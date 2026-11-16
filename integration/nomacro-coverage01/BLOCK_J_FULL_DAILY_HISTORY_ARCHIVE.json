@@ -1,0 +1,53 @@
+{
+  "prefix_filter": null,
+  "run": 43840145787,
+  "archive": "BLOCK_J_FULL_DAILY_HISTORY_RAW.tar.xz",
+  "bytes": 171223232,
+  "sha256": "fc9be0c687190fda4e6a784900b5bcbdb1d530d10d963e30f943a1d9fc0b9231",
+  "selection": "Actual inputs, generated Fortran, reports, ledger rows, native checkpoint archives and logs; compiled objects/executables/provider are excluded. Complete GitHub artifacts downloaded and SHA256-verified separately.",
+  "artifacts": [
+    {
+      "id": 14213091533,
+      "node_id": "MDg6QXJ0aWZhY3QxNDIxMzA5MTUzMw==",
+      "name": "nomacro-history-water-history-10d4cc551e779ab86f235d0151284f27bc92da45",
+      "size_in_bytes": 221569988,
+      "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14213091533",
+      "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14213091533/zip",
+      "expired": false,
+      "digest": "sha256:ad14ad6ca001221fd6a01be28fb69f8a68fb23e5645898a5c2ddb8891d447a48",
+      "created_at": "2026-11-16T09:32:38Z",
+      "updated_at": "2026-11-16T09:32:38Z",
+      "expires_at": "2026-12-16T09:31:40Z",
+      "workflow_run": {
+        "id": 43840145787,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/nomacro-coverage10",
+        "head_sha": "10d4cc551e779ab86f235d0151284f27bc92da45"
+      }
+    }
+  ],
+  "parts": [
+    {
+      "file": "BLOCK_J_FULL_DAILY_HISTORY_RAW.tar.xz.part001",
+      "bytes": 45000000,
+      "sha256": "aa1c904a2f0b4d1b049495952dff6a17a4e6db942b8609d8f5dc31cd4a5967d6"
+    },
+    {
+      "file": "BLOCK_J_FULL_DAILY_HISTORY_RAW.tar.xz.part002",
+      "bytes": 45000000,
+      "sha256": "2b0982632670095895692af6adb196549b1ba1b999e758d2732390a7c9c2c6e3"
+    },
+    {
+      "file": "BLOCK_J_FULL_DAILY_HISTORY_RAW.tar.xz.part003",
+      "bytes": 45000000,
+      "sha256": "221649457b4b38e364632e9b46f04af35381dfefb5a581a805db4e40cbcb39c3"
+    },
+    {
+      "file": "BLOCK_J_FULL_DAILY_HISTORY_RAW.tar.xz.part004",
+      "bytes": 36223232,
+      "sha256": "726a2c8be448319ff411dfe9991074c7a4d5e3f574eeec57b7f6413997e4f088"
+    }
+  ],
+  "reconstruct": "Concatenate listed parts in order, verify archive SHA256, then extract"
+}

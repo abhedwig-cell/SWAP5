@@ -154,6 +154,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         values=re.findall(r'(?mi)^\s*'+name+r'\s*=\s*(\d+)\b',control)
         if len(values)!=1:raise ValueError('Missing/ambiguous physical selector: '+name)
         return int(values[0])
+    micro_state=bool(project.input_directory and not project.macro and (selector('SWHYST') or selector('SWSNOW')))
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
     soil_tables = selector('SWSOPHY')==1
@@ -211,7 +212,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                           hydraulic_history=bool(project.input_directory and selector('SWHYST')>0),
                           thermal_history=bool(project.input_directory and selector('SWSNOW')>0),
                           management_state=management_state,
-                          plant_et_state=bool(project.input_directory and selector('SWCFBS')==1))
+                          plant_et_state=bool(project.input_directory and selector('SWCFBS')==1),
+                          micro_lookup_state=micro_state)
         imports = "return_at_day_end"
         if runtime_checkpoint:
             imports += ", checkpoint_clock"
@@ -590,6 +592,25 @@ end module MOD_wofost""")
         source=source[:marker.start()]+procedures+source[marker.start():]
         (output/'irrigation.f90').write_text(source,encoding='cp1252')
         patched.insert(0,'irrigation')
+    if micro_state:
+        from micro_lookup_state import render as render_micro_lookup
+        source=(donor_build/'swap-selected/RWU_micro.f90').read_text(encoding='cp1252')
+        (output/'RWU_micro.f90').write_text(render_micro_lookup(source),encoding='cp1252')
+        patched.insert(0,'RWU_micro')
+        patched.remove('boundtop');patched.insert(0,'boundtop')
+        from oxygen_lookup_state import render as render_oxygen_lookup
+        source=(donor_build/'swap-selected/oxygenstress.f90').read_text(encoding='cp1252')
+        (output/'oxygenstress.f90').write_text(render_oxygen_lookup(source),encoding='cp1252')
+        patched.insert(0,'oxygenstress')
+        from history_top_state import render as render_history_top
+        (output/'boundtop.f90').write_text(render_history_top((output/'boundtop.f90').read_text(encoding='cp1252')),encoding='cp1252')
+        if checkpoint_day is not None or runtime_checkpoint:
+            path=output/'swap.f90';source=path.read_text(encoding='cp1252')
+            source=replace(source,'use MOD_wofost,only:hybrid_apply_wofost',
+                           'use O2_pars,only:hybrid_apply_oxygen\nuse MOD_top,only:hybrid_apply_top\nuse mod_RWU_micro,only:hybrid_apply_micro_lookup\nuse MOD_wofost,only:hybrid_apply_wofost')
+            source=replace(source,'         call hybrid_apply_wofost(fl_cropemergence)',
+                           '         call hybrid_apply_wofost(fl_cropemergence)\n         call hybrid_apply_top()\n         call hybrid_apply_oxygen()\n         call hybrid_apply_micro_lookup()')
+            path.write_text(source,encoding='cp1252')
     if not project.macro and project.time_step_policy==PHYSICAL_GROWTH_TIME_POLICY:
         render_physical_iteration_proposal(output,strict_water=strict_water)
     if project.input_directory and selector('SWCFBS')==1:
@@ -682,6 +703,12 @@ end module plant_interface""")
     }
     if project.input_directory:
         build_identity['experimental_input_adapter'] = sha(APP/'experimental_project.py')
+    if micro_state:
+        from micro_lookup_state import POLICY
+        build_identity['micro_lookup_state_policy']=POLICY
+        build_identity['micro_lookup_state_source']=sha(APP/'micro_lookup_state.py')
+        build_identity['history_top_state_source']=sha(APP/'history_top_state.py')
+        build_identity['oxygen_lookup_state_source']=sha(APP/'oxygen_lookup_state.py')
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
     if not project.macro:

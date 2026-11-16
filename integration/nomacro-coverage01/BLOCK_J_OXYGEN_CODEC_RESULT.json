@@ -1,0 +1,419 @@
+{
+  "status": "PRODUCTION_ORIGINAL_OXYGEN_LOOKUP_CODEC_O0_O2_PASS",
+  "compiler": {
+    "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+    "target": "x86_64-w64-mingw32"
+  },
+  "profiles": [
+    {
+      "optimization": "O0",
+      "original_provider_optimization": "O2",
+      "compilation": [
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-I",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-I",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_oxygen_codec\\O0\\oxygenstress.f90",
+            "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_oxygen_lookup_codec.f90"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "gfortran",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_oxygen_codec\\O0\\codec.exe",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundtop.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\frozencond.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\solute.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_csv_output.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\variables.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_oxygen_codec\\O0\\oxygenstress.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_oxygen_codec\\O0\\original_oxygen_lookup_codec.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        }
+      ],
+      "positive": {
+        "name": "valid",
+        "returncode": 0,
+        "stdout": " ORIGINAL_OXYGEN_LOOKUP_EXACT         168\n",
+        "stderr": ""
+      },
+      "refusals": [
+        {
+          "name": "version",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history version/flag\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x77245444\n#4  0x7724acaf\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "flag",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history version/flag\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x77245444\n#4  0x7724acaf\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "nodes",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Foreign original oxygen history grid\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x77245471\n#4  0x7724acaf\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "clock",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Foreign original oxygen history clock\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x772454eb\n#4  0x7724acaf\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "nan",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Nonfinite original oxygen history arrays\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x772458b7\n#4  0x7724acaf\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "negative",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history domain\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x7724598b\n#4  0x7724acaf\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "mplus1",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history domain\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x7724598b\n#4  0x7724acaf\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "trailer",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history size\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x77245a52\n#4  0x7724acaf\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "short",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Incomplete original oxygen history trailer\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x77245a28\n#4  0x7724acaf\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "writer-nan",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Nonfinite original oxygen history arrays\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x772458b7\n#4  0x7724b302\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "writer-negative",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history domain\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x7724598b\n#4  0x7724b302\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "writer-domain",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history domain\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x7724598b\n#4  0x7724b302\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "stale-apply",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Stale original oxygen history context\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x77244d41\n#4  0x7724b732\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "grid-apply",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Changed original oxygen history grid\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x77244e76\n#4  0x7724b732\n#5  0x7724bd98\n#6  0x77181156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        }
+      ],
+      "roundtrip_exact": true,
+      "staged_read_before_assignment": true,
+      "undefined_tails_unchanged": true,
+      "inactive_roundtrip_exact": true,
+      "generated_source_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+      "executable_sha256": "bf83e34b77759cdeb040d01558a93bf3725d3ee6e0adb16cba21c671ff90943c"
+    },
+    {
+      "optimization": "O2",
+      "original_provider_optimization": "O2",
+      "compilation": [
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-I",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-I",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_oxygen_codec\\O2\\oxygenstress.f90",
+            "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_oxygen_lookup_codec.f90"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "gfortran",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_oxygen_codec\\O2\\codec.exe",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundtop.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\frozencond.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\solute.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_csv_output.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\variables.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_oxygen_codec\\O2\\oxygenstress.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_oxygen_codec\\O2\\original_oxygen_lookup_codec.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a"
+          ],
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        }
+      ],
+      "positive": {
+        "name": "valid",
+        "returncode": 0,
+        "stdout": " ORIGINAL_OXYGEN_LOOKUP_EXACT         168\n",
+        "stderr": ""
+      },
+      "refusals": [
+        {
+          "name": "version",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history version/flag\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e5acc\n#4  0x555e97e6\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "flag",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history version/flag\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e5acc\n#4  0x555e97e6\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "nodes",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Foreign original oxygen history grid\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e55e5\n#4  0x555e97e6\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "clock",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Foreign original oxygen history clock\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e5ae0\n#4  0x555e97e6\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "nan",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Nonfinite original oxygen history arrays\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e54d3\n#4  0x555e97e6\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "negative",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history domain\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e5683\n#4  0x555e97e6\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "mplus1",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history domain\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e5683\n#4  0x555e97e6\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "trailer",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history size\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e5a7c\n#4  0x555e97e6\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "short",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Incomplete original oxygen history trailer\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e5aa4\n#4  0x555e97e6\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "writer-nan",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Nonfinite original oxygen history arrays\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e54d3\n#4  0x555e9009\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "writer-negative",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history domain\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e5683\n#4  0x555e9009\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "writer-domain",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Invalid original oxygen history domain\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e5683\n#4  0x555e9009\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "stale-apply",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Stale original oxygen history context\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e4f9a\n#4  0x555e92cc\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "grid-apply",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "ERROR STOP Changed original oxygen history grid\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x555e4fbf\n#4  0x555e92cc\n#5  0x5560971f\n#6  0x55521156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        }
+      ],
+      "roundtrip_exact": true,
+      "staged_read_before_assignment": true,
+      "undefined_tails_unchanged": true,
+      "inactive_roundtrip_exact": true,
+      "generated_source_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+      "executable_sha256": "3519064321778aca7016c6dc3019924f7ec65b2d360bad38d6a85a1867f86b88"
+    }
+  ],
+  "production_generator_sha256": "c1e8241acae6069bbd4a941e448a203e70db3019c1e7c64d02ccee605b68dbba",
+  "original_source_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
+  "driver_sha256": "8dafa706a60d785cf5bc50d8581b068357a5ba3151ea69ad5faa4b3cf09ae1f1",
+  "scope": "Actual production complete oxygen preprocessing codec in original native dependency closure; no model or active macropore execution",
+  "reporter_label_correction": "Raw report scope had copied top-component wording; generated oxygenstress and original_oxygen_lookup_codec driver/source SHA and actual14 refusals identify executed component. Raw archive retained unchanged."
+}

@@ -1,0 +1,5004 @@
+{
+  "status": "PRIVATE_WHOLE_ORIGINAL_OXYGEN_REPLAY_PASS",
+  "interface_reconnected": false,
+  "micro_lookup_replayed": false,
+  "cold_warm_physical_exact": true,
+  "pinned_source": "33770602914210e11b50d6bede94838bb4274958",
+  "current_source": "a4db1cf15ed70c26d7d7416df866cf904de70f6e",
+  "original_run": 43836309698,
+  "origin_sha256": "2193fea4959da02466ea89cfea5d81c66aa28bf2c3bec24beb8af11c1260092c",
+  "origin_unchanged": true,
+  "no_publication": true,
+  "no_build_rebinding": true,
+  "original_executable_relink_exact": true,
+  "field_inventory": [
+    {
+      "field": "plant_interface.unit_crp",
+      "kind": "integer",
+      "original_expression": "unit_crp"
+    },
+    {
+      "field": "plant_interface.icrop",
+      "kind": "integer",
+      "original_expression": "icrop"
+    },
+    {
+      "field": "plant_interface.cropstart",
+      "kind": "real",
+      "original_expression": "cropstart"
+    },
+    {
+      "field": "plant_interface.cropend",
+      "kind": "real",
+      "original_expression": "cropend"
+    },
+    {
+      "field": "plant_interface.croptype",
+      "kind": "integer",
+      "original_expression": "croptype"
+    },
+    {
+      "field": "plant_interface.co2",
+      "kind": "real",
+      "original_expression": "co2"
+    },
+    {
+      "field": "plant_interface.fco2amax",
+      "kind": "real",
+      "original_expression": "fco2amax"
+    },
+    {
+      "field": "plant_interface.fco2eff",
+      "kind": "real",
+      "original_expression": "fco2eff"
+    },
+    {
+      "field": "plant_interface.fco2tra",
+      "kind": "real",
+      "original_expression": "fco2tra"
+    },
+    {
+      "field": "plant_interface.fl_start_croprotation",
+      "kind": "logical",
+      "original_expression": "fl_start_croprotation"
+    },
+    {
+      "field": "plant_interface.fl_start_cropemergence",
+      "kind": "logical",
+      "original_expression": "fl_start_cropemergence"
+    },
+    {
+      "field": "plant_interface.fl_cropemergence",
+      "kind": "logical",
+      "original_expression": "fl_cropemergence"
+    },
+    {
+      "field": "plant_interface.fl_cropharvest",
+      "kind": "logical",
+      "original_expression": "fl_cropharvest"
+    },
+    {
+      "field": "plant_interface.fl_cropharvestday",
+      "kind": "logical",
+      "original_expression": "fl_cropharvestday"
+    },
+    {
+      "field": "plant_interface.fl_cropisreset",
+      "kind": "logical",
+      "original_expression": "fl_cropisreset"
+    },
+    {
+      "field": "plant_interface.swcf",
+      "kind": "integer",
+      "original_expression": "swcf"
+    },
+    {
+      "field": "plant_interface.cf",
+      "kind": "real",
+      "original_expression": "cf"
+    },
+    {
+      "field": "plant_interface.ch",
+      "kind": "real",
+      "original_expression": "ch"
+    },
+    {
+      "field": "plant_interface.albedo",
+      "kind": "real",
+      "original_expression": "albedo"
+    },
+    {
+      "field": "plant_interface.rsc",
+      "kind": "real",
+      "original_expression": "rsc"
+    },
+    {
+      "field": "plant_interface.rsw",
+      "kind": "real",
+      "original_expression": "rsw"
+    },
+    {
+      "field": "plant_interface.kdif",
+      "kind": "real",
+      "original_expression": "kdif"
+    },
+    {
+      "field": "plant_interface.kdir",
+      "kind": "real",
+      "original_expression": "kdir"
+    },
+    {
+      "field": "plant_interface.vcover",
+      "kind": "real",
+      "original_expression": "vcover"
+    },
+    {
+      "field": "plant_interface.sw_drought",
+      "kind": "integer",
+      "original_expression": "sw_drought"
+    },
+    {
+      "field": "plant_interface.sw_oxygen",
+      "kind": "integer",
+      "original_expression": "sw_oxygen"
+    },
+    {
+      "field": "plant_interface.mrftb",
+      "kind": "real",
+      "original_expression": "mrftb"
+    },
+    {
+      "field": "plant_interface.max_resp_factor",
+      "kind": "real",
+      "original_expression": "max_resp_factor"
+    },
+    {
+      "field": "plant_interface.q10_root",
+      "kind": "real",
+      "original_expression": "q10_root"
+    },
+    {
+      "field": "plant_interface.c_mroot",
+      "kind": "real",
+      "original_expression": "c_mroot"
+    },
+    {
+      "field": "plant_interface.f_senes",
+      "kind": "real",
+      "original_expression": "f_senes"
+    },
+    {
+      "field": "plant_interface.sw_inter",
+      "kind": "integer",
+      "original_expression": "sw_inter"
+    },
+    {
+      "field": "plant_interface.dt_interc_event",
+      "kind": "real",
+      "original_expression": "dt_interc_event"
+    },
+    {
+      "field": "plant_interface.cofab",
+      "kind": "real",
+      "original_expression": "cofab"
+    },
+    {
+      "field": "plant_interface.pfreetb",
+      "kind": "real",
+      "original_expression": "pfreetb"
+    },
+    {
+      "field": "plant_interface.pstemtb",
+      "kind": "real",
+      "original_expression": "pstemtb"
+    },
+    {
+      "field": "plant_interface.scanopytb",
+      "kind": "real",
+      "original_expression": "scanopytb"
+    },
+    {
+      "field": "plant_interface.avevaptb",
+      "kind": "real",
+      "original_expression": "avevaptb"
+    },
+    {
+      "field": "plant_interface.avprectb",
+      "kind": "real",
+      "original_expression": "avprectb"
+    },
+    {
+      "field": "plant_interface.siccaplai",
+      "kind": "real",
+      "original_expression": "siccaplai"
+    },
+    {
+      "field": "plant_interface.siccap",
+      "kind": "real",
+      "original_expression": "siccap"
+    },
+    {
+      "field": "plant_interface.sicact",
+      "kind": "real",
+      "original_expression": "sicact"
+    },
+    {
+      "field": "plant_interface.crsflx_in",
+      "kind": "real",
+      "original_expression": "crsflx_in"
+    },
+    {
+      "field": "plant_interface.crsflx_out",
+      "kind": "real",
+      "original_expression": "crsflx_out"
+    },
+    {
+      "field": "plant_interface.siccaploss",
+      "kind": "real",
+      "original_expression": "siccaploss"
+    },
+    {
+      "field": "plant_interface.swrd",
+      "kind": "integer",
+      "original_expression": "swrd"
+    },
+    {
+      "field": "plant_interface.swrdc",
+      "kind": "integer",
+      "original_expression": "swrdc"
+    },
+    {
+      "field": "plant_interface.swwrtnonox",
+      "kind": "integer",
+      "original_expression": "swwrtnonox"
+    },
+    {
+      "field": "plant_interface.aeratecrit",
+      "kind": "real",
+      "original_expression": "aeratecrit"
+    },
+    {
+      "field": "plant_interface.wrtmax",
+      "kind": "real",
+      "original_expression": "wrtmax"
+    },
+    {
+      "field": "plant_interface.wroottb",
+      "kind": "real",
+      "original_expression": "wroottb"
+    },
+    {
+      "field": "plant_interface.noddrz",
+      "kind": "integer",
+      "original_expression": "noddrz"
+    },
+    {
+      "field": "plant_interface.rd",
+      "kind": "real",
+      "original_expression": "rd"
+    },
+    {
+      "field": "plant_interface.dvs",
+      "kind": "real",
+      "original_expression": "dvs"
+    },
+    {
+      "field": "plant_interface.lai",
+      "kind": "real",
+      "original_expression": "lai"
+    },
+    {
+      "field": "plant_interface.tsum",
+      "kind": "real",
+      "original_expression": "tsum"
+    },
+    {
+      "field": "plant_interface.wrt",
+      "kind": "real",
+      "original_expression": "wrt"
+    },
+    {
+      "field": "plant_interface.wst",
+      "kind": "real",
+      "original_expression": "wst"
+    },
+    {
+      "field": "plant_interface.wlv",
+      "kind": "real",
+      "original_expression": "wlv"
+    },
+    {
+      "field": "plant_interface.wso",
+      "kind": "real",
+      "original_expression": "wso"
+    },
+    {
+      "field": "plant_interface.dwrt",
+      "kind": "real",
+      "original_expression": "dwrt"
+    },
+    {
+      "field": "plant_interface.dwst",
+      "kind": "real",
+      "original_expression": "dwst"
+    },
+    {
+      "field": "plant_interface.dwlv",
+      "kind": "real",
+      "original_expression": "dwlv"
+    },
+    {
+      "field": "plant_interface.grrt",
+      "kind": "real",
+      "original_expression": "grrt"
+    },
+    {
+      "field": "plant_interface.drrt",
+      "kind": "real",
+      "original_expression": "drrt"
+    },
+    {
+      "field": "plant_interface.drst",
+      "kind": "real",
+      "original_expression": "drst"
+    },
+    {
+      "field": "plant_interface.drlv",
+      "kind": "real",
+      "original_expression": "drlv"
+    },
+    {
+      "field": "plant_interface.ipgass",
+      "kind": "real",
+      "original_expression": "ipgass"
+    },
+    {
+      "field": "plant_interface.igass",
+      "kind": "real",
+      "original_expression": "igass"
+    },
+    {
+      "field": "plant_interface.imres",
+      "kind": "real",
+      "original_expression": "imres"
+    },
+    {
+      "field": "plant_interface.laipot",
+      "kind": "real",
+      "original_expression": "laipot"
+    },
+    {
+      "field": "plant_interface.wrtpot",
+      "kind": "real",
+      "original_expression": "wrtpot"
+    },
+    {
+      "field": "plant_interface.wstpot",
+      "kind": "real",
+      "original_expression": "wstpot"
+    },
+    {
+      "field": "plant_interface.wlvpot",
+      "kind": "real",
+      "original_expression": "wlvpot"
+    },
+    {
+      "field": "plant_interface.wsopot",
+      "kind": "real",
+      "original_expression": "wsopot"
+    },
+    {
+      "field": "plant_interface.dwrtpot",
+      "kind": "real",
+      "original_expression": "dwrtpot"
+    },
+    {
+      "field": "plant_interface.dwstpot",
+      "kind": "real",
+      "original_expression": "dwstpot"
+    },
+    {
+      "field": "plant_interface.dwlvpot",
+      "kind": "real",
+      "original_expression": "dwlvpot"
+    },
+    {
+      "field": "plant_interface.grrtpot",
+      "kind": "real",
+      "original_expression": "grrtpot"
+    },
+    {
+      "field": "plant_interface.ipgasspot",
+      "kind": "real",
+      "original_expression": "ipgasspot"
+    },
+    {
+      "field": "plant_interface.igasspot",
+      "kind": "real",
+      "original_expression": "igasspot"
+    },
+    {
+      "field": "plant_interface.imrespot",
+      "kind": "real",
+      "original_expression": "imrespot"
+    },
+    {
+      "field": "plant_interface.dmhrv",
+      "kind": "real",
+      "original_expression": "dmhrv"
+    },
+    {
+      "field": "plant_interface.dmloss",
+      "kind": "real",
+      "original_expression": "dmloss"
+    },
+    {
+      "field": "plant_interface.icut",
+      "kind": "integer",
+      "original_expression": "icut"
+    },
+    {
+      "field": "plant_interface.tcut",
+      "kind": "integer",
+      "original_expression": "tcut"
+    },
+    {
+      "field": "plant_interface.dmhrvpot",
+      "kind": "real",
+      "original_expression": "dmhrvpot"
+    },
+    {
+      "field": "plant_interface.dmlosspot",
+      "kind": "real",
+      "original_expression": "dmlosspot"
+    },
+    {
+      "field": "plant_interface.icutpot",
+      "kind": "integer",
+      "original_expression": "icutpot"
+    },
+    {
+      "field": "plant_interface.tcutpot",
+      "kind": "integer",
+      "original_expression": "tcutpot"
+    },
+    {
+      "field": "plant_interface.hlim3h",
+      "kind": "real",
+      "original_expression": "hlim3h"
+    },
+    {
+      "field": "plant_interface.hlim3l",
+      "kind": "real",
+      "original_expression": "hlim3l"
+    },
+    {
+      "field": "plant_interface.hlim4",
+      "kind": "real",
+      "original_expression": "hlim4"
+    },
+    {
+      "field": "atmosphere_interface.tav",
+      "kind": "real",
+      "original_expression": "tav"
+    },
+    {
+      "field": "atmosphere_interface.rad",
+      "kind": "real",
+      "original_expression": "rad"
+    },
+    {
+      "field": "atmosphere_interface.grai",
+      "kind": "real",
+      "original_expression": "grai"
+    },
+    {
+      "field": "variables.h",
+      "kind": "real",
+      "original_expression": "h(1:numnod)"
+    },
+    {
+      "field": "variables.theta",
+      "kind": "real",
+      "original_expression": "theta(1:numnod)"
+    },
+    {
+      "field": "variables.k",
+      "kind": "real",
+      "original_expression": "k(1:numnod+1)"
+    },
+    {
+      "field": "variables.kmean",
+      "kind": "real",
+      "original_expression": "kmean(1:numnod+1)"
+    },
+    {
+      "field": "variables.dimoca",
+      "kind": "real",
+      "original_expression": "dimoca(1:numnod)"
+    },
+    {
+      "field": "variables.fhyst",
+      "kind": "real",
+      "original_expression": "fhyst(1:numnod)"
+    },
+    {
+      "field": "variables.indeks",
+      "kind": "integer",
+      "original_expression": "indeks(1:numnod)"
+    },
+    {
+      "field": "variables.dt",
+      "kind": "real",
+      "original_expression": "dt"
+    },
+    {
+      "field": "variables.dtold",
+      "kind": "real",
+      "original_expression": "dtold"
+    },
+    {
+      "field": "variables.pond",
+      "kind": "real",
+      "original_expression": "pond"
+    },
+    {
+      "field": "variables.pondm1",
+      "kind": "real",
+      "original_expression": "pondm1"
+    },
+    {
+      "field": "variables.gwl",
+      "kind": "real",
+      "original_expression": "gwl"
+    },
+    {
+      "field": "variables.volact",
+      "kind": "real",
+      "original_expression": "volact"
+    },
+    {
+      "field": "MOD_MvG.cofgen",
+      "kind": "real",
+      "original_expression": "cofgen(:,1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.tsoil",
+      "kind": "real",
+      "original_expression": "tsoil(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.heacon",
+      "kind": "real",
+      "original_expression": "heacon(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.heacap",
+      "kind": "real",
+      "original_expression": "heacap(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.tetop",
+      "kind": "real",
+      "original_expression": "tetop"
+    },
+    {
+      "field": "MOD_SoilTemperature.tebot",
+      "kind": "real",
+      "original_expression": "tebot"
+    },
+    {
+      "field": "MOD_top.theatm",
+      "kind": "real",
+      "original_expression": "theatm"
+    },
+    {
+      "field": "MOD_top.katm",
+      "kind": "real",
+      "original_expression": "katm"
+    },
+    {
+      "field": "MOD_top.q0",
+      "kind": "real",
+      "original_expression": "q0"
+    },
+    {
+      "field": "MOD_top.hsurf",
+      "kind": "real",
+      "original_expression": "hsurf"
+    },
+    {
+      "field": "MOD_top.FlRunoff",
+      "kind": "logical",
+      "original_expression": "FlRunoff"
+    },
+    {
+      "field": "MOD_top.ftoph",
+      "kind": "logical",
+      "original_expression": "ftoph"
+    }
+  ],
+  "records": {
+    "warm": {
+      "last_row": {
+        "column": 1,
+        "day": 525,
+        "committed": true,
+        "revision": 525,
+        "stock_end_cm": [
+          75.68942577054516,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          76.13810758064827,
+          0.0,
+          0.0,
+          0.0013687380000000004,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0013687380000000004,
+          0.0,
+          0.017855263452810657,
+          0.0,
+          0.21746809738034048,
+          0.0,
+          0.21335844926996164,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -73.76587818370143,
+          -70.08769122050631,
+          -67.00367270227837,
+          -64.39523268596699,
+          -62.15397908187138,
+          -60.18665900851076,
+          -58.42930190330252,
+          -56.840631155132755,
+          -55.38934239965682,
+          -54.04812086727793,
+          -50.43553856559966,
+          -45.45139446940255,
+          -40.854969000730655,
+          -36.332948221555476,
+          -31.675964622536295,
+          -26.94346496052531,
+          -22.1814053972421,
+          -17.38329309927428,
+          -12.547318273058728,
+          -7.6743927589616865,
+          -0.18518389677953334,
+          9.814816103220467,
+          19.814816103220465,
+          29.814816103220465,
+          39.814816103220465,
+          49.814816103220465,
+          59.814816103220465,
+          69.81481610322047,
+          79.81481610322047,
+          89.81481610322047,
+          99.81481610322047,
+          109.81481610322047,
+          119.81481610322047,
+          129.81481610322047
+        ],
+        "groundwater_cm": -65.18536073407505,
+        "drainage_outward_cm": 0.21335844926996164,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": -2.3002433291452462e-15,
+        "kernel_residual_cm": 5.828670879282072e-15,
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": -5.141720382795256e-15
+      },
+      "snapshot_count": 73
+    },
+    "cold": {
+      "last_row": {
+        "column": 1,
+        "day": 525,
+        "committed": true,
+        "revision": 1,
+        "stock_end_cm": [
+          75.68942624545012,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          76.13810758064827,
+          0.0,
+          0.0,
+          0.0013687380000000004,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0013687380000000004,
+          0.0,
+          0.017855263456569213,
+          0.0,
+          0.21746809738034048,
+          0.0,
+          0.213357974361239,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -73.76563540750503,
+          -70.08749343053202,
+          -67.00351064534824,
+          -64.39509824799553,
+          -62.153866073198444,
+          -60.18656341177029,
+          -58.429221220800414,
+          -56.84056362987071,
+          -55.3892866072724,
+          -54.04807558354691,
+          -50.435515964160956,
+          -45.45139618687174,
+          -40.854983749187156,
+          -36.33297016076179,
+          -31.675989493869547,
+          -26.943491131403633,
+          -22.181432160509853,
+          -17.383320025358316,
+          -12.547345142557957,
+          -7.674419501912664,
+          -0.18521064629817366,
+          9.814789353701826,
+          19.814789353701826,
+          29.814789353701826,
+          39.814789353701826,
+          49.814789353701826,
+          59.814789353701826,
+          69.81478935370183,
+          79.81478935370183,
+          89.81478935370183,
+          99.81478935370183,
+          109.81478935370183,
+          119.81478935370183,
+          129.81478935370183
+        ],
+        "groundwater_cm": -65.18538750917834,
+        "drainage_outward_cm": 0.213357974361239,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": -3.3341385208274232e-15,
+        "kernel_residual_cm": 6.827871601444713e-15,
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": -4.081804338973427e-15
+      },
+      "snapshot_count": 73
+    },
+    "cold-oxygen-restored": {
+      "last_row": {
+        "column": 1,
+        "day": 525,
+        "committed": true,
+        "revision": 1,
+        "stock_end_cm": [
+          75.68942577054516,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          76.13810758064827,
+          0.0,
+          0.0,
+          0.0013687380000000004,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0013687380000000004,
+          0.0,
+          0.017855263452810657,
+          0.0,
+          0.21746809738034048,
+          0.0,
+          0.21335844926996164,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -73.76587818370143,
+          -70.08769122050631,
+          -67.00367270227837,
+          -64.39523268596699,
+          -62.15397908187138,
+          -60.18665900851076,
+          -58.42930190330252,
+          -56.840631155132755,
+          -55.38934239965682,
+          -54.04812086727793,
+          -50.43553856559966,
+          -45.45139446940255,
+          -40.854969000730655,
+          -36.332948221555476,
+          -31.675964622536295,
+          -26.94346496052531,
+          -22.1814053972421,
+          -17.38329309927428,
+          -12.547318273058728,
+          -7.6743927589616865,
+          -0.18518389677953334,
+          9.814816103220467,
+          19.814816103220465,
+          29.814816103220465,
+          39.814816103220465,
+          49.814816103220465,
+          59.814816103220465,
+          69.81481610322047,
+          79.81481610322047,
+          89.81481610322047,
+          99.81481610322047,
+          109.81481610322047,
+          119.81481610322047,
+          129.81481610322047
+        ],
+        "groundwater_cm": -65.18536073407505,
+        "drainage_outward_cm": 0.21335844926996164,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": -2.3002433291452462e-15,
+        "kernel_residual_cm": 5.828670879282072e-15,
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": -5.141720382795256e-15
+      },
+      "snapshot_count": 73
+    }
+  },
+  "phase_differences": [
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.369218000135878
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.206504280095501e-09
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.3692180065380994
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.max_resp_factor",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 9.313094283252843
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.q10_root",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.c_mroot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.010666666666666666
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.f_senes",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.sicact",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0013687380000000004
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.crsflx_in",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.015028447265964563
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.crsflx_out",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.015028447265964563
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.369218000135878
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.206504280095501e-09
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.ipgass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885179033105
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.igass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885134124768
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.imres",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.280022640418031
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.3692180065380994
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.ipgasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885179033105
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.igasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885179033105
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.imrespot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.280022640418031
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.005028655666786411
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.1909413914994918e-19
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.1243345168743564
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.unit_crp",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 800.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.co2",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 360.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fco2amax",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fco2eff",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fco2tra",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fl_start_cropemergence",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.swcf",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.ch",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 10.581668625146886
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.albedo",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.04000000000000001
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.rsc",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 135.8
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.kdif",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.kdir",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.7500000000000001
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.vcover",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.05286628761220946
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.max_resp_factor",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 9.313094283252843
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.q10_root",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.c_mroot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.010666666666666666
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.f_senes",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.sw_inter",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.siccaplai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.018900000000000004
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.siccap",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0015849272470349742
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.crsflx_in",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.015028447265964563
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.crsflx_out",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.015028447265964563
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.swrd",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.swwrtnonox",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.aeratecrit",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.5
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.lai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.08385858449920497
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.369218000135877
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wst",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 20.14829288015762
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 49.328579117179395
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.dwlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.206504280095501e-09
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.369218000135878
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.206504280095501e-09
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.ipgass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885179033105
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.igass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885134124768
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.imres",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.280022640418031
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.laipot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.08385858453556595
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.369218006538098
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wstpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 20.148292887584198
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wlvpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 49.3285791385682
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.3692180065380994
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.ipgasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885179033105
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.igasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885179033105
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.imrespot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.280022640418031
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.005028655666786411
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.1909413914994918e-19
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.1243345168743564
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.369218000135878
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.206504280095501e-09
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.3692180065380994
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.369218000135878
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.206504280095501e-09
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.3692180065380994
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.unit_crp",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 800.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.co2",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 360.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fco2amax",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fco2eff",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fco2tra",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fl_start_cropemergence",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.swcf",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.ch",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 10.581668625146886
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.albedo",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.04000000000000001
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.rsc",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 135.8
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.kdif",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.kdir",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.7500000000000001
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.vcover",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.05286628761220946
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.max_resp_factor",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 9.313094283252843
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.q10_root",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.c_mroot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.010666666666666666
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.f_senes",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.sw_inter",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.siccaplai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.018900000000000004
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.siccap",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0015849272470349742
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.crsflx_in",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.015028447265964563
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.crsflx_out",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.015028447265964563
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.swrd",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.swwrtnonox",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.aeratecrit",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.5
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.lai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.08385858449920497
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.369218000135877
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wst",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 20.14829288015762
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 49.328579117179395
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.dwlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.206504280095501e-09
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.369218000135878
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.206504280095501e-09
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.ipgass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885179033105
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.igass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885134124768
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.imres",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.280022640418031
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.laipot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.08385858453556595
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.369218006538098
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wstpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 20.148292887584198
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wlvpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 49.3285791385682
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.3692180065380994
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.ipgasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885179033105
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.igasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 17.898885179033105
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.imrespot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.280022640418031
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "atmosphere_interface.tav",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 21.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "atmosphere_interface.rad",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 14530000.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "atmosphere_interface.grai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.36
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.005028655666786411
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.1909413914994918e-19
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.1243345168743564
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.crsflx_in",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.015028447265964563
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.crsflx_out",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.015028447265964563
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.369218000135878
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.206504280095501e-09
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.3692180065380994
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    }
+  ],
+  "private_sources": {
+    "hybrid_state_diagnostic.f90": "275c2ac3a076b7bbdd1ad26c3ee8d9c86adcef74a204834a8d038bc91bc12e1b",
+    "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+    "swap.f90": "62d423ad54297dc10156bd71fe12a2a4629dca347cb0a96644a6e6985e3b2c88",
+    "swap_main.f90": "500a1fce5636414cee1241bac3c99b02e375f1608b3c8bd32e4a4f9df5211a31"
+  },
+  "private_executable_sha256": "5cc8d43b551792375287122f014c697cdc62c243cda84553dcc57b8d4747a24e",
+  "scope": "Read-only original component-state evidence, not current public qualification or demonstrated causation",
+  "complete_component_module": "MOD_cropdevelopment",
+  "complete_component_comparison": [
+    {
+      "phase": "BEFORE_METEO3",
+      "bytes": 255116,
+      "layout": [
+        {
+          "field": "fl_cropcalendar",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_readcropfile",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "rdmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_prep",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_prep",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw_sow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_sow",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw_germ",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_germ",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "delay_prep",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nodsow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "delay_sow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "tsumgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "adcrh",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "adcrl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hlim1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hlim2u",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hlim2l",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_oxygentype",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "q10_microbial",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "specific_resp_humus",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "oxygenslope",
+          "kind": 1,
+          "count": 6,
+          "bits": 64
+        },
+        {
+          "field": "oxygenintercept",
+          "kind": 1,
+          "count": 6,
+          "bits": 64
+        },
+        {
+          "field": "campbell_h100",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "campbell_h500",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gfp_h100",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rootradius_m",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "srl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_salinity",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "saltmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "saltslope",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_compensate",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw_stressor",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "alphacrit",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dcritrtz",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rdtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "rdi",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rri",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rdc",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rlwtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "rdm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rdpot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rr",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "swdmi2rd",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "rrimin",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "extentcrit",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "noddrz_old",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "mxnoddrz",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "cumdens_top",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "wroot_node",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "lrv_node",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "wroot_node_top",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "rdctb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "wrtmin",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fgwrt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fdwrt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "swlrvconstant",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "z_prep",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "h_prep",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "max_delay_prep",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "z_sow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "h_sow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "z_tempsow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "max_delay_sow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "TempSow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "zgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "agerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "bgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hdrygerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hwetgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tsumemeopt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tbasem",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "teffmx",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_co2",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "co2amaxtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "co2efftb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "co2tratb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "co2year",
+          "kind": 2,
+          "count": 1000,
+          "bits": 32
+        },
+        {
+          "field": "co2ppm",
+          "kind": 1,
+          "count": 1000,
+          "bits": 64
+        },
+        {
+          "field": "chtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "cftb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "cumdens",
+          "kind": 1,
+          "count": 10002,
+          "bits": 64
+        },
+        {
+          "field": "do_read_rds",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        }
+      ],
+      "differences": [
+        {
+          "field": "sw_germ",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 2,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 2,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "nodsow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "tsumgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 264.9614406185489,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 264.9614406185489,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "adcrh",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.5,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.5,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "adcrl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.1,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hlim1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 15.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -15.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hlim2u",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 30.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -30.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hlim2l",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 30.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -30.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "alphacrit",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.7000000000000001,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.7000000000000001,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "rr",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.24000000000000002,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.24000000000000002,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "noddrz_old",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 10,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 10,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "zgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 10.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -10.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "agerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 203.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 203.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "cgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 292.8909108802118,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 292.8909108802118,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "bgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 661.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 661.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hdrygerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 500.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -500.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hwetgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 100.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -100.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "tsumemeopt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 255.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 255.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "tbasem",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 3.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 3.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "teffmx",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 18.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 18.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "cftb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64,
+          "changed_entries": 7,
+          "maximum_absolute_difference": 2.0,
+          "first_changed": [
+            {
+              "index": 2,
+              "warm": 0.5,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 1.2,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 1.3,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 1.5,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 1.3,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 2.0,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 1.2,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "cumdens",
+          "kind": 1,
+          "count": 10002,
+          "bits": 64,
+          "changed_entries": 36,
+          "maximum_absolute_difference": 1.0,
+          "first_changed": [
+            {
+              "index": 3,
+              "warm": 0.06666666666666667,
+              "cold": 0.02
+            },
+            {
+              "index": 4,
+              "warm": 0.19013260837012833,
+              "cold": 0.0396
+            },
+            {
+              "index": 5,
+              "warm": 0.13333333333333333,
+              "cold": 0.04
+            },
+            {
+              "index": 6,
+              "warm": 0.3602582251588089,
+              "cold": 0.0784
+            },
+            {
+              "index": 7,
+              "warm": 0.2,
+              "cold": 0.06
+            },
+            {
+              "index": 8,
+              "warm": 0.5103509409145256,
+              "cold": 0.11639999999999999
+            },
+            {
+              "index": 9,
+              "warm": 0.26666666666666666,
+              "cold": 0.08
+            },
+            {
+              "index": 10,
+              "warm": 0.6403491243489735,
+              "cold": 0.1536
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "bytes": 255116,
+      "layout": [
+        {
+          "field": "fl_cropcalendar",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_readcropfile",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "rdmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_prep",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_prep",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw_sow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_sow",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw_germ",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_germ",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "delay_prep",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nodsow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "delay_sow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "tsumgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "adcrh",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "adcrl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hlim1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hlim2u",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hlim2l",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_oxygentype",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "q10_microbial",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "specific_resp_humus",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "oxygenslope",
+          "kind": 1,
+          "count": 6,
+          "bits": 64
+        },
+        {
+          "field": "oxygenintercept",
+          "kind": 1,
+          "count": 6,
+          "bits": 64
+        },
+        {
+          "field": "campbell_h100",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "campbell_h500",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gfp_h100",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rootradius_m",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "srl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_salinity",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "saltmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "saltslope",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_compensate",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw_stressor",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "alphacrit",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dcritrtz",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rdtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "rdi",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rri",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rdc",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rlwtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "rdm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rdpot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rr",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "swdmi2rd",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "rrimin",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "extentcrit",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "noddrz_old",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "mxnoddrz",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "cumdens_top",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "wroot_node",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "lrv_node",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "wroot_node_top",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "rdctb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "wrtmin",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fgwrt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fdwrt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "swlrvconstant",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "z_prep",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "h_prep",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "max_delay_prep",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "z_sow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "h_sow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "z_tempsow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "max_delay_sow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "TempSow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "zgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "agerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "bgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hdrygerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hwetgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tsumemeopt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tbasem",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "teffmx",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_co2",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "co2amaxtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "co2efftb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "co2tratb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "co2year",
+          "kind": 2,
+          "count": 1000,
+          "bits": 32
+        },
+        {
+          "field": "co2ppm",
+          "kind": 1,
+          "count": 1000,
+          "bits": 64
+        },
+        {
+          "field": "chtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "cftb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "cumdens",
+          "kind": 1,
+          "count": 10002,
+          "bits": 64
+        },
+        {
+          "field": "do_read_rds",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        }
+      ],
+      "differences": [
+        {
+          "field": "sw_germ",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 2,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 2,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "nodsow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "tsumgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 264.9614406185489,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 264.9614406185489,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "adcrh",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.5,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.5,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "adcrl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.1,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hlim1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 15.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -15.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hlim2u",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 30.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -30.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hlim2l",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 30.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -30.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "alphacrit",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.7000000000000001,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.7000000000000001,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "rr",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.24000000000000002,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.24000000000000002,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "noddrz_old",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 10,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 10,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "zgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 10.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -10.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "agerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 203.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 203.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "cgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 292.8909108802118,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 292.8909108802118,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "bgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 661.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 661.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hdrygerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 500.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -500.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hwetgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 100.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -100.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "tsumemeopt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 255.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 255.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "tbasem",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 3.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 3.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "teffmx",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 18.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 18.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "cftb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64,
+          "changed_entries": 7,
+          "maximum_absolute_difference": 2.0,
+          "first_changed": [
+            {
+              "index": 2,
+              "warm": 0.5,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 1.2,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 1.3,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 1.5,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 1.3,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 2.0,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 1.2,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "cumdens",
+          "kind": 1,
+          "count": 10002,
+          "bits": 64,
+          "changed_entries": 36,
+          "maximum_absolute_difference": 1.0,
+          "first_changed": [
+            {
+              "index": 3,
+              "warm": 0.06666666666666667,
+              "cold": 0.02
+            },
+            {
+              "index": 4,
+              "warm": 0.19013260837012833,
+              "cold": 0.0396
+            },
+            {
+              "index": 5,
+              "warm": 0.13333333333333333,
+              "cold": 0.04
+            },
+            {
+              "index": 6,
+              "warm": 0.3602582251588089,
+              "cold": 0.0784
+            },
+            {
+              "index": 7,
+              "warm": 0.2,
+              "cold": 0.06
+            },
+            {
+              "index": 8,
+              "warm": 0.5103509409145256,
+              "cold": 0.11639999999999999
+            },
+            {
+              "index": 9,
+              "warm": 0.26666666666666666,
+              "cold": 0.08
+            },
+            {
+              "index": 10,
+              "warm": 0.6403491243489735,
+              "cold": 0.1536
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "bytes": 255116,
+      "layout": [
+        {
+          "field": "fl_cropcalendar",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_readcropfile",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "rdmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_prep",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_prep",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw_sow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_sow",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw_germ",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fl_germ",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "delay_prep",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nodsow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "delay_sow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "tsumgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "adcrh",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "adcrl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hlim1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hlim2u",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hlim2l",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_oxygentype",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "q10_microbial",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "specific_resp_humus",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "oxygenslope",
+          "kind": 1,
+          "count": 6,
+          "bits": 64
+        },
+        {
+          "field": "oxygenintercept",
+          "kind": 1,
+          "count": 6,
+          "bits": 64
+        },
+        {
+          "field": "campbell_h100",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "campbell_h500",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gfp_h100",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rootradius_m",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "srl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_salinity",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "saltmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "saltslope",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_compensate",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw_stressor",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "alphacrit",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dcritrtz",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rdtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "rdi",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rri",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rdc",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rlwtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "rdm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rdpot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rr",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "swdmi2rd",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "rrimin",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "extentcrit",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "noddrz_old",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "mxnoddrz",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "cumdens_top",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "wroot_node",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "lrv_node",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "wroot_node_top",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "rdctb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "wrtmin",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fgwrt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fdwrt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "swlrvconstant",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "z_prep",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "h_prep",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "max_delay_prep",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "z_sow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "h_sow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "z_tempsow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "max_delay_sow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "TempSow",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "zgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "agerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "bgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hdrygerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hwetgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tsumemeopt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tbasem",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "teffmx",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sw_co2",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "co2amaxtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "co2efftb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "co2tratb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "co2year",
+          "kind": 2,
+          "count": 1000,
+          "bits": 32
+        },
+        {
+          "field": "co2ppm",
+          "kind": 1,
+          "count": 1000,
+          "bits": 64
+        },
+        {
+          "field": "chtb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "cftb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64
+        },
+        {
+          "field": "cumdens",
+          "kind": 1,
+          "count": 10002,
+          "bits": 64
+        },
+        {
+          "field": "do_read_rds",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        }
+      ],
+      "differences": [
+        {
+          "field": "sw_germ",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 2,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 2,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "nodsow",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "tsumgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 264.9614406185489,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 264.9614406185489,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "adcrh",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.5,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.5,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "adcrl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.1,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hlim1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 15.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -15.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hlim2u",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 30.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -30.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hlim2l",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 30.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -30.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "alphacrit",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.7000000000000001,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.7000000000000001,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "rr",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.24000000000000002,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.24000000000000002,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "noddrz_old",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 10,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 10,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "zgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 10.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -10.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "agerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 203.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 203.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "cgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 292.8909108802118,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 292.8909108802118,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "bgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 661.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 661.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hdrygerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 500.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -500.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "hwetgerm",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 100.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -100.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "tsumemeopt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 255.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 255.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "tbasem",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 3.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 3.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "teffmx",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 18.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 18.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "cftb",
+          "kind": 1,
+          "count": 40,
+          "bits": 64,
+          "changed_entries": 7,
+          "maximum_absolute_difference": 2.0,
+          "first_changed": [
+            {
+              "index": 2,
+              "warm": 0.5,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 1.2,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 1.3,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 1.5,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 1.3,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 2.0,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 1.2,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "cumdens",
+          "kind": 1,
+          "count": 10002,
+          "bits": 64,
+          "changed_entries": 36,
+          "maximum_absolute_difference": 1.0,
+          "first_changed": [
+            {
+              "index": 3,
+              "warm": 0.06666666666666667,
+              "cold": 0.02
+            },
+            {
+              "index": 4,
+              "warm": 0.19013260837012833,
+              "cold": 0.0396
+            },
+            {
+              "index": 5,
+              "warm": 0.13333333333333333,
+              "cold": 0.04
+            },
+            {
+              "index": 6,
+              "warm": 0.3602582251588089,
+              "cold": 0.0784
+            },
+            {
+              "index": 7,
+              "warm": 0.2,
+              "cold": 0.06
+            },
+            {
+              "index": 8,
+              "warm": 0.5103509409145256,
+              "cold": 0.11639999999999999
+            },
+            {
+              "index": 9,
+              "warm": 0.26666666666666666,
+              "cold": 0.08
+            },
+            {
+              "index": 10,
+              "warm": 0.6403491243489735,
+              "cold": 0.1536
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "whole_root_field_inventory": [
+    {
+      "field": "fl_cropcalendar",
+      "kind": "logical",
+      "declaration": "logical, save :: fl_cropcalendar                   ! flag indicating that crop calendar is active"
+    },
+    {
+      "field": "fl_readcropfile",
+      "kind": "logical",
+      "declaration": "logical, save :: fl_readcropfile                   ! flag indicating reading of input.crp"
+    },
+    {
+      "field": "rdmax",
+      "kind": "real",
+      "declaration": "real(8), save :: rdmax                             ! soil limited root extension"
+    },
+    {
+      "field": "sw_prep",
+      "kind": "integer",
+      "declaration": "integer, save :: sw_prep"
+    },
+    {
+      "field": "fl_prep",
+      "kind": "logical",
+      "declaration": "logical, save :: fl_prep                           ! flag indicating if ploughing opportunity has been realized"
+    },
+    {
+      "field": "sw_sow",
+      "kind": "integer",
+      "declaration": "integer, save :: sw_sow"
+    },
+    {
+      "field": "fl_sow",
+      "kind": "logical",
+      "declaration": "logical, save :: fl_sow                            ! flag indicating if sowing opportunity has been realized"
+    },
+    {
+      "field": "sw_germ",
+      "kind": "integer",
+      "declaration": "integer, save :: sw_germ"
+    },
+    {
+      "field": "fl_germ",
+      "kind": "logical",
+      "declaration": "logical, save :: fl_germ                           ! flag indicating if germination has been realized"
+    },
+    {
+      "field": "delay_prep",
+      "kind": "integer",
+      "declaration": "integer, save :: delay_prep                        ! delay of preparation"
+    },
+    {
+      "field": "nodsow",
+      "kind": "integer",
+      "declaration": "integer, save :: nodsow                            ! compartment number for monitoring sowing temperature"
+    },
+    {
+      "field": "delay_sow",
+      "kind": "integer",
+      "declaration": "integer, save :: delay_sow                         ! delay of delay"
+    },
+    {
+      "field": "tsumgerm",
+      "kind": "real",
+      "declaration": "real(8), save :: tsumgerm                          ! temperature sum during germination"
+    },
+    {
+      "field": "adcrh",
+      "kind": "real",
+      "declaration": "real(8), save :: adcrh                             ! level of high atmospheric demand (L/T)"
+    },
+    {
+      "field": "adcrl",
+      "kind": "real",
+      "declaration": "real(8), save :: adcrl                             ! level of low atmospheric demand (L/T)"
+    },
+    {
+      "field": "hlim1",
+      "kind": "real",
+      "declaration": "real(8), save :: hlim1                             ! pressure head above which root water uptake stops (L)"
+    },
+    {
+      "field": "hlim2u",
+      "kind": "real",
+      "declaration": "real(8), save :: hlim2u                            ! pressure head below which optimum water uptake starts for top layer (L)"
+    },
+    {
+      "field": "hlim2l",
+      "kind": "real",
+      "declaration": "real(8), save :: hlim2l                            ! pressure head below which optimum water uptake starts for sub layer (L)"
+    },
+    {
+      "field": "sw_oxygentype",
+      "kind": "integer",
+      "declaration": "integer, save :: sw_oxygentype                     ! switch for method oxygen stress calculation: 1 = physical processes; 2 = repro functions"
+    },
+    {
+      "field": "q10_microbial",
+      "kind": "real",
+      "declaration": "real(8), save :: q10_microbial                     ! relative increase in microbial respiration at temperature increase of 10 degree C [1.0..4.0 -, R]"
+    },
+    {
+      "field": "specific_resp_humus",
+      "kind": "real",
+      "declaration": "real(8), save :: specific_resp_humus               ! respiration rate of humus at 25 degree C [0.0..1.0 kg O2/kg C/d, R]"
+    },
+    {
+      "field": "oxygenslope",
+      "kind": "real",
+      "declaration": "real(8), save :: oxygenslope(6)                    ! parameters of reproduction function for oxygen stress according to Bartholomeus"
+    },
+    {
+      "field": "oxygenintercept",
+      "kind": "real",
+      "declaration": "real(8), save :: oxygenintercept(6)                ! parameters of reproduction function for oxygen stress according to Bartholomeus"
+    },
+    {
+      "field": "campbell_h100",
+      "kind": "real",
+      "declaration": "real(8), save :: campbell_h100, campbell_h500      ! parameters to determine the slope of the soil water retention curve (default: h100=-100 cm; h500=-500 cm)"
+    },
+    {
+      "field": "campbell_h500",
+      "kind": "real",
+      "declaration": "real(8), save :: campbell_h100, campbell_h500      ! parameters to determine the slope of the soil water retention curve (default: h100=-100 cm; h500=-500 cm)"
+    },
+    {
+      "field": "gfp_h100",
+      "kind": "real",
+      "declaration": "real(8), save :: gfp_h100                          ! gass filled porosity at soil water pressure head (default: h100=-100 cm)"
+    },
+    {
+      "field": "rootradius_m",
+      "kind": "real",
+      "declaration": "real(8), save :: rootradius_m                      ! root radius drought and oxygen stress (m)"
+    },
+    {
+      "field": "srl",
+      "kind": "real",
+      "declaration": "real(8), save :: srl                               ! specific root length [0.d0..1.d10 m root/kg root, R]"
+    },
+    {
+      "field": "sw_salinity",
+      "kind": "integer",
+      "declaration": "integer, save :: sw_salinity                       ! switch for salinity stress: 0 = no stress; 1 = Maas and Hoffman (1977)"
+    },
+    {
+      "field": "saltmax",
+      "kind": "real",
+      "declaration": "real(8), save :: saltmax                           ! threshold salt concentration in soil water  [0..100 mg/cm3, R]"
+    },
+    {
+      "field": "saltslope",
+      "kind": "real",
+      "declaration": "real(8), save :: saltslope                         ! decline of rootwater uptake above threshold [0..1.0 cm3/mg, R]"
+    },
+    {
+      "field": "sw_compensate",
+      "kind": "integer",
+      "declaration": "integer, save :: sw_compensate                     ! switch for method of compensation of root water uptake stress"
+    },
+    {
+      "field": "sw_stressor",
+      "kind": "integer",
+      "declaration": "integer, save :: sw_stressor                       ! switch for stressor to compensate (1 = all stressors (default); 2 = drought stress, 3 = oxygen stress, 4 = salinity stress; 5 = frost stress)"
+    },
+    {
+      "field": "alphacrit",
+      "kind": "real",
+      "declaration": "real(8), save :: alphacrit                         ! critical stress index for compensation of root water uptake (-)"
+    },
+    {
+      "field": "dcritrtz",
+      "kind": "real",
+      "declaration": "real(8), save :: dcritrtz                          ! threshold for rootzone to start compensation of root water uptake; Walsum (cm)"
+    },
+    {
+      "field": "rdtb",
+      "kind": "real",
+      "declaration": "real(8), dimension(macroptb), save :: rdtb         ! root depth as function of development stage"
+    },
+    {
+      "field": "rdi",
+      "kind": "real",
+      "declaration": "real(8), save :: rdi                               ! initial rooting depth (L)"
+    },
+    {
+      "field": "rri",
+      "kind": "real",
+      "declaration": "real(8), save :: rri                               ! maximum daily increase of rooting depth (L/T)"
+    },
+    {
+      "field": "rdc",
+      "kind": "real",
+      "declaration": "real(8), save :: rdc                               ! maximum rooting depth of particular crop (L)"
+    },
+    {
+      "field": "rlwtb",
+      "kind": "real",
+      "declaration": "real(8), dimension(macroptb), save :: rlwtb        ! root depth as function of root biomass"
+    },
+    {
+      "field": "rdm",
+      "kind": "real",
+      "declaration": "real(8), save :: rdm                               ! Maximum rooting depth (minimum of soil profile and particular crop) (L)"
+    },
+    {
+      "field": "rdpot",
+      "kind": "real",
+      "declaration": "real(8), save :: rdpot                             ! Potential rooting depth (L)"
+    },
+    {
+      "field": "rr",
+      "kind": "real",
+      "declaration": "real(8), save :: rr                                ! Root extension (L)"
+    },
+    {
+      "field": "swdmi2rd",
+      "kind": "integer",
+      "declaration": "integer, save :: swdmi2rd                          ! limited root extension by ratio tact/tpot"
+    },
+    {
+      "field": "rrimin",
+      "kind": "real",
+      "declaration": "real(8), save :: rrimin                            ! minimum root extension in case of no reduction of root water uptake by drought stress (L/T)"
+    },
+    {
+      "field": "extentcrit",
+      "kind": "real",
+      "declaration": "real(8), save :: extentcrit                        ! threshold for maximum root extension"
+    },
+    {
+      "field": "noddrz_old",
+      "kind": "integer",
+      "declaration": "integer, save :: noddrz_old                        ! previous node depth root zone"
+    },
+    {
+      "field": "mxnoddrz",
+      "kind": "integer",
+      "declaration": "integer, save :: mxnoddrz"
+    },
+    {
+      "field": "cumdens_top",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp), save :: cumdens_top, wroot_node, lrv_node, wroot_node_top"
+    },
+    {
+      "field": "wroot_node",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp), save :: cumdens_top, wroot_node, lrv_node, wroot_node_top"
+    },
+    {
+      "field": "lrv_node",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp), save :: cumdens_top, wroot_node, lrv_node, wroot_node_top"
+    },
+    {
+      "field": "wroot_node_top",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp), save :: cumdens_top, wroot_node, lrv_node, wroot_node_top"
+    },
+    {
+      "field": "rdctb",
+      "kind": "real",
+      "declaration": "real(8), dimension(macroptb), save :: rdctb        ! array with relative root density (-) as function of relative root depth (-)"
+    },
+    {
+      "field": "wrtmin",
+      "kind": "real",
+      "declaration": "real(8), save :: wrtmin                            ! minimum dry weight of plant root at soil compartment (kg/ha)"
+    },
+    {
+      "field": "fgwrt",
+      "kind": "real",
+      "declaration": "real(8), save :: fgwrt                             ! factor of growth rate of dry weight of plant root which is adaptive (-)"
+    },
+    {
+      "field": "fdwrt",
+      "kind": "real",
+      "declaration": "real(8), save :: fdwrt                             ! factor of death rate of dry weight of plant root which is adaptive (-)"
+    },
+    {
+      "field": "swlrvconstant",
+      "kind": "integer",
+      "declaration": "integer, save :: swlrvconstant                     ! switch for forcing constant Lrv (1) or not (0; default)"
+    },
+    {
+      "field": "z_prep",
+      "kind": "real",
+      "declaration": "real(8), save :: z_prep                            ! z-level for monitoring work-ability for the crop"
+    },
+    {
+      "field": "h_prep",
+      "kind": "real",
+      "declaration": "real(8), save :: h_prep                            ! maximum pressure head during preparation"
+    },
+    {
+      "field": "max_delay_prep",
+      "kind": "integer",
+      "declaration": "integer, save :: max_delay_prep                    ! maximum delay of preparation (starting from begin of growing season)"
+    },
+    {
+      "field": "z_sow",
+      "kind": "real",
+      "declaration": "real(8), save :: z_sow                             ! z-level for monitoring work-ability for the crop"
+    },
+    {
+      "field": "h_sow",
+      "kind": "real",
+      "declaration": "real(8), save :: h_sow                             ! maximum pressure head during sowing"
+    },
+    {
+      "field": "z_tempsow",
+      "kind": "real",
+      "declaration": "real(8), save :: z_tempsow                         ! z-level for monitoring temperature for sowing"
+    },
+    {
+      "field": "max_delay_sow",
+      "kind": "integer",
+      "declaration": "integer, save :: max_delay_sow                     ! maximum delay of sowing (starting from begin of growing season)"
+    },
+    {
+      "field": "TempSow",
+      "kind": "real",
+      "declaration": "real(8), save :: TempSow                           ! temperature for sowing"
+    },
+    {
+      "field": "zgerm",
+      "kind": "real",
+      "declaration": "real(8), save :: zgerm                             ! z-level for monitoring temperature for germination"
+    },
+    {
+      "field": "agerm",
+      "kind": "real",
+      "declaration": "real(8), save :: agerm                             ! coefficient a of germination"
+    },
+    {
+      "field": "cgerm",
+      "kind": "real",
+      "declaration": "real(8), save :: cgerm                             ! coefficient c of germination"
+    },
+    {
+      "field": "bgerm",
+      "kind": "real",
+      "declaration": "real(8), save :: bgerm                             ! coefficient b of germination"
+    },
+    {
+      "field": "hdrygerm",
+      "kind": "real",
+      "declaration": "real(8), save :: hdrygerm                          ! criterium hdry of germination"
+    },
+    {
+      "field": "hwetgerm",
+      "kind": "real",
+      "declaration": "real(8), save :: hwetgerm                          ! criterium hwet of germination"
+    },
+    {
+      "field": "tsumemeopt",
+      "kind": "real",
+      "declaration": "real(8), save :: tsumemeopt                        ! temperature sum for crop emergence under optimal conditions"
+    },
+    {
+      "field": "tbasem",
+      "kind": "real",
+      "declaration": "real(8), save :: tbasem                            ! lower threshold temp. for emergence (C)"
+    },
+    {
+      "field": "teffmx",
+      "kind": "real",
+      "declaration": "real(8), save :: teffmx                            ! max. eff. temp. for emergence (C)"
+    },
+    {
+      "field": "sw_co2",
+      "kind": "integer",
+      "declaration": "integer, save :: sw_co2                            ! switch indicating correction of CO2"
+    },
+    {
+      "field": "co2amaxtb",
+      "kind": "real",
+      "declaration": "real(8), dimension(macroptb), save :: co2amaxtb    ! array with factor to correct AMAX as function of CO2"
+    },
+    {
+      "field": "co2efftb",
+      "kind": "real",
+      "declaration": "real(8), dimension(macroptb), save :: co2efftb     ! array with factors to correct EFF as function of CO2"
+    },
+    {
+      "field": "co2tratb",
+      "kind": "real",
+      "declaration": "real(8), dimension(macroptb), save :: co2tratb     ! array with factors to correct TRA as function of CO2"
+    },
+    {
+      "field": "co2year",
+      "kind": "integer",
+      "declaration": "integer, dimension(mayrs * 10), save :: co2year    ! table with years for which CO2 concentrations are given"
+    },
+    {
+      "field": "co2ppm",
+      "kind": "real",
+      "declaration": "real(8), dimension(mayrs * 10), save :: co2ppm     ! table with CO2 concentrations (ppm), for each year in co2year"
+    },
+    {
+      "field": "chtb",
+      "kind": "real",
+      "declaration": "real(8), dimension(macroptb), save :: chtb         ! array with crop heights (cm) as function of development stage"
+    },
+    {
+      "field": "cftb",
+      "kind": "real",
+      "declaration": "real(8), dimension(macroptb), save :: cftb         ! array with either crop factors (-) or crop height (L) as function of development stage"
+    },
+    {
+      "field": "cumdens",
+      "kind": "real",
+      "declaration": "real(8), dimension((macp+1)*2), save :: cumdens    ! cumulative root distribution"
+    },
+    {
+      "field": "do_read_rds",
+      "kind": "logical",
+      "declaration": "logical, save :: do_read_rds = .TRUE.              ! TRUE: read locally; FALSE: do not read locally and RDmax is available globally"
+    }
+  ],
+  "private_oxygen_source": "b1e7ec6a45169f9190362b5c9f49aba8fa9daea5ce5f03b0a4373273816df395",
+  "oxygen_restored_payload_exact": true,
+  "lossless_result": {
+    "archive": "BLOCK_J_OXYGEN_COMPONENT_REPLAY_RAW.tar.xz",
+    "member": "current-history525-a4db1cf15ed70c26d7d7416df866cf904de70f6e/RESULT.json",
+    "sha256": "f6435bc72c8fc2e879b1a08a80c10d011b5f4f7c89e15e15c2caa0577a5da469"
+  }
+}

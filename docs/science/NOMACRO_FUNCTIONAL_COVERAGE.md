@@ -50,8 +50,9 @@ Hupsel, Grassgrowth and SaltFarm process implementations, with general parameter
 and project calendars. Original WOFOST/scheduled-irrigation management state is selected independently
 of chemistry. Solute runs retain their conserved chemical auxiliary state;
 experimental water-only runs use their distinct management format. The registered
-grass-only water path retains its own native state, and unqualified water-only
-hydraulic/snow history remains explicitly refused.
+grass-only water path retains its own native state. Block J qualifies the named
+water-only hysteresis/snow successor through complete original history context;
+unexecuted combinations retain their separate qualification boundary.
 
 ## First implementation block
 
@@ -226,8 +227,8 @@ which remain outside this work unit. A supported input selector alone is not A.
 
 | Family | A: executed scope | B/C: remaining original integration or qualification |
 | --- | --- | --- |
-| Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A through I | B: arbitrary grids, references and process combinations need their own evidence |
-| Richards/hydraulics | Selected original MvG/exponential2, explicit original PCHIP tables, geometric means3/4 and unchanged production solver; named hysteresis continuations | B/C: original TSPACK startup censor, harmonic5/6 strict-balance refusals, Szymkiewicz7 tables; alternative constitutive models3..11 retain six strict failures/three censors; RIA12 unqualified; later active history FAIL retained; water-only history refused |
+| Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A through J | B: arbitrary grids, references and process combinations need their own evidence |
+| Richards/hydraulics | Selected original MvG/exponential2, explicit original PCHIP tables, geometric means3/4 and unchanged production solver; named hysteresis continuations | B/C: original TSPACK startup censor, harmonic5/6 strict-balance refusals, Szymkiewicz7 tables; alternative constitutive models3..11 retain six strict failures/three censors; RIA12 unqualified; D/first-J history FAILs retained; J complete initialized-context successor qualifies its eleven named combinations |
 | Lower boundary | Selected original Cauchy/closed/free; table, sine, head-dependent flux | C: strict solute substep receipt absent for reconstructed modes1/5; B: other original boundaries8/9 |
 | Drainage/surface water | Selected original drainage methods2/3; undrained free-bottom trajectory | B: other original drainage/division/surface-water options; retained undrained closed-bottom day51 refusal is not A |
 | Crops/roots/ET | Registered grass/rotation/WOFOST; bare/simple maize; Gash/Feddes/microscopic drought2/Walsum2 | B: broader original growth structures, root/stress/interception/ET controls and combinations; canonical D/E evidence retains its named scope |
@@ -293,9 +294,10 @@ The original failure and selected raw state are retained in
 `BLOCK_D_RETAINED_FAIL_*`. Two narrowly scoped cache hypotheses both failed and
 were removed. No tolerance, physical law or general solver change was made.
 
-The revised route explicitly refuses new water-only hysteresis or snow history
-before compilation/output. Completing these combinations requires preserving a
-larger original state block in a separate bounded successor, rather than another
+At the D source, the revised route explicitly refused new water-only hysteresis
+or snow history before compilation/output. Block J below supersedes this bounded
+refusal with complete original component-state ownership. It preserves the failed
+D observations and follows the larger state-block strategy, rather than another
 local cache-repair loop. Earlier solute-history block B evidence remains limited
 to its named2/365 restart origins; it is not proof of arbitrary active-crop
 history restart. Whole scientific equivalence remains unqualified.
@@ -625,3 +627,63 @@ this own branch were canceled and are not represented as green qualification.
 owns admission. One new complete configuration and zero independent historical
 projects are added. Full no-macro functional coverage, remaining original state
 families and whole physical energy/scientific equivalence remain open.
+
+
+## Block J: complete original initialized history context
+
+The qualified experimental successor owns three complete original component-state
+blocks for hysteresis/snow input: initialized microscopic M/K lookup tables,
+all eight saved MOD_top fields and the six once-initialized OxygenStress parameter
+arrays plus their initialization flag. Original preprocessing uses the hydraulic
+curve present at first initialization; recomputing on a later accepted scanning
+curve does not preserve that historical context. The oxygen context survives crop
+changes. State restore validates the bound clock, domains and dimensions, stages
+values, then applies them after original initialization and before root extraction.
+Undefined allocation tails remain outside the serialized physical state.
+
+The implementation changes no original equation, iterative algorithm, tolerance or
+selected numerical policy. The state policy is explicitly source-bound as
+`original-initialized-micro-top-oxygen-v3`; older capsules cannot be rebound.
+Registered/no-history generation remains outside activation. Twelve distinct
+experimental history formats cover water/chemical, hysteresis/snow and optional
+plant ET context. Source-only original preparation still executes no model.
+
+Current source10d4cc551 passes43840145787: full1096 warm days and EVERY daily
+own cold physical/native continuation, four original crop-calendar windows at
+actual touched/controller O0/O2, active native530 and resealed malformed history
+state. The immutable original provider remains O2. Local actual production codecs
+pass O0/O2 with23 microscopic,15 top and14 oxygen refusals per optimization;
+initialized/absent roundtrip, staged assignment and undefined-tail preservation
+have explicit evidence. Real Windows generated O0 day2to4 is exact; no complete
+Windows history or scientific oxygen-accuracy claim follows.
+
+The first eleven full trajectories43833787531 passed, but its additional daily
+proof failed154. Whole original top replay was causal; the successor then failed
+525 after524 exact daily continuations. Whole oxygen preprocessing replay was
+causal for525. Both failures, the earlier two D cache hypotheses and noncausal
+whole WOFOST interface re-export probes remain retained. No failed observation
+is relabeled as an exact restart. Original standalone reference diagnostics and
+scientific failures remain separate from functional qualification.
+
+The remaining ten affected configurations pass43840655461 on source3abdfebc6;
+its app/src and qualification harness are exact to10d4cc551. All eleven complete
+1096-day periods total12056 days: water-only hyst1/hyst2/snow/hyst1snow/hyst2snow,
+the four corresponding chemical B cases, and chemical/water CFBS1 combined
+history. The four B combinations are requalified, not new historical projects.
+Every case has actual O0/O2 native2/365/530 windows, four calendar transitions,
+finite native temperature diagnostics,29 resealed active decoder refusals per
+optimization, isolated origins, injected mass rejection and external discard/
+replay/durable recovery. The daily combined-history run additionally qualifies
+all1096 cold native/physical continuations and disk recovery365/530/730. Every
+original native temperature record there is finite, ranging-6.781815 to26.240943C.
+Whole physical energy and scientific temperature/oxygen accuracy are not inferred.
+
+Fresh43840659129 preserves the eight standard generated source/external seams;
+no no-history source image changes. The actual old D warm532 physical rows and
+original530 native payload remain exact. RC2 package admissionf1883e6fa is
+reconciled without changing executed app/src; frozen RC1 and fixed RC2 refs remain
+unchanged. The actual J merge receipt owns canonical admission; qualification
+alone does not establish it. `BLOCK_J_STATUS.json`, the three state contracts,
+per-source results and SHA256 raw archives under `integration/nomacro-coverage01/`
+own the recoverable evidence. Complete original no-macro option coverage and
+whole physical energy/science remain unqualified.

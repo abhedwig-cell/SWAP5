@@ -1,0 +1,79 @@
+{
+  "status": "READ_ONLY_ORIGINAL_WATER_HISTORY_MISMATCH_EXACTLY_REPRODUCED",
+  "run": 43821758579,
+  "source": "ff18c215f6cf2870001912f4f7bc5025da9551e6",
+  "pinned_source": "640565a8dee425aad182101d37ee5afb2f6e14a5",
+  "origin_unchanged": true,
+  "no_publication": true,
+  "original_executable_relink_exact": true,
+  "scalar_water_difference_cm": -2.281495881106821e-09,
+  "differences_before_first_Meteo3": [
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.790735769694051
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 6.696616676722917e-06
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.7907619666970875
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0012334725512770789
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.411461882016534e-20
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.07138540379011458
+    }
+  ],
+  "inference": "Original root-extension reads grrt/grrtpot; restored complete WOFOST rate objects are not re-exported to the original plant interface. This is not yet causal proof or a repair."
+}

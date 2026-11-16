@@ -1,0 +1,847 @@
+{
+  "status": "ACTUAL_WHOLE_ORIGINAL_VARIABLES_MODULE_INTERFACE_SYNTAX_PASS",
+  "fields": [
+    {
+      "field": "nprintday",
+      "kind": "integer",
+      "declaration": "integer                    :: nprintday          ! Number of output times during one day"
+    },
+    {
+      "field": "flprintdt",
+      "kind": "logical",
+      "declaration": "logical                    :: flprintdt          ! Flag indicating output every dt"
+    },
+    {
+      "field": "flprintshort",
+      "kind": "logical",
+      "declaration": "logical                    :: flprintshort       ! Flag indicating several output times during a day"
+    },
+    {
+      "field": "floutputshort",
+      "kind": "logical",
+      "declaration": "logical                    :: floutputshort      ! Flag indicating time for output during a day is reached"
+    },
+    {
+      "field": "nprintcount",
+      "kind": "integer",
+      "declaration": "integer                    :: nprintcount        ! Counter for output during a day"
+    },
+    {
+      "field": "cntper",
+      "kind": "integer",
+      "declaration": "integer                    :: cntper             ! Day number of intermediate period"
+    },
+    {
+      "field": "daycum",
+      "kind": "integer",
+      "declaration": "integer                    :: daycum             ! Day number from start of simulation"
+    },
+    {
+      "field": "daynr",
+      "kind": "integer",
+      "declaration": "integer                    :: daynr              ! Day number of calendar year"
+    },
+    {
+      "field": "imonth",
+      "kind": "integer",
+      "declaration": "integer                    :: imonth             ! Month number of calendar year"
+    },
+    {
+      "field": "ioutdat",
+      "kind": "integer",
+      "declaration": "integer                    :: ioutdat            ! Counter of output date for water and solute balance"
+    },
+    {
+      "field": "ioutdatint",
+      "kind": "integer",
+      "declaration": "integer                    :: ioutdatint         ! Counter of intermediate output date"
+    },
+    {
+      "field": "isteps",
+      "kind": "integer",
+      "declaration": "integer                    :: isteps             ! Number of time steps from the start of the day"
+    },
+    {
+      "field": "iyear",
+      "kind": "integer",
+      "declaration": "integer                    :: iyear              ! Year number of calendar year"
+    },
+    {
+      "field": "numbit_crit",
+      "kind": "integer",
+      "declaration": "integer                    :: numbit_crit        ! number of iteration below which time step increase is performed (default: numbit_crit = 3; range [3,maxit])"
+    },
+    {
+      "field": "period",
+      "kind": "integer",
+      "declaration": "integer                    :: period             ! Length of prescribed output interval (T)"
+    },
+    {
+      "field": "swheader",
+      "kind": "integer",
+      "declaration": "integer                    :: swheader           ! Switch for printing of header in output files at each balance period: 0 = no; 1 = yes"
+    },
+    {
+      "field": "swodat",
+      "kind": "integer",
+      "declaration": "integer                    :: swodat             ! Switch for extra, specific output dates in the input file: 0 = no; 1 = yes"
+    },
+    {
+      "field": "swres",
+      "kind": "integer",
+      "declaration": "integer                    :: swres              ! Switch for counter of output interval: 0 = no reset; 1 = reset at start of calendar year"
+    },
+    {
+      "field": "dt",
+      "kind": "real",
+      "declaration": "real(8)                    :: dt                 ! Time step (T)"
+    },
+    {
+      "field": "dtmax",
+      "kind": "real",
+      "declaration": "real(8)                    :: dtmax              ! Maximum time step (T)"
+    },
+    {
+      "field": "dtmin",
+      "kind": "real",
+      "declaration": "real(8)                    :: dtmin              ! Minimum time step (T)"
+    },
+    {
+      "field": "dtold",
+      "kind": "real",
+      "declaration": "real(8)                    :: dtold              ! Length of previous Time step (T)"
+    },
+    {
+      "field": "fact_dt_increase",
+      "kind": "real",
+      "declaration": "real(8)                    :: fact_dt_increase   ! multiplication factor for dt increase (default: fact_dt_increase = 2; range [1.1,10])"
+    },
+    {
+      "field": "fact_dt_decrease",
+      "kind": "real",
+      "declaration": "real(8)                    :: fact_dt_decrease   ! multiplication factor for dt decrease (default: fact_dt_decrease = 0.5; range [1.0d-3, 0.99])"
+    },
+    {
+      "field": "fact_dt_fldect",
+      "kind": "real",
+      "declaration": "real(8)                    :: fact_dt_fldect     ! factor for dt in case this is requested to be decreased by headcalc or surfacewater (default: fact_dt_fldect = 3; range [2,10])"
+    },
+    {
+      "field": "outdat",
+      "kind": "real",
+      "declaration": "real(8), dimension(maout)  :: outdat             ! Array with output dates for water and solute balances"
+    },
+    {
+      "field": "outdatint",
+      "kind": "real",
+      "declaration": "real(8), dimension(maout)  :: outdatint          ! Array with intermediate output dates"
+    },
+    {
+      "field": "outper",
+      "kind": "real",
+      "declaration": "real(8)                    :: outper             ! Length of actual output interval (T)"
+    },
+    {
+      "field": "t",
+      "kind": "real",
+      "declaration": "real(8)                    :: t                  ! Time since start of calendar year (T)"
+    },
+    {
+      "field": "t1900",
+      "kind": "real",
+      "declaration": "real(8)                    :: t1900              ! Time since 1900 (T)"
+    },
+    {
+      "field": "tcum",
+      "kind": "real",
+      "declaration": "real(8)                    :: tcum               ! Time since start of simulation (T)"
+    },
+    {
+      "field": "timjan1",
+      "kind": "real",
+      "declaration": "real(8)                    :: timjan1            ! January first of meteo year as number of day since 1-1-1900(T)"
+    },
+    {
+      "field": "tend",
+      "kind": "real",
+      "declaration": "real(8)                    :: tend               ! End date of simulation run"
+    },
+    {
+      "field": "tstart",
+      "kind": "real",
+      "declaration": "real(8)                    :: tstart             ! Start date of simulation run"
+    },
+    {
+      "field": "flbaloutput",
+      "kind": "logical",
+      "declaration": "logical                    :: flbaloutput        ! Flag indicating time for output of water and solute balance"
+    },
+    {
+      "field": "fldayend",
+      "kind": "logical",
+      "declaration": "logical                    :: fldayend           ! Flag indicating end of day"
+    },
+    {
+      "field": "fldaystart",
+      "kind": "logical",
+      "declaration": "logical                    :: fldaystart         ! Flag indicating that this time step is the first one of a day"
+    },
+    {
+      "field": "fldecdt",
+      "kind": "logical",
+      "declaration": "logical                    :: fldecdt            ! Flag indicating decrease of time step"
+    },
+    {
+      "field": "fldtmin",
+      "kind": "logical",
+      "declaration": "logical                    :: fldtmin            ! Flag indicating that the time step is equal to the minimum time step"
+    },
+    {
+      "field": "fldtreduce",
+      "kind": "logical",
+      "declaration": "logical                    :: fldtreduce"
+    },
+    {
+      "field": "flheader",
+      "kind": "logical",
+      "declaration": "logical                    :: flheader           ! Flag indicating that header should be printed in output file"
+    },
+    {
+      "field": "floutput",
+      "kind": "logical",
+      "declaration": "logical                    :: floutput           ! Flag indicating time for ouput"
+    },
+    {
+      "field": "flrunend",
+      "kind": "logical",
+      "declaration": "logical                    :: flrunend           ! Flag indicating end of run"
+    },
+    {
+      "field": "flzerocumu",
+      "kind": "logical",
+      "declaration": "logical                    :: flzerocumu         ! Flag indicating that cumulative fluxes should be reset to zero"
+    },
+    {
+      "field": "flzerointr",
+      "kind": "logical",
+      "declaration": "logical                    :: flzerointr         ! Flag indicating that intermediate fluxes should be reset to zero"
+    },
+    {
+      "field": "bal",
+      "kind": "integer",
+      "declaration": "integer                    :: bal                ! Internal number of output file *.BAL with overview of water balance"
+    },
+    {
+      "field": "blc",
+      "kind": "integer",
+      "declaration": "integer                    :: blc                ! Internal number of output file *.BLC with all water balance components in detail"
+    },
+    {
+      "field": "bpegwl",
+      "kind": "integer",
+      "declaration": "integer                    :: bpegwl             ! Node at bottom of perched groundwater"
+    },
+    {
+      "field": "indeks",
+      "kind": "integer",
+      "declaration": "integer, dimension(macp)   :: indeks             ! Index denoting wetting or drying curve in case of hysteresis: 1 = wetting; -1 = drying"
+    },
+    {
+      "field": "Itnumb",
+      "kind": "integer",
+      "declaration": "integer, dimension(100,2)  :: Itnumb"
+    },
+    {
+      "field": "MaxBackTr",
+      "kind": "integer",
+      "declaration": "integer                    :: MaxBackTr"
+    },
+    {
+      "field": "MaxIt",
+      "kind": "integer",
+      "declaration": "integer                    :: MaxIt"
+    },
+    {
+      "field": "MaxIterTime",
+      "kind": "integer",
+      "declaration": "integer                    :: MaxIterTime        ! Maximum cputime (secs), introduced to be able to interrupt (near) endless iterations"
+    },
+    {
+      "field": "msteps",
+      "kind": "integer",
+      "declaration": "integer                    :: msteps             ! Maximum number of iteration steps during a day to solve Richards equation"
+    },
+    {
+      "field": "nhead",
+      "kind": "integer",
+      "declaration": "integer                    :: nhead              ! Number of initial soil water pressure heads as provided in the input  (times 2; incl. index)"
+    },
+    {
+      "field": "nodgwl",
+      "kind": "integer",
+      "declaration": "integer                    :: nodgwl             ! Node at top of groundwater level"
+    },
+    {
+      "field": "npegwl",
+      "kind": "integer",
+      "declaration": "integer                    :: npegwl             ! Node at top of perched groundwater level"
+    },
+    {
+      "field": "numbit",
+      "kind": "integer",
+      "declaration": "integer                    :: numbit             ! Iteration number for solving Richards equation"
+    },
+    {
+      "field": "sw2",
+      "kind": "integer",
+      "declaration": "integer                    :: sw2                ! Switch for prescribed bottom flux: 1 = sine function; 2 = table"
+    },
+    {
+      "field": "sw3",
+      "kind": "integer",
+      "declaration": "integer                    :: sw3                ! Switch for prescribed hydraulic head of deep aquifer: 1 = sine function; 2 = table"
+    },
+    {
+      "field": "sw4",
+      "kind": "integer",
+      "declaration": "integer                    :: sw4                ! Switch for extra groundwater flux as function of time: 0 = no extra flux; 1 = include extra flux"
+    },
+    {
+      "field": "swafo",
+      "kind": "integer",
+      "declaration": "integer                    :: swafo              ! Switch for extra output file with formatted data for water quality models:"
+    },
+    {
+      "field": "swaun",
+      "kind": "integer",
+      "declaration": "integer                    :: swaun              ! Switch for extra output file with unformatted data for water quality models:"
+    },
+    {
+      "field": "swbal",
+      "kind": "integer",
+      "declaration": "integer                    :: swbal              ! Switch for output file with yearly water balance *.BAL: 0 = no; 1 = yes"
+    },
+    {
+      "field": "swblc",
+      "kind": "integer",
+      "declaration": "integer                    :: swblc              ! Switch for output file with detailed yearly water balance *.BLC: 0 = no"
+    },
+    {
+      "field": "swbotb",
+      "kind": "integer",
+      "declaration": "integer                    :: swbotb             ! Switch for bottom boundary condition (see *.SWP input file for overview)"
+    },
+    {
+      "field": "swbotb3Impl",
+      "kind": "integer",
+      "declaration": "integer                    :: swbotb3Impl        ! Switch for implicit solution with lower boundary option 3 (Cauchy): 0 = explicit, 1 = implicit"
+    },
+    {
+      "field": "SwBotb3ResVert",
+      "kind": "integer",
+      "declaration": "integer                    :: SwBotb3ResVert     ! Switch to suppress addition of vertical resistance between bottom of model and groundwater level"
+    },
+    {
+      "field": "swcfbs",
+      "kind": "integer",
+      "declaration": "integer                    :: swcfbs             ! Switch for use of coefficient CFBS to convert potential ET into potential E: 0 = no; 1 = yes"
+    },
+    {
+      "field": "swcofqhc",
+      "kind": "integer",
+      "declaration": "integer                    :: swcofqhc           ! Switch for additional flux added to exponential flux-groundwater level relationship: 0 = no, 1 = yes"
+    },
+    {
+      "field": "swcsv",
+      "kind": "integer",
+      "declaration": "integer                    :: swcsv              ! Switch for CSV output specified by user; default = 0: no output; 1: regular output. 2: regular + init file. 3: binary output"
+    },
+    {
+      "field": "swkimpl",
+      "kind": "integer",
+      "declaration": "integer                    :: swkimpl            ! Switch for implicit solution with hydraulic conductivity: 0 = explicit, 1 = implicit"
+    },
+    {
+      "field": "swkmean",
+      "kind": "integer",
+      "declaration": "integer                    :: swkmean            ! Switch for mean of hydraulic conductivity: 1 = unweighted arithmic mean, 2 = weighted arithmic mean"
+    },
+    {
+      "field": "swqhbot",
+      "kind": "integer",
+      "declaration": "integer                    :: swqhbot            ! Switch for flux-groundwater level relationship: 1 = exponential function; 2 = tabular function"
+    },
+    {
+      "field": "swredu",
+      "kind": "integer",
+      "declaration": "integer                    :: swredu             ! Switch for reduction of soil evaporation: 0 = no empirical function; 1 = use function of Black;"
+    },
+    {
+      "field": "swsba",
+      "kind": "integer",
+      "declaration": "integer                    :: swsba              ! Switch for output file with daily solute balance *.SBA: 0 = no; 1 = yes; 1 = yes"
+    },
+    {
+      "field": "aqamp",
+      "kind": "real",
+      "declaration": "real(8)                    :: aqamp              ! Amplitude of prescribed sine wave of hydraulic head in deep aquifer (T)"
+    },
+    {
+      "field": "aqave",
+      "kind": "real",
+      "declaration": "real(8)                    :: aqave              ! Average hydraulic head in deep aquifer (L)"
+    },
+    {
+      "field": "aqper",
+      "kind": "real",
+      "declaration": "real(8)                    :: aqper              ! Period of prescribed sine wave of hydraulic head in deep aquifer (T)"
+    },
+    {
+      "field": "aqtmax",
+      "kind": "real",
+      "declaration": "real(8)                    :: aqtmax             ! Time with maximum hydraulic head in deep aquifer (T)"
+    },
+    {
+      "field": "cfbs",
+      "kind": "real",
+      "declaration": "real(8)                    :: cfbs               ! Coefficient (-) to convert potential evapotranspiration into potential evaporation"
+    },
+    {
+      "field": "cofqha",
+      "kind": "real",
+      "declaration": "real(8)                    :: cofqha             ! Coefficient A in exponential relationship between drainage flux and groundwater level (L/T)"
+    },
+    {
+      "field": "cofqhb",
+      "kind": "real",
+      "declaration": "real(8)                    :: cofqhb             ! Coefficient B in exponential relationship between drainage flux and groundwater level (/T)"
+    },
+    {
+      "field": "cofqhc",
+      "kind": "real",
+      "declaration": "real(8)                    :: cofqhc             ! Coefficient C (flux) in exponential relationship between drainage flux and groundwater level (L/T)"
+    },
+    {
+      "field": "cofred",
+      "kind": "real",
+      "declaration": "real(8)                    :: cofred             ! Soil evaporation coefficient of Black or Boesten/Stroosnijder"
+    },
+    {
+      "field": "CritDevBalCp",
+      "kind": "real",
+      "declaration": "real(8)                    :: CritDevBalCp       ! Convergence criterion for deviation in water balance for the solution of the Richards equation per individual layer (default: 1.0d-6; range [1.0d-8,1.0d-03])"
+    },
+    {
+      "field": "CritDevBalTot",
+      "kind": "real",
+      "declaration": "real(8)                    :: CritDevBalTot      ! Convergence criterion for solution of Richards equation for all layers together (default 1.0d-5; range [1.0d-7,1.0d-02])"
+    },
+    {
+      "field": "CritDevh1Cp",
+      "kind": "real",
+      "declaration": "real(8)                    :: CritDevh1Cp        ! Convergence criterium for Richards equation: relative difference in pressure heads (-)"
+    },
+    {
+      "field": "CritDevh2Cp",
+      "kind": "real",
+      "declaration": "real(8)                    :: CritDevh2Cp        ! Convergence criterium for Richards equation: absolute difference in pressure heads (L)"
+    },
+    {
+      "field": "CritDevMasBal",
+      "kind": "real",
+      "declaration": "real(8)                    :: CritDevMasBal      ! Maximum error in water balance (L)"
+    },
+    {
+      "field": "CritDevPondDt",
+      "kind": "real",
+      "declaration": "real(8)                    :: CritDevPondDt"
+    },
+    {
+      "field": "CriterHr",
+      "kind": "real",
+      "declaration": "real(8)                    :: CriterHr           ! Maximum difference of Hroot between iterations; convergence criterium  (L)"
+    },
+    {
+      "field": "deepgw",
+      "kind": "real",
+      "declaration": "real(8)                    :: deepgw             ! hydraulic head in aquifer (L)"
+    },
+    {
+      "field": "delp",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: delp               ! Change in soil water pressure head (L), to determine change in hysteresis scanning curve"
+    },
+    {
+      "field": "dimoca",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: dimoca             ! Differential soil moisture capacity (/L)"
+    },
+    {
+      "field": "dznew",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: dznew              ! Desired thickness of compartments for soil water quality models (L)"
+    },
+    {
+      "field": "fhyst",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: fhyst              ! Hysteresis factor determining the scanning curve (-)"
+    },
+    {
+      "field": "gwl",
+      "kind": "real",
+      "declaration": "real(8)                    :: gwl                ! Groundwater level (L)"
+    },
+    {
+      "field": "gwlconv",
+      "kind": "real",
+      "declaration": "real(8)                    :: gwlconv            ! Maximum difference of groundwater levels between iterations to solve Richards equation"
+    },
+    {
+      "field": "gwli",
+      "kind": "real",
+      "declaration": "real(8)                    :: gwli               ! Groundwater level (L) at start of simulation"
+    },
+    {
+      "field": "gwlinp",
+      "kind": "real",
+      "declaration": "real(8)                    :: gwlinp             ! Prescribed groundwater level (L) for current time"
+    },
+    {
+      "field": "gwlm1",
+      "kind": "real",
+      "declaration": "real(8)                    :: gwlm1              ! Groundwater level (L) at former time level"
+    },
+    {
+      "field": "gwltab",
+      "kind": "real",
+      "declaration": "real(8), dimension(mabbc*2):: gwltab             ! Array with prescribed groundwater level (L) as function of time (T)"
+    },
+    {
+      "field": "htb",
+      "kind": "real",
+      "declaration": "real(8), dimension(:), allocatable :: htb        ! Array with initial soil water pressure head as function of soil depth"
+    },
+    {
+      "field": "h",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: h                  ! Soil water pressure head (L)"
+    },
+    {
+      "field": "haqtab",
+      "kind": "real",
+      "declaration": "real(8), dimension(mabbc*2):: haqtab             ! Array with specified hydraulic head in deep aquifer (L) as function of time (T)"
+    },
+    {
+      "field": "hbot",
+      "kind": "real",
+      "declaration": "real(8)                    :: hbot               ! Soil water pressure head (L) at bottom of soil column"
+    },
+    {
+      "field": "hbotab",
+      "kind": "real",
+      "declaration": "real(8), dimension(mabbc*2):: hbotab             ! Array with specified pressure head of lowest compartment (L) as function of time (T)"
+    },
+    {
+      "field": "hdrain",
+      "kind": "real",
+      "declaration": "real(8)                    :: hdrain             ! Mean drainage level (L) to derive regional average groundwater level for bottom boundary condition"
+    },
+    {
+      "field": "hm1",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: hm1                ! Soil water pressure head (L) at former time level"
+    },
+    {
+      "field": "hplate",
+      "kind": "real",
+      "declaration": "real(8)                    :: hplate             ! Pressure head of ceramic plate below lysimeter"
+    },
+    {
+      "field": "ivolbeg",
+      "kind": "real",
+      "declaration": "real(8)                    :: ivolbeg            ! Water volume in soil matrix at start of intermediate period for csv output (L)"
+    },
+    {
+      "field": "ipondbeg",
+      "kind": "real",
+      "declaration": "real(8)                    :: ipondbeg           ! Water volume in ponding storage at start of intermediate period for csv output (L)"
+    },
+    {
+      "field": "isicbeg",
+      "kind": "real",
+      "declaration": "real(8)                    :: isicbeg            ! Water volume in interception storage at start of intermediate period for csv output (L)"
+    },
+    {
+      "field": "issnowbeg",
+      "kind": "real",
+      "declaration": "real(8)                    :: issnowbeg          ! Water volume in snow storage at start of intermediate period for csv output (L)"
+    },
+    {
+      "field": "ithetabeg",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: ithetabeg          ! Array with water volume fraction in soil matrix at start of intermediate period for csv output (L)"
+    },
+    {
+      "field": "k",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp+1) :: k                  ! Array with soil hydraulic conductivity (L/T) for each numerical compartment"
+    },
+    {
+      "field": "kbot",
+      "kind": "real",
+      "declaration": "real(8)                    :: kbot               ! Soil hydraulic condictivity (L/T) at bottom of soil column"
+    },
+    {
+      "field": "kmean",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp+1) :: kmean              ! Array with mean soil hydraulic conductivity (L/T) at the interface of current and upper compartment"
+    },
+    {
+      "field": "ksatfit",
+      "kind": "real",
+      "declaration": "real(8), dimension(maho)   :: ksatfit            ! Array with saturated hydraulic conductivity (L/T) for each soil layer: fitted on VG based on lab data"
+    },
+    {
+      "field": "ksatexm",
+      "kind": "real",
+      "declaration": "real(8), dimension(maho)   :: ksatexm            ! Array with saturated hydraulic conductivity (L/T) for each soil layer: examined in lab or field"
+    },
+    {
+      "field": "ldwet",
+      "kind": "real",
+      "declaration": "real(8)                    :: ldwet              ! Length of dry period (L) as used in Black's model for reduction of soil evaporation"
+    },
+    {
+      "field": "pegwl",
+      "kind": "real",
+      "declaration": "real(8)                    :: pegwl              ! Perched groundwater level (L)"
+    },
+    {
+      "field": "pegwl_bot",
+      "kind": "real",
+      "declaration": "real(8)                    :: pegwl_bot          ! Bottom position of perched groundwater region (L)"
+    },
+    {
+      "field": "pond",
+      "kind": "real",
+      "declaration": "real(8)                    :: pond               ! Height of ponding layer (L)"
+    },
+    {
+      "field": "pondini",
+      "kind": "real",
+      "declaration": "real(8)                    :: pondini            ! Ponding water layer (L) on soil surface at start of current water balance period"
+    },
+    {
+      "field": "pondm1",
+      "kind": "real",
+      "declaration": "real(8)                    :: pondm1             ! Ponding water layer (L) on soil surface at former time level"
+    },
+    {
+      "field": "pondmx",
+      "kind": "real",
+      "declaration": "real(8)                    :: pondmx             ! Maximum amount of ponding (L) on soil surface before runoff starts"
+    },
+    {
+      "field": "pondmxtab",
+      "kind": "real",
+      "declaration": "real(8), dimension(mairg*2):: pondmxtab          ! Table with time-dependent input (date,value) for maximum amount of ponding (L) on soil surface before runoff starts"
+    },
+    {
+      "field": "q",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp+1) :: q                  ! Soil water flux between current compartment and upper compartment (L/T)"
+    },
+    {
+      "field": "qbot",
+      "kind": "real",
+      "declaration": "real(8)                    :: qbot               ! Water flux through bottom of simulated soil column (L/T)"
+    },
+    {
+      "field": "qbotab",
+      "kind": "real",
+      "declaration": "real(8), dimension(mabbc*2):: qbotab             ! Array with specified bottom flux (L/T) as function of time (T)"
+    },
+    {
+      "field": "qbot_nonfrozen",
+      "kind": "real",
+      "declaration": "real(8)                    :: qbot_nonfrozen     ! Water flux through bottom of non-frozen soil column (L/T)"
+    },
+    {
+      "field": "qimmob",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: qimmob             ! Soil water flux between mobile and immobile fraction in case of fingered flow (L/T)"
+    },
+    {
+      "field": "qrot",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: qrot               ! Array with root water extraction flux for each compartment (L/T)"
+    },
+    {
+      "field": "qtop",
+      "kind": "real",
+      "declaration": "real(8)                    :: qtop               ! Water flux through soil surface (L/T)"
+    },
+    {
+      "field": "epd",
+      "kind": "real",
+      "declaration": "real(8)                    :: epd                ! Ponding evaporation rate (L/T)"
+    },
+    {
+      "field": "reva",
+      "kind": "real",
+      "declaration": "real(8)                    :: reva               ! Actual soil evaporation rate (L/T)"
+    },
+    {
+      "field": "rimlay",
+      "kind": "real",
+      "declaration": "real(8)                    :: rimlay             ! Vertical resistance of aquitard (T)"
+    },
+    {
+      "field": "rsigni",
+      "kind": "real",
+      "declaration": "real(8)                    :: rsigni             ! Minimum amount of rainfall (L) which resets the empirical soil evaporation reduction models"
+    },
+    {
+      "field": "rsoil",
+      "kind": "real",
+      "declaration": "real(8)                    :: rsoil              ! Soil resistance of wet soil of PMdirect (T/L)"
+    },
+    {
+      "field": "rsro",
+      "kind": "real",
+      "declaration": "real(8)                    :: rsro               ! Drainage resistance for surface runoff (T)"
+    },
+    {
+      "field": "rsroexp",
+      "kind": "real",
+      "declaration": "real(8)                    :: rsroexp            ! Exponent to calculate surface runoff (T)"
+    },
+    {
+      "field": "runon",
+      "kind": "real",
+      "declaration": "real(8)                    :: runon              ! Water runon flux (L/T)"
+    },
+    {
+      "field": "runots",
+      "kind": "real",
+      "declaration": "real(8)                    :: runots             ! Amount of runoff during a time step (L)"
+    },
+    {
+      "field": "saev",
+      "kind": "real",
+      "declaration": "real(8)                    :: saev               ! Cumulative actual evaporation (L) as used in the model of Boesten/Stroosnijder for reduction of E"
+    },
+    {
+      "field": "shape_3",
+      "kind": "real",
+      "declaration": "real(8)                    :: shape_3            ! Shape factor to derive average groundwater level (-; 0...1)"
+    },
+    {
+      "field": "sinamp",
+      "kind": "real",
+      "declaration": "real(8)                    :: sinamp             ! Amplitude of prescribed bottom flux (L/T) in case of sine function"
+    },
+    {
+      "field": "sinave",
+      "kind": "real",
+      "declaration": "real(8)                    :: sinave             ! Average value of prescribed bottom flux (L/T) in case of sine function"
+    },
+    {
+      "field": "sinmax",
+      "kind": "real",
+      "declaration": "real(8)                    :: sinmax             ! Time of the year with maximum bottom flux in case of prescribed sine function"
+    },
+    {
+      "field": "spev",
+      "kind": "real",
+      "declaration": "real(8)                    :: spev               ! Cumulative potential evaporation (L) as used in the model of Boesten/Stroosnijder for reduction of E"
+    },
+    {
+      "field": "tau",
+      "kind": "real",
+      "declaration": "real(8)                    :: tau                ! Minimum pressure head difference (L) to change from wetting to drying in case of hysteresis"
+    },
+    {
+      "field": "theta",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: theta              ! Volumetric soil water content (-)"
+    },
+    {
+      "field": "thetar",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: thetar             ! Residual volumetric soil water content (-) for each numerical compartment"
+    },
+    {
+      "field": "thetas",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: thetas             ! Saturated volumetric soil water content (-) for each numerical compartment"
+    },
+    {
+      "field": "thetm1",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: thetm1             ! Volumetric soil water content (-) at former time level"
+    },
+    {
+      "field": "thetsl",
+      "kind": "real",
+      "declaration": "real(8), dimension(maho)   :: thetsl             ! Saturated volumetric water content (-) for each soil layer"
+    },
+    {
+      "field": "volact",
+      "kind": "real",
+      "declaration": "real(8)                    :: volact             ! Water storage (L) of soil column at current time level"
+    },
+    {
+      "field": "volini",
+      "kind": "real",
+      "declaration": "real(8)                    :: volini             ! Water storage (L) of soil column at start of simulation"
+    },
+    {
+      "field": "volm1",
+      "kind": "real",
+      "declaration": "real(8)                    :: volm1              ! Water storage (L) of soil column at former time level"
+    },
+    {
+      "field": "zi",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp)   :: zi                 ! Array with soil depths (L) used to specify initial soil water pressure heads"
+    },
+    {
+      "field": "flksatexm",
+      "kind": "logical",
+      "declaration": "logical                    :: flksatexm          ! flag Ksatexm variable present in input file"
+    },
+    {
+      "field": "fllowgwl",
+      "kind": "logical",
+      "declaration": "logical                    :: fllowgwl           ! Flag indicating precribed groundwater level below bottom soil column"
+    },
+    {
+      "field": "fluseksatexm",
+      "kind": "logical",
+      "declaration": "logical, dimension(macp)   :: fluseksatexm       ! flag per node: yes/no make use of Ksatexm (Ksat examined in lab or field) extension in h-range [-2,0]"
+    },
+    {
+      "field": "flMaxIterTime",
+      "kind": "logical",
+      "declaration": "logical                    :: flMaxIterTime      ! flag to enable input of Maximum cputime"
+    }
+  ],
+  "command": [
+    "gfortran",
+    "-fsyntax-only",
+    "-cpp",
+    "-Dlinux",
+    "-ffree-line-length-none",
+    "-fallow-argument-mismatch",
+    "-I",
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+    "-I",
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+    "-I",
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_variables_syntax\\hybrid_state_diagnostic.f90"
+  ],
+  "returncode": 0,
+  "scope": "Implicitly SAVE complete numeric module declarations; allocation marker retained; no state repair or model qualification"
+}
