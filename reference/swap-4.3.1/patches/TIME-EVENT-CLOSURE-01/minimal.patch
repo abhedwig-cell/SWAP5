@@ -1,0 +1,11 @@
+--- a/timecontrol.f90
++++ b/timecontrol.f90
+@@ -279,7 +279,7 @@
+ 
+ ! 2.7  maximum size of time interval (dtEvent)
+       dtEvent = get_dtevent()
+-      if (dt > dtevent) then
++      if (dt+dtCrit > dtevent) then
+          dt = dtevent
+          if (swsolve == 2 .AND. dabs(dtevent - 1.0d0) > dtCrit ) call swap_error('timecontrol(3)', 'swsolve = 2: unexpected: dtevent < 1.0d0')
+       end if

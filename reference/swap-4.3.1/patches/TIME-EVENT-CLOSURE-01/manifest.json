@@ -1,0 +1,9 @@
+{
+  "audit_id": "TIME-EVENT-CLOSURE-01",
+  "status": "BOUNDED_NATIVE_COMPONENT_QUALIFIED_MODEL_REPLAY_PENDING",
+  "original_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+  "corrected_sha256": "7419088428e538da100a2c30c4b32f90fc2799d34f3336f4139cb55fb0f84f57",
+  "base": "immutable original timecontrol.f90, no prior patch to this file",
+  "scope": "case3 next-proposal event clipping matches case1/2; original dtCrit1e-8 unchanged",
+  "b1_promotion": false
+}
