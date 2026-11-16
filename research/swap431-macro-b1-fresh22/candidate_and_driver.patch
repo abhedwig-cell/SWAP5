@@ -1,0 +1,77 @@
+--- LIMIT21/diag_state.f90
++++ FRESH22/diag_state.f90
+@@ -21,7 +21,7 @@
+ use MOD_swap_mp,only:IDecMpRat
+ attempts=attempts+1
+ iter_index=0;macro_seq=0
+-target=attempts==38.or.(attempts>=50.and.attempts<=52)
++target=attempts==38
+ nvec=0;njac=0;nrate=0;nderiv=0;nback=0;nfresh=0;kind=-1;iterations=0;flags=0
+ trialdt=dt;prelevel=IDecMpRat
+ call system_clock(hclock)
+@@ -39,6 +39,13 @@
+  flush(node_u);flush(op_u);flush(raw_u);flush(limit_u)
+ end if
+ if(mod(attempts,128)==0) flush(u)
++end subroutine
++subroutine finish_target()
++integer::o
++close(u);close(v);close(node_u);close(op_u);close(raw_u);close(limit_u)
++open(newunit=o,file='outcome.txt',status='replace')
++write(o,*) 'FRESH22_TARGET_HEAD_RETURN',attempts,kind,iterations,residual,maxres,worst
++close(o)
+ end subroutine
+ subroutine outcome(k,it,f,f1,f2,f3,fmp,s,m,w)
+ integer,intent(in)::k,it,w
+
+--- LIMIT21/head_diag.f90
++++ FRESH22/head_diag.f90
+@@ -225,6 +225,8 @@
+       end if
+ 
+ !     incorporate Jacobian information in coefficient matrix elements
++! FRESH22 localized candidate: current operator for original target head only.
++      if(target) flunsatok(1:3)=.false.
+       call diag_log(1)
+       njac=njac+1
+       call jacobian_F()
+@@ -628,6 +630,7 @@
+  logical :: active
+  character(40) :: name
+  inquire(file='active.marker',exist=active)
++ if(target) active=.true.
+  if(.not.active) return
+  counter=counter+1
+  write(name,'(a,i0,a)') 'solver_',counter,'.txt'
+
+--- LIMIT21/soilwater_native.f90
++++ FRESH22/soilwater_native.f90
+@@ -248,7 +248,7 @@
+  budget_open=.true.;budget_count=0
+ end subroutine
+ logical function retry07_driver() result(handled)
+- use DIAG19,only:head_start,head_end
++ use DIAG19,only:head_start,head_end,attempts,finish_target
+  use CONTRACT06_CONTROL, only:use_patch
+  use variables,only:fldecdt,dt,t1900
+  use MOD_swap_mp,only:FlDecMpRat
+@@ -264,8 +264,19 @@
+  end if
+  accepted_dt=dt
+  call head_start()
++ if(attempts==38) then
++  call inventory_dump('target_begin')
++  call native09_dump('context_target_begin')
++ end if
+  call headcalc
+  call head_end()
++ if(attempts==38) then
++  call inventory_dump('target_return')
++  call native09_dump('context_target_return')
++  call finish_target()
++  if(budget_open) close(budget_unit)
++  stop 0
++ end if
+ end function
+ subroutine retry07_checkpoint()
+  use DIAG19,only:log_start,log_end,commit
