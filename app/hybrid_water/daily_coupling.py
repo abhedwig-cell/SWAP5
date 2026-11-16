@@ -160,6 +160,10 @@ def validate_bundle(bundle, reference, project):
         if identity['budget_source']!=h.sha(source) or source.read_text(encoding='cp1252')!=render_budget((h.APP/'hybrid_step_budget.f90').read_text(encoding='cp1252'),lower_boundary):
             raise ValueError('Foreign generated lower-boundary receipt source')
     from micro_lookup_state import POLICY,enabled
+    from scheduled_pond_state import POLICY as POND_HISTORY_POLICY,enabled as pond_history_enabled
+    expected_pond_history={'policy':POND_HISTORY_POLICY,'source_sha256':h.sha(h.APP/'scheduled_pond_state.py')} if pond_history_enabled(project) else None
+    if identity.get('scheduled_pond_history')!=expected_pond_history:
+        raise ValueError('Foreign original scheduled pond history policy; rebuild without rebinding')
     expected_micro=POLICY if enabled(project) else None
     if identity.get('micro_lookup_state_policy')!=expected_micro:
         raise ValueError('Bundle original microscopic lookup state policy differs; rebuild without rebinding')

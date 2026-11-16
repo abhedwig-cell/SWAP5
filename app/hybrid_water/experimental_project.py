@@ -231,6 +231,8 @@ def auxiliary_magic(project):
     history = int(selected['SWHYST']>0)+2*selected['SWSNOW']
     if history:
         from micro_lookup_state import MAGICS
+        if selected['SWPONDMX']==1:
+            from scheduled_pond_state import MAGICS
         return MAGICS[(project.solute,bool(selected['SWCFBS']))][history-1].encode()
     if selected['SWCFBS']:
         return ((b'S5ETC016',b'S5EHC017',b'S5ESC018',b'S5EMC019') if project.solute else

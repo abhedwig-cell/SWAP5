@@ -3,7 +3,7 @@ import re
 
 FIELDS=('theatm','katm','h0max','k1max','q0','hsurf','FlRunoff','ftoph')
 
-def render(source):
+def render(source, *, scheduled_pond=False):
     declarations=source.split('contains',1)[0]
     actual=re.findall(r'(?im)^\s*(?:real\(8\)|logical),\s*save\s*::\s*(\w+)',declarations)
     if actual!=list(FIELDS) or not re.search(r'hatm\s*=\s*-2\.75d\+05',source,re.I):
@@ -54,5 +54,20 @@ FlRunoff=hybrid_top_flags(1)==1;ftoph=hybrid_top_flags(2)==1
 hybrid_top_pending=.false.
 end subroutine
 '''
+    if scheduled_pond:
+        # PondRunoff owns this live schedule carry. BoundTop consumes its last
+        # value even on days when PondRunoff is never called. Restore the actual
+        # value together with all MOD_top fields, after original initialization.
+        if source.count('pondmx = afgen (pondmxtab,2*mairg,t1900+dt)') != 1:
+            raise ValueError('Changed original scheduled pond owner')
+        source=source.replace('hybrid_top_values(6)', 'hybrid_top_values(7)')
+        routines=routines.replace('use variables,only:t1900', 'use variables,only:t1900,pondmx')
+        routines=routines.replace('clock,values(6)', 'clock,values(7)')
+        routines=routines.replace('version=1;clock=t1900;values=[theatm,katm,h0max,k1max,q0,hsurf]',
+                                  'version=2;clock=t1900;values=[theatm,katm,h0max,k1max,q0,hsurf,pondmx]')
+        routines=routines.replace('trailer=72', 'trailer=80').replace('version/=1.or.trailer/=72', 'version/=2.or.trailer/=80')
+        routines=routines.replace("if(any(flags<0)", "if(values(7)<0d0)error stop 'Invalid top history scheduled pond domain'\nif(any(flags<0)")
+        routines=routines.replace('hybrid_top_pending=.false.\nend subroutine',
+                                  'pondmx=hybrid_top_values(7)\nhybrid_top_pending=.false.\nend subroutine')
     if len(re.findall(r'(?im)^end module',source))!=1:raise ValueError('Changed original top module terminator')
     return re.sub(r'(?im)^end module',routines+'\nend module',source,count=1)
