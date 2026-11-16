@@ -46,7 +46,8 @@ def main():
                 except ValueError:item['missing_history_policy_refused']=True
                 else:raise AssertionError('Missing history policy accepted')
             print(key,opt,'FULL1096_AND_ALL_NATIVE_WINDOWS_EXACT',flush=True);save()
-        item['reference']=m.reference_run(case,a.reference_work,out/(key+'-original431'),out/(key+'-O2-full'),20)
+        from exact_reference import compare
+        item['reference']=compare(out/(key+'-O2-full'),a.reference_work,out/(key+'-executed-input-reference'))
         assert item['reference']['status']=='COMPLETE_DIAGNOSTIC_REFERENCE'
         item['status']='SCHEDULED_PONDMX_RESTART_FULL_O0_O2_PASS';save()
     print('SCHEDULED_PONDMX_RESTART_FULL_O0_O2_PASS',flush=True)
