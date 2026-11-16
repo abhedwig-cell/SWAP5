@@ -1,0 +1,43 @@
+name: Original water-only history component discriminator
+on:
+  push:
+    branches: [codex/nomacro-coverage10]
+    paths: ['.github/workflows/nomacro-history-diagnostic.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tools/solute
+      - uses: actions/checkout@v4
+        with:
+          ref: 640565a8dee425aad182101d37ee5afb2f6e14a5
+          path: pinned
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            reference/swap-4.3.1/projects
+      - uses: actions/download-artifact@v4
+        with:
+          name: nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5
+          run-id: 43416681903
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - name: Reproduce exact original component memory without accepted publication
+        run: python3 -B tools/solute/probe_water_history_components.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: water-history-components-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

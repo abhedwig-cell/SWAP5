@@ -1,3 +1,14 @@
+# I admitted; J read-only whole-component history diagnostic
+
+CanonicalIf9ada0cb2 exacttreeb76177077 equals qualified head28e59e484; I_MERGE
+persisted on branch10. I model2full1096; sixstrict/threecensor failures remain.
+Next J follows revised complete original component-state strategy after both D
+cache hypotheses failed. Contract BLOCK_J_RECOVERY: isolated exact own640565a8d
+source/carrier43416681903, unchanged origin, no publication or rebinding. Inventory
+complete plant/atmosphere and public hydraulic/thermal state, reproduce actual
+O0 own530->531 mismatch read-only, then decide complete component contract.
+No J public activation/qualification yet; frozen and peers untouched.
+
 # I bounded assessment ready for admission
 
 PR1683 branch09; canonicalHf1f8d0602/peers unchanged16Nov. Model2 full1096

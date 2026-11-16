@@ -1,0 +1,670 @@
+{
+  "status": "ACTUAL_ORIGINAL_MODULE_INTERFACE_SYNTAX_PASS",
+  "command": [
+    "gfortran",
+    "-fsyntax-only",
+    "-ffree-line-length-none",
+    "-I",
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+    "-I",
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_syntax\\hybrid_state_diagnostic.f90"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "scope": "Compile-only with actual original module interface metadata; no foreign-ABI object linking/execution or model qualification",
+  "inventory": [
+    {
+      "field": "plant_interface.unit_crp",
+      "kind": "integer",
+      "original_expression": "unit_crp"
+    },
+    {
+      "field": "plant_interface.icrop",
+      "kind": "integer",
+      "original_expression": "icrop"
+    },
+    {
+      "field": "plant_interface.cropstart",
+      "kind": "real",
+      "original_expression": "cropstart"
+    },
+    {
+      "field": "plant_interface.cropend",
+      "kind": "real",
+      "original_expression": "cropend"
+    },
+    {
+      "field": "plant_interface.croptype",
+      "kind": "integer",
+      "original_expression": "croptype"
+    },
+    {
+      "field": "plant_interface.co2",
+      "kind": "real",
+      "original_expression": "co2"
+    },
+    {
+      "field": "plant_interface.fco2amax",
+      "kind": "real",
+      "original_expression": "fco2amax"
+    },
+    {
+      "field": "plant_interface.fco2eff",
+      "kind": "real",
+      "original_expression": "fco2eff"
+    },
+    {
+      "field": "plant_interface.fco2tra",
+      "kind": "real",
+      "original_expression": "fco2tra"
+    },
+    {
+      "field": "plant_interface.fl_start_croprotation",
+      "kind": "logical",
+      "original_expression": "fl_start_croprotation"
+    },
+    {
+      "field": "plant_interface.fl_start_cropemergence",
+      "kind": "logical",
+      "original_expression": "fl_start_cropemergence"
+    },
+    {
+      "field": "plant_interface.fl_cropemergence",
+      "kind": "logical",
+      "original_expression": "fl_cropemergence"
+    },
+    {
+      "field": "plant_interface.fl_cropharvest",
+      "kind": "logical",
+      "original_expression": "fl_cropharvest"
+    },
+    {
+      "field": "plant_interface.fl_cropharvestday",
+      "kind": "logical",
+      "original_expression": "fl_cropharvestday"
+    },
+    {
+      "field": "plant_interface.fl_cropisreset",
+      "kind": "logical",
+      "original_expression": "fl_cropisreset"
+    },
+    {
+      "field": "plant_interface.swcf",
+      "kind": "integer",
+      "original_expression": "swcf"
+    },
+    {
+      "field": "plant_interface.cf",
+      "kind": "real",
+      "original_expression": "cf"
+    },
+    {
+      "field": "plant_interface.ch",
+      "kind": "real",
+      "original_expression": "ch"
+    },
+    {
+      "field": "plant_interface.albedo",
+      "kind": "real",
+      "original_expression": "albedo"
+    },
+    {
+      "field": "plant_interface.rsc",
+      "kind": "real",
+      "original_expression": "rsc"
+    },
+    {
+      "field": "plant_interface.rsw",
+      "kind": "real",
+      "original_expression": "rsw"
+    },
+    {
+      "field": "plant_interface.kdif",
+      "kind": "real",
+      "original_expression": "kdif"
+    },
+    {
+      "field": "plant_interface.kdir",
+      "kind": "real",
+      "original_expression": "kdir"
+    },
+    {
+      "field": "plant_interface.vcover",
+      "kind": "real",
+      "original_expression": "vcover"
+    },
+    {
+      "field": "plant_interface.sw_drought",
+      "kind": "integer",
+      "original_expression": "sw_drought"
+    },
+    {
+      "field": "plant_interface.sw_oxygen",
+      "kind": "integer",
+      "original_expression": "sw_oxygen"
+    },
+    {
+      "field": "plant_interface.mrftb",
+      "kind": "real",
+      "original_expression": "mrftb"
+    },
+    {
+      "field": "plant_interface.max_resp_factor",
+      "kind": "real",
+      "original_expression": "max_resp_factor"
+    },
+    {
+      "field": "plant_interface.q10_root",
+      "kind": "real",
+      "original_expression": "q10_root"
+    },
+    {
+      "field": "plant_interface.c_mroot",
+      "kind": "real",
+      "original_expression": "c_mroot"
+    },
+    {
+      "field": "plant_interface.f_senes",
+      "kind": "real",
+      "original_expression": "f_senes"
+    },
+    {
+      "field": "plant_interface.sw_inter",
+      "kind": "integer",
+      "original_expression": "sw_inter"
+    },
+    {
+      "field": "plant_interface.dt_interc_event",
+      "kind": "real",
+      "original_expression": "dt_interc_event"
+    },
+    {
+      "field": "plant_interface.cofab",
+      "kind": "real",
+      "original_expression": "cofab"
+    },
+    {
+      "field": "plant_interface.pfreetb",
+      "kind": "real",
+      "original_expression": "pfreetb"
+    },
+    {
+      "field": "plant_interface.pstemtb",
+      "kind": "real",
+      "original_expression": "pstemtb"
+    },
+    {
+      "field": "plant_interface.scanopytb",
+      "kind": "real",
+      "original_expression": "scanopytb"
+    },
+    {
+      "field": "plant_interface.avevaptb",
+      "kind": "real",
+      "original_expression": "avevaptb"
+    },
+    {
+      "field": "plant_interface.avprectb",
+      "kind": "real",
+      "original_expression": "avprectb"
+    },
+    {
+      "field": "plant_interface.siccaplai",
+      "kind": "real",
+      "original_expression": "siccaplai"
+    },
+    {
+      "field": "plant_interface.siccap",
+      "kind": "real",
+      "original_expression": "siccap"
+    },
+    {
+      "field": "plant_interface.sicact",
+      "kind": "real",
+      "original_expression": "sicact"
+    },
+    {
+      "field": "plant_interface.crsflx_in",
+      "kind": "real",
+      "original_expression": "crsflx_in"
+    },
+    {
+      "field": "plant_interface.crsflx_out",
+      "kind": "real",
+      "original_expression": "crsflx_out"
+    },
+    {
+      "field": "plant_interface.siccaploss",
+      "kind": "real",
+      "original_expression": "siccaploss"
+    },
+    {
+      "field": "plant_interface.swrd",
+      "kind": "integer",
+      "original_expression": "swrd"
+    },
+    {
+      "field": "plant_interface.swrdc",
+      "kind": "integer",
+      "original_expression": "swrdc"
+    },
+    {
+      "field": "plant_interface.swwrtnonox",
+      "kind": "integer",
+      "original_expression": "swwrtnonox"
+    },
+    {
+      "field": "plant_interface.aeratecrit",
+      "kind": "real",
+      "original_expression": "aeratecrit"
+    },
+    {
+      "field": "plant_interface.wrtmax",
+      "kind": "real",
+      "original_expression": "wrtmax"
+    },
+    {
+      "field": "plant_interface.wroottb",
+      "kind": "real",
+      "original_expression": "wroottb"
+    },
+    {
+      "field": "plant_interface.noddrz",
+      "kind": "integer",
+      "original_expression": "noddrz"
+    },
+    {
+      "field": "plant_interface.rd",
+      "kind": "real",
+      "original_expression": "rd"
+    },
+    {
+      "field": "plant_interface.dvs",
+      "kind": "real",
+      "original_expression": "dvs"
+    },
+    {
+      "field": "plant_interface.lai",
+      "kind": "real",
+      "original_expression": "lai"
+    },
+    {
+      "field": "plant_interface.tsum",
+      "kind": "real",
+      "original_expression": "tsum"
+    },
+    {
+      "field": "plant_interface.wrt",
+      "kind": "real",
+      "original_expression": "wrt"
+    },
+    {
+      "field": "plant_interface.wst",
+      "kind": "real",
+      "original_expression": "wst"
+    },
+    {
+      "field": "plant_interface.wlv",
+      "kind": "real",
+      "original_expression": "wlv"
+    },
+    {
+      "field": "plant_interface.wso",
+      "kind": "real",
+      "original_expression": "wso"
+    },
+    {
+      "field": "plant_interface.dwrt",
+      "kind": "real",
+      "original_expression": "dwrt"
+    },
+    {
+      "field": "plant_interface.dwst",
+      "kind": "real",
+      "original_expression": "dwst"
+    },
+    {
+      "field": "plant_interface.dwlv",
+      "kind": "real",
+      "original_expression": "dwlv"
+    },
+    {
+      "field": "plant_interface.grrt",
+      "kind": "real",
+      "original_expression": "grrt"
+    },
+    {
+      "field": "plant_interface.drrt",
+      "kind": "real",
+      "original_expression": "drrt"
+    },
+    {
+      "field": "plant_interface.drst",
+      "kind": "real",
+      "original_expression": "drst"
+    },
+    {
+      "field": "plant_interface.drlv",
+      "kind": "real",
+      "original_expression": "drlv"
+    },
+    {
+      "field": "plant_interface.ipgass",
+      "kind": "real",
+      "original_expression": "ipgass"
+    },
+    {
+      "field": "plant_interface.igass",
+      "kind": "real",
+      "original_expression": "igass"
+    },
+    {
+      "field": "plant_interface.imres",
+      "kind": "real",
+      "original_expression": "imres"
+    },
+    {
+      "field": "plant_interface.laipot",
+      "kind": "real",
+      "original_expression": "laipot"
+    },
+    {
+      "field": "plant_interface.wrtpot",
+      "kind": "real",
+      "original_expression": "wrtpot"
+    },
+    {
+      "field": "plant_interface.wstpot",
+      "kind": "real",
+      "original_expression": "wstpot"
+    },
+    {
+      "field": "plant_interface.wlvpot",
+      "kind": "real",
+      "original_expression": "wlvpot"
+    },
+    {
+      "field": "plant_interface.wsopot",
+      "kind": "real",
+      "original_expression": "wsopot"
+    },
+    {
+      "field": "plant_interface.dwrtpot",
+      "kind": "real",
+      "original_expression": "dwrtpot"
+    },
+    {
+      "field": "plant_interface.dwstpot",
+      "kind": "real",
+      "original_expression": "dwstpot"
+    },
+    {
+      "field": "plant_interface.dwlvpot",
+      "kind": "real",
+      "original_expression": "dwlvpot"
+    },
+    {
+      "field": "plant_interface.grrtpot",
+      "kind": "real",
+      "original_expression": "grrtpot"
+    },
+    {
+      "field": "plant_interface.ipgasspot",
+      "kind": "real",
+      "original_expression": "ipgasspot"
+    },
+    {
+      "field": "plant_interface.igasspot",
+      "kind": "real",
+      "original_expression": "igasspot"
+    },
+    {
+      "field": "plant_interface.imrespot",
+      "kind": "real",
+      "original_expression": "imrespot"
+    },
+    {
+      "field": "plant_interface.dmhrv",
+      "kind": "real",
+      "original_expression": "dmhrv"
+    },
+    {
+      "field": "plant_interface.dmloss",
+      "kind": "real",
+      "original_expression": "dmloss"
+    },
+    {
+      "field": "plant_interface.icut",
+      "kind": "integer",
+      "original_expression": "icut"
+    },
+    {
+      "field": "plant_interface.tcut",
+      "kind": "integer",
+      "original_expression": "tcut"
+    },
+    {
+      "field": "plant_interface.dmhrvpot",
+      "kind": "real",
+      "original_expression": "dmhrvpot"
+    },
+    {
+      "field": "plant_interface.dmlosspot",
+      "kind": "real",
+      "original_expression": "dmlosspot"
+    },
+    {
+      "field": "plant_interface.icutpot",
+      "kind": "integer",
+      "original_expression": "icutpot"
+    },
+    {
+      "field": "plant_interface.tcutpot",
+      "kind": "integer",
+      "original_expression": "tcutpot"
+    },
+    {
+      "field": "plant_interface.hlim3h",
+      "kind": "real",
+      "original_expression": "hlim3h"
+    },
+    {
+      "field": "plant_interface.hlim3l",
+      "kind": "real",
+      "original_expression": "hlim3l"
+    },
+    {
+      "field": "plant_interface.hlim4",
+      "kind": "real",
+      "original_expression": "hlim4"
+    },
+    {
+      "field": "atmosphere_interface.tav",
+      "kind": "real",
+      "original_expression": "tav"
+    },
+    {
+      "field": "atmosphere_interface.rad",
+      "kind": "real",
+      "original_expression": "rad"
+    },
+    {
+      "field": "atmosphere_interface.grai",
+      "kind": "real",
+      "original_expression": "grai"
+    },
+    {
+      "field": "variables.h",
+      "kind": "real",
+      "original_expression": "h(1:numnod)"
+    },
+    {
+      "field": "variables.theta",
+      "kind": "real",
+      "original_expression": "theta(1:numnod)"
+    },
+    {
+      "field": "variables.k",
+      "kind": "real",
+      "original_expression": "k(1:numnod+1)"
+    },
+    {
+      "field": "variables.kmean",
+      "kind": "real",
+      "original_expression": "kmean(1:numnod+1)"
+    },
+    {
+      "field": "variables.dimoca",
+      "kind": "real",
+      "original_expression": "dimoca(1:numnod)"
+    },
+    {
+      "field": "variables.fhyst",
+      "kind": "real",
+      "original_expression": "fhyst(1:numnod)"
+    },
+    {
+      "field": "variables.indeks",
+      "kind": "integer",
+      "original_expression": "indeks(1:numnod)"
+    },
+    {
+      "field": "variables.dt",
+      "kind": "real",
+      "original_expression": "dt"
+    },
+    {
+      "field": "variables.dtold",
+      "kind": "real",
+      "original_expression": "dtold"
+    },
+    {
+      "field": "variables.pond",
+      "kind": "real",
+      "original_expression": "pond"
+    },
+    {
+      "field": "variables.pondm1",
+      "kind": "real",
+      "original_expression": "pondm1"
+    },
+    {
+      "field": "variables.gwl",
+      "kind": "real",
+      "original_expression": "gwl"
+    },
+    {
+      "field": "variables.volact",
+      "kind": "real",
+      "original_expression": "volact"
+    },
+    {
+      "field": "MOD_MvG.cofgen",
+      "kind": "real",
+      "original_expression": "cofgen(:,1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.tsoil",
+      "kind": "real",
+      "original_expression": "tsoil(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.heacon",
+      "kind": "real",
+      "original_expression": "heacon(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.heacap",
+      "kind": "real",
+      "original_expression": "heacap(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.tetop",
+      "kind": "real",
+      "original_expression": "tetop"
+    },
+    {
+      "field": "MOD_SoilTemperature.tebot",
+      "kind": "real",
+      "original_expression": "tebot"
+    },
+    {
+      "field": "MOD_top.theatm",
+      "kind": "real",
+      "original_expression": "theatm"
+    },
+    {
+      "field": "MOD_top.katm",
+      "kind": "real",
+      "original_expression": "katm"
+    },
+    {
+      "field": "MOD_top.q0",
+      "kind": "real",
+      "original_expression": "q0"
+    },
+    {
+      "field": "MOD_top.hsurf",
+      "kind": "real",
+      "original_expression": "hsurf"
+    },
+    {
+      "field": "MOD_top.FlRunoff",
+      "kind": "logical",
+      "original_expression": "FlRunoff"
+    },
+    {
+      "field": "MOD_top.ftoph",
+      "kind": "logical",
+      "original_expression": "ftoph"
+    }
+  ],
+  "actual_private_swap_sources_syntax": [
+    {
+      "command": [
+        "gfortran",
+        "-fsyntax-only",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_syntax\\swap.f90"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "private_source_sha256": "0fb5960965293b31f0a9e99ddddbb8581b3d516b8a10fc130586dea1055fa7e2"
+    },
+    {
+      "command": [
+        "gfortran",
+        "-fsyntax-only",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_syntax\\swap_main.f90"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "private_source_sha256": "4a5d626f89938a8d6858faaff98d1b3160cb1c76bafe109d049412f06047e977"
+    }
+  ]
+}
