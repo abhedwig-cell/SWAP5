@@ -1,0 +1,89 @@
+{
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "day_crossing": "PASS_LAST_SUBDAY_OWN_CHECKPOINT_CROSSING_AND_FIRST_NEXTDAY_STEP_O0_O2",
+  "results": [
+    {
+      "optimization": "O0",
+      "steps": [
+        {
+          "step": "cross",
+          "begin": 35796.99991333311,
+          "dt": 8.666809920809815e-05,
+          "end": 35797.0,
+          "combined_inventory_error_cm": -1.8510312640301896e-15,
+          "domain_errors_cm": [
+            3.061854697734845e-17,
+            -4.0992159482371865e-18,
+            2.558039500707987e-18,
+            6.268043809681823e-20,
+            -1.6263032587282567e-19
+          ],
+          "paired_exchange_error": 3.469446951953614e-18
+        },
+        {
+          "step": "nextday",
+          "begin": 35797.0,
+          "dt": 0.0001733361984161963,
+          "end": 35797.0001733362,
+          "combined_inventory_error_cm": -1.3592805266776642e-14,
+          "domain_errors_cm": [
+            2.75167123245032e-17,
+            4.159778803965869e-18,
+            2.151463686025923e-18,
+            4.0318768289304696e-19,
+            1.5924219408380846e-19
+          ],
+          "paired_exchange_error": 2.7755575615628914e-17
+        }
+      ],
+      "checkpoint": 35796.99991333311
+    },
+    {
+      "optimization": "O2",
+      "steps": [
+        {
+          "step": "cross",
+          "begin": 35796.99991333311,
+          "dt": 8.666809920809815e-05,
+          "end": 35797.0,
+          "combined_inventory_error_cm": -1.8510312640301896e-15,
+          "domain_errors_cm": [
+            3.061854697734845e-17,
+            -4.0992159482371865e-18,
+            2.558039500707987e-18,
+            6.268043809681823e-20,
+            -1.6263032587282567e-19
+          ],
+          "paired_exchange_error": 3.469446951953614e-18
+        },
+        {
+          "step": "nextday",
+          "begin": 35797.0,
+          "dt": 0.0001733361984161963,
+          "end": 35797.0001733362,
+          "combined_inventory_error_cm": -1.3592805266776642e-14,
+          "domain_errors_cm": [
+            2.75167123245032e-17,
+            4.159778803965869e-18,
+            2.151463686025923e-18,
+            4.0318768289304696e-19,
+            1.5924219408380846e-19
+          ],
+          "paired_exchange_error": 2.7755575615628914e-17
+        }
+      ],
+      "checkpoint": 35796.99991333311
+    }
+  ],
+  "physical_and_format_changes": false,
+  "source_boundary": "Only soilwater qualification harness changed",
+  "model_routes": 4,
+  "max_seconds": 0.8547108001075685,
+  "no_censored": true,
+  "full_campaign": false,
+  "exclusions": [
+    "No checkpoint AT midnight/dayend: existing subday file guard unchanged",
+    "No cumulative output/PEARL continuity claim",
+    "No other modes/reduced state/dry h0 transitions or official promotion"
+  ]
+}

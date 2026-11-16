@@ -1,0 +1,5 @@
+Lees STATUS.json, RESULT.json en REPORT.md. DAY10 kwalificeert dezelfde bestaande B-native state, korte echte voortzetting naar laatste subdagcheckpoint t35796.99991333311, eigen file/vers proces, crossing naar35797 en eerste volgende-dagstap tot35797.0001733362. O0/O2 alle meetvectors exact. Fysiek/native code ongewijzigd; alleen kwalificatie-soilwater. Werkelijke host voert dagafsluiting, crop en volgende dagstart uit; niets handmatig overgeslagen.
+
+Onafhankelijke inventaris en gepaarde exchange slagen (~−1.85e-15/−1.36e-14cm). Vier routes elk<1sec, cap20. TEND Jan3 uitsluitend om oorspronkelijke derde-dagforcing te laden; start via bestaand B-bestand, geen koude tweedaagse/481run. Begin- en eindtijden zijn gelijk; na commit alle fysieke/heat/cropvelden exact. Cross-return alleen oud matrix_vertical verschilt en wordt in echte commit exact herberekend.
+
+Geen exact-midnight checkpointclaim: ongewijzigde native reader accepteert alleen subdagfase. Output/PEARL/cumulatieve histories blijven ongekwalificeerd. Geen andere modi/reduced/dryh0 of referentiepromotie. Herbeoordeel met assess_day10.py zonder modellen; geen brede campagne.
