@@ -22,8 +22,10 @@
                                 vlmpstcp, vlmpdycp, ksatcovlay, icptpsatzon, gwlflcpzo, zbtdm, vlmpdm,                                       &
                                 zdrabas, ppdmcp, icpbtdm, zwalevdm, mpvolume, nodgwlflcpzo, frmpwalwet, icptpwasrdm,swmbf, vlmpdmcp,         &
                                 vlmpdmcpm1, waunmpdmcpm1, waunmpdmcp, waunsat,  WaSrMpDm, qtopmpdmcp, icpbtdmm1, nkwt, fldecMPmbf
-      use DIAG19,only:target,attempts,iter_index,nvec,limit_u,macro_seq
+      use DIAG19,only:target,attempts,iter_index,nvec,limit_u,macro_seq,probe_busy,probe_u,point_id,point_node,point_delta
       implicit NONE
+
+      integer::snap23_unit,snap23_mode
 
 ! --- global                                                          In
       integer, intent(in)     :: ITask
@@ -1458,12 +1460,69 @@
       end do
 
       return
+
+      entry sense23_rate_io(snap23_unit,snap23_mode)
+      if(snap23_mode==1) then
+      write(snap23_unit) ic,id,jd,SqHlp,Sq,icc
+      write(snap23_unit) icgwl,icuns,ichlp,iter,CritHtop,FrFlwIn
+      write(snap23_unit) FrFlwOut,FlwInDmExces,FlwInIntSatDmPot,FlwInMtxSatDmPot,FlwInTopLatDmPot,FlwInTopVrtDmPot
+      write(snap23_unit) FlwOutMtxUnsDmPot,FlwOutMtxSatDmPot,FlwOutDmExces,FlwOutDmTot,FlwInIntSatCpPot,FlwInMtxSatCpPot
+      write(snap23_unit) FlwOutDrRapCpPot,FlwOutMtxUnsDmCpPot,FlwOutMtxSatDmCpPot,FlwInDmTot,FlwInTopExcesTot,FlwInTopPot
+      write(snap23_unit) FlwInTopXtr,FlwOutDrRapPot,SatDefDm,SatDefDmRel,FrXtr,Pp
+      write(snap23_unit) PpTot,SatDefTot,VlMpUndrDrL,VlMpUndrGwL,WaSrMpDmMax,WaSrMpDmMin
+      write(snap23_unit) WaSrMpDmTmp,Ld,r0,w_geom,Henpr1,lim_min
+      write(snap23_unit) lim_max,lim_under,lim_in,lim_out,lim_tmp,lim_frin
+      write(snap23_unit) lim_excess,lim_nodein,ThetaExc,FlwInTopExc,FrFlwTopIn,FrFlwSideIn
+      write(snap23_unit) FlwRed,FlwTopCp,FlwLatCpPot,FlwLatAbs,FlwSat,FlwSatNew
+      write(snap23_unit) QInIntSatS,QInMtxSatS,QOutMtxSatS,QOutMtxUnsS,FlwTopS,FlwLatCpS
+      write(snap23_unit) WaSat,SRel0,SRel1,Srelavg,Vl0,Vl1
+      write(snap23_unit) FrMpSat,CpFr,MPRelSat,WaUnTmp,dtheta,dthetaold
+      write(snap23_unit) fdtheta,fdthetadrv,KSatMP,RapDraRes,dH_MPOld,dH_MP
+      write(snap23_unit) zdenom,denommax,zdenommax,denom,numer,CorFac
+      write(snap23_unit) cfdry,cfdry2,massbal,kwsat,notconv,MPempty
+      write(snap23_unit) MPfull,KwSatCp
+      else
+      read(snap23_unit) ic,id,jd,SqHlp,Sq,icc
+      read(snap23_unit) icgwl,icuns,ichlp,iter,CritHtop,FrFlwIn
+      read(snap23_unit) FrFlwOut,FlwInDmExces,FlwInIntSatDmPot,FlwInMtxSatDmPot,FlwInTopLatDmPot,FlwInTopVrtDmPot
+      read(snap23_unit) FlwOutMtxUnsDmPot,FlwOutMtxSatDmPot,FlwOutDmExces,FlwOutDmTot,FlwInIntSatCpPot,FlwInMtxSatCpPot
+      read(snap23_unit) FlwOutDrRapCpPot,FlwOutMtxUnsDmCpPot,FlwOutMtxSatDmCpPot,FlwInDmTot,FlwInTopExcesTot,FlwInTopPot
+      read(snap23_unit) FlwInTopXtr,FlwOutDrRapPot,SatDefDm,SatDefDmRel,FrXtr,Pp
+      read(snap23_unit) PpTot,SatDefTot,VlMpUndrDrL,VlMpUndrGwL,WaSrMpDmMax,WaSrMpDmMin
+      read(snap23_unit) WaSrMpDmTmp,Ld,r0,w_geom,Henpr1,lim_min
+      read(snap23_unit) lim_max,lim_under,lim_in,lim_out,lim_tmp,lim_frin
+      read(snap23_unit) lim_excess,lim_nodein,ThetaExc,FlwInTopExc,FrFlwTopIn,FrFlwSideIn
+      read(snap23_unit) FlwRed,FlwTopCp,FlwLatCpPot,FlwLatAbs,FlwSat,FlwSatNew
+      read(snap23_unit) QInIntSatS,QInMtxSatS,QOutMtxSatS,QOutMtxUnsS,FlwTopS,FlwLatCpS
+      read(snap23_unit) WaSat,SRel0,SRel1,Srelavg,Vl0,Vl1
+      read(snap23_unit) FrMpSat,CpFr,MPRelSat,WaUnTmp,dtheta,dthetaold
+      read(snap23_unit) fdtheta,fdthetadrv,KSatMP,RapDraRes,dH_MPOld,dH_MP
+      read(snap23_unit) zdenom,denommax,zdenommax,denom,numer,CorFac
+      read(snap23_unit) cfdry,cfdry2,massbal,kwsat,notconv,MPempty
+      read(snap23_unit) MPfull,KwSatCp
+      end if
+      return
       contains
       subroutine limit21_trace(stage)
       integer,intent(in)::stage
       real(8)::outfac
       outfac=-1d0
       if(stage/=1) outfac=FrFlwOut
+      if(probe_busy) then
+      if(stage==3) then
+      write(probe_u,*) point_id,point_node,point_delta,attempts,iter_index,nvec,macro_seq,ITask,stage,dt,FrReduQ,h(52), &
+       GwlFlCpZo,ICpTpSatZon,ZWaLevDm(3),WaSrMpDm(3),lim_min,lim_max,lim_under,VlMpDm(3), &
+       lim_in,lim_out,lim_tmp,lim_frin,lim_excess,FlwOutDmExces(3),outfac, &
+       FlwInTopVrtDmPot(3),FlwInTopLatDmPot(3),FlwInIntSatDmPot(3),FlwInMtxSatDmPot(3), &
+       FlwOutMtxSatDmPot(3),FlwOutMtxUnsDmPot(3),FlwOutMtxSatDmCpPot(3,52), &
+       QOutMtxSatDmCp(3,52),QInMtxSatDmCp(3,52),QInTopVrtDm(3)+QInTopLatDm(3), &
+       FlwOutMtxSatDmCpPot(3,52)/dt,sum(QOutMtxSatDmCp(3,1:numnod))+sum(QOutMtxUnsDmCp(3,1:numnod)), &
+       sum(QInMtxSatDmCp(3,1:numnod))+sum(QInIntSatDmCp(3,1:numnod))+QInTopVrtDm(3)+QInTopLatDm(3), &
+       FlwInTopExcesTot,SatDefTot,merge(1,0,FlwOutDmExces(3)/dt>1d-7), &
+       merge(1,0,FlwOutDmTot(3)>FlwOutDmExces(3)),WaSrMpDm(3)+lim_frin*lim_in-lim_min,lim_nodein
+      end if
+      return
+      end if
       write(limit_u,*) attempts,iter_index,nvec,macro_seq,ITask,stage,dt,FrReduQ,h(52), &
        GwlFlCpZo,ICpTpSatZon,ZWaLevDm(3),WaSrMpDm(3),lim_min,lim_max,lim_under,VlMpDm(3), &
        lim_in,lim_out,lim_tmp,lim_frin,lim_excess,FlwOutDmExces(3),outfac, &
@@ -1496,6 +1555,8 @@
       use MOD_macropore, only: dfdhmp, ICpBtDm, ppdmcp, dipocp, cdarcy, frreduq, qoutmtxsatdmcp, qinmtxsatdmcp, ictopmp, swsep, shapefacmp
                                
       implicit none
+
+      integer::snap23_unit,snap23_mode
 
 ! --- global                                                          In
       integer, intent(in)  :: ITask, id
@@ -1653,7 +1714,15 @@
       end select
 
       return
-      end subroutine
+      
+      entry sense23_sat_io(snap23_unit,snap23_mode)
+      if(snap23_mode==1) then
+      write(snap23_unit) DelHDmCp,FlwMtxSatDmCp
+      else
+      read(snap23_unit) DelHDmCp,FlwMtxSatDmCp
+      end if
+      return
+end subroutine
 
 
 !=====================================================================
@@ -1678,6 +1747,8 @@
 
       use DIAG19,only:target,attempts,iter_index,nvec,raw_u
       implicit none
+
+      integer::snap23_unit,snap23_mode
 
 ! --- global                                                         In
       integer, intent(in)     :: id, ITask
@@ -1890,6 +1961,14 @@
       end select
 
       return
+      entry sense23_abs_io(snap23_unit,snap23_mode)
+      if(snap23_mode==1) then
+      write(snap23_unit) DelHDmCp,Diffusivity,FlSorp
+      else
+      read(snap23_unit) DelHDmCp,Diffusivity,FlSorp
+      end if
+      return
+
       end
 
 

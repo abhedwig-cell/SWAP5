@@ -59,8 +59,8 @@ s=s[:start]+'''      if(probe_busy) then
 # Snapshot explicit persistent locals; ordinary automatic scratch is not retained.
 head=s[:s.index('!     for FORCHECK')]
 s=entry(s,'subroutine macrorate(itask)','end subroutine macrorate','sense23_rate_io',names(head,True))
-s=entry(s,'subroutine satflow(itask','end subroutine satflow','sense23_sat_io',['DelHDmCp','FlwMtxSatDmCp'])
-s=entry(s,'subroutine absorption','end subroutine absorption','sense23_abs_io',['DelHDmCp','Diffusivity','FlSorp'])
+s=entry(s,'subroutine satflow(itask','end subroutine','sense23_sat_io',['DelHDmCp','FlwMtxSatDmCp'])
+s=entry(s,'subroutine absorption','\n      end\n','sense23_abs_io',['DelHDmCp','Diffusivity','FlSorp'])
 put('macrorate_node.f90',s,old)
 s=(SRC/'calcgwl.f90').read_text();old=s
 s=s.replace('public :: calcgwl, no_deltaGWL_warning','public :: calcgwl, no_deltaGWL_warning,sense23_gwl_io',1)

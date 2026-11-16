@@ -1,0 +1,13 @@
+{
+  "stage": "PREREGISTERED",
+  "baseline": "4976c403d7eeeb7c8158d2b34d3d07c1585ffe96",
+  "routes": [
+    "O0 native attempt38",
+    "O2 native attempt38"
+  ],
+  "probe": "Before tridiagonal solve iteration30 of same current-operator head; MACRORATE only, no solver update",
+  "points": "base; h50,h51,h52 plus/minus1e-4 and5e-5; repeatedbase =14evaluations",
+  "restore": "allownmacro/swapmpmodule fields, hostmutationclosure and savedMACRORATE/SATFLOW/ABSORPTION/CALCGWLlocals; binary identity aftereachprobe",
+  "hard_timeout_seconds": 20,
+  "no_campaign": true
+}
