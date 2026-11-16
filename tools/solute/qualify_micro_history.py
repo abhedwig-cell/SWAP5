@@ -29,6 +29,9 @@ def malformed_active(origin,day,project,label,reuse,out,call):
     top=start-72
     for name,offset,fmt,value in [('top-version',0,'=i',9),('top-clock',4,'=d',0.),('top-nan',12,'=d',float('nan')),
        ('top-negative',20,'=d',-1.),('top-flag',60,'=i',9),('top-trailer',68,'=i',0)]:replace(name,top+offset,fmt,value)
+    oxygen_end=top;oxygen_size=struct.unpack_from('=i',raw,oxygen_end-4)[0];oxygen=oxygen_end-oxygen_size
+    assert oxygen_size==24+48*project.nodes
+    for name,offset,fmt,value in [('oxygen-version',0,'=i',9),('oxygen-flag',4,'=i',9),('oxygen-grid',8,'=i',999),('oxygen-clock',12,'=d',0.),('oxygen-nan',20,'=d',float('nan')),('oxygen-negative',20,'=d',-1.),('oxygen-trailer',oxygen_size-4,'=i',0)]:replace(name,oxygen+offset,fmt,value)
     changes.extend([('short',raw[:-1]),('outer-eof',raw+b'x')])
     for name,data in changes:
         changed=dict(members);changed['macro.bin']=data

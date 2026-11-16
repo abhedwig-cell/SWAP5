@@ -151,6 +151,8 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Bundle original microscopic lookup state generator differs')
     if expected_micro and identity.get('history_top_state_source')!=h.sha(h.APP/'history_top_state.py'):
         raise ValueError('Foreign original top history generator')
+    if expected_micro and identity.get('oxygen_lookup_state_source')!=h.sha(h.APP/'oxygen_lookup_state.py'):
+        raise ValueError('Foreign original oxygen history generator')
     if not project.macro:
         tables=False
         if project.input_directory:

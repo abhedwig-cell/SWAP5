@@ -45,7 +45,9 @@ def management_end(aux,project):
     from micro_lookup_state import ALL_MAGICS
     size=struct.unpack_from('=i',aux,len(aux)-4)[0] if aux[:8] in ALL_MAGICS else 0
     if size:assert 44<=size<=len(aux)
-    return len(aux)-size-(72 if size else 0)-8*count-(100 if selected['SWCFBS'] else 0)
+    oxygen_size=struct.unpack_from('=i',aux,len(aux)-size-72-4)[0] if size else 0
+    if oxygen_size:assert oxygen_size in (24,24+48*project.nodes)
+    return len(aux)-size-(72 if size else 0)-oxygen_size-8*count-(100 if selected['SWCFBS'] else 0)
 
 
 def native_temperatures(checkpoint,project):

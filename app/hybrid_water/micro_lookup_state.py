@@ -5,7 +5,7 @@ Undefined allocation tails are outside the serialized physical domain.
 """
 import re
 
-POLICY = 'original-initialized-micro-and-top-v2'
+POLICY = 'original-initialized-micro-top-oxygen-v3'
 MAGICS = {
     (False,False): ('S5WML024','S5WMS025','S5WMM026'),
     (True,False): ('S5CML027','S5CMS028','S5CMM029'),
