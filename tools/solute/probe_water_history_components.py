@@ -85,7 +85,7 @@ def snapshots(path,inventory):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source-root',type=Path,required=True);p.add_argument('--prior',type=Path,required=True)
-    p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p.add_argument('--output',type=Path,required=True);p.add_argument('--reconnect-wofost-interface',action='store_true');a=p.parse_args()
     pinned=a.source_root.resolve();assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=pinned,text=True).strip()==PIN
     sys.path.insert(0,str(pinned/'tools/solute'));sys.path.insert(0,str(pinned/'app/hybrid_water'))
     import daily_host as h
@@ -123,7 +123,12 @@ def main():
         text=path.read_text(encoding='cp1252')
         text=instrument_source(text,filename,h.replace)
         path.write_text(text,encoding='cp1252')
-    for filename in ('hybrid_state_diagnostic.f90','swap.f90','swap_main.f90'):
+    if a.reconnect_wofost_interface:
+        path=target/'wofost.f90';assert h.sha(path)==identity['donor_generated']['wofost.f90']
+        text=h.replace(path.read_text(encoding='cp1252'),'         r_act=hybrid_r_act',
+            '         r_act=hybrid_r_act\n         call update_wofost_interface(s_pot,r_pot)\n         call update_wofost_interface(s_act,r_act)')
+        path.write_text(text,encoding='cp1252')
+    for filename in ('hybrid_state_diagnostic.f90',*(['wofost.f90'] if a.reconnect_wofost_interface else []),'swap.f90','swap_main.f90'):
         compile(['gfortran',*identity['donor_flags'],'-I',str(objects),'-I',str(ttutil),'-c',filename])
     compile(['gfortran','-o',str(h.executable(target,'day_donor')),*linked,str(target/'hybrid_state_diagnostic.o')])
     records={}
@@ -138,7 +143,8 @@ def main():
     oldwarm=json.loads((prior/'water-history-O0-active-prefix/daily.jsonl').read_text().splitlines()[530])
     oldcold=json.loads((prior/'water-history-O0-active-restart/daily.jsonl').read_text().splitlines()[0])
     assert physical(records['warm']['last_row'])==physical(oldwarm)
-    assert physical(records['cold']['last_row'])==physical(oldcold)
+    if not a.reconnect_wofost_interface:assert physical(records['cold']['last_row'])==physical(oldcold)
+    exact=physical(records['cold']['last_row'])==physical(records['warm']['last_row'])
     assert physical(oldwarm)!=physical(oldcold) and h.sha(source)==digest
     changes=[]
     warm={x['phase']:x for x in records['warm']['snapshots'] if x['clock']==project.start_clock+530}
@@ -147,13 +153,15 @@ def main():
         for name,before in warm[phase]['fields'].items():
             after=cold[phase]['fields'][name]
             if before!=after:changes.append(dict(phase=phase,field=name,changed_entries=sum(x!=y for x,y in zip(before,after)),maximum_absolute_difference=max(abs(float(x)-float(y)) for x,y in zip(before,after))))
-    result=dict(status='READ_ONLY_ORIGINAL_WATER_HISTORY_MISMATCH_EXACTLY_REPRODUCED',pinned_source=PIN,
+    status=('PRIVATE_COMPLETE_WOFOST_INTERFACE_RECONNECT_PASS' if exact else 'PRIVATE_COMPLETE_WOFOST_INTERFACE_RECONNECT_FAIL') if a.reconnect_wofost_interface else 'READ_ONLY_ORIGINAL_WATER_HISTORY_MISMATCH_EXACTLY_REPRODUCED'
+    result=dict(status=status,interface_reconnected=a.reconnect_wofost_interface,cold_warm_physical_exact=exact,pinned_source=PIN,
         current_source=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),original_run=43416681903,
         origin_sha256=digest,origin_unchanged=True,no_publication=True,no_build_rebinding=True,
         original_executable_relink_exact=True,field_inventory=inventory,records=records,phase_differences=changes,
-        private_sources={name:h.sha(target/name) for name in ('hybrid_state_diagnostic.f90','swap.f90','swap_main.f90')},
+        private_sources={name:h.sha(target/name) for name in ('hybrid_state_diagnostic.f90','wofost.f90','swap.f90','swap_main.f90')},
         private_executable_sha256=h.sha(h.executable(target,'day_donor')),
         scope='Read-only original component-state evidence, not current public qualification or demonstrated causation')
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'],flush=True)
+    if a.reconnect_wofost_interface:assert exact,'Complete original interface reconnection did not reproduce warm physical state'
 
 if __name__=='__main__':main()

@@ -4,6 +4,11 @@ on:
     branches: [codex/nomacro-coverage10]
     paths: ['.github/workflows/nomacro-history-diagnostic.yml']
   workflow_dispatch:
+    inputs:
+      reconnect_interface:
+        type: boolean
+        default: false
+        description: Private complete original WOFOST interface reconnection, no publication
 permissions:
   contents: read
   actions: read
@@ -34,7 +39,14 @@ jobs:
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/prior
       - name: Reproduce exact original component memory without accepted publication
-        run: python3 -B tools/solute/probe_water_history_components.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
+        env:
+          RECONNECT: ${{ inputs.reconnect_interface }}
+        run: |
+          if [ "$RECONNECT" = true ]; then
+            python3 -B tools/solute/probe_water_history_components.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof" --reconnect-wofost-interface
+          else
+            python3 -B tools/solute/probe_water_history_components.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
