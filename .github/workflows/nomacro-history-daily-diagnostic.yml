@@ -1,0 +1,43 @@
+name: Current history every-day restart discriminator
+on:
+  push:
+    branches: [codex/nomacro-coverage10]
+    paths: ['.github/workflows/nomacro-history-daily-diagnostic.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tools/solute
+      - uses: actions/checkout@v4
+        with:
+          ref: 9dd1f03e4b0252eb9d5f2b4bbbdde221f498f67f
+          path: pinned
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            reference/swap-4.3.1/projects
+      - uses: actions/download-artifact@v4
+        with:
+          name: nomacro-history-water-history-9dd1f03e4b0252eb9d5f2b4bbbdde221f498f67f
+          run-id: 43833787531
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - name: Reproduce complete original component state at current153-to154
+        run: python3 -B tools/solute/probe_current_history_daily.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof" --variables-snapshots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: current-history-daily-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30
