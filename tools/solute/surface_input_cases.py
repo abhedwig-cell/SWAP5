@@ -18,7 +18,7 @@ def create(target,key):
         text,n=re.subn(r'(?m)^([ \t]*DATEPMX PONDMXTB[^\n]*\n)(?:[ \t]*\d{4}-\d{2}-\d{2}[^\n]*\n)+',
             r'\g<1>  2002-01-01 0.2\n  2002-07-19 0.1\n  2002-07-20 0.8\n  2002-12-31 0.2\n',text);assert n==1
     if changes['SWRUNON']:
-        text+="\nRUFIL = 'surface'\n"
+        text,n=re.subn(r"(?m)^([ \t]*RUFIL[ \t]*=[ \t]*)'[^']+'",r"\g<1>'surface'",text);assert n==1
         start=date(2002,1,1)
         (target/'surface.ru').write_text('DATE AMOUNT\n'+''.join(f'{start+timedelta(days=day)} {PULSES_MM.get(day,0.0):.1f}\n' for day in range(1097)))
     control.write_text(text,encoding='cp1252')
