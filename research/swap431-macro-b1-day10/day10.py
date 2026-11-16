@@ -6,7 +6,7 @@ sp=importlib.util.spec_from_file_location('native09',P/'native09.py');m=importli
 def run(opt,mode):
  c=W/(opt+'-'+mode);c.mkdir(parents=True,exist_ok=True);assert not (c/'outcome.txt').exists()
  for x in json.loads((P/'CASE_IDENTITY.json').read_text()):
-  src=Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/x['path'];assert m.sha(src)==x['sha256'];shutil.copy2(src,c/x['path'])
+  src=Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/x['path'];assert m.sha(src)==x['sha256'];(c/x['path']).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,c/x['path'])
  src=P/'data'/opt/'B_TRIAL/candidate.end' if mode=='CONTINUE' else R/'data'/opt/'CONTINUE/daycheckpoint.end'
  shutil.copy2(src,c/'own.end')
  s=(c/'swap.swp').read_text(encoding='cp1252');s=re.sub(r'(?mi)^(\s*SWINCO\s*=\s*)2\b',r'\g<1>3',s,count=1)
