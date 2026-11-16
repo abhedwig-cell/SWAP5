@@ -325,7 +325,11 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
             end if
          end if""")
         if strict_water:
+            source=replace(source,"   use hybrid_step_budget, only: projected_water_residual",
+                           "   use hybrid_step_budget, only: projected_water_residual, projected_daily_receipt_error")
             source=replace(source,"1d-6 * (t1900-budget_start+dt)","1d-10 * (t1900-budget_start+dt)")
+            source=replace(source,"abs(budget_total + budget_step) > 1d-10 * (t1900-budget_start+dt)",
+                           "max(abs(budget_total + budget_step),projected_daily_receipt_error()) > 1d-10 * (t1900-budget_start+dt)")
             source=replace(source,"   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror",
                            "   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, mass_polish_at")
             source=replace(source,"   iBackTr        = 0","   mass_polish_at = 0\n   iBackTr        = 0")
@@ -334,7 +338,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
             # at dtmin without curing the observed day-one residual.
             source=replace(source,anchor,"""      if (budget_enabled .and. .not.flnonconv) then
          budget_step=projected_water_residual()
-         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.
+         if (max(abs(budget_total+budget_step),projected_daily_receipt_error())>1d-10*(t1900-budget_start+dt)) flnonconv=.true.
          if (.not.flnonconv .and. mass_polish_at==0) then
             ! One more original Newton iteration avoids stopping directly on
             ! the day guard where independently summed receipts can round out.
