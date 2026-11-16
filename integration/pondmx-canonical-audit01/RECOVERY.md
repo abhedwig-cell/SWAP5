@@ -17,6 +17,14 @@ copied swap.ok/output), with fresh complete1096/1097-row comparison. Preserve
 the earlier output-compatible format1 references and source failures; don't
 relabel literal input or whole-science equivalence. All1e-10 hard limits remain.
 No production change, new state schema, macro, numerical or broad CI campaign.
-Persist audit/raw and bounded test-only source-footprint addition, PR admission
-and actual canonical verification. Source advances require actual dependency
+Persist supplementary audit/raw and link from the admitted PR; no additional
+production PR or source-footprint allowance is needed. Source advances require actual dependency
 reconciliation; completed physical histories must never be rebound.
+
+COMPLETED: four fresh actual canonical O0/O2 builds/prefix201/own199to201 exact,
+two full original431 literal executed-input comparisons complete. Actual clean
+canonical fec7b4415 passes all eight negative methods and complete current
+admission consumer. RESULT/RAW/README/CANONICAL own the independent audit.
+Production was already admitted in PR1694; close parallel PR1693 and preserve
+its causal proof. Publish this supplementary branch and link its exact commit
+from PR1694. Do not merge extra audit paths or modify the admitted source guard.
