@@ -1,9 +1,18 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "COMPLETED_DAY_NATIVE_PHASE_IMPLEMENTED_AND_BOUNDED_QUALIFIED",
   "baseline": "223398b8da089a7da239cef2999fdb92c9dd1a7d",
   "canonical": "f9ada0cb2134971f92267a209f3a1fc86901dda8",
   "scope": "Exact midnight AFTER original crop/dayend/output completion, BEFORE next daystart; existing DAY10 preboundary ownfile, O0/O2 one next-day step",
   "cap_seconds": 20,
   "physics_changed": false,
-  "output_ledgers_excluded": true
+  "output_ledgers_excluded": true,
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "midnight_restart": "PASS_EXACT_35797_AFTER_FULL_DAYEND_ONE_NEXTDAY_STEP_O0_O2",
+  "results": "RESULT.json",
+  "report": "REPORT.md",
+  "assessment": "assess_mid11.py",
+  "model_routes": 6,
+  "no_censored": true,
+  "official_reference_promoted": false,
+  "next_safe_step": "Retain exact completed-day PASS, no automatic campaign; intermediate phases/output/modes remain excluded"
 }

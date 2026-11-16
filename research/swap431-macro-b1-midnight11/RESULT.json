@@ -1,0 +1,40 @@
+{
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "midnight_restart": "PASS_COMPLETED_DAY_PHASE_EXACT_35797_O0_O2_ONE_NEXTDAY_STEP",
+  "results": [
+    {
+      "optimization": "O0",
+      "step": {
+        "begin": 35797.0,
+        "dt": 0.0001733361984161963,
+        "end": 35797.0001733362,
+        "inventory_error_cm": -1.3592805266776642e-14,
+        "paired_exchange_error": 2.7755575615628914e-17
+      }
+    },
+    {
+      "optimization": "O2",
+      "step": {
+        "begin": 35797.0,
+        "dt": 0.0001733361984161963,
+        "end": 35797.0001733362,
+        "inventory_error_cm": -1.3592805266776642e-14,
+        "paired_exchange_error": 2.7755575615628914e-17
+      }
+    }
+  ],
+  "phase": "After all original dayend crop/output actions, before next loop TimeControl2",
+  "format": "V2 completed-day header; V1 read remains subday-only",
+  "guards": [
+    "Invalid V2 phase rejected before install",
+    "Day state masquerading as V1 rejected before install"
+  ],
+  "physical_solver_changes": false,
+  "model_routes": 6,
+  "max_seconds": 0.525237400084734,
+  "exclusions": [
+    "No intermediate dayend checkpoint before crop/output completion",
+    "No cumulative/PEARL/output-ledger continuity",
+    "No general midnight/other mode/reduced state/full trajectory or official promotion"
+  ]
+}

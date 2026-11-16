@@ -1,0 +1,104 @@
+--- a/native_state.f90
++++ b/native_state.f90
+@@ -20,6 +20,7 @@
+ implicit none
+ logical,save :: pending=.false.,macro_done=.false.
+ integer,save :: saved_n,saved_nd
++logical,save :: day_ready=.false.
+ character(64),parameter :: signature='5524115f66b68d26b40f42f25a1624c8da5d33cf435158ba1634ba8cbdec19f5'
+ real(8),save :: b_WaSrMpDm(madm)
+ real(8),save :: b_WaUnMpDm(madm)
+@@ -107,14 +108,15 @@
+ contains
+ subroutine io(u,rw)
+ integer,intent(in)::u,rw
+-integer::ios,n,nd,v
++integer::ios,n,nd,v,phase
+ character(32)::tag
+ character(64)::sig
+ if(swmacro/=1) return
+ if(rw==2) then
+  if(swmbf/=1.or.swabs/=1.or.IDecMpRat/=0.or.FlDecMpRat.or.fldecdt) error stop 'NATIVE09 unsupported boundary'
+- tag='SWAP431_MACRO_RESTART_V1'
+- write(u) tag,1,numnod,NumDm,signature
++ if(.not.day_ready) error stop 'MID11 writer phase not complete'
++ tag='SWAP431_MACRO_RESTART_V2'
++ write(u) tag,2,numnod,NumDm,signature,2
+  write(u) WaSrMpDm(1:NumDm)
+  write(u) WaUnMpDm(1:NumDm)
+  write(u) WaUnMpDmCp(1:NumDm,1:numnod)
+@@ -204,7 +206,15 @@
+ end if
+ read(u,iostat=ios) tag,v,n,nd,sig
+ if(ios/=0) error stop 'NATIVE09 missing trailer'
+-if(tag/='SWAP431_MACRO_RESTART_V1'.or.v/=1.or.sig/=signature) error stop 'NATIVE09 version or identity mismatch'
++phase=1
++if(v==2.and.tag=='SWAP431_MACRO_RESTART_V2') then
++ backspace(u)
++ read(u,iostat=ios) tag,v,n,nd,sig,phase
++ if(ios/=0.or.phase/=2) error stop 'MID11 invalid completed-day phase'
++else
++ if(v/=1.or.tag/='SWAP431_MACRO_RESTART_V1') error stop 'MID11 version mismatch'
++end if
++if(sig/=signature) error stop 'MID11 identity mismatch'
+ if(n/=numnod.or.n<1.or.nd<1.or.nd>madm) error stop 'NATIVE09 dimensions mismatch'
+ saved_n=n;saved_nd=nd
+ read(u,iostat=ios) b_WaSrMpDm(1:nd)
+@@ -440,7 +450,11 @@
+ read(u,iostat=ios) tag
+ if(ios/=0.or.tag/='NATIVE09_COMPLETE') error stop 'NATIVE09 incomplete trailer'
+ if(b_tstart/=tstart.or.b_dt<=0.or.b_dtold<=0) error stop 'NATIVE09 time/origin mismatch'
+-if(b_fldaystart.or.b_fldayend) error stop 'NATIVE09 only accepted subday supported'
++if(phase==1) then
++ if(b_fldaystart.or.b_fldayend) error stop 'MID11 v1 not a subday state'
++else
++ if(.not.b_fldaystart.or..not.b_fldayend.or.b_t1900/=dnint(b_t1900).or.abs(b_tcum-1d0)>1d-8) error stop 'MID11 day state inconsistent'
++end if
+ if(any(b_WaSrMpDm(1:nd)<0).or.any(b_TimAbsCumDmCp(1:nd,1:n)<0)) error stop 'NATIVE09 invalid inventory/history'
+ if(any(b_VlMpDmCp(1:nd,1:n)<0).or.any(b_WaUnMpDmCp(1:nd,1:n)<0)) error stop 'NATIVE09 invalid geometry'
+ if(any(b_ICpBtDm(1:nd)<1).or.any(b_ICpBtDm(1:nd)>n)) error stop 'NATIVE09 bottom index'
+@@ -657,7 +671,7 @@
+ subroutine native09_host()
+ use MOD_native09, only:pending,install_host,dump
+ use MOD_SoilWater, only:soilwater
+-use MOD_cropdevelopment, only:cropdevelopment
++use MOD_cropdevelopment, only:cropdevelopment,fl_readcropfile
+ use MOD_swap_base, only:pathcrop,iun_min2,iun_max2
+ use plant_interface, only:crpfilnam,cropfil,icrop,unit_crp,croptype
+ integer,external :: getun2
+@@ -673,6 +687,7 @@
+ ! SoilWater1 does not integrate water or sorption for SWINCO3/SWHYST0.
+ call soilwater(1)
+ call install_host()
++fl_readcropfile=.false.
+ call dump('native_installed')
+ end subroutine
+ subroutine native09_dump(label)
+@@ -680,3 +695,8 @@
+ character(*)::label
+ call dump(label)
+ end subroutine
++
++subroutine native11_ready()
++use MOD_native09,only:day_ready
++day_ready=.true.
++end subroutine
+--- a/swap_native.f90
++++ b/swap_native.f90
+@@ -160,7 +160,7 @@
+ use MOD_frost,           only: frozencond, frozenbounds, rfcp
+ use MOD_macropore,       only: macrostatevar, macropore
+ use MOD_MvG,             only: fill_cofgen, set_cofgen_pointers
+-use MOD_SoilWater,       only: soilwater, soilwaterstatevar,retry07_checkpoint
++use MOD_SoilWater,       only: soilwater, soilwaterstatevar,retry07_checkpoint,day11_boundary
+ use MOD_SoilTemperature, only: SoilTemperature, tsoil, tetop
+ use KVapor,              only: DefaultTemperature
+ use MOD_Solute,          only: Solute
+@@ -511,6 +511,7 @@
+          end if
+ 
+       end if
++      call day11_boundary()
+ 
+    end do
+ 
