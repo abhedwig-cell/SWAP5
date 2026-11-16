@@ -29,3 +29,14 @@ Implementation: tests/nomacro_mixtures/run.py uses current production
 DailyHost/build/verify_checkpoint APIs and existing strict balance checks.
 Next: prepare/preflight fixtures, persist reproducible selection, execute the
 bounded four-case block, preserve outcomes and compare literal original431.
+
+COMPLETED: all4 short trials pass;8actual full1096 O0/O2,4original431 complete,
+28of32full native windows exact. Four199to201 surface/history native FAILs
+retained; no physical code repair attempted. Both full plate/history cases
+pass all native windows. Every daily hard balance passes unchanged.
+See SUMMARY/COMPLETION and raw archives. Science NOT_QUALIFIED.
+Next concrete owner experiment: observe actual variables.pondmx carry at199/201
+without inferring it from h0max; then correct the complete owned top context if
+causal. Keep this failed-source cohort immutable. Do not duplicate active N
+external-irrigation work. Publish a bounded test-only PR; source admission may
+preserve M only for the exact unchanged production closure and sealed M proof.

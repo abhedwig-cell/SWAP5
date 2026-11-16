@@ -1,0 +1,1894 @@
+{
+  "status": "FOUR_COMPLETE_MIXTURES_WITH_RETAINED_EXACT_NATIVE_FAILURES",
+  "baseline_canonical": "6136101463762b1dd18419fe0260965eccd482c7",
+  "executed_initial_source": "99f81eeacece5efccfa7a6d8ca96e4ea490a6932",
+  "verification_completion_source": "462a02ba78ec9605ee60905bcb5abc7b7c5ceb78",
+  "runtime_app_src_reference_tools_unchanged": true,
+  "independent_historical_projects_added": 0,
+  "derived_configurations_tested": 4,
+  "derived_configurations_passing_full_and_exact_restart": 2,
+  "complete_SWAP5_trajectories": 8,
+  "complete_SWAP5_days": 8768,
+  "complete_original431_trajectories": 4,
+  "complete_original431_days": 4384,
+  "full_native_windows": 32,
+  "exact_native_windows_pass": 28,
+  "exact_native_windows_fail": 4,
+  "short_native_windows_pass": 4,
+  "water_guard_cm": 1e-10,
+  "solute_guard_mg_cm2": 1e-10,
+  "tolerances_changed": false,
+  "optimization_scope": "O0/O2 generated donor and kernel; immutable original provider remains O2",
+  "source_or_model_repair": false,
+  "original_inputs_identical_between_executables": true,
+  "cases": {
+    "water-plate-history": {
+      "functional_status": "FULL_AND_EXACT_OWN_PASS",
+      "profiles": {
+        "O0": {
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 2.3295601558892542e-14,
+            "max_kernel_cm": 2.6201263381153694e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 1.1025600208693881e-13
+          },
+          "model_seconds": 7.962847599992529,
+          "windows": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            }
+          ]
+        },
+        "O2": {
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 2.3295601558892542e-14,
+            "max_kernel_cm": 2.6201263381153694e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 1.1025600208693881e-13
+          },
+          "model_seconds": 6.829372099833563,
+          "windows": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            }
+          ]
+        }
+      },
+      "original431": {
+        "command": [
+          "C:\\SWAP5-RC2\\provider\\build\\swap_b0_gfortran.exe",
+          "./swap.swp"
+        ],
+        "executable_sha256": "499b5d9c72a908af9282f5479a5b93e4488da5019620f9252c3117786cbca8a3",
+        "identical_executed_inputs": {
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+          "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+          "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+          "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+          "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+          "potato.crp": "4ba7d3848f90fc87fec5b31478d7141cb8528f35f53f8521929961d673bfd56a",
+          "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "swap.swp": "c190854bf8c89732c3db2edd78bb14baea4aca6f9f3bdca34078167a23463e87"
+        },
+        "seconds": 2.7788835000246763,
+        "timeout": false,
+        "returncode": 100,
+        "swap_ok": true,
+        "error": "",
+        "scientific_equivalence": "NOT_QUALIFIED",
+        "tolerances_changed": false,
+        "original_rows": 1097,
+        "swap5_rows": 1097,
+        "compared_rows": 1097,
+        "maximum_numeric_csv_differences": {
+          "GWL": 0.0,
+          "WTOT": 0.07578672860400104,
+          "BALDEV": 0.025930846624,
+          "TSUM": 0.0
+        },
+        "status": "COMPLETE_DIAGNOSTIC_REFERENCE"
+      },
+      "numeric_comparison": {
+        "RAIN": {
+          "maximum_absolute": 9.99866855977416e-13,
+          "date": "2004-01-16"
+        },
+        "SNOW": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "IRRIG": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "RUNOFF": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "EIC": {
+          "maximum_absolute": 0.00038411997599999137,
+          "date": "2004-06-24"
+        },
+        "EPD": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "EPOT": {
+          "maximum_absolute": 0.0005473996910000112,
+          "date": "2004-06-08"
+        },
+        "EACT": {
+          "maximum_absolute": 0.005073865185000002,
+          "date": "2003-07-29"
+        },
+        "ESUBLIM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TPOT": {
+          "maximum_absolute": 0.0006586402479999975,
+          "date": "2004-06-09"
+        },
+        "TACT": {
+          "maximum_absolute": 0.004967762600000009,
+          "date": "2004-05-29"
+        },
+        "TREDDRY": {
+          "maximum_absolute": 0.004967288576000005,
+          "date": "2004-05-29"
+        },
+        "TREDWET": {
+          "maximum_absolute": 0.0009986510029999993,
+          "date": "2002-07-31"
+        },
+        "DRN": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "SSDI": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "BOT": {
+          "maximum_absolute": 0.07578672860500024,
+          "date": "2002-01-01"
+        },
+        "GWL": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PD_VOL": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "SNOW_VOL": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "IC_VOL": {
+          "maximum_absolute": 0.025930846624,
+          "date": "2004-12-31"
+        },
+        "WTOT": {
+          "maximum_absolute": 0.07578672860400104,
+          "date": "2002-01-01"
+        },
+        "DSTOR": {
+          "maximum_absolute": 0.07578672860500024,
+          "date": "2002-01-01"
+        },
+        "BALDEV": {
+          "maximum_absolute": 0.025930846624,
+          "date": "2004-12-31"
+        },
+        "CH": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "CF": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TSUM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "DVS": {
+          "maximum_absolute": 1.3400199999971663e-07,
+          "date": "2002-05-17"
+        },
+        "LAIPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWSO": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "RDPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "ICUTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TCUTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PHRVDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PLOSSDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "VCOVER": {
+          "maximum_absolute": 0.0014088945300000377,
+          "date": "2004-05-31"
+        },
+        "LAI": {
+          "maximum_absolute": 0.009102246819000293,
+          "date": "2004-06-14"
+        },
+        "WSO": {
+          "maximum_absolute": 8.63873491898994,
+          "date": "2003-08-14"
+        },
+        "WLV": {
+          "maximum_absolute": 4.54016286909291,
+          "date": "2004-06-10"
+        },
+        "WST": {
+          "maximum_absolute": 1.8733795476650812,
+          "date": "2004-06-10"
+        },
+        "WRT": {
+          "maximum_absolute": 1.1712004300169383,
+          "date": "2004-06-10"
+        },
+        "DWLV": {
+          "maximum_absolute": 1.261117118763,
+          "date": "2004-05-30"
+        },
+        "DWST": {
+          "maximum_absolute": 0.8016050894890441,
+          "date": "2004-06-25"
+        },
+        "DWRT": {
+          "maximum_absolute": 2.12693810497467,
+          "date": "2004-12-31"
+        },
+        "TWLV": {
+          "maximum_absolute": 3.6345460423290206,
+          "date": "2004-06-22"
+        },
+        "TWST": {
+          "maximum_absolute": 2.4230306948861653,
+          "date": "2004-06-22"
+        },
+        "TWRT": {
+          "maximum_absolute": 2.22526512962213,
+          "date": "2004-08-28"
+        },
+        "WDM": {
+          "maximum_absolute": 9.79946512999959,
+          "date": "2003-08-14"
+        },
+        "RD": {
+          "maximum_absolute": 0.002535160401997416,
+          "date": "2003-08-03"
+        },
+        "ICUT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TCUT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "HRVDM": {
+          "maximum_absolute": 8.901060520000101,
+          "date": "2004-08-29"
+        },
+        "LOSSDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PGASSTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PGASST": {
+          "maximum_absolute": 0.609010066674017,
+          "date": "2004-06-01"
+        },
+        "GASSTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "GASST": {
+          "maximum_absolute": 4.672696996751995,
+          "date": "2003-08-03"
+        },
+        "MRESTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "MREST": {
+          "maximum_absolute": 0.12844354239800282,
+          "date": "2004-06-09"
+        }
+      },
+      "scientific_verdict": "NOT_QUALIFIED; raw differences only, unchanged historical criteria and reference limitations"
+    },
+    "chemical-plate-history": {
+      "functional_status": "FULL_AND_EXACT_OWN_PASS",
+      "profiles": {
+        "O0": {
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 2.3295601558892542e-14,
+            "max_kernel_cm": 2.6201263381153694e-14,
+            "max_solute_mg_cm2": 2.7711166694643907e-13,
+            "sum_water_residual_cm": 1.1025600208693881e-13
+          },
+          "model_seconds": 8.504959299927577,
+          "windows": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            }
+          ]
+        },
+        "O2": {
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 2.3295601558892542e-14,
+            "max_kernel_cm": 2.6201263381153694e-14,
+            "max_solute_mg_cm2": 2.7711166694643907e-13,
+            "sum_water_residual_cm": 1.1025600208693881e-13
+          },
+          "model_seconds": 6.960884500062093,
+          "windows": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            }
+          ]
+        }
+      },
+      "original431": {
+        "command": [
+          "C:\\SWAP5-RC2\\provider\\build\\swap_b0_gfortran.exe",
+          "./swap.swp"
+        ],
+        "executable_sha256": "499b5d9c72a908af9282f5479a5b93e4488da5019620f9252c3117786cbca8a3",
+        "identical_executed_inputs": {
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+          "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+          "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+          "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+          "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+          "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+          "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "swap.swp": "6ecc3ecfacdc5c6526dd46a5e1148a75884892616e4f5aeb320a9b606552cc56"
+        },
+        "seconds": 3.069344599964097,
+        "timeout": false,
+        "returncode": 100,
+        "swap_ok": true,
+        "error": "",
+        "scientific_equivalence": "NOT_QUALIFIED",
+        "tolerances_changed": false,
+        "original_rows": 1097,
+        "swap5_rows": 1097,
+        "compared_rows": 1097,
+        "maximum_numeric_csv_differences": {
+          "GWL": 0.0,
+          "WTOT": 0.07578672860400104,
+          "BALDEV": 0.025930846624,
+          "S_STOT": 0.0185799283910022,
+          "S_BALDEV": 0.0,
+          "TSUM": 0.0
+        },
+        "status": "COMPLETE_DIAGNOSTIC_REFERENCE"
+      },
+      "numeric_comparison": {
+        "RAIN": {
+          "maximum_absolute": 9.99866855977416e-13,
+          "date": "2004-01-16"
+        },
+        "SNOW": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "IRRIG": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "RUNOFF": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "EIC": {
+          "maximum_absolute": 0.00038411997599999137,
+          "date": "2004-06-24"
+        },
+        "EPD": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "EPOT": {
+          "maximum_absolute": 0.0005473996910000112,
+          "date": "2004-06-08"
+        },
+        "EACT": {
+          "maximum_absolute": 0.005073865185000002,
+          "date": "2003-07-29"
+        },
+        "ESUBLIM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TPOT": {
+          "maximum_absolute": 0.0006586402479999975,
+          "date": "2004-06-09"
+        },
+        "TACT": {
+          "maximum_absolute": 0.004967762600000009,
+          "date": "2004-05-29"
+        },
+        "TREDDRY": {
+          "maximum_absolute": 0.004967288576000005,
+          "date": "2004-05-29"
+        },
+        "TREDWET": {
+          "maximum_absolute": 0.0009986510029999993,
+          "date": "2002-07-31"
+        },
+        "TREDSOL": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "DRN": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "SSDI": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "BOT": {
+          "maximum_absolute": 0.07578672860500024,
+          "date": "2002-01-01"
+        },
+        "GWL": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PD_VOL": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "SNOW_VOL": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "IC_VOL": {
+          "maximum_absolute": 0.025930846624,
+          "date": "2004-12-31"
+        },
+        "WTOT": {
+          "maximum_absolute": 0.07578672860400104,
+          "date": "2002-01-01"
+        },
+        "DSTOR": {
+          "maximum_absolute": 0.07578672860500024,
+          "date": "2002-01-01"
+        },
+        "BALDEV": {
+          "maximum_absolute": 0.025930846624,
+          "date": "2004-12-31"
+        },
+        "CH": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "CF": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TSUM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "DVS": {
+          "maximum_absolute": 1.3400199999971663e-07,
+          "date": "2002-05-17"
+        },
+        "LAIPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWSO": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "RDPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "ICUTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TCUTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PHRVDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PLOSSDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "VCOVER": {
+          "maximum_absolute": 0.0014088945300000377,
+          "date": "2004-05-31"
+        },
+        "LAI": {
+          "maximum_absolute": 0.009102246819000293,
+          "date": "2004-06-14"
+        },
+        "WSO": {
+          "maximum_absolute": 8.63873491898994,
+          "date": "2003-08-14"
+        },
+        "WLV": {
+          "maximum_absolute": 4.54016286909291,
+          "date": "2004-06-10"
+        },
+        "WST": {
+          "maximum_absolute": 1.8733795476650812,
+          "date": "2004-06-10"
+        },
+        "WRT": {
+          "maximum_absolute": 1.1712004300169383,
+          "date": "2004-06-10"
+        },
+        "DWLV": {
+          "maximum_absolute": 1.261117118763,
+          "date": "2004-05-30"
+        },
+        "DWST": {
+          "maximum_absolute": 0.8016050894890441,
+          "date": "2004-06-25"
+        },
+        "DWRT": {
+          "maximum_absolute": 2.12693810497467,
+          "date": "2004-12-31"
+        },
+        "TWLV": {
+          "maximum_absolute": 3.6345460423290206,
+          "date": "2004-06-22"
+        },
+        "TWST": {
+          "maximum_absolute": 2.4230306948861653,
+          "date": "2004-06-22"
+        },
+        "TWRT": {
+          "maximum_absolute": 2.22526512962213,
+          "date": "2004-08-28"
+        },
+        "WDM": {
+          "maximum_absolute": 9.79946512999959,
+          "date": "2003-08-14"
+        },
+        "RD": {
+          "maximum_absolute": 0.002535160401997416,
+          "date": "2003-08-03"
+        },
+        "ICUT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TCUT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "HRVDM": {
+          "maximum_absolute": 8.901060520000101,
+          "date": "2004-08-29"
+        },
+        "LOSSDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PGASSTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PGASST": {
+          "maximum_absolute": 0.609010066674017,
+          "date": "2004-06-01"
+        },
+        "GASSTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "GASST": {
+          "maximum_absolute": 4.672696996751995,
+          "date": "2003-08-03"
+        },
+        "MRESTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "MREST": {
+          "maximum_absolute": 0.12844354239800282,
+          "date": "2004-06-09"
+        },
+        "S_RAIN": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "S_IRRIG": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "S_BOT": {
+          "maximum_absolute": 0.0003749723339999955,
+          "date": "2002-03-06"
+        },
+        "S_DRN": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "S_UPT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "S_STOT": {
+          "maximum_absolute": 0.0185799283910022,
+          "date": "2003-01-06"
+        },
+        "S_BALDEV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "S_DSTOR": {
+          "maximum_absolute": 0.0003749723339999955,
+          "date": "2002-03-06"
+        }
+      },
+      "scientific_verdict": "NOT_QUALIFIED; raw differences only, unchanged historical criteria and reference limitations"
+    },
+    "water-surface-history": {
+      "functional_status": "FULL_PERIOD_PASS_EXACT_OWN_FAIL",
+      "profiles": {
+        "O0": {
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.6611712005953905e-13,
+            "max_kernel_cm": 1.6608936448392342e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 2.617343966173746e-12
+          },
+          "model_seconds": 6.643893399974331,
+          "windows": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": false,
+              "auxiliary_bytes": [
+                1362340,
+                1362340
+              ],
+              "differing_byte_offsets": [
+                1362252,
+                1362253,
+                1362254,
+                1362255,
+                1362256,
+                1362257
+              ],
+              "original_top_context": {
+                "theatm": {
+                  "warm": 0.039969753361074056,
+                  "cold": 0.039969753361074056
+                },
+                "katm": {
+                  "warm": 1.2067820271555084e-19,
+                  "cold": 1.2067820271555084e-19
+                },
+                "h0max": {
+                  "warm": 0.197938023450583,
+                  "cold": 0.2
+                },
+                "k1max": {
+                  "warm": 416.6519968624877,
+                  "cold": 416.6519968624877
+                },
+                "q0": {
+                  "warm": 1.0151617506806312,
+                  "cold": 1.0151617506806312
+                },
+                "hsurf": {
+                  "warm": 0.0,
+                  "cold": 0.0
+                }
+              },
+              "status": "EXACT_OWN_FAIL_RETAINED"
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            }
+          ]
+        },
+        "O2": {
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.6611712005953905e-13,
+            "max_kernel_cm": 1.6608936448392342e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 2.617343966173746e-12
+          },
+          "model_seconds": 5.445951299974695,
+          "windows": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": false,
+              "auxiliary_bytes": [
+                1362340,
+                1362340
+              ],
+              "differing_byte_offsets": [
+                1362252,
+                1362253,
+                1362254,
+                1362255,
+                1362256,
+                1362257
+              ],
+              "original_top_context": {
+                "theatm": {
+                  "warm": 0.039969753361074056,
+                  "cold": 0.039969753361074056
+                },
+                "katm": {
+                  "warm": 1.2067820271555084e-19,
+                  "cold": 1.2067820271555084e-19
+                },
+                "h0max": {
+                  "warm": 0.197938023450583,
+                  "cold": 0.2
+                },
+                "k1max": {
+                  "warm": 416.6519968624877,
+                  "cold": 416.6519968624877
+                },
+                "q0": {
+                  "warm": 1.0151617506806312,
+                  "cold": 1.0151617506806312
+                },
+                "hsurf": {
+                  "warm": 0.0,
+                  "cold": 0.0
+                }
+              },
+              "status": "EXACT_OWN_FAIL_RETAINED"
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            }
+          ]
+        }
+      },
+      "original431": {
+        "command": [
+          "C:\\SWAP5-RC2\\provider\\build\\swap_b0_gfortran.exe",
+          "./swap.swp"
+        ],
+        "executable_sha256": "499b5d9c72a908af9282f5479a5b93e4488da5019620f9252c3117786cbca8a3",
+        "identical_executed_inputs": {
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+          "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+          "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+          "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+          "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+          "potato.crp": "4ba7d3848f90fc87fec5b31478d7141cb8528f35f53f8521929961d673bfd56a",
+          "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+          "surface.ru": "acdaa8b55fb3c5014108d810906ca305d050e73dc8a4c6e204771763493d58d3",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "swap.swp": "536b1e1389fff9dc471bb3b7373bb718f96a5f508046e77fe7db34af4122c7b2"
+        },
+        "seconds": 3.1760921000968665,
+        "timeout": false,
+        "returncode": 100,
+        "swap_ok": true,
+        "error": "",
+        "scientific_equivalence": "NOT_QUALIFIED",
+        "tolerances_changed": false,
+        "original_rows": 1097,
+        "swap5_rows": 1097,
+        "compared_rows": 1097,
+        "maximum_numeric_csv_differences": {
+          "GWL": 2.7068103920110005,
+          "WTOT": 0.12212530941999944,
+          "BALDEV": 0.031255684224,
+          "TSUM": 0.0
+        },
+        "status": "COMPLETE_DIAGNOSTIC_REFERENCE"
+      },
+      "numeric_comparison": {
+        "RAIN": {
+          "maximum_absolute": 3.19699999806744e-09,
+          "date": "2004-08-12"
+        },
+        "IRRIG": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "RUNON": {
+          "maximum_absolute": 6.039999611573421e-10,
+          "date": "2002-07-19"
+        },
+        "RUNOFF": {
+          "maximum_absolute": 0.190725404235,
+          "date": "2002-01-05"
+        },
+        "EIC": {
+          "maximum_absolute": 5.440245499999108e-05,
+          "date": "2003-09-22"
+        },
+        "EPD": {
+          "maximum_absolute": 0.012068023215,
+          "date": "2002-07-31"
+        },
+        "EPOT": {
+          "maximum_absolute": 5.776514499999941e-05,
+          "date": "2003-09-20"
+        },
+        "EACT": {
+          "maximum_absolute": 0.013383778478999998,
+          "date": "2004-05-27"
+        },
+        "TPOT": {
+          "maximum_absolute": 8.863395800001728e-05,
+          "date": "2003-09-18"
+        },
+        "TACT": {
+          "maximum_absolute": 0.004967130646000073,
+          "date": "2003-07-15"
+        },
+        "TREDDRY": {
+          "maximum_absolute": 0.004966714857999988,
+          "date": "2003-07-15"
+        },
+        "TREDWET": {
+          "maximum_absolute": 0.0015976969819999996,
+          "date": "2003-07-16"
+        },
+        "DRN": {
+          "maximum_absolute": 0.06853259050799998,
+          "date": "2002-01-05"
+        },
+        "SSDI": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "GWL": {
+          "maximum_absolute": 2.7068103920110005,
+          "date": "2002-01-05"
+        },
+        "PD_VOL": {
+          "maximum_absolute": 0.002404354167,
+          "date": "2002-12-30"
+        },
+        "IC_VOL": {
+          "maximum_absolute": 0.031255689271,
+          "date": "2004-12-31"
+        },
+        "WTOT": {
+          "maximum_absolute": 0.12212530941999944,
+          "date": "2002-01-05"
+        },
+        "DSTOR": {
+          "maximum_absolute": 0.12219258424699997,
+          "date": "2002-01-05"
+        },
+        "BALDEV": {
+          "maximum_absolute": 0.031255684224,
+          "date": "2004-12-31"
+        },
+        "CH": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "CF": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TSUM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "DVS": {
+          "maximum_absolute": 1.867064999999321e-06,
+          "date": "2002-05-18"
+        },
+        "LAIPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWSO": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "RDPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "ICUTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TCUTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PHRVDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PLOSSDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "VCOVER": {
+          "maximum_absolute": 0.00029836343000000376,
+          "date": "2003-09-21"
+        },
+        "LAI": {
+          "maximum_absolute": 0.0009490927139998995,
+          "date": "2003-09-19"
+        },
+        "WSO": {
+          "maximum_absolute": 4.221355570000014,
+          "date": "2003-09-22"
+        },
+        "WLV": {
+          "maximum_absolute": 0.39545529735704577,
+          "date": "2003-09-19"
+        },
+        "WST": {
+          "maximum_absolute": 0.5198871557229268,
+          "date": "2003-07-16"
+        },
+        "WRT": {
+          "maximum_absolute": 0.49156876169308816,
+          "date": "2003-07-16"
+        },
+        "DWLV": {
+          "maximum_absolute": 0.36455338453902186,
+          "date": "2003-09-22"
+        },
+        "DWST": {
+          "maximum_absolute": 0.2572697158580013,
+          "date": "2003-09-29"
+        },
+        "DWRT": {
+          "maximum_absolute": 0.2390584060369747,
+          "date": "2003-09-29"
+        },
+        "TWLV": {
+          "maximum_absolute": 0.4007314793043406,
+          "date": "2003-09-22"
+        },
+        "TWST": {
+          "maximum_absolute": 0.5198871557229268,
+          "date": "2003-07-16"
+        },
+        "TWRT": {
+          "maximum_absolute": 0.49156876169308816,
+          "date": "2003-07-16"
+        },
+        "WDM": {
+          "maximum_absolute": 5.13358165000318,
+          "date": "2003-09-22"
+        },
+        "RD": {
+          "maximum_absolute": 0.04266810677900068,
+          "date": "2003-07-15"
+        },
+        "ICUT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TCUT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "HRVDM": {
+          "maximum_absolute": 0.003221985151867557,
+          "date": "2004-05-17"
+        },
+        "LOSSDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PGASSTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PGASST": {
+          "maximum_absolute": 0.09166825497899822,
+          "date": "2003-09-21"
+        },
+        "GASSTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "GASST": {
+          "maximum_absolute": 2.954741384149031,
+          "date": "2003-07-15"
+        },
+        "MRESTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "MREST": {
+          "maximum_absolute": 0.03167518794400337,
+          "date": "2003-07-20"
+        }
+      },
+      "scientific_verdict": "NOT_QUALIFIED; raw differences only, unchanged historical criteria and reference limitations"
+    },
+    "chemical-surface-history": {
+      "functional_status": "FULL_PERIOD_PASS_EXACT_OWN_FAIL",
+      "profiles": {
+        "O0": {
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.6611712005953905e-13,
+            "max_kernel_cm": 1.6608936448392342e-13,
+            "max_solute_mg_cm2": 2.1337792643905118e-13,
+            "sum_water_residual_cm": 2.617343966173746e-12
+          },
+          "model_seconds": 6.889348500175402,
+          "windows": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": false,
+              "auxiliary_bytes": [
+                1362628,
+                1362628
+              ],
+              "differing_byte_offsets": [
+                1362540,
+                1362541,
+                1362542,
+                1362543,
+                1362544,
+                1362545
+              ],
+              "original_top_context": {
+                "theatm": {
+                  "warm": 0.039969753361074056,
+                  "cold": 0.039969753361074056
+                },
+                "katm": {
+                  "warm": 1.2067820271555084e-19,
+                  "cold": 1.2067820271555084e-19
+                },
+                "h0max": {
+                  "warm": 0.197938023450583,
+                  "cold": 0.2
+                },
+                "k1max": {
+                  "warm": 416.6519968624877,
+                  "cold": 416.6519968624877
+                },
+                "q0": {
+                  "warm": 1.0151617506806312,
+                  "cold": 1.0151617506806312
+                },
+                "hsurf": {
+                  "warm": 0.0,
+                  "cold": 0.0
+                }
+              },
+              "status": "EXACT_OWN_FAIL_RETAINED"
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            }
+          ]
+        },
+        "O2": {
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.6611712005953905e-13,
+            "max_kernel_cm": 1.6608936448392342e-13,
+            "max_solute_mg_cm2": 2.1337792643905118e-13,
+            "sum_water_residual_cm": 2.617343966173746e-12
+          },
+          "model_seconds": 5.662721500033513,
+          "windows": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": false,
+              "auxiliary_bytes": [
+                1362628,
+                1362628
+              ],
+              "differing_byte_offsets": [
+                1362540,
+                1362541,
+                1362542,
+                1362543,
+                1362544,
+                1362545
+              ],
+              "original_top_context": {
+                "theatm": {
+                  "warm": 0.039969753361074056,
+                  "cold": 0.039969753361074056
+                },
+                "katm": {
+                  "warm": 1.2067820271555084e-19,
+                  "cold": 1.2067820271555084e-19
+                },
+                "h0max": {
+                  "warm": 0.197938023450583,
+                  "cold": 0.2
+                },
+                "k1max": {
+                  "warm": 416.6519968624877,
+                  "cold": 416.6519968624877
+                },
+                "q0": {
+                  "warm": 1.0151617506806312,
+                  "cold": 1.0151617506806312
+                },
+                "hsurf": {
+                  "warm": 0.0,
+                  "cold": 0.0
+                }
+              },
+              "status": "EXACT_OWN_FAIL_RETAINED"
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native_result_end": true,
+              "exact_native_auxiliary": true,
+              "status": "EXACT_OWN_PASS"
+            }
+          ]
+        }
+      },
+      "original431": {
+        "command": [
+          "C:\\SWAP5-RC2\\provider\\build\\swap_b0_gfortran.exe",
+          "./swap.swp"
+        ],
+        "executable_sha256": "499b5d9c72a908af9282f5479a5b93e4488da5019620f9252c3117786cbca8a3",
+        "identical_executed_inputs": {
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+          "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+          "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+          "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+          "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+          "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+          "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+          "surface.ru": "acdaa8b55fb3c5014108d810906ca305d050e73dc8a4c6e204771763493d58d3",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "swap.swp": "224f17bbd12978c3d5e83b400fb838832a7091af0dfe56a85ed2da76db6a078f"
+        },
+        "seconds": 2.8594750999473035,
+        "timeout": false,
+        "returncode": 100,
+        "swap_ok": true,
+        "error": "",
+        "scientific_equivalence": "NOT_QUALIFIED",
+        "tolerances_changed": false,
+        "original_rows": 1097,
+        "swap5_rows": 1097,
+        "compared_rows": 1097,
+        "maximum_numeric_csv_differences": {
+          "GWL": 2.7068103920110005,
+          "WTOT": 0.12212530941999944,
+          "BALDEV": 0.031255684224,
+          "S_STOT": 0.05379639472599962,
+          "S_BALDEV": 0.0,
+          "TSUM": 0.0
+        },
+        "status": "COMPLETE_DIAGNOSTIC_REFERENCE"
+      },
+      "numeric_comparison": {
+        "RAIN": {
+          "maximum_absolute": 3.19699999806744e-09,
+          "date": "2004-08-12"
+        },
+        "IRRIG": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "RUNON": {
+          "maximum_absolute": 6.039999611573421e-10,
+          "date": "2002-07-19"
+        },
+        "RUNOFF": {
+          "maximum_absolute": 0.190725404235,
+          "date": "2002-01-05"
+        },
+        "EIC": {
+          "maximum_absolute": 5.440245499999108e-05,
+          "date": "2003-09-22"
+        },
+        "EPD": {
+          "maximum_absolute": 0.012068023215,
+          "date": "2002-07-31"
+        },
+        "EPOT": {
+          "maximum_absolute": 5.776514499999941e-05,
+          "date": "2003-09-20"
+        },
+        "EACT": {
+          "maximum_absolute": 0.013383778478999998,
+          "date": "2004-05-27"
+        },
+        "TPOT": {
+          "maximum_absolute": 8.863395800001728e-05,
+          "date": "2003-09-18"
+        },
+        "TACT": {
+          "maximum_absolute": 0.004967130646000073,
+          "date": "2003-07-15"
+        },
+        "TREDDRY": {
+          "maximum_absolute": 0.004966714857999988,
+          "date": "2003-07-15"
+        },
+        "TREDWET": {
+          "maximum_absolute": 0.0015976969819999996,
+          "date": "2003-07-16"
+        },
+        "TREDSOL": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "DRN": {
+          "maximum_absolute": 0.06853259050799998,
+          "date": "2002-01-05"
+        },
+        "SSDI": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "GWL": {
+          "maximum_absolute": 2.7068103920110005,
+          "date": "2002-01-05"
+        },
+        "PD_VOL": {
+          "maximum_absolute": 0.002404354167,
+          "date": "2002-12-30"
+        },
+        "IC_VOL": {
+          "maximum_absolute": 0.031255689271,
+          "date": "2004-12-31"
+        },
+        "WTOT": {
+          "maximum_absolute": 0.12212530941999944,
+          "date": "2002-01-05"
+        },
+        "DSTOR": {
+          "maximum_absolute": 0.12219258424699997,
+          "date": "2002-01-05"
+        },
+        "BALDEV": {
+          "maximum_absolute": 0.031255684224,
+          "date": "2004-12-31"
+        },
+        "CH": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "CF": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TSUM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "DVS": {
+          "maximum_absolute": 1.867064999999321e-06,
+          "date": "2002-05-18"
+        },
+        "LAIPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWSO": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PDWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWLV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWST": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PTWRT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PWDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "RDPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "ICUTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TCUTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PHRVDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PLOSSDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "VCOVER": {
+          "maximum_absolute": 0.00029836343000000376,
+          "date": "2003-09-21"
+        },
+        "LAI": {
+          "maximum_absolute": 0.0009490927139998995,
+          "date": "2003-09-19"
+        },
+        "WSO": {
+          "maximum_absolute": 4.221355570000014,
+          "date": "2003-09-22"
+        },
+        "WLV": {
+          "maximum_absolute": 0.39545529735704577,
+          "date": "2003-09-19"
+        },
+        "WST": {
+          "maximum_absolute": 0.5198871557229268,
+          "date": "2003-07-16"
+        },
+        "WRT": {
+          "maximum_absolute": 0.49156876169308816,
+          "date": "2003-07-16"
+        },
+        "DWLV": {
+          "maximum_absolute": 0.36455338453902186,
+          "date": "2003-09-22"
+        },
+        "DWST": {
+          "maximum_absolute": 0.2572697158580013,
+          "date": "2003-09-29"
+        },
+        "DWRT": {
+          "maximum_absolute": 0.2390584060369747,
+          "date": "2003-09-29"
+        },
+        "TWLV": {
+          "maximum_absolute": 0.4007314793043406,
+          "date": "2003-09-22"
+        },
+        "TWST": {
+          "maximum_absolute": 0.5198871557229268,
+          "date": "2003-07-16"
+        },
+        "TWRT": {
+          "maximum_absolute": 0.49156876169308816,
+          "date": "2003-07-16"
+        },
+        "WDM": {
+          "maximum_absolute": 5.13358165000318,
+          "date": "2003-09-22"
+        },
+        "RD": {
+          "maximum_absolute": 0.04266810677900068,
+          "date": "2003-07-15"
+        },
+        "ICUT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "TCUT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "HRVDM": {
+          "maximum_absolute": 0.003221985151867557,
+          "date": "2004-05-17"
+        },
+        "LOSSDM": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PGASSTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "PGASST": {
+          "maximum_absolute": 0.09166825497899822,
+          "date": "2003-09-21"
+        },
+        "GASSTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "GASST": {
+          "maximum_absolute": 2.954741384149031,
+          "date": "2003-07-15"
+        },
+        "MRESTPOT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "MREST": {
+          "maximum_absolute": 0.03167518794400337,
+          "date": "2003-07-20"
+        },
+        "S_RAIN": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "S_IRRIG": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "S_DRN": {
+          "maximum_absolute": 0.00223528547900001,
+          "date": "2002-02-12"
+        },
+        "S_UPT": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "S_STOT": {
+          "maximum_absolute": 0.05379639472599962,
+          "date": "2002-12-02"
+        },
+        "S_BALDEV": {
+          "maximum_absolute": 0.0,
+          "date": "2001-12-31"
+        },
+        "S_DSTOR": {
+          "maximum_absolute": 0.00223528547900001,
+          "date": "2002-02-12"
+        }
+      },
+      "scientific_verdict": "NOT_QUALIFIED; raw differences only, unchanged historical criteria and reference limitations"
+    }
+  },
+  "native_failure": {
+    "window": [
+      199,
+      201
+    ],
+    "field": "MOD_top.h0max",
+    "warm": 0.197938023450583,
+    "cold": 0.2,
+    "physical_daily_rows_and_result_end_exact": true,
+    "auxiliary_byte_equality": false,
+    "causal_assessment": "Confirmed differing accepted serialized field. Source audit: BoundTop resets h0max from variables.pondmx; PondRunoff changes pondmx only when that routine executes. Top/history codec does not store pondmx. Missing carry is a hypothesis for the next small experiment, not a completed repair.",
+    "next": "Expose actual warm/cold pondmx at199 and201 with a bounded production-owner driver, then preserve its complete original state if causal; never ignore differing native bytes or infer pondmx from h0max."
+  },
+  "science": "NOT_QUALIFIED; maximum GWL difference2.706810392011cm for runon mix. Original BALDEV differences0.025930846624/0.031255684224cm are retained raw diagnostics, not independently qualified reference accuracy."
+}
