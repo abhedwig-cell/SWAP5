@@ -1,0 +1,97 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-NEXT18",
+  "decision": "INCOMPLETE_CENSORED_NO_FULL_PERIOD_PASS",
+  "native_start_and_nonzero_period_reset": "PASS_O0_O2",
+  "common_next_period_steps_O0_O2_byte_exact": 7577,
+  "checks": [
+    {
+      "optimization": "O0",
+      "mode": "PREFIX",
+      "censored": true,
+      "timeout_seconds": 20,
+      "observed_seconds": 20.236185299931094,
+      "complete_budget_rows": 9030,
+      "last_recorded_time": 35797.67339122522,
+      "minimum_flux_factor": 0.010000000000000002,
+      "reduced_committed_rows": 599,
+      "first_reduced_time": 35797.071397877706,
+      "BAL_bytes": 0
+    },
+    {
+      "optimization": "O0",
+      "mode": "RESUME",
+      "censored": true,
+      "timeout_seconds": 20,
+      "observed_seconds": 20.02782789990306,
+      "complete_budget_rows": 8159,
+      "last_recorded_time": 35797.72468301477,
+      "minimum_flux_factor": 0.010000000000000002,
+      "reduced_committed_rows": 945,
+      "first_reduced_time": 35797.071397877706,
+      "BAL_bytes": 0
+    },
+    {
+      "optimization": "O0",
+      "common_native_steps_byte_exact": 7577,
+      "original_first_period_rows_byte_exact": 1453,
+      "native_install_exact": true,
+      "period_reset_exact": true,
+      "canopy_origin_cm": 0.0025926018136122326,
+      "pre_head_legacy_derived_dump_differences": [
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "matrix_vertical",
+        "boundary_rates",
+        "event"
+      ]
+    },
+    {
+      "optimization": "O2",
+      "mode": "PREFIX",
+      "censored": true,
+      "timeout_seconds": 20,
+      "observed_seconds": 20.183641199953854,
+      "complete_budget_rows": 9655,
+      "last_recorded_time": 35797.730764133026,
+      "minimum_flux_factor": 0.010000000000000002,
+      "reduced_committed_rows": 988,
+      "first_reduced_time": 35797.071397877706,
+      "BAL_bytes": 0
+    },
+    {
+      "optimization": "O2",
+      "mode": "RESUME",
+      "censored": true,
+      "timeout_seconds": 20,
+      "observed_seconds": 20.036482400028035,
+      "complete_budget_rows": 8636,
+      "last_recorded_time": 35797.78453894471,
+      "minimum_flux_factor": 0.010000000000000002,
+      "reduced_committed_rows": 1404,
+      "first_reduced_time": 35797.071397877706,
+      "BAL_bytes": 0
+    },
+    {
+      "optimization": "O2",
+      "common_native_steps_byte_exact": 8202,
+      "original_first_period_rows_byte_exact": 1453,
+      "native_install_exact": true,
+      "period_reset_exact": true,
+      "canopy_origin_cm": 0.0025926018136122326,
+      "pre_head_legacy_derived_dump_differences": [
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "matrix_vertical",
+        "boundary_rates",
+        "event"
+      ]
+    }
+  ],
+  "model_routes": 4,
+  "timeout_seconds_per_route": 20,
+  "physics_BAL_codec_changes": false,
+  "full_period_BAL_and_balance": "NOT_QUALIFIED_NO_ENDPOINT",
+  "official_promotion": false
+}
