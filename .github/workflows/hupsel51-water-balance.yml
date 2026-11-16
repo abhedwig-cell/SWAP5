@@ -8,6 +8,7 @@ on:
       - 'tools/solute/check_closed_pond_jacobian.py'
       - 'tools/solute/check_hupsel51_repair.py'
       - '.github/workflows/hupsel51-water-balance.yml'
+      - 'tests/hupsel51/**'
 permissions:
   contents: read
 concurrency:
@@ -28,6 +29,8 @@ jobs:
         run: python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/hupsel51-provider"
       - name: Original scalar pond equation versus actual O0/O2 Jacobian
         run: python3 -B tools/solute/check_closed_pond_jacobian.py --reference-work "$RUNNER_TEMP/hupsel51-provider" --output "$RUNNER_TEMP/hupsel51-component"
+      - name: Shared soil-air receipt template O0/O2 after composition
+        run: python3 -B tools/solute/check_soil_air_receipt.py --reference-work "$RUNNER_TEMP/hupsel51-provider" --output "$RUNNER_TEMP/hupsel51-soil-air"
       - name: Full undrained1096 and exact own50/530 restarts O2
         run: python3 -B tools/solute/check_hupsel51_repair.py --reference-work "$RUNNER_TEMP/hupsel51-provider" --output "$RUNNER_TEMP/hupsel51-O2" --model-cap 60
       - name: Full generated-donor and kernel O0 and exact native restarts
@@ -40,6 +43,7 @@ jobs:
           name: hupsel51-${{ github.sha }}
           path: |
             ${{ runner.temp }}/hupsel51-component
+            ${{ runner.temp }}/hupsel51-soil-air
             ${{ runner.temp }}/hupsel51-O2
             ${{ runner.temp }}/hupsel51-O0
             ${{ runner.temp }}/hupsel51-named

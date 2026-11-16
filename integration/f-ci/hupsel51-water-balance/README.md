@@ -68,3 +68,26 @@ the six current physical contracts; MC-SOL still builds and executes its
 actual column/file/restart tests at both optimizations before preservation.
 This selection is not whole-science admission and does not repair or hide
 the original failed science comparisons. The former red runs remain visible.
+
+## Actual canonical composition after PR1686
+
+PR1686 merged as f1d1c13a295c5b54ec11e03d864de7030ca09008, with first
+parent49ac58e473878b21b4050cebbf777ec1a97cc120 (PR1687), second parent
+a6d4c4c7cfeb7286b3790bcec41dfdcf62a29adb. PR metadata still showed the
+older parent at admission. The actual merge is an exact conflict-free Git
+merge of these parents, but its runtime differs from the premerge qualification.
+Old evidence was therefore not used to qualify the changed host/build identity.
+
+Fresh Windows executions on the actual merged source pass undrained1096 O0/O2,
+all three named full periods, every exact physical/CSV/native own window, and
+both pond and soil-air components O0/O2. All five complete trajectories and
+physical CSV rows are also exactly equal to their precomposition counterparts.
+COMPOSED_WINDOWS.json and COMPOSED_WINDOWS_RAW.zip (433 members, fixed SHA256
+anchors in the current verifier) preserve commands, source/build identities,
+raw daily data, native checkpoints and both component results. The original
+WINDOWS/UBUNTU capsules and historical failed gates remain unchanged.
+
+The CI source boundary now names the actual composed runtime, requires the
+fresh composition proof, and adds the soil-air component to the full Ubuntu
+qualification. It does not promote the separate whole-science verdict or the
+original SWAP431 comparison. No physical runtime was edited during admission.

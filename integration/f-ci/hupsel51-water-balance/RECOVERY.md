@@ -20,3 +20,16 @@ runtime is unchanged from6e2cd26f; immutable evidence remains anchored at
 then await the three updated CI jobs and merge with an exact expected head.
 After merge verify canonical parents/runtime/tree and run a fresh bounded
 actual canonical full1096/native-own and component O0/O2 check.
+
+## Actual merge reconciliation
+
+PR1686 merged f1d1c13a2 onto concurrent PR1687 parent49ac58e47. Actual
+two-parent merge tree verified. Fresh actual-source Windows full1096 O0/O2,
+three named complete runs and all own windows PASS; all physical/CSV rows
+exact to precomposition; both native pond/soil-air components O0/O2 PASS.
+COMPOSED_WINDOWS files own this new source/build evidence; original sealed
+proofs unchanged. Own branch codex/hupsel51-composed-admission contains only
+bounded admission/test/documentation changes. Next: await composed Ubuntu and
+F-CI terminal checks, merge follow-up PR after separately checking live remote
+base f1d1c13a2, then verify actual final tree/runtime and current admission.
+Do not infer the canonical base from cached PR metadata.
