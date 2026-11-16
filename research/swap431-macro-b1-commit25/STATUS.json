@@ -1,0 +1,13 @@
+{
+  "stage": "PREREGISTERED",
+  "baseline": "426b8d31a92a23b9f6b58dd58b96f67f220cd213",
+  "routes": [
+    "O0 same original native step to hostcommit",
+    "O2 same original native step to hostcommit"
+  ],
+  "scope": "Target38 head, original SoilWater3/macrostate/integral3/TimeControl3, independent inventories and primitive accepted-step budget",
+  "stop": "After target hostcommit, before next step; hard20s perroute",
+  "candidate_changes": false,
+  "driver_changes_only": true,
+  "no_campaign": true
+}

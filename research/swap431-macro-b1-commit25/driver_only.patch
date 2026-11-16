@@ -1,0 +1,44 @@
+--- JAC24/soilwater_native.f90
++++ COMMIT25/soilwater_native.f90
+@@ -267,19 +267,19 @@
+  if(attempts==38) then
+   call inventory_dump('target_begin')
+   call native09_dump('context_target_begin')
++  call ledger12_dump('ledger_target_begin')
+  end if
+  call headcalc
+  call head_end()
+  if(attempts==38) then
+   call inventory_dump('target_return')
+   call native09_dump('context_target_return')
+-  call finish_target()
+-  if(budget_open) close(budget_unit)
+-  stop 0
++  call ledger12_dump('ledger_target_return')
++  if(fldecdt.or.FlDecMpRat) error stop 'COMMIT25 selected head refused before commit'
+  end if
+ end function
+ subroutine retry07_checkpoint()
+- use DIAG19,only:log_start,log_end,commit
++ use DIAG19,only:log_start,log_end,commit,attempts,finish_target
+  use variables,only:t1900,dt,qbot,qrot,runon,epd,reva,runots
+  use MOD_meteo,only:graidt,nraidt
+  use MOD_irrigation,only:gird,nird,qssdi
+@@ -301,6 +301,17 @@
+  call log_end()
+  if(commit()) then
+   if(budget_open) close(budget_unit)
++  stop 0
++ end if
++ if(attempts==38) then
++  call inventory_dump('committed')
++  call native09_dump('context_committed')
++  call ledger12_dump('ledger_committed')
++  call finish_target()
++  if(budget_open) close(budget_unit)
++  open(newunit=u,file='outcome.txt',status='replace')
++  write(u,*) 'COMMIT25_HOST_COMMITTED',t1900,accepted_dt,dt,budget_count
++  close(u)
+   stop 0
+  end if
+ end subroutine
