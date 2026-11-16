@@ -308,8 +308,9 @@ def main():
     if experimental:
         from experimental_project import inspect
         # Existing explicit-flux certificate is independent of chemical mode.
-        # Reconstructed1/5 water-only cases retain the independent daily guard.
-        profile['budget_retry']=inspect(project.input_directory)['boundary']['SWBOTB'] not in (1,5)
+        # Prescribed-head5 now has its own independent strict trial receipt.
+        # Existing water-only prescribed-groundwater1 retains the daily guard.
+        profile['budget_retry']=inspect(project.input_directory)['boundary']['SWBOTB'] != 1
     project_meta=dict(case=project.case,model=project.model,start_date=project.start_date,nodes=project.nodes,water_tolerance=project.water_tolerance)
     if args.build_bundle is not None:
         from daily_coupling import validate_bundle

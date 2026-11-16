@@ -9,17 +9,21 @@ solver/performance campaign. Original family already exists in HeadCalc/readswap
 Original SWBOTB5 uses NN=numnod and always applies the original prescribed-head
 boundary gradient, with qbot later reconstructed by Fluxes. Unlike8 there is no
 flboth switching. Reuse the now qualified explicit ORIGINAL trial-flux argument
-at both convergence/final receipt call sites. No original equation, Newton step,
-parameter, tolerance, time policy, state codec or original qbot assignment changes.
+at both convergence/final receipt call sites. No original equation, Newton update, parameter, tolerance, configured time policy,
+state codec or original qbot assignment changes. The source-bound strict trial
+certificate (budget_retry) is explicitly enabled for5; the existing hard daily
+guard remains unchanged. Old capsules cannot be rebound to this new receipt.
 
 Extend source-guarded existing lower_boundary_receipt generator to effective5/8.
 Keep emitted SWBOTB8 code BYTE-EXACT; distinct source-bound prescribed-head receipt
 identity for5. Choose effective BBC file selector.5 always passes original
 -kmean(NN+1)*hgrad(NN+1); both signed influx and outflux are valid. Preserve original
 budget algebra; do not use reconstructed qbot as independent trial source.
-No new persistent boundary state. Atomically reject unqualified reconstructed1
-for water as well as chemistry (previous water preflight reached unsupported
-strict receipt at runtime); do not expose9 before its own receipt audit.
+No new persistent boundary state. Preserve the existing water-only1 route and its independent daily guard; only
+chemical1 remains refused. Initial inference about water1 was corrected after
+reading run_water.py: it intentionally disables the unsupported trial receipt
+for water1/5. New5 now has an explicit strict certificate, so change only its
+budget_retry dispatch; do not expose9 before its own receipt audit.
 
 Select six full1096 water/chemical cases: constant original prescribed head,
 original DATE5/HBOT5 table, and same table via external BBC file. Require actual
