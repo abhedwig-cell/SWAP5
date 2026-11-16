@@ -1,0 +1,164 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-REJECT26",
+  "decision": "PASS_ORIGINAL_B_REFUSAL_ROLLBACK_DIRECT_RETRY_WITH_ACTIVE_UPDATE_EXCLUSION",
+  "model_routes": 4,
+  "hard_timeout_seconds": 20,
+  "all_uncensored": true,
+  "non_timing_O0_O2_byte_exact": true,
+  "physics_criteria_dt_reduction_policy_changes": false,
+  "rank1_algorithm_changes": false,
+  "scope": "Full candidate evaluated in originalB, rank1 inactive there; no proof of refusal while update active, no nextstep/restart/period admission",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "original_B_inventory_byte_exact": true,
+      "real_refusal": true,
+      "large_iterations": 30,
+      "large_final_max_residual": 0.020384908446936467,
+      "large_final_sum_residual": -0.006467572730344004,
+      "retry_iterations": 6,
+      "retry_final_max_residual": 1.5412286749616477e-07,
+      "retry_final_sum_residual": -1.5406055498653736e-07,
+      "original_rollback_physical_core_exact": true,
+      "immediate_rollback_differences": [
+        "boundary_rates",
+        "controls",
+        "event",
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "reference",
+        "sorptivity"
+      ],
+      "small_retry_pre_head_work_differences": [
+        "boundary_rates",
+        "event",
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "reference",
+        "sorptivity"
+      ],
+      "accepted_solver_full_dump_exact_to_direct": true,
+      "accepted_context_ledger_commit_budget_byte_exact_to_direct": true,
+      "rank1_update_active": false,
+      "active_update_refusal_qualification": false,
+      "balances": [
+        {
+          "mode": "TRIAL",
+          "seconds": 1.7015925999730825,
+          "committed_time": 35796.9513633331,
+          "used_dt_days": 1e-05,
+          "matrix_change_cm": 2.682210662090192e-05,
+          "macro_change_cm": -3.1829146833958766e-05,
+          "canopy_change_cm": -3.921116395119717e-09,
+          "external_cm": -5.0109597888206294e-06,
+          "inventory_error_cm": -1.5406313343937963e-12,
+          "original_total_residual_integral_limit_cm": 1.0000000000000002e-10,
+          "domain_errors_cm": [
+            -2.3291817862717158e-17,
+            -3.5642617024868924e-18,
+            2.6601069708521302e-18,
+            -1.1299419516372367e-18,
+            -5.421010862427522e-19
+          ]
+        },
+        {
+          "mode": "DIRECT",
+          "seconds": 1.0384289000649005,
+          "committed_time": 35796.9513633331,
+          "used_dt_days": 1e-05,
+          "matrix_change_cm": 2.682210662090192e-05,
+          "macro_change_cm": -3.1829146833958766e-05,
+          "canopy_change_cm": -3.921116395119717e-09,
+          "external_cm": -5.0109597888206294e-06,
+          "inventory_error_cm": -1.5406313343937963e-12,
+          "original_total_residual_integral_limit_cm": 1.0000000000000002e-10,
+          "domain_errors_cm": [
+            -2.3291817862717158e-17,
+            -3.5642617024868924e-18,
+            2.6601069708521302e-18,
+            -1.1299419516372367e-18,
+            -5.421010862427522e-19
+          ]
+        }
+      ]
+    },
+    {
+      "optimization": "O2",
+      "original_B_inventory_byte_exact": true,
+      "real_refusal": true,
+      "large_iterations": 30,
+      "large_final_max_residual": 0.020384908446936467,
+      "large_final_sum_residual": -0.006467572730344004,
+      "retry_iterations": 6,
+      "retry_final_max_residual": 1.5412286749616477e-07,
+      "retry_final_sum_residual": -1.5406055498653736e-07,
+      "original_rollback_physical_core_exact": true,
+      "immediate_rollback_differences": [
+        "boundary_rates",
+        "controls",
+        "event",
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "reference",
+        "sorptivity"
+      ],
+      "small_retry_pre_head_work_differences": [
+        "boundary_rates",
+        "event",
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "reference",
+        "sorptivity"
+      ],
+      "accepted_solver_full_dump_exact_to_direct": true,
+      "accepted_context_ledger_commit_budget_byte_exact_to_direct": true,
+      "rank1_update_active": false,
+      "active_update_refusal_qualification": false,
+      "balances": [
+        {
+          "mode": "TRIAL",
+          "seconds": 1.2727532000280917,
+          "committed_time": 35796.9513633331,
+          "used_dt_days": 1e-05,
+          "matrix_change_cm": 2.682210662090192e-05,
+          "macro_change_cm": -3.1829146833958766e-05,
+          "canopy_change_cm": -3.921116395119717e-09,
+          "external_cm": -5.0109597888206294e-06,
+          "inventory_error_cm": -1.5406313343937963e-12,
+          "original_total_residual_integral_limit_cm": 1.0000000000000002e-10,
+          "domain_errors_cm": [
+            -2.3291817862717158e-17,
+            -3.5642617024868924e-18,
+            2.6601069708521302e-18,
+            -1.1299419516372367e-18,
+            -5.421010862427522e-19
+          ]
+        },
+        {
+          "mode": "DIRECT",
+          "seconds": 0.8107332000508904,
+          "committed_time": 35796.9513633331,
+          "used_dt_days": 1e-05,
+          "matrix_change_cm": 2.682210662090192e-05,
+          "macro_change_cm": -3.1829146833958766e-05,
+          "canopy_change_cm": -3.921116395119717e-09,
+          "external_cm": -5.0109597888206294e-06,
+          "inventory_error_cm": -1.5406313343937963e-12,
+          "original_total_residual_integral_limit_cm": 1.0000000000000002e-10,
+          "domain_errors_cm": [
+            -2.3291817862717158e-17,
+            -3.5642617024868924e-18,
+            2.6601069708521302e-18,
+            -1.1299419516372367e-18,
+            -5.421010862427522e-19
+          ]
+        }
+      ]
+    }
+  ]
+}

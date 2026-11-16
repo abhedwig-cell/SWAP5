@@ -1,9 +1,12 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "QUALIFIED_ORIGINAL_B_WITH_ACTIVE_UPDATE_EXCLUSION",
   "baseline": "870ffbb3f78ddb51b0128be8779169dc8a4da318",
   "selection": "Existing original RETRY07 B35796.9513533331 dt2e-5; unchanged original prefix, Darcy/currentJac candidate on only at B",
   "routes": "O2 TRIAL first; if genuine rejection compare DIRECT and O0 counterparts",
   "candidate": "Same current macro/rank1 solver, qualified activation guards; no forced refusal or tolerance change",
   "bounds": "Up to4 actual original retries, stop on scaled request, otherwise first accepted hostcommit; timeout20 perroute",
-  "no_campaign": true
+  "no_campaign": true,
+  "decision": "PASS_ORIGINAL_B_REFUSAL_ROLLBACK_DIRECT_RETRY_WITH_ACTIVE_UPDATE_EXCLUSION",
+  "models_launched": 4,
+  "active_rank1_during_refusal": false
 }
