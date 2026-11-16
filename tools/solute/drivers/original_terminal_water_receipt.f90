@@ -13,7 +13,12 @@ program terminal_receipt_contract
  implicit none
  real(8)::predicted(28),actual(28),saved_canopy,saved_volume,receipt
  integer::case_index
+ character(16)::mode
  numnod=2;noddrz=0;nrlevs=1;swmacro=0;swsnow=1;swdra=1
+ call get_command_argument(1,mode)
+ if(trim(mode)=='macro')swmacro=1
+ if(trim(mode)=='no-snow')swsnow=0
+ if(trim(mode)=='no-drain')swdra=0
  dz(1:2)=100d0;theta(1:2)=[.3d0,.4d0];q=0d0;qdra=0d0;qdrain=0d0
  flzerocumu=.true.;flzerointr=.true.;ptra=0d0;peva=0d0
  do case_index=1,12
@@ -27,6 +32,7 @@ program terminal_receipt_contract
  qssdi(1:2)=[.02d0,.01d0];qssdisum=.03d0;qrosum=.08d0
  runon=.06d0;runots=.001d0;epd=.014d0;reva=.021d0
  siccaploss=0d0;sicact=.2d0;siccap=.5d0;crsflx_in=.4d0;crsflx_out=.3d0
+ if(case_index==5.or.case_index==6)siccap=.201d0
  if(case_index>=9)then
  sicact=0d0;crsflx_in=0d0;crsflx_out=0d0
  endif

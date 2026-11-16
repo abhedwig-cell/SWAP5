@@ -14,6 +14,9 @@ def controls(build,reference,project,out,full,data,*,policy_key="scheduled_pond_
     # Foreign format policy must fail before any output/private worker exists.
     foreign=out/'foreign-policy';foreign.mkdir();changed=json.loads((build/'BUILD.json').read_text())
     changed['identity'][policy_key]['policy']='foreign';(foreign/'BUILD.json').write_text(json.dumps(changed))
+    if meta['identity'].get('time_event_closure'):
+        for name in ('timecontrol.f90','terminal_water_receipt.f90'):
+            (foreign/name).write_bytes((build/name).read_bytes())
     try:validate_bundle(foreign,reference,project)
     except ValueError as error:assert ('Foreign original scheduled pond history' if policy_key=='scheduled_pond_history' else 'Foreign bounded original frost reference policy') in str(error)
     else:raise AssertionError('Foreign pond policy accepted')
