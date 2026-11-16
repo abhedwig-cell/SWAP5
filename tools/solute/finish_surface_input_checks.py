@@ -99,7 +99,23 @@ def finish(out,key):
         with (work/'stdout.log').open('wb') as log:r=subprocess.run([str(donor),'./swap.swp'],cwd=work,stdout=log,stderr=subprocess.STDOUT,timeout=180)
         error=(work/'swap.err').read_text(encoding='cp1252') if (work/'swap.err').exists() else ''
         comparisons[kind]=dict(returncode=r.returncode,swap_ok=(work/'swap.ok').exists(),error=error,science='NOT_QUALIFIED',original_executable_sha256=h.sha(donor))
-        assert comparisons[kind]['swap_ok'] and not error.strip() and r.returncode in (0,100)
+        if kind=='literal' and not comparisons[kind]['swap_ok']:
+            # Same original diagnostic policy as the existing full harness.
+            # Preserve the distributed unknown S_CONC output-field failure.
+            assert 'Item S_CONC in userlist not known' in error
+            comparisons[kind]['retained_original_output_failure']=True
+        else:assert comparisons[kind]['swap_ok'] and not error.strip() and r.returncode in (0,100)
+    def csv_rows(path):
+        return list(csv.DictReader(line for line in path.read_text(encoding='cp1252').splitlines() if line.strip() and not line.startswith('*')))
+    original_rows=csv_rows(out/(key+'-completion-reference-csv')/'result_output.csv')
+    hybrid_rows=csv_rows(out/(key+'-O2-control')/'original/result_output.csv')
+    comparisons['csv']['original_output_rows']=len(original_rows);comparisons['csv']['hybrid_output_rows']=len(hybrid_rows)
+    if len(original_rows)==len(hybrid_rows):
+        deltas={}
+        for field in original_rows[0]:
+            try:deltas[field]=max(abs(float(a[field])-float(b[field])) for a,b in zip(original_rows,hybrid_rows,strict=True))
+            except (ValueError,KeyError,TypeError):pass
+        comparisons['csv']['maximum_numeric_csv_differences']=deltas
     base=['--model',e.MODEL,'--experimental-project',case,'--reference-work',reference,'--build-bundle',out/(key+'-O2-build')]
     path=case/'swap.swp';saved=path.read_bytes()
     bad=[('macro','SWMACRO',1),('snow','SWSNOW',2),('frost','SWFROST',1),('hysteresis','SWHYST',3),('solute','SWSOLU',2),('adsorption','SWSP',2),('decay','SWDC',2),('reservoir','SWBR',1),('surfacewater','SWDRA',2),('heat','SWHEA',2),('other-bottom','SWBOTB',9),('reconstructed-groundwater','SWBOTB',1),('foreign-head','SWBOTB',5)]
