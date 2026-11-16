@@ -34,3 +34,15 @@ platform, performance, macro or MODFLOW campaigns. Invariants2/3/4/7/13/21/23/29
 apply. Reconcile existing current-source owner authority before any M admission;
 L proof remains immutable and cannot be rebound to changed source. A checkpoint
 is a recovery point, not an admission claim or instruction to stop.
+
+Source65bfe12195af15c1ed39167edbd996e643941c55 is persisted and pushed.
+Local original reader and actual production PondRunoff O0/O2 pass. Four short
+O0 water/chemical configurations plus past-knots and L5-reader composition are
+physical/native exact. Original full-invalid DATEPMX refuses zero accepted days.
+BLOCK_M_LOCAL_ASSESSMENT retains every initial fixture/driver assertion issue,
+including original STOP0 refusal semantics and clock-integral witness precision.
+Native exactness and mass guards were not relaxed. Full6 selected43863064413
+and default8 source/external seams43863068702 are active; poll existing jobs.
+Earlier L queue-only43857560916 eventually became terminalSUCCESS; replacement
+43859318316 remains the separately sealed qualification. No duplicate fullL
+execution is selected by that queue metadata reconciliation.
