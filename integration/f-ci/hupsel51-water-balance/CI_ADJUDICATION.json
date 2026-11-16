@@ -1,0 +1,21 @@
+{
+  "canonical_parent": {
+    "ref": "3fb625da73031885624987d42ad922cb184c96e5",
+    "F_CI_first_predicate_pass": false,
+    "F_CI_first_failure": "application source differs from tested head",
+    "MC_SOL_first_predicate_pass": false,
+    "MC_SOL_first_failure": "unreviewed delta"
+  },
+  "repair": {
+    "ref": "6e2cd26f873f9a935af92816a2f1d947df9293c7",
+    "F_CI_first_predicate_pass": false,
+    "F_CI_first_failure": "application source differs from tested head",
+    "MC_SOL_first_predicate_pass": false,
+    "MC_SOL_first_failure": "unreviewed delta"
+  },
+  "assessment": "Both historical authority predicates already fail on canonical parent before new physics runs; guards unchanged and not weakened. Dedicated new qualification passes. These CI failures remain visible, not global F-CI PASS.",
+  "current_failed_runs": {
+    "F_CI": 43844795754,
+    "MC_SOL_column": 43844795879
+  }
+}

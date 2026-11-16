@@ -11,8 +11,19 @@ module hybrid_step_budget
   use variables, only: dt, theta, thetm1, pond, pondm1, qbot, swbotb, epd, reva, runon, runots
   implicit none
   private
-  public :: projected_water_residual, apply_surface_lateral_limit
+  public :: projected_water_residual, apply_surface_lateral_limit, linear_pond_top_jacobian
 contains
+  pure real(8) function linear_pond_top_jacobian(conductance,step,pond,threshold,resistance) result(tangent)
+    ! Eliminate the original linear PondRunoff storage equation analytically.
+    ! Its derivative includes the response of pond to the first-node head.
+    ! Conductivity is held fixed by the caller's original SWKIMPL0 contract.
+    real(8), intent(in) :: conductance,step,pond,threshold,resistance
+    real(8) :: runoff_tangent
+    runoff_tangent=0d0
+    if(pond>threshold) runoff_tangent=step/resistance
+    tangent=conductance*(1d0+runoff_tangent)/(1d0+step*conductance+runoff_tangent)
+  end function
+
   real(8) function projected_water_residual() result(residual)
     real(8) :: delta_matrix, delta_macro, new_stock, rapid, external
     integer :: domain, bottom

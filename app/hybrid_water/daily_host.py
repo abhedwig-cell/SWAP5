@@ -348,6 +348,24 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
          end if
       end if
 """+anchor)
+            if project.input_directory:
+                from experimental_project import inspect
+                configuration=inspect(project.input_directory)
+                selected=configuration['selectors']
+                # A bounded original closed-profile successor. Named release
+                # source images and all macro/nonlinear-surface routes stay exact.
+                if selected['SWDRA']==0 and configuration['boundary']['SWBOTB']==6 and selected['SWSNOW']==0 and selected['SWKIMPL']==0:
+                    source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
+                                   '   use hybrid_step_budget, only: projected_water_residual, linear_pond_top_jacobian\n'
+                                   '   use variables, only: rsro, rsroexp, pondmx')
+                    source=replace(source,'   if (ftoph) dFdhM(1) = dFdhM(1) + kmean(1)/disnod(1)',
+                                   '''   if (ftoph) then
+      if (flrunoff .and. rsroexp==1d0 .and. rsro>=1d-3) then
+         dFdhM(1)=dFdhM(1)+linear_pond_top_jacobian(kmean(1)/disnod(1),dt,pond,pondmx,rsro)
+      else
+         dFdhM(1)=dFdhM(1)+kmean(1)/disnod(1)
+      end if
+   end if''')
         if shared_pond_transfer:
             source = replace(source, "only: projected_water_residual",
                              "only: projected_water_residual, apply_surface_lateral_limit")
