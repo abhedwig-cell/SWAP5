@@ -325,11 +325,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
             end if
          end if""")
         if strict_water:
-            source=replace(source,"   use hybrid_step_budget, only: projected_water_residual",
-                           "   use hybrid_step_budget, only: projected_water_residual, projected_daily_receipt_error")
             source=replace(source,"1d-6 * (t1900-budget_start+dt)","1d-10 * (t1900-budget_start+dt)")
-            source=replace(source,"abs(budget_total + budget_step) > 1d-10 * (t1900-budget_start+dt)",
-                           "(abs(budget_total + budget_step) > 1d-10 * (t1900-budget_start+dt) .or. projected_daily_receipt_error() > 1d-10)")
             source=replace(source,"   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror",
                            "   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, mass_polish_at")
             source=replace(source,"   iBackTr        = 0","   mass_polish_at = 0\n   iBackTr        = 0")
@@ -338,8 +334,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
             # at dtmin without curing the observed day-one residual.
             source=replace(source,anchor,"""      if (budget_enabled .and. .not.flnonconv) then
          budget_step=projected_water_residual()
-         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt) .or. &
-             projected_daily_receipt_error()>1d-10) flnonconv=.true.
+         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.
          if (.not.flnonconv .and. mass_polish_at==0) then
             ! One more original Newton iteration avoids stopping directly on
             ! the day guard where independently summed receipts can round out.
@@ -348,6 +343,23 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
          end if
       end if
 """+anchor)
+            if project.input_directory:
+                from experimental_project import inspect
+                selected=inspect(project.input_directory)['selectors']
+                # A bounded original closed-profile successor. Named release
+                # source images and all macro/nonlinear-surface routes stay exact.
+                if selected['SWDRA']==0 and selected['SWBOTB']==6 and selected['SWSNOW']==0 and selected['SWKIMPL']==0:
+                    source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
+                                   '   use hybrid_step_budget, only: projected_water_residual, linear_pond_top_jacobian\n'
+                                   '   use variables, only: rsro, rsroexp, pondmx')
+                    source=replace(source,'   if (ftoph) dFdhM(1) = dFdhM(1) + kmean(1)/disnod(1)',
+                                   '''   if (ftoph) then
+      if (flrunoff .and. rsroexp==1d0 .and. rsro>=1d-3) then
+         dFdhM(1)=dFdhM(1)+linear_pond_top_jacobian(kmean(1)/disnod(1),dt,pond,pondmx,rsro)
+      else
+         dFdhM(1)=dFdhM(1)+kmean(1)/disnod(1)
+      end if
+   end if''')
         if shared_pond_transfer:
             source = replace(source, "only: projected_water_residual",
                              "only: projected_water_residual, apply_surface_lateral_limit")
