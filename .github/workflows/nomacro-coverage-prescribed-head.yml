@@ -5,6 +5,10 @@ on:
     paths: ['.github/workflows/nomacro-coverage-prescribed-head.yml']
   workflow_dispatch:
     inputs:
+      frost_history:
+        type: boolean
+        default: false
+        description: Bounded original corrected frost with complete snow history
       pond_history:
         type: boolean
         default: false
@@ -36,7 +40,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        configuration: ${{ fromJSON(inputs.pond_history && '["water-surface-history","chemical-surface-history"]' || inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
+        configuration: ${{ fromJSON(inputs.frost_history && '["water-frost-undrained","chemical-frost-undrained","water-frost-drained"]' || inputs.pond_history && '["water-surface-history","chemical-surface-history"]' || inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
     env:
       OMP_NUM_THREADS: '1'
     steps:
@@ -46,11 +50,14 @@ jobs:
             app
             tests/nomacro_mixtures
             tests/nomacro_pond_history
+            tests/nomacro_frost
             src
             tools/solute
             tools/vq
             reference/swap-4.3.1/projects
             reference/swap-4.3.1/source-archives
+            reference/swap-4.3.1/frost-corrections/FROST-DRAIN-01
+            reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01
       - name: Download immutable executed runon evidence
         if: inputs.finish_surface_runon
         uses: actions/download-artifact@v4
@@ -64,12 +71,16 @@ jobs:
         run: git -c protocol.version=2 fetch --filter=blob:none --no-tags --depth=1 origin 166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad
       - name: Execute selected original boundary and native own restarts O0/O2
         env:
+          FROST_HISTORY: ${{ inputs.frost_history }}
           POND_HISTORY: ${{ inputs.pond_history }}
           SURFACE_INPUTS: ${{ inputs.surface_inputs }}
           FINISH_SURFACE_RUNON: ${{ inputs.finish_surface_runon }}
           FIXED_IRRIGATION_INPUTS: ${{ inputs.fixed_irrigation_inputs }}
         run: |
-          if [ "$POND_HISTORY" = true ]; then
+          if [ "$FROST_HISTORY" = true ]; then
+            python3 -B tests/nomacro_frost/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
+            python3 -B tools/solute/check_bounded_frost.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/frost-component"
+          elif [ "$POND_HISTORY" = true ]; then
             python3 -B tests/nomacro_pond_history/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
             python3 -B tools/solute/check_top_history_codec.py --scheduled-pond --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/pond-component"
           elif [ "$FIXED_IRRIGATION_INPUTS" = true ]; then
@@ -84,6 +95,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: nomacro-${{ inputs.pond_history && 'pond-history' || inputs.fixed_irrigation_inputs && 'irrigation-file' || inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
+          name: nomacro-${{ inputs.frost_history && 'frost-history' || inputs.pond_history && 'pond-history' || inputs.fixed_irrigation_inputs && 'irrigation-file' || inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30
