@@ -85,3 +85,28 @@ Canonical advanced to90ee20596 only through two publication Markdown files;
 that admitted documentation was merged without app/src/reference changes.
 Before M admission re-read relevant latest canonical/peer delta, keep original
 L/closed6 owner evidence immutable and select the explicit qualified M successor.
+
+
+FINAL M QUALIFICATION: completion43867490337 onf6ce291e4 is terminalSUCCESS for
+all4 affected configurations. It reconsumes all existing actual full/native/
+event evidence and executes only missing original references and16 refusals per
+case. The literal original S_CONC failure remains explicit, CSV-only reference
+compatibility passes, and strict nominal1e-10 runon quantity accuracy remains
+FAILED_NOT_QUALIFIED. Full6 physical count is6576 O2 days with original providerO2;
+O0 has ordinary5,active532,event531 prefixes/own native proof, not6full periods.
+Maximum water9.995376244352136e-11cm, solute2.0189361551216096e-13mg/cm2.
+Current physical source166d and verification sourcef6ce have exact app/src/
+reference/run_water/fixture/native-event code; only completed verification
+changes after166d. Both pond-only original65 cases are inherited through fresh
+actual O0/O2 source/input/policy preservation. Fresh registeredGrass O2 emitted
+sources/input/kernel/policies are exact to sealed L; no duplicate full trajectory.
+Eight RAW capsules retain physical failures, both failed completion attempts,
+original reference and nominal diagnostic failures and actual local methods.
+
+Existing current-source selector tests/hupsel51 now keeps original/f1/L anchors
+and adds separate fixed M qualification/preservation/raw anchors, exact current
+source, scoped verification-phase inheritance and16 new corruption controls.
+All6 test methods pass. Seal evidence before inserting final M_SEALED SHA;
+then commit selector and run the complete current consumer before actual
+expected-head canonical admission. Keep actual merge receipt separate from this
+qualified checkpoint. Active macro research/whole science remain outside scope.

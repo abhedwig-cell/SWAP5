@@ -797,3 +797,79 @@ table-validation contract, recovery/status records and SHA256 raw archives under
 `integration/nomacro-coverage01/` own the qualification. The actual L merge receipt
 owns canonical admission. Frozen RC1/RC2, historical scientific FAILs, full
 original option-mixture coverage and whole physical energy/science remain separate.
+
+## Block M: original scheduled pond threshold and runon file
+
+Six Hupsel-derived water-only/chemical configurations qualify SWPONDMX1,
+SWRUNON1 and their combination. Complete original readswap, MOD_top/PondRunoff,
+MOD_runon and TimeControl implementations remain the physical owners. The
+scheduled threshold uses original DATEPMX/PONDMXTB; the runon file has explicit
+daily zero records and five hash-bound pulses. Only DATEPMX validation uses the
+bound original project start during cold initialization, composed with the
+existing L5 reader when selected. Original values/interpolation, actual worker
+clock and invalid-full-period input refusals remain unchanged. No new boundary
+state codec or copied physical formula is introduced.
+
+Actual original runon-reader O0/O2 validates future-table reconstruction at and
+between events and refuses missing, negative, duplicate and unordered input.
+The actually generated original PondRunoff component executes five threshold
+epochs and independent storage/flux identities at O0/O2. One test-only PUBLIC
+declaration exposes its two private work fields; routine bodies and production
+interfaces remain unchanged. Actual Windows O0 five-day own2to4 continuations
+pass water pond/runon/combined and chemical combined cases. Additional past-all-
+knots and L5-reader composition windows are native exact. Original full-invalid
+DATEPMX input refuses before accepting day1. Initial driver/input mistakes,
+including duplicated dormant RUFIL and original STOP0 error semantics, remain
+recorded separately from numerical or scientific failures.
+
+First matrix43863064413 on source65bfe1219 passes the two complete pond-table
+cases but retains four real runon367 strict mass refusals. Existing canonical
+linear_pond_top_jacobian applies to the same original linear PondRunoff equation
+for SWDRA0/1. Its eligibility extends only to the new experimental runon1/drain1,
+closed6, no-snow, SWKIMPL0 composition. All equations, input pulses, time-step
+parameters and1e-10 hard guards remain fixed. Fresh original-initialization
+Windows369 crosses367 with maximum4.7559e-14cm residual. Earlier rows differ
+from day5; this is no cross-source byte-equivalence claim. Old capsules remain
+bound to their original source and are never relabeled as candidate restarts.
+
+Source166d4b7b5 run43864567262 completes the four affected1096-day trajectories,
+O0/O2 own2/365/530,199to201 and529to531, independent origins, injected mass refusal,
+foreign schedule binding and external discard/replay/durable recovery. The
+workflow remains FAILED at an additional nominal-input assertion: the day200
+1.2cm pulse integrates to1.1999999993713575cm. Original TimeControl dtCrit is
+1e-8 DAYS. The event witness uses that unchanged endpoint-clock contract times
+the prescribed rate, while independent MASS guards remain1e-10cm. The stricter
+nominal-quantity1e-10 diagnostic stays FAILED/NOT_QUALIFIED; neither its history
+nor original clock/table/model values are changed to obtain a PASS.
+
+Completion43867490337 on qualification sourcef6ce291e4 reconsumes the exact
+executed artifacts, verifies source/input/binary binding and actual native/event
+payloads, then executes the missing standalone and preflight checks. It reruns
+no completed physical period. Earlier completion43866440207 used the wrong warm
+journal location;43866903871 reached the known literal S_CONC output failure.
+Both remain failed evidence. The final completion preserves that original
+literal failure, applies only the existing output-compatible CSV specification
+to the diagnostic reference and passes all sixteen remaining input refusals per
+case. Original numerical differences are recorded without scientific promotion.
+
+Fresh O0/O2 emitted-source/input/policy comparisons preserve the two pond-only
+cohorts from65bfe1219; their full evidence is inherited on that actual unchanged
+surface. All six configurations total6576 full O2 days. O0 qualifies ordinary
+five-day, active532-day and event531-day prefixes with own continuations; six
+full O0 periods are not claimed. Twenty-four additional event windows are native
+and physical exact. Maximum independent water residual is9.995376244352136e-11cm;
+solute is2.0189361551216096e-13mg/cm2. Native temperature diagnostics remain finite
+within their existing bounded meaning. Default8 source/external seams pass on
+the repaired runtime43864571266. Fresh L5/closed6 builds preserve actual emitted
+sources, original input identities, kernel source Git blobs and policy values;
+LF/CRLF and binary identities stay explicitly distinct. Unchanged full L/K/J and
+named/platform campaigns are not repeated.
+
+`BLOCK_M_QUALIFICATION.json`, the surface/runon recovery and repair contract,
+clock diagnostic, component and source-preservation records, and SHA256 raw
+capsules under `integration/nomacro-coverage01/` own the bounded qualification.
+The existing source-bound CI selector retains all immutable prior proofs and
+uses a separately sealed M successor; the actual M merge receipt owns admission.
+The two independently admitted publication documents are preserved. Fixed RC1/
+RC2, original scientific FAILs, whole energy/science and unexecuted option mixes
+remain unchanged. These derived inputs add no independent historical project.
