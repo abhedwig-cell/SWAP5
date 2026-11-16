@@ -1,0 +1,29 @@
+{
+  "stage": "PREREGISTERED",
+  "baseline": "dd47bab261c47945437492f26e9fd92e02fe7717",
+  "scope": "At most2 previously untested original cases, largest extra line-search counts in node57 and node73 groups before0.31day",
+  "selection": {
+    "D1": {
+      "original_attempt": 2630,
+      "prior_commits": 1137,
+      "time": 35797.26534378702,
+      "dt": 0.0002222222222222222,
+      "original_max_residual": 0.0002925167803762632,
+      "original_max_node": 57.0,
+      "original_extra_line_search_trials": 13.0
+    },
+    "D2": {
+      "original_attempt": 3066,
+      "prior_commits": 1309,
+      "time": 35797.29042064949,
+      "dt": 0.000282842712474619,
+      "original_max_residual": 0.0005097141825163261,
+      "original_max_node": 73.0,
+      "original_extra_line_search_trials": 35.0
+    }
+  },
+  "routes": "O2 trialD1 first, D2 onlyifneeded; qualifying active refusal gets DIRECT and O0 comparison",
+  "candidate_and_harness_changes": false,
+  "bounds": "Original native35797 prefix unchanged; hard20s perroute,max4originaltargetattempts,stoponscaledrequest,no campaign",
+  "qualification_requires": "Real refusal with at least1 active rank1 iteration; original rollback and direct smaller retry equality"
+}
