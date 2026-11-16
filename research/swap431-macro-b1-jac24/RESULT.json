@@ -1,0 +1,100 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-JAC24",
+  "decision": "LOCAL_HEAD_PASS_ANALYTIC_RANK1_GWL_MINIMUM_STOCK_COUPLING",
+  "model_routes": 2,
+  "hard_timeout_seconds": 20,
+  "all_uncensored": true,
+  "non_timing_O0_O2_byte_exact": true,
+  "physical_equations_criteria_dt_reduction_changes": false,
+  "solver_change": "Current macro operator plus localized analytic domain3 factor gradient and rank1 linear solve; target38 only",
+  "qualification_scope": "Original target head returned converged before host commit; no rollback/retry/restart or period admission for this candidate",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 0.7843013999518007,
+      "calibration": [
+        {
+          "node": 50,
+          "analytic_domain3_Q52_derivative": -0.8736097304811432,
+          "finite_difference_reference": -0.873609731274691,
+          "error": 7.935477830400828e-10
+        },
+        {
+          "node": 51,
+          "analytic_domain3_Q52_derivative": -0.16492587669035186,
+          "finite_difference_reference": -0.16492587672257975,
+          "error": 3.222788702572643e-11
+        },
+        {
+          "node": 52,
+          "analytic_domain3_Q52_derivative": -0.01016213151705724,
+          "finite_difference_reference": -0.010162131514595413,
+          "error": -2.461827616762058e-12
+        }
+      ],
+      "calibration_trial_state_restored_exact": true,
+      "prior_attempts_exact": 37,
+      "prior_commits_exact": 36,
+      "target_begin_t1900": 35797.07066666668,
+      "target_dt": 0.0013333333333333333,
+      "head_converged": true,
+      "iterations": 2,
+      "used_flux_factor": 1.0,
+      "max_abs_residual": 4.1219765101185857e-10,
+      "sum_residual": -4.8737777443261876e-11,
+      "fresh_V1_checks": 1.0,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2,
+      "rank1_linear_residual_max": 2.7755575615628914e-17,
+      "Sherman_Morrison_denominators": [
+        6.04256071438238,
+        5.763939404854703
+      ],
+      "head_return_before_host_commit": true
+    },
+    {
+      "optimization": "O2",
+      "seconds": 0.7731189001351595,
+      "calibration": [
+        {
+          "node": 50,
+          "analytic_domain3_Q52_derivative": -0.8736097304811432,
+          "finite_difference_reference": -0.873609731274691,
+          "error": 7.935477830400828e-10
+        },
+        {
+          "node": 51,
+          "analytic_domain3_Q52_derivative": -0.16492587669035186,
+          "finite_difference_reference": -0.16492587672257975,
+          "error": 3.222788702572643e-11
+        },
+        {
+          "node": 52,
+          "analytic_domain3_Q52_derivative": -0.01016213151705724,
+          "finite_difference_reference": -0.010162131514595413,
+          "error": -2.461827616762058e-12
+        }
+      ],
+      "calibration_trial_state_restored_exact": true,
+      "prior_attempts_exact": 37,
+      "prior_commits_exact": 36,
+      "target_begin_t1900": 35797.07066666668,
+      "target_dt": 0.0013333333333333333,
+      "head_converged": true,
+      "iterations": 2,
+      "used_flux_factor": 1.0,
+      "max_abs_residual": 4.1219765101185857e-10,
+      "sum_residual": -4.8737777443261876e-11,
+      "fresh_V1_checks": 1.0,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2,
+      "rank1_linear_residual_max": 2.7755575615628914e-17,
+      "Sherman_Morrison_denominators": [
+        6.04256071438238,
+        5.763939404854703
+      ],
+      "head_return_before_host_commit": true
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "QUALIFIED_LOCAL_HEAD_ONLY",
   "baseline": "340a19b4f0ff09115ceafc39a39777ba1ca1250a",
   "routes": [
     "O0 same native target38",
@@ -9,5 +9,7 @@
   "linear_solve": "Original tridiagonal inverse plus Sherman Morrison, no dense Jacobian",
   "stop": "After target38 head return, before next host retry/commit; timeout20s",
   "unchanged": "Physical providers, branch thresholds, residual criteria, maxit30, dt, reduction policy and native input",
-  "no_campaign": true
+  "no_campaign": true,
+  "decision": "LOCAL_HEAD_PASS_ANALYTIC_RANK1_GWL_MINIMUM_STOCK_COUPLING",
+  "models_launched": 2
 }

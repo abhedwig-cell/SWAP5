@@ -1,0 +1,9 @@
+Lees REPORT/RESULT/STATUS/candidate.patch. JAC24 is lokale headPASS, geen hostcommit/periode/restartpromotie. Baseline SENSE23 340a19b4f. Zelfde nativecase/start35797,poging38begin35797.070666666681,dt.0013333333333333333. Eerste36commits/37attempts/targetbeginexactFRESH22. Alleen target38 heeft currentmacrooperator plus analytische rang1factorafgeleide domein3.
+
+q=f*o/dt,f=1-E/O,E=L-W+O bijzeroI =>df=-dL/O-f*dO/O. dLviaGWL(h50,h51) envolumeDensity;dO=sumdo,do_i=-o_i/(Hmp_i-h_i). BestaandelokaleSATFLOWafgeleidebehouden,addU_iV_j metU=-o_i/dt,V=df/dh_j. Alleuitgaandecomponentendomein3,geenalleen52diagfix. OplossingT+UV viaoriginalTRIDAG2calls+ShermanMorrison,geenvolleFDJ. Partiëlezero-inflowtak,geenunsatout/herverdeling,bracket50;anderebranchesgeenaanvulling. Guardfoutenonderzoeksstop,geenanderecriteriapolicy.
+
+KalibratiezelfdeSENSE23snapshotSHAaec5d438...tegenFDdh50/51/52verschilmax7.94e-10<1e-8. Providerreadgeenherberekeningofheadinjectie:savehuidig,loadcal,getcoeff,restorehuidig;current/restoredBINbyteexact. Newtonroutezelf gebruikt eigenactuelewaarden. GeenbeperkingoudeWminvastgezet.
+
+Exact2routes O0/O2normaal0.784/0.773sec,cap20,geencensuur/anderevariants. Beideconvergeren2iterFrRedu1,maxres4.121976510118586e-10node51,sumres-4.873777744326188e-11. Alleconvergentie/reductieflagfalse,V1fresh1 werkelijkuitgevoerd,geenextralinsearch. Rank1actiefbeideiter,denom6.04256/5.76394,maxlinearres2.78e-17. Niettimingtraces/exportbytegelijkO0/O2. FRESH22alleenfreshfaalde30itermax1.14e-4. Nugeenhostcommit37:stopheadreturnzoalsvorigewerkeenheden. Geenphysical/BAL/native/criteria/dt/reductionwijziging.
+
+Volgendeapartekwalificatiekanhostcommit/inventaris/refusalrollback/directsmallerretry/eigenrestartselecteren;NIETautomatischuitvoeren. GeenovernemenoudePASSvoornewsolver,geenfullBAL/factor.01/algemeneJacpromotie. IEEE_DENORMALinstrumentatielimietgeërfdSENSE23bewaard. assess_jac24.py readonly,seal_jac24.py streamtclosure.
