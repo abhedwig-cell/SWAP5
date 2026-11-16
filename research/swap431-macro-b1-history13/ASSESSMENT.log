@@ -1,0 +1,46 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-HISTORY13",
+  "models_launched": 0,
+  "decision": "PARTIAL_ORIGINAL_HISTORY_AVAILABLE_COMPLETE_CANDIDATE_PERIOD_HISTORY_NOT_RECOVERED",
+  "sealed_daily_records": {
+    "variants": [
+      "B0",
+      "V1",
+      "V2"
+    ],
+    "dates": [
+      "initial 1997-12-31",
+      "1998-01-01",
+      "1998-01-02"
+    ],
+    "initial_macro_stocks_cm": [
+      1.582,
+      0.04949
+    ],
+    "meaning": "Available original rounded stock and flux checks; never exact 132-field replacement"
+  },
+  "exact_preboundary_native_ledgers": "Not found in inspected sealed evidence before LEDGER12",
+  "exact_current_coverage": {
+    "start": 35796.99991333311,
+    "checkpoint": 35797.0,
+    "end": 35797.0001733362,
+    "scope": "Locally accumulated last-boundary-step and next-day step; no historical carry-in"
+  },
+  "losses": [
+    "NATIVE09 B writer omitted cumulative ledgers",
+    "DAY10 read B physical file and wrote last-subday physical file without ledgers",
+    "MID11/LEDGER12 bootstrap from last-subday file without prior cumulative carry-in"
+  ],
+  "invariant": "Do not replace missing candidate ledger by rounded old-variant totals or silently rebase the historical balance origin",
+  "minimum_addition": [
+    "Declare exact balance origin, end and actual source/policy history, including patch activation time",
+    "Obtain exact authoritative cumulative carry-in and original balance initial stocks at the first legacy handoff, or capture the missing prefix from that origin in one uninterrupted same-candidate process",
+    "Carry all required water-output state through every handoff with explicit history coverage/origin metadata; reject full-period claim when coverage is incomplete",
+    "Verify independent external balance from the original inventory to final inventory, and actual period output/reset/labels on O0/O2"
+  ],
+  "required_new_model_selection": "None in this evidence-only task; exact prefix recovery would require separate tightly scoped selection, no automatic two-day/481 campaign",
+  "full_period_balance": "NOT_QUALIFIED",
+  "local_LEDGER12_PASS_preserved": true,
+  "production_changed": false,
+  "official_promotion": false
+}
