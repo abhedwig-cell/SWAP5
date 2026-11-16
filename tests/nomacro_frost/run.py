@@ -31,6 +31,14 @@ def main():
   assert len(actual)==1097
   initial=actual.pop(0);assert initial[-1]==0 and all(v[-1]==1 for v in actual)
   r['frost_witness']=dict(initial_original_uncomputed_diagnostic=initial,actual_daily_original_records=len(actual),minimum_rfcp=min(v[0] for v in actual),days_with_reduction=sum(v[0]<1 for v in actual),days_with_zero_factor=sum(v[0]==0 for v in actual),original_front_nodes=sorted(set(int(v[2]) for v in actual)),actual_records=actual)
+  winter=[day for day,v in enumerate(actual,1) if v[0]<1 and day<100]
+  crop=[day for day,v in enumerate(actual,1) if v[0]<1 and 170<=day<=200]
+  assert winter and crop,'No actual positive frost activation in winter/crop pulse'
+  from qualify_surface_schedule import windows
+  r['active_frost_exact_native_windows']=windows(build,reference,project,out/(opt+'-active-frost'),rows,opt,
+        cuts=(winter[0]-1,crop[0]-1),compare_full=True)
+  r['active_frost_exact_native_windows']['event_scope']='Actual original partial frost reduction during winter and active crop pulses'
+  if project.solute:r['frost_witness']['total_original_frost_uptake_reduction_cm']=sum(row['uptake_terms_cm'][5] for row in rows)
   controlout=out/(opt+'-controls');controlout.mkdir();r['controls']=checks.controls(build,reference,project,controlout,full,rows,policy_key='frost_reference');save();print(a.configuration,opt,'FULL_NATIVE_AND_TRANSACTIONS_PASS',flush=True)
  result['status']='SHORT_BOUNDED_FROST_O0_O2_PASS' if a.short_only else 'COMPLETE_BOUNDED_FROST_O0_O2_PASS';save()
 

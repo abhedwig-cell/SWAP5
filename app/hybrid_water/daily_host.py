@@ -360,7 +360,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                 # Extend the admitted tangent only to the selected new runon
                 # composition; unchanged runon0/drain1 images remain exact.
                 pond_tangent=selected['SWDRA']==0 or (selected['SWDRA']==1 and selected['SWRUNON']==1)
-                if pond_tangent and configuration['boundary']['SWBOTB']==6 and (selected['SWSNOW']==0 or selected['SWFROST']==1) and selected['SWKIMPL']==0:
+                if pond_tangent and configuration['boundary']['SWBOTB']==6 and selected['SWSNOW']==0 and selected['SWKIMPL']==0:
                     source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
                                    '   use hybrid_step_budget, only: projected_water_residual, linear_pond_top_jacobian\n'
                                    '   use variables, only: rsro, rsroexp, pondmx')

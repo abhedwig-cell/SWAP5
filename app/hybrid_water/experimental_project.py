@@ -159,6 +159,10 @@ def inspect(directory):
         boundary = selected
     if boundary.get('SWBOTB') not in range(1, 9):
         raise ValueError('Unsupported/missing original lower boundary')
+    if selected['SWFROST']:
+        expected_bottom=7 if selected['SWDRA']==0 else 6
+        if boundary['SWBOTB']!=expected_bottom or selected['SWTOPBHEA']!=2:
+            raise ValueError('Bounded frost qualification requires prescribed surface temperature and free bottom7 or drained bottom6')
     if selected['SWSOLU'] and boundary['SWBOTB']==1:
         raise ValueError('Prescribed groundwater-level flux requires a separate independent trial receipt')
     for name, value in boundary.items():
@@ -186,6 +190,8 @@ def inspect(directory):
                 raise ValueError('Unsupported original irrigation schedule')
             if structure(sig) not in crop_structures or any(sig.get(k) not in values for k,values in root_controls.items()):
                 raise ValueError('Crop process/state combination is not implemented: '+path.name)
+            if selected['SWFROST'] and sig['SWDROUGHT']!=1:
+                raise ValueError('Original microscopic root extraction does not implement frost: '+path.name)
             if sig['SWDROUGHT']>1 and sig['SWCOMPENSATE']>0:
                 raise ValueError('Original microscopic root uptake cannot be combined with additional compensation')
             if sig.get('SWINTER')==2 and crop_types[path.resolve()] != {1}:
