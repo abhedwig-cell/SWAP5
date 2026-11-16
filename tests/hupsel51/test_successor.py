@@ -70,6 +70,31 @@ class Boundaries(unittest.TestCase):
             with self.subTest(attack=index), self.assertRaises(ValueError):
                 s.validate_l(*values)
 
+    def test_m_physical_provenance_guard_and_retained_clock_diagnostic(self):
+        load = lambda name: json.loads((s.ROOT/s.L_PROOF/(name+'.json')).read_text())
+        q = load('BLOCK_M_QUALIFICATION')
+        previous = load('BLOCK_M_PRIOR_SOURCE_PRESERVATION')
+        pond = load('BLOCK_M_POND_SOURCE_PRESERVATION')
+        components = load('BLOCK_M_LOCAL_ASSESSMENT')
+        s.validate_m(q, previous, pond, components)
+        attacks = []
+        for field, value in (('runtime_source', s.L_RUNTIME), ('qualification_source', s.M_EXECUTED), ('complete_model_days', 51), ('mass_guard_cm', 1e-9), ('maximum_water_residual_cm', float('nan')), ('nominal_runon_1e10_accuracy', 'PASS')):
+            bad = copy.deepcopy(q); bad[field] = value; attacks.append((bad, previous, pond, components))
+        bad = copy.deepcopy(q); bad['per_configuration_executed_sources']['water-pond-table'] = s.M_EXECUTED; attacks.append((bad, previous, pond, components))
+        bad = copy.deepcopy(q); bad['reports']['water-runon-file']['completed_physics_reexecuted'] = True; attacks.append((bad, previous, pond, components))
+        bad = copy.deepcopy(q); bad['reports']['water-runon-file']['configurations'][1]['surface_event_exact_native_windows']['native_exact'] = False; attacks.append((bad, previous, pond, components))
+        bad = copy.deepcopy(q); bad['reports']['water-runon-file']['original_references']['literal']['retained_original_output_failure'] = False; attacks.append((bad, previous, pond, components))
+        bad = copy.deepcopy(pond); bad['profiles'].pop('chemical-pond-table-O2'); attacks.append((q, previous, bad, components))
+        bad = copy.deepcopy(components); bad['original_invalid_table']['status'] = 'PASS'; attacks.append((q, previous, pond, bad))
+        for field, value in (('original_event_clock_bound_cm', 1e-3), ('nominal_cm', 0.0), ('difference_cm', 0.0)):
+            bad = copy.deepcopy(q)
+            record = next(r for r in bad['reports']['water-runon-file']['configurations'] if r['optimization'] == 'O2')['original_runon_event_witness']['records'][0]
+            record[field] = value; attacks.append((bad, previous, pond, components))
+        bad = copy.deepcopy(q); bad['reports']['chemical-runon-file']['configurations'][0]['maximum_solute_residual_mg_cm2'] = None; attacks.append((bad, previous, pond, components))
+        for index, values in enumerate(attacks):
+            with self.subTest(attack=index), self.assertRaises(ValueError):
+                s.validate_m(*values)
+
 
 if __name__ == '__main__':
     unittest.main()

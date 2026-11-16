@@ -17,7 +17,12 @@ ROOT = Path(__file__).resolve().parents[2]
 SEALED = '4ee0e08b095b945870dce54032e0d886478fb4c4'
 ORIGINAL_RUNTIME = '6e2cd26f873f9a935af92816a2f1d947df9293c7'
 RUNTIME = 'f1d1c13a295c5b54ec11e03d864de7030ca09008'
-CURRENT_RUNTIME = 'dadbda8128c16d8ba8dd858e5ac3a0b64a9a2b75'
+L_RUNTIME = 'dadbda8128c16d8ba8dd858e5ac3a0b64a9a2b75'
+L_ADMITTED = '30f7a21ff0b3437ea937476c72ca11421d2d03de'
+CURRENT_RUNTIME = 'f6ce291e4c28e88ee3c1b47a206da12433a92c38'
+M_EXECUTED = '166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad'
+M_POND_EXECUTED = '65bfe12195af15c1ed39167edbd996e643941c55'
+M_SEALED = '182d1c464bad3ae011ff18d64103e2a88eb78702'
 L_SEALED = '69561229a73b6c0085b2023935b8be09d1262710'
 L_PROOF = 'integration/nomacro-coverage01/'
 COMPOSED_JSON_SHA256 = '0fafaad32f544eb487668f1393fc5e4bd7848af7dc0d69ec3738716dc99a3985'
@@ -126,7 +131,7 @@ def validate_runs(profiles):
 
 
 def validate_l(q, preservation, components):
-    require(q['runtime_source'] == preservation['runtime_source'] == CURRENT_RUNTIME, 'foreign L source')
+    require(q['runtime_source'] == preservation['runtime_source'] == L_RUNTIME, 'foreign L source')
     require(q['status'] == 'ALL_SELECTED_PRESCRIBED_HEAD_FULL_TRAJECTORIES_AND_OWN_RESTARTS_PASS', 'L incomplete')
     require(q['full_configurations'] == 6 and q['complete_model_days'] == 6576, 'L full trajectory count')
     require(q['science'] == preservation['science'] == 'NOT_QUALIFIED', 'L scientific promotion')
@@ -153,19 +158,19 @@ def validate_l(q, preservation, components):
         require(p[opt]['all_generated_execution_sources_exact'] and p[opt]['all_1096_physical_daily_rows_exact'], 'L closed6 physical/source drift')
     for name in ('grass', 'hupsel', 'salt'):
         require(p[name]['status'] == 'ACTUAL_NAMED_GENERATED_SOURCES_AND_INPUTS_EXACT' and p[name]['publisher_source_exact'] and p[name]['budget_source_git_blob_exact'], 'L named dependency drift')
-    require(components['runtime_source'] == CURRENT_RUNTIME, 'foreign component source')
+    require(components['runtime_source'] == L_RUNTIME, 'foreign component source')
     require(components['prescribed_head']['status'] == 'PRODUCTION_ORIGINAL_PRESCRIBED_HEAD_RECEIPT_O0_O2_PASS', 'L receipt component')
     require(components['soil_air']['status'] == 'PRODUCTION_ORIGINAL_SOIL_AIR_RECEIPT_O0_O2_PASS', 'L soil-air component')
     require(components['pond']['status'] == 'ORIGINAL_LINEAR_POND_TANGENT_O0_O2_PASS' and set(components['pond']['profiles']) == {'O0', 'O2'}, 'L pond component')
 
 
 def verify_l(c):
-    git('merge-base', '--is-ancestor', CURRENT_RUNTIME, L_SEALED)
+    git('merge-base', '--is-ancestor', L_RUNTIME, L_SEALED)
     git('merge-base', '--is-ancestor', L_SEALED, 'HEAD')
-    require(not git('diff', CURRENT_RUNTIME, 'HEAD', '--', 'src', 'app', 'reference', 'tools'), 'runtime differs from qualified L source')
+    require(not git('diff', L_RUNTIME, L_ADMITTED, '--', 'src', 'app', 'reference', 'tools'), 'admitted L runtime differs from qualified L source')
     # The immutable seal contains reviewed docs/evidence, not a moving allowlist.
     # Later changes may update only this selector/tests and the admission receipt.
-    paths = set(git('diff', '--name-only', L_SEALED, 'HEAD').decode().splitlines())
+    paths = set(git('diff', '--name-only', L_SEALED, L_ADMITTED).decode().splitlines())
     require(paths <= {SELF, TEST, L_PROOF+'BLOCK_L_MERGE.json', L_PROOF+'BLOCK_L_CI_SELECTION.json'}, 'unqualified delta after L evidence seal')
     def sealed_json(name):
         path = L_PROOF+name+'.json'
@@ -181,6 +186,80 @@ def verify_l(c):
         path = L_PROOF+m['archive']
         require(hashlib.sha256((ROOT/path).read_bytes()).hexdigest() == m['sha256'], 'L raw capsule identity: '+label)
     return q, p
+
+
+def validate_m(q, previous, pond, components):
+    require(q['qualification_source'] == CURRENT_RUNTIME and q['runtime_source'] == M_EXECUTED, 'foreign M source')
+    require(q['status'] == 'ALL_SIX_ORIGINAL_SURFACE_INPUT_CONFIGURATIONS_QUALIFIED', 'M incomplete')
+    require(q['full_configurations'] == 6 and q['complete_model_days'] == 6576 and q['full_period_optimization'] == 'O2', 'M full count/profile')
+    require(q['mass_guard_cm'] == 1e-10 and q['mass_guard_changed'] is False, 'M mass guard changed')
+    require(q['whole_scientific_equivalence'] == 'NOT_QUALIFIED' and q['nominal_runon_1e10_accuracy'].startswith('FAILED_NOT_QUALIFIED'), 'M failed diagnostic promoted')
+    expected = {mode+'-'+kind for mode in ('water', 'chemical') for kind in ('pond-table', 'runon-file', 'surface-combined')}
+    require(set(q['reports']) == expected, 'M missing configuration')
+    for field in ('maximum_water_residual_cm', 'maximum_solute_residual_mg_cm2'):
+        v = q[field]
+        require(math.isfinite(v) and 0 <= v <= 1e-10, 'M summary hard balance')
+    for key, report in q['reports'].items():
+        old = key.endswith('pond-table')
+        require(q['per_configuration_executed_sources'][key] == (M_POND_EXECUTED if old else M_EXECUTED), 'M execution provenance')
+        require(report['status'] == 'EXPERIMENTAL_SURFACE_INPUT_OPTIONS_PASS', 'M incomplete case')
+        if not old:
+            require(report['executed_runtime_source'] == M_EXECUTED and report['source_commit'] == CURRENT_RUNTIME and report['resumed_exact_run'] == 43864567262 and report['completed_physics_reexecuted'] is False, 'M completed physics rebound/rerun')
+            require(report['original_references']['literal'].get('retained_original_output_failure') is True, 'M literal failure erased')
+            require(report['original_references']['csv']['swap_ok'] is True and len(report['events']) == 16 and all(e['returncode'] != 0 and e['expected_refusal'] for e in report['events']), 'M missing completion checks')
+        records = report['configurations']
+        require(len(records) == 2 and {r['optimization'] for r in records} == {'O0', 'O2'}, 'M optimization coverage')
+        for r in records:
+            require(r['configuration'] == key, 'M foreign configuration report')
+            require(not r['solute_active'] or r['maximum_solute_residual_mg_cm2'] is not None, 'M missing chemical balance')
+            require(r['exact_day_suffix'] and r['exact_native_auxiliary'] and r['active_crop_exact_native_window'] == [530, 532], 'M nonexact native continuation')
+            for field in ('maximum_water_residual_cm', 'maximum_solute_residual_mg_cm2'):
+                v = r[field]
+                require(v is None or math.isfinite(v) and 0 <= v <= 1e-10, 'M hard balance')
+            w = r['surface_event_exact_native_windows']
+            require(w['physical_exact'] and w['native_exact'] and w['origins_unchanged'] and w['windows'] == [[199, 201], [529, 531]], 'M event continuation')
+            if r['optimization'] == 'O2':
+                require(r['full_period_pass'] and r['completed_days'] == r['requested_days'] == 1096, 'M partial full trajectory')
+                require(all(r[k] is True for k in ('foreign_surface_schedule_refused_before_output', 'independent_distinct_origins', 'external_discard_replay_exact', 'external_disk_recovery', 'inconsistent_mass_refused_without_commit')), 'M transaction/binding preservation')
+                if not old:
+                    witness = r['original_runon_event_witness']
+                    require(witness['original_clock_contract_pass'] and witness['original_dtCrit_days'] == 1e-8, 'M original event clock changed')
+                    require({v['day'] for v in witness['records']} == {3, 200, 365, 530, 730}, 'M missing pulse')
+                    require(any(v['strict_nominal_1e10_diagnostic_pass'] is False for v in witness['records']), 'M nominal failure erased')
+                    for v in witness['records']:
+                        nominal = {3: 8*.1, 200: 12*.1, 365: 6*.1, 530: 10*.1, 730: 4*.1}[v['day']]
+                        require(v['nominal_cm'] == nominal and v['difference_cm'] == v['actual_integrated_cm']-nominal, 'M altered pulse quantity/diagnostic')
+                        require(v['original_event_clock_bound_cm'] == 2e-8*nominal+8*math.ulp(nominal), 'M inflated clock uncertainty')
+                        require(math.isfinite(v['actual_integrated_cm']) and abs(v['difference_cm']) <= v['original_event_clock_bound_cm'], 'M event input outside original clock contract')
+                        require(v['strict_nominal_1e10_diagnostic_pass'] == (abs(v['difference_cm']) <= 1e-10), 'M false nominal diagnostic')
+    require(previous['status'] == 'M_INACTIVE_L5_CLOSED6_SOURCE_PRESERVATION_PASS' and previous['runtime_source'] == M_EXECUTED and previous['all_host_execution_functions_classes_AST_exact'], 'M prior execution ownership drift')
+    require(set(previous['profiles']) == {'head5', 'closed6'} and all(p['status'] == 'ACTUAL_PRIOR_EXECUTION_SOURCES_AND_INPUTS_PRESERVED' and p['generated'] and p['kernel_sources'] for p in previous['profiles'].values()), 'M missing prior source preservation')
+    require(pond['status'] == 'BOTH_POND_TABLE_FULL_AND_NATIVE_COHORTS_INHERITED_ON_ACTUAL_SOURCE_PRESERVATION' and pond['runtime_source'] == M_EXECUTED and pond['prior_runtime_source'] == M_POND_EXECUTED, 'M pond inheritance identity')
+    require(set(pond['profiles']) == {m+'-pond-table-'+o for m in ('water', 'chemical') for o in ('O0', 'O2')} and all(p['status'] == 'POND65_FULL_AND_NATIVE_DEPENDENCY_PRESERVED' for p in pond['profiles'].values()), 'M unqualified pond dependency')
+    require(components['runon_reader']['status'] == 'COMPLETE_ORIGINAL_RUNON_READER_O0_O2_PASS' and components['pond_component']['status'] == 'ACTUAL_ORIGINAL_SCHEDULED_POND_O0_O2_PASS', 'M component qualification missing')
+    require(components['original_invalid_table']['status'] == 'ORIGINAL_FULL_INVALID_POND_TABLE_REFUSED_ZERO_DAYS', 'M original invalid-domain guard')
+
+
+def verify_m():
+    git('merge-base', '--is-ancestor', CURRENT_RUNTIME, M_SEALED)
+    git('merge-base', '--is-ancestor', M_SEALED, 'HEAD')
+    git('merge-base', '--is-ancestor', L_ADMITTED, CURRENT_RUNTIME)
+    require(not git('diff', CURRENT_RUNTIME, 'HEAD', '--', 'src', 'app', 'reference', 'tools'), 'runtime differs from qualified M source')
+    require(not git('diff', M_EXECUTED, CURRENT_RUNTIME, '--', 'src', 'app', 'reference', 'tools/solute/run_water.py', 'tools/solute/surface_input_cases.py', 'tools/solute/qualify_surface_schedule.py'), 'M physical runtime changed during verification completion')
+    paths = set(git('diff', '--name-only', M_SEALED, 'HEAD').decode().splitlines())
+    require(paths <= {SELF, TEST, L_PROOF+'BLOCK_M_CI_SELECTION.json', L_PROOF+'BLOCK_M_MERGE.json'}, 'unqualified delta after M evidence seal')
+    def sealed_json(name):
+        path = L_PROOF+name+'.json'
+        require(blob('HEAD', path) == blob(M_SEALED, path), 'M sealed proof changed: '+name)
+        return json.loads((ROOT/path).read_text())
+    q = sealed_json('BLOCK_M_QUALIFICATION')
+    validate_m(q, sealed_json('BLOCK_M_PRIOR_SOURCE_PRESERVATION'), sealed_json('BLOCK_M_POND_SOURCE_PRESERVATION'), sealed_json('BLOCK_M_LOCAL_ASSESSMENT'))
+    grass = sealed_json('BLOCK_M_GRASS_SOURCE_PRESERVATION')
+    require(grass['status'] == 'M_ACTUAL_REGISTERED_GRASS_EXECUTION_SOURCES_EXACT_TO_SEALED_L' and grass['runtime_source'] == M_EXECUTED and grass['qualification_source'] == CURRENT_RUNTIME and grass['generated'] and grass['kernel_sources'] and grass['inputs'], 'M named Grassgrowth source preservation')
+    for label in ('FIRST_MATRIX', 'FULL_RUNON_WITNESS_FAILURE', 'FIRST_DEFAULT', 'DEFAULT_PRESERVATION', 'FIRST_COMPLETION', 'LITERAL_REFERENCE_FAILURE', 'COMPLETED_RUNON', 'LOCAL'):
+        m = sealed_json('BLOCK_M_'+label+'_ARCHIVE')
+        require(hashlib.sha256((ROOT/L_PROOF/m['archive']).read_bytes()).hexdigest() == m['sha256'], 'M raw capsule identity: '+label)
+    return q
 
 
 def verify():
@@ -232,10 +311,14 @@ def verify():
     require(all(p['all_physical_daily_fields_exact'] and p['all_physical_csv_rows_exact'] for p in c['prior_physical_preservation'].values()), 'composed physical drift')
     require(digest((ROOT/PROOF/'COMPOSED_WINDOWS_RAW.zip').read_bytes()) == COMPOSED_RAW_SHA256, 'composed raw capsule identity')
     q, p = verify_l(c)
+    m = verify_m()
     return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=CURRENT_RUNTIME,
                 prior_composed_runtime=RUNTIME, current_L_proof_anchor=L_SEALED,
                 current_L_full_days=q['complete_model_days'],
-                closed6_current_full_native_O0_O2='PASS; prior physical rows exact',
+                current_M_full_days=m['complete_model_days'], current_M_proof_anchor=M_SEALED,
+                current_M_physical_source=M_EXECUTED,
+                original_nominal_runon_accuracy=m['nominal_runon_1e10_accuracy'],
+                closed6_current_full_native_O0_O2='INHERITED from sealed L full/native PASS on actual current source preservation',
                 named_full_evidence='INHERITED on exact generated sources/inputs/policies; binary identity NOT claimed',
                 proof_anchor=SEALED, original_canonical_parent=BASE,
                 actual_composition_parents=c['actual_merge_parents'],
