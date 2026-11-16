@@ -1,3 +1,31 @@
+# J complete original microscopic lookup discriminator next
+
+CanonicalIf9ada0cb2; branch10. No public app/src changes or J admission yet.
+Read-only43821758579 reproduces exactD O0 own530->531 failure. Complete WOFOST
+interface reconnect43822941363 FAIL/noncausal: ratefields corrected, physical
+cold row unchanged. Complete MOD_drain84field/7.98MB snapshots43824383388 show
+allfields exact after firstDrain2. Complete Variables165field/3.70MB snapshots
+43825562534 show qrot already differs3.72e-7 beforeSoilWater. Original get_MFLP_K
+preprocesses M/K only at cropinitialization from then-current scanning curves;
+cold recomputes using later curve. Contract BLOCK_J_MICRO_LOOKUP_STRATEGY.
+Next private THREE-WAY originalO2 RWUcomponent: warm531 exactold; baselinecold531
+exactold; replay whole initialized accepted M430/K429 x layers aftercoldrootinit
+and compare restoredcold531 to actualwarm. No scalarcache/solver/tolerance repair,
+accepted publication or bundle rebinding. Local actualmoduleinterface syntaxPASS.
+Follow one exact hosted handle through terminal once dispatched, no duplicates.
+Frozen and peers untouched; whole science/energy/history remain unqualified.
+
+# I admitted; J read-only whole-component history diagnostic
+
+CanonicalIf9ada0cb2 exacttreeb76177077 equals qualified head28e59e484; I_MERGE
+persisted on branch10. I model2full1096; sixstrict/threecensor failures remain.
+Next J follows revised complete original component-state strategy after both D
+cache hypotheses failed. Contract BLOCK_J_RECOVERY: isolated exact own640565a8d
+source/carrier43416681903, unchanged origin, no publication or rebinding. Inventory
+complete plant/atmosphere and public hydraulic/thermal state, reproduce actual
+O0 own530->531 mismatch read-only, then decide complete component contract.
+No J public activation/qualification yet; frozen and peers untouched.
+
 # I bounded assessment ready for admission
 
 PR1683 branch09; canonicalHf1f8d0602/peers unchanged16Nov. Model2 full1096

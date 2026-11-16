@@ -1,0 +1,82 @@
+{
+  "status": "ACTUAL_ORIGINAL_MICRO_LOOKUP_PROBE_INTERFACE_SYNTAX_PASS",
+  "compilation": [
+    {
+      "command": [
+        "gfortran",
+        "-fsyntax-only",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_micro_syntax\\RWU_micro.f90"
+      ],
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gfortran",
+        "-fsyntax-only",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_micro_syntax\\hybrid_state_diagnostic.f90"
+      ],
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gfortran",
+        "-fsyntax-only",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_micro_syntax\\swap.f90"
+      ],
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gfortran",
+        "-fsyntax-only",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_micro_syntax\\swap_main.f90"
+      ],
+      "returncode": 0,
+      "stderr": ""
+    }
+  ],
+  "scope": "Actual original module declarations; complete defined lookup context, no public state or physics changes"
+}

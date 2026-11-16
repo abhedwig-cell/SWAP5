@@ -1,0 +1,39 @@
+name: Complete original microscopic history state
+on:
+  workflow_dispatch:
+    inputs:
+      cohort:
+        type: choice
+        default: daily
+        options: [daily, remaining, all]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        configuration: ${{ fromJSON(inputs.cohort == 'remaining' && '["water-hyst1","water-hyst2","water-snow","water-hyst2-snow","chemical-hyst1","chemical-hyst2","chemical-snow","chemical-history","water-et-history","chemical-et-history"]' || inputs.cohort == 'all' && '["water-history","water-hyst1","water-hyst2","water-snow","water-hyst2-snow","chemical-hyst1","chemical-hyst2","chemical-snow","chemical-history","water-et-history","chemical-et-history"]' || '["water-history"]') }}
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Execute full original history and native own restarts O0/O2
+        run: python3 -B tools/solute/check_nomacro_coverage.py --history-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-history-${{ matrix.configuration }}-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

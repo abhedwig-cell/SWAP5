@@ -1,0 +1,5270 @@
+{
+  "status": "READ_ONLY_ORIGINAL_WATER_HISTORY_MISMATCH_EXACTLY_REPRODUCED",
+  "interface_reconnected": false,
+  "micro_lookup_replayed": false,
+  "cold_warm_physical_exact": false,
+  "pinned_source": "9dd1f03e4b0252eb9d5f2b4bbbdde221f498f67f",
+  "current_source": "7ca12519bd13bc026953f4837dfb7c9c72ed2605",
+  "original_run": 43833787531,
+  "origin_sha256": "d9a946ef7bd185e425d59a0500f639df299a4093ac30179a1fdbfd9ed2576acf",
+  "origin_unchanged": true,
+  "no_publication": true,
+  "no_build_rebinding": true,
+  "original_executable_relink_exact": true,
+  "field_inventory": [
+    {
+      "field": "plant_interface.unit_crp",
+      "kind": "integer",
+      "original_expression": "unit_crp"
+    },
+    {
+      "field": "plant_interface.icrop",
+      "kind": "integer",
+      "original_expression": "icrop"
+    },
+    {
+      "field": "plant_interface.cropstart",
+      "kind": "real",
+      "original_expression": "cropstart"
+    },
+    {
+      "field": "plant_interface.cropend",
+      "kind": "real",
+      "original_expression": "cropend"
+    },
+    {
+      "field": "plant_interface.croptype",
+      "kind": "integer",
+      "original_expression": "croptype"
+    },
+    {
+      "field": "plant_interface.co2",
+      "kind": "real",
+      "original_expression": "co2"
+    },
+    {
+      "field": "plant_interface.fco2amax",
+      "kind": "real",
+      "original_expression": "fco2amax"
+    },
+    {
+      "field": "plant_interface.fco2eff",
+      "kind": "real",
+      "original_expression": "fco2eff"
+    },
+    {
+      "field": "plant_interface.fco2tra",
+      "kind": "real",
+      "original_expression": "fco2tra"
+    },
+    {
+      "field": "plant_interface.fl_start_croprotation",
+      "kind": "logical",
+      "original_expression": "fl_start_croprotation"
+    },
+    {
+      "field": "plant_interface.fl_start_cropemergence",
+      "kind": "logical",
+      "original_expression": "fl_start_cropemergence"
+    },
+    {
+      "field": "plant_interface.fl_cropemergence",
+      "kind": "logical",
+      "original_expression": "fl_cropemergence"
+    },
+    {
+      "field": "plant_interface.fl_cropharvest",
+      "kind": "logical",
+      "original_expression": "fl_cropharvest"
+    },
+    {
+      "field": "plant_interface.fl_cropharvestday",
+      "kind": "logical",
+      "original_expression": "fl_cropharvestday"
+    },
+    {
+      "field": "plant_interface.fl_cropisreset",
+      "kind": "logical",
+      "original_expression": "fl_cropisreset"
+    },
+    {
+      "field": "plant_interface.swcf",
+      "kind": "integer",
+      "original_expression": "swcf"
+    },
+    {
+      "field": "plant_interface.cf",
+      "kind": "real",
+      "original_expression": "cf"
+    },
+    {
+      "field": "plant_interface.ch",
+      "kind": "real",
+      "original_expression": "ch"
+    },
+    {
+      "field": "plant_interface.albedo",
+      "kind": "real",
+      "original_expression": "albedo"
+    },
+    {
+      "field": "plant_interface.rsc",
+      "kind": "real",
+      "original_expression": "rsc"
+    },
+    {
+      "field": "plant_interface.rsw",
+      "kind": "real",
+      "original_expression": "rsw"
+    },
+    {
+      "field": "plant_interface.kdif",
+      "kind": "real",
+      "original_expression": "kdif"
+    },
+    {
+      "field": "plant_interface.kdir",
+      "kind": "real",
+      "original_expression": "kdir"
+    },
+    {
+      "field": "plant_interface.vcover",
+      "kind": "real",
+      "original_expression": "vcover"
+    },
+    {
+      "field": "plant_interface.sw_drought",
+      "kind": "integer",
+      "original_expression": "sw_drought"
+    },
+    {
+      "field": "plant_interface.sw_oxygen",
+      "kind": "integer",
+      "original_expression": "sw_oxygen"
+    },
+    {
+      "field": "plant_interface.mrftb",
+      "kind": "real",
+      "original_expression": "mrftb"
+    },
+    {
+      "field": "plant_interface.max_resp_factor",
+      "kind": "real",
+      "original_expression": "max_resp_factor"
+    },
+    {
+      "field": "plant_interface.q10_root",
+      "kind": "real",
+      "original_expression": "q10_root"
+    },
+    {
+      "field": "plant_interface.c_mroot",
+      "kind": "real",
+      "original_expression": "c_mroot"
+    },
+    {
+      "field": "plant_interface.f_senes",
+      "kind": "real",
+      "original_expression": "f_senes"
+    },
+    {
+      "field": "plant_interface.sw_inter",
+      "kind": "integer",
+      "original_expression": "sw_inter"
+    },
+    {
+      "field": "plant_interface.dt_interc_event",
+      "kind": "real",
+      "original_expression": "dt_interc_event"
+    },
+    {
+      "field": "plant_interface.cofab",
+      "kind": "real",
+      "original_expression": "cofab"
+    },
+    {
+      "field": "plant_interface.pfreetb",
+      "kind": "real",
+      "original_expression": "pfreetb"
+    },
+    {
+      "field": "plant_interface.pstemtb",
+      "kind": "real",
+      "original_expression": "pstemtb"
+    },
+    {
+      "field": "plant_interface.scanopytb",
+      "kind": "real",
+      "original_expression": "scanopytb"
+    },
+    {
+      "field": "plant_interface.avevaptb",
+      "kind": "real",
+      "original_expression": "avevaptb"
+    },
+    {
+      "field": "plant_interface.avprectb",
+      "kind": "real",
+      "original_expression": "avprectb"
+    },
+    {
+      "field": "plant_interface.siccaplai",
+      "kind": "real",
+      "original_expression": "siccaplai"
+    },
+    {
+      "field": "plant_interface.siccap",
+      "kind": "real",
+      "original_expression": "siccap"
+    },
+    {
+      "field": "plant_interface.sicact",
+      "kind": "real",
+      "original_expression": "sicact"
+    },
+    {
+      "field": "plant_interface.crsflx_in",
+      "kind": "real",
+      "original_expression": "crsflx_in"
+    },
+    {
+      "field": "plant_interface.crsflx_out",
+      "kind": "real",
+      "original_expression": "crsflx_out"
+    },
+    {
+      "field": "plant_interface.siccaploss",
+      "kind": "real",
+      "original_expression": "siccaploss"
+    },
+    {
+      "field": "plant_interface.swrd",
+      "kind": "integer",
+      "original_expression": "swrd"
+    },
+    {
+      "field": "plant_interface.swrdc",
+      "kind": "integer",
+      "original_expression": "swrdc"
+    },
+    {
+      "field": "plant_interface.swwrtnonox",
+      "kind": "integer",
+      "original_expression": "swwrtnonox"
+    },
+    {
+      "field": "plant_interface.aeratecrit",
+      "kind": "real",
+      "original_expression": "aeratecrit"
+    },
+    {
+      "field": "plant_interface.wrtmax",
+      "kind": "real",
+      "original_expression": "wrtmax"
+    },
+    {
+      "field": "plant_interface.wroottb",
+      "kind": "real",
+      "original_expression": "wroottb"
+    },
+    {
+      "field": "plant_interface.noddrz",
+      "kind": "integer",
+      "original_expression": "noddrz"
+    },
+    {
+      "field": "plant_interface.rd",
+      "kind": "real",
+      "original_expression": "rd"
+    },
+    {
+      "field": "plant_interface.dvs",
+      "kind": "real",
+      "original_expression": "dvs"
+    },
+    {
+      "field": "plant_interface.lai",
+      "kind": "real",
+      "original_expression": "lai"
+    },
+    {
+      "field": "plant_interface.tsum",
+      "kind": "real",
+      "original_expression": "tsum"
+    },
+    {
+      "field": "plant_interface.wrt",
+      "kind": "real",
+      "original_expression": "wrt"
+    },
+    {
+      "field": "plant_interface.wst",
+      "kind": "real",
+      "original_expression": "wst"
+    },
+    {
+      "field": "plant_interface.wlv",
+      "kind": "real",
+      "original_expression": "wlv"
+    },
+    {
+      "field": "plant_interface.wso",
+      "kind": "real",
+      "original_expression": "wso"
+    },
+    {
+      "field": "plant_interface.dwrt",
+      "kind": "real",
+      "original_expression": "dwrt"
+    },
+    {
+      "field": "plant_interface.dwst",
+      "kind": "real",
+      "original_expression": "dwst"
+    },
+    {
+      "field": "plant_interface.dwlv",
+      "kind": "real",
+      "original_expression": "dwlv"
+    },
+    {
+      "field": "plant_interface.grrt",
+      "kind": "real",
+      "original_expression": "grrt"
+    },
+    {
+      "field": "plant_interface.drrt",
+      "kind": "real",
+      "original_expression": "drrt"
+    },
+    {
+      "field": "plant_interface.drst",
+      "kind": "real",
+      "original_expression": "drst"
+    },
+    {
+      "field": "plant_interface.drlv",
+      "kind": "real",
+      "original_expression": "drlv"
+    },
+    {
+      "field": "plant_interface.ipgass",
+      "kind": "real",
+      "original_expression": "ipgass"
+    },
+    {
+      "field": "plant_interface.igass",
+      "kind": "real",
+      "original_expression": "igass"
+    },
+    {
+      "field": "plant_interface.imres",
+      "kind": "real",
+      "original_expression": "imres"
+    },
+    {
+      "field": "plant_interface.laipot",
+      "kind": "real",
+      "original_expression": "laipot"
+    },
+    {
+      "field": "plant_interface.wrtpot",
+      "kind": "real",
+      "original_expression": "wrtpot"
+    },
+    {
+      "field": "plant_interface.wstpot",
+      "kind": "real",
+      "original_expression": "wstpot"
+    },
+    {
+      "field": "plant_interface.wlvpot",
+      "kind": "real",
+      "original_expression": "wlvpot"
+    },
+    {
+      "field": "plant_interface.wsopot",
+      "kind": "real",
+      "original_expression": "wsopot"
+    },
+    {
+      "field": "plant_interface.dwrtpot",
+      "kind": "real",
+      "original_expression": "dwrtpot"
+    },
+    {
+      "field": "plant_interface.dwstpot",
+      "kind": "real",
+      "original_expression": "dwstpot"
+    },
+    {
+      "field": "plant_interface.dwlvpot",
+      "kind": "real",
+      "original_expression": "dwlvpot"
+    },
+    {
+      "field": "plant_interface.grrtpot",
+      "kind": "real",
+      "original_expression": "grrtpot"
+    },
+    {
+      "field": "plant_interface.ipgasspot",
+      "kind": "real",
+      "original_expression": "ipgasspot"
+    },
+    {
+      "field": "plant_interface.igasspot",
+      "kind": "real",
+      "original_expression": "igasspot"
+    },
+    {
+      "field": "plant_interface.imrespot",
+      "kind": "real",
+      "original_expression": "imrespot"
+    },
+    {
+      "field": "plant_interface.dmhrv",
+      "kind": "real",
+      "original_expression": "dmhrv"
+    },
+    {
+      "field": "plant_interface.dmloss",
+      "kind": "real",
+      "original_expression": "dmloss"
+    },
+    {
+      "field": "plant_interface.icut",
+      "kind": "integer",
+      "original_expression": "icut"
+    },
+    {
+      "field": "plant_interface.tcut",
+      "kind": "integer",
+      "original_expression": "tcut"
+    },
+    {
+      "field": "plant_interface.dmhrvpot",
+      "kind": "real",
+      "original_expression": "dmhrvpot"
+    },
+    {
+      "field": "plant_interface.dmlosspot",
+      "kind": "real",
+      "original_expression": "dmlosspot"
+    },
+    {
+      "field": "plant_interface.icutpot",
+      "kind": "integer",
+      "original_expression": "icutpot"
+    },
+    {
+      "field": "plant_interface.tcutpot",
+      "kind": "integer",
+      "original_expression": "tcutpot"
+    },
+    {
+      "field": "plant_interface.hlim3h",
+      "kind": "real",
+      "original_expression": "hlim3h"
+    },
+    {
+      "field": "plant_interface.hlim3l",
+      "kind": "real",
+      "original_expression": "hlim3l"
+    },
+    {
+      "field": "plant_interface.hlim4",
+      "kind": "real",
+      "original_expression": "hlim4"
+    },
+    {
+      "field": "atmosphere_interface.tav",
+      "kind": "real",
+      "original_expression": "tav"
+    },
+    {
+      "field": "atmosphere_interface.rad",
+      "kind": "real",
+      "original_expression": "rad"
+    },
+    {
+      "field": "atmosphere_interface.grai",
+      "kind": "real",
+      "original_expression": "grai"
+    },
+    {
+      "field": "variables.h",
+      "kind": "real",
+      "original_expression": "h(1:numnod)"
+    },
+    {
+      "field": "variables.theta",
+      "kind": "real",
+      "original_expression": "theta(1:numnod)"
+    },
+    {
+      "field": "variables.k",
+      "kind": "real",
+      "original_expression": "k(1:numnod+1)"
+    },
+    {
+      "field": "variables.kmean",
+      "kind": "real",
+      "original_expression": "kmean(1:numnod+1)"
+    },
+    {
+      "field": "variables.dimoca",
+      "kind": "real",
+      "original_expression": "dimoca(1:numnod)"
+    },
+    {
+      "field": "variables.fhyst",
+      "kind": "real",
+      "original_expression": "fhyst(1:numnod)"
+    },
+    {
+      "field": "variables.indeks",
+      "kind": "integer",
+      "original_expression": "indeks(1:numnod)"
+    },
+    {
+      "field": "variables.dt",
+      "kind": "real",
+      "original_expression": "dt"
+    },
+    {
+      "field": "variables.dtold",
+      "kind": "real",
+      "original_expression": "dtold"
+    },
+    {
+      "field": "variables.pond",
+      "kind": "real",
+      "original_expression": "pond"
+    },
+    {
+      "field": "variables.pondm1",
+      "kind": "real",
+      "original_expression": "pondm1"
+    },
+    {
+      "field": "variables.gwl",
+      "kind": "real",
+      "original_expression": "gwl"
+    },
+    {
+      "field": "variables.volact",
+      "kind": "real",
+      "original_expression": "volact"
+    },
+    {
+      "field": "MOD_MvG.cofgen",
+      "kind": "real",
+      "original_expression": "cofgen(:,1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.tsoil",
+      "kind": "real",
+      "original_expression": "tsoil(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.heacon",
+      "kind": "real",
+      "original_expression": "heacon(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.heacap",
+      "kind": "real",
+      "original_expression": "heacap(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.tetop",
+      "kind": "real",
+      "original_expression": "tetop"
+    },
+    {
+      "field": "MOD_SoilTemperature.tebot",
+      "kind": "real",
+      "original_expression": "tebot"
+    },
+    {
+      "field": "MOD_top.theatm",
+      "kind": "real",
+      "original_expression": "theatm"
+    },
+    {
+      "field": "MOD_top.katm",
+      "kind": "real",
+      "original_expression": "katm"
+    },
+    {
+      "field": "MOD_top.q0",
+      "kind": "real",
+      "original_expression": "q0"
+    },
+    {
+      "field": "MOD_top.hsurf",
+      "kind": "real",
+      "original_expression": "hsurf"
+    },
+    {
+      "field": "MOD_top.FlRunoff",
+      "kind": "logical",
+      "original_expression": "FlRunoff"
+    },
+    {
+      "field": "MOD_top.ftoph",
+      "kind": "logical",
+      "original_expression": "ftoph"
+    }
+  ],
+  "records": {
+    "warm": {
+      "last_row": {
+        "column": 1,
+        "day": 154,
+        "committed": true,
+        "revision": 154,
+        "stock_end_cm": [
+          72.05911318171492,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          72.41898464828535,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.009999999999999926,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.005225328423017385,
+          0.0,
+          0.3302726086004164,
+          0.0,
+          0.034373529546993804,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -1234.7259338203717,
+          -387.37568051601215,
+          -281.17173907754477,
+          -238.81715682592838,
+          -212.12871752049918,
+          -192.28545862737636,
+          -176.21020967885525,
+          -162.73338811158177,
+          -151.2719436996566,
+          -141.23943986588037,
+          -122.77076178234437,
+          -96.61995829727381,
+          -79.61156690855405,
+          -67.62253441722616,
+          -60.60914646680977,
+          -54.54212481327196,
+          -48.7843093990485,
+          -43.27446889974689,
+          -37.94055377768163,
+          -32.72441109529601,
+          -25.050285067667065,
+          -14.964047010052067,
+          -4.946749115488868,
+          5.053250884511132,
+          15.053250884511133,
+          25.053250884511133,
+          35.05325088451113,
+          45.05325088451113,
+          55.05325088451113,
+          65.05325088451113,
+          75.05325088451113,
+          85.05325088451113,
+          95.05325088451113,
+          105.05325088451113
+        ],
+        "groundwater_cm": -89.94674911548887,
+        "drainage_outward_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": -2.6558616417204917e-15,
+        "kernel_residual_cm": 2.6645352591003757e-15,
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": 3.191891195797325e-16
+      },
+      "snapshot_count": 57
+    },
+    "cold": {
+      "last_row": {
+        "column": 1,
+        "day": 154,
+        "committed": true,
+        "revision": 1,
+        "stock_end_cm": [
+          72.05911318171492,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          72.41898464828535,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.009999999999999926,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.005225328423017385,
+          0.0,
+          0.3302726086004164,
+          0.0,
+          0.03437352954698819,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -1234.7259338202186,
+          -387.3756805160105,
+          -281.17173907754506,
+          -238.81715682592844,
+          -212.12871752049907,
+          -192.28545862737633,
+          -176.21020967885522,
+          -162.73338811158177,
+          -151.2719436996566,
+          -141.23943986588043,
+          -122.77076178234431,
+          -96.6199582972737,
+          -79.61156690855398,
+          -67.6225344172262,
+          -60.60914646680979,
+          -54.542124813271975,
+          -48.784309399048496,
+          -43.27446889974689,
+          -37.94055377768163,
+          -32.72441109529601,
+          -25.05028506766707,
+          -14.964047010052044,
+          -4.946749115488849,
+          5.053250884511151,
+          15.05325088451115,
+          25.05325088451115,
+          35.05325088451115,
+          45.05325088451115,
+          55.05325088451115,
+          65.05325088451116,
+          75.05325088451116,
+          85.05325088451116,
+          95.05325088451116,
+          105.05325088451116
+        ],
+        "groundwater_cm": -89.94674911548884,
+        "drainage_outward_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": 2.957703526540456e-15,
+        "kernel_residual_cm": -2.9976021664879227e-15,
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": 4.2327252813834093e-16
+      },
+      "snapshot_count": 57
+    }
+  },
+  "phase_differences": [
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0016597876140011444
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8.766079386905638e-20
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0401266452441121
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0016597876140011444
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8.766079386905638e-20
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0401266452441121
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.unit_crp",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 800.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.co2",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 360.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fco2amax",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fco2eff",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fco2tra",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.swcf",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.cf",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.7248333333333333
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.kdif",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.6000000000000001
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.kdir",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.7500000000000001
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.vcover",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.5566906740973453
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.sw_inter",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.swrd",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.aeratecrit",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0001
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.lai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.9548750000000001
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0016597876140011444
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8.766079386905638e-20
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0401266452441121
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0016597876140011444
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8.766079386905638e-20
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0401266452441121
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0016597876140011444
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8.766079386905638e-20
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0401266452441121
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.unit_crp",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 800.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.co2",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 360.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fco2amax",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fco2eff",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fco2tra",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.swcf",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.cf",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.7248333333333333
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.kdif",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.6000000000000001
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.kdir",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.7500000000000001
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.vcover",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.5566906740973453
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.sw_inter",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.swrd",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.aeratecrit",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0001
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.lai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.9548750000000001
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "atmosphere_interface.tav",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 16.05
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "atmosphere_interface.rad",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 28280000.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0016597876140011444
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8.766079386905638e-20
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0401266452441121
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0016597876140011444
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8.766079386905638e-20
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0401266452441121
+    }
+  ],
+  "private_sources": {
+    "hybrid_state_diagnostic.f90": "9368dfe807161556552bfd8ced04a34a2009f495cdd62068e35ce19fed5728a7",
+    "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+    "swap.f90": "926ece414a3164a979d841b1f9a3246dcfb4670f9d55f56056ca4cab05c67505",
+    "swap_main.f90": "500a1fce5636414cee1241bac3c99b02e375f1608b3c8bd32e4a4f9df5211a31"
+  },
+  "private_executable_sha256": "65451ec501169f130ccdee700692e5b43c468f0b3e9aaa3b37fd52e55f08e706",
+  "scope": "Read-only original component-state evidence, not current public qualification or demonstrated causation",
+  "complete_component_module": "variables",
+  "complete_component_comparison": [
+    {
+      "phase": "BEFORE_METEO3",
+      "bytes": 3698252,
+      "layout": [
+        {
+          "field": "nprintday",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flprintdt",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flprintshort",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "floutputshort",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nprintcount",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "cntper",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "daycum",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "daynr",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "imonth",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "ioutdat",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "ioutdatint",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "isteps",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "iyear",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "numbit_crit",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "period",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swheader",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swodat",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swres",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "dt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dtmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dtmin",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dtold",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fact_dt_increase",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fact_dt_decrease",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fact_dt_fldect",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "outdat",
+          "kind": 1,
+          "count": 3000,
+          "bits": 64
+        },
+        {
+          "field": "outdatint",
+          "kind": 1,
+          "count": 3000,
+          "bits": 64
+        },
+        {
+          "field": "outper",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "t",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "t1900",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tcum",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "timjan1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tend",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tstart",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "flbaloutput",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldayend",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldaystart",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldecdt",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldtmin",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldtreduce",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flheader",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "floutput",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flrunend",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flzerocumu",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flzerointr",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "bal",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "blc",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "bpegwl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "indeks",
+          "kind": 2,
+          "count": 5000,
+          "bits": 32
+        },
+        {
+          "field": "Itnumb",
+          "kind": 2,
+          "count": 200,
+          "bits": 32
+        },
+        {
+          "field": "MaxBackTr",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "MaxIt",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "MaxIterTime",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "msteps",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nhead",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nodgwl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "npegwl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "numbit",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw2",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw3",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw4",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swafo",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swaun",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swbal",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swblc",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swbotb",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swbotb3Impl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "SwBotb3ResVert",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swcfbs",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swcofqhc",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swcsv",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swkimpl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swkmean",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swqhbot",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swredu",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swsba",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "aqamp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "aqave",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "aqper",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "aqtmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cfbs",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofqha",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofqhb",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofqhc",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofred",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevBalCp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevBalTot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevh1Cp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevh2Cp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevMasBal",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevPondDt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CriterHr",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "deepgw",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "delp",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "dimoca",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "dznew",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "fhyst",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "gwl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwlconv",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwli",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwlinp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwlm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwltab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "htb",
+          "kind": 1,
+          "count": -1,
+          "bits": 64
+        },
+        {
+          "field": "h",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "haqtab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "hbot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hbotab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "hdrain",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hm1",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "hplate",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "ivolbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "ipondbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "isicbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "issnowbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "ithetabeg",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "k",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64
+        },
+        {
+          "field": "kbot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "kmean",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64
+        },
+        {
+          "field": "ksatfit",
+          "kind": 1,
+          "count": 25,
+          "bits": 64
+        },
+        {
+          "field": "ksatexm",
+          "kind": 1,
+          "count": 25,
+          "bits": 64
+        },
+        {
+          "field": "ldwet",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pegwl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pegwl_bot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pond",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondini",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondmx",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondmxtab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "q",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64
+        },
+        {
+          "field": "qbot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "qbotab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "qbot_nonfrozen",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "qimmob",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "qrot",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "qtop",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "epd",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "reva",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rimlay",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsigni",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsoil",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsro",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsroexp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "runon",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "runots",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "saev",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "shape_3",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sinamp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sinave",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sinmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "spev",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tau",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "theta",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetar",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetas",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetm1",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetsl",
+          "kind": 1,
+          "count": 25,
+          "bits": 64
+        },
+        {
+          "field": "volact",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "volini",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "volm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "zi",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "flksatexm",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fllowgwl",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fluseksatexm",
+          "kind": 3,
+          "count": 5000,
+          "bits": 32
+        },
+        {
+          "field": "flMaxIterTime",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        }
+      ],
+      "differences": [
+        {
+          "field": "daycum",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 153,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 154,
+              "cold": 1
+            }
+          ]
+        },
+        {
+          "field": "outper",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "tstart",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 153.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 37256.0,
+              "cold": 37409.0
+            }
+          ]
+        },
+        {
+          "field": "fldayend",
+          "kind": 3,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "floutput",
+          "kind": 3,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "flzerocumu",
+          "kind": 3,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0,
+              "cold": 1
+            }
+          ]
+        },
+        {
+          "field": "Itnumb",
+          "kind": 2,
+          "count": 200,
+          "bits": 32,
+          "changed_entries": 36,
+          "maximum_absolute_difference": 336626,
+          "first_changed": [
+            {
+              "index": 3,
+              "warm": 1401,
+              "cold": 0
+            },
+            {
+              "index": 4,
+              "warm": 2707,
+              "cold": 0
+            },
+            {
+              "index": 5,
+              "warm": 63,
+              "cold": 0
+            },
+            {
+              "index": 7,
+              "warm": 3,
+              "cold": 0
+            },
+            {
+              "index": 11,
+              "warm": 10,
+              "cold": 0
+            },
+            {
+              "index": 12,
+              "warm": 30,
+              "cold": 0
+            },
+            {
+              "index": 13,
+              "warm": 32,
+              "cold": 0
+            },
+            {
+              "index": 14,
+              "warm": 43,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "numbit",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 4,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 4,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "gwli",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 75.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -75.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "gwlm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 87.88882911419707,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -87.88882911419707,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "q",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64,
+          "changed_entries": 23,
+          "maximum_absolute_difference": 0.12492015698567893,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.0401266452440784,
+              "cold": 0.0
+            },
+            {
+              "index": 2,
+              "warm": 0.01521258831942009,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 0.01160346834356853,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 0.012147847812563894,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 0.014013460367130325,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 0.016388217065363347,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 0.019787296411563918,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 0.023252184285125925,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "qrot",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64,
+          "changed_entries": 16,
+          "maximum_absolute_difference": 0.06318229045198105,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.01773759677406127,
+              "cold": 0.0
+            },
+            {
+              "index": 2,
+              "warm": 0.017764830862848965,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 0.017285198876936105,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 0.01684246165917041,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 0.016141461064374703,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 0.016141461064374713,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 0.015219091860696157,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 0.015219091860696157,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "qtop",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.0401266452441121,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.0401266452441121,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "reva",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.0401266452441121,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.0401266452441121,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "thetm1",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64,
+          "changed_entries": 34,
+          "maximum_absolute_difference": 0.3870640000000001,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.17297900216926676,
+              "cold": 0.0
+            },
+            {
+              "index": 2,
+              "warm": 0.21680962945604493,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 0.2332445925436424,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 0.24305665096046014,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 0.25075360840055577,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 0.25707537766355604,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 0.2628781148282482,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 0.2683591481399714,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "volini",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.05377460070845075,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 72.3652100475769,
+              "cold": 72.41898464828535
+            }
+          ]
+        },
+        {
+          "field": "volm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 72.4353288225017,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 72.4353288225017,
+              "cold": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "BEFORE_DRAIN2",
+      "bytes": 3698252,
+      "layout": [
+        {
+          "field": "nprintday",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flprintdt",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flprintshort",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "floutputshort",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nprintcount",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "cntper",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "daycum",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "daynr",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "imonth",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "ioutdat",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "ioutdatint",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "isteps",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "iyear",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "numbit_crit",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "period",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swheader",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swodat",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swres",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "dt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dtmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dtmin",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dtold",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fact_dt_increase",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fact_dt_decrease",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fact_dt_fldect",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "outdat",
+          "kind": 1,
+          "count": 3000,
+          "bits": 64
+        },
+        {
+          "field": "outdatint",
+          "kind": 1,
+          "count": 3000,
+          "bits": 64
+        },
+        {
+          "field": "outper",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "t",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "t1900",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tcum",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "timjan1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tend",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tstart",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "flbaloutput",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldayend",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldaystart",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldecdt",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldtmin",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldtreduce",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flheader",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "floutput",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flrunend",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flzerocumu",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flzerointr",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "bal",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "blc",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "bpegwl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "indeks",
+          "kind": 2,
+          "count": 5000,
+          "bits": 32
+        },
+        {
+          "field": "Itnumb",
+          "kind": 2,
+          "count": 200,
+          "bits": 32
+        },
+        {
+          "field": "MaxBackTr",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "MaxIt",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "MaxIterTime",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "msteps",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nhead",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nodgwl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "npegwl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "numbit",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw2",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw3",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw4",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swafo",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swaun",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swbal",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swblc",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swbotb",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swbotb3Impl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "SwBotb3ResVert",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swcfbs",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swcofqhc",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swcsv",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swkimpl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swkmean",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swqhbot",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swredu",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swsba",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "aqamp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "aqave",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "aqper",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "aqtmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cfbs",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofqha",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofqhb",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofqhc",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofred",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevBalCp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevBalTot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevh1Cp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevh2Cp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevMasBal",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevPondDt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CriterHr",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "deepgw",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "delp",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "dimoca",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "dznew",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "fhyst",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "gwl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwlconv",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwli",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwlinp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwlm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwltab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "htb",
+          "kind": 1,
+          "count": -1,
+          "bits": 64
+        },
+        {
+          "field": "h",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "haqtab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "hbot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hbotab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "hdrain",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hm1",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "hplate",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "ivolbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "ipondbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "isicbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "issnowbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "ithetabeg",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "k",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64
+        },
+        {
+          "field": "kbot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "kmean",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64
+        },
+        {
+          "field": "ksatfit",
+          "kind": 1,
+          "count": 25,
+          "bits": 64
+        },
+        {
+          "field": "ksatexm",
+          "kind": 1,
+          "count": 25,
+          "bits": 64
+        },
+        {
+          "field": "ldwet",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pegwl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pegwl_bot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pond",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondini",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondmx",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondmxtab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "q",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64
+        },
+        {
+          "field": "qbot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "qbotab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "qbot_nonfrozen",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "qimmob",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "qrot",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "qtop",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "epd",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "reva",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rimlay",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsigni",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsoil",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsro",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsroexp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "runon",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "runots",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "saev",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "shape_3",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sinamp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sinave",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sinmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "spev",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tau",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "theta",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetar",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetas",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetm1",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetsl",
+          "kind": 1,
+          "count": 25,
+          "bits": 64
+        },
+        {
+          "field": "volact",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "volini",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "volm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "zi",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "flksatexm",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fllowgwl",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fluseksatexm",
+          "kind": 3,
+          "count": 5000,
+          "bits": 32
+        },
+        {
+          "field": "flMaxIterTime",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        }
+      ],
+      "differences": [
+        {
+          "field": "daycum",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 153,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 154,
+              "cold": 1
+            }
+          ]
+        },
+        {
+          "field": "outper",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "tstart",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 153.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 37256.0,
+              "cold": 37409.0
+            }
+          ]
+        },
+        {
+          "field": "fldayend",
+          "kind": 3,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "floutput",
+          "kind": 3,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "flzerocumu",
+          "kind": 3,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0,
+              "cold": 1
+            }
+          ]
+        },
+        {
+          "field": "Itnumb",
+          "kind": 2,
+          "count": 200,
+          "bits": 32,
+          "changed_entries": 36,
+          "maximum_absolute_difference": 336626,
+          "first_changed": [
+            {
+              "index": 3,
+              "warm": 1401,
+              "cold": 0
+            },
+            {
+              "index": 4,
+              "warm": 2707,
+              "cold": 0
+            },
+            {
+              "index": 5,
+              "warm": 63,
+              "cold": 0
+            },
+            {
+              "index": 7,
+              "warm": 3,
+              "cold": 0
+            },
+            {
+              "index": 11,
+              "warm": 10,
+              "cold": 0
+            },
+            {
+              "index": 12,
+              "warm": 30,
+              "cold": 0
+            },
+            {
+              "index": 13,
+              "warm": 32,
+              "cold": 0
+            },
+            {
+              "index": 14,
+              "warm": 43,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "numbit",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 4,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 4,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "gwli",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 75.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -75.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "gwlm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 87.88882911419707,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -87.88882911419707,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "q",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64,
+          "changed_entries": 23,
+          "maximum_absolute_difference": 0.12492015698567893,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.0401266452440784,
+              "cold": 0.0
+            },
+            {
+              "index": 2,
+              "warm": 0.01521258831942009,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 0.01160346834356853,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 0.012147847812563894,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 0.014013460367130325,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 0.016388217065363347,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 0.019787296411563918,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 0.023252184285125925,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "qtop",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.0401266452441121,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.0401266452441121,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "reva",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.0401266452441121,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.0401266452441121,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "thetm1",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64,
+          "changed_entries": 34,
+          "maximum_absolute_difference": 0.3870640000000001,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.17297900216926676,
+              "cold": 0.0
+            },
+            {
+              "index": 2,
+              "warm": 0.21680962945604493,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 0.2332445925436424,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 0.24305665096046014,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 0.25075360840055577,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 0.25707537766355604,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 0.2628781148282482,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 0.2683591481399714,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "volini",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.05377460070845075,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 72.3652100475769,
+              "cold": 72.41898464828535
+            }
+          ]
+        },
+        {
+          "field": "volm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 72.4353288225017,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 72.4353288225017,
+              "cold": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "AFTER_DRAIN2",
+      "bytes": 3698252,
+      "layout": [
+        {
+          "field": "nprintday",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flprintdt",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flprintshort",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "floutputshort",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nprintcount",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "cntper",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "daycum",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "daynr",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "imonth",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "ioutdat",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "ioutdatint",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "isteps",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "iyear",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "numbit_crit",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "period",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swheader",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swodat",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swres",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "dt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dtmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dtmin",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "dtold",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fact_dt_increase",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fact_dt_decrease",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "fact_dt_fldect",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "outdat",
+          "kind": 1,
+          "count": 3000,
+          "bits": 64
+        },
+        {
+          "field": "outdatint",
+          "kind": 1,
+          "count": 3000,
+          "bits": 64
+        },
+        {
+          "field": "outper",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "t",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "t1900",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tcum",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "timjan1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tend",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tstart",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "flbaloutput",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldayend",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldaystart",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldecdt",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldtmin",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fldtreduce",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flheader",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "floutput",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flrunend",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flzerocumu",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "flzerointr",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "bal",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "blc",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "bpegwl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "indeks",
+          "kind": 2,
+          "count": 5000,
+          "bits": 32
+        },
+        {
+          "field": "Itnumb",
+          "kind": 2,
+          "count": 200,
+          "bits": 32
+        },
+        {
+          "field": "MaxBackTr",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "MaxIt",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "MaxIterTime",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "msteps",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nhead",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "nodgwl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "npegwl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "numbit",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw2",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw3",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "sw4",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swafo",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swaun",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swbal",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swblc",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swbotb",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swbotb3Impl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "SwBotb3ResVert",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swcfbs",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swcofqhc",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swcsv",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swkimpl",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swkmean",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swqhbot",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swredu",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "swsba",
+          "kind": 2,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "aqamp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "aqave",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "aqper",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "aqtmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cfbs",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofqha",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofqhb",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofqhc",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "cofred",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevBalCp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevBalTot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevh1Cp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevh2Cp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevMasBal",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CritDevPondDt",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "CriterHr",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "deepgw",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "delp",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "dimoca",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "dznew",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "fhyst",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "gwl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwlconv",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwli",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwlinp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwlm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "gwltab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "htb",
+          "kind": 1,
+          "count": -1,
+          "bits": 64
+        },
+        {
+          "field": "h",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "haqtab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "hbot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hbotab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "hdrain",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "hm1",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "hplate",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "ivolbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "ipondbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "isicbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "issnowbeg",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "ithetabeg",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "k",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64
+        },
+        {
+          "field": "kbot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "kmean",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64
+        },
+        {
+          "field": "ksatfit",
+          "kind": 1,
+          "count": 25,
+          "bits": 64
+        },
+        {
+          "field": "ksatexm",
+          "kind": 1,
+          "count": 25,
+          "bits": 64
+        },
+        {
+          "field": "ldwet",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pegwl",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pegwl_bot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pond",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondini",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondmx",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "pondmxtab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "q",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64
+        },
+        {
+          "field": "qbot",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "qbotab",
+          "kind": 1,
+          "count": 73200,
+          "bits": 64
+        },
+        {
+          "field": "qbot_nonfrozen",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "qimmob",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "qrot",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "qtop",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "epd",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "reva",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rimlay",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsigni",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsoil",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsro",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "rsroexp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "runon",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "runots",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "saev",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "shape_3",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sinamp",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sinave",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "sinmax",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "spev",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "tau",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "theta",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetar",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetas",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetm1",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "thetsl",
+          "kind": 1,
+          "count": 25,
+          "bits": 64
+        },
+        {
+          "field": "volact",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "volini",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "volm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64
+        },
+        {
+          "field": "zi",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64
+        },
+        {
+          "field": "flksatexm",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fllowgwl",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        },
+        {
+          "field": "fluseksatexm",
+          "kind": 3,
+          "count": 5000,
+          "bits": 32
+        },
+        {
+          "field": "flMaxIterTime",
+          "kind": 3,
+          "count": 1,
+          "bits": 32
+        }
+      ],
+      "differences": [
+        {
+          "field": "daycum",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 153,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 154,
+              "cold": 1
+            }
+          ]
+        },
+        {
+          "field": "outper",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "tstart",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 153.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 37256.0,
+              "cold": 37409.0
+            }
+          ]
+        },
+        {
+          "field": "fldayend",
+          "kind": 3,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "floutput",
+          "kind": 3,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 1,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "flzerocumu",
+          "kind": 3,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 1,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0,
+              "cold": 1
+            }
+          ]
+        },
+        {
+          "field": "Itnumb",
+          "kind": 2,
+          "count": 200,
+          "bits": 32,
+          "changed_entries": 36,
+          "maximum_absolute_difference": 336626,
+          "first_changed": [
+            {
+              "index": 3,
+              "warm": 1401,
+              "cold": 0
+            },
+            {
+              "index": 4,
+              "warm": 2707,
+              "cold": 0
+            },
+            {
+              "index": 5,
+              "warm": 63,
+              "cold": 0
+            },
+            {
+              "index": 7,
+              "warm": 3,
+              "cold": 0
+            },
+            {
+              "index": 11,
+              "warm": 10,
+              "cold": 0
+            },
+            {
+              "index": 12,
+              "warm": 30,
+              "cold": 0
+            },
+            {
+              "index": 13,
+              "warm": 32,
+              "cold": 0
+            },
+            {
+              "index": 14,
+              "warm": 43,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "numbit",
+          "kind": 2,
+          "count": 1,
+          "bits": 32,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 4,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 4,
+              "cold": 0
+            }
+          ]
+        },
+        {
+          "field": "gwli",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 75.0,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -75.0,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "gwlm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 87.88882911419707,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": -87.88882911419707,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "q",
+          "kind": 1,
+          "count": 5001,
+          "bits": 64,
+          "changed_entries": 23,
+          "maximum_absolute_difference": 0.12492015698567893,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.0401266452440784,
+              "cold": 0.0
+            },
+            {
+              "index": 2,
+              "warm": 0.01521258831942009,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 0.01160346834356853,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 0.012147847812563894,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 0.014013460367130325,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 0.016388217065363347,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 0.019787296411563918,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 0.023252184285125925,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "qtop",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.0401266452441121,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.0401266452441121,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "reva",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.0401266452441121,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.0401266452441121,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "thetm1",
+          "kind": 1,
+          "count": 5000,
+          "bits": 64,
+          "changed_entries": 34,
+          "maximum_absolute_difference": 0.3870640000000001,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 0.17297900216926676,
+              "cold": 0.0
+            },
+            {
+              "index": 2,
+              "warm": 0.21680962945604493,
+              "cold": 0.0
+            },
+            {
+              "index": 3,
+              "warm": 0.2332445925436424,
+              "cold": 0.0
+            },
+            {
+              "index": 4,
+              "warm": 0.24305665096046014,
+              "cold": 0.0
+            },
+            {
+              "index": 5,
+              "warm": 0.25075360840055577,
+              "cold": 0.0
+            },
+            {
+              "index": 6,
+              "warm": 0.25707537766355604,
+              "cold": 0.0
+            },
+            {
+              "index": 7,
+              "warm": 0.2628781148282482,
+              "cold": 0.0
+            },
+            {
+              "index": 8,
+              "warm": 0.2683591481399714,
+              "cold": 0.0
+            }
+          ]
+        },
+        {
+          "field": "volini",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 0.05377460070845075,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 72.3652100475769,
+              "cold": 72.41898464828535
+            }
+          ]
+        },
+        {
+          "field": "volm1",
+          "kind": 1,
+          "count": 1,
+          "bits": 64,
+          "changed_entries": 1,
+          "maximum_absolute_difference": 72.4353288225017,
+          "first_changed": [
+            {
+              "index": 1,
+              "warm": 72.4353288225017,
+              "cold": 0.0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "lossless_result": {
+    "archive": "BLOCK_J_CURRENT_DAILY_DIAGNOSTIC_RAW.tar.xz",
+    "member": "current-history-daily-7ca12519bd13bc026953f4837dfb7c9c72ed2605/RESULT.json",
+    "sha256": "04b11e59a552f6995cb29cadd901d75a0595bd4eb6b20c5ba983a16a09d9c3bd"
+  }
+}
