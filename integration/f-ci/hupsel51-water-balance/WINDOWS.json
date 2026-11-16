@@ -1,0 +1,1453 @@
+{
+  "runtime_source_commit": "6e2cd26f873f9a935af92816a2f1d947df9293c7",
+  "canonical_parent": "3fb625da7",
+  "source_sha256": {
+    "app/hybrid_water/daily_host.py": "c541476b5b2d3675d48b89d926e8b7fd0313d706457016e84dcbd7d03bffc354",
+    "app/hybrid_water/hybrid_step_budget.f90": "aac67d0eb9d3c613401294f982b4ae463084dca7dc5ddcc50a0100b7eea073c3",
+    "app/hybrid_water/donor_sources.py": "2110a4c00f92357785cc40533763c54ebd325960534ebb216caec96f776d6b5c",
+    "app/hybrid_water/experimental_project.py": "958df111649afd7cc8a9025856ec952a05646f135821a2baf89dc7460c0af5a8"
+  },
+  "Windows": {
+    "O2": {
+      "undrained": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 2.3109292257572633e-13,
+          "max_kernel_cm": 2.3225865675158275e-13,
+          "max_solute_mg_cm2": 1.1316295123187103e-13,
+          "sum_water_residual_cm": 3.1970948512292235e-12
+        },
+        "model_seconds": 4.614329400006682,
+        "build_sha256": "a3ac8ea73c7d97c39e7c61c9913e6ba3d7dd272e89c50ee399a19ee338353177",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 50,
+            "end": 52,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.269362400053069
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.3241521001327783
+          }
+        ]
+      }
+    },
+    "O0": {
+      "undrained": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 2.3109292257572633e-13,
+          "max_kernel_cm": 2.3225865675158275e-13,
+          "max_solute_mg_cm2": 1.1316295123187103e-13,
+          "sum_water_residual_cm": 3.1970948512292235e-12
+        },
+        "model_seconds": 5.172675400041044,
+        "build_sha256": "5d7620eb50f5d0088ac62e3202d486a86e3f4cf7068446baff3aac69a420d509",
+        "profiles": {
+          "kernel_flags": [
+            "-O0",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O0",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 50,
+            "end": 52,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.30227190000005066
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.3200545001309365
+          }
+        ]
+      }
+    },
+    "named": {
+      "grass": {
+        "status": "FULL_PASS",
+        "full_days": 1827,
+        "budgets": {
+          "days": 1827,
+          "max_water_cm": 1.2831355015544926e-13,
+          "max_kernel_cm": 1.2828627049543684e-13,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": -1.9993334022601785e-13
+        },
+        "model_seconds": 11.680535200051963,
+        "build_sha256": "a65b9d9a64b09f512c9b801cc643c8e116fe168c9d6299e4e74dbb9d812bce62",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 365,
+            "end": 367,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.2601069000083953
+          }
+        ]
+      },
+      "hupsel": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 9.997037887180676e-11,
+          "max_kernel_cm": 9.997380701065595e-11,
+          "max_solute_mg_cm2": 2.159834487009581e-13,
+          "sum_water_residual_cm": 2.6692236513800333e-10
+        },
+        "model_seconds": 5.465337500208989,
+        "build_sha256": "c93584d2163f9517405b022a4d246327669e92b0cda6a6994ea3cafa0d04c20c",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 365,
+            "end": 367,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.4985324000008404
+          }
+        ]
+      },
+      "salt": {
+        "status": "FULL_PASS",
+        "full_days": 1461,
+        "budgets": {
+          "days": 1461,
+          "max_water_cm": 2.959653355727454e-12,
+          "max_kernel_cm": 2.9596325390457423e-12,
+          "max_solute_mg_cm2": 1.3835196877032274e-11,
+          "sum_water_residual_cm": 2.9654271659768083e-10
+        },
+        "model_seconds": 12.232941299909726,
+        "build_sha256": "a96959f4b2ecbd9fcb70e693358f15232d04c2a8a694af4fdba160b434f76910",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 109,
+            "end": 111,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.33925159997306764
+          }
+        ]
+      }
+    }
+  },
+  "release_unchanged": true,
+  "water_guard_cm": 1e-10,
+  "solute_guard_mg_cm2": 1e-10,
+  "tolerances_changed": false,
+  "RC2_modified": false,
+  "original_comparison": {
+    "pristine431_retained_partial": {
+      "compared_days": 336,
+      "identical_executed_inputs_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "405afc1a369be1032d45902c33a466edd01332f59c74ca5f0d293403fa2e007b"
+      },
+      "fields": {
+        "RAIN": {
+          "max_abs_difference": 1.0000056338554941e-12,
+          "worst_day": 66
+        },
+        "IRRIG": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "RUNOFF": {
+          "max_abs_difference": 0.193539933433,
+          "worst_day": 5
+        },
+        "EIC": {
+          "max_abs_difference": 9.999917560676863e-13,
+          "worst_day": 184
+        },
+        "EPD": {
+          "max_abs_difference": 0.047640390698,
+          "worst_day": 23
+        },
+        "EPOT": {
+          "max_abs_difference": 1.09999995223653e-11,
+          "worst_day": 247
+        },
+        "EACT": {
+          "max_abs_difference": 0.014746731376000001,
+          "worst_day": 23
+        },
+        "TPOT": {
+          "max_abs_difference": 8.299999576522055e-11,
+          "worst_day": 247
+        },
+        "TACT": {
+          "max_abs_difference": 0.0003027651280000099,
+          "worst_day": 170
+        },
+        "TREDDRY": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "TREDWET": {
+          "max_abs_difference": 0.0003027651280000099,
+          "worst_day": 170
+        },
+        "TREDSOL": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "SSDI": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "GWL": {
+          "max_abs_difference": 12.766802877959,
+          "worst_day": 23
+        },
+        "PD_VOL": {
+          "max_abs_difference": 0.075642625923,
+          "worst_day": 24
+        },
+        "IC_VOL": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "WTOT": {
+          "max_abs_difference": 0.19353992876700943,
+          "worst_day": 5
+        },
+        "DSTOR": {
+          "max_abs_difference": 0.19353983508200034,
+          "worst_day": 5
+        },
+        "BALDEV": {
+          "max_abs_difference": 0.000498512385,
+          "worst_day": 334
+        },
+        "CH": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "CF": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "TSUM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "DVS": {
+          "max_abs_difference": 1.1441524000000021e-05,
+          "worst_day": 152
+        },
+        "LAIPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PWSO": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PWLV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PWST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PWRT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PDWLV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PDWST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PDWRT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PTWLV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PTWST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PTWRT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PWDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "RDPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "ICUTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "TCUTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PHRVDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PLOSSDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "VCOVER": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "LAI": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "WSO": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "WLV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "WST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "WRT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "DWLV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "DWST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "DWRT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "TWLV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "TWST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "TWRT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "WDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "RD": {
+          "max_abs_difference": 0.0110866469430011,
+          "worst_day": 168
+        },
+        "ICUT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "TCUT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "HRVDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "LOSSDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PGASSTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "PGASST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "GASSTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "GASST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "MRESTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "MREST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 288
+        },
+        "S_RAIN": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "S_IRRIG": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "S_DEC": {
+          "max_abs_difference": 0.001994282543999998,
+          "worst_day": 5
+        },
+        "S_UPT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "S_STOT": {
+          "max_abs_difference": 0.0019942825440040224,
+          "worst_day": 5
+        },
+        "S_BALDEV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 336
+        },
+        "S_DSTOR": {
+          "max_abs_difference": 0.0019942825440040224,
+          "worst_day": 5
+        }
+      },
+      "reference_csv_sha256": "975a04557ebb0ef48529dfe5b409bfe22d7c3ed304e869038107ee495f1a7b9c",
+      "day51": {
+        "GWL": ".830655506135",
+        "WTOT": "78.817220000000",
+        "BALDEV": "5.873903714537E-07",
+        "S_STOT": "45.798265760666"
+      },
+      "scope": "Retained unmodified60s incomplete run"
+    },
+    "431_linear_pond_diagnostic": {
+      "compared_days": 1096,
+      "identical_executed_inputs_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "405afc1a369be1032d45902c33a466edd01332f59c74ca5f0d293403fa2e007b"
+      },
+      "fields": {
+        "RAIN": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "IRRIG": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "RUNOFF": {
+          "max_abs_difference": 0.032701207656000014,
+          "worst_day": 5
+        },
+        "EIC": {
+          "max_abs_difference": 0.0007842524690000463,
+          "worst_day": 562
+        },
+        "EPD": {
+          "max_abs_difference": 0.004342939178000001,
+          "worst_day": 24
+        },
+        "EPOT": {
+          "max_abs_difference": 0.00040375492100000465,
+          "worst_day": 556
+        },
+        "EACT": {
+          "max_abs_difference": 0.002304764188999997,
+          "worst_day": 918
+        },
+        "TPOT": {
+          "max_abs_difference": 0.0006582388949999962,
+          "worst_day": 561
+        },
+        "TACT": {
+          "max_abs_difference": 0.0035806557760000024,
+          "worst_day": 554
+        },
+        "TREDDRY": {
+          "max_abs_difference": 8.245481000000002e-06,
+          "worst_day": 908
+        },
+        "TREDWET": {
+          "max_abs_difference": 0.0032663463710000014,
+          "worst_day": 554
+        },
+        "TREDSOL": {
+          "max_abs_difference": 0.0037320208090000015,
+          "worst_day": 589
+        },
+        "SSDI": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "GWL": {
+          "max_abs_difference": 1.7255950528180009,
+          "worst_day": 23
+        },
+        "PD_VOL": {
+          "max_abs_difference": 0.023583228671000017,
+          "worst_day": 24
+        },
+        "IC_VOL": {
+          "max_abs_difference": 0.005324719615,
+          "worst_day": 1096
+        },
+        "WTOT": {
+          "max_abs_difference": 0.03270224056799975,
+          "worst_day": 23
+        },
+        "DSTOR": {
+          "max_abs_difference": 0.03270129651599962,
+          "worst_day": 5
+        },
+        "BALDEV": {
+          "max_abs_difference": 0.005324697112,
+          "worst_day": 1096
+        },
+        "CH": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "CF": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "TSUM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "DVS": {
+          "max_abs_difference": 3.0380420000000697e-06,
+          "worst_day": 152
+        },
+        "LAIPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PWSO": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PWLV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PWST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PWRT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PDWLV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PDWST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PDWRT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PTWLV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PTWST": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PTWRT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PWDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "RDPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "ICUTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "TCUTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PHRVDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PLOSSDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "VCOVER": {
+          "max_abs_difference": 0.000982366573000104,
+          "worst_day": 557
+        },
+        "LAI": {
+          "max_abs_difference": 0.005746794068999694,
+          "worst_day": 620
+        },
+        "WSO": {
+          "max_abs_difference": 3.957728242554367,
+          "worst_day": 582
+        },
+        "WLV": {
+          "max_abs_difference": 2.3944975285160126,
+          "worst_day": 620
+        },
+        "WST": {
+          "max_abs_difference": 0.8136980578079829,
+          "worst_day": 582
+        },
+        "WRT": {
+          "max_abs_difference": 1.2064655339939918,
+          "worst_day": 582
+        },
+        "DWLV": {
+          "max_abs_difference": 1.6156640941959495,
+          "worst_day": 637
+        },
+        "DWST": {
+          "max_abs_difference": 0.2643333136419983,
+          "worst_day": 884
+        },
+        "DWRT": {
+          "max_abs_difference": 0.6099535168100374,
+          "worst_day": 1096
+        },
+        "TWLV": {
+          "max_abs_difference": 1.7888914398008637,
+          "worst_day": 582
+        },
+        "TWST": {
+          "max_abs_difference": 1.0439804782861302,
+          "worst_day": 884
+        },
+        "TWRT": {
+          "max_abs_difference": 1.2064655339939918,
+          "worst_day": 582
+        },
+        "WDM": {
+          "max_abs_difference": 6.560317740162645,
+          "worst_day": 582
+        },
+        "RD": {
+          "max_abs_difference": 0.0020268756119996567,
+          "worst_day": 288
+        },
+        "ICUT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "TCUT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "HRVDM": {
+          "max_abs_difference": 2.609951195714075,
+          "worst_day": 913
+        },
+        "LOSSDM": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PGASSTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "PGASST": {
+          "max_abs_difference": 0.4905173131439824,
+          "worst_day": 558
+        },
+        "GASSTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "GASST": {
+          "max_abs_difference": 5.099436625045001,
+          "worst_day": 554
+        },
+        "MRESTPOT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "MREST": {
+          "max_abs_difference": 0.760457397416,
+          "worst_day": 861
+        },
+        "S_RAIN": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "S_IRRIG": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "S_DEC": {
+          "max_abs_difference": 0.0007684678710000031,
+          "worst_day": 5
+        },
+        "S_UPT": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "S_STOT": {
+          "max_abs_difference": 0.0007684678709978243,
+          "worst_day": 5
+        },
+        "S_BALDEV": {
+          "max_abs_difference": 0.0,
+          "worst_day": 1096
+        },
+        "S_DSTOR": {
+          "max_abs_difference": 0.0007684678709978243,
+          "worst_day": 5
+        }
+      },
+      "reference_csv_sha256": "bb6308038ad08eb017ce659b9d0cde30af90f5606f65c1acb433d4ae6e1c74b1",
+      "day51": {
+        "GWL": ".824933214169",
+        "WTOT": "78.817220000000",
+        "BALDEV": "6.698877008660E-08",
+        "S_STOT": "45.800811696927"
+      },
+      "scope": "Original program with only corrected pond tangent, full1096; numerical discriminator, not pristine or independently qualified reference"
+    }
+  },
+  "science": "NOT_QUALIFIED whole scientific equivalence; original criteria and reference limitations retained",
+  "named_RC2_preservation": {
+    "grass": {
+      "generated_original_units_byte_exact": true,
+      "units": 6,
+      "all_physical_daily_fields_exact_to_RC2": true,
+      "max_groundwater_difference_cm": 0.0
+    },
+    "hupsel": {
+      "generated_original_units_byte_exact": true,
+      "units": 12,
+      "all_physical_daily_fields_exact_to_RC2": true,
+      "max_groundwater_difference_cm": 0.0
+    },
+    "salt": {
+      "generated_original_units_byte_exact": true,
+      "units": 12,
+      "all_physical_daily_fields_exact_to_RC2": true,
+      "max_groundwater_difference_cm": 0.0
+    }
+  },
+  "original_diagnostic_control": {
+    "status": "TARGETED_ORIGINAL_COMPARISON_COMPLETE",
+    "pristine_original_full": "Retained60s timeout; first336days usable, not full reference PASS",
+    "corrected_original_control": "Original program, time and loose convergence controls; only analytic coupled pond Jacobian changes; no SWAP5 strict guard, not pristine431 or independently scientifically qualified",
+    "control_full_days": 1096,
+    "control_wall_seconds": 2.7426531000528485,
+    "source_sha256": {
+      "pristine_headcalc": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "control_headcalc": "d514f873a6a4e25e66d4e9c1d0233af3f45e0078f55e102f5255a8f50e52670e",
+      "tangent_helper": "aac67d0eb9d3c613401294f982b4ae463084dca7dc5ddcc50a0100b7eea073c3"
+    },
+    "control_executable_sha256": "0704c00821ac9e2d1325ae106ab3e2f8662881c70fb255605a6674f8780a2f23",
+    "identical_executed_inputs_sha256": {
+      "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+      "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+      "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+      "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+      "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+      "swap.swp": "405afc1a369be1032d45902c33a466edd01332f59c74ca5f0d293403fa2e007b"
+    },
+    "commands": [
+      {
+        "command": [
+          "gfortran",
+          "-O2",
+          "-ffree-line-length-none",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic",
+          "-IC:\\SWAP5-RC2\\provider\\build\\swap-obj",
+          "-c",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\app\\hybrid_water\\hybrid_step_budget.f90"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gfortran",
+          "-O2",
+          "-ffree-line-length-none",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic",
+          "-IC:\\SWAP5-RC2\\provider\\build\\swap-obj",
+          "-c",
+          "headcalc.f90"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gfortran",
+          "-o",
+          "swap431-linear-pond.exe",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\arrays.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\boundbottom.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\boundtop.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\calcgwl.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\description.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\divdra.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\drainage.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\fixed.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\fluxes.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\frozencond.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\functions.o",
+          "C:\\SWAP5-testing\\hupsel51\\comparison431\\headcalc.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\hysteresis.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\initialize.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\integral.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\interface_atmosphere.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\interface_plant.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\irrigation.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\macropore.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\macroporeoutput.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\macrorate.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\management_soil.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\MOD_drainage.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\MOD_meteo.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\MOD_MvG_functions.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\MOD_RIA.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\MOD_runon.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\oxygenstress.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\params.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\readswap.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\rootextraction.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\RWU_micro.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\snow.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\soilwater.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\solute.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\sptabulated.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\surfacewater.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\swap.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\swap_base.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\swap_csv_output.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\swap_main.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\swapoutput.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\temperature.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\tillage.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\timecontrol.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\tridag.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\variables.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\watstor.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\WC_K_models_04_11.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost_soil_amendments.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost_soil_declarations.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost_soil_interface.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost_soil_parameters.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofost_soil_watern.o",
+          "C:\\SWAP5-RC2\\provider\\build\\swap-obj\\wofostnut.o",
+          "C:\\SWAP5-testing\\hupsel51\\comparison431\\hybrid_step_budget.o",
+          "C:\\SWAP5-RC2\\provider\\build\\ttutil-obj\\libttutil.a"
+        ],
+        "returncode": 0
+      }
+    ],
+    "comparison": {
+      "pristine431_retained_partial": {
+        "compared_days": 336,
+        "max_abs": {
+          "GWL": 12.766802877959,
+          "WTOT": 0.19353992876700943,
+          "BALDEV": 0.000498512385,
+          "S_STOT": 0.0019942825440040224,
+          "S_BALDEV": 0.0
+        },
+        "day51": {
+          "GWL": ".830655506135",
+          "WTOT": "78.817220000000",
+          "BALDEV": "5.873903714537E-07",
+          "S_STOT": "45.798265760666",
+          "S_BALDEV": "0."
+        }
+      },
+      "original431_with_only_coupled_tangent": {
+        "compared_days": 1096,
+        "max_abs": {
+          "GWL": 1.7255950528180009,
+          "WTOT": 0.03270224056799975,
+          "BALDEV": 0.005324697112,
+          "S_STOT": 0.0007684678709978243,
+          "S_BALDEV": 0.0
+        },
+        "day51": {
+          "GWL": ".824933214169",
+          "WTOT": "78.817220000000",
+          "BALDEV": "6.698877008660E-08",
+          "S_STOT": "45.800811696927",
+          "S_BALDEV": "0."
+        }
+      }
+    },
+    "tolerances_changed": false
+  },
+  "repaired_day51": {
+    "independent_residual_cm": 1.0200174038743626e-14,
+    "kernel_residual_cm": -1.6653345369377348e-14,
+    "integrated_guard_residual_cm": -1.0370176939389353e-14
+  },
+  "repaired_day433": {
+    "independent_residual_cm": 1.1046719095020308e-14,
+    "kernel_residual_cm": -1.3627987627273797e-14
+  },
+  "component": {
+    "status": "ORIGINAL_LINEAR_POND_TANGENT_O0_O2_PASS",
+    "profiles": {
+      "O0": {
+        "cases": 36,
+        "maximum_relative_complex_step_error": 2.7675639557855903e-15,
+        "maximum_old_fixed_pond_relative_error": 40.000000000000114,
+        "actual": [
+          0.009999990000010001,
+          0.009999990099019704,
+          0.009999990000010001,
+          0.009999990002009598,
+          0.009999990000010001,
+          0.009999990001009899,
+          0.009996001599360257,
+          0.00999920006399488,
+          0.009996001599360257,
+          0.009996297667530544,
+          0.009996001599360257,
+          0.00999615532487505,
+          0.9999000099990001,
+          0.9999009999009999,
+          0.9999000099990001,
+          0.9999000299910027,
+          0.9999000099990001,
+          0.9999000199960009,
+          0.9615384615384615,
+          0.9920634920634921,
+          0.9615384615384615,
+          0.9642857142857143,
+          0.9615384615384615,
+          0.9629629629629629,
+          909.090909090909,
+          909.9099099099099,
+          909.090909090909,
+          909.1074350118159,
+          909.090909090909,
+          909.0991728024725,
+          24.390243902439025,
+          111.11111111111111,
+          24.390243902439025,
+          26.29016553067186,
+          24.390243902439025,
+          25.341130604288498
+        ]
+      },
+      "O2": {
+        "cases": 36,
+        "maximum_relative_complex_step_error": 2.7675639557855903e-15,
+        "maximum_old_fixed_pond_relative_error": 40.000000000000114,
+        "actual": [
+          0.009999990000010001,
+          0.009999990099019704,
+          0.009999990000010001,
+          0.009999990002009598,
+          0.009999990000010001,
+          0.009999990001009899,
+          0.009996001599360257,
+          0.00999920006399488,
+          0.009996001599360257,
+          0.009996297667530544,
+          0.009996001599360257,
+          0.00999615532487505,
+          0.9999000099990001,
+          0.9999009999009999,
+          0.9999000099990001,
+          0.9999000299910027,
+          0.9999000099990001,
+          0.9999000199960009,
+          0.9615384615384615,
+          0.9920634920634921,
+          0.9615384615384615,
+          0.9642857142857143,
+          0.9615384615384615,
+          0.9629629629629629,
+          909.090909090909,
+          909.9099099099099,
+          909.090909090909,
+          909.1074350118159,
+          909.090909090909,
+          909.0991728024725,
+          24.390243902439025,
+          111.11111111111111,
+          24.390243902439025,
+          26.29016553067186,
+          24.390243902439025,
+          25.341130604288498
+        ]
+      }
+    },
+    "cases": [
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.00999999000001
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.009999990099019704
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.00999999000001
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.009999990002009598
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.00999999000001
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.009999990001009897
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.009996001599360257
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.00999920006399488
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.009996001599360257
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.009996297667530544
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.009996001599360257
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.009996155324875048
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.9999000099990001
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.9999009999009999
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.9999000099990001
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.9999000299910028
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.9999000099990001
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.9999000199960009
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.9615384615384616
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.992063492063492
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.9615384615384616
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.9642857142857143
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.9615384615384616
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.962962962962963
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 909.0909090909091
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 909.9099099099099
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 909.0909090909091
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 909.107435011816
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 909.0909090909091
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 909.0991728024725
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 24.390243902438957
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 111.11111111111101
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 24.390243902438957
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 26.290165530671835
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 24.390243902438957
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 25.341130604288505
+      }
+    ],
+    "finite_difference_tolerance_is_not_a_physical_balance_tolerance": true
+  },
+  "Ubuntu_run": 43844795787,
+  "Ubuntu_status": "PENDING at Windows seal; add terminal adjudication separately"
+}
