@@ -1,0 +1,1559 @@
+{
+  "status": "PRIVATE_COMPLETE_WOFOST_INTERFACE_RECONNECT_FAIL",
+  "interface_reconnected": true,
+  "cold_warm_physical_exact": false,
+  "pinned_source": "640565a8dee425aad182101d37ee5afb2f6e14a5",
+  "current_source": "cba180299356dc32c70c038b933650a75ae65bb2",
+  "original_run": 43416681903,
+  "origin_sha256": "977ea8c38f8eb1915c6f1e46b6d3477e4a4467fcb88cb253e4cade4b96486c74",
+  "origin_unchanged": true,
+  "no_publication": true,
+  "no_build_rebinding": true,
+  "original_executable_relink_exact": true,
+  "field_inventory": [
+    {
+      "field": "plant_interface.unit_crp",
+      "kind": "integer",
+      "original_expression": "unit_crp"
+    },
+    {
+      "field": "plant_interface.icrop",
+      "kind": "integer",
+      "original_expression": "icrop"
+    },
+    {
+      "field": "plant_interface.cropstart",
+      "kind": "real",
+      "original_expression": "cropstart"
+    },
+    {
+      "field": "plant_interface.cropend",
+      "kind": "real",
+      "original_expression": "cropend"
+    },
+    {
+      "field": "plant_interface.croptype",
+      "kind": "integer",
+      "original_expression": "croptype"
+    },
+    {
+      "field": "plant_interface.co2",
+      "kind": "real",
+      "original_expression": "co2"
+    },
+    {
+      "field": "plant_interface.fco2amax",
+      "kind": "real",
+      "original_expression": "fco2amax"
+    },
+    {
+      "field": "plant_interface.fco2eff",
+      "kind": "real",
+      "original_expression": "fco2eff"
+    },
+    {
+      "field": "plant_interface.fco2tra",
+      "kind": "real",
+      "original_expression": "fco2tra"
+    },
+    {
+      "field": "plant_interface.fl_start_croprotation",
+      "kind": "logical",
+      "original_expression": "fl_start_croprotation"
+    },
+    {
+      "field": "plant_interface.fl_start_cropemergence",
+      "kind": "logical",
+      "original_expression": "fl_start_cropemergence"
+    },
+    {
+      "field": "plant_interface.fl_cropemergence",
+      "kind": "logical",
+      "original_expression": "fl_cropemergence"
+    },
+    {
+      "field": "plant_interface.fl_cropharvest",
+      "kind": "logical",
+      "original_expression": "fl_cropharvest"
+    },
+    {
+      "field": "plant_interface.fl_cropharvestday",
+      "kind": "logical",
+      "original_expression": "fl_cropharvestday"
+    },
+    {
+      "field": "plant_interface.fl_cropisreset",
+      "kind": "logical",
+      "original_expression": "fl_cropisreset"
+    },
+    {
+      "field": "plant_interface.swcf",
+      "kind": "integer",
+      "original_expression": "swcf"
+    },
+    {
+      "field": "plant_interface.cf",
+      "kind": "real",
+      "original_expression": "cf"
+    },
+    {
+      "field": "plant_interface.ch",
+      "kind": "real",
+      "original_expression": "ch"
+    },
+    {
+      "field": "plant_interface.albedo",
+      "kind": "real",
+      "original_expression": "albedo"
+    },
+    {
+      "field": "plant_interface.rsc",
+      "kind": "real",
+      "original_expression": "rsc"
+    },
+    {
+      "field": "plant_interface.rsw",
+      "kind": "real",
+      "original_expression": "rsw"
+    },
+    {
+      "field": "plant_interface.kdif",
+      "kind": "real",
+      "original_expression": "kdif"
+    },
+    {
+      "field": "plant_interface.kdir",
+      "kind": "real",
+      "original_expression": "kdir"
+    },
+    {
+      "field": "plant_interface.vcover",
+      "kind": "real",
+      "original_expression": "vcover"
+    },
+    {
+      "field": "plant_interface.sw_drought",
+      "kind": "integer",
+      "original_expression": "sw_drought"
+    },
+    {
+      "field": "plant_interface.sw_oxygen",
+      "kind": "integer",
+      "original_expression": "sw_oxygen"
+    },
+    {
+      "field": "plant_interface.mrftb",
+      "kind": "real",
+      "original_expression": "mrftb"
+    },
+    {
+      "field": "plant_interface.max_resp_factor",
+      "kind": "real",
+      "original_expression": "max_resp_factor"
+    },
+    {
+      "field": "plant_interface.q10_root",
+      "kind": "real",
+      "original_expression": "q10_root"
+    },
+    {
+      "field": "plant_interface.c_mroot",
+      "kind": "real",
+      "original_expression": "c_mroot"
+    },
+    {
+      "field": "plant_interface.f_senes",
+      "kind": "real",
+      "original_expression": "f_senes"
+    },
+    {
+      "field": "plant_interface.sw_inter",
+      "kind": "integer",
+      "original_expression": "sw_inter"
+    },
+    {
+      "field": "plant_interface.dt_interc_event",
+      "kind": "real",
+      "original_expression": "dt_interc_event"
+    },
+    {
+      "field": "plant_interface.cofab",
+      "kind": "real",
+      "original_expression": "cofab"
+    },
+    {
+      "field": "plant_interface.pfreetb",
+      "kind": "real",
+      "original_expression": "pfreetb"
+    },
+    {
+      "field": "plant_interface.pstemtb",
+      "kind": "real",
+      "original_expression": "pstemtb"
+    },
+    {
+      "field": "plant_interface.scanopytb",
+      "kind": "real",
+      "original_expression": "scanopytb"
+    },
+    {
+      "field": "plant_interface.avevaptb",
+      "kind": "real",
+      "original_expression": "avevaptb"
+    },
+    {
+      "field": "plant_interface.avprectb",
+      "kind": "real",
+      "original_expression": "avprectb"
+    },
+    {
+      "field": "plant_interface.siccaplai",
+      "kind": "real",
+      "original_expression": "siccaplai"
+    },
+    {
+      "field": "plant_interface.siccap",
+      "kind": "real",
+      "original_expression": "siccap"
+    },
+    {
+      "field": "plant_interface.sicact",
+      "kind": "real",
+      "original_expression": "sicact"
+    },
+    {
+      "field": "plant_interface.crsflx_in",
+      "kind": "real",
+      "original_expression": "crsflx_in"
+    },
+    {
+      "field": "plant_interface.crsflx_out",
+      "kind": "real",
+      "original_expression": "crsflx_out"
+    },
+    {
+      "field": "plant_interface.siccaploss",
+      "kind": "real",
+      "original_expression": "siccaploss"
+    },
+    {
+      "field": "plant_interface.swrd",
+      "kind": "integer",
+      "original_expression": "swrd"
+    },
+    {
+      "field": "plant_interface.swrdc",
+      "kind": "integer",
+      "original_expression": "swrdc"
+    },
+    {
+      "field": "plant_interface.swwrtnonox",
+      "kind": "integer",
+      "original_expression": "swwrtnonox"
+    },
+    {
+      "field": "plant_interface.aeratecrit",
+      "kind": "real",
+      "original_expression": "aeratecrit"
+    },
+    {
+      "field": "plant_interface.wrtmax",
+      "kind": "real",
+      "original_expression": "wrtmax"
+    },
+    {
+      "field": "plant_interface.wroottb",
+      "kind": "real",
+      "original_expression": "wroottb"
+    },
+    {
+      "field": "plant_interface.noddrz",
+      "kind": "integer",
+      "original_expression": "noddrz"
+    },
+    {
+      "field": "plant_interface.rd",
+      "kind": "real",
+      "original_expression": "rd"
+    },
+    {
+      "field": "plant_interface.dvs",
+      "kind": "real",
+      "original_expression": "dvs"
+    },
+    {
+      "field": "plant_interface.lai",
+      "kind": "real",
+      "original_expression": "lai"
+    },
+    {
+      "field": "plant_interface.tsum",
+      "kind": "real",
+      "original_expression": "tsum"
+    },
+    {
+      "field": "plant_interface.wrt",
+      "kind": "real",
+      "original_expression": "wrt"
+    },
+    {
+      "field": "plant_interface.wst",
+      "kind": "real",
+      "original_expression": "wst"
+    },
+    {
+      "field": "plant_interface.wlv",
+      "kind": "real",
+      "original_expression": "wlv"
+    },
+    {
+      "field": "plant_interface.wso",
+      "kind": "real",
+      "original_expression": "wso"
+    },
+    {
+      "field": "plant_interface.dwrt",
+      "kind": "real",
+      "original_expression": "dwrt"
+    },
+    {
+      "field": "plant_interface.dwst",
+      "kind": "real",
+      "original_expression": "dwst"
+    },
+    {
+      "field": "plant_interface.dwlv",
+      "kind": "real",
+      "original_expression": "dwlv"
+    },
+    {
+      "field": "plant_interface.grrt",
+      "kind": "real",
+      "original_expression": "grrt"
+    },
+    {
+      "field": "plant_interface.drrt",
+      "kind": "real",
+      "original_expression": "drrt"
+    },
+    {
+      "field": "plant_interface.drst",
+      "kind": "real",
+      "original_expression": "drst"
+    },
+    {
+      "field": "plant_interface.drlv",
+      "kind": "real",
+      "original_expression": "drlv"
+    },
+    {
+      "field": "plant_interface.ipgass",
+      "kind": "real",
+      "original_expression": "ipgass"
+    },
+    {
+      "field": "plant_interface.igass",
+      "kind": "real",
+      "original_expression": "igass"
+    },
+    {
+      "field": "plant_interface.imres",
+      "kind": "real",
+      "original_expression": "imres"
+    },
+    {
+      "field": "plant_interface.laipot",
+      "kind": "real",
+      "original_expression": "laipot"
+    },
+    {
+      "field": "plant_interface.wrtpot",
+      "kind": "real",
+      "original_expression": "wrtpot"
+    },
+    {
+      "field": "plant_interface.wstpot",
+      "kind": "real",
+      "original_expression": "wstpot"
+    },
+    {
+      "field": "plant_interface.wlvpot",
+      "kind": "real",
+      "original_expression": "wlvpot"
+    },
+    {
+      "field": "plant_interface.wsopot",
+      "kind": "real",
+      "original_expression": "wsopot"
+    },
+    {
+      "field": "plant_interface.dwrtpot",
+      "kind": "real",
+      "original_expression": "dwrtpot"
+    },
+    {
+      "field": "plant_interface.dwstpot",
+      "kind": "real",
+      "original_expression": "dwstpot"
+    },
+    {
+      "field": "plant_interface.dwlvpot",
+      "kind": "real",
+      "original_expression": "dwlvpot"
+    },
+    {
+      "field": "plant_interface.grrtpot",
+      "kind": "real",
+      "original_expression": "grrtpot"
+    },
+    {
+      "field": "plant_interface.ipgasspot",
+      "kind": "real",
+      "original_expression": "ipgasspot"
+    },
+    {
+      "field": "plant_interface.igasspot",
+      "kind": "real",
+      "original_expression": "igasspot"
+    },
+    {
+      "field": "plant_interface.imrespot",
+      "kind": "real",
+      "original_expression": "imrespot"
+    },
+    {
+      "field": "plant_interface.dmhrv",
+      "kind": "real",
+      "original_expression": "dmhrv"
+    },
+    {
+      "field": "plant_interface.dmloss",
+      "kind": "real",
+      "original_expression": "dmloss"
+    },
+    {
+      "field": "plant_interface.icut",
+      "kind": "integer",
+      "original_expression": "icut"
+    },
+    {
+      "field": "plant_interface.tcut",
+      "kind": "integer",
+      "original_expression": "tcut"
+    },
+    {
+      "field": "plant_interface.dmhrvpot",
+      "kind": "real",
+      "original_expression": "dmhrvpot"
+    },
+    {
+      "field": "plant_interface.dmlosspot",
+      "kind": "real",
+      "original_expression": "dmlosspot"
+    },
+    {
+      "field": "plant_interface.icutpot",
+      "kind": "integer",
+      "original_expression": "icutpot"
+    },
+    {
+      "field": "plant_interface.tcutpot",
+      "kind": "integer",
+      "original_expression": "tcutpot"
+    },
+    {
+      "field": "plant_interface.hlim3h",
+      "kind": "real",
+      "original_expression": "hlim3h"
+    },
+    {
+      "field": "plant_interface.hlim3l",
+      "kind": "real",
+      "original_expression": "hlim3l"
+    },
+    {
+      "field": "plant_interface.hlim4",
+      "kind": "real",
+      "original_expression": "hlim4"
+    },
+    {
+      "field": "atmosphere_interface.tav",
+      "kind": "real",
+      "original_expression": "tav"
+    },
+    {
+      "field": "atmosphere_interface.rad",
+      "kind": "real",
+      "original_expression": "rad"
+    },
+    {
+      "field": "atmosphere_interface.grai",
+      "kind": "real",
+      "original_expression": "grai"
+    },
+    {
+      "field": "variables.h",
+      "kind": "real",
+      "original_expression": "h(1:numnod)"
+    },
+    {
+      "field": "variables.theta",
+      "kind": "real",
+      "original_expression": "theta(1:numnod)"
+    },
+    {
+      "field": "variables.k",
+      "kind": "real",
+      "original_expression": "k(1:numnod+1)"
+    },
+    {
+      "field": "variables.kmean",
+      "kind": "real",
+      "original_expression": "kmean(1:numnod+1)"
+    },
+    {
+      "field": "variables.dimoca",
+      "kind": "real",
+      "original_expression": "dimoca(1:numnod)"
+    },
+    {
+      "field": "variables.fhyst",
+      "kind": "real",
+      "original_expression": "fhyst(1:numnod)"
+    },
+    {
+      "field": "variables.indeks",
+      "kind": "integer",
+      "original_expression": "indeks(1:numnod)"
+    },
+    {
+      "field": "variables.dt",
+      "kind": "real",
+      "original_expression": "dt"
+    },
+    {
+      "field": "variables.dtold",
+      "kind": "real",
+      "original_expression": "dtold"
+    },
+    {
+      "field": "variables.pond",
+      "kind": "real",
+      "original_expression": "pond"
+    },
+    {
+      "field": "variables.pondm1",
+      "kind": "real",
+      "original_expression": "pondm1"
+    },
+    {
+      "field": "variables.gwl",
+      "kind": "real",
+      "original_expression": "gwl"
+    },
+    {
+      "field": "variables.volact",
+      "kind": "real",
+      "original_expression": "volact"
+    },
+    {
+      "field": "MOD_MvG.cofgen",
+      "kind": "real",
+      "original_expression": "cofgen(:,1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.tsoil",
+      "kind": "real",
+      "original_expression": "tsoil(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.heacon",
+      "kind": "real",
+      "original_expression": "heacon(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.heacap",
+      "kind": "real",
+      "original_expression": "heacap(1:numnod)"
+    },
+    {
+      "field": "MOD_SoilTemperature.tetop",
+      "kind": "real",
+      "original_expression": "tetop"
+    },
+    {
+      "field": "MOD_SoilTemperature.tebot",
+      "kind": "real",
+      "original_expression": "tebot"
+    },
+    {
+      "field": "MOD_top.theatm",
+      "kind": "real",
+      "original_expression": "theatm"
+    },
+    {
+      "field": "MOD_top.katm",
+      "kind": "real",
+      "original_expression": "katm"
+    },
+    {
+      "field": "MOD_top.q0",
+      "kind": "real",
+      "original_expression": "q0"
+    },
+    {
+      "field": "MOD_top.hsurf",
+      "kind": "real",
+      "original_expression": "hsurf"
+    },
+    {
+      "field": "MOD_top.FlRunoff",
+      "kind": "logical",
+      "original_expression": "FlRunoff"
+    },
+    {
+      "field": "MOD_top.ftoph",
+      "kind": "logical",
+      "original_expression": "ftoph"
+    }
+  ],
+  "phase_differences": [
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.max_resp_factor",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 15.149238125057428
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.q10_root",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.c_mroot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.010666666666666666
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.f_senes",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0012334725512770789
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.411461882016534e-20
+    },
+    {
+      "phase": "AFTER_MANAGEMENT_RESTORE",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.07138540379011458
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.unit_crp",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 800.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.co2",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 360.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fco2amax",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fco2eff",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.fco2tra",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.swcf",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.ch",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 37.43243243243243
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.albedo",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.04000000000000001
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.rsc",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 135.8
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.kdif",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.kdir",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.7500000000000001
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.vcover",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.1504583073647925
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.max_resp_factor",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 15.149238125057428
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.q10_root",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.c_mroot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.010666666666666666
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.f_senes",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.sw_inter",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.siccaplai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.018900000000000004
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.siccap",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.004947735922824638
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.swrd",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.swwrtnonox",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.aeratecrit",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.5
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.lai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.261784969461621
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 50.219628534263364
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wst",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 58.254769099745516
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 142.62371866478247
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.dwlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.637252549087907e-05
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.790735769694051
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 6.696616676722917e-06
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.ipgass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 57.121150744102415
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.igass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 57.121044928145
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.imres",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.4729853262331085
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.laipot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.26178545523084096
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 50.21970762519203
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wstpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 58.25486084522275
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.wlvpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 142.62396965554535
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.7907619666970875
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.ipgasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 57.12123207532406
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.igasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 57.12123207532406
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.imrespot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.4729887147242
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0012334725512770789
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.411461882016534e-20
+    },
+    {
+      "phase": "AFTER_METEO2",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.07138540379011458
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0012334725512770789
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.411461882016534e-20
+    },
+    {
+      "phase": "AFTER_METEO3",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.07138540379011458
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.unit_crp",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 800.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.co2",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 360.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fco2amax",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fco2eff",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.fco2tra",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.swcf",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.ch",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 37.43243243243243
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.albedo",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.04000000000000001
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.rsc",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 135.8
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.kdif",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.kdir",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.7500000000000001
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.vcover",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.1504583073647925
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.max_resp_factor",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 15.149238125057428
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.q10_root",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.c_mroot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.010666666666666666
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.f_senes",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.sw_inter",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 3.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.siccaplai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.018900000000000004
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.siccap",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.004947735922824638
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.swrd",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.swwrtnonox",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.aeratecrit",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.5
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.lai",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.261784969461621
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 50.219628534263364
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wst",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 58.254769099745516
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 142.62371866478247
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.dwlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.637252549087907e-05
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.grrt",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.790735769694051
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.drlv",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 6.696616676722917e-06
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.ipgass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 57.121150744102415
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.igass",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 57.121044928145
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.imres",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.4729853262331085
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.laipot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.26178545523084096
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 50.21970762519203
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wstpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 58.25486084522275
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.wlvpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 142.62396965554535
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.grrtpot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.7907619666970875
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.ipgasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 57.12123207532406
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.igasspot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 57.12123207532406
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.imrespot",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 2.4729887147242
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "atmosphere_interface.tav",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 15.5
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "atmosphere_interface.rad",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 16660000.0
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0012334725512770789
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.411461882016534e-20
+    },
+    {
+      "phase": "BEFORE_METEO2",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.07138540379011458
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.dt_interc_event",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 1.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.cofab",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.25
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.hlim3h",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 325.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.hlim3l",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 600.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "plant_interface.hlim4",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 8000.0
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "MOD_top.theatm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.0012334725512770789
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "MOD_top.katm",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 7.411461882016534e-20
+    },
+    {
+      "phase": "BEFORE_METEO3",
+      "field": "MOD_top.q0",
+      "changed_entries": 1,
+      "maximum_absolute_difference": 0.07138540379011458
+    }
+  ],
+  "private_sources": {
+    "hybrid_state_diagnostic.f90": "81d9f3d9b8199e89bca1096e57bb710c1574b523c61296624187e7695282617e",
+    "wofost.f90": "61fd87bf1242f5da1b0c405e6da61ebc774ab427c7f171508905894993c8ef60",
+    "swap.f90": "e6e77a7ac146652224580246329ad6a16bf612e551cde86dbd2ad5521ff1e380",
+    "swap_main.f90": "500a1fce5636414cee1241bac3c99b02e375f1608b3c8bd32e4a4f9df5211a31"
+  },
+  "private_executable_sha256": "1b57fb896c2ca6588afaeb9668650e426d330b1f54e20c617be04b6ec79736fe",
+  "scope": "Read-only original component-state evidence, not current public qualification or demonstrated causation",
+  "records": {
+    "warm": {
+      "last_row": {
+        "column": 1,
+        "day": 531,
+        "committed": true,
+        "revision": 531,
+        "stock_end_cm": [
+          74.63237032642938,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          74.8464948017151,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.06789137551498903,
+          0.0,
+          0.06853427607930723,
+          0.0,
+          0.07769882369140228,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -103.94661099450543,
+          -97.98661818526992,
+          -92.90762181083922,
+          -88.55760522143761,
+          -84.7888120173792,
+          -81.47886268055879,
+          -78.52979226788344,
+          -75.88949979841308,
+          -73.51473753520206,
+          -71.35627956556425,
+          -66.10563476628815,
+          -59.12009894132666,
+          -53.216273468177704,
+          -47.807161372944385,
+          -42.697503732571775,
+          -37.674783760404495,
+          -32.688995783684774,
+          -27.723143200447105,
+          -22.765668779710776,
+          -17.809047361442683,
+          -10.358998648777686,
+          -0.3647299869762637,
+          9.635270013023737,
+          19.635270013023735,
+          29.635270013023735,
+          39.635270013023735,
+          49.635270013023735,
+          59.635270013023735,
+          69.63527001302373,
+          79.63527001302373,
+          89.63527001302373,
+          99.63527001302373,
+          109.63527001302373,
+          119.63527001302373
+        ],
+        "groundwater_cm": -75.36483619809806,
+        "drainage_outward_cm": 0.07769882369140228,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": 1.62231339473351e-14,
+        "kernel_residual_cm": -1.6209256159527285e-14,
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": -1.3839623891342967e-14
+      },
+      "snapshot_count": 55
+    },
+    "cold": {
+      "last_row": {
+        "column": 1,
+        "day": 531,
+        "committed": true,
+        "revision": 1,
+        "stock_end_cm": [
+          74.63237032871088,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          74.8464948017151,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.06789137541128991,
+          0.0,
+          0.06853427607930723,
+          0.0,
+          0.07769882151360064,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -103.94640677551975,
+          -97.9864907185431,
+          -92.90756045097706,
+          -88.55758819772588,
+          -84.78882125003601,
+          -81.47888492190609,
+          -78.52981937896033,
+          -75.88952665164246,
+          -73.51476141297505,
+          -71.35629969298483,
+          -66.10564771430532,
+          -59.120105206141204,
+          -53.21627676119018,
+          -47.80716315940001,
+          -42.69750497031017,
+          -37.674784725667536,
+          -32.688996574726666,
+          -27.723143882561995,
+          -22.765669396076802,
+          -17.8090479400393,
+          -10.358999201957007,
+          -0.36473053985337234,
+          9.635269460146628,
+          19.635269460146628,
+          29.635269460146628,
+          39.63526946014663,
+          49.63526946014663,
+          59.63526946014663,
+          69.63526946014663,
+          79.63526946014663,
+          89.63526946014663,
+          99.63526946014663,
+          109.63526946014663,
+          119.63526946014663
+        ],
+        "groundwater_cm": -75.36483675113243,
+        "drainage_outward_cm": 0.07769882151360064,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": 2.110811525568579e-14,
+        "kernel_residual_cm": -2.1094237467877974e-14,
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": -1.4530043834781736e-14
+      },
+      "snapshot_count": 55
+    }
+  },
+  "complete_lossless_report": {
+    "archive": "BLOCK_J_INTERFACE_PROBE_RAW.tar.xz",
+    "member": "water-history-components-cba180299356dc32c70c038b933650a75ae65bb2/RESULT.json",
+    "sha256": "9ff4c3a3d59421ab34ab75ff002aec1363b0e0bf91faf281836efcfce8293a8b"
+  }
+}

@@ -36,3 +36,15 @@ Hosted diagnostic justified by Linux carrier ABI/compilerSHA3f4cea0c; local
 Windows compiler differs and cannot validate/execute those exact artifacts.
 Perform local source inventory/syntax checks first, then one bounded8min Linux
 read-only component diagnostic, no full release or platform/performance campaign.
+
+First43821758579 exactly reproduces original warm/cold mismatch with complete
+plant/atmosphere and inventoried hydraulic/thermal state. Complete original
+WOFOST interface reconnection43822941363 fails causality: exported rates become
+exact but physical row stays identically failed. Retain it; no public change.
+Next read-only snapshot ALL declared saved numeric fields/arrays of the original
+MOD_drain, not one guessed coefficient: before Meteo3 and before/after first
+Drain(2). Binary streams keep complete fields, source-generated typed layouts
+permit exact field comparison without massive repeated JSON arrays. Verify
+unchanged original relink/compiler/source/native and actual physical rows again.
+This is diagnosis of whole original component ownership, not a third cached
+parameter patch or any numerical/solver/tolerance repair.

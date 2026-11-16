@@ -1,0 +1,488 @@
+{
+  "status": "ACTUAL_WHOLE_ORIGINAL_DRAIN_MODULE_INTERFACE_SYNTAX_PASS",
+  "fields": [
+    {
+      "field": "swdivd",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   swdivd          = 0    ! Switch to distribute drainage flux vertically according to transmissivity: 0 = no; 1 = yes"
+    },
+    {
+      "field": "swdivdinf",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   swdivdinf       = 0    ! Switch to distribute infiltration flux vertically according to transmissivity, separatly from drainage fluxes: 0 = no; 1 = yes"
+    },
+    {
+      "field": "swdislay",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   swdislay        = 0    ! Switch to distribute drainage flux vertically with a given position of the top of the model discharge layers: 0 = no; 1 = yes"
+    },
+    {
+      "field": "swdtyp",
+      "kind": "integer",
+      "declaration": "integer, dimension(madr),        save ::   swdtyp          = 0    ! Switch for type of drainage medium: 1 = drain tube, 2 = open channel"
+    },
+    {
+      "field": "swliminf",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   swliminf        = 1    ! Switch for limit of infiltration head to the waterdepth in the channel: 0 = nolimit, 1 = limitation"
+    },
+    {
+      "field": "swnrsrf",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   swnrsrf         = 0    ! Switch for interflow relations: 0 = no interflow, 1-2 = interflow (differ for basic / extended drainage)"
+    },
+    {
+      "field": "swtopdislay",
+      "kind": "integer",
+      "declaration": "integer, dimension(madr),        save ::   swtopdislay     = 0    ! Switch, for each drainage level, to distribute drainage flux vertically with a given position of the top of the model discharge layers: 0 = no; 1 = yes"
+    },
+    {
+      "field": "swtopnrsrf",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   swtopnrsrf      = 0    ! Switch to enable adjustment of model discharge layer, in case swnrsrf > 0: 0 = no, 1 = yes"
+    },
+    {
+      "field": "cofani",
+      "kind": "real",
+      "declaration": "real(8), dimension(maho),        save ::   cofani          = 0.d0 ! Anisotropy coefficient (horizontal / vertical saturated hydraulic conductivity) (-)"
+    },
+    {
+      "field": "cofintfl",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   cofintfl        = 0.d0 ! Coefficient for exponential interflow relation (T-1)"
+    },
+    {
+      "field": "diffl",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   diffl           = 0.d0 ! Difference in water level between drain and groundwater (L)"
+    },
+    {
+      "field": "drainl",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   drainl          = 0.d0 ! Water level inside the drain (L)"
+    },
+    {
+      "field": "expintfl",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   expintfl        = 0.d0 ! Exponent for exponential interflow relation (-)"
+    },
+    {
+      "field": "facdpthinf",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   facdpthinf      = 0.d0 ! Factor to reduce depth of infiltration layer as fraction of max depth discharge layer (swdivdinf == 1) (-)"
+    },
+    {
+      "field": "ftopdislay",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   ftopdislay      = 0.d0 ! Array with factor for function to determine depth of top of model discharge layer for each drain level, see also swtopdislay (swdislay == 2) (-)"
+    },
+    {
+      "field": "ksatcp",
+      "kind": "real",
+      "declaration": "real(8), dimension(macp),        save ::   ksatcp          = 0.d0 ! Saturated hydraulic conductivity per compartment (L/T)"
+    },
+    {
+      "field": "Lspacing",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   Lspacing        = 0.d0 ! Array with spacing between drains for each drainage level (L)"
+    },
+    {
+      "field": "qdra",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr,macp),   save ::   qdra            = 0.d0 ! Array with lateral drainage flux (L/T) for each drainage level and compartment"
+    },
+    {
+      "field": "qdrain",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   qdrain          = 0.d0 ! Total lateral drainage flux (L/T) for each drainage level"
+    },
+    {
+      "field": "qdrtot",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   qdrtot          = 0.d0 ! Total lateral drainage flux (L/T)"
+    },
+    {
+      "field": "zbotdr",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   zbotdr          = 0.d0 ! Array with depth of drain bottom for each drain level"
+    },
+    {
+      "field": "ztopdislay",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   ztopdislay      = 0.d0 ! Array with depth of top of model discharge layer for each drain level, see also swtopdislay (swdislay == 1) (L)"
+    },
+    {
+      "field": "dramet",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   dramet          = 0    ! Switch for lateral drainage: 1 = table of flux - groundwater level; 2 = Hooghoudt or Ernst; 3 = drainage/infiltration resistance"
+    },
+    {
+      "field": "nrlevs",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   nrlevs          = 1    ! Number of drainage levels"
+    },
+    {
+      "field": "qdrtab",
+      "kind": "real",
+      "declaration": "real(8), dimension(50),          save ::   qdrtab          = 0.d0 ! Array with lateral drainage flux (L/T) as function of groundwater level (L)"
+    },
+    {
+      "field": "ipos",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   ipos            = 0    ! Switch for position of drain (see *.DRA input file for overview)"
+    },
+    {
+      "field": "basegw",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   basegw          = 0.d0 ! Depth of impervious layer (L) for drainage according to Hooghoudt or Ernst"
+    },
+    {
+      "field": "entres",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   entres          = 0.d0 ! Drain entry resistance (T)"
+    },
+    {
+      "field": "geofac",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   geofac          = 0.d0 ! Geometry factor (-) for analytical drainage formula of Ernst"
+    },
+    {
+      "field": "khbot",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   khbot           = 0.d0 ! Horizontal hydraulic conductivity of bottom layer (L/T)"
+    },
+    {
+      "field": "khtop",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   khtop           = 0.d0 ! Horizontal hydraulic conductivity of top layer (L/T)"
+    },
+    {
+      "field": "kvbot",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   kvbot           = 0.d0 ! Vertical hydraulic conductivity of bottom layer (L/T)"
+    },
+    {
+      "field": "kvtop",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   kvtop           = 0.d0 ! Vertical hydraulic conductivity of top layer (L/T)"
+    },
+    {
+      "field": "shape",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   shape           = 0.d0 ! Shape factor: ratio between the mean and the maximum groundwater level elevation above the drainage base (-)"
+    },
+    {
+      "field": "wetper",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   wetper          = 0.d0 ! Wet perimeter of drain (L)"
+    },
+    {
+      "field": "zintf",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   zintf           = 0.d0 ! Depth (L) at which fine top layer ends and coarse sub layer starts"
+    },
+    {
+      "field": "nowltab",
+      "kind": "integer",
+      "declaration": "integer, dimension(madr),        save ::   nowltab         = 0    ! Number of input dates in for prescribed drain water levels"
+    },
+    {
+      "field": "swallo",
+      "kind": "integer",
+      "declaration": "integer, dimension(madr),        save ::   swallo          = 0    ! Switch to allow all (1), only infiltration (2) or only drainage (3) for each drainage level"
+    },
+    {
+      "field": "drares",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   drares          = 0.d0 ! Array with drainage resistance (T) for each drainage level"
+    },
+    {
+      "field": "infres",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   infres          = 0.d0 ! Array with infiltration resistance (T) for each drainage level"
+    },
+    {
+      "field": "owltab",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr,2*maowl),save ::   owltab          = 0.d0 ! Table with prescribed drain water levels"
+    },
+    {
+      "field": "swsrf",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   swsrf           = 0    ! Switch for interaction with surface water system: 1 = no interaction, 2 = without separate primary system, 3 = with separate primary system"
+    },
+    {
+      "field": "swqhr",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   swqhr           = 0    ! Switch for type of discharge relationship: 1 = exponential, 2 = table"
+    },
+    {
+      "field": "swsec",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   swsec           = 0    ! Switch for type of surface water level secondary system: 1 = input, 2 = simulated"
+    },
+    {
+      "field": "nrpri",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   nrpri           = 0    ! Number of primary system"
+    },
+    {
+      "field": "nrsec",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   nrsec           = 0    ! Number of secondary system"
+    },
+    {
+      "field": "nmper",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   nmper           = 0    ! Number of management periods"
+    },
+    {
+      "field": "swman",
+      "kind": "integer",
+      "declaration": "integer, dimension(mamp),        save ::   swman           = 0    ! Type of water management: 1 = fixed weir crest, 2 = automatic weir, for each management period"
+    },
+    {
+      "field": "nphase",
+      "kind": "integer",
+      "declaration": "integer, dimension(mamp),        save ::   nphase          = 0    !"
+    },
+    {
+      "field": "nodhd",
+      "kind": "integer",
+      "declaration": "integer, dimension(mamp),        save ::   nodhd           = 0    !"
+    },
+    {
+      "field": "numadj",
+      "kind": "integer",
+      "declaration": "integer,                         save ::   numadj          = 0    ! Counter for number of adjustments"
+    },
+    {
+      "field": "intwl",
+      "kind": "integer",
+      "declaration": "integer, dimension(mamp),        save ::   intwl           = 0    ! Length of water level adjustment period (SWMAN = 2) (T)"
+    },
+    {
+      "field": "widthr",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   widthr          = 0.d0 ! Bottom width of channel (L)"
+    },
+    {
+      "field": "taludr",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   taludr          = 0.d0 ! Side slope (dh/dw) of channel (-)"
+    },
+    {
+      "field": "rdrain",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   rdrain          = 0.d0 ! Drainage resistance (T)"
+    },
+    {
+      "field": "rsurfdeep",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   rsurfdeep       = 0.d0 ! Maximum resistance of rapid surface drainage (T), in case SWNRSRF == 1"
+    },
+    {
+      "field": "rsurfshallow",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   rsurfshallow    = 0.d0 ! Minimum resistance of rapid surface drainage (T), in case SWNRSRF == 1"
+    },
+    {
+      "field": "rinfi",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   rinfi           = 0.d0 ! Infiltration resistance (T)"
+    },
+    {
+      "field": "rentry",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   rentry          = 0.d0 ! Entrance resistance (T)"
+    },
+    {
+      "field": "rexit",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   rexit           = 0.d0 ! Exit resistance (T)"
+    },
+    {
+      "field": "gwlinf",
+      "kind": "real",
+      "declaration": "real(8), dimension(madr),        save ::   gwlinf          = 0.d0 ! Groundwater level for maximum infiltration (T)"
+    },
+    {
+      "field": "wlptab",
+      "kind": "real",
+      "declaration": "real(8), dimension(2*mawlp),     save ::   wlptab          = 0.d0 ! Water level of primary system (L)"
+    },
+    {
+      "field": "impend",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp),        save ::   impend          = 0.d0 ! Date that management period ends"
+    },
+    {
+      "field": "wldip",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp),        save ::   wldip           = 0.d0 ! Allowed dip of surface water level before starting supply (L)"
+    },
+    {
+      "field": "wscap",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp),        save ::   wscap           = 0.d0 ! Surface water supply capacity (L/T)"
+    },
+    {
+      "field": "hbweir",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp),        save ::   hbweir          = 0.d0 ! Weir crest, or lowest position in case SWMAN == 2 (L)"
+    },
+    {
+      "field": "osswlm",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   osswlm          = 0.d0 ! Criterium for warning about oscillation (L)"
+    },
+    {
+      "field": "wlstar",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   wlstar          = 0.d0 ! Target level (L)"
+    },
+    {
+      "field": "wlp",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   wlp             = 0.d0 ! Water level in primary system (L)"
+    },
+    {
+      "field": "alphaw",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp),        save ::   alphaw          = 0.d0 ! Alpha coefficient of discharge formula (-)"
+    },
+    {
+      "field": "betaw",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp),        save ::   betaw           = 0.d0 ! Beta coefficient of discharge formula (-)"
+    },
+    {
+      "field": "dropr",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp*mamte),  save ::   dropr           = 0.d0 ! Drop rate"
+    },
+    {
+      "field": "gwlcrit",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp,mamte),  save ::   gwlcrit         = 0.d0 !"
+    },
+    {
+      "field": "hcrit",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp,mamte),  save ::   hcrit           = 0.d0 !"
+    },
+    {
+      "field": "vcrit",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp,mamte),  save ::   vcrit           = 0.d0 !"
+    },
+    {
+      "field": "hqhtab",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp,mamte),  save ::   hqhtab          = 0.d0 !"
+    },
+    {
+      "field": "qqhtab",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp,mamte),  save ::   qqhtab          = 0.d0 !"
+    },
+    {
+      "field": "wlsman",
+      "kind": "real",
+      "declaration": "real(8), dimension(mamp,mamte),  save ::   wlsman          = 0.d0 !"
+    },
+    {
+      "field": "wlstab",
+      "kind": "real",
+      "declaration": "real(8), dimension(2*mawls),     save ::   wlstab          = 0.d0 ! Table with water level (L) as function of time, given as input"
+    },
+    {
+      "field": "sttab",
+      "kind": "real",
+      "declaration": "real(8), dimension(22,2),        save ::   sttab           = 0.d0 ! Table with relation between water storage (L) and water level (L)"
+    },
+    {
+      "field": "swst",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   swst            = 0.d0 ! Storage in secondary system (L)"
+    },
+    {
+      "field": "wlsbak",
+      "kind": "real",
+      "declaration": "real(8), dimension(4),           save ::   wlsbak          = 0.d0 ! Registration of water levels in secondary system of precious timesteps (L)"
+    },
+    {
+      "field": "wls",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   wls             = 0.d0 ! Water level in secondary system (L)"
+    },
+    {
+      "field": "qdrd",
+      "kind": "real",
+      "declaration": "real(8),                         save ::   qdrd            = 0.d0 ! Drainage flux to or from secondary system (L)"
+    }
+  ],
+  "compilation": [
+    {
+      "command": [
+        "gfortran",
+        "-fsyntax-only",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_drain_syntax\\hybrid_state_diagnostic.f90"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gfortran",
+        "-fsyntax-only",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_drain_syntax\\swap.f90"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "gfortran",
+        "-fsyntax-only",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\water-history-O0-build",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43416681903\\nomacro-crop-640565a8dee425aad182101d37ee5afb2f6e14a5\\provider\\build\\ttutil-obj",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_drain_syntax\\swap_main.f90"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "scope": "Complete declared fixed numeric module fields; no state repair or model qualification"
+}

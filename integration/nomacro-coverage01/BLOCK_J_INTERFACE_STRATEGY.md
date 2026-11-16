@@ -34,3 +34,11 @@ public water-only history. If supported, implement only explicit new experimenta
 water-history scope with a documented build-bound interface strategy and fresh
 current full/native O0/O2, transactions/corruption and unchanged predecessor checks.
 No mixed old/native bundle rebinding or whole-science/energy promotion.
+
+Actual private43822941363 FAIL: complete original interface re-export makes all
+root rates exact before Meteo3, but the entire physical cold531 row is unchanged
+from the original failing cold row. Water delta2.281495881106821e-9cm remains;
+drainage delta2.177801647351707e-9cm remains. Thus this interface mismatch is NOT
+the cause of the retained hydraulic restart failure. Do not activate it publicly
+or present it as a repair. Keep the private source/result and investigate a
+complete original drainage component snapshot before proposing any state change.

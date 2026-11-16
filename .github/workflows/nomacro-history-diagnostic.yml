@@ -5,6 +5,10 @@ on:
     paths: ['.github/workflows/nomacro-history-diagnostic.yml']
   workflow_dispatch:
     inputs:
+      drainage_snapshots:
+        type: boolean
+        default: false
+        description: Snapshot entire original numeric drainage module before and after Drain2
       reconnect_interface:
         type: boolean
         default: false
@@ -41,9 +45,12 @@ jobs:
       - name: Reproduce exact original component memory without accepted publication
         env:
           RECONNECT: ${{ inputs.reconnect_interface }}
+          DRAIN: ${{ inputs.drainage_snapshots }}
         run: |
           if [ "$RECONNECT" = true ]; then
             python3 -B tools/solute/probe_water_history_components.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof" --reconnect-wofost-interface
+          elif [ "$DRAIN" = true ]; then
+            python3 -B tools/solute/probe_water_history_components.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof" --drainage-snapshots
           else
             python3 -B tools/solute/probe_water_history_components.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
           fi
