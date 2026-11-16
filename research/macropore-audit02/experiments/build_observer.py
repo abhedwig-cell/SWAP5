@@ -1,13 +1,13 @@
 """Generate/link research-only observers against exact preserved original objects."""
 import argparse,json,shutil,subprocess,time,hashlib
 from pathlib import Path
-p=argparse.ArgumentParser();p.add_argument('--workspace',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--compiler',required=True);p.add_argument('--mode',choices=['rollback','trace'],required=True)
+p=argparse.ArgumentParser();p.add_argument('--workspace',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--compiler',required=True);p.add_argument('--target',default='x86-64-v3');p.add_argument('--template',type=Path);p.add_argument('--mode',choices=['rollback','retry','trace'],required=True)
 a=p.parse_args();a.output.mkdir()
 base=a.workspace/'O2/build';ref=a.workspace/'provider/generic-reference/build';here=Path(__file__).parent
 for f in base.iterdir():
  if f.is_file():shutil.copyfile(f,a.output/f.name)
 source=(base/'macropore.f90').read_text(encoding='cp1252')
-if a.mode=='rollback':
+if a.mode in ['rollback','retry']:
  source=(ref/'swap-selected/soilwater.f90').read_text(encoding='cp1252')
  source=source.replace('            call headcalc','            if(t1900>=35809d0.and.t1900<35810d0) call audit_state(0)\n            call headcalc')
  (a.output/'soilwater.f90').write_text(source,encoding='cp1252')
@@ -16,6 +16,15 @@ if a.mode=='rollback':
  source=source.replace('            call TimeControl(5)','            if(t1900>=35809d0.and.t1900<35810d0) call audit_state(2)\n            call TimeControl(5)')
  (a.output/'swap.f90').write_text(source,encoding='cp1252')
  shutil.copyfile(here/'state_observer.c',a.output/'observer.c');changed=['soilwater.f90','swap.f90']
+ if a.mode=='retry':
+  source=(base/'headcalc.f90').read_text(encoding='cp1252')
+  source=source.replace('   call vector_F(1, hgrad)','   call retry_probe02()\n   call vector_F(1, hgrad)',1)
+  source=source.replace('\ncontains\n','\ncontains\n'+(here/'retry_probe.f90').read_text()+'\n',1)
+  (a.output/'headcalc.f90').write_text(source,encoding='cp1252');changed.append('headcalc.f90')
+  # Keep only fork helpers from the second translation unit.
+  c=(here/'retry_observer.c').read_text()+'\n#include <sys/wait.h>\n#include <unistd.h>\n#include <errno.h>\nint s5_shadow_begin'+(here/'fork_observer.c').read_text().split('int s5_shadow_begin',1)[1].split('int64_t audit_hash_',1)[0]
+  (a.output/'observer.c').write_text(c)
+
 else:
  source=(base/'headcalc.f90').read_text(encoding='cp1252')
  source=source.replace('   real(8)                          :: QMpLatSsSav, lateral_before_pond','   real(8)                          :: QMpLatSsSav, lateral_before_pond\n   integer :: audit_seq=0, audit_unit\n   real(8) :: audit_h(macp),audit_q(macp)')
@@ -24,9 +33,9 @@ else:
  source=source.replace('         call vector_F(2, hgrad)','         call trace02(0)\n         call vector_F(2, hgrad)\n         call trace02(2)')
  source=source.replace('!        special case for macropores','         call trace02(5)\n!        special case for macropores')
  source=source.replace('         call MACROPORE(2)','         call MACROPORE(2)\n         audit_h=h\n         audit_q=QExcMpMtx\n         call trace02(1)')
- source=source.replace('\ncontains\n','\ncontains\n'+(here/'trace_observer.f90').read_text()+'\n',1)
+ source=source.replace('\ncontains\n','\ncontains\n'+(a.template or here/'trace_observer.f90').read_text()+'\n',1)
  (a.output/'headcalc.f90').write_text(source,encoding='cp1252');shutil.copyfile(here/'fork_observer.c',a.output/'observer.c');changed=['headcalc.f90']
-m=json.loads((base/'BUILD.json').read_text());flags=m['identity']['donor_flags'];logs=[]
+m=json.loads((base/'BUILD.json').read_text());flags=[*m['identity']['donor_flags'],'-march='+a.target];logs=[]
 def run(cmd):
  t=time.perf_counter();r=subprocess.run(cmd,cwd=a.output,text=True,capture_output=True,timeout=30);logs.append(dict(command=cmd,seconds=time.perf_counter()-t,returncode=r.returncode,stdout=r.stdout,stderr=r.stderr));(a.output/'AUDIT_BUILD.json').write_text(json.dumps(logs,indent=2));assert r.returncode==0,r.stderr
 run(['gcc','-O2','-c','observer.c'])

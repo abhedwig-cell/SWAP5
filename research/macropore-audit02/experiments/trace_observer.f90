@@ -4,7 +4,8 @@ subroutine trace02(stage)
  integer::u,pid,ic
  integer(8),external::audit_hash,audit_macrohash
  integer(8)::hh,mh,qh
- logical,save::busy=.false.
+ logical,save::busy=.false.,done=.false.
+ logical::found
  real(8)::oldF(macp),oldQ(macp),oldH(macp),oldT(macp),cached_h(macp)
  character(32)::file
  interface
@@ -14,10 +15,11 @@ subroutine trace02(stage)
   subroutine shadow_end() bind(C,name='s5_shadow_end')
   end subroutine
  end interface
- if(busy)return
+ if(busy.or.done)return
  ! Observe each selected day's final live timestep, not a rebuilt daily average.
- if(t1900<36227d0.or.t1900>=36233d0)return
- if(abs(t1900+dt-dnint(t1900+dt))>1d-10)return
+ if(t1900<36227d0.or.t1900>=36229d0)return
+ if(.not.flunsatok(3))return
+
  audit_seq=audit_seq+1
  hh=audit_hash(h,NN);qh=audit_hash(QExcMpMtx,NN);mh=audit_macrohash()
  open(newunit=u,file='trace02.txt',position='append',status='unknown')
@@ -28,6 +30,8 @@ subroutine trace02(stage)
  pid=shadow_begin()
  if(pid/=0)then
   if(pid<0)error stop 'audit child failed'
+  inquire(file='first-divergence.txt',exist=found)
+  if(found)done=.true.
   return
  endif
  busy=.true.
@@ -46,5 +50,14 @@ subroutine trace02(stage)
   write(u,*) 'FRESH_Q',QExcMpMtx(1:NN)
  endif
  close(u)
+ if(maxval(abs(QExcMpMtx(1:NN)-oldQ(1:NN)))>0d0)then
+  open(newunit=u,file='first-divergence.txt',status='replace')
+  write(u,*)t1900,dt,numbit,itry,stage,maxval(abs(oldF(1:NN))),maxval(abs(F(1:NN))),maxval(abs(QExcMpMtx(1:NN)-oldQ(1:NN)))
+  write(u,*) 'H',oldH(1:NN)
+  write(u,*) 'CACHE_H',cached_h(1:NN)
+  write(u,*) 'CACHE_Q',oldQ(1:NN)
+  write(u,*) 'FRESH_Q',QExcMpMtx(1:NN)
+  close(u)
+ endif
  call shadow_end()
 end subroutine trace02
