@@ -240,6 +240,11 @@ def validate_m(q, previous, pond, components):
     require(components['original_invalid_table']['status'] == 'ORIGINAL_FULL_INVALID_POND_TABLE_REFUSED_ZERO_DAYS', 'M original invalid-domain guard')
 
 
+# Test/evidence-only additions have no production dependency delta. These
+# exact files retain their own native FAILs; M qualification is not extended.
+M_VERIFICATION_ONLY = {'tests/nomacro_mixtures/run.py': '23a6d79b62fb9fee24a059373cfcb6330f536f49', 'tests/nomacro_mixtures/finish.py': 'fad203c6a37c8ab1e812b584aa94769249c5f0b9', 'integration/nomacro-mixtures01/COMPLETION.json': 'c591aa527fefef3695e179bc53e7e631924a6163', 'integration/nomacro-mixtures01/INITIAL_RESULT.json': '5da7bf8def2233fbc259a4c6cd464b13149c811e', 'integration/nomacro-mixtures01/INPUTS.json': 'd089d6ed5845b4af26b5b3abb9614e7a2c9f8862', 'integration/nomacro-mixtures01/RAW_MANIFEST.json': '2eef14da5461df914c65731877e799095faabba8', 'integration/nomacro-mixtures01/RAW_PLATE.zip': '85a99043ad1c9397dead33b570937ef86b6cbdd2', 'integration/nomacro-mixtures01/RAW_SURFACE.zip': '4171ee373b4737d12f4866cc3c0ddd84bc513cd2', 'integration/nomacro-mixtures01/README.md': '40fe36c323085f628e2be0c606d7d4cbf21adbd0', 'integration/nomacro-mixtures01/RECOVERY.md': '1025a76512ac44831bd46c1fac9877926044b787', 'integration/nomacro-mixtures01/SUMMARY.json': '907dd6ee8fc45900c436f273c09b7bda8a24f69c'}
+
+
 def verify_m():
     git('merge-base', '--is-ancestor', CURRENT_RUNTIME, M_SEALED)
     git('merge-base', '--is-ancestor', M_SEALED, 'HEAD')
@@ -247,7 +252,9 @@ def verify_m():
     require(not git('diff', CURRENT_RUNTIME, 'HEAD', '--', 'src', 'app', 'reference', 'tools'), 'runtime differs from qualified M source')
     require(not git('diff', M_EXECUTED, CURRENT_RUNTIME, '--', 'src', 'app', 'reference', 'tools/solute/run_water.py', 'tools/solute/surface_input_cases.py', 'tools/solute/qualify_surface_schedule.py'), 'M physical runtime changed during verification completion')
     paths = set(git('diff', '--name-only', M_SEALED, 'HEAD').decode().splitlines())
-    require(paths <= {SELF, TEST, L_PROOF+'BLOCK_M_CI_SELECTION.json', L_PROOF+'BLOCK_M_MERGE.json'}, 'unqualified delta after M evidence seal')
+    require(paths <= {SELF, TEST, L_PROOF+'BLOCK_M_CI_SELECTION.json', L_PROOF+'BLOCK_M_MERGE.json'} | set(M_VERIFICATION_ONLY), 'unqualified delta after M evidence seal')
+    for path, expected in M_VERIFICATION_ONLY.items():
+        require(git('rev-parse', 'HEAD:'+path).decode().strip() == expected, 'changed test-only mixture file: '+path)
     def sealed_json(name):
         path = L_PROOF+name+'.json'
         require(blob('HEAD', path) == blob(M_SEALED, path), 'M sealed proof changed: '+name)
