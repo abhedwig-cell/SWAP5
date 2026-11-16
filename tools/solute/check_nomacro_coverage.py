@@ -750,7 +750,8 @@ def main():
            ('hysteresis', 'SWHYST', 3), ('solute', 'SWSOLU', 2), ('adsorption', 'SWSP', 2),
            ('decay', 'SWDC', 2), ('reservoir', 'SWBR', 1), ('surfacewater', 'SWDRA', 2),
            ('heat', 'SWHEA', 2), ('other-bottom', 'SWBOTB', 9),
-           ('reconstructed-groundwater', 'SWBOTB', 1), ('reconstructed-head', 'SWBOTB', 5)]
+           ('reconstructed-groundwater', 'SWBOTB', 1),
+           ('foreign-bottom-flow-binding','SWBOTB',2) if args.head_boundary_options else ('reconstructed-head', 'SWBOTB', 5)]
     for label, name, value in bad:
         target = out/('refused-'+label)
         try:

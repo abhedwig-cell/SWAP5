@@ -66,3 +66,13 @@ def render_headcalc(source,boundary=8):
                    'else','  budget_step=projected_water_residual()','end if']
         source=source.replace(anchor,'\n'.join(indent+line for line in lines))
     return source
+
+def render_readswap(source,original_start_clock):
+    import math
+    if not math.isfinite(original_start_clock):raise ValueError('Invalid original validation clock')
+    anchor="call checkdate(ifnd,dates,tend,tstart,'date5 ','readswap//swbotb=5      ')"
+    if source.count(anchor)!=1:raise ValueError('Changed original prescribed-head table validation anchor')
+    # Only validation uses the bound original input interval. Original AFGEN,
+    # values, actual worker clock and every physical calculation remain intact.
+    return source.replace(anchor,
+        f"call checkdate(ifnd,dates,tend,{original_start_clock:.17g}d0,'date5 ','readswap//swbotb=5      ')")

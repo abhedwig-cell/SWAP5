@@ -660,6 +660,12 @@ end module plant_interface""")
             budget_source.write_text(render_budget((APP/'hybrid_step_budget.f90').read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
             path=output/'headcalc.f90'
             path.write_text(render_headcalc(path.read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
+            if lower_boundary==5:
+                from lower_boundary_receipt import render_readswap
+                source=(donor_build/'swap-selected/readswap.f90').read_text(encoding='cp1252')
+                (output/'readswap.f90').write_text(render_readswap(source,project.start_clock),encoding='cp1252')
+                if 'readswap' in patched:raise ValueError('Multiple original reader state owners')
+                patched.append('readswap')
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
