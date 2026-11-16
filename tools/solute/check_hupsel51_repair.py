@@ -56,7 +56,7 @@ def main():
   source=a.input_dir
   if source is None:source=a.output/'inputs';inputs(source)
   project=e.load(source)
-  specs=[('undrained',project,52 if a.suite=='O0' else 1096,[50,52] if a.suite=='O0' else [50,52,530,532,1096])]
+  specs=[('undrained',project,1096,[50,52,530,532,1096])]
  reports={};commands=[]
  (a.output/'INVOCATION.json').write_text(json.dumps(dict(argv=sys.argv,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),suite=a.suite,host_api='Validated DailyHost.step + native checkpoint publisher; no build rebinding',model_cap_seconds=a.model_cap),indent=2))
  for name,project,last,cuts in specs:

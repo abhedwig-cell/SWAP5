@@ -345,10 +345,11 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
 """+anchor)
             if project.input_directory:
                 from experimental_project import inspect
-                selected=inspect(project.input_directory)['selectors']
+                configuration=inspect(project.input_directory)
+                selected=configuration['selectors']
                 # A bounded original closed-profile successor. Named release
                 # source images and all macro/nonlinear-surface routes stay exact.
-                if selected['SWDRA']==0 and selected['SWBOTB']==6 and selected['SWSNOW']==0 and selected['SWKIMPL']==0:
+                if selected['SWDRA']==0 and configuration['boundary']['SWBOTB']==6 and selected['SWSNOW']==0 and selected['SWKIMPL']==0:
                     source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
                                    '   use hybrid_step_budget, only: projected_water_residual, linear_pond_top_jacobian\n'
                                    '   use variables, only: rsro, rsroexp, pondmx')
