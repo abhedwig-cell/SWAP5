@@ -164,6 +164,10 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Bundle original microscopic lookup state generator differs')
     if expected_micro and identity.get('history_top_state_source')!=h.sha(h.APP/'history_top_state.py'):
         raise ValueError('Foreign original top history generator')
+    from history_top_state import scheduled_enabled,SCHEDULED_POND_POLICY
+    expected_pond_history={'policy':SCHEDULED_POND_POLICY,'source_sha256':h.sha(h.APP/'history_top_state.py')} if scheduled_enabled(project) else None
+    if identity.get('scheduled_pond_history')!=expected_pond_history:
+        raise ValueError('Foreign scheduled pond history; rebuild without rebinding')
     if expected_micro and identity.get('oxygen_lookup_state_source')!=h.sha(h.APP/'oxygen_lookup_state.py'):
         raise ValueError('Foreign original oxygen history generator')
     if not project.macro:

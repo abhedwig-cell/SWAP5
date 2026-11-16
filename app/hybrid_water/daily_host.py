@@ -627,7 +627,7 @@ end module MOD_wofost""")
         (output/'oxygenstress.f90').write_text(render_oxygen_lookup(source),encoding='cp1252')
         patched.insert(0,'oxygenstress')
         from history_top_state import render as render_history_top
-        (output/'boundtop.f90').write_text(render_history_top((output/'boundtop.f90').read_text(encoding='cp1252')),encoding='cp1252')
+        (output/'boundtop.f90').write_text(render_history_top((output/'boundtop.f90').read_text(encoding='cp1252'),scheduled_pond=selector('SWPONDMX')==1),encoding='cp1252')
         if checkpoint_day is not None or runtime_checkpoint:
             path=output/'swap.f90';source=path.read_text(encoding='cp1252')
             source=replace(source,'use MOD_wofost,only:hybrid_apply_wofost',
@@ -752,6 +752,9 @@ end module plant_interface""")
         build_identity['micro_lookup_state_policy']=POLICY
         build_identity['micro_lookup_state_source']=sha(APP/'micro_lookup_state.py')
         build_identity['history_top_state_source']=sha(APP/'history_top_state.py')
+        if selector('SWPONDMX')==1:
+            from history_top_state import SCHEDULED_POND_POLICY
+            build_identity['scheduled_pond_history']={'policy':SCHEDULED_POND_POLICY,'source_sha256':sha(APP/'history_top_state.py')}
         build_identity['oxygen_lookup_state_source']=sha(APP/'oxygen_lookup_state.py')
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)

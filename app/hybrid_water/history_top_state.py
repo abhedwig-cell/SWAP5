@@ -2,8 +2,17 @@
 import re
 
 FIELDS=('theatm','katm','h0max','k1max','q0','hsurf','FlRunoff','ftoph')
+SCHEDULED_POND_POLICY='original-top-scheduled-pond-history-v2'
 
-def render(source):
+
+def scheduled_enabled(project):
+    if not project.input_directory or project.macro:return False
+    from experimental_project import inspect
+    selected=inspect(project.input_directory)['selectors']
+    return bool(selected['SWPONDMX'] and (selected['SWHYST'] or selected['SWSNOW']))
+
+
+def render(source,scheduled_pond=False):
     declarations=source.split('contains',1)[0]
     actual=re.findall(r'(?im)^\s*(?:real\(8\)|logical),\s*save\s*::\s*(\w+)',declarations)
     if actual!=list(FIELDS) or not re.search(r'hatm\s*=\s*-2\.75d\+05',source,re.I):
@@ -54,5 +63,17 @@ FlRunoff=hybrid_top_flags(1)==1;ftoph=hybrid_top_flags(2)==1
 hybrid_top_pending=.false.
 end subroutine
 '''
+    if scheduled_pond:
+        # Preserve the actual original carry; neither AFGEN(now) nor h0max is
+        # its owner. Unselected v1 emission remains byte exact.
+        source=source.replace('hybrid_top_values(6)=0d0','hybrid_top_values(7)=0d0')
+        routines=routines.replace('use variables,only:t1900','use variables,only:t1900,pondmx')
+        routines=routines.replace('real(8)::clock,values(6)','real(8)::clock,values(7)')
+        routines=routines.replace('version=1;clock=t1900;values=[theatm,katm,h0max,k1max,q0,hsurf]',
+                                  'version=2;clock=t1900;values=[theatm,katm,h0max,k1max,q0,hsurf,pondmx]')
+        routines=routines.replace('trailer=72','trailer=80').replace('version/=1.or.trailer/=72','version/=2.or.trailer/=80')
+        routines=routines.replace('if(any(flags<0)',"if(values(7)<0d0)error stop 'Invalid scheduled pond maximum history'\nif(any(flags<0)")
+        routines=routines.replace('q0=hybrid_top_values(5);hsurf=hybrid_top_values(6)',
+                                  'q0=hybrid_top_values(5);hsurf=hybrid_top_values(6)\npondmx=hybrid_top_values(7)')
     if len(re.findall(r'(?im)^end module',source))!=1:raise ValueError('Changed original top module terminator')
     return re.sub(r'(?im)^end module',routines+'\nend module',source,count=1)
