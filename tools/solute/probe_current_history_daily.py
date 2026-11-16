@@ -275,7 +275,42 @@ def main():
         provider_flags=['-O2','-cpp','-Dlinux','-finit-local-zero','-ffree-line-length-none','-fallow-argument-mismatch',*prepared['floating_point_profile']['flags']]
         compile(['gfortran',*provider_flags,'-I',str(objects),'-I',str(ttutil),'-c','RWU_micro.f90'])
         replacements['RWU_micro.o']=target/'RWU_micro.o'
+    top=(ref/'build/swap-selected/boundtop.f90').read_text(encoding='cp1252')
+    fields=saved_numeric(top.split('contains',1)[0]);assert len(fields)==8
+    names=','.join(x[0] for x in fields)
+    declaration="public :: hybrid_top_probe\n"
+    top=top.replace('contains',declaration+'contains',1)
+    routine="""
+subroutine hybrid_top_probe(restoring)
+use variables,only:t1900
+logical,intent(in)::restoring
+integer::unit
+real(8)::clock
+logical::exists
+if(t1900/="""+str(project.start_clock+153)+"""d0)return
+if(restoring)then
+  inquire(file='hybrid-top-origin.bin',exist=exists)
+  if(.not.exists)return
+  open(newunit=unit,file='hybrid-top-origin.bin',access='stream',form='unformatted',status='old')
+  read(unit)clock
+  if(clock/=t1900)error stop 'Foreign whole top component clock'
+  read(unit)"""+names+"""
+else
+  open(newunit=unit,file='hybrid-top-capture.bin',access='stream',form='unformatted',status='replace')
+  write(unit)t1900
+  write(unit)"""+names+"""
+end if
+close(unit)
+end subroutine
+"""
+    assert re.search(r'(?im)^end module',top)
+    top=re.sub(r'(?im)^end module',routine+'\nend module',top,count=1)
+    (target/'boundtop.f90').write_text(top,encoding='cp1252')
+    compile(['gfortran',*identity['donor_flags'],'-I',str(objects),'-I',str(ttutil),'-c','boundtop.f90'])
+    replacements['boundtop.o']=target/'boundtop.o'
     diagnostic,inventory=snapshot_source(ref/'build/swap-selected',project.start_clock+153,a.drainage_snapshots,a.variables_snapshots,a.micro_lookup_replay)
+    diagnostic=diagnostic.replace('implicit none','use MOD_top,only:hybrid_top_probe\nimplicit none',1)
+    diagnostic=diagnostic.replace("write(*,'(a,1x,a,1x,f18.8)')'DIAG_COMPONENT_BEGIN'", "if(phase=='DAY_RETURN')call hybrid_top_probe(.false.)\nif(phase=='AFTER_MANAGEMENT_RESTORE')call hybrid_top_probe(.true.)\nwrite(*,'(a,1x,a,1x,f18.8)')'DIAG_COMPONENT_BEGIN'",1)
     (target/'hybrid_state_diagnostic.f90').write_text(diagnostic)
     for filename in ('swap.f90','swap_main.f90'):
         path=target/filename;assert h.sha(path)==identity['donor_generated'][filename]
@@ -293,11 +328,13 @@ def main():
     compile(['gfortran','-o',str(h.executable(target,'day_donor')),*linked,str(target/'hybrid_state_diagnostic.o')])
     records={}
     models=[('warm',h.ColumnStart(name='original'),154),('cold',h.ColumnStart(day=153,origin=origin,receipt=receipt,name='original'),1)]
+    models.append(('cold-top-restored',h.ColumnStart(day=153,origin=origin,receipt=receipt,name='original'),1))
     if a.micro_lookup_replay:models.append(('cold-restored',h.ColumnStart(day=153,origin=origin,receipt=receipt,name='original'),1))
     for label,start,last in models:
         model=out/label;model.mkdir();rows=[]
         with contextlib.ExitStack() as stack:
             host=h.DailyHost(stack,h.executable(target,'day_donor'),h.executable(target,'day_kernel'),case,model,[start],runtime=True,checkpoint_enabled=True,project=project)
+            if label=='cold-top-restored':shutil.copy2(out/'warm/original/hybrid-top-capture.bin',model/'original/hybrid-top-origin.bin')
             if label=='cold-restored':shutil.copy2(out/'warm/original/hybrid-lookup-capture.bin',model/'original/hybrid-lookup-origin.bin')
             for _ in range(last):rows.append(host.step(1))
             host.close()
@@ -311,7 +348,7 @@ def main():
     with zipfile.ZipFile(next((prior/'water-history-O2-everyday/cold').rglob('accepted-column-1-day-154.zip'))) as z:oldcold=json.loads(z.read('checkpoint.json'))['receipt']
     assert physical(records['warm']['last_row'])==physical(oldwarm)
     if not a.reconnect_wofost_interface:assert physical(records['cold']['last_row'])==physical(oldcold)
-    target_label='cold-restored' if a.micro_lookup_replay else 'cold'
+    target_label='cold-top-restored'
     exact=physical(records[target_label]['last_row'])==physical(records['warm']['last_row'])
     assert physical(oldwarm)!=physical(oldcold) and h.sha(source)==digest
     changes=[]
@@ -342,7 +379,10 @@ def main():
         result['lookup_payloads']['accepted_capture']=h.sha(capture)
         result['lookup_payloads']['restored']=h.sha(restored)
         result['lookup_header']=list(struct.unpack_from('<8sd6i',capture.read_bytes()))[1:]
+    result['whole_top_fields']=fields
+    result['whole_top_replay_exact']=exact
+    result['private_top_sha256']=h.sha(target/'boundtop.f90')
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'],flush=True)
-    if a.reconnect_wofost_interface or a.micro_lookup_replay:assert exact,'Complete original component replay did not reproduce warm physical state'
+    assert exact,'Complete original component replay did not reproduce warm physical state'
 
 if __name__=='__main__':main()
