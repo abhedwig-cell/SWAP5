@@ -50,6 +50,7 @@ def bounded(seconds,callback):
    p.wait(timeout=5)
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--suite',choices=['candidate','O0','named'],default='candidate');p.add_argument('--build-bundle',type=Path);p.add_argument('--input-dir',type=Path);p.add_argument('--model-cap',type=float,default=480)
+ p.add_argument('--named-project',choices=['grass','hupsel','salt'],help='Resume one named application without repeating completed profiles')
  a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False);user_prepare.validate(a.reference_work)
  if a.suite=='named':specs=[('grass',h.GRASSGROWTH,1827,[365,367,1827]),('hupsel',h.HUPSEL,1096,[365,367,1096]),('salt',h.SALTFARM,1461,[109,111,1461])]
  else:
@@ -57,6 +58,9 @@ def main():
   if source is None:source=a.output/'inputs';inputs(source)
   project=e.load(source)
   specs=[('undrained',project,1096,[50,52,530,532,1096])]
+ if a.named_project:
+  assert a.suite=='named'
+  specs=[s for s in specs if s[0]==a.named_project]
  reports={};commands=[]
  (a.output/'INVOCATION.json').write_text(json.dumps(dict(argv=sys.argv,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),suite=a.suite,host_api='Validated DailyHost.step + native checkpoint publisher; no build rebinding',model_cap_seconds=a.model_cap),indent=2))
  for name,project,last,cuts in specs:
