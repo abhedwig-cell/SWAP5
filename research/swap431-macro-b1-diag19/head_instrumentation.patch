@@ -1,0 +1,84 @@
+--- STAGNATION05/headcalc_inventory.f90
++++ DIAG19/head_diag.f90
+@@ -40,6 +40,7 @@
+    use MOD_swap_mp,        only: armpss, frarmtrx, qexcmpmtx, dfdhmp, ictopmp                        ! all input
+    use MOD_swap_mp,        only: qmplatss, idecmprat                                                 ! input + output
+    use MOD_swap_mp,        only: fldecmprat, fldecMPmbf                                              ! output
++   use DIAG19,only:nvec,njac,nrate,nderiv,nback,nfresh,outcome
+    implicit none
+ 
+ !  diagnostic local storage only
+@@ -191,6 +192,7 @@
+ 
+ !  calculate vector F (first time)
+    F = 0.0d0
++   nvec=nvec+1
+    call vector_F(1, hgrad)
+ 
+ !  initial estimate of F inner product
+@@ -223,6 +225,7 @@
+ 
+ !     incorporate Jacobian information in coefficient matrix elements
+       call diag_log(1)
++      njac=njac+1
+       call jacobian_F()
+       call diag_log(2)
+ 
+@@ -241,6 +244,7 @@
+ !     back tracking cycle
+       factor = 1.0d0
+       do itry = 1, MaxBackTr
++         nback=nback+1
+          iBackTr = iBackTr + 1
+ !        factor reduces the change of h (difh) calculated as a full Newton Raphson step
+ 
+@@ -288,6 +292,7 @@
+          end if
+ 
+ !        re-calculate F-function
++         nvec=nvec+1
+          call vector_F(2, hgrad)
+ 
+ !        calculate maximum deviation per compartment and new inner product
+@@ -390,6 +395,7 @@
+       if (swmacro == 1 .AND. .NOT.flnonconv .AND. dabs(sum1) <= CritDevBalTot) then
+          call diag_log(5)
+          flunsatok(1:3) = .FALSE.
++         nfresh=nfresh+1; nvec=nvec+1
+          call vector_F(1,hgrad)
+          call diag_log(6)
+          sump = 0.5d0 * dot_product(F(1:NN),F(1:NN))
+@@ -463,7 +469,8 @@
+ 
+       if (.NOT.flnonconv) then      ! convergence has been reached
+      
+-         call unreduced_trace(0)
++         call outcome(0,numbit,flnonconv,any(flnonconv1(1:NN)),any(flnonconv2(1:NN)),flnonconv3,fldecMPmbf,sum1,maxval(abs(F(1:NN))),maxloc(abs(F(1:NN)),dim=1))
++   call unreduced_trace(0)
+ !        special case for macropores
+          if (swmacro == 1) then
+             FlDecMpRat = .FALSE.
+@@ -510,6 +517,7 @@
+    ! end do numbit = 1, MaxIt1
+    end do
+ 
++   call outcome(4,numbit,flnonconv,any(flnonconv1(1:NN)),any(flnonconv2(1:NN)),flnonconv3,fldecMPmbf,sum1,maxval(abs(F(1:NN))),maxloc(abs(F(1:NN)),dim=1))
+    call unreduced_trace(4)
+ !  Convergence could not been reached
+    if (.NOT.fldtmin) then
+@@ -659,6 +667,7 @@
+ !  depending on iTask
+    if (swmacro == 1) then
+       if (iTask == 1 .OR. .NOT. flunsatok(3)) then 
++         nrate=nrate+1
+          call MACROPORE(2)
+       else
+          QMpLatSs = QMpLatSsSav
+@@ -824,6 +833,7 @@
+ 
+ !  special case macropore
+    if (swmacro == 1 .AND. .NOT.flunsatok(3)) then
++      nderiv=nderiv+1
+       call MACROPORE(3)
+       dFdhM(1:NN) = dFdhM(1:NN) - dFdhMp(1:NN)
+    end if
