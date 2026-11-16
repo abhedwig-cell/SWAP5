@@ -95,8 +95,8 @@ def inspect(directory):
         for name in ('SWSP', 'SWDC', 'SWBR'):
             if selected.get(name) not in ({0} if name == 'SWBR' else {0, 1}):
                 raise ValueError('Solute ledger/state does not support '+name)
-    if selected['SWIRFIX'] and selected.get('SWIRGFIL') != 0:
-        raise ValueError('Experimental fixed irrigation must be embedded in SWP')
+    if selected['SWIRFIX'] and selected.get('SWIRGFIL') not in (0,1):
+        raise ValueError('Unsupported/missing original fixed irrigation input selector')
     if selected['SWETR']==1 and (selected['SWMETDETAIL'] or selected['SWDIVIDE']):
         raise ValueError('Original prescribed reference ET requires daily weather and factor partition0')
     if selected['SWMETDETAIL'] and (selected['SWETR'] or selected['SWRAIN'] or selected['SWSNOW']):
@@ -117,7 +117,7 @@ def inspect(directory):
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},
-                   SWRUNON={0,1}, SWPONDMX={0,1})
+                   SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1})
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
     if selected['SWSNOW'] and selected['SWCALT'] != 2:

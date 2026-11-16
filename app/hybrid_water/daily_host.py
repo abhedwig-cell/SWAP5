@@ -158,6 +158,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     from lower_boundary_receipt import selected_boundary
     lower_boundary=selected_boundary(project)
     lower_receipt=lower_boundary is not None
+    from fixed_irrigation_file import enabled as fixed_irrigation_file_enabled
+    fixed_file=fixed_irrigation_file_enabled(project)
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
@@ -504,6 +506,9 @@ end module MOD_wofost""")
         patched.insert(0,'wofost')
         patched.append('MOD_cropdevelopment')
         source=(donor_build/'swap-selected/irrigation.f90').read_text(encoding='cp1252')
+        if fixed_file:
+            from fixed_irrigation_file import render_irrigation
+            source=render_irrigation(source)
         source=replace(source,"      subroutine read_irrigation_fixed()",
                        "      subroutine read_irrigation_fixed()\n         use MOD_swap_base,only:swinco")
         source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
@@ -759,6 +764,9 @@ end module plant_interface""")
         from lower_boundary_receipt import policy as lower_policy
         build_identity['lower_boundary_receipt']={'policy':lower_policy(lower_boundary),'source_sha256':sha(APP/'lower_boundary_receipt.py'),
             'template_sha256':sha(APP/'hybrid_step_budget.f90'),'effective_SWBOTB':lower_boundary}
+    if fixed_file:
+        from fixed_irrigation_file import POLICY as FIXED_FILE_POLICY
+        build_identity['fixed_irrigation_file']={'policy':FIXED_FILE_POLICY,'source_sha256':sha(APP/'fixed_irrigation_file.py')}
     if scheduled_pond:
         from surface_schedule import POLICY as SURFACE_SCHEDULE_POLICY
         build_identity['surface_schedule']={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':sha(APP/'surface_schedule.py')}
