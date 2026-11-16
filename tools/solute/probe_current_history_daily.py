@@ -275,7 +275,8 @@ def main():
         provider_flags=['-O2','-cpp','-Dlinux','-finit-local-zero','-ffree-line-length-none','-fallow-argument-mismatch',*prepared['floating_point_profile']['flags']]
         compile(['gfortran',*provider_flags,'-I',str(objects),'-I',str(ttutil),'-c','RWU_micro.f90'])
         replacements['RWU_micro.o']=target/'RWU_micro.o'
-    top=(ref/'build/swap-selected/boundtop.f90').read_text(encoding='cp1252')
+    assert h.sha(target/'boundtop.f90')==identity['donor_generated']['boundtop.f90']
+    top=(target/'boundtop.f90').read_text(encoding='cp1252')
     fields=saved_numeric(top.split('contains',1)[0]);assert len(fields)==8
     names=','.join(x[0] for x in fields)
     declaration="public :: hybrid_top_probe\n"
