@@ -283,9 +283,11 @@ def main():
         match=re.match(r'\s*(real\([^)]*\)|integer|logical)(?!\w).*?\bsave\s*::\s*(.*)',line,re.I)
         if not match:continue
         kind='real' if match[1].lower().startswith('real') else match[1].lower()
-        for name in match[2].split('!')[0].split(','):
-            name=name.strip().split('=')[0].strip();assert re.fullmatch(r'\w+',name),(line,name)
-            count='size('+name+')' if 'dimension' in line.lower() else '1'
+        for declaration_name in re.split(r',(?!(?:[^()]*\)))',match[2].split('!')[0]):
+            item=declaration_name.strip().split('=')[0].strip()
+            parsed=re.fullmatch(r'(\w+)(\([^)]*\))?',item);assert parsed,(line,item)
+            name=parsed[1]
+            count='size('+name+')' if 'dimension' in line.lower() or parsed[2] else '1'
             root_fields.append(dict(field=name,kind=kind,declaration=line.strip()))
             root_writes.append('write(unit)'+name)
             root_writes.append("write(*,'(a,1x,a,1x,a,3(1x,i0))')'DIAG_DRAIN_LAYOUT',phase,'"+name+"',"+str({'real':1,'integer':2,'logical':3}[kind])+','+count+',storage_size('+name+')')
