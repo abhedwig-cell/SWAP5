@@ -1,0 +1,38 @@
+{
+  "status": "M_CURRENT_SOURCE_SELECTOR_AND_NEGATIVE_CONTROLS_PASS",
+  "checked_head": "b1e617bca4b504c4ed886b29e34e712e3aa29121",
+  "qualification_source": "f6ce291e4c28e88ee3c1b47a206da12433a92c38",
+  "physical_source": "166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad",
+  "evidence_seal": "182d1c464bad3ae011ff18d64103e2a88eb78702",
+  "verifier": {
+    "status": "HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS",
+    "runtime": "f6ce291e4c28e88ee3c1b47a206da12433a92c38",
+    "prior_composed_runtime": "f1d1c13a295c5b54ec11e03d864de7030ca09008",
+    "current_L_proof_anchor": "69561229a73b6c0085b2023935b8be09d1262710",
+    "current_L_full_days": 6576,
+    "current_M_full_days": 6576,
+    "current_M_proof_anchor": "182d1c464bad3ae011ff18d64103e2a88eb78702",
+    "current_M_physical_source": "166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad",
+    "original_nominal_runon_accuracy": "FAILED_NOT_QUALIFIED; retained day200 error6.2864e-10cm, original dtCrit1e-8day unchanged",
+    "closed6_current_full_native_O0_O2": "INHERITED from sealed L full/native PASS on actual current source preservation",
+    "named_full_evidence": "INHERITED on exact generated sources/inputs/policies; binary identity NOT claimed",
+    "proof_anchor": "4ee0e08b095b945870dce54032e0d886478fb4c4",
+    "original_canonical_parent": "3fb625da73031885624987d42ad922cb184c96e5",
+    "actual_composition_parents": [
+      "49ac58e473878b21b4050cebbf777ec1a97cc120",
+      "a6d4c4c7cfeb7286b3790bcec41dfdcf62a29adb"
+    ],
+    "historical_guards": "UNCHANGED; not current-source authorities",
+    "column_physics": "UNCHANGED; live O0/O2 column test remains required",
+    "whole_scientific_equivalence": "NOT_QUALIFIED"
+  },
+  "unit_tests": "6 PASS: original controls,9 L and16 M claim corruptions",
+  "actual_dirty_source_refusal": {
+    "returncode": 1,
+    "reason": "dirty qualified surface",
+    "original_bytes_restored": true
+  },
+  "full_moving_FCI": "NOT_SELECTED_IMPACT; not broad CI-green",
+  "original_compose_L_proofs": "Unchanged immutable anchors; current M source/preservation evidence is separate",
+  "nominal_runon_1e10": "FAILED_NOT_QUALIFIED retained; original dtCrit clock witness and hard mass guards distinct"
+}
