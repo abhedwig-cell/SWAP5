@@ -1,4 +1,5 @@
 module hybrid_step_budget
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod, dz
   use MOD_swap_base, only: swsnow, swmacro, swdra
   use MOD_macropore, only: NumDm, ICpBtDm, WaSrMpDm, QExcMtxDmCp, QInTopLatDm, QInTopVrtDm, QOutDrRapCp
@@ -17,12 +18,58 @@ module hybrid_step_budget
   private
   public :: projected_water_residual, projected_daily_receipt_error, apply_surface_lateral_limit
 contains
+  pure real(8) function receipt_sum(values) result(total)
+    ! Error-free binary64 expansion with a final half-even collapse, matching
+    ! the finite math.fsum contract used by the host. At most24 receipt terms.
+    ! This avoids software binary128 in every converged Richards candidate.
+    real(8), intent(in) :: values(:)
+    real(8) :: partial(24), carry, term, upper, lower, swap, recovered
+    integer :: count, kept, item, part
+    count=0
+    do item=1,size(values)
+      carry=values(item);kept=0
+      do part=1,count
+        term=partial(part)
+        if(abs(carry)<abs(term)) then
+          swap=carry;carry=term;term=swap
+        end if
+        upper=carry+term
+        recovered=upper-carry
+        lower=term-recovered
+        if(lower/=0d0) then
+          kept=kept+1;partial(kept)=lower
+        end if
+        carry=upper
+      end do
+      count=kept
+      if(carry/=0d0) then
+        count=count+1;partial(count)=carry
+      end if
+    end do
+    total=0d0;lower=0d0
+    if(count==0) return
+    total=partial(count);count=count-1
+    do while(count>0)
+      carry=total;term=partial(count);count=count-1
+      total=carry+term
+      recovered=total-carry
+      lower=term-recovered
+      if(lower/=0d0) exit
+    end do
+    if(count>0) then
+      if((lower<0d0.and.partial(count)<0d0).or.(lower>0d0.and.partial(count)>0d0)) then
+        term=2d0*lower;carry=total+term
+        recovered=carry-total
+        if(recovered==term) total=carry
+      end if
+    end if
+  end function
+
   real(8) function projected_daily_receipt_error() result(error)
     ! Predict the *exported* receipt using the original WatStor and Integral(3)
     ! arithmetic, without changing a state or counter. Sum-of-step residuals
     ! alone miss rounding in the independently integrated daily counters.
     ! Snow and reconstructed-bottom receipts retain their existing contracts.
-    integer, parameter :: wide = selected_real_kind(33)
     real(8) :: stocks(4), origin(4), flow(16), ending, initial, incoming, outgoing
     real(8) :: qbotts, canopy_out, independent, kernel_left, kernel_grouped
     integer :: node
@@ -46,15 +93,18 @@ contains
     if(sw_inter==3) canopy_out=crsflx_out
     flow(8)=flow(8)+canopy_out*dt
     if(swdra>0) flow(14)=flow(14)+qdrtot*dt
-    ! The host faithfully exports these binary64 quantities, using math.fsum.
-    ! Wider reduction reproduces those sums before applying both binary64
-    ! kernel associations; it does not raise the binary64 physical tolerance.
-    ending=real(sum(real(stocks,wide)),8)
-    initial=real(sum(real(origin,wide)),8)
-    incoming=real(sum(real(flow(:7),wide)),8)
-    outgoing=real(sum(real(flow(8:),wide)),8)
-    independent=real(sum(real(flow(:7),wide))-sum(real(flow(8:),wide)) &
-                     +sum(real(origin,wide))-sum(real(stocks,wide)),8)
+    if(.not.all(ieee_is_finite(stocks)).or..not.all(ieee_is_finite(origin)).or. &
+       .not.all(ieee_is_finite(flow))) then
+      error=huge(1d0)
+      return
+    end if
+    ! Reduce the exported binary64 quantities just as the host does, then
+    ! apply both binary64 kernel associations without a tolerance allowance.
+    ending=receipt_sum(stocks)
+    initial=receipt_sum(origin)
+    incoming=receipt_sum(flow(:7))
+    outgoing=receipt_sum(flow(8:))
+    independent=receipt_sum([flow(:7),-flow(8:),origin,-stocks])
     kernel_left=ending-initial-incoming+outgoing
     kernel_grouped=ending-initial-(incoming-outgoing)
     error=max(abs(independent),abs(kernel_left),abs(kernel_grouped))
