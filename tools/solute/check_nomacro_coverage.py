@@ -88,11 +88,12 @@ def main():
     group.add_argument('--history-options',action='store_true',help='Complete original microscopic lookup context for snow/hysteresis')
     group.add_argument('--lower-boundary-options',action='store_true',help='Original soil-air/ceramic-plate bottom boundary and independent trial receipt')
     group.add_argument('--head-boundary-options',action='store_true',help='Original prescribed-head5 boundary with independent signed trial flux')
+    group.add_argument('--surface-input-options',action='store_true',help='Original scheduled pond threshold and runon file input')
     parser.add_argument('--configuration',action='append',help='Explicit selected hydraulic/weather configuration; preserves prior per-configuration evidence')
     args = parser.parse_args()
-    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options
-    active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options
-    if args.configuration and not (args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options):parser.error('--configuration requires --hydraulic-options or --weather-options')
+    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options
+    active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options
+    if args.configuration and not (args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options):parser.error('--configuration requires --hydraulic-options or --weather-options')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     reference = out/'provider'
@@ -463,6 +464,11 @@ def main():
             if model>=8:additions+=['HA = -10.0 -10.0','APAR = -1.5 -1.5','OMEGA_K = .01 .01','SWVAPOR = 0 0']
             path=case/'swap.swp';path.write_text(path.read_text(encoding='cp1252')+'\n'+ '\n'.join(additions)+'\n',encoding='cp1252')
             cases[key]=case
+    if args.surface_input_options:
+        from surface_input_cases import create
+        for mode in ('water','chemical'):
+            for kind in ('pond-table','runon-file','surface-combined'):
+                key=mode+'-'+kind;cases[key]=create(out/('input-'+key),key)
     if args.configuration:
         if not set(args.configuration)<=set(cases):raise ValueError('Unknown requested hydraulic configuration')
         cases={key:value for key,value in cases.items() if key in args.configuration}
@@ -555,7 +561,7 @@ def main():
                         from qualify_micro_history import every_day
                         report['every_daily_cold_continuation']=every_day(bundle,reference,project,out/(label+'-everyday'),data)
 
-                if args.process_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options:
+                if args.process_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options:
                     report['active_native_soil_temperature_C']=native_temperatures(endstate/f'accepted-column-1-day-{active_cut+2}.zip',project)
                     report['thermal_scope']='Original temperature state and exact continuation; whole physical energy NOT_QUALIFIED'
                     (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
@@ -581,6 +587,13 @@ def main():
                     call(label+'-foreign-receipt',base+['--build-bundle',foreign,'--output',target,'--days',1],refuse=True,absent=target)
                     assert 'Foreign original lower-boundary receipt' in (out/(label+'-foreign-receipt.log')).read_text()
                     report['foreign_lower_receipt_refused_before_output']=True
+                if args.surface_input_options:
+                    foreign=out/(label+'-foreign-schedule-build');shutil.copytree(bundle,foreign)
+                    path=foreign/'BUILD.json';changed=json.loads(path.read_text());changed['identity']['surface_schedule']={'policy':'foreign'};path.write_text(json.dumps(changed))
+                    target=out/(label+'-foreign-schedule-refused')
+                    call(label+'-foreign-schedule',base+['--build-bundle',foreign,'--output',target,'--days',1],refuse=True,absent=target)
+                    assert 'Foreign original surface schedule' in (out/(label+'-foreign-schedule.log')).read_text()
+                    report['foreign_surface_schedule_refused_before_output']=True
                 isolated = out/(label+'-isolated'); isolated.mkdir()
                 restored = out/(label+'-isolation-origin')
                 receipt = h.verify_checkpoint(short/'accepted-column-1-day-2.zip', 2, meta['binding'], restored)
@@ -631,7 +644,7 @@ def main():
                 recovered.discard(third)
                 report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
                               inconsistent_mass_refused_without_commit=True)
-                if (args.extended and key.startswith('hupsel')) or ((args.crop_options or args.lower_boundary_options or args.head_boundary_options) and key.startswith('water-')) or (args.weather_options and e.inspect(case)['selectors']['SWCFBS']):
+                if (args.extended and key.startswith('hupsel')) or ((args.crop_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options) and key.startswith('water-')) or (args.weather_options and e.inspect(case)['selectors']['SWCFBS']):
                     with zipfile.ZipFile(origin) as z:
                         members={name:z.read(name) for name in z.namelist()}
                     original_aux=members['macro.bin']
@@ -659,6 +672,23 @@ def main():
                         assert h.sha(origin)==before
                     report['resealed_native_history_refusals']=len(controls)
                 (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
+
+        if args.surface_input_options:
+            from qualify_surface_schedule import windows
+            from surface_input_cases import PULSES_MM
+            selectors=e.inspect(case)['selectors']
+            for opt in ('O0','O2'):
+                selected=next(r for r in reports if r['configuration']==key and r['optimization']==opt)
+                selected['surface_event_exact_native_windows']=windows(out/(key+'-'+opt+'-build'),reference,project,
+                    out/(key+'-'+opt+'-surface-windows'),full_rows,opt)
+                if opt=='O2':
+                    for day,amount in PULSES_MM.items():
+                        assert abs(full_rows[day-1]['external_flux_cm'][4]-(amount*.1 if selectors['SWRUNON'] else 0))<=1e-10
+                    selected['max_pond_cm']=max(r['stock_end_cm'][1] for r in full_rows)
+                    selected['total_runoff_cm']=sum(r['external_flux_cm'][8] for r in full_rows)
+                    selected['actual_runon_cm']={day:full_rows[day-1]['external_flux_cm'][4] for day in PULSES_MM}
+                    selected['runon_witness_tolerance_cm']=1e-10
+            (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
 
         if args.lower_boundary_options or args.head_boundary_options:
             from qualify_lower_boundary import natural_windows
@@ -742,7 +772,7 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    key = next(iter(cases)) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
+    key = next(iter(cases)) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
     case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
             '--build-bundle', out/(key+'-O2-build')]
@@ -770,9 +800,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_PRESCRIBED_HEAD_OPTIONS_PASS' if args.head_boundary_options else 'EXPERIMENTAL_LOWER_BOUNDARY_OPTIONS_PASS' if args.lower_boundary_options else 'EXPERIMENTAL_HISTORY_OPTIONS_PASS' if args.history_options else 'EXPERIMENTAL_WEATHER_OPTIONS_PASS' if args.weather_options else 'EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_SURFACE_INPUT_OPTIONS_PASS' if args.surface_input_options else 'EXPERIMENTAL_PRESCRIBED_HEAD_OPTIONS_PASS' if args.head_boundary_options else 'EXPERIMENTAL_LOWER_BOUNDARY_OPTIONS_PASS' if args.lower_boundary_options else 'EXPERIMENTAL_HISTORY_OPTIONS_PASS' if args.history_options else 'EXPERIMENTAL_WEATHER_OPTIONS_PASS' if args.weather_options else 'EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
+                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

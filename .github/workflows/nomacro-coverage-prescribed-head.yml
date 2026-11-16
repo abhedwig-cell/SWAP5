@@ -1,9 +1,14 @@
-name: Original prescribed-head lower boundary receipt
+name: Original head and surface-file boundary controls
 on:
   push:
     branches: [codex/nomacro-coverage12]
     paths: ['.github/workflows/nomacro-coverage-prescribed-head.yml']
   workflow_dispatch:
+    inputs:
+      surface_inputs:
+        type: boolean
+        default: false
+        description: Select scheduled pond and runon file cohort instead of prescribed head
 permissions:
   contents: read
 jobs:
@@ -14,7 +19,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        configuration: [water-head-fixed, water-head-table, chemical-head-fixed, chemical-head-table, water-head-bbc, chemical-head-bbc]
+        configuration: ${{ fromJSON(inputs.surface_inputs && '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
     env:
       OMP_NUM_THREADS: '1'
     steps:
@@ -27,11 +32,18 @@ jobs:
             tools/vq
             reference/swap-4.3.1/projects
             reference/swap-4.3.1/source-archives
-      - name: Execute full original soil-air boundary and native own restarts O0/O2
-        run: python3 -B tools/solute/check_nomacro_coverage.py --head-boundary-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
+      - name: Execute selected original boundary and native own restarts O0/O2
+        env:
+          SURFACE_INPUTS: ${{ inputs.surface_inputs }}
+        run: |
+          if [ "$SURFACE_INPUTS" = true ]; then
+            python3 -B tools/solute/check_nomacro_coverage.py --surface-input-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
+          else
+            python3 -B tools/solute/check_nomacro_coverage.py --head-boundary-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: nomacro-head-${{ matrix.configuration }}-${{ github.sha }}
+          name: nomacro-${{ inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30
