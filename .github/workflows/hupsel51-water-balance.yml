@@ -43,6 +43,7 @@ jobs:
           name: hupsel51-${{ github.sha }}
           path: |
             ${{ runner.temp }}/hupsel51-component
+            ${{ runner.temp }}/hupsel51-soil-air
             ${{ runner.temp }}/hupsel51-O2
             ${{ runner.temp }}/hupsel51-O0
             ${{ runner.temp }}/hupsel51-named

@@ -29,6 +29,7 @@ QUALIFY = '.github/workflows/hupsel51-water-balance.yml'
 COMPOSED_STEP = '''      - name: Shared soil-air receipt template O0/O2 after composition
         run: python3 -B tools/solute/check_soil_air_receipt.py --reference-work "$RUNNER_TEMP/hupsel51-provider" --output "$RUNNER_TEMP/hupsel51-soil-air"
 '''
+COMPOSED_ARTIFACT = '            ${{ runner.temp }}/hupsel51-soil-air\n'
 FCI_INSERT = '''          if [[ -f tests/hupsel51/verify_successor.py ]]; then
             # Exact current repair proof, not a relabelled historical admission.
             python3 -B tests/hupsel51/test_successor.py
@@ -97,6 +98,8 @@ def validate_workflow(path, current, previous):
         current = current.replace(insertion, '', 1)
         require(current.count(COMPOSED_STEP) == 1, 'missing/duplicate composed soil-air check')
         current = current.replace(COMPOSED_STEP, '', 1)
+        require(current.count(COMPOSED_ARTIFACT) == 1, 'missing/duplicate composed component raw output')
+        current = current.replace(COMPOSED_ARTIFACT, '', 1)
     require(current == previous, 'historical workflow body changed: '+path)
 
 
@@ -167,7 +170,8 @@ def verify():
     require(all(p['all_physical_daily_fields_exact'] and p['all_physical_csv_rows_exact'] for p in c['prior_physical_preservation'].values()), 'composed physical drift')
     require(digest((ROOT/PROOF/'COMPOSED_WINDOWS_RAW.zip').read_bytes()) == COMPOSED_RAW_SHA256, 'composed raw capsule identity')
     return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=RUNTIME,
-                proof_anchor=SEALED, canonical_parent=BASE,
+                proof_anchor=SEALED, original_canonical_parent=BASE,
+                actual_composition_parents=c['actual_merge_parents'],
                 historical_guards='UNCHANGED; not current-source authorities',
                 column_physics='UNCHANGED; live O0/O2 column test remains required',
                 whole_scientific_equivalence='NOT_QUALIFIED')
