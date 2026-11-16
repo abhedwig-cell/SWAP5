@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "QUALIFIED_LOCAL_HOST_COMMIT",
   "baseline": "426b8d31a92a23b9f6b58dd58b96f67f220cd213",
   "routes": [
     "O0 same original native step to hostcommit",
@@ -9,5 +9,7 @@
   "stop": "After target hostcommit, before next step; hard20s perroute",
   "candidate_changes": false,
   "driver_changes_only": true,
-  "no_campaign": true
+  "no_campaign": true,
+  "decision": "PASS_LOCAL_HOST_COMMIT_AND_WATER_INVENTORY_O0_O2",
+  "models_launched": 2
 }

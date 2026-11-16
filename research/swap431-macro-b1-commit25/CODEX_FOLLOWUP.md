@@ -1,0 +1,9 @@
+Lees REPORT/RESULT/STATUS. COMMIT25 breidt JAC24 lokale headPASS uit tot echtehostcommit+inventaris van exactzelfde stap. Baseline426b8d31a. Allef90bronnenbyteexactJAC24behalvesoilwater_native(driverstop/export);geennewsolver/criteria/fysica/BAL/nativewijziging. Nativeaanlooporigineelgrens35797,36priorcommits/37priorattempts exact,target38headexact2iterFr1V1. DriverlaatSoilWater3/MACROPORE4/integral3/heat/TimeControl3lopen,stop37ecommit,geenvervolgstap. Geenverborgenstatecopy.
+
+Tbegin35797.070666666681,Tend35797.072000000015,useddt.0013333333333333333,nextdt.002nietverwarren. 37budgetrows/38headattempts. Exact2routes O0.704s,O2.593s,cap20,ongecensureerd/geencampagne. Allecommittedvectors/ledger/raw nontimingbytegelijkO0O2 enhead/cal/JtracesexactJAC24.
+
+OnafhankelijkeΔmatrix=-.0005471728387796002,Δmacro=-.00010155226635849123,Δpond0,Δcanopy=-1.981343671357723e-7cm;gross external=-.0006489232394402206 =>error-6.500659385788587e-14cm<dt*CritDevBalTot1.3333333333333334e-8. Netversiezondercanopyzelfdeafrondniveau. Δstocksuitapartetheta*dz*fr+5domain+pond+SICACT;fluxintegraaluitaccepted32primitives. GeenafgerondeBALsluiting. SWSNOW/SWFROST0. Domainclosureerrors~1e-17cm. Domain3end=.0353436710755035exactnative minimumvanfinalheadoperator,nietomzeild.
+
+Beginledger=headreturnledgerexact;naechtehostintegralallecumudeltas=dt*rates,maxscalarerror4.12e-18cm. MB/ICtop/exchangecumugecheckt. GeenSICINIreset:nonzeroperiodeoriginbehouden. Headreturnh/theta=committedh/theta,stocks/clock/events/wetwall doorrealmacrostatebijgewerkt.
+
+Geenrejection/rollback/directsmallerretry/eigenrestart/nextstep/fullBALkwalificatie. Geennewnativecheckpointgeschreven/oudPASSautomatischvoornewsolver. IEEE_DENORMALinstrumentatielimietgeërfdbehouden. Alleenapartevraagselecteertverderwerk. assess_commit25.py readonly;seal_commit25.py streamtclosure/manifest.
