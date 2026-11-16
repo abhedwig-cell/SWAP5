@@ -90,7 +90,8 @@ def main():
     def continuation():return h.run(donor,kernel,case,restarted,end,checkpoint_day=start,origin=origin,origin_receipt=receipt,runtime=True,publish_day=end,checkpoint_binding=binding,model=project.model,project=project)
     result,elapsed=bounded(60,continuation);assert result['first_refusal'] is None
     actual=rows(restarted);check(actual);assert physical(actual)==physical(data[start:end])
-    assert csvlines(restarted/'original/result_output.csv')[-(end-start):]==csvlines(full/'original/result_output.csv')[start+1:end+1]
+    # CSV has a header and an initial-state row before day1.
+    assert csvlines(restarted/'original/result_output.csv')[-(end-start):]==csvlines(full/'original/result_output.csv')[start+2:end+2]
     with zipfile.ZipFile(restarted/f'accepted-column-1-day-{end}.zip') as x,zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as y:
      for native in ('result.end','macro.bin'):assert x.read(native)==y.read(native)
     assert sha(checkpoint)==digest
