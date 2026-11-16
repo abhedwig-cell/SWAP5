@@ -86,11 +86,12 @@ def main():
     group.add_argument('--weather-options',action='store_true',help='Original reference ET, rainfall and detailed meteorology')
     group.add_argument('--constitutive-options',action='store_true',help='Actual original alternative water retention/conductivity models2..11')
     group.add_argument('--history-options',action='store_true',help='Complete original microscopic lookup context for snow/hysteresis')
+    group.add_argument('--lower-boundary-options',action='store_true',help='Original soil-air/ceramic-plate bottom boundary and independent trial receipt')
     parser.add_argument('--configuration',action='append',help='Explicit selected hydraulic/weather configuration; preserves prior per-configuration evidence')
     args = parser.parse_args()
-    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options
-    active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options
-    if args.configuration and not (args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options):parser.error('--configuration requires --hydraulic-options or --weather-options')
+    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options
+    active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options
+    if args.configuration and not (args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options):parser.error('--configuration requires --hydraulic-options or --weather-options')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     reference = out/'provider'
@@ -125,6 +126,25 @@ def main():
         path.write_text(text, encoding='cp1252')
         cases[key] = case
 
+    if args.lower_boundary_options:
+        specs=[('water-air',0,0,False),('water-plate',0,-50,False),('chemical-air',1,0,False),
+               ('chemical-plate',1,-50,False),('water-plate-bbc',0,-25,True),('chemical-plate-bbc',1,-25,True)]
+        for key,solute,plate,bbc in specs:
+            case=out/('input-'+key);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
+            changes={'SWSOLU':solute,'SWBBCFILE':int(bbc),'SWBOTB':3 if bbc else 8}
+            for path,options in [(case/'swap.swp',changes)]+[(p,{'SWSALINITY':0} if not solute else {}) for p in case.glob('*.crp')]:
+                text=path.read_text(encoding='cp1252')
+                for name,value in options.items():
+                    text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text)
+                    assert count==1,(key,path,name)
+                if path.name=='swap.swp':
+                    if bbc:
+                        text,count=re.subn(r"(?mi)^([ \t]*BBCFIL[ \t]*=[ \t]*)'[^']+'",r"\1'soil-air'",text)
+                        assert count==1
+                    else:text+='\nHPLATE = '+str(plate)+'.0\n'
+                path.write_text(text,encoding='cp1252')
+            if bbc:(case/'soil-air.bbc').write_text('SWBOTB = 8\nHPLATE = '+str(plate)+'.0\n',encoding='cp1252')
+            cases[key]=case
     if args.history_options:
         specs=[('water-history',0,1,1,0),('water-hyst1',0,1,0,0),('water-hyst2',0,2,0,0),
                ('water-snow',0,0,1,0),('water-hyst2-snow',0,2,1,0),
@@ -514,7 +534,7 @@ def main():
                         from qualify_micro_history import every_day
                         report['every_daily_cold_continuation']=every_day(bundle,reference,project,out/(label+'-everyday'),data)
 
-                if args.process_options or args.weather_options or args.constitutive_options or args.history_options:
+                if args.process_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options:
                     report['active_native_soil_temperature_C']=native_temperatures(endstate/f'accepted-column-1-day-{active_cut+2}.zip',project)
                     report['thermal_scope']='Original temperature state and exact continuation; whole physical energy NOT_QUALIFIED'
                     (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
@@ -581,7 +601,7 @@ def main():
                 recovered.discard(third)
                 report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
                               inconsistent_mass_refused_without_commit=True)
-                if (args.extended and key.startswith('hupsel')) or (args.crop_options and key.startswith('water-')) or (args.weather_options and e.inspect(case)['selectors']['SWCFBS']):
+                if (args.extended and key.startswith('hupsel')) or ((args.crop_options or args.lower_boundary_options) and key.startswith('water-')) or (args.weather_options and e.inspect(case)['selectors']['SWCFBS']):
                     with zipfile.ZipFile(origin) as z:
                         members={name:z.read(name) for name in z.namelist()}
                     original_aux=members['macro.bin']
@@ -684,7 +704,7 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    key = next(iter(cases)) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
+    key = next(iter(cases)) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
     case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
             '--build-bundle', out/(key+'-O2-build')]
@@ -711,9 +731,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_HISTORY_OPTIONS_PASS' if args.history_options else 'EXPERIMENTAL_WEATHER_OPTIONS_PASS' if args.weather_options else 'EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_LOWER_BOUNDARY_OPTIONS_PASS' if args.lower_boundary_options else 'EXPERIMENTAL_HISTORY_OPTIONS_PASS' if args.history_options else 'EXPERIMENTAL_WEATHER_OPTIONS_PASS' if args.weather_options else 'EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
+                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

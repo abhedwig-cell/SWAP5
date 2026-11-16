@@ -143,6 +143,15 @@ def validate_bundle(bundle, reference, project):
     """Reuse a qualified binary only at its exact source/build/input boundary."""
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
+    from lower_boundary_receipt import enabled as lower_enabled,POLICY as LOWER_POLICY,render_budget
+    lower=lower_enabled(project)
+    expected_lower={'policy':LOWER_POLICY,'source_sha256':h.sha(h.APP/'lower_boundary_receipt.py'),
+                    'template_sha256':h.sha(h.APP/'hybrid_step_budget.f90'),'effective_SWBOTB':8} if lower else None
+    if identity.get('lower_boundary_receipt')!=expected_lower:raise ValueError('Foreign original lower-boundary receipt')
+    if lower:
+        source=bundle/'hybrid_step_budget.f90'
+        if identity['budget_source']!=h.sha(source) or source.read_text(encoding='cp1252')!=render_budget((h.APP/'hybrid_step_budget.f90').read_text(encoding='cp1252')):
+            raise ValueError('Foreign generated lower-boundary receipt source')
     from micro_lookup_state import POLICY,enabled
     expected_micro=POLICY if enabled(project) else None
     if identity.get('micro_lookup_state_policy')!=expected_micro:
@@ -183,7 +192,7 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Bundle project differs')
     for key, name in [('host', 'daily_host.py'), ('adapter', 'donor_adapter.f90'),
                       ('driver', 'main.f90'), ('budget_source', 'hybrid_step_budget.f90')]:
-        if key == 'budget_source' and not meta['binding']['budget_retry']:
+        if key == 'budget_source' and (lower or not meta['binding']['budget_retry']):
             continue
         if identity[key] != h.sha(h.APP / name):
             raise ValueError('Bundle source differs: ' + name)
