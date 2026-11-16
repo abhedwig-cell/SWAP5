@@ -1,0 +1,32 @@
+{
+  "status": "CURRENT_SOURCE_SELECTOR_AND_NEGATIVE_CONTROLS_PASS",
+  "checked_head": "afab82c8864e72f78bf336a9b8843491dd3a21fa",
+  "runtime_source": "dadbda8128c16d8ba8dd858e5ac3a0b64a9a2b75",
+  "evidence_seal": "69561229a73b6c0085b2023935b8be09d1262710",
+  "verifier": {
+    "status": "HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS",
+    "runtime": "dadbda8128c16d8ba8dd858e5ac3a0b64a9a2b75",
+    "prior_composed_runtime": "f1d1c13a295c5b54ec11e03d864de7030ca09008",
+    "current_L_proof_anchor": "69561229a73b6c0085b2023935b8be09d1262710",
+    "current_L_full_days": 6576,
+    "closed6_current_full_native_O0_O2": "PASS; prior physical rows exact",
+    "named_full_evidence": "INHERITED on exact generated sources/inputs/policies; binary identity NOT claimed",
+    "proof_anchor": "4ee0e08b095b945870dce54032e0d886478fb4c4",
+    "original_canonical_parent": "3fb625da73031885624987d42ad922cb184c96e5",
+    "actual_composition_parents": [
+      "49ac58e473878b21b4050cebbf777ec1a97cc120",
+      "a6d4c4c7cfeb7286b3790bcec41dfdcf62a29adb"
+    ],
+    "historical_guards": "UNCHANGED; not current-source authorities",
+    "column_physics": "UNCHANGED; live O0/O2 column test remains required",
+    "whole_scientific_equivalence": "NOT_QUALIFIED"
+  },
+  "unit_tests": "5 PASS, including9 L claim corruptions plus original controls",
+  "actual_dirty_source_refusal": {
+    "returncode": 1,
+    "reason": "dirty qualified surface",
+    "original_bytes_restored": true
+  },
+  "full_moving_FCI": "NOT_SELECTED_IMPACT; no broad green claim",
+  "prior_sealed_evidence": "UNCHANGED and separately verified"
+}

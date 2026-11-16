@@ -8,14 +8,20 @@ def physical(row):return {k:v for k,v in row.items() if k not in ('column','revi
 def payload(path):
     with zipfile.ZipFile(path) as z:return {n:z.read(n) for n in ('result.end','macro.bin')}
 
-def natural_windows(bundle,reference,project,out,full_rows,opt):
+def natural_windows(bundle,reference,project,out,full_rows,opt,*,signed=False):
     # These thresholds classify naturally exercised regimes, not acceptance or
     # balance tolerance. The actual model/host retains its original hard guards.
-    open_days=[r['day'] for r in full_rows[:-2] if r['bottom_outward_cm']>1e-6]
-    closed_days=[i+1 for i in range(10,len(full_rows)-2)
-                 if all(abs(r['bottom_outward_cm'])<1e-12 for r in full_rows[i:i+3])]
-    assert open_days and closed_days, 'Full trajectory did not exercise both natural outlet regimes'
-    cuts={'open':max(2,open_days[0]),'closed':closed_days[0]}
+    if signed:
+        open_days=[i+1 for i in range(len(full_rows)-2) if all(r['bottom_outward_cm']>1e-6 for r in full_rows[i:i+3])]
+        closed_days=[i+1 for i in range(len(full_rows)-2) if all(r['bottom_outward_cm']< -1e-6 for r in full_rows[i:i+3])]
+        assert open_days and closed_days,'Full prescribed-head trajectory did not exercise both flow directions'
+        cuts={'outflow':max(2,open_days[0]),'inflow':max(2,closed_days[0])}
+    else:
+        open_days=[r['day'] for r in full_rows[:-2] if r['bottom_outward_cm']>1e-6]
+        closed_days=[i+1 for i in range(10,len(full_rows)-2)
+                     if all(abs(r['bottom_outward_cm'])<1e-12 for r in full_rows[i:i+3])]
+        assert open_days and closed_days, 'Full trajectory did not exercise both natural outlet regimes'
+        cuts={'open':max(2,open_days[0]),'closed':closed_days[0]}
     selected=set(cuts.values())|{d+2 for d in cuts.values()};out.mkdir();warmdir=out/'warm';warmdir.mkdir()
     meta,case=validate_bundle(bundle,reference,project);expected={}
     with contextlib.ExitStack() as stack:
@@ -44,5 +50,8 @@ def natural_windows(bundle,reference,project,out,full_rows,opt):
     result=dict(optimization=opt,natural_open_days=len(open_days),natural_closed_days=len(closed_days),
         classification_only=dict(open_outward_gt_cm=1e-6,closed_abs_outward_lt_cm=1e-12),
         windows={k:[v,v+2] for k,v in cuts.items()},physical_exact=True,native_exact=True,origins_unchanged=True)
+    if signed:
+        result['natural_outflow_days']=result.pop('natural_open_days');result['natural_inflow_days']=result.pop('natural_closed_days')
+        result['classification_only']={'outward_gt_cm':1e-6,'inward_lt_cm':-1e-6}
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
     return result

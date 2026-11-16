@@ -1,9 +1,10 @@
-"""PR1686-only current CI selection; historical admissions stay immutable.
+"""Source-bound current CI selection; historical admissions stay immutable.
 
 This is not a replacement historical oracle or whole-science admission. It
 inherits sealed full-run evidence only for the exact tested runtime and permits
 three literal CI forwarding insertions. Any subsequent runtime change must choose
-and qualify its own successor.
+and qualify its own successor. L adds a separately sealed prescribed-head
+qualification plus fresh closed6 and unchanged named-source preservation.
 """
 from pathlib import Path
 import hashlib
@@ -16,6 +17,9 @@ ROOT = Path(__file__).resolve().parents[2]
 SEALED = '4ee0e08b095b945870dce54032e0d886478fb4c4'
 ORIGINAL_RUNTIME = '6e2cd26f873f9a935af92816a2f1d947df9293c7'
 RUNTIME = 'f1d1c13a295c5b54ec11e03d864de7030ca09008'
+CURRENT_RUNTIME = 'dadbda8128c16d8ba8dd858e5ac3a0b64a9a2b75'
+L_SEALED = '69561229a73b6c0085b2023935b8be09d1262710'
+L_PROOF = 'integration/nomacro-coverage01/'
 COMPOSED_JSON_SHA256 = '0fafaad32f544eb487668f1393fc5e4bd7848af7dc0d69ec3738716dc99a3985'
 COMPOSED_RAW_SHA256 = '5dd145a3f54950ef09aa5ad6316729abf981b14c8c896a0d1815f5f6c5292f25'
 BASE = '3fb625da73031885624987d42ad922cb184c96e5'
@@ -121,11 +125,69 @@ def validate_runs(profiles):
                 require(all(w[k] is True for k in ('exact_physical', 'exact_csv', 'exact_native_auxiliary', 'origin_unchanged')), 'nonexact native own restart')
 
 
+def validate_l(q, preservation, components):
+    require(q['runtime_source'] == preservation['runtime_source'] == CURRENT_RUNTIME, 'foreign L source')
+    require(q['status'] == 'ALL_SELECTED_PRESCRIBED_HEAD_FULL_TRAJECTORIES_AND_OWN_RESTARTS_PASS', 'L incomplete')
+    require(q['full_configurations'] == 6 and q['complete_model_days'] == 6576, 'L full trajectory count')
+    require(q['science'] == preservation['science'] == 'NOT_QUALIFIED', 'L scientific promotion')
+    expected = {mode+'-head-'+kind for mode in ('water', 'chemical') for kind in ('fixed', 'table', 'bbc')}
+    records = [r for report in q['reports'].values() for r in report['configurations']]
+    full = [r for r in records if r['full_period_pass']]
+    require(len(full) == 6 and {r['configuration'] for r in full} == expected, 'L missing configuration')
+    for r in records:
+        require(r['exact_day_suffix'] and r['exact_native_auxiliary'] and r['active_crop_exact_native_window'] == [530, 532], 'L native continuation')
+        for key in ('maximum_water_residual_cm', 'maximum_solute_residual_mg_cm2'):
+            v = r[key]
+            require(v is None or math.isfinite(v) and 0 <= v <= 1e-10, 'L hard balance')
+        if r['full_period_pass']:
+            require(r['completed_days'] == r['requested_days'] == 1096, 'L partial trajectory')
+            require(all(r[k] is True for k in ('foreign_lower_receipt_refused_before_output', 'independent_distinct_origins', 'external_discard_replay_exact', 'external_disk_recovery', 'inconsistent_mass_refused_without_commit')), 'L transaction/binding preservation')
+    windows = q['natural_regime_windows']
+    require(len(windows) == 24 and {(w['configuration'], w['optimization'], w['regime']) for w in windows} == {(n, opt, regime) for n in expected for opt in ('O0', 'O2') for regime in ('inflow', 'outflow')}, 'L signed outlet window coverage')
+    require(all(w['physical_exact'] and w['native_exact'] and w['origins_unchanged'] for w in windows), 'L nonexact outlet restart')
+    require(q['original_full_invalid_DATE5_refused'] and q['short_past_all_knots_cold_exact'], 'L original table validation contract')
+    require(preservation['status'] == 'L_CURRENT_CLOSED6_AND_NAMED_PRESERVATION_PASS', 'L preservation incomplete')
+    p = preservation['profiles']
+    require(set(p) == {'O0', 'O2', 'grass', 'hupsel', 'salt'}, 'L preservation cohort')
+    for opt in ('O0', 'O2'):
+        require(p[opt]['all_generated_execution_sources_exact'] and p[opt]['all_1096_physical_daily_rows_exact'], 'L closed6 physical/source drift')
+    for name in ('grass', 'hupsel', 'salt'):
+        require(p[name]['status'] == 'ACTUAL_NAMED_GENERATED_SOURCES_AND_INPUTS_EXACT' and p[name]['publisher_source_exact'] and p[name]['budget_source_git_blob_exact'], 'L named dependency drift')
+    require(components['runtime_source'] == CURRENT_RUNTIME, 'foreign component source')
+    require(components['prescribed_head']['status'] == 'PRODUCTION_ORIGINAL_PRESCRIBED_HEAD_RECEIPT_O0_O2_PASS', 'L receipt component')
+    require(components['soil_air']['status'] == 'PRODUCTION_ORIGINAL_SOIL_AIR_RECEIPT_O0_O2_PASS', 'L soil-air component')
+    require(components['pond']['status'] == 'ORIGINAL_LINEAR_POND_TANGENT_O0_O2_PASS' and set(components['pond']['profiles']) == {'O0', 'O2'}, 'L pond component')
+
+
+def verify_l(c):
+    git('merge-base', '--is-ancestor', CURRENT_RUNTIME, L_SEALED)
+    git('merge-base', '--is-ancestor', L_SEALED, 'HEAD')
+    require(not git('diff', CURRENT_RUNTIME, 'HEAD', '--', 'src', 'app', 'reference', 'tools'), 'runtime differs from qualified L source')
+    # The immutable seal contains reviewed docs/evidence, not a moving allowlist.
+    # Later changes may update only this selector/tests and the admission receipt.
+    paths = set(git('diff', '--name-only', L_SEALED, 'HEAD').decode().splitlines())
+    require(paths <= {SELF, TEST, L_PROOF+'BLOCK_L_MERGE.json', L_PROOF+'BLOCK_L_CI_SELECTION.json'}, 'unqualified delta after L evidence seal')
+    def sealed_json(name):
+        path = L_PROOF+name+'.json'
+        require(blob('HEAD', path) == blob(L_SEALED, path), 'L sealed proof changed: '+name)
+        return json.loads((ROOT/path).read_text())
+    q = sealed_json('BLOCK_L_QUALIFICATION')
+    p = sealed_json('BLOCK_L_CURRENT_PRESERVATION')
+    components = sealed_json('BLOCK_L_COMPONENT_RESULT')
+    validate_l(q, p, components)
+    validate_runs(dict(O0={'undrained': p['profiles']['O0']['full']}, O2={'undrained': p['profiles']['O2']['full']}, named=c['Windows']['named']))
+    for label in ('FIRST_MATRIX', 'READER_MATRIX', 'READER_DEFAULT', 'FULL_TRAJECTORIES', 'LOCAL', 'DEFAULT_PRESERVATION'):
+        m = sealed_json('BLOCK_L_'+label+'_ARCHIVE')
+        path = L_PROOF+m['archive']
+        require(hashlib.sha256((ROOT/path).read_bytes()).hexdigest() == m['sha256'], 'L raw capsule identity: '+label)
+    return q, p
+
+
 def verify():
     git('merge-base', '--is-ancestor', SEALED, 'HEAD')
     git('merge-base', '--is-ancestor', RUNTIME, 'HEAD')
-    require(not git('diff', RUNTIME, 'HEAD', '--', 'src', 'app', 'reference', 'tools'), 'runtime differs from qualified source')
-    paths = git('diff', '--name-only', RUNTIME, 'HEAD').decode().splitlines()
+    require(not git('diff', RUNTIME, CURRENT_RUNTIME, '--', 'src', 'reference'), 'unqualified kernel/reference delta')
+    paths = git('diff', '--name-only', RUNTIME, '206938ff7737a669341d1cb2a9318c185ed5b08a').decode().splitlines()
     validate_scope(paths)
     require(not git('diff', 'HEAD', '--', 'src', 'app', 'reference', 'tools', 'tests', '.github', 'integration'), 'dirty qualified surface')
     for p in (FCI, MC, CHEM):
@@ -169,7 +231,12 @@ def verify():
     require(c['pond_component_status'] == 'ORIGINAL_LINEAR_POND_TANGENT_O0_O2_PASS', 'pond derivative composition untested')
     require(all(p['all_physical_daily_fields_exact'] and p['all_physical_csv_rows_exact'] for p in c['prior_physical_preservation'].values()), 'composed physical drift')
     require(digest((ROOT/PROOF/'COMPOSED_WINDOWS_RAW.zip').read_bytes()) == COMPOSED_RAW_SHA256, 'composed raw capsule identity')
-    return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=RUNTIME,
+    q, p = verify_l(c)
+    return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=CURRENT_RUNTIME,
+                prior_composed_runtime=RUNTIME, current_L_proof_anchor=L_SEALED,
+                current_L_full_days=q['complete_model_days'],
+                closed6_current_full_native_O0_O2='PASS; prior physical rows exact',
+                named_full_evidence='INHERITED on exact generated sources/inputs/policies; binary identity NOT claimed',
                 proof_anchor=SEALED, original_canonical_parent=BASE,
                 actual_composition_parents=c['actual_merge_parents'],
                 historical_guards='UNCHANGED; not current-source authorities',

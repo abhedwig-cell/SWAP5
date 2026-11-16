@@ -155,9 +155,10 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         if len(values)!=1:raise ValueError('Missing/ambiguous physical selector: '+name)
         return int(values[0])
     micro_state=bool(project.input_directory and not project.macro and (selector('SWHYST') or selector('SWSNOW')))
-    from lower_boundary_receipt import enabled as lower_receipt_enabled
-    lower_receipt=lower_receipt_enabled(project)
-    if lower_receipt and not budget_retry:raise ValueError('Soil-air boundary requires independent strict trial receipt')
+    from lower_boundary_receipt import selected_boundary
+    lower_boundary=selected_boundary(project)
+    lower_receipt=lower_boundary is not None
+    if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
     soil_tables = selector('SWSOPHY')==1
@@ -674,9 +675,15 @@ end module plant_interface""")
         if lower_receipt:
             from lower_boundary_receipt import render_budget,render_headcalc
             budget_source=output/'hybrid_step_budget.f90'
-            budget_source.write_text(render_budget((APP/'hybrid_step_budget.f90').read_text(encoding='cp1252')),encoding='cp1252')
+            budget_source.write_text(render_budget((APP/'hybrid_step_budget.f90').read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
             path=output/'headcalc.f90'
-            path.write_text(render_headcalc(path.read_text(encoding='cp1252')),encoding='cp1252')
+            path.write_text(render_headcalc(path.read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
+            if lower_boundary==5:
+                from lower_boundary_receipt import render_readswap
+                source=(donor_build/'swap-selected/readswap.f90').read_text(encoding='cp1252')
+                (output/'readswap.f90').write_text(render_readswap(source,project.start_clock),encoding='cp1252')
+                if 'readswap' in patched:raise ValueError('Multiple original reader state owners')
+                patched.append('readswap')
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
@@ -739,9 +746,9 @@ end module plant_interface""")
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
     if lower_receipt:
-        from lower_boundary_receipt import POLICY as LOWER_POLICY
-        build_identity['lower_boundary_receipt']={'policy':LOWER_POLICY,'source_sha256':sha(APP/'lower_boundary_receipt.py'),
-            'template_sha256':sha(APP/'hybrid_step_budget.f90'),'effective_SWBOTB':8}
+        from lower_boundary_receipt import policy as lower_policy
+        build_identity['lower_boundary_receipt']={'policy':lower_policy(lower_boundary),'source_sha256':sha(APP/'lower_boundary_receipt.py'),
+            'template_sha256':sha(APP/'hybrid_step_budget.f90'),'effective_SWBOTB':lower_boundary}
     if not project.macro:
         build_identity['floating_point_profile'] = no_macro_fp_profile()
         build_identity['soil_table_policy'] = project.soil_table_policy if soil_tables else None

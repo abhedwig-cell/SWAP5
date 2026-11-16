@@ -143,14 +143,15 @@ def validate_bundle(bundle, reference, project):
     """Reuse a qualified binary only at its exact source/build/input boundary."""
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
-    from lower_boundary_receipt import enabled as lower_enabled,POLICY as LOWER_POLICY,render_budget
-    lower=lower_enabled(project)
-    expected_lower={'policy':LOWER_POLICY,'source_sha256':h.sha(h.APP/'lower_boundary_receipt.py'),
-                    'template_sha256':h.sha(h.APP/'hybrid_step_budget.f90'),'effective_SWBOTB':8} if lower else None
+    from lower_boundary_receipt import selected_boundary,policy as lower_policy,render_budget
+    lower_boundary=selected_boundary(project)
+    lower=lower_boundary is not None
+    expected_lower={'policy':lower_policy(lower_boundary),'source_sha256':h.sha(h.APP/'lower_boundary_receipt.py'),
+                    'template_sha256':h.sha(h.APP/'hybrid_step_budget.f90'),'effective_SWBOTB':lower_boundary} if lower else None
     if identity.get('lower_boundary_receipt')!=expected_lower:raise ValueError('Foreign original lower-boundary receipt')
     if lower:
         source=bundle/'hybrid_step_budget.f90'
-        if identity['budget_source']!=h.sha(source) or source.read_text(encoding='cp1252')!=render_budget((h.APP/'hybrid_step_budget.f90').read_text(encoding='cp1252')):
+        if identity['budget_source']!=h.sha(source) or source.read_text(encoding='cp1252')!=render_budget((h.APP/'hybrid_step_budget.f90').read_text(encoding='cp1252'),lower_boundary):
             raise ValueError('Foreign generated lower-boundary receipt source')
     from micro_lookup_state import POLICY,enabled
     expected_micro=POLICY if enabled(project) else None

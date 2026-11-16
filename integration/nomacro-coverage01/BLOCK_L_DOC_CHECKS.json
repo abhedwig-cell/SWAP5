@@ -1,0 +1,14 @@
+{
+  "document": "docs/science/NOMACRO_FUNCTIONAL_COVERAGE.md",
+  "document_sha256": "8c4c5c3c2a5181bd2f5868985d1a0f30063d6e6f894a8d26581249364100aa22",
+  "source_check": {
+    "command": "python -B tools/docs/check_docs.py",
+    "returncode": 0
+  },
+  "strict_mkdocs": {
+    "returncode": 0,
+    "seconds": 38.22,
+    "log_sha256": "5cad0c40d0c61f5b5df4aeaf8e6e47271c9625d2dcac86862484c38a6143e256"
+  },
+  "scope": "Actual L documentation postimage; source check and strict build passed"
+}

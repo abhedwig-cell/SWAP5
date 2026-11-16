@@ -134,8 +134,8 @@ def inspect(directory):
         boundary = selected
     if boundary.get('SWBOTB') not in range(1, 9):
         raise ValueError('Unsupported/missing original lower boundary')
-    if selected['SWSOLU'] and boundary['SWBOTB'] in (1, 5):
-        raise ValueError('Reconstructed bottom flux requires a separate strict substep receipt')
+    if selected['SWSOLU'] and boundary['SWBOTB']==1:
+        raise ValueError('Prescribed groundwater-level flux requires a separate independent trial receipt')
     for name, value in boundary.items():
         if value not in allowed.get(name, set()):
             raise ValueError('Unsupported boundary selector: '+name)

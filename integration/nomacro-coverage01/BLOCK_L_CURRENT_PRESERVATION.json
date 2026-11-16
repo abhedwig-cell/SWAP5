@@ -1,0 +1,544 @@
+{
+  "status": "L_CURRENT_CLOSED6_AND_NAMED_PRESERVATION_PASS",
+  "runtime_source": "dadbda8128c16d8ba8dd858e5ac3a0b64a9a2b75",
+  "baseline": "f1d1c13a295c5b54ec11e03d864de7030ca09008",
+  "profiles": {
+    "grass": {
+      "status": "ACTUAL_NAMED_GENERATED_SOURCES_AND_INPUTS_EXACT",
+      "compared_identity_keys": [
+        "compiler_sha256",
+        "donor_flags",
+        "kernel_flags",
+        "donor_generated",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "floating_point_profile",
+        "soil_table_policy",
+        "solute_step_policy",
+        "time_step_policy"
+      ],
+      "identity": {
+        "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "donor_flags": [
+          "-O2",
+          "-cpp",
+          "-Dlinux",
+          "-finit-local-zero",
+          "-ffree-line-length-none",
+          "-fallow-argument-mismatch",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ],
+        "kernel_flags": [
+          "-O2",
+          "-ffree-line-length-none",
+          "-fcheck=all",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ],
+        "donor_generated": {
+          "macropore.f90": "e23d498600bddbf7cd97dc23a8e77e7a5a6fdc079bce36f9f20bae1134b01f12",
+          "timecontrol.f90": "12e552c5912ab94b3454a19f2f2c906ecba29256b8b2ac54e2f85ad3d468be67",
+          "swap.f90": "fbaec845db99b5dbd2ec91799e7c606935854738d9b800c7845b6677f3b30fe8",
+          "swap_main.f90": "450c2069d70b4becf3c33323acac354490292b1378d6a8ec2508bae628f04f6c",
+          "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+        },
+        "kernel_sources": [
+          [
+            "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+            "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f"
+          ],
+          [
+            "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+            "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393"
+          ],
+          [
+            "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+            "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835"
+          ],
+          [
+            "src/transaction/mod_transaction_reference.f90",
+            "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27"
+          ],
+          [
+            "src/runtime/mod_canonical_contracts.f90",
+            "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d"
+          ],
+          [
+            "src/runtime/mod_canonical_interval_runtime.f90",
+            "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65"
+          ],
+          [
+            "src/kernel/mod_kernel_transactions.f90",
+            "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3"
+          ],
+          [
+            "src/runtime/mod_groundwater_coupling_contract.f90",
+            "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205"
+          ],
+          [
+            "src/runtime/mod_groundwater_swap_forcing_adapter.f90",
+            "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515"
+          ],
+          [
+            "src/runtime/mod_groundwater_swap_transaction_participant.f90",
+            "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e"
+          ],
+          [
+            "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+            "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38"
+          ],
+          [
+            "src/runtime/mod_fmr_soil_water_application_host.f90",
+            "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+          ]
+        ],
+        "adapter": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+        "driver": "ba1026fe767b219aafe8bae46245fd31dd178a50f6962c745bbe864c6ef73a9d",
+        "floating_point_profile": {
+          "id": "gnu-x86_64-separate-ops-v1",
+          "flags": [
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "soil_table_policy": null,
+        "solute_step_policy": null,
+        "time_step_policy": "configured-dtmax-daily-v1"
+      },
+      "inputs": {
+        "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "control_plot.inp": "f863e4ba420dee267e1d034e54d69e6d3419eb54263e067d2acee4acebbd8812",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "observed/HRVDM.csv": "834a7aa8ebdb773e70d3bac588743edc50e980a5013a46fa1de1aec902859a88",
+        "observed/WDM.csv": "fe1e42be70e61a771e7dd60e75967a34af7d910fe22bd361f9dbb4f3495197a3",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+        "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196"
+      },
+      "current_BUILD_sha256": "76112b2adab4ffbc740bd93817b841723f159ff8d0d99ea8aae48aab33354bf9",
+      "prior_BUILD_member": "named/grass/build/BUILD.json",
+      "prior_BUILD_sha256": "1a9026f437cae7f814edc055e2fdd41dcf570340f847a2af08efbc8a65af8c44",
+      "binary_identity": "NOT_BYTE_EXACT: separately compiled original provider objects/libraries; not used as a binary preservation claim",
+      "publisher_source_exact": true,
+      "budget_source_git_blob_exact": true,
+      "budget_checkout": "Only LF/CRLF checkout conversion differs; each actual source digest is checked against its own BUILD identity"
+    },
+    "hupsel": {
+      "status": "ACTUAL_NAMED_GENERATED_SOURCES_AND_INPUTS_EXACT",
+      "compared_identity_keys": [
+        "compiler_sha256",
+        "donor_flags",
+        "kernel_flags",
+        "donor_generated",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "floating_point_profile",
+        "soil_table_policy",
+        "solute_step_policy",
+        "time_step_policy"
+      ],
+      "identity": {
+        "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "donor_flags": [
+          "-O2",
+          "-cpp",
+          "-Dlinux",
+          "-finit-local-zero",
+          "-ffree-line-length-none",
+          "-fallow-argument-mismatch",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ],
+        "kernel_flags": [
+          "-O2",
+          "-ffree-line-length-none",
+          "-fcheck=all",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ],
+        "donor_generated": {
+          "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "macropore.f90": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+          "timecontrol.f90": "12e552c5912ab94b3454a19f2f2c906ecba29256b8b2ac54e2f85ad3d468be67",
+          "swap.f90": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+          "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "headcalc.f90": "fa7d96c944d14dfa08d76d3b9939e7d01f4ae3077ba1542b084760bbfe17176b",
+          "boundtop.f90": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+        },
+        "kernel_sources": [
+          [
+            "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+            "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f"
+          ],
+          [
+            "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+            "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393"
+          ],
+          [
+            "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+            "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835"
+          ],
+          [
+            "src/transaction/mod_transaction_reference.f90",
+            "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27"
+          ],
+          [
+            "src/runtime/mod_canonical_contracts.f90",
+            "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d"
+          ],
+          [
+            "src/runtime/mod_canonical_interval_runtime.f90",
+            "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65"
+          ],
+          [
+            "src/kernel/mod_kernel_transactions.f90",
+            "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3"
+          ],
+          [
+            "src/runtime/mod_groundwater_coupling_contract.f90",
+            "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205"
+          ],
+          [
+            "src/runtime/mod_groundwater_swap_forcing_adapter.f90",
+            "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515"
+          ],
+          [
+            "src/runtime/mod_groundwater_swap_transaction_participant.f90",
+            "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e"
+          ],
+          [
+            "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+            "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38"
+          ],
+          [
+            "src/runtime/mod_fmr_soil_water_application_host.f90",
+            "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+          ]
+        ],
+        "adapter": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+        "driver": "ba1026fe767b219aafe8bae46245fd31dd178a50f6962c745bbe864c6ef73a9d",
+        "floating_point_profile": {
+          "id": "gnu-x86_64-separate-ops-v1",
+          "flags": [
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "soil_table_policy": null,
+        "solute_step_policy": "admitted-cde-substeps-v1",
+        "time_step_policy": "configured-dtmax-daily-v1"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "current_BUILD_sha256": "b1f57db9b018dd41c1f9ca6444dee04241e58e43e56a16a9bb2c7f07cbe6fbee",
+      "prior_BUILD_member": "named/hupsel/build/BUILD.json",
+      "prior_BUILD_sha256": "200b23f7b47961b8888427b0f957054b38fe8c3123bb65a44b8a16c73c08282d",
+      "binary_identity": "NOT_BYTE_EXACT: separately compiled original provider objects/libraries; not used as a binary preservation claim",
+      "publisher_source_exact": true,
+      "budget_source_git_blob_exact": true,
+      "budget_checkout": "Only LF/CRLF checkout conversion differs; each actual source digest is checked against its own BUILD identity"
+    },
+    "salt": {
+      "status": "ACTUAL_NAMED_GENERATED_SOURCES_AND_INPUTS_EXACT",
+      "compared_identity_keys": [
+        "compiler_sha256",
+        "donor_flags",
+        "kernel_flags",
+        "donor_generated",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "floating_point_profile",
+        "soil_table_policy",
+        "solute_step_policy",
+        "time_step_policy"
+      ],
+      "identity": {
+        "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "donor_flags": [
+          "-O2",
+          "-cpp",
+          "-Dlinux",
+          "-finit-local-zero",
+          "-ffree-line-length-none",
+          "-fallow-argument-mismatch",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ],
+        "kernel_flags": [
+          "-O2",
+          "-ffree-line-length-none",
+          "-fcheck=all",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ],
+        "donor_generated": {
+          "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "macropore.f90": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+          "timecontrol.f90": "3a48b918afc9ea568f814a58c601f255ef1e647db0a6647d777a9f657880a851",
+          "swap.f90": "eca77cdc3997061060e2a9b1ed2d646d4fb9abfb2cc5501429f851d855b21a7f",
+          "swap_main.f90": "656becdbb62f8d4d6cfaf64bca2e11444fa1fc76baff8d25388e9930a74b9df1",
+          "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "headcalc.f90": "f92d3bd18664a241a39765fc657a92247487e00285ec5c762f9553f136811730",
+          "boundtop.f90": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+        },
+        "kernel_sources": [
+          [
+            "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+            "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f"
+          ],
+          [
+            "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+            "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393"
+          ],
+          [
+            "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+            "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835"
+          ],
+          [
+            "src/transaction/mod_transaction_reference.f90",
+            "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27"
+          ],
+          [
+            "src/runtime/mod_canonical_contracts.f90",
+            "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d"
+          ],
+          [
+            "src/runtime/mod_canonical_interval_runtime.f90",
+            "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65"
+          ],
+          [
+            "src/kernel/mod_kernel_transactions.f90",
+            "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3"
+          ],
+          [
+            "src/runtime/mod_groundwater_coupling_contract.f90",
+            "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205"
+          ],
+          [
+            "src/runtime/mod_groundwater_swap_forcing_adapter.f90",
+            "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515"
+          ],
+          [
+            "src/runtime/mod_groundwater_swap_transaction_participant.f90",
+            "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e"
+          ],
+          [
+            "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+            "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38"
+          ],
+          [
+            "src/runtime/mod_fmr_soil_water_application_host.f90",
+            "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+          ]
+        ],
+        "adapter": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+        "driver": "ba1026fe767b219aafe8bae46245fd31dd178a50f6962c745bbe864c6ef73a9d",
+        "floating_point_profile": {
+          "id": "gnu-x86_64-separate-ops-v1",
+          "flags": [
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "soil_table_policy": null,
+        "solute_step_policy": "admitted-cde-substeps-v1",
+        "time_step_policy": "configured-dtmax-physical-growth-v2"
+      },
+      "inputs": {
+        "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+        "fontane.crp": "000eeca30866de5bb015ebd0fe7f931b8675908d0bb908683e36bf8eebe73754",
+        "PREPARATION.json": "65147ab4cde9975dc67ff1f1e704a01ead0c1f9eb6e33b7bff6ed9efb86931bd",
+        "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+        "swap.ini": "3f6539a9c6bfd1e9dfdbccc74418c9ed97e130445f7cd781e4d1e44353915b87",
+        "swap.swp": "9060e13639d15809eccd2e9a339092e63dc2fc21d8c74511be994a762b85039d"
+      },
+      "current_BUILD_sha256": "fdd6160479ef668d5519641928c4a499d0116ffbff7d72c5b528830b8945b3c1",
+      "prior_BUILD_member": "named/salt/build/BUILD.json",
+      "prior_BUILD_sha256": "59ded1b5478fbad9a23b4b20f063f59c1664eec3bc699a4804f2c6d69bb3e457",
+      "binary_identity": "NOT_BYTE_EXACT: separately compiled original provider objects/libraries; not used as a binary preservation claim",
+      "publisher_source_exact": true,
+      "budget_source_git_blob_exact": true,
+      "budget_checkout": "Only LF/CRLF checkout conversion differs; each actual source digest is checked against its own BUILD identity"
+    },
+    "O0": {
+      "status": "CLOSED6_CURRENT_FULL_NATIVE_AND_PRIOR_PHYSICAL_EXACT",
+      "full": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 2.3109292257572633e-13,
+          "max_kernel_cm": 2.3225865675158275e-13,
+          "max_solute_mg_cm2": 1.1316295123187103e-13,
+          "sum_water_residual_cm": 3.1970948512292235e-12
+        },
+        "model_seconds": 5.29350750008598,
+        "build_sha256": "38931b3a0e3e37b1f39b7a828d35a16f6443dcfdae52cc85c3ef28db68dfaf12",
+        "profiles": {
+          "kernel_flags": [
+            "-O0",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O0",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 50,
+            "end": 52,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.2957691000774503
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.371785799972713
+          }
+        ]
+      },
+      "compared_identity_keys": [
+        "compiler_sha256",
+        "donor_flags",
+        "kernel_flags",
+        "donor_generated",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "floating_point_profile",
+        "soil_table_policy",
+        "solute_step_policy",
+        "time_step_policy"
+      ],
+      "all_generated_execution_sources_exact": true,
+      "all_1096_physical_daily_rows_exact": true
+    },
+    "O2": {
+      "status": "CLOSED6_CURRENT_FULL_NATIVE_AND_PRIOR_PHYSICAL_EXACT",
+      "full": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 2.3109292257572633e-13,
+          "max_kernel_cm": 2.3225865675158275e-13,
+          "max_solute_mg_cm2": 1.1316295123187103e-13,
+          "sum_water_residual_cm": 3.1970948512292235e-12
+        },
+        "model_seconds": 5.119010899914429,
+        "build_sha256": "ca085e2e255994b9c82ebc3e64a5792e0b9853d2117b957250dffe97c5bd2801",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 50,
+            "end": 52,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.33740710001438856
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.3705659999977797
+          }
+        ]
+      },
+      "compared_identity_keys": [
+        "compiler_sha256",
+        "donor_flags",
+        "kernel_flags",
+        "donor_generated",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "floating_point_profile",
+        "soil_table_policy",
+        "solute_step_policy",
+        "time_step_policy"
+      ],
+      "all_generated_execution_sources_exact": true,
+      "all_1096_physical_daily_rows_exact": true
+    }
+  },
+  "scope": "Fresh closed6 full O0/O2 and own50/530; unchanged named generated sources/inputs inherited from immutable actual-composition proof. Host build-only branches change only selected5/8; stepping functions and kernel sources unchanged. No old capsule rebind.",
+  "science": "NOT_QUALIFIED"
+}

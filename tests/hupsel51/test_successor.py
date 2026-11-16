@@ -50,6 +50,26 @@ class Boundaries(unittest.TestCase):
         with self.assertRaises(ValueError):
             s.validate_runs(r)
 
+    def test_current_l_source_full_native_and_mass_claims(self):
+        load = lambda name: json.loads((s.ROOT/s.L_PROOF/(name+'.json')).read_text())
+        q = load('BLOCK_L_QUALIFICATION')
+        p = load('BLOCK_L_CURRENT_PRESERVATION')
+        c = load('BLOCK_L_COMPONENT_RESULT')
+        s.validate_l(q, p, c)
+        attacks = []
+        bad = copy.deepcopy(q); bad['runtime_source'] = s.RUNTIME; attacks.append((bad, p, c))
+        bad = copy.deepcopy(q); bad['complete_model_days'] = 51; attacks.append((bad, p, c))
+        bad = copy.deepcopy(q); bad['natural_regime_windows'].pop(); attacks.append((bad, p, c))
+        bad = copy.deepcopy(q); bad['natural_regime_windows'][0]['native_exact'] = False; attacks.append((bad, p, c))
+        bad = copy.deepcopy(q); next(iter(bad['reports'].values()))['configurations'][0]['maximum_water_residual_cm'] = 1.0001e-10; attacks.append((bad, p, c))
+        bad = copy.deepcopy(q); bad['original_full_invalid_DATE5_refused'] = False; attacks.append((bad, p, c))
+        bad = copy.deepcopy(p); bad['profiles']['O0']['all_1096_physical_daily_rows_exact'] = False; attacks.append((q, bad, c))
+        bad = copy.deepcopy(p); bad['profiles']['grass']['publisher_source_exact'] = False; attacks.append((q, bad, c))
+        bad = copy.deepcopy(c); bad['prescribed_head']['status'] = 'FAILED'; attacks.append((q, p, bad))
+        for index, values in enumerate(attacks):
+            with self.subTest(attack=index), self.assertRaises(ValueError):
+                s.validate_l(*values)
+
 
 if __name__ == '__main__':
     unittest.main()
