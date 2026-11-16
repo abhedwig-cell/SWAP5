@@ -1,0 +1,20 @@
+{
+  "status": "ACTUAL_INLINE_AND_FILE_STORAGE_EQUIVALENCE_PASS",
+  "source_commit": "6afb72468c0060df60694d4b69ee8619fdc93062",
+  "profiles": [
+    {
+      "configuration": "water-file-subsurface-interval",
+      "optimization": "O0",
+      "physical_all_six_days_exact": true,
+      "final_native_payload_exact": true,
+      "scope": "Independent fresh inline0/file1 input cases; no checkpoint/binary/source identity rebinding"
+    },
+    {
+      "configuration": "chemical-file-sprinkler",
+      "optimization": "O0",
+      "physical_all_six_days_exact": true,
+      "final_native_payload_exact": true,
+      "scope": "Independent fresh inline0/file1 input cases; no checkpoint/binary/source identity rebinding"
+    }
+  ]
+}
