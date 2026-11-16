@@ -1,0 +1,125 @@
+--- NODE20/diag_state.f90
++++ LIMIT21/diag_state.f90
+@@ -2,7 +2,7 @@
+ implicit none
+ integer,save::nvec=0,njac=0,nrate=0,nderiv=0,nback=0,nfresh=0,attempts=0,steps=0,u,v
+ logical,save::target=.false.
+-integer,save::iter_index=0,node_u,op_u,raw_u
++integer,save::iter_index=0,node_u,op_u,raw_u,limit_u,macro_seq=0
+ integer,save::kind=-1,iterations=0,flags(5)=0,worst=0,prelevel=0
+ real(8),save::residual=0,maxres=0,trialdt=0,headwall=0,budgetwall=0,spanhead=0,spanbudget=0
+ integer(8),save::origin,lastclock,hclock,bclock,rate
+@@ -14,12 +14,13 @@
+ open(newunit=node_u,file='node_iterations.txt',status='replace')
+ open(newunit=op_u,file='node_operator.txt',status='replace')
+ open(newunit=raw_u,file='node_absorption.txt',status='replace')
++open(newunit=limit_u,file='domain3_limit.txt',status='replace')
+ end subroutine
+ subroutine head_start()
+ use variables,only:dt
+ use MOD_swap_mp,only:IDecMpRat
+ attempts=attempts+1
+-iter_index=0
++iter_index=0;macro_seq=0
+ target=attempts==38.or.(attempts>=50.and.attempts<=52)
+ nvec=0;njac=0;nrate=0;nderiv=0;nback=0;nfresh=0;kind=-1;iterations=0;flags=0
+ trialdt=dt;prelevel=IDecMpRat
+@@ -35,7 +36,7 @@
+  merge(1,0,fldecdt),merge(1,0,FlDecMpRat),merge(1,0,fldtmin),flags,residual,maxres,worst, &
+  nvec,njac,nrate,nderiv,nback,nfresh,headwall
+ if(target) then
+- flush(node_u);flush(op_u);flush(raw_u)
++ flush(node_u);flush(op_u);flush(raw_u);flush(limit_u)
+ end if
+ if(mod(attempts,128)==0) flush(u)
+ end subroutine
+@@ -64,8 +65,8 @@
+ if(mod(steps,128)==0) flush(v)
+ done=steps>=42.or.elapsed>=16d0
+ if(done) then
+- close(u);close(v);close(node_u);close(op_u);close(raw_u)
+- open(newunit=o,file='outcome.txt',status='replace');write(o,*) 'NODE20_BOUNDED',steps,elapsed;close(o)
++ close(u);close(v);close(node_u);close(op_u);close(raw_u);close(limit_u)
++ open(newunit=o,file='outcome.txt',status='replace');write(o,*) 'LIMIT21_BOUNDED',steps,elapsed;close(o)
+ end if
+ spanhead=0;spanbudget=0
+ call system_clock(lastclock)
+
+--- NODE20/macrorate_node.f90
++++ LIMIT21/macrorate_node.f90
+@@ -22,6 +22,7 @@
+                                 vlmpstcp, vlmpdycp, ksatcovlay, icptpsatzon, gwlflcpzo, zbtdm, vlmpdm,                                       &
+                                 zdrabas, ppdmcp, icpbtdm, zwalevdm, mpvolume, nodgwlflcpzo, frmpwalwet, icptpwasrdm,swmbf, vlmpdmcp,         &
+                                 vlmpdmcpm1, waunmpdmcpm1, waunmpdmcp, waunsat,  WaSrMpDm, qtopmpdmcp, icpbtdmm1, nkwt, fldecMPmbf
++      use DIAG19,only:target,attempts,iter_index,nvec,limit_u,macro_seq
+       implicit NONE
+ 
+ ! --- global                                                          In
+@@ -42,6 +43,7 @@
+       real(8), save                       :: FrXtr, Pp, PpTot, SatDefTot, VlMpUndrDrL, VlMpUndrGwL
+       real(8), save                       :: WaSrMpDmMax, WaSrMpDmMin, WaSrMpDmTmp
+       real(8), save                       :: Ld, r0, w_geom, Henpr1  
++      real(8),save::lim_min,lim_max,lim_under,lim_in,lim_out,lim_tmp,lim_frin,lim_excess,lim_nodein
+       real(8) VOLUNDR
+       real(8), save                       :: ThetaExc, FlwInTopExc, FrFlwTopIn, FrFlwSideIn, FlwRed                       ! KWT Flow reduction variables
+       real(8), save, dimension(MaCp)      :: FlwTopCp, FlwLatCpPot                                                        ! KWT Flow variables
+@@ -61,6 +63,7 @@
+ 
+ ! ----------------------------------------------------------------------
+ !     for FORCHECK
++      macro_seq=macro_seq+1
+       t1900 = t1900
+ !
+ !> I < ---------- INITIALISE AND CHECK MACROPORE STATUS ---------------
+@@ -256,6 +259,13 @@
+ !           Excess outflow; compensated in later sections
+             FlwOutDmExces(id) = 0.d0
+             if (WaSrMpDmTmp < WaSrMpDmMin) FlwOutDmExces(id) = WaSrMpDmMin - WaSrMpDmTmp
++            if(target.and.id==3) then
++             lim_min=WaSrMpDmMin;lim_max=WaSrMpDmMax;lim_under=VlMpUndrGwL
++             lim_in=FlwInDmTot;lim_out=FlwOutDmTot(id);lim_tmp=WaSrMpDmTmp;lim_frin=FrFlwIn
++             lim_excess=FlwOutDmExces(id);lim_nodein=FlwInMtxSatCpPot(52)
++             call limit21_trace(1)
++            end if
++
+    
+ !           Saturation deficit of domain and of total of domains: for checking available storage for excess from other domains
+             SatDefDm(id)    = dmax1(0.d0,(VlMpDm(id)-WaSrMpDmTmp))
+@@ -1385,11 +1395,13 @@
+                   FrFlwOut = 0.d0
+                end if
+             end if 
++            if(target.and.id==3) call limit21_trace(2)
+             if (swmbf == 1 .OR. (swmbf == 2 .AND. id > 1)) then
+                QOutMtxSatDmCp(id,IcTopMp:NumNod) = FrFlwOut * FlwOutMtxSatDmCpPot(id,IcTopMp:NumNod)  / dt
+                QOutMtxUnsDmCp(id,IcTopMp:NumNod) = FrFlwOut * FlwOutMtxUnsDmCpPot(id,IcTopMp:NumNod)  / dt
+                if (id == 1) QOutDrRapCp(IcTopMp:NumNod) = FrFlwOut * FlwOutDrRapCpPot(IcTopMp:NumNod) / dt
+             end if
++            if(target.and.id==3) call limit21_trace(3)
+          end do
+       end if
+ 
+@@ -1446,6 +1458,23 @@
+       end do
+ 
+       return
++      contains
++      subroutine limit21_trace(stage)
++      integer,intent(in)::stage
++      real(8)::outfac
++      outfac=-1d0
++      if(stage/=1) outfac=FrFlwOut
++      write(limit_u,*) attempts,iter_index,nvec,macro_seq,ITask,stage,dt,FrReduQ,h(52), &
++       GwlFlCpZo,ICpTpSatZon,ZWaLevDm(3),WaSrMpDm(3),lim_min,lim_max,lim_under,VlMpDm(3), &
++       lim_in,lim_out,lim_tmp,lim_frin,lim_excess,FlwOutDmExces(3),outfac, &
++       FlwInTopVrtDmPot(3),FlwInTopLatDmPot(3),FlwInIntSatDmPot(3),FlwInMtxSatDmPot(3), &
++       FlwOutMtxSatDmPot(3),FlwOutMtxUnsDmPot(3),FlwOutMtxSatDmCpPot(3,52), &
++       QOutMtxSatDmCp(3,52),QInMtxSatDmCp(3,52),QInTopVrtDm(3)+QInTopLatDm(3), &
++       FlwOutMtxSatDmCpPot(3,52)/dt,sum(QOutMtxSatDmCp(3,1:numnod))+sum(QOutMtxUnsDmCp(3,1:numnod)), &
++       sum(QInMtxSatDmCp(3,1:numnod))+sum(QInIntSatDmCp(3,1:numnod))+QInTopVrtDm(3)+QInTopLatDm(3), &
++       FlwInTopExcesTot,SatDefTot,merge(1,0,FlwOutDmExces(3)/dt>1d-7), &
++       merge(1,0,FlwOutDmTot(3)>FlwOutDmExces(3)),WaSrMpDm(3)+lim_frin*lim_in-lim_min,lim_nodein
++      end subroutine limit21_trace
+       end subroutine MacroRate
+ 
+ 
