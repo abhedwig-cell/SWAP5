@@ -5,6 +5,10 @@ on:
     paths: ['.github/workflows/nomacro-coverage-prescribed-head.yml']
   workflow_dispatch:
     inputs:
+      fixed_irrigation_inputs:
+        type: boolean
+        default: false
+        description: Select original external fixed irrigation file cohort
       surface_inputs:
         type: boolean
         default: false
@@ -28,7 +32,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        configuration: ${{ fromJSON(inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
+        configuration: ${{ fromJSON(inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
     env:
       OMP_NUM_THREADS: '1'
     steps:
@@ -56,8 +60,11 @@ jobs:
         env:
           SURFACE_INPUTS: ${{ inputs.surface_inputs }}
           FINISH_SURFACE_RUNON: ${{ inputs.finish_surface_runon }}
+          FIXED_IRRIGATION_INPUTS: ${{ inputs.fixed_irrigation_inputs }}
         run: |
-          if [ "$FINISH_SURFACE_RUNON" = true ]; then
+          if [ "$FIXED_IRRIGATION_INPUTS" = true ]; then
+            python3 -B tools/solute/check_nomacro_coverage.py --fixed-irrigation-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
+          elif [ "$FINISH_SURFACE_RUNON" = true ]; then
             python3 -B tools/solute/check_nomacro_coverage.py --surface-input-options --finish-surface-runon-evidence --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
           elif [ "$SURFACE_INPUTS" = true ]; then
             python3 -B tools/solute/check_nomacro_coverage.py --surface-input-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
@@ -67,6 +74,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: nomacro-${{ inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
+          name: nomacro-${{ inputs.fixed_irrigation_inputs && 'irrigation-file' || inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30

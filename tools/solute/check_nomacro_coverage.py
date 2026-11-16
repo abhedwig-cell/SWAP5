@@ -89,12 +89,13 @@ def main():
     group.add_argument('--lower-boundary-options',action='store_true',help='Original soil-air/ceramic-plate bottom boundary and independent trial receipt')
     group.add_argument('--head-boundary-options',action='store_true',help='Original prescribed-head5 boundary with independent signed trial flux')
     group.add_argument('--surface-input-options',action='store_true',help='Original scheduled pond threshold and runon file input')
+    group.add_argument('--fixed-irrigation-options',action='store_true',help='Complete original external fixed irrigation reader; water0/1/2 and chemical0/1')
     parser.add_argument('--configuration',action='append',help='Explicit selected hydraulic/weather configuration; preserves prior per-configuration evidence')
     parser.add_argument('--finish-surface-runon-evidence',action='store_true',help='Finish missing M verification on immutable actual run43864567262 artifacts; no model rerun')
     args = parser.parse_args()
-    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options
-    active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options
-    if args.configuration and not (args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options):parser.error('--configuration requires --hydraulic-options or --weather-options')
+    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options or args.fixed_irrigation_options
+    active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options or args.fixed_irrigation_options
+    if args.configuration and not (args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options or args.fixed_irrigation_options):parser.error('--configuration requires a selected process cohort')
     if args.finish_surface_runon_evidence:
         if not args.surface_input_options or not args.configuration or len(args.configuration)!=1:parser.error('M completion requires one selected surface configuration')
         from finish_surface_input_checks import finish
@@ -474,6 +475,9 @@ def main():
         for mode in ('water','chemical'):
             for kind in ('pond-table','runon-file','surface-combined'):
                 key=mode+'-'+kind;cases[key]=create(out/('input-'+key),key)
+    if args.fixed_irrigation_options:
+        from fixed_irrigation_cases import create,SPECS
+        for key in SPECS:cases[key]=create(out/('input-'+key),key)
     if args.configuration:
         if not set(args.configuration)<=set(cases):raise ValueError('Unknown requested hydraulic configuration')
         cases={key:value for key,value in cases.items() if key in args.configuration}
@@ -566,7 +570,7 @@ def main():
                         from qualify_micro_history import every_day
                         report['every_daily_cold_continuation']=every_day(bundle,reference,project,out/(label+'-everyday'),data)
 
-                if args.process_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options:
+                if args.process_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options or args.fixed_irrigation_options:
                     report['active_native_soil_temperature_C']=native_temperatures(endstate/f'accepted-column-1-day-{active_cut+2}.zip',project)
                     report['thermal_scope']='Original temperature state and exact continuation; whole physical energy NOT_QUALIFIED'
                     (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
@@ -599,6 +603,13 @@ def main():
                     call(label+'-foreign-schedule',base+['--build-bundle',foreign,'--output',target,'--days',1],refuse=True,absent=target)
                     assert 'Foreign original surface schedule' in (out/(label+'-foreign-schedule.log')).read_text()
                     report['foreign_surface_schedule_refused_before_output']=True
+                if args.fixed_irrigation_options:
+                    foreign=out/(label+'-foreign-file-build');shutil.copytree(bundle,foreign)
+                    path=foreign/'BUILD.json';changed=json.loads(path.read_text());changed['identity']['fixed_irrigation_file']={'policy':'foreign'};path.write_text(json.dumps(changed))
+                    target=out/(label+'-foreign-file-refused')
+                    call(label+'-foreign-file',base+['--build-bundle',foreign,'--output',target,'--days',1],refuse=True,absent=target)
+                    assert 'Foreign original fixed irrigation file policy' in (out/(label+'-foreign-file.log')).read_text()
+                    report['foreign_fixed_file_policy_refused_before_output']=True
                 isolated = out/(label+'-isolated'); isolated.mkdir()
                 restored = out/(label+'-isolation-origin')
                 receipt = h.verify_checkpoint(short/'accepted-column-1-day-2.zip', 2, meta['binding'], restored)
@@ -649,7 +660,7 @@ def main():
                 recovered.discard(third)
                 report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
                               inconsistent_mass_refused_without_commit=True)
-                if (args.extended and key.startswith('hupsel')) or ((args.crop_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options) and key.startswith('water-')) or (args.weather_options and e.inspect(case)['selectors']['SWCFBS']):
+                if (args.extended and key.startswith('hupsel')) or ((args.crop_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options or args.fixed_irrigation_options) and key.startswith('water-')) or (args.weather_options and e.inspect(case)['selectors']['SWCFBS']):
                     with zipfile.ZipFile(origin) as z:
                         members={name:z.read(name) for name in z.namelist()}
                     original_aux=members['macro.bin']
@@ -692,6 +703,19 @@ def main():
                     selected['max_pond_cm']=max(r['stock_end_cm'][1] for r in full_rows)
                     selected['total_runoff_cm']=sum(r['external_flux_cm'][8] for r in full_rows)
                     selected['actual_runon_cm']={day:full_rows[day-1]['external_flux_cm'][4] for day in PULSES_MM}
+            (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
+
+        if args.fixed_irrigation_options:
+            from qualify_surface_schedule import windows
+            from fixed_irrigation_cases import SPECS
+            solute,kind,zone=SPECS[key]
+            for opt in ('O0','O2'):
+                selected=next(r for r in reports if r['configuration']==key and r['optimization']==opt)
+                selected['fixed_irrigation_event_exact_native_windows']=windows(out/(key+'-'+opt+'-build'),reference,project,
+                    out/(key+'-'+opt+'-irrigation-windows'),full_rows,opt,cuts=(4,),fixed_irrigation=True)
+                actual=selected['fixed_irrigation_event_exact_native_windows']['actual_fixed_irrigation_cm'][5]
+                assert actual['subsurface' if kind==2 else 'gross_surface']>0
+                selected['original_irrigation_type']=kind
             (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
 
         if args.lower_boundary_options or args.head_boundary_options:
@@ -776,7 +800,7 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    key = next(iter(cases)) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
+    key = next(iter(cases)) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options or args.fixed_irrigation_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
     case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
             '--build-bundle', out/(key+'-O2-build')]
@@ -804,9 +828,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_SURFACE_INPUT_OPTIONS_PASS' if args.surface_input_options else 'EXPERIMENTAL_PRESCRIBED_HEAD_OPTIONS_PASS' if args.head_boundary_options else 'EXPERIMENTAL_LOWER_BOUNDARY_OPTIONS_PASS' if args.lower_boundary_options else 'EXPERIMENTAL_HISTORY_OPTIONS_PASS' if args.history_options else 'EXPERIMENTAL_WEATHER_OPTIONS_PASS' if args.weather_options else 'EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_FIXED_IRRIGATION_FILE_OPTIONS_PASS' if args.fixed_irrigation_options else 'EXPERIMENTAL_SURFACE_INPUT_OPTIONS_PASS' if args.surface_input_options else 'EXPERIMENTAL_PRESCRIBED_HEAD_OPTIONS_PASS' if args.head_boundary_options else 'EXPERIMENTAL_LOWER_BOUNDARY_OPTIONS_PASS' if args.lower_boundary_options else 'EXPERIMENTAL_HISTORY_OPTIONS_PASS' if args.history_options else 'EXPERIMENTAL_WEATHER_OPTIONS_PASS' if args.weather_options else 'EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
+                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options or args.fixed_irrigation_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)
