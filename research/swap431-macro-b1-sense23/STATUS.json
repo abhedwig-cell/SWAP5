@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "QUALIFIED_LOCAL_SENSITIVITY_AND_SCOPED_RESTORE",
   "baseline": "4976c403d7eeeb7c8158d2b34d3d07c1585ffe96",
   "routes": [
     "O0 native attempt38",
@@ -9,5 +9,9 @@
   "points": "base; h50,h51,h52 plus/minus1e-4 and5e-5; repeatedbase =14evaluations",
   "restore": "allownmacro/swapmpmodule fields, hostmutationclosure and savedMACRORATE/SATFLOW/ABSORPTION/CALCGWLlocals; binary identity aftereachprobe",
   "hard_timeout_seconds": 20,
-  "no_campaign": true
+  "no_campaign": true,
+  "decision": "LOCAL_SENSITIVITY_AND_SCOPED_RESTORE_PASS_NONLOCAL_GWL_COUPLING_CONFIRMED",
+  "model_process_invocations": 6,
+  "setup_failures": 2,
+  "note": "Four successful instrumented processes incl two repeated after IEEE restoration addition; same selected model context, no extra solver variant"
 }

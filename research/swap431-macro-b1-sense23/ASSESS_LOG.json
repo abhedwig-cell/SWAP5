@@ -1,0 +1,115 @@
+{
+  "decision": "LOCAL_SENSITIVITY_AND_SCOPED_RESTORE_PASS_NONLOCAL_GWL_COUPLING_CONFIRMED",
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 1.174582399893552,
+      "restore_sha": "aec5d4383614499853fe809018b53844d54d852a205a77f45c28ea28378f62c3",
+      "derivatives": [
+        {
+          "node": 50,
+          "epsilon_cm": 5e-05,
+          "dGWL_dh": 1.0248696113990263,
+          "analytic_dGWL_dh": 1.0248696104664101,
+          "dMinimumStock_dh": 0.004570364483258427,
+          "dInPotential_dh": 0.0,
+          "dOutPotential_dh": 0.0,
+          "dNodeOutPotential_dh": 0.0,
+          "dFactor_dh": -91.32518981542658,
+          "chain_dFactor_dh": -91.32518981542643,
+          "dQ3node52_dh": -0.873609731274691,
+          "chain_dQ3node52_dh": -0.8736097312746859,
+          "dAggregateMacroQ52_dh": -0.8736097312747604,
+          "existing_macro_J52_50": 0.0
+        },
+        {
+          "node": 51,
+          "epsilon_cm": 5e-05,
+          "dGWL_dh": 0.1983644148140229,
+          "analytic_dGWL_dh": 0.19836441474298752,
+          "dMinimumStock_dh": 0.0008845980660476815,
+          "dInPotential_dh": 0.0,
+          "dOutPotential_dh": -2.449188249249918e-05,
+          "dNodeOutPotential_dh": 0.0,
+          "dFactor_dh": -17.24097896115384,
+          "chain_dFactor_dh": -17.240978963816236,
+          "dQ3node52_dh": -0.16492587672257975,
+          "chain_dQ3node52_dh": -0.16492587674805792,
+          "dAggregateMacroQ52_dh": -0.16492587672251036,
+          "existing_macro_J52_50": null
+        },
+        {
+          "node": 52,
+          "epsilon_cm": 5e-05,
+          "dGWL_dh": 0.0,
+          "analytic_dGWL_dh": 0.0,
+          "dMinimumStock_dh": 0.0,
+          "dInPotential_dh": 0.0,
+          "dOutPotential_dh": -2.0453511904723175e-05,
+          "dNodeOutPotential_dh": -2.0453511904723175e-05,
+          "dFactor_dh": 0.36335126715081323,
+          "chain_dFactor_dh": 0.363351266300047,
+          "dQ3node52_dh": -0.010162131514595413,
+          "chain_dQ3node52_dh": -0.010162131517038094,
+          "dAggregateMacroQ52_dh": -0.12367912258587355,
+          "existing_macro_J52_50": null
+        }
+      ]
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.1262866000179201,
+      "restore_sha": "aec5d4383614499853fe809018b53844d54d852a205a77f45c28ea28378f62c3",
+      "derivatives": [
+        {
+          "node": 50,
+          "epsilon_cm": 5e-05,
+          "dGWL_dh": 1.0248696113990263,
+          "analytic_dGWL_dh": 1.0248696104664101,
+          "dMinimumStock_dh": 0.004570364483258427,
+          "dInPotential_dh": 0.0,
+          "dOutPotential_dh": 0.0,
+          "dNodeOutPotential_dh": 0.0,
+          "dFactor_dh": -91.32518981542658,
+          "chain_dFactor_dh": -91.32518981542643,
+          "dQ3node52_dh": -0.873609731274691,
+          "chain_dQ3node52_dh": -0.8736097312746859,
+          "dAggregateMacroQ52_dh": -0.8736097312747604,
+          "existing_macro_J52_50": 0.0
+        },
+        {
+          "node": 51,
+          "epsilon_cm": 5e-05,
+          "dGWL_dh": 0.1983644148140229,
+          "analytic_dGWL_dh": 0.19836441474298752,
+          "dMinimumStock_dh": 0.0008845980660476815,
+          "dInPotential_dh": 0.0,
+          "dOutPotential_dh": -2.449188249249918e-05,
+          "dNodeOutPotential_dh": 0.0,
+          "dFactor_dh": -17.24097896115384,
+          "chain_dFactor_dh": -17.240978963816236,
+          "dQ3node52_dh": -0.16492587672257975,
+          "chain_dQ3node52_dh": -0.16492587674805792,
+          "dAggregateMacroQ52_dh": -0.16492587672251036,
+          "existing_macro_J52_50": null
+        },
+        {
+          "node": 52,
+          "epsilon_cm": 5e-05,
+          "dGWL_dh": 0.0,
+          "analytic_dGWL_dh": 0.0,
+          "dMinimumStock_dh": 0.0,
+          "dInPotential_dh": 0.0,
+          "dOutPotential_dh": -2.0453511904723175e-05,
+          "dNodeOutPotential_dh": -2.0453511904723175e-05,
+          "dFactor_dh": 0.36335126715081323,
+          "chain_dFactor_dh": 0.363351266300047,
+          "dQ3node52_dh": -0.010162131514595413,
+          "chain_dQ3node52_dh": -0.010162131517038094,
+          "dAggregateMacroQ52_dh": -0.12367912258587355,
+          "existing_macro_J52_50": null
+        }
+      ]
+    }
+  ]
+}
