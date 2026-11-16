@@ -2,22 +2,22 @@
   "block": "O_COMPLETE_ORIGINAL_SCHEDULED_POND_HISTORY",
   "baseline": "8dcda0fb247ae7823d720817d6340114d5227728",
   "runtime_source": "e8d78740663a879945f05b4ecd445db30554ceac",
-  "physical_source": "6bb585572",
-  "status": "WINDOWS_FOUR_FULL_TRAJECTORIES_4384_DAYS_ALL_NATIVE_AND_PHYSICAL_PRESERVATION_PASS_HOSTED_QUALIFICATION_ACTIVE",
+  "physical_source": "6bb58557252f3c7ab8da27efe18e8cbe53bffe5d",
+  "status": "WINDOWS_UBUNTU_FULL_NATIVE_BALANCE_QUALIFIED_PENDING_CANONICAL_ADMISSION",
   "runs": [
     {
       "id": 43887021490,
       "head_sha": "e8d78740663a879945f05b4ecd445db30554ceac",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/43887021490",
       "path": ".github/workflows/nomacro-coverage-prescribed-head.yml"
     },
     {
       "id": 43887025962,
       "head_sha": "e8d78740663a879945f05b4ecd445db30554ceac",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/43887025962",
       "path": ".github/workflows/nomacro-coverage-surface.yml"
     }
@@ -32,5 +32,5 @@
     "unrelated_platform_performance": "NOT_SELECTED_IMPACT"
   },
   "science": "NOT_QUALIFIED",
-  "next": "Follow existing hosted runs terminal; finish actual prior generated-source preservation; seal raw,docs,current selector and canonical admission"
+  "next": "Evidence sealed, immutable historical/current successor selection, canonical expected-head merge"
 }
