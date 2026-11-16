@@ -11,6 +11,8 @@ program original_fixed_irrigation_reader
   call get_command_argument(3,argument);read(argument,*)swinco
   tend=37266d0;unit_swp=810;unit_err=21;unit_log=6;swpfilnam='reader.swp';pathwork=''
   swirfix=1;schedule=0;numnod=4;zbotcp(1:4)=[-5d0,-20d0,-50d0,-100d0]
+  call get_command_argument(4,argument)
+  if(trim(argument)=='shallow')zbotcp(1:4)=[-5d0,-10d0,-20d0,-30d0]
   irtype=0;irdate=0d0;irrate=0d0;irdepth=0d0;irconc=0d0;nod_ssdi=0;ir_z=0d0
   open(unit_err,file='reader.err',status='replace')
   call rdinit(unit_swp,unit_err,swpfilnam)

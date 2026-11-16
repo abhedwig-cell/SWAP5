@@ -37,3 +37,17 @@ general solver/performance, macro/B0/B1 or MODFLOW campaigns. Changed implementa
 or concrete failure alone selects extra gates. Preserve failed/censored outcomes
 and exact source pins; reconcile current owner/canonical/peers before admission.
 Invariants2/3/4/7/13/21/23/29 apply. A checkpoint is not a stop or admission claim.
+
+
+Small actual original irrigation owner passes O0/O2 for8 read/event variants,
+late native-mode past-last cursor/no replay and7 original input refusals per
+optimization. It confirms chemical TYPE2 has IRCONC20/CIRR0/positiveQSSDI and
+original CDE has no QSSDI source. Native compatibility guard is therefore part
+of the new file1 policy, before any accepted model state. A second actual
+component witness with reversed IR_Z[-80,-10] yields negative stored depth and
+zero delivery from positive24mm. For file1 only, use already parsed original
+coordinates to refuse reversed/out-of-grid intervals before original node search;
+no sorting, amount adjustment, geometry equation or solver repair. All valid
+original physical calculations stay literal. Existing inline/default0 emitted
+sources must remain exact. Retain original counterexamples and fresh guarded
+O0/O2 positives/refusals independently; no code/result rebinding.

@@ -18,14 +18,14 @@ def main():
         compilation=[]
         for cmd in commands:
             r=subprocess.run(cmd,cwd=target,capture_output=True,text=True,timeout=120);compilation.append(dict(command=cmd,returncode=r.returncode,stdout=r.stdout,stderr=r.stderr));assert r.returncode==0,r.stderr
-        def execute(name,kind,*,solute=0,start=37256,inco=1,depth='24.0',rate='12.0',second_date='2002-01-05',zone='-30.0',missing=False,refused=False,native_compatibility=False):
+        def execute(name,kind,*,solute=0,start=37256,inco=1,depth='24.0',rate='12.0',second_date='2002-01-05',zone='-30.0',missing=False,refused=False,native_compatibility=False,shallow=False,native_error_label=None):
             work=target/name;work.mkdir();(work/'reader.swp').write_text("SWIRGFIL = 1\nIRGFIL = 'fixed'\n")
             body=f'IRDATE IRDEPTH IRCONC IRTYPE IRRATE\n2002-01-03 {depth} 20.0 {kind} {rate}\n{second_date} 12.0 10.0 {kind} {rate}\n'
             if kind==2:body+='\nIR_Z = '+zone+'\n'
             if not missing:(work/'fixed.irg').write_text(body)
-            r=subprocess.run([str(target/'reader.exe'),str(start),str(solute),str(inco)],cwd=work,capture_output=True,text=True,timeout=15)
+            r=subprocess.run([str(target/'reader.exe'),str(start),str(solute),str(inco),'shallow' if shallow else 'deep'],cwd=work,capture_output=True,text=True,timeout=15)
             (work/'stdout.log').write_text(r.stdout);(work/'stderr.log').write_text(r.stderr);error=(work/'reader.err').read_text(errors='replace')
-            if native_compatibility:assert r.returncode!=0 and not (work/'values.txt').exists() and 'Unsupported fixed subsurface solute irrigation' in r.stderr,(name,r.stdout,r.stderr,error)
+            if native_compatibility or native_error_label:assert r.returncode!=0 and not (work/'values.txt').exists() and (native_error_label or 'Unsupported fixed subsurface solute irrigation') in r.stderr,(name,r.stdout,r.stderr,error)
             elif refused:assert not (work/'values.txt').exists() and 'ERROR' in error,(name,r.stdout,r.stderr,error)
             else:assert r.returncode==0 and (work/'values.txt').exists(),(name,r.stdout,r.stderr,error)
             data=[line.split() for line in (work/'values.txt').read_text().splitlines()] if not refused else None
@@ -48,6 +48,9 @@ def main():
         late=execute('past-last-cold',1,start=37262,inco=3);assert int(late['values'][0][0])==3
         late_values=list(map(float,late['values'][1]));assert late_values[8:11]==[0,0,0]
         refusals=[execute('missing-file',1,missing=True,refused=True),execute('negative-depth',1,depth='-1.0',refused=True),execute('negative-rate',1,rate='-1.0',refused=True),execute('duration-over-day',1,rate='0.5',refused=True),execute('duplicate-date',1,second_date='2002-01-03',refused=True),execute('unordered-date',1,second_date='2002-01-01',refused=True),execute('invalid-depth-coordinate',2,zone='1.0',refused=True)]
+        if a.expect_chemical_type2_refusal:
+            for name,zone,shallow in [('reversed-depth-interval','-80.0 -10.0',False),('outside-profile','-40.0',True)]:
+                refusals.append(execute(name,2,zone=zone,shallow=shallow,refused=True,native_error_label='Invalid fixed subsurface irrigation depth interval/profile'))
         profiles.append(dict(optimization=opt,original_provider_optimization='O2',compilation=compilation,positive=positive,past_last=late,refusals=refusals,chemical_type2_refusals=compatibility_refusals,generated_source_sha256=sha(source),executable_sha256=sha(target/'reader.exe')))
     solute_source=ref/'build/swap-selected/solute.f90';assert 'qssdi' not in solute_source.read_text(encoding='cp1252').lower()
     result=dict(status='ACTUAL_GUARDED_FIXED_IRRIGATION_FILE_O0_O2_PASS' if a.expect_chemical_type2_refusal else 'ACTUAL_ORIGINAL_FIXED_IRRIGATION_READER_AND_EVENT_O0_O2_PASS',profiles=profiles,production_preimage_sha256=sha(original),driver_sha256=sha(driver),original_CDE_sha256=sha(solute_source),subsurface_chemical='EXPLICIT_NATIVE_REFUSAL; original missing delivery diagnostic stays NOT_QUALIFIED' if a.expect_chemical_type2_refusal else 'ORIGINAL_PRESCRIBED_DELIVERY_MISSING_NOT_QUALIFIED; gate before exposing chemical TYPE2',scope='Complete actually emitted original irrigation owner/native closure; no copied reader/event/chemical implementation, no model/macro execution')
