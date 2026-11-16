@@ -1,0 +1,37 @@
+* Project:       andelst
+* File content:  detailed overview of water balance components (cm)
+* File name:     result.blc
+* Model version: Swap 4.3.1
+* Generated at:  2026-11-16 09:21:09
+
+Period             :  1998-01-01  until  1998-01-02 
+Depth soil profile :  320.00 cm
+=================================================+=================================================
+INPUT                                            | OUTPUT
+                   PLANT    SNOW    POND    SOIL |                   PLANT    SNOW    POND    SOIL
+=================================================+=================================================
+Initially Present           0.00    0.00  153.08 | Finally present            0.00    0.00  153.84
+Gross Rainfall      1.23                         |
+Nett Rainfall               0.00    1.23         | Nett Rainfall      1.23
+                                                 | Interception       0.00
+Snowfall                    0.00                 |
+Snowmelt                            0.00         | Snowmelt                   0.00
+                                                 | Sublimation                0.00
+SSDI                                        0.00 | Plant Transpiration                        0.00
+                                                 | Soil Evaporation                   0.06
+Runon                               0.00         | Runoff                             0.00
+Inundation                          0.00         |
+Infiltr. Soil Surf.                         0.79 | Infiltr. Soil Surf.                0.79
+Exfiltr. Soil Surf.                 0.04         | Exfiltr. Soil Surf.                        0.04
+                                                 | Inflow top macroprs                0.42
+Infiltr. macropores                         0.13 | Exfiltr. macropores                        0.26
+Infiltr. subsurf.                                | Drainage
+- system 1                                  0.00 | - system 1                                 0.00
+Upward seepage                              0.16 | Downward seepage                           0.01
+=================================================+=================================================
+Sum                 1.23    0.00    1.27  154.16 | Sum                1.23    0.00    1.27  154.16
+=================================================+=================================================
+Storage Change              0.00    0.00    0.76
+Balance Deviation  -0.00    0.00    0.00   -0.00
+===================================================================================================
+

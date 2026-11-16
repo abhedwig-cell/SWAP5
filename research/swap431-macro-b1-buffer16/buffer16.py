@@ -10,6 +10,9 @@ def run(opt,mode,label=''):
  for x in json.loads((P/'CASE_IDENTITY.json').read_text()):
   src=Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/x['path'];assert m.sha(src)==x['sha256'];(c/x['path']).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,c/x['path'])
  if mode=='RESUME':shutil.copy2(R/'data'/opt/'PREFIX/midnight.end',c/'own.end')
+ if label=='INCOMPLETE':
+  import struct
+  p=c/'own.end';b=bytearray(p.read_bytes());i=b.index(b'PATCH_FROM_BALANCE_ORIGIN');struct.pack_into('<i',b,i-4,0);p.write_bytes(b)
  s=(c/'swap.swp').read_text(encoding='cp1252');
  if mode=='RESUME':s=re.sub(r'(?mi)^(\s*SWINCO\s*=\s*)2\b',r'\g<1>3',s,count=1)
  s=re.sub(r'(?mi)^\s*TEND\s*=.*$', ' TEND = 1998-01-03',s,count=1)
