@@ -715,6 +715,7 @@ def main():
                     out/(key+'-'+opt+'-irrigation-windows'),full_rows,opt,cuts=(4,),fixed_irrigation=True)
                 actual=selected['fixed_irrigation_event_exact_native_windows']['actual_fixed_irrigation_cm'][5]
                 assert actual['subsurface' if kind==2 else 'gross_surface']>0
+                assert actual['gross_surface' if kind==2 else 'subsurface']==0
                 selected['original_irrigation_type']=kind
             (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
 
