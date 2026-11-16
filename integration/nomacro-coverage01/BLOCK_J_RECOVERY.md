@@ -75,3 +75,22 @@ that existing run to terminal, inspect original whole state before selecting a r
 Earlier D cache hypotheses and all original science/mass FAILs remain failed.
 Current canonical observedf1883e6fa (RC2 package only; app/src unchanged); reconcile
 live delta before any future admission. FrozenRC1 unchanged11529865e.
+
+
+Final three-owner source10d4cc551: actual production oxygen codec O0/O2 PASS14
+refusals each; generated WindowsO0 real2to4 PASS. Full current43840145787 SUCCESS:
+all1096 daily cold physical AND native exact; four crop-calendar windows120/494/
+636/730 at both0/2; named2/365/530. Ten remaining cases43840655461 SUCCESS source
+3abdfebc6 with exact app/src/harness. All11full12056days,88calendarwindows,
+638active decoder corruptions. Default eight source/external seams43840659129
+SUCCESS. NativeT all1096finite -6.781815..26.240943C. OldD warm532 and native530
+exact. Source/strictdocs PASS. Complete science/energy/alloriginalcoverage open.
+
+CanonicalRC2 deliveryf1883e6fa merged into own21208c292 without app/src/harness
+delta from executed10d4cc551. Frozen RC1 and RC2 unchanged. Peer STATE02 moved
+research-only to2b1929461, zero app/src/tools/solute delta and no private import;
+PERF01 still5b68e5438. All existing hosted qualification runs terminal. Remaining
+own raw sealer processes still must finish, SHA and split reconstruction verified
+before PR/admission. Do not stop at sealing; complete expected-head admission,
+verify actual canonical tree and persist receipt on next own branch, then continue
+remaining no-macro scope. No current J canonical merge yet.

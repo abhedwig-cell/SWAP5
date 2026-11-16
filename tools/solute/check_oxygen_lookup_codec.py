@@ -47,7 +47,7 @@ def main():
           roundtrip_exact=True,staged_read_before_assignment=True,undefined_tails_unchanged=True,inactive_roundtrip_exact=True,generated_source_sha256=sha(generated),executable_sha256=sha(target/'codec.exe')))
     (out/'RESULT.json').write_text(json.dumps(dict(status='PRODUCTION_ORIGINAL_OXYGEN_LOOKUP_CODEC_O0_O2_PASS',compiler=prepared['toolchain']['gfortran'],profiles=profiles,
       production_generator_sha256=sha(ROOT/'app/hybrid_water/oxygen_lookup_state.py'),original_source_sha256=sha(source),driver_sha256=sha(ROOT/'tools/solute/drivers/original_oxygen_lookup_codec.f90'),
-      scope='Actual production top component codec in complete original native dependency closure; no model or active macropore execution'),indent=2)+'\n')
+      scope='Actual production complete oxygen preprocessing codec in original native dependency closure; no model or active macropore execution'),indent=2)+'\n')
     print('PRODUCTION_ORIGINAL_OXYGEN_LOOKUP_CODEC_O0_O2_PASS')
 
 if __name__=='__main__':main()
