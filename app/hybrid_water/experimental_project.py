@@ -66,6 +66,11 @@ def inspect(directory):
     text = (directory/'swap.swp').read_text(encoding='cp1252')
     check_paths(text, 'swap.swp')
     selected = switches(text)
+    # SWVAPOR is an original per-layer array; inspect every value, not only
+    # the first token seen by the scalar SW-selector inventory.
+    vapor = re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^!\r\n]+)',text)
+    if vapor and (len(vapor)!=1 or not re.fullmatch(r'0(?:[ \t]+0)*[ \t]*',vapor[0])):
+        raise ValueError('Original vapor transport requires separate conserved-state qualification')
     crop_files=set();crop_types={}
     if selected.get('SWCROP')==1:
         entries=crop_entries(text)
@@ -111,7 +116,7 @@ def inspect(directory):
                    SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SWCALT={1,2},
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
-                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1})
+                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0})
     if not selected['SWSOLU'] and (selected['SWHYST'] or selected['SWSNOW']):
         raise ValueError('Water-only hydraulic/snow history requires complete original restart integration')
     if selected['SWSNOW'] and selected['SWHEA'] == 0:

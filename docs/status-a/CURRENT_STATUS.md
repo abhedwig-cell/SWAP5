@@ -1743,3 +1743,14 @@ interface; inactive codecs/default source images remain exact. Per-case authorit
 is `integration/nomacro-coverage01/BLOCK_H_QUALIFICATION.json`; actual merge receipt
 owns admission. Full original coverage, scientific equivalence and whole energy
 remain open. The registered release and frozen Status-A denominator are unchanged.
+
+## Original alternative constitutive assessment
+
+[Coverage block I](../science/NOMACRO_FUNCTIONAL_COVERAGE.md) qualifies the original
+exponential model2 over1096 days and actual O0/O2 native/transaction gates. Six
+other constitutive models retain strict water failures; three reach the180second
+model cap after364accepted days. All-ten full qualification is not claimed.
+Original component O0/O2 checks do not override those failed trajectories.
+`integration/nomacro-coverage01/BLOCK_I_QUALIFICATION.json` owns per-case scope;
+the actual merge receipt owns admission. Original equations/solver/codecs and
+registered release scope are unchanged. Whole science/energy/history stays open.

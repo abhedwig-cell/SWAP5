@@ -1740,3 +1740,18 @@ future-crop input refusal43595046093, codec O0/O2/corruption, six inactive sourc
 images and warm1096 preservation remain versioned. Fresh43597013103 preserves
 eight default generated-source images and actual external seams. Whole science,
 energy, independent-project denominator and remaining history gaps are unchanged.
+
+## Alternative original constitutive assessment
+
+[Block I](../science/NOMACRO_FUNCTIONAL_COVERAGE.md) traces original-code audit
+and explicit physical fixtures to BLOCK_I_RECOVERY, actual small original
+O0/O2 execution to BLOCK_I_COMPONENT and per-case full/censored outcomes to
+BLOCK_I_QUALIFICATION/FIRST_ASSESSMENT/PDI_ASSESSMENT. Model2 in43599641836
+completes1096 days and named actual O0/O2 native/transaction gates; the other
+nine models are not full-period qualified. Four original HA type refusals and
+the real-typed PDI retry43600505987 remain archived. Model3 exact O0 own364
+refusal survives cap43600305896; only the missing O2 cold step resumes from
+its verified actual own origin and passes43819018691. No capsule rebinding or
+solver/tolerance repair occurs.44 prior descriptors remain exact. Versioned
+SHA256 raw archives and the actual merge receipt own evidence/admission; no
+independent historical-project, whole-science or energy promotion is implied.

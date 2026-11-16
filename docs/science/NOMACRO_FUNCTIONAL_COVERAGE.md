@@ -226,8 +226,8 @@ which remain outside this work unit. A supported input selector alone is not A.
 
 | Family | A: executed scope | B/C: remaining original integration or qualification |
 | --- | --- | --- |
-| Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A through G | B: arbitrary grids, references and process combinations need their own evidence |
-| Richards/hydraulics | Selected original MvG, explicit original PCHIP tables, geometric means3/4 and unchanged production solver; named hysteresis continuations | B/C: original TSPACK startup censor, harmonic5/6 strict-balance refusals, Szymkiewicz7 tables and further constitutive families; later active history FAIL retained; water-only history refused |
+| Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A through I | B: arbitrary grids, references and process combinations need their own evidence |
+| Richards/hydraulics | Selected original MvG/exponential2, explicit original PCHIP tables, geometric means3/4 and unchanged production solver; named hysteresis continuations | B/C: original TSPACK startup censor, harmonic5/6 strict-balance refusals, Szymkiewicz7 tables; alternative constitutive models3..11 retain six strict failures/three censors; RIA12 unqualified; later active history FAIL retained; water-only history refused |
 | Lower boundary | Selected original Cauchy/closed/free; table, sine, head-dependent flux | C: strict solute substep receipt absent for reconstructed modes1/5; B: other original boundaries8/9 |
 | Drainage/surface water | Selected original drainage methods2/3; undrained free-bottom trajectory | B: other original drainage/division/surface-water options; retained undrained closed-bottom day51 refusal is not A |
 | Crops/roots/ET | Registered grass/rotation/WOFOST; bare/simple maize; Gash/Feddes/microscopic drought2/Walsum2 | B: broader original growth structures, root/stress/interception/ET controls and combinations; canonical D/E evidence retains its named scope |
@@ -554,3 +554,74 @@ eight old generated-source images and actual default external/no-file seams.
 owns admission. This adds zero independent historical projects. Complete original
 no-macro coverage, mass-carried physical energy, arbitrary history, original
 oxygen/scientific failures, TSPACK and harmonic limits remain unresolved.
+
+## Original alternative constitutive families
+
+Block I assesses the actual original iHWCKmodel2..11 paths. The original reader
+owns physical parameter validation and forbids alternative models with hysteresis,
+soil tables, coarse output or active macropores. No water-retention, conductivity,
+Richards, chemical, codec or tolerance implementation changes. PDI fixtures
+explicitly select SWVAPOR0; preflight checks every layer, including later-layer
+activation, malformed values and duplicates, before build/output. Vapor transport
+and RIA12 remain separate unqualified contracts. The original RIA reader audit
+also records a suspected parameter-column mapping problem, without claiming an
+executed failure or changing the reference.
+
+The original exponential test model2 completes1096 days in43599641836 onf45d9a10b.
+Actual touched-donor/controller O0/O2 gates pass native2/365/530 continuations,
+complete endpoint bytes, finite native temperature, strict water/chemical bounds,
+isolated origins, mass refusal and external discard/replay/disk recovery. Original
+provider objects remain O2. Full-period maximum water residual is
+1.0940900962985722e-13cm and chemical residual4.0021111424870526e-13mg/cm2. Literal
+and output-compatible original references remain separately labeled; diagnostic
+comparison does not establish whole scientific equivalence.
+
+All ten configurations were assessed, but only model2 is full-period qualified:
+
+| Original model | Accepted days before failure/censor | Retained outcome |
+| --- | ---: | --- |
+| 2 exponential | 1096 | Full trajectory and required gates PASS |
+| 3 bimodal MvG | 364 | Strict water FAIL365: -1.1546276901024912cm |
+| 4 MvG variant | 364 | Original-model wall cap180seconds |
+| 5 scaled MvG | 364 | Strict water FAIL365: -1.26894985140697cm |
+| 6 bimodal MvG variant | 363 | Strict water FAIL364: 1.0031782349262386e-10cm |
+| 7 scaled bimodal MvG | 364 | Strict water FAIL365: -1.1645635054140089cm |
+| 8 PDI | 364 | Original-model wall cap180seconds |
+| 9 scaled PDI | 364 | Strict water FAIL365: -1.3179849365384415cm |
+| 10 bimodal PDI | 364 | Original-model wall cap180seconds |
+| 11 scaled bimodal PDI | 364 | Strict water FAIL365: -1.1918294945729293cm |
+
+Models3..7 are retained from43599641836. PDI8..11 initially refuse HA INTEGER
+input before any accepted day: the original reader requires a real array. Only
+lexical notation changes from-10 to-10.0; the same physical values are used in
+43600505987, which produces the PDI outcomes above. The unsuccessful trajectories
+stop during the O0 active-prefix gate; they do not establish full O2 or arbitrary
+native-history qualification. The integrated estimates for the six strict
+refusals are within1e-10 while the independent stock/flux receipts fail. These
+are not rounded, clipped or relabeled as accepted. Censors are not numerical
+FAILs or completed periods. No scalar or solver repair is attempted.
+
+Model3 own364-native replay reproduces the exact365 physical refusal at both
+O0/O2, preserves accepted stocks/origin and publishes no refused day. Job43600305896
+reaches its eight-minute cap after the successful complete O0 proof and actual
+O2 warm refusal/own364 publication. Its O2 cold step is incomplete, not passed.
+Only that missing cold step resumes from the verified actual carrier in
+43819018691 and passes. Build/input/source/compiler/native identity is checked
+without rebinding; no warm history is rerun or fabricated.
+
+Local actual original arrays/variables/WC_K_models_04_11 component O0/O2 checks
+pass finite, physical-domain and monotone-retention tests for models4..11 on two
+explicitly derived soils. This component evidence does not override any full
+trajectory failure or censor. Additional bimodal/PDI parameters are synthetic
+physical inputs recorded in BLOCK_I_RECOVERY and raw files, not fitted original
+historical projects. All44 selected prior project descriptors remain exact;
+subsequent app changes only tighten vapor preflight, leaving all generation/core
+sources unchanged. Fresh build identity is still required; old bundles are not
+silently rebound. Unrelated automatically triggered broad/performance jobs on
+this own branch were canceled and are not represented as green qualification.
+
+`BLOCK_I_QUALIFICATION.json`, first/PDI assessments and SHA256 raw archives under
+`integration/nomacro-coverage01/` own the bounded result; the actual merge receipt
+owns admission. One new complete configuration and zero independent historical
+projects are added. Full no-macro functional coverage, remaining original state
+families and whole physical energy/scientific equivalence remain open.

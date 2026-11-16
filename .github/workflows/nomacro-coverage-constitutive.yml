@@ -1,0 +1,43 @@
+name: Original alternative constitutive families
+on:
+  push:
+    branches: [codex/nomacro-coverage09]
+    paths: ['.github/workflows/nomacro-coverage-constitutive.yml']
+  workflow_dispatch:
+    inputs:
+      cohort:
+        type: choice
+        default: all
+        options: [all, pdi-only]
+        description: Repeat only original real-typed PDI fixtures after retained input refusal
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        model: ${{ fromJSON(inputs.cohort == 'pdi-only' && '[8,9,10,11]' || '[2,3,4,5,6,7,8,9,10,11]') }}
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Execute one distinct original constitutive configuration
+        run: python3 -B tools/solute/check_nomacro_coverage.py --constitutive-options --configuration constitutive-${{ matrix.model }} --output "$RUNNER_TEMP/proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-constitutive-${{ matrix.model }}-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

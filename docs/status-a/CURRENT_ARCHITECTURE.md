@@ -689,3 +689,14 @@ validate the block; inactive codecs stay byte-identical. No physical formula,
 Richards solver, balance tolerance or registered numerical policy changes. Two
 temporal-forcing configurations remain strict full-period refusals. Build/source/
 native binding requires fresh bundles and prevents old-checkpoint rebinding.
+
+## Alternative original constitutive dispatch
+
+[Block I](../science/NOMACRO_FUNCTIONAL_COVERAGE.md) uses original iHWCKmodel
+dispatch and complete WC_K_models_04_11 bodies without replacing formulas or
+accepted state. Per-layer SWVAPOR preflight permits only explicit zero and
+rejects later-layer activation, malformed values and duplicate arrays before
+build/output. Original readers retain numeric and physical validation. The
+original exponential model2 has full functional evidence; six alternative
+strict refusals and three censors remain underqualified. Vapor transport and
+RIA12 require their separate original state/ledger/reference contracts.

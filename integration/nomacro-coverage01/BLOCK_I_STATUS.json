@@ -1,0 +1,48 @@
+{
+  "block": "I_ORIGINAL_CONSTITUTIVE_FAMILIES",
+  "pr": 1683,
+  "source": "f45d9a10bfb89aa95a3dc498b625b1d25f1f2270",
+  "canonical_base": "f1f8d06024f4e9d11002984978d7b0de22adb054",
+  "run": 43599641836,
+  "status": "BOUNDED_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION",
+  "models": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "component": "Original models4..11 local O0/O2 PASS",
+  "requested_full_days_each": 1096,
+  "whole_science": "NOT_QUALIFIED",
+  "pending_delta": "Additional per-layer SWVAPOR0-only preflight; no generated/runtime/numerical change",
+  "next": "Seal final reports/raw/docs; admit only bounded model2/full and retained refusal/censor scope; continue other original families",
+  "completed_full_configurations": [
+    "constitutive-2"
+  ],
+  "complete_days": 1096,
+  "retained_failure": {
+    "configuration": "constitutive-3",
+    "optimization": "O0",
+    "accepted_days": 364,
+    "refusal_day": 365,
+    "independent_water_residual_cm": -1.1546276901024912,
+    "integrated_estimate_cm": 2.574461231715377e-11
+  },
+  "prior_descriptors_exact": 44,
+  "pdi_retry_run": 43600505987,
+  "pdi_retry_source": "2cfc20b0e6eeb2bff7b32b8dab8102592ca375be",
+  "model3_refusal_run": 43600305896,
+  "model3_refusal_source": "30dc4d1e7579872db664b32b0b6fd1dbec599b14",
+  "pdi_retry_status": "TERMINAL_FAIL_MODELS9_11_STRICT365_8_10_CAP180_AFTER364",
+  "model3_refusal_status": "JOB_CAP8MIN_O0_COMPLETE_O2_WARM_REFUSAL_RECORDED_COLD_INCOMPLETE",
+  "model3_cold_only_run": 43819018691,
+  "model3_cold_only_source": "4abad03ae456adb207b356c74f2cc83bf4d602f6",
+  "canonical_reconciled": "f1f8d06024f4e9d11002984978d7b0de22adb054",
+  "model3_cold_only_status": "SUCCESS_EXACT_OWN_O2_NATIVE_REFUSAL"
+}
