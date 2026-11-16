@@ -9,13 +9,13 @@ from daily_coupling import CoupledDailyColumn,validate_bundle
 import user_prepare
 
 
-def controls(build,reference,project,out,full,data):
+def controls(build,reference,project,out,full,data,*,policy_key="scheduled_pond_history"):
     meta,case=validate_bundle(build,reference,project)
     # Foreign format policy must fail before any output/private worker exists.
     foreign=out/'foreign-policy';foreign.mkdir();changed=json.loads((build/'BUILD.json').read_text())
-    changed['identity']['scheduled_pond_history']['policy']='foreign';(foreign/'BUILD.json').write_text(json.dumps(changed))
+    changed['identity'][policy_key]['policy']='foreign';(foreign/'BUILD.json').write_text(json.dumps(changed))
     try:validate_bundle(foreign,reference,project)
-    except ValueError as error:assert 'Foreign original scheduled pond history' in str(error)
+    except ValueError as error:assert ('Foreign original scheduled pond history' if policy_key=='scheduled_pond_history' else 'Foreign bounded original frost reference policy') in str(error)
     else:raise AssertionError('Foreign pond policy accepted')
     isolated=out/'isolated';isolated.mkdir();origin=out/'isolation-origin'
     receipt=m.h.verify_checkpoint(full/'accepted-column-1-day-2.zip',2,meta['binding'],origin)
@@ -46,10 +46,12 @@ def controls(build,reference,project,out,full,data):
     third=recovered.prepare();assert m.physical([{k:v for k,v in third.budget.items() if k!='candidate_only'}|{'committed':True}])==m.physical([data[2]]);recovered.discard(third)
     # Rehash the archive intentionally: test the real native domain, beyond ZIP hashes.
     with zipfile.ZipFile(full/'accepted-column-1-day-199.zip') as z:members={n:z.read(n) for n in z.namelist()}
-    aux=members['macro.bin'];lookup=struct.unpack_from('=i',aux,len(aux)-4)[0];top=len(aux)-lookup-80
-    assert struct.unpack_from('=i',aux,top)[0]==2 and struct.unpack_from('=i',aux,top+76)[0]==80
+    aux=members['macro.bin'];lookup=struct.unpack_from('=i',aux,len(aux)-4)[0]
+    scheduled=bool(meta['identity'].get('scheduled_pond_history'));top_bytes=80 if scheduled else 72;top=len(aux)-lookup-top_bytes
+    assert struct.unpack_from('=i',aux,top)[0]==(2 if scheduled else 1) and struct.unpack_from('=i',aux,top+top_bytes-4)[0]==top_bytes
+    scalar_offset=top+(60 if scheduled else 28)
     attacks=[]
-    for name,offset,fmt,value in [('old-format',0,'8s',b'S5WML024' if not project.solute else b'S5CML027'),('pond-nan',top+60,'d',float('nan')),('pond-negative',top+60,'d',-1.),('foreign-clock',top+4,'d',0.)]:
+    for name,offset,fmt,value in [('old-format',0,'8s',(b'S5WML024' if not project.solute else b'S5CML027') if scheduled else b'S5WAT007'),('pond-nan' if scheduled else 'top-nan',scalar_offset,'d',float('nan')),('pond-negative' if scheduled else 'top-negative',scalar_offset,'d',-1.),('foreign-clock',top+4,'d',0.)]:
         altered=dict(members);raw=bytearray(aux);struct.pack_into('='+fmt,raw,offset,value);altered['macro.bin']=bytes(raw)
         manifest=json.loads(altered['checkpoint.json']);manifest['files']['macro.bin']=hashlib.sha256(raw).hexdigest();altered['checkpoint.json']=json.dumps(manifest).encode()
         package=out/(name+'.zip')

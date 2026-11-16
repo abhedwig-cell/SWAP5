@@ -81,7 +81,7 @@ def inspect(directory):
             crop_files.add(path.resolve())
             crop_types.setdefault(path.resolve(),set()).add(int(crop_type))
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
-                 'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
+                 'SWSNOW': {0, 1}, 'SWFROST': {0, 1}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
                  'SWTOPBHEA': {1, 2, 3, 4}, 'SWBOTBHEA': {1, 2}, 'SWCROP': {0, 1},
                  'SWMETDETAIL': {0,1}, 'SWRUNON': {0,1}, 'SWKIMPL': {0},
                  'SWPONDMX': {0,1}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
@@ -117,9 +117,22 @@ def inspect(directory):
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},
-                   SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1})
+                   SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1}, SWDIVD={0,1})
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
+    if selected['SWFROST']:
+        if (selected['SWHEA']!=1 or selected['SWCALT']!=2 or selected['SWSNOW']!=1
+                or selected['SWHYST']!=2 or selected.get('SWDIVD')!=0):
+            raise ValueError('Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0')
+        limits=[]
+        for name in ('TFROSTSTA','TFROSTEND'):
+            values=re.findall(r'(?mi)^[ \t]*'+name+r'[ \t]*=[ \t]*([^!\r\n]+)',text)
+            if len(values)!=1:raise ValueError('Missing/ambiguous original frost limit')
+            try:value=float(values[0].strip().replace('D','e').replace('d','e'))
+            except ValueError:raise ValueError('Invalid original frost limit') from None
+            if not -10<=value<=5:raise ValueError('Nonfinite/outside original frost limit')
+            limits.append(value)
+        if limits[0]<=limits[1]:raise ValueError('Unordered original frost temperature limits')
     if selected['SWSNOW'] and selected['SWCALT'] != 2:
         raise ValueError('Snow requires numerical thermal history integration')
     if selected['SWHYST'] and selected['SWSOPHY'] != 0:

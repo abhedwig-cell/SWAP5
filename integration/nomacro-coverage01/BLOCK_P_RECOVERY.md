@@ -9,7 +9,7 @@ Accepted bounded reference authority: docs/audits/PPA_WU05B7_GUARDED_REFERENCE_G
 No global B1/B0, macro, general solver, MODFLOW or unrelated migration selected.
 
 Implement/qualify only explicit experimental SWFROST1,SWHEA1,SWCALT2,SWSNOW1,
-SWHYST1/2,SWDIVD0,SWDRA0/1,SWMACRO0. Existing complete snow thermal and
+SWHYST2,SWDIVD0,SWDRA0/1,SWMACRO0. Existing complete snow thermal and
 hysteretic/microscopic original history owners are prerequisites for this first
 frost integration. Original limits0/-1C; derived ordinary drainage has explicit
 SWDIVD0. Keep SWDIVD1, no-heat, analytic/no-snow/no-history and surface-water frost
