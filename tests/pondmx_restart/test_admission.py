@@ -5,6 +5,15 @@ spec=importlib.util.spec_from_file_location('owner',Path(__file__).with_name('ve
 
 
 class Admission(unittest.TestCase):
+    def test_composition_cannot_hide_changed_source_or_native_state(self):
+        c=json.loads((owner.ROOT/owner.PROOF/'COMPOSITION.json').read_text());owner.validate_composition(c)
+        bad=copy.deepcopy(c);bad['reports']['water-O2']['generated_sources_byte_exact']=False
+        with self.assertRaises(ValueError):owner.validate_composition(bad)
+        bad=copy.deepcopy(c);bad['reports']['chemical-O0']['own']['exact_native']=False
+        with self.assertRaises(ValueError):owner.validate_composition(bad)
+        bad=copy.deepcopy(c);bad['reports']['external-irrigation-N']['scheduled_history_inactive']=False
+        with self.assertRaises(ValueError):owner.validate_composition(bad)
+
     def test_positive_and_corruption_controls(self):
         q=json.loads((owner.ROOT/owner.PROOF/'QUALIFICATION.json').read_text());owner.validate(q)
         attacks=[]

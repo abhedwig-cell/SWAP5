@@ -1,0 +1,484 @@
+{
+  "status": "COMPOSED_N_AND_PONDMX_SELECTED_DEPENDENCIES_PRESERVED",
+  "source_commit": "d0e34c8764e334b078c1b256a181890310cd19c3",
+  "incoming_canonical": "8dcda0fb247ae7823d720817d6340114d5227728",
+  "full_physics_reexecuted": false,
+  "reports": {
+    "water-O0": {
+      "generated_sources_byte_exact": true,
+      "input_bytes_exact": true,
+      "images": {
+        "boundtop.f90": "1215166d7a185d4eaae9bdb1d2e5acad2b6964d4bb153bf1c50c53744107b061",
+        "headcalc.f90": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "3c3e013c4ff71e0f9166ca5300a56a852637308032ecd3c8d9660c78f30f9059",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+        "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\water-O0",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\pondmx-restart01-qualified\\inputs\\water-surface-history",
+        "--donor-opt",
+        "O0"
+      ],
+      "seconds": 10.961034300038591,
+      "binary_identity_claim": false,
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.941291737419306e-14,
+          "max_kernel_cm": 3.941291737419306e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 6.978024928716575e-13
+        },
+        "model_seconds": 1.2152172001078725,
+        "build_sha256": "4e0ef13dbb55c25923e04f53ab1efc29320fb3f8a55d76e1ee425164e3bb419e"
+      },
+      "own": {
+        "start": 199,
+        "end": 201,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true,
+        "seconds": 0.42969899997115135
+      }
+    },
+    "water-O2": {
+      "generated_sources_byte_exact": true,
+      "input_bytes_exact": true,
+      "images": {
+        "boundtop.f90": "1215166d7a185d4eaae9bdb1d2e5acad2b6964d4bb153bf1c50c53744107b061",
+        "headcalc.f90": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "3c3e013c4ff71e0f9166ca5300a56a852637308032ecd3c8d9660c78f30f9059",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+        "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\water-O2",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\pondmx-restart01-qualified\\inputs\\water-surface-history",
+        "--donor-opt",
+        "O2"
+      ],
+      "seconds": 20.31522600003518,
+      "binary_identity_claim": false,
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.941291737419306e-14,
+          "max_kernel_cm": 3.941291737419306e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 6.978024928716575e-13
+        },
+        "model_seconds": 1.127872999990359,
+        "build_sha256": "2878739330f9ff647988b464d044f48734add42028b997915b776064e0117c51"
+      },
+      "own": {
+        "start": 199,
+        "end": 201,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true,
+        "seconds": 0.37402550014667213
+      }
+    },
+    "chemical-O0": {
+      "generated_sources_byte_exact": true,
+      "input_bytes_exact": true,
+      "images": {
+        "boundtop.f90": "1215166d7a185d4eaae9bdb1d2e5acad2b6964d4bb153bf1c50c53744107b061",
+        "headcalc.f90": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "e4bced0a823c6bb5ba362dbd76706b3c0fc4a621344d481759423e4621a91af8",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+        "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\chemical-O0",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\pondmx-restart01-qualified\\inputs\\chemical-surface-history",
+        "--donor-opt",
+        "O0"
+      ],
+      "seconds": 10.808938700007275,
+      "binary_identity_claim": false,
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.941291737419306e-14,
+          "max_kernel_cm": 3.941291737419306e-14,
+          "max_solute_mg_cm2": 2.1337792643905118e-13,
+          "sum_water_residual_cm": 6.978024928716575e-13
+        },
+        "model_seconds": 1.2520949998870492,
+        "build_sha256": "9a5a5d04b93cc5b80751df9f308982e8cf9d861d850daf3396f3d242b122cdd7"
+      },
+      "own": {
+        "start": 199,
+        "end": 201,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true,
+        "seconds": 0.36689750012010336
+      }
+    },
+    "chemical-O2": {
+      "generated_sources_byte_exact": true,
+      "input_bytes_exact": true,
+      "images": {
+        "boundtop.f90": "1215166d7a185d4eaae9bdb1d2e5acad2b6964d4bb153bf1c50c53744107b061",
+        "headcalc.f90": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "e4bced0a823c6bb5ba362dbd76706b3c0fc4a621344d481759423e4621a91af8",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+        "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\chemical-O2",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\pondmx-restart01-qualified\\inputs\\chemical-surface-history",
+        "--donor-opt",
+        "O2"
+      ],
+      "seconds": 21.84743950003758,
+      "binary_identity_claim": false,
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.941291737419306e-14,
+          "max_kernel_cm": 3.941291737419306e-14,
+          "max_solute_mg_cm2": 2.1337792643905118e-13,
+          "sum_water_residual_cm": 6.978024928716575e-13
+        },
+        "model_seconds": 1.4602050001267344,
+        "build_sha256": "1edf3c9a764e26540e31c0f0cb247cfd5d3a4c39219e68ebd29d0727339e53f8"
+      },
+      "own": {
+        "start": 199,
+        "end": 201,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true,
+        "seconds": 0.43711160006932914
+      }
+    },
+    "plate-v1": {
+      "generated_sources_byte_exact": true,
+      "input_bytes_exact": true,
+      "images": {
+        "boundtop.f90": "5c95fa81587361cb1dbe29ecc36ddd5da91f1826654639066cc29c0fdb6a4287",
+        "headcalc.f90": "09b783d244909b4c34222e2355e2f1287e01823574dbbfb0f07d8e797b105706",
+        "hybrid_step_budget.f90": "40230f24d302e0d605585f3d66d8d912b1bdc41571f3bc44ca242d6a10677046",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "09a48c142bf34c6709c7a9cf1493059ff73b8c0362e60d7612019ba402736c3f",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+        "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\plate-v1",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\nomacro-mixtures01\\water-plate-history",
+        "--donor-opt",
+        "O2"
+      ],
+      "seconds": 20.790950499940664,
+      "binary_identity_claim": false
+    },
+    "grass": {
+      "generated_sources_byte_exact": true,
+      "input_bytes_exact": true,
+      "images": {
+        "macropore.f90": "e23d498600bddbf7cd97dc23a8e77e7a5a6fdc079bce36f9f20bae1134b01f12",
+        "swap.f90": "fbaec845db99b5dbd2ec91799e7c606935854738d9b800c7845b6677f3b30fe8",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+        "swap_main.f90": "450c2069d70b4becf3c33323acac354490292b1378d6a8ec2508bae628f04f6c",
+        "timecontrol.f90": "12e552c5912ab94b3454a19f2f2c906ecba29256b8b2ac54e2f85ad3d468be67"
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\grass",
+        "--no-macro-release"
+      ],
+      "seconds": 13.467494700103998,
+      "binary_identity_claim": false
+    },
+    "hupsel": {
+      "generated_sources_byte_exact": true,
+      "input_bytes_exact": true,
+      "images": {
+        "boundtop.f90": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+        "headcalc.f90": "fa7d96c944d14dfa08d76d3b9939e7d01f4ae3077ba1542b084760bbfe17176b",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+        "swap.f90": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+        "timecontrol.f90": "12e552c5912ab94b3454a19f2f2c906ecba29256b8b2ac54e2f85ad3d468be67",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\hupsel",
+        "--no-macro-release"
+      ],
+      "seconds": 19.359134999802336,
+      "binary_identity_claim": false
+    },
+    "salt": {
+      "generated_sources_byte_exact": true,
+      "input_bytes_exact": true,
+      "images": {
+        "boundtop.f90": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+        "headcalc.f90": "f92d3bd18664a241a39765fc657a92247487e00285ec5c762f9553f136811730",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+        "swap.f90": "eca77cdc3997061060e2a9b1ed2d646d4fb9abfb2cc5501429f851d855b21a7f",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "656becdbb62f8d4d6cfaf64bca2e11444fa1fc76baff8d25388e9930a74b9df1",
+        "timecontrol.f90": "3a48b918afc9ea568f814a58c601f255ef1e647db0a6647d777a9f657880a851",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\salt",
+        "--no-macro-release"
+      ],
+      "seconds": 22.371718399925157,
+      "binary_identity_claim": false
+    },
+    "external-irrigation-N": {
+      "images": {
+        "boundtop.f90": {
+          "current_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "archived_sha256": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0",
+          "line_ending_normalized_source_exact": true
+        },
+        "headcalc.f90": {
+          "current_sha256": "fa7d96c944d14dfa08d76d3b9939e7d01f4ae3077ba1542b084760bbfe17176b",
+          "archived_sha256": "e8693175f3c0497d83fa9a59868250d4c0b76ca4e8a88de8d825ae5c25f6255f",
+          "line_ending_normalized_source_exact": true
+        },
+        "irrigation.f90": {
+          "current_sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d",
+          "archived_sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a",
+          "line_ending_normalized_source_exact": true
+        },
+        "macropore.f90": {
+          "current_sha256": "e17f51a555f572afb61be1cab777f500fc1273eab25783db102ef888aa25f329",
+          "archived_sha256": "80c8d12b4cd2e6cb64017ccb1c6ed40093769847180175dfe3cba024ead969e5",
+          "line_ending_normalized_source_exact": true
+        },
+        "MOD_cropdevelopment.f90": {
+          "current_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "archived_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77",
+          "line_ending_normalized_source_exact": true
+        },
+        "swap.f90": {
+          "current_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "archived_sha256": "27d186901823d7ba7cfe74d26f4913211f28c64fa1901581bc090e8b9958da30",
+          "line_ending_normalized_source_exact": true
+        },
+        "swapoutput.f90": {
+          "current_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "archived_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+          "line_ending_normalized_source_exact": true
+        },
+        "swap_csv_output.f90": {
+          "current_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "archived_sha256": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e",
+          "line_ending_normalized_source_exact": true
+        },
+        "swap_main.f90": {
+          "current_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "archived_sha256": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391",
+          "line_ending_normalized_source_exact": true
+        },
+        "wofost.f90": {
+          "current_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "archived_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+          "line_ending_normalized_source_exact": true
+        }
+      },
+      "scheduled_history_inactive": true,
+      "binary_identity_claim": false,
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\N-input",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--donor-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\pondmx-restart01-composed\\N-build"
+      ]
+    }
+  },
+  "incoming_baseline_consumer": {
+    "source_commit": "8dcda0fb247ae7823d720817d6340114d5227728",
+    "returncode": 0,
+    "command": [
+      "python",
+      "-B",
+      "tests/hupsel51/verify_successor.py"
+    ],
+    "seconds": 16.36657049995847,
+    "stdout": "{\n  \"status\": \"HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS\",\n  \"runtime\": \"6afb72468c0060df60694d4b69ee8619fdc93062\",\n  \"current_N_full_days\": 6576,\n  \"current_N_proof_anchor\": \"4b6e470b64cd0c5b9967cfb0b4e35c778d8fafe5\",\n  \"prior_composed_runtime\": \"f1d1c13a295c5b54ec11e03d864de7030ca09008\",\n  \"current_L_proof_anchor\": \"69561229a73b6c0085b2023935b8be09d1262710\",\n  \"current_L_full_days\": 6576,\n  \"current_M_full_days\": 6576,\n  \"current_M_proof_anchor\": \"182d1c464bad3ae011ff18d64103e2a88eb78702\",\n  \"current_M_physical_source\": \"166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad\",\n  \"original_nominal_runon_accuracy\": \"FAILED_NOT_QUALIFIED; retained day200 error6.2864e-10cm, original dtCrit1e-8day unchanged\",\n  \"closed6_current_full_native_O0_O2\": \"INHERITED from sealed L full/native PASS on actual current source preservation\",\n  \"named_full_evidence\": \"INHERITED on exact generated sources/inputs/policies; binary identity NOT claimed\",\n  \"proof_anchor\": \"4ee0e08b095b945870dce54032e0d886478fb4c4\",\n  \"original_canonical_parent\": \"3fb625da73031885624987d42ad922cb184c96e5\",\n  \"actual_composition_parents\": [\n    \"49ac58e473878b21b4050cebbf777ec1a97cc120\",\n    \"a6d4c4c7cfeb7286b3790bcec41dfdcf62a29adb\"\n  ],\n  \"historical_guards\": \"UNCHANGED; not current-source authorities\",\n  \"column_physics\": \"UNCHANGED; live O0/O2 column test remains required\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+    "stderr": ""
+  },
+  "raw_archive": {
+    "path": "RAW_COMPOSITION.zip",
+    "sha256": "f0da84a7c2c87f7927b5e9ab368b0fb901da3ba3829809effe243a5eb2d1ad9b",
+    "bytes": 9233521,
+    "members": 388
+  }
+}

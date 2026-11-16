@@ -4,6 +4,9 @@ import hashlib,json,math,subprocess
 ROOT=Path(__file__).resolve().parents[2]
 BASE='d4ccdc7cb9e3d18ed044e74cd2d277252b291461'
 RUNTIME='4156596c70460a849892d1d81fd69853bf68f50c'
+INCOMING='8dcda0fb247ae7823d720817d6340114d5227728'
+COMPOSED='d0e34c8764e334b078c1b256a181890310cd19c3'
+COMPOSITION_SHA256='19cf5901d186dcbb9dce6a5abe9ac3bc491dd330db89131f0c18f11964384edc'
 PROOF='integration/pondmx-restart01/'
 SELF='tests/hupsel51/verify_successor.py'
 QUALIFICATION_SHA256='899f3656ccfa58b6deb0287ea0693d108f64d6274f1efa3b24091c1f794ffabe'
@@ -50,21 +53,41 @@ def validate(q):
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT)
 
 
+def validate_composition(c):
+    require(c['status']=='COMPOSED_N_AND_PONDMX_SELECTED_DEPENDENCIES_PRESERVED' and c['source_commit']==COMPOSED and c['incoming_canonical']==INCOMING,'foreign composition')
+    selected={'water-O0','water-O2','chemical-O0','chemical-O2'}
+    require(set(c['reports'])==selected|{'plate-v1','grass','hupsel','salt','external-irrigation-N'},'missing composed closure')
+    for key,r in c['reports'].items():
+        if key=='external-irrigation-N':
+            require(r['scheduled_history_inactive'] and r['images'] and all(x['line_ending_normalized_source_exact'] for x in r['images'].values()),'incoming N physical source changed')
+        else:
+            require(r['generated_sources_byte_exact'] and r['input_bytes_exact'] and r['images'] and not r['binary_identity_claim'],'composed physical closure changed')
+        if key in selected:
+            require(r['short']['days']==201 and all(r['own'][k] for k in ('exact_physical','exact_csv','exact_native','origin_unchanged')),'composed native failure')
+    require(c['incoming_baseline_consumer']['source_commit']==INCOMING and c['incoming_baseline_consumer']['returncode']==0,'incoming old admission not actually verified')
+
+
 def verify():
-    git('merge-base','--is-ancestor',RUNTIME,'HEAD')
-    require(not git('diff',RUNTIME,'HEAD','--','src','app','reference','tools'),'unqualified runtime delta')
+    git('merge-base','--is-ancestor',RUNTIME,COMPOSED)
+    git('merge-base','--is-ancestor',COMPOSED,'HEAD')
+    require(not git('diff',COMPOSED,'HEAD','--','src','app','reference','tools'),'unqualified runtime delta')
     require(not git('diff','HEAD','--','src','app','reference','tools','tests','.github','integration'),'dirty qualified surface')
-    changes=git('diff','--name-only',BASE,'HEAD').decode().splitlines()
+    changes=git('diff','--name-only',INCOMING,'HEAD').decode().splitlines()
     physical={'app/hybrid_water/daily_host.py','app/hybrid_water/daily_coupling.py','app/hybrid_water/history_top_state.py'}
     require(all(p in physical|{SELF,'.github/workflows/pondmx-restart.yml'} or p.startswith(('tests/pondmx_restart/',PROOF)) for p in changes),'foreign source/evidence delta')
-    original=git('show',BASE+':'+SELF).decode().replace('\r\n','\n');current=(ROOT/SELF).read_text()
+    original=git('show',INCOMING+':'+SELF).decode().replace('\r\n','\n');current=(ROOT/SELF).read_text()
     require(current.count(HOOK)==1 and current.replace(HOOK,'',1)==original,'old admission body changed')
     raw=git('show','HEAD:'+PROOF+'QUALIFICATION.json')
     require(hashlib.sha256(raw).hexdigest()==QUALIFICATION_SHA256,'qualification proof changed')
     q=json.loads(raw);validate(q)
     for name,record in q['archives'].items():
         require(hashlib.sha256((ROOT/PROOF/name).read_bytes()).hexdigest()==record['sha256'],'raw capsule changed')
-    return dict(status='SCHEDULED_PONDMX_RESTART_SOURCE_BOUND_PASS',runtime=RUNTIME,
+    raw=git('show','HEAD:'+PROOF+'COMPOSITION.json')
+    require(hashlib.sha256(raw).hexdigest()==COMPOSITION_SHA256,'composition proof changed')
+    c=json.loads(raw);validate_composition(c)
+    require(hashlib.sha256((ROOT/PROOF/c['raw_archive']['path']).read_bytes()).hexdigest()==c['raw_archive']['sha256'],'composition raw changed')
+    return dict(status='SCHEDULED_PONDMX_RESTART_SOURCE_BOUND_PASS',runtime=COMPOSED,
+                full_physics_runtime=RUNTIME,incoming_canonical=INCOMING,
                 full_days=4384,exact_full_native_windows=16,prior_failed_source=BASE,
                 old_failures='PRESERVED; no old checkpoint rebind',science='NOT_QUALIFIED')
 
