@@ -1,0 +1,177 @@
+--- a/native_state.f90
++++ b/native_state.f90
+@@ -21,6 +21,9 @@
+ logical,save :: pending=.false.,macro_done=.false.
+ integer,save :: saved_n,saved_nd
+ logical,save :: day_ready=.false.
++logical,save :: prefix_complete=.false.
++real(8),save :: prefix_origin=0d0,coverage_end=0d0
++character(32),save :: coverage_policy="PATCH_FROM_BALANCE_ORIGIN"
+ character(64),parameter :: signature='5524115f66b68d26b40f42f25a1624c8da5d33cf435158ba1634ba8cbdec19f5'
+ real(8),save :: b_WaSrMpDm(madm)
+ real(8),save :: b_WaUnMpDm(madm)
+@@ -116,8 +119,8 @@
+ if(rw==2) then
+  if(swmbf/=1.or.swabs/=1.or.IDecMpRat/=0.or.FlDecMpRat.or.fldecdt) error stop 'NATIVE09 unsupported boundary'
+  if(.not.day_ready) error stop 'MID11 writer phase not complete'
+- tag='SWAP431_MACRO_RESTART_V3'
+- write(u) tag,3,numnod,NumDm,signature,2
++ tag='SWAP431_MACRO_RESTART_V4'
++ write(u) tag,4,numnod,NumDm,signature,2
+  write(u) WaSrMpDm(1:NumDm)
+  write(u) WaUnMpDm(1:NumDm)
+  write(u) WaUnMpDmCp(1:NumDm,1:numnod)
+@@ -201,6 +204,8 @@
+  write(u) fl_cropemergence
+  write(u) fl_cropharvest
+  write(u) cumdens_top(1:numnod+1)
++ if(.not.prefix_complete.or.prefix_origin/=tstart) error stop 'PREFIX14 incomplete history'
++ write(u) prefix_origin,t1900,prefix_complete,coverage_policy
+  call ledger12_io(u,2)
+  tag='NATIVE09_COMPLETE'
+  write(u) tag
+@@ -209,7 +214,7 @@
+ read(u,iostat=ios) tag,v,n,nd,sig
+ if(ios/=0) error stop 'NATIVE09 missing trailer'
+ phase=1
+-if(((v==2.and.tag=='SWAP431_MACRO_RESTART_V2').or.(v==3.and.tag=='SWAP431_MACRO_RESTART_V3'))) then
++if(((v==2.and.tag=='SWAP431_MACRO_RESTART_V2').or.(v==3.and.tag=='SWAP431_MACRO_RESTART_V3').or.(v==4.and.tag=='SWAP431_MACRO_RESTART_V4'))) then
+  backspace(u)
+  read(u,iostat=ios) tag,v,n,nd,sig,phase
+  if(ios/=0.or.phase/=2) error stop 'MID11 invalid completed-day phase'
+@@ -450,9 +455,13 @@
+ if(ios/=0) error stop 'NATIVE09 incomplete cumdens_top'
+ if(.not.all(ieee_is_finite(b_cumdens_top(1:n+1)))) error stop 'NATIVE09 nonfinite cumdens_top'
+ call get_environment_variable('LEDGER12_REQUIRE',require_ledger)
+-if(trim(require_ledger)=='1'.and.v/=3) error stop 'LEDGER12 required history absent'
+-if(v==3.and.nd/=5) error stop 'LEDGER12 selected domain mismatch'
+-if(v==3) call ledger12_io(u,1)
++if(trim(require_ledger)=='1'.and.v/=4) error stop 'LEDGER12 required history absent'
++if(v>=3.and.nd/=5) error stop 'LEDGER12 selected domain mismatch'
++if(v==4) then
++ read(u,iostat=ios) prefix_origin,coverage_end,prefix_complete,coverage_policy
++ if(ios/=0.or..not.prefix_complete.or.prefix_origin/=tstart.or.coverage_end/=b_t1900.or.coverage_policy/='PATCH_FROM_BALANCE_ORIGIN') error stop 'PREFIX14 history coverage mismatch'
++end if
++if(v>=3) call ledger12_io(u,1)
+ read(u,iostat=ios) tag
+ if(ios/=0.or.tag/='NATIVE09_COMPLETE') error stop 'NATIVE09 incomplete trailer'
+ if(b_tstart/=tstart.or.b_dt<=0.or.b_dtold<=0) error stop 'NATIVE09 time/origin mismatch'
+@@ -708,3 +717,9 @@
+ use MOD_native09,only:day_ready
+ day_ready=.true.
+ end subroutine
++
++subroutine prefix14_coverage(origin)
++use MOD_native09,only:prefix_origin,prefix_complete
++real(8)::origin
++prefix_origin=origin;prefix_complete=.true.
++end subroutine
+--- a/soilwater_native.f90
++++ b/soilwater_native.f90
+@@ -1,10 +1,11 @@
+ module MOD_SoilWater
+ 
+    private
+-   public :: soilwater, soilwaterstatevar,retry07_checkpoint,day11_boundary
++   public :: soilwater, soilwaterstatevar,retry07_checkpoint,day11_boundary,prefix14_start
+    logical,save :: checkpoint_pending=.false.,followup_pending=.false.,restart_pending=.false.
+    integer,save :: checkpoint_phase=0
+    character(64),save :: qualification_outcome=''
++   real(8),save :: accepted_dt=0d0
+ 
+ 
+    contains
+@@ -225,9 +226,25 @@
+       end subroutine SoilWaterStateVar
+ 
+ 
++subroutine prefix14_start()
++ use variables,only:t1900
++ use CONTRACT06_CONTROL,only:use_patch
++ implicit none
++ character(24)::mode
++ integer::u
++ call get_environment_variable('DAY10_MODE',mode)
++ use_patch=.true.
++ if(trim(mode)=='PREFIX') then
++  call prefix14_coverage(t1900)
++  call inventory_dump('initial')
++  call ledger12_dump('ledger_initial')
++  call native09_dump('context_initial')
++  open(newunit=u,file='step_budget.txt',status='replace');close(u)
++ end if
++end subroutine
+ logical function retry07_driver() result(handled)
+  use CONTRACT06_CONTROL, only:use_patch
+- use variables,only:fldecdt
++ use variables,only:fldecdt,dt
+  use MOD_swap_mp,only:FlDecMpRat
+  implicit none
+  character(24)::mode
+@@ -239,6 +256,7 @@
+  call ledger12_dump('ledger_begin')
+   call native09_dump('context_begin')
+  end if
++ accepted_dt=dt
+  call headcalc
+  if(checkpoint_phase==1) then
+   call inventory_dump('returned')
+@@ -246,23 +264,28 @@
+  end if
+ end function
+ subroutine retry07_checkpoint()
++ use variables,only:t1900,dt,qbot,qrot,runon,epd,reva,runots
++ use MOD_meteo,only:graidt,nraidt
++ use MOD_irrigation,only:gird,nird,qssdi
++ use MOD_drain,only:qdra,nrlevs
++ use MOD_macropore,only:QOutDrRapCp,QInTopLatDm,QInTopVrtDm,QExcMtxDmCp,FrReduQ,NumDm
++ use MOD_grid,only:numnod
++ use plant_interface,only:crsflx_out,sicact
+  implicit none
+  integer::u
++ character(24)::mode
++ call get_environment_variable('DAY10_MODE',mode)
++ if(trim(mode)=='PREFIX'.and.checkpoint_phase==0) then
++  open(newunit=u,file='step_budget.txt',position='append')
++  write(u,*) t1900,accepted_dt,graidt,gird,runon,crsflx_out,epd,reva,sum(qrot(1:numnod)),qbot,sum(qdra(1:nrlevs,1:numnod)),sum(qssdi(1:numnod)),sum(QOutDrRapCp(1:numnod)),runots,nraidt,nird,FrReduQ, &
++   QInTopLatDm(1:NumDm),QInTopVrtDm(1:NumDm),sum(QExcMtxDmCp(1:NumDm,1:numnod),dim=2)
++  close(u)
++ end if
+  if(checkpoint_phase/=1) return
+  call inventory_dump('accepted')
+  call ledger12_dump('ledger_accepted')
+  call native09_dump('context_accepted')
+- block
+- use variables,only:outfil,ioutdat
+- use MOD_macropore,only:bma
+- integer::old_index
+- old_index=ioutdat;ioutdat=2;outfil='ledgerprobe'
+- call outbma(1)
+- call outbma(2)
+- close(bma)
+- ioutdat=old_index
+- call ledger12_dump('ledger_after_render')
+- end block
++
+  open(newunit=u,file='outcome.txt',status='replace');write(u,*) 'MID11_NEXT_DAY_ACCEPTED';close(u)
+  stop 0
+ end subroutine
+--- a/swap_native.f90
++++ b/swap_native.f90
+@@ -160,7 +160,7 @@
+ use MOD_frost,           only: frozencond, frozenbounds, rfcp
+ use MOD_macropore,       only: macrostatevar, macropore
+ use MOD_MvG,             only: fill_cofgen, set_cofgen_pointers
+-use MOD_SoilWater,       only: soilwater, soilwaterstatevar,retry07_checkpoint,day11_boundary
++use MOD_SoilWater,       only: soilwater, soilwaterstatevar,retry07_checkpoint,day11_boundary,prefix14_start
+ use MOD_SoilTemperature, only: SoilTemperature, tsoil, tetop
+ use KVapor,              only: DefaultTemperature
+ use MOD_Solute,          only: Solute
+@@ -333,6 +333,7 @@
+ 
+ if (iTask == 2) then
+    call native09_host()
++   call prefix14_start()
+ 
+ !  Specific for exchange when called as DLL
+    if (iCaller == 2) call handle_exchange(21, flError); if (flError) return

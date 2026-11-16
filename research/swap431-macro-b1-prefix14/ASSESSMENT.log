@@ -1,0 +1,50 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-PREFIX14",
+  "decision": "PREFIX_CAPTURE_CENSORED_FULL_PERIOD_NOT_QUALIFIED",
+  "candidate": "Existing V1 plus unchanged CONTRACT06 Darcy correction active from first head/original balance origin, with explicit LEDGER12 output history owner",
+  "period_origin": 35795,
+  "target_completed_day_boundary": 35797,
+  "results": [
+    {
+      "optimization": "O0",
+      "status": "CENSORED_AT_20_SECOND_LIMIT",
+      "wall_seconds_including_termination": 20.346514699980617,
+      "accepted_step_records": 770,
+      "last_record_time": 35796.419000005524,
+      "last_dt": 0.0010000000620493665,
+      "unreduced_record_count": 770,
+      "original_matrix_inventory_cm": 153.08077642218285,
+      "original_macro_MB_cm": 1.5819999999999999,
+      "original_macro_IC_cm": 0.04949324324324319,
+      "original_macro_total_cm": 1.631493243243243,
+      "full_period_checkpoint_available": false
+    },
+    {
+      "optimization": "O2",
+      "status": "CENSORED_AT_20_SECOND_LIMIT",
+      "wall_seconds_including_termination": 20.094385700067505,
+      "accepted_step_records": 787,
+      "last_record_time": 35796.43600000658,
+      "last_dt": 0.0010000000620493665,
+      "unreduced_record_count": 787,
+      "original_matrix_inventory_cm": 153.08077642218285,
+      "original_macro_MB_cm": 1.5819999999999999,
+      "original_macro_IC_cm": 0.04949324324324319,
+      "original_macro_total_cm": 1.631493243243243,
+      "full_period_checkpoint_available": false
+    }
+  ],
+  "common_exact_step_records": 770,
+  "initial_exports_O0_O2_byte_exact": true,
+  "configured_route_timeout_seconds": 20,
+  "model_routes": 2,
+  "additional_retries": 0,
+  "own_resume_routes_not_launched": "No completed period file exists",
+  "full_period_balance": "NOT_QUALIFIED",
+  "partial_balance": "No independent endpoint snapshot at timeout; no partial balance PASS inferred from flux records",
+  "metadata_implementation": "V4 origin/end/complete-policy record implemented/compiled but not exercised at target, therefore unqualified",
+  "io_check": "IO_CHECK.json is only a no-model microbenchmark; it does not establish logging as the dominant cause of the limit",
+  "official_reference_promoted": false,
+  "production_changed": false,
+  "next_safe_step": "Retain cap result and exact original inventories. Any future progress requires separately selected bounded diagnosis of the fixed-candidate prefix cost/convergence; no silent timeout increase, chunking, variant substitution or campaign."
+}
