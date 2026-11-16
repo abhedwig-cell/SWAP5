@@ -135,7 +135,6 @@ def inspect(directory):
                 raise ValueError('Bounded original frost reference excludes effective SWDIVD1')
             if selected['SWSOLU']:
                 raise ValueError('Original drainage reader refuses SWDIVD0 with solute transport')
-            raise ValueError('Integrated frost drainage awaits conservative snow/day receipt qualification')
         limits=[]
         for name in ('TFROSTSTA','TFROSTEND'):
             values=re.findall(r'(?mi)^[ \t]*'+name+r'[ \t]*=[ \t]*([^!\r\n]+)',text)
@@ -241,6 +240,12 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     chemical=LEGACY_SOLUTE_STEP_POLICY if solute_step_policy is None else solute_step_policy
     if chemical not in SOLUTE_STEP_POLICIES:raise ValueError('Unknown experimental chemical substep policy')
     report = inspect(directory)
+    from time_event_closure import POLICY as EVENT_POLICY
+    drained_frost = report['selectors']['SWFROST']==1 and report['selectors']['SWDRA']==1
+    if drained_frost and policy != EVENT_POLICY:
+        raise ValueError('Integrated frost drainage requires explicit corrected TimeControl event closure')
+    if policy == EVENT_POLICY and not drained_frost:
+        raise ValueError('Corrected event closure is bounded to original water frost drainage')
     from daily_host import ORIGINAL_SOIL_TABLE_POLICY, SOIL_TABLE_POLICIES
     soil=ORIGINAL_SOIL_TABLE_POLICY if soil_table_policy is None else soil_table_policy
     if soil not in SOIL_TABLE_POLICIES:raise ValueError('Unknown original soil-table interpolation policy')

@@ -58,6 +58,7 @@ def controls(build,reference,project,out,full,data,*,policy_key="scheduled_pond_
         with zipfile.ZipFile(package,'w') as z:
             for n,b in altered.items():z.writestr(n,b)
         target=out/(name+'-refused');command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',m.e.MODEL,'--experimental-project',str(project.input_directory),'--reference-work',str(reference),'--build-bundle',str(build),'--restart',str(package),'--restart-day','199','--days','200','--output',str(target)]
+        command.extend(['--experimental-time-step-policy',project.time_step_policy])
         r=subprocess.run(command,capture_output=True,text=True,timeout=30);(out/(name+'.stderr')).write_text(r.stderr)
         assert r.returncode!=0 and not list(target.glob('accepted-*.zip')),(name,r.stdout,r.stderr)
         diagnostic=''.join(p.read_text(errors='replace') for p in target.rglob('donor.stderr'))
