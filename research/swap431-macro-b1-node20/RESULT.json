@@ -1,0 +1,1973 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-NODE20",
+  "decision": "DIAGNOSIS_ONLY_ORIGINAL_COUPLED_FREEZE_REFRESH_CYCLE",
+  "model_routes": 2,
+  "hard_timeout_seconds": 20,
+  "no_censored": true,
+  "operator_traces_O0_O2_byte_exact": true,
+  "physics_solver_BAL_policy_changes": false,
+  "full_second_period_qualification": false,
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 0.5975262001156807,
+      "attempts_exact_to_DIAG19": 52,
+      "commits_exact_to_DIAG19": 42,
+      "operator_records": 197,
+      "iteration_records": 591,
+      "absorption_records": 0,
+      "max_operator_reconstruction_error": 2.5153490401663703e-17,
+      "checks": [
+        {
+          "attempt": 38,
+          "begin_time": 35797.07066666668,
+          "used_dt": 0.0013333333333333333,
+          "used_flux_factor": 1.0,
+          "actual_iterations": 30,
+          "fresh_checks": 6,
+          "h52_range_cm": [
+            3.0099690165750665,
+            3.120444144119234
+          ],
+          "theta52_values": [
+            0.444
+          ],
+          "pairs": [
+            {
+              "iteration": 5.0,
+              "h52_cm": 3.1153534934031706,
+              "cached_F52": -7.675721169775329e-12,
+              "fresh_F52": 0.016241506142744028,
+              "delta_F52": 0.01624150615041975,
+              "delta_minus_exchange": 0.01624150615041975,
+              "delta_exchange_by_domain": [
+                -0.005280847918513049,
+                -0.0013202119796282604,
+                -0.009640446252278417,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.3692298322233223,
+                0.22235966605815274
+              ],
+              "minus_exchange_before": 0.14654794419152128,
+              "minus_exchange_after": 0.16278945034194103,
+              "saturated_out_to_matrix_domain3_before": 0.009640446252278417,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14217868935466246,
+                0.014009701089137249
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.1474595372731755,
+                0.01532991306876551
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 10.0,
+              "h52_cm": 3.120443666543589,
+              "cached_F52": -8.924333494420011e-12,
+              "fresh_F52": 0.016752232381942816,
+              "delta_F52": 0.01675223239086715,
+              "delta_minus_exchange": 0.01675223239086715,
+              "delta_exchange_by_domain": [
+                -0.005695818901202937,
+                -0.0014239547253007342,
+                -0.009632458764363479,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.36853999471012905,
+                0.2216027336452254
+              ],
+              "minus_exchange_before": 0.14661503909000678,
+              "minus_exchange_after": 0.16336727148087393,
+              "saturated_out_to_matrix_domain3_before": 0.009632458764363479,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1422259752831189,
+                0.014021522571251359
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14792179418432183,
+                0.015445477296552093
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 15.0,
+              "h52_cm": 3.1204441440739212,
+              "cached_F52": -8.924944117083555e-12,
+              "fresh_F52": 0.016752275014274787,
+              "delta_F52": 0.01675227502319973,
+              "delta_minus_exchange": 0.01675227502319973,
+              "delta_exchange_by_domain": [
+                -0.005695854109495385,
+                -0.001423963527373848,
+                -0.009632457386330477,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.3685399273879018,
+                0.22160265474752414
+              ],
+              "minus_exchange_before": 0.1466150506654802,
+              "minus_exchange_after": 0.16336732568867993,
+              "saturated_out_to_matrix_domain3_before": 0.00963245738633093,
+              "saturated_out_to_matrix_domain3_after": 4.524214711623667e-16,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1422259834410716,
+                0.014021524610739534
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14792183755056698,
+                0.015445488138113382
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 20.0,
+              "h52_cm": 3.120444144119234,
+              "cached_F52": -8.924250227693165e-12,
+              "fresh_F52": 0.016752275018315138,
+              "delta_F52": 0.01675227502723939,
+              "delta_minus_exchange": 0.01675227502723939,
+              "delta_exchange_by_domain": [
+                -0.005695854112831966,
+                -0.0014239635282079933,
+                -0.009632457386199438,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.368539927381504,
+                0.22160265474002247
+              ],
+              "minus_exchange_before": 0.14661505066658473,
+              "minus_exchange_after": 0.16336732569382412,
+              "saturated_out_to_matrix_domain3_before": 0.009632457386199438,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14222598344185003,
+                0.01402152461093414
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.147921837554682,
+                0.015445488139142134
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 25.0,
+              "h52_cm": 3.1204441441191144,
+              "cached_F52": -8.92536045071779e-12,
+              "fresh_F52": 0.01675227501829729,
+              "delta_F52": 0.01675227502722265,
+              "delta_minus_exchange": 0.01675227502722265,
+              "delta_exchange_by_domain": [
+                -0.005695854112818977,
+                -0.0014239635282047441,
+                -0.009632457386198915,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.36853992738151076,
+                0.2216026547400251
+              ],
+              "minus_exchange_before": 0.14661505066658775,
+              "minus_exchange_after": 0.1633673256938104,
+              "saturated_out_to_matrix_domain3_before": 0.009632457386199077,
+              "saturated_out_to_matrix_domain3_after": 1.617166109557451e-16,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14222598344185217,
+                0.014021524610934675
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14792183755467114,
+                0.015445488139139419
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 30.0,
+              "h52_cm": 3.1204441441189164,
+              "cached_F52": -8.924666561327399e-12,
+              "fresh_F52": 0.016752275018270674,
+              "delta_F52": 0.01675227502719534,
+              "delta_minus_exchange": 0.01675227502719534,
+              "delta_exchange_by_domain": [
+                -0.00569585411279766,
+                -0.0014239635281994116,
+                -0.009632457386198267,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.3685399273815278,
+                0.2216026547400381
+              ],
+              "minus_exchange_before": 0.1466150506665925,
+              "minus_exchange_after": 0.16336732569378784,
+              "saturated_out_to_matrix_domain3_before": 0.009632457386198511,
+              "saturated_out_to_matrix_domain3_after": 2.454627130579134e-16,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1422259834418555,
+                0.014021524610935513
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14792183755465316,
+                0.015445488139134924
+              ],
+              "macro_cache_flag_before": 1.0
+            }
+          ]
+        },
+        {
+          "attempt": 50,
+          "begin_time": 35797.07125645635,
+          "used_dt": 2e-05,
+          "used_flux_factor": 1.0,
+          "actual_iterations": 30,
+          "fresh_checks": 6,
+          "h52_range_cm": [
+            3.022221282457617,
+            3.0741070128290855
+          ],
+          "theta52_values": [
+            0.444
+          ],
+          "pairs": [
+            {
+              "iteration": 5.0,
+              "h52_cm": 3.0704918803526784,
+              "cached_F52": -9.711675907908557e-14,
+              "fresh_F52": 0.009851290797440876,
+              "delta_F52": 0.009851290797537993,
+              "delta_minus_exchange": 0.009851290797537993,
+              "delta_exchange_by_domain": [
+                -0.0003454744424021827,
+                -8.636861060054742e-05,
+                -0.00941944774453524,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37386920945450597,
+                0.22570313034217498
+              ],
+              "minus_exchange_before": 0.1478439041309452,
+              "minus_exchange_after": 0.1576951949284832,
+              "saturated_out_to_matrix_domain3_before": 0.009419447744537195,
+              "saturated_out_to_matrix_domain3_after": 1.9549041687632845e-15,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14304289116978738,
+                0.014220460705695007
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14338836561218957,
+                0.014306829316295554
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 10.0,
+              "h52_cm": 3.074106736638707,
+              "cached_F52": -2.523536934972981e-13,
+              "fresh_F52": 0.010294296578930606,
+              "delta_F52": 0.01029429657918296,
+              "delta_minus_exchange": 0.01029429657918296,
+              "delta_exchange_by_domain": [
+                -0.0006967687655519972,
+                -0.00017419219138800103,
+                -0.009423335622242943,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3729700275258975,
+                0.22483660658633153
+              ],
+              "minus_exchange_before": 0.14781124595802492,
+              "minus_exchange_after": 0.15810554253720788,
+              "saturated_out_to_matrix_domain3_before": 0.009423335622265796,
+              "saturated_out_to_matrix_domain3_after": 2.2852910329421554e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14301987493363405,
+                0.014214706646656673
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371664369918605,
+                0.014388898838044674
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 15.0,
+              "h52_cm": 3.0741070128097845,
+              "cached_F52": -2.5279778270714814e-13,
+              "fresh_F52": 0.010294330567566207,
+              "delta_F52": 0.010294330567819004,
+              "delta_minus_exchange": 0.010294330567819004,
+              "delta_exchange_by_domain": [
+                -0.0006967957051761675,
+                -0.00017419892629403667,
+                -0.009423335936348793,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3729699589234922,
+                0.22483654062245714
+              ],
+              "minus_exchange_before": 0.1478112433194936,
+              "minus_exchange_after": 0.1581055738873126,
+              "saturated_out_to_matrix_domain3_before": 0.009423335936376667,
+              "saturated_out_to_matrix_domain3_after": 2.7872892725426134e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1430198730740977,
+                0.014214706181772587
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371666877927386,
+                0.014388905108066624
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 20.0,
+              "h52_cm": 3.074107012829048,
+              "cached_F52": -2.5232593792168245e-13,
+              "fresh_F52": 0.01029433056984766,
+              "delta_F52": 0.010294330570099985,
+              "delta_minus_exchange": 0.010294330570099985,
+              "delta_exchange_by_domain": [
+                -0.0006967957069723418,
+                -0.00017419892674308546,
+                -0.009423335936384569,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3729699589181641,
+                0.22483654061719585
+              ],
+              "minus_exchange_before": 0.14781124331942724,
+              "minus_exchange_after": 0.15810557388952723,
+              "saturated_out_to_matrix_domain3_before": 0.009423335936384569,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14301987307405092,
+                0.014214706181760892
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371666878102327,
+                0.014388905108503977
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 25.0,
+              "h52_cm": 3.0741070128290855,
+              "cached_F52": -2.5260349367783874e-13,
+              "fresh_F52": 0.010294330569882992,
+              "delta_F52": 0.010294330570135596,
+              "delta_minus_exchange": 0.010294330570135596,
+              "delta_exchange_by_domain": [
+                -0.0006967957069978215,
+                -0.0001741989267494571,
+                -0.009423335936388302,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3729699589180918,
+                0.22483654061715466
+              ],
+              "minus_exchange_before": 0.14781124331939588,
+              "minus_exchange_after": 0.15810557388953148,
+              "saturated_out_to_matrix_domain3_before": 0.009423335936388302,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14301987307402883,
+                0.014214706181755367
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371666878102665,
+                0.014388905108504824
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 30.0,
+              "h52_cm": 3.0741070128271715,
+              "cached_F52": -2.521594044679887e-13,
+              "fresh_F52": 0.010294330569608268,
+              "delta_F52": 0.010294330569860427,
+              "delta_minus_exchange": 0.010294330569860427,
+              "delta_exchange_by_domain": [
+                -0.0006967957067838815,
+                -0.00017419892669597037,
+                -0.009423335936380587,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37296995891820955,
+                0.22483654061721592
+              ],
+              "minus_exchange_before": 0.1478112433194528,
+              "minus_exchange_after": 0.15810557388931323,
+              "saturated_out_to_matrix_domain3_before": 0.009423335936381524,
+              "saturated_out_to_matrix_domain3_after": 9.360184146377658e-16,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14301987307406894,
+                0.014214706181765398
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371666878085282,
+                0.014388905108461369
+              ],
+              "macro_cache_flag_before": 1.0
+            }
+          ]
+        },
+        {
+          "attempt": 51,
+          "begin_time": 35797.07125645635,
+          "used_dt": 1e-05,
+          "used_flux_factor": 1.0,
+          "actual_iterations": 60,
+          "fresh_checks": 12,
+          "h52_range_cm": [
+            3.025599219872477,
+            3.0761684215988776
+          ],
+          "theta52_values": [
+            0.444
+          ],
+          "pairs": [
+            {
+              "iteration": 5.0,
+              "h52_cm": 3.0695585280006634,
+              "cached_F52": -5.4567461660326444e-14,
+              "fresh_F52": 0.009885822332769495,
+              "delta_F52": 0.009885822332824062,
+              "delta_minus_exchange": 0.009885822332824062,
+              "delta_exchange_by_domain": [
+                -0.0003597203482236522,
+                -8.993008705591478e-05,
+                -0.009436171897544513,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3740420066853417,
+                0.2260164104590331
+              ],
+              "minus_exchange_before": 0.14770342124496538,
+              "minus_exchange_after": 0.15758924357778945,
+              "saturated_out_to_matrix_domain3_before": 0.009436171897630031,
+              "saturated_out_to_matrix_domain3_after": 8.551865304864777e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14294388418347778,
+                0.014195708959117606
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14330360453170143,
+                0.014285639046173521
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 10.0,
+              "h52_cm": 3.072512790040187,
+              "cached_F52": -1.6681100944992977e-13,
+              "fresh_F52": 0.010103694850830514,
+              "delta_F52": 0.010103694850997325,
+              "delta_minus_exchange": 0.010103694850997325,
+              "delta_exchange_by_domain": [
+                -0.0005452075455010252,
+                -0.00013630188637525804,
+                -0.00942218541912104,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37311572164386125,
+                0.22497263899796488
+              ],
+              "minus_exchange_before": 0.1478209076644409,
+              "minus_exchange_after": 0.15792460251543822,
+              "saturated_out_to_matrix_domain3_before": 0.00942218541912104,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14302668413625103,
+                0.014216408947310917
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14357189168175205,
+                0.014352710833686175
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 15.0,
+              "h52_cm": 3.0725129551929915,
+              "cached_F52": -1.6658896484500474e-13,
+              "fresh_F52": 0.010103715352543091,
+              "delta_F52": 0.01010371535270968,
+              "delta_minus_exchange": 0.01010371535270968,
+              "delta_exchange_by_domain": [
+                -0.0005452237798609094,
+                -0.00013630594496523256,
+                -0.009422185627883547,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3731156731027231,
+                0.22497259221095176
+              ],
+              "minus_exchange_before": 0.14782090591031607,
+              "minus_exchange_after": 0.15792462126302576,
+              "saturated_out_to_matrix_domain3_before": 0.009422185627945424,
+              "saturated_out_to_matrix_domain3_after": 6.18784366083881e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14302668290001067,
+                0.014216408638250825
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14357190667987157,
+                0.014352714583216058
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 20.0,
+              "h52_cm": 3.072512955199401,
+              "cached_F52": -1.6697754290362354e-13,
+              "fresh_F52": 0.010103715352751785,
+              "delta_F52": 0.010103715352918763,
+              "delta_minus_exchange": 0.010103715352918763,
+              "delta_exchange_by_domain": [
+                -0.0005452237800339377,
+                -0.00013630594500848268,
+                -0.009422185627876327,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3731156731014566,
+                0.22497259220910448
+              ],
+              "minus_exchange_before": 0.14782090591089647,
+              "minus_exchange_after": 0.15792462126381523,
+              "saturated_out_to_matrix_domain3_before": 0.009422185627876327,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14302668290041973,
+                0.014216408638353092
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14357190668045366,
+                0.014352714583361575
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 25.0,
+              "h52_cm": 3.072512955190583,
+              "cached_F52": -1.6728285423539546e-13,
+              "fresh_F52": 0.010103715351579085,
+              "delta_F52": 0.010103715351746367,
+              "delta_minus_exchange": 0.010103715351746367,
+              "delta_exchange_by_domain": [
+                -0.0005452237791597758,
+                -0.00013630594478994222,
+                -0.009422185627796682,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37311567310163307,
+                0.22497259220917648
+              ],
+              "minus_exchange_before": 0.14782090591100064,
+              "minus_exchange_after": 0.157924621262747,
+              "saturated_out_to_matrix_domain3_before": 0.009422185627863927,
+              "saturated_out_to_matrix_domain3_after": 6.724412791607604e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1430266829004931,
+                0.01421640863837144
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.1435719066796529,
+                0.014352714583161383
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 30.0,
+              "h52_cm": 3.0725129551995387,
+              "cached_F52": -1.6672774272308288e-13,
+              "fresh_F52": 0.010103715352787285,
+              "delta_F52": 0.010103715352954012,
+              "delta_minus_exchange": 0.010103715352954012,
+              "delta_exchange_by_domain": [
+                -0.0005452237800602777,
+                -0.00013630594501506943,
+                -0.009422185627878664,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3731156731014122,
+                0.22497259220907995
+              ],
+              "minus_exchange_before": 0.14782090591087685,
+              "minus_exchange_after": 0.15792462126383086,
+              "saturated_out_to_matrix_domain3_before": 0.009422185627878664,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14302668290040588,
+                0.014216408638349632
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14357190668046615,
+                0.014352714583364701
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 35.0,
+              "h52_cm": 3.0530754483731397,
+              "cached_F52": -2.760014439218139e-13,
+              "fresh_F52": -0.0029243753861289967,
+              "delta_F52": -0.0029243753858529953,
+              "delta_minus_exchange": -0.0029243753858529953,
+              "delta_exchange_by_domain": [
+                0.0012591514680068416,
+                0.00031478786700170694,
+                0.0013504360508444467,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3783707828670263,
+                0.2290343594989774
+              ],
+              "minus_exchange_before": 0.14901424838648422,
+              "minus_exchange_after": 0.14608987300063123,
+              "saturated_out_to_matrix_domain3_before": 0.008277824923492027,
+              "saturated_out_to_matrix_domain3_after": 0.009628260974336474,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14306586831738247,
+                0.014226204992593776
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14180671684937562,
+                0.013911417125592069
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 40.0,
+              "h52_cm": 3.0761684202540542,
+              "cached_F52": -4.551081733694673e-13,
+              "fresh_F52": 0.011073179350697404,
+              "delta_F52": 0.011073179351152512,
+              "delta_minus_exchange": 0.011073179351152512,
+              "delta_exchange_by_domain": [
+                -0.001267984825834012,
+                -0.0003169962064584978,
+                -0.009488198318859987,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.372240069161229,
+                0.2246514948728515
+              ],
+              "minus_exchange_before": 0.1472663993066337,
+              "minus_exchange_after": 0.15833957865778622,
+              "saturated_out_to_matrix_domain3_before": 0.009488198318859987,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14263588776979644,
+                0.014118709855697274
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14390387259563045,
+                0.014435706062155771
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 45.0,
+              "h52_cm": 3.053075435845616,
+              "cached_F52": -2.7672308888782027e-13,
+              "fresh_F52": -0.0029243780291815236,
+              "delta_F52": -0.0029243780289048005,
+              "delta_minus_exchange": -0.0029243780289048005,
+              "delta_exchange_by_domain": [
+                0.0012591526061080105,
+                0.00031478815152700436,
+                0.0013504372712697735,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37837078613500597,
+                0.22903436173816527
+              ],
+              "minus_exchange_before": 0.1490142494152753,
+              "minus_exchange_after": 0.1460898713863705,
+              "saturated_out_to_matrix_domain3_before": 0.008277823895240595,
+              "saturated_out_to_matrix_domain3_after": 0.009628261166510369,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14306586831781418,
+                0.01422620499270171
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14180671571170617,
+                0.013911416841174706
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 50.0,
+              "h52_cm": 3.0761684215988776,
+              "cached_F52": -4.559963517891674e-13,
+              "fresh_F52": 0.011073179591288923,
+              "delta_F52": 0.01107317959174492,
+              "delta_minus_exchange": 0.01107317959174492,
+              "delta_exchange_by_domain": [
+                -0.00126798500993347,
+                -0.0003169962524833692,
+                -0.0094881983293281,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3722400687992923,
+                0.22465149459884604
+              ],
+              "minus_exchange_before": 0.14726639921870158,
+              "minus_exchange_after": 0.1583395788104465,
+              "saturated_out_to_matrix_domain3_before": 0.0094881983293281,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1426358877078252,
+                0.014118709840204465
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14390387271775867,
+                0.014435706092687834
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 55.0,
+              "h52_cm": 3.053075437001116,
+              "cached_F52": -2.7700064464397656e-13,
+              "fresh_F52": -0.0029243777851231667,
+              "delta_F52": -0.002924377784846166,
+              "delta_minus_exchange": -0.002924377784846166,
+              "delta_exchange_by_domain": [
+                0.0012591525011325655,
+                0.0003147881252831431,
+                0.001350437158430473,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37837078583265055,
+                0.22903436153097378
+              ],
+              "minus_exchange_before": 0.1490142493201111,
+              "minus_exchange_after": 0.14608987153526493,
+              "saturated_out_to_matrix_domain3_before": 0.00827782399035437,
+              "saturated_out_to_matrix_domain3_after": 0.009628261148784843,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14306586831777385,
+                0.014226204992691626
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14180671581664128,
+                0.013911416867408483
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 60.0,
+              "h52_cm": 3.076168413058421,
+              "cached_F52": -4.556632848817799e-13,
+              "fresh_F52": 0.011073178056294819,
+              "delta_F52": 0.011073178056750482,
+              "delta_minus_exchange": 0.011073178056750482,
+              "delta_exchange_by_domain": [
+                -0.001267983835835318,
+                -0.0003169959589588347,
+                -0.00948819826195632,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37224007112783997,
+                0.2246514963619427
+              ],
+              "minus_exchange_before": 0.14726639978415293,
+              "minus_exchange_after": 0.1583395778409034,
+              "saturated_out_to_matrix_domain3_before": 0.009488198262012462,
+              "saturated_out_to_matrix_domain3_after": 5.614323623870045e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1426358881063338,
+                0.014118709939831608
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.1439038719421691,
+                0.014435705898790443
+              ],
+              "macro_cache_flag_before": 1.0
+            }
+          ]
+        },
+        {
+          "attempt": 52,
+          "begin_time": 35797.07125645635,
+          "used_dt": 0.0001414213562373095,
+          "used_flux_factor": 0.1,
+          "actual_iterations": 3,
+          "fresh_checks": 1,
+          "h52_range_cm": [
+            3.0669527659073488,
+            4.414838083444375
+          ],
+          "theta52_values": [
+            0.444
+          ],
+          "pairs": [
+            {
+              "iteration": 3.0,
+              "h52_cm": 4.414745614153383,
+              "cached_F52": 1.7969480070600952e-11,
+              "fresh_F52": 1.7969480070600952e-11,
+              "delta_F52": 0.0,
+              "delta_minus_exchange": 0.0,
+              "delta_exchange_by_domain": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.1847941081747993,
+                0.15231685563534547
+              ],
+              "minus_exchange_before": 0.03215507757613464,
+              "minus_exchange_after": 0.03215507757613464,
+              "saturated_out_to_matrix_domain3_before": 0.0,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.02654648768902607,
+                0.004482595713581334
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.02654648768902607,
+                0.004482595713581334
+              ],
+              "macro_cache_flag_before": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "optimization": "O2",
+      "seconds": 0.43697420018725097,
+      "attempts_exact_to_DIAG19": 52,
+      "commits_exact_to_DIAG19": 42,
+      "operator_records": 197,
+      "iteration_records": 591,
+      "absorption_records": 0,
+      "max_operator_reconstruction_error": 2.5153490401663703e-17,
+      "checks": [
+        {
+          "attempt": 38,
+          "begin_time": 35797.07066666668,
+          "used_dt": 0.0013333333333333333,
+          "used_flux_factor": 1.0,
+          "actual_iterations": 30,
+          "fresh_checks": 6,
+          "h52_range_cm": [
+            3.0099690165750665,
+            3.120444144119234
+          ],
+          "theta52_values": [
+            0.444
+          ],
+          "pairs": [
+            {
+              "iteration": 5.0,
+              "h52_cm": 3.1153534934031706,
+              "cached_F52": -7.675721169775329e-12,
+              "fresh_F52": 0.016241506142744028,
+              "delta_F52": 0.01624150615041975,
+              "delta_minus_exchange": 0.01624150615041975,
+              "delta_exchange_by_domain": [
+                -0.005280847918513049,
+                -0.0013202119796282604,
+                -0.009640446252278417,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.3692298322233223,
+                0.22235966605815274
+              ],
+              "minus_exchange_before": 0.14654794419152128,
+              "minus_exchange_after": 0.16278945034194103,
+              "saturated_out_to_matrix_domain3_before": 0.009640446252278417,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14217868935466246,
+                0.014009701089137249
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.1474595372731755,
+                0.01532991306876551
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 10.0,
+              "h52_cm": 3.120443666543589,
+              "cached_F52": -8.924333494420011e-12,
+              "fresh_F52": 0.016752232381942816,
+              "delta_F52": 0.01675223239086715,
+              "delta_minus_exchange": 0.01675223239086715,
+              "delta_exchange_by_domain": [
+                -0.005695818901202937,
+                -0.0014239547253007342,
+                -0.009632458764363479,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.36853999471012905,
+                0.2216027336452254
+              ],
+              "minus_exchange_before": 0.14661503909000678,
+              "minus_exchange_after": 0.16336727148087393,
+              "saturated_out_to_matrix_domain3_before": 0.009632458764363479,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1422259752831189,
+                0.014021522571251359
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14792179418432183,
+                0.015445477296552093
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 15.0,
+              "h52_cm": 3.1204441440739212,
+              "cached_F52": -8.924944117083555e-12,
+              "fresh_F52": 0.016752275014274787,
+              "delta_F52": 0.01675227502319973,
+              "delta_minus_exchange": 0.01675227502319973,
+              "delta_exchange_by_domain": [
+                -0.005695854109495385,
+                -0.001423963527373848,
+                -0.009632457386330477,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.3685399273879018,
+                0.22160265474752414
+              ],
+              "minus_exchange_before": 0.1466150506654802,
+              "minus_exchange_after": 0.16336732568867993,
+              "saturated_out_to_matrix_domain3_before": 0.00963245738633093,
+              "saturated_out_to_matrix_domain3_after": 4.524214711623667e-16,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1422259834410716,
+                0.014021524610739534
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14792183755056698,
+                0.015445488138113382
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 20.0,
+              "h52_cm": 3.120444144119234,
+              "cached_F52": -8.924250227693165e-12,
+              "fresh_F52": 0.016752275018315138,
+              "delta_F52": 0.01675227502723939,
+              "delta_minus_exchange": 0.01675227502723939,
+              "delta_exchange_by_domain": [
+                -0.005695854112831966,
+                -0.0014239635282079933,
+                -0.009632457386199438,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.368539927381504,
+                0.22160265474002247
+              ],
+              "minus_exchange_before": 0.14661505066658473,
+              "minus_exchange_after": 0.16336732569382412,
+              "saturated_out_to_matrix_domain3_before": 0.009632457386199438,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14222598344185003,
+                0.01402152461093414
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.147921837554682,
+                0.015445488139142134
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 25.0,
+              "h52_cm": 3.1204441441191144,
+              "cached_F52": -8.92536045071779e-12,
+              "fresh_F52": 0.01675227501829729,
+              "delta_F52": 0.01675227502722265,
+              "delta_minus_exchange": 0.01675227502722265,
+              "delta_exchange_by_domain": [
+                -0.005695854112818977,
+                -0.0014239635282047441,
+                -0.009632457386198915,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.36853992738151076,
+                0.2216026547400251
+              ],
+              "minus_exchange_before": 0.14661505066658775,
+              "minus_exchange_after": 0.1633673256938104,
+              "saturated_out_to_matrix_domain3_before": 0.009632457386199077,
+              "saturated_out_to_matrix_domain3_after": 1.617166109557451e-16,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14222598344185217,
+                0.014021524610934675
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14792183755467114,
+                0.015445488139139419
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 30.0,
+              "h52_cm": 3.1204441441189164,
+              "cached_F52": -8.924666561327399e-12,
+              "fresh_F52": 0.016752275018270674,
+              "delta_F52": 0.01675227502719534,
+              "delta_minus_exchange": 0.01675227502719534,
+              "delta_exchange_by_domain": [
+                -0.00569585411279766,
+                -0.0014239635281994116,
+                -0.009632457386198267,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.00032222196597251056,
+                -0.0,
+                0.0,
+                -0.3685399273815278,
+                0.2216026547400381
+              ],
+              "minus_exchange_before": 0.1466150506665925,
+              "minus_exchange_after": 0.16336732569378784,
+              "saturated_out_to_matrix_domain3_before": 0.009632457386198511,
+              "saturated_out_to_matrix_domain3_after": 2.454627130579134e-16,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1422259834418555,
+                0.014021524610935513
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14792183755465316,
+                0.015445488139134924
+              ],
+              "macro_cache_flag_before": 1.0
+            }
+          ]
+        },
+        {
+          "attempt": 50,
+          "begin_time": 35797.07125645635,
+          "used_dt": 2e-05,
+          "used_flux_factor": 1.0,
+          "actual_iterations": 30,
+          "fresh_checks": 6,
+          "h52_range_cm": [
+            3.022221282457617,
+            3.0741070128290855
+          ],
+          "theta52_values": [
+            0.444
+          ],
+          "pairs": [
+            {
+              "iteration": 5.0,
+              "h52_cm": 3.0704918803526784,
+              "cached_F52": -9.711675907908557e-14,
+              "fresh_F52": 0.009851290797440876,
+              "delta_F52": 0.009851290797537993,
+              "delta_minus_exchange": 0.009851290797537993,
+              "delta_exchange_by_domain": [
+                -0.0003454744424021827,
+                -8.636861060054742e-05,
+                -0.00941944774453524,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37386920945450597,
+                0.22570313034217498
+              ],
+              "minus_exchange_before": 0.1478439041309452,
+              "minus_exchange_after": 0.1576951949284832,
+              "saturated_out_to_matrix_domain3_before": 0.009419447744537195,
+              "saturated_out_to_matrix_domain3_after": 1.9549041687632845e-15,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14304289116978738,
+                0.014220460705695007
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14338836561218957,
+                0.014306829316295554
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 10.0,
+              "h52_cm": 3.074106736638707,
+              "cached_F52": -2.523536934972981e-13,
+              "fresh_F52": 0.010294296578930606,
+              "delta_F52": 0.01029429657918296,
+              "delta_minus_exchange": 0.01029429657918296,
+              "delta_exchange_by_domain": [
+                -0.0006967687655519972,
+                -0.00017419219138800103,
+                -0.009423335622242943,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3729700275258975,
+                0.22483660658633153
+              ],
+              "minus_exchange_before": 0.14781124595802492,
+              "minus_exchange_after": 0.15810554253720788,
+              "saturated_out_to_matrix_domain3_before": 0.009423335622265796,
+              "saturated_out_to_matrix_domain3_after": 2.2852910329421554e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14301987493363405,
+                0.014214706646656673
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371664369918605,
+                0.014388898838044674
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 15.0,
+              "h52_cm": 3.0741070128097845,
+              "cached_F52": -2.5279778270714814e-13,
+              "fresh_F52": 0.010294330567566207,
+              "delta_F52": 0.010294330567819004,
+              "delta_minus_exchange": 0.010294330567819004,
+              "delta_exchange_by_domain": [
+                -0.0006967957051761675,
+                -0.00017419892629403667,
+                -0.009423335936348793,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3729699589234922,
+                0.22483654062245714
+              ],
+              "minus_exchange_before": 0.1478112433194936,
+              "minus_exchange_after": 0.1581055738873126,
+              "saturated_out_to_matrix_domain3_before": 0.009423335936376667,
+              "saturated_out_to_matrix_domain3_after": 2.7872892725426134e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1430198730740977,
+                0.014214706181772587
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371666877927386,
+                0.014388905108066624
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 20.0,
+              "h52_cm": 3.074107012829048,
+              "cached_F52": -2.5232593792168245e-13,
+              "fresh_F52": 0.01029433056984766,
+              "delta_F52": 0.010294330570099985,
+              "delta_minus_exchange": 0.010294330570099985,
+              "delta_exchange_by_domain": [
+                -0.0006967957069723418,
+                -0.00017419892674308546,
+                -0.009423335936384569,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3729699589181641,
+                0.22483654061719585
+              ],
+              "minus_exchange_before": 0.14781124331942724,
+              "minus_exchange_after": 0.15810557388952723,
+              "saturated_out_to_matrix_domain3_before": 0.009423335936384569,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14301987307405092,
+                0.014214706181760892
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371666878102327,
+                0.014388905108503977
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 25.0,
+              "h52_cm": 3.0741070128290855,
+              "cached_F52": -2.5260349367783874e-13,
+              "fresh_F52": 0.010294330569882992,
+              "delta_F52": 0.010294330570135596,
+              "delta_minus_exchange": 0.010294330570135596,
+              "delta_exchange_by_domain": [
+                -0.0006967957069978215,
+                -0.0001741989267494571,
+                -0.009423335936388302,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3729699589180918,
+                0.22483654061715466
+              ],
+              "minus_exchange_before": 0.14781124331939588,
+              "minus_exchange_after": 0.15810557388953148,
+              "saturated_out_to_matrix_domain3_before": 0.009423335936388302,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14301987307402883,
+                0.014214706181755367
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371666878102665,
+                0.014388905108504824
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 30.0,
+              "h52_cm": 3.0741070128271715,
+              "cached_F52": -2.521594044679887e-13,
+              "fresh_F52": 0.010294330569608268,
+              "delta_F52": 0.010294330569860427,
+              "delta_minus_exchange": 0.010294330569860427,
+              "delta_exchange_by_domain": [
+                -0.0006967957067838815,
+                -0.00017419892669597037,
+                -0.009423335936380587,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37296995891820955,
+                0.22483654061721592
+              ],
+              "minus_exchange_before": 0.1478112433194528,
+              "minus_exchange_after": 0.15810557388931323,
+              "saturated_out_to_matrix_domain3_before": 0.009423335936381524,
+              "saturated_out_to_matrix_domain3_after": 9.360184146377658e-16,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14301987307406894,
+                0.014214706181765398
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14371666878085282,
+                0.014388905108461369
+              ],
+              "macro_cache_flag_before": 1.0
+            }
+          ]
+        },
+        {
+          "attempt": 51,
+          "begin_time": 35797.07125645635,
+          "used_dt": 1e-05,
+          "used_flux_factor": 1.0,
+          "actual_iterations": 60,
+          "fresh_checks": 12,
+          "h52_range_cm": [
+            3.025599219872477,
+            3.0761684215988776
+          ],
+          "theta52_values": [
+            0.444
+          ],
+          "pairs": [
+            {
+              "iteration": 5.0,
+              "h52_cm": 3.0695585280006634,
+              "cached_F52": -5.4567461660326444e-14,
+              "fresh_F52": 0.009885822332769495,
+              "delta_F52": 0.009885822332824062,
+              "delta_minus_exchange": 0.009885822332824062,
+              "delta_exchange_by_domain": [
+                -0.0003597203482236522,
+                -8.993008705591478e-05,
+                -0.009436171897544513,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3740420066853417,
+                0.2260164104590331
+              ],
+              "minus_exchange_before": 0.14770342124496538,
+              "minus_exchange_after": 0.15758924357778945,
+              "saturated_out_to_matrix_domain3_before": 0.009436171897630031,
+              "saturated_out_to_matrix_domain3_after": 8.551865304864777e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14294388418347778,
+                0.014195708959117606
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14330360453170143,
+                0.014285639046173521
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 10.0,
+              "h52_cm": 3.072512790040187,
+              "cached_F52": -1.6681100944992977e-13,
+              "fresh_F52": 0.010103694850830514,
+              "delta_F52": 0.010103694850997325,
+              "delta_minus_exchange": 0.010103694850997325,
+              "delta_exchange_by_domain": [
+                -0.0005452075455010252,
+                -0.00013630188637525804,
+                -0.00942218541912104,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37311572164386125,
+                0.22497263899796488
+              ],
+              "minus_exchange_before": 0.1478209076644409,
+              "minus_exchange_after": 0.15792460251543822,
+              "saturated_out_to_matrix_domain3_before": 0.00942218541912104,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14302668413625103,
+                0.014216408947310917
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14357189168175205,
+                0.014352710833686175
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 15.0,
+              "h52_cm": 3.0725129551929915,
+              "cached_F52": -1.6658896484500474e-13,
+              "fresh_F52": 0.010103715352543091,
+              "delta_F52": 0.01010371535270968,
+              "delta_minus_exchange": 0.01010371535270968,
+              "delta_exchange_by_domain": [
+                -0.0005452237798609094,
+                -0.00013630594496523256,
+                -0.009422185627883547,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3731156731027231,
+                0.22497259221095176
+              ],
+              "minus_exchange_before": 0.14782090591031607,
+              "minus_exchange_after": 0.15792462126302576,
+              "saturated_out_to_matrix_domain3_before": 0.009422185627945424,
+              "saturated_out_to_matrix_domain3_after": 6.18784366083881e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14302668290001067,
+                0.014216408638250825
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14357190667987157,
+                0.014352714583216058
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 20.0,
+              "h52_cm": 3.072512955199401,
+              "cached_F52": -1.6697754290362354e-13,
+              "fresh_F52": 0.010103715352751785,
+              "delta_F52": 0.010103715352918763,
+              "delta_minus_exchange": 0.010103715352918763,
+              "delta_exchange_by_domain": [
+                -0.0005452237800339377,
+                -0.00013630594500848268,
+                -0.009422185627876327,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3731156731014566,
+                0.22497259220910448
+              ],
+              "minus_exchange_before": 0.14782090591089647,
+              "minus_exchange_after": 0.15792462126381523,
+              "saturated_out_to_matrix_domain3_before": 0.009422185627876327,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14302668290041973,
+                0.014216408638353092
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14357190668045366,
+                0.014352714583361575
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 25.0,
+              "h52_cm": 3.072512955190583,
+              "cached_F52": -1.6728285423539546e-13,
+              "fresh_F52": 0.010103715351579085,
+              "delta_F52": 0.010103715351746367,
+              "delta_minus_exchange": 0.010103715351746367,
+              "delta_exchange_by_domain": [
+                -0.0005452237791597758,
+                -0.00013630594478994222,
+                -0.009422185627796682,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37311567310163307,
+                0.22497259220917648
+              ],
+              "minus_exchange_before": 0.14782090591100064,
+              "minus_exchange_after": 0.157924621262747,
+              "saturated_out_to_matrix_domain3_before": 0.009422185627863927,
+              "saturated_out_to_matrix_domain3_after": 6.724412791607604e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1430266829004931,
+                0.01421640863837144
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.1435719066796529,
+                0.014352714583161383
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 30.0,
+              "h52_cm": 3.0725129551995387,
+              "cached_F52": -1.6672774272308288e-13,
+              "fresh_F52": 0.010103715352787285,
+              "delta_F52": 0.010103715352954012,
+              "delta_minus_exchange": 0.010103715352954012,
+              "delta_exchange_by_domain": [
+                -0.0005452237800602777,
+                -0.00013630594501506943,
+                -0.009422185627878664,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3731156731014122,
+                0.22497259220907995
+              ],
+              "minus_exchange_before": 0.14782090591087685,
+              "minus_exchange_after": 0.15792462126383086,
+              "saturated_out_to_matrix_domain3_before": 0.009422185627878664,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14302668290040588,
+                0.014216408638349632
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14357190668046615,
+                0.014352714583364701
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 35.0,
+              "h52_cm": 3.0530754483731397,
+              "cached_F52": -2.760014439218139e-13,
+              "fresh_F52": -0.0029243753861289967,
+              "delta_F52": -0.0029243753858529953,
+              "delta_minus_exchange": -0.0029243753858529953,
+              "delta_exchange_by_domain": [
+                0.0012591514680068416,
+                0.00031478786700170694,
+                0.0013504360508444467,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3783707828670263,
+                0.2290343594989774
+              ],
+              "minus_exchange_before": 0.14901424838648422,
+              "minus_exchange_after": 0.14608987300063123,
+              "saturated_out_to_matrix_domain3_before": 0.008277824923492027,
+              "saturated_out_to_matrix_domain3_after": 0.009628260974336474,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14306586831738247,
+                0.014226204992593776
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14180671684937562,
+                0.013911417125592069
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 40.0,
+              "h52_cm": 3.0761684202540542,
+              "cached_F52": -4.551081733694673e-13,
+              "fresh_F52": 0.011073179350697404,
+              "delta_F52": 0.011073179351152512,
+              "delta_minus_exchange": 0.011073179351152512,
+              "delta_exchange_by_domain": [
+                -0.001267984825834012,
+                -0.0003169962064584978,
+                -0.009488198318859987,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.372240069161229,
+                0.2246514948728515
+              ],
+              "minus_exchange_before": 0.1472663993066337,
+              "minus_exchange_after": 0.15833957865778622,
+              "saturated_out_to_matrix_domain3_before": 0.009488198318859987,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14263588776979644,
+                0.014118709855697274
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14390387259563045,
+                0.014435706062155771
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 45.0,
+              "h52_cm": 3.053075435845616,
+              "cached_F52": -2.7672308888782027e-13,
+              "fresh_F52": -0.0029243780291815236,
+              "delta_F52": -0.0029243780289048005,
+              "delta_minus_exchange": -0.0029243780289048005,
+              "delta_exchange_by_domain": [
+                0.0012591526061080105,
+                0.00031478815152700436,
+                0.0013504372712697735,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37837078613500597,
+                0.22903436173816527
+              ],
+              "minus_exchange_before": 0.1490142494152753,
+              "minus_exchange_after": 0.1460898713863705,
+              "saturated_out_to_matrix_domain3_before": 0.008277823895240595,
+              "saturated_out_to_matrix_domain3_after": 0.009628261166510369,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14306586831781418,
+                0.01422620499270171
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14180671571170617,
+                0.013911416841174706
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 50.0,
+              "h52_cm": 3.0761684215988776,
+              "cached_F52": -4.559963517891674e-13,
+              "fresh_F52": 0.011073179591288923,
+              "delta_F52": 0.01107317959174492,
+              "delta_minus_exchange": 0.01107317959174492,
+              "delta_exchange_by_domain": [
+                -0.00126798500993347,
+                -0.0003169962524833692,
+                -0.0094881983293281,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.3722400687992923,
+                0.22465149459884604
+              ],
+              "minus_exchange_before": 0.14726639921870158,
+              "minus_exchange_after": 0.1583395788104465,
+              "saturated_out_to_matrix_domain3_before": 0.0094881983293281,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1426358877078252,
+                0.014118709840204465
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14390387271775867,
+                0.014435706092687834
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 55.0,
+              "h52_cm": 3.053075437001116,
+              "cached_F52": -2.7700064464397656e-13,
+              "fresh_F52": -0.0029243777851231667,
+              "delta_F52": -0.002924377784846166,
+              "delta_minus_exchange": -0.002924377784846166,
+              "delta_exchange_by_domain": [
+                0.0012591525011325655,
+                0.0003147881252831431,
+                0.001350437158430473,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37837078583265055,
+                0.22903436153097378
+              ],
+              "minus_exchange_before": 0.1490142493201111,
+              "minus_exchange_after": 0.14608987153526493,
+              "saturated_out_to_matrix_domain3_before": 0.00827782399035437,
+              "saturated_out_to_matrix_domain3_after": 0.009628261148784843,
+              "saturated_in_from_matrix_domains12_before": [
+                0.14306586831777385,
+                0.014226204992691626
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.14180671581664128,
+                0.013911416867408483
+              ],
+              "macro_cache_flag_before": 1.0
+            },
+            {
+              "iteration": 60.0,
+              "h52_cm": 3.076168413058421,
+              "cached_F52": -4.556632848817799e-13,
+              "fresh_F52": 0.011073178056294819,
+              "delta_F52": 0.011073178056750482,
+              "delta_minus_exchange": 0.011073178056750482,
+              "delta_exchange_by_domain": [
+                -0.001267983835835318,
+                -0.0003169959589588347,
+                -0.00948819826195632,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.37224007112783997,
+                0.2246514963619427
+              ],
+              "minus_exchange_before": 0.14726639978415293,
+              "minus_exchange_after": 0.1583395778409034,
+              "saturated_out_to_matrix_domain3_before": 0.009488198262012462,
+              "saturated_out_to_matrix_domain3_after": 5.614323623870045e-14,
+              "saturated_in_from_matrix_domains12_before": [
+                0.1426358881063338,
+                0.014118709939831608
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.1439038719421691,
+                0.014435705898790443
+              ],
+              "macro_cache_flag_before": 1.0
+            }
+          ]
+        },
+        {
+          "attempt": 52,
+          "begin_time": 35797.07125645635,
+          "used_dt": 0.0001414213562373095,
+          "used_flux_factor": 0.1,
+          "actual_iterations": 3,
+          "fresh_checks": 1,
+          "h52_range_cm": [
+            3.0669527659073488,
+            4.414838083444375
+          ],
+          "theta52_values": [
+            0.444
+          ],
+          "pairs": [
+            {
+              "iteration": 3.0,
+              "h52_cm": 4.414745614153383,
+              "cached_F52": 1.7969480070600952e-11,
+              "fresh_F52": 1.7969480070600952e-11,
+              "delta_F52": 0.0,
+              "delta_minus_exchange": 0.0,
+              "delta_exchange_by_domain": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "matrix_terms": [
+                0.0,
+                0.0003221749812886751,
+                -0.0,
+                0.0,
+                -0.1847941081747993,
+                0.15231685563534547
+              ],
+              "minus_exchange_before": 0.03215507757613464,
+              "minus_exchange_after": 0.03215507757613464,
+              "saturated_out_to_matrix_domain3_before": 0.0,
+              "saturated_out_to_matrix_domain3_after": 0.0,
+              "saturated_in_from_matrix_domains12_before": [
+                0.02654648768902607,
+                0.004482595713581334
+              ],
+              "saturated_in_from_matrix_domains12_after": [
+                0.02654648768902607,
+                0.004482595713581334
+              ],
+              "macro_cache_flag_before": 0.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
