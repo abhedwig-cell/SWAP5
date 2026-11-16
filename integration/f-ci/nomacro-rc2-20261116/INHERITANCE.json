@@ -1,0 +1,46 @@
+{
+  "status": "QUALIFIED_BASELINE_AND_DELTA_PINNED",
+  "canonical_baseline": "f9ada0cb2134971f92267a209f3a1fc86901dda8",
+  "included_after_14Nov": [
+    "PR1680 generic external surface and explicit chemical policy",
+    "PR1681 bounded hydraulic table/mean/Darcy",
+    "PR1682 bounded weather/ET/rain",
+    "PR1683 bounded exponential model2 with retained alternatives"
+  ],
+  "source_candidate": "38837eab440dfd30e112aef41bd6e2a4e94f982c",
+  "production_delta_from_baseline": "",
+  "proofs": {
+    "BLOCK_F_MERGE.json": {
+      "sha256": "9ab9d23e9d056400ff35769e5e072828a442d84bab16329824246221fea63ab3",
+      "status": "CANONICALLY_ADMITTED_BOUNDED_EXPERIMENTAL_FUNCTIONAL_SCOPE",
+      "scope": "Existing bounded admission evidence; no additional full configuration claim"
+    },
+    "BLOCK_G_MERGE.json": {
+      "sha256": "0bbfe456a965cfca77ce49cc18cdc5a189c43dfc38eca24616705005c82f573f",
+      "status": "CANONICALLY_ADMITTED_BOUNDED_EXPERIMENTAL_FUNCTIONAL_SCOPE",
+      "scope": "Existing bounded admission evidence; no additional full configuration claim"
+    },
+    "BLOCK_H_MERGE.json": {
+      "sha256": "582211478981497eaaab4d124a92fedb06f9bb37e9244c281e9f0f0fdaa92698",
+      "status": "CANONICALLY_ADMITTED_BOUNDED_EXPERIMENTAL_FUNCTIONAL_SCOPE",
+      "scope": "Existing bounded admission evidence; no additional full configuration claim"
+    },
+    "BLOCK_I_QUALIFICATION.json": {
+      "sha256": "b6c278e502696c1da1d1bfffd973e3949cb40c9d2718032fdc19f7944d2bf50b",
+      "status": "BOUNDED_EXPONENTIAL_MODEL2_FUNCTIONAL_QUALIFICATION_WITH_SIX_RETAINED_REFUSALS_AND_THREE_CENSORS",
+      "scope": "Existing bounded admission evidence; no additional full configuration claim"
+    },
+    "BLOCK_I_PRESERVATION.json": {
+      "sha256": "c84f10fceeec21ffb84535408c07d250482c2c66eac5a2282ea0a5c371086589",
+      "status": "ALL_VALID_PRIOR_DESCRIPTORS_EXACT",
+      "scope": "Existing bounded admission evidence; no additional full configuration claim"
+    },
+    "BLOCK_I_VAPOR_PREFLIGHT.json": {
+      "sha256": "dcac7fffb814021f547ad74fa6285ec83e7348b1c475f6f02964145065ca1f60",
+      "status": "PASS_ACTUAL_ADAPTER_PER_LAYER_VAPOR_REFUSAL",
+      "scope": "Existing bounded admission evidence; no additional full configuration claim"
+    }
+  },
+  "decision": "No production change. Requalify actual current source-ZIP named user route, reuse bounded experimental history without promoting refusals/censors; no broad new test matrix.",
+  "frozen_RC1": "11529865e76fb2259542f1e770726cd87af27603"
+}
