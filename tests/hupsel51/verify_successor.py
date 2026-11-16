@@ -19,7 +19,10 @@ ORIGINAL_RUNTIME = '6e2cd26f873f9a935af92816a2f1d947df9293c7'
 RUNTIME = 'f1d1c13a295c5b54ec11e03d864de7030ca09008'
 L_RUNTIME = 'dadbda8128c16d8ba8dd858e5ac3a0b64a9a2b75'
 L_ADMITTED = '30f7a21ff0b3437ea937476c72ca11421d2d03de'
-CURRENT_RUNTIME = 'f6ce291e4c28e88ee3c1b47a206da12433a92c38'
+M_RUNTIME = 'f6ce291e4c28e88ee3c1b47a206da12433a92c38'
+M_ADMITTED = '6136101463762b1dd18419fe0260965eccd482c7'
+CURRENT_RUNTIME = '6afb72468c0060df60694d4b69ee8619fdc93062'
+N_SEALED = '4b6e470b64cd0c5b9967cfb0b4e35c778d8fafe5'
 M_EXECUTED = '166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad'
 M_POND_EXECUTED = '65bfe12195af15c1ed39167edbd996e643941c55'
 M_SEALED = '182d1c464bad3ae011ff18d64103e2a88eb78702'
@@ -189,7 +192,7 @@ def verify_l(c):
 
 
 def validate_m(q, previous, pond, components):
-    require(q['qualification_source'] == CURRENT_RUNTIME and q['runtime_source'] == M_EXECUTED, 'foreign M source')
+    require(q['qualification_source'] == M_RUNTIME and q['runtime_source'] == M_EXECUTED, 'foreign M source')
     require(q['status'] == 'ALL_SIX_ORIGINAL_SURFACE_INPUT_CONFIGURATIONS_QUALIFIED', 'M incomplete')
     require(q['full_configurations'] == 6 and q['complete_model_days'] == 6576 and q['full_period_optimization'] == 'O2', 'M full count/profile')
     require(q['mass_guard_cm'] == 1e-10 and q['mass_guard_changed'] is False, 'M mass guard changed')
@@ -204,7 +207,7 @@ def validate_m(q, previous, pond, components):
         require(q['per_configuration_executed_sources'][key] == (M_POND_EXECUTED if old else M_EXECUTED), 'M execution provenance')
         require(report['status'] == 'EXPERIMENTAL_SURFACE_INPUT_OPTIONS_PASS', 'M incomplete case')
         if not old:
-            require(report['executed_runtime_source'] == M_EXECUTED and report['source_commit'] == CURRENT_RUNTIME and report['resumed_exact_run'] == 43864567262 and report['completed_physics_reexecuted'] is False, 'M completed physics rebound/rerun')
+            require(report['executed_runtime_source'] == M_EXECUTED and report['source_commit'] == M_RUNTIME and report['resumed_exact_run'] == 43864567262 and report['completed_physics_reexecuted'] is False, 'M completed physics rebound/rerun')
             require(report['original_references']['literal'].get('retained_original_output_failure') is True, 'M literal failure erased')
             require(report['original_references']['csv']['swap_ok'] is True and len(report['events']) == 16 and all(e['returncode'] != 0 and e['expected_refusal'] for e in report['events']), 'M missing completion checks')
         records = report['configurations']
@@ -246,12 +249,12 @@ M_VERIFICATION_ONLY = {'tests/nomacro_mixtures/run.py': '23a6d79b62fb9fee24a0593
 
 
 def verify_m():
-    git('merge-base', '--is-ancestor', CURRENT_RUNTIME, M_SEALED)
+    git('merge-base', '--is-ancestor', M_RUNTIME, M_SEALED)
     git('merge-base', '--is-ancestor', M_SEALED, 'HEAD')
-    git('merge-base', '--is-ancestor', L_ADMITTED, CURRENT_RUNTIME)
-    require(not git('diff', CURRENT_RUNTIME, 'HEAD', '--', 'src', 'app', 'reference', 'tools'), 'runtime differs from qualified M source')
-    require(not git('diff', M_EXECUTED, CURRENT_RUNTIME, '--', 'src', 'app', 'reference', 'tools/solute/run_water.py', 'tools/solute/surface_input_cases.py', 'tools/solute/qualify_surface_schedule.py'), 'M physical runtime changed during verification completion')
-    paths = set(git('diff', '--name-only', M_SEALED, 'HEAD').decode().splitlines())
+    git('merge-base', '--is-ancestor', L_ADMITTED, M_RUNTIME)
+    require(not git('diff', M_RUNTIME, M_ADMITTED, '--', 'src', 'app', 'reference', 'tools'), 'runtime differs from qualified M source')
+    require(not git('diff', M_EXECUTED, M_RUNTIME, '--', 'src', 'app', 'reference', 'tools/solute/run_water.py', 'tools/solute/surface_input_cases.py', 'tools/solute/qualify_surface_schedule.py'), 'M physical runtime changed during verification completion')
+    paths = set(git('diff', '--name-only', M_SEALED, M_ADMITTED).decode().splitlines())
     require(paths <= {SELF, TEST, L_PROOF+'BLOCK_M_CI_SELECTION.json', L_PROOF+'BLOCK_M_MERGE.json'} | set(M_VERIFICATION_ONLY), 'unqualified delta after M evidence seal')
     for path, expected in M_VERIFICATION_ONLY.items():
         require(git('rev-parse', 'HEAD:'+path).decode().strip() == expected, 'changed test-only mixture file: '+path)
@@ -262,10 +265,77 @@ def verify_m():
     q = sealed_json('BLOCK_M_QUALIFICATION')
     validate_m(q, sealed_json('BLOCK_M_PRIOR_SOURCE_PRESERVATION'), sealed_json('BLOCK_M_POND_SOURCE_PRESERVATION'), sealed_json('BLOCK_M_LOCAL_ASSESSMENT'))
     grass = sealed_json('BLOCK_M_GRASS_SOURCE_PRESERVATION')
-    require(grass['status'] == 'M_ACTUAL_REGISTERED_GRASS_EXECUTION_SOURCES_EXACT_TO_SEALED_L' and grass['runtime_source'] == M_EXECUTED and grass['qualification_source'] == CURRENT_RUNTIME and grass['generated'] and grass['kernel_sources'] and grass['inputs'], 'M named Grassgrowth source preservation')
+    require(grass['status'] == 'M_ACTUAL_REGISTERED_GRASS_EXECUTION_SOURCES_EXACT_TO_SEALED_L' and grass['runtime_source'] == M_EXECUTED and grass['qualification_source'] == M_RUNTIME and grass['generated'] and grass['kernel_sources'] and grass['inputs'], 'M named Grassgrowth source preservation')
     for label in ('FIRST_MATRIX', 'FULL_RUNON_WITNESS_FAILURE', 'FIRST_DEFAULT', 'DEFAULT_PRESERVATION', 'FIRST_COMPLETION', 'LITERAL_REFERENCE_FAILURE', 'COMPLETED_RUNON', 'LOCAL'):
         m = sealed_json('BLOCK_M_'+label+'_ARCHIVE')
         require(hashlib.sha256((ROOT/L_PROOF/m['archive']).read_bytes()).hexdigest() == m['sha256'], 'M raw capsule identity: '+label)
+    return q
+
+
+def validate_n(q, preservation, component, inline, refused):
+    require(q['runtime_source'] == preservation['runtime_source'] == inline['source_commit'] == refused['source_commit'] == CURRENT_RUNTIME, 'foreign N source')
+    require(q['status'] == 'ALL_SIX_EXTERNAL_FIXED_IRRIGATION_CONFIGURATIONS_QUALIFIED', 'N incomplete')
+    require(q['full_configurations'] == 6 and q['complete_model_days'] == 6576 and q['full_period_optimization'] == 'O2', 'N full count/profile')
+    require(q['mass_guard_cm'] == 1e-10 and q['mass_guard_changed'] is False and q['new_state_codec'] is False and q['solver_or_time_policy_changed'] is False, 'N changed conservation/runtime policy')
+    require(q['whole_scientific_equivalence'] == 'NOT_QUALIFIED' and q['chemical_subsurface'].startswith('EXPLICIT_NATIVE_REFUSAL') and q['reversed_or_outside_depth'].startswith('EXPLICIT_NATIVE_REFUSAL'), 'N unsupported physics promoted')
+    expected = {'water-file-'+k for k in ('sprinkler','surface','subsurface','subsurface-interval')} | {'chemical-file-'+k for k in ('sprinkler','surface')}
+    require(set(q['reports']) == expected, 'N missing configuration')
+    for field in ('maximum_water_residual_cm', 'maximum_solute_residual_mg_cm2'):
+        v = q[field]; require(math.isfinite(v) and 0 <= v <= 1e-10, 'N summary hard balance')
+    for key, report in q['reports'].items():
+        require(report['source_commit'] == CURRENT_RUNTIME and report['status'] == 'EXPERIMENTAL_FIXED_IRRIGATION_FILE_OPTIONS_PASS', 'N report identity')
+        records = report['configurations']
+        require(len(records) == 2 and {r['optimization'] for r in records} == {'O0','O2'}, 'N optimization coverage')
+        for r in records:
+            require(r['configuration'] == key and r['exact_day_suffix'] and r['exact_native_auxiliary'] and r['active_crop_exact_native_window'] == [530,532], 'N own native continuation')
+            require(r['solute_active'] == key.startswith('chemical-'), 'N chemical dispatch')
+            require(not r['solute_active'] or r['maximum_solute_residual_mg_cm2'] is not None, 'N missing chemical balance')
+            for field in ('maximum_water_residual_cm','maximum_solute_residual_mg_cm2'):
+                v = r[field]; require(v is None or math.isfinite(v) and 0 <= v <= 1e-10, 'N hard balance')
+            w = r['fixed_irrigation_event_exact_native_windows']
+            require(w['physical_exact'] and w['native_exact'] and w['origins_unchanged'] and w['windows'] == [[4,6]], 'N event continuation')
+            kind = 2 if 'subsurface' in key else (0 if key.endswith('sprinkler') else 1)
+            require(r['original_irrigation_type'] == kind, 'N irrigation type')
+            channels = w['actual_fixed_irrigation_cm']['5']
+            used, unused = ('subsurface','gross_surface') if kind == 2 else ('gross_surface','subsurface')
+            require(math.isfinite(channels[used]) and channels[used] > 0 and channels[unused] == 0, 'N missing/wrong input channel')
+            if r['optimization'] == 'O2':
+                require(r['full_period_pass'] and r['completed_days'] == r['requested_days'] == 1096, 'N partial trajectory')
+                require(all(r[k] is True for k in ('foreign_fixed_file_policy_refused_before_output','independent_distinct_origins','external_discard_replay_exact','external_disk_recovery','inconsistent_mass_refused_without_commit')), 'N transaction/binding preservation')
+    events = q['event_windows']
+    require(len(events) == 12 and {(w['configuration'],w['optimization']) for w in events} == {(k,o) for k in expected for o in ('O0','O2')}, 'N event cohort')
+    require(all(w['physical_exact'] and w['native_exact'] and w['origins_unchanged'] and w['window'] == [4,6] for w in events), 'N event summary drift')
+    require(preservation['status'] == 'N_PRIOR_M_L5_AND_NAMED_SOURCE_PRESERVATION_PASS' and preservation['science'] == 'NOT_QUALIFIED', 'N prior-source preservation')
+    require(set(preservation['profiles']) == {'water-surface-combined','chemical-surface-combined','registered-grass','prescribed-head5'}, 'N missing prior cohort')
+    require(all(p['status'] == 'ACTUAL_PRIOR_SOURCE_INPUT_AND_POLICY_PRESERVED' and p['generated'] and p['kernel_sources'] and p['inputs'] for p in preservation['profiles'].values()), 'N prior dependency drift')
+    require(component['status'] == 'ACTUAL_GUARDED_FIXED_IRRIGATION_FILE_O0_O2_PASS' and component['subsurface_chemical'].startswith('EXPLICIT_NATIVE_REFUSAL'), 'N original component')
+    require(len(component['profiles']) == 2 and {p['optimization'] for p in component['profiles']} == {'O0','O2'}, 'N component optimization')
+    for p in component['profiles']:
+        require(len(p['positive']) == 6 and all(v['returncode'] == 0 and not v['refused'] and v['values'] for v in p['positive']), 'N component delivery')
+        require(not p['past_last']['refused'] and p['past_last']['values'][0][0] == '3', 'N exhausted-table continuation')
+        require(len(p['refusals']) == 9 and len(p['chemical_type2_refusals']) == 2 and all(v['refused'] and v['values'] is None for v in p['refusals']+p['chemical_type2_refusals']), 'N original domain/chemical refusals')
+    require(inline['status'] == 'ACTUAL_INLINE_AND_FILE_STORAGE_EQUIVALENCE_PASS' and len(inline['profiles']) == 2 and all(p['physical_all_six_days_exact'] and p['final_native_payload_exact'] for p in inline['profiles']), 'N storage representation drift')
+    require(refused['status'] == 'ACTUAL_UNSUPPORTED_CHEMICAL_AND_REVERSED_GEOMETRY_REFUSALS_PASS' and {p['name'] for p in refused['profiles']} == {'chemical-subsurface','reversed-depth'} and all(p['status'] == 'ACTUAL_NATIVE_INPUT_REFUSAL_ZERO_ACCEPTED_DAYS' for p in refused['profiles']), 'N unsupported native input accepted')
+
+
+def verify_n():
+    git('merge-base','--is-ancestor',CURRENT_RUNTIME,N_SEALED)
+    git('merge-base','--is-ancestor',N_SEALED,'HEAD')
+    git('merge-base','--is-ancestor',M_ADMITTED,CURRENT_RUNTIME)
+    require(not git('diff',CURRENT_RUNTIME,'HEAD','--','src','app','reference','tools'), 'runtime differs from qualified N source')
+    paths = set(git('diff','--name-only',N_SEALED,'HEAD').decode().splitlines())
+    require(paths <= {SELF,TEST,L_PROOF+'BLOCK_N_CI_SELECTION.json',L_PROOF+'BLOCK_N_MERGE.json'}, 'unqualified delta after N evidence seal')
+    def sealed_json(name):
+        path = L_PROOF+name+'.json'
+        require(blob('HEAD',path) == blob(N_SEALED,path), 'N sealed proof changed: '+name)
+        return json.loads((ROOT/path).read_text())
+    q = sealed_json('BLOCK_N_QUALIFICATION')
+    validate_n(q,sealed_json('BLOCK_N_PRIOR_SOURCE_PRESERVATION'),sealed_json('BLOCK_N_GUARDED_COMPONENT_RESULT'),sealed_json('BLOCK_N_INLINE_FILE_EQUIVALENCE'),sealed_json('BLOCK_N_ACTUAL_NATIVE_REFUSALS'))
+    for label in ('FULL_TRAJECTORIES','DEFAULT_PRESERVATION','LOCAL'):
+        m = sealed_json('BLOCK_N_'+label+'_ARCHIVE')
+        require(hashlib.sha256((ROOT/L_PROOF/m['archive']).read_bytes()).hexdigest() == m['sha256'], 'N raw capsule identity: '+label)
+    for name in ('ORIGINAL_COMPONENT_RESULT','REVERSED_INTERVAL_DIAGNOSTIC','WINDOWS_SHORT_RESULT','DEFAULT_PRESERVATION_RESULT','ASSESSMENT'):
+        sealed_json('BLOCK_N_'+name)
     return q
 
 
@@ -322,7 +392,9 @@ def verify():
     require(digest((ROOT/PROOF/'COMPOSED_WINDOWS_RAW.zip').read_bytes()) == COMPOSED_RAW_SHA256, 'composed raw capsule identity')
     q, p = verify_l(c)
     m = verify_m()
+    n = verify_n()
     return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=CURRENT_RUNTIME,
+                current_N_full_days=n['complete_model_days'], current_N_proof_anchor=N_SEALED,
                 prior_composed_runtime=RUNTIME, current_L_proof_anchor=L_SEALED,
                 current_L_full_days=q['complete_model_days'],
                 current_M_full_days=m['complete_model_days'], current_M_proof_anchor=M_SEALED,

@@ -96,5 +96,25 @@ class Boundaries(unittest.TestCase):
                 s.validate_m(*values)
 
 
+    def test_n_source_delivery_native_domain_and_mass(self):
+        load = lambda name: json.loads((s.ROOT/s.L_PROOF/('BLOCK_N_'+name+'.json')).read_text())
+        values = [load(n) for n in ('QUALIFICATION','PRIOR_SOURCE_PRESERVATION','GUARDED_COMPONENT_RESULT','INLINE_FILE_EQUIVALENCE','ACTUAL_NATIVE_REFUSALS')]
+        s.validate_n(*values)
+        attacks = []
+        for field,value in [('runtime_source',s.M_RUNTIME),('complete_model_days',51),('mass_guard_cm',1e-9),('maximum_water_residual_cm',float('nan')),('chemical_subsurface','PASS'),('reversed_or_outside_depth','PASS'),('new_state_codec',True)]:
+            bad=copy.deepcopy(values);bad[0][field]=value;attacks.append(bad)
+        for field,value in [('exact_native_auxiliary',False),('maximum_solute_residual_mg_cm2',None),('foreign_fixed_file_policy_refused_before_output',False)]:
+            bad=copy.deepcopy(values);bad[0]['reports']['chemical-file-sprinkler']['configurations'][1][field]=value;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[0]['reports']['water-file-subsurface']['configurations'][1]['fixed_irrigation_event_exact_native_windows']['actual_fixed_irrigation_cm']['5']['subsurface']=0;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[0]['event_windows'].pop();attacks.append(bad)
+        bad=copy.deepcopy(values);bad[1]['profiles']['registered-grass']['inputs']={};attacks.append(bad)
+        bad=copy.deepcopy(values);bad[2]['profiles'][0]['chemical_type2_refusals'][0]['refused']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[3]['profiles'][0]['final_native_payload_exact']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[4]['profiles'][0]['status']='PASS';attacks.append(bad)
+        for index,bad in enumerate(attacks):
+            with self.subTest(attack=index), self.assertRaises(ValueError):
+                s.validate_n(*bad)
+
+
 if __name__ == '__main__':
     unittest.main()

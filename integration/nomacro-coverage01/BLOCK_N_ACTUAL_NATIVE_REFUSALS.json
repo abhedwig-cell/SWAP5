@@ -1,0 +1,114 @@
+{
+  "source_commit": "6afb72468c0060df60694d4b69ee8619fdc93062",
+  "status": "ACTUAL_UNSUPPORTED_CHEMICAL_AND_REVERSED_GEOMETRY_REFUSALS_PASS",
+  "profiles": [
+    {
+      "name": "chemical-subsurface",
+      "status": "ACTUAL_NATIVE_INPUT_REFUSAL_ZERO_ACCEPTED_DAYS",
+      "expected_diagnostic": "Unsupported fixed subsurface solute irrigation",
+      "events": [
+        {
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "tools/solute/run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_chemical-subsurface_input",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--kernel-opt",
+            "O0",
+            "--donor-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_chemical-subsurface_build"
+          ],
+          "seconds": 13.333363499958068,
+          "returncode": 0,
+          "stdout": "{\"status\": \"BUILT_NO_MODEL_EXECUTED\", \"model\": \"HYBRID_NOMACRO_WATER\", \"kernel_optimization\": \"O0\"}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "tools/solute/run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_chemical-subsurface_input",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-bundle",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_chemical-subsurface_build",
+            "--days",
+            "1",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_chemical-subsurface_run"
+          ],
+          "seconds": 1.5277103001717478,
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\app\\hybrid_water\\daily_host.py\", line 1197, in run\n    host = DailyHost(stack, donor, kernel, case, output, starts,\n                     checkpoint_enabled=checkpoint_day is not None or runtime,\n                     runtime=runtime, binding=checkpoint_binding, model=model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\app\\hybrid_water\\daily_host.py\", line 1061, in __init__\n    _, initial = receive(worker, transcript, {\"HYBRID_READY\"})\n                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\app\\hybrid_water\\daily_host.py\", line 824, in receive\n    raise RuntimeError(f\"Missing {prefixes}, process exited with {process.wait()}\")\nRuntimeError: Missing {'HYBRID_READY'}, process exited with 1\n"
+        }
+      ]
+    },
+    {
+      "name": "reversed-depth",
+      "status": "ACTUAL_NATIVE_INPUT_REFUSAL_ZERO_ACCEPTED_DAYS",
+      "expected_diagnostic": "Invalid fixed subsurface irrigation depth interval/profile",
+      "events": [
+        {
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "tools/solute/run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_reversed-depth_input",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--kernel-opt",
+            "O0",
+            "--donor-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_reversed-depth_build"
+          ],
+          "seconds": 9.865439599845558,
+          "returncode": 0,
+          "stdout": "{\"status\": \"BUILT_NO_MODEL_EXECUTED\", \"model\": \"HYBRID_NOMACRO_WATER\", \"kernel_optimization\": \"O0\"}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "tools/solute/run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_reversed-depth_input",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-bundle",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_reversed-depth_build",
+            "--days",
+            "1",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\N_refusal_reversed-depth_run"
+          ],
+          "seconds": 1.4562952001579106,
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\app\\hybrid_water\\daily_host.py\", line 1197, in run\n    host = DailyHost(stack, donor, kernel, case, output, starts,\n                     checkpoint_enabled=checkpoint_day is not None or runtime,\n                     runtime=runtime, binding=checkpoint_binding, model=model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\app\\hybrid_water\\daily_host.py\", line 1061, in __init__\n    _, initial = receive(worker, transcript, {\"HYBRID_READY\"})\n                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\app\\hybrid_water\\daily_host.py\", line 824, in receive\n    raise RuntimeError(f\"Missing {prefixes}, process exited with {process.wait()}\")\nRuntimeError: Missing {'HYBRID_READY'}, process exited with 1\n"
+        }
+      ]
+    }
+  ]
+}
