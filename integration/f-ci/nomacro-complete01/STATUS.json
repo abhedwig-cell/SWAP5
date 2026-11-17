@@ -3,8 +3,8 @@
   "baseline": "b2b05ae110366dae062663bd97c63d4187cdcd8d",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-calendar01",
-  "last_commit": "b2b05ae110366dae062663bd97c63d4187cdcd8d",
-  "status": "AGE_OUTPUT_CALENDAR_DIAGNOSTIC_CONTRACT_PERSISTED",
+  "last_commit": "c5b98b47ef185bae3bcd0037396e50060eca51c4",
+  "status": "AGE_CALENDAR_LOCAL_QUALIFICATION_IN_PROGRESS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -315,8 +315,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Complete S5AGE003 output calendar state qualification and negative controls; no canonical admission yet.",
-  "recovery_point": "Postcrop full1096 trajectory PASS water/age; own530 CSV difference six crop totals diagnosed first-day WOFOST reset. Explicit deferred restore persisted, old evidence retained. No active models or CI.",
+  "next_code_change": "Complete current calendar source qualification, strict evidence successor and actual canonical admission; retain all failed prototypes.",
+  "recovery_point": "Both source7943551d0 plainPERIOD3 O0/O2 full1096 and seven exact cold windows PASS. Matrix short uses exact-bound completed pilots, twelve new configurations running. Inactive daily002 four profiles and fixed daily002 eight profiles running. No CI dispatched. Evidence age-calendar-final-matrix / age-calendar-inactive / age-calendar-daily-fixed-preserve.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -418,7 +418,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Fresh calendar O0/O2 short and full pilot after six crop output integrals restore fix; then fourteen-profile matrix/reference and active native refusal/preservation.",
+  "next_action": "Complete final fourteen-profile matrix, corrected-original reference and actual native003 corruption/transaction controls; portable selected workflow and daily002/age-off preservation next.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -431,5 +431,16 @@
   "qualified_age_fixed_ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
   "age_fixed_sealed_proof": "56ae017e413503891d6c1a9709d1c882f2a14edb",
   "active_branch": "codex/nomacro-age-calendar01",
-  "canonical_baseline": "b2b05ae110366dae062663bd97c63d4187cdcd8d"
+  "canonical_baseline": "b2b05ae110366dae062663bd97c63d4187cdcd8d",
+  "calendar_results": {
+    "source": "7943551d0",
+    "pilot": "O0/O2 ten-day and1096days/seven exact native windows PASS",
+    "failures_retained": [
+      "originalday1missingHYBRID_STOCK_FLUX",
+      "missingpostcropincrementday567",
+      "sixcropoutputtotalsresetatcold530",
+      "coldTSTARTshortensannualoutputdatecalendarterminal1096"
+    ],
+    "whole_science": "NOT_QUALIFIED"
+  }
 }
