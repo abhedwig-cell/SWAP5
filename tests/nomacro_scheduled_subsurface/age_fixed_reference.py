@@ -17,8 +17,9 @@ r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
 def main():
     p=argparse.ArgumentParser()
     for name in ('prior-reference','inputs','output'):p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument('--platform',choices=('Windows','Ubuntu'),default='Windows')
     a=p.parse_args();a.output.mkdir();record=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),profiles={},whole_scientific_equivalence='NOT_QUALIFIED')
-    identity=json.loads((ROOT/'integration/f-ci/nomacro-complete01/AGE_QUALIFICATION.json').read_text())['original_provider_reference']['Windows']
+    identity=json.loads((ROOT/'integration/f-ci/nomacro-complete01/AGE_QUALIFICATION.json').read_text())['original_provider_reference'][a.platform]
     sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
     def save():(a.output/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n')
     try:
