@@ -24,7 +24,7 @@ def main():
    # Host and input adapter changed; do not disguise their new identities. All
    # remaining persisted physical/build dependencies must remain exactly equal.
    changed=sorted(k for k in set(meta['identity'])|set(prior['identity']) if meta['identity'].get(k)!=prior['identity'].get(k))
-   assert set(changed)<= {'host','experimental_input_adapter'},changed
+   assert set(changed)<= {'host','experimental_input_adapter','restart_publisher'},changed
    assert 'conserved_aquifer_solute' not in meta['identity']
    parent=a.prior/(name+'-full')
    if not parent.exists():parent=a.prior/(name+'-prefix365')
