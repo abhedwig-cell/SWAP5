@@ -1,6 +1,6 @@
 # INACTIVE35 — ontbrekende niet-lokale Jacobiaankoppelingen aangetoond
 
-**De eerste inactieve afwijzing uit de eigen kandidaattraj­ectie is gereproduceerd en gericht verklaard als een onvolledig gelineariseerde macroporiënkoppeling.** Op de onderzochte Jacobiaantoestand zijn echte niet-lokale macroresiduderivaten gemeten waar de huidige tridiagonale Jacobiaan nul heeft en de huidige rang-één-aanvulling uitstaat. De fluxfysica is niet als fout aangetoond. Er is geen numerieke correctie ingevoerd.
+**Bij de gereproduceerde eerste inactieve afwijzing zijn ontbrekende niet-lokale Jacobiaantermen aangetoond.** Op de onderzochte Jacobiaantoestand zijn echte niet-lokale macroresiduderivaten gemeten waar de huidige tridiagonale Jacobiaan nul heeft en de huidige rang-één-aanvulling uitstaat. De fluxfysica is niet als fout aangetoond. Er is geen numerieke correctie ingevoerd.
 
 De oorspronkelijke rollback plus kleinere retry geeft exact dezelfde geaccepteerde toestand als een directe kleinere stap. De verklaring is dus niet dat schadelijk achtergebleven trialgeheugen de geaccepteerde retry verandert. Dit kwalificeert alleen deze **inactieve** afwijzing; het nog ontbrekende actieve-afwijzingsbewijs blijft open.
 
