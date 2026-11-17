@@ -43,3 +43,10 @@ physics/mass/scientific tolerances, no saved state. New numerical accuracy
 configuration is explicit and metadata-bound. Test in fresh time02 directories;
 do not overwrite or rebind first-source results. If this second approach fails
 materially, reassess instead of adding finer local fixes.
+
+Canonical advanced independently to f0e5e39ea3d166755e394700a5a8765700eab875
+(scheduled subsurface irrigation). Reconciled without conflicts at c02580924.
+Its new branch is inactive for the selected fixed-surface inputs. Qualify actual
+composed emitted dependencies and input equality plus pulse/storm prefix215 and
+cold windows for all four profiles; reuse unchanged fulls only at that closure.
+Do not rerun complete periods or conflate older source/binary identities.
