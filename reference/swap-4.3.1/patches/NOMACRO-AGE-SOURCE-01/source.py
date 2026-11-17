@@ -158,6 +158,29 @@ def source(original,*,native=False):
 end subroutine
 end submodule MOD_calc_AgeTracer""")
     if native:
+        replace('   contains\n      module subroutine calc_AgeTracer(task)',"""      integer,save::age_output_day_offset=0
+      real(8),save::age_output_period_offset=0d0
+      logical,save::age_initial_reset_pending=.false.,age_saved_cumulative_reset=.false.,age_saved_interval_reset=.false.
+   contains
+      module subroutine calc_AgeTracer(task)""")
+        replace('      logical::age_first_microstep',
+                '      logical::age_first_microstep,age_reset_now,age_interval_reset_now')
+        replace('only: flzerocumu, q,','only: flzerocumu, flzerointr, q,')
+        replace('         age_cumulative=0d0',"""         age_cumulative=0d0
+         age_output_day_offset=0;age_output_period_offset=0d0
+         age_initial_reset_pending=.false.""")
+        replace('         if (flzerocumu) then',"""         age_reset_now=flzerocumu;age_interval_reset_now=flzerointr
+         if(age_initial_reset_pending)then
+            age_reset_now=age_saved_cumulative_reset
+            age_interval_reset_now=age_saved_interval_reset
+            age_initial_reset_pending=.false.
+         end if
+         if(age_interval_reset_now)age_output_period_offset=0d0
+         if (age_reset_now) then""")
+        # Age output continuation is private: do not change water/global output
+        # initialization flags or counters while restoring an age observer.
+        body=body.replace('date,comma,daynr,comma,daycum','date,comma,daynr,comma,(daycum+age_output_day_offset)')
+        body=body.replace('/outper','/(outper+age_output_period_offset)')
         replace('end submodule MOD_calc_AgeTracer',NATIVE+'\nend submodule MOD_calc_AgeTracer')
     return (prefix+'submodule (MOD_Solute) MOD_calc_AgeTracer'+body).replace('\n','\r\n').encode('cp1252')
 
@@ -176,16 +199,18 @@ def csv_source(original):
 NATIVE="""module subroutine hybrid_age_checkpoint(unit,restoring)
    use ieee_arithmetic,only:ieee_is_finite
    use MOD_grid,only:numnod
-   use variables,only:theta,pond
+   use variables,only:theta,pond,daycum,outper,flzerocumu,flzerointr
    integer,intent(in)::unit
    logical,intent(in)::restoring
    real(8)::saved_parameters(3),saved_total(3),observed(11),scale,tolerance
-   integer::ios
+   real(8)::saved_output_period
+   integer::ios,saved_output_day
    if(swsolu/=2.or..not.allocated(Agemsy))error stop 'Foreign original age native owner'
    if(restoring)then
       read(unit,iostat=ios)Agemsy,ageml(1:numnod),cml(1:numnod),age_pond_stock, &
          Agepond,Agepondm1,saved_parameters,age_cumulative,icAgeTopupw,icAgeTopdwn, &
-         icAgeBot,icAgeRot,icAgeSur,icAgeDra,AgeGwl1m,rottot,sqdra,saved_total
+         icAgeBot,icAgeRot,icAgeSur,icAgeDra,AgeGwl1m,rottot,sqdra,saved_total, &
+         saved_output_day,saved_output_period,age_saved_cumulative_reset,age_saved_interval_reset
       if(ios/=0)error stop 'Incomplete original age native state'
       if(.not.all(ieee_is_finite(Agemsy)).or..not.all(ieee_is_finite(ageml(1:numnod))).or. &
          .not.all(ieee_is_finite(cml(1:numnod))).or..not.all(ieee_is_finite(age_cumulative)).or. &
@@ -198,6 +223,12 @@ NATIVE="""module subroutine hybrid_age_checkpoint(unit,restoring)
          any(age_cumulative([1,2,3,6,7,8])<0d0))error stop 'Invalid original age native domain'
       if(any(abs(saved_parameters-[Ageirr,Agedrain,Agepre])>0d0)) &
          error stop 'Foreign original age native forcing'
+      if(saved_output_day<0.or..not.ieee_is_finite(saved_output_period))error stop 'Invalid original age output clock'
+      if(saved_output_period<0d0)error stop 'Negative original age output period'
+      age_output_day_offset=saved_output_day-daycum
+      age_output_period_offset=0d0
+      if(.not.age_saved_interval_reset)age_output_period_offset=saved_output_period
+      age_initial_reset_pending=.true.
       call hybrid_age_observe(observed)
       scale=max(1d0,maxval(abs(saved_total)),maxval(abs(observed(1:3))))
       tolerance=8192d0*epsilon(1d0)*scale
@@ -208,6 +239,7 @@ NATIVE="""module subroutine hybrid_age_checkpoint(unit,restoring)
       call hybrid_age_observe(observed)
       write(unit)Agemsy,ageml(1:numnod),cml(1:numnod),age_pond_stock, &
          Agepond,Agepondm1,[Ageirr,Agedrain,Agepre],age_cumulative,icAgeTopupw,icAgeTopdwn, &
-         icAgeBot,icAgeRot,icAgeSur,icAgeDra,AgeGwl1m,rottot,sqdra,observed(1:3)
+         icAgeBot,icAgeRot,icAgeSur,icAgeDra,AgeGwl1m,rottot,sqdra,observed(1:3), &
+         daycum+age_output_day_offset,outper+age_output_period_offset,flzerocumu,flzerointr
    end if
 end subroutine hybrid_age_checkpoint"""
