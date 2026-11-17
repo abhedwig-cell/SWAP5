@@ -1,0 +1,39 @@
+{
+  "indexing": "zero-based; native nodes are one-based",
+  "inherited_trace_schema": "../swap431-macro-b1-domains36/TRACE_FIELDS.json",
+  "jac37_trace": {
+    "0": "attempt",
+    "1": "iteration",
+    "2:17": "meta16 below",
+    "18": "B51_50",
+    "19": "B51_51",
+    "20:23": "Woodbury M11 M12 M21 M22",
+    "24": "det(M)",
+    "25:26": "lambda2 lambda3",
+    "27": "maximum full corrected linear residual"
+  },
+  "meta16": [
+    "eligible (negative = guard reason)",
+    "number of nonzero stock updates",
+    "f2",
+    "f3",
+    "Lbranch2 (0 stockcap, 1 volume)",
+    "Lbranch3",
+    "tie2",
+    "tie3",
+    "reserved0",
+    "reserved0",
+    "incoming GWL coefficient cG",
+    "internal incoming head coefficient cInt",
+    "GWL",
+    "reserved0",
+    "provider stamp valid",
+    "theta50 minus thetaS50"
+  ],
+  "cal37_terms": "Not generated or used inTRAJECTORY39; no frozenDOMAINS36point imported. Numerical routine retained unchanged but notcalled.",
+  "inventory_trace_note": "Column12 counts oldrank1 calls plus handlednewcorrection calls once each, never sumstockranks. Total334=222old+112new. jac37_trace includes all1929Jac calls;112eligible,1817fallbacks. jac24_trace contains those1817fallbackcalls.",
+  "stop": "First full commit >=35797.372, or16s internal, or512commits, or scaledrequest. Hard20s external. Outcome qualified atfixedthreshold, no dtshortening.",
+  "scope": "TRAJECTORY39 continuous correction enabled before first head from native35797. Same original host rollback for any unscaled refusal; none occurred.",
+  "rollback": "No refusal/rollback occurred. ACTIVE38 qualification inherited for its original context only; no newfailure or restart proof.",
+  "ledger_baseline": "ledger_initial is before original day-start cumulative reset; ledger_begin is after reset. Whole-segment primitive increments must use ledger_begin ->ledger_final. Physical initial/begin inventories equal, including nonzeroSICACT."
+}
