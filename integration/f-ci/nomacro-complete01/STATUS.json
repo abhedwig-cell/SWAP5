@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-output-clock01",
-  "last_commit": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
-  "status": "AGE_OUTPUT_CLOCK_BASELINE_DIAGNOSTICS_SELECTED",
+  "last_commit": "6ce0ab4001b3bfa17490bee4c48f61752412d11f",
+  "status": "AGE_CLOCK_NPRINT2_3_O0_O2_SHORT_EXACT_NATIVE_PASS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -319,8 +319,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Separate bound original output epoch in original TimeControl print trigger/event caps, specialize print-counter/flag state and annual-only selection; correct monthly inactive-selector preflight.",
-  "recovery_point": "Actual canonicalb6dc588ef fully verified; no model orCI active. New output-clock branch contract and selection persisted before baseline; prior004/003/002 proof immutable. OverallPARTIAL/NOT_QUALIFIED.",
+  "next_code_change": "Complete annual/subdaily cohort controllers and actual reference/cadence/native controls; no changes to physical providers or literal003/004 helpers.",
+  "recovery_point": "Source6ce0ab400: all four v3NP2/3 plain O0/O2 short10days and three exact physical/fiveCSV/complete005native windows PASS. Earlier b349warm10pass/coldDTbootstrap drift retained; 19fpreimageanchor failure generation-only retained. FixlocalphysicalepochduringTimeControl1 andglobalboundepochdynamic. No localmodel orCIcurrentlyactive.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -422,7 +422,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Execute unchanged public NPRINTDAY2/3, annual-only and monthly inactive-selector omission baselines. Then implement distinct005 output clock/state adapter preserving literal old renderers/providers.",
+  "next_action": "Full1096NP2/3 plain O0/O2 pilots using exact v3builds; annual371day O0/O2 short/year native; then selected coupled matrix, inactive monthly input and preservation.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -464,5 +464,6 @@
   ],
   "qualified_age_schedule_runtime": "f19bdf187a187e5d241fc3841eba9acfad63bc37",
   "qualified_age_schedule_ubuntu": "a376307776ea05bd975b6bf04a67e8c7baf7256b",
-  "age_schedule_sealed_proof": "bc03011bae1d4b3a7060cf16cf95c490d1ecf025"
+  "age_schedule_sealed_proof": "bc03011bae1d4b3a7060cf16cf95c490d1ecf025",
+  "age_clock_failure": "Global output epoch was used with local nprintcount during TimeControl1 before calendar restore, capping persistedENDDT0.03999999997564507 to0/negative. Preservephysicalepochininit; exact v3nativeO0/O2 nowPASS."
 }
