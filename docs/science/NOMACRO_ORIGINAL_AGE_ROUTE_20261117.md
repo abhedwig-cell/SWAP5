@@ -1,8 +1,9 @@
 # Original no-macro water-age route
 
-**In development; not qualified or canonically admitted.** Historical closure
-remains PARTIAL and whole scientific equivalence NOT_QUALIFIED. The admitted
-chemical/aquifer source and state chains remain immutable.
+**Bounded work-unit qualification; canonical admission is recorded separately.**
+Historical closure remains PARTIAL, whole scientific equivalence NOT_QUALIFIED,
+and the named RC2 release scope unchanged. Previous chemical/aquifer source and
+state chains remain immutable.
 
 The original SWSOLU=2 branch is distinct from chemical mass. Age concentration
 is days and its amount is water depth times days. Actual bounds-checked original
@@ -40,16 +41,15 @@ surface callers keep their zero-default arithmetic and existing acceptance
 criteria. The new small driver checks returned water, age units, production,
 separate internal attribution and invalid domains.
 
-Before generic input activation, require a small real provider driver, preservation
-of the existing150-step literal-oracle tests, actual corrected/source reference
-observations, explicit soil/pond/source/effluent ledgers, accepted-state/native
-ownership and ordinary/active/year restart. Age balance uses its separately named
-accepted age units and policy; the existing chemical1e-10mg/cm2 and water1e-10cm
-guards remain unchanged. Original unsupported snow/macro combinations must stay
-refused. Surface and microstep adapters remain implementation work, not evidence
-of functional admission.
+Small real provider drivers, the existing150-step literal oracle, corrected
+original-host observations, explicit soil/pond/source ledgers and real native
+ownership are exercised. The age interval applies the original dtmin floor
+before capping by the remaining accepted water interval; it cannot overshoot
+that interval. This numerical clock policy is separate from SWSOLU=2 and the
+physical input selectors. Age balance retains the existing8192*epsilon*inventory
+policy in cm day. Chemical1e-10mg/cm2 and water1e-10cm guards remain unchanged.
 
-## Effluent output correction in development
+## Corrected effluent output
 
 The first core stage passed Windows/Ubuntu full source/state/native tests and
 existing-owner preservation, persisted in `AGE_CORE_QUALIFICATION.json` at
@@ -67,11 +67,57 @@ against the actual transport receipt before accumulating them over the same
 output interval; it does not change transport or accepted core age state.
 
 No-export means are the explicit missing sentinel -9999, with zero water and
-age amount. The companion `ageEffluentWater.csv` supplies actual cm exported for
-every mean-age column. `ageEffluentqDrain.csv` reports positive drainage exports
+age amount. The companion `ageeffluentwater.csv` supplies actual cm exported for
+every mean-age column. `ageeffluentqdrain.csv` reports positive drainage exports
 in cm over that same interval. The native AGE002 owner includes these output
 amount/volume counters. Required gates include weighted-mixture/duration/unit
 counterexamples, native output fidelity, and exact preservation of every prior
-core trajectory. Earlier supported Linux joint-owner preservation is inherited
-only after literal input-closure validation; no repeat is selected for an
-independent new observer or an output-only host change.
+core trajectory. The supported Linux joint-owner preservation is inherited only
+after literal input-closure and compiler checks. It is not presented as a fresh
+execution for the independent new observer/output changes.
+
+## Executed scope and limits
+
+- Windows and Ubuntu, initial ages0/100days, donor/kernel O0/O2: eight full1096day
+  trajectories,32 full native windows, eight short native windows, all four age
+  CSV files and actual root/runoff/drain exports. The original34node Hupsel
+  input uses daily output, no macro, aquifer, fixed irrigation, snow or salinity.
+- All8768 daily core rows and age-profile rows remain exact to the pre-output
+  stage. Seventy-two native comparisons preserve every prior core byte after
+  projecting out only the sixteen declared new output doubles and codec tag.
+  Old checkpoints are compared read-only; none is converted or rebound. Actual
+  new-code restarts use AGE002 and reproduce the complete new native payload.
+- Both platforms exercise active pond ageing/infiltration at day367, external
+  adoption, discard/replay, disk recovery, independent origins and deliberate
+  corrupt candidate refusal before acceptance. Windows additionally runs eight
+  original-reader refusals and forty private-native refusals, including AGE001
+  rejection and output-volume/amount corruption.
+- Eleven fresh age-off fixed/scheduled chemical, water, named-three, pulse and
+  aquifer contexts preserve emitted/provider/flag/input closures and exact
+  physical/CSV/native prefixes. Unchanged full periods are not repeated.
+- The public run/build-bundle/restart CLI is exercised with exact physical,
+  age-ledger and all-five-CSV windows. Qualification data and raw inventories
+  are under `integration/f-ci/nomacro-complete01/AGE_*`; admission is separate.
+
+Reference differences remain explicit: the original printed age profiles differ
+from the corrected original-host profiles by up to0.1day and from the SWAP5 host
+by up to2.75days. Original profile output has only four significant digits.
+These composite differences have no fitted acceptance tolerance or individually
+established cause. Tracer retention under evaporation is inherited policy, not
+an independent validation of physical mean-water age. Conservation, functional
+execution and restart do not establish whole-model equivalence.
+
+Fixed-irrigation age coupling, non-daily output continuation, vapor and other
+historical compositions remain separate inventory work. Generic experimental
+input acceptance is not qualification of every allowed option combination.
+The earlier direct age `--source-only` dispatch error was reproduced on actual
+canonicaledbc before new code; registered current-source hooks must preserve its
+literal historical assertions while binding current qualification. The older
+POSIX snapshot route's Windows fsync link failure is retained, not relabelled
+PASS; its supported Linux physical/native owner is qualified and preserved.
+
+```text
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project INPUT --reference-work PROVIDER --build-only --output BUILD
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project INPUT --reference-work PROVIDER --build-bundle BUILD --days 5 --checkpoint-at 2 --output RUN
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project INPUT --reference-work PROVIDER --build-bundle BUILD --days 4 --restart RUN/accepted-column-1-day-2.zip --restart-day 2 --output COLD
+```
