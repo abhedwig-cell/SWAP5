@@ -151,7 +151,7 @@ end submodule MOD_Solute_CDE""")
     return body.replace('\n','\r\n').encode('cp1252')+tail
 
 
-def reference_csv(original):
+def reference_csv(original,*,prefix='AQUIFER_CUMULATIVE',include_soil=True):
     body=original.decode('cp1252').replace('\r\n','\n')
     anchor='   use MOD_solute,               only: imsqprec, imsqirrig, imsqbot, imsqdra, imdectot, imrottot, sampro, sbaldev, sdstor'
     if body.count(anchor)!=1:raise ValueError('Changed original aquifer observer import')
@@ -161,7 +161,7 @@ def reference_csv(original):
     body=body.replace(anchor,anchor+'\n   real(8)::aq_values(7)')
     anchor='   dstor_1    = wasrdm1 - iwasrdm1beg'
     if body.count(anchor)!=1:raise ValueError('Changed original aquifer observer output')
-    body=body.replace(anchor,"   call hybrid_aquifer_cumulative(aq_values)\n"
-        "   write(*,'(a,7(1x,es25.17e3))')'AQUIFER_CUMULATIVE',aq_values\n"
-        "   write(*,'(a,9(1x,es25.17e3))')'AQUIFER_SOIL',sampro,sdstor,imsqprec,imsqirrig,imsqbot,imsqdra,imdectot,imrottot,sbaldev\n"+anchor)
+    report="   call hybrid_aquifer_cumulative(aq_values)\n"+f"   write(*,'(a,7(1x,es25.17e3))')'{prefix}',aq_values\n"
+    if include_soil:report+="   write(*,'(a,9(1x,es25.17e3))')'AQUIFER_SOIL',sampro,sdstor,imsqprec,imsqirrig,imsqbot,imsqdra,imdectot,imrottot,sbaldev\n"
+    body=body.replace(anchor,report+anchor)
     return body.replace('\n','\r\n').encode('cp1252')

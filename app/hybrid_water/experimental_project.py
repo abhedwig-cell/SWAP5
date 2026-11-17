@@ -93,7 +93,7 @@ def inspect(directory):
             raise ValueError('Unsupported experimental process/state: '+name)
     if selected['SWSOLU']:
         for name in ('SWSP', 'SWDC', 'SWBR'):
-            if selected.get(name) not in ({0} if name == 'SWBR' else {0, 1}):
+            if selected.get(name) not in {0, 1}:
                 raise ValueError('Solute ledger/state does not support '+name)
     if selected['SWIRFIX'] and selected.get('SWIRGFIL') not in (0,1):
         raise ValueError('Unsupported/missing original fixed irrigation input selector')

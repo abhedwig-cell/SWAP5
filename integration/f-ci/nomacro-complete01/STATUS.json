@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-aquifer-source01",
   "last_commit": "bd8bb551c",
-  "status": "AQUIFER_SOURCE_CORRECTION_REFERENCE_IMPLEMENTED_COMPONENT_PASS",
+  "status": "AQUIFER_CORRECTED_REFERENCE_O0_O2_PASS_CALLER_NATIVE_IMPLEMENTED_UNQUALIFIED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -201,8 +201,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Execute actual original index-only diagnostic and corrected box/reference O0/O2, verify soil/box/exchange/compound1e-10 guards. Preserve all failed cases; repair source/numerical issues without clipping or tolerance change. SWBR1 preflight remains refused until native/runtime qualification.",
-  "recovery_point": "Current canonicale677 verified exact tree5e5395 and real owner PASS. AQ branch in same private worktree: unconnected evaluator/driver commitbd8bb551c, O0/O2 PASS with one provider/3compiler requests each (12.64/1.62s). Legacy O0/O2 bounds35>34 and uncheckedNaN proof retained. Additional source audit: isqdra already includesdtsolu/cumulates within water step, yet original box multiplies it bydtsolu again; surface output uses updated concentration after Euler loss. Correct these explicitly in reference before integrating. SWBR1 remains refused; no model/CI active.",
+  "next_code_change": "Build actual SWBR1 experimental box/soil case O0/O2; first strict day/native own test, then complete model and active external/rejected native source cases. Check soil+box/transfer/global guards unchanged1e-10; keep all failures. Code now enables only development SWBR1 branch, canonicale677 unchanged.",
+  "recovery_point": "AQ physical evaluator+loss bound and corrected original ten1096periods O0/O2 PASS. Index-only original remaining compound error0.6896808mg/cm2; corrected maxcompound7.725e-12 (guard1e-10), stiff limit binds961times. Current generator emits exact prior reference F90 bytes. Caller/source metadata/nativeCDF/cumulative/state/compound guard implemented on dev AQ branch, not yet built. SWAP5 canonicale677 fixed/scheduled admission remains unchanged.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -277,8 +277,17 @@
         "owner": "NOMACRO-AQUIFER-SOLUTE-01",
         "authority": "docs/verification/principles.md#reference-chain",
         "expected_seconds": 180,
-        "prior_execution": "NOT_RUN",
+        "prior_execution": "PASS",
         "existing_evidence": "Actual original O0/O2 bounds failure plus uncheckedNaN; actual one-provider evaluator+loss-limit O0/O2 PASS."
+      },
+      "aquifer_runtime": {
+        "changed_dependency": "Original SWBR1 source, complete privateCDF/native cumulative state, coupled soil/box mass transfer, explicit loss-limited Euler policy",
+        "scientific_claim": "Actual full/native/rejected coupled state closes soil/box/exchange/compound budgets without tolerance changes or concentration clipping",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md; docs/verification/principles.md#transaction-tests",
+        "expected_seconds": 240,
+        "prior_execution": "NOT_RUN",
+        "existing_evidence": "Actual original and corrected reference, real one-provider component O0/O2; unchanged-context preservation still required."
       }
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
