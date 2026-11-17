@@ -66,7 +66,7 @@ def native(build,reference,project,full,out):
                     binding=meta['binding'],model=project.model,project=project)
         except (ValueError,RuntimeError) as error:
             diagnostic='\n'.join(p.read_text(errors='replace') for p in target.rglob('donor.stderr'))
-            assert any(word in (diagnostic+' '+str(error)).lower() for word in ('calendar','checkpoint','age','original regular output','original output date','original interval date')),(attack,diagnostic,str(error))
+            assert any(word in (diagnostic+' '+str(error)).lower() for word in ('calendar','checkpoint','age','original regular output','original output','original interval date')),(attack,diagnostic,str(error))
             assert not list(target.glob('accepted-*.zip'))
             checks.append(dict(attack=attack,status='REFUSED',diagnostic=diagnostic,error=str(error)))
         else:raise AssertionError('Corrupt calendar native accepted: '+attack)
