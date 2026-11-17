@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 ROOT=Path(__file__).resolve().parents[2]
-sys.path.insert(0,str(ROOT/'tools/solute'))
+sys.path[:0]=[str(ROOT/'tools/solute'),str(ROOT/'app/hybrid_water')]
 import user_prepare
 
 
