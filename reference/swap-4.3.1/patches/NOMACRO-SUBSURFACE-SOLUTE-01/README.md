@@ -8,6 +8,11 @@ The actual original concentration perturbation is recorded at
 `integration/f-ci/nomacro-complete01/ORIGINAL_CHEMICAL_AUDIT.json`:2.4cm subsurface
 water ignores concentration0/20, while the surface positive control adds48mg/cm2.
 Original CDE includes neither the nodal irrigation mass source nor its ledger.
+The original fixed-irrigation producer also leaves `cirr=0` for subsurface
+events. The first CDE-only candidate completed every paired period but still
+reported zero injected mass: the missing producer/consumer coupling is retained
+in `CHEMICAL_CDE_ONLY_FAILURE.json`. The complete candidate publishes the actual
+fixed-event concentration only for no-macro chemical subsurface delivery.
 
 The correction consumes actual original `qssdi(i)` in cm/day, original `cirr` in
 mg/cm3, actual solute interval in days, and original compartment thickness in cm.
@@ -26,7 +31,7 @@ equations, numerical controls, surface sources and inactive source arithmetic
 remain unchanged. Current SWAP5 chemical SSDI preflight refusals remain active.
 
 Before integration, qualify the exact corrected original module on water-only
-macro-disabled input, with active chemistry: surface/subsurface0/20 controls,
+macropore-disabled input with active chemistry: surface/subsurface0/20 controls,
 explicit per-node conservation, strict chemical balances and source-absent
 preservation. Then qualify the actual SWAP5 caller, accepted/discarded state,
 source/ledger correspondence, own native restart and relevant process coupling.

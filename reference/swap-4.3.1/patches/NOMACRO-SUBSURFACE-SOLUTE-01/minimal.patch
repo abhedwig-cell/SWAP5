@@ -72,3 +72,22 @@
              end if
  
  ! ---    continue with next solute time step
+--- a/irrigation.f90
++++ b/irrigation.f90
+@@ -72,7 +72,7 @@
+ ! ----------------------------------------------------------------------
+ ! --  global variables
+       use MOD_arrays,           only: maho      
+-      use MOD_swap_base,        only: swsolu, unit_err, fl_initialize, swirfix
++      use MOD_swap_base,        only: swsolu, unit_err, fl_initialize, swirfix, swmacro
+       use plant_interface,      only: unit_crp, crpfilnam, icrop, cropstart, cropend, fl_start_croprotation, fl_cropemergence, dvs, noddrz, hlim3l, hlim3h, hlim4, rd
+       use atmosphere_interface, only: grai
+       use MOD_grid,             only: zbotcp, numlay, botcom, ztopcp, dz, layer, numnod
+@@ -425,6 +425,7 @@
+                   gird = irrate(nirri)
+                   cirr = irconc(nirri)
+                else
++                  if(swsolu==1.and.swmacro==0)cirr=irconc(nirri)
+                   qssdi(nod_ssdi(1):nod_ssdi(2)) = irrate(nirri) 
+                   qssdisum                       = qssdisum + sum(qssdi(nod_ssdi(1):nod_ssdi(2)))
+                end if

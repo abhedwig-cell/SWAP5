@@ -37,12 +37,15 @@ def main():
     out=a.output.resolve();out.mkdir(parents=True,exist_ok=a.resume);reference=a.reference_work.resolve();user_prepare.validate(reference)
     provider=reference/'build';objects=provider/'swap-obj';ttutil=provider/'ttutil-obj'
     original=(provider/'swap-selected/solute.f90').read_bytes();corrected=correction.source(original)
+    original_irrigation=(provider/'swap-selected/irrigation.f90').read_bytes()
+    corrected_irrigation=correction.irrigation_source(original_irrigation)
     helper=correction.helper_source();sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
     result=json.loads((out/'RESULT.json').read_text()) if a.resume else dict(status='RUNNING',
         source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         original_sha256=correction.ORIGINAL_SHA,corrected_sha256=hashlib.sha256(corrected).hexdigest(),
+        original_irrigation_sha256=correction.IRRIGATION_SHA,corrected_irrigation_sha256=hashlib.sha256(corrected_irrigation).hexdigest(),
         helper_canonical_sha256=hashlib.sha256(helper).hexdigest(),profiles={},events=[],
-        unchanged_original_objects={p.name:sha(p) for p in objects.glob('*.o') if p.name!='solute.o'},
+        unchanged_original_objects={p.name:sha(p) for p in objects.glob('*.o') if p.name not in ('solute.o','irrigation.o')},
         original_ttutil_sha256=sha(ttutil/'libttutil.a'),whole_scientific_equivalence='NOT_QUALIFIED',
         b1_promotion=False,chemical_subsurface_SW5_activation=False)
     def save(): (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
@@ -65,11 +68,13 @@ def main():
                            '-ffp-contract=off','-march=x86-64','-mtune=generic','-J'+str(build),'-I'+str(build),'-I'+str(objects),'-I'+str(ttutil)]
                     if version=='corrected':
                         r=call(['gfortran',*flags,'-c',build/'mod_subsurface_solute_source.f90','-o',build/'source.o'],build,'source-compile',60);assert r.returncode==0,r.stderr.decode(errors='replace')
+                    (build/'irrigation.f90').write_bytes(corrected_irrigation if version=='corrected' else original_irrigation)
+                    r=call(['gfortran',*flags,'-c',build/'irrigation.f90','-o',build/'irrigation.o'],build,'irrigation-compile',60);assert r.returncode==0,r.stderr.decode(errors='replace')
                     r=call(['gfortran',*flags,'-c',build/'solute.f90','-o',build/'solute.o'],build,'solute-compile',60);assert r.returncode==0,r.stderr.decode(errors='replace')
-                    linked=[p for p in sorted(objects.glob('*.o')) if p.name!='solute.o']+[build/'solute.o']
+                    linked=[p for p in sorted(objects.glob('*.o')) if p.name not in ('solute.o','irrigation.o')]+[build/'irrigation.o',build/'solute.o']
                     if version=='corrected':linked.append(build/'source.o')
                     r=call(['gfortran','-o',executable,*linked,ttutil/'libttutil.a'],build,'link',60);assert r.returncode==0,r.stderr.decode(errors='replace')
-                    record.update(executable_sha256=sha(executable),flags=flags,compile_providers=2 if version=='corrected' else 1,link_objects=len(linked));save()
+                    record.update(executable_sha256=sha(executable),flags=flags,compile_providers=3 if version=='corrected' else 2,link_objects=len(linked));save()
                 for kind,key in [('surface','water-file-surface'),('point','water-file-subsurface'),('interval','water-file-subsurface-interval')]:
                     for concentration in (0.,20.):
                         case_name=kind+'-'+str(int(concentration))

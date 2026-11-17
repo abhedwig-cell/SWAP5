@@ -150,10 +150,14 @@
     {
       "test": "Initial corrected-source renderer",
       "cause": "The original age tracer repeats the solute clock anchor. Renderer refused the ambiguous full-file match; bounded it to the exact CDE submodule, preserving the entire age-tracer tail. No native run before the repair."
+    },
+    {
+      "test": "Actual CDE-only corrected reference O0/O2, all24periods complete",
+      "cause": "Corrected CDE still received cirr0: original fixed subsurface producer assigns irconc only in surface branch. Complete correction now includes this precise producer dependency; all first raw trajectories retained."
     }
   ],
   "running_ci": [],
-  "next_code_change": "Compile exact corrected original CDE with the real shared source evaluator at O0/O2; run surface/subsurface concentration controls, independent irrigation mass and strict chemical balances before any SWAP5 chemical activation.",
+  "next_code_change": "Execute complete corrected original producer plus CDE at O0/O2; check actual water*concentration input, chemical mass and all source-absent/surface preservation. Do not enable chemical SWAP5 input until integrated state/native qualification.",
   "recovery_point": "Admitted S/PULSE/R implementation stays canonical f0e5e39ea. Development branch codex/nomacro-chemical-source01 adds only an unconnected, stateless conservative source evaluator and its real one-provider driver. Run --case subsurface_solute_source, retain errors, then corrected original CDE/source ledger qualification. Do not claim chemical SSDI enabled.",
   "external_blocker": null,
   "test_selection": {
@@ -176,6 +180,16 @@
         "existing_evidence": "Windows4 full periods pass; GNU/Linux original reader and native execution not yet measured for this new route",
         "prior_execution": "PASS",
         "diagnosis": "Canonical R changed shared input/builder source since isolated qualification. Fresh actual-composition builds/native continuations establish the composed identity; retain all earlier PASS on its own source, no checkpoint rebinding."
+      },
+      "chemical_source_reference": {
+        "changed_dependency": "Original fixed subsurface concentration producer and conserved nodal source/CDE ledgers",
+        "scientific_claim": "Exact original paired source-present/source-absent controls and chemical input closure",
+        "owner": "NOMACRO-SUBSURFACE-SOLUTE-01",
+        "authority": "docs/verification/principles.md#reference-chain",
+        "expected_seconds": 180,
+        "prior_execution": "FAILED",
+        "diagnosis": "CDE-only source did not receive concentration. Rebuild both touched original modules for same-optimization controls; new producer branch is necessary.",
+        "existing_evidence": "Pure source O0/O2 PASS; first CDE-only24periods retained with zero source."
       }
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"

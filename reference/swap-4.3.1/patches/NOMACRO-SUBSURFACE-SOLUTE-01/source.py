@@ -5,6 +5,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[4]
 ORIGINAL_SHA='2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2'
 HELPER_SHA='0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f'
+IRRIGATION_SHA='65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1'
 
 
 def helper_source():
@@ -13,6 +14,17 @@ def helper_source():
     if hashlib.sha256(canonical).hexdigest()!=HELPER_SHA:
         raise ValueError('Foreign conservative subsurface solute source')
     return canonical
+
+
+def irrigation_source(original):
+    if hashlib.sha256(original).hexdigest()!=IRRIGATION_SHA:
+        raise ValueError('Foreign original irrigation concentration producer')
+    anchor=b'      use MOD_swap_base,        only: swsolu, unit_err, fl_initialize, swirfix'
+    if original.count(anchor)!=1:raise ValueError('Changed original irrigation switch import')
+    original=original.replace(anchor,anchor+b', swmacro')
+    anchor=b'                  qssdi(nod_ssdi(1):nod_ssdi(2)) = irrate(nirri)'
+    if original.count(anchor)!=1:raise ValueError('Changed original fixed subsurface producer')
+    return original.replace(anchor,b'                  if(swsolu==1.and.swmacro==0)cirr=irconc(nirri)\r\n'+anchor)
 
 
 def source(original):

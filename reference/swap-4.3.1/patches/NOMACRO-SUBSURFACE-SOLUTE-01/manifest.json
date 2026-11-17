@@ -1,11 +1,13 @@
 {
   "audit_id": "NOMACRO-SUBSURFACE-SOLUTE-01",
-  "status": "PURE_PRODUCTION_COMPONENT_O0_O2_PASS_REFERENCE_MODEL_PENDING",
+  "status": "PRODUCER_AND_CDE_SOURCE_IMPLEMENTED_COMPONENT_PASS_PAIRED_REFERENCE_PENDING",
   "original_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
   "corrected_sha256": "7731a8db5712fd3d2c6631ee910d79c1801b5b762673c9427a30cfdfb5f29c0b",
   "helper_canonical_LF_sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
   "helper": "src/process/mod_subsurface_solute_source.f90",
   "b1_promotion": false,
   "active_macropore_qualification": false,
-  "scope": "Conserved nodal chemical irrigation source and matching original ledgers only; SWMACRO0, no physics/solver tolerance change."
+  "scope": "Conserved nodal chemical irrigation source and matching original ledgers only; SWMACRO0, no physics/solver tolerance change.",
+  "original_irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+  "corrected_irrigation_sha256": "92ca8e7ea395a66a1023b24dfe1c73cd561fc1d9e07370fdef84812a7a3508a2"
 }
