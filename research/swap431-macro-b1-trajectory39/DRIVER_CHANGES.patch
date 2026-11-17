@@ -1,0 +1,149 @@
+--- ACTIVE38/soilwater_native.f90
++++ TRAJECTORY39/soilwater_native.f90
+@@ -261,13 +261,8 @@
+  use variables,only:t1900,dt,fldecdt
+  use MOD_swap_mp,only:IDecMpRat,FlDecMpRat
+  use MOD_macropore,only:MacroStateVar
+- use MOD_drain,only:drain
+- implicit none
+- character(24)::mode
+- character(80)::text
+- character(60)::label
+- character(8)::policy34
+- integer::i,target_attempt,u
++ implicit none
++ integer::u
+  handled=.true.
+  if(.not.period_begin_done) then
+   period_begin_done=.true.
+@@ -275,97 +270,29 @@
+   call native09_dump('context_begin')
+   call ledger12_dump('ledger_begin')
+  end if
+- call get_environment_variable('DAY10_MODE',mode)
+- call get_environment_variable('PERIOD34_ORIGINAL_POLICY',policy34)
+- target_attempt=-1
+- if(trim(mode)/='TRAJ') then
+-  call get_environment_variable('TRAJECTORY33_ATTEMPT',text)
+-  read(text,*) target_attempt
+- end if
+- if(attempts+1/=target_attempt) then
+-  detail33=.false.
+-  call capture33()
+-  call head_start()
+-  call headcalc
+-  call head_end()
+-  if(fldecdt.or.FlDecMpRat) then
+-   if(active_in_attempt>0) then
+-    call inventory_dump('refused')
+-    call native09_dump('context_refused')
+-    call ledger12_dump('ledger_refused')
+-    open(newunit=u,file='event33.txt',status='replace')
+-    write(u,*) attempts,t1900,dt,active_in_attempt,IDecMpRat,merge(1,0,fldecdt),merge(1,0,FlDecMpRat)
+-    close(u)
+-    call SoilWaterStateVar(2)
+-    call MacroStateVar(2)
+-    call inventory_dump('rollback')
+-    call native09_dump('context_rollback')
+-    call ledger12_dump('ledger_rollback')
+-    call finish33('FIRST_ACTIVE_REFUSAL')
+-   else if((FlDecMpRat.or.IDecMpRat/=0).and.trim(policy34)/='1') then
+-    call finish33('SCALED_REQUEST_BEFORE_ACTIVE_REFUSAL')
+-   end if
+-  end if
+-  return
+- end if
+- if(abs(t1900-35797.370782734390d0)>1d-10) error stop 'ACTIVE38 original clock mismatch'
+- select case(target_attempt)
+- case(296)
+-  if(abs(dt-0.00022919151316365426d0)>1d-16) error stop 'ACTIVE38 dt296 mismatch'
+- case(297)
+-  if(abs(dt-0.00007639717105455142d0)>1d-16) error stop 'ACTIVE38 dt297 mismatch'
+- case(298)
+-  if(abs(dt-0.000025465723684850474d0)>1d-16) error stop 'ACTIVE38 dt298 mismatch'
+- case default
+-  error stop 'ACTIVE38 outside preregistered set'
+- end select
+- if(IDecMpRat/=0) error stop 'TRAJECTORY33 scaled replay excluded'
+- apply37=.true.
+- call jac37_calibrate()
+- detail33=.true.
+- call inventory_dump('origin')
+- call native09_dump('context_origin')
+- call ledger12_dump('ledger_origin')
+- if(trim(mode)=='DIRECT') then
+-  fldecdt=.true.
+-  call TimeControl(5)
+-  call drain(2)
+-  call SoilWaterStateVar(1)
+-  call MacroStateVar(1)
+- end if
+- do i=1,4
+-  write(label,'(a,i0)') 'begin_',i
+-  call inventory_dump(trim(label))
+-  call native09_dump('context_'//trim(label))
+-  call ledger12_dump('ledger_'//trim(label))
+-  call capture33()
+-  call head_start()
+-  call headcalc
+-  call head_end()
+-  write(label,'(a,i0)') 'returned_',i
+-  call inventory_dump(trim(label))
+-  call native09_dump('context_'//trim(label))
+-  call ledger12_dump('ledger_'//trim(label))
+-  if(.not.fldecdt.and..not.FlDecMpRat) then
+-   if(IDecMpRat/=0) error stop 'TRAJECTORY33 scaled retry excluded'
+-   call inventory_dump('accepted_return')
+-   call native09_dump('context_accepted_return')
+-   call ledger12_dump('ledger_accepted_return')
+-   reject26_pending=.true.
+-   return
+-  end if
++ ! Numerical activation from the first own head, always guarded by unchanged terms.
++ apply37=.true.;detail33=.false.
++ call capture33()
++ call head_start()
++ call headcalc
++ call head_end()
++ if(fldecdt.or.FlDecMpRat) then
++  open(newunit=u,file='refusal_trace.txt',status='unknown',position='append')
++  write(u,*) attempts,t1900,dt,active_in_attempt,IDecMpRat,merge(1,0,fldecdt),merge(1,0,FlDecMpRat)
++  close(u)
++ end if
++ if(FlDecMpRat.or.IDecMpRat/=0) then
++  call inventory_dump('refused')
++  call native09_dump('context_refused')
++  call ledger12_dump('ledger_refused')
+   call SoilWaterStateVar(2)
+   call MacroStateVar(2)
+-  write(label,'(a,i0)') 'rollback_',i
+-  call inventory_dump(trim(label))
+-  call native09_dump('context_'//trim(label))
+-  call ledger12_dump('ledger_'//trim(label))
+-  if(FlDecMpRat.or.IDecMpRat/=0.or.i==4) call finish33('NO_UNSCALED_RETRY_WITHIN_BOUND')
+-  call TimeControl(5)
+-  call drain(2)
+-  call SoilWaterStateVar(1)
+-  call MacroStateVar(1)
+- end do
++  call inventory_dump('rollback')
++  call native09_dump('context_rollback')
++  call ledger12_dump('ledger_rollback')
++  call finish33('SCALED_REQUEST_BEFORE_SHORT_TARGET')
++ end if
++ ! Ordinary unscaled refusal is handled by the unchanged original host transaction.
+ end function
+ 
+ subroutine retry07_checkpoint()
+@@ -405,7 +332,10 @@
+   call ledger12_dump('ledger_committed')
+   call finish33('TARGET_RETRY_HOST_COMMITTED')
+  end if
+- if(commit()) call finish33('INTERNAL_BUDGET_BEFORE_PERIOD_END')
++ done35=commit()
++ if(t1900>=35797.372d0) call finish33('BOUNDED_CORRECTED_TRAJECTORY')
++ if(done35) call finish33('INTERNAL_BUDGET_BEFORE_SHORT_TARGET')
++ if(budget_count>=512) call finish33('COMMIT_CAP_BEFORE_SHORT_TARGET')
+ end subroutine
+ 
+ subroutine finish33(reason)
