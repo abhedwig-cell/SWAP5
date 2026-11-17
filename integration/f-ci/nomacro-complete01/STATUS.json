@@ -1,0 +1,54 @@
+{
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "baseline": "67ddba2692cc13f89cfc29100836f2d6a4b80eec",
+  "canonical": "integration/f-ci-canonical",
+  "branch": "codex/nomacro-complete01",
+  "last_commit": "67ddba2692cc13f89cfc29100836f2d6a4b80eec",
+  "status": "IMPLEMENTED_NOT_QUALIFIED",
+  "functional_completeness": "PARTIAL",
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
+  "completed": [
+    "Reconciled PR1662,1669..1696 against live GitHub metadata and canonical",
+    "Located active independent table-drainage work on codex/nomacro-coverage18; excluded its unmerged code"
+  ],
+  "open": [
+    "Complete historical selector inventory",
+    "Scheduled subsurface water irrigation qualification",
+    "Remaining chemical reservoir/age/vapor/drainage/surfacewater/constitutive/weather/state gaps"
+  ],
+  "dependency_surface": [
+    "app/hybrid_water/experimental_project.py",
+    "app/hybrid_water/daily_host.py",
+    "app/hybrid_water/daily_coupling.py",
+    "app/hybrid_water/scheduled_subsurface_irrigation.py",
+    "original MOD_irrigation, MOD_integral and water solver; existing complete management native codec"
+  ],
+  "invariants": [
+    3,
+    4,
+    7,
+    13,
+    21,
+    23
+  ],
+  "latest_test_results": [],
+  "failed_tests": [],
+  "running_ci": [],
+  "next_code_change": "Execute real original scheduled subsurface irrigation through O0/O2 production host; diagnose any actual balance/restart defect before admission.",
+  "recovery_point": "Read STATUS.json, verify branch/canonical delta; continue tests/nomacro_scheduled_subsurface/run.py with existing provider C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider; never rebind old source identities.",
+  "external_blocker": null,
+  "test_selection": {
+    "groups": {
+      "scheduled_subsurface": {
+        "changed_dependency": "Previously refused original SCHEDULE1 ISUAS2 water input; guarded actual original reader; source-bound reuse identity",
+        "scientific_claim": "Original point/interval subsurface scheduling integrates conserved daily water and complete own restart without changed physical equations",
+        "owner": "SWAP5-NOMACRO-COMPLETE01 / original MOD_irrigation",
+        "authority": "AGENTS.md#independent-local-testability; docs/verification/principles.md#transaction-tests",
+        "expected_seconds": 260,
+        "existing_evidence": "Prior complete management codec and fixed subsurface integration; scheduled ISUAS2 not qualified. Run focused original production route.",
+        "prior_execution": "NONE"
+      }
+    }
+  }
+}

@@ -213,8 +213,11 @@ def inspect(directory):
             if one(body, 'DRAMET', r'[+-]?\d+') not in ('2', '3'):
                 raise ValueError('Unqualified drainage method')
         if path.suffix.lower() == '.crp' and schedule == '1':
-            if one(body, 'ISUAS', r'[+-]?\d+') not in ('0', '1'):
-                raise ValueError('Subsurface scheduled irrigation is not integrated')
+            method = one(body, 'ISUAS', r'[+-]?\d+')
+            if method not in ('0', '1', '2'):
+                raise ValueError('Unsupported original scheduled irrigation method')
+            if method == '2' and selected['SWSOLU']:
+                raise ValueError('Scheduled subsurface solute irrigation requires a separate conserved mass owner')
     start = one(text, 'TSTART', r'\d{4}-\d{2}-\d{2}')
     end = one(text, 'TEND', r'\d{4}-\d{2}-\d{2}')
     if date.fromisoformat(end) < date.fromisoformat(start):
