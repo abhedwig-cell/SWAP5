@@ -1,0 +1,39 @@
+{
+  "status": "CORRECTED_ORIGINAL_SOURCE_ACTIVATES_SALINITY_PRISTINE_SOURCE_ABSENT_PASS",
+  "profiles": {
+    "original-O0": {
+      "days": 1096,
+      "executable_sha256": "76dae8b498a301e3645bc78e4060e15ab1d3d2624239c351fe4bf661595f48d0",
+      "input_mass_mg_cm2": 0.0,
+      "salinity_reduction_cm": 0.0,
+      "max_printed_solute_residual_mg_cm2": 0.0,
+      "seconds": 3.0951173999346793
+    },
+    "corrected-O0": {
+      "days": 1096,
+      "executable_sha256": "3fd76b6aefe8376d8a9a98e73b6788cda3c8223e96e74221c63392d50f262cb7",
+      "input_mass_mg_cm2": 48.0,
+      "salinity_reduction_cm": 3.491979176509,
+      "max_printed_solute_residual_mg_cm2": 0.0,
+      "seconds": 3.148851600009948
+    },
+    "original-O2": {
+      "days": 1096,
+      "executable_sha256": "141e4a83c455c714f6aff79d6e3836c9cd0e26069e1c759aad1884b9c8a936d8",
+      "input_mass_mg_cm2": 0.0,
+      "salinity_reduction_cm": 0.0,
+      "max_printed_solute_residual_mg_cm2": 0.0,
+      "seconds": 3.0353918001055717
+    },
+    "corrected-O2": {
+      "days": 1096,
+      "executable_sha256": "f4675ae4c09fe1bd81573bf48d0752b5b213c65ebeebb7c9743405edbbca4150",
+      "input_mass_mg_cm2": 48.0,
+      "salinity_reduction_cm": 3.491979176509,
+      "max_printed_solute_residual_mg_cm2": 0.0,
+      "seconds": 3.2360366000793874
+    }
+  },
+  "reference_source_commit": "de800eaf275ce571d451675609c4ccae5929e11f",
+  "b1_promotion": false
+}

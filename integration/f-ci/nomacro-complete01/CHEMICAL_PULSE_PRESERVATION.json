@@ -1,0 +1,246 @@
+{
+  "status": "CORRECTED_CHEMICAL_SOURCE_PRESERVES_PULSE_PHYSICAL_CSV_NATIVE_PASS",
+  "source_commit": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
+  "profiles": {
+    "water-surface-history-O0": {
+      "changed_generated": [],
+      "unchanged_provider_closure": [
+        "donor_flags",
+        "kernel_flags",
+        "donor_objects",
+        "donor_modules",
+        "ttutil_modules",
+        "ttutil_library",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "time_step_policy"
+      ],
+      "inputs_exact": true,
+      "physical_csv_prefix_exact": true,
+      "days": 201,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.071154441869339e-14,
+          "max_kernel_cm": 3.069766663088558e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 6.788349247413734e-13
+        },
+        "model_seconds": 1.2464459999464452,
+        "build_sha256": "feda87ab4a5f0696d20c0539a0dac9d4a6e5e04fa8704bc2f1ffaf2bf30a0db0",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.48027929989621043
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.33834119979292154
+          }
+        ]
+      },
+      "corrected_source_policy": null
+    },
+    "water-surface-history-O2": {
+      "changed_generated": [],
+      "unchanged_provider_closure": [
+        "donor_flags",
+        "kernel_flags",
+        "donor_objects",
+        "donor_modules",
+        "ttutil_modules",
+        "ttutil_library",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "time_step_policy"
+      ],
+      "inputs_exact": true,
+      "physical_csv_prefix_exact": true,
+      "days": 201,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.071154441869339e-14,
+          "max_kernel_cm": 3.069766663088558e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 6.788349247413734e-13
+        },
+        "model_seconds": 1.3332944000139832,
+        "build_sha256": "ba55f945e3888c614df4facb6e35a29212a08eea266b8f67ce2efde955e3068a",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.4739179997704923
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.3530156002379954
+          }
+        ]
+      },
+      "corrected_source_policy": null
+    },
+    "chemical-surface-history-O0": {
+      "changed_generated": [
+        "irrigation.f90",
+        "mod_subsurface_solute_source.f90",
+        "solute.f90"
+      ],
+      "unchanged_provider_closure": [
+        "donor_flags",
+        "kernel_flags",
+        "donor_objects",
+        "donor_modules",
+        "ttutil_modules",
+        "ttutil_library",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "time_step_policy"
+      ],
+      "inputs_exact": true,
+      "physical_csv_prefix_exact": true,
+      "days": 201,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.071154441869339e-14,
+          "max_kernel_cm": 3.069766663088558e-14,
+          "max_solute_mg_cm2": 1.5251210396579479e-12,
+          "sum_water_residual_cm": 6.788349247413734e-13
+        },
+        "model_seconds": 1.3907416998408735,
+        "build_sha256": "422abd9b986d0b782ad79273ee993d8da6151e1313550fb6b6043d99f9b31805",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.44441029988229275
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.35059900023043156
+          }
+        ]
+      },
+      "corrected_source_policy": {
+        "policy": "original-corrected-fixed-subsurface-solute-v1",
+        "source_sha256": "3d16481f4b840213f280214990b93125edce31ebb31022ded0ce86360429c281",
+        "correction_sha256": "66181eaf79f9f6858c19a246b12f4a77d89e7135aff62f006f5305e7a366ed0c",
+        "helper_canonical_sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+        "original_solute_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+        "original_irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+        "fixed_reader_sha256": "13e223bb24ab212ba5e58aa7633b76535a4397c0c0904bc8d15b17a134ce000f"
+      }
+    },
+    "chemical-surface-history-O2": {
+      "changed_generated": [
+        "irrigation.f90",
+        "mod_subsurface_solute_source.f90",
+        "solute.f90"
+      ],
+      "unchanged_provider_closure": [
+        "donor_flags",
+        "kernel_flags",
+        "donor_objects",
+        "donor_modules",
+        "ttutil_modules",
+        "ttutil_library",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "time_step_policy"
+      ],
+      "inputs_exact": true,
+      "physical_csv_prefix_exact": true,
+      "days": 201,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.071154441869339e-14,
+          "max_kernel_cm": 3.069766663088558e-14,
+          "max_solute_mg_cm2": 1.5251210396579479e-12,
+          "sum_water_residual_cm": 6.788349247413734e-13
+        },
+        "model_seconds": 1.2264952999539673,
+        "build_sha256": "b31b4354c77f66140989d6b6dbd5db1bcc9412b3c3f0d385fc0df774a79220bd",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.4472269001416862
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.34027000004425645
+          }
+        ]
+      },
+      "corrected_source_policy": {
+        "policy": "original-corrected-fixed-subsurface-solute-v1",
+        "source_sha256": "3d16481f4b840213f280214990b93125edce31ebb31022ded0ce86360429c281",
+        "correction_sha256": "66181eaf79f9f6858c19a246b12f4a77d89e7135aff62f006f5305e7a366ed0c",
+        "helper_canonical_sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+        "original_solute_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+        "original_irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+        "fixed_reader_sha256": "13e223bb24ab212ba5e58aa7633b76535a4397c0c0904bc8d15b17a134ce000f"
+      }
+    }
+  }
+}
