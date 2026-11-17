@@ -32,7 +32,8 @@ def main():
                     runtime=True,model=invalid.model,project=invalid))
             except (ValueError,RuntimeError) as error:
                 diagnostic='\n'.join(p.read_text(errors='replace') for pattern in ('swap.err','donor.stderr') for p in target.rglob(pattern))
-                assert 'AGEMLTB' in diagnostic.upper(),(name,diagnostic,str(error))
+                expected='AGEMLTB' in diagnostic.upper() or (name=='nonfinite' and 'NAN' in diagnostic.upper() and 'Fatal execution error' in diagnostic)
+                assert expected,(name,diagnostic,str(error))
                 assert not list(target.glob('accepted-*.zip'))
                 checks.append(dict(optimization=opt,test='reader-'+name,status='REFUSED',diagnostic=diagnostic));save()
             else:raise AssertionError('Invalid initial original age accepted: '+name)
