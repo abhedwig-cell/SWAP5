@@ -1,5 +1,5 @@
 {
-  "status": "SEALED_CLOCK_SOURCE_STATE_OUTPUT_ADMISSION_PASS_CANONICAL_PENDING",
+  "status": "CLOCK_SOURCE_STATE_OUTPUT_ACTUAL_CANONICAL_ADMISSION_PASS",
   "runtime": "4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24",
   "canonical_parent": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "current_owner": "tests/nomacro_scheduled_subsurface/age_clock_verify.py",
@@ -115,7 +115,7 @@
     "runtime": "4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24",
     "canonical_parent": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
     "owner": "tests/nomacro_scheduled_subsurface/age_clock_verify.py",
-    "status": "SEALED_REGISTERED_ROOT_PASS_CANONICAL_PENDING",
+    "status": "ADMITTED_ACTUAL_CANONICAL_CURRENT_OWNER_PASS",
     "full_moving_fci": "NOT_SELECTED_IMPACT",
     "actual_receipt_component": "42cases*2opts*2platformsPASS; actualIntegral/Watstor, no copiedwaterlaw",
     "selected_ubuntu_run": 44192970110,
@@ -130,7 +130,8 @@
     "sealed": "36ce7dc47415478e7b9d86694bca401f26699763",
     "raw_producer_reports_bound": 84,
     "measured_legacy002_builds_bound": 24,
-    "current_root_seconds": 175.65230609988794
+    "current_root_seconds": 175.65230609988794,
+    "actual_canonical": "3bf7765ff78040e579252d749000ea051d2416a0"
   },
   "current_registered_root": {
     "returncode": 0,
@@ -148,5 +149,47 @@
       "age_units": "cm day",
       "native_codec": "S5AGE005"
     }
-  }
+  },
+  "actual_clock_canonical_merge": {
+    "status": "ACTUAL_CANONICAL_COMPLETE_TREE_AND_DETACHED_OWNER_PASS",
+    "pr": 1719,
+    "merge": "3bf7765ff78040e579252d749000ea051d2416a0",
+    "parents": [
+      "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
+      "6d9948f8e53e497632e55c591cf4a7d6fa242445"
+    ],
+    "qualified_head": "6d9948f8e53e497632e55c591cf4a7d6fa242445",
+    "tree": "655bba0a0467761cbbca643c87954424f5115581",
+    "exact_complete_tree": true,
+    "verification_context": "Actual detached merge in the isolated agent worktree; original OneDrive workspaces untouched",
+    "actual_detached_owner": {
+      "returncode": 0,
+      "seconds": 174.530432399828,
+      "head": "3bf7765ff78040e579252d749000ea051d2416a0",
+      "stdout": "{\n  \"status\": \"CURRENT_SUBDAILY_ANNUAL_MONTHLY_AGE_SOURCE_STATE_OUTPUT_ADMISSION_PASS\",\n  \"runtime\": \"4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"water_guard_cm\": 1e-10,\n  \"chemical_mass_guard_changed\": false,\n  \"age_units\": \"cm day\",\n  \"native_codec\": \"S5AGE005\"\n}\n",
+      "stderr": "",
+      "result": {
+        "status": "CURRENT_SUBDAILY_ANNUAL_MONTHLY_AGE_SOURCE_STATE_OUTPUT_ADMISSION_PASS",
+        "runtime": "4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24",
+        "functional_completion": "PARTIAL",
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "water_guard_cm": 1e-10,
+        "chemical_mass_guard_changed": false,
+        "age_units": "cm day",
+        "native_codec": "S5AGE005"
+      }
+    }
+  },
+  "admission_validator_recovery": [
+    {
+      "head": "ee06117d221d29ebe19651aa4c653a958765f9fc",
+      "status": "FAILED",
+      "reason": "Incorrect consumer assumption of source_commit in legacy002 reports; bind measured BUILD hashes instead."
+    },
+    {
+      "head": "c7754e1efd4bd2cd42b7ccb3403b8f4f4f6dce41",
+      "status": "FAILED",
+      "reason": "Incorrect canonical-LF expectation for platform-raw adapter source hash; compare exact same-platform qualified build identities; no object hash relaxed."
+    }
+  ]
 }

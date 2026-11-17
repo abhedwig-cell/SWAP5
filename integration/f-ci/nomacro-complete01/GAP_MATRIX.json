@@ -162,7 +162,7 @@
       "function": "Mixed aquifer reservoir, water age and vapor",
       "classification": "PARTIAL",
       "original_source": "solute.f90, solute1.f90, soilwater.f90",
-      "scope": "Bounded corrected SWBR1 admitted PR1706, original SWSOLU2 daily age source/state/output PR1711 and fixed zero-day young-water age PR1713. Non-daily age output, other age combinations and SWVAPOR remain open; no all-combinations/whole-science promotion.",
+      "scope": "Bounded correctedSWBR1, original daily/fixed-young age002, regular003, monthly/explicit004 and annual/NP2/3age005 source/state/output admitted. Other age/process combinations and SWVAPOR remain open; no all-combinations/whole-science promotion.",
       "authority": "app/hybrid_water/experimental_project.py",
       "authority_present": true
     },
@@ -1241,11 +1241,13 @@
     "canonical_merge": "9c32d7fc02b49c88839d392d81111760726bacce"
   },
   "bounded_subdaily_annual_age_clock": {
-    "classification": "IMPLEMENTED_NOT_QUALIFIED",
-    "source_qualification": "Windows/Ubuntu boundedsource/state/output PASS; sealedadmission/canonicalpending.",
+    "classification": "ADMITTED",
+    "source_qualification": "Actualcanonical3bf7765ff: exactb6/6dparents andcomplete655bba0tree; detachedregisteredrootPASS174.530sec.",
     "runtime": "4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24",
     "scope": "16profiles/platform: NP2/3plain/surface/SSDIinterval andannual-onlyplain/interval O0/O2,1096days,128exactfullcoldwindows/platform. Actualmonthlyinactiveomission inputs; old004/003/002/ageoff exactpreserved.",
     "qualification_authority": "integration/f-ci/nomacro-complete01/AGE_CLOCK_QUALIFICATION.json",
-    "remaining": "FLPRINTDT andotherhistoricaloutput/processdomains; originalwater/profile/cadence/format limitations remain NOT_QUALIFIED. No newRCartifact."
+    "remaining": "FLPRINTDT andotherhistoricaloutput/processdomains; originalwater/profile/cadence/format limitations remain NOT_QUALIFIED. No newRCartifact.",
+    "canonical_merge": "3bf7765ff78040e579252d749000ea051d2416a0",
+    "admission_authority": "integration/f-ci/nomacro-complete01/AGE_CLOCK_MERGE_RECEIPT.json"
   }
 }
