@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "f0e5e39ea3d166755e394700a5a8765700eab875",
+  "baseline": "55a5a641f0d3a9ed294756f9e245ee3e41193a1e",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-chemical-source01",
-  "last_commit": "4830f5d69",
-  "status": "FIXED_CHEMICAL_QUALIFIED_BRANCH_READY_CANONICAL",
+  "last_commit": "55a5a641f0d3a9ed294756f9e245ee3e41193a1e",
+  "status": "FIXED_CHEMICAL_CANONICALLY_ADMITTED_NEXT_SCHEDULED_SOURCE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -29,11 +29,12 @@
     "Ubuntu44071407357 point/interval O0/O2 full/native and24paired original reference periods SUCCESS; downloaded ZIP digests and1719members verified",
     "Windows file/inline source physical+CSV8days O0/O2 exact; six actual original invalid-depth native refusals PASS",
     "Fresh named3 and scheduled-water4 full trajectories, generated source and native payloads exact to admitted source",
-    "Four201day active pulse/native prefixes preserve prior full physical/CSV results across corrected chemical source"
+    "Four201day active pulse/native prefixes preserve prior full physical/CSV results across corrected chemical source",
+    "PR1702 canonical55a5a641f: exact parents and complete tree verified; actual detached canonical current owner PASS"
   ],
   "open": [
     "Complete historical selector inventory",
-    "Fixed chemical canonical admission; scheduled chemical source and native qualification",
+    "Scheduled chemical source selection, coupled native/event/transaction and portable qualification",
     "Remaining chemical reservoir/age/vapor/drainage/surfacewater/constitutive/weather/state gaps"
   ],
   "dependency_surface": [
@@ -179,9 +180,15 @@
       "cause": "Both complete periods satisfy mass guards but net salinity reduction was zero. First winter event and second compensated growing-season event are retained as inactive-exposure controls. Growing-season uncompensated source at unchanged original stress thresholds passes O0/O2 with positive3.4921434323cm response."
     }
   ],
-  "running_ci": [],
-  "next_code_change": "Create and merge fixed chemical PR to unchanged canonical f0e5; verify real parents/tree and execute current owner on actual merge postimage. Then continue scheduled chemical original source/reference/state qualification.",
-  "recovery_point": "All selected chemical/source/native/platform/salinity/preservation, docs and owner/negative gates PASS. Branch codex/nomacro-chemical-source01 ready; canonical stillf0e5. Original fixed source defects corrected explicitly; whole science NOT_QUALIFIED, all-scope migration PARTIAL; no active run.",
+  "running_ci": [
+    {
+      "id": 44075761879,
+      "source": "64195df1559ca630f4c0ed27ab83bb527b3af20c",
+      "status": "MODULAR_FEEDBACK_IN_PROGRESS_SELECTION_PREFLIGHT_PASS"
+    }
+  ],
+  "next_code_change": "Continue in private worktree C:/Users/Veldh012/swap5-nomacro-scheduled-chemical01, branch codex/nomacro-scheduled-chemical01. Scheduled original paired16period reference O0/O2 now PASS with point64 and interval174mg/cm2; implement separate scheduled selection/metadata and qualify actual source/native/event transactions before admission.",
+  "recovery_point": "Fixed chemical source is canonical55a5a641f viaPR1702; tree8209721e exact to qualified64195df15 and actual canonical owner PASS. Metadata receipt admission pending. Continue scheduled chemical from this canonical; fixed sealed proof6514334f immutable. FCI44075761879 feedback remains monitored; full moving FCI not selected. All-scope PARTIAL/science NOT_QUALIFIED.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -231,7 +238,7 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "Clean exact-owner successor PASS; next commit adds only permitted recovery/selection metadata.",
+  "last_commit_role": "Actual PR1702 canonical implementation: parents and complete qualified tree exact, real detached postimage owner PASS.",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01"

@@ -1,6 +1,6 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
+  "baseline": "55a5a641f0d3a9ed294756f9e245ee3e41193a1e",
   "status": "SOURCE_BASED_FAMILY_MATRIX_WITH_REMAINING_SELECTOR_RECONCILIATION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -122,8 +122,8 @@
       "function": "Chemical subsurface irrigation",
       "classification": "PARTIAL",
       "original_source": "irrigation.f90, solute.f90",
-      "scope": "Proven original fixed concentration producer and CDE source defects corrected on development branch; point/interval Windows/Ubuntu full O0/O2 mass/native/input/transaction checks pass. Canonical fixed admission pending; scheduled chemical remains refused; no global B1 promotion.",
-      "authority": "integration/f-ci/nomacro-complete01/CHEMICAL_CORRECTED_REFERENCE.json",
+      "scope": "Fixed point/interval chemical input canonically admitted via explicit corrected source and ledgers, PR1702. Original scheduled CDE source omission remains inherited; scheduled chemical still refused pending caller/native/platform qualification.",
+      "authority": "integration/f-ci/nomacro-complete01/CHEMICAL_MERGE_RECEIPT.json",
       "authority_present": true
     },
     {
@@ -188,6 +188,14 @@
       "original_source": "macropore.f90",
       "scope": "preserved; audit/contract work not touched",
       "authority": "AGENTS.md",
+      "authority_present": true
+    },
+    {
+      "function": "Corrected fixed chemical subsurface source",
+      "classification": "ADMITTED",
+      "original_source": "irrigation.f90, solute.f90",
+      "scope": "PR1702 corrected producer and CDE source: Windows/Ubuntu point/interval full O0/O2, strict mass, own native and active external/refusal; original source controls, active salinity and admitted preservation. File/inline input; no global B1 or scheduled promotion.",
+      "authority": "integration/f-ci/nomacro-complete01/CHEMICAL_MERGE_RECEIPT.json",
       "authority_present": true
     }
   ],
