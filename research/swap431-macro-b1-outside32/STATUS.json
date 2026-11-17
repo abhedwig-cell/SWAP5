@@ -1,14 +1,21 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "ORIGINAL_OBSERVER_VALIDATED_TARGETS_PERSISTED",
   "baseline": "550d6ef1ce5be3cf0d9188ad976795ccdbfe5078",
   "remote_main": "be481cfb40f953e337116ef4a6dc5bc3ef64d4f7",
   "workstream": "isolated SWAP431 B1 numerical research",
   "scope": "One O2 original observer through660attempts with initial records ONLY580..660 around prior active624. Max2 NEW original candidatecontexts, no extension, no INITIAL30 pool repeats.",
-  "selection_rule": "Exclude all previously targeted C/D/E/F/G contexts and original38. Require original exhausted refusal, dt>1e-5, preIDec0,noFlDecMpRat, initial I0,L<W,0<factor<1,E/dt>1e-7,O>E,GWLbracket50. First: greatest original extraLS (earliest tie). Second: strongest partial limit (smallestfactor) from different original committed step (earliesttie). Fewer than2 eligible => test onlythose, none => no candidate runs.",
+  "selection_rule": "Keep samewindow580..660, same max2 contexts, no further extension. Choose largest originalextraLS earliesttie620; choose non-node52 refusal from different committedstep610. Both initialI0,L=W; actual rank1activation must be measured during iteration.",
   "routes": "Observer O2 then TRIAL O2/O0 max2contexts; DIRECT bothopts only following true active refusal with accepted original smaller retry. Every model process timeout20sec,max4originaltargetattempts,stopscaledrequest,onehostcommit,no followupstep.",
   "candidate_and_harness_source_byte_exact_REMAINING31": true,
   "observer_changes": "Only bounded driver and observation gates; no extra provider calls; targetfalse original heads. Verify original non-timing attempts and budgetprefix.",
   "invariants": "No physics, tolerance, MAXIT, dt, reduction, numerical candidate, shared interface, B0/B1.12/canonical/release change; conserve accepted water and transactional state semantics.",
   "required": "Actually active rank1 during true solver refusal, original rollback, exact direct smaller retry. No historical refusal or line-search rejection substitution.",
-  "official_promotion": false
+  "official_promotion": false,
+  "original_selection_eligible_count": 0,
+  "scope_revision": "See SCOPE_REVISION.json: allow zero inflow fullyconstrained START, require actual rank1 activation for failure witness; physicalguard unchanged.",
+  "initial_partial_requirement_not_qualified": true,
+  "selected_original_attempts": [
+    620,
+    610
+  ]
 }
