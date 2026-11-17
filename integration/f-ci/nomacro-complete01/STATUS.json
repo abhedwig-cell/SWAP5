@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "e709ab5a4b9b858c539e3c7208b8997ea6205ce2",
+  "baseline": "949a61af1b4eee252959208d3d544e17c4895db9",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-scheduled-chemical01",
-  "last_commit": "112f1b6ae",
-  "status": "SCHEDULED_CHEMICAL_QUALIFIED_BRANCH_READY_CANONICAL",
+  "last_commit": "949a61af1b4eee252959208d3d544e17c4895db9",
+  "status": "SCHEDULED_AND_FIXED_CHEMICAL_CANONICALLY_ADMITTED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -31,12 +31,13 @@
     "Fresh named3 and scheduled-water4 full trajectories, generated source and native payloads exact to admitted source",
     "Four201day active pulse/native prefixes preserve prior full physical/CSV results across corrected chemical source",
     "PR1702 canonical55a5a641f: exact parents and complete tree verified; actual detached canonical current owner PASS",
-    "Scheduled chemical Windows/Ubuntu eight1096periods O0/O2 source/native/external PASS; Linux44079261977 SUCCESS, both raw digests/1504members checked; native10invalid domain refusals and interleaved6step source origins bothopts PASS; nine admitted-context emitted closures and native prefixes exact without repeated full periods"
+    "Scheduled chemical Windows/Ubuntu eight1096periods O0/O2 source/native/external PASS; Linux44079261977 SUCCESS, both raw digests/1504members checked; native10invalid domain refusals and interleaved6step source origins bothopts PASS; nine admitted-context emitted closures and native prefixes exact without repeated full periods",
+    "PR1704 actual canonical949a61af1: exact e709/200a3e parents and full tree36e24ab, actual detached current owner PASS; scheduled source64/174mg/cm2 admitted"
   ],
   "open": [
     "Complete historical selector inventory",
-    "Scheduled chemical source selection, coupled native/event/transaction and portable qualification",
-    "Remaining chemical reservoir/age/vapor/drainage/surfacewater/constitutive/weather/state gaps"
+    "Original SWBR1 aquifer/source/ledger and full native state; age/vapor and other chemical variants",
+    "Remaining drainage/surfacewater/constitutive/weather/state gaps and release consolidation"
   ],
   "dependency_surface": [
     "app/hybrid_water/daily_host.py",
@@ -191,8 +192,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Integrate scheduled chemical branch onto unchanged canonicale709, verify actual parents/tree and real canonical current owner. Then inspect next uncovered original age/vapor/aquifer state/ledger branch and implement the first safe supported contract; no active macro/general MODFLOW/performance work.",
-  "recovery_point": "All scheduled source/reference/full/native/platform/input/isolation/closure/docs and actual owner/dirty+committed-source guards PASS. Branch ready; canonicale709 fixed source admitted. Source6c5b, Ubuntu70293c7/run44079261977 SUCCESS, proofa5ee02. No model/CI process active. Entire migration PARTIAL/science NOT_QUALIFIED.",
+  "next_code_change": "Investigate original SWBR1 aquifer breakthrough source: apparent bdenskfsatporos(i) after node loop indexes numnod+1; reproduce with checked original O0/O2, then implement small real conservative reservoir/source/state contract and corrected reference before enabling input. Preserve literal admitted chemical proof; no macropore/general MODFLOW work.",
+  "recovery_point": "Canonical949a61af1 admits scheduled source viaPR1704 and fixed source viaPR1702. Runtime6c5b, Ubuntu70293c7/run44079261977 and proofa5ee02 retain exact scope; actual merge tree36e24ab/current-owner verified. Metadata receipt admission pending; no active model/CI. Next safe block original SWBR1 source/reference/state; untouched age/vapor and full selector reconciliation remain open. All-scope PARTIAL/science NOT_QUALIFIED.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -260,7 +261,7 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "Actual clean scheduled owner PASS; subsequent permitted recovery/selection metadata only.",
+  "last_commit_role": "PR1704 actual canonical merge; both parents and complete qualified tree36e24ab exact, actual detached current owner PASS.",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",

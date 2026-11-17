@@ -1,6 +1,6 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "55a5a641f0d3a9ed294756f9e245ee3e41193a1e",
+  "baseline": "949a61af1b4eee252959208d3d544e17c4895db9",
   "status": "SOURCE_BASED_FAMILY_MATRIX_WITH_REMAINING_SELECTOR_RECONCILIATION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -120,10 +120,10 @@
     },
     {
       "function": "Chemical subsurface irrigation",
-      "classification": "PARTIAL",
+      "classification": "ADMITTED",
       "original_source": "irrigation.f90, solute.f90",
-      "scope": "Fixed point/interval chemical input canonically admitted via explicit corrected source and ledgers, PR1702. Original scheduled CDE source omission remains inherited; scheduled chemical still refused pending caller/native/platform qualification.",
-      "authority": "integration/f-ci/nomacro-complete01/CHEMICAL_MERGE_RECEIPT.json",
+      "scope": "Bounded fixed and scheduled point/interval chemical source are canonically admitted via explicit correction/shared evaluator, strict water/solute/native/event/transaction and Windows/Ubuntu O0/O2 controls; no global B1 or whole migration/science promotion.",
+      "authority": "integration/f-ci/nomacro-complete01/SCHEDULED_CHEMICAL_MERGE_RECEIPT.json",
       "authority_present": true
     },
     {
@@ -196,6 +196,14 @@
       "original_source": "irrigation.f90, solute.f90",
       "scope": "PR1702 corrected producer and CDE source: Windows/Ubuntu point/interval full O0/O2, strict mass, own native and active external/refusal; original source controls, active salinity and admitted preservation. File/inline input; no global B1 or scheduled promotion.",
       "authority": "integration/f-ci/nomacro-complete01/CHEMICAL_MERGE_RECEIPT.json",
+      "authority_present": true
+    },
+    {
+      "function": "Scheduled chemical subsurface source",
+      "classification": "ADMITTED",
+      "original_source": "irrigation.f90, solute.f90",
+      "scope": "PR1704: separate scheduled policy, unchanged shared source/codec, eight portable full periods,32full+8short native, original16paired, native bad-input/isolation and exact unchanged-context closures/prefixes.",
+      "authority": "integration/f-ci/nomacro-complete01/SCHEDULED_CHEMICAL_MERGE_RECEIPT.json",
       "authority_present": true
     }
   ],
