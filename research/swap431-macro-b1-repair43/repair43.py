@@ -6,7 +6,7 @@ sp=importlib.util.spec_from_file_location('native09',P/'native09.py');m=importli
 body=(P/'native09.py').read_text();body=body[body.index('def build(opt):'):body.index('def run(opt,')];body=body.replace("for name,dest in [","for name,dest in [('diag_state','diag19'),('calcgwl_probe','calcgwl'),('head_diag','headcalc'),('macrorate_node','macrorate'),('integral_canopy','integral'),",1);body=body.replace("('macropore_native','macropore'),","('macropore_native','macropore'),('probe_state','probe23'),('contract43_probe','contract43'),('guard41_observer','guard41'),('jac37_update','jac37'),('jac_update','jac24'),('ledger_state','ledger12'),",1);exec(body,m.__dict__)
 def run(opt,mode,label=''):
  profile=mode+('_'+label if label else '')
- assert mode=='TRAJ' and not label
+ assert mode=='TRAJ' and label in ['', 'FINAL']
  c=W/(opt+'-'+profile+'-FINAL-RENDER');c.mkdir(parents=True,exist_ok=True);assert not (c/'outcome.txt').exists()
  for x in json.loads((P/'CASE_IDENTITY.json').read_text()):
   src=Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/x['path'];assert m.sha(src)==x['sha256'];(c/x['path']).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,c/x['path'])
