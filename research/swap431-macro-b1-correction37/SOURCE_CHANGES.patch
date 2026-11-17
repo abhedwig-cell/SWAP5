@@ -1,0 +1,308 @@
+--- a/research/swap431-macro-b1-domains36/diag_state.f90
++++ b/research/swap431-macro-b1-correction37/diag_state.f90
+@@ -4,7 +4,7 @@
+ logical,save::target=.false.,qualification_active=.true.,detail33=.false.
+ integer,save::active_in_attempt=0,active_total=0
+ integer,save::iter_index=0,node_u,op_u,raw_u,limit_u,macro_seq=0,op35_u,node35_u
+-logical,save::probe_busy=.false.
++logical,save::probe_busy=.false.,apply37=.false.
+ integer,save::probe_u,point_id=0,point_node=0
+ real(8),save::point_delta=0
+ integer,save::kind=-1,iterations=0,flags(5)=0,worst=0,prelevel=0
+--- a/research/swap431-macro-b1-domains36/jac37_update.f90
++++ b/research/swap431-macro-b1-correction37/jac37_update.f90
+@@ -0,0 +1,164 @@
++subroutine jac37_terms(n,uu,vv,bl,bd,meta,eligible)
++use MOD_arrays,only:macp,madm
++use MOD_grid,only:numnod,z,dz
++use MOD_macropore,only:NumDm,ICpTpSatZon,ICpTpPerZon,ICpBtPerZon,QInMtxSatDmCp,QInIntSatDmCp,QOutMtxSatDmCp,QOutMtxUnsDmCp,FrReduQ
++use MOD_swap_mp,only:swmbf,IcTopMp,IDecMpRat,GwlFlCpZo
++use variables,only:h,theta,thetas,pegwl
++implicit none
++integer,intent(in)::n
++real(8),intent(out)::uu(macp,2),vv(macp,2),bl,bd,meta(16)
++logical,intent(out)::eligible
++real(8)::cm(24,madm),pot(macp,2),valid,den,g,g0,g1,depth,hm,delta,doo,rhoslope,cg,ci,fr
++integer::d,k,i
++uu=0d0;vv=0d0;bl=0d0;bd=0d0;meta=0d0;eligible=.false.
++meta(1)=-1
++if(n/=numnod.or.n<58.or.NumDm/=5.or.swmbf/=1.or.IcTopMp/=1.or.IDecMpRat/=0.or.FrReduQ/=1d0) return
++call jac37_get(cm,pot,valid)
++meta(15)=valid;meta(1)=-2
++if(valid/=1d0) return
++meta(1)=-3
++if(ICpTpSatZon/=51.or.ICpTpPerZon/=51.or.ICpBtPerZon/=51) return
++if(h(50)>=0d0.or.h(51)<=0d0.or.h(51)>=1d0) return
++if(abs(pegwl-GwlFlCpZo)>1d-9) return
++den=h(51)-h(50)
++g=z(51)+h(51)/den*(z(50)-z(51))
++if(abs(g-GwlFlCpZo)>1d-9) return
++g0=(z(50)-z(51))*h(51)/den**2
++g1=-(z(50)-z(51))*h(50)/den**2
++meta(13)=g;meta(16)=theta(50)-thetas(50)
++meta(1)=-4
++if(any(cm(8,1:5)/=1d0).or.any(cm(22,1:5)/=0d0)) return
++if(cm(16,1)/=1d0.or.any(cm(16,4:5)/=1d0)) return
++meta(1)=-5
++if(any(QInIntSatDmCp(1,1:50)/=0d0).or.any(QInIntSatDmCp(1,52:n)/=0d0)) return
++if(QInIntSatDmCp(1,51)<=0d0.or.QInMtxSatDmCp(1,51)<=0d0) return
++if(QOutMtxSatDmCp(1,51)/=0d0.or.QOutMtxUnsDmCp(1,51)/=0d0) return
++hm=cm(24,1)-z(51)
++if(hm>=1d-8) return
++hm=0d0
++depth=g-(z(51)-.5d0*dz(51))
++if(depth<=0d0.or.depth>=dz(51)) return
++cg=(QInMtxSatDmCp(1,51)+QInIntSatDmCp(1,51))/depth
++ci=QInIntSatDmCp(1,51)/(h(51)-hm)
++bl=cg*g0;bd=cg*g1+ci
++meta(11)=cg;meta(12)=ci
++meta(1)=-6
++! New and old correction regions do not overlap: positive top-only inflow here.
++do k=1,2
++ d=k+1
++ if(cm(5,d)<=0d0.or.cm(5,d)/=cm(9,d).or.any(cm(10:12,d)/=0d0)) return
++ if(any(cm(14:15,d)/=0d0).or.cm(6,d)<=0d0) return
++ if(cm(2,d)/=min(cm(4,d),cm(1,d))) return
++ fr=cm(16,d);meta(2+k)=fr
++ if(fr<0d0.or.fr>1d0) return
++ if(cm(4,d)<cm(1,d)) then
++  rhoslope=cm(18,d);meta(4+k)=1d0
++ else
++  rhoslope=0d0;meta(4+k)=0d0
++ end if
++ if(cm(4,d)==cm(1,d)) meta(6+k)=1d0
++ ! Unlimited and fully cut-off flows retain their native piecewise-zero factor derivative.
++ if(fr==0d0.or.fr==1d0) cycle
++ if(cm(17,d)/cm(21,d)<=1d-7.or.cm(6,d)<=cm(17,d)) return
++ do i=1,n
++  if(pot(i,k)>0d0) then
++   if(i<51.or.h(i)<=0d0) return
++   delta=max(0d0,cm(24,d)-z(i))-h(i)
++   if(delta<=0d0) return
++   doo=-pot(i,k)/delta
++   uu(i,k)=-pot(i,k)/cm(21,d)
++   vv(i,k)=-fr*doo/cm(6,d)
++  end if
++ end do
++ vv(50,k)=vv(50,k)-rhoslope*g0/cm(6,d)
++ vv(51,k)=vv(51,k)-rhoslope*g1/cm(6,d)
++ meta(2)=meta(2)+1d0
++end do
++meta(1)=1d0;eligible=.true.
++end subroutine
++
++subroutine jac37_solve(n,a,b,c,r,x,ierror,handled)
++use MOD_arrays,only:macp
++use DIAG19,only:attempts,iter_index,active_in_attempt,active_total
++implicit none
++integer,intent(in)::n
++real(8),intent(in)::a(n),b(n),c(n),r(n)
++real(8),intent(out)::x(n)
++integer,intent(out)::ierror
++logical,intent(out)::handled
++real(8)::uu(macp,2),vv(macp,2),meta(16),bl,bd,aa(n),bb(n),zz(n,2),M(2,2),rhs(2),lam(2),det,res(n)
++integer::k,i,e
++logical,save::opened=.false.
++integer,save::tu
++call jac37_terms(n,uu,vv,bl,bd,meta,handled)
++M=0d0;M(1,1)=1d0;M(2,2)=1d0;lam=0d0;det=1d0;res=-1d0
++if(handled) then
++ aa=a;bb=b;aa(51)=aa(51)+bl;bb(51)=bb(51)+bd
++ call tridag(n,aa,bb,c,r,x,ierror)
++ if(ierror/=0) error stop 'JAC37 active base solve failed'
++ zz=0d0
++ do k=1,2
++  if(all(uu(1:n,k)==0d0)) cycle
++  call tridag(n,aa,bb,c,uu(1:n,k),zz(:,k),e)
++  if(e/=0) error stop 'JAC37 update solve failed'
++ end do
++ do k=1,2
++  do i=1,2
++   M(k,i)=M(k,i)+dot_product(vv(1:n,k),zz(:,i))
++  end do
++  rhs(k)=dot_product(vv(1:n,k),x)
++ end do
++ det=M(1,1)*M(2,2)-M(1,2)*M(2,1)
++ if(abs(det)<1d-12) error stop 'JAC37 rank2 update singular'
++ lam(1)=(rhs(1)*M(2,2)-M(1,2)*rhs(2))/det
++ lam(2)=(M(1,1)*rhs(2)-rhs(1)*M(2,1))/det
++ x=x-zz(:,1)*lam(1)-zz(:,2)*lam(2)
++ res=bb*x-r
++ do i=2,n
++  res(i)=res(i)+aa(i)*x(i-1)
++ end do
++ do i=1,n-1
++  res(i)=res(i)+c(i)*x(i+1)
++ end do
++ do k=1,2
++  res=res+uu(1:n,k)*dot_product(vv(1:n,k),x)
++ end do
++ active_in_attempt=active_in_attempt+1;active_total=active_total+1
++end if
++if(.not.opened) then
++ open(newunit=tu,file='jac37_trace.txt',status='replace');opened=.true.
++end if
++write(tu,*) attempts,iter_index,meta,bl,bd,M(1,1),M(1,2),M(2,1),M(2,2),det,lam, &
++ merge(maxval(abs(res)),-1d0,handled)
++flush(tu)
++end subroutine
++
++subroutine jac37_calibrate()
++use,intrinsic::ieee_exceptions,only:ieee_status_type,ieee_get_status,ieee_set_status
++use SENSE23_TRANSACTION,only:snapshot
++use MOD_arrays,only:macp
++use MOD_grid,only:numnod
++implicit none
++real(8)::uu(macp,2),vv(macp,2),meta(16),bl,bd
++logical::eligible
++integer::u
++type(ieee_status_type)::fp
++call ieee_get_status(fp)
++call snapshot('cal37_before.bin',1)
++call snapshot('domains36_point.bin',2)
++call MACRORATE(2)
++call jac37_terms(numnod,uu,vv,bl,bd,meta,eligible)
++if(.not.eligible) error stop 'JAC37 calibration outside fixed contract'
++open(newunit=u,file='cal37_terms.txt',status='replace')
++write(u,*) 'meta',meta
++write(u,*) 'band',bl,bd
++write(u,*) 'u2',uu(1:numnod,1)
++write(u,*) 'u3',uu(1:numnod,2)
++write(u,*) 'v2',vv(1:numnod,1)
++write(u,*) 'v3',vv(1:numnod,2)
++close(u)
++call snapshot('cal37_before.bin',2)
++call snapshot('cal37_after.bin',1)
++call jac37_invalidate()
++call ieee_set_status(fp)
++end subroutine
+--- a/research/swap431-macro-b1-domains36/jac_update.f90
++++ b/research/swap431-macro-b1-correction37/jac_update.f90
+@@ -24,7 +24,7 @@
+ 
+ subroutine jac24_solve(n,a,b,c,r,x,ierror)
+ use MOD_arrays,only:macp
+-use DIAG19,only:attempts,iter_index,active_in_attempt,active_total
++use DIAG19,only:attempts,iter_index,active_in_attempt,active_total,apply37
+ implicit none
+ integer,intent(in)::n
+ real(8),intent(in)::a(n),b(n),c(n),r(n)
+@@ -32,8 +32,13 @@
+ integer,intent(out)::ierror
+ real(8)::uu(macp),vv(macp),d(macp),meta(12),z(macp),denom,alpha,res(n)
+ integer::u,i,e
++logical::handled37
+ logical,save::opened=.false.
+ integer,save::trace_u
++if(apply37) then
++ call jac37_solve(n,a,b,c,r,x,ierror,handled37)
++ if(handled37) return
++end if
+ call jac24_terms(n,uu,vv,d,meta)
+ call tridag(n,a,b,c,r,x,ierror)
+ if(ierror/=0) then
+--- a/research/swap431-macro-b1-domains36/macrorate_node.f90
++++ b/research/swap431-macro-b1-correction37/macrorate_node.f90
+@@ -22,11 +22,16 @@
+                                 vlmpstcp, vlmpdycp, ksatcovlay, icptpsatzon, gwlflcpzo, zbtdm, vlmpdm,                                       &
+                                 zdrabas, ppdmcp, icpbtdm, zwalevdm, mpvolume, nodgwlflcpzo, frmpwalwet, icptpwasrdm,swmbf, vlmpdmcp,         &
+                                 vlmpdmcpm1, waunmpdmcpm1, waunmpdmcp, waunsat,  WaSrMpDm, qtopmpdmcp, icpbtdmm1, nkwt, fldecMPmbf
+-      use DIAG19,only:target,attempts,iter_index,nvec,limit_u,macro_seq,probe_busy,probe_u,point_id,point_node,point_delta,detail33
++      use DIAG19,only:target,attempts,iter_index,nvec,limit_u,macro_seq,probe_busy,probe_u,point_id,point_node,point_delta,detail33,apply37
+       implicit NONE
+ 
+       integer::snap23_unit,snap23_mode
+       integer::n24,j24,l24
++      real(8),save::canonical37(24,madm)=0d0,head37(macp)=0d0,time37=0d0,dt37=0d0
++      integer,save::task37=-1,attempt37=-1,iteration37=-1
++      logical,save::ready37=.false.
++      real(8)::get37_meta(24,madm),get37_potential(macp,2),get37_valid
++
+       real(8)::pot35(macp),info35(12)
+       real(8),save::obs36_meta(24,madm),obs36_in(macp,madm),obs36_outsat(macp,madm),obs36_outuns(macp,madm),obs36_rapid(macp,madm)
+       real(8)::get36_meta(24,madm),get36_in(macp,madm),get36_outsat(macp,madm),get36_outuns(macp,madm),get36_rapid(macp,madm)
+@@ -78,6 +83,7 @@
+ !
+ !> I < ---------- INITIALISE AND CHECK MACROPORE STATUS ---------------
+ ! --- Initialisation Fluxes and Derivatives
++      if(apply37) ready37=.false.
+       QMaPo                            = 0.d0
+       QRapDra                          = 0.d0
+       QInTopVrtDm(1:NumDm)             = 0.d0
+@@ -269,6 +275,13 @@
+ !           Excess outflow; compensated in later sections
+             FlwOutDmExces(id) = 0.d0
+             if (WaSrMpDmTmp < WaSrMpDmMin) FlwOutDmExces(id) = WaSrMpDmMin - WaSrMpDmTmp
++            if(apply37) then
++             canonical37(:,id)=0d0
++             canonical37(1:15,id)=[WaSrMpDm(id),WaSrMpDmMin,WaSrMpDmMax,VlMpUndrGwL,FlwInDmTot,FlwOutDmTot(id), &
++              WaSrMpDmTmp,FrFlwIn,FlwInTopVrtDmPot(id),FlwInTopLatDmPot(id),FlwInIntSatDmPot(id),FlwInMtxSatDmPot(id), &
++              FlwOutMtxSatDmPot(id),FlwOutMtxUnsDmPot(id),merge(FlwOutDrRapPot,0d0,id==1)]
++             canonical37(18:24,id)=[VlMpDmCp(id,ICpTpSatZon)/dz(ICpTpSatZon),GwlFlCpZo,dble(ICpTpSatZon),dt,0d0,dble(IcTopMp),ZWaLevDm(id)]
++            end if
+             if(detail33) then
+              obs36_meta(:,id)=0d0
+              obs36_meta(1:15,id)=[WaSrMpDm(id),WaSrMpDmMin,WaSrMpDmMax,VlMpUndrGwL,FlwInDmTot,FlwOutDmTot(id), &
+@@ -1424,6 +1437,11 @@
+                if (id == 1) QOutDrRapCp(IcTopMp:NumNod) = FrFlwOut * FlwOutDrRapCpPot(IcTopMp:NumNod) / dt
+             end if
+             if(target.and.id==3) call limit21_trace(3)
++            if(apply37) then
++             canonical37(16,id)=FrFlwOut
++             canonical37(17,id)=FlwOutDmExces(id)
++             canonical37(22,id)=FlwInTopExcesTot
++            end if
+             if(detail33) then
+              obs36_meta(16,id)=FrFlwOut
+              obs36_meta(17,id)=FlwOutDmExces(id)
+@@ -1468,6 +1486,11 @@
+          QRapDra       = QRapDra + QOutDrRapCp(ic)
+       end do
+ !
++      if(apply37) then
++       head37(1:numnod)=h(1:numnod)
++       time37=t1900;dt37=dt;task37=ITask;attempt37=attempts;iteration37=iter_index
++       ready37=.true.
++      end if
+       if (ITask == 1) return
+ !              ------------- END of ITask 1 -------------
+ 
+@@ -1487,6 +1510,18 @@
+ 
+       return
+ 
++      return
++      entry jac37_get(get37_meta,get37_potential,get37_valid)
++      get37_meta=canonical37
++      get37_potential(:,1)=FlwOutMtxSatDmCpPot(2,:)
++      get37_potential(:,2)=FlwOutMtxSatDmCpPot(3,:)
++      get37_valid=0d0
++      if(ready37.and.task37==2.and.time37==t1900.and.dt37==dt.and.attempt37==attempts.and.iteration37==iter_index) then
++       if(all(head37(1:numnod)==h(1:numnod))) get37_valid=1d0
++      end if
++      return
++      entry jac37_invalidate()
++      ready37=.false.
+       return
+       entry diagnose36_get(get36_meta,get36_in,get36_outsat,get36_outuns,get36_rapid)
+       get36_meta=obs36_meta
+--- a/research/swap431-macro-b1-domains36/soilwater_native.f90
++++ b/research/swap431-macro-b1-correction37/soilwater_native.f90
+@@ -257,7 +257,7 @@
+ end subroutine
+ 
+ logical function retry07_driver() result(handled)
+- use DIAG19,only:head_start,head_end,attempts,detail33,active_in_attempt
++ use DIAG19,only:head_start,head_end,attempts,detail33,active_in_attempt,apply37
+  use variables,only:t1900,dt,fldecdt
+  use MOD_swap_mp,only:IDecMpRat,FlDecMpRat
+  use MOD_macropore,only:MacroStateVar
+@@ -310,6 +310,8 @@
+  end if
+  if(abs(t1900-35797.370324351359d0)>1d-10.or.abs(dt-0.0006875745394909628d0)>1d-16) error stop 'INACTIVE35 replay context mismatch'
+  if(IDecMpRat/=0) error stop 'TRAJECTORY33 scaled replay excluded'
++ apply37=.true.
++ call jac37_calibrate()
+  detail33=.true.
+  call inventory_dump('origin')
+  call native09_dump('context_origin')
