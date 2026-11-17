@@ -37,3 +37,26 @@ copy water laws, mutate prior helpers, rebind old native files or build a genera
 qualification framework. No active macro, broad MODFLOW, new solver or performance
 campaign is selected. No long matrix or portable campaign until the diagnostic
 identifies the actual changed dependency surface.
+
+The O0/O2 public baseline confirms all these gaps. SWCSV0/2 are accepted by the
+actual original source but refused by preflight. Non-ageNP2fails day1origin;
+non-age monthly output is rewritten and lacks a daily receipt. RequestedGWL/5
+becomes compatibility groups/12, with65columns versus the original2. Both
+FLPRINTDT age35day runs succeed warm and refuse native restart at the schedule
+periodic counter. SWCSV3crashes in the original GNU64executable. Its csv_out
+local allocatable buffer is allocated in case1 and used in a later case2call;
+Fortran deallocates it on procedure return. Prove this with an allocation-only
+instrumented real original call path, then qualify a one-line case2scratch
+allocation before any SWAP5activation. Preserve REAL4binary payload semantics.
+
+A separately selected original-output mode is justified: changing compatibility
+defaults would change admitted CSV/restart contracts. Plan a public
+`--original-output` choice for experimental original projects, with an explicit
+project/binding field defaulting off. It preserves actual format, groups,
+precision and date/frequency controls; default admitted behavior stays literal.
+Reuse the qualified Integral receipt provider, actual output expressions and
+complete defined calendar state. Water/age non-daily modes need this general
+receipt/state ownership. CDE initially requires daily output unless its separate
+chemical output history/receipt is demonstrably complete. Never silently accept
+an unsupported combination. The binary correction is a source-bound reference
+work unit first, not an already activated feature or mass-conservation claim.
