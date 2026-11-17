@@ -551,6 +551,11 @@ class CoupledDailyColumn:
                 conserved=struct.unpack_from('<'+str(self.project.nodes+2)+'d',aux,48)
                 if not all(math.isfinite(v) and v>=0 for v in conserved):
                     raise ValueError('Unrestartable candidate conserved solute state')
+            if self.project.age:
+                from conserved_original_age import MAGIC,validate as validate_age
+                with zipfile.ZipFile(candidate) as z:aux=z.read('macro.bin')
+                if aux[:8]!=MAGIC:raise ValueError('Foreign original age native codec')
+                validate_age(raw['age_state_cm_day'])
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')
             host.close()
