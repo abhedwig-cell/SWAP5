@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: irrigation-pulse-${{ github.ref }}
   cancel-in-progress: false
@@ -32,19 +33,27 @@ jobs:
             reference/swap-4.3.1/source-archives
       - name: Prepare immutable original source and compiler provider
         run: python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/provider"
-      - name: Original TimeControl component and short O0/O2 pulse restarts
+      - name: Recover completed source-bound component full periods and native windows
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 44047914474
+          name: irrigation-pulse-3b5c682da60e9be18e5f5ac8cb1e1b81116bda87
+          path: ${{ runner.temp }}/previous
+      - name: Verify unchanged executed dependency surface before continuation
         run: |
-          python3 -B tests/irrigation_pulse/component.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/component"
-          python3 -B tests/irrigation_pulse/run.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/pulse" --phase short
-      - name: Complete affected periods and exact day restarts O0/O2
-        run: python3 -B tests/irrigation_pulse/run.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/pulse" --phase full
+          git fetch --no-tags --depth=1 origin 3b5c682da60e9be18e5f5ac8cb1e1b81116bda87
+          git diff --exit-code 3b5c682da60e9be18e5f5ac8cb1e1b81116bda87 HEAD -- app src reference tools tests/irrigation_pulse/run.py tests/irrigation_pulse/component.py tests/irrigation_pulse/component.f90 tests/nomacro_mixtures tests/nomacro_pond_history
+          python3 -c 'import json,os,pathlib; p=pathlib.Path(os.environ["RUNNER_TEMP"])/"previous/pulse/RESULT.json"; r=json.loads(p.read_text()); assert len(r["cases"])==2; assert all(v[o]["full"]["days"]==1096 and len(v[o]["full"]["own"])==6 for v in r["cases"].values() for o in ("O0","O2"))'
+          find "$RUNNER_TEMP/previous" -type f -name '*.exe' -exec chmod u+x {} +
       - name: Literal original comparison transactions and paired model cost
-        run: python3 -B tests/irrigation_pulse/finish.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/pulse"
+        run: |
+          chmod u+x "$RUNNER_TEMP/previous/pulse/"*-build/day_donor "$RUNNER_TEMP/previous/pulse/"*-build/day_kernel
+          python3 -B tests/irrigation_pulse/finish.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/previous/pulse"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: irrigation-pulse-${{ github.sha }}
           path: |
-            ${{ runner.temp }}/component
-            ${{ runner.temp }}/pulse
+            ${{ runner.temp }}/previous
           retention-days: 30
