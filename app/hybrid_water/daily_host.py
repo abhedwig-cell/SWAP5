@@ -366,9 +366,18 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                 configuration=inspect(project.input_directory)
                 selected=configuration['selectors']
                 # The same original linear pond relation applies to drain0/1.
-                # Extend the admitted tangent only to the selected new runon
-                # composition; unchanged runon0/drain1 images remain exact.
-                pond_tangent=selected['SWDRA']==0 or (selected['SWDRA']==1 and selected['SWRUNON']==1)
+                # The new original tabulated drain also holds its rates fixed
+                # during HeadCalc. Resolve the actual original DRFIL owner.
+                table_drainage=False
+                if selected['SWDRA']==1 and selected['SWSNOW']==0:
+                    from experimental_project import one
+                    body=(case/'swap.swp').read_text(encoding='cp1252')
+                    name=one(body,'DRFIL',r"'[^']+'").strip("'")
+                    prefix=one(body,'PATHDRAIN',r"'[^']*'").strip("'").strip()
+                    drain=(case/(prefix+name+'.dra')).read_text(encoding='cp1252')
+                    table_drainage=one(drain,'DRAMET',r'[+-]?\d+')=='1'
+                pond_tangent=(selected['SWDRA']==0 or
+                              (selected['SWDRA']==1 and selected['SWRUNON']==1) or table_drainage)
                 if pond_tangent and configuration['boundary']['SWBOTB']==6 and selected['SWSNOW']==0 and selected['SWKIMPL']==0:
                     source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
                                    '   use hybrid_step_budget, only: projected_water_residual, linear_pond_top_jacobian\n'

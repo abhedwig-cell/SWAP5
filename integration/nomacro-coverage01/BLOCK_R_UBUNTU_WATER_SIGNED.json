@@ -1,0 +1,286 @@
+{
+  "status": "COMPLETE_TABULATED_DRAINAGE_O0_O2_PASS",
+  "source_commit": "75e5b45a1b7a8705d6d364156a1ad4434107dfdf",
+  "configuration": "water-drain-signed",
+  "selected_physical_controls": {
+    "SWMACRO": 0,
+    "SWSOLU": 0,
+    "SWDRA": 1,
+    "DRAMET": 1,
+    "SWDIVD": 1,
+    "signed_table": true
+  },
+  "profiles": {
+    "O0": {
+      "status": "FULL_PASS",
+      "days": 1096,
+      "budgets": {
+        "days": 1096,
+        "max_water_cm": 1.5276668818842154e-13,
+        "max_kernel_cm": 1.525446435834965e-13,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 5.885459619625036e-12
+      },
+      "model_seconds": 1.7791456509999932,
+      "build_sha256": "0de474af7fe02e3b763d63c966916fd9bdd7cfdad0e75f5d399eeffb9076bfd7",
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 5,
+        "budgets": {
+          "days": 5,
+          "max_water_cm": 2.2912227670701668e-14,
+          "max_kernel_cm": 2.3092638912203256e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 3.569491707419714e-14
+        },
+        "model_seconds": 0.10823002199998655,
+        "build_sha256": "0de474af7fe02e3b763d63c966916fd9bdd7cfdad0e75f5d399eeffb9076bfd7",
+        "own": {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.03691378399997802
+        }
+      },
+      "own": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.036077828000003365
+        },
+        {
+          "start": 199,
+          "end": 201,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.03791520199999354
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.03555703000000676
+        },
+        {
+          "start": 530,
+          "end": 532,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.038779720000007956
+        }
+      ],
+      "drainage_signed_exposure": {
+        "days_positive": 731,
+        "days_negative": 365
+      },
+      "controls": {
+        "foreign_policy_refused": true,
+        "independent_origins": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true,
+        "native_refusals": [
+          {
+            "name": "foreign-format",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x71ff0242a454 in ???\n#1  0x71ff0242b1f1 in ???\n#2  0x5d7e9bfc6ceb in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x5d7e9bffbdc6 in swap_\n#4  0x5d7e9c01d0fe in MAIN__\n#5  0x5d7e9c01da65 in main\n"
+          },
+          {
+            "name": "foreign-nodes",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x75ec2422a454 in ???\n#1  0x75ec2422b1f1 in ???\n#2  0x59454c244ceb in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x59454c279dc6 in swap_\n#4  0x59454c29b0fe in MAIN__\n#5  0x59454c29ba65 in main\n"
+          },
+          {
+            "name": "foreign-clock",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x747aa282a454 in ???\n#1  0x747aa282b1f1 in ???\n#2  0x5c7d93a0dceb in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x5c7d93a42dc6 in swap_\n#4  0x5c7d93a640fe in MAIN__\n#5  0x5c7d93a64a65 in main\n"
+          },
+          {
+            "name": "nonfinite-season",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Nonfinite nonmacro seasonal clock\n\nError termination. Backtrace:\n#0  0x789c9362a454 in ???\n#1  0x789c9362b1f1 in ???\n#2  0x5ad97661fdee in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x5ad976654dc6 in swap_\n#4  0x5ad9766760fe in MAIN__\n#5  0x5ad976676a65 in main\n"
+          }
+        ]
+      }
+    },
+    "O2": {
+      "status": "FULL_PASS",
+      "days": 1096,
+      "budgets": {
+        "days": 1096,
+        "max_water_cm": 1.5276668818842154e-13,
+        "max_kernel_cm": 1.525446435834965e-13,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 5.885459619625036e-12
+      },
+      "model_seconds": 1.6644138480000095,
+      "build_sha256": "21e740e33f9a884ac2def4823afb50014f976937e865a5e548302cc4b389c1ca",
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 5,
+        "budgets": {
+          "days": 5,
+          "max_water_cm": 2.2912227670701668e-14,
+          "max_kernel_cm": 2.3092638912203256e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 3.569491707419714e-14
+        },
+        "model_seconds": 0.05164333900000884,
+        "build_sha256": "21e740e33f9a884ac2def4823afb50014f976937e865a5e548302cc4b389c1ca",
+        "own": {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.03471253199998614
+        }
+      },
+      "own": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.03508841199999324
+        },
+        {
+          "start": 199,
+          "end": 201,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.036707047000021475
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.03457736900000441
+        },
+        {
+          "start": 530,
+          "end": 532,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.03858518799998478
+        }
+      ],
+      "drainage_signed_exposure": {
+        "days_positive": 731,
+        "days_negative": 365
+      },
+      "controls": {
+        "foreign_policy_refused": true,
+        "independent_origins": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true,
+        "native_refusals": [
+          {
+            "name": "foreign-format",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x7d2faae2a454 in ???\n#1  0x7d2faae2b1f1 in ???\n#2  0x642ee52e916a in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x642ee531ef6f in swap_\n#4  0x642ee5334e23 in MAIN__\n#5  0x642ee52995de in main\n"
+          },
+          {
+            "name": "foreign-nodes",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x73955c82a454 in ???\n#1  0x73955c82b1f1 in ???\n#2  0x5614dc7bb16a in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x5614dc7f0f6f in swap_\n#4  0x5614dc806e23 in MAIN__\n#5  0x5614dc76b5de in main\n"
+          },
+          {
+            "name": "foreign-clock",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x79d3c222a454 in ???\n#1  0x79d3c222b1f1 in ???\n#2  0x623f9a6ee16a in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x623f9a723f6f in swap_\n#4  0x623f9a739e23 in MAIN__\n#5  0x623f9a69e5de in main\n"
+          },
+          {
+            "name": "nonfinite-season",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Nonfinite nonmacro seasonal clock\n\nError termination. Backtrace:\n#0  0x7cc49fe2a454 in ???\n#1  0x7cc49fe2b1f1 in ???\n#2  0x57f704f8a1c9 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x57f704fbff6f in swap_\n#4  0x57f704fd5e23 in MAIN__\n#5  0x57f704f3a5de in main\n"
+          }
+        ]
+      }
+    }
+  },
+  "events": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input",
+        "--reference-work",
+        "/home/runner/work/_temp/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--donor-opt",
+        "O0",
+        "--output",
+        "/home/runner/work/_temp/proof/O0-build"
+      ],
+      "seconds": 2.180950148999983,
+      "returncode": 0,
+      "stdout": "{\"status\": \"BUILT_NO_MODEL_EXECUTED\", \"model\": \"HYBRID_NOMACRO_WATER\", \"kernel_optimization\": \"O0\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input",
+        "--reference-work",
+        "/home/runner/work/_temp/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--donor-opt",
+        "O2",
+        "--output",
+        "/home/runner/work/_temp/proof/O2-build"
+      ],
+      "seconds": 6.577034424000004,
+      "returncode": 0,
+      "stdout": "{\"status\": \"BUILT_NO_MODEL_EXECUTED\", \"model\": \"HYBRID_NOMACRO_WATER\", \"kernel_optimization\": \"O2\"}\n",
+      "stderr": ""
+    }
+  ],
+  "science": "NOT_QUALIFIED"
+}
