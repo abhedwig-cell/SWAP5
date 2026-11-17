@@ -3,7 +3,7 @@ program test_aquifer_solute_reservoir
   use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
   use mod_aquifer_solute_reservoir
   implicit none
-  real(real64) :: p(7),original(7),saved(8),nan
+  real(real64) :: p(7),original(7),saved(8),nan,limit
   type(aquifer_solute_result) :: result
   integer :: status,i
   p=[2.0_real64,0.5_real64,8.0_real64,3.0_real64,1.0_real64,0.125_real64,0.5_real64]
@@ -42,6 +42,17 @@ program test_aquifer_solute_reservoir
   p=original;p(1)=huge(1.0_real64);call refused(AQ_OVERFLOW)
   p=[1.0_real64,1.0_real64,1.0_real64,-huge(1.0_real64),huge(1.0_real64),0.0_real64,1.0_real64]
   call refused(AQ_OVERFLOW)
+  limit=-123.0_real64
+  call evaluate_aquifer_loss_limit(4.0_real64,2.0_real64,0.5_real64,0.5_real64,limit,status)
+  if(status/=AQ_OK.or.limit/=0.5_real64)error stop 'aquifer positive Euler bound units'
+  call evaluate_aquifer_loss_limit(4.0_real64,0.0_real64,0.0_real64,0.5_real64,limit,status)
+  if(status/=AQ_OK.or.limit/=huge(1.0_real64))error stop 'no-loss interval bound'
+  call evaluate_aquifer_loss_limit(4.0_real64,2.0_real64,0.5_real64,0.0_real64,limit,status)
+  if(status/=AQ_INVALID.or.limit/=huge(1.0_real64))error stop 'invalid bound changed output'
+  call evaluate_aquifer_loss_limit(4.0_real64,2.0_real64,nan,0.5_real64,limit,status)
+  if(status/=AQ_INVALID.or.limit/=huge(1.0_real64))error stop 'nonfinite bound changed output'
+  call evaluate_aquifer_loss_limit(1.0e-300_real64,huge(1.0_real64),0.0_real64,0.5_real64,limit,status)
+  if(status/=AQ_OVERFLOW.or.limit/=huge(1.0_real64))error stop 'overflow bound changed output'
   p=[1.0_real64,1.0e-300_real64,1.0_real64,huge(1.0_real64),0.0_real64,0.0_real64,1.0_real64]
   call refused(AQ_OVERFLOW)
   print '(a)','AQUIFER_SOLUTE_RESERVOIR_CONTRACT=PASS'

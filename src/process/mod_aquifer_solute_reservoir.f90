@@ -18,8 +18,40 @@ module mod_aquifer_solute_reservoir
     real(real64) :: decayed_mg_cm2=0.0_real64
     real(real64) :: residual_mg_cm2=0.0_real64
   end type
-  public :: evaluate_aquifer_solute_reservoir
+  public :: evaluate_aquifer_solute_reservoir,evaluate_aquifer_loss_limit
 contains
+  pure subroutine evaluate_aquifer_loss_limit(capacity,outward_water_rate,decay_rate,safety,interval_limit,status)
+    ! Positive-net surface export plus all soil return-flow water is a loss.
+    ! Ignoring positive soil mass input gives a conservative Euler positivity
+    ! bound. The caller records the safety factor as numerical policy.
+    real(real64),intent(in)::capacity,outward_water_rate,decay_rate,safety
+    real(real64),intent(inout)::interval_limit
+    integer,intent(out)::status
+    real(real64)::water_loss,total_loss,candidate
+    logical::ok
+    status=AQ_INVALID
+    if(.not.all(ieee_is_finite([capacity,outward_water_rate,decay_rate,safety])))return
+    if(capacity<=0.0_real64.or.outward_water_rate<0.0_real64.or.decay_rate<0.0_real64 &
+       .or.safety<=0.0_real64.or.safety>1.0_real64)return
+    call divide(outward_water_rate,capacity,water_loss,ok)
+    if(.not.ok)then
+      status=AQ_OVERFLOW;return
+    end if
+    call add(water_loss,decay_rate,total_loss,ok)
+    if(.not.ok)then
+      status=AQ_OVERFLOW;return
+    end if
+    candidate=LIMIT
+    if(total_loss>0.0_real64)then
+      call divide(safety,total_loss,candidate,ok)
+      ! A mathematical limit above the largest finite value leaves every
+      ! representable interval below the actual bound; use finite LIMIT.
+      if(.not.ok)candidate=LIMIT
+    end if
+    if(candidate<=0.0_real64)return
+    interval_limit=candidate;status=AQ_OK
+  end subroutine
+
   pure subroutine evaluate_aquifer_solute_reservoir(concentration,storage_coefficient,thickness, &
       soil_mass_rate,net_drainage,decay_rate,interval,result,status)
     real(real64), intent(in) :: concentration,storage_coefficient,thickness
