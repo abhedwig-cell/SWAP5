@@ -99,10 +99,14 @@ approval, default promotion and whole scientific equivalence.
 
 ## Source, platform runs and sealed evidence
 
-Physical snapshot remains c3a0a7e17; production app/src/tools are unchanged in
-this work unit. The8 full1096-day Windows/Ubuntu O0/O2 trajectories,64 exact
-own day-restart windows and8 nonperturbing heat observations remain valid at
-that unchanged dependency surface. They are not repeated for reference tooling.
+The independent target snapshot is c3a0a7e17; reference tooling does not alter
+production physics. During final review preparation, canonical's newer chemical
+source was reconciled. The [review postimage](../review/README.md) proves exact
+water dependency closure and refreshes the affected chemical full/native/heat
+cohort. The independent water attribution remains valid at that exact physical
+closure. The current cohort retains8 full1096-day profiles,64 exact full own
+windows and8 nonperturbing heat observations with explicit inheritance/fresh
+source roles. Unchanged full water runs are not repeated for reference tooling.
 
 Independent portable run[44091311535](https://github.com/abhedwig-cell/SWAP5/actions/runs/44091311535)
 at8b1a09652 completed SUCCESS, artifact14331578060, SHA256

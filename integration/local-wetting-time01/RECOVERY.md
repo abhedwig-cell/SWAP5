@@ -121,3 +121,22 @@ bound remain NOT_CLAIMED. This is review readiness, not merge/default admission.
 Next safe step after publication is reviewer feedback and selected integration
 checks for an actual candidate postimage, not another empirical limiter, broader
 configuration campaign or repetition of the same short reference ladder.
+
+Final review composition: canonicale67710244 merged atd7d93b8fa; metadata
+conflict keeps local-wetting/fixed-chemical/scheduled-chemical identities.
+Windows052e35840 and Ubuntu a629c6fe9 have equal app/src/tools postimages.
+review/VERIFIED.json confirms4 fresh chemical fulls/32 own windows/4 heat
+profiles and exact physical/CSV/native parent equality;4 water365 prefixes
+and8 own windows plus exact emitted dependencies support water full/native/heat
+inheritance. Actual water/chemical pressure/GWL is identical through365.
+Effective current full cohort8×1096/64 own/8 heat, plus8 fresh water-prefix
+windows. Ubuntu selected run44097197382 SUCCESS; no repeated independent
+reference ladder was needed because the water physical closure stays exact.
+
+Synchronization auto-started broad unselected PR campaigns:8 quick legacy
+checks completed SUCCESS,6 remaining unselected runs cancelled for cost control.
+Exact dispositions in review/AUTOMATIC_CI_SELECTION.json; cancellation is not
+PASS or broad admission. Final evidence commits use skip-ci; model/source
+qualification remains bound to its actual measured source and dependencies.
+Sealed asset-map newline handling is explicit to preserve exact checksum bytes
+on both platforms; no numerical historical result is changed.

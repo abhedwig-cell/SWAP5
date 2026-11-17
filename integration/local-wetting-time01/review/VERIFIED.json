@@ -1,0 +1,52 @@
+{
+  "status": "REVIEW_POSTIMAGE_PHYSICAL_DEPENDENCIES_AND_FRESH_AFFECTED_COHORT_VERIFIED",
+  "tolerances_changed": false,
+  "water_full_profiles_inherited": 4,
+  "chemical_full_profiles_fresh": 4,
+  "chemical_own_windows_fresh": 32,
+  "water_prefix_own_windows_fresh": 8,
+  "chemical_heat_profiles_fresh": 4,
+  "compile_link_seconds": "UNKNOWN; exact commands retained",
+  "profiles": {
+    "windows/water-surface-history-O0": {
+      "days_fresh": 365,
+      "model_seconds": 2.3295614002272487,
+      "physical_exact_to_parent": true
+    },
+    "windows/water-surface-history-O2": {
+      "days_fresh": 365,
+      "model_seconds": 2.0825688000768423,
+      "physical_exact_to_parent": true
+    },
+    "windows/chemical-surface-history-O0": {
+      "days_fresh": 1096,
+      "model_seconds": 12.297381999902427,
+      "physical_exact_to_parent": true
+    },
+    "windows/chemical-surface-history-O2": {
+      "days_fresh": 1096,
+      "model_seconds": 9.79512199992314,
+      "physical_exact_to_parent": true
+    },
+    "ubuntu/water-surface-history-O0": {
+      "days_fresh": 365,
+      "model_seconds": 0.6446018430000038,
+      "physical_exact_to_parent": true
+    },
+    "ubuntu/water-surface-history-O2": {
+      "days_fresh": 365,
+      "model_seconds": 0.9244356489999888,
+      "physical_exact_to_parent": true
+    },
+    "ubuntu/chemical-surface-history-O0": {
+      "days_fresh": 1096,
+      "model_seconds": 4.220967125999991,
+      "physical_exact_to_parent": true
+    },
+    "ubuntu/chemical-surface-history-O2": {
+      "days_fresh": 1096,
+      "model_seconds": 3.1573487839999927,
+      "physical_exact_to_parent": true
+    }
+  }
+}

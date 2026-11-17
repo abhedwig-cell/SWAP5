@@ -1,0 +1,404 @@
+{
+  "source": "a629c6fe9b452f469b96108b042c3fdab077e1cf",
+  "canonical": "e67710244d84a9a37b30b76e853a3e5b0eeb55d2",
+  "tolerances_changed": false,
+  "profiles": {
+    "water-surface-history-O0": {
+      "generated_sources": {
+        "RWU_micro.f90": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7",
+        "macropore.f90": "70107af06891f210cd2a5019d13ed744665ee1f8703b654d331001233f261492",
+        "swap_main.f90": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391",
+        "swap_csv_output.f90": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e",
+        "irrigation.f90": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693",
+        "swap.f90": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4",
+        "headcalc.f90": "98ab68a9a974ff3a7233ffbe597474777e73d8c7b3e0bb5e7a08f5d1482eeb45",
+        "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+        "oxygenstress.f90": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29",
+        "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+        "boundtop.f90": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "readswap.f90": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071",
+        "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+      },
+      "source_delta": [],
+      "closure_fields_exact": [
+        "donor_flags",
+        "kernel_flags",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "budget_source",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "irrigation_pulse_time",
+        "local_wetting_time",
+        "time_step_policy",
+        "micro_lookup_state_policy",
+        "micro_lookup_state_source"
+      ],
+      "coverage": {
+        "status": "SHORT_PASS",
+        "days": 365,
+        "budgets": {
+          "days": 365,
+          "max_water_cm": 1.6514567491299204e-13,
+          "max_kernel_cm": 1.652011860642233e-13,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 1.2467625537656776e-12
+        },
+        "model_seconds": 0.6446018430000038,
+        "build_sha256": "eb03fb32015099fea8be208f1e88613154223b8ae5a156beda8af924bd2d0761",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.06070555499999841
+          },
+          {
+            "start": 362,
+            "end": 365,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.031052361999996947
+          }
+        ]
+      },
+      "assessment": "EXACT_PHYSICAL_CLOSURE_FULL_NATIVE_HEAT_INHERITED",
+      "physical_exact_to_prior": true
+    },
+    "water-surface-history-O2": {
+      "generated_sources": {
+        "RWU_micro.f90": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7",
+        "macropore.f90": "70107af06891f210cd2a5019d13ed744665ee1f8703b654d331001233f261492",
+        "swap_main.f90": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391",
+        "swap_csv_output.f90": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e",
+        "irrigation.f90": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693",
+        "swap.f90": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4",
+        "headcalc.f90": "98ab68a9a974ff3a7233ffbe597474777e73d8c7b3e0bb5e7a08f5d1482eeb45",
+        "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+        "oxygenstress.f90": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29",
+        "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+        "boundtop.f90": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "readswap.f90": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071",
+        "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+      },
+      "source_delta": [],
+      "closure_fields_exact": [
+        "donor_flags",
+        "kernel_flags",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "budget_source",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "irrigation_pulse_time",
+        "local_wetting_time",
+        "time_step_policy",
+        "micro_lookup_state_policy",
+        "micro_lookup_state_source"
+      ],
+      "coverage": {
+        "status": "SHORT_PASS",
+        "days": 365,
+        "budgets": {
+          "days": 365,
+          "max_water_cm": 1.6514567491299204e-13,
+          "max_kernel_cm": 1.652011860642233e-13,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 1.2467625537656776e-12
+        },
+        "model_seconds": 0.9244356489999888,
+        "build_sha256": "9efd36e877cc564f08cfacca575329f65c1dc87b866659c0d6d384788de0f6e8",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.12152107400000034
+          },
+          {
+            "start": 362,
+            "end": 365,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.07879299599999001
+          }
+        ]
+      },
+      "assessment": "EXACT_PHYSICAL_CLOSURE_FULL_NATIVE_HEAT_INHERITED",
+      "physical_exact_to_prior": true
+    },
+    "chemical-surface-history-O0": {
+      "generated_sources": {
+        "RWU_micro.f90": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7",
+        "macropore.f90": "587fc86231ac6cb3c09690f0728766b7ab5eb9d4b9523c0810f15b06a7d81ef8",
+        "swap_main.f90": "fa88a5ea39b3a663ed7568219e60732b9c54848b8357e19d01c0610752ca9a9f",
+        "swap_csv_output.f90": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea",
+        "irrigation.f90": "3fe7c3b8ff1be6a62fd7db051aa0be61c8f612171f279f073d1b0315af770620",
+        "swap.f90": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4",
+        "headcalc.f90": "98ab68a9a974ff3a7233ffbe597474777e73d8c7b3e0bb5e7a08f5d1482eeb45",
+        "mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+        "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+        "solute.f90": "a18531a6ac349102bf8c6d265fc98aa4ff1d9fd4c59072728bba628cda8d1713",
+        "oxygenstress.f90": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29",
+        "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+        "boundtop.f90": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "readswap.f90": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071",
+        "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+      },
+      "source_delta": [
+        "irrigation.f90",
+        "mod_subsurface_solute_source.f90",
+        "solute.f90"
+      ],
+      "closure_fields_exact": [
+        "donor_flags",
+        "kernel_flags",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "budget_source",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "irrigation_pulse_time",
+        "local_wetting_time",
+        "time_step_policy",
+        "micro_lookup_state_policy",
+        "micro_lookup_state_source"
+      ],
+      "coverage": {
+        "status": "FULL_PASS",
+        "days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 1.6514567491299204e-13,
+          "max_kernel_cm": 1.652011860642233e-13,
+          "max_solute_mg_cm2": 1.5683798660834358e-12,
+          "sum_water_residual_cm": 3.2303872567573228e-12
+        },
+        "model_seconds": 4.220967125999991,
+        "build_sha256": "5cb4ac0a43ccd3c54c2060f4d03b5279a22454c3f81f6023700ceaf429cf8f8f",
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.028292426000007254
+          },
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.06776081099999942
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.03465746999999908
+          },
+          {
+            "start": 211,
+            "end": 213,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.06292437300000131
+          },
+          {
+            "start": 213,
+            "end": 215,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.026520114999996736
+          },
+          {
+            "start": 365,
+            "end": 367,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.03435116100000357
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.0280696359999979
+          },
+          {
+            "start": 1094,
+            "end": 1096,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.0278552660000031
+          }
+        ]
+      },
+      "assessment": "FRESH_AFFECTED_FULL_AND_NATIVE_REQUIRED",
+      "physical_exact_to_prior": true
+    },
+    "chemical-surface-history-O2": {
+      "generated_sources": {
+        "RWU_micro.f90": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7",
+        "macropore.f90": "587fc86231ac6cb3c09690f0728766b7ab5eb9d4b9523c0810f15b06a7d81ef8",
+        "swap_main.f90": "fa88a5ea39b3a663ed7568219e60732b9c54848b8357e19d01c0610752ca9a9f",
+        "swap_csv_output.f90": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea",
+        "irrigation.f90": "3fe7c3b8ff1be6a62fd7db051aa0be61c8f612171f279f073d1b0315af770620",
+        "swap.f90": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4",
+        "headcalc.f90": "98ab68a9a974ff3a7233ffbe597474777e73d8c7b3e0bb5e7a08f5d1482eeb45",
+        "mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+        "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+        "solute.f90": "a18531a6ac349102bf8c6d265fc98aa4ff1d9fd4c59072728bba628cda8d1713",
+        "oxygenstress.f90": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29",
+        "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+        "boundtop.f90": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "readswap.f90": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071",
+        "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+      },
+      "source_delta": [
+        "irrigation.f90",
+        "mod_subsurface_solute_source.f90",
+        "solute.f90"
+      ],
+      "closure_fields_exact": [
+        "donor_flags",
+        "kernel_flags",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "budget_source",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "irrigation_pulse_time",
+        "local_wetting_time",
+        "time_step_policy",
+        "micro_lookup_state_policy",
+        "micro_lookup_state_source"
+      ],
+      "coverage": {
+        "status": "FULL_PASS",
+        "days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 1.6514567491299204e-13,
+          "max_kernel_cm": 1.652011860642233e-13,
+          "max_solute_mg_cm2": 1.5683798660834358e-12,
+          "sum_water_residual_cm": 3.2303872567573228e-12
+        },
+        "model_seconds": 3.1573487839999927,
+        "build_sha256": "909b5f50e0c528113d3e4cee0e1fea63e4b43460de10a3892be60e6ec58df2ec",
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.025004206000005524
+          },
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.056196453000012525
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.03161845399998242
+          },
+          {
+            "start": 211,
+            "end": 213,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.054576158999992685
+          },
+          {
+            "start": 213,
+            "end": 215,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.024967825000004495
+          },
+          {
+            "start": 365,
+            "end": 367,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.026842135999999073
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.028138017999992826
+          },
+          {
+            "start": 1094,
+            "end": 1096,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.02616713399999071
+          }
+        ]
+      },
+      "assessment": "FRESH_AFFECTED_FULL_AND_NATIVE_REQUIRED",
+      "physical_exact_to_prior": true
+    }
+  },
+  "status": "MERGE_POSTIMAGE_ALL_SELECTED_PHYSICAL_NATIVE_PASS"
+}

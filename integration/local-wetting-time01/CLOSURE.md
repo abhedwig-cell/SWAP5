@@ -2,6 +2,12 @@
 
 ## Current independent disposition
 
+Final [review-postimage verification](review/README.md) also reconciles current
+canonical's chemical-source additions. Water inheritance requires exact
+generated/dependency closure and fresh prefix/native checks; all affected
+chemical full/native/heat profiles are refreshed. Source identities and the
+bounded scientific result are kept separate from actual canonical admission.
+
 The [independent qualification](independent/README.md) closes the bounded
 groundwater-attribution review blocker. Original431 HeadCalc with additional
 original Newton effort, without SWAP5 HeadCalc or its budget module, passes
