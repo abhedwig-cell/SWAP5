@@ -30,6 +30,16 @@ boundary policies explicit. They do not assert that retained age tracer is an
 independently validated physical mean-water-age law under evaporation. The
 original and accepted age contracts are the bounded reference authorities.
 
+The original top water flux may be upward during soil evaporation. The surface
+water balance must retain that actual return flow separately from external
+runon. Add zero-default `soil_return_depth_cm` and `soil_return_age_day` to the
+existing surface request, with a separate internal age-input receipt. Original
+tracer retention supplies zero upward age despite positive upward water; this
+is explicit policy, not missing water or an invented external source. Existing
+surface callers keep their zero-default arithmetic and existing acceptance
+criteria. The new small driver checks returned water, age units, production,
+separate internal attribution and invalid domains.
+
 Before generic input activation, require a small real provider driver, preservation
 of the existing150-step literal-oracle tests, actual corrected/source reference
 observations, explicit soil/pond/source/effluent ledgers, accepted-state/native

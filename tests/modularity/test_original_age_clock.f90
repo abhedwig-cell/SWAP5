@@ -3,10 +3,13 @@ program test_original_age_clock
   use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
   use mod_solute_compartment_state
   use mod_b111_age_tracer_substep
+  use mod_b111_surface_age_budget
   implicit none
   type(solute_compartment_state_t)::s,c,before
   type(b111_age_tracer_substep_forcing_t)::f,g
   type(b111_age_tracer_substep_receipt_t)::r
+  type(surface_age_request_t)::surface
+  type(surface_age_receipt_t)::surface_result
   real(real64)::production
   integer::status,i
   call initialize_solute_compartment_state([0d0],0d0,0d0,[2d0],s,status)
@@ -38,6 +41,22 @@ program test_original_age_clock
   g=f;g%accepted_surface_age_input_cm_day=.01d0;call refused(g,'retention with inflowing age refused')
   g=f;g%accepted_surface_age_input_cm_day=-.01d0;call refused(g,'negative handoff still refused')
   g=f;g%q_face_up_cm_day(1)=-1d0;call refused(g,'retention with infiltrating water refused')
+  surface%dt_day=1d0;surface%soil_return_depth_cm=.25d0;surface%evaporation_depth_cm=.25d0
+  call advance_surface_age_budget(surface,surface_result)
+  call require(surface_result%status==SURFACE_AGE_OK,'actual soil return and evaporation water close')
+  call require(surface_result%external_age_input_cm_day==0d0,'soil return is not external runon')
+  call require(surface_result%soil_return_age_input_cm_day==0d0,'explicit retained tracer gives zero upward age')
+  surface%pond_end_cm=.125d0;surface%evaporation_depth_cm=.125d0;surface%soil_return_age_day=2d0
+  call advance_surface_age_budget(surface,surface_result)
+  call require(surface_result%status==SURFACE_AGE_OK,'aged soil return is explicit')
+  call require(surface_result%soil_return_age_input_cm_day==.5d0,'internal returned age units')
+  call require(surface_result%pond_end_stock_cm_day==.5625d0,'return plus pond age production retained')
+  surface%soil_return_depth_cm=-1d0
+  call advance_surface_age_budget(surface,surface_result)
+  call require(surface_result%status==SURFACE_AGE_INVALID,'negative soil return refused')
+  surface%soil_return_depth_cm=.25d0;surface%soil_return_age_day=ieee_value(0d0,ieee_quiet_nan)
+  call advance_surface_age_budget(surface,surface_result)
+  call require(surface_result%status==SURFACE_AGE_INVALID,'nonfinite return age refused')
   print *,'ORIGINAL_AGE_CLOCK_RETENTION_UNITS_AND_REFUSALS=PASS'
 contains
   subroutine require(ok,label)
