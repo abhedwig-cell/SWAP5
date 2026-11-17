@@ -1,5 +1,5 @@
 {
-  "status": "EXACT_MONTHLY_EXPLICIT_AGE004_QUALIFIED_CANONICAL_PENDING",
+  "status": "EXACT_MONTHLY_EXPLICIT_AGE004_CANONICALLY_ADMITTED_ACTUAL_MERGE_PASS",
   "runtime": "f19bdf187a187e5d241fc3841eba9acfad63bc37",
   "canonical_parent": "a97978f39b8ce89a4d7aaec64172d43bfef88288",
   "current_owner": "tests/nomacro_scheduled_subsurface/age_schedule_verify.py",
@@ -65,27 +65,28 @@
       "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-fixed-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 125, in <module>\n    if __name__=='__main__':print(json.dumps(verify(),indent=2))\n                                             ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-fixed-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 96, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'fixed age runtime differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-fixed-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 31, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: fixed age runtime differs from qualification\n"
     }
   },
-  "actual_canonical_merge": "27d545b951265f63b2be321751123384d1a0c4ca",
+  "actual_canonical_merge": "9c32d7fc02b49c88839d392d81111760726bacce",
   "sealed_proof": "bc03011bae1d4b3a7060cf16cf95c490d1ecf025",
   "root_owner": "CURRENT_MONTHLY_EXPLICIT_AGE_REGULAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
-  "next": "Reconcile actual canonical, integrate qualified schedule004, verify actual merge parents/tree/root. Then metadata receipt and next output-clock/input family.",
-  "pr": 1715,
-  "actual_canonical_tree": "a42f92351afcaa026867785c483017218c557141",
+  "next": "Actual metadata merge verification, then original subdaily/annual output clock and inactive monthly selector omissions.",
+  "pr": 1717,
+  "actual_canonical_tree": "dd960f0f68f48c34c07bb1669691ee6af88d8cc7",
   "actual_merge_owner": {
     "returncode": 0,
-    "seconds": 69.86139900004491,
-    "stdout": "{\n  \"status\": \"CURRENT_REGULAR_AGE_CALENDAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS\",\n  \"runtime\": \"75f4bf12f71286e0021877e9285df43beb6be01d\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"water_guard_cm\": 1e-10,\n  \"chemical_mass_guard_changed\": false,\n  \"age_units\": \"cm day\",\n  \"native_codec\": \"S5AGE003\",\n  \"daily_native_codec\": \"S5AGE002\"\n}\n",
+    "seconds": 108.15081450017169,
+    "stdout": "{\n  \"status\": \"CURRENT_MONTHLY_EXPLICIT_AGE_REGULAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS\",\n  \"runtime\": \"f19bdf187a187e5d241fc3841eba9acfad63bc37\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"water_guard_cm\": 1e-10,\n  \"chemical_mass_guard_changed\": false,\n  \"age_units\": \"cm day\",\n  \"native_codec\": \"S5AGE004\",\n  \"daily_native_codec\": \"S5AGE002\",\n  \"regular_native_codec\": \"S5AGE003\"\n}\n",
     "stderr": "",
     "result": {
-      "status": "CURRENT_REGULAR_AGE_CALENDAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
-      "runtime": "75f4bf12f71286e0021877e9285df43beb6be01d",
+      "status": "CURRENT_MONTHLY_EXPLICIT_AGE_REGULAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
+      "runtime": "f19bdf187a187e5d241fc3841eba9acfad63bc37",
       "functional_completion": "PARTIAL",
       "whole_scientific_equivalence": "NOT_QUALIFIED",
       "water_guard_cm": 1e-10,
       "chemical_mass_guard_changed": false,
       "age_units": "cm day",
-      "native_codec": "S5AGE003",
-      "daily_native_codec": "S5AGE002"
+      "native_codec": "S5AGE004",
+      "daily_native_codec": "S5AGE002",
+      "regular_native_codec": "S5AGE003"
     }
   },
   "registered_root": {
