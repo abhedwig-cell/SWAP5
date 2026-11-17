@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "949a61af1b4eee252959208d3d544e17c4895db9",
+  "baseline": "e67710244d84a9a37b30b76e853a3e5b0eeb55d2",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-scheduled-chemical01",
-  "last_commit": "949a61af1b4eee252959208d3d544e17c4895db9",
-  "status": "SCHEDULED_AND_FIXED_CHEMICAL_CANONICALLY_ADMITTED",
+  "branch": "codex/nomacro-aquifer-source01",
+  "last_commit": "e67710244d84a9a37b30b76e853a3e5b0eeb55d2",
+  "status": "AQUIFER_ORIGINAL_BOUNDS_DEFECT_PROVEN_COMPONENT_IMPLEMENTED_UNTESTED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -40,11 +40,10 @@
     "Remaining drainage/surfacewater/constitutive/weather/state gaps and release consolidation"
   ],
   "dependency_surface": [
-    "app/hybrid_water/daily_host.py",
-    "app/hybrid_water/daily_coupling.py",
-    "app/hybrid_water/experimental_project.py",
-    "app/hybrid_water/conserved_scheduled_subsurface_solute.py",
-    "Shared src/process/mod_subsurface_solute_source.f90 and corrected original source generator remain literal to fixed admission"
+    "src/process/mod_aquifer_solute_reservoir.f90",
+    "tests/modularity/test_aquifer_solute_reservoir.f90",
+    "tests/modularity/run_modular_tests.py",
+    "Original MOD_Solute_CDE SWBR storage coefficient, signed drainage, surface output, decay and private Cdrain/native state; caller not implemented"
   ],
   "invariants": [
     3,
@@ -189,11 +188,15 @@
     {
       "test": "Independent scheduled native instance harness",
       "cause": "Two original variants defaulted to same directory name. Added explicit unique ColumnStart.name, retaining same original physical variant; native10domain controls and both interleaved six-step active origin tests pass. No production change."
+    },
+    {
+      "test": "Original SWBR1 audit",
+      "cause": "Unchecked native returns normal completion despite5480NaN output values. Bounds instrumentation identifiesaccess35 above34 atoriginalsolute.f90:464 forO0/O2. Initial diagnostic assertion wrongly assumed SaltFarm-like195nodes; generalized to actualn+1 and consumed retained O0 without rerun; actualO0 returncodeUNKNOWN retained, O2 recorded."
     }
   ],
   "running_ci": [],
-  "next_code_change": "Investigate original SWBR1 aquifer breakthrough source: apparent bdenskfsatporos(i) after node loop indexes numnod+1; reproduce with checked original O0/O2, then implement small real conservative reservoir/source/state contract and corrected reference before enabling input. Preserve literal admitted chemical proof; no macropore/general MODFLOW work.",
-  "recovery_point": "Canonical949a61af1 admits scheduled source viaPR1704 and fixed source viaPR1702. Runtime6c5b, Ubuntu70293c7/run44079261977 and proofa5ee02 retain exact scope; actual merge tree36e24ab/current-owner verified. Metadata receipt admission pending; no active model/CI. Next safe block original SWBR1 source/reference/state; untouched age/vapor and full selector reconciliation remain open. All-scope PARTIAL/science NOT_QUALIFIED.",
+  "next_code_change": "Run existing modular real production aquifer_solute_reservoir driver O0/O2 first. Then correct original aquifer storage index to explicit bottom coefficient, pair original/corrected reference, expose conserved box/soil exchange and full native state with unchanged guard before lifting SWBR1 refusal.",
+  "recovery_point": "Both fixed/scheduled chemical source admitted canonicale677 (PR1702/1704 implementation plus1703/1705 exact metadata). Real current owner executed on actuale677, tree5e5395 exact. New branch AQ adds only unconnected pure reservoir evaluator and driver. Original checked O0/O2 proves35>34 storage-array access; unchecked normal1096period contains5480NaN budgets. No SWAP5 SWBR activation, no new codec, no model/CI active. Entire migration PARTIAL/science NOT_QUALIFIED.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -252,6 +255,15 @@
         "expected_seconds": 240,
         "prior_execution": "PASS",
         "existing_evidence": "Exact fixed canonical full/native/platform/source proof; new scheduled full source/state gates. Nine representative fresh builds/native prefixes discriminate accidental selection into previously qualified contexts."
+      },
+      "aquifer_component": {
+        "changed_dependency": "Missing original aquifer source/ledger/native owner; new small stateless real64 evaluator of original forward-Euler concentration equation",
+        "scientific_claim": "Explicit capacity/stock/signed soil exchange/positive-net surface outflow/decay units and independent conservation, A/B/A, invalid/negative/overflow result preservation",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md#independent-local-testability; docs/verification/principles.md",
+        "expected_seconds": 10,
+        "prior_execution": "NOT_RUN",
+        "existing_evidence": "Original SWBR array defect proven; canonical source/state baseline immutable. No existing qualified aquifer evaluator found in current process-source closure."
       }
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
