@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
+  "baseline": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-complete01",
-  "last_commit": "88a9baaf95ece51466d7359272b5f95b4e35ddba",
-  "status": "FINAL_PULSE_COMPOSED_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "last_commit": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
+  "status": "SCHEDULED_SSDI_CANONICALLY_ADMITTED_REMAINING_MIGRATION_ACTIVE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -23,7 +23,8 @@
     "Actual immutable fd162a pulse/R consumer PASS",
     "Fresh Windows point/interval full/native and named3 full/native on combined pulse/S source PASS",
     "Actual four selected pulse generated/object/input closures and201-day native windows preserved without repeating original full pulse periods",
-    "Ubuntu44061060754 combined pulse/S source full qualification terminal SUCCESS"
+    "Ubuntu44061060754 combined pulse/S source full qualification terminal SUCCESS",
+    "PR1699 actual canonical merge0b9e4a214: both parents and complete tree exact to qualified head; real detached canonical owner PASS"
   ],
   "open": [
     "Complete historical selector inventory",
@@ -139,8 +140,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Seal final pulse-composed proof and route existing current owner through exact combined-source validator. Verify source corruption, docs and final PR source, then integrate1699 and inspect actual merge postimage. Continue corrected-reference chemical SSDI after admission.",
-  "recovery_point": "Latest current proof PULSE_COMPOSED_QUALIFICATION.json; preserve older QUALIFICATION.json and504fd7390 seal. Source120d329b0; Ubuntu8110b4e8b, run44061060754 SUCCESS. Native/physical outputs exact against pre-pulse proof. Actual prior pulse/R consumer passes at immutablefd162a. Existing historical entry restored literal; latest pulse dispatcher forwards to tests/nomacro_scheduled_subsurface/verify.py. Finish final own seal/current integrity and safe PR1699 canonical admission; then actual merge/tree/owner verification and corrected-reference chemical SSDI source.",
+  "next_code_change": "Implement independent conservative nodal chemical SSDI source and qualify corrected original CDE/reference ledger before enabling chemical fixed/scheduled subsurface input. Source defect positive controls already in ORIGINAL_CHEMICAL_AUDIT.json.",
+  "recovery_point": "Canonical admission0b9e4a214. Current task branch codex/nomacro-complete01 contains descriptive admission receipt. Resume from latest versioned STATUS; verify live delta only. All S full/native/platform evidence terminal and sealed; do not repeat for metadata. Next code is chemical source, with separate existing-policy and original-refusal preservation.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -170,5 +171,6 @@
   "qualified_source": "120d329b0b65ebbb0daa5d5a9ad5088400f8ddae",
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
-  "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2"
+  "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
+  "last_commit_role": "Admitted implementation; descriptive recovery metadata is its descendant."
 }
