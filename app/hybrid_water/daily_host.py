@@ -25,7 +25,8 @@ NO_MACRO_TIME_POLICY = 'configured-dtmax-daily-v1'
 PHYSICAL_GROWTH_TIME_POLICY = 'configured-dtmax-physical-growth-v2'
 from time_event_closure import POLICY as EVENT_CLOSURE_TIME_POLICY
 from irrigation_pulse_time import POLICY as IRRIGATION_PULSE_TIME_POLICY
-TIME_POLICIES = (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY,PHYSICAL_GROWTH_TIME_POLICY,EVENT_CLOSURE_TIME_POLICY,IRRIGATION_PULSE_TIME_POLICY)
+from local_wetting_time import POLICY as LOCAL_WETTING_TIME_POLICY
+TIME_POLICIES = (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY,PHYSICAL_GROWTH_TIME_POLICY,EVENT_CLOSURE_TIME_POLICY,IRRIGATION_PULSE_TIME_POLICY,LOCAL_WETTING_TIME_POLICY)
 ORIGINAL_SOIL_TABLE_POLICY = 'original-tspack-v1'
 PCHIP_SOIL_TABLE_POLICY = 'original-pchip-v1'
 SOIL_TABLE_POLICIES = (ORIGINAL_SOIL_TABLE_POLICY,PCHIP_SOIL_TABLE_POLICY)
@@ -202,6 +203,12 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     if not project.macro:donor_flags.extend(NO_MACRO_FP_FLAGS)
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
+    if project.time_step_policy == LOCAL_WETTING_TIME_POLICY:
+        from local_wetting_time import source as wetting_source
+        if project.macro or not project.input_directory:
+            raise ValueError('Local wetting policy requires explicit experimental input')
+        (output/'timecontrol.f90').write_bytes(wetting_source((donor_build/'swap-selected/timecontrol.f90').read_bytes()))
+        patched.insert(0,'timecontrol')
     if project.time_step_policy == IRRIGATION_PULSE_TIME_POLICY:
         from irrigation_pulse_time import source as pulse_source
         if project.macro or not project.input_directory:
@@ -801,6 +808,9 @@ end module plant_interface""")
     }
     if project.input_directory:
         build_identity['experimental_input_adapter'] = sha(APP/'experimental_project.py')
+    if project.time_step_policy == LOCAL_WETTING_TIME_POLICY:
+        from local_wetting_time import metadata as wetting_metadata
+        build_identity['local_wetting_time'] = wetting_metadata((donor_build/'swap-selected/timecontrol.f90').read_bytes())
     if project.time_step_policy == IRRIGATION_PULSE_TIME_POLICY:
         from irrigation_pulse_time import metadata as pulse_metadata
         build_identity['irrigation_pulse_time'] = pulse_metadata((donor_build/'swap-selected/timecontrol.f90').read_bytes())
