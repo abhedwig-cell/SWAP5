@@ -29,3 +29,14 @@ Original B0 comparisons remain separately classified from refined short-time
 controls. Reuse literal archived inputs and fulls only at exact dependencies.
 No named-release/default policy promotion or all-option claim. Publish actual
 code, reproducible commands/source/build/input/raw and scope in a focused PR.
+
+COMPLETED: actual Windows/Ubuntu O0/O2 short,8full1096/8768days,48full native
+windows, pulse external discard/replay/disk recovery, independent instances,
+mass/native/metadata refusals,4literal full original431 comparisons and paired
+baseline costs. Only emitted TimeControl differs. First hosted44047914474 is
+FAILED at a test lacking explicit native adoption, after successful physical
+full/native stages; continuation44048454336 SUCCESS reuses exact dependencies.
+No passed period was rebound or repeated for that test correction. Day5GWL
+gap becomes0.07850cm; full science stillNOT_QUALIFIED (max1.39949cm day215).
+Publish sealed proof and code in one focused PR. No canonical merge or release
+default promotion claimed; existing source admission guards stay immutable.
