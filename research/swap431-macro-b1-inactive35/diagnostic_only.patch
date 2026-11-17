@@ -1,0 +1,123 @@
+--- PERIOD34/diag_state.f90
++++ INACTIVE35/diag_state.f90
+@@ -3,7 +3,7 @@
+ integer,save::nvec=0,njac=0,nrate=0,nderiv=0,nback=0,nfresh=0,attempts=0,steps=0,u,v
+ logical,save::target=.false.,qualification_active=.true.,detail33=.false.
+ integer,save::active_in_attempt=0,active_total=0
+-integer,save::iter_index=0,node_u,op_u,raw_u,limit_u,macro_seq=0
++integer,save::iter_index=0,node_u,op_u,raw_u,limit_u,macro_seq=0,op35_u,node35_u
+ logical,save::probe_busy=.false.
+ integer,save::probe_u,point_id=0,point_node=0
+ real(8),save::point_delta=0
+@@ -19,6 +19,8 @@
+ open(newunit=op_u,file='node_operator.txt',status='replace')
+ open(newunit=raw_u,file='node_absorption.txt',status='replace')
+ open(newunit=limit_u,file='domain3_limit.txt',status='replace')
++open(newunit=op35_u,file='operator_nodes.txt',status='replace')
++open(newunit=node35_u,file='iteration_nodes.txt',status='replace')
+ end subroutine
+ subroutine head_start()
+ use variables,only:dt
+@@ -46,7 +48,7 @@
+ end subroutine
+ subroutine finish_target()
+ integer::o
+-close(u);close(v);close(node_u);close(op_u);close(raw_u);close(limit_u)
++close(u);close(v);close(node_u);close(op_u);close(raw_u);close(limit_u);close(op35_u);close(node35_u)
+ open(newunit=o,file='outcome.txt',status='replace')
+ write(o,*) 'FRESH22_TARGET_HEAD_RETURN',attempts,kind,iterations,residual,maxres,worst
+ close(o)
+--- PERIOD34/head_diag.f90
++++ INACTIVE35/head_diag.f90
+@@ -40,7 +40,7 @@
+    use MOD_swap_mp,        only: armpss, frarmtrx, qexcmpmtx, dfdhmp, ictopmp                        ! all input
+    use MOD_swap_mp,        only: qmplatss, idecmprat                                                 ! input + output
+    use MOD_swap_mp,        only: fldecmprat, fldecMPmbf                                              ! output
+-   use DIAG19,only:nvec,njac,nrate,nderiv,nback,nfresh,outcome,target,attempts,iter_index,node_u,op_u,detail33
++   use DIAG19,only:nvec,njac,nrate,nderiv,nback,nfresh,outcome,target,attempts,iter_index,node_u,op_u,detail33,op35_u,node35_u
+    implicit none
+ 
+ !  diagnostic local storage only
+@@ -580,6 +580,7 @@
+  QOutMtxUnsDmCp,QOutMtxSatDmCp,QInMtxSatDmCp,QInIntSatDmCp,FrMpWalWet,TimAbsCumDmCp
+  integer,intent(in)::stage
+  call node20_log(stage)
++ call node35_log(stage)
+  if(.not.diag_active) return
+  write(diag_u,*) stage,numbit,itry,factor,maxval(abs(F(1:NN))),sum(F(1:NN)), &
+  .5d0*dot_product(F(1:NN),F(1:NN)),sumold,merge(1,0,flunsatok(3)), &
+@@ -626,6 +627,40 @@
+  QInMtxSatDmCp(1:NumDm,52),QInIntSatDmCp(1:NumDm,52),FrMpWalWet(1:NumDm,52), &
+  TimAbsCumDmCp(1:NumDm,52),merge(1,0,FlEndSrpEvt(1:NumDm,52)),ICpTpWaSrDm(1:NumDm),ZWaLevDm(1:NumDm)
+ end subroutine node20_operator
++
++subroutine node35_log(stage)
++integer,intent(in)::stage
++integer::ic,fc,fh
++real(8)::hl,step,jl,jm,ju,mpd
++if(.not.detail33) return
++do ic=50,57
++ hl=h(ic);step=0d0;jl=0d0;jm=0d0;ju=0d0;mpd=0d0;fc=0;fh=0
++ if(stage/=0) hl=hold(ic)
++ if(stage==3.or.stage==4.or.stage==5.or.stage==6) step=difh(ic)
++ if(stage==2) then
++  jl=dFdhU(ic);jm=dFdhM(ic);ju=dFdhL(ic);mpd=dFdhMp(ic)
++ end if
++ if(stage==4) then
++  fc=merge(1,0,flnonconv1(ic));fh=merge(1,0,flnonconv2(ic))
++ end if
++ write(node35_u,*) attempts,iter_index,stage,nvec,ic,h(ic),hl,step,F(ic),jl,jm,ju,mpd,fc,fh
++end do
++end subroutine
++
++subroutine node35_operator(task,grad)
++use MOD_macropore,only:NumDm,QExcMtxDmCp,QOutMtxUnsDmCp,QOutMtxSatDmCp,QInMtxSatDmCp,QInIntSatDmCp,FrReduQ
++integer,intent(in)::task
++real(8),intent(in)::grad(macp+1)
++integer::ic
++if(.not.detail33) return
++do ic=50,57
++ write(op35_u,*) attempts,iter_index,nvec,task,t1900,dt,ic,h(ic),theta(ic),thetm1(ic),F(ic), &
++  (theta(ic)-thetm1(ic))*FrArMtrx(ic)*dz(ic)/dt,sink(ic),-source(ic),qrot(ic), &
++  -kmean(ic)*grad(ic),kmean(ic+1)*grad(ic+1),-QExcMpMtx(ic),FrReduQ, &
++  QExcMtxDmCp(1:NumDm,ic),QOutMtxUnsDmCp(1:NumDm,ic),QOutMtxSatDmCp(1:NumDm,ic), &
++  QInMtxSatDmCp(1:NumDm,ic),QInIntSatDmCp(1:NumDm,ic)
++end do
++end subroutine
+ 
+ subroutine unreduced_trace(kind)
+  use MOD_macropore, only:FrReduQ
+@@ -822,6 +857,7 @@
+    if (swmacro == 1) F(1:NN) = F(1:NN) - QExcMpMtx(1:NN)
+ 
+ call node20_operator(iTask,hgrad)
++call node35_operator(iTask,hgrad)
+ end subroutine vector_F
+ 
+ subroutine jacobian_F()
+--- PERIOD34/soilwater_native.f90
++++ INACTIVE35/soilwater_native.f90
+@@ -308,6 +308,7 @@
+   end if
+   return
+  end if
++ if(abs(t1900-35797.370324351359d0)>1d-10.or.abs(dt-0.0006875745394909628d0)>1d-16) error stop 'INACTIVE35 replay context mismatch'
+  if(IDecMpRat/=0) error stop 'TRAJECTORY33 scaled replay excluded'
+  detail33=.true.
+  call inventory_dump('origin')
+@@ -367,6 +368,7 @@
+  use plant_interface,only:crsflx_out,sicact
+  implicit none
+  real(8)::dm,dp,dc,dx,external,domain_error(5)
++ logical::done35
+  integer::j
+  call log_start()
+  write(budget_unit,*) t1900,accepted_dt,graidt,gird,runon,crsflx_out,epd,reva,sum(qrot(1:numnod)),qbot,sum(qdra(1:nrlevs,1:numnod)),sum(qssdi(1:numnod)),sum(QOutDrRapCp(1:numnod)),runots,nraidt,nird,FrReduQ, &
+@@ -385,6 +387,7 @@
+  end if
+  call log_end()
+  if(reject26_pending) then
++  done35=commit()
+   call inventory_dump('committed')
+   call native09_dump('context_committed')
+   call ledger12_dump('ledger_committed')
