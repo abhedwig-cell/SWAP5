@@ -123,6 +123,9 @@ def inspect(directory):
             and int(one(text,'PERIOD',r'[+-]?\d+'))>1
             and int(one(text,'NPRINTDAY',r'[+-]?\d+'))==1):
         allowed['SWRES']={0,1} # explicit regular age output/calendar owner
+    if (selected['SWSOLU']==2 and int(one(text,'NPRINTDAY',r'[+-]?\d+'))==1
+            and (selected.get('SWMONTH')==1 or selected.get('SWODAT')==1)):
+        allowed.update(SWMONTH={0,1},SWODAT={0,1},SWRES={0,1})
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
     frost_drain_file=None
@@ -281,6 +284,8 @@ def validate(project):
 
 def auxiliary_magic(project):
     if project.age:
+        from age_output_schedule import selection as scheduled,MAGIC as SCHEDULE_MAGIC
+        if scheduled(project) is not None:return SCHEDULE_MAGIC
         from age_output_calendar import selection,MAGIC as CALENDAR_MAGIC
         if selection(project) is not None:return CALENDAR_MAGIC
         from conserved_original_age import MAGIC
