@@ -173,6 +173,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     chemical_source=chemical_fixed or chemical_scheduled
     from conserved_aquifer_solute import enabled as aquifer_enabled, correction as aquifer_correction
     aquifer_source=aquifer_enabled(project)
+    from age_output_calendar import selection as age_calendar_selection
+    age_calendar=age_calendar_selection(project)
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=(2 if project.age else int(project.solute)):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
@@ -819,6 +821,9 @@ end module plant_interface""")
                        '            if(abs(terminal_water_residual())>1d-10)flnonconv=.true.\n'
                        '         end if')
         path.write_text(source,encoding='cp1252')
+    if age_calendar is not None:
+        from age_output_calendar import apply_build as apply_age_output_calendar
+        patched=apply_age_output_calendar(output,donor_build,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -830,6 +835,7 @@ end module plant_interface""")
                     *([str(output/'mod_subsurface_solute_source.o')] if chemical_source else []),
                     *([str(output/'mod_aquifer_solute_reservoir.o')] if aquifer_source else []),
                     *([str(output/(name+'.o')) for name in (*age_patch.PROVIDERS,*age_patch.OUTPUT_PROVIDERS)] if project.age else []),
+                    *([str(output/(name+'.o')) for name in ('mod_original_output_receipt','hybrid_age_output_state','age_output_calendar_probe')] if age_calendar is not None else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
@@ -890,6 +896,8 @@ end module plant_interface""")
     if project.age:
         from conserved_original_age import metadata as age_metadata
         build_identity['conserved_original_age']=age_metadata()
+        from age_output_calendar import age_identity
+        build_identity['conserved_original_age']=age_identity(build_identity['conserved_original_age'],project)
         from age_fixed_irrigation import enabled as age_fixed_enabled,metadata as age_fixed_metadata
         if age_fixed_enabled(project):build_identity['original_age_fixed_irrigation']=age_fixed_metadata()
     if project.time_step_policy == IRRIGATION_PULSE_TIME_POLICY:

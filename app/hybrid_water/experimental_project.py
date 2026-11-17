@@ -277,6 +277,8 @@ def validate(project):
 
 def auxiliary_magic(project):
     if project.age:
+        from age_output_calendar import selection,MAGIC as CALENDAR_MAGIC
+        if selection(project) is not None:return CALENDAR_MAGIC
         from conserved_original_age import MAGIC
         return MAGIC
     selected = inspect(project.input_directory)['selectors']
