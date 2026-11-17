@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "55a5a641f0d3a9ed294756f9e245ee3e41193a1e",
+  "baseline": "e709ab5a4b9b858c539e3c7208b8997ea6205ce2",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-chemical-source01",
-  "last_commit": "55a5a641f0d3a9ed294756f9e245ee3e41193a1e",
-  "status": "FIXED_CHEMICAL_CANONICALLY_ADMITTED_NEXT_SCHEDULED_SOURCE",
+  "branch": "codex/nomacro-scheduled-chemical01",
+  "last_commit": "e709ab5a4b9b858c539e3c7208b8997ea6205ce2",
+  "status": "SCHEDULED_CHEMICAL_REFERENCE_PASS_CALLER_IMPLEMENTED_UNQUALIFIED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -38,14 +38,11 @@
     "Remaining chemical reservoir/age/vapor/drainage/surfacewater/constitutive/weather/state gaps"
   ],
   "dependency_surface": [
-    "src/process/mod_subsurface_solute_source.f90",
-    "tests/modularity/test_subsurface_solute_source.f90",
-    "tests/modularity/run_modular_tests.py",
-    "Original MOD_solute_CDE source and irrigation qssdi/cirr owners; caller integration not implemented",
-    "app/hybrid_water/conserved_subsurface_solute.py",
     "app/hybrid_water/daily_host.py",
     "app/hybrid_water/daily_coupling.py",
-    "app/hybrid_water/fixed_irrigation_file.py"
+    "app/hybrid_water/experimental_project.py",
+    "app/hybrid_water/conserved_scheduled_subsurface_solute.py",
+    "Shared src/process/mod_subsurface_solute_source.f90 and corrected original source generator remain literal to fixed admission"
   ],
   "invariants": [
     3,
@@ -178,17 +175,15 @@
     {
       "test": "Salinity exposure first two O0 periods",
       "cause": "Both complete periods satisfy mass guards but net salinity reduction was zero. First winter event and second compensated growing-season event are retained as inactive-exposure controls. Growing-season uncompensated source at unchanged original stress thresholds passes O0/O2 with positive3.4921434323cm response."
-    }
-  ],
-  "running_ci": [
+    },
     {
-      "id": 44075761879,
-      "source": "64195df1559ca630f4c0ed27ab83bb527b3af20c",
-      "status": "MODULAR_FEEDBACK_IN_PROGRESS_SELECTION_PREFLIGHT_PASS"
+      "test": "Scheduled chemical original reference input",
+      "cause": "Original RDSDOR refuses integer CIRRS0/20. First input rejected before trajectory. Use literal decimal0.0/20.0; repaired16paired periods pass, retain first diagnostic."
     }
   ],
-  "next_code_change": "Continue in private worktree C:/Users/Veldh012/swap5-nomacro-scheduled-chemical01, branch codex/nomacro-scheduled-chemical01. Scheduled original paired16period reference O0/O2 now PASS with point64 and interval174mg/cm2; implement separate scheduled selection/metadata and qualify actual source/native/event transactions before admission.",
-  "recovery_point": "Fixed chemical source is canonical55a5a641f viaPR1702; tree8209721e exact to qualified64195df15 and actual canonical owner PASS. Metadata receipt admission pending. Continue scheduled chemical from this canonical; fixed sealed proof6514334f immutable. FCI44075761879 feedback remains monitored; full moving FCI not selected. All-scope PARTIAL/science NOT_QUALIFIED.",
+  "running_ci": [],
+  "next_code_change": "Execute actual scheduled chemical point/interval O0/O2 short and full source/native/event/transaction qualification. Reused real nodal source unchanged; separate scheduled metadata and preflight activation are development candidates, not canonical.",
+  "recovery_point": "Fixed correction admitted55a5 and recovery metadatae709 verified exact to921 tree7dbd. PR1702 FCI44075761879, ClosedHupsel44075761928 and docs44075761841 terminal SUCCESS. New private worktree scheduled-chemical01 frome709 contains caller selection and test; original16paired1096period reference PASS, point64/interval174mg/cm2. No new scheduled binary or native execution yet. Next run chemical_scheduled.py; preserve fixed proof and qualify a new successor before integration.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -229,6 +224,15 @@
         "expected_seconds": 300,
         "prior_execution": "PASS",
         "existing_evidence": "Four full periods per platform and original24paired per platform; admitted anchors/pulse/S exact"
+      },
+      "scheduled_chemical": {
+        "changed_dependency": "Previously refused SCHEDULE1/ISUAS2 chemistry now selects existing conserved CDE source and separate physical policy identity",
+        "scientific_claim": "Original actual qssdi*cirrs source and conserved daily ledger/native/event transactions with no new physical formula or codec",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md; docs/verification/principles.md#transaction-tests",
+        "expected_seconds": 200,
+        "prior_execution": "NOT_RUN",
+        "existing_evidence": "Shared real nodal evaluator, original16paired scheduled reference O0/O2, fixed canonical strict state/source qualification"
       }
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"

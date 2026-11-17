@@ -165,7 +165,10 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled
     scheduled_subsurface=scheduled_subsurface_enabled(project)
     from conserved_subsurface_solute import enabled as chemical_source_enabled, correction as chemical_correction
-    chemical_source=chemical_source_enabled(project)
+    chemical_fixed=chemical_source_enabled(project)
+    from conserved_scheduled_subsurface_solute import enabled as chemical_scheduled_enabled
+    chemical_scheduled=chemical_scheduled_enabled(project)
+    chemical_source=chemical_fixed or chemical_scheduled
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
@@ -544,9 +547,9 @@ end module MOD_wofost""")
         if scheduled_subsurface:
             from scheduled_subsurface_irrigation import render_irrigation as render_scheduled_subsurface
             source=render_scheduled_subsurface(source)
-        if fixed_file or chemical_source:
+        if fixed_file or chemical_fixed:
             from fixed_irrigation_file import render_irrigation
-            source=render_irrigation(source,allow_chemical_subsurface=chemical_source)
+            source=render_irrigation(source,allow_chemical_subsurface=chemical_fixed)
         source=replace(source,"      subroutine read_irrigation_fixed()",
                        "      subroutine read_irrigation_fixed()\n         use MOD_swap_base,only:swinco")
         source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
@@ -816,9 +819,12 @@ end module plant_interface""")
     }
     if project.input_directory:
         build_identity['experimental_input_adapter'] = sha(APP/'experimental_project.py')
-    if chemical_source:
+    if chemical_fixed:
         from conserved_subsurface_solute import metadata as chemical_metadata
         build_identity['conserved_subsurface_solute']=chemical_metadata()
+    if chemical_scheduled:
+        from conserved_scheduled_subsurface_solute import metadata as chemical_scheduled_metadata
+        build_identity['conserved_scheduled_subsurface_solute']=chemical_scheduled_metadata()
     if project.time_step_policy == IRRIGATION_PULSE_TIME_POLICY:
         from irrigation_pulse_time import metadata as pulse_metadata
         build_identity['irrigation_pulse_time'] = pulse_metadata((donor_build/'swap-selected/timecontrol.f90').read_bytes())
