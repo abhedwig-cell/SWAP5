@@ -40,6 +40,8 @@ jobs:
         run: python3 -B tests/local_wetting/run.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/wetting" --phase full
       - name: Literal original reference rollback controls and paired costs
         run: python3 -B tests/local_wetting/finish.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/wetting"
+      - name: Original supported heat observation with physical exactness
+        run: python3 -B tests/local_wetting/heat.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/wetting"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
