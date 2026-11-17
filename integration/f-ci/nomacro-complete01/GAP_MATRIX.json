@@ -1,6 +1,6 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "9e0b9d871e942361ad179095670f42a1db134768",
+  "baseline": "c73820ee4e6ba07cbf6f3cbc8bdc88ab597b7a01",
   "status": "SOURCE_BASED_FAMILY_MATRIX_WITH_REMAINING_SELECTOR_RECONCILIATION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -162,7 +162,7 @@
       "function": "Mixed aquifer reservoir, water age and vapor",
       "classification": "PARTIAL",
       "original_source": "solute.f90, solute1.f90, soilwater.f90",
-      "scope": "Bounded corrected SWBR1 admitted PR1706 and original SWSOLU2 daily age source/state/output admitted PR1711. Fixed young-water age irrigation, non-daily age output and SWVAPOR remain open; no all-combinations or whole-science promotion.",
+      "scope": "Bounded corrected SWBR1 admitted PR1706, original SWSOLU2 daily age source/state/output PR1711 and fixed zero-day young-water age PR1713. Non-daily age output, other age combinations and SWVAPOR remain open; no all-combinations/whole-science promotion.",
       "authority": "app/hybrid_water/experimental_project.py",
       "authority_present": true
     },
@@ -1213,14 +1213,15 @@
   "bounded_original_age": {
     "classification": "PARTIAL",
     "qualified_scope": "Canonical PR1711/9e0b9d871: SWSOLU2 initial0/100 daily Hupsel34 O0/O2 Windows/Ubuntu; complete private age/pond/output native state, actual accepted providers, corrected water-weighted effluent and public CLI. Actual RC3/local-wetting composition and fresh repaired pulse preservation qualified.",
-    "remaining": "Fixed young-water irrigation, non-daily output continuation, other age combinations and vapor remain open; unresolved original age profile differences.",
+    "remaining": "Non-daily output continuation, nonzero age-valued inflows, other age combinations and vapor remain open; bounded fixed young-water irrigation admitted PR1713, initial0has short fixed evidence only; original age-profile differences remain unresolved.",
     "authority": "integration/f-ci/nomacro-complete01/AGE_COMPOSITION_QUALIFICATION.json",
     "admission_authority": "integration/f-ci/nomacro-complete01/AGE_MERGE_RECEIPT.json"
   },
   "bounded_fixed_young_age": {
-    "classification": "QUALIFIED_ADMISSION_PENDING",
+    "classification": "ADMITTED_BOUNDED",
     "scope": "All4fixed young-water forms,100dayinitial age, daily Hupsel34 O0/O2 Windows/Ubuntu full/native/reference. File/inline active comparison, zero-initial8day controls, complete publicCLIactive restart and strict native/input refusals; existing unchanged4age/13age-off contexts exact.",
     "qualification_authority": "integration/f-ci/nomacro-complete01/AGE_FIXED_QUALIFICATION.json",
-    "remaining": "Non-daily output, nonzero age-valued inflows and other age/vapor combinations remain open. Original-profile2.76day difference not qualified."
+    "remaining": "Non-daily output, nonzero age-valued inflows and other age/vapor combinations remain open. Original-profile2.76day difference not qualified.",
+    "admission_authority": "integration/f-ci/nomacro-complete01/AGE_FIXED_MERGE_RECEIPT.json"
   }
 }
