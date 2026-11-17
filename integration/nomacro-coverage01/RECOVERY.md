@@ -1,3 +1,22 @@
+# Q qualified snapshot: canonical admission next
+
+Canonical baseline0f12c639da5c4dadf488282dc8e110d2a8ad1874 (P PR1695).
+Runtime33f7363965c137f017ce756fa6b5a07dc4287051, branch17. Latest scope and
+contracts: BLOCK_Q_QUALIFICATION, BLOCK_Q_TIME_EVENT_CONTRACT and
+BLOCK_Q_DAILY_RECEIPT_REASSESSMENT. Windows O0 sourcec6b9a94d8 is physically
+source-identical; verification and O2 at33f736396. Ubuntu44043681822 SUCCESS;
+default8 44043820872 SUCCESS. All four1096 periods,16standard/24active native
+windows, external/rollback/isolation and native/source refusals pass. The strict
+day367 failed candidate and original day21 FAIL remain raw. No mass tolerance,
+Jacobian, persistent codec or frozen tag changed. Whole science remains open.
+
+Next: finish raw/doc verification, seal immutable Q evidence, extend only the
+existing bounded current-owner selector, then PR admission with actual merge-tree
+and current-owner verification. Do not rerun completed physical periods merely
+to finish metadata. Continue remaining coverage after successful admission.
+
+Historical recovery entries below retain their recorded scope and chronology.
+
 # J complete original microscopic lookup discriminator next
 
 CanonicalIf9ada0cb2; branch10. No public app/src changes or J admission yet.
