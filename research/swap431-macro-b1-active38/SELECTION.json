@@ -1,0 +1,41 @@
+{
+  "source": "PERIOD34 O0/O2 original candidate TRAJ, before first reduction299",
+  "candidates": [
+    {
+      "attempt": 296,
+      "prior_commits": 294,
+      "time": 35797.37078273439,
+      "dt": 0.00022919151316365426,
+      "old_iterations": 31,
+      "old_fluxfactor": 1.0,
+      "old_maxres": 3.860687778064684e-05
+    },
+    {
+      "attempt": 297,
+      "prior_commits": 294,
+      "time": 35797.37078273439,
+      "dt": 7.639717105455142e-05,
+      "old_iterations": 31,
+      "old_fluxfactor": 1.0,
+      "old_maxres": 0.004573360083878562
+    },
+    {
+      "attempt": 298,
+      "prior_commits": 294,
+      "time": 35797.37078273439,
+      "dt": 2.5465723684850474e-05,
+      "old_iterations": 31,
+      "old_fluxfactor": 1.0,
+      "old_maxres": 0.006342735417887404
+    }
+  ],
+  "order": [
+    296,
+    297,
+    298
+  ],
+  "stop": "First paired active true refusal; qualify actual rollback and direct dt/3 retry. If all accept stop finite selection as no witness. No forced refusal or extension.",
+  "hard_seconds_per_route": 20,
+  "max_selection_routes": 6,
+  "conditional_direct_routes": 2
+}
