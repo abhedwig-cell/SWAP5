@@ -1,0 +1,22 @@
+--- TRAJECTORY39/soilwater_native.f90
++++ PERIOD40/soilwater_native.f90
+@@ -290,7 +290,7 @@
+   call inventory_dump('rollback')
+   call native09_dump('context_rollback')
+   call ledger12_dump('ledger_rollback')
+-  call finish33('SCALED_REQUEST_BEFORE_SHORT_TARGET')
++  call finish33('SCALED_REQUEST_BEFORE_PERIOD_END')
+  end if
+  ! Ordinary unscaled refusal is handled by the unchanged original host transaction.
+ end function
+@@ -333,9 +333,7 @@
+   call finish33('TARGET_RETRY_HOST_COMMITTED')
+  end if
+  done35=commit()
+- if(t1900>=35797.372d0) call finish33('BOUNDED_CORRECTED_TRAJECTORY')
+- if(done35) call finish33('INTERNAL_BUDGET_BEFORE_SHORT_TARGET')
+- if(budget_count>=512) call finish33('COMMIT_CAP_BEFORE_SHORT_TARGET')
++ if(done35) call finish33('INTERNAL_BUDGET_BEFORE_PERIOD_END')
+ end subroutine
+ 
+ subroutine finish33(reason)

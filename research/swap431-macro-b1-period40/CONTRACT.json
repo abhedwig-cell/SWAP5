@@ -1,0 +1,29 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-PERIOD40",
+  "baseline": "b7bfd2715188757bac81cfdba1043fc7ebfd0743",
+  "start_native_t1900": 35797,
+  "native_sha256": "21bd728c9983d6a0d4e82d6b2fd12729dc02284277a5dab5d296d8edc1dcbf16",
+  "maximum_commits": null,
+  "internal_stop_seconds": 16,
+  "external_hard_seconds": 20,
+  "model_routes": 2,
+  "activation": "apply37 true before every head from first; unchanged terms guards and oldrank1 fallback",
+  "ordinary_refusal": "unchanged original host rollback/TimeControl5 and retry; no forced failure",
+  "stop_scaled_request": true,
+  "expected_checks": [
+    "O0/O2 non-timing byte identity",
+    "fresh V1 all accepted heads",
+    "all commits/used dt and original time control",
+    "all perstep and integrated independent inventories",
+    "ledger primitive increments and domain inventories",
+    "actual guard/linear solve activity",
+    "comparison to old prefix up to actual divergence; no old trajectory graft"
+  ],
+  "no_physics_policy_changes": true,
+  "no_full_period_restart_or_canonical_admission": false,
+  "end_native_t1900": 35798,
+  "stop": "Natural day boundary35798 AFTER original BAL/CSV output, or internal16s, or firstscaledrequest; hard20s each",
+  "maximum_commits_note": "Short-observation512cap removed only for explicitly requested samefullperiod. No numerical budget or dt/reduction change.",
+  "full_period_balance_requested": true,
+  "no_new_restart_or_canonical_admission": true
+}
