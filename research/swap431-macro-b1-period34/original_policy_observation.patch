@@ -1,0 +1,27 @@
+--- PERIOD34/strict_observation
++++ PERIOD34/original_policy_observation
+@@ -266,6 +266,7 @@
+  character(24)::mode
+  character(80)::text
+  character(60)::label
++ character(8)::policy34
+  integer::i,target_attempt,u
+  handled=.true.
+  if(.not.period_begin_done) then
+@@ -275,6 +276,7 @@
+   call ledger12_dump('ledger_begin')
+  end if
+  call get_environment_variable('DAY10_MODE',mode)
++ call get_environment_variable('PERIOD34_ORIGINAL_POLICY',policy34)
+  target_attempt=-1
+  if(trim(mode)/='TRAJ') then
+   call get_environment_variable('TRAJECTORY33_ATTEMPT',text)
+@@ -300,7 +302,7 @@
+     call native09_dump('context_rollback')
+     call ledger12_dump('ledger_rollback')
+     call finish33('FIRST_ACTIVE_REFUSAL')
+-   else if(FlDecMpRat.or.IDecMpRat/=0) then
++   else if((FlDecMpRat.or.IDecMpRat/=0).and.trim(policy34)/='1') then
+     call finish33('SCALED_REQUEST_BEFORE_ACTIVE_REFUSAL')
+    end if
+   end if

@@ -23,7 +23,7 @@ def run(opt,mode,label=''):
  s=re.sub(r'(?mi)^(\s*SWYRVAR\s*=\s*)0\b',r'\g<1>1',s,count=1)
  s+='\n OUTDAT = 1998-01-02 1998-01-03\n'
  (c/'swap.swp').write_text(s,encoding='cp1252')
- env=os.environ.copy();env['DAY10_MODE']=mode;env['LEDGER12_REQUIRE']='1'
+ env=os.environ.copy();env['DAY10_MODE']=mode;env['LEDGER12_REQUIRE']='1';env['PERIOD34_ORIGINAL_POLICY']='1' if label=='POLICY' else '0'
  if mode!='TRAJ':env['TRAJECTORY33_ATTEMPT']=str(json.loads((R/'EVENT_SELECTION.json').read_text())['attempt'])
  t=time.perf_counter()
  try:
