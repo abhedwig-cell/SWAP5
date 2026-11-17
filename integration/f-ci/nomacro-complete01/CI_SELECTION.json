@@ -1,5 +1,5 @@
 {
-  "status": "SCHEDULED_CHEMICAL_SUCCESSOR_SELECTED_SEAL_PENDING",
+  "status": "EXACT_SEALED_SCHEDULED_CHEMICAL_SUCCESSOR_PASS",
   "runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "canonical_parent": "e709ab5a4b9b858c539e3c7208b8997ea6205ce2",
   "current_owner": "tests/nomacro_scheduled_subsurface/scheduled_chemical_verify.py",
@@ -16,5 +16,30 @@
     "seconds": 37.01452920027077,
     "returncode": 0
   },
-  "actual_source_negative": "PENDING_CLEAN_OWNER_SEAL"
+  "actual_source_negative": {
+    "dirty": {
+      "status": "REFUSED",
+      "returncode": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 80, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty scheduled chemical surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 22, in require\n    if not test:raise ValueError(message)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty scheduled chemical surface\n"
+    },
+    "committed": {
+      "status": "REFUSED",
+      "commit": "0902efdf78a460d30d0a1467052651533578f77c",
+      "actual_immutable_checkout": "C:/Users/Veldh012/swap5-scheduled-chemical-guard-control",
+      "returncode": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 82, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'scheduled chemical runtime differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 22, in require\n    if not test:raise ValueError(message)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: scheduled chemical runtime differs from qualification\n"
+    },
+    "qualified_head": "112f1b6aefb24097700a2079cc4fa4e873e28457"
+  },
+  "sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
+  "current_owner_verification": {
+    "status": "CURRENT_FIXED_AND_SCHEDULED_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
+    "runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
+    "scheduled_chemical_full_days": 8768,
+    "fixed_chemical_full_days": 8768,
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "functional_completion": "PARTIAL",
+    "water_guard_cm": 1e-10,
+    "solute_guard_mg_cm2": 1e-10
+  }
 }
