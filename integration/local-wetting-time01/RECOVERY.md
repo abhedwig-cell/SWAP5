@@ -85,3 +85,13 @@ replacement reference is qualified. Keep failed literal B0 comparisons and
 reference limits visible. Next acceptance is independently balance-qualified
 temporal reference, not another empirical controller or tolerance change.
 closure/ contains new sealed raw outcomes; prior publication remains immutable.
+
+Final bounded follow-up: strict-reference/ preserves the original standalone
+loop with explicitly shared existing strict HeadCalc. Its three-day shared362
+seed runs close independent printed BALDEV within12-decimal precision at the
+unchanged internal1e-10 guard; matching-cap GWL differences are1.466e-7 and
+3.565e-8cm. Clean input-only reproduction passes. This removes the bounded
+reference-balance objection, not the need for independent whole-period/temporal
+qualification. The finer6.25e-6day run is censored at20seconds, not PASS; do
+not retry/widen its bound. No production changes afterc3a0a7e17. Failed nominal
+B0 comparisons and draft scientific/default acceptance remain visible.

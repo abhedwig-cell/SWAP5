@@ -8,6 +8,9 @@ and history sensitivity**, but the original failed criterion is **not converted
 to PASS**. The opt-in policy is not a demonstrated groundwater-error estimator.
 PR1701 remains draft: an independently accurate, mass-qualified reference is
 still required for scientific acceptance. No original tolerance was enlarged.
+The final [strict-reference assessment](strict-reference/ASSESSMENT.json)
+additionally closes the **bounded reference balance** using the already existing
+strict water owner; it does not provide independent whole-period validation.
 
 ## Actual defect and repair
 
@@ -110,6 +113,43 @@ criteria. No finer empirical production limiter, date-specific production cap,
 relaxed guard, or tuned match to nominal B0 is introduced. Further model
 parameter tuning is unjustified until an independently mass-qualified temporal
 reference exists. That is the concrete remaining scientific acceptance blocker.
+
+## Final bounded strict-reference check
+
+One simpler distinguishing check retains the original standalone daily/output
+loop and shares the **existing** strict HeadCalc water-step owner explicitly.
+It is a corrected-original diagnostic, not literal B0 and not an independent
+physical solver. The same shared saved362 state and zero-irrigation three-day
+window are used. No new threshold or mass equation is introduced.
+
+At caps1e-4 and2.5e-5 day, the original loop now observes BALDEV zero at the
+recorded12-decimal precision, while the internal unchanged1e-10 guard remains
+active. Day364 GWL is−3.589151223737 /−3.601118077251 cm. Differences from
+SWAP5 at matching caps are **1.466e-7 /3.565e-8 cm**, respectively. A clean
+reproduction copies inputs/native seed only, excluding stale success/output
+files, and reproduces both values. Its models take1.90 /7.07 seconds.
+
+The6.25e-6-day extension hits the predeclared20-second bound and is censored,
+not qualified; that first runner had copied an old swap.ok into its directory,
+which is explicitly **not** completion evidence. No cap or criterion is widened.
+Both the censored original attempt and clean successful reproduction are sealed
+in `strict-reference/RAW.zip`, with exact member/command/source identities.
+
+This resolves the bounded balance objection and strongly supports a temporal /
+history origin of the nominal2.8cm endpoint difference. It does **not** change
+the failed original nominal whole-run comparison, prove temporal convergence
+beyond the recorded levels, qualify an independent universal reference, or
+establish a production GWL-error bound for the heuristic wetting limiter.
+Those are separate scientific acceptance conditions, and the PR remains draft.
+
+Reproduce this explicitly shared-owner check after the common-state preparation:
+
+```text
+python -B tests/local_wetting/strict_saturation_reference.py --reference-work PROVIDER --corrected OUT --common COMMON --output STRICT_NEW
+```
+
+The optional finer selection is not part of routine reproduction. Do not retry
+the censored stress level merely to turn it green.
 
 ## Evidence and reproduction
 
