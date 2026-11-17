@@ -5,7 +5,7 @@ R=Path(__file__).resolve().parent;P=R.parent/'swap431-macro-b1-contract42';W=Pat
 def rows(p):return [list(map(float,s.split())) for s in p.read_text().splitlines()]
 def f(p):return {s.split()[0].lower():list(map(float,s.split()[1:])) for s in p.read_text().splitlines()}
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
-for name in ['jac37_update.f90','jac_update.f90','head_diag.f90','macropore_native.f90','probe_state.f90','calcgwl_probe.f90','native_state.f90','ledger_state.f90','integral_canopy.f90','swap_native.f90','swapoutput_native.f90','meteo_native.f90']:
+for name in ['jac37_update.f90','jac_update.f90','head_diag.f90','probe_state.f90','calcgwl_probe.f90','native_state.f90','ledger_state.f90','integral_canopy.f90','swap_native.f90','swapoutput_native.f90','meteo_native.f90']:
  assert (R/name).read_bytes()==(P/name).read_bytes(),name
 m=(R/'macrorate_node.f90').read_text();p=(P/'macrorate_node.f90').read_text()
 assert m[:m.index('      subroutine ABSORPTION(')]==p[:p.index('      subroutine ABSORPTION(')]
@@ -13,7 +13,7 @@ assert m[m.index('      subroutine RAPIDDRAIN('):]==p[p.index('      subroutine 
 assert (R/'guard41_observer.f90').read_text()==(P/'guard41_observer.f90').read_text().replace('\nif(iter_index==10) call contract42_probe()','')
 result=[];pairrows=[];frozen=[]
 for opt in ['O0','O2']:
- d=R/'data'/opt/'TRAJ';old=P/'data'/opt/'TRAJ';a=rows(d/'attempt_trace.txt');oa=rows(old/'attempt_trace.txt');b=rows(d/'step_budget.txt');iv=rows(d/'inventory_trace.txt');j=rows(d/'jac37_trace.txt');j24=rows(d/'jac24_trace.txt')
+ d=R/'data'/opt/'TRAJ_FINAL';old=P/'data'/opt/'TRAJ';a=rows(d/'attempt_trace.txt');oa=rows(old/'attempt_trace.txt');b=rows(d/'step_budget.txt');iv=rows(d/'inventory_trace.txt');j=rows(d/'jac37_trace.txt');j24=rows(d/'jac24_trace.txt')
  assert len(a)==len(b)==len(iv)==357
  assert [x[:-1] for x in a[:356]]==[x[:-1] for x in oa[:356]]
  assert b[:356]==rows(old/'step_budget.txt') and iv[:356]==rows(old/'inventory_trace.txt')
@@ -73,16 +73,32 @@ for opt in ['O0','O2']:
   de=zz['macro_domain'][k]-aa['macro_domain'][k]-dt*(v[17+k]+v[22+k]-v[27+k]-(v[12] if k==0 else 0));assert abs(de)<1e-13;domains.append(de)
  for key,col in [('cgrai',2),('cgird',3),('crunon',4),('caintc',5),('cepd',6),('cevap',7),('cqrot',8),('cqbot',9),('cqdra',10),('cqssdi',11),('cqmpoutdrrap',12)]:assert abs(L1[key][0]-L0[key][0]-dt*v[col])<1e-12
  assert (d/'ledger_returned.txt').read_bytes()==(d/'ledger_origin.txt').read_bytes()
+ # The final native owner preserves the actual continuing D3 event and its contact-weighted reference.
+ ix=46*5+2;pd=dom[2]
+ g=-61+zz['h'][47]/(zz['h'][47]-zz['h'][46])*2
+ wet_top=min(-58,cz['zwalevdm'][2]);wet=wet_top+60;hist_cf=(wet_top-max(-60,g))/wet
+ increment=hist_cf*ca['awlcorfac'][46]*zz['wet_wall'][ix]*pd[33]*(4/pd[34])*aa['sorptivity'][ix]*(math.sqrt(aa['clock'][ix]+dt)-math.sqrt(aa['clock'][ix]))
+ assert zz['clock'][ix]==aa['clock'][ix]+dt and zz['sorptivity'][ix]==aa['sorptivity'][ix]>0
+ assert abs(zz['reference'][ix]-aa['reference'][ix]-increment)<1e-16 and zz['event'][ix]==0
+ assert all(zz[k][46*5+3]==0 for k in ['clock','reference','sorptivity']) and zz['event'][46*5+3]==1
+ preliminary=R/'data'/opt/'TRAJ'
+ for name in ['solver_1','step_budget','inventory_trace','accepted_return','context_accepted_return','ledger_committed']:
+  assert (d/(name+'.txt')).read_bytes()==(preliminary/(name+'.txt')).read_bytes(),name
+ pre_run=json.loads((R/(opt+'_TRAJ_RUN.json')).read_text());assert pre_run['returncode']==0 and not pre_run['censored'] and pre_run['seconds']<20
+ pre_ident=json.loads((R/('PRELIMINARY_'+opt+'_IDENTITY.json')).read_text())
+ assert all(sha(R/'preliminary_source'/name)==h for name,h in pre_ident['sources'].items())
+ assert sha(W/'PRELIMINARY'/opt/'native09.exe')==pre_ident['exe_sha256']
+
  assert all(abs(x[9])<x[3]*1e-5 and max(abs(y) for y in x[13:])<1e-13 for x in iv)
- run=json.loads((R/(opt+'_TRAJ_RUN.json')).read_text());assert run['returncode']==0 and not run['censored'] and run['seconds']<20
+ run=json.loads((R/(opt+'_TRAJ_FINAL_RUN.json')).read_text());assert run['returncode']==0 and not run['censored'] and run['seconds']<20
  ident=json.loads((R/(opt+'_IDENTITY.json')).read_text());assert all(sha(R/name)==h for name,h in ident['sources'].items()) and sha(W/opt/'native09.exe')==ident['exe_sha256']
- result.append(dict(optimization=opt,seconds=run['seconds'],original_prefix_commits_and_attempts_exact=356,original_target_context_exact=True,probe_outer_host_and_cache_restore_byte_exact=True,probe_selected_scope_and_cache_and_flags_restores=10,actual_extra_frozen_provider_calls=9,old_D4_gap_at_1e_minus8=op[5][25]-op[6][25],repaired_D4_gap_at_1e_minus8=pts[5][25]-pts[6][25],exact_boundary_D4_rate=pts[7][25],target_used_dt=dt,target_iterations=5,target_vector_calls=7,target_extra_backtracks=0,target_fresh_certifications=1,target_max_residual=last[18],target_sum_residual=last[17],flux_factor=1,old_fixed_geometry_Jacobian_correction_inactive=True,new_contact_geometry_Jacobian_outerproduct_added=False,host_commit_t1900=v[0],next_dt=zz['controls'][1],target_independent_inventory_error_cm=error,target_inventory_limit_cm=dt*1e-5,target_domain_balance_errors_cm=domains,ledger_increments_verified=True,real_refusal_occurred=False,new_repair_active_refusal_rollback_direct_qualified=False))
-for p in (R/'data/O0/TRAJ').glob('*.txt'):
- if p.name not in ['cost_trace.txt','attempt_trace.txt']:assert p.read_bytes()==(R/'data/O2/TRAJ'/p.name).read_bytes(),p.name
+ result.append(dict(optimization=opt,seconds=run['seconds'],original_prefix_commits_and_attempts_exact=356,original_target_context_exact=True,probe_outer_host_and_cache_restore_byte_exact=True,probe_selected_scope_and_cache_and_flags_restores=10,actual_extra_frozen_provider_calls=9,old_D4_gap_at_1e_minus8=op[5][25]-op[6][25],repaired_D4_gap_at_1e_minus8=pts[5][25]-pts[6][25],exact_boundary_D4_rate=pts[7][25],target_used_dt=dt,target_iterations=5,target_vector_calls=7,target_extra_backtracks=0,target_fresh_certifications=1,target_max_residual=last[18],target_sum_residual=last[17],flux_factor=1,old_fixed_geometry_Jacobian_correction_inactive=True,new_contact_geometry_Jacobian_outerproduct_added=False,host_commit_t1900=v[0],next_dt=zz['controls'][1],target_independent_inventory_error_cm=error,target_inventory_limit_cm=dt*1e-5,target_domain_balance_errors_cm=domains,ledger_increments_verified=True,D3_clock_after_commit=zz['clock'][ix],D3_reference_increment=zz['reference'][ix]-aa['reference'][ix],D3_end_geometry_contact_factor=hist_cf,continuing_sorption_event_history_verified=True,real_refusal_occurred=False,new_repair_active_refusal_rollback_direct_qualified=False))
+for p in (R/'data/O0/TRAJ_FINAL').glob('*.txt'):
+ if p.name not in ['cost_trace.txt','attempt_trace.txt']:assert p.read_bytes()==(R/'data/O2/TRAJ_FINAL'/p.name).read_bytes(),p.name
 assert [x[:-1] for x in rows(R/'data/O0/TRAJ/attempt_trace.txt')]==[x[:-1] for x in rows(R/'data/O2/TRAJ/attempt_trace.txt')]
-for p in (R/'data/O0/TRAJ').glob('*.bin'):assert p.read_bytes()==(R/'data/O2/TRAJ'/p.name).read_bytes(),p.name
+for p in (R/'data/O0/TRAJ_FINAL').glob('*.bin'):assert p.read_bytes()==(R/'data/O2/TRAJ_FINAL'/p.name).read_bytes(),p.name
 with (R/'PAIRED_LIMITS.csv').open('w',newline='',encoding='utf-8') as fp:
  w=csv.DictWriter(fp,fieldnames=list(pairrows[0]));w.writeheader();w.writerows(pairrows)
 (R/'FROZEN_INPUTS.json').write_text(json.dumps(frozen,indent=2)+'\n',encoding='utf-8')
-q=dict(work_unit='SWAP431-MACRO-B1-REPAIR43',decision='PASS_MINIMAL_CONTACT_REPAIR_JUMP_AND_ORIGINAL357_CONVERGENCE_HOSTCOMMIT_O0_O2',source_checkpoint='4b0d9752f',model_routes=2,all_uncensored=True,hard_timeout_seconds=20,O0_O2_non_timing_byte_exact=True,physical_change='Only authorized unsaturated/water-wetted GWLcell contact repair; original mechanisms/max/stock/perched/SATFLOW rules preserved',solver_tolerance_MAXIT_dt_reduction_rule_changes=False,complete_corrected_trajectory_period_restart_general_admission=False,new_repair_real_refusal_rollback_direct_qualified=False,B1_status='B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS',official_promotion=False,results=result)
+q=dict(work_unit='SWAP431-MACRO-B1-REPAIR43',decision='PASS_MINIMAL_CONTACT_REPAIR_JUMP_AND_ORIGINAL357_CONVERGENCE_HOSTCOMMIT_O0_O2',source_checkpoint='2fd75e206',model_routes=4,final_routes=2,preliminary_routes=2,preliminary_superseded_for_history_gap=True,all_uncensored=True,hard_timeout_seconds=20,O0_O2_non_timing_byte_exact=True,physical_change='Only authorized unsaturated/water-wetted GWLcell contact repair; original mechanisms/max/stock/perched/SATFLOW rules preserved',solver_tolerance_MAXIT_dt_reduction_rule_changes=False,complete_corrected_trajectory_period_restart_general_admission=False,new_repair_real_refusal_rollback_direct_qualified=False,B1_status='B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS',official_promotion=False,results=result)
 (R/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf-8');print(json.dumps(q,indent=2))

@@ -1,8 +1,11 @@
 {
   "work_unit": "SWAP431-MACRO-B1-REPAIR43",
   "decision": "PASS_MINIMAL_CONTACT_REPAIR_JUMP_AND_ORIGINAL357_CONVERGENCE_HOSTCOMMIT_O0_O2",
-  "source_checkpoint": "4b0d9752f",
-  "model_routes": 2,
+  "source_checkpoint": "2fd75e206",
+  "model_routes": 4,
+  "final_routes": 2,
+  "preliminary_routes": 2,
+  "preliminary_superseded_for_history_gap": true,
   "all_uncensored": true,
   "hard_timeout_seconds": 20,
   "O0_O2_non_timing_byte_exact": true,
@@ -15,7 +18,7 @@
   "results": [
     {
       "optimization": "O0",
-      "seconds": 2.5253818002529442,
+      "seconds": 2.6860242998227477,
       "original_prefix_commits_and_attempts_exact": 356,
       "original_target_context_exact": true,
       "probe_outer_host_and_cache_restore_byte_exact": true,
@@ -46,12 +49,16 @@
         3.2526065174565133e-19
       ],
       "ledger_increments_verified": true,
+      "D3_clock_after_commit": 0.006000006877002306,
+      "D3_reference_increment": 3.226599104566574e-08,
+      "D3_end_geometry_contact_factor": 0.6362967095764742,
+      "continuing_sorption_event_history_verified": true,
       "real_refusal_occurred": false,
       "new_repair_active_refusal_rollback_direct_qualified": false
     },
     {
       "optimization": "O2",
-      "seconds": 2.148486199788749,
+      "seconds": 2.0948359998874366,
       "original_prefix_commits_and_attempts_exact": 356,
       "original_target_context_exact": true,
       "probe_outer_host_and_cache_restore_byte_exact": true,
@@ -82,6 +89,10 @@
         3.2526065174565133e-19
       ],
       "ledger_increments_verified": true,
+      "D3_clock_after_commit": 0.006000006877002306,
+      "D3_reference_increment": 3.226599104566574e-08,
+      "D3_end_geometry_contact_factor": 0.6362967095764742,
+      "continuing_sorption_event_history_verified": true,
       "real_refusal_occurred": false,
       "new_repair_active_refusal_rollback_direct_qualified": false
     }
