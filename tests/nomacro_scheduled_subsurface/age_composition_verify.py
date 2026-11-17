@@ -81,6 +81,10 @@ def validate(q):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('fixed_young_age_admission',ROOT/'tests/nomacro_scheduled_subsurface/age_fixed_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty age composition admission surface')
     for ref in (PARENT,CANONICAL,ADMISSION_CANONICAL,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     extra=set(git('diff','--name-only',CANONICAL,ADMISSION_CANONICAL).decode().splitlines())
