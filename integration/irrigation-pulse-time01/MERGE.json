@@ -1,0 +1,45 @@
+{
+  "source": "fd162a1ea22c41e798a431f39957aaff9c173e46",
+  "parents": [
+    "a9044fdab7e333058c6a4dab34884e56e33c35a9",
+    "769199713e7658fbcd9d0ad7ec346cd474b231fb"
+  ],
+  "tree": "f6efd579c4710e6b97c807edc0b6eb7d2b789607",
+  "records": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "tests/irrigation_pulse/test_verify.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ".\n----------------------------------------------------------------------\nRan 1 test in 0.046s\n\nOK\n",
+      "seconds": 0.26173499994911253
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "tests/hupsel51/test_successor.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "...........\n----------------------------------------------------------------------\nRan 11 tests in 1.754s\n\nOK\n",
+      "seconds": 2.0073495998512954
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "tests/hupsel51/verify_successor.py"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"CURRENT_R_PLUS_LOCAL_PULSE_ADMISSION_PASS\",\n  \"runtime\": \"70f1c669ec170656c96e66e56cf1750cc66edb74\",\n  \"inherited_full_days\": 8768,\n  \"full_native_windows\": 48,\n  \"fresh_composed_native_windows\": 8,\n  \"prior_R_full_days\": 17536,\n  \"default_policy_changed\": false,\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"tolerances_changed\": false\n}\n",
+      "stderr": "",
+      "seconds": 10.567035200074315
+    }
+  ],
+  "tree_exact_to_qualified_PR_head": true,
+  "pr": 1697
+}
