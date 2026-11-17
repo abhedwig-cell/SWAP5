@@ -16,6 +16,16 @@ jobs:
       OMP_NUM_THREADS: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            tests/local_wetting
+            tests/nomacro_mixtures
+            tests/nomacro_pond_history
+            reference/swap-4.3.1
       - uses: actions/download-artifact@v4
         with:
           name: review-composed-a629c6fe9b452f469b96108b042c3fdab077e1cf
