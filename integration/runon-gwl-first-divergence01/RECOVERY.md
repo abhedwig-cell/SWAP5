@@ -25,3 +25,13 @@ current admitted source and prior O/M scientific dispositions. Preserve rejected
 trials, source/build/input identity, exact commands and numerical results.
 Deliver a source-bound causal explanation or justified repair plus affected
 O0/O2/regression verification, published on the own branch/PR as appropriate.
+
+COMPLETED: initial same0.0002day step differs1.06533e-9cm GWL, then adaptive
+grids diverge. Material maximumday5 explained by exact pond Newton derivative
+allowing coarse0.04day pulse steps which original rejects3times. Derivative-only
+original counterfactual retains identical days0..4 and shiftsday5 GWL2.54325cm.
+Matched five-day refinement0.004/0.0004/0.00004 in both models reduces gap to
+0.001182635609cm; O0/O2 endpoints identical. Guards unchanged. No production
+repair/admission or scientific PASS is claimed. Preserve raw, publish this
+explanation and link from PR1694; next optional implementation is event-local
+temporal-accuracy selection, not a globally reduced timestep or weaker tangent.
