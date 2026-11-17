@@ -40,8 +40,18 @@ for key,prior,inputs,opt,model in configs:
  for file,digest in b['identity']['kernel_sources']:
   now=(root/file).read_bytes();old=subprocess.check_output(['git','show','8dcda0fb247ae7823d720817d6340114d5227728:'+file]);assert now.replace(b'\r\n',b'\n')==old
   assert digest in (sha(now),sha(old));kernel[file]=sha(now)
- for field in ('floating_point_profile','soil_table_policy','solute_step_policy','time_step_policy'):assert a['identity'].get(field)==b['identity'].get(field),(key,field)
- assert a['identity'].get('scheduled_pond_history')==b['identity'].get('scheduled_pond_history');assert a['identity'].get('frost_reference') is None
+ for field in ('compiler','target','compiler_sha256','donor_flags','kernel_flags','donor_objects','donor_modules','ttutil_modules','ttutil_library','floating_point_profile','soil_table_policy','solute_step_policy','time_step_policy'):
+  assert a['identity'].get(field)==b['identity'].get(field),(key,field)
+ current_pond=a['identity'].get('scheduled_pond_history');prior_pond=b['identity'].get('scheduled_pond_history')
+ if current_pond!=prior_pond:
+  # New Windows checkouts can have CRLF while the original proof used LF.
+  # Verify both actual hashes against the unchanged versioned complete source;
+  # retain distinct hashes/build identities rather than rebinding either one.
+  assert current_pond and prior_pond and current_pond['policy']==prior_pond['policy']
+  file='app/hybrid_water/scheduled_pond_state.py';old=subprocess.check_output(['git','show','67ddba269:'+file]);now=(root/file).read_bytes()
+  assert old==now.replace(b'\r\n',b'\n') and current_pond['source_sha256']==sha(now)
+  assert prior_pond['source_sha256'] in (sha(old),sha(old.replace(b'\n',b'\r\n')))
+ assert a['identity'].get('frost_reference') is None
  reports[key]=dict(status='ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT',generated=fields,kernel_sources=kernel,inputs=a['inputs'],scope='Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained')
  q=dict(status='SCHEDULED_SSDI_PRIOR_O_J_PLATE_N_M_L5_AND_NAMED_SOURCE_PRESERVATION_PASS',runtime_source=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),profiles=reports,science='NOT_QUALIFIED')
  (out/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n');print(key,'SOURCE_PRESERVATION_PASS',flush=True)
