@@ -1,0 +1,211 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-NODE41",
+  "decision": "PASS_DIAGNOSIS_ORIGINAL357_NODE47_PROGRESS_AND_GUARD_O0_O2",
+  "source_checkpoint": "28e70e7ee",
+  "model_routes": 2,
+  "all_uncensored": true,
+  "hard_timeout_seconds": 20,
+  "O0_O2_non_timing_byte_exact": true,
+  "no_extra_provider_evaluations_or_FD_probes": true,
+  "physics_numerical_terms_guards_tolerance_MAXIT_dt_reduction_rules_unchanged": true,
+  "finding": "Iterationchatter across originalABSORPTION discretecell exclusion at GWL=-60. Newcorrection fixedgeometryoutofscope; allJacstockfactors1; notstalecache. Observedbranchjump localized; not yetproof ofphysicalcontractdefect or authorizedguardextension.",
+  "full_period_BAL_new_restart_general_admission": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 2.04812019970268,
+      "original_prefix_commits_exact": 356,
+      "original_attempts_including_selected_exact": 357,
+      "selected_iterations": 30,
+      "vector_and_provider_calls": 105,
+      "line_search_trials": 104,
+      "extra_line_search_trials": 74,
+      "line_search_exhaustions": 9,
+      "node47_residual_sign_changes": 19,
+      "initial_Fmax": 0.19031264786385216,
+      "minimum_iteration_end_Fmax": 0.025031095286205937,
+      "final_Fmax": 0.02571625908888784,
+      "final_sum_residual": -0.007310765121685977,
+      "final_node": 47,
+      "final_fresh_certifications": 0,
+      "no_provisional_convergence": true,
+      "guard_reason": -3,
+      "provider_stamps_all_valid": true,
+      "actual_head_interpolation": [
+        47,
+        48
+      ],
+      "native_zone_states": {
+        "48_48_48": 17,
+        "47_47_minus1": 13
+      },
+      "fixed_zone_condition_passes": 0,
+      "fixed_head_condition_passes": 0,
+      "fixed_interpolation_condition_passes": 0,
+      "PeGWL_absent_sentinel999_iterations": 13,
+      "h50_range": [
+        4.3103585892996135,
+        4.363544316033264
+      ],
+      "h51_range": [
+        6.171052909597875,
+        6.2213722212601885
+      ],
+      "all_Jacobian_domain_in_out_factors_one": true,
+      "domain2_lateral_inflow_nonzero_all_Jacobians": true,
+      "domain2_other_positive_flow_Jacobians": {
+        "internal_in": 17,
+        "matrix_in": 30,
+        "UNSAT_out": 0
+      },
+      "cell47_bottom_cm": -60,
+      "provider_branch": {
+        "47": {
+          "evaluations": 56,
+          "unsaturated_macro_out_rate_range": [
+            0.0,
+            0.0
+          ],
+          "domain3_rate_range": [
+            0.0,
+            0.0
+          ],
+          "domain4_rate_range": [
+            0.0,
+            0.0
+          ]
+        },
+        "48": {
+          "evaluations": 49,
+          "unsaturated_macro_out_rate_range": [
+            0.05661226258953998,
+            0.05688505173565076
+          ],
+          "domain3_rate_range": [
+            8.241702753516238e-05,
+            8.457422744629282e-05
+          ],
+          "domain4_rate_range": [
+            0.05652984556200482,
+            0.05680047750820447
+          ]
+        }
+      },
+      "final_node47_operator": {
+        "storage": 7.234462032161571e-05,
+        "sink": 0.0,
+        "minus_source": -0.0,
+        "root": 0.0,
+        "upper": -0.3463775936611503,
+        "lower": 0.3772050320571525,
+        "minus_macro": -0.056616042105211685,
+        "residual": -0.02571625908888784,
+        "domain3_unsat_out": 8.244703960426284e-05,
+        "domain4_unsat_out": 0.05653359506560742
+      },
+      "max_operator_decomposition_error": 2.7755575615628914e-17,
+      "physical_saved_water_inventory_restored": true,
+      "ledger_unchanged_no_target_commit": true,
+      "immediate_full_native_snapshot_identity": false
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.5239153997972608,
+      "original_prefix_commits_exact": 356,
+      "original_attempts_including_selected_exact": 357,
+      "selected_iterations": 30,
+      "vector_and_provider_calls": 105,
+      "line_search_trials": 104,
+      "extra_line_search_trials": 74,
+      "line_search_exhaustions": 9,
+      "node47_residual_sign_changes": 19,
+      "initial_Fmax": 0.19031264786385216,
+      "minimum_iteration_end_Fmax": 0.025031095286205937,
+      "final_Fmax": 0.02571625908888784,
+      "final_sum_residual": -0.007310765121685977,
+      "final_node": 47,
+      "final_fresh_certifications": 0,
+      "no_provisional_convergence": true,
+      "guard_reason": -3,
+      "provider_stamps_all_valid": true,
+      "actual_head_interpolation": [
+        47,
+        48
+      ],
+      "native_zone_states": {
+        "48_48_48": 17,
+        "47_47_minus1": 13
+      },
+      "fixed_zone_condition_passes": 0,
+      "fixed_head_condition_passes": 0,
+      "fixed_interpolation_condition_passes": 0,
+      "PeGWL_absent_sentinel999_iterations": 13,
+      "h50_range": [
+        4.3103585892996135,
+        4.363544316033264
+      ],
+      "h51_range": [
+        6.171052909597875,
+        6.2213722212601885
+      ],
+      "all_Jacobian_domain_in_out_factors_one": true,
+      "domain2_lateral_inflow_nonzero_all_Jacobians": true,
+      "domain2_other_positive_flow_Jacobians": {
+        "internal_in": 17,
+        "matrix_in": 30,
+        "UNSAT_out": 0
+      },
+      "cell47_bottom_cm": -60,
+      "provider_branch": {
+        "47": {
+          "evaluations": 56,
+          "unsaturated_macro_out_rate_range": [
+            0.0,
+            0.0
+          ],
+          "domain3_rate_range": [
+            0.0,
+            0.0
+          ],
+          "domain4_rate_range": [
+            0.0,
+            0.0
+          ]
+        },
+        "48": {
+          "evaluations": 49,
+          "unsaturated_macro_out_rate_range": [
+            0.05661226258953998,
+            0.05688505173565076
+          ],
+          "domain3_rate_range": [
+            8.241702753516238e-05,
+            8.457422744629282e-05
+          ],
+          "domain4_rate_range": [
+            0.05652984556200482,
+            0.05680047750820447
+          ]
+        }
+      },
+      "final_node47_operator": {
+        "storage": 7.234462032161571e-05,
+        "sink": 0.0,
+        "minus_source": -0.0,
+        "root": 0.0,
+        "upper": -0.3463775936611503,
+        "lower": 0.3772050320571525,
+        "minus_macro": -0.056616042105211685,
+        "residual": -0.02571625908888784,
+        "domain3_unsat_out": 8.244703960426284e-05,
+        "domain4_unsat_out": 0.05653359506560742
+      },
+      "max_operator_decomposition_error": 2.7755575615628914e-17,
+      "physical_saved_water_inventory_restored": true,
+      "ledger_unchanged_no_target_commit": true,
+      "immediate_full_native_snapshot_identity": false
+    }
+  ]
+}
