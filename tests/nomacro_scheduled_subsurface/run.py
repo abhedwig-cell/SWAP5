@@ -161,7 +161,7 @@ def main():
     def save(): (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
     if args.resume:
         previous = json.loads((out/'RESULT.json').read_text())
-        assert previous['configuration']==args.configuration and previous['inputs']==descriptor
+        assert previous['configuration']==args.configuration and previous['inputs']==json.loads(json.dumps(descriptor))
         result = previous
         result['controller_commit'] = subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
         result.setdefault('retained_failures',[]).append(dict(status=previous['status'],error=previous.get('error')))
