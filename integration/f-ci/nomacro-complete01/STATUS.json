@@ -3,8 +3,8 @@
   "baseline": "e67710244d84a9a37b30b76e853a3e5b0eeb55d2",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-aquifer-source01",
-  "last_commit": "bd8bb551c",
-  "status": "AQUIFER_CORRECTED_REFERENCE_O0_O2_PASS_CALLER_NATIVE_IMPLEMENTED_UNQUALIFIED",
+  "last_commit": "1ab4e396d90746681ba0d42e1c7353856d40d0ef",
+  "status": "AQUIFER_WINDOWS_EIGHT_FULL_NATIVE_PASS_CONTROLS_PRESERVATION_RUNNING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -41,9 +41,12 @@
   ],
   "dependency_surface": [
     "src/process/mod_aquifer_solute_reservoir.f90",
-    "tests/modularity/test_aquifer_solute_reservoir.f90",
-    "tests/modularity/run_modular_tests.py",
-    "Original MOD_Solute_CDE SWBR storage coefficient, signed drainage, surface output, decay and private Cdrain/native state; caller not implemented"
+    "app/hybrid_water/conserved_aquifer_solute.py",
+    "app/hybrid_water/daily_host.py",
+    "app/hybrid_water/daily_coupling.py",
+    "app/hybrid_water/experimental_project.py",
+    "reference/swap-4.3.1/patches/NOMACRO-AQUIFER-SOLUTE-01",
+    "tests/nomacro_scheduled_subsurface/aquifer*.py"
   ],
   "invariants": [
     3,
@@ -132,6 +135,14 @@
       "status": "O0_O2_PASS",
       "proof": "AQUIFER_COMPONENT.json",
       "scope": "Units/conservation/signed exchange/zero interval/A-B-A/nonmutation/refused output. Caller/native/reference not implemented."
+    },
+    {
+      "result": "WINDOWS_AQUIFER_EIGHT_FULL_COMPOUND_AND_EXACT_NATIVE_PASS",
+      "source": "f59e4b3cf",
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/aquifer-runtime-full",
+      "days": 8768,
+      "native_windows": 32,
+      "guard_mg_cm2": 1e-10
     }
   ],
   "failed_tests": [
@@ -202,7 +213,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Build actual SWBR1 experimental box/soil case O0/O2; first strict day/native own test, then complete model and active external/rejected native source cases. Check soil+box/transfer/global guards unchanged1e-10; keep all failures. Code now enables only development SWBR1 branch, canonicale677 unchanged.",
-  "recovery_point": "AQ physical evaluator+loss bound and corrected original ten1096periods O0/O2 PASS. Index-only original remaining compound error0.6896808mg/cm2; corrected maxcompound7.725e-12 (guard1e-10), stiff limit binds961times. Current generator emits exact prior reference F90 bytes. Caller/source metadata/nativeCDF/cumulative/state/compound guard implemented on dev AQ branch, not yet built. SWAP5 canonicale677 fixed/scheduled admission remains unchanged.",
+  "recovery_point": "Branch codex/nomacro-aquifer-source01; full controller complete; controls session2541 and preservation session76481. Check real process status before restarting.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -303,5 +314,6 @@
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
-  "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7"
+  "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
+  "next_action": "Complete aquifer controls/preservation; run selected Ubuntu aquifer qualification, then strict evidence/current-source successor and actual canonical admission. No whole-model equivalence promotion."
 }
