@@ -23,10 +23,12 @@ def render_irrigation(source):
     # Both scalar and interval inputs join here, before the original grid walk.
     # Preserve all original allocation/rate equations and complete module state.
     anchor = '               ! determine layer number where SSDI takes place'
-    if source.count(anchor) != 1:
+    boundary = source.index('      subroutine read_irrigation_fixed()')
+    scheduled, fixed = source[:boundary], source[boundary:]
+    if scheduled.count(anchor) != 1:
         raise ValueError('Changed original scheduled subsurface depth input anchor')
-    return source.replace(anchor,
+    return scheduled.replace(anchor,
         "               if(numnod<1)error stop 'Invalid scheduled subsurface irrigation profile'\n"
         "               if(ir_z(1)<ir_z(2).or.any(ir_z<zbotcp(numnod))) &\n"
         "                  error stop 'Invalid scheduled subsurface irrigation depth interval/profile'\n"
-        + anchor)
+        + anchor) + fixed
