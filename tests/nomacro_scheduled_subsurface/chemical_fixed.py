@@ -1,5 +1,6 @@
 """Actual corrected fixed chemical SSDI; use existing production/native harness."""
 import argparse
+import contextlib
 import importlib.util
 import json
 from pathlib import Path
@@ -12,6 +13,52 @@ spec=importlib.util.spec_from_file_location('scheduled_controls',Path(__file__).
 s=importlib.util.module_from_spec(spec);spec.loader.exec_module(s)
 m=s.m
 from fixed_irrigation_cases import create
+from daily_coupling import CoupledDailyColumn,validate_bundle
+
+
+def controls(build,reference,project,full,data,out):
+    out.mkdir();meta,case=validate_bundle(build,reference,project)
+    foreign=out/'foreign';foreign.mkdir()
+    changed=json.loads((build/'BUILD.json').read_text())
+    changed['identity']['conserved_subsurface_solute']['policy']='foreign'
+    (foreign/'BUILD.json').write_text(json.dumps(changed))
+    try:validate_bundle(foreign,reference,project)
+    except ValueError as error:assert 'Foreign conserved subsurface solute policy' in str(error)
+    else:raise AssertionError('Foreign chemical source accepted')
+    source=full/'accepted-column-1-day-4.zip';digest=m.sha(source)
+    column=CoupledDailyColumn(build,reference,out/'external',project,'fixed-chemical',origin=source,day=4,adopt_native=True)
+    trial=column.prepare();assert trial.budget['solute_ledger_mg_cm2'][3]>0
+    column.discard(trial);assert column.day==4 and m.sha(source)==digest
+    replay=column.prepare();assert replay.budget==trial.budget
+    column.accept(replay)
+    recovered=CoupledDailyColumn(build,reference,out/'recovered',project,'fixed-chemical',origin=column.checkpoint,day=5)
+    endpoint=recovered.prepare()
+    assert m.physical([{k:v for k,v in endpoint.budget.items() if k!='candidate_only'}|{'committed':True}])==m.physical([data[5]])
+    recovered.discard(endpoint)
+    origin=out/'origin';receipt=m.h.verify_checkpoint(source,4,meta['binding'],origin)
+    refused=out/'refused';refused.mkdir()
+    with contextlib.ExitStack() as stack:
+        host=m.h.DailyHost(stack,m.h.executable(build,'day_donor'),m.h.executable(build,'day_kernel'),case,refused,
+                          [m.h.ColumnStart('original',4,origin,receipt)],checkpoint_enabled=True,runtime=True,
+                          binding=meta['binding'],model=project.model,project=project)
+        stock=host.columns[0].solute_stock;water=host.columns[0].stocks.copy();receive=m.h.receive
+        def corrupt(process,*args,**kwargs):
+            disposition,response=receive(process,*args,**kwargs)
+            if process is host.columns[0].worker and 'HYBRID_SOLUTE_LEDGER' in response:
+                values=response['HYBRID_SOLUTE_LEDGER'].copy();values[0]=str(float(values[0])+1)
+                response['HYBRID_SOLUTE_LEDGER']=values
+            return disposition,response
+        try:
+            m.h.receive=corrupt
+            try:host.step(1,checkpoint=True)
+            except ValueError as error:assert 'solute candidate exceeds unchanged1e-10 mass guard' in str(error)
+            else:raise AssertionError('Inconsistent active chemical source accepted')
+        finally:m.h.receive=receive
+        assert host.columns[0].day==4 and host.columns[0].solute_stock==stock and host.columns[0].stocks==water
+        assert not list(refused.glob('accepted-*.zip'))
+        host.close()
+    return dict(foreign_policy_refused=True,active_discard_replay_exact=True,active_disk_recovery=True,
+                inconsistent_chemical_mass_refused=True,committed_state_unchanged=True,origin_unchanged=m.sha(source)==digest)
 
 
 def main():
@@ -21,14 +68,16 @@ def main():
     p.add_argument('--configuration',choices=['point','interval'],required=True)
     p.add_argument('--inline',action='store_true')
     p.add_argument('--short-only',action='store_true')
+    p.add_argument('--reuse-build-from',type=Path)
     args=p.parse_args();out=args.output.resolve();out.mkdir()
     reference=args.reference_work.resolve();m.user_prepare.validate(reference)
-    case=out/'input'
-    create(case,'water-file-subsurface'+('-interval' if args.configuration=='interval' else ''),inline=args.inline)
-    path=case/'swap.swp';text=path.read_text(encoding='cp1252')
-    for name,value in dict(SWSOLU=1,SWMONTH=0,INLIST_CSV="'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'").items():
-        text=s.assignment(text,name,value)
-    path.write_text(text+'\nNUM_DECIMALS = 12\n',encoding='cp1252')
+    case=args.reuse_build_from.resolve()/'input' if args.reuse_build_from else out/'input'
+    if not args.reuse_build_from:
+        create(case,'water-file-subsurface'+('-interval' if args.configuration=='interval' else ''),inline=args.inline)
+        path=case/'swap.swp';text=path.read_text(encoding='cp1252')
+        for name,value in dict(SWSOLU=1,SWMONTH=0,INLIST_CSV="'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'").items():
+            text=s.assignment(text,name,value)
+        path.write_text(text+'\nNUM_DECIMALS = 12\n',encoding='cp1252')
     project=m.e.load(case)
     result=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                 configuration=args.configuration,inline=args.inline,inputs=m.e.inspect(case),profiles={},
@@ -37,14 +86,18 @@ def main():
     save()
     try:
         for opt in ('O0','O2'):
-            build=out/(opt+'-build')
+            build=(args.reuse_build_from.resolve() if args.reuse_build_from else out)/(opt+'-build')
             command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',m.e.MODEL,
                      '--experimental-project',str(case),'--reference-work',str(reference),'--build-only',
                      '--kernel-opt',opt,'--donor-opt',opt,'--output',str(build)]
-            started=time.perf_counter();run=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
-            (out/(opt+'-build.stdout')).write_text(run.stdout);(out/(opt+'-build.stderr')).write_text(run.stderr)
-            result['profiles'][opt]=dict(build_seconds=time.perf_counter()-started,returncode=run.returncode);save()
-            assert run.returncode==0,run.stderr
+            if args.reuse_build_from:
+                validate_bundle(build,reference,project)
+                result['profiles'][opt]=dict(build_reused=str(build),compilation='NOT_REPEATED')
+            else:
+                started=time.perf_counter();run=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
+                (out/(opt+'-build.stdout')).write_text(run.stdout);(out/(opt+'-build.stderr')).write_text(run.stderr)
+                result['profiles'][opt]=dict(build_seconds=time.perf_counter()-started,returncode=run.returncode);save()
+                assert run.returncode==0,run.stderr
             last=8 if args.short_only else 1096
             full=out/(opt+'-full')
             report,data=m.trajectory(build,reference,project,full,last,{2,4,6,365,367,last},60)
@@ -55,6 +108,7 @@ def main():
             report.update(irrigation_water_cm=water,irrigation_mass_mg_cm2=mass)
             report['own']=[m.own(build,reference,project,full,data,start,start+2,out/(opt+'-own'+str(start)))
                            for start in ((2,4) if args.short_only else (2,4,365))]
+            report['controls']=controls(build,reference,project,full,data,out/(opt+'-controls'))
             result['profiles'][opt].update(report);save()
             print(args.configuration,opt,'SOURCE_MASS_NATIVE_PASS',flush=True)
         result['status']='SHORT_O0_O2_PASS' if args.short_only else 'FULL_O0_O2_PASS'
