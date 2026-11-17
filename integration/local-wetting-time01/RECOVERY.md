@@ -50,3 +50,17 @@ Its new branch is inactive for the selected fixed-surface inputs. Qualify actual
 composed emitted dependencies and input equality plus pulse/storm prefix215 and
 cold windows for all four profiles; reuse unchanged fulls only at that closure.
 Do not rerun complete periods or conflate older source/binary identities.
+
+Published result: draft PR #1701 to integration/f-ci-canonical, verified open
+and conflict-free at source/evidence95a28e482145133f35ddd621b1902a219e513dc6.
+README, VERIFIED and SEAL own the final assessment:8 full1096-day Windows/Ubuntu
+O0/O2 profiles,64 exact own windows, unchanged mass guards; current composition
+adds12 own windows with equal emitted dependencies. Full literal original431
+comparisons remain NOT_QUALIFIED (maximum GWL2.678/2.783cm). Supported heat
+observer passes numerical conduction but perturbs the physical trajectory from
+day585 in both output modes. Preserve those failures; no third observer or
+controller tweak. Registered defaults and canonical admission remain unchanged.
+Next concrete acceptance is scientific disposition/independently qualified
+reference and nonperturbing heat observation; do not re-run unchanged fulls
+or promote this experimental policy without those decisions. PR is the bounded
+requested deliverable, not completion of whole scientific equivalence.
