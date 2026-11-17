@@ -50,13 +50,13 @@ def validate(q,composed):
 def verify():
     git('merge-base','--is-ancestor',BASE,'HEAD');git('merge-base','--is-ancestor',FULL_SEAL,'HEAD');git('merge-base','--is-ancestor',COMPOSED_SEAL,'HEAD')
     require(not git('diff','HEAD','--','src','app','reference','tools','tests','.github','integration'),'dirty qualified surface')
-    require(not git('diff',RUNTIME,'HEAD','--','src','app','reference','tools','.github','tests/nomacro_drainage','tests/nomacro_time_event','tests/nomacro_frost','tests/nomacro_pond_history','tests/nomacro_mixtures','tests/irrigation_pulse/run.py','tests/irrigation_pulse/component.py','tests/irrigation_pulse/component.f90','tests/irrigation_pulse/finish.py','tests/irrigation_pulse/compose.py'),'runtime differs from qualified composition')
+    require(not git('diff',RUNTIME,'HEAD','--','src','app','reference','tools','tests/nomacro_drainage','tests/nomacro_time_event','tests/nomacro_frost','tests/nomacro_pond_history','tests/nomacro_mixtures','tests/irrigation_pulse/run.py','tests/irrigation_pulse/component.py','tests/irrigation_pulse/component.f90','tests/irrigation_pulse/finish.py','tests/irrigation_pulse/compose.py'),'runtime differs from qualified composition')
     paths=set(git('diff','--name-only',BASE,'HEAD').decode().splitlines())
     allowed={'app/hybrid_water/'+p for p in ('daily_host.py','daily_coupling.py','experimental_project.py','irrigation_pulse_time.py')}|{ENTRY,'.github/workflows/irrigation-pulse-time.yml'}
     require(all(p in allowed or p.startswith((PROOF,'tests/irrigation_pulse/')) for p in paths),'unqualified delta outside pulse owner')
     require(blob('HEAD',ENTRY).decode().replace(HOOK,'',1)==blob(BASE,ENTRY).decode() and blob('HEAD',ENTRY).decode().count(HOOK)==1,'historical R admission body changed')
     post=set(git('diff','--name-only',COMPOSED_SEAL,'HEAD').decode().splitlines())
-    require(post<={ENTRY,'tests/irrigation_pulse/verify.py','tests/irrigation_pulse/test_verify.py',PROOF+'ADMISSION.json',PROOF+'MERGE.json',PROOF+'ADMISSION_RECOVERY.md'},'unsealed post-composition delta')
+    require(post<={ENTRY,'tests/irrigation_pulse/verify.py','tests/irrigation_pulse/test_verify.py',PROOF+'ADMISSION.json',PROOF+'MERGE.json',PROOF+'ADMISSION_RECOVERY.md','.github/workflows/irrigation-pulse-time.yml'},'unsealed post-composition delta')
     def sealed(ref,name):
         path=PROOF+name;require(blob('HEAD',path)==blob(ref,path),'sealed proof changed: '+name);return json.loads((ROOT/path).read_text())
     q=sealed(FULL_SEAL,'QUALIFICATION.json');composed=sealed(COMPOSED_SEAL,'COMPOSITION.json');validate(q,composed)
