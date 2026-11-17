@@ -193,5 +193,32 @@ class Boundaries(unittest.TestCase):
             with self.subTest(attack=index),self.assertRaises(ValueError):s.validate_q(*bad)
 
 
+    def test_r_complete_table_fluxes_native_external_and_preservation(self):
+        load=lambda n:json.loads((s.ROOT/s.L_PROOF/('BLOCK_R_'+n+'.json')).read_text())
+        values=[load(n) for n in ('QUALIFICATION','PRIOR_SOURCE_PRESERVATION','PRIOR_P_FREE_PRESERVATION','PRIOR_Q_PRESERVATION','COMPONENT_RESULT','DEFAULT_PRESERVATION_RESULT')]
+        values.extend([dict(Windows=load('PREFLIGHT_WINDOWS'),Ubuntu=load('UBUNTU_PREFLIGHT')),load('POND_COMPONENT_INHERITANCE'),load('REPAIRED_PREFIX53')]);s.validate_r(*values);attacks=[]
+        for field,value in [('runtime_source',s.Q_RUNTIME),('complete_model_days',8768),('mass_guard_cm',1e-9),('maximum_water_residual_cm',float('nan')),('maximum_solute_residual_mg_cm2',1.01e-10),('new_persistent_codec',True),('new_tangent_formula',True),('clock_policy_changed',True),('whole_scientific_equivalence','PASS'),('retained_failures','PASS')]:
+            bad=copy.deepcopy(values);bad[0][field]=value;attacks.append(bad)
+        for edit in ('mass','native','external','sign','source','forcing'):
+            bad=copy.deepcopy(values);rep=bad[0]['platforms']['Ubuntu']['chemical-drain-signed'];r=rep['profiles']['O2']
+            if edit=='mass':r['budgets']['max_solute_mg_cm2']=float('nan')
+            elif edit=='native':r['own'][0]['exact_native']=False
+            elif edit=='external':r['controls']['external_disk_recovery']=False
+            elif edit=='sign':r['drainage_signed_exposure']['days_negative']=0
+            elif edit=='source':rep['source_commit']=s.R_WINDOWS
+            else:rep['selected_physical_controls']['DRAMET']=2
+            attacks.append(bad)
+        bad=copy.deepcopy(values);bad[1]['profiles'].pop('prescribed-head5');attacks.append(bad)
+        bad=copy.deepcopy(values);bad[2]['profiles']['chemical']['prefix']['own'][1]['exact_csv']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[3]['all_21_physical_rows_exact']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[4]['physical_cases_per_optimization']=14;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[5]['profiles'][0]['every_exercised_native_exact']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[6]['Windows']['custom_file_probe']['actual_selected_drain_file']='swap.dra';attacks.append(bad)
+        bad=copy.deepcopy(values);bad[7]['actual_template_git_diff_empty']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[8]['profiles']['O0']['own']['exact_native']=False;attacks.append(bad)
+        for index,bad in enumerate(attacks):
+            with self.subTest(attack=index),self.assertRaises(ValueError):s.validate_r(*bad)
+
+
 if __name__ == '__main__':
     unittest.main()

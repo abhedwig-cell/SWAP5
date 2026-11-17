@@ -1,0 +1,396 @@
+{
+  "status": "EXACT_QUALIFIED_ORIGINAL_LINEAR_POND_FUNCTION_INHERITED_NEW_COUPLED_BRANCH_TESTED",
+  "source_commit": "ea113db7685735293c21103bcdd48a78ebc3ed78",
+  "unchanged_template_since": "166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad",
+  "template_sha256": "f77d10dbfd94aa1fad0204ce58dd2a66802f3acd250000f4320719f4695d2c9d",
+  "qualified_derivative_evidence": "BLOCK_L_COMPONENT_RESULT.json/pond",
+  "derivative_component": {
+    "status": "ORIGINAL_LINEAR_POND_TANGENT_O0_O2_PASS",
+    "profiles": {
+      "O0": {
+        "cases": 36,
+        "maximum_relative_complex_step_error": 2.7675639557855903e-15,
+        "maximum_old_fixed_pond_relative_error": 40.000000000000114,
+        "actual": [
+          0.009999990000010001,
+          0.009999990099019704,
+          0.009999990000010001,
+          0.009999990002009598,
+          0.009999990000010001,
+          0.009999990001009899,
+          0.009996001599360257,
+          0.00999920006399488,
+          0.009996001599360257,
+          0.009996297667530544,
+          0.009996001599360257,
+          0.00999615532487505,
+          0.9999000099990001,
+          0.9999009999009999,
+          0.9999000099990001,
+          0.9999000299910027,
+          0.9999000099990001,
+          0.9999000199960009,
+          0.9615384615384615,
+          0.9920634920634921,
+          0.9615384615384615,
+          0.9642857142857143,
+          0.9615384615384615,
+          0.9629629629629629,
+          909.090909090909,
+          909.9099099099099,
+          909.090909090909,
+          909.1074350118159,
+          909.090909090909,
+          909.0991728024725,
+          24.390243902439025,
+          111.11111111111111,
+          24.390243902439025,
+          26.29016553067186,
+          24.390243902439025,
+          25.341130604288498
+        ]
+      },
+      "O2": {
+        "cases": 36,
+        "maximum_relative_complex_step_error": 2.7675639557855903e-15,
+        "maximum_old_fixed_pond_relative_error": 40.000000000000114,
+        "actual": [
+          0.009999990000010001,
+          0.009999990099019704,
+          0.009999990000010001,
+          0.009999990002009598,
+          0.009999990000010001,
+          0.009999990001009899,
+          0.009996001599360257,
+          0.00999920006399488,
+          0.009996001599360257,
+          0.009996297667530544,
+          0.009996001599360257,
+          0.00999615532487505,
+          0.9999000099990001,
+          0.9999009999009999,
+          0.9999000099990001,
+          0.9999000299910027,
+          0.9999000099990001,
+          0.9999000199960009,
+          0.9615384615384615,
+          0.9920634920634921,
+          0.9615384615384615,
+          0.9642857142857143,
+          0.9615384615384615,
+          0.9629629629629629,
+          909.090909090909,
+          909.9099099099099,
+          909.090909090909,
+          909.1074350118159,
+          909.090909090909,
+          909.0991728024725,
+          24.390243902439025,
+          111.11111111111111,
+          24.390243902439025,
+          26.29016553067186,
+          24.390243902439025,
+          25.341130604288498
+        ]
+      }
+    },
+    "cases": [
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.00999999000001
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.009999990099019704
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.00999999000001
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.009999990002009598
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.00999999000001
+      },
+      {
+        "c": 0.01,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.009999990001009897
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.009996001599360257
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.00999920006399488
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.009996001599360257
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.009996297667530544
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.009996001599360257
+      },
+      {
+        "c": 0.01,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.009996155324875048
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.9999000099990001
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.9999009999009999
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.9999000099990001
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.9999000299910028
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.9999000099990001
+      },
+      {
+        "c": 1.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.9999000199960009
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.9615384615384616
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 0.992063492063492
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.9615384615384616
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 0.9642857142857143
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.9615384615384616
+      },
+      {
+        "c": 1.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 0.962962962962963
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 909.0909090909091
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 909.9099099099099
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 909.0909090909091
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 909.107435011816
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 909.0909090909091
+      },
+      {
+        "c": 1000.0,
+        "step": 0.0001,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 909.0991728024725
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 24.390243902438957
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.01,
+        "expected": 111.11111111111101
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 24.390243902438957
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 0.5,
+        "expected": 26.290165530671835
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.1,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 24.390243902438957
+      },
+      {
+        "c": 1000.0,
+        "step": 0.04,
+        "pond": 0.4,
+        "threshold": 0.2,
+        "resistance": 1.0,
+        "expected": 25.341130604288505
+      }
+    ],
+    "finite_difference_tolerance_is_not_a_physical_balance_tolerance": true
+  },
+  "whole_original_native_evidence": "BLOCK_M_LOCAL_ASSESSMENT.json/pond_component",
+  "whole_original_native_status": "ACTUAL_ORIGINAL_SCHEDULED_POND_O0_O2_PASS",
+  "actual_template_git_diff_empty": true,
+  "new_branch": "Actual DRFIL DRAMET1, closed6/snow0/SWKIMPL0 and existing linear runoff guards; drainage held fixed during each HeadCalc call",
+  "new_domain_gate": "BLOCK_R_REPAIRED_PREFIX53.json: actual O0/O2 failed51 replay and exact native50to53",
+  "scope": "Original derivative function unchanged; no redundant component/model campaign; all affected full R trajectories require fresh execution",
+  "science": "NOT_QUALIFIED"
+}

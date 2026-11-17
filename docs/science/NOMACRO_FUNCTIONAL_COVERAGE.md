@@ -229,12 +229,12 @@ which remain outside this work unit. A supported input selector alone is not A.
 | --- | --- | --- |
 | Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A through K | B: arbitrary grids, references and process combinations need their own evidence |
 | Richards/hydraulics | Selected original MvG/exponential2, explicit original PCHIP tables, geometric means3/4 and unchanged production solver; named hysteresis continuations | B/C: original TSPACK startup censor, harmonic5/6 strict-balance refusals, Szymkiewicz7 tables; alternative constitutive models3..11 retain six strict failures/three censors; RIA12 unqualified; D/first-J history FAILs retained; J complete initialized-context successor qualifies its eleven named combinations |
-| Lower boundary | Selected original Cauchy/closed/free; table, sine, head-dependent flux; K soil-air8 with ceramic plate/BBC | C: original independent trial receipt for reconstructed modes1/5 remains unqualified; B: original simultaneous head/flux9 |
-| Drainage/surface water | Selected original drainage methods2/3; undrained free-bottom trajectory | B: other original drainage/division/surface-water options; retained undrained closed-bottom day51 refusal is not A |
+| Lower boundary | Selected original Cauchy/closed/free; table, sine, head-dependent flux; K soil-air8 with ceramic plate/BBC; L prescribed head5 | C: reconstructed mode1 remains unqualified; B: original simultaneous head/flux9 |
+| Drainage/surface water | Selected original methods2/3; R positive/signed method1 tables; undrained free-bottom trajectory | B: further original division/surface-water combinations; retained old undrained closed-bottom day51 failure is not an all-parameter PASS |
 | Crops/roots/ET | Registered grass/rotation/WOFOST; bare/simple maize; Gash/Feddes/microscopic drought2/Walsum2 | B: broader original growth structures, root/stress/interception/ET controls and combinations; canonical D/E evidence retains its named scope |
 | Irrigation | Registered and eligible generic water-only/chemical external surface histories, managed rotation | B: original scheduling and subsurface variants beyond the executed families |
 | Heat | Selected numerical and analytical temperature; original top1..4 and bottom1/2; compatible no-heat routes | B: unexecuted process combinations; whole physical energy including mass-carried energy remains a separate scientific limitation |
-| Snow/frost | Positive snow/melt and history; P qualifies bounded partial frost with free bottom7 | Integrated frost drainage, closed/fully blocked trajectories and unsupported root combinations remain excluded |
+| Snow/frost | Positive snow/melt/history; P bounded free-bottom7 partial frost; Q water DRAMET2/SWDIVD0 partial frost with explicit event closure | Undrained closed/fully blocked trajectories, chemical SWDIVD0 and unsupported root combinations remain excluded |
 | Solute | Original conservative CDE; separate and combined Freundlich sorption/decay | B/C: reservoir SWBR1, original age/tracer SWSOLU2 and their matching conserved ledgers/state |
 | Weather/top boundary | Selected original daily weather, atmosphere, interception and surface store | H: eight qualified ET/rain configurations; detailed pulsed rain/hourly weather retain day364 failures; further top-boundary options and implicit conductivity SWKIMPL1 remain open |
 | Runtime control | Registered groundwater and surface forcing; experimental original and eligible full external surface accept/discard/recovery | B/C: general runtime dynamic boundary forcing beyond the registered contracts |
@@ -1037,7 +1037,7 @@ completion remain open.
 
 **Qualified snapshot.** Runtime `33f7363965c137f017ce756fa6b5a07dc4287051`
 adds the explicit experimental numerical policy
-`original-adaptive-event-closure-v1` for water frost/drainage, original SWDIVD0,
+`original-adaptive-event-closure-v1` for water frost/drainage, original DRAMET2/SWDIVD0,
 closed bottom6, snow1/hysteresis2, numeric heat with prescribed TSS2 and Feddes1
 in all future crops. Chemical SWDIVD0 and SWDIVD1 remain refused. Canonical
 admission is owned by the actual `BLOCK_Q_MERGE.json` receipt when present.
@@ -1089,3 +1089,54 @@ clock/frost module replacements; common-field differences remain diagnostic.
 the bounded claim. Whole science, whole energy and all-option completion remain
 **NOT_QUALIFIED**. No global B1 snapshot, frozen release, macro or general
 solver/performance campaign is promoted.
+
+## Block R: complete original tabulated lateral drainage
+
+**Qualified snapshot.** Runtime `75e5b45a1b7a8705d6d364156a1ad4434107dfdf`
+extends the experimental method qualifier to original DRAMET1. The complete
+original reader, table interpolation, drainage rate and vertical distribution
+remain the physical owners. Actual DRFIL/PATHDRAIN selects the file; no drain
+filename is assumed. Four derived Hupsel configurations cover water/chemical,
+the original positive table and a signed drainage/infiltration table, with
+SWDIVD1, closed bottom6, original no-snow/no-frost/history0 and unchanged adaptive
+clock policy. These add zero independent historical projects. The actual
+canonical admission receipt, when present, is `BLOCK_R_MERGE.json`.
+
+The small original Drainage/DrainFluxBasic native closure passes15cases at each
+O0/O2: endpoints, interpolation, positive/negative/zero flux and no groundwater,
+including exact total/last-node accounting. Coupled full trajectories separately
+qualify original SWDIVD1 and chemical accounting. No new persistent state or
+codec is introduced: the table is initialized input, and the existing complete
+original native day-state owners retain continuation.
+
+The first signed candidates retain actual O0 and O2 day51 failures at independent
+1.0010102816093713e-10cm. The existing qualified exact linear pond derivative
+applies because drainage is fixed within each original HeadCalc call. Its
+selection extends to actual DRAMET1 under the existing bottom6/snow0/SWKIMPL0
+and linear-runoff guards. The derivative formula is unchanged, with its prior
+native/component qualification inherited by exact source identity. Fresh O0/O2
+prefix53 and own50to53 pass before the full successor executions. Four earlier
+positive full periods are retained separately, without rebinding their capsules
+to changed generated HeadCalc.
+
+Windows/Ubuntu O0/O2 complete all four1096-day configurations:16full periods,
+17536model days,64standard exact native windows and16short own2to4 controls.
+Both flux directions occur in every signed trajectory. Maximum independent
+water1.934663367009204e-13cm, kernel1.9345636204093353e-13cm and solute
+2.6305512130543607e-13mg/cm2 remain below unchanged1e-10 guards. All16profiles
+pass independent origins, inconsistent-mass refusal without publication, external
+discard/replay/recovery, foreign policy and four actual rehashed native refusals.
+
+The original DRAMET limits and incompatible table/division combinations refuse
+before output. A custom-file probe deliberately leaves an unused method2
+`swap.dra` while selecting a signed method1 table in `drains/selected.dra`;
+actual53days and exact own50to53 pass on both platforms. Default8 and13fresh
+prior source/input/policy comparisons preserve the relevant earlier capability
+evidence, including active P free-frost and Q failed-day/native probes. Compiled
+binary identity is not claimed.
+
+`BLOCK_R_QUALIFICATION.json`, component inheritance, retained failures, input
+refusals and source-bound raw archives own the bounded claim. Whole science,
+whole energy, broader drainage/surface-water and all-option completion remain
+**NOT_QUALIFIED**. No original rate law, mass limit, new derivative formula,
+global B1 snapshot, frozen release or general solver/performance campaign changes.

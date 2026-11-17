@@ -1,0 +1,889 @@
+{
+  "status": "R_PRIOR_O_J_PLATE_N_M_L5_AND_NAMED_SOURCE_PRESERVATION_PASS",
+  "runtime_source": "75e5b45a1b7a8705d6d364156a1ad4434107dfdf",
+  "profiles": {
+    "water-surface-combined": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "irrigation.f90": {
+          "prior_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "current_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "normalized_LF_sha256": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693"
+        },
+        "wofost.f90": {
+          "prior_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "current_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "normalized_LF_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+        },
+        "macropore.f90": {
+          "prior_actual_sha256": "e17f51a555f572afb61be1cab777f500fc1273eab25783db102ef888aa25f329",
+          "current_actual_sha256": "e17f51a555f572afb61be1cab777f500fc1273eab25783db102ef888aa25f329",
+          "normalized_LF_sha256": "80c8d12b4cd2e6cb64017ccb1c6ed40093769847180175dfe3cba024ead969e5"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "current_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "normalized_LF_sha256": "27d186901823d7ba7cfe74d26f4913211f28c64fa1901581bc090e8b9958da30"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "current_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "normalized_LF_sha256": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "current_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "normalized_LF_sha256": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        },
+        "headcalc.f90": {
+          "prior_actual_sha256": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+          "current_actual_sha256": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+          "normalized_LF_sha256": "356fdea44df04ecb97f68936be0102c36b63f730d5c63950c8ad0ce453c313df"
+        },
+        "boundtop.f90": {
+          "prior_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "current_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "normalized_LF_sha256": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0"
+        },
+        "MOD_cropdevelopment.f90": {
+          "prior_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "current_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "normalized_LF_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+        },
+        "readswap.f90": {
+          "prior_actual_sha256": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+          "current_actual_sha256": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+          "normalized_LF_sha256": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "6b7d994c3908f198100104f935c05536d0fdce7a56c0ef32286471738ea0e31a",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "8c7bd67acd0119e82a13b1fec84fc1cf19a3679116a4b1da1124644f7c996a01",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "surface.ru": "e058e50427b5e382d56da23287a64e643c265ed9fd7df8c8f150f3b77299e91b",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "f674fb6ad6ed58d66c3f63032db84dea4fbab181445873fb17e7d0acdbe73640"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    },
+    "chemical-surface-combined": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "irrigation.f90": {
+          "prior_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "current_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "normalized_LF_sha256": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693"
+        },
+        "wofost.f90": {
+          "prior_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "current_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "normalized_LF_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+        },
+        "solute.f90": {
+          "prior_actual_sha256": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "current_actual_sha256": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "normalized_LF_sha256": "1a769b34177db432e968909be7ef052b6516fcbf9e16fcc2e7ac39bce18696d4"
+        },
+        "macropore.f90": {
+          "prior_actual_sha256": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+          "current_actual_sha256": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+          "normalized_LF_sha256": "3072ad24b5f12415f002927deef34da19c094ee4ad558899da97e9990cb326f7"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "current_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "normalized_LF_sha256": "27d186901823d7ba7cfe74d26f4913211f28c64fa1901581bc090e8b9958da30"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+          "current_actual_sha256": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+          "normalized_LF_sha256": "fa88a5ea39b3a663ed7568219e60732b9c54848b8357e19d01c0610752ca9a9f"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "current_actual_sha256": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "normalized_LF_sha256": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        },
+        "headcalc.f90": {
+          "prior_actual_sha256": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+          "current_actual_sha256": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+          "normalized_LF_sha256": "356fdea44df04ecb97f68936be0102c36b63f730d5c63950c8ad0ce453c313df"
+        },
+        "boundtop.f90": {
+          "prior_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "current_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "normalized_LF_sha256": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0"
+        },
+        "MOD_cropdevelopment.f90": {
+          "prior_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "current_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "normalized_LF_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+        },
+        "readswap.f90": {
+          "prior_actual_sha256": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+          "current_actual_sha256": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+          "normalized_LF_sha256": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "surface.ru": "e058e50427b5e382d56da23287a64e643c265ed9fd7df8c8f150f3b77299e91b",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "b20e5a3e25007da491c23aadffefcf0f381c325809cdab4c8f773e4f1e5674ad"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    },
+    "registered-grass": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "macropore.f90": {
+          "prior_actual_sha256": "e23d498600bddbf7cd97dc23a8e77e7a5a6fdc079bce36f9f20bae1134b01f12",
+          "current_actual_sha256": "e23d498600bddbf7cd97dc23a8e77e7a5a6fdc079bce36f9f20bae1134b01f12",
+          "normalized_LF_sha256": "b199e1940616154755f939e6b4dee61773a9e961f5a4b2f5886b23817b98396a"
+        },
+        "timecontrol.f90": {
+          "prior_actual_sha256": "12e552c5912ab94b3454a19f2f2c906ecba29256b8b2ac54e2f85ad3d468be67",
+          "current_actual_sha256": "12e552c5912ab94b3454a19f2f2c906ecba29256b8b2ac54e2f85ad3d468be67",
+          "normalized_LF_sha256": "a9d3b0d069276448b259feb05af48b6c4ed249f4051ad1fd6fb4ab183b473fd3"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "fbaec845db99b5dbd2ec91799e7c606935854738d9b800c7845b6677f3b30fe8",
+          "current_actual_sha256": "fbaec845db99b5dbd2ec91799e7c606935854738d9b800c7845b6677f3b30fe8",
+          "normalized_LF_sha256": "e180376e915837d2a1b1dc712d755fcfb80faebe2f1f406548e31cb84ddcc4d6"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "450c2069d70b4becf3c33323acac354490292b1378d6a8ec2508bae628f04f6c",
+          "current_actual_sha256": "450c2069d70b4becf3c33323acac354490292b1378d6a8ec2508bae628f04f6c",
+          "normalized_LF_sha256": "1269692a9582c541b2865d8ec8dc514c539ddb572621cb5545be77e11f7bf298"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "current_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "normalized_LF_sha256": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "control_plot.inp": "f863e4ba420dee267e1d034e54d69e6d3419eb54263e067d2acee4acebbd8812",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "observed/HRVDM.csv": "834a7aa8ebdb773e70d3bac588743edc50e980a5013a46fa1de1aec902859a88",
+        "observed/WDM.csv": "fe1e42be70e61a771e7dd60e75967a34af7d910fe22bd361f9dbb4f3495197a3",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+        "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    },
+    "prescribed-head5": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "irrigation.f90": {
+          "prior_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "current_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "normalized_LF_sha256": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693"
+        },
+        "wofost.f90": {
+          "prior_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "current_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "normalized_LF_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+        },
+        "macropore.f90": {
+          "prior_actual_sha256": "e17f51a555f572afb61be1cab777f500fc1273eab25783db102ef888aa25f329",
+          "current_actual_sha256": "e17f51a555f572afb61be1cab777f500fc1273eab25783db102ef888aa25f329",
+          "normalized_LF_sha256": "80c8d12b4cd2e6cb64017ccb1c6ed40093769847180175dfe3cba024ead969e5"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "current_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "normalized_LF_sha256": "27d186901823d7ba7cfe74d26f4913211f28c64fa1901581bc090e8b9958da30"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "current_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "normalized_LF_sha256": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "current_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "normalized_LF_sha256": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        },
+        "headcalc.f90": {
+          "prior_actual_sha256": "b6c38d36a54f95e689febc33ce57fdc0ab715b8a03eb0992de83f7a8eed9ef8f",
+          "current_actual_sha256": "b6c38d36a54f95e689febc33ce57fdc0ab715b8a03eb0992de83f7a8eed9ef8f",
+          "normalized_LF_sha256": "86846f45207441207b24d71954b28ad4690a0a5ab6aca17883ecd3c1fb4a997d"
+        },
+        "boundtop.f90": {
+          "prior_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "current_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "normalized_LF_sha256": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0"
+        },
+        "MOD_cropdevelopment.f90": {
+          "prior_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "current_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "normalized_LF_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+        },
+        "readswap.f90": {
+          "prior_actual_sha256": "84623b684079644773465fa94c3513762f213adb8eeaf8127de82aa0142cc4e6",
+          "current_actual_sha256": "84623b684079644773465fa94c3513762f213adb8eeaf8127de82aa0142cc4e6",
+          "normalized_LF_sha256": "67e4e8b56e108214eee7a98dc32df690f7ba98fd8f62147ca64e8347f2a0764d"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "6b7d994c3908f198100104f935c05536d0fdce7a56c0ef32286471738ea0e31a",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "8c7bd67acd0119e82a13b1fec84fc1cf19a3679116a4b1da1124644f7c996a01",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "23ea0a0a3d76adfb0637547149d607bc3f810de5a0a6fa40a07819b3b87f2b91"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    },
+    "water-file-subsurface-interval": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "irrigation.f90": {
+          "prior_actual_sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d",
+          "current_actual_sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d",
+          "normalized_LF_sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+        },
+        "wofost.f90": {
+          "prior_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "current_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "normalized_LF_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+        },
+        "macropore.f90": {
+          "prior_actual_sha256": "e17f51a555f572afb61be1cab777f500fc1273eab25783db102ef888aa25f329",
+          "current_actual_sha256": "e17f51a555f572afb61be1cab777f500fc1273eab25783db102ef888aa25f329",
+          "normalized_LF_sha256": "80c8d12b4cd2e6cb64017ccb1c6ed40093769847180175dfe3cba024ead969e5"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "current_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "normalized_LF_sha256": "27d186901823d7ba7cfe74d26f4913211f28c64fa1901581bc090e8b9958da30"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "current_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "normalized_LF_sha256": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "current_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "normalized_LF_sha256": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        },
+        "headcalc.f90": {
+          "prior_actual_sha256": "fa7d96c944d14dfa08d76d3b9939e7d01f4ae3077ba1542b084760bbfe17176b",
+          "current_actual_sha256": "fa7d96c944d14dfa08d76d3b9939e7d01f4ae3077ba1542b084760bbfe17176b",
+          "normalized_LF_sha256": "e8693175f3c0497d83fa9a59868250d4c0b76ca4e8a88de8d825ae5c25f6255f"
+        },
+        "boundtop.f90": {
+          "prior_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "current_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "normalized_LF_sha256": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0"
+        },
+        "MOD_cropdevelopment.f90": {
+          "prior_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "current_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "normalized_LF_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "fixed-irrigation.irg": "9b9961341be3a0d373a520d6220799a35a30a00332b5f7dd50ec6ad8b76f139e",
+        "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+        "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "4fc6d227e2695d98cc9717c6fb785846deab7781616347bc0141a8f67000dd22"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    },
+    "chemical-file-sprinkler": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "irrigation.f90": {
+          "prior_actual_sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d",
+          "current_actual_sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d",
+          "normalized_LF_sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+        },
+        "wofost.f90": {
+          "prior_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "current_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "normalized_LF_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+        },
+        "solute.f90": {
+          "prior_actual_sha256": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "current_actual_sha256": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "normalized_LF_sha256": "1a769b34177db432e968909be7ef052b6516fcbf9e16fcc2e7ac39bce18696d4"
+        },
+        "macropore.f90": {
+          "prior_actual_sha256": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+          "current_actual_sha256": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+          "normalized_LF_sha256": "3072ad24b5f12415f002927deef34da19c094ee4ad558899da97e9990cb326f7"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "current_actual_sha256": "8b9f03a74823fc60511ee0c06ce27111f07e97c552318b78ab11ca7019749a71",
+          "normalized_LF_sha256": "27d186901823d7ba7cfe74d26f4913211f28c64fa1901581bc090e8b9958da30"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+          "current_actual_sha256": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+          "normalized_LF_sha256": "fa88a5ea39b3a663ed7568219e60732b9c54848b8357e19d01c0610752ca9a9f"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "current_actual_sha256": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "normalized_LF_sha256": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        },
+        "headcalc.f90": {
+          "prior_actual_sha256": "fa7d96c944d14dfa08d76d3b9939e7d01f4ae3077ba1542b084760bbfe17176b",
+          "current_actual_sha256": "fa7d96c944d14dfa08d76d3b9939e7d01f4ae3077ba1542b084760bbfe17176b",
+          "normalized_LF_sha256": "e8693175f3c0497d83fa9a59868250d4c0b76ca4e8a88de8d825ae5c25f6255f"
+        },
+        "boundtop.f90": {
+          "prior_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "current_actual_sha256": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+          "normalized_LF_sha256": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0"
+        },
+        "MOD_cropdevelopment.f90": {
+          "prior_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "current_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "normalized_LF_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "fixed-irrigation.irg": "b171d7ac5afe1721aa87defacf0c31b6d0e82e71ec115d96a74da100f7c45334",
+        "grass.crp": "fdccfa866e87a43b99cc6965ef1760f125031dd42111b36dcfc77c91b5c97f24",
+        "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "3ccce528518539726fd69ae25cb22268d418969b3bc90c00fd5c23b3d0e169de",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "08936350127af44ac1f351738339194b69506d6b5df056c228d30b3ca93f6c64"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    },
+    "water-plate-history": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "oxygenstress.f90": {
+          "prior_actual_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "current_actual_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "normalized_LF_sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+        },
+        "boundtop.f90": {
+          "prior_actual_sha256": "5c95fa81587361cb1dbe29ecc36ddd5da91f1826654639066cc29c0fdb6a4287",
+          "current_actual_sha256": "5c95fa81587361cb1dbe29ecc36ddd5da91f1826654639066cc29c0fdb6a4287",
+          "normalized_LF_sha256": "ea9d62eed9518fff6e6f46312d17885fb1a722bf108c5a02a5f30f2df87b4a15"
+        },
+        "RWU_micro.f90": {
+          "prior_actual_sha256": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+          "current_actual_sha256": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+          "normalized_LF_sha256": "63d0bafc92fa4bc5de139722a563b75a25e999bf22104b2ffc72d5bdd1cf1386"
+        },
+        "irrigation.f90": {
+          "prior_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "current_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "normalized_LF_sha256": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693"
+        },
+        "wofost.f90": {
+          "prior_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "current_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "normalized_LF_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+        },
+        "macropore.f90": {
+          "prior_actual_sha256": "09a48c142bf34c6709c7a9cf1493059ff73b8c0362e60d7612019ba402736c3f",
+          "current_actual_sha256": "09a48c142bf34c6709c7a9cf1493059ff73b8c0362e60d7612019ba402736c3f",
+          "normalized_LF_sha256": "1bf84bdf4c9492740be01f4eb9b0dfb762e1d66f12066e7bdb5d03f2fe992d73"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+          "current_actual_sha256": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+          "normalized_LF_sha256": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "current_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "normalized_LF_sha256": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "current_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "normalized_LF_sha256": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        },
+        "headcalc.f90": {
+          "prior_actual_sha256": "09b783d244909b4c34222e2355e2f1287e01823574dbbfb0f07d8e797b105706",
+          "current_actual_sha256": "09b783d244909b4c34222e2355e2f1287e01823574dbbfb0f07d8e797b105706",
+          "normalized_LF_sha256": "5f416dd85126383e39f2211f394b18590b1420cfbc2c49c408f7b4ec89de73d2"
+        },
+        "MOD_cropdevelopment.f90": {
+          "prior_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "current_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "normalized_LF_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+        "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "4ba7d3848f90fc87fec5b31478d7141cb8528f35f53f8521929961d673bfd56a",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "c190854bf8c89732c3db2edd78bb14baea4aca6f9f3bdca34078167a23463e87"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    },
+    "chemical-plate-history": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "oxygenstress.f90": {
+          "prior_actual_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "current_actual_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "normalized_LF_sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+        },
+        "boundtop.f90": {
+          "prior_actual_sha256": "5c95fa81587361cb1dbe29ecc36ddd5da91f1826654639066cc29c0fdb6a4287",
+          "current_actual_sha256": "5c95fa81587361cb1dbe29ecc36ddd5da91f1826654639066cc29c0fdb6a4287",
+          "normalized_LF_sha256": "ea9d62eed9518fff6e6f46312d17885fb1a722bf108c5a02a5f30f2df87b4a15"
+        },
+        "RWU_micro.f90": {
+          "prior_actual_sha256": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+          "current_actual_sha256": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+          "normalized_LF_sha256": "63d0bafc92fa4bc5de139722a563b75a25e999bf22104b2ffc72d5bdd1cf1386"
+        },
+        "irrigation.f90": {
+          "prior_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "current_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "normalized_LF_sha256": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693"
+        },
+        "wofost.f90": {
+          "prior_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "current_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "normalized_LF_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+        },
+        "solute.f90": {
+          "prior_actual_sha256": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "current_actual_sha256": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "normalized_LF_sha256": "1a769b34177db432e968909be7ef052b6516fcbf9e16fcc2e7ac39bce18696d4"
+        },
+        "macropore.f90": {
+          "prior_actual_sha256": "13957111c07c54af25f4f4247fd325d5e90300e77f4238b019e053c500720864",
+          "current_actual_sha256": "13957111c07c54af25f4f4247fd325d5e90300e77f4238b019e053c500720864",
+          "normalized_LF_sha256": "ca6847a6e02a56f11f34025595a96d667d05bef99ce19fab0b460e44912b3b9c"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+          "current_actual_sha256": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+          "normalized_LF_sha256": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+          "current_actual_sha256": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+          "normalized_LF_sha256": "fa88a5ea39b3a663ed7568219e60732b9c54848b8357e19d01c0610752ca9a9f"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "current_actual_sha256": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "normalized_LF_sha256": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        },
+        "headcalc.f90": {
+          "prior_actual_sha256": "09b783d244909b4c34222e2355e2f1287e01823574dbbfb0f07d8e797b105706",
+          "current_actual_sha256": "09b783d244909b4c34222e2355e2f1287e01823574dbbfb0f07d8e797b105706",
+          "normalized_LF_sha256": "5f416dd85126383e39f2211f394b18590b1420cfbc2c49c408f7b4ec89de73d2"
+        },
+        "MOD_cropdevelopment.f90": {
+          "prior_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "current_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "normalized_LF_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "6ecc3ecfacdc5c6526dd46a5e1148a75884892616e4f5aeb320a9b606552cc56"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    },
+    "water-surface-history": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "oxygenstress.f90": {
+          "prior_actual_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "current_actual_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "normalized_LF_sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+        },
+        "boundtop.f90": {
+          "prior_actual_sha256": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+          "current_actual_sha256": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+          "normalized_LF_sha256": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea"
+        },
+        "RWU_micro.f90": {
+          "prior_actual_sha256": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+          "current_actual_sha256": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+          "normalized_LF_sha256": "63d0bafc92fa4bc5de139722a563b75a25e999bf22104b2ffc72d5bdd1cf1386"
+        },
+        "irrigation.f90": {
+          "prior_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "current_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "normalized_LF_sha256": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693"
+        },
+        "wofost.f90": {
+          "prior_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "current_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "normalized_LF_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+        },
+        "macropore.f90": {
+          "prior_actual_sha256": "4b57ed86a1b2ddf4a5ff2444cc7463d13ae21a3d819281d08d0ac8a99d36366e",
+          "current_actual_sha256": "4b57ed86a1b2ddf4a5ff2444cc7463d13ae21a3d819281d08d0ac8a99d36366e",
+          "normalized_LF_sha256": "70107af06891f210cd2a5019d13ed744665ee1f8703b654d331001233f261492"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+          "current_actual_sha256": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+          "normalized_LF_sha256": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "current_actual_sha256": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+          "normalized_LF_sha256": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "current_actual_sha256": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+          "normalized_LF_sha256": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        },
+        "headcalc.f90": {
+          "prior_actual_sha256": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+          "current_actual_sha256": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+          "normalized_LF_sha256": "356fdea44df04ecb97f68936be0102c36b63f730d5c63950c8ad0ce453c313df"
+        },
+        "MOD_cropdevelopment.f90": {
+          "prior_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "current_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "normalized_LF_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+        },
+        "readswap.f90": {
+          "prior_actual_sha256": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+          "current_actual_sha256": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+          "normalized_LF_sha256": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+        "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "4ba7d3848f90fc87fec5b31478d7141cb8528f35f53f8521929961d673bfd56a",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "surface.ru": "acdaa8b55fb3c5014108d810906ca305d050e73dc8a4c6e204771763493d58d3",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "536b1e1389fff9dc471bb3b7373bb718f96a5f508046e77fe7db34af4122c7b2"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    },
+    "chemical-surface-history": {
+      "status": "ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT",
+      "generated": {
+        "oxygenstress.f90": {
+          "prior_actual_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "current_actual_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "normalized_LF_sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+        },
+        "boundtop.f90": {
+          "prior_actual_sha256": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+          "current_actual_sha256": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+          "normalized_LF_sha256": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea"
+        },
+        "RWU_micro.f90": {
+          "prior_actual_sha256": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+          "current_actual_sha256": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+          "normalized_LF_sha256": "63d0bafc92fa4bc5de139722a563b75a25e999bf22104b2ffc72d5bdd1cf1386"
+        },
+        "irrigation.f90": {
+          "prior_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "current_actual_sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+          "normalized_LF_sha256": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693"
+        },
+        "wofost.f90": {
+          "prior_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "current_actual_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "normalized_LF_sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+        },
+        "solute.f90": {
+          "prior_actual_sha256": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "current_actual_sha256": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+          "normalized_LF_sha256": "1a769b34177db432e968909be7ef052b6516fcbf9e16fcc2e7ac39bce18696d4"
+        },
+        "macropore.f90": {
+          "prior_actual_sha256": "4ac560478819ba11cc41b493e31cd9f14b7774a2b831a53554fcf93451a3a9cb",
+          "current_actual_sha256": "4ac560478819ba11cc41b493e31cd9f14b7774a2b831a53554fcf93451a3a9cb",
+          "normalized_LF_sha256": "587fc86231ac6cb3c09690f0728766b7ab5eb9d4b9523c0810f15b06a7d81ef8"
+        },
+        "swap.f90": {
+          "prior_actual_sha256": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+          "current_actual_sha256": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+          "normalized_LF_sha256": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4"
+        },
+        "swap_main.f90": {
+          "prior_actual_sha256": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+          "current_actual_sha256": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+          "normalized_LF_sha256": "fa88a5ea39b3a663ed7568219e60732b9c54848b8357e19d01c0610752ca9a9f"
+        },
+        "swap_csv_output.f90": {
+          "prior_actual_sha256": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "current_actual_sha256": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+          "normalized_LF_sha256": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea"
+        },
+        "swapoutput.f90": {
+          "prior_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "current_actual_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "normalized_LF_sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+        },
+        "headcalc.f90": {
+          "prior_actual_sha256": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+          "current_actual_sha256": "7735eb54e130cb5fa3fbb8b4f49fe4c71d9598c1b35339264ad27aa1e42ca9ed",
+          "normalized_LF_sha256": "356fdea44df04ecb97f68936be0102c36b63f730d5c63950c8ad0ce453c313df"
+        },
+        "MOD_cropdevelopment.f90": {
+          "prior_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "current_actual_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "normalized_LF_sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+        },
+        "readswap.f90": {
+          "prior_actual_sha256": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+          "current_actual_sha256": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+          "normalized_LF_sha256": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071"
+        }
+      },
+      "kernel_sources": {
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+        "src/transaction/mod_transaction_reference.f90": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+        "src/runtime/mod_canonical_contracts.f90": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+        "src/runtime/mod_canonical_interval_runtime.f90": "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65",
+        "src/kernel/mod_kernel_transactions.f90": "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3",
+        "src/runtime/mod_groundwater_coupling_contract.f90": "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205",
+        "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515",
+        "src/runtime/mod_groundwater_swap_transaction_participant.f90": "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e",
+        "src/runtime/mod_groundwater_interface_mass_ledger.f90": "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38",
+        "src/runtime/mod_fmr_soil_water_application_host.f90": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+      },
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "surface.ru": "acdaa8b55fb3c5014108d810906ca305d050e73dc8a4c6e204771763493d58d3",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "224f17bbd12978c3d5e83b400fb838832a7091af0dfe56a85ed2da76db6a078f"
+      },
+      "scope": "Fresh actual generated sources; original immutable source/native capsules not rebound; distinct build identities retained"
+    }
+  },
+  "science": "NOT_QUALIFIED"
+}

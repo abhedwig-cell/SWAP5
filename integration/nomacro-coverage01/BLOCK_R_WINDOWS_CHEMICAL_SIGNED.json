@@ -1,0 +1,286 @@
+{
+  "status": "COMPLETE_TABULATED_DRAINAGE_O0_O2_PASS",
+  "source_commit": "4da8feaff8134ca64cdf8133fcf3126313a6135e",
+  "configuration": "chemical-drain-signed",
+  "selected_physical_controls": {
+    "SWMACRO": 0,
+    "SWSOLU": 1,
+    "SWDRA": 1,
+    "DRAMET": 1,
+    "SWDIVD": 1,
+    "signed_table": true
+  },
+  "profiles": {
+    "O0": {
+      "status": "FULL_PASS",
+      "days": 1096,
+      "budgets": {
+        "days": 1096,
+        "max_water_cm": 1.5276668818842154e-13,
+        "max_kernel_cm": 1.525446435834965e-13,
+        "max_solute_mg_cm2": 4.077920184690498e-14,
+        "sum_water_residual_cm": 5.825064459479251e-12
+      },
+      "model_seconds": 5.542166799772531,
+      "build_sha256": "7bcd9cc0e24d69031653449cc2e33a804c7a32488ac966b685327f82573e53c5",
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 5,
+        "budgets": {
+          "days": 5,
+          "max_water_cm": 2.105260410445453e-14,
+          "max_kernel_cm": 2.0872192862952943e-14,
+          "max_solute_mg_cm2": 3.25434124093249e-14,
+          "sum_water_residual_cm": 3.3460593237139014e-14
+        },
+        "model_seconds": 0.5571246999315917,
+        "build_sha256": "7bcd9cc0e24d69031653449cc2e33a804c7a32488ac966b685327f82573e53c5",
+        "own": {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.3377574000041932
+        }
+      },
+      "own": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.3276196999941021
+        },
+        {
+          "start": 199,
+          "end": 201,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.394707600120455
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.3877896999474615
+        },
+        {
+          "start": 530,
+          "end": 532,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.4367568001616746
+        }
+      ],
+      "drainage_signed_exposure": {
+        "days_positive": 731,
+        "days_negative": 365
+      },
+      "controls": {
+        "foreign_policy_refused": true,
+        "independent_origins": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true,
+        "native_refusals": [
+          {
+            "name": "foreign-format",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x228b944f\n#4  0x2292a6a9\n#5  0x22950a25\n#6  0x229512ed\n#7  0x22891156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+          },
+          {
+            "name": "foreign-nodes",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x228b944f\n#4  0x2292a6a9\n#5  0x22950a25\n#6  0x229512ed\n#7  0x22891156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+          },
+          {
+            "name": "foreign-clock",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x228b944f\n#4  0x2292a6a9\n#5  0x22950a25\n#6  0x229512ed\n#7  0x22891156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+          },
+          {
+            "name": "nonfinite-season",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Nonfinite nonmacro seasonal clock\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x228b9544\n#4  0x2292a6a9\n#5  0x22950a25\n#6  0x229512ed\n#7  0x22891156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+          }
+        ]
+      }
+    },
+    "O2": {
+      "status": "FULL_PASS",
+      "days": 1096,
+      "budgets": {
+        "days": 1096,
+        "max_water_cm": 1.5276668818842154e-13,
+        "max_kernel_cm": 1.525446435834965e-13,
+        "max_solute_mg_cm2": 4.077920184690498e-14,
+        "sum_water_residual_cm": 5.825064459479251e-12
+      },
+      "model_seconds": 6.266866999911144,
+      "build_sha256": "4c6728ddaee6035c03094c4d1f1111a2a9dea51ad2ebeb0a4461ba5cf92b8669",
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 5,
+        "budgets": {
+          "days": 5,
+          "max_water_cm": 2.105260410445453e-14,
+          "max_kernel_cm": 2.0872192862952943e-14,
+          "max_solute_mg_cm2": 3.25434124093249e-14,
+          "sum_water_residual_cm": 3.3460593237139014e-14
+        },
+        "model_seconds": 0.604960500029847,
+        "build_sha256": "4c6728ddaee6035c03094c4d1f1111a2a9dea51ad2ebeb0a4461ba5cf92b8669",
+        "own": {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.38182549993507564
+        }
+      },
+      "own": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.38056010007858276
+        },
+        {
+          "start": 199,
+          "end": 201,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.4184532000217587
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.4332856999244541
+        },
+        {
+          "start": 530,
+          "end": 532,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.4144474999047816
+        }
+      ],
+      "drainage_signed_exposure": {
+        "days_positive": 731,
+        "days_negative": 365
+      },
+      "controls": {
+        "foreign_policy_refused": true,
+        "independent_origins": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true,
+        "native_refusals": [
+          {
+            "name": "foreign-format",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x144233a3\n#4  0x1448fd95\n#5  0x144ac873\n#6  0x144f0a2f\n#7  0x14401156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+          },
+          {
+            "name": "foreign-nodes",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x144233a3\n#4  0x1448fd95\n#5  0x144ac873\n#6  0x144f0a2f\n#7  0x14401156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+          },
+          {
+            "name": "foreign-clock",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x144233a3\n#4  0x1448fd95\n#5  0x144ac873\n#6  0x144f0a2f\n#7  0x14401156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+          },
+          {
+            "name": "nonfinite-season",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Nonfinite nonmacro seasonal clock\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x14423407\n#4  0x1448fd95\n#5  0x144ac873\n#6  0x144f0a2f\n#7  0x14401156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+          }
+        ]
+      }
+    }
+  },
+  "events": [
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_repaired_chemical_signed_local\\input",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--donor-opt",
+        "O0",
+        "--output",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_repaired_chemical_signed_local\\O0-build"
+      ],
+      "seconds": 10.163925800006837,
+      "returncode": 0,
+      "stdout": "{\"status\": \"BUILT_NO_MODEL_EXECUTED\", \"model\": \"HYBRID_NOMACRO_WATER\", \"kernel_optimization\": \"O0\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_repaired_chemical_signed_local\\input",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--donor-opt",
+        "O2",
+        "--output",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_repaired_chemical_signed_local\\O2-build"
+      ],
+      "seconds": 22.009891900001094,
+      "returncode": 0,
+      "stdout": "{\"status\": \"BUILT_NO_MODEL_EXECUTED\", \"model\": \"HYBRID_NOMACRO_WATER\", \"kernel_optimization\": \"O2\"}\n",
+      "stderr": ""
+    }
+  ],
+  "science": "NOT_QUALIFIED"
+}
