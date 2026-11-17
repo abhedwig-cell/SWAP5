@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-chemical-source01",
   "last_commit": "f0e5e39ea3d166755e394700a5a8765700eab875",
-  "status": "CHEMICAL_SSDI_SOURCE_COMPONENT_IMPLEMENTED_NOT_QUALIFIED",
+  "status": "CHEMICAL_SOURCE_COMPONENT_O0_O2_PASS_CORRECTED_REFERENCE_IMPLEMENTED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -102,6 +102,16 @@
     {
       "result": "FINAL_COMPOSED_RAW_ALL_MEMBERS_VERIFIED",
       "members": 6412
+    },
+    {
+      "result": "SUBSURFACE_SOLUTE_SOURCE_PRODUCTION_O0_O2_PASS",
+      "providers": 1,
+      "driver": "tests/modularity/test_subsurface_solute_source.f90",
+      "seconds": [
+        1.243074200116098,
+        1.0984198001679033
+      ],
+      "scope": "Only source evaluator; original CDE/caller coupling not qualified"
     }
   ],
   "failed_tests": [
@@ -136,10 +146,14 @@
     {
       "path": "isolation",
       "cause": "Diagnostic passed names positionally as unsupported physical variant; corrected named ColumnStart arguments and actual interleaved origins pass on isolated and composed source."
+    },
+    {
+      "test": "Initial corrected-source renderer",
+      "cause": "The original age tracer repeats the solute clock anchor. Renderer refused the ambiguous full-file match; bounded it to the exact CDE submodule, preserving the entire age-tracer tail. No native run before the repair."
     }
   ],
   "running_ci": [],
-  "next_code_change": "Run new real production source contract O0/O2, then apply the conserved nodal source and matching ledger to an exact corrected original CDE reference before allowing any chemical subsurface project. Current integrated chemical refusal stays in place.",
+  "next_code_change": "Compile exact corrected original CDE with the real shared source evaluator at O0/O2; run surface/subsurface concentration controls, independent irrigation mass and strict chemical balances before any SWAP5 chemical activation.",
   "recovery_point": "Admitted S/PULSE/R implementation stays canonical f0e5e39ea. Development branch codex/nomacro-chemical-source01 adds only an unconnected, stateless conservative source evaluator and its real one-provider driver. Run --case subsurface_solute_source, retain errors, then corrected original CDE/source ledger qualification. Do not claim chemical SSDI enabled.",
   "external_blocker": null,
   "test_selection": {

@@ -19,6 +19,9 @@ def source(original):
     if hashlib.sha256(original).hexdigest()!=ORIGINAL_SHA:
         raise ValueError('Foreign original solute CDE preimage')
     helper_source()
+    end=original.index(b'end submodule MOD_Solute_CDE')+len(b'end submodule MOD_Solute_CDE')
+    tail=original[end:]
+    original=original[:end]
     def replace(anchor,replacement):
         nonlocal original
         anchor=anchor.replace('\n','\r\n').encode('ascii')
@@ -58,4 +61,4 @@ def source(original):
             '               sqirrig=sqirrig+ssdi_total\n'
             '               imsqirrig=imsqirrig+ssdi_total\n'
             '            end if\n\n'+anchor)
-    return original
+    return original+tail
