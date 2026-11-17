@@ -101,10 +101,16 @@ def main():
     parser.add_argument('--reference-work', type=Path, required=True)
     parser.add_argument('--configuration', choices=['point','interval'], required=True)
     parser.add_argument('--short-only', action='store_true')
+    parser.add_argument('--reuse-from', type=Path, help='Validate existing same-source/input O0/O2 builds; never rebind them')
     args = parser.parse_args()
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     reference = args.reference_work.resolve(); m.user_prepare.validate(reference)
-    case = out/'input'; descriptor = fixture(case, args.configuration)
+    if args.reuse_from:
+        case = args.reuse_from.resolve()/'input'; descriptor = m.e.inspect(case)
+        original = json.loads((args.reuse_from/'RESULT.json').read_text())
+        assert original['configuration'] == args.configuration
+    else:
+        case = out/'input'; descriptor = fixture(case, args.configuration)
     project = m.e.load(case)
     result = dict(status='RUNNING', source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configuration=args.configuration, inputs=descriptor, profiles={}, events=[],
@@ -114,13 +120,19 @@ def main():
     try:
         for opt in ('O0','O2'):
             build = out/(opt+'-build')
+            if args.reuse_from:
+                build = args.reuse_from.resolve()/(opt+'-build')
             command = [sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',m.e.MODEL,
                        '--experimental-project',str(case),'--reference-work',str(reference),'--build-only',
                        '--kernel-opt',opt,'--donor-opt',opt,'--output',str(build)]
-            started = time.perf_counter(); run = subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
-            (out/(opt+'-build.stdout')).write_text(run.stdout); (out/(opt+'-build.stderr')).write_text(run.stderr)
-            result['events'].append(dict(command=command,seconds=time.perf_counter()-started,returncode=run.returncode))
-            assert run.returncode == 0, run.stderr
+            if args.reuse_from:
+                validate_bundle(build,reference,project)
+                result['events'].append(dict(validated_existing_build=str(build), compilation='NOT_REPEATED'))
+            else:
+                started = time.perf_counter(); run = subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
+                (out/(opt+'-build.stdout')).write_text(run.stdout); (out/(opt+'-build.stderr')).write_text(run.stderr)
+                result['events'].append(dict(command=command,seconds=time.perf_counter()-started,returncode=run.returncode))
+                assert run.returncode == 0, run.stderr
             short = out/(opt+'-short')
             brief, data = m.trajectory(build,reference,project,short,5,{2,4},30)
             brief['own'] = m.own(build,reference,project,short,data,2,4,out/(opt+'-short-own'))
