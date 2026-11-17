@@ -1,0 +1,326 @@
+{
+  "source": "53db42ec5fdb015093592e00d3cd896ea649e390",
+  "cases": {
+    "water-surface-history": {
+      "reference": {
+        "command": [
+          "/home/runner/work/_temp/provider/build/swap_b0_gfortran",
+          "./swap.swp"
+        ],
+        "executable_sha256": "0f7f2b76dd2ea3c6aa00107dd9c7c3511592f7eb6d0dc0da0e4ebd51d598c844",
+        "identical_executed_inputs": {
+          "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+          "potato.crp": "8c7bd67acd0119e82a13b1fec84fc1cf19a3679116a4b1da1124644f7c996a01",
+          "swap.swp": "c25a200cc06458487482a6f44d5acd0b46d3d4d7f6163284cd3293b736662142",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+          "grass.crp": "6b7d994c3908f198100104f935c05536d0fdce7a56c0ef32286471738ea0e31a",
+          "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+          "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+          "surface.ru": "e058e50427b5e382d56da23287a64e643c265ed9fd7df8c8f150f3b77299e91b",
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        },
+        "seconds": 1.2677309790000209,
+        "timeout": false,
+        "returncode": 100,
+        "swap_ok": true,
+        "error": "",
+        "scientific_equivalence": "NOT_QUALIFIED",
+        "tolerances_changed": false,
+        "original_rows": 1097,
+        "swap5_rows": 1097,
+        "compared_rows": 1097,
+        "maximum_numeric_csv_differences": {
+          "GWL": 2.782672849402,
+          "WTOT": 0.03255656035300092,
+          "BALDEV": 0.031255684224,
+          "TSUM": 0.0
+        },
+        "status": "COMPLETE_DIAGNOSTIC_REFERENCE"
+      },
+      "literal_executed_inputs_exact": true,
+      "O0": {
+        "foreign_policy_refused": true,
+        "independent_origins": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true,
+        "native_refusals": [
+          {
+            "name": "old-format",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x72e1b5c2a454 in ???\n#1  0x72e1b5c2b1f1 in ???\n#2  0x5ade37d1c472 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x5ade37d582c6 in swap_\n#4  0x5ade37d795fe in MAIN__\n#5  0x5ade37d79f65 in main\n"
+          },
+          {
+            "name": "pond-nan",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Nonfinite top history state\n\nError termination. Backtrace:\n#0  0x7d0bd142a454 in ???\n#1  0x7d0bd142b1f1 in ???\n#2  0x5bb32705e6d2 in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x5bb327085113 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x5bb3270c02c6 in swap_\n#5  0x5bb3270e15fe in MAIN__\n#6  0x5bb3270e1f65 in main\n"
+          },
+          {
+            "name": "pond-negative",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Invalid top history scheduled pond domain\n\nError termination. Backtrace:\n#0  0x7cd79302a454 in ???\n#1  0x7cd79302b1f1 in ???\n#2  0x64143b80a761 in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x64143b831113 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x64143b86c2c6 in swap_\n#5  0x64143b88d5fe in MAIN__\n#6  0x64143b88df65 in main\n"
+          },
+          {
+            "name": "foreign-clock",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign top history clock\n\nError termination. Backtrace:\n#0  0x788f9ce2a454 in ???\n#1  0x788f9ce2b1f1 in ???\n#2  0x58becede865e in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x58becee0f113 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x58becee4a2c6 in swap_\n#5  0x58becee6b5fe in MAIN__\n#6  0x58becee6bf65 in main\n"
+          }
+        ],
+        "pulse_discard_replay_and_recovery_exact": true,
+        "pulse_metadata_refusals": 3
+      },
+      "O2": {
+        "foreign_policy_refused": true,
+        "independent_origins": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true,
+        "native_refusals": [
+          {
+            "name": "old-format",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x71a0e522a454 in ???\n#1  0x71a0e522b1f1 in ???\n#2  0x625418d57026 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x625418d8dd0f in swap_\n#4  0x625418da3be3 in MAIN__\n#5  0x625418d045de in main\n"
+          },
+          {
+            "name": "pond-nan",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Nonfinite top history state\n\nError termination. Backtrace:\n#0  0x76ded822a454 in ???\n#1  0x76ded822b1f1 in ???\n#2  0x5946c089c7f7 in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x5946c08bbed5 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x5946c08f2d0f in swap_\n#5  0x5946c0908be3 in MAIN__\n#6  0x5946c08695de in main\n"
+          },
+          {
+            "name": "pond-negative",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Invalid top history scheduled pond domain\n\nError termination. Backtrace:\n#0  0x7d2084a2a454 in ???\n#1  0x7d2084a2b1f1 in ???\n#2  0x62c6869b27d1 in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x62c6869d1ed5 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x62c686a08d0f in swap_\n#5  0x62c686a1ebe3 in MAIN__\n#6  0x62c68697f5de in main\n"
+          },
+          {
+            "name": "foreign-clock",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign top history clock\n\nError termination. Backtrace:\n#0  0x7331ef82a454 in ???\n#1  0x7331ef82b1f1 in ???\n#2  0x56474c62f80a in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x56474c64eed5 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x56474c685d0f in swap_\n#5  0x56474c69bbe3 in MAIN__\n#6  0x56474c5fc5de in main\n"
+          }
+        ],
+        "pulse_discard_replay_and_recovery_exact": true,
+        "pulse_metadata_refusals": 3
+      },
+      "baseline_build": {
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "/home/runner/work/_temp/wetting/inputs/water-surface-history",
+          "--experimental-time-step-policy",
+          "original-adaptive-irrigation-pulse-v1",
+          "--reference-work",
+          "/home/runner/work/_temp/provider",
+          "--build-only",
+          "--kernel-opt",
+          "O2",
+          "--donor-opt",
+          "O2",
+          "--output",
+          "/home/runner/work/_temp/wetting/finish-controls/water-surface-history-baseline-build"
+        ],
+        "seconds": 7.850979021000001
+      },
+      "baseline_full": {
+        "status": "FULL_PASS",
+        "days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 1.9485107971561888e-13,
+          "max_kernel_cm": 1.9484414082171497e-13,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 2.62284970658892e-12
+        },
+        "model_seconds": 3.147100939999973,
+        "build_sha256": "fb38c4097b7a4f9190bbd82bd2ca571aa3a34a8708eb96e61e42217b612fa697",
+        "own": {
+          "start": 4,
+          "end": 6,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.08830033700002105
+        }
+      },
+      "O2_full_cost_ratio": 1.3907399252341839,
+      "dry_initial2_exact_to_baseline": true,
+      "full_O0_O2_physical_exact": true,
+      "cross_policy_checkpoint_refused": true
+    },
+    "chemical-surface-history": {
+      "reference": {
+        "command": [
+          "/home/runner/work/_temp/provider/build/swap_b0_gfortran",
+          "./swap.swp"
+        ],
+        "executable_sha256": "0f7f2b76dd2ea3c6aa00107dd9c7c3511592f7eb6d0dc0da0e4ebd51d598c844",
+        "identical_executed_inputs": {
+          "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+          "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+          "swap.swp": "134998f884574ef99aafe090c8cd304644019b445d2f003c55ec64e7d22d3902",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+          "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+          "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+          "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+          "surface.ru": "e058e50427b5e382d56da23287a64e643c265ed9fd7df8c8f150f3b77299e91b",
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        },
+        "seconds": 1.3185278760000188,
+        "timeout": false,
+        "returncode": 100,
+        "swap_ok": true,
+        "error": "",
+        "scientific_equivalence": "NOT_QUALIFIED",
+        "tolerances_changed": false,
+        "original_rows": 1097,
+        "swap5_rows": 1097,
+        "compared_rows": 1097,
+        "maximum_numeric_csv_differences": {
+          "GWL": 2.782672849402,
+          "WTOT": 0.03255656035300092,
+          "BALDEV": 0.031255684224,
+          "S_STOT": 0.010244048850999832,
+          "S_BALDEV": 0.0,
+          "TSUM": 0.0
+        },
+        "status": "COMPLETE_DIAGNOSTIC_REFERENCE"
+      },
+      "literal_executed_inputs_exact": true,
+      "O0": {
+        "foreign_policy_refused": true,
+        "independent_origins": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true,
+        "native_refusals": [
+          {
+            "name": "old-format",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x7e9113a2a454 in ???\n#1  0x7e9113a2b1f1 in ???\n#2  0x584b94e0b432 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x584b94e4aa86 in swap_\n#4  0x584b94e6c082 in MAIN__\n#5  0x584b94e6ca88 in main\n"
+          },
+          {
+            "name": "pond-nan",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Nonfinite top history state\n\nError termination. Backtrace:\n#0  0x70baed22a454 in ???\n#1  0x70baed22b1f1 in ???\n#2  0x646b88bb6692 in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x646b88bdd0e9 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x646b88c1ba86 in swap_\n#5  0x646b88c3d082 in MAIN__\n#6  0x646b88c3da88 in main\n"
+          },
+          {
+            "name": "pond-negative",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Invalid top history scheduled pond domain\n\nError termination. Backtrace:\n#0  0x7d543902a454 in ???\n#1  0x7d543902b1f1 in ???\n#2  0x5b987114f721 in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x5b98711760e9 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x5b98711b4a86 in swap_\n#5  0x5b98711d6082 in MAIN__\n#6  0x5b98711d6a88 in main\n"
+          },
+          {
+            "name": "foreign-clock",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign top history clock\n\nError termination. Backtrace:\n#0  0x75ac1742a454 in ???\n#1  0x75ac1742b1f1 in ???\n#2  0x62e271e0a61e in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x62e271e310e9 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x62e271e6fa86 in swap_\n#5  0x62e271e91082 in MAIN__\n#6  0x62e271e91a88 in main\n"
+          }
+        ],
+        "pulse_discard_replay_and_recovery_exact": true,
+        "pulse_metadata_refusals": 3
+      },
+      "O2": {
+        "foreign_policy_refused": true,
+        "independent_origins": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true,
+        "native_refusals": [
+          {
+            "name": "old-format",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x7402ba82a454 in ???\n#1  0x7402ba82b1f1 in ???\n#2  0x63f948682006 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#3  0x63f9486b90cf in swap_\n#4  0x63f9486cf1a3 in MAIN__\n#5  0x63f94862f5de in main\n"
+          },
+          {
+            "name": "pond-nan",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Nonfinite top history state\n\nError termination. Backtrace:\n#0  0x7338bb62a454 in ???\n#1  0x7338bb62b1f1 in ???\n#2  0x5e259275d7f7 in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x5e259277ceb4 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x5e25927b40cf in swap_\n#5  0x5e25927ca1a3 in MAIN__\n#6  0x5e259272a5de in main\n"
+          },
+          {
+            "name": "pond-negative",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Invalid top history scheduled pond domain\n\nError termination. Backtrace:\n#0  0x7fba04a2a454 in ???\n#1  0x7fba04a2b1f1 in ???\n#2  0x5a11ba6a27d1 in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x5a11ba6c1eb4 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x5a11ba6f90cf in swap_\n#5  0x5a11ba70f1a3 in MAIN__\n#6  0x5a11ba66f5de in main\n"
+          },
+          {
+            "name": "foreign-clock",
+            "returncode": 1,
+            "accepted_days": 0,
+            "diagnostic": "ERROR STOP Foreign top history clock\n\nError termination. Backtrace:\n#0  0x711ee522a454 in ???\n#1  0x711ee522b1f1 in ???\n#2  0x58edf4f8780a in __mod_top_MOD_hybrid_top_checkpoint\n#3  0x58edf4fa6eb4 in __mod_macropore_MOD_hybrid_macro_checkpoint\n#4  0x58edf4fde0cf in swap_\n#5  0x58edf4ff41a3 in MAIN__\n#6  0x58edf4f545de in main\n"
+          }
+        ],
+        "pulse_discard_replay_and_recovery_exact": true,
+        "pulse_metadata_refusals": 3
+      },
+      "baseline_build": {
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "/home/runner/work/_temp/wetting/inputs/chemical-surface-history",
+          "--experimental-time-step-policy",
+          "original-adaptive-irrigation-pulse-v1",
+          "--reference-work",
+          "/home/runner/work/_temp/provider",
+          "--build-only",
+          "--kernel-opt",
+          "O2",
+          "--donor-opt",
+          "O2",
+          "--output",
+          "/home/runner/work/_temp/wetting/finish-controls/chemical-surface-history-baseline-build"
+        ],
+        "seconds": 8.562381321000032
+      },
+      "baseline_full": {
+        "status": "FULL_PASS",
+        "days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 1.9485107971561888e-13,
+          "max_kernel_cm": 1.9484414082171497e-13,
+          "max_solute_mg_cm2": 1.5393478456976126e-12,
+          "sum_water_residual_cm": 2.62284970658892e-12
+        },
+        "model_seconds": 3.2525765290000095,
+        "build_sha256": "ee1926375804a486312937ac1b3b56f1ff8c849d19a313342b93a4bd549ba7eb",
+        "own": {
+          "start": 4,
+          "end": 6,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.09106228199999578
+        }
+      },
+      "O2_full_cost_ratio": 1.3783948589761135,
+      "dry_initial2_exact_to_baseline": true,
+      "full_O0_O2_physical_exact": true,
+      "cross_policy_checkpoint_refused": true
+    }
+  },
+  "tolerances_changed": false,
+  "science": "NOT_QUALIFIED",
+  "status": "FULL_LITERAL_REFERENCE_PULSE_TRANSACTION_AND_PAIRED_COST_PASS"
+}

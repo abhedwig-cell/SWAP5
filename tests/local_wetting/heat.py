@@ -28,8 +28,13 @@ def main():
       for day in range(1,1097):
        row=host.step(1,checkpoint=day in {2,4,6,199,201,211,213,215,365,367,530,532,1094,1096});data.append(row);journal.write(json.dumps(row)+'\n');assert row['committed']
      host.close()
-   _,seconds=m.bounded(30,trial);assert m.physical(data)==m.physical(m.rows(out/(name+'-full')))
-   report=read_accepted_heat(folder/'original/original-heat-accounting.txt',data,project,compact=True);assert len(report['daily'])==1096 and not report['full_energy_balance_complete']
+   _,seconds=m.bounded(30,trial)
+   control=m.rows(out/(name+'-full'))
+   if m.physical(data)!=m.physical(control):
+    failure=dict(status='OBSERVER_PERTURBS_TRAJECTORY_QUALIFICATION_OPEN',observed_days=len(data),first_physical_difference_day=next(x['day'] for x,y in zip(data,control) if m.physical([x])!=m.physical([y])),tolerances_changed=False,full_energy_balance_complete=False)
+    (out/'HEAT_FAILURE.json').write_text(json.dumps(failure,indent=2))
+    raise RuntimeError('Heat observer changes trajectory; preserve observation and refuse qualification')
+   report=read_accepted_heat(folder/'original/original-heat-summary.txt',data,project,compact=True);assert len(report['daily'])==1096 and not report['full_energy_balance_complete']
    result['profiles'][name]=dict(seconds=seconds,physical_daily_exact=True,commands=commands,observer_source_sha256=m.sha(src),executable_sha256=m.sha(exe),accepted_days=1096,maximum_cell_residual_j_cm2=max(v['cell_residual_max_j_cm2'] for v in report['daily']),maximum_global_step_residual_j_cm2=max(v['global_step_residual_max_j_cm2'] for v in report['daily']),full_energy_balance_complete=False)
    (folder/'HEAT.json').write_text(json.dumps(report,indent=2));(out/'HEAT.json').write_text(json.dumps(result,indent=2));print(name,'FULL_SUPPORTED_CONDUCTION_UNCHANGED_LIMIT_PASS',flush=True)
 if __name__=='__main__':main()
