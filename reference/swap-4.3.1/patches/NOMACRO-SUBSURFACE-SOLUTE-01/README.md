@@ -1,6 +1,7 @@
 # Original no-macro subsurface solute input correction
 
-**Implemented candidate; full reference and SWAP5 coupling qualification pending.**
+**Development candidate: Windows paired original and SWAP5 O0/O2 PASS;
+portable qualification and canonical admission pending.**
 This is not a global B1 promotion. Active macropore branches are unchanged and
 are not selected for execution.
 
@@ -28,7 +29,18 @@ The original CDE scratch arrays contain only freshly derived source amounts;
 they are initialized on task1 and overwritten each active solute substep. They
 are not physical state and introduce no persistent format. The original CDE
 equations, numerical controls, surface sources and inactive source arithmetic
-remain unchanged. Current SWAP5 chemical SSDI preflight refusals remain active.
+remain unchanged. The experimental fixed chemical caller selects the explicitly
+identified correction for SWSOLU1/SWIRFIX1/SWMACRO0. Scheduled chemical SSDI remains
+refused. Registered release profiles do not select this new source correction.
+
+`CHEMICAL_CORRECTED_REFERENCE.json` records 24 complete original/corrected periods:
+the corrected point and interval input equals the actual water times concentration
+(48 mg/cm2), while every source-absent and surface row is exact at matching
+optimization. This is source/ledger qualification, not whole-model B1 promotion.
+Actual SWAP5 Windows point/interval trajectories complete1096days at both O0/O2,
+including exact physical/CSV/native own windows2to4,4to6(active),365to367,
+active discard/replay/adopt/recovery, and unchanged committed state after a
+deliberately inconsistent chemical candidate is refused by the existing guard.
 
 Before integration, qualify the exact corrected original module on water-only
 macropore-disabled input with active chemistry: surface/subsurface0/20 controls,

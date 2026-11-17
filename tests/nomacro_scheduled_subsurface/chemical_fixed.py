@@ -72,7 +72,9 @@ def main():
     p.add_argument('--reuse-build-from',type=Path)
     p.add_argument('--resume',action='store_true')
     args=p.parse_args();out=args.output.resolve();out.mkdir(exist_ok=args.resume)
-    reference=args.reference_work.resolve();m.user_prepare.validate(reference)
+    reference=args.reference_work.resolve()
+    if not (reference/'PREPARED.json').exists():m.user_prepare.prepare(reference)
+    m.user_prepare.validate(reference)
     case=args.reuse_build_from.resolve()/'input' if args.reuse_build_from else out/'input'
     if not args.reuse_build_from and not args.resume:
         create(case,'water-file-subsurface'+('-interval' if args.configuration=='interval' else ''),inline=args.inline)
