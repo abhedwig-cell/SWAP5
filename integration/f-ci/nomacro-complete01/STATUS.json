@@ -1,13 +1,13 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "23194d6be22f4c67c2f81c13d730aea621c4ba53",
+  "baseline": "edbc66b9e2f9debee588db5763da960aee04b36c",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-aquifer-admission01",
-  "last_commit": "23194d6be22f4c67c2f81c13d730aea621c4ba53",
-  "status": "AQUIFER_CANONICAL_ADMITTED_ACTUAL_MERGE_PASS",
+  "branch": "codex/nomacro-age-source01",
+  "last_commit": "263008e66",
+  "status": "AGE_CURRENT_RC3_COMPOSITION_ALL_GATES_PASS_READY_CANONICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
-  "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
+  "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
   "completed": [
     "Reconciled PR1662,1669..1696 against live GitHub metadata and canonical",
     "Located active independent table-drainage work on codex/nomacro-coverage18; excluded its unmerged code",
@@ -33,7 +33,9 @@
     "PR1702 canonical55a5a641f: exact parents and complete tree verified; actual detached canonical current owner PASS",
     "Scheduled chemical Windows/Ubuntu eight1096periods O0/O2 source/native/external PASS; Linux44079261977 SUCCESS, both raw digests/1504members checked; native10invalid domain refusals and interleaved6step source origins bothopts PASS; nine admitted-context emitted closures and native prefixes exact without repeated full periods",
     "PR1704 actual canonical949a61af1: exact e709/200a3e parents and full tree36e24ab, actual detached current owner PASS; scheduled source64/174mg/cm2 admitted",
-    "PR1706 actual canonical23194d6be: complete qualified treece096656 exact, exact e677/d658 parents, actual detached source/evidence owner PASS; corrected SWBR1 source/state admitted in bounded no-macro scope."
+    "PR1706 actual canonical23194d6be: complete qualified treece096656 exact, exact e677/d658 parents, actual detached source/evidence owner PASS; corrected SWBR1 source/state admitted in bounded no-macro scope.",
+    "Bounded original age source/state and corrected water-weighted output: Windows/Ubuntu eight full1096 periods, 32full+8short native windows, 72 exact prior-core projections, actual original reference, active rollback, 48 native/reader refusals, 11 age-off contexts and public CLI run/restart PASS; not yet canonical.",
+    "Actual e5b323292 canonical composition: eight full age periods complete physical/output/native exact, active rollback both platforms; four wetting contexts per platform exact source/provider/physical/native; nine other contexts exact. Canonical dry-end RWU change requalified through eight fresh full pulse periods and48seasonal native windows. Linux remaining44134056082SUCCESS; failed attempts retained."
   ],
   "open": [
     "Complete historical selector inventory",
@@ -41,13 +43,10 @@
     "Remaining drainage/surfacewater/constitutive/weather/state gaps and release consolidation"
   ],
   "dependency_surface": [
-    "src/process/mod_aquifer_solute_reservoir.f90",
-    "app/hybrid_water/conserved_aquifer_solute.py",
-    "app/hybrid_water/daily_host.py",
-    "app/hybrid_water/daily_coupling.py",
-    "app/hybrid_water/experimental_project.py",
-    "reference/swap-4.3.1/patches/NOMACRO-AQUIFER-SOLUTE-01",
-    "tests/nomacro_scheduled_subsurface/aquifer*.py"
+    "Original calc_AgeTracer/read_AgeTracer/outage private Agemsy and pond/effluent state, original age initialization/restart",
+    "src/process/mod_b111_age_tracer_substep.f90 (existing admitted provider, preserve)",
+    "src/process/mod_b111_surface_age_budget.f90 (existing admitted provider, preserve)",
+    "app/hybrid_water/experimental_project.py and daily_host native/ledger route (not yet changed for age)"
   ],
   "invariants": [
     3,
@@ -171,6 +170,79 @@
       "docs_strict_seconds": 32.55,
       "new_evidence_corruptions": 115,
       "unit_methods": 5
+    },
+    {
+      "result": "ORIGINAL_AGE_FOUR_FULL_FINITE_BOUNDS_CHECKED_DIAGNOSTICS",
+      "initial_ages": [
+        0,
+        100
+      ],
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "days": 4384,
+      "age_balance": "NOT_YET_OBSERVED",
+      "SWAP5_activation": false
+    },
+    {
+      "result": "ORIGINAL_HOST_REAL_AGE_PROVIDERS_FOUR_FULL_LEDGER_PASS",
+      "days": 4384,
+      "maximum_combined_residual_cm_day": 2.1796240372469466e-09,
+      "tolerance_policy": "Existing accepted age8192*epsilon*inventory_scale; cm day, not chemical mass",
+      "chemical_mass_guard_changed": false
+    },
+    {
+      "result": "ORIGINAL_AGE_SHORT_O0_ALL_NATIVE_AND_OUTPUT_EXACT",
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/age-runtime-O0-short-v2",
+      "days": 5,
+      "native_window": [
+        2,
+        4
+      ],
+      "age_csv_files": 3,
+      "maximum_age_residual_cm_day": 1.7780221739371882e-13
+    },
+    {
+      "result": "WINDOWS_FOUR_FULL_ORIGINAL_AGE_HOST_NATIVE_AND_OUTPUT_PASS",
+      "days": 4384,
+      "full_native_windows": 16,
+      "short_native_windows": 4,
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/age-runtime-full"
+    },
+    {
+      "result": "WINDOWS_ACTIVE_POND_AGE_TRANSACTIONS_REFUSALS_ISOLATION_PASS",
+      "active_pond_day": 367,
+      "candidate_refusals": 24,
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/age-controls"
+    },
+    {
+      "result": "OLD_ACCEPTED_AGE_OWNER_WINDOWS_LINK_UNAVAILABLE_NOT_PASS",
+      "reason": "Existing POSIX-only mod_b111_age_snapshot_disk binds fsync, unavailable to MinGW link; no new-route failure or physical dependency defect established.",
+      "events": 292,
+      "seconds": 85.28,
+      "next": "Execute actual existing physical/native owner on Linux in selected workflow; no repeated Windows283provider compilation"
+    },
+    {
+      "result": "CORRECTED_AGE_EFFLUENT_WINDOWS_FOUR_FULL_CORE_AND_NATIVE_EXACT_PASS",
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/age-effluent-full",
+      "days": 4384,
+      "full_native_windows": 16,
+      "short_native_windows": 4,
+      "prior_core_native_projections": 36
+    },
+    {
+      "result": "CORRECTED_AGE_EFFLUENT_ORIGINAL_REFERENCE_FOUR_FULL_AND_PRIOR_CORE_EXACT_PASS",
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/age-effluent-reference",
+      "days": 4384
+    },
+    {
+      "result": "AGE_EFFLUENT_INDEPENDENT_PROVIDER_O0_O2_PASS",
+      "compiler_requests_each": 3,
+      "seconds": [
+        10.868517399765551,
+        1.4586585997603834
+      ]
     }
   ],
   "failed_tests": [
@@ -241,7 +313,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Build actual SWBR1 experimental box/soil case O0/O2; first strict day/native own test, then complete model and active external/rejected native source cases. Check soil+box/transfer/global guards unchanged1e-10; keep all failures. Code now enables only development SWBR1 branch, canonicale677 unchanged.",
-  "recovery_point": "Canonical23194d6be; PR1706 admitted. All AQ proof sealed680df6a5c. No active model/CI. Next original water-age source audit: original calc_AgeTracer and accepted mod_b111_age_tracer_substep, no duplicate science.",
+  "recovery_point": "No active model or CI. Completed new Windows four full periods/native/all4CSV and all1096 prior-core rows plus9 native-core projections per profile exact; corrected-reference four full periods/all prior core observations exact. Source helpers3 and supported old age joint closure unchanged sincecore4c. New Linux workflow selects only observer/new source/state gates and verifies every old owner input/compiler before inheritance. Old direct age --source-only dispatcher unregistered-projected-reader failure reproduced at actual canonicaledbc; no PASS claimed for that legacy entry.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -336,15 +408,20 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "PR1706 actual canonical merge: exact parents/full tree and actual detached current owner PASS.",
+  "last_commit_role": "Current canonical composition root owner, source refusals, seven unit methods and docs PASS; actual admission pending.",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Finalize admission metadata and verify actual merge; then implement original water-age input/process/native route using existing production age providers. Preserve admitted aquifer/S/fixed/scheduled/pulse/R source chains.",
+  "next_action": "Open and merge canonical age PR at exact qualified head; verify actual merge parents/full tree and detached current owner. Continue remaining age fixed young-water irrigation and non-daily output/vapor.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
-  "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61"
+  "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
+  "qualified_age_runtime": "df243e2f43b1d7243ebcb447feb8540a2a9fe03a",
+  "qualified_age_ubuntu_carrier": "f74eabd497604a3dc498207ede5f555b56498a5f",
+  "age_sealed_proof": "271fddac1e4b9930e6c0ec743a60a29e2b031de7",
+  "qualified_age_composition_runtime": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
+  "qualified_age_composition_ubuntu": "304e528438f13270f9b421a2a4f386d71ec451dc"
 }

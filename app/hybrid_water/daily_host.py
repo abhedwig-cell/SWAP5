@@ -52,6 +52,7 @@ class HybridProject:
     time_step_policy: str = ORIGINAL_TIME_POLICY
     solute_step_policy: str = LEGACY_SOLUTE_STEP_POLICY
     soil_table_policy: str = ORIGINAL_SOIL_TABLE_POLICY
+    age: bool = False
 
     @property
     def last_day(self):
@@ -173,7 +174,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     from conserved_aquifer_solute import enabled as aquifer_enabled, correction as aquifer_correction
     aquifer_source=aquifer_enabled(project)
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
-    if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
+    if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=(2 if project.age else int(project.solute)):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
     soil_tables = selector('SWSOPHY')==1
     if project.soil_table_policy != ORIGINAL_SOIL_TABLE_POLICY and not soil_tables:
@@ -212,6 +213,15 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         source=replace(source,"   write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900",
                        "   call hybrid_aquifer_cumulative(aq_initial)\n"
                        "   write(*,'(a,7(1x,es25.17e3))')'HYBRID_AQUIFER_CUMULATIVE',aq_initial\n"
+                       "   write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900")
+    if project.age:
+        source=replace(source,'use MOD_grid, only: numnod','use MOD_solute,only:hybrid_age_observe,hybrid_age_effluent_observe\nuse MOD_grid, only: numnod')
+        source=replace(source,'real(8)              :: window_start','real(8)              :: window_start\nreal(8)::age_initial(11),age_effluent_initial(24)')
+        source=replace(source,"   write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900",
+                       "   call hybrid_age_observe(age_initial)\n"
+                       "   write(*,'(a,11(1x,es25.17e3))')'HYBRID_AGE_CUMULATIVE',age_initial\n"
+                       "   call hybrid_age_effluent_observe(age_effluent_initial)\n"
+                       "   write(*,'(a,24(1x,es25.17e3))')'HYBRID_AGE_EFFLUENT',age_effluent_initial\n"
                        "   write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900")
     main.write_text(source, encoding="cp1252")
     if aquifer_source:
@@ -254,7 +264,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         day_source = swap.read_text(encoding="cp1252")
         module = day_source[:day_source.index("end module hybrid_day_window") + len("end module hybrid_day_window")]
         render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS.get(checkpoint_day, 2),
-                          runtime=runtime_checkpoint, nonmacro=not project.macro, solute_state=project.solute,
+                          runtime=runtime_checkpoint, nonmacro=not project.macro, solute_state=project.solute, age_state=project.age,
                           hydraulic_history=bool(project.input_directory and selector('SWHYST')>0),
                           thermal_history=bool(project.input_directory and selector('SWSNOW')>0),
                           management_state=management_state,
@@ -447,11 +457,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         # lagged runoff estimate is below the legacy small-flux shortcut.
         # That shortcut booked runoff without subtracting it from new pond.
         source=(donor_build/'swap-selected/boundtop.f90').read_text(encoding='cp1252')
-        source=replace(source,"      if (dabs(runots) < 1.0d-6) then",
-                       "      if (dabs(runots) < 1.0d-6 .and. .not.(swdra/=2 .and. rsro>=1d-3 .and. &\n"
-                       "          dabs(rsroexp-1d0)<1d-6)) then")
-        source=replace(source,"else if (dabs(runots) >= 1.0d-6 .AND. swdra /= 2 .AND. dabs(rsroexp-1.0d0) < 1.0d-6) then",
-                       "else if (swdra /= 2 .AND. rsro>=1d-3 .AND. dabs(rsroexp-1.0d0) < 1.0d-6) then")
+        from original_pond_budget import render as render_linear_pond_conservation
+        source=render_linear_pond_conservation(source)
         (output/'boundtop.f90').write_text(source,encoding='cp1252')
         patched.append('boundtop')
     if project.solute:
@@ -525,6 +532,15 @@ end submodule MOD_Solute_CDE""")
         if aquifer_source:
             (output/'mod_aquifer_solute_reservoir.f90').write_bytes(aquifer_correction().helper_source())
             patched.insert(0,'mod_aquifer_solute_reservoir')
+    if project.age:
+        from conserved_original_age import correction as age_correction
+        age_patch=age_correction()
+        (output/'solute.f90').write_bytes(age_patch.source((donor_build/'swap-selected/solute.f90').read_bytes(),native=True,effluent=True))
+        age_csv=age_patch.csv_source((output/'swap_csv_output.f90').read_bytes())
+        (output/'swap_csv_output.f90').write_bytes(age_csv.replace(b'AGE_CUMULATIVE',b'HYBRID_AGE_CUMULATIVE'))
+        for name in (*age_patch.PROVIDERS,*age_patch.OUTPUT_PROVIDERS):
+            (output/(name+'.f90')).write_bytes((ROOT/'src/process'/(name+'.f90')).read_bytes())
+        patched[0:0]=[*age_patch.PROVIDERS,*age_patch.OUTPUT_PROVIDERS,'solute']
     if management_state:
         source=(donor_build/'swap-selected/MOD_cropdevelopment.f90').read_text(encoding='cp1252')
         source=replace(source,"            siccaploss = siccaploss + sicact",
@@ -808,6 +824,7 @@ end module plant_interface""")
                     *(str(replacements.get(p.name, p)) for p in donor_objects),
                     *([str(output/'mod_subsurface_solute_source.o')] if chemical_source else []),
                     *([str(output/'mod_aquifer_solute_reservoir.o')] if aquifer_source else []),
+                    *([str(output/(name+'.o')) for name in (*age_patch.PROVIDERS,*age_patch.OUTPUT_PROVIDERS)] if project.age else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
@@ -865,6 +882,9 @@ end module plant_interface""")
     if aquifer_source:
         from conserved_aquifer_solute import metadata as aquifer_metadata
         build_identity['conserved_aquifer_solute']=aquifer_metadata()
+    if project.age:
+        from conserved_original_age import metadata as age_metadata
+        build_identity['conserved_original_age']=age_metadata()
     if project.time_step_policy == IRRIGATION_PULSE_TIME_POLICY:
         from irrigation_pulse_time import metadata as pulse_metadata
         build_identity['irrigation_pulse_time'] = pulse_metadata((donor_build/'swap-selected/timecontrol.f90').read_bytes())
@@ -1084,6 +1104,8 @@ class DailyColumn:
     last_checkpoint: Path | None = None
     solute_stock: float | None = None
     aquifer_state: list | None = None
+    age_state: list | None = None
+    age_effluent: list | None = None
 
 
 def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=ANDELST):
@@ -1210,7 +1232,17 @@ class DailyHost:
                     aquifer_state=validate_aquifer(list(map(float,initial['HYBRID_AQUIFER_CUMULATIVE'])))
                     if start.receipt is not None and aquifer_state!=start.receipt['aquifer_state']:
                         raise ValueError('Restored aquifer state differs from accepted receipt')
-            self.columns.append(DailyColumn(directory, start.variant, worker, transcript, start.day, stocks, pressure,solute_stock=solute_stock,aquifer_state=aquifer_state))
+            age_state=None
+            age_effluent=None
+            if project.age:
+                from conserved_original_age import validate as validate_age,validate_effluent
+                age_state=validate_age(list(map(float,initial['HYBRID_AGE_CUMULATIVE'])))
+                age_effluent=validate_effluent(list(map(float,initial['HYBRID_AGE_EFFLUENT'])))
+                if start.receipt is not None and age_state!=start.receipt['age_state_cm_day']:
+                    raise ValueError('Restored original age state differs from accepted receipt')
+                if start.receipt is not None and age_effluent!=start.receipt['age_effluent']:
+                    raise ValueError('Restored original age effluent differs from accepted receipt')
+            self.columns.append(DailyColumn(directory, start.variant, worker, transcript, start.day, stocks, pressure,solute_stock=solute_stock,aquifer_state=aquifer_state,age_state=age_state,age_effluent=age_effluent))
         send(self.host, str(len(self.columns)))
         for column in self.columns:
             if not project.macro:send(self.host,f"{project.nodes} {project.start_clock}")
@@ -1265,6 +1297,10 @@ class DailyHost:
                 from conserved_aquifer_solute import ledger as aquifer_ledger
                 solute_budget.update(aquifer_ledger(current.aquifer_state,list(map(float,response['HYBRID_AQUIFER_CUMULATIVE'])),current.solute_stock,ledger))
         bottom_out = flow[15] - flow[6]
+        if self.project.age:
+            from conserved_original_age import ledger as age_ledger,validate_effluent
+            solute_budget.update(age_ledger(current.age_state,list(map(float,response['HYBRID_AGE_CUMULATIVE']))))
+            solute_budget['age_effluent']=validate_effluent(list(map(float,response['HYBRID_AGE_EFFLUENT'])))
         reply = [day, math.fsum(stocks[:6]), math.fsum(flow[:7]), math.fsum(flow[7:]),
                  bottom_out, -hydraulic[1], *hydraulic[2:], *stocks[:6]]
         send(self.host, " ".join(map(str, reply)))
@@ -1295,6 +1331,8 @@ class DailyHost:
             current.pressure = budget["pressure_head_cm"].copy()
             if self.project.solute:current.solute_stock=budget["solute_end_mg_cm2"]
             if current.aquifer_state is not None:current.aquifer_state=budget['aquifer_state'].copy()
+            if current.age_state is not None:current.age_state=budget['age_state_cm_day'].copy()
+            if current.age_effluent is not None:current.age_effluent=budget['age_effluent'].copy()
         else:
             current.refused = True
             stop_process(current.worker)

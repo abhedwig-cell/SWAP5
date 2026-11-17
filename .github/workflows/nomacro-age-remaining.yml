@@ -1,0 +1,34 @@
+name: Age composition remaining wetting and pulse preservation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /app/
+            /src/
+            /tools/solute/
+            /tools/vq/
+            /tests/
+            /integration/local-wetting-time01/admission/
+            /reference/swap-4.3.1/projects/
+            /reference/swap-4.3.1/source-archives/
+            /reference/swap-4.3.1/patches/
+      - name: Qualify corrected output/native state and exact prior core preservation O0/O2
+        run: python3 -B tests/nomacro_scheduled_subsurface/age_remaining_ci.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-age-remaining-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

@@ -20,6 +20,10 @@ def validate_delta(rows,tree,s):
  for p,h in {**s['added_blobs'],**s['guard_blobs']}.items():
   check(tree.get(p)==h,'unqualified age postimage '+p)
 def verify_source():
+ import importlib.util
+ spec=importlib.util.spec_from_file_location('original_age_admission',ROOT/'tests/nomacro_scheduled_subsurface/age_verify.py')
+ owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+ return owner.source_status()
  if (ROOT/'src/crop/mod_crop_soil_n_day.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-crop'))
   import verify_crop_supply_successor as crop_supply
@@ -121,6 +125,10 @@ def validate_final_driver(data,primary):
  check(witness['driver_sha256']==expected['tests/nut-sol/test_age_joint.f90'],'different extreme preimage driver')
  check(witness['events'][-1]['exit']==-8 and b'SIGFPE' in data['preimage/native.stderr'],'missing real Fortran preimage overflow')
 def verify_qualification():
+ import importlib.util
+ spec=importlib.util.spec_from_file_location('original_age_admission',ROOT/'tests/nomacro_scheduled_subsurface/age_verify.py')
+ owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+ return owner.qualification_status()
  if (ROOT/'src/crop/mod_crop_soil_n_day.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-crop'))
   import verify_crop_supply_successor as crop_supply

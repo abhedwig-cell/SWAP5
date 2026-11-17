@@ -12,6 +12,8 @@ module mod_b111_surface_age_budget
     real(real64) :: pond_age_stock_cm_day=0.0_real64
     real(real64) :: rain_depth_cm=0.0_real64, irrigation_depth_cm=0.0_real64
     real(real64) :: runon_depth_cm=0.0_real64
+    ! Explicit upward soil/surface water exchange, separate from external runon.
+    real(real64) :: soil_return_depth_cm=0.0_real64, soil_return_age_day=0.0_real64
     real(real64) :: rain_age_day=0.0_real64, irrigation_age_day=0.0_real64
     real(real64) :: runon_age_day=0.0_real64
     real(real64) :: infiltration_depth_cm=0.0_real64
@@ -23,6 +25,7 @@ module mod_b111_surface_age_budget
     real(real64) :: infiltration_age_export_cm_day=0.0_real64
     real(real64) :: runoff_age_export_cm_day=0.0_real64
     real(real64) :: external_age_input_cm_day=0.0_real64
+    real(real64) :: soil_return_age_input_cm_day=0.0_real64
     real(real64) :: age_production_cm_day=0.0_real64
     real(real64) :: residual_cm_day=0.0_real64
     real(real64) :: mixed_age_day=0.0_real64
@@ -37,19 +40,22 @@ contains
     if (.not.all(ieee_is_finite([q%dt_day,q%pond_start_cm,q%pond_end_cm, &
         q%pond_age_stock_cm_day,q%rain_depth_cm,q%irrigation_depth_cm, &
         q%runon_depth_cm,q%rain_age_day,q%irrigation_age_day,q%runon_age_day, &
-        q%infiltration_depth_cm,q%runoff_depth_cm,q%evaporation_depth_cm]))) return
+        q%infiltration_depth_cm,q%runoff_depth_cm,q%evaporation_depth_cm, &
+        q%soil_return_depth_cm,q%soil_return_age_day]))) return
     if (q%dt_day<=0.0_real64.or.q%dt_day>1.0e3_real64) return
     if (min(q%pond_start_cm,q%pond_end_cm,q%pond_age_stock_cm_day, &
         q%rain_depth_cm,q%irrigation_depth_cm,q%runon_depth_cm, &
         q%rain_age_day,q%irrigation_age_day,q%runon_age_day, &
-        q%infiltration_depth_cm,q%runoff_depth_cm,q%evaporation_depth_cm)<0.0_real64) return
+        q%infiltration_depth_cm,q%runoff_depth_cm,q%evaporation_depth_cm, &
+        q%soil_return_depth_cm,q%soil_return_age_day)<0.0_real64) return
     if (max(q%pond_start_cm,q%pond_end_cm,q%rain_depth_cm,q%irrigation_depth_cm, &
         q%runon_depth_cm,q%infiltration_depth_cm,q%runoff_depth_cm, &
-        q%evaporation_depth_cm)>1.0e6_real64) return
+        q%evaporation_depth_cm,q%soil_return_depth_cm)>1.0e6_real64) return
     if (q%pond_age_stock_cm_day>1.0e12_real64.or. &
-        max(q%rain_age_day,q%irrigation_age_day,q%runon_age_day)>1.0e6_real64) return
+        max(q%rain_age_day,q%irrigation_age_day,q%runon_age_day,q%soil_return_age_day)>1.0e6_real64) return
     if (q%pond_start_cm<=0.0_real64.and.q%pond_age_stock_cm_day>0.0_real64) return
     gross=q%rain_depth_cm+q%irrigation_depth_cm+q%runon_depth_cm
+    if(q%soil_return_depth_cm>0.0_real64)gross=gross+q%soil_return_depth_cm
     loss=q%infiltration_depth_cm+q%runoff_depth_cm+q%evaporation_depth_cm
     scale=max(1.0_real64,q%pond_start_cm,q%pond_end_cm,gross,loss)
     residual_water=q%pond_end_cm-q%pond_start_cm-gross+loss
@@ -63,6 +69,10 @@ contains
     r%external_age_input_cm_day=q%rain_depth_cm*q%rain_age_day+ &
         q%irrigation_depth_cm*q%irrigation_age_day+q%runon_depth_cm*q%runon_age_day
     available=q%pond_age_stock_cm_day+r%external_age_input_cm_day+r%age_production_cm_day
+    if(q%soil_return_depth_cm>0.0_real64)then
+      r%soil_return_age_input_cm_day=q%soil_return_depth_cm*q%soil_return_age_day
+      available=available+r%soil_return_age_input_cm_day
+    end if
     depth_total=q%pond_end_cm+q%infiltration_depth_cm+q%runoff_depth_cm
     if (depth_total<=0.0_real64) then
       if (available>1.0e-10_real64) return

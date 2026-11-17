@@ -42,6 +42,12 @@ CASES['subsurface_solute_source']={'driver':'tests/modularity/test_subsurface_so
     'marker':'SUBSURFACE_SOLUTE_SOURCE_UNITS_CONSERVATION_NONMUTATION_ABA_REFUSALS=PASS','flags':COMMON}
 CASES['aquifer_solute_reservoir']={'driver':'tests/modularity/test_aquifer_solute_reservoir.f90',
     'marker':'AQUIFER_SOLUTE_RESERVOIR_CONTRACT=PASS','flags':COMMON}
+CASES['original_age_clock']={'driver':'tests/modularity/test_original_age_clock.f90',
+    'marker':'ORIGINAL_AGE_CLOCK_RETENTION_UNITS_AND_REFUSALS=PASS','flags':COMMON}
+CASES['surface_age_budget']={'driver':'tests/nut-sol/test_surface_age_budget.f90',
+    'marker':'MC_SOL01_SURFACE_AGE_BUDGET=PASS','flags':COMMON}
+CASES['age_effluent_observer']={'driver':'tests/modularity/test_age_effluent_observer.f90',
+    'marker':'AGE_EFFLUENT_WATER_WEIGHTED_UNITS_ABA_AND_REFUSALS=PASS','flags':COMMON}
 
 COMPONENTS={
  'hydraulics':'src/solver/mod_b110_default_mvg_provider.f90',
@@ -195,6 +201,9 @@ class Session:
 # Selection is deliberately bounded to reviewed local seams, not an import-graph
 # admission inference. Anything else needs the existing scientific owner's record.
 LOCAL_SEAMS = {
+ 'src/process/mod_b111_age_tracer_substep.f90': ['original_age_clock'],
+ 'src/process/mod_b111_surface_age_budget.f90': ['original_age_clock','surface_age_budget'],
+ 'src/process/mod_age_effluent_observer.f90': ['age_effluent_observer'],
  'src/process/mod_aquifer_solute_reservoir.f90': ['aquifer_solute_reservoir'],
  'src/process/mod_subsurface_solute_source.f90': ['subsurface_solute_source'],
  'src/process/mod_restricted_surface_evaporation.f90': ['boesten'],

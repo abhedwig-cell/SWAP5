@@ -15,6 +15,10 @@ def ci_successor():
     import runpy
     return runpy.run_path(str(ROOT/'integration/audits/surface_age_ci/authority.py'),run_name='ci_source_authority')
 def verify_source():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('original_age_admission',ROOT/'tests/nomacro_scheduled_subsurface/age_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.source_status()
     s=record();base=s['baseline']
     ci=ci_successor()
     if ci is not None:ci['verify_source']()
@@ -87,6 +91,10 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
     check(b'MC_SOL01_SURFACE_AGE_BUDGET_O2=PASS' in files['isolated.stdout'],'isolated O2 absent')
     return dict(physical_triplet=True,fresh_process=True,incumbent_age_preserved=True)
 def verify_qualification():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('original_age_admission',ROOT/'tests/nomacro_scheduled_subsurface/age_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.qualification_status()
     perf=ROOT/'integration/performance/authority.py'
     if perf.exists():
         import runpy

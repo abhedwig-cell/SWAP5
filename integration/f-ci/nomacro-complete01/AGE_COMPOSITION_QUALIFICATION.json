@@ -1,0 +1,2829 @@
+{
+  "status": "AGE_RC3_WETTING_CANONICAL_COMPOSITION_QUALIFIED",
+  "runtime": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
+  "ubuntu": "304e528438f13270f9b421a2a4f386d71ec451dc",
+  "canonical_parent": "e5b3232926e3f24641c4cb0e58db57f115946b59",
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "active_macro_qualification": false,
+  "water_guard_cm": 1e-10,
+  "chemical_mass_guard_changed": false,
+  "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+  "age": {
+    "Windows": {
+      "status": "CANONICAL_COMPOSITION_FOUR_FULL_AGE_SOURCE_STATE_OUTPUT_EXACT",
+      "source": "20b669b658317a44bdb264100786802d3f96c797",
+      "profiles": {
+        "0-O0": {
+          "days": 1096,
+          "generated_sources_exact": true,
+          "compiled_closure_inputs_exact": true,
+          "complete_physical_age_output_rows_exact": true,
+          "all_five_csv_exact": true,
+          "all_nine_full_native_payloads_exact": true,
+          "prior_native_adopted": false,
+          "effluent": {
+            "all_daily_mean_and_volume_fields_match_full_precision_probe": true,
+            "missing_value": -9999.0,
+            "positive_root_export_days": 623,
+            "positive_runoff_export_days": 4,
+            "positive_drain_export_days": 469
+          },
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.28333260025829077,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3068798999302089,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3975655999965966,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3226076001301408,
+              "all_four_age_csv_exact": true
+            }
+          ]
+        },
+        "0-O2": {
+          "days": 1096,
+          "generated_sources_exact": true,
+          "compiled_closure_inputs_exact": true,
+          "complete_physical_age_output_rows_exact": true,
+          "all_five_csv_exact": true,
+          "all_nine_full_native_payloads_exact": true,
+          "prior_native_adopted": false,
+          "effluent": {
+            "all_daily_mean_and_volume_fields_match_full_precision_probe": true,
+            "missing_value": -9999.0,
+            "positive_root_export_days": 623,
+            "positive_runoff_export_days": 4,
+            "positive_drain_export_days": 469
+          },
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2969261999242008,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.34594079991802573,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3737098998390138,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.31452029990032315,
+              "all_four_age_csv_exact": true
+            }
+          ]
+        },
+        "100-O0": {
+          "days": 1096,
+          "generated_sources_exact": true,
+          "compiled_closure_inputs_exact": true,
+          "complete_physical_age_output_rows_exact": true,
+          "all_five_csv_exact": true,
+          "all_nine_full_native_payloads_exact": true,
+          "prior_native_adopted": false,
+          "effluent": {
+            "all_daily_mean_and_volume_fields_match_full_precision_probe": true,
+            "missing_value": -9999.0,
+            "positive_root_export_days": 623,
+            "positive_runoff_export_days": 4,
+            "positive_drain_export_days": 469
+          },
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3014883999712765,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.35079789999872446,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.4167549000121653,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.37449089996516705,
+              "all_four_age_csv_exact": true
+            }
+          ]
+        },
+        "100-O2": {
+          "days": 1096,
+          "generated_sources_exact": true,
+          "compiled_closure_inputs_exact": true,
+          "complete_physical_age_output_rows_exact": true,
+          "all_five_csv_exact": true,
+          "all_nine_full_native_payloads_exact": true,
+          "prior_native_adopted": false,
+          "effluent": {
+            "all_daily_mean_and_volume_fields_match_full_precision_probe": true,
+            "missing_value": -9999.0,
+            "positive_root_export_days": 623,
+            "positive_runoff_export_days": 4,
+            "positive_drain_export_days": 469
+          },
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2829724997282028,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.35359069984406233,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.39748269971460104,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.36625520000234246,
+              "all_four_age_csv_exact": true
+            }
+          ]
+        }
+      },
+      "whole_scientific_equivalence": "NOT_QUALIFIED",
+      "water_guard_cm": 1e-10,
+      "chemical_mass_guard_changed": false
+    },
+    "Ubuntu": {
+      "status": "CANONICAL_COMPOSITION_FOUR_FULL_AGE_SOURCE_STATE_OUTPUT_EXACT",
+      "source": "6c8581624706b1e5e57ac33b0018a1817c887b8e",
+      "profiles": {
+        "0-O0": {
+          "days": 1096,
+          "generated_sources_exact": true,
+          "compiled_closure_inputs_exact": true,
+          "complete_physical_age_output_rows_exact": true,
+          "all_five_csv_exact": true,
+          "all_nine_full_native_payloads_exact": true,
+          "prior_native_adopted": false,
+          "effluent": {
+            "all_daily_mean_and_volume_fields_match_full_precision_probe": true,
+            "missing_value": -9999.0,
+            "positive_root_export_days": 623,
+            "positive_runoff_export_days": 4,
+            "positive_drain_export_days": 469
+          },
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03974718200001348,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04072799400000804,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.17015282599999182,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.042754858999984435,
+              "all_four_age_csv_exact": true
+            }
+          ]
+        },
+        "0-O2": {
+          "days": 1096,
+          "generated_sources_exact": true,
+          "compiled_closure_inputs_exact": true,
+          "complete_physical_age_output_rows_exact": true,
+          "all_five_csv_exact": true,
+          "all_nine_full_native_payloads_exact": true,
+          "prior_native_adopted": false,
+          "effluent": {
+            "all_daily_mean_and_volume_fields_match_full_precision_probe": true,
+            "missing_value": -9999.0,
+            "positive_root_export_days": 623,
+            "positive_runoff_export_days": 4,
+            "positive_drain_export_days": 469
+          },
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.036241487000012285,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03824155199998813,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.1348369190000085,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.041028323999995564,
+              "all_four_age_csv_exact": true
+            }
+          ]
+        },
+        "100-O0": {
+          "days": 1096,
+          "generated_sources_exact": true,
+          "compiled_closure_inputs_exact": true,
+          "complete_physical_age_output_rows_exact": true,
+          "all_five_csv_exact": true,
+          "all_nine_full_native_payloads_exact": true,
+          "prior_native_adopted": false,
+          "effluent": {
+            "all_daily_mean_and_volume_fields_match_full_precision_probe": true,
+            "missing_value": -9999.0,
+            "positive_root_export_days": 623,
+            "positive_runoff_export_days": 4,
+            "positive_drain_export_days": 469
+          },
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.0385041469999976,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04060564100001329,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.17213040999999407,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.042752660000019205,
+              "all_four_age_csv_exact": true
+            }
+          ]
+        },
+        "100-O2": {
+          "days": 1096,
+          "generated_sources_exact": true,
+          "compiled_closure_inputs_exact": true,
+          "complete_physical_age_output_rows_exact": true,
+          "all_five_csv_exact": true,
+          "all_nine_full_native_payloads_exact": true,
+          "prior_native_adopted": false,
+          "effluent": {
+            "all_daily_mean_and_volume_fields_match_full_precision_probe": true,
+            "missing_value": -9999.0,
+            "positive_root_export_days": 623,
+            "positive_runoff_export_days": 4,
+            "positive_drain_export_days": 469
+          },
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.037017415000008214,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03829913000001284,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.13457790499998623,
+              "all_four_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.040526699999986704,
+              "all_four_age_csv_exact": true
+            }
+          ]
+        }
+      },
+      "whole_scientific_equivalence": "NOT_QUALIFIED",
+      "water_guard_cm": 1e-10,
+      "chemical_mass_guard_changed": false
+    }
+  },
+  "wetting": {
+    "Windows": {
+      "status": "SELECTED_CANONICAL_COMPOSITION_PASS",
+      "source": "9ae30a1a724425aada7fc5f33d50013217c1a732",
+      "profiles": {
+        "water-surface-history-O0": {
+          "build_seconds": 13.778315200004727,
+          "generated_sources": {
+            "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+            "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+            "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+            "macropore.f90": "4b57ed86a1b2ddf4a5ff2444cc7463d13ae21a3d819281d08d0ac8a99d36366e",
+            "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+            "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+            "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+            "RWU_micro.f90": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+            "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+            "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+            "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+            "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+            "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+            "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+          },
+          "changed_identity_fields": [
+            "budget_source",
+            "experimental_input_adapter",
+            "host",
+            "local_wetting_time",
+            "restart_publisher",
+            "time_step_policy_source"
+          ],
+          "all_other_identity_fields_exact": true,
+          "aquifer_enabled": false,
+          "input_exact": true,
+          "prefix_physical_exact": true,
+          "coverage": {
+            "status": "SHORT_PASS",
+            "days": 365,
+            "budgets": {
+              "days": 365,
+              "max_water_cm": 8.643086246706844e-14,
+              "max_kernel_cm": 8.615330671091215e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 1.2250826438367501e-12
+            },
+            "model_seconds": 3.199230599682778,
+            "build_sha256": "da4eaec56ae43f4fb7e5edafe1b7ff47e7e55bda8371d2b8ab497ee1e5a54135",
+            "own": [
+              {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.5651788003742695
+              },
+              {
+                "start": 199,
+                "end": 201,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.4737272998318076
+              },
+              {
+                "start": 362,
+                "end": 365,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.3898852998390794
+              }
+            ]
+          }
+        },
+        "water-surface-history-O2": {
+          "build_seconds": 20.578476899769157,
+          "generated_sources": {
+            "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+            "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+            "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+            "macropore.f90": "4b57ed86a1b2ddf4a5ff2444cc7463d13ae21a3d819281d08d0ac8a99d36366e",
+            "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+            "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+            "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+            "RWU_micro.f90": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+            "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+            "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+            "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+            "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+            "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+            "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+          },
+          "changed_identity_fields": [
+            "budget_source",
+            "experimental_input_adapter",
+            "host",
+            "local_wetting_time",
+            "restart_publisher",
+            "time_step_policy_source"
+          ],
+          "all_other_identity_fields_exact": true,
+          "aquifer_enabled": false,
+          "input_exact": true,
+          "prefix_physical_exact": true,
+          "coverage": {
+            "status": "SHORT_PASS",
+            "days": 365,
+            "budgets": {
+              "days": 365,
+              "max_water_cm": 8.643086246706844e-14,
+              "max_kernel_cm": 8.615330671091215e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 1.2250826438367501e-12
+            },
+            "model_seconds": 2.2010293998755515,
+            "build_sha256": "b64dd3b1adcc56fa47bf88d366ae50fc361c460319bbd7388eaea9fc8e662f61",
+            "own": [
+              {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.39989439956843853
+              },
+              {
+                "start": 199,
+                "end": 201,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.3561963001266122
+              },
+              {
+                "start": 362,
+                "end": 365,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.35574060026556253
+              }
+            ]
+          }
+        },
+        "chemical-surface-history-O0": {
+          "build_seconds": 10.562078299932182,
+          "generated_sources": {
+            "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+            "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+            "irrigation.f90": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66",
+            "macropore.f90": "4ac560478819ba11cc41b493e31cd9f14b7774a2b831a53554fcf93451a3a9cb",
+            "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+            "mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+            "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+            "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+            "RWU_micro.f90": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+            "solute.f90": "e6e85c2bebf7412985c973f7d690890361910ae54be615af6db90fd2513fc0fa",
+            "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+            "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+            "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+            "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+            "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+            "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+          },
+          "changed_identity_fields": [
+            "budget_source",
+            "experimental_input_adapter",
+            "host",
+            "local_wetting_time",
+            "restart_publisher",
+            "time_step_policy_source"
+          ],
+          "all_other_identity_fields_exact": true,
+          "aquifer_enabled": false,
+          "input_exact": true,
+          "prefix_physical_exact": true,
+          "coverage": {
+            "status": "SHORT_PASS",
+            "days": 365,
+            "budgets": {
+              "days": 365,
+              "max_water_cm": 8.643086246706844e-14,
+              "max_kernel_cm": 8.615330671091215e-14,
+              "max_solute_mg_cm2": 1.5044057986119894e-12,
+              "sum_water_residual_cm": 1.2250826438367501e-12
+            },
+            "model_seconds": 3.0452074999921024,
+            "build_sha256": "d688cb8218aa8aafe4abff7c2f6ef336f20d3c0541b6dc8ef41508163cb0fe2b",
+            "own": [
+              {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.4645810998044908
+              },
+              {
+                "start": 199,
+                "end": 201,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.37847730005159974
+              },
+              {
+                "start": 362,
+                "end": 365,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.34220439987257123
+              }
+            ]
+          }
+        },
+        "chemical-surface-history-O2": {
+          "build_seconds": 18.6871285000816,
+          "generated_sources": {
+            "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+            "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+            "irrigation.f90": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66",
+            "macropore.f90": "4ac560478819ba11cc41b493e31cd9f14b7774a2b831a53554fcf93451a3a9cb",
+            "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+            "mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+            "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+            "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+            "RWU_micro.f90": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+            "solute.f90": "e6e85c2bebf7412985c973f7d690890361910ae54be615af6db90fd2513fc0fa",
+            "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+            "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+            "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+            "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+            "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+            "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+          },
+          "changed_identity_fields": [
+            "budget_source",
+            "experimental_input_adapter",
+            "host",
+            "local_wetting_time",
+            "restart_publisher",
+            "time_step_policy_source"
+          ],
+          "all_other_identity_fields_exact": true,
+          "aquifer_enabled": false,
+          "input_exact": true,
+          "prefix_physical_exact": true,
+          "coverage": {
+            "status": "SHORT_PASS",
+            "days": 365,
+            "budgets": {
+              "days": 365,
+              "max_water_cm": 8.643086246706844e-14,
+              "max_kernel_cm": 8.615330671091215e-14,
+              "max_solute_mg_cm2": 1.5044057986119894e-12,
+              "sum_water_residual_cm": 1.2250826438367501e-12
+            },
+            "model_seconds": 2.3581958999857306,
+            "build_sha256": "03d40bc943f3869a2cfda18afd1b902727d7ca6989bda416e83b8d2374056f16",
+            "own": [
+              {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.42913149995729327
+              },
+              {
+                "start": 199,
+                "end": 201,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.3668492999859154
+              },
+              {
+                "start": 362,
+                "end": 365,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.3255421998910606
+              }
+            ]
+          }
+        }
+      },
+      "tolerances_changed": false,
+      "original_full_science": "FAIL_PRESERVED",
+      "full_scientific_equivalence": "NOT_CLAIMED"
+    },
+    "Ubuntu": {
+      "status": "SELECTED_CANONICAL_COMPOSITION_PASS",
+      "source": "304e528438f13270f9b421a2a4f386d71ec451dc",
+      "profiles": {
+        "water-surface-history-O0": {
+          "build_seconds": 4.542171380000013,
+          "generated_sources": {
+            "readswap.f90": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071",
+            "RWU_micro.f90": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7",
+            "headcalc.f90": "98ab68a9a974ff3a7233ffbe597474777e73d8c7b3e0bb5e7a08f5d1482eeb45",
+            "swap.f90": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4",
+            "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+            "swap_csv_output.f90": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e",
+            "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+            "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+            "oxygenstress.f90": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29",
+            "swap_main.f90": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391",
+            "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77",
+            "irrigation.f90": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693",
+            "boundtop.f90": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea",
+            "macropore.f90": "70107af06891f210cd2a5019d13ed744665ee1f8703b654d331001233f261492"
+          },
+          "changed_identity_fields": [
+            "experimental_input_adapter",
+            "host",
+            "time_step_policy_source"
+          ],
+          "all_other_identity_fields_exact": true,
+          "aquifer_enabled": false,
+          "input_exact": true,
+          "prefix_physical_exact": true,
+          "coverage": {
+            "status": "SHORT_PASS",
+            "days": 365,
+            "budgets": {
+              "days": 365,
+              "max_water_cm": 1.6514567491299204e-13,
+              "max_kernel_cm": 1.652011860642233e-13,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 1.2467625537656776e-12
+            },
+            "model_seconds": 1.061057366,
+            "build_sha256": "48dbb02e933f0f38bd771d3d955276587ad3c53d46b9e89722775447773cb155",
+            "own": [
+              {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.08979503800000543
+              },
+              {
+                "start": 199,
+                "end": 201,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.039931069999994406
+              },
+              {
+                "start": 362,
+                "end": 365,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.0379729779999991
+              }
+            ]
+          }
+        },
+        "water-surface-history-O2": {
+          "build_seconds": 7.180448841000015,
+          "generated_sources": {
+            "readswap.f90": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071",
+            "RWU_micro.f90": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7",
+            "headcalc.f90": "98ab68a9a974ff3a7233ffbe597474777e73d8c7b3e0bb5e7a08f5d1482eeb45",
+            "swap.f90": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4",
+            "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+            "swap_csv_output.f90": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e",
+            "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+            "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+            "oxygenstress.f90": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29",
+            "swap_main.f90": "a9edfb3209cb7ba0d84271929fa737a1879d1f7dc9ecfc57d660469dc1b88391",
+            "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77",
+            "irrigation.f90": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693",
+            "boundtop.f90": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea",
+            "macropore.f90": "70107af06891f210cd2a5019d13ed744665ee1f8703b654d331001233f261492"
+          },
+          "changed_identity_fields": [
+            "experimental_input_adapter",
+            "host",
+            "time_step_policy_source"
+          ],
+          "all_other_identity_fields_exact": true,
+          "aquifer_enabled": false,
+          "input_exact": true,
+          "prefix_physical_exact": true,
+          "coverage": {
+            "status": "SHORT_PASS",
+            "days": 365,
+            "budgets": {
+              "days": 365,
+              "max_water_cm": 1.6514567491299204e-13,
+              "max_kernel_cm": 1.652011860642233e-13,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 1.2467625537656776e-12
+            },
+            "model_seconds": 0.8720857710000018,
+            "build_sha256": "c3dcef6754cb5249bb5d4e1d873ebd39c82d420ceb90ef5c375a8ffcedbcd84a",
+            "own": [
+              {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.08450128800001266
+              },
+              {
+                "start": 199,
+                "end": 201,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.03715045699999564
+              },
+              {
+                "start": 362,
+                "end": 365,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.034827173999985916
+              }
+            ]
+          }
+        },
+        "chemical-surface-history-O0": {
+          "build_seconds": 2.1718398549999733,
+          "generated_sources": {
+            "readswap.f90": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071",
+            "RWU_micro.f90": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7",
+            "headcalc.f90": "98ab68a9a974ff3a7233ffbe597474777e73d8c7b3e0bb5e7a08f5d1482eeb45",
+            "solute.f90": "a18531a6ac349102bf8c6d265fc98aa4ff1d9fd4c59072728bba628cda8d1713",
+            "swap.f90": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4",
+            "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+            "swap_csv_output.f90": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea",
+            "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+            "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+            "oxygenstress.f90": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29",
+            "swap_main.f90": "fa88a5ea39b3a663ed7568219e60732b9c54848b8357e19d01c0610752ca9a9f",
+            "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77",
+            "mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+            "irrigation.f90": "3fe7c3b8ff1be6a62fd7db051aa0be61c8f612171f279f073d1b0315af770620",
+            "boundtop.f90": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea",
+            "macropore.f90": "587fc86231ac6cb3c09690f0728766b7ab5eb9d4b9523c0810f15b06a7d81ef8"
+          },
+          "changed_identity_fields": [
+            "experimental_input_adapter",
+            "host",
+            "time_step_policy_source"
+          ],
+          "all_other_identity_fields_exact": true,
+          "aquifer_enabled": false,
+          "input_exact": true,
+          "prefix_physical_exact": true,
+          "coverage": {
+            "status": "SHORT_PASS",
+            "days": 365,
+            "budgets": {
+              "days": 365,
+              "max_water_cm": 1.6514567491299204e-13,
+              "max_kernel_cm": 1.652011860642233e-13,
+              "max_solute_mg_cm2": 1.5683798660834358e-12,
+              "sum_water_residual_cm": 1.2467625537656776e-12
+            },
+            "model_seconds": 1.0373293480000143,
+            "build_sha256": "be7c65738dbfe51b163073c9f70d8b076c06678702e9e1b265c50712af88de77",
+            "own": [
+              {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.10194826000000035
+              },
+              {
+                "start": 199,
+                "end": 201,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.04784864999999172
+              },
+              {
+                "start": 362,
+                "end": 365,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.04685614600001031
+              }
+            ]
+          }
+        },
+        "chemical-surface-history-O2": {
+          "build_seconds": 7.708906773000024,
+          "generated_sources": {
+            "readswap.f90": "76600e3ffdf924a545915f50c17f19ee104c4bc718e2e4f75b54c9c1025d7071",
+            "RWU_micro.f90": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7",
+            "headcalc.f90": "98ab68a9a974ff3a7233ffbe597474777e73d8c7b3e0bb5e7a08f5d1482eeb45",
+            "solute.f90": "a18531a6ac349102bf8c6d265fc98aa4ff1d9fd4c59072728bba628cda8d1713",
+            "swap.f90": "07388321c36eac282033afb7340fe7e60032755339b655f298ca0967de7a6cc4",
+            "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+            "swap_csv_output.f90": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea",
+            "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+            "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+            "oxygenstress.f90": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29",
+            "swap_main.f90": "fa88a5ea39b3a663ed7568219e60732b9c54848b8357e19d01c0610752ca9a9f",
+            "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77",
+            "mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+            "irrigation.f90": "3fe7c3b8ff1be6a62fd7db051aa0be61c8f612171f279f073d1b0315af770620",
+            "boundtop.f90": "062c8a52f18987c457a938a24757e9c304e884b65ca4eb3257c1794f9b6fd5ea",
+            "macropore.f90": "587fc86231ac6cb3c09690f0728766b7ab5eb9d4b9523c0810f15b06a7d81ef8"
+          },
+          "changed_identity_fields": [
+            "experimental_input_adapter",
+            "host",
+            "time_step_policy_source"
+          ],
+          "all_other_identity_fields_exact": true,
+          "aquifer_enabled": false,
+          "input_exact": true,
+          "prefix_physical_exact": true,
+          "coverage": {
+            "status": "SHORT_PASS",
+            "days": 365,
+            "budgets": {
+              "days": 365,
+              "max_water_cm": 1.6514567491299204e-13,
+              "max_kernel_cm": 1.652011860642233e-13,
+              "max_solute_mg_cm2": 1.5683798660834358e-12,
+              "sum_water_residual_cm": 1.2467625537656776e-12
+            },
+            "model_seconds": 0.9408185560000106,
+            "build_sha256": "a7cbfd95c041da29c3421e34a2faa0f30b55b4a3993568f37173393e632d8a3c",
+            "own": [
+              {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.09271059499999978
+              },
+              {
+                "start": 199,
+                "end": 201,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.0446485770000038
+              },
+              {
+                "start": 362,
+                "end": 365,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.04332010699999955
+              }
+            ]
+          }
+        }
+      },
+      "tolerances_changed": false,
+      "original_full_science": "FAIL_PRESERVED",
+      "full_scientific_equivalence": "NOT_CLAIMED"
+    }
+  },
+  "controls": {
+    "Windows": {
+      "O0": {
+        "status": "ORIGINAL_AGE_ACTIVE_POND_TRANSACTIONS_REFUSALS_AND_ORIGINS_PASS",
+        "checks": [
+          {
+            "attack": "soil-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "pond-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "total-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "soil-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "pond-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "external-input",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "drainage",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "bottom",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "root",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "runoff",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "internal-infiltration",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "error": "Invalid or nonfinite original age state"
+          },
+          {
+            "attack": "effluent-mean",
+            "status": "REFUSED",
+            "error": "Original age effluent has inconsistent water-weighted units"
+          },
+          {
+            "attack": "effluent-negative-volume",
+            "status": "REFUSED",
+            "error": "Negative original age effluent amount or volume"
+          },
+          {
+            "attack": "effluent-nonfinite",
+            "status": "REFUSED",
+            "error": "Incomplete or nonfinite original age effluent observation"
+          },
+          {
+            "attack": "effluent-orphan",
+            "status": "REFUSED",
+            "error": "Inconsistent missing original age effluent"
+          }
+        ],
+        "active_pond_day": 367,
+        "discard_replay_exact": true,
+        "disk_recovery_exact": true,
+        "independent_steps": 6,
+        "committed_state_unchanged": true,
+        "origins_unchanged": true,
+        "foreign_policy_refused": true
+      },
+      "O2": {
+        "status": "ORIGINAL_AGE_ACTIVE_POND_TRANSACTIONS_REFUSALS_AND_ORIGINS_PASS",
+        "checks": [
+          {
+            "attack": "soil-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "pond-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "total-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "soil-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "pond-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "external-input",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "drainage",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "bottom",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "root",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "runoff",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "internal-infiltration",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "error": "Invalid or nonfinite original age state"
+          },
+          {
+            "attack": "effluent-mean",
+            "status": "REFUSED",
+            "error": "Original age effluent has inconsistent water-weighted units"
+          },
+          {
+            "attack": "effluent-negative-volume",
+            "status": "REFUSED",
+            "error": "Negative original age effluent amount or volume"
+          },
+          {
+            "attack": "effluent-nonfinite",
+            "status": "REFUSED",
+            "error": "Incomplete or nonfinite original age effluent observation"
+          },
+          {
+            "attack": "effluent-orphan",
+            "status": "REFUSED",
+            "error": "Inconsistent missing original age effluent"
+          }
+        ],
+        "active_pond_day": 367,
+        "discard_replay_exact": true,
+        "disk_recovery_exact": true,
+        "independent_steps": 6,
+        "committed_state_unchanged": true,
+        "origins_unchanged": true,
+        "foreign_policy_refused": true
+      }
+    },
+    "Ubuntu": {
+      "O0": {
+        "status": "ORIGINAL_AGE_ACTIVE_POND_TRANSACTIONS_REFUSALS_AND_ORIGINS_PASS",
+        "checks": [
+          {
+            "attack": "soil-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "pond-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "total-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "soil-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "pond-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "external-input",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "drainage",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "bottom",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "root",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "runoff",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "internal-infiltration",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "error": "Invalid or nonfinite original age state"
+          },
+          {
+            "attack": "effluent-mean",
+            "status": "REFUSED",
+            "error": "Original age effluent has inconsistent water-weighted units"
+          },
+          {
+            "attack": "effluent-negative-volume",
+            "status": "REFUSED",
+            "error": "Negative original age effluent amount or volume"
+          },
+          {
+            "attack": "effluent-nonfinite",
+            "status": "REFUSED",
+            "error": "Incomplete or nonfinite original age effluent observation"
+          },
+          {
+            "attack": "effluent-orphan",
+            "status": "REFUSED",
+            "error": "Inconsistent missing original age effluent"
+          }
+        ],
+        "active_pond_day": 367,
+        "discard_replay_exact": true,
+        "disk_recovery_exact": true,
+        "independent_steps": 6,
+        "committed_state_unchanged": true,
+        "origins_unchanged": true,
+        "foreign_policy_refused": true
+      },
+      "O2": {
+        "status": "ORIGINAL_AGE_ACTIVE_POND_TRANSACTIONS_REFUSALS_AND_ORIGINS_PASS",
+        "checks": [
+          {
+            "attack": "soil-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "pond-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "total-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "soil-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "pond-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "external-input",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "drainage",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "bottom",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "root",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "runoff",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "internal-infiltration",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "error": "Invalid or nonfinite original age state"
+          },
+          {
+            "attack": "effluent-mean",
+            "status": "REFUSED",
+            "error": "Original age effluent has inconsistent water-weighted units"
+          },
+          {
+            "attack": "effluent-negative-volume",
+            "status": "REFUSED",
+            "error": "Negative original age effluent amount or volume"
+          },
+          {
+            "attack": "effluent-nonfinite",
+            "status": "REFUSED",
+            "error": "Incomplete or nonfinite original age effluent observation"
+          },
+          {
+            "attack": "effluent-orphan",
+            "status": "REFUSED",
+            "error": "Inconsistent missing original age effluent"
+          }
+        ],
+        "active_pond_day": 367,
+        "discard_replay_exact": true,
+        "disk_recovery_exact": true,
+        "independent_steps": 6,
+        "committed_state_unchanged": true,
+        "origins_unchanged": true,
+        "foreign_policy_refused": true
+      }
+    }
+  },
+  "pulse": {
+    "Windows": {
+      "source": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
+      "policy": "original-adaptive-irrigation-pulse-v1",
+      "water_guard_cm": 1e-10,
+      "solute_guard_mg_cm2": 1e-10,
+      "tolerances_changed": false,
+      "science": "NOT_QUALIFIED",
+      "cases": {
+        "water-surface-history": {
+          "O0": {
+            "build": {
+              "command": [
+                "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+                "-B",
+                "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+                "--model",
+                "HYBRID_NOMACRO_WATER",
+                "--experimental-project",
+                "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-canonical-pulse\\inputs\\water-surface-history",
+                "--experimental-time-step-policy",
+                "original-adaptive-irrigation-pulse-v1",
+                "--reference-work",
+                "C:\\SWAP5-RC2\\provider",
+                "--build-only",
+                "--kernel-opt",
+                "O0",
+                "--donor-opt",
+                "O0",
+                "--output",
+                "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-canonical-pulse\\water-surface-history-O0-build"
+              ],
+              "seconds": 8.253260499797761
+            },
+            "short": {
+              "status": "SHORT_PASS",
+              "days": 6,
+              "budgets": {
+                "days": 6,
+                "max_water_cm": 1.169203622808368e-14,
+                "max_kernel_cm": 1.1657341758564144e-14,
+                "max_solute_mg_cm2": 0,
+                "sum_water_residual_cm": 6.609621704123381e-15
+              },
+              "model_seconds": 0.5877204998396337,
+              "build_sha256": "5935a4664a9115e948e4de00eb0cf954ac034e755c004ecef5ec7203d73900c1",
+              "own": {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.409440899733454
+              }
+            },
+            "full": {
+              "status": "FULL_PASS",
+              "days": 1096,
+              "budgets": {
+                "days": 1096,
+                "max_water_cm": 1.0541220674120666e-13,
+                "max_kernel_cm": 1.0536016503692736e-13,
+                "max_solute_mg_cm2": 0,
+                "sum_water_residual_cm": 3.38025708803097e-12
+              },
+              "model_seconds": 7.792315399739891,
+              "build_sha256": "5935a4664a9115e948e4de00eb0cf954ac034e755c004ecef5ec7203d73900c1",
+              "own": [
+                {
+                  "start": 2,
+                  "end": 4,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.2933733002282679
+                },
+                {
+                  "start": 4,
+                  "end": 6,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.38514759996905923
+                },
+                {
+                  "start": 199,
+                  "end": 201,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.31690889969468117
+                },
+                {
+                  "start": 365,
+                  "end": 367,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.2786932000890374
+                },
+                {
+                  "start": 530,
+                  "end": 532,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.3287828001193702
+                },
+                {
+                  "start": 1094,
+                  "end": 1096,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.33850539987906814
+                }
+              ]
+            }
+          },
+          "O2": {
+            "build": {
+              "command": [
+                "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+                "-B",
+                "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+                "--model",
+                "HYBRID_NOMACRO_WATER",
+                "--experimental-project",
+                "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-canonical-pulse\\inputs\\water-surface-history",
+                "--experimental-time-step-policy",
+                "original-adaptive-irrigation-pulse-v1",
+                "--reference-work",
+                "C:\\SWAP5-RC2\\provider",
+                "--build-only",
+                "--kernel-opt",
+                "O2",
+                "--donor-opt",
+                "O2",
+                "--output",
+                "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-canonical-pulse\\water-surface-history-O2-build"
+              ],
+              "seconds": 16.65723939985037
+            },
+            "short": {
+              "status": "SHORT_PASS",
+              "days": 6,
+              "budgets": {
+                "days": 6,
+                "max_water_cm": 1.169203622808368e-14,
+                "max_kernel_cm": 1.1657341758564144e-14,
+                "max_solute_mg_cm2": 0,
+                "sum_water_residual_cm": 6.609621704123381e-15
+              },
+              "model_seconds": 0.5679771997965872,
+              "build_sha256": "bde6800a5eb602559a021c22fe3a7d87d5b805e9fa88ccf04d98b06b0a62a279",
+              "own": {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.4184337998740375
+              }
+            },
+            "full": {
+              "status": "FULL_PASS",
+              "days": 1096,
+              "budgets": {
+                "days": 1096,
+                "max_water_cm": 1.0541220674120666e-13,
+                "max_kernel_cm": 1.0536016503692736e-13,
+                "max_solute_mg_cm2": 0,
+                "sum_water_residual_cm": 3.38025708803097e-12
+              },
+              "model_seconds": 6.465346499811858,
+              "build_sha256": "bde6800a5eb602559a021c22fe3a7d87d5b805e9fa88ccf04d98b06b0a62a279",
+              "own": [
+                {
+                  "start": 2,
+                  "end": 4,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.28188479971140623
+                },
+                {
+                  "start": 4,
+                  "end": 6,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.3824357995763421
+                },
+                {
+                  "start": 199,
+                  "end": 201,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.300333000253886
+                },
+                {
+                  "start": 365,
+                  "end": 367,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.2783213001675904
+                },
+                {
+                  "start": 530,
+                  "end": 532,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.3021912002004683
+                },
+                {
+                  "start": 1094,
+                  "end": 1096,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.33920380007475615
+                }
+              ]
+            }
+          }
+        },
+        "chemical-surface-history": {
+          "O0": {
+            "build": {
+              "command": [
+                "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+                "-B",
+                "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+                "--model",
+                "HYBRID_NOMACRO_WATER",
+                "--experimental-project",
+                "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-canonical-pulse\\inputs\\chemical-surface-history",
+                "--experimental-time-step-policy",
+                "original-adaptive-irrigation-pulse-v1",
+                "--reference-work",
+                "C:\\SWAP5-RC2\\provider",
+                "--build-only",
+                "--kernel-opt",
+                "O0",
+                "--donor-opt",
+                "O0",
+                "--output",
+                "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-canonical-pulse\\chemical-surface-history-O0-build"
+              ],
+              "seconds": 8.836171699687839
+            },
+            "short": {
+              "status": "SHORT_PASS",
+              "days": 6,
+              "budgets": {
+                "days": 6,
+                "max_water_cm": 1.169203622808368e-14,
+                "max_kernel_cm": 1.1657341758564144e-14,
+                "max_solute_mg_cm2": 1.5251210396579479e-12,
+                "sum_water_residual_cm": 6.609621704123381e-15
+              },
+              "model_seconds": 0.5563352000899613,
+              "build_sha256": "8ecf47f9d592f362423bd9a64ae7fdb3d68617cf74b3c5e3a6a6871484a163d8",
+              "own": {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.4235056000761688
+              }
+            },
+            "full": {
+              "status": "FULL_PASS",
+              "days": 1096,
+              "budgets": {
+                "days": 1096,
+                "max_water_cm": 1.0541220674120666e-13,
+                "max_kernel_cm": 1.0536016503692736e-13,
+                "max_solute_mg_cm2": 1.5251210396579479e-12,
+                "sum_water_residual_cm": 3.38025708803097e-12
+              },
+              "model_seconds": 8.094589499756694,
+              "build_sha256": "8ecf47f9d592f362423bd9a64ae7fdb3d68617cf74b3c5e3a6a6871484a163d8",
+              "own": [
+                {
+                  "start": 2,
+                  "end": 4,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.32835529977455735
+                },
+                {
+                  "start": 4,
+                  "end": 6,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.4083301001228392
+                },
+                {
+                  "start": 199,
+                  "end": 201,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.35380160016939044
+                },
+                {
+                  "start": 365,
+                  "end": 367,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.317265999969095
+                },
+                {
+                  "start": 530,
+                  "end": 532,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.35315960040315986
+                },
+                {
+                  "start": 1094,
+                  "end": 1096,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.374526200350374
+                }
+              ]
+            }
+          },
+          "O2": {
+            "build": {
+              "command": [
+                "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+                "-B",
+                "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+                "--model",
+                "HYBRID_NOMACRO_WATER",
+                "--experimental-project",
+                "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-canonical-pulse\\inputs\\chemical-surface-history",
+                "--experimental-time-step-policy",
+                "original-adaptive-irrigation-pulse-v1",
+                "--reference-work",
+                "C:\\SWAP5-RC2\\provider",
+                "--build-only",
+                "--kernel-opt",
+                "O2",
+                "--donor-opt",
+                "O2",
+                "--output",
+                "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-canonical-pulse\\chemical-surface-history-O2-build"
+              ],
+              "seconds": 16.547714000102133
+            },
+            "short": {
+              "status": "SHORT_PASS",
+              "days": 6,
+              "budgets": {
+                "days": 6,
+                "max_water_cm": 1.169203622808368e-14,
+                "max_kernel_cm": 1.1657341758564144e-14,
+                "max_solute_mg_cm2": 1.5251210396579479e-12,
+                "sum_water_residual_cm": 6.609621704123381e-15
+              },
+              "model_seconds": 0.4847817998379469,
+              "build_sha256": "4228677df467db5bed063aadeecc25b013954fa3e258ae1bcc1ac4dd0460e13d",
+              "own": {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.40828630002215505
+              }
+            },
+            "full": {
+              "status": "FULL_PASS",
+              "days": 1096,
+              "budgets": {
+                "days": 1096,
+                "max_water_cm": 1.0541220674120666e-13,
+                "max_kernel_cm": 1.0536016503692736e-13,
+                "max_solute_mg_cm2": 1.5251210396579479e-12,
+                "sum_water_residual_cm": 3.38025708803097e-12
+              },
+              "model_seconds": 7.255698699969798,
+              "build_sha256": "4228677df467db5bed063aadeecc25b013954fa3e258ae1bcc1ac4dd0460e13d",
+              "own": [
+                {
+                  "start": 2,
+                  "end": 4,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.38120600022375584
+                },
+                {
+                  "start": 4,
+                  "end": 6,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.39511930011212826
+                },
+                {
+                  "start": 199,
+                  "end": 201,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.3250539996661246
+                },
+                {
+                  "start": 365,
+                  "end": 367,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.3102891002781689
+                },
+                {
+                  "start": 530,
+                  "end": 532,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.3461175998672843
+                },
+                {
+                  "start": 1094,
+                  "end": 1096,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.3963752002455294
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Ubuntu": {
+      "source": "304e528438f13270f9b421a2a4f386d71ec451dc",
+      "policy": "original-adaptive-irrigation-pulse-v1",
+      "water_guard_cm": 1e-10,
+      "solute_guard_mg_cm2": 1e-10,
+      "tolerances_changed": false,
+      "science": "NOT_QUALIFIED",
+      "cases": {
+        "water-surface-history": {
+          "O0": {
+            "build": {
+              "command": [
+                "/usr/bin/python3",
+                "-B",
+                "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+                "--model",
+                "HYBRID_NOMACRO_WATER",
+                "--experimental-project",
+                "/home/runner/work/_temp/proof/pulse/inputs/water-surface-history",
+                "--experimental-time-step-policy",
+                "original-adaptive-irrigation-pulse-v1",
+                "--reference-work",
+                "/home/runner/work/_temp/provider",
+                "--build-only",
+                "--kernel-opt",
+                "O0",
+                "--donor-opt",
+                "O0",
+                "--output",
+                "/home/runner/work/_temp/proof/pulse/water-surface-history-O0-build"
+              ],
+              "seconds": 2.0370790089999957
+            },
+            "short": {
+              "status": "SHORT_PASS",
+              "days": 6,
+              "budgets": {
+                "days": 6,
+                "max_water_cm": 1.256633685997599e-14,
+                "max_kernel_cm": 1.2545520178264269e-14,
+                "max_solute_mg_cm2": 0,
+                "sum_water_residual_cm": 3.707830483618002e-14
+              },
+              "model_seconds": 0.10005160100001831,
+              "build_sha256": "0199f2389318f3fd5131a54dd9a25649617a773563277452258e1bed1beda9e5",
+              "own": {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.09054500899998175
+              }
+            },
+            "full": {
+              "status": "FULL_PASS",
+              "days": 1096,
+              "budgets": {
+                "days": 1096,
+                "max_water_cm": 1.9646784199522926e-13,
+                "max_kernel_cm": 1.965094753586527e-13,
+                "max_solute_mg_cm2": 0,
+                "sum_water_residual_cm": 2.9156388420818096e-12
+              },
+              "model_seconds": 3.6885175380000135,
+              "build_sha256": "0199f2389318f3fd5131a54dd9a25649617a773563277452258e1bed1beda9e5",
+              "own": [
+                {
+                  "start": 2,
+                  "end": 4,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.026933388000003333
+                },
+                {
+                  "start": 4,
+                  "end": 6,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.0896828150000033
+                },
+                {
+                  "start": 199,
+                  "end": 201,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.026146265000022595
+                },
+                {
+                  "start": 365,
+                  "end": 367,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.02578158699998312
+                },
+                {
+                  "start": 530,
+                  "end": 532,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.02885973900001204
+                },
+                {
+                  "start": 1094,
+                  "end": 1096,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.028826774000009436
+                }
+              ]
+            }
+          },
+          "O2": {
+            "build": {
+              "command": [
+                "/usr/bin/python3",
+                "-B",
+                "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+                "--model",
+                "HYBRID_NOMACRO_WATER",
+                "--experimental-project",
+                "/home/runner/work/_temp/proof/pulse/inputs/water-surface-history",
+                "--experimental-time-step-policy",
+                "original-adaptive-irrigation-pulse-v1",
+                "--reference-work",
+                "/home/runner/work/_temp/provider",
+                "--build-only",
+                "--kernel-opt",
+                "O2",
+                "--donor-opt",
+                "O2",
+                "--output",
+                "/home/runner/work/_temp/proof/pulse/water-surface-history-O2-build"
+              ],
+              "seconds": 7.215711626000001
+            },
+            "short": {
+              "status": "SHORT_PASS",
+              "days": 6,
+              "budgets": {
+                "days": 6,
+                "max_water_cm": 1.256633685997599e-14,
+                "max_kernel_cm": 1.2545520178264269e-14,
+                "max_solute_mg_cm2": 0,
+                "sum_water_residual_cm": 3.707830483618002e-14
+              },
+              "model_seconds": 0.09231088199999249,
+              "build_sha256": "6779ba3ebc721d5791533de54c58450f7521499625aa17a3b48c0e1bd8cd407a",
+              "own": {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.08210675000000833
+              }
+            },
+            "full": {
+              "status": "FULL_PASS",
+              "days": 1096,
+              "budgets": {
+                "days": 1096,
+                "max_water_cm": 1.9646784199522926e-13,
+                "max_kernel_cm": 1.965094753586527e-13,
+                "max_solute_mg_cm2": 0,
+                "sum_water_residual_cm": 2.9156388420818096e-12
+              },
+              "model_seconds": 3.060618086000005,
+              "build_sha256": "6779ba3ebc721d5791533de54c58450f7521499625aa17a3b48c0e1bd8cd407a",
+              "own": [
+                {
+                  "start": 2,
+                  "end": 4,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.025189793000009786
+                },
+                {
+                  "start": 4,
+                  "end": 6,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.08356917999998359
+                },
+                {
+                  "start": 199,
+                  "end": 201,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.024615525000001526
+                },
+                {
+                  "start": 365,
+                  "end": 367,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.02328719999999862
+                },
+                {
+                  "start": 530,
+                  "end": 532,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.0276618160000055
+                },
+                {
+                  "start": 1094,
+                  "end": 1096,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.027547617000010405
+                }
+              ]
+            }
+          }
+        },
+        "chemical-surface-history": {
+          "O0": {
+            "build": {
+              "command": [
+                "/usr/bin/python3",
+                "-B",
+                "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+                "--model",
+                "HYBRID_NOMACRO_WATER",
+                "--experimental-project",
+                "/home/runner/work/_temp/proof/pulse/inputs/chemical-surface-history",
+                "--experimental-time-step-policy",
+                "original-adaptive-irrigation-pulse-v1",
+                "--reference-work",
+                "/home/runner/work/_temp/provider",
+                "--build-only",
+                "--kernel-opt",
+                "O0",
+                "--donor-opt",
+                "O0",
+                "--output",
+                "/home/runner/work/_temp/proof/pulse/chemical-surface-history-O0-build"
+              ],
+              "seconds": 2.143419633999997
+            },
+            "short": {
+              "status": "SHORT_PASS",
+              "days": 6,
+              "budgets": {
+                "days": 6,
+                "max_water_cm": 1.256633685997599e-14,
+                "max_kernel_cm": 1.2545520178264269e-14,
+                "max_solute_mg_cm2": 1.5393478456976126e-12,
+                "sum_water_residual_cm": 3.707830483618002e-14
+              },
+              "model_seconds": 0.11103779199999053,
+              "build_sha256": "bcc34919fe8acb99b27b4c65a726fe49db0f2e63a9bad507bead26ee07463961",
+              "own": {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.10143244099998583
+              }
+            },
+            "full": {
+              "status": "FULL_PASS",
+              "days": 1096,
+              "budgets": {
+                "days": 1096,
+                "max_water_cm": 1.9646784199522926e-13,
+                "max_kernel_cm": 1.965094753586527e-13,
+                "max_solute_mg_cm2": 1.5393478456976126e-12,
+                "sum_water_residual_cm": 2.9156388420818096e-12
+              },
+              "model_seconds": 3.7915652400000113,
+              "build_sha256": "bcc34919fe8acb99b27b4c65a726fe49db0f2e63a9bad507bead26ee07463961",
+              "own": [
+                {
+                  "start": 2,
+                  "end": 4,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.03254350499997827
+                },
+                {
+                  "start": 4,
+                  "end": 6,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.10347992999999178
+                },
+                {
+                  "start": 199,
+                  "end": 201,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.03251087799998231
+                },
+                {
+                  "start": 365,
+                  "end": 367,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.03149995800001193
+                },
+                {
+                  "start": 530,
+                  "end": 532,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.03662897400002407
+                },
+                {
+                  "start": 1094,
+                  "end": 1096,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.03550352100000964
+                }
+              ]
+            }
+          },
+          "O2": {
+            "build": {
+              "command": [
+                "/usr/bin/python3",
+                "-B",
+                "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+                "--model",
+                "HYBRID_NOMACRO_WATER",
+                "--experimental-project",
+                "/home/runner/work/_temp/proof/pulse/inputs/chemical-surface-history",
+                "--experimental-time-step-policy",
+                "original-adaptive-irrigation-pulse-v1",
+                "--reference-work",
+                "/home/runner/work/_temp/provider",
+                "--build-only",
+                "--kernel-opt",
+                "O2",
+                "--donor-opt",
+                "O2",
+                "--output",
+                "/home/runner/work/_temp/proof/pulse/chemical-surface-history-O2-build"
+              ],
+              "seconds": 7.687286927000002
+            },
+            "short": {
+              "status": "SHORT_PASS",
+              "days": 6,
+              "budgets": {
+                "days": 6,
+                "max_water_cm": 1.256633685997599e-14,
+                "max_kernel_cm": 1.2545520178264269e-14,
+                "max_solute_mg_cm2": 1.5393478456976126e-12,
+                "sum_water_residual_cm": 3.707830483618002e-14
+              },
+              "model_seconds": 0.1018911239999909,
+              "build_sha256": "c2fe431e2dbf37272e88c687e1ce3e14feca5922b9b859eedb59e8279102e901",
+              "own": {
+                "start": 4,
+                "end": 6,
+                "exact_physical": true,
+                "exact_csv": true,
+                "exact_native": true,
+                "origin_unchanged": true,
+                "seconds": 0.09239619000001653
+              }
+            },
+            "full": {
+              "status": "FULL_PASS",
+              "days": 1096,
+              "budgets": {
+                "days": 1096,
+                "max_water_cm": 1.9646784199522926e-13,
+                "max_kernel_cm": 1.965094753586527e-13,
+                "max_solute_mg_cm2": 1.5393478456976126e-12,
+                "sum_water_residual_cm": 2.9156388420818096e-12
+              },
+              "model_seconds": 3.1352540690000126,
+              "build_sha256": "c2fe431e2dbf37272e88c687e1ce3e14feca5922b9b859eedb59e8279102e901",
+              "own": [
+                {
+                  "start": 2,
+                  "end": 4,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.03276085100000614
+                },
+                {
+                  "start": 4,
+                  "end": 6,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.09449052300001881
+                },
+                {
+                  "start": 199,
+                  "end": 201,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.0318972289999806
+                },
+                {
+                  "start": 365,
+                  "end": 367,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.030849028000005774
+                },
+                {
+                  "start": 530,
+                  "end": 532,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.03443408600000453
+                },
+                {
+                  "start": 1094,
+                  "end": 1096,
+                  "exact_physical": true,
+                  "exact_csv": true,
+                  "exact_native": true,
+                  "origin_unchanged": true,
+                  "seconds": 0.03394112700001983
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "preservation": {
+    "status": "NINE_EXACT_CONTEXTS_PASS_PULSE_SOURCE_CHANGE_SELECTED_SEPARATELY",
+    "source_commit": "20b669b658317a44bdb264100786802d3f96c797",
+    "profiles": {
+      "fixed-point-O2": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-fixed-point-full\\O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 2.120525977034049e-14,
+            "max_kernel_cm": 2.1316282072803006e-14,
+            "max_solute_mg_cm2": 2.0671853985521071e-13,
+            "sum_water_residual_cm": 4.553296758733061e-14
+          },
+          "model_seconds": 0.5543935000896454,
+          "build_sha256": "82b4464cb95a24b7733a90295f30dc5ef2787c817c9c87289d32f805fb210af6",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.33491559978574514
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3681866000406444
+            }
+          ]
+        }
+      },
+      "scheduled-water-O2": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-preserve-water-point\\O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 5,
+          "budgets": {
+            "days": 5,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 3.5348406059870774e-14
+          },
+          "model_seconds": 0.3898251997306943,
+          "build_sha256": "985b081948507784a443e26af65145768db6d70b7e009e0e9dcc9a8bc17bdb5e",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.27252089977264404
+            }
+          ]
+        }
+      },
+      "grass": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-current-named\\grass\\full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 4,
+          "budgets": {
+            "days": 4,
+            "max_water_cm": 1.1178871640203707e-14,
+            "max_kernel_cm": 1.1102230246251565e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": -4.763918436150098e-15
+          },
+          "model_seconds": 0.5046866000629961,
+          "build_sha256": "5ea26d8c502431dd279361d6c3572284a4a0d2b8d4c75d1a188e01232c4ae267",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.33779320027679205
+            }
+          ]
+        }
+      },
+      "hupsel": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-current-named\\hupsel\\full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 4,
+          "budgets": {
+            "days": 4,
+            "max_water_cm": 1.0644263248593688e-14,
+            "max_kernel_cm": 1.0644263248593688e-14,
+            "max_solute_mg_cm2": 0.0,
+            "sum_water_residual_cm": 1.6932147958031996e-14
+          },
+          "model_seconds": 0.3795381998643279,
+          "build_sha256": "118bbf48209b1520f40ff73aab541a0b6c4f88197be4288960bcd5cab2daf7c4",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.25905669992789626
+            }
+          ]
+        }
+      },
+      "salt": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-current-named\\salt\\full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 4,
+          "budgets": {
+            "days": 4,
+            "max_water_cm": 5.145571468911925e-13,
+            "max_kernel_cm": 5.144773496112975e-13,
+            "max_solute_mg_cm2": 1.2403411631112249e-12,
+            "sum_water_residual_cm": 8.791613270719978e-13
+          },
+          "model_seconds": 0.38200390012934804,
+          "build_sha256": "3c4b0ae07497aae1e327a01581de043a330c43947e5c639df201fdfe16695b30",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.22445689979940653
+            }
+          ]
+        }
+      },
+      "scheduled-chemical-point-O2": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\scheduled-chemical-point-full\\O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 0.0,
+            "sum_water_residual_cm": 4.334634864586184e-14
+          },
+          "model_seconds": 0.4566589999012649,
+          "build_sha256": "bd7f708f3106f85959a3e16e49990af0a9c7a1578109a5a7a70aea6fc354c5ba",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2925299000926316
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2731201001442969
+            }
+          ]
+        }
+      },
+      "scheduled-chemical-interval-O2": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\scheduled-chemical-interval-full\\O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 0.0,
+            "sum_water_residual_cm": 4.334634864586184e-14
+          },
+          "model_seconds": 0.4589762999676168,
+          "build_sha256": "95953b644360bd6c0a440cedf7a434269aff7a3b9a32e0a463d5aa10cae3aafa",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3181137996725738
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.27095540007576346
+            }
+          ]
+        }
+      },
+      "aquifer-sorption-decay": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-runtime-full\\sorption-decay-O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 7.507883204027621e-15,
+            "sum_water_residual_cm": 4.334634864586184e-14
+          },
+          "model_seconds": 0.4611733998171985,
+          "build_sha256": "eaa4d4525d5b59467eeddece3e1d289da918c2738ce103ef02831b4a1744aaeb",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2804653998464346
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.31409600004553795
+            }
+          ]
+        }
+      },
+      "aquifer-stiff-loss": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-runtime-full\\stiff-loss-O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 0.0,
+            "sum_water_residual_cm": 4.334634864586184e-14
+          },
+          "model_seconds": 0.5625315997749567,
+          "build_sha256": "fd3ccad19a03cf9732f093b5b5d88141327bb203aea24257bb5ea2223ac6008f",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.311614400241524
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.33791060000658035
+            }
+          ]
+        }
+      }
+    },
+    "unchanged_full_periods": "NOT_REPEATED_EXACT_EMITTED_SOURCE_PROVIDER_INPUT_AND_FRESH_NATIVE_PREFIX_CONTROLS",
+    "error": "AssertionError(('pulse-water', 'generated source drift'))",
+    "raw_outcome": "FAILED_AT_CHANGED_PULSE_SOURCE"
+  },
+  "parent_owner": {
+    "status": "CURRENT_ORIGINAL_AGE_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
+    "verified_head": "e28475719846b533c0b3726cd6a1a1f3360de575"
+  },
+  "workflow": {
+    "id": 44134056082,
+    "status": "SUCCESS",
+    "artifact_id": 14351481950,
+    "sha256": "364640d62d7e006b4952fc2ee6a96214efe1eb3b122215dafba972c9ccdcb89c"
+  },
+  "age_workflow": {
+    "id": 44132663545,
+    "status": "FAILURE_RETAINED",
+    "age_subgate": "FOUR_FULL_AGE_SOURCE_STATE_OUTPUT_AND_ACTIVE_CONTROLS_PASS",
+    "failure": "Subsequent old wetting guard rejected changed Python renderer identity; no age subgate failure.",
+    "artifact_id": 14351431026,
+    "sha256": "8df24f81731e66c5eb4091542e4860c99a2205873173f81f7ccf263fba636768"
+  },
+  "failed_controls": [
+    {
+      "run": 44133875418,
+      "status": "FAILURE_RETAINED",
+      "cause": "Portable runner omitted app/hybrid_water import path before provider preparation; no physical execution."
+    },
+    {
+      "path": "age-canonical-wetting",
+      "status": "FAILURE_RETAINED",
+      "cause": "Provider-object and newline identities differed; fresh exact-provider check selected. No allowance for changed provider bytes."
+    },
+    {
+      "path": "age-canonical-preservation",
+      "status": "FAILURE_RETAINED",
+      "cause": "Original pulse RWU_micro source changed by accepted canonical dry-end repair; fresh all-four full pulse periods and seasonal native own windows per platform selected, no old full-period inheritance."
+    }
+  ],
+  "raw_archives": {
+    "AGE_COMPOSITION_FIRST_UBUNTU_RAW": {
+      "archive": "AGE_COMPOSITION_FIRST_UBUNTU_RAW.zip",
+      "sha256": "8df24f81731e66c5eb4091542e4860c99a2205873173f81f7ccf263fba636768",
+      "bytes": 33150082,
+      "member_count": 3300,
+      "all_members_forward_verified": true
+    },
+    "AGE_COMPOSITION_REMAINING_UBUNTU_RAW": {
+      "archive": "AGE_COMPOSITION_REMAINING_UBUNTU_RAW.zip",
+      "sha256": "364640d62d7e006b4952fc2ee6a96214efe1eb3b122215dafba972c9ccdcb89c",
+      "bytes": 27191721,
+      "member_count": 2633,
+      "all_members_forward_verified": true
+    },
+    "AGE_COMPOSITION_WINDOWS_RAW": {
+      "archive": "AGE_COMPOSITION_WINDOWS_RAW.zip",
+      "sha256": "dd9019c6825f5656570a9584e36b9ae593c189560d8a6cc7baab351943355418",
+      "bytes": 68368230,
+      "member_count": 6889,
+      "all_members_forward_verified": true
+    }
+  },
+  "unresolved": "Original age profile differences and inherited original pulse scientific FAIL remain unqualified. Other age input/clock combinations, vapor and remaining historical selectors remain open.",
+  "controller_canonical_sha256": {
+    "tests/nomacro_scheduled_subsurface/age_composition.py": "db78314455b4fa69be9cc25860d67b1c5bdb1fe5c2ee87def82850f0807d4775",
+    "tests/nomacro_scheduled_subsurface/age_composition_ci.py": "cabe7e742bea8c8f8c098d2f22f9916dd03528f1fbd21e6b21aeefa9c5c8b924",
+    "tests/nomacro_scheduled_subsurface/age_remaining_ci.py": "02312614522d71723a5a2f97e78f06cd45de40571020349617892defee6b63d6",
+    "tests/nomacro_scheduled_subsurface/age_wetting_preserve.py": "3dd94788836051a6539729756d6ad483306fd9ee5c0623a6bb71d7908cf6b2d3",
+    "tests/nomacro_scheduled_subsurface/age_controls.py": "c9d4a549f39bb1cd9b153ddf7c5a2733b827d86b0325b10a89688a083a35f796",
+    "tests/nomacro_scheduled_subsurface/preserve_age.py": "fba7bf737aa2d6ce535dfc8b9e41ade925648f591db8930d780617e2c41984cb",
+    "tests/irrigation_pulse/run.py": "e26ab54b3b52290dba9b5efc1adc61b7e15fb491b1fb455bbab5105586c9aefb"
+  }
+}
