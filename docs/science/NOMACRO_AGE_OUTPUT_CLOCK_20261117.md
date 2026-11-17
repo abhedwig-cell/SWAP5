@@ -68,3 +68,11 @@ interpret the emitted components with an explicit60-second carry only in the
 validator, and report the inherited formatting limitation. Require exact file
 bytes across restarts. This does not establish valid ISO timestamp formatting.
 Annual371day O0/O2 pilots and four exact restart windows each passed.
+
+The terminal-only trial condition still rejected day364. The original minimum-step
+nonconvergence continuation bypassed the convergence branch on that day; the
+accepted-terminal diagnostic was absent. Therefore project the actual receipt at
+each candidate and apply the same elapsed-day-scaled1e-10 bound alongside the
+existing per-step hydraulic guard. Prevent accumulated ledger error before the
+saturated terminal/minimum step, instead of relying on a terminal polish. Original
+minimum-step behavior and the external strict refusal remain unchanged.

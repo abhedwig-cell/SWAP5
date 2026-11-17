@@ -178,8 +178,7 @@ def apply_build(output,donor_build,project,patched):
         text=text.replace(anchor,'   use MOD_integral,only:hybrid_output_trial_residual\n'+anchor,1)
         anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
         assert text.count(anchor)==1
-        text=text.replace(anchor,anchor+"\n         if(tcum+dt>=1d0-1d-8)then\n"
-                          "            if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.\n         end if",1)
+        text=text.replace(anchor,anchor+"\n         if(abs(hybrid_output_trial_residual())>1d-10*(t1900-budget_start+dt))flnonconv=.true.",1)
         anchor='      if (.NOT.flnonconv) then      ! convergence has been reached';assert text.count(anchor)==1
         text=text.replace(anchor,anchor+"\n         if(tcum+dt>=1d0-1d-8)write(*,'(a,4(1x,es25.17e3))') &\n"
                           "          'AGE_OUTPUT_TERMINAL_WATER',t1900,tcum,dt,hybrid_output_trial_residual()",1)
