@@ -596,9 +596,14 @@ end module MOD_wofost""")
         if scheduled_subsurface:
             from scheduled_subsurface_irrigation import render_irrigation as render_scheduled_subsurface
             source=render_scheduled_subsurface(source)
-        if fixed_file or chemical_fixed:
+        from age_fixed_irrigation import enabled as age_fixed_enabled
+        age_fixed=age_fixed_enabled(project)
+        if fixed_file or chemical_fixed or age_fixed:
             from fixed_irrigation_file import render_irrigation
-            source=render_irrigation(source,allow_chemical_subsurface=chemical_fixed)
+            source=render_irrigation(source,allow_chemical_subsurface=chemical_fixed or age_fixed)
+        if age_fixed:
+            from age_fixed_irrigation import render_irrigation as render_age_fixed
+            source=render_age_fixed(source)
         source=replace(source,"      subroutine read_irrigation_fixed()",
                        "      subroutine read_irrigation_fixed()\n         use MOD_swap_base,only:swinco")
         source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
@@ -885,6 +890,8 @@ end module plant_interface""")
     if project.age:
         from conserved_original_age import metadata as age_metadata
         build_identity['conserved_original_age']=age_metadata()
+        from age_fixed_irrigation import enabled as age_fixed_enabled,metadata as age_fixed_metadata
+        if age_fixed_enabled(project):build_identity['original_age_fixed_irrigation']=age_fixed_metadata()
     if project.time_step_policy == IRRIGATION_PULSE_TIME_POLICY:
         from irrigation_pulse_time import metadata as pulse_metadata
         build_identity['irrigation_pulse_time'] = pulse_metadata((donor_build/'swap-selected/timecontrol.f90').read_bytes())
