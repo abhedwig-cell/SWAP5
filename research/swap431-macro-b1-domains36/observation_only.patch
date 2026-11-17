@@ -1,0 +1,121 @@
+--- INACTIVE35/macrorate_node.f90
++++ DOMAINS36/macrorate_node.f90
+@@ -28,6 +28,9 @@
+       integer::snap23_unit,snap23_mode
+       integer::n24,j24,l24
+       real(8)::pot35(macp),info35(12)
++      real(8),save::obs36_meta(24,madm),obs36_in(macp,madm),obs36_outsat(macp,madm),obs36_outuns(macp,madm),obs36_rapid(macp,madm)
++      real(8)::get36_meta(24,madm),get36_in(macp,madm),get36_outsat(macp,madm),get36_outuns(macp,madm),get36_rapid(macp,madm)
++
+       real(8)::u24(macp),v24(macp),d24(macp),meta24(12)
+       real(8)::f24,rho24,g24,den24,dh24,hm24
+ 
+@@ -266,6 +269,18 @@
+ !           Excess outflow; compensated in later sections
+             FlwOutDmExces(id) = 0.d0
+             if (WaSrMpDmTmp < WaSrMpDmMin) FlwOutDmExces(id) = WaSrMpDmMin - WaSrMpDmTmp
++            if(detail33) then
++             obs36_meta(:,id)=0d0
++             obs36_meta(1:15,id)=[WaSrMpDm(id),WaSrMpDmMin,WaSrMpDmMax,VlMpUndrGwL,FlwInDmTot,FlwOutDmTot(id), &
++              WaSrMpDmTmp,FrFlwIn,FlwInTopVrtDmPot(id),FlwInTopLatDmPot(id),FlwInIntSatDmPot(id),FlwInMtxSatDmPot(id), &
++              FlwOutMtxSatDmPot(id),FlwOutMtxUnsDmPot(id),merge(FlwOutDrRapPot,0d0,id==1)]
++             obs36_meta(18:24,id)=[VlMpDmCp(id,ICpTpSatZon)/dz(ICpTpSatZon),GwlFlCpZo,dble(ICpTpSatZon),dt,0d0,dble(IcTopMp),ZWaLevDm(id)]
++             obs36_in(:,id)=FlwInMtxSatCpPot+FlwInIntSatCpPot
++             obs36_outsat(:,id)=FlwOutMtxSatDmCpPot(id,:)
++             obs36_outuns(:,id)=FlwOutMtxUnsDmCpPot(id,:)
++             obs36_rapid(:,id)=0d0
++             if(id==1) obs36_rapid(:,id)=FlwOutDrRapCpPot
++            end if
+             if(target.and.id==3) then
+              lim_min=WaSrMpDmMin;lim_max=WaSrMpDmMax;lim_under=VlMpUndrGwL
+              lim_in=FlwInDmTot;lim_out=FlwOutDmTot(id);lim_tmp=WaSrMpDmTmp;lim_frin=FrFlwIn
+@@ -1409,6 +1424,12 @@
+                if (id == 1) QOutDrRapCp(IcTopMp:NumNod) = FrFlwOut * FlwOutDrRapCpPot(IcTopMp:NumNod) / dt
+             end if
+             if(target.and.id==3) call limit21_trace(3)
++            if(detail33) then
++             obs36_meta(16,id)=FrFlwOut
++             obs36_meta(17,id)=FlwOutDmExces(id)
++             obs36_meta(22,id)=FlwInTopExcesTot
++            end if
++
+          end do
+       end if
+ 
+@@ -1466,6 +1487,13 @@
+ 
+       return
+ 
++      return
++      entry diagnose36_get(get36_meta,get36_in,get36_outsat,get36_outuns,get36_rapid)
++      get36_meta=obs36_meta
++      get36_in=obs36_in
++      get36_outsat=obs36_outsat
++      get36_outuns=obs36_outuns
++      get36_rapid=obs36_rapid
+       return
+       entry diagnose35_get(pot35,info35)
+       pot35=0d0
+--- INACTIVE35/probe_state.f90
++++ DOMAINS36/probe_state.f90
+@@ -209,18 +209,19 @@
+ use SENSE23_TRANSACTION,only:snapshot
+ use DIAG19,only:probe_busy,probe_u,point_id,point_node,point_delta
+ use variables,only:h,theta,k,swkimpl,dt
+-use MOD_arrays,only:macp
++use MOD_arrays,only:macp,madm
+ use MOD_MvG,only:watcon,hconduc
+ use MOD_frost,only:rfcp
+ use MOD_grid,only:numnod,z,dz
+ use MOD_swap_mp,only:FrArMtrx,QExcMpMtx,dFdhMp
+-use MOD_macropore,only:QExcMtxDmCp
++use MOD_macropore,only:QExcMtxDmCp,NumDm
+ implicit none
+ character(8)::enable
+-integer::u,ru,fu,cu,node,lev,sgn,j,nbytes,partid
++integer::u,ru,fu,cu,node,lev,sgn,j,nbytes,partid,dom36,unit36,base36
+ integer,parameter::nodes(4)=[50,51,52,57]
+ integer(1),allocatable::original(:),restored(:)
+ real(8)::eps,pot(macp),meta(12)
++real(8)::meta36(24,madm),in36(macp,madm),out36(macp,madm),uns36(macp,madm),rapid36(macp,madm)
+ type(ieee_status_type)::fp
+ logical::before_flags(size(ieee_all)),after_flags(size(ieee_all)),same
+ call get_environment_variable('PROBE35_ENABLE',enable)
+@@ -247,6 +248,14 @@
+ write(cu,*) 'meta_before',meta
+ write(cu,*) 'pot_before',pot(1:numnod)
+ close(cu)
++call diagnose36_get(meta36,in36,out36,uns36,rapid36)
++open(newunit=base36,file='probe36_base.txt',status='replace')
++do dom36=1,NumDm
++ write(base36,*) dom36,meta36(:,dom36),QExcMtxDmCp(dom36,1:numnod),in36(1:numnod,dom36),out36(1:numnod,dom36), &
++  uns36(1:numnod,dom36),rapid36(1:numnod,dom36)
++end do
++close(base36)
++open(newunit=unit36,file='probe36_domains.txt',status='replace')
+ open(newunit=ru,file='probe35_restore.txt',status='replace')
+ open(newunit=fu,file='probe35_points.txt',status='replace')
+ open(newunit=probe_u,file='probe35_limits.txt',status='replace')
+@@ -264,7 +273,7 @@
+ call evaluate(0,0d0)
+ call restore_state()
+ probe_busy=.false.
+-close(probe_u);close(fu);close(ru)
++close(probe_u);close(fu);close(ru);close(unit36)
+ call ieee_set_status(fp)
+ deallocate(original,restored)
+ contains
+@@ -293,5 +302,11 @@
+ call MACRORATE(1)
+ call diagnose35_get(pot,meta)
+ write(fu,*) partid,ic,delta,meta,h(50:52),QExcMtxDmCp(3,1:numnod),QExcMpMtx(1:numnod),pot(1:numnod)
+-end subroutine
+-end subroutine
++call diagnose36_get(meta36,in36,out36,uns36,rapid36)
++do dom36=1,NumDm
++ write(unit36,*) partid,ic,delta,dom36,meta36(:,dom36),QExcMtxDmCp(dom36,1:numnod),in36(1:numnod,dom36), &
++  out36(1:numnod,dom36),uns36(1:numnod,dom36),rapid36(1:numnod,dom36)
++end do
++
++end subroutine
++end subroutine
