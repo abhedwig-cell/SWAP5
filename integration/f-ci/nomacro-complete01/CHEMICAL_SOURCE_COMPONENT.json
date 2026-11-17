@@ -1,0 +1,313 @@
+{
+  "audit": {},
+  "events": [
+    {
+      "command": [
+        "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\process\\mod_subsurface_solute_source.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.19927769992500544
+    },
+    {
+      "command": [
+        "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\modularity\\test_subsurface_solute_source.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.16513340012170374
+    },
+    {
+      "command": [
+        "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.2255847998894751
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-0-0-subsurface_solute_source-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "3974e3a7b70157c0215a6b72c32dc74e88ff07f35ae205184d68ac51635f7699",
+      "wall_seconds": 0.07553009991534054
+    },
+    {
+      "command": [
+        "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\process\\mod_subsurface_solute_source.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.20892590004950762
+    },
+    {
+      "command": [
+        "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\modularity\\test_subsurface_solute_source.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.2206823998130858
+    },
+    {
+      "command": [
+        "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15071549988351762
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-source-component\\build-1-4-subsurface_solute_source-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "3974e3a7b70157c0215a6b72c32dc74e88ff07f35ae205184d68ac51635f7699",
+      "wall_seconds": 0.06502880016341805
+    }
+  ],
+  "head": "605727026e66c089db3e35ad3d58a14be5d65c3c",
+  "records": [
+    {
+      "artifact_sha256": {
+        "build-0-0-subsurface_solute_source-O0\\000.o": "5fb9df625bc4b20cb13cc71a156fcc96a55935e2c9e821a1262e2cfa9238ccf1",
+        "build-0-0-subsurface_solute_source-O0\\001.o": "0e3a42de536cb59834f1c9b676c96bddc773e58229a5e2f05c380419bea966a7",
+        "build-0-0-subsurface_solute_source-O0\\mod_subsurface_solute_source.mod": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254",
+        "build-0-0-subsurface_solute_source-O0\\test.exe": "2314737e89565e1fdb38bc528d29d346ca63291035debf2b7bab4c18b1d20884"
+      },
+      "build": "cold",
+      "case": "subsurface_solute_source",
+      "compile_seconds": 0.3644111000467092,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "464741f853e0a19511515a4951807c66607858dfe601cb7aabe1e31c4cc3373a",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "2314737e89565e1fdb38bc528d29d346ca63291035debf2b7bab4c18b1d20884",
+      "execution_seconds": 0.07553009991534054,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0"
+      ],
+      "inputs": {
+        "src/process/mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+        "tests/modularity/test_subsurface_solute_source.f90": "3eb9649ec2d2d2b25207fd0ece2790a5d813619aa6628e276a375e2494442735"
+      },
+      "link_seconds": 0.2255847998894751,
+      "optimization": 0,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 5.19980676472187e-06,
+      "sources": [
+        "src/process/mod_subsurface_solute_source.f90",
+        "tests/modularity/test_subsurface_solute_source.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "3974e3a7b70157c0215a6b72c32dc74e88ff07f35ae205184d68ac51635f7699",
+      "total_seconds": 1.243074200116098,
+      "validation_seconds": 0.5073802000842988
+    },
+    {
+      "artifact_sha256": {
+        "build-1-4-subsurface_solute_source-O2\\000.o": "1862874546d3499de3d7a5d824e014eb9bc9bbf85d20355047e780d9b846fe82",
+        "build-1-4-subsurface_solute_source-O2\\001.o": "5417455d0ef4644f5d2e33df4741b2e0bbcd18a87d33576ae50a91cf79588e6e",
+        "build-1-4-subsurface_solute_source-O2\\mod_subsurface_solute_source.mod": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254",
+        "build-1-4-subsurface_solute_source-O2\\test.exe": "7d6ca0f5446164c6eb8a495ed7cea287390749549e015e2c39e96e3129d44e46"
+      },
+      "build": "cold",
+      "case": "subsurface_solute_source",
+      "compile_seconds": 0.4296082998625934,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "464741f853e0a19511515a4951807c66607858dfe601cb7aabe1e31c4cc3373a",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "7d6ca0f5446164c6eb8a495ed7cea287390749549e015e2c39e96e3129d44e46",
+      "execution_seconds": 0.06502880016341805,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2"
+      ],
+      "inputs": {
+        "src/process/mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+        "tests/modularity/test_subsurface_solute_source.f90": "3eb9649ec2d2d2b25207fd0ece2790a5d813619aa6628e276a375e2494442735"
+      },
+      "link_seconds": 0.15071549988351762,
+      "optimization": 2,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 5.899928510189056e-06,
+      "sources": [
+        "src/process/mod_subsurface_solute_source.f90",
+        "tests/modularity/test_subsurface_solute_source.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "3974e3a7b70157c0215a6b72c32dc74e88ff07f35ae205184d68ac51635f7699",
+      "total_seconds": 1.0984198001679033,
+      "validation_seconds": 0.39473559986799955
+    }
+  ],
+  "status": "PASS"
+}

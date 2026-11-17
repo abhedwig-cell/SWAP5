@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
+  "baseline": "f0e5e39ea3d166755e394700a5a8765700eab875",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-complete01",
-  "last_commit": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
-  "status": "SCHEDULED_SSDI_CANONICALLY_ADMITTED_REMAINING_MIGRATION_ACTIVE",
+  "branch": "codex/nomacro-chemical-source01",
+  "last_commit": "4830f5d69",
+  "status": "FIXED_CHEMICAL_QUALIFIED_BRANCH_READY_CANONICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -24,19 +24,27 @@
     "Fresh Windows point/interval full/native and named3 full/native on combined pulse/S source PASS",
     "Actual four selected pulse generated/object/input closures and201-day native windows preserved without repeating original full pulse periods",
     "Ubuntu44061060754 combined pulse/S source full qualification terminal SUCCESS",
-    "PR1699 actual canonical merge0b9e4a214: both parents and complete tree exact to qualified head; real detached canonical owner PASS"
+    "PR1699 actual canonical merge0b9e4a214: both parents and complete tree exact to qualified head; real detached canonical owner PASS",
+    "Corrected fixed chemical point/interval Windows four1096periods O0/O2:48mg/cm2, unchanged1e-10 water/solute guards, active native/external and year-own PASS",
+    "Ubuntu44071407357 point/interval O0/O2 full/native and24paired original reference periods SUCCESS; downloaded ZIP digests and1719members verified",
+    "Windows file/inline source physical+CSV8days O0/O2 exact; six actual original invalid-depth native refusals PASS",
+    "Fresh named3 and scheduled-water4 full trajectories, generated source and native payloads exact to admitted source",
+    "Four201day active pulse/native prefixes preserve prior full physical/CSV results across corrected chemical source"
   ],
   "open": [
     "Complete historical selector inventory",
-    "Scheduled subsurface water irrigation qualification",
+    "Fixed chemical canonical admission; scheduled chemical source and native qualification",
     "Remaining chemical reservoir/age/vapor/drainage/surfacewater/constitutive/weather/state gaps"
   ],
   "dependency_surface": [
-    "app/hybrid_water/experimental_project.py",
+    "src/process/mod_subsurface_solute_source.f90",
+    "tests/modularity/test_subsurface_solute_source.f90",
+    "tests/modularity/run_modular_tests.py",
+    "Original MOD_solute_CDE source and irrigation qssdi/cirr owners; caller integration not implemented",
+    "app/hybrid_water/conserved_subsurface_solute.py",
     "app/hybrid_water/daily_host.py",
     "app/hybrid_water/daily_coupling.py",
-    "app/hybrid_water/scheduled_subsurface_irrigation.py",
-    "original MOD_irrigation, MOD_integral and water solver; existing complete management native codec"
+    "app/hybrid_water/fixed_irrigation_file.py"
   ],
   "invariants": [
     3,
@@ -103,6 +111,22 @@
     {
       "result": "FINAL_COMPOSED_RAW_ALL_MEMBERS_VERIFIED",
       "members": 6412
+    },
+    {
+      "result": "SUBSURFACE_SOLUTE_SOURCE_PRODUCTION_O0_O2_PASS",
+      "providers": 1,
+      "driver": "tests/modularity/test_subsurface_solute_source.f90",
+      "seconds": [
+        1.243074200116098,
+        1.0984198001679033
+      ],
+      "scope": "Only source evaluator; original CDE/caller coupling not qualified"
+    },
+    {
+      "test": "Corrected fixed chemical scope",
+      "status": "PASS",
+      "proof": "CHEMICAL_QUALIFICATION.json",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
     }
   ],
   "failed_tests": [
@@ -137,11 +161,27 @@
     {
       "path": "isolation",
       "cause": "Diagnostic passed names positionally as unsupported physical variant; corrected named ColumnStart arguments and actual interleaved origins pass on isolated and composed source."
+    },
+    {
+      "test": "Initial corrected-source renderer",
+      "cause": "The original age tracer repeats the solute clock anchor. Renderer refused the ambiguous full-file match; bounded it to the exact CDE submodule, preserving the entire age-tracer tail. No native run before the repair."
+    },
+    {
+      "test": "Actual CDE-only corrected reference O0/O2, all24periods complete",
+      "cause": "Corrected CDE still received cirr0: original fixed subsurface producer assigns irconc only in surface branch. Complete correction now includes this precise producer dependency; all first raw trajectories retained."
+    },
+    {
+      "test": "Active chemical mass refusal harness",
+      "cause": "Expected guard correctly left host unusable. Removed invalid normal close; ExitStack cleans processes. Completed periods retained and consumed without rebind."
+    },
+    {
+      "test": "Salinity exposure first two O0 periods",
+      "cause": "Both complete periods satisfy mass guards but net salinity reduction was zero. First winter event and second compensated growing-season event are retained as inactive-exposure controls. Growing-season uncompensated source at unchanged original stress thresholds passes O0/O2 with positive3.4921434323cm response."
     }
   ],
   "running_ci": [],
-  "next_code_change": "Implement independent conservative nodal chemical SSDI source and qualify corrected original CDE/reference ledger before enabling chemical fixed/scheduled subsurface input. Source defect positive controls already in ORIGINAL_CHEMICAL_AUDIT.json.",
-  "recovery_point": "Canonical admission0b9e4a214. Current task branch codex/nomacro-complete01 contains descriptive admission receipt. Resume from latest versioned STATUS; verify live delta only. All S full/native/platform evidence terminal and sealed; do not repeat for metadata. Next code is chemical source, with separate existing-policy and original-refusal preservation.",
+  "next_code_change": "Create and merge fixed chemical PR to unchanged canonical f0e5; verify real parents/tree and execute current owner on actual merge postimage. Then continue scheduled chemical original source/reference/state qualification.",
+  "recovery_point": "All selected chemical/source/native/platform/salinity/preservation, docs and owner/negative gates PASS. Branch codex/nomacro-chemical-source01 ready; canonical stillf0e5. Original fixed source defects corrected explicitly; whole science NOT_QUALIFIED, all-scope migration PARTIAL; no active run.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -163,6 +203,25 @@
         "existing_evidence": "Windows4 full periods pass; GNU/Linux original reader and native execution not yet measured for this new route",
         "prior_execution": "PASS",
         "diagnosis": "Canonical R changed shared input/builder source since isolated qualification. Fresh actual-composition builds/native continuations establish the composed identity; retain all earlier PASS on its own source, no checkpoint rebinding."
+      },
+      "chemical_source_reference": {
+        "changed_dependency": "Original fixed subsurface concentration producer and conserved nodal source/CDE ledgers",
+        "scientific_claim": "Exact original paired source-present/source-absent controls and chemical input closure",
+        "owner": "NOMACRO-SUBSURFACE-SOLUTE-01",
+        "authority": "docs/verification/principles.md#reference-chain",
+        "expected_seconds": 180,
+        "prior_execution": "PASS",
+        "diagnosis": "CDE-only source did not receive concentration. Rebuild both touched original modules for same-optimization controls; new producer branch is necessary.",
+        "existing_evidence": "Pure source O0/O2 PASS; first CDE-only24periods retained with zero source."
+      },
+      "chemical_fixed_composition": {
+        "changed_dependency": "Original fixed concentration producer plus conserved nodal CDE source and transaction/native coupling",
+        "scientific_claim": "Active source48mg/cm2, unchanged water/solute guards, Windows/Ubuntu O0/O2 exact native own and external discard/recovery; active salinity composition selected",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md; docs/verification/principles.md",
+        "expected_seconds": 300,
+        "prior_execution": "PASS",
+        "existing_evidence": "Four full periods per platform and original24paired per platform; admitted anchors/pulse/S exact"
       }
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
@@ -172,5 +231,8 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "Admitted implementation; descriptive recovery metadata is its descendant."
+  "last_commit_role": "Clean exact-owner successor PASS; next commit adds only permitted recovery/selection metadata.",
+  "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
+  "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
+  "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01"
 }

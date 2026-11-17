@@ -161,6 +161,11 @@ def validate_bundle(bundle, reference, project):
     if expected_frost and (bundle/'frozencond.f90').read_bytes()!=guarded:raise ValueError('Foreign actual original frost source')
     expected_file={'policy':FIXED_FILE_POLICY,'source_sha256':h.sha(h.APP/'fixed_irrigation_file.py')} if fixed_file_enabled(project) else None
     if identity.get('fixed_irrigation_file')!=expected_file:raise ValueError('Foreign original fixed irrigation file policy')
+    from conserved_subsurface_solute import enabled as chemical_enabled, metadata as chemical_metadata, correction as chemical_correction
+    expected_chemical=chemical_metadata() if chemical_enabled(project) else None
+    if identity.get('conserved_subsurface_solute')!=expected_chemical:raise ValueError('Foreign conserved subsurface solute policy')
+    if expected_chemical and (bundle/'mod_subsurface_solute_source.f90').read_bytes()!=chemical_correction().helper_source():
+        raise ValueError('Foreign actual conserved subsurface solute helper')
     from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled, POLICY as SCHEDULED_SUBSURFACE_POLICY
     expected_subsurface={'policy':SCHEDULED_SUBSURFACE_POLICY,'source_sha256':h.sha(h.APP/'scheduled_subsurface_irrigation.py')} if scheduled_subsurface_enabled(project) else None
     if identity.get('scheduled_subsurface_irrigation')!=expected_subsurface:raise ValueError('Foreign original scheduled subsurface irrigation policy')

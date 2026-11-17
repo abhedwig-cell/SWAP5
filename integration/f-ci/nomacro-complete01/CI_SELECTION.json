@@ -1,50 +1,45 @@
 {
-  "status": "FINAL_SOURCE_BOUND_R_PULSE_SCHEDULED_SUCCESSOR_SELECTED",
-  "runtime": "120d329b0b65ebbb0daa5d5a9ad5088400f8ddae",
-  "sealed_proof": "405ea6aa800cf33abc059a11a8ab6e9760f74b6e",
-  "canonical_parent": "fd162a1ea22c41e798a431f39957aaff9c173e46",
-  "current_owner": "tests/nomacro_scheduled_subsurface/verify.py",
-  "historical_R_authority": "Immutable verification remains bound to actual R_ADMITTED; latest S source is separately exact-gated. All historical q/r assertions and proof blobs remain.",
-  "scientific_claim": "Bounded original water scheduled SSDI only; two depth families, both optimizations and both platforms, complete actual R composition, native/event/transaction/refusal controls.",
+  "status": "EXACT_SEALED_FIXED_CHEMICAL_SUCCESSOR_PASS",
+  "runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
+  "canonical_parent": "f0e5e39ea3d166755e394700a5a8765700eab875",
+  "current_owner": "tests/nomacro_scheduled_subsurface/chemical_verify.py",
+  "scientific_claim": "Bounded original fixed no-macro chemical point/interval source and ledger correction with actual native/external/refusal state; whole migration remains PARTIAL.",
   "whole_scientific_equivalence": "NOT_QUALIFIED",
-  "mass_guard_cm": 1e-10,
-  "full_moving_fci": "NOT_SELECTED_IMPACT: no src/reference solver, codec or physical-law change; existing current-owner chain and live selected native/column consumers retain their duties.",
+  "full_moving_fci": "NOT_SELECTED_IMPACT: no existing kernel/solver/transaction/codec implementation change. New stateless one-provider source and actual generated original producer/CDE have selected independent, full/native/platform/reference gates. Existing current-owner chain and selected six small production feedback remain mandatory; unexecuted full moving F-CI is not claimed PASS.",
   "retired_highest_low_air": "NOT_SELECTED_POLICY",
-  "negative_evidence_controls": 25,
-  "unit_tests": "14_PASS_50_NEW_SCHEDULED_EVIDENCE_CORRUPTIONS_REFUSED",
-  "actual_source_negative_control": {
-    "status": "REFUSED",
-    "returncode": 1,
-    "diagnostic": "warning: in the working copy of 'app/hybrid_water/scheduled_subsurface_irrigation.py', LF will be replaced by CRLF the next time Git touches it\nTraceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 76, in verify\n    original=verify_s()\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 51, in verify_s\n    require(not git('diff','HEAD','--','src','app','reference','tools','tests','.github','integration'),'dirty qualified surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 19, in require\n    if not test:raise ValueError(message)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty qualified surface\n"
+  "unit_tests": "15_PASS;62_NEW_CHEMICAL_EVIDENCE_CORRUPTIONS_REFUSED",
+  "small_production": "Existing six selected contracts O0/O2 PASS; new subsurface source independent O0/O2 PASS",
+  "owning_preservation": "Actual immutable canonical f0e5 consumer PASS; literal prior S/pulse/R bodies and proof remain. Fresh S/named generated/full/native exact; pulse changed-source active201day physical/CSV/native exact.",
+  "source_guards": {
+    "dirty": {
+      "status": "REFUSED",
+      "returncode": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 102, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty chemical qualified surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 23, in require\n    if not test:raise ValueError(message)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty chemical qualified surface\n"
+    },
+    "committed": {
+      "status": "REFUSED",
+      "commit": "f6a0e98549d33804a95b99eb281efe48c883dd91",
+      "actual_immutable_checkout": "C:/Users/Veldh012/swap5-chemical-guard-control",
+      "returncode": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 104, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'chemical runtime differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 23, in require\n    if not test:raise ValueError(message)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: chemical runtime differs from qualification\n"
+    },
+    "qualified_head": "4830f5d698ae1ddbebc954cf4a8d3af68f838ae7"
   },
+  "sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
   "current_owner_verification": {
-    "status": "CURRENT_R_PULSE_AND_SCHEDULED_SSDI_ADMISSION_PASS",
-    "runtime": "120d329b0b65ebbb0daa5d5a9ad5088400f8ddae",
-    "scheduled_full_days": 8768,
-    "pulse_full_days": 8768,
-    "prior_R_full_days": 17536,
+    "status": "CURRENT_R_PULSE_SCHEDULED_AND_FIXED_CHEMICAL_ADMISSION_PASS",
+    "runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
+    "chemical_full_days": 8768,
+    "prior_scheduled_full_days": 8768,
     "whole_scientific_equivalence": "NOT_QUALIFIED",
-    "mass_guard_cm": 1e-10
+    "functional_completion": "PARTIAL",
+    "water_guard_cm": 1e-10,
+    "solute_guard_mg_cm2": 1e-10
   },
-  "current_modular_feedback": {
-    "status": "MODULAR_PRODUCTION_DRIVERS_PASS",
-    "cases": [
-      "assimilation",
-      "boesten",
-      "drainage",
-      "low_air_policy",
-      "root_contract",
-      "root_oxygen"
-    ],
-    "optimizations": [
-      "O0",
-      "O2"
-    ],
-    "log_sha256": "de7a1f58be64ad8959d4a35b439a0041c1c74d7743f90b3fcc59f2fd286ea172",
-    "output": "C:/Users/Veldh012/swap5-complete01-evidence/current-modular",
-    "scope": "Exact current F-CI selected small feedback body; full moving F-CI and unchanged file-column workflows NOT_SELECTED_IMPACT by their path and owner boundaries."
-  },
-  "historical_entry": "tests/hupsel51/verify_successor.py remains literal to fd162a; prior pulse body remains literal after removing only the new dispatch hook.",
   "docs_source": "PASS",
-  "strict_docs_render_seconds": 36.11
+  "strict_docs_render": {
+    "status": "PASS",
+    "seconds": 59.5171427000314,
+    "returncode": 0
+  }
 }

@@ -1,0 +1,1521 @@
+{
+  "audit": {},
+  "events": [
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\process\\mod_restricted_surface_evaporation.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.16822210000827909
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\fapp\\test_ppa_wu04b_boesten_process.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.18477229960262775
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.1842853003181517
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-0-0-boesten-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "ac1f4a15fa14625078a8437a1baa861354cc1168ebe8ff4937228364e5f2e9b7",
+      "wall_seconds": 0.0726956999860704
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\process\\mod_restricted_surface_evaporation.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.18430780014023185
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\fapp\\test_ppa_wu04b_boesten_process.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15746950032189488
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15335480030626059
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-1-4-boesten-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "ac1f4a15fa14625078a8437a1baa861354cc1168ebe8ff4937228364e5f2e9b7",
+      "wall_seconds": 0.06455309968441725
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\solver\\mod_soil_water_solver_contract.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.23566780006513
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\solver\\mod_process_hydraulic_view.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.1678472999483347
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\process\\mod_root_water_uptake_process.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\002.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.22414089972153306
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\fmig431\\test_swap431_root_oxygen_emp.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\003.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.1421896000392735
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\001.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\002.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\003.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.14772709971293807
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "9de2b5cef2ee7809ceb670ce07e824e7f91f00b4f8309f1c2b183a97635cf66f",
+      "wall_seconds": 0.07725400011986494
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\solver\\mod_soil_water_solver_contract.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.4903334002010524
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\solver\\mod_process_hydraulic_view.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.2259400999173522
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\process\\mod_root_water_uptake_process.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\002.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.38184629986062646
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\fmig431\\test_swap431_root_oxygen_emp.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\003.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.20779410004615784
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\001.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\002.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\003.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.14768749987706542
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "9de2b5cef2ee7809ceb670ce07e824e7f91f00b4f8309f1c2b183a97635cf66f",
+      "wall_seconds": 0.06646319990977645
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-4-20-root_contract-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-4-20-root_contract-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\modularity\\test_root_contracts.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-4-20-root_contract-O0\\003.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15888020023703575
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\001.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-2-8-root_oxygen-O0\\002.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-4-20-root_contract-O0\\003.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-4-20-root_contract-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.14989619981497526
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-4-20-root_contract-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "10278bae0e97dd7e4d9c7f61d02e0a1b5cfc026ada42307f604c24237af6e57f",
+      "wall_seconds": 0.08521999977529049
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-5-23-root_contract-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-5-23-root_contract-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\modularity\\test_root_contracts.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-5-23-root_contract-O2\\003.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.2410487001761794
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\001.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-3-14-root_oxygen-O2\\002.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-5-23-root_contract-O2\\003.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-5-23-root_contract-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.19884949969127774
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-5-23-root_contract-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "10278bae0e97dd7e4d9c7f61d02e0a1b5cfc026ada42307f604c24237af6e57f",
+      "wall_seconds": 0.07485239999368787
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\process\\mod_drainage_hooghoudt_equivalent_depth.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15163059998303652
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\modularity\\test_drainage_contract.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.13256129994988441
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.144465500023216
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-6-26-drainage-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdin_sha256": "c7a9f1ba0d532fb174be0a99d717df0fff9323af1e8ce52c0d532c19c0835364",
+      "stdout_sha256": "723f6ac13ffa7a2ca55f600e4cf54ef5df0919a0c6a9e250f80e5cdc6374930a",
+      "wall_seconds": 0.06902990024536848
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\process\\mod_drainage_hooghoudt_equivalent_depth.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.16233010031282902
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\modularity\\test_drainage_contract.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.1472738003358245
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.1430480000562966
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-7-30-drainage-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdin_sha256": "c7a9f1ba0d532fb174be0a99d717df0fff9323af1e8ce52c0d532c19c0835364",
+      "stdout_sha256": "723f6ac13ffa7a2ca55f600e4cf54ef5df0919a0c6a9e250f80e5cdc6374930a",
+      "wall_seconds": 0.06995399994775653
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\crop\\mod_wofost81_assimilation.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.14229699969291687
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\fwof\\pp02\\test_wofost81_assimilation_driver.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.18545889994129539
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-O0",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.14844030002132058
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-8-34-assimilation-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdin_sha256": "dec2dc1e8866e9de19535061f6c7b8aa84e7d4329d7060fae4c6707b815024f0",
+      "stdout_sha256": "30fd0d080283ac7ffdc49c1b6d20c6d182b64d92d4330c0347e4386391efaf7f",
+      "wall_seconds": 0.09567579999566078
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\src\\crop\\mod_wofost81_assimilation.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15479040006175637
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\fwof\\pp02\\test_wofost81_assimilation_driver.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.13377790013328195
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-O2",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.14853330003097653
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-small-production\\build-9-38-assimilation-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdin_sha256": "dec2dc1e8866e9de19535061f6c7b8aa84e7d4329d7060fae4c6707b815024f0",
+      "stdout_sha256": "30fd0d080283ac7ffdc49c1b6d20c6d182b64d92d4330c0347e4386391efaf7f",
+      "wall_seconds": 0.10445019975304604
+    }
+  ],
+  "head": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
+  "records": [
+    {
+      "artifact_sha256": {
+        "build-0-0-boesten-O0\\000.o": "69074f5591fc699090584725464f96620bdb53200f2ae0a415c4e54c5e1c91d4",
+        "build-0-0-boesten-O0\\001.o": "3b00a08dcbd467b646f97e5ca8a778c168f61c3be8eeca8ade05dbb7fd0b5214",
+        "build-0-0-boesten-O0\\mod_restricted_surface_evaporation.mod": "eb5cf9c4b4aeb2167a9ecb97a061292bc97fc3325e4a35093d98f6b328c034bf",
+        "build-0-0-boesten-O0\\test.exe": "b9193831b058d9efe26bf8f7150ca97cb3802f5792735ec7b64d94b3632d6d29"
+      },
+      "build": "cold",
+      "case": "boesten",
+      "compile_seconds": 0.35299439961090684,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "b9193831b058d9efe26bf8f7150ca97cb3802f5792735ec7b64d94b3632d6d29",
+      "execution_seconds": 0.0726956999860704,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0"
+      ],
+      "inputs": {
+        "src/process/mod_restricted_surface_evaporation.f90": "e415c1155e865cde8f85d92e723507f271600afe4e28de30c1261712844cfd7a",
+        "tests/fapp/test_ppa_wu04b_boesten_process.f90": "6816a4306764e4d1387bf899da494779095c52d16e3a40c359d564552a68e478"
+      },
+      "link_seconds": 0.1842853003181517,
+      "optimization": 0,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 5.500391125679016e-06,
+      "sources": [
+        "src/process/mod_restricted_surface_evaporation.f90",
+        "tests/fapp/test_ppa_wu04b_boesten_process.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "ac1f4a15fa14625078a8437a1baa861354cc1168ebe8ff4937228364e5f2e9b7",
+      "total_seconds": 9.91385590005666,
+      "validation_seconds": 9.24300879985094
+    },
+    {
+      "artifact_sha256": {
+        "build-1-4-boesten-O2\\000.o": "7abcf41701c7e890aae8e18c87955e94932b67088269b594f517d9cf7e456499",
+        "build-1-4-boesten-O2\\001.o": "b29402283fce497cd5cef6821841ba288b322facb2f7db53a9836bc9f8867386",
+        "build-1-4-boesten-O2\\mod_restricted_surface_evaporation.mod": "eb5cf9c4b4aeb2167a9ecb97a061292bc97fc3325e4a35093d98f6b328c034bf",
+        "build-1-4-boesten-O2\\test.exe": "6aabab00e5cee7fa3510cedd804840217a6f8a80624404d90d83833bc785408e"
+      },
+      "build": "cold",
+      "case": "boesten",
+      "compile_seconds": 0.34177730046212673,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "6aabab00e5cee7fa3510cedd804840217a6f8a80624404d90d83833bc785408e",
+      "execution_seconds": 0.06455309968441725,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2"
+      ],
+      "inputs": {
+        "src/process/mod_restricted_surface_evaporation.f90": "e415c1155e865cde8f85d92e723507f271600afe4e28de30c1261712844cfd7a",
+        "tests/fapp/test_ppa_wu04b_boesten_process.f90": "6816a4306764e4d1387bf899da494779095c52d16e3a40c359d564552a68e478"
+      },
+      "link_seconds": 0.15335480030626059,
+      "optimization": 2,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 5.300156772136688e-06,
+      "sources": [
+        "src/process/mod_restricted_surface_evaporation.f90",
+        "tests/fapp/test_ppa_wu04b_boesten_process.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "ac1f4a15fa14625078a8437a1baa861354cc1168ebe8ff4937228364e5f2e9b7",
+      "total_seconds": 1.1183186997659504,
+      "validation_seconds": 0.4936546999961138
+    },
+    {
+      "artifact_sha256": {
+        "build-2-8-root_oxygen-O0\\000.o": "d8036e53db92e671dfb4b91b6d523f3a7d8dc35047f47d6436f3b84edcea0320",
+        "build-2-8-root_oxygen-O0\\001.o": "d9ca8a083cb3ab3c5f7c1df51e58442d65cd7bcb586cda27d9266f662bb518be",
+        "build-2-8-root_oxygen-O0\\002.o": "77281e32e1562685fa357077a2fbfe064ed615aa9c9440082e8485adbfee3b24",
+        "build-2-8-root_oxygen-O0\\003.o": "43be48304767e1ef09b72b6c5d12cb8a947fa1450bcd1c28644c76ef49020eff",
+        "build-2-8-root_oxygen-O0\\mod_process_hydraulic_view.mod": "2490d466df88446796474b769ae4ed421b5d5caa0a218b1cb5153bb6d27509d8",
+        "build-2-8-root_oxygen-O0\\mod_root_water_uptake_process.mod": "52c566ec140472d2f0bd46987aa77b2479e84d4d90a0791983072cf8acec1e1e",
+        "build-2-8-root_oxygen-O0\\mod_soil_water_solver_contract.mod": "1df86df8f34ea4b6dee5aff675d320e07bea0dc55956540ae3d850cb90eeca63",
+        "build-2-8-root_oxygen-O0\\test.exe": "417cf56c8335e5929f0396fce5856006a9dcc20dfbc24f8e189cab4128100707"
+      },
+      "build": "cold",
+      "case": "root_oxygen",
+      "compile_seconds": 0.7698455997742712,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 5,
+      "executable_sha256": "417cf56c8335e5929f0396fce5856006a9dcc20dfbc24f8e189cab4128100707",
+      "execution_seconds": 0.07725400011986494,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0"
+      ],
+      "inputs": {
+        "src/process/mod_root_water_uptake_process.f90": "4a2a89214e8d7aa247f58426ad57b0f947afbc5f0dc422ce984b34af14038069",
+        "src/solver/mod_process_hydraulic_view.f90": "fb741e2274f179a7cff636fce8f618ed7ddb4b84fc68d60be8898bb80742d72e",
+        "src/solver/mod_soil_water_solver_contract.f90": "7c80677d43a4abc0ef493076ed1984ad793e14d5ea4b64dbdbebbd4170e87732",
+        "tests/fmig431/test_swap431_root_oxygen_emp.f90": "7911db4f3e111ad6002ad2b90e29c2e2ad5271205c0561f3832d576b836d7b12"
+      },
+      "link_seconds": 0.14772709971293807,
+      "optimization": 0,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 4.599802196025848e-06,
+      "sources": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/solver/mod_process_hydraulic_view.f90",
+        "src/process/mod_root_water_uptake_process.f90",
+        "tests/fmig431/test_swap431_root_oxygen_emp.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "9de2b5cef2ee7809ceb670ce07e824e7f91f00b4f8309f1c2b183a97635cf66f",
+      "total_seconds": 1.5783649999648333,
+      "validation_seconds": 0.5000621997751296
+    },
+    {
+      "artifact_sha256": {
+        "build-3-14-root_oxygen-O2\\000.o": "19df8a6b2add56d7a5541e2afe28434d1d258edcf867578d8659711c35659bb5",
+        "build-3-14-root_oxygen-O2\\001.o": "8377dd2ae317c3db17a8a494e4f0ec339fc8b0613b3e3bf369e30b7b4ece7e28",
+        "build-3-14-root_oxygen-O2\\002.o": "739989c4e104f72ca3fc15516f2b11b5de3db0ad6783f9713924c20e01fead28",
+        "build-3-14-root_oxygen-O2\\003.o": "6783516b61440ef3d169190fccbefb8acb8349ca0cc34023a91392ec30a3d3cf",
+        "build-3-14-root_oxygen-O2\\mod_process_hydraulic_view.mod": "2490d466df88446796474b769ae4ed421b5d5caa0a218b1cb5153bb6d27509d8",
+        "build-3-14-root_oxygen-O2\\mod_root_water_uptake_process.mod": "52c566ec140472d2f0bd46987aa77b2479e84d4d90a0791983072cf8acec1e1e",
+        "build-3-14-root_oxygen-O2\\mod_soil_water_solver_contract.mod": "1df86df8f34ea4b6dee5aff675d320e07bea0dc55956540ae3d850cb90eeca63",
+        "build-3-14-root_oxygen-O2\\test.exe": "b5cb02c00a51a0f2f81e76a118520380ea92408de9f804643a5f7759c07a6578"
+      },
+      "build": "cold",
+      "case": "root_oxygen",
+      "compile_seconds": 1.305913900025189,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 5,
+      "executable_sha256": "b5cb02c00a51a0f2f81e76a118520380ea92408de9f804643a5f7759c07a6578",
+      "execution_seconds": 0.06646319990977645,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2"
+      ],
+      "inputs": {
+        "src/process/mod_root_water_uptake_process.f90": "4a2a89214e8d7aa247f58426ad57b0f947afbc5f0dc422ce984b34af14038069",
+        "src/solver/mod_process_hydraulic_view.f90": "fb741e2274f179a7cff636fce8f618ed7ddb4b84fc68d60be8898bb80742d72e",
+        "src/solver/mod_soil_water_solver_contract.f90": "7c80677d43a4abc0ef493076ed1984ad793e14d5ea4b64dbdbebbd4170e87732",
+        "tests/fmig431/test_swap431_root_oxygen_emp.f90": "7911db4f3e111ad6002ad2b90e29c2e2ad5271205c0561f3832d576b836d7b12"
+      },
+      "link_seconds": 0.14768749987706542,
+      "optimization": 2,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 5.2996911108493805e-06,
+      "sources": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/solver/mod_process_hydraulic_view.f90",
+        "src/process/mod_root_water_uptake_process.f90",
+        "tests/fmig431/test_swap431_root_oxygen_emp.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "9de2b5cef2ee7809ceb670ce07e824e7f91f00b4f8309f1c2b183a97635cf66f",
+      "total_seconds": 2.1526669999584556,
+      "validation_seconds": 0.5567357996478677
+    },
+    {
+      "artifact_sha256": {
+        "build-2-8-root_oxygen-O0\\000.o": "d8036e53db92e671dfb4b91b6d523f3a7d8dc35047f47d6436f3b84edcea0320",
+        "build-2-8-root_oxygen-O0\\001.o": "d9ca8a083cb3ab3c5f7c1df51e58442d65cd7bcb586cda27d9266f662bb518be",
+        "build-2-8-root_oxygen-O0\\002.o": "77281e32e1562685fa357077a2fbfe064ed615aa9c9440082e8485adbfee3b24",
+        "build-4-20-root_contract-O0\\003.o": "2cb605cbe28767ccaee63810ff00e8fd37850f34dc8031e9200d2435fdf337a4",
+        "build-4-20-root_contract-O0\\mod_process_hydraulic_view.mod": "2490d466df88446796474b769ae4ed421b5d5caa0a218b1cb5153bb6d27509d8",
+        "build-4-20-root_contract-O0\\mod_root_water_uptake_process.mod": "52c566ec140472d2f0bd46987aa77b2479e84d4d90a0791983072cf8acec1e1e",
+        "build-4-20-root_contract-O0\\mod_soil_water_solver_contract.mod": "1df86df8f34ea4b6dee5aff675d320e07bea0dc55956540ae3d850cb90eeca63",
+        "build-4-20-root_contract-O0\\test.exe": "516a4c314f4b185ae6cf6c257654854b164f1152554efd74d9c70a6d4a6d03ce"
+      },
+      "build": "cold",
+      "case": "root_contract",
+      "compile_seconds": 0.15888020023703575,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 2,
+      "executable_sha256": "516a4c314f4b185ae6cf6c257654854b164f1152554efd74d9c70a6d4a6d03ce",
+      "execution_seconds": 0.08521999977529049,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0"
+      ],
+      "inputs": {
+        "src/process/mod_root_water_uptake_process.f90": "4a2a89214e8d7aa247f58426ad57b0f947afbc5f0dc422ce984b34af14038069",
+        "src/solver/mod_process_hydraulic_view.f90": "fb741e2274f179a7cff636fce8f618ed7ddb4b84fc68d60be8898bb80742d72e",
+        "src/solver/mod_soil_water_solver_contract.f90": "7c80677d43a4abc0ef493076ed1984ad793e14d5ea4b64dbdbebbd4170e87732",
+        "tests/modularity/test_root_contracts.f90": "dc1abc505c1c42f8af0090c5e37e26660c8b403e87ab718a24a59b10da82174d"
+      },
+      "link_seconds": 0.14989619981497526,
+      "optimization": 0,
+      "reused_compilations": 3,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 4.599802196025848e-06,
+      "sources": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/solver/mod_process_hydraulic_view.f90",
+        "src/process/mod_root_water_uptake_process.f90",
+        "tests/modularity/test_root_contracts.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "10278bae0e97dd7e4d9c7f61d02e0a1b5cfc026ada42307f604c24237af6e57f",
+      "total_seconds": 0.9829330001957715,
+      "validation_seconds": 0.5185453994199634
+    },
+    {
+      "artifact_sha256": {
+        "build-3-14-root_oxygen-O2\\000.o": "19df8a6b2add56d7a5541e2afe28434d1d258edcf867578d8659711c35659bb5",
+        "build-3-14-root_oxygen-O2\\001.o": "8377dd2ae317c3db17a8a494e4f0ec339fc8b0613b3e3bf369e30b7b4ece7e28",
+        "build-3-14-root_oxygen-O2\\002.o": "739989c4e104f72ca3fc15516f2b11b5de3db0ad6783f9713924c20e01fead28",
+        "build-5-23-root_contract-O2\\003.o": "360753dcc20bbdfe54bf26e8ff6b2ae4a5a8e2a8f79bc72fe8ea9903d8863506",
+        "build-5-23-root_contract-O2\\mod_process_hydraulic_view.mod": "2490d466df88446796474b769ae4ed421b5d5caa0a218b1cb5153bb6d27509d8",
+        "build-5-23-root_contract-O2\\mod_root_water_uptake_process.mod": "52c566ec140472d2f0bd46987aa77b2479e84d4d90a0791983072cf8acec1e1e",
+        "build-5-23-root_contract-O2\\mod_soil_water_solver_contract.mod": "1df86df8f34ea4b6dee5aff675d320e07bea0dc55956540ae3d850cb90eeca63",
+        "build-5-23-root_contract-O2\\test.exe": "722a19a426dd2609bb8bb10d2cf50a5b20a3d42015608d9b99d89a366e93ae36"
+      },
+      "build": "cold",
+      "case": "root_contract",
+      "compile_seconds": 0.2410487001761794,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 2,
+      "executable_sha256": "722a19a426dd2609bb8bb10d2cf50a5b20a3d42015608d9b99d89a366e93ae36",
+      "execution_seconds": 0.07485239999368787,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2"
+      ],
+      "inputs": {
+        "src/process/mod_root_water_uptake_process.f90": "4a2a89214e8d7aa247f58426ad57b0f947afbc5f0dc422ce984b34af14038069",
+        "src/solver/mod_process_hydraulic_view.f90": "fb741e2274f179a7cff636fce8f618ed7ddb4b84fc68d60be8898bb80742d72e",
+        "src/solver/mod_soil_water_solver_contract.f90": "7c80677d43a4abc0ef493076ed1984ad793e14d5ea4b64dbdbebbd4170e87732",
+        "tests/modularity/test_root_contracts.f90": "dc1abc505c1c42f8af0090c5e37e26660c8b403e87ab718a24a59b10da82174d"
+      },
+      "link_seconds": 0.19884949969127774,
+      "optimization": 2,
+      "reused_compilations": 3,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 4.7995708882808685e-06,
+      "sources": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/solver/mod_process_hydraulic_view.f90",
+        "src/process/mod_root_water_uptake_process.f90",
+        "tests/modularity/test_root_contracts.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "10278bae0e97dd7e4d9c7f61d02e0a1b5cfc026ada42307f604c24237af6e57f",
+      "total_seconds": 1.0765662998892367,
+      "validation_seconds": 0.504343899898231
+    },
+    {
+      "artifact_sha256": {
+        "build-6-26-drainage-O0\\000.o": "bcc098564298ed1b22a0467ed38b7c3a16bcef3baaf474a0fbc5474c2a4c7b8f",
+        "build-6-26-drainage-O0\\001.o": "1f2fe26aa858901e81ef7cfbfeb53f1fa4a3adcf9026523cbe9eee1a43ca0924",
+        "build-6-26-drainage-O0\\mod_drainage_hooghoudt_equivalent_depth.mod": "af3756b8861e1cad87cd3d946946f7cb75f0b129a78c7ce1c490ad7bfc6727fd",
+        "build-6-26-drainage-O0\\test.exe": "3358255af20bc9d5607623e0ff9806043e9bd3cdc302448aef76161b8aee3b29"
+      },
+      "build": "cold",
+      "case": "drainage",
+      "compile_seconds": 0.28419189993292093,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "3358255af20bc9d5607623e0ff9806043e9bd3cdc302448aef76161b8aee3b29",
+      "execution_seconds": 0.06902990024536848,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0"
+      ],
+      "inputs": {
+        "src/process/mod_drainage_hooghoudt_equivalent_depth.f90": "1316914c6397096dbf34c77b509f741427b0d3c794cce440277423da955bcfce",
+        "tests/modularity/contract_oracles.py": "fd70b71ab3e53fdab24ca518f5e7ab3013e3190d345d0f76abfd4ff949d2ca41",
+        "tests/modularity/oracles/fvq38_dramet2_scientific.py": "d2daf859636e359016efdf478353d1297a8d36465e7d5ca2ebc0cfd6bf2f4f84",
+        "tests/modularity/test_drainage_contract.f90": "939e4cf5438d3bf64898f739253b076faf15cab2117204d3dafa351a388dc8dd"
+      },
+      "link_seconds": 0.144465500023216,
+      "optimization": 0,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 0.00035740016028285027,
+      "sources": [
+        "src/process/mod_drainage_hooghoudt_equivalent_depth.f90",
+        "tests/modularity/test_drainage_contract.f90"
+      ],
+      "stdin_sha256": "c7a9f1ba0d532fb174be0a99d717df0fff9323af1e8ce52c0d532c19c0835364",
+      "stdout_sha256": "723f6ac13ffa7a2ca55f600e4cf54ef5df0919a0c6a9e250f80e5cdc6374930a",
+      "total_seconds": 1.1070607001893222,
+      "validation_seconds": 0.5499685001559556
+    },
+    {
+      "artifact_sha256": {
+        "build-7-30-drainage-O2\\000.o": "96e9d758504813222e47e0f40a37ccd85b7e5a3929e205592668d0a9bdb9eeb9",
+        "build-7-30-drainage-O2\\001.o": "56bee9063f49ab340b97a805262c16df64d23f6e312c947d632d478b8de8ab53",
+        "build-7-30-drainage-O2\\mod_drainage_hooghoudt_equivalent_depth.mod": "af3756b8861e1cad87cd3d946946f7cb75f0b129a78c7ce1c490ad7bfc6727fd",
+        "build-7-30-drainage-O2\\test.exe": "ffe768bd081b6922827edb34ae4b41b4d88fb0ab5bae313097bf562cc4efd704"
+      },
+      "build": "cold",
+      "case": "drainage",
+      "compile_seconds": 0.3096039006486535,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "ffe768bd081b6922827edb34ae4b41b4d88fb0ab5bae313097bf562cc4efd704",
+      "execution_seconds": 0.06995399994775653,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2"
+      ],
+      "inputs": {
+        "src/process/mod_drainage_hooghoudt_equivalent_depth.f90": "1316914c6397096dbf34c77b509f741427b0d3c794cce440277423da955bcfce",
+        "tests/modularity/contract_oracles.py": "fd70b71ab3e53fdab24ca518f5e7ab3013e3190d345d0f76abfd4ff949d2ca41",
+        "tests/modularity/oracles/fvq38_dramet2_scientific.py": "d2daf859636e359016efdf478353d1297a8d36465e7d5ca2ebc0cfd6bf2f4f84",
+        "tests/modularity/test_drainage_contract.f90": "939e4cf5438d3bf64898f739253b076faf15cab2117204d3dafa351a388dc8dd"
+      },
+      "link_seconds": 0.1430480000562966,
+      "optimization": 2,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 0.0004560002125799656,
+      "sources": [
+        "src/process/mod_drainage_hooghoudt_equivalent_depth.f90",
+        "tests/modularity/test_drainage_contract.f90"
+      ],
+      "stdin_sha256": "c7a9f1ba0d532fb174be0a99d717df0fff9323af1e8ce52c0d532c19c0835364",
+      "stdout_sha256": "723f6ac13ffa7a2ca55f600e4cf54ef5df0919a0c6a9e250f80e5cdc6374930a",
+      "total_seconds": 1.0818927004002035,
+      "validation_seconds": 0.4954361002892256
+    },
+    {
+      "artifact_sha256": {
+        "build-8-34-assimilation-O0\\000.o": "b5f812010cf3b49fa2b7e6d5e170c99db4519053b747e25d27632e43e4b9ca3b",
+        "build-8-34-assimilation-O0\\001.o": "9a0f6864fe8a8306c54610f53200950dfa8b0cde38ea67d4cb80cf0868e90555",
+        "build-8-34-assimilation-O0\\mod_wofost81_assimilation.mod": "8f1dc1786b6b74d02e1b3d626d37e0c61bef7dc88e50a6eea769effa6ae4a815",
+        "build-8-34-assimilation-O0\\test.exe": "ab56a34b342dd1222fce2ae96ce15d65e00775a787ff27cdfa7693f447f304d2"
+      },
+      "build": "cold",
+      "case": "assimilation",
+      "compile_seconds": 0.32775589963421226,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "ab56a34b342dd1222fce2ae96ce15d65e00775a787ff27cdfa7693f447f304d2",
+      "execution_seconds": 0.09567579999566078,
+      "flags": [
+        "-std=f2008",
+        "-O0"
+      ],
+      "inputs": {
+        "src/crop/mod_wofost81_assimilation.f90": "e212afddfbe923c7affc595614306d03e891446ff85aa9a8003b6abfc8af798d",
+        "tests/fwof/pp02/check_wofost81_assimilation_oracle.py": "e7f75172c3fd23e839eb11da967ce22669452f389652ef602fc83479ff578228",
+        "tests/fwof/pp02/test_wofost81_assimilation_driver.f90": "c0b6fcffc754e232881f3a992e580e1333d28634b043d0b044ee02810aea749e",
+        "tests/modularity/contract_oracles.py": "fd70b71ab3e53fdab24ca518f5e7ab3013e3190d345d0f76abfd4ff949d2ca41"
+      },
+      "link_seconds": 0.14844030002132058,
+      "optimization": 0,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 0.0010412996634840965,
+      "sources": [
+        "src/crop/mod_wofost81_assimilation.f90",
+        "tests/fwof/pp02/test_wofost81_assimilation_driver.f90"
+      ],
+      "stdin_sha256": "dec2dc1e8866e9de19535061f6c7b8aa84e7d4329d7060fae4c6707b815024f0",
+      "stdout_sha256": "30fd0d080283ac7ffdc49c1b6d20c6d182b64d92d4330c0347e4386391efaf7f",
+      "total_seconds": 1.2031070003286004,
+      "validation_seconds": 0.5604074997827411
+    },
+    {
+      "artifact_sha256": {
+        "build-9-38-assimilation-O2\\000.o": "85b9f6eb28febf6fc1a7a5d9d8ba37f361a259fa375f974be2ad8c01f483a377",
+        "build-9-38-assimilation-O2\\001.o": "3763c785f11b413ff7872eb973c58ea75c07002806ec417b2d9821d55a856246",
+        "build-9-38-assimilation-O2\\mod_wofost81_assimilation.mod": "8f1dc1786b6b74d02e1b3d626d37e0c61bef7dc88e50a6eea769effa6ae4a815",
+        "build-9-38-assimilation-O2\\test.exe": "40008f77fb591f1edc00709be91e0cac1993fa0478a4336fdfa642a05f387276"
+      },
+      "build": "cold",
+      "case": "assimilation",
+      "compile_seconds": 0.2885683001950383,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "9a15d04e2fc1d6d5181221bfecc756e354fb56b48441487ff77227868487ee04",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "40008f77fb591f1edc00709be91e0cac1993fa0478a4336fdfa642a05f387276",
+      "execution_seconds": 0.10445019975304604,
+      "flags": [
+        "-std=f2008",
+        "-O2"
+      ],
+      "inputs": {
+        "src/crop/mod_wofost81_assimilation.f90": "e212afddfbe923c7affc595614306d03e891446ff85aa9a8003b6abfc8af798d",
+        "tests/fwof/pp02/check_wofost81_assimilation_oracle.py": "e7f75172c3fd23e839eb11da967ce22669452f389652ef602fc83479ff578228",
+        "tests/fwof/pp02/test_wofost81_assimilation_driver.f90": "c0b6fcffc754e232881f3a992e580e1333d28634b043d0b044ee02810aea749e",
+        "tests/modularity/contract_oracles.py": "fd70b71ab3e53fdab24ca518f5e7ab3013e3190d345d0f76abfd4ff949d2ca41"
+      },
+      "link_seconds": 0.14853330003097653,
+      "optimization": 2,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 0.0006331996992230415,
+      "sources": [
+        "src/crop/mod_wofost81_assimilation.f90",
+        "tests/fwof/pp02/test_wofost81_assimilation_driver.f90"
+      ],
+      "stdin_sha256": "dec2dc1e8866e9de19535061f6c7b8aa84e7d4329d7060fae4c6707b815024f0",
+      "stdout_sha256": "30fd0d080283ac7ffdc49c1b6d20c6d182b64d92d4330c0347e4386391efaf7f",
+      "total_seconds": 1.1283605000935495,
+      "validation_seconds": 0.5251302998512983
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,93 @@
+--- a/solute.f90
++++ b/solute.f90
+@@ -142,13 +142,14 @@
+ !     date               : december 2007; code update: June, 2019
+ !     purpose            : calculation of solute concentrations
+ ! ----------------------------------------------------------------------
+-      use MOD_swap_base,       only: swinco, swhea
++      use MOD_swap_base,       only: swinco, swhea, swmacro
+       use MOD_texture_orgmat,  only: bdens
+       use MOD_grid,            only: z, dz, layer, numnod, inpola, inpolb, disnod
+       use MOD_meteo,           only: nraidt
+       use MOD_drain,           only: nrlevs, qdra, qdrtot
+       use MOD_swap_mp,         only: armpss
+-      use MOD_irrigation,      only: nird, cirr
++      use MOD_irrigation,      only: nird, cirr, qssdi
++      use mod_subsurface_solute_source, only: evaluate_subsurface_solute_source, SUBSOL_OK
+       use variables,           only: thetsl, theta
+       use variables,           only: t1900, dt
+       use variables,           only: flzerointr, flzerocumu, q, dtmin, qtop, pond, qrot, qbot
+@@ -167,6 +168,10 @@
+       real(8)                             :: tcumsol, rounderr
+       real(8)                             :: sampro0
+       logical                             :: differ
++      logical                             :: fl_ssdi_source
++      integer                             :: ssdi_status
++      real(8)                             :: ssdi_total
++      real(8), allocatable                :: ssdi_mass(:), ssdi_bulk(:)
+ !     somelocal constants (to save)
+       real(8), dimension(:), allocatable  :: thetav, diffus, dispr1, vpore2, ddiffwcs, bdenskf, bdenskfcref, bdenskfsatporos, decpotfdepth
+ 
+@@ -192,6 +197,9 @@
+          if (allocated(bdenskfcref))     deallocate(bdenskfcref);     allocate(bdenskfcref(numnod))
+          if (allocated(bdenskfsatporos)) deallocate(bdenskfsatporos); allocate(bdenskfsatporos(numnod))
+          if (allocated(decpotfdepth))    deallocate(decpotfdepth);    allocate(decpotfdepth(numnod))
++         if(allocated(ssdi_mass))deallocate(ssdi_mass,ssdi_bulk)
++         allocate(ssdi_mass(numnod),ssdi_bulk(numnod))
++         ssdi_mass=0.0d0;ssdi_bulk=0.0d0;ssdi_total=0.0d0;fl_ssdi_source=.false.
+ 
+          swbotbc            = 0
+          nconc              = 0
+@@ -341,6 +349,13 @@
+             dtsolu  = min(dtsolu,(dt-tcumsol))
+             dtsolu  = max(dtsolu,dtmin)
+             tcumsol = tcumsol + dtsolu
++            fl_ssdi_source=.false.
++            if(swmacro==0)then
++               call evaluate_subsurface_solute_source(qssdi(1:numnod),cirr,dz(1:numnod),dtsolu, &
++                    ssdi_mass,ssdi_bulk,ssdi_total,ssdi_status)
++               if(ssdi_status/=SUBSOL_OK)error stop 'Invalid conserved subsurface solute source'
++               fl_ssdi_source=any(ssdi_mass/=0.0d0)
++            end if
+ 
+ ! ---       solute flux at soil surface
+             csurf = (nird*cirr + nraidt*cpre)*dtsolu + csurf   ! mg cm-2
+@@ -417,6 +432,7 @@
+ 
+ ! ---          conservation equation for the substance
+                cmsy(i) = cmsy(i) + (cfluxb-cfluxt) / dz(i) + (-ctrans-crot-cdrtot) * dtsolu
++               if(fl_ssdi_source)cmsy(i)=cmsy(i)+ssdi_bulk(i)
+ 
+                ! since bottom boundary condition is treated explicitly we MUST calculate sqbot here (before CML is recalculated)
+                ! this prevents errors in sbaldev
+@@ -471,6 +487,11 @@
+ ! ---       flux to surface water from aquifer
+             if (swbr == 1) then
+                sqsur = sqsur + qdrtot*cdrain*dtsolu
++            end if
++
++            if(fl_ssdi_source)then
++               sqirrig=sqirrig+ssdi_total
++               imsqirrig=imsqirrig+ssdi_total
+             end if
+ 
+ ! ---    continue with next solute time step
+--- a/irrigation.f90
++++ b/irrigation.f90
+@@ -72,7 +72,7 @@
+ ! ----------------------------------------------------------------------
+ ! --  global variables
+       use MOD_arrays,           only: maho      
+-      use MOD_swap_base,        only: swsolu, unit_err, fl_initialize, swirfix
++      use MOD_swap_base,        only: swsolu, unit_err, fl_initialize, swirfix, swmacro
+       use plant_interface,      only: unit_crp, crpfilnam, icrop, cropstart, cropend, fl_start_croprotation, fl_cropemergence, dvs, noddrz, hlim3l, hlim3h, hlim4, rd
+       use atmosphere_interface, only: grai
+       use MOD_grid,             only: zbotcp, numlay, botcom, ztopcp, dz, layer, numnod
+@@ -425,6 +425,7 @@
+                   gird = irrate(nirri)
+                   cirr = irconc(nirri)
+                else
++                  if(swsolu==1.and.swmacro==0)cirr=irconc(nirri)
+                   qssdi(nod_ssdi(1):nod_ssdi(2)) = irrate(nirri) 
+                   qssdisum                       = qssdisum + sum(qssdi(nod_ssdi(1):nod_ssdi(2)))
+                end if
