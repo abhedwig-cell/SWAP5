@@ -102,6 +102,7 @@ def validate(q):
         components=q['components'][platform];require(set(components)=={'O0','O2'},'005 actual receipt component missing')
         for r in components.values():require(r['status']=='ACTUAL_ORIGINAL_TRIAL_RECEIPT_EXACT_NONMUTATION_42_PASS' and r['cases']==42 and len(r['linked_objects'])>=1,'005 real Integral component absent')
         ref=q['original_reference'][platform]
+        require(ref['compiler']==next(iter(q['builds'][platform].values()))['identity']['compiler'] and ref['whole_scientific_equivalence']=='NOT_QUALIFIED','005 original compiler/science changed')
         require(ref['status']=='SIXTEEN_ORIGINAL_AGE_CLOCK_FULL_REFERENCE_EXECUTIONS_PASS' and set(ref['profiles'])==set(PROFILES) and ref['fresh_compile'] is False and ref['reference_parent']==parent['original_reference'][platform]['reference_parent'] and ref['builds']==parent['original_reference'][platform]['builds'],'005 original reference unbound')
         for name,r in ref['profiles'].items():
             mode,n,kind,opt=PROFILES[name]
@@ -130,8 +131,9 @@ def validate(q):
     off=q['age_off_preservation'];require(off['status']=='THIRTEEN_AGE_FIXED_OFF_CURRENT_PARENT_CONTEXTS_SOURCE_NATIVE_EXACT' and len(off['profiles'])==13,'005 age-off preservation absent')
     for r in off['profiles'].values():require(r['generated_provider_inputs_exact'] is True and r['physical_csv_exact'] is True and all(w['exact_physical'] and w['exact_csv'] and w['exact_native'] and w['origin_unchanged'] for w in r['coverage']['own']),'005 age-off drift')
     cli=q['public_cli'];require(cli['status']=='PUBLIC_SUBDAILY_AGE005_RUN_AND_COLD_RESTART_PASS' and cli['warm_days']==10 and cli['window']==[4,8] and cli['nprintday']==3 and all(cli[k] is True for k in ('physical_exact','five_original_csv_exact','complete_native_exact')),'005 public CLI absent')
-    base=q['base_consumer'];require(base['merge']==BASE and base['exact_complete_tree'] is True and base['actual_detached_owner']['returncode']==0,'005 actual canonical parent absent')
-    artifact=q['workflow']['artifact'];require(q['workflow']['status']=='SUCCESS' and artifact['all_members_forward_verified'] is True and artifact['member_count']==len(artifact['members']),'005 portable artifact incomplete')
+    base=q['base_consumer'];require(base['merge']==BASE and base['exact_complete_tree'] is True and base['actual_detached_owner']['returncode']==0 and base['actual_detached_owner']['result']['status']=='CURRENT_MONTHLY_EXPLICIT_AGE_REGULAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS','005 actual canonical parent absent')
+    artifact=q['workflow']['artifact'];require(q['workflow']['id']==44192970110 and artifact['id']==14377848736 and artifact['run']==44192970110 and artifact['bytes']==277875449 and artifact['sha256']=='2bae080196e82bf8291dfe8efb9e9ae72b9133ca3a4fc62c946b0ccf380beb56','005 portable run/archive differs')
+    require(q['workflow']['status']=='SUCCESS' and artifact['all_members_forward_verified'] is True and artifact['member_count']==len(artifact['members']),'005 portable artifact incomplete')
 
 
 def unchanged_selection(ref):
