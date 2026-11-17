@@ -37,6 +37,7 @@ def main():
     for phase in ('short','full'):run('tests/nomacro_scheduled_subsurface/age_schedule_matrix.py','--reference-work',a.reference_work,'--output',a.output/'matrix','--phase',phase)
     run('tests/nomacro_scheduled_subsurface/age_schedule_reference.py','--reference-work',a.reference_work,'--prior-reference',target,'--matrix',a.output/'matrix','--platform','Ubuntu','--output',a.output/'reference')
     run('tests/nomacro_scheduled_subsurface/age_schedule_controls.py','--reference-work',a.reference_work,'--matrix',a.output/'matrix','--output',a.output/'controls')
+    run('tests/nomacro_scheduled_subsurface/age_schedule_reader_controls.py','--reference-work',a.reference_work,'--matrix',a.output/'matrix','--output',a.output/'reader-controls')
     run('tests/nomacro_scheduled_subsurface/age_schedule_preserve.py','--reference-work',a.reference_work,'--platform','Ubuntu','--output',a.output/'regular003-preserve')
     run('tests/nomacro_scheduled_subsurface/age_fixed_inactive.py','--reference-work',a.reference_work,'--platform','Ubuntu','--output',a.output/'inactive')
     run('tests/nomacro_scheduled_subsurface/age_calendar_preserve.py','--reference-work',a.reference_work,'--platform','Ubuntu','--output',a.output/'daily-fixed-preserve')
