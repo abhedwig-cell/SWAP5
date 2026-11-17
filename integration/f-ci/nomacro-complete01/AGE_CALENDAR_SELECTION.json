@@ -1,5 +1,5 @@
 {
-  "status": "FOURTEEN_SHORT_PASS_LONG_GUARD_EXPOSED_MISSING_POST_CROP_OBSERVATION",
+  "status": "POSTCROP_FULL_WATER_PASS_CROP_OUTPUT_RESTORE_REPAIRED",
   "baseline": "b2b05ae110366dae062663bd97c63d4187cdcd8d",
   "owner": "SWAP5-NOMACRO-COMPLETE01",
   "contract": "docs/science/NOMACRO_AGE_OUTPUT_CALENDAR_20261117.md",
@@ -36,5 +36,33 @@
     "cause": "New observer covered original integral task3 but missed actual task4 iintc+=siccaploss after crop update. Both original counter expressions remain unchanged; observe the real third increment as well.",
     "guards_changed": false
   },
-  "next": "Fresh source-bound O0/O2 short, then complete matrix/reference with the post-crop increment captured. Old build/checkpoint signatures stay refused; no rebind."
+  "next": "Fresh O0/O2 short and full pilot after post-initialization crop output restoration; preserve all old source-bound bundles.",
+  "retained_restart_failure": {
+    "path": "age-calendar-postcrop-p3-plain-O0/full-own530",
+    "cause": "Original first resumed crop initialization clears six already restored plant output integrals. Physical daily rows exact; six original CSV totals differ. Restore those six saved values once after actual crop initialization, before normal integral reset.",
+    "full_days": 1096,
+    "source": "0641cef3831eaf48c467898378875bd25f4e00b9",
+    "prior_native_windows_pass": [
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        199,
+        201
+      ],
+      [
+        364,
+        367
+      ]
+    ]
+  }
 }

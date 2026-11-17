@@ -57,6 +57,7 @@ type(output_receipt_frame_t),save::hybrid_output_frame
 integer,save::pending_header(20)=0
 real(8),allocatable,save::pending_values(:)
 logical,save::output_restore_pending=.false.
+logical,save::output_crop_restore_pending=.false.
 real(8),parameter::original_output_start_clock={project.start_clock}d0
 contains
 subroutine output_assert_age_clock(day,period)
@@ -163,6 +164,18 @@ pos=1
 '''+ '\n'.join(unpack)+'''
 if(pos/=size(pending_values)+1)error stop 'Original output calendar layout mismatch'
 output_restore_pending=.false.
+! Original first-day crop initialization resets these six output integrals.
+! Restore them once after that initialization, before the normal interval reset.
+output_crop_restore_pending=.true.
+end subroutine
+subroutine hybrid_output_crop_apply()
+use plant_interface,only:ipgass,igass,imres,ipgasspot,igasspot,imrespot
+integer::pos
+if(.not.output_crop_restore_pending)return
+pos=size(pending_values)-7
+ipgass=pending_values(pos);igass=pending_values(pos+1);imres=pending_values(pos+2)
+ipgasspot=pending_values(pos+3);igasspot=pending_values(pos+4);imrespot=pending_values(pos+5)
+output_crop_restore_pending=.false.
 end subroutine
 '''
 
@@ -251,7 +264,12 @@ def apply_build(output,donor_build,project,patched):
     (output/'hybrid_age_output_state.f90').write_text(state_source(project),encoding='cp1252')
     (output/'integral.f90').write_text(render_integral((donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252')),encoding='cp1252')
     (output/'age_output_calendar_probe.f90').write_text(PROBE,encoding='cp1252')
-    path=output/'swap.f90';path.write_text(render_swap(path.read_text(encoding='cp1252')),encoding='cp1252')
+    path=output/'swap.f90';source=render_swap(path.read_text(encoding='cp1252'))
+    anchor='use hybrid_day_window, only:';assert source.count(anchor)==1
+    source=source.replace(anchor,'use MOD_integral,only:hybrid_output_crop_apply\n'+anchor,1)
+    anchor='         call hybrid_apply_wofost(fl_cropemergence)';assert source.count(anchor)==1
+    source=source.replace(anchor,anchor+'\n         call hybrid_output_crop_apply()',1)
+    path.write_text(source,encoding='cp1252')
     path=output/'solute.f90';path.write_bytes(render_solute(path.read_bytes()))
     path=output/'macropore.f90';path.write_text(render_macro(path.read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'swap_main.f90';source=path.read_text(encoding='cp1252')
