@@ -1,0 +1,51 @@
+{
+  "status": "ORIGINAL_POND_TANGENT_REUSE_PREFIX53_O0_O2_NATIVE_PASS",
+  "source_commit": "ea113db7685735293c21103bcdd48a78ebc3ed78",
+  "profiles": {
+    "O0": {
+      "status": "SHORT_PASS",
+      "days": 53,
+      "budgets": {
+        "days": 53,
+        "max_water_cm": 3.853167784839684e-14,
+        "max_kernel_cm": 3.4861002973229915e-14,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 3.1974105980069056e-13
+      },
+      "model_seconds": 0.6200854999478906,
+      "build_sha256": "0151d956c3b425cdac9d35168eeb35817363ceb98eb65b06f3a94943752ec315",
+      "own": {
+        "start": 50,
+        "end": 53,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true,
+        "seconds": 0.29390279995277524
+      }
+    },
+    "O2": {
+      "status": "SHORT_PASS",
+      "days": 53,
+      "budgets": {
+        "days": 53,
+        "max_water_cm": 3.853167784839684e-14,
+        "max_kernel_cm": 3.4861002973229915e-14,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 3.1974105980069056e-13
+      },
+      "model_seconds": 0.5010754999238998,
+      "build_sha256": "e607cbf8d1059914117387f5d9fc6c52e24414e20227bf91f1d2fb25b9de5a71",
+      "own": {
+        "start": 50,
+        "end": 53,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true,
+        "seconds": 0.2625655001029372
+      }
+    }
+  },
+  "science": "NOT_QUALIFIED"
+}
