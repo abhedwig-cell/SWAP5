@@ -14,6 +14,9 @@ module mod_b111_age_tracer_substep
     real(real64)::dt_day=0.0_real64
     real(real64),allocatable::theta(:)
     real(real64),allocatable::theta_previous(:)
+    ! Optional physical water-step midpoint when the age clock subcycles.
+    ! Concentration reconstruction still uses theta_previous for that microstep.
+    real(real64),allocatable::production_theta_mean(:)
     real(real64),allocatable::dz_cm(:)
     real(real64),allocatable::q_face_up_cm_day(:)
     real(real64),allocatable::root_sink_cm_day(:)
@@ -28,6 +31,9 @@ module mod_b111_age_tracer_substep
     real(real64)::macropore_area_fraction=0.0_real64
     ! Candidate-only explicit accepted surface-age flux in cm day.
     logical::accepted_surface_age_available=.false.
+    ! Explicit original age-tracer policy: evaporative water carries no age.
+    ! Requires an accepted zero age handoff and a nonnegative actual top flux.
+    logical::evaporative_top_retains_age=.false.
     real(real64)::accepted_surface_age_input_cm_day=0.0_real64
     real(real64),allocatable::face_left_weight(:)
     real(real64),allocatable::face_right_weight(:)
@@ -131,6 +137,7 @@ contains
       end do
 
       ageprod=0.5_real64*(f%theta(i)+f%theta_previous(i))
+      if(allocated(f%production_theta_mean))ageprod=f%production_theta_mean(i)
       receipt%production_amount_cm_day=receipt%production_amount_cm_day+ageprod*f%dt_day*f%dz_cm(i)
       new_amount=committed%age_amount(i)+(agefluxb-agefluxt)+(-agerot-agedrtot+ageprod)*f%dt_day*f%dz_cm(i)
       if(new_amount<0.0_real64)then
@@ -171,6 +178,11 @@ contains
     n=size(f%theta)
     if(n<1.or.size(f%theta_previous)/=n.or.size(f%dz_cm)/=n.or.size(f%q_face_up_cm_day)/=n+1.or. &
        size(f%root_sink_cm_day)/=n.or.size(f%qdra_cm_day,2)/=n)return
+    if(allocated(f%production_theta_mean))then
+      if(size(f%production_theta_mean)/=n)return
+      if(.not.all(ieee_is_finite(f%production_theta_mean)))return
+      if(any(f%production_theta_mean<1.0e-8_real64).or.any(f%production_theta_mean>1.0_real64))return
+    end if
     if(.not.all(ieee_is_finite(f%theta)).or..not.all(ieee_is_finite(f%theta_previous)).or. &
        .not.all(ieee_is_finite(f%dz_cm)).or..not.all(ieee_is_finite(f%q_face_up_cm_day)).or. &
        .not.all(ieee_is_finite(f%root_sink_cm_day)).or..not.all(ieee_is_finite(f%qdra_cm_day)))return
@@ -197,10 +209,15 @@ contains
     if(any(f%dz_cm<1.0e-4_real64).or.any(f%dz_cm>1.0e4_real64))return
     if(any(abs(f%q_face_up_cm_day)>1.0e6_real64).or.any(f%root_sink_cm_day>1.0e6_real64).or. &
        any(abs(f%qdra_cm_day)>1.0e6_real64).or.f%drain_age_day>1.0e6_real64)return
-    ! Surface age semantics are deliberately excluded from this production profile.
+    ! Surface handoff is explicit. Existing default exclusions are preserved.
+    if(f%evaporative_top_retains_age)then
+      if(.not.f%accepted_surface_age_available)return
+      if(f%q_face_up_cm_day(1)<0.0_real64.or.f%accepted_surface_age_input_cm_day/=0.0_real64)return
+    end if
     if(f%accepted_surface_age_available)then
       if(.not.ieee_is_finite(f%accepted_surface_age_input_cm_day))return
-      if(f%accepted_surface_age_input_cm_day<0.0_real64.or.f%q_face_up_cm_day(1)>0.0_real64)return
+      if(f%accepted_surface_age_input_cm_day<0.0_real64)return
+      if(f%q_face_up_cm_day(1)>0.0_real64.and..not.f%evaporative_top_retains_age)return
       if(any(abs([f%rain_rate_cm_day,f%irrigation_rate_cm_day,f%pond_previous_cm, &
          f%pond_end_cm,f%macropore_area_fraction])>0.0_real64))return
     else

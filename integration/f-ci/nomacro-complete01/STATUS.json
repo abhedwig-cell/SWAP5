@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-source01",
   "last_commit": "edbc66b9e2f9debee588db5763da960aee04b36c",
-  "status": "ORIGINAL_WATER_AGE_ROUTE_IN_DEVELOPMENT",
+  "status": "ORIGINAL_AGE_COMPONENT_ADAPTER_OPTIONS_IMPLEMENTED_NOT_QUALIFIED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -168,6 +168,20 @@
       "docs_strict_seconds": 32.55,
       "new_evidence_corruptions": 115,
       "unit_methods": 5
+    },
+    {
+      "result": "ORIGINAL_AGE_FOUR_FULL_FINITE_BOUNDS_CHECKED_DIAGNOSTICS",
+      "initial_ages": [
+        0,
+        100
+      ],
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "days": 4384,
+      "age_balance": "NOT_YET_OBSERVED",
+      "SWAP5_activation": false
     }
   ],
   "failed_tests": [
@@ -340,7 +354,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Execute original age0/100 full diagnostics with already source-bound original bounds executables, and existing real age provider process-only tests. Reuse existing age physics; implement explicit age ledger/native owner and original input route after reference results.",
+  "next_action": "Run small original_age_clock O0/O2 and existing150-step age literal process tests; then actual original-source adapter delegating age microsteps to existing provider with explicit physical water midpoint and original evaporation retention, separate age ledger/native state. Generic SWSOLU2 remains refused until full qualification.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61"
