@@ -1,8 +1,8 @@
 {
-  "status": "FIXED_RC3_QUALIFIED_FROZEN_DELIVERED_READY_FOR_PR",
+  "status": "FIXED_RC3_CANONICAL_POSTIMAGE_AND_DELIVERY_VERIFIED",
   "source": "2cedd9d0eaf8be8e8cdba321e3ab836835c558a3",
   "archive_sha256": "cfcb0b5ab515dc8aeb8b5e5e2259556145f2129faf8116d1624e9438bd2f913e",
-  "next": "Publish and integrate qualification/manual PR; verify actual canonical postimage and unchanged fixed source ref",
+  "next": "This fixed-candidate delivery is complete. Keep source ref/ZIP immutable; any future code or scientific widening needs a separately selected work unit.",
   "local": "Clean source ZIP outside Git; fresh provider; all named O0short/O2 full/control/long own/refusal/external PASS",
   "local_total_measured_command_seconds": 285.9380926010199,
   "hosted_run": 44120507341,
@@ -11,5 +11,6 @@
   "freeze": "2cedd9d0eaf8be8e8cdba321e3ab836835c558a3",
   "delivery": "C:\\Users\\Veldh012\\SWAP5-RC3-20261117",
   "docs_source": "PASS",
-  "mkdocs_strict": "PASS29.23seconds"
+  "mkdocs_strict": "PASS29.23seconds",
+  "canonical_merge": "e8dbb6853599309ed8005b919cdcb3f634b48d8f"
 }
