@@ -1,0 +1,3560 @@
+{
+  "status": "AGE_CORE_SOURCE_STATE_PLATFORM_PASS_OUTPUT_UNITS_STILL_INHERITED_DEFECT",
+  "runtime": "4c6b52b4e09dec9906d41115990942ee7b40a14a",
+  "ubuntu": "ca0356cfdec82853bd3c3f8f0eb611ea70e258dc",
+  "platforms": {
+    "Windows": {
+      "status": "FOUR_FULL_ORIGINAL_AGE_HOST_O0_O2_NATIVE_PASS",
+      "source_commit": "c3dfc28fe0c61575a63b493ce29b3b50b2305630",
+      "profiles": {
+        "0-O0": {
+          "short": {
+            "status": "SHORT_PASS",
+            "days": 5,
+            "budgets": {
+              "days": 5,
+              "max_water_cm": 1.4585554986012994e-14,
+              "max_kernel_cm": 1.4585554986012994e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 3.5348406059870774e-14
+            },
+            "model_seconds": 0.30475679971277714,
+            "build_sha256": "e86bc84e801049e4cb9e768940d2dde9ad36d2bd9dfeb321f71ba0d1aa5074fa",
+            "own": {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3860084996558726,
+              "all_three_age_csv_exact": true
+            }
+          },
+          "full": {
+            "status": "FULL_PASS",
+            "days": 1096,
+            "budgets": {
+              "days": 1096,
+              "max_water_cm": 9.996719570843846e-11,
+              "max_kernel_cm": 9.996847794013775e-11,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.6637713928284366e-10
+            },
+            "model_seconds": 6.135528199840337,
+            "build_sha256": "e86bc84e801049e4cb9e768940d2dde9ad36d2bd9dfeb321f71ba0d1aa5074fa"
+          },
+          "maximum_residual_cm_day": {
+            "age_soil_residual_cm_day": 2.2287215545313543e-09,
+            "age_pond_residual_cm_day": 7.194765616613807e-16,
+            "age_combined_residual_cm_day": 2.2289646955421516e-09
+          },
+          "maximum_fraction_of_accepted_age_tolerance": 0.06505145888988202,
+          "final_state_cm_day": [
+            41854.47109476,
+            0.0,
+            41854.47109476,
+            78963.04185052824,
+            0.1410846116886591,
+            0.0,
+            28557.03972710758,
+            0.0,
+            8551.669857940284,
+            0.0022553353650721837,
+            0.13882927632358755
+          ],
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2942769001238048,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.31828629970550537,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.4045204999856651,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3327505998313427,
+              "all_three_age_csv_exact": true
+            }
+          ],
+          "status": "FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS"
+        },
+        "0-O2": {
+          "build_seconds": 16.56962430011481,
+          "build_returncode": 0,
+          "short": {
+            "status": "SHORT_PASS",
+            "days": 5,
+            "budgets": {
+              "days": 5,
+              "max_water_cm": 1.4585554986012994e-14,
+              "max_kernel_cm": 1.4585554986012994e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 3.5348406059870774e-14
+            },
+            "model_seconds": 0.42875370010733604,
+            "build_sha256": "45dfaabff233128a95b1218451d38e70c38de50c404eb08746542cdb29d1e681",
+            "own": {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2964944997802377,
+              "all_three_age_csv_exact": true
+            }
+          },
+          "full": {
+            "status": "FULL_PASS",
+            "days": 1096,
+            "budgets": {
+              "days": 1096,
+              "max_water_cm": 9.996719570843846e-11,
+              "max_kernel_cm": 9.996847794013775e-11,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.6637713928284366e-10
+            },
+            "model_seconds": 6.262704399880022,
+            "build_sha256": "45dfaabff233128a95b1218451d38e70c38de50c404eb08746542cdb29d1e681"
+          },
+          "maximum_residual_cm_day": {
+            "age_soil_residual_cm_day": 2.2287215545313543e-09,
+            "age_pond_residual_cm_day": 7.194765616613807e-16,
+            "age_combined_residual_cm_day": 2.2289646955421516e-09
+          },
+          "maximum_fraction_of_accepted_age_tolerance": 0.06505145888988202,
+          "final_state_cm_day": [
+            41854.47109476,
+            0.0,
+            41854.47109476,
+            78963.04185052824,
+            0.1410846116886591,
+            0.0,
+            28557.03972710758,
+            0.0,
+            8551.669857940284,
+            0.0022553353650721837,
+            0.13882927632358755
+          ],
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3357643997296691,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3164177997969091,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3804516000673175,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3198939999565482,
+              "all_three_age_csv_exact": true
+            }
+          ],
+          "status": "FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS"
+        },
+        "100-O0": {
+          "build_seconds": 8.56782010011375,
+          "build_returncode": 0,
+          "short": {
+            "status": "SHORT_PASS",
+            "days": 5,
+            "budgets": {
+              "days": 5,
+              "max_water_cm": 1.4585554986012994e-14,
+              "max_kernel_cm": 1.4585554986012994e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 3.5348406059870774e-14
+            },
+            "model_seconds": 0.4773335000500083,
+            "build_sha256": "2db2956114fd6b131e01b9eb52c6cd6a6f4aabb170d09720ab59781456b75d85",
+            "own": {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.30670670000836253,
+              "all_three_age_csv_exact": true
+            }
+          },
+          "full": {
+            "status": "FULL_PASS",
+            "days": 1096,
+            "budgets": {
+              "days": 1096,
+              "max_water_cm": 9.996719570843846e-11,
+              "max_kernel_cm": 9.996847794013775e-11,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.6637713928284366e-10
+            },
+            "model_seconds": 6.1152857998386025,
+            "build_sha256": "2db2956114fd6b131e01b9eb52c6cd6a6f4aabb170d09720ab59781456b75d85"
+          },
+          "maximum_residual_cm_day": {
+            "age_soil_residual_cm_day": 2.188249040302459e-09,
+            "age_pond_residual_cm_day": 7.194765616613807e-16,
+            "age_combined_residual_cm_day": 2.1884921813132563e-09
+          },
+          "maximum_fraction_of_accepted_age_tolerance": 0.0525693281882665,
+          "final_state_cm_day": [
+            43366.24760666561,
+            0.0,
+            43366.24760666561,
+            78963.04185052824,
+            0.1410846116886591,
+            0.0,
+            33955.046908814875,
+            0.0,
+            9160.64975479844,
+            0.0022553353650721837,
+            0.13882927632358755
+          ],
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.29745319997891784,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.335808000061661,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.39926209999248385,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3515293998643756,
+              "all_three_age_csv_exact": true
+            }
+          ],
+          "status": "FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS"
+        },
+        "100-O2": {
+          "build_seconds": 16.3261810997501,
+          "build_returncode": 0,
+          "short": {
+            "status": "SHORT_PASS",
+            "days": 5,
+            "budgets": {
+              "days": 5,
+              "max_water_cm": 1.4585554986012994e-14,
+              "max_kernel_cm": 1.4585554986012994e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 3.5348406059870774e-14
+            },
+            "model_seconds": 0.48420470021665096,
+            "build_sha256": "8f3eabfb9cec6e17009bf52d2beeaa0d13d1bac4ae2fd17dd4d28d396434cdb8",
+            "own": {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2994169001467526,
+              "all_three_age_csv_exact": true
+            }
+          },
+          "full": {
+            "status": "FULL_PASS",
+            "days": 1096,
+            "budgets": {
+              "days": 1096,
+              "max_water_cm": 9.996719570843846e-11,
+              "max_kernel_cm": 9.996847794013775e-11,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.6637713928284366e-10
+            },
+            "model_seconds": 5.771507000084966,
+            "build_sha256": "8f3eabfb9cec6e17009bf52d2beeaa0d13d1bac4ae2fd17dd4d28d396434cdb8"
+          },
+          "maximum_residual_cm_day": {
+            "age_soil_residual_cm_day": 2.188249040302459e-09,
+            "age_pond_residual_cm_day": 7.194765616613807e-16,
+            "age_combined_residual_cm_day": 2.1884921813132563e-09
+          },
+          "maximum_fraction_of_accepted_age_tolerance": 0.0525693281882665,
+          "final_state_cm_day": [
+            43366.24760666561,
+            0.0,
+            43366.24760666561,
+            78963.04185052824,
+            0.1410846116886591,
+            0.0,
+            33955.046908814875,
+            0.0,
+            9160.64975479844,
+            0.0022553353650721837,
+            0.13882927632358755
+          ],
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3010107995942235,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3089894000440836,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.38105779979377985,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3282174002379179,
+              "all_three_age_csv_exact": true
+            }
+          ],
+          "status": "FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS"
+        }
+      },
+      "units": "cm day",
+      "whole_scientific_equivalence": "NOT_QUALIFIED",
+      "chemical_mass_guard_changed": false,
+      "water_guard_cm": 1e-10
+    },
+    "Ubuntu": {
+      "status": "FOUR_FULL_ORIGINAL_AGE_HOST_O0_O2_NATIVE_PASS",
+      "source_commit": "ca0356cfdec82853bd3c3f8f0eb611ea70e258dc",
+      "profiles": {
+        "0-O0": {
+          "build_seconds": 2.863813125000007,
+          "build_returncode": 0,
+          "short": {
+            "status": "SHORT_PASS",
+            "days": 5,
+            "budgets": {
+              "days": 5,
+              "max_water_cm": 1.7347668440637065e-14,
+              "max_kernel_cm": 1.734723475976807e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.8027872991248648e-14
+            },
+            "model_seconds": 0.05187701600002015,
+            "build_sha256": "f27d9e58a07d709b327e16e048673b4828c2a90ce23b0f9de64f0d97d232887a",
+            "own": {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.038582004000005554,
+              "all_three_age_csv_exact": true
+            }
+          },
+          "full": {
+            "status": "FULL_PASS",
+            "days": 1096,
+            "budgets": {
+              "days": 1096,
+              "max_water_cm": 9.996712219953116e-11,
+              "max_kernel_cm": 9.996847794013775e-11,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.6622491792124294e-10
+            },
+            "model_seconds": 3.4525306870000065,
+            "build_sha256": "f27d9e58a07d709b327e16e048673b4828c2a90ce23b0f9de64f0d97d232887a"
+          },
+          "maximum_residual_cm_day": {
+            "age_soil_residual_cm_day": 2.232814239055969e-09,
+            "age_pond_residual_cm_day": 7.589415207398531e-16,
+            "age_combined_residual_cm_day": 2.2330572469267396e-09
+          },
+          "maximum_fraction_of_accepted_age_tolerance": 0.06517089839409738,
+          "final_state_cm_day": [
+            41854.69949305404,
+            0.0,
+            41854.69949305404,
+            78963.00989140138,
+            0.1410846116886609,
+            0.0,
+            28556.84143347923,
+            0.0,
+            8551.607794147989,
+            0.0022553353650723107,
+            0.13882927632358952
+          ],
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04016536099999257,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04096155400000612,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.1661435979999908,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04288899099998389,
+              "all_three_age_csv_exact": true
+            }
+          ],
+          "status": "FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS"
+        },
+        "0-O2": {
+          "build_seconds": 9.414010088999987,
+          "build_returncode": 0,
+          "short": {
+            "status": "SHORT_PASS",
+            "days": 5,
+            "budgets": {
+              "days": 5,
+              "max_water_cm": 1.7347668440637065e-14,
+              "max_kernel_cm": 1.734723475976807e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.8027872991248648e-14
+            },
+            "model_seconds": 0.050798613000040405,
+            "build_sha256": "2d32664e222c2692759885cc79780ac4d7f0c6ff8ade25e1d9ee686da81d6df9",
+            "own": {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03764561200000571,
+              "all_three_age_csv_exact": true
+            }
+          },
+          "full": {
+            "status": "FULL_PASS",
+            "days": 1096,
+            "budgets": {
+              "days": 1096,
+              "max_water_cm": 9.996712219953116e-11,
+              "max_kernel_cm": 9.996847794013775e-11,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.6622491792124294e-10
+            },
+            "model_seconds": 3.0921748190000358,
+            "build_sha256": "2d32664e222c2692759885cc79780ac4d7f0c6ff8ade25e1d9ee686da81d6df9"
+          },
+          "maximum_residual_cm_day": {
+            "age_soil_residual_cm_day": 2.232814239055969e-09,
+            "age_pond_residual_cm_day": 7.589415207398531e-16,
+            "age_combined_residual_cm_day": 2.2330572469267396e-09
+          },
+          "maximum_fraction_of_accepted_age_tolerance": 0.06517089839409738,
+          "final_state_cm_day": [
+            41854.69949305404,
+            0.0,
+            41854.69949305404,
+            78963.00989140138,
+            0.1410846116886609,
+            0.0,
+            28556.84143347923,
+            0.0,
+            8551.607794147989,
+            0.0022553353650723107,
+            0.13882927632358952
+          ],
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03797085299999026,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03891873800000667,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.13579101200002697,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04149234599998408,
+              "all_three_age_csv_exact": true
+            }
+          ],
+          "status": "FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS"
+        },
+        "100-O0": {
+          "build_seconds": 2.897615003999988,
+          "build_returncode": 0,
+          "short": {
+            "status": "SHORT_PASS",
+            "days": 5,
+            "budgets": {
+              "days": 5,
+              "max_water_cm": 1.7347668440637065e-14,
+              "max_kernel_cm": 1.734723475976807e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.8027872991248648e-14
+            },
+            "model_seconds": 0.05174198700001398,
+            "build_sha256": "af8dc4fa9082b5eaa4bc2a22d41e65796f77353a21d2cc8b513443ee3582575e",
+            "own": {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04028929399999015,
+              "all_three_age_csv_exact": true
+            }
+          },
+          "full": {
+            "status": "FULL_PASS",
+            "days": 1096,
+            "budgets": {
+              "days": 1096,
+              "max_water_cm": 9.996712219953116e-11,
+              "max_kernel_cm": 9.996847794013775e-11,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.6622491792124294e-10
+            },
+            "model_seconds": 3.4670500730000526,
+            "build_sha256": "af8dc4fa9082b5eaa4bc2a22d41e65796f77353a21d2cc8b513443ee3582575e"
+          },
+          "maximum_residual_cm_day": {
+            "age_soil_residual_cm_day": 2.1891584933708685e-09,
+            "age_pond_residual_cm_day": 7.589415207398531e-16,
+            "age_combined_residual_cm_day": 2.189401501241639e-09
+          },
+          "maximum_fraction_of_accepted_age_tolerance": 0.05259117077840755,
+          "final_state_cm_day": [
+            43366.48230335552,
+            0.0,
+            43366.48230335552,
+            78963.00989140138,
+            0.1410846116886609,
+            0.0,
+            33954.84233600917,
+            0.0,
+            9160.587671787574,
+            0.0022553353650723107,
+            0.13882927632358952
+          ],
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03836188499997206,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04125269799999387,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.16765455499995596,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04285530699996798,
+              "all_three_age_csv_exact": true
+            }
+          ],
+          "status": "FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS"
+        },
+        "100-O2": {
+          "build_seconds": 9.359858889000009,
+          "build_returncode": 0,
+          "short": {
+            "status": "SHORT_PASS",
+            "days": 5,
+            "budgets": {
+              "days": 5,
+              "max_water_cm": 1.7347668440637065e-14,
+              "max_kernel_cm": 1.734723475976807e-14,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.8027872991248648e-14
+            },
+            "model_seconds": 0.04702131599998438,
+            "build_sha256": "9cb3a2ef9466e725f270cfb0f5d8b1702896fcb4f707f3e567a825191bc4f162",
+            "own": {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03712532799994506,
+              "all_three_age_csv_exact": true
+            }
+          },
+          "full": {
+            "status": "FULL_PASS",
+            "days": 1096,
+            "budgets": {
+              "days": 1096,
+              "max_water_cm": 9.996712219953116e-11,
+              "max_kernel_cm": 9.996847794013775e-11,
+              "max_solute_mg_cm2": 0,
+              "sum_water_residual_cm": 2.6622491792124294e-10
+            },
+            "model_seconds": 3.075770824000017,
+            "build_sha256": "9cb3a2ef9466e725f270cfb0f5d8b1702896fcb4f707f3e567a825191bc4f162"
+          },
+          "maximum_residual_cm_day": {
+            "age_soil_residual_cm_day": 2.1891584933708685e-09,
+            "age_pond_residual_cm_day": 7.589415207398531e-16,
+            "age_combined_residual_cm_day": 2.189401501241639e-09
+          },
+          "maximum_fraction_of_accepted_age_tolerance": 0.05259117077840755,
+          "final_state_cm_day": [
+            43366.48230335552,
+            0.0,
+            43366.48230335552,
+            78963.00989140138,
+            0.1410846116886609,
+            0.0,
+            33954.84233600917,
+            0.0,
+            9160.587671787574,
+            0.0022553353650723107,
+            0.13882927632358952
+          ],
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03885021799999322,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.038114690999975664,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.13274835900000426,
+              "all_three_age_csv_exact": true
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.040263323000033324,
+              "all_three_age_csv_exact": true
+            }
+          ],
+          "status": "FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS"
+        }
+      },
+      "units": "cm day",
+      "whole_scientific_equivalence": "NOT_QUALIFIED",
+      "chemical_mass_guard_changed": false,
+      "water_guard_cm": 1e-10
+    }
+  },
+  "controls": {
+    "Windows": {
+      "O0": {
+        "status": "ORIGINAL_AGE_ACTIVE_POND_TRANSACTIONS_REFUSALS_AND_ORIGINS_PASS",
+        "checks": [
+          {
+            "attack": "soil-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "pond-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "total-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "soil-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "pond-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "external-input",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "drainage",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "bottom",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "root",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "runoff",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "internal-infiltration",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "error": "Invalid or nonfinite original age state"
+          }
+        ],
+        "active_pond_day": 367,
+        "discard_replay_exact": true,
+        "disk_recovery_exact": true,
+        "independent_steps": 6,
+        "committed_state_unchanged": true,
+        "origins_unchanged": true,
+        "foreign_policy_refused": true
+      },
+      "O2": {
+        "status": "ORIGINAL_AGE_ACTIVE_POND_TRANSACTIONS_REFUSALS_AND_ORIGINS_PASS",
+        "checks": [
+          {
+            "attack": "soil-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "pond-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "total-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "soil-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "pond-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "external-input",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "drainage",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "bottom",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "root",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "runoff",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "internal-infiltration",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "error": "Invalid or nonfinite original age state"
+          }
+        ],
+        "active_pond_day": 367,
+        "discard_replay_exact": true,
+        "disk_recovery_exact": true,
+        "independent_steps": 6,
+        "committed_state_unchanged": true,
+        "origins_unchanged": true,
+        "foreign_policy_refused": true
+      }
+    },
+    "Ubuntu": {
+      "O0": {
+        "status": "ORIGINAL_AGE_ACTIVE_POND_TRANSACTIONS_REFUSALS_AND_ORIGINS_PASS",
+        "checks": [
+          {
+            "attack": "soil-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "pond-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "total-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "soil-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "pond-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "external-input",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "drainage",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "bottom",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "root",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "runoff",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "internal-infiltration",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "error": "Invalid or nonfinite original age state"
+          }
+        ],
+        "active_pond_day": 367,
+        "discard_replay_exact": true,
+        "disk_recovery_exact": true,
+        "independent_steps": 6,
+        "committed_state_unchanged": true,
+        "origins_unchanged": true,
+        "foreign_policy_refused": true
+      },
+      "O2": {
+        "status": "ORIGINAL_AGE_ACTIVE_POND_TRANSACTIONS_REFUSALS_AND_ORIGINS_PASS",
+        "checks": [
+          {
+            "attack": "soil-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "pond-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "total-stock",
+            "status": "REFUSED",
+            "error": "Inconsistent original soil/pond age stock"
+          },
+          {
+            "attack": "soil-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "pond-production",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "external-input",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "drainage",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "bottom",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "root",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "runoff",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "internal-infiltration",
+            "status": "REFUSED",
+            "error": "Original age candidate exceeds accepted age balance policy"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "error": "Invalid or nonfinite original age state"
+          }
+        ],
+        "active_pond_day": 367,
+        "discard_replay_exact": true,
+        "disk_recovery_exact": true,
+        "independent_steps": 6,
+        "committed_state_unchanged": true,
+        "origins_unchanged": true,
+        "foreign_policy_refused": true
+      }
+    }
+  },
+  "original_provider_reference": {
+    "Windows": {
+      "status": "ORIGINAL_HOST_REAL_AGE_PROVIDERS_FULL_O0_O2_LEDGER_PASS",
+      "source_commit": "8e3385b5a9cd8276445f6c3c50fa7adda7e000c0",
+      "profiles": {
+        "O0": {
+          "cases": {
+            "0": {
+              "days": 1096,
+              "initial": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "final": [
+                41854.473291956994,
+                0.0,
+                41854.473291956994,
+                78963.75285134249,
+                0.1398538965165391,
+                0.0,
+                28558.534734073794,
+                0.0,
+                8550.882438217763,
+                0.0022410010666406546,
+                0.13761289544989916
+              ],
+              "maximum_residual_cm_day": {
+                "soil": 2.1781812326038263e-09,
+                "pond": 3.5041414214731503e-16,
+                "combined": 2.1796240372469466e-09
+              },
+              "maximum_fraction_of_accepted_age_tolerance": 0.06361233348354291,
+              "tolerance_policy": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+              "chemical_mass_guard_changed": false,
+              "input_sha256": {
+                "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+                "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+                "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+                "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+                "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+                "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+                "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+                "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+                "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+                "swap.swp": "2e5ac121045a4d9d44c78b074f772e937c7fcb387602dac247f5def4d75d8994"
+              }
+            },
+            "100": {
+              "days": 1096,
+              "initial": [
+                7518.763590471085,
+                0.0,
+                7518.763590471085,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "final": [
+                43366.39445088151,
+                0.0,
+                43366.39445088151,
+                78963.75285134249,
+                0.1398538965165391,
+                0.0,
+                33956.30154104032,
+                0.0,
+                9159.95806279696,
+                0.0022410010666406546,
+                0.13761289544989916
+              ],
+              "maximum_residual_cm_day": {
+                "soil": 2.1586270965157084e-09,
+                "pond": 3.5041414214731503e-16,
+                "combined": 2.1600699011588287e-09
+              },
+              "maximum_fraction_of_accepted_age_tolerance": 0.051887246596683124,
+              "tolerance_policy": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+              "chemical_mass_guard_changed": false,
+              "input_sha256": {
+                "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+                "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+                "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+                "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+                "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+                "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+                "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+                "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+                "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+                "swap.swp": "34a9a711cd7c01918350145a4f17c40226ca7c086cea2e6e086d340e4c584ebf"
+              }
+            }
+          },
+          "generated_sha256": {
+            "boundtop.f90": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+            "mod_b111_age_tracer_substep.f90": "080310258fa67ee8bb30e7270290eba3581798faf08bd326b2bc5d4fcd9c016b",
+            "mod_b111_surface_age_budget.f90": "b6773e7233d3c02edea0d8e8f3b2ad67195957a28ae703d41b6a49efba35666d",
+            "mod_solute_compartment_state.f90": "1de600a1154bb05678c27bef759efba9bbf4d3a332853f862b5fc04d9adb5ba5",
+            "solute.f90": "7df978fac318b306e2aad4728041978ade04f7eafd06414e1b4f3879c70d841e",
+            "swap_csv_output.f90": "fca5a5824f48790dd9c1580243a373f06a50d5ace4f80dcfa01169e09e680778"
+          },
+          "executable_sha256": "8b000f54b88d3f63ff062f89af75134a00744330392a6778f74476aa20a06790"
+        },
+        "O2": {
+          "cases": {
+            "0": {
+              "days": 1096,
+              "initial": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "final": [
+                41854.473291956994,
+                0.0,
+                41854.473291956994,
+                78963.75285134249,
+                0.1398538965165391,
+                0.0,
+                28558.534734073794,
+                0.0,
+                8550.882438217763,
+                0.0022410010666406546,
+                0.13761289544989916
+              ],
+              "maximum_residual_cm_day": {
+                "soil": 2.1781812326038263e-09,
+                "pond": 3.5041414214731503e-16,
+                "combined": 2.1796240372469466e-09
+              },
+              "maximum_fraction_of_accepted_age_tolerance": 0.06361233348354291,
+              "tolerance_policy": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+              "chemical_mass_guard_changed": false,
+              "input_sha256": {
+                "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+                "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+                "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+                "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+                "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+                "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+                "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+                "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+                "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+                "swap.swp": "2e5ac121045a4d9d44c78b074f772e937c7fcb387602dac247f5def4d75d8994"
+              }
+            },
+            "100": {
+              "days": 1096,
+              "initial": [
+                7518.763590471085,
+                0.0,
+                7518.763590471085,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "final": [
+                43366.39445088151,
+                0.0,
+                43366.39445088151,
+                78963.75285134249,
+                0.1398538965165391,
+                0.0,
+                33956.30154104032,
+                0.0,
+                9159.95806279696,
+                0.0022410010666406546,
+                0.13761289544989916
+              ],
+              "maximum_residual_cm_day": {
+                "soil": 2.1586270965157084e-09,
+                "pond": 3.5041414214731503e-16,
+                "combined": 2.1600699011588287e-09
+              },
+              "maximum_fraction_of_accepted_age_tolerance": 0.051887246596683124,
+              "tolerance_policy": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+              "chemical_mass_guard_changed": false,
+              "input_sha256": {
+                "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+                "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+                "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+                "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+                "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+                "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+                "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+                "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+                "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+                "swap.swp": "34a9a711cd7c01918350145a4f17c40226ca7c086cea2e6e086d340e4c584ebf"
+              }
+            }
+          },
+          "generated_sha256": {
+            "boundtop.f90": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+            "mod_b111_age_tracer_substep.f90": "080310258fa67ee8bb30e7270290eba3581798faf08bd326b2bc5d4fcd9c016b",
+            "mod_b111_surface_age_budget.f90": "b6773e7233d3c02edea0d8e8f3b2ad67195957a28ae703d41b6a49efba35666d",
+            "mod_solute_compartment_state.f90": "1de600a1154bb05678c27bef759efba9bbf4d3a332853f862b5fc04d9adb5ba5",
+            "solute.f90": "7df978fac318b306e2aad4728041978ade04f7eafd06414e1b4f3879c70d841e",
+            "swap_csv_output.f90": "fca5a5824f48790dd9c1580243a373f06a50d5ace4f80dcfa01169e09e680778"
+          },
+          "executable_sha256": "ab47142891564ca60eb7efa8c9ec7abef04e833836f127d9eecb8affc47b9eb0"
+        }
+      },
+      "events": [
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\mod_solute_compartment_state.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\mod_solute_compartment_state.o"
+          ],
+          "seconds": 0.2099091000854969,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\mod_b111_age_tracer_substep.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\mod_b111_age_tracer_substep.o"
+          ],
+          "seconds": 0.2865011999383569,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\mod_b111_surface_age_budget.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\mod_b111_surface_age_budget.o"
+          ],
+          "seconds": 0.16917889984324574,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\solute.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\solute.o"
+          ],
+          "seconds": 0.4530150997452438,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\swap_csv_output.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\swap_csv_output.o"
+          ],
+          "seconds": 0.7776804999448359,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\boundtop.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\boundtop.o"
+          ],
+          "seconds": 0.20528910029679537,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\swap_age.exe",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\frozencond.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\oxygenstress.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_main.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\variables.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\mod_solute_compartment_state.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\mod_b111_age_tracer_substep.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\mod_b111_surface_age_budget.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\solute.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\swap_csv_output.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\boundtop.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a"
+          ],
+          "seconds": 0.3713847999460995,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\swap_age.exe",
+            "./swap.swp"
+          ],
+          "seconds": 2.730743399821222,
+          "returncode": 100
+        },
+        {
+          "command": [
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O0\\swap_age.exe",
+            "./swap.swp"
+          ],
+          "seconds": 2.7692368999123573,
+          "returncode": 100
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\mod_solute_compartment_state.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\mod_solute_compartment_state.o"
+          ],
+          "seconds": 0.33446280006319284,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\mod_b111_age_tracer_substep.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\mod_b111_age_tracer_substep.o"
+          ],
+          "seconds": 0.5893099000677466,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\mod_b111_surface_age_budget.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\mod_b111_surface_age_budget.o"
+          ],
+          "seconds": 0.1739672999829054,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\solute.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\solute.o"
+          ],
+          "seconds": 1.3792580999433994,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\swap_csv_output.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\swap_csv_output.o"
+          ],
+          "seconds": 2.6359100001864135,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+            "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+            "-c",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\boundtop.f90",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\boundtop.o"
+          ],
+          "seconds": 0.20985170034691691,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\swap_age.exe",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\frozencond.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\oxygenstress.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_main.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\variables.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\mod_solute_compartment_state.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\mod_b111_age_tracer_substep.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\mod_b111_surface_age_budget.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\solute.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\swap_csv_output.o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\boundtop.o",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a"
+          ],
+          "seconds": 0.3037636997178197,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\swap_age.exe",
+            "./swap.swp"
+          ],
+          "seconds": 2.4548808000981808,
+          "returncode": 100
+        },
+        {
+          "command": [
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-provider-original-host-v2\\O2\\swap_age.exe",
+            "./swap.swp"
+          ],
+          "seconds": 2.3297059000469744,
+          "returncode": 100
+        }
+      ],
+      "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+      "SWAP5_activation": false,
+      "whole_scientific_equivalence": "NOT_QUALIFIED",
+      "retained_failure": {
+        "status": "FAILED",
+        "error": "AssertionError(('04  0.00000000000000000E+000  4.23674556659528753E+004  7.85824337030851020E+004  1.39853896516539095E-001  0.00000000000000000E+000  2.76653084784060484E+004  0.00000000000000000E+000  8.54980717163222835E+003  2.24100106664065464E-003  1.37612895449899159E-001\\r\\nAGE_CUMULATIVE  4.22432868505484148E+004  0.00000000000000000E+000  4.22432868505484148E+004  7.86587669672587508E+004  1.39853896516539095E-001  0.00000000000000000E+000  2.78657787229289970E+004  0.00000000000000000E+000  8.54983900668739625E+003  2.24100106664065464E-003  1.37612895449899159E-001\\r\\nAGE_CUMULATIVE  4.21456243595806518E+004  0.00000000000000000E+000  4.21456243595806518E+004  7.87350764385912189E+004  1.39853896516539095E-001  0.00000000000000000E+000  2.80395434366725203E+004  0.00000000000000000E+000  8.55004625524411131E+003  2.24100106664065464E-003  1.37612895449899159E-001\\r\\nAGE_CUMULATIVE  4.20349143118737557E+004  0.00000000000000000E+000  4.20349143118737557E+004  7.88114603138303064E+004  1.39853896516539095E-001  0.00000000000000000E+000  2.82266373596185003E+004  0.00000000000000000E+000  8.55004625524411131E+003  2.24100106664065464E-003  1.37612895449899159E-001\\r\\nAGE_CUMULATIVE  4.19325406029621445E+004  0.00000000000000000E+000  4.19325406029621445E+004  7.88876901764874929E+004  1.39853896516539095E-001  0.00000000000000000E+000  2.84047209439395592E+004  0.00000000000000000E+000  8.55056624249184460E+003  2.24100106664065464E-003  1.37612895449899159E-001\\r\\nAGE_CUMULATIVE  4.18544732919569942E+004  0.00000000000000000E+000  4.18544732919569942E+004  7.89637528513424913E+004  1.39853896516539095E-001  0.00000000000000000E+000  2.85585347340737935E+004  0.00000000000000000E+000  8.55088243821776268E+003  2.24100106664065464E-003  1.37612895449899159E-001\\r\\n Swap normal completion!\\r\\n', ''))"
+      },
+      "controller_commit": "530c3a960620516ea92031af01699a05b62d401e"
+    },
+    "Ubuntu": {
+      "status": "ORIGINAL_HOST_REAL_AGE_PROVIDERS_FULL_O0_O2_LEDGER_PASS",
+      "source_commit": "ca0356cfdec82853bd3c3f8f0eb611ea70e258dc",
+      "profiles": {
+        "O0": {
+          "cases": {
+            "0": {
+              "days": 1096,
+              "initial": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "final": [
+                41854.473291957154,
+                0.0,
+                41854.473291957154,
+                78963.75285134256,
+                0.13985389651653402,
+                0.0,
+                28558.53473407355,
+                0.0,
+                8550.882438217775,
+                0.002241001066640284,
+                0.13761289544989458
+              ],
+              "maximum_residual_cm_day": {
+                "soil": 2.1731792754220436e-09,
+                "pond": 6.019490461639521e-16,
+                "combined": 2.174622228384021e-09
+              },
+              "maximum_fraction_of_accepted_age_tolerance": 0.06346635567820948,
+              "tolerance_policy": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+              "chemical_mass_guard_changed": false,
+              "input_sha256": {
+                "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+                "potato.crp": "b9eb5c91fbc69f825d980f7631408a5c798b52b257517882f4d3e16c8fcdde63",
+                "swap.swp": "4d47330076c2316a4cf788002e16dee03c04b0803d94885ec9fd3e5e4dd1bc28",
+                "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+                "fixed-irrigation.irg": "0aec1a39acf6c08e57cbbf59222f39877e537e1dfce6fd32c1a60a60b2f85720",
+                "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+                "grass.crp": "6b7d994c3908f198100104f935c05536d0fdce7a56c0ef32286471738ea0e31a",
+                "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+                "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+                "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+              }
+            },
+            "100": {
+              "days": 1096,
+              "initial": [
+                7518.763590471085,
+                0.0,
+                7518.763590471085,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "final": [
+                43366.39445088162,
+                0.0,
+                43366.39445088162,
+                78963.75285134256,
+                0.13985389651653402,
+                0.0,
+                33956.30154104013,
+                0.0,
+                9159.95806279699,
+                0.002241001066640284,
+                0.13761289544989458
+              ],
+              "maximum_residual_cm_day": {
+                "soil": 2.1604463495972226e-09,
+                "pond": 6.019490461639521e-16,
+                "combined": 2.1618893025592e-09
+              },
+              "maximum_fraction_of_accepted_age_tolerance": 0.05193095061249694,
+              "tolerance_policy": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+              "chemical_mass_guard_changed": false,
+              "input_sha256": {
+                "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+                "potato.crp": "b9eb5c91fbc69f825d980f7631408a5c798b52b257517882f4d3e16c8fcdde63",
+                "swap.swp": "e519128124b35eb59bd0bf02be2884ef4e2c0724e54d17fe995d209490d596fb",
+                "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+                "fixed-irrigation.irg": "0aec1a39acf6c08e57cbbf59222f39877e537e1dfce6fd32c1a60a60b2f85720",
+                "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+                "grass.crp": "6b7d994c3908f198100104f935c05536d0fdce7a56c0ef32286471738ea0e31a",
+                "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+                "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+                "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+              }
+            }
+          },
+          "generated_sha256": {
+            "mod_solute_compartment_state.f90": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+            "swap_csv_output.f90": "fca5a5824f48790dd9c1580243a373f06a50d5ace4f80dcfa01169e09e680778",
+            "solute.f90": "7df978fac318b306e2aad4728041978ade04f7eafd06414e1b4f3879c70d841e",
+            "boundtop.f90": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0",
+            "mod_b111_surface_age_budget.f90": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+            "mod_b111_age_tracer_substep.f90": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e"
+          },
+          "executable_sha256": "bad7d9dd9b20f03dad019e8c7fd5f76620c579572ae326a4116d5ae4e01a7c98"
+        },
+        "O2": {
+          "cases": {
+            "0": {
+              "days": 1096,
+              "initial": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "final": [
+                41854.473291957154,
+                0.0,
+                41854.473291957154,
+                78963.75285134256,
+                0.13985389651653402,
+                0.0,
+                28558.53473407355,
+                0.0,
+                8550.882438217775,
+                0.002241001066640284,
+                0.13761289544989458
+              ],
+              "maximum_residual_cm_day": {
+                "soil": 2.1731792754220436e-09,
+                "pond": 6.019490461639521e-16,
+                "combined": 2.174622228384021e-09
+              },
+              "maximum_fraction_of_accepted_age_tolerance": 0.06346635567820948,
+              "tolerance_policy": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+              "chemical_mass_guard_changed": false,
+              "input_sha256": {
+                "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+                "potato.crp": "b9eb5c91fbc69f825d980f7631408a5c798b52b257517882f4d3e16c8fcdde63",
+                "swap.swp": "4d47330076c2316a4cf788002e16dee03c04b0803d94885ec9fd3e5e4dd1bc28",
+                "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+                "fixed-irrigation.irg": "0aec1a39acf6c08e57cbbf59222f39877e537e1dfce6fd32c1a60a60b2f85720",
+                "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+                "grass.crp": "6b7d994c3908f198100104f935c05536d0fdce7a56c0ef32286471738ea0e31a",
+                "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+                "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+                "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+              }
+            },
+            "100": {
+              "days": 1096,
+              "initial": [
+                7518.763590471085,
+                0.0,
+                7518.763590471085,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "final": [
+                43366.39445088162,
+                0.0,
+                43366.39445088162,
+                78963.75285134256,
+                0.13985389651653402,
+                0.0,
+                33956.30154104013,
+                0.0,
+                9159.95806279699,
+                0.002241001066640284,
+                0.13761289544989458
+              ],
+              "maximum_residual_cm_day": {
+                "soil": 2.1604463495972226e-09,
+                "pond": 6.019490461639521e-16,
+                "combined": 2.1618893025592e-09
+              },
+              "maximum_fraction_of_accepted_age_tolerance": 0.05193095061249694,
+              "tolerance_policy": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+              "chemical_mass_guard_changed": false,
+              "input_sha256": {
+                "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+                "potato.crp": "b9eb5c91fbc69f825d980f7631408a5c798b52b257517882f4d3e16c8fcdde63",
+                "swap.swp": "e519128124b35eb59bd0bf02be2884ef4e2c0724e54d17fe995d209490d596fb",
+                "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+                "fixed-irrigation.irg": "0aec1a39acf6c08e57cbbf59222f39877e537e1dfce6fd32c1a60a60b2f85720",
+                "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+                "grass.crp": "6b7d994c3908f198100104f935c05536d0fdce7a56c0ef32286471738ea0e31a",
+                "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+                "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+                "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+              }
+            }
+          },
+          "generated_sha256": {
+            "mod_solute_compartment_state.f90": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+            "swap_csv_output.f90": "fca5a5824f48790dd9c1580243a373f06a50d5ace4f80dcfa01169e09e680778",
+            "solute.f90": "7df978fac318b306e2aad4728041978ade04f7eafd06414e1b4f3879c70d841e",
+            "boundtop.f90": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0",
+            "mod_b111_surface_age_budget.f90": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+            "mod_b111_age_tracer_substep.f90": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e"
+          },
+          "executable_sha256": "d21c39366b46ad428b4fbb4c9d4159efa2044983a1b9cbf2c80471bafd77116a"
+        }
+      },
+      "events": [
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O0/mod_solute_compartment_state.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O0/mod_solute_compartment_state.o"
+          ],
+          "seconds": 0.06982104800002276,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O0/mod_b111_age_tracer_substep.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O0/mod_b111_age_tracer_substep.o"
+          ],
+          "seconds": 0.1220787009999924,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O0/mod_b111_surface_age_budget.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O0/mod_b111_surface_age_budget.o"
+          ],
+          "seconds": 0.025657996000006733,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O0/solute.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O0/solute.o"
+          ],
+          "seconds": 0.20010811299999887,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O0/swap_csv_output.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O0/swap_csv_output.o"
+          ],
+          "seconds": 0.4919662900000219,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/proof/reference/O0",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O0/boundtop.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O0/boundtop.o"
+          ],
+          "seconds": 0.03127222800000595,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O0/swap_age.exe",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_Kavg_Szym.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_MvG_functions.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_RIA.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_cropdevelopment.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_drainage.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_meteo.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_out_PEARL_ANIMO.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_runon.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/RWU_micro.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/WC_K_models_04_11.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/arrays.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/boundbottom.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/calcgwl.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/description.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/divdra.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/drainage.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/fixed.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/fluxes.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/frozencond.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/functions.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/headcalc.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/hysteresis.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/initialize.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/integral.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/interface_atmosphere.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/interface_plant.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/irrigation.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/macropore.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/macroporeoutput.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/macrorate.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/management_soil.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/oxygenstress.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/params.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/readswap.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/rootextraction.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/snow.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/soilwater.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/sptabulated.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/surfacewater.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/swap.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/swap_base.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/swap_main.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/swapoutput.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/temperature.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/tillage.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/timecontrol.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/tridag.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/variables.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/watstor.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_amendments.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_balancecheck.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_cropresidues.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_declarations.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_interface.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_orgmatn.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_parameters.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_rateconstants.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_watern.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofostnut.o",
+            "/home/runner/work/_temp/proof/reference/O0/mod_solute_compartment_state.o",
+            "/home/runner/work/_temp/proof/reference/O0/mod_b111_age_tracer_substep.o",
+            "/home/runner/work/_temp/proof/reference/O0/mod_b111_surface_age_budget.o",
+            "/home/runner/work/_temp/proof/reference/O0/solute.o",
+            "/home/runner/work/_temp/proof/reference/O0/swap_csv_output.o",
+            "/home/runner/work/_temp/proof/reference/O0/boundtop.o",
+            "/home/runner/work/_temp/provider/build/ttutil-obj/libttutil.a"
+          ],
+          "seconds": 0.0680532100000164,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/home/runner/work/_temp/proof/reference/O0/swap_age.exe",
+            "./swap.swp"
+          ],
+          "seconds": 1.9297718729999929,
+          "returncode": 100
+        },
+        {
+          "command": [
+            "/home/runner/work/_temp/proof/reference/O0/swap_age.exe",
+            "./swap.swp"
+          ],
+          "seconds": 1.973746005999999,
+          "returncode": 100
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O2/mod_solute_compartment_state.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O2/mod_solute_compartment_state.o"
+          ],
+          "seconds": 0.18854730099999983,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O2/mod_b111_age_tracer_substep.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O2/mod_b111_age_tracer_substep.o"
+          ],
+          "seconds": 0.40133084800001484,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O2/mod_b111_surface_age_budget.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O2/mod_b111_surface_age_budget.o"
+          ],
+          "seconds": 0.04482831799998621,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O2/solute.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O2/solute.o"
+          ],
+          "seconds": 1.0049925609999946,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O2/swap_csv_output.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O2/swap_csv_output.o"
+          ],
+          "seconds": 1.9792762880000225,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-std=legacy",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-fcheck=bounds",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic",
+            "-J/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/proof/reference/O2",
+            "-I/home/runner/work/_temp/provider/build/swap-obj",
+            "-I/home/runner/work/_temp/provider/build/ttutil-obj",
+            "-c",
+            "/home/runner/work/_temp/proof/reference/O2/boundtop.f90",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O2/boundtop.o"
+          ],
+          "seconds": 0.06884978299999034,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gfortran",
+            "-o",
+            "/home/runner/work/_temp/proof/reference/O2/swap_age.exe",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_Kavg_Szym.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_MvG_functions.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_RIA.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_cropdevelopment.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_drainage.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_meteo.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_out_PEARL_ANIMO.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/MOD_runon.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/RWU_micro.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/WC_K_models_04_11.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/arrays.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/boundbottom.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/calcgwl.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/description.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/divdra.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/drainage.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/fixed.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/fluxes.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/frozencond.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/functions.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/headcalc.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/hysteresis.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/initialize.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/integral.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/interface_atmosphere.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/interface_plant.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/irrigation.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/macropore.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/macroporeoutput.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/macrorate.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/management_soil.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/oxygenstress.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/params.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/readswap.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/rootextraction.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/snow.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/soilwater.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/sptabulated.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/surfacewater.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/swap.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/swap_base.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/swap_main.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/swapoutput.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/temperature.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/tillage.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/timecontrol.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/tridag.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/variables.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/watstor.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_amendments.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_balancecheck.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_cropresidues.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_declarations.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_interface.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_orgmatn.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_parameters.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_rateconstants.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofost_soil_watern.o",
+            "/home/runner/work/_temp/provider/build/swap-obj/wofostnut.o",
+            "/home/runner/work/_temp/proof/reference/O2/mod_solute_compartment_state.o",
+            "/home/runner/work/_temp/proof/reference/O2/mod_b111_age_tracer_substep.o",
+            "/home/runner/work/_temp/proof/reference/O2/mod_b111_surface_age_budget.o",
+            "/home/runner/work/_temp/proof/reference/O2/solute.o",
+            "/home/runner/work/_temp/proof/reference/O2/swap_csv_output.o",
+            "/home/runner/work/_temp/proof/reference/O2/boundtop.o",
+            "/home/runner/work/_temp/provider/build/ttutil-obj/libttutil.a"
+          ],
+          "seconds": 0.06855743499997402,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/home/runner/work/_temp/proof/reference/O2/swap_age.exe",
+            "./swap.swp"
+          ],
+          "seconds": 1.6882721119999928,
+          "returncode": 100
+        },
+        {
+          "command": [
+            "/home/runner/work/_temp/proof/reference/O2/swap_age.exe",
+            "./swap.swp"
+          ],
+          "seconds": 1.6990206330000035,
+          "returncode": 100
+        }
+      ],
+      "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+      "SWAP5_activation": false,
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    }
+  },
+  "existing_age_owner": {
+    "baseline": "ca0356cfdec82853bd3c3f8f0eb611ea70e258dc",
+    "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "authority_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "literal_lines": [
+      939,
+      987
+    ],
+    "runs": {
+      "O0": {
+        "process_stdout": "AGE_LITERAL_150_STEPS_PRODUCTION_UNITS_BALANCE_INVALID_RETRY=PASS\n",
+        "oracle_sha256": "17510309c5e342874315338068e1ea29738c16bbfede046330f10dcd71aaad2f",
+        "process_provider_count": 2,
+        "surface": {
+          "stdout": "REJECTED_NUMERICAL_TRIAL        1       0       0\nACTUAL_REFINEMENT_POND_CM_DAY    1.502072656275369E+00   1.502072652665710E+00   1.502072644175111E+00\nACTUAL_REFINEMENT_SOIL_CM_DAY    3.980731007077760E+00   3.980731006378781E+00   3.980731004897032E+00\nACCEPTED_WATER_DEPTHS_CM    2.500000000000000E-04   2.500000000000000E-04   5.000000000000000E-04   7.372026734119991E-04   7.148137332359105E-05   5.000000000000000E-05\nAGE_RESIDUALS_CM_DAY   -2.193991516241667E-15  -3.256048859354155E-15  -1.338583107204916E-16\nSURFACE_AGE_REAL_REFERENCE_TRIPLET=PASS\n",
+          "endpoint_sha256": "7afefa2a28a99e5b7ca05bf92e5402005329ce419b41ce8e07548aedc0955831",
+          "fresh_sha256": "7afefa2a28a99e5b7ca05bf92e5402005329ce419b41ce8e07548aedc0955831",
+          "snapshot_negatives": [
+            "truncated",
+            "overlong",
+            "outer_crc",
+            "inner_crc"
+          ]
+        },
+        "physical_stdout": "MATRIX_BASE_DISK_CONTRACT=PASS\nAGE_ACTUAL_LITERAL_FIFTEEN_CARRIER_NEGATIVES_REPLAY=PASS\nMC_SOL01_REAL_REFERENCE_ZERO_POND_TRIPLET_RESTORE=PASS\nAGE_ACTUAL_LITERAL_FIFTEEN_CARRIER_NEGATIVES_REPLAY=PASS\nAGE_JOINT_ATOMIC_RETRY_RESTART_BALANCE=PASS\n",
+        "physical_provider_count": 283,
+        "endpoint_sha256": "e806f01cd856d2f32dc505014b41820acedd75572f41533489d6d3d7fac87b35",
+        "fresh_sha256": "e806f01cd856d2f32dc505014b41820acedd75572f41533489d6d3d7fac87b35",
+        "restart_negatives": [
+          "truncated",
+          "overlong",
+          "outer_crc",
+          "inner_crc"
+        ]
+      },
+      "O2": {
+        "process_stdout": "AGE_LITERAL_150_STEPS_PRODUCTION_UNITS_BALANCE_INVALID_RETRY=PASS\n",
+        "oracle_sha256": "17510309c5e342874315338068e1ea29738c16bbfede046330f10dcd71aaad2f",
+        "process_provider_count": 2,
+        "surface": {
+          "stdout": "REJECTED_NUMERICAL_TRIAL        1       0       0\nACTUAL_REFINEMENT_POND_CM_DAY    1.502072656275369E+00   1.502072652665710E+00   1.502072644175111E+00\nACTUAL_REFINEMENT_SOIL_CM_DAY    3.980731007077760E+00   3.980731006378781E+00   3.980731004897032E+00\nACCEPTED_WATER_DEPTHS_CM    2.500000000000000E-04   2.500000000000000E-04   5.000000000000000E-04   7.372026734119991E-04   7.148137332359105E-05   5.000000000000000E-05\nAGE_RESIDUALS_CM_DAY   -2.193991516241667E-15  -3.256048859354155E-15  -1.338583107204916E-16\nSURFACE_AGE_REAL_REFERENCE_TRIPLET=PASS\n",
+          "endpoint_sha256": "7afefa2a28a99e5b7ca05bf92e5402005329ce419b41ce8e07548aedc0955831",
+          "fresh_sha256": "7afefa2a28a99e5b7ca05bf92e5402005329ce419b41ce8e07548aedc0955831",
+          "snapshot_negatives": [
+            "truncated",
+            "overlong",
+            "outer_crc",
+            "inner_crc"
+          ]
+        },
+        "physical_stdout": "MATRIX_BASE_DISK_CONTRACT=PASS\nAGE_ACTUAL_LITERAL_FIFTEEN_CARRIER_NEGATIVES_REPLAY=PASS\nMC_SOL01_REAL_REFERENCE_ZERO_POND_TRIPLET_RESTORE=PASS\nAGE_ACTUAL_LITERAL_FIFTEEN_CARRIER_NEGATIVES_REPLAY=PASS\nAGE_JOINT_ATOMIC_RETRY_RESTART_BALANCE=PASS\n",
+        "physical_provider_count": 283,
+        "endpoint_sha256": "e806f01cd856d2f32dc505014b41820acedd75572f41533489d6d3d7fac87b35",
+        "fresh_sha256": "e806f01cd856d2f32dc505014b41820acedd75572f41533489d6d3d7fac87b35",
+        "restart_negatives": [
+          "truncated",
+          "overlong",
+          "outer_crc",
+          "inner_crc"
+        ]
+      }
+    },
+    "input_sha256": {
+      "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64": "d28c2def250392ff62c37c20eae5c3bffca03870915baf88b4816a0084bc17dc",
+      "tests/nut-sol/run_age.py": "af9eee0b141598d46f3a537f7539d4dfabcf2b087a2324d050b4bfe5eb80c568",
+      "src/process/mod_solute_compartment_state.f90": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+      "src/process/mod_b111_age_tracer_substep.f90": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+      "tests/nut-sol/test_age_process.f90": "79038a3b7d040bc44bcff366b8dbd4c1fd294224e492ef5e9f7b700b7e930346",
+      "tests/physics/test_ppa_wu05d2_mixed_application.f90": "ee21037290dedcd5d6e39a27b556f049ebe7f9a12ae00d5256423bbc4a87e59d",
+      "tests/modularity/low_air_consistent_grid_stubs.f90": "848877df82c52366a0bc6bd80c160600de68d59f4862d156244a5adedd3a9217",
+      "src/runtime/mod_fmr_runtime_core.f90": "797675140b081f80794a0490d46eeda5d4a777292bdd1bd5154d0cb0b1ab7d05",
+      "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+      "src/process/mod_soil_temperature_contract.f90": "b3409482caf0487bdf9af738afcb098733d2c34d565f3bde18028b5d5e785405",
+      "src/runtime/mod_fmr_thermal_substep_receipt.f90": "283cf6eda8a9ea4fbfb97ecdc77652e45db1fa6b53f357ab6ec309b4de5e76e4",
+      "src/process/mod_solute_macropore_exchange.f90": "ecb3a215a6e692730d23a0ae8289e203c428dd78ab647b53cedb9e23fbd32864",
+      "src/process/mod_solute_mobile_macro_salt_transport.f90": "1228c8c6768f82d27081cbb4c0915e7ec8412376a9dc84963f2bc6dc35da354c",
+      "src/runtime/mod_fmr_water_flux_trace_contract.f90": "9554ff2733f07ee40dd3c7d63ca1fd2504c3d6767b0465319fd74f512edb9912",
+      "src/process/mod_root_salinity_response.f90": "4ef0bf62ae7abb43d283c82370ae6aa102f8f4d9cc96ecd8617b64f91fbb448a",
+      "src/process/mod_solute_water_face_flux_reconstruction.f90": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
+      "src/process/mod_solute_mobile_salt_state.f90": "7e9463600dd47e4f9a9b05f6f4a8ab68684c383d7dabc80195c212c6da920094",
+      "src/process/mod_b111_solute_sorption.f90": "0eef10b501db3ab8e60715c24f7b5e403166b4007288a5ef8b31f6280490f7eb",
+      "src/process/mod_b111_solute_decay.f90": "601c4b77d33520d023286b44b00a658337417c76ee3a12d51e25674421447b9c",
+      "src/process/mod_b111_pond_solute_exchange.f90": "e78834e5ecd4cb8e074549e8bc031ce9a6964c13d098fbc56736f8cbd61e1ed3",
+      "src/process/mod_b111_reactive_solute_substep.f90": "175176481a5c3620e0d1429b15b74e3bdaaaa1f4a3167e12851174d743ef081b",
+      "src/runtime/mod_fmr_b111_matrix_solute_route.f90": "4aba97dbfaee4cd765fe23a0379e85bc378bcb445221a8245cecb3ff01a998f9",
+      "src/process/mod_b111_persistent_pond.f90": "214a7c62f943b6188d69dcd99fd5bb684c87ff9f4287133b4d17df9c360eccc6",
+      "src/runtime/mod_fmr_b111_pond_solute_route.f90": "a4e7ba25f17d61e6dbb7956d30d4c2ebdd02531f2b4724e268b0f88e09d15ea0",
+      "src/process/mod_pond_water_temporal_difference.f90": "59f9dfe1d7d30d269669ea50b5a8675b77d534f44acc95d1c50ac3d967737afb",
+      "src/transaction/mod_fkt_temporal_indicator_history.f90": "f17deb9c343d17dc426689a589080048c208c38171b2a967ca9650211f3596db",
+      "src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90": "78b67df4e9f9565af37f11e84ec1e008617a0c9144a1d62bd6ae4e2f106893f8",
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+      "src/transaction/mod_accepted_trajectory_directional_publication.f90": "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8",
+      "src/runtime/mod_canonical_contracts.f90": "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b",
+      "src/runtime/mod_canonical_interval_runtime.f90": "1a3e57b9a2d58b11e2be71f55f36e3f4dde0c988cb0010bcfc42f393be9d8384",
+      "src/kernel/mod_kernel_transactions.f90": "ae14f20d6582699f3a0f575a09c62c95e84e7a7b8048cfb9b188faf47b41e308",
+      "src/runtime/mod_fmr_checkpoint_orchestrator.f90": "039ab9813d0fe3f84d2d04fdea0e263099c393ebff23995ce545f0ef20300585",
+      "src/adapter/mod_fmr_mode7_temporal_head_envelope.f90": "729a425e6c8e6a32819ab8aaafb8bf40add5df31cf346fa9ecbca88466f39426",
+      "src/runtime/mod_interception_source_window_runtime.f90": "aef9e30f3463b8422301d2d68d4b7f58db355a90e1ec3313ef6918d496caa6d2",
+      "src/process/mod_rutter_interception_process.f90": "7d0bc19366a331d793860e1b22e3407c682b64158a86eb6f59d032e325af17ab",
+      "src/process/mod_rutter_event_integrator.f90": "8033bcca89c8d488db2d754f1b345234e4dcea5f2b8fc7aad5ca45abab91de5f",
+      "src/runtime/mod_rutter_source_window_processor.f90": "8a9ae57b3956ec7e5418d0b450f3158a7cf947a3f25367d0f397270f633c25f5",
+      "src/runtime/mod_fmr_bottom_thermal_carrier.f90": "11bd9843d454f2e64295afd8b7a1e120de3c5d048af3f217e15fb8724b1e9ead",
+      "src/runtime/mod_fmr_top_sensible_boundary_carrier.f90": "1f18e99142f8ef30c1684e31af3ab21fea54b85e875aa69a22001c9c1a4a4d1f",
+      "src/solver/mod_soil_water_solver_contract.f90": "91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c",
+      "src/solver/mod_b110_default_mvg_provider.f90": "9f1806a45f759bb047b97fcd55a4e88339e4aaa111cb58b2fabe1cea65567f11",
+      "src/process/mod_restricted_surface_evaporation.f90": "7f35440dd71189668c0259d44092a1262f8d09791971347fdfd1f7e6cbb2c475",
+      "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "e622d52f8edd35cd50e1235226e52570c9be0e8e345c632b6b8f2e00a6fbcfcf",
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "c863927a8974a5753b71fe6d6d19e995576af102446953ca9527797cf78e767b",
+      "src/solver/mod_b110_source_sink_provider.f90": "9f77a9fbd2f79b93aff97f8f5bee3ba8d7314a9d179c2fb3f3a0b93de33f118d",
+      "src/solver/mod_b110_root_sink_provider.f90": "7679dec5f23ea59ceabd3f5a1f7de65b30728b4ca6999dc33d499665acd0cd2e",
+      "src/solver/mod_reference_richards_workspace.f90": "cb899e79f1cb667d852ea97342efaa4924b90cbb2a1529629819291012273f5e",
+      "src/solver/mod_reference_linear_solver.f90": "d2becea870d10dd954e1c3d3072992ccea0d85e3237fd159050379160f13fd33",
+      "src/solver/mod_reference_richards_state_binding.f90": "11609ee59a2f1a888c408c611a54b773f931bb5e0b5c46bd3ebb4a016bcf32d2",
+      "src/solver/mod_b110_default_mvg_directional_provider.f90": "40ed0f09d7ab29007cb89008c9e95d9b8dee2be882972775a8385798ebffe55b",
+      "src/solver/mod_b110_direct_retention_core.f90": "6bdc5210911803a9b36e41b38aa706c92b8cab3e30ca797cc6d6be2586153336",
+      "src/solver/mod_b110_direct_retention_provider.f90": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9",
+      "src/solver/mod_fixed_flux_top_boundary_provider.f90": "83fac9a3f6bbae7f097b9f0d72d018b3d8d50553a8325f5a3f7b7f1d86f7e9e8",
+      "src/solver/mod_reference_richards_temporal_indicator.f90": "68b4956d9bf2f2e52ac2623b5f64ce2c0285e8ed7121ca6752212b79e0a72f2a",
+      "src/runtime/mod_a23bu_worker_execution_context.f90": "3bba0d4c16685c6af91e84285d1c296c396c72fcf91978c412ca1ca1d6a8270f",
+      "src/adapter/mod_reference_richards_legacy_binding.f90": "0e5bfb442b265b6536e088a26e93961eca282498c307cafb1372a45c411d0cbd",
+      "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": "62c88eb7012ccd7b2c8c14f98c71ac9ffca0618de2337bf91cc29975540595dd",
+      "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "c09975cb3aeaaaa503868e436900e371c41589475d6c362f6d0d72fbda667c4f",
+      "src/runtime/mod_fmr_soil_water_application_host.f90": "6315a507c697bd033d88bba63403176927841638458879986d7bcf1825a8ae3c",
+      "src/runtime/mod_rossfast_d3r_execution_policy.f90": "5c64376250027ccd4f5dd256ad75e8a87e81e1547156c8851757248fed87a558",
+      "src/runtime/mod_rossfast_d3r_model_binding.f90": "1c4569d6eae9417c6d2adc5760dc76ea3fd4de0267fbb427cc944da1357f32bf",
+      "src/solver/mod_rossfast_d3r_table_kernel.f90": "5c1a4c5f78cd153cb37d02b7f11a0d6c1ced4c36822001979d1fc4311288f4a8",
+      "src/solver/mod_rossfast_d3r_table_provider.f90": "cb5988be404d220f30fa70a1e9920c4e0aa65b3ce53325f0e99cff49f7913ce5",
+      "src/solver/mod_rossfast_d3r_soil_water_solver.f90": "b922853f9c141f1bba14628509db92600bba66d6581b185e012d9c9a746a79fe",
+      "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90": "fba92c8b38224ce2530b83dec8dba4166153f1d63fbf9791d117519dd65b0c3f",
+      "src/process/mod_b111_explicit_cauchy_profile_flux.f90": "ed04df5fc2884cd47a1beab26e79b419dd9146c6a4ed0ed03555d6f98839e79f",
+      "src/solver/mod_b111_profile_groundwater_projection.f90": "c6f190a8fb28a0cf5aa12909e5de043058f333e1710e77a247f27e6b9ecd7c66",
+      "src/process/mod_root_micro_matric_flux_table.f90": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86",
+      "src/process/mod_root_micro_de_willigen_process.f90": "a0923fd2c7dc4e406624e9b0b2d6987a5a6ab05345bd5ee9818d309d4c817db4",
+      "src/runtime/mod_fmr_micro_mvg_table_binding.f90": "64077bd4b29768f4252a5b42e6b8fbc317210d81b56352732b30a9d653d10cc8",
+      "src/adapter/mod_b110_serialized_context_binding.f90": "3c135ba10d55e6cda904e0f0c904512fcce40b8dc41606b02708663edf4f3e28",
+      "src/process/mod_snow_process.f90": "1590a91275f99f3412bf71a263c0fa61371b106810c6a662c249b7d1b3c89293",
+      "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+      "src/solver/mod_b110_smooth_freatic_projection.f90": "9b89f3415f7131ebc1e673245db7403cd06844d916b303ae3440c3de139d93ab",
+      "src/crop/mod_crop_bartholomeus_input.f90": "470c4fd84eb636db1b1d30682c94539db896fa7bb3d1911c36d3c9c1d13fd024",
+      "src/process/mod_bartholomeus_runtime_input.f90": "ff905a0a1a19350a80d156bfaf4c3967a587f90d2c867a8585a3f155d7a5cc97",
+      "src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90": "f8ee306cbdf277d1b9fd296628567b68ea08c07f7c395aa9a855346727d505f7",
+      "src/physics/oxygen/mod_bartholomeus_parameter_contract.f90": "9e71144aa62c3bb3a1b186457e43f5f213b7a90f212619eb4890c5a1ebeab122",
+      "src/physics/oxygen/mod_bartholomeus_temperature.f90": "03576b59a1903aa97c5e2de939d60710074b80ddbe1619c140af121a29064a4f",
+      "src/physics/oxygen/mod_bartholomeus_waterfilm.f90": "878a2a15d178f8516e9f6f3fa433e695c6db2593a007f7a31de85eb469e51f3b",
+      "src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90": "77d1ed769212137cfd7aebfd10b1d845939e6e7385e0ccb73ac079f5672d92c1",
+      "src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90": "a7189411fb26d7720d32ac4ae22be5ec6b08ecff083edcc1839d66df0a39c08f",
+      "src/runtime/mod_fmr_bartholomeus_activation.f90": "612e72478a24e0ab106a77f680510db119f4f578303bf1dac856340e4fc27a15",
+      "src/runtime/mod_fmr_bartholomeus_contract.f90": "bd9678ae1133544c036b78b8e36e2cfaac2b520ea3f321a6f60a7c74854474cb",
+      "src/physics/oxygen/mod_bartholomeus_micro.f90": "9dae62dc9c7990e700acb979ea0994b7640e0473cd49fd2154acfcc52fb539d6",
+      "src/physics/oxygen/mod_oxygen_macro_zero_depth.f90": "2b2f3896b44767f15dbd2099ed21d3f77c828899efdaf4c2bc1e77f3f4082b1f",
+      "src/physics/oxygen/mod_bartholomeus_macro.f90": "69260aa8dfde150853d09ee243efb164d82205d8be4cff6f6fffb07a0aed4dd4",
+      "src/physics/oxygen/mod_oxygen_scalar_bracket.f90": "8821205d51b0142f0aec02700c6617181e39c5586473716d978fd53eac311cf6",
+      "src/physics/oxygen/mod_bartholomeus_response.f90": "982a5b04ac67677f74a65087986bfdecfe0508b507a4cdfd7c53f526cd5515af",
+      "src/physics/oxygen/mod_bartholomeus_microbial.f90": "2056fcee48425d543daaf3a28e7eb7f58346a5566c8a74c458456fb73774bea3",
+      "src/physics/oxygen/mod_bartholomeus_response_assembly.f90": "5db54d54f7e5cafa641512bd5c2409b1d0d9f4b257e4f575c09ff93e4265a6fc",
+      "src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90": "c3fff3222e11ba39ee73b727f56fd12fab4e48b8c811348b9be2cf8cfbc27afc",
+      "src/physics/oxygen/mod_bartholomeus_profile_response.f90": "76f8bde09cd0b283608ff60e76b42f635d937af725d4be134094b902686b24df",
+      "src/physics/oxygen/mod_bartholomeus_factor_provider.f90": "6b4afcc18af72ddbb9f11a48993dfb90d4bd6ac0afac1b705751a7c1b7154f79",
+      "src/process/mod_root_water_uptake_process.f90": "0b6347fe91fd5174908f0966c4fe2bdf2084e4cf8baa945b7a4f3a0be0d2ca14",
+      "src/process/mod_root_uptake_oxygen_composition.f90": "a5e04d82ed7f6faea1d76be0ac81cffdde3cda14e0523075cd441ea3928c927e",
+      "src/runtime/mod_fmr_bartholomeus_execution.f90": "a74bf2815e533704b79bdc1de4442d9746e23825d39695b70d98dec7704731ea",
+      "src/process/mod_root_uptake_compensation.f90": "8d462ca72adc2de88946408449d88c3739c46d97cabd954288b878a6c0cbb230",
+      "src/process/mod_frost_geometry_effect.f90": "a1b025631d4f9eed58e3f5f08d22aaa965f9a77c0933b35305812e6f47b3d212",
+      "src/process/mod_frost_bottom_boundary_effect.f90": "e1a80b791552a25beae21851e273cc39a7a522fc3c975031a724c2005a4cda68",
+      "src/process/mod_frost_drainage_effect.f90": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900",
+      "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+      "src/process/mod_drainage_spatial_distribution.f90": "29dcd8b23ac76b032857202cbd7ae670f26e18cd04a7f85dafb662773f3b6ca6",
+      "src/process/mod_frost_divdra_drainage_effect.f90": "1cf2bf1d292af041ce96208045484961b4b730ba7325141bb5ecafafa48cecca",
+      "src/process/mod_drainage_b19_separate_infiltration_adapter.f90": "66c2307df33223dc3d0db31a08987427438841c58c47c89eaf4835a6f46ca2f0",
+      "src/process/mod_frost_multilevel_divdra_effect.f90": "50176734b0751b6bee4bad3b2ec5975badef94145d1124c405bf49d494a8b15f",
+      "src/process/mod_root_frost_stress.f90": "336d85f1fe094b2b85c999491467c4a83de37898c1da941738d81050d82421a4",
+      "src/runtime/mod_root_uptake_compensation_execution.f90": "638b64fdefb019673bee37ee71ce7f293b965206dd26544bea12c9a2b21d021d",
+      "src/process/mod_drainage_process.f90": "4ad68b1b1fc1e4b58737ea94f11a899cc05079e11bd46b910c0e88ab568ce66b",
+      "src/process/mod_drainage_tabulated_response.f90": "84672d1c500c163c38bf98dbe0224559fd6a27189a95fde8911bdcce2f490f9b",
+      "src/process/mod_drainage_hooghoudt_equivalent_depth.f90": "2e4331a9b286476cd2a7e0553ba590c0cf017c4941ae6f141e6edce47c3ac3aa",
+      "src/process/mod_drainage_hooghoudt_ipos1_response.f90": "1eed82b76a59048bbf50d02831e7236a50452f0067417d26a4fca6f44868a690",
+      "src/process/mod_drainage_hooghoudt_ipos23_response.f90": "efdb4510aab0833d06950cc6dc8f1853678189ad9b29b02de985c7e4bc9ca93d",
+      "src/process/mod_drainage_ernst_ipos45_preparation.f90": "a562c0cd43edc5b21af47f5977ae001c896d9e288e992a3501972ea267ecb5d5",
+      "src/process/mod_drainage_ernst_ipos45_response.f90": "9263511e6bc86e704021d7bbd84d8f277e220f724bb49233d7512777b7147f00",
+      "src/process/mod_drainage_empirical_interflow_response.f90": "32fd0dc80f4f62ce3158836769508fa6e0dab8c9a3a38e02280c0596ebb89c70",
+      "src/process/mod_drainage_extended_exchange.f90": "598043509c62414918fea3d61e76c6d146bb76f3413318c2444e3181bae2c292",
+      "src/process/mod_drainage_multilevel_aggregation.f90": "42444d0719dc9d8470a7803acad3aa328cb3c7fb080e84b0ae568f4df501967e",
+      "src/process/mod_drainage_dramet3_response.f90": "690a80a5a91dcc5f3e02883bf1fd9800e5d0efbab163e6255cac1b1723372976",
+      "src/runtime/mod_fmr_drainage_response_binding.f90": "5a7f08da264771b1cbc63228f882fec59d01c662b11fc15ef5d3a5535c6d8ef6",
+      "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90": "94f5852d14dfdfbdad80b37335d6eb00d365091efb47953467a89cbf4c1f504f",
+      "src/runtime/mod_fmr_drainage_qbot_directional_binding.f90": "c5bbaeb07083f66ad95271ffee70fce6174ec6140e0e843aafde2c144002c62f",
+      "src/process/mod_restricted_soil_temperature.f90": "74c7e098896637be38faa24a3e685ea79640be5b37ada80721fb42156794dd4a",
+      "src/process/mod_frost_hydraulic_effect.f90": "aa202064505f4d5e21e6da6900fe2c6ba9ec5bb3e653f41990e367abb10d74e5",
+      "src/solver/mod_frost_hydraulic_provider.f90": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a",
+      "src/process/mod_restricted_fixed_weir_surface_water.f90": "72f2b91e8e4a882b8fc71934ba98d816bd5999cb4e11ef842ce550d742a0e158",
+      "src/runtime/mod_macropore_continuation_state.f90": "ce0e8289429f7bacfb4c04ce49fbec4a6d2500f0d383ce7fb8970e34eb216dc6",
+      "src/process/macropore/mod_rfm_unponded_activation.f90": "9b94fe35abea3fa47c1a38a46b047ea25603467b91c535dbe890b0042c9b9962",
+      "src/runtime/mod_rfm_unponded_surface_composition.f90": "480e5aaca15bc97df642346c82914df0dd31b3b5fa73936ea540be4cc3ae8f90",
+      "src/process/macropore/mod_rfm_preferential_router.f90": "6c7b1c03106410631cf4916e3ea7175269da6c608b727e1c185dd94ad6a5c009",
+      "src/process/macropore/mod_rfm_surface_event_age.f90": "fb94b2d9f1139e7b4980657a939c172d00be4ab1adca1cc968e8f8b2e5dcce15",
+      "src/runtime/mod_rfm_physical_state.f90": "67815114e53c622088d9716712054376215164523da1189433f6ad537d91641d",
+      "src/runtime/mod_rfm_runtime_configuration.f90": "131e2c004577a779e836d4533e9d750803895b701322ee0abfdba66c4af0210d",
+      "src/runtime/mod_rfm_surface_forcing.f90": "c708c6fdd8a080f91181c37614dc5ca6b56b0a8af36b325bcea7c6c252174784",
+      "src/runtime/mod_rfm_matrix_source_provider.f90": "231f4cf0be4468b095eea2eb4ec61045e1416a8e6035b629fd4ebdcfb45b395d",
+      "src/process/macropore/mod_rfm_surface_sorptivity.f90": "2d17efe9cabeb992e6b3ec01d930351fd23f8c3e2660b9d89d84fc96bf62d90a",
+      "src/runtime/mod_fmr_rfm_activation_binding.f90": "7f9f8bb438e576bcbe9fd3cf0a396f1867a3eae97593ecae5b26c9cbba1a9a2e",
+      "src/runtime/mod_rfm_wall_hydraulic_history_binding.f90": "dd521ce36bda6d2a7ce522d05589c9cf74367c5c592043e5a416737205e84922",
+      "src/process/macropore/mod_rfm_endpoint_release.f90": "9dbf13e578c95f8c8c9cbd0fdf093a1ad82b3ec48ec0ce405850fc92d39c5284",
+      "src/runtime/mod_rfm_ic_storage_geometry.f90": "c28e25843b5df880f057a12af5dfede57c487dbf119998a61075799d6411f6fe",
+      "src/runtime/mod_rfm_ic_hydrostatic_head.f90": "98097a135a124829a14abe175ac756bf9a11d8c8a9beb20838bac3e76e65d4e5",
+      "src/runtime/mod_rfm_whole_column_candidate_ledger.f90": "7eca15037600639bb96baf1cbf292ed556759f525e7352bdb7c8ea8455d84dc8",
+      "src/runtime/mod_rfm_production_candidate_composer.f90": "1de30b8af1dcf4ff1b026a3e886a66af4fabd39444b1a7b2f3a426743c6ed286",
+      "src/runtime/mod_rfm_live_trial_preparer.f90": "4c204b7b5afe40080443d2e8d9a33475be0ae63608e1d64b575b65b0405f6966",
+      "src/process/mod_solute_mobile_advection_dispersion.f90": "e619f6e1a022a43ed83d39e89ddaad1a97e4ad3a0603bb24023914a2dbe64c3b",
+      "src/runtime/mod_fmr_base_salt_temporal_policy.f90": "5723d4bdaf6cea1a6c589b29b2dc6e590d1d5a943f4ba8215436cf409f15d179",
+      "src/solver/mod_b111_hysteresis_state.f90": "f2011f882aae813c14f64a99237ed68fab9aee6bb21414290283b2aa2c483f5a",
+      "src/solver/mod_b111_legacy_hydraulic_provider.f90": "8ec995d888d4f7017b30dca674e544c84d2fb060e341cb5cafa9f92c52821fef",
+      "src/solver/mod_b111_extended_hydraulic_provider.f90": "dba10db02b0fc545ee00c907c725cf73083400af83531ff8276a14a074574633",
+      "src/solver/mod_b111_conductivity_power_tail.f90": "07b76a826041822277d2732c47c141e65d80ae959be87cea6df8506565f5f3bb",
+      "src/solver/mod_b111_linear_table_provider.f90": "5a364c13d21d6c79557714acb289cbf9b4578dfc3f06716edb655807d2b73b85",
+      "src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90": "75e49a060ff8bf5b8e45a95ac0ea7872daf7380afab95de244780e92f02dac94",
+      "src/process/macropore/mod_ppa_wu05a5_top_partition.f90": "86f0af006c8ae3a2d58124b0bd1fa2a61d85813051da38eef84c8b9df946a001",
+      "src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90": "6482e11f9c95f5e8ec338507238a230702355f7b53be311816f341d6a6cb10b7",
+      "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90": "98cb4da7c906dd01525ca630707a8d5b4a11e4871b24b75126fbacf8a8e418ff",
+      "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "51043eddc6680fbc1039998435000b73c569c998c9e86cca8f10c9f077b0d35b",
+      "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81",
+      "src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90": "d41f24f73ad9fbb0fa4ef1557437faae83f73b8f759cf0634d72685fc2ec02e4",
+      "src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90": "62bdc0e3b5891c41737f24f2b918182f495f15cbccd37642e3c7baf7e0503cd6",
+      "src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90": "f628543f5e04d39c0dc99532ac391b672314709877f93a001684336b50232bfb",
+      "src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90": "ea1b5008abcf6241b82acc38e33526ca0833f9ac592884f729c42655c1b855c9",
+      "src/process/macropore/mod_macropore_dynamic_shrinkage.f90": "aab6a789802c575adcb5e37dd17f5d925cb416a4d9c293802c9df0069f1ad8fb",
+      "src/runtime/mod_fmr_macropore_configuration.f90": "8c71e63e5d4787b1c1b8d167542c3226bcc37ac1c607c59e0823f663c149283c",
+      "src/runtime/mod_fmr_macropore_top_input.f90": "4a5c959849a3937be3535948648a77ab01d86c357372255a57ac48be26f1f5ad",
+      "src/solver/mod_macropore_exchange_overlay_provider.f90": "0fc247a6ccc9bd233cf62ba45feca9692d2c96909f374999c03708c1665a3459",
+      "src/process/macropore/mod_macropore_standard_storage.f90": "fef24207ca3bc27547a58a73277b8d93ff6f24f4b6becf9fff4447dbe5662af8",
+      "src/runtime/mod_macropore_standard_rate_adapter.f90": "d28e618a53458724d7f222bc2fbd3a5d46aed4faad9752334f86d2d656c693ab",
+      "src/process/macropore/mod_macropore_covering_layer_input.f90": "3de7c233ba7d2f7653d403f86b085749806fe5445078db9729d39cb6c77bb554",
+      "src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90": "0c86ae585e64abe3e9663dcaa3e57bb95c3ffdc0552a36305f7c926fe6a3b1e6",
+      "src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90": "9fa872a01226a6206ffb0d20eb3629ebe96f1ca27cb3641d4b8c2881e7577b73",
+      "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90": "4f364b414cad429ef92ccb8edcd47b76b12c5cd31fd606c9302a56e14746ea76",
+      "src/runtime/mod_macropore_single_column_runtime.f90": "c8ebc71e10736e823d7cbed8d7b7e0d2771e261440ff6dcbe766cfaf1886b015",
+      "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90": "3928ba93416c2271d93d275e0688a4656256558cc68e65b6aff615663fcad7ff",
+      "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90": "bc61897382b2969c899e271ef41d495f7b06d378d5c7a6bf6490d506d232f527",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "8c7499de470536467285bbfb7a7e266b053b531fd9494677c12f47f7f1af1d51",
+      "src/kernel/mod_kernel_committed_persistence.f90": "5b7de4dc602dbd9c83cf121e984d52b3cb99757efaf1a16a4a219881f8bfb147",
+      "src/crop/mod_wofost_actual_biomass_state.f90": "c451172db39746eabfdea0c681cd9c9bb5d7e8047ec1044e28f995d9747a13ac",
+      "src/crop/mod_wofost_rate_table.f90": "611b2891e64ec992a395174117d029f9f0d196ca3c04a18e858a9ced809d8777",
+      "src/crop/mod_crop_root_depth_dvs.f90": "17ea93688481fd2abc0dd7bc552ddf77583e69e7e29bca30649485fcfdc1e161",
+      "src/crop/mod_crop_root_depth_biomass.f90": "cad3f316fa4ad3bd3c3a2992c07782c5fcb2794347b6b7ea4ab9eb2ff01095a3",
+      "src/crop/mod_crop_root_profile_static.f90": "79c54eedac5126236b7ecc3e02d5485012a4f0438ff79e7677452dd9a9f47b95",
+      "src/crop/mod_crop_root_uptake_input_contract.f90": "01c08474c08d65cfca15055acb4aaaea1ca54968c8ae0d408a377a32d6d9f176",
+      "src/crop/mod_crop_root_biomass_distribution.f90": "8254bb464d9e894243c1de7f4e7a69b81b1cd08b284b54534d20f797ee55d6c9",
+      "src/crop/mod_wofost_crop_owner_state.f90": "889ee90ae98eeec10aee37b52497b7b472d572d4815c475d911dedf7b2ce0401",
+      "src/crop/mod_wofost_one_day_structural_evolution.f90": "a119d2b9073cee7b2888bb10215ca1f5202bb82c1f6d5ff915b9f6819706b88a",
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": "59776899b96533123884b9331cb820b139772ef3633d79a96f09c34019442484",
+      "src/crop/mod_wofost_rate_parameters.f90": "bb7a73d609e745d597a37622bb18a3bc627f923e30b1c3ca68f503fd3a0bea4b",
+      "src/crop/mod_wofost_grass_development.f90": "133f0481884476ed6898fb0474ede3dd8a9031dd4fe3545b2d518015f9f17f78",
+      "src/crop/mod_wofost_one_day_rate_state_view.f90": "db22b520ffbefbcd8ab81e15a8738cb70f1ac51f5614c357033af89098e39b55",
+      "src/crop/mod_wofost_potential_shadow_state.f90": "2fe40bc73ef2b2835b23a8d781237c5bc1a48cf984cff621a44896be0f9ef237",
+      "src/crop/mod_wofost_prepare_assimilation.f90": "b44d7b38357c49187ad3fcf60935ec2aca78ed365e541ecea5b7045eb40b6796",
+      "src/crop/mod_wofost_finalize_rates.f90": "4b7a212630fb36dcc3bafb797c410e027629a87dca867a826fedfc01e9eb8aa0",
+      "src/crop/mod_wofost_potential_shadow_daily.f90": "0c1751400e6c9ccdeeacfce1aa502e72bb971a2ec9ccbe0cacc1f334a271ca09",
+      "src/crop/mod_crop_root_anaerobic_extension_gate.f90": "453144bafc59803f582fa7f250d8efed99f14b644be6167a2016df0a186404c9",
+      "src/crop/mod_wofost_grass_daily_growth.f90": "a9ceae93bfa57f59741770c621ca96c20c9d72f9625037a17dff2d715435ae28",
+      "src/crop/mod_wofost_two_phase_crop_window.f90": "886cb7c03cecdb76d8da855aecdeae34e15e8314aaf8103342651ed7cda71c79",
+      "src/crop/mod_crop_previous_day_emergence_gate.f90": "bce7b87e514bd78db479ddc1f379bd50484e1966321415a97d5ec2fce50bbcc6",
+      "src/crop/mod_crop_preparation_sowing_preflight.f90": "e85843fd4654c45cd59f56bf2103dc218addde8724097d10c4d656e463558a95",
+      "src/crop/mod_crop_germination_preflight.f90": "d602f3e103b3eb34d14da3a135292f5959308412fda5962813a3b03b5661c411",
+      "src/crop/mod_crop_lifecycle_daily_composition.f90": "f3e6a744107ca12da5feb23fd484d1b2bedbe72cb8a3790f114f661288032580",
+      "src/crop/mod_crop_lifecycle_continuation.f90": "7b48d68384f0621c53b7fcec073131ef048690f12d84478dd29fc45fdaad379e",
+      "src/crop/mod_wofost_emergence_initialization.f90": "c8f8e81a6ac2cbb1ca932884b172a757d06d9adb5ccdff2a6c375aed52066924",
+      "src/crop/mod_crop_root_extension_supply_limit.f90": "463e868dc220e38d95505566af7848bc4d5f96d89e82fe26db4034e2ab9f1208",
+      "src/crop/mod_crop_root_depth_rate_owner.f90": "cbf964fb9669b34b7f1fabafd91998fd9753097e686cf048bdd58c47cafee910",
+      "src/crop/mod_crop_adaptive_root_profile_owner.f90": "d9bfd7487247701597b45d1ac8dcc39a3f6d5bb03c9f929f50a2c69fc996edbc",
+      "src/runtime/mod_fmr_wofost_crop_transaction.f90": "8b88ddc8f31a30aa7e836394cd8cd3c2a0731e7aa6519d0fd7944f166e80a030",
+      "src/crop/mod_crop_weather_day_owner.f90": "7d1f0b9520f7cc86e89be42bb5a1d99813c7f3a0b25e489ea5665fdb794486b4",
+      "src/crop/mod_crop_b111_sowing_node.f90": "b3bbd79b40525db8d56e71765ec8da0ff4349c735002787aefe5833cdd5f98ec",
+      "src/crop/mod_crop_b110_grid_sowing_preflight.f90": "da8868d129f2edd1148191156cd66d2ca4a98541ef47beffef59740e71863a9c",
+      "src/crop/mod_crop_b111_pressure_head_average.f90": "35bdcbac3690323cd92af99ab304058c1deeeaf549e058d593cde234e4747da7",
+      "src/runtime/mod_fmr_crop_certified_hydrothermal_forcing.f90": "75e55d4ca009538ae414b3f6bbafad603830049d52dc49b3104830a375d643ca",
+      "src/runtime/mod_fmr_crop_certified_germination_moisture.f90": "0583671d5e498fe823b240a5741b26b299eac5937af05e09fff48668157bea45",
+      "src/runtime/mod_fmr_crop_certified_daily_preflight.f90": "d157f3c7372a82c915af86cd44040bc12bd7965bdd5ca2f536d1630b6741285c",
+      "src/runtime/mod_fmr_crop_weather_day_preflight.f90": "3b865b5747a0fb96f9bd23b1a9c61ffb7da2c87132e4996c450cb0b3a0738e6d",
+      "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90": "c1251f0e9c4b25b4efd91c1cac7744001d51a42708fd170d0ade9b8acddd371b",
+      "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90": "0ac0ad5d6857ca06c725ba80bc2beb1ee3e66bd8e5f1147bb752357d70d2b7b6",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": "82d83551659fc63c8a3fdf6bd25fac07d6d76021f475ef3e4176c1061739a2e1",
+      "src/runtime/mod_fmr_root_uptake_process_binding.f90": "b29091b566c5b37038f4028b8665a071bee89e6b275c0eee861cce1a8707e8dd",
+      "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90": "18aa7e518ffcf0388a2acfd28d8831e823e5d19e499be76909013d9ead7e525a",
+      "src/crop/mod_crop_et_canopy_view_provider.f90": "f173e16c2ebf8c2a17c770c7fe6a4c41e159f00315b87b17c441654adbb71fb3",
+      "src/crop/mod_crop_co2_response_resolver.f90": "4a19ae96fa65f10ff537ac427961355f9986852a222d5387069c97f20c054e80",
+      "src/adapter/mod_swap_daily_weather_file_adapter.f90": "bcb15e084886674a29775f9c29436236080d21b238c9e5f0130857dd57cd54ca",
+      "src/adapter/mod_crop_atmospheric_co2_forcing.f90": "5df7f04c03335ca75af0b1e25f725cdbb36b4378e2e33d8a93fe135889229cc2",
+      "src/runtime/mod_fmr_accepted_commit_receipt.f90": "f3650457a7ba519c0d9bbd23cba8e4664fa6aad0f901db818fde9e1ad2faeaa0",
+      "src/runtime/mod_fmr_owned_commit_receipt.f90": "9fe2f8d0aa30199bfb8c4c86032c8d99ad0f477404ffa0272077fee883160c56",
+      "src/runtime/mod_fmr_bottom_external_thermal_binding.f90": "dd3e975a8eca60012b45ce6a7739bf17679681472f56f9d845fd64434bd6c8a0",
+      "src/runtime/mod_fmr_bottom_external_thermal_provider.f90": "7636652591748f5cca23e327050fa56249505f4b0453d8f9a193c9bd4c931313",
+      "src/process/mod_liquid_water_sensible_enthalpy.f90": "cdb5a82de7632b2fbd61f7238378dd7675cd0afa0203607e63c9e115d0379431",
+      "src/runtime/mod_fmr_bottom_sensible_energy.f90": "d5b21307928708de5eb863092b68863bee8a6890b500510a8927a8dce1e53414",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "83db4ce1b22f65ccb52db67e258fe8ad647e2862af40b387bad800867395edf5",
+      "src/runtime/mod_groundwater_coupling_contract.f90": "81001c48c7fd98faec9c3612092cd6729c8f98d16b6057ecfc5ecb090b306252",
+      "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "d5f6645e27e8fc89bdc46838fe34e9766e8163b444027f5e6d80ea950759b8e1",
+      "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90": "9dba7109d7247de394e62eeaa1e76bd8235e19845e8f5e74559ed4380b327bc4",
+      "src/runtime/mod_groundwater_swap_transaction_participant.f90": "c13813f8412db1a02cf8ae8eac27d6005a6835a22f60fade196eb0cc3dc3277b",
+      "src/runtime/mod_fmr_groundwater_swap_participant.f90": "8e83fcde89acb6fc23755d671b8ab082fa88758e5a97e1102512d66a55fda6cf",
+      "src/runtime/mod_fmr_groundwater_participant_registry.f90": "2546ad7f7c12410c4f5fbbdcbaa8650c16c26c56acd7283a351dd290dc90310b",
+      "src/runtime/mod_groundwater_interface_mass_ledger.f90": "934b62625685c67f5a3bb8931522609f7b73ed4ab853f06b5249b15ae362aa0a",
+      "src/runtime/mod_groundwater_tile_aggregation.f90": "ef5e5baaec547a06b837cd2b741fb294b58f6c65dde2cf7b5f64b34b3f2220ba",
+      "src/runtime/mod_groundwater_multiswap_types.f90": "3d6523a5170f20eb403faaa1a95fdd21e6f7fd5b28556c712edbe6226f3a8546",
+      "src/runtime/mod_modflow6_swap_predictor_response.f90": "991965a9f04915a3c0ec2520a67e58e92ee05628d7114457fc0556993a1d065d",
+      "src/runtime/mod_modflow6_multiswap_cell_response.f90": "199792d8ba22904a29c182e32b56a5284d11993c8f91f555d45a9303a3d37235",
+      "src/runtime/mod_modflow6_linear_response_backend.f90": "2c00b979b2e9d9d4aace2d764cee86207612799e1a13cb2f791921a190ac03f8",
+      "src/runtime/mod_modflow6_api_binding.f90": "41e920034a93d286ba15a97fd7f75b167e0c504d47d05ea9f8f8e8fa392a70f5",
+      "src/runtime/mod_groundwater_topology_composition.f90": "be23512b29022e3d0105d1f436aba29e06a6aa7a8e888c2796b006980453e3fc",
+      "src/runtime/mod_groundwater_application_plan.f90": "bc60a81df2678b426e772dd73c6400e7e105754dd30051cf48825c618b478134",
+      "src/process/mod_reference_et_demand_process.f90": "e1cb4efe5918dc3c964608405e7556d40f3bfec4ca7655d336a1c8264e85aa24",
+      "src/runtime/mod_fmr_reference_et_demand_binding.f90": "5b4ddc09504e56060f45976e45d1595c687ad59955991053c94a4d59aa2b8985",
+      "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90": "e6b86f7afef5444d3fad5edf473d7ce9c5bc9ef8467eb196933f5ce15519a7ed",
+      "src/runtime/mod_fmr_groundwater_application_context.f90": "7170d9df2504499e078f7852ae26ba8e785cfeabb9f531614ee3b858ee0d89dd",
+      "src/adapter/mod_fmr_groundwater_application_c_api.f90": "3e0fca369acccd17927bb624add24fee950be39a0585c7b2166b2a959400b8e4",
+      "src/runtime/mod_fmr_biomass_root_depth_binding.f90": "7becf1e260a76a0ec50d7ce2fa39d346406ae1e4ba7a161562755346092eab32",
+      "src/runtime/mod_fmr_biomass_root_uptake_input.f90": "7ecf7b64abea9dd671474d2c2655e70a039a1d0e46d0c26c5480a29031535c23",
+      "src/runtime/mod_fmr_interception_source_window_binding.f90": "d6753b7b0ae8af43f2d68958226cd95e0291cd1e06fbd5517b541aba8537364c",
+      "src/process/mod_pmdirect_swetr0_process.f90": "fe57c128bb42d9c124398dc939e27dd5cfc94f9b403a34f99ab161dc2131391d",
+      "src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90": "0e16e9aa538b782fe968b7090d13761f3545c98b8398d27c6bb7580e968e018a",
+      "src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90": "96bcc0955d4f86b4610c6c9c0cfb1511e25081b87a0071b08d5381416971e630",
+      "src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90": "09d61c9a6bfa10e52b39cdf74e677b38070cb07ceef14b25c37c1df576dbf6b3",
+      "src/process/mod_irrigation_availability_policy.f90": "cd75bbfeb2670cc073418305166c3118aae5ef7ebdaf7edeeffd602ae4a4205f",
+      "src/process/mod_irrigation_process.f90": "3be749df2efd7dcc7238df40b25030ad12d0a27318d9d17cce78f2773029ddeb",
+      "src/process/mod_irrigation_root_zone_summary.f90": "3538884374b1d23616abf7fd72ba3796d556a22a97164f1738e71ddee5375845",
+      "src/process/mod_scheduled_irrigation_management_policy.f90": "a9ebed6b6136c88f35b272951d554870aca25769c0d3f1cc15072c3f1160e79a",
+      "src/runtime/mod_fmr_scheduled_irrigation_application.f90": "6c81c2763407bc6f85df6a3d39afb04ca901be33f6753d0a9fec61618d268586",
+      "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90": "eff8bc46e0cd49715dae15d3ab0a4196c09ebe95e556b013607f406fd2e141be",
+      "src/runtime/mod_fmr_sensor_depth_irrigation_binding.f90": "0a8b40f35023fd1bea7d2fd44c3f9d1fe722114207b9aa56d2b98d8b5d1c1bee",
+      "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90": "948e05c4d1bbf5b45dcd728dd2f9627199cc3552ad74bad98e262fe62478a0a0",
+      "src/runtime/mod_fmr_management_irrigation_forcing_binding.f90": "574a893876e2319b87cc6087dfee18a8914fc199fe28d893b03e03e880dffcc3",
+      "src/runtime/mod_fmr_accepted_salt_irrigation_binding.f90": "115c903f631d2ad5656f2728f9857639b290cdbd12999b75f6a0e05b277b4503",
+      "src/runtime/mod_fmr_irrigation_management_restart.f90": "48ca4520df3972ceaa255a4b1d0dd3a3e8224e3e23fbafa5187b97a138c75c17",
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90": "6032785508565a1ccdfce9c28764ab2f31aac84b1241fd3e18f41963df9eb16c",
+      "src/crop/mod_crop_rotation_calendar.f90": "8084e05504a7d6829cf254de03aae6cdcef2feaf456373ce4b912bc881fafa13",
+      "src/runtime/mod_fmr_irrigation_material_root_binding.f90": "b067a5807f691fa7cc07dd547f9d7b13d7ef692b27ba17e688a010cbcd51c40f",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "1e0ff3ccaf43a90bd514d0a5226956fa907b845c48b2986686b76eb47c04bb2c",
+      "src/process/mod_b111_surface_age_budget.f90": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+      "src/process/mod_b111_surface_age_owner.f90": "ee4058b331134ffed68f2c528b56518b9502365fa0117bef0e237fc8d023e855",
+      "src/runtime/mod_b111_surface_age_trace_bridge.f90": "a3754179c3ff63c3d310cf77e2cd79bb4374dbafa10165e8039d99bee7e99c36",
+      "src/runtime/mod_fmr_b111_age_route.f90": "b2bdfb98f883aa7d6b9d7be89f388d5d73626bc0fa009f7764640834cfad87e4",
+      "src/runtime/mod_fmr_restart_state_contract.f90": "42b73466cdf736b459b98da265dc9f5f4563943abc3b1eec25b046a8cec0985a",
+      "src/runtime/mod_fmr_committed_restart.f90": "842d87dc68fef7dda6fbe17371d6ed5e4d3ed1a5fa5d2e5e58d42c12ed088b2f",
+      "src/runtime/mod_fmr_b111_age_joint_application.f90": "c73f6f03df022f394f5db0edad4ad83c1bf454fdd55fd6c51ef77a83cc69e366",
+      "src/adapter/mod_b111_surface_age_disk.f90": "1974b7febd6cd561abbc05ce9484a3f64a4e20c7c2381e445e417d3aa5c0ff32",
+      "src/adapter/mod_age_joint_restart_file.f90": "2103d5becd52336f4d08fbeb0e83ac3a940ea6e1fb2ee3a1fe88dd1893837fbf",
+      "src/adapter/mod_b111_age_triplet_disk.f90": "56222d1954ea91fedc55c7c6cca1b3fafafa2321b8ad1a19e3600b43ce2a4584",
+      "src/adapter/mod_b111_age_snapshot_disk.f90": "57f8131c4db88a49958489bb5e78863e8c3bcc2e1e349bd733165903e6733295",
+      "src/legacy/b1_10_port/headcalc.f90": "862e1ab60ebcc319853a7247c61513a900a90bc418c125a03ce789ff414ed3e9",
+      "tests/nut-sol/test_age_joint.f90": "31478cd3c7e8397bea708be8768c63be5f7b4364332cca03194192faa689dbf3",
+      "app/support/restart_publish.c": "f064226eac3aab1f16c6c1a1068a903d86eef6565ad26a29dee91b0018cf77ed",
+      "tests/nut-sol/test_surface_age_joint.f90": "07a73aebdf3d36f2d96e8b59c0a8ff40494f4450e03d0892996c4ab1ed7ae7f4"
+    },
+    "cost_seconds": {
+      "physical_compile": 165.07706677200036,
+      "physical_link": 0.26630231500000434,
+      "physical_native": 0.5015361339999913,
+      "process_compile": 1.5167792549999959,
+      "process_link": 0.06601228100000611,
+      "process_native": 0.0030056829999978163,
+      "publication_compile": 0.20915511800002662,
+      "surface_compile": 4.2268175920000175,
+      "surface_link": 0.2670447709999877,
+      "surface_native": 0.5553636920000145
+    },
+    "status": "PHYSICAL_PASS_NOT_ADMITTED"
+  },
+  "native_refusals": {
+    "status": "ORIGINAL_AGE_READER_AND_PRIVATE_NATIVE_REFUSALS_PASS",
+    "checks": [
+      {
+        "optimization": "O0",
+        "test": "reader-negative",
+        "status": "REFUSED",
+        "diagnostic": " Data file   ./SWAP.SWP with 208 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in rdadortb: Range error of identifier 'agemltb(  2)' value = -1.0000    , range = [  0.0000    ,  1000.0    ]\n ERROR in rdadortb: Range error of identifier 'agemltb(  2)' value = -1.0000    , range = [  0.0000    ,  1000.0    ]\n\n"
+      },
+      {
+        "optimization": "O0",
+        "test": "reader-above-input-domain",
+        "status": "REFUSED",
+        "diagnostic": " Data file   ./SWAP.SWP with 208 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in rdadortb: Range error of identifier 'agemltb(  2)' value =  1001.0    , range = [  0.0000    ,  1000.0    ]\n ERROR in rdadortb: Range error of identifier 'agemltb(  2)' value =  1001.0    , range = [  0.0000    ,  1000.0    ]\n\n"
+      },
+      {
+        "optimization": "O0",
+        "test": "reader-nonfinite",
+        "status": "REFUSED",
+        "diagnostic": "\n Error(s) or Warning(s) while reading from ./swap.swp\n\n Line Error text                               Somewhere here\n ==== ==========                               ==============\n 1565 After a value this is illegal            [ -10.0 nan]\n                                                       ^-^\n 1567 After a value this is illegal            [ -95.0 nan]\n                                                       ^-^\n  1567  Variable NAN: name already used\n\n  1567  Variable NAN: data type is not consistent\n\n\n\n Number of errors in data file ./SWAP.SWP:   4\n Fatal execution error\n\n"
+      },
+      {
+        "optimization": "O0",
+        "test": "reader-missing",
+        "status": "REFUSED",
+        "diagnostic": " Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in read_AgeTracer: Variable AGEMLTB not present in file ./swap.swp\n ERROR in read_AgeTracer: Variable AGEMLTB not present in file ./swap.swp\n\n"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-negative-bulk",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19616\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-nonfinite-bulk",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Nonfinite original age native state\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad193ca\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-negative-age",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19616\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-negative-output-age",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19616\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-negative-pond",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19616\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-foreign-boundary",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Foreign original age native forcing\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19708\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-changed-production",
+        "status": "REFUSED",
+        "diagnostic": "",
+        "error": "Restored original age state differs from accepted receipt"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-negative-infiltration",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19616\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-wrong-stock",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Unbalanced original age native stock\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19a66\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-negative-day",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age output clock\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19762\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-negative-period",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Negative original age output period\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad1978e\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-nonfinite-period",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age output clock\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19762\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-truncated",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Incomplete original age native state\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad18f14\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O0",
+        "test": "native-overflow-stock",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xad19616\n#4  0xacb950b\n#5  0xad2dc69\n#6  0xad53ee4\n#7  0xad54811\n#8  0xac91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "reader-negative",
+        "status": "REFUSED",
+        "diagnostic": " Data file   ./SWAP.SWP with 208 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in rdadortb: Range error of identifier 'agemltb(  2)' value = -1.0000    , range = [  0.0000    ,  1000.0    ]\n ERROR in rdadortb: Range error of identifier 'agemltb(  2)' value = -1.0000    , range = [  0.0000    ,  1000.0    ]\n\n"
+      },
+      {
+        "optimization": "O2",
+        "test": "reader-above-input-domain",
+        "status": "REFUSED",
+        "diagnostic": " Data file   ./SWAP.SWP with 208 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in rdadortb: Range error of identifier 'agemltb(  2)' value =  1001.0    , range = [  0.0000    ,  1000.0    ]\n ERROR in rdadortb: Range error of identifier 'agemltb(  2)' value =  1001.0    , range = [  0.0000    ,  1000.0    ]\n\n"
+      },
+      {
+        "optimization": "O2",
+        "test": "reader-nonfinite",
+        "status": "REFUSED",
+        "diagnostic": "\n Error(s) or Warning(s) while reading from ./swap.swp\n\n Line Error text                               Somewhere here\n ==== ==========                               ==============\n 1565 After a value this is illegal            [ -10.0 nan]\n                                                       ^-^\n 1567 After a value this is illegal            [ -95.0 nan]\n                                                       ^-^\n  1567  Variable NAN: name already used\n\n  1567  Variable NAN: data type is not consistent\n\n\n\n Number of errors in data file ./SWAP.SWP:   4\n Fatal execution error\n\n"
+      },
+      {
+        "optimization": "O2",
+        "test": "reader-missing",
+        "status": "REFUSED",
+        "diagnostic": " Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in read_AgeTracer: Variable AGEMLTB not present in file ./swap.swp\n ERROR in read_AgeTracer: Variable AGEMLTB not present in file ./swap.swp\n\n"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-negative-bulk",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806ef62\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-nonfinite-bulk",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Nonfinite original age native state\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806ef8a\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-negative-age",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806ef62\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-negative-output-age",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806ef62\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-negative-pond",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806ef62\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-foreign-boundary",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Foreign original age native forcing\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806efb2\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-changed-production",
+        "status": "REFUSED",
+        "diagnostic": "",
+        "error": "Restored original age state differs from accepted receipt"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-negative-infiltration",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806ef62\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-wrong-stock",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Unbalanced original age native stock\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806e93f\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-negative-day",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age output clock\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806ef9e\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-negative-period",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Negative original age output period\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806efda\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-nonfinite-period",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age output clock\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806ef9e\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-truncated",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Incomplete original age native state\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806efc6\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      },
+      {
+        "optimization": "O2",
+        "test": "native-overflow-stock",
+        "status": "REFUSED",
+        "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x4806ef62\n#4  0x48013039\n#5  0x48082055\n#6  0x4809e9c7\n#7  0x480e7aaf\n#8  0x47ff1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+        "error": "Missing {'HYBRID_READY'}, process exited with 1"
+      }
+    ]
+  },
+  "preservation": {
+    "status": "AGE_OFF_PRESERVES_ELEVEN_SELECTED_ADMITTED_CONTEXTS_PASS",
+    "source_commit": "74ea0578d3b033945f96e8bb860eb07fe6dc7ff6",
+    "profiles": {
+      "fixed-point-O2": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-fixed-point-full\\O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 2.120525977034049e-14,
+            "max_kernel_cm": 2.1316282072803006e-14,
+            "max_solute_mg_cm2": 2.0671853985521071e-13,
+            "sum_water_residual_cm": 4.553296758733061e-14
+          },
+          "model_seconds": 0.8991609001532197,
+          "build_sha256": "366c7957b1f7b028dc88de96eeb439c12346273a96eaa8abceeec8cda2b3d38b",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.30818619998171926
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.35090560000389814
+            }
+          ]
+        }
+      },
+      "scheduled-water-O2": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-preserve-water-point\\O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 5,
+          "budgets": {
+            "days": 5,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 3.5348406059870774e-14
+          },
+          "model_seconds": 0.43888620007783175,
+          "build_sha256": "0afa91f91c1faa489e5bd70f441f64f118eb66941981b4584c62747aabc46aa0",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.33388719987124205
+            }
+          ]
+        }
+      },
+      "grass": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-current-named\\grass\\full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 4,
+          "budgets": {
+            "days": 4,
+            "max_water_cm": 1.1178871640203707e-14,
+            "max_kernel_cm": 1.1102230246251565e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": -4.763918436150098e-15
+          },
+          "model_seconds": 0.6073870998807251,
+          "build_sha256": "d904e135a107c2ee6d79c84cb877b4ea2418d0eb26b3cacaadc56e5ae2999a9a",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2552928002551198
+            }
+          ]
+        }
+      },
+      "hupsel": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-current-named\\hupsel\\full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 4,
+          "budgets": {
+            "days": 4,
+            "max_water_cm": 1.0644263248593688e-14,
+            "max_kernel_cm": 1.0644263248593688e-14,
+            "max_solute_mg_cm2": 0.0,
+            "sum_water_residual_cm": 1.6932147958031996e-14
+          },
+          "model_seconds": 0.4313308000564575,
+          "build_sha256": "5e3cdc12f29bb6f4b406ad84eb668230a6ca0e2127388ce552f97b01b6ed55df",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2589595001190901
+            }
+          ]
+        }
+      },
+      "salt": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-current-named\\salt\\full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 4,
+          "budgets": {
+            "days": 4,
+            "max_water_cm": 5.145571468911925e-13,
+            "max_kernel_cm": 5.144773496112975e-13,
+            "max_solute_mg_cm2": 1.2403411631112249e-12,
+            "sum_water_residual_cm": 8.791613270719978e-13
+          },
+          "model_seconds": 0.435319900047034,
+          "build_sha256": "2fec11b032aeb7f9a19a7f129052f7f6c71e44ebb31934b17aec6e1a14168531",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.25607770029455423
+            }
+          ]
+        }
+      },
+      "scheduled-chemical-point-O2": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\scheduled-chemical-point-full\\O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 0.0,
+            "sum_water_residual_cm": 4.334634864586184e-14
+          },
+          "model_seconds": 0.5079947002232075,
+          "build_sha256": "f0f19d7e9ba72072eea71b0596d50026158415e1b9dd3f623064f15ebfae3e62",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.326666499953717
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.31167580001056194
+            }
+          ]
+        }
+      },
+      "scheduled-chemical-interval-O2": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\scheduled-chemical-interval-full\\O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 0.0,
+            "sum_water_residual_cm": 4.334634864586184e-14
+          },
+          "model_seconds": 0.5585485999472439,
+          "build_sha256": "7f73c9676acb348903adf2b76489fcf993009b005dd71eda12bc8be9c6b43162",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.31027619959786534
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3029057998210192
+            }
+          ]
+        }
+      },
+      "aquifer-sorption-decay": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-runtime-full\\sorption-decay-O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 7.507883204027621e-15,
+            "sum_water_residual_cm": 4.334634864586184e-14
+          },
+          "model_seconds": 0.498749400023371,
+          "build_sha256": "1c6cedef6f035a263f7b661fc74702dcd6cf5bed0d5e5cef7b4afb5b38cc8b1c",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.31886120000854135
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3519139001145959
+            }
+          ]
+        }
+      },
+      "aquifer-stiff-loss": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-runtime-full\\stiff-loss-O2-full",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 8,
+          "budgets": {
+            "days": 8,
+            "max_water_cm": 1.4585554986012994e-14,
+            "max_kernel_cm": 1.4585554986012994e-14,
+            "max_solute_mg_cm2": 0.0,
+            "sum_water_residual_cm": 4.334634864586184e-14
+          },
+          "model_seconds": 0.5191350001841784,
+          "build_sha256": "afe3ba20ba4894e38189a17daa94a9e4f13f4312d1227ca58ee5f496430fbf4b",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.34030159981921315
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3809885000810027
+            }
+          ]
+        }
+      },
+      "pulse-water": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-preserve-pulse\\water-surface-history-O2-prefix201",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 201,
+          "budgets": {
+            "days": 201,
+            "max_water_cm": 3.071154441869339e-14,
+            "max_kernel_cm": 3.069766663088558e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 6.788349247413734e-13
+          },
+          "model_seconds": 1.222658900078386,
+          "build_sha256": "d96389b494fe532970c649e2e74b53dbb1cee72aba550b73483468e7b3969e8a",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.44103229977190495
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.33401670027524233
+            }
+          ]
+        }
+      },
+      "pulse-chemical": {
+        "all_generated_sources_exact": true,
+        "provider_flags_inputs_exact": true,
+        "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-preserve-pulse\\chemical-surface-history-O2-prefix201",
+        "physical_csv_prefix_exact": true,
+        "exact_current_source_binding": true,
+        "prefix": {
+          "status": "SHORT_PASS",
+          "days": 201,
+          "budgets": {
+            "days": 201,
+            "max_water_cm": 3.071154441869339e-14,
+            "max_kernel_cm": 3.069766663088558e-14,
+            "max_solute_mg_cm2": 1.5251210396579479e-12,
+            "sum_water_residual_cm": 6.788349247413734e-13
+          },
+          "model_seconds": 1.1978660002350807,
+          "build_sha256": "5cc2e409a9f59a3eff1b29731bce5b0e724d88c8fb8a8c7a78b28e688f723755",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.4545089998282492
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.35646429983899
+            }
+          ]
+        }
+      }
+    },
+    "unchanged_full_periods": "NOT_REPEATED_EXACT_EMITTED_SOURCE_PROVIDER_INPUT_AND_FRESH_NATIVE_PREFIX_CONTROLS"
+  },
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "canonical_admission": false,
+  "legacy_effluent_units": "INHERITED_DEFECT: accumulated q*age*dt has cm day units; division by outper(day) yields cm, not days. Correct mean requires actual exported-water denominator and a matching output interval.",
+  "next": "Correct effluent observer and native output counters with independent real production driver; preserve core trajectories and prior-owner physical source, then qualify current output/native postimage."
+}
