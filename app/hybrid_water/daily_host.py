@@ -1133,8 +1133,10 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
             # Same output-only compatibility already owned by HIGH_PRECISION_REFERENCE.json.
             source,count=re.subn(r"(?mi)^(\s*INLIST_CSV\s*=\s*)'[^']*'",r"\1'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'",source)
             if count!=1:raise ValueError('Missing/ambiguous original CSV groups')
-            source,count=re.subn(r"(?m)^([ \t]*SWMONTH[ \t]*=[ \t]*)1",r"\g<1>0",source)
-            if count not in (0,1):raise ValueError("Ambiguous original monthly output setting")
+            from age_output_schedule import selection as age_schedule_selection
+            if age_schedule_selection(project) is None:
+                source,count=re.subn(r"(?m)^([ \t]*SWMONTH[ \t]*=[ \t]*)1",r"\g<1>0",source)
+                if count not in (0,1):raise ValueError("Ambiguous original monthly output setting")
             source,count=re.subn(r'(?m)^([ \t]*NUM_DECIMALS[ \t]*=[ \t]*)[^\s!]+',r'\g<1>12',source)
             if count>1:raise ValueError('Ambiguous original output precision')
             if count==0:source += "\nNUM_DECIMALS = 12\n"

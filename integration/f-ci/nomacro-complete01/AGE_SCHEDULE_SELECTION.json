@@ -1,5 +1,5 @@
 {
-  "status": "THREE_ACTUAL_BASELINE_REFUSALS_MINIMAL_SCHEDULE_ADAPTER_PERSISTED",
+  "status": "MONTHLY_PHYSICAL45_PASS_EXPOSED_OLD_PRIVATE_OUTPUT_REWRITE",
   "baseline": "a97978f39b8ce89a4d7aaec64172d43bfef88288",
   "owner": "SWAP5-NOMACRO-COMPLETE01",
   "contract": "docs/science/NOMACRO_AGE_SCHEDULE_OUTPUT_20261117.md",
@@ -23,5 +23,15 @@
   "whole_scientific_equivalence": "NOT_QUALIFIED",
   "baseline_diagnostic": "AGE_SCHEDULE_BASELINE_DIAGNOSTIC.json",
   "implementation": "Separate schedule004 uses literal regular003 renderer/provider/state/clock/packing. Only zero-period counter guard differs; month branch honors original inactive PERIOD/SWRES/SWODAT. Existing daily002 and regular003 generation remains selected through unchanged old helper.",
-  "next": "Monthly plain O0/O2 short45days, real month endpoint and four exact native windows. No original provider/component repeat because source unchanged."
+  "next": "Fresh O0/O2 monthly45day and four exact native windows with actual SWMONTH1 retained in private original reader input.",
+  "retained_failure": {
+    "paths": [
+      "age-schedule-monthly-plain-O0",
+      "age-schedule-monthly-plain-O2"
+    ],
+    "source": "56735bc0db248ad7737f892304ca69b8b07ee616",
+    "actual_days": 45,
+    "cause": "Private prepare_column still rewrote original SWMONTH1 to0, a historical output-only compatibility path. With PERIOD0 this suppressed monthly output; new validator refused empty output. Preserve original SWMONTH for selected004only; previous daily002/regular003/ageoff paths literal.",
+    "guards_changed": false
+  }
 }
