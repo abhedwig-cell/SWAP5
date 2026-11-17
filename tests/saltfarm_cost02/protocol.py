@@ -1,17 +1,18 @@
 """Actual kernel-reader decimal-word identity and receive boundary/error contract."""
 from pathlib import Path
-import argparse,hashlib,io,json,subprocess,sys
+import argparse,ast,hashlib,io,json,subprocess,sys
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'app/hybrid_water'));import daily_host as h
-p=argparse.ArgumentParser();p.add_argument('--qualification',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
+p=argparse.ArgumentParser();p.add_argument('--qualification',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--candidate-source',type=Path,required=True);a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
+node=next(n for n in ast.parse(a.candidate_source.read_text()).body if isinstance(n,ast.FunctionDef) and n.name=='receive');ns=dict(h.__dict__);exec(compile(ast.Module(body=[node],type_ignores=[]),'private-rejected-receiver','exec'),ns);receive=ns['receive']
 class Transcript(io.StringIO):
  def __init__(self):super().__init__();self.flushes=0
  def flush(self):self.flushes+=1;super().flush()
 class Process:
  def __init__(self,lines):self.stdout=iter(lines)
  def wait(self):return 7
-lines=['diagnostic\n','HYBRID_HYDRAULIC 1 2 -0.00000000000000000e0 3\n','HYBRID_DAY_RETURN 2 3\n'];t=Transcript();key,values=h.receive(Process(lines),t,{'HYBRID_DAY_RETURN'});assert key=='HYBRID_DAY_RETURN' and values['HYBRID_HYDRAULIC'][2]=='-0.00000000000000000e0';assert t.getvalue()==''.join(lines) and t.flushes==1
+lines=['diagnostic\n','HYBRID_HYDRAULIC 1 2 -0.00000000000000000e0 3\n','HYBRID_DAY_RETURN 2 3\n'];t=Transcript();key,values=receive(Process(lines),t,{'HYBRID_DAY_RETURN'});assert key=='HYBRID_DAY_RETURN' and values['HYBRID_HYDRAULIC'][2]=='-0.00000000000000000e0';assert t.getvalue()==''.join(lines) and t.flushes==1
 t=Transcript()
-try:h.receive(Process(lines[:-1]),t,{'HYBRID_DAY_RETURN'})
+try:receive(Process(lines[:-1]),t,{'HYBRID_DAY_RETURN'})
 except RuntimeError:pass
 else:raise AssertionError('Missing reply accepted')
 assert t.getvalue()==''.join(lines[:-1]) and t.flushes==1
@@ -19,7 +20,7 @@ def broken():
  yield 'diagnostic\n'
  raise OSError('broken pipe')
 t=Transcript()
-try:h.receive(Process(broken()),t,{'HYBRID_DAY_RETURN'})
+try:receive(Process(broken()),t,{'HYBRID_DAY_RETURN'})
 except OSError:pass
 else:raise AssertionError('Broken pipe accepted')
 assert t.getvalue()=='diagnostic\n' and t.flushes==1

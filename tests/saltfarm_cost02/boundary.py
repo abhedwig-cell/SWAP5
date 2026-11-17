@@ -1,13 +1,13 @@
 """Paired real-worker boundary discriminator; unchanged physical binaries."""
 from pathlib import Path
 import argparse,contextlib,csv,ctypes,json,shutil,subprocess,sys,zipfile
-p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--qualification',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--days',type=int,default=365);a=p.parse_args();sys.path[:0]=[str(a.source/'app/hybrid_water'),str(a.source/'tools/solute')]
+p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--qualification',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--candidate-source',type=Path,required=True);p.add_argument('--days',type=int,default=365);a=p.parse_args();sys.path[:0]=[str(a.source/'app/hybrid_water'),str(a.source/'tools/solute')]
 import daily_host as h
 from daily_coupling import validate_bundle
 from check_hupsel51_repair import bounded,physical,rows
 out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);ref=a.qualification/'provider';old=a.qualification/'saltfarm-O2-candidate-build';parent=a.qualification/'saltfarm-O2-candidate-full';meta,case=validate_bundle(old,ref,h.SALTFARM);build=out/'build';shutil.copytree(old,build);commands=[]
 import ast
-candidate=ast.parse((Path(__file__).resolve().parents[2]/'app/hybrid_water/daily_host.py').read_text())
+candidate=ast.parse(a.candidate_source.read_text())
 receive=next(n for n in candidate.body if isinstance(n,ast.FunctionDef) and n.name=='receive')
 step=next(n for n in next(n for n in candidate.body if isinstance(n,ast.ClassDef) and n.name=='DailyHost').body if isinstance(n,ast.FunctionDef) and n.name=='step')
 old_receive=h.receive;old_step=h.DailyHost.step;namespace=dict(h.__dict__);exec(compile(ast.Module(body=[receive,step],type_ignores=[]),'private-boundary-discriminator','exec'),namespace)
