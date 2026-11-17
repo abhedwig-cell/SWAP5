@@ -175,8 +175,8 @@ def render_integral(source):
     anchor='      real(8) qrotts,qdrats,ptrats,epdts,pevats,revats,qbotts'
     if source.count(anchor)!=1:raise ValueError('Changed original integral increment locals')
     source=source.replace(anchor,anchor+'\n      real(8)::hybrid_receipt_increment\n      integer::hybrid_receipt_status',1)
-    first=source.index('   case (3)');last=source.index('   case (4)',first);body=source[first:last]
-    for name,slot,count in [('igrai',1,1),('igird',4,1),('irunon',5,1),('iqssdi',6,1),('iqbup',7,1),('iintc',8,2),('iruno',9,1),('iqrot',10,1),('iepd',11,1),('ievap',12,1),('iqdra',14,1),('iqbdo',16,1)]:
+    first=source.index('   case (3)');last=source.index('   case default',first);body=source[first:last]
+    for name,slot,count in [('igrai',1,1),('igird',4,1),('irunon',5,1),('iqssdi',6,1),('iqbup',7,1),('iintc',8,3),('iruno',9,1),('iqrot',10,1),('iepd',11,1),('ievap',12,1),('iqdra',14,1),('iqbdo',16,1)]:
         pattern=r'(?mi)^([ \t]*)'+name+r'\s*=\s*'+name+r'\s*([+-])\s*([^!\n]+)[ \t]*$'
         def observer(match):
             indent,op,expr=match.groups();signed='-' if op=='-' else ''
