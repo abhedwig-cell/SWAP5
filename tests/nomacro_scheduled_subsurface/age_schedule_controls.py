@@ -58,7 +58,7 @@ def native(build,reference,project,full,out):
                     [m.h.ColumnStart('original',4,origin,receipt)],runtime=True,checkpoint_enabled=True,binding=meta['binding'],model=project.model,project=project)
         except (ValueError,RuntimeError) as error:
             diagnostic='\n'.join(p.read_text(errors='replace') for p in target.rglob('donor.stderr'))
-            assert any(token in (diagnostic+' '+str(error)).lower() for token in ('calendar','checkpoint','age','original schedule','original zero-period','original output','original interval date')),(attack,diagnostic,str(error))
+            assert any(token in (diagnostic+' '+str(error)).lower() for token in ('calendar','checkpoint','age','original schedule','original zero-period','original output','original regular output','original interval date')),(attack,diagnostic,str(error))
             assert not list(target.glob('accepted-*.zip'));checks.append(dict(attack=attack,status='REFUSED',diagnostic=diagnostic,error=str(error)))
         else:raise AssertionError('Corrupt native004 schedule accepted: '+attack)
         assert m.sha(source)==digest
