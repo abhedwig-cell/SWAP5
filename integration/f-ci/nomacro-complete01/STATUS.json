@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "23194d6be22f4c67c2f81c13d730aea621c4ba53",
+  "baseline": "edbc66b9e2f9debee588db5763da960aee04b36c",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-aquifer-admission01",
-  "last_commit": "23194d6be22f4c67c2f81c13d730aea621c4ba53",
-  "status": "AQUIFER_CANONICAL_ADMITTED_ACTUAL_MERGE_PASS",
+  "branch": "codex/nomacro-age-source01",
+  "last_commit": "edbc66b9e2f9debee588db5763da960aee04b36c",
+  "status": "ORIGINAL_WATER_AGE_ROUTE_IN_DEVELOPMENT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -41,13 +41,10 @@
     "Remaining drainage/surfacewater/constitutive/weather/state gaps and release consolidation"
   ],
   "dependency_surface": [
-    "src/process/mod_aquifer_solute_reservoir.f90",
-    "app/hybrid_water/conserved_aquifer_solute.py",
-    "app/hybrid_water/daily_host.py",
-    "app/hybrid_water/daily_coupling.py",
-    "app/hybrid_water/experimental_project.py",
-    "reference/swap-4.3.1/patches/NOMACRO-AQUIFER-SOLUTE-01",
-    "tests/nomacro_scheduled_subsurface/aquifer*.py"
+    "Original calc_AgeTracer/read_AgeTracer/outage private Agemsy and pond/effluent state, original age initialization/restart",
+    "src/process/mod_b111_age_tracer_substep.f90 (existing admitted provider, preserve)",
+    "src/process/mod_b111_surface_age_budget.f90 (existing admitted provider, preserve)",
+    "app/hybrid_water/experimental_project.py and daily_host native/ledger route (not yet changed for age)"
   ],
   "invariants": [
     3,
@@ -241,7 +238,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Build actual SWBR1 experimental box/soil case O0/O2; first strict day/native own test, then complete model and active external/rejected native source cases. Check soil+box/transfer/global guards unchanged1e-10; keep all failures. Code now enables only development SWBR1 branch, canonicale677 unchanged.",
-  "recovery_point": "Canonical23194d6be; PR1706 admitted. All AQ proof sealed680df6a5c. No active model/CI. Next original water-age source audit: original calc_AgeTracer and accepted mod_b111_age_tracer_substep, no duplicate science.",
+  "recovery_point": "Canonicaledbc66b9e actual owner PASS; branch codex/nomacro-age-source01. Aquifer canonical proof immutable. New age_reference.py persisted before execution.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -336,14 +333,14 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "PR1706 actual canonical merge: exact parents/full tree and actual detached current owner PASS.",
+  "last_commit_role": "PR1707 actual metadata canonical merge: exact parents and full treefc6b8323, actual detached aquifer owner PASS.",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Finalize admission metadata and verify actual merge; then implement original water-age input/process/native route using existing production age providers. Preserve admitted aquifer/S/fixed/scheduled/pulse/R source chains.",
+  "next_action": "Execute original age0/100 full diagnostics with already source-bound original bounds executables, and existing real age provider process-only tests. Reuse existing age physics; implement explicit age ledger/native owner and original input route after reference results.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61"
