@@ -1,5 +1,5 @@
 import pathlib,subprocess,json,hashlib,zipfile,sys
-root=pathlib.Path.cwd();e=pathlib.Path('C:/Users/Veldh012/swap5-coverage-evidence');sha=lambda b:hashlib.sha256(b).hexdigest();reports={};configs=[];out=pathlib.Path('C:/Users/Veldh012/swap5-complete01-evidence/preservation');out.mkdir(parents=True,exist_ok=False)
+root=pathlib.Path.cwd();e=pathlib.Path('C:/Users/Veldh012/swap5-coverage-evidence');sha=lambda b:hashlib.sha256(b).hexdigest();reports={};configs=[];out=pathlib.Path('C:/Users/Veldh012/swap5-complete01-evidence/preservation');out.mkdir(parents=True,exist_ok="--resume" in sys.argv)
 for key in ('water-surface-combined','chemical-surface-combined','registered-grass','prescribed-head5'):
  prior=e/('N_preserve_'+key+'_build');meta=json.loads((prior/'BUILD.json').read_text());model='HYBRID_GRASSGROWTH_WATER' if key=='registered-grass' else None
  inputs=None if model else pathlib.Path(meta['project']['input_directory']) if 'input_directory' in meta.get('project',{}) else None
@@ -24,6 +24,11 @@ for key,prior,inputs,opt,model in configs:
  cmd+=['--no-macro-release'] if model else ['--experimental-project',str(inputs),'--donor-opt',opt]
  if not (bundle/'BUILD.json').exists():
   r=subprocess.run(cmd,capture_output=True,text=True,timeout=180);(out/(key+'.stdout')).write_text(r.stdout);(out/(key+'.stderr')).write_text(r.stderr);assert r.returncode==0,(key,r.stderr)
+ sys.path[:0]=[str(root/'app/hybrid_water'),str(root/'tools/solute')]
+ from daily_coupling import validate_bundle
+ import experimental_project as experimental
+ import daily_host
+ validate_bundle(bundle,e/'J_windows_provider',daily_host.GRASSGROWTH if model else experimental.load(inputs))
  a=json.loads((bundle/'BUILD.json').read_text());fields={}
  if prior:
   b=json.loads((prior/'BUILD.json').read_text());assert a['inputs']==b['inputs'];oldfiles={file:(prior/file).read_bytes() for file in b['identity']['donor_generated']}
