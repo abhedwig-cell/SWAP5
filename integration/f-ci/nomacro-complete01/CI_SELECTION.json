@@ -1,5 +1,5 @@
 {
-  "status": "EXACT_CURRENT_RC3_AGE_COMPOSITION_ALL_ADMISSION_GATES_PASS",
+  "status": "EXACT_CURRENT_RC3_AGE_CANONICALLY_ADMITTED_ACTUAL_MERGE_PASS",
   "runtime": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
   "canonical_parent": "e5b3232926e3f24641c4cb0e58db57f115946b59",
   "current_owner": "tests/nomacro_scheduled_subsurface/age_composition_verify.py",
@@ -44,5 +44,38 @@
   },
   "admission_canonical_parent": "4c0c4de1043c2d8969d4a9ce5369d2a3e81f3b7d",
   "canonical_nonphysical_reconciliation": "PR1710 cost reports/tests only; exact complete source app/src/reference/tools unchanged; immutable independent evidence preserved. No performance admission.",
-  "admission_guard_development": "Initial new parent-origin check met an older different manifest schema and raised KeyError; new-origin mapping is now explicitly restricted to the new parent subset manifest, while every raw identity/member remains checked. No physical or sealed evidence change."
+  "admission_guard_development": "Initial new parent-origin check met an older different manifest schema and raised KeyError; new-origin mapping is now explicitly restricted to the new parent subset manifest, while every raw identity/member remains checked. No physical or sealed evidence change.",
+  "actual_canonical_merge": {
+    "status": "CANONICAL_ADMITTED_ACTUAL_MERGE_VERIFIED",
+    "pr": 1711,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1711",
+    "merge": "9e0b9d871e942361ad179095670f42a1db134768",
+    "parents": [
+      "4c0c4de1043c2d8969d4a9ce5369d2a3e81f3b7d",
+      "ef6f6a658443f25d5a77e96f09846439927303c8"
+    ],
+    "qualified_head": "ef6f6a658443f25d5a77e96f09846439927303c8",
+    "complete_tree": "9e29c022d06da3a976c8d367f271612516c316a4",
+    "actual_merge_tree_exact": true,
+    "actual_detached_merge_owner": {
+      "returncode": 0,
+      "seconds": 30.09,
+      "result": {
+        "status": "CURRENT_COMPOSED_ORIGINAL_AGE_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
+        "runtime": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "full_model_days": 8768,
+        "water_guard_cm": 1e-10,
+        "chemical_mass_guard_changed": false,
+        "age_units": "cm day",
+        "native_codec": "S5AGE002"
+      }
+    },
+    "runtime": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
+    "ubuntu": "304e528438f13270f9b421a2a4f386d71ec451dc",
+    "sealed": "5912bee4e9f21f4cc8cc142576ac81fa3c7bacd5",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "functional_completion": "PARTIAL"
+  }
 }
