@@ -1,5 +1,5 @@
 {
-  "stage": "ORIGINAL_OBSERVER_VALIDATED_SELECTION_PERSISTED",
+  "stage": "STRICT_INITIAL_CONTEXTS_QUALIFIED_NO_ACTIVE_REFUSAL",
   "baseline": "5ec00670ef095d9e11b1ecad77c7b5adae48680c",
   "canonical_remote": "be481cfb40f953e337116ef4a6dc5bc3ef64d4f7",
   "workstream": "isolated SWAP431 B1 research; no canonical admission",
@@ -14,5 +14,15 @@
     "F1",
     "F2"
   ],
-  "observer": "279 original attempts exact excluding diagnostic step counter/timing, 141 prefix budget rows exact, 0.632019 sec, 7 new eligible original refusals, choose2 by preregistered rules"
+  "observer": "279 original attempts exact excluding diagnostic step counter/timing, 141 prefix budget rows exact, 0.632019 sec, 7 new eligible original refusals, choose2 by preregistered rules",
+  "model_routes": 5,
+  "selected_original_attempts": [
+    44,
+    48
+  ],
+  "decision": "STRICT_INITIAL_PARTIAL_CONTEXTS_CONFIRMED_NO_ACTIVE_REFUSAL",
+  "active_refusal_rollback_direct_qualification": false,
+  "official_promotion": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "remaining": "No true refusal of unchanged candidate in the two selected contexts; rollback/direct equality not exercised. No general absence claim. No scope expansion this round."
 }

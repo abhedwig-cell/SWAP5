@@ -1,0 +1,114 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-INITIAL30",
+  "decision": "STRICT_INITIAL_PARTIAL_CONTEXTS_CONFIRMED_NO_ACTIVE_REFUSAL",
+  "model_routes": 5,
+  "hard_timeout_seconds": 20,
+  "all_uncensored": true,
+  "O0_O2_non_timing_byte_exact": true,
+  "candidate_physics_harness_criteria_changes": false,
+  "active_refusal_rollback_direct_qualification": false,
+  "reason": "Both new original contexts start zero inflow and partially limited. Candidate converges2/1iterations with rank1 active throughout. No real refusal; rollback/direct remains unqualified.",
+  "official_promotion": false,
+  "observer_seconds": 0.6320184001233429,
+  "observer_original_attempts": 279,
+  "observer_original_budget_rows": 141,
+  "new_initially_eligible_contexts": 7,
+  "selected_original_attempts": [
+    44,
+    48
+  ],
+  "results": [
+    {
+      "optimization": "O0",
+      "context": "F1",
+      "seconds": 0.3780664000660181,
+      "original_attempt": 44,
+      "original_time": 35797.07120987656,
+      "original_dt": 6.584362139917695e-05,
+      "original_prefix_rows_byte_exact": 38,
+      "original_extra_line_search_trials": 8.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 2.6011415243942793e-12,
+      "sum_residual": 1.0743352903578936e-11,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": 6.253136029810147e-16,
+      "inventory_limit_cm": 6.584362139917696e-10
+    },
+    {
+      "optimization": "O0",
+      "context": "F2",
+      "seconds": 0.348679699935019,
+      "original_attempt": 48,
+      "original_time": 35797.07124645635,
+      "original_dt": 2.926383173296753e-05,
+      "original_prefix_rows_byte_exact": 40,
+      "original_extra_line_search_trials": 8.0,
+      "candidate_converged": true,
+      "iterations": 1,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 1.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 1
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 9.521769914200284e-07,
+      "sum_residual": 1.5661895918045288e-06,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": 4.5832763718176364e-11,
+      "inventory_limit_cm": 2.9263831732967533e-10
+    },
+    {
+      "optimization": "O2",
+      "context": "F1",
+      "seconds": 0.8230233998037875,
+      "original_attempt": 44,
+      "original_time": 35797.07120987656,
+      "original_dt": 6.584362139917695e-05,
+      "original_prefix_rows_byte_exact": 38,
+      "original_extra_line_search_trials": 8.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 2.6011415243942793e-12,
+      "sum_residual": 1.0743352903578936e-11,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": 6.253136029810147e-16,
+      "inventory_limit_cm": 6.584362139917696e-10
+    },
+    {
+      "optimization": "O2",
+      "context": "F2",
+      "seconds": 0.40100189996883273,
+      "original_attempt": 48,
+      "original_time": 35797.07124645635,
+      "original_dt": 2.926383173296753e-05,
+      "original_prefix_rows_byte_exact": 40,
+      "original_extra_line_search_trials": 8.0,
+      "candidate_converged": true,
+      "iterations": 1,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 1.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 1
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 9.521769914200284e-07,
+      "sum_residual": 1.5661895918045288e-06,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": 4.5832763718176364e-11,
+      "inventory_limit_cm": 2.9263831732967533e-10
+    }
+  ]
+}
