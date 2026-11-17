@@ -10,7 +10,8 @@ import age_calendar as c
 def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--phase',choices=('short','full'),required=True);a=p.parse_args()
+    p.add_argument('--phase',choices=('short','full'),required=True)
+    p.add_argument('--plain-period3-pilot-prefix',type=Path);a=p.parse_args()
     if a.phase=='short':a.output.mkdir()
     record=a.output/'RESULT.json';q=json.loads(record.read_text()) if record.exists() else dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),profiles={},whole_scientific_equivalence='NOT_QUALIFIED',water_guard_cm=1e-10,chemical_mass_guard_changed=False)
     def save():record.write_text(json.dumps(q,indent=2)+'\n')
@@ -19,6 +20,14 @@ def main():
     try:
         for kind,period,reset,opt in specs:
             name=f'p{period}-{kind}-r{reset}-{opt}';out=a.output/name
+            if a.plain_period3_pilot_prefix and (kind,period,reset)==('plain',3,0):
+                out=Path(str(a.plain_period3_pilot_prefix)+opt)
+                completed=json.loads((out/'RESULT.json').read_text())
+                assert completed['status']=='REGULAR_AGE_CALENDAR_FULL_SOURCE_OUTPUT_NATIVE_PASS'
+                assert completed['kind']==kind and completed['period']==period and completed['swres']==reset and completed['optimization']==opt
+                c.m.validate_bundle(out/'build',a.reference_work,c.m.e.load(out/'input'))
+                assert a.phase in completed and completed[a.phase]['own']
+                q['profiles'][name]=completed;save();print(name,a.phase,'EXACT_SOURCE_BOUND_COMPLETED_PILOT_REUSED',flush=True);continue
             cmd=[sys.executable,'-B',str(Path(__file__).with_name('age_calendar.py')),'--reference-work',str(a.reference_work),'--output',str(out),'--kind',kind,'--period',str(period),'--swres',str(reset),'--optimization',opt,'--phase',a.phase]
             r=subprocess.run(cmd,capture_output=True,text=True,timeout=240);(a.output/(name+'-'+a.phase+'.log')).write_text(r.stdout+r.stderr)
             if (out/'RESULT.json').exists():q['profiles'][name]=json.loads((out/'RESULT.json').read_text());save()
