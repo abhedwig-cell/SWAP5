@@ -3,8 +3,8 @@
   "baseline": "edbc66b9e2f9debee588db5763da960aee04b36c",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-source01",
-  "last_commit": "edbc66b9e2f9debee588db5763da960aee04b36c",
-  "status": "ORIGINAL_AGE_COMPONENT_ADAPTER_OPTIONS_IMPLEMENTED_NOT_QUALIFIED",
+  "last_commit": "530c3a960620516ea92031af01699a05b62d401e",
+  "status": "ORIGINAL_AGE_REFERENCE_FULL_PASS_CALLER_NATIVE_IMPLEMENTED_NOT_QUALIFIED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -182,6 +182,13 @@
       "days": 4384,
       "age_balance": "NOT_YET_OBSERVED",
       "SWAP5_activation": false
+    },
+    {
+      "result": "ORIGINAL_HOST_REAL_AGE_PROVIDERS_FOUR_FULL_LEDGER_PASS",
+      "days": 4384,
+      "maximum_combined_residual_cm_day": 2.1796240372469466e-09,
+      "tolerance_policy": "Existing accepted age8192*epsilon*inventory_scale; cm day, not chemical mass",
+      "chemical_mass_guard_changed": false
     }
   ],
   "failed_tests": [
@@ -252,7 +259,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Build actual SWBR1 experimental box/soil case O0/O2; first strict day/native own test, then complete model and active external/rejected native source cases. Check soil+box/transfer/global guards unchanged1e-10; keep all failures. Code now enables only development SWBR1 branch, canonicale677 unchanged.",
-  "recovery_point": "Canonicaledbc66b9e actual owner PASS; branch codex/nomacro-age-source01. Aquifer canonical proof immutable. New age_reference.py persisted before execution.",
+  "recovery_point": "Branch codex/nomacro-age-source01. Actual original host delegated provider O0/O2 both initial0/100 full1096 PASS. No intended active model/CI. Fresh age-runtime-inputs contains only original manifest input files. App age route/native compiled prototype not yet exercised.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -354,7 +361,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run small original_age_clock O0/O2 and existing150-step age literal process tests; then actual original-source adapter delegating age microsteps to existing provider with explicit physical water midpoint and original evaporation retention, separate age ledger/native state. Generic SWSOLU2 remains refused until full qualification.",
+  "next_action": "Build actual age0 O0 host, run short5day plus exact2to4 native before full periods. Age domain currently requires no snow/aquifer/fixed irrigation and no salinity; explicit age unit balance policy is inherited, chemical/water guards unchanged.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61"

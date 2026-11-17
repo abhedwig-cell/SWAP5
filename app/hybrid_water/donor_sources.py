@@ -84,7 +84,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False, thermal_history=False, management_state=False, plant_et_state=False, micro_lookup_state=False, scheduled_pond_history=False):
+def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False, thermal_history=False, management_state=False, plant_et_state=False, micro_lookup_state=False, scheduled_pond_history=False, age_state=False):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -267,6 +267,18 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
                       '        call hybrid_oxygen_checkpoint(unit,.true.)\n        call hybrid_top_checkpoint(unit,.true.)\n        call hybrid_micro_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing')
         codec=replace(codec,'      end if\n      close(unit)',
                       '        call hybrid_oxygen_checkpoint(unit,.false.)\n        call hybrid_top_checkpoint(unit,.false.)\n        call hybrid_micro_checkpoint(unit,.false.)\n      end if\n      close(unit)')
+    if age_state:
+        if not nonmacro or solute_state or not managed:raise ValueError('Age native owner requires managed no-macro age')
+        codec=replace(codec,'      use MOD_swap_base, only: swmacro',
+                      '      use MOD_solute,only:hybrid_age_checkpoint\n      use MOD_swap_base, only: swmacro')
+        codec=replace(codec,'        read(unit,iostat=ios) trailing',
+                      '        call hybrid_age_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing')
+        codec=replace(codec,'      end if\n      close(unit)',
+                      '        call hybrid_age_checkpoint(unit,.false.)\n      end if\n      close(unit)')
+        import re
+        magics=re.findall(r"'S5[A-Z0-9]{6}'",codec)
+        if len(magics)!=2 or len(set(magics))!=1:raise ValueError('Ambiguous original age native format')
+        codec=codec.replace(magics[0],"'S5AGE001'")
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)

@@ -1,0 +1,433 @@
+{
+  "audit": {},
+  "events": [
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_solute_compartment_state.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.18319359980523586
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_b111_age_tracer_substep.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.26698190020397305
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_b111_surface_age_budget.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\002.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.23367330012843013
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\modularity\\test_original_age_clock.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\003.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.22993919998407364
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\001.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\002.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\003.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.148180500138551
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-0-0-original_age_clock-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "145ce7d886b38819d6f14ffa2fb0bdad8aec0a293113dc2065748d626de9cb05",
+      "wall_seconds": 0.07546930015087128
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_solute_compartment_state.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.32975760009139776
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_b111_age_tracer_substep.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.5705594001337886
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_b111_surface_age_budget.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\002.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.22734080022200942
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\modularity\\test_original_age_clock.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\003.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.6170257003977895
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\001.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\002.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\003.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.1470452998764813
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-clock-surface-component\\build-1-6-original_age_clock-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "145ce7d886b38819d6f14ffa2fb0bdad8aec0a293113dc2065748d626de9cb05",
+      "wall_seconds": 0.06935869995504618
+    }
+  ],
+  "head": "d9179d4846606d3d9ca74aaba8aa0a2e9d85857f",
+  "records": [
+    {
+      "artifact_sha256": {
+        "build-0-0-original_age_clock-O0\\000.o": "2300db9c1c4d81560decccc054577fce15de6494fad415b5d6317469b18c58a7",
+        "build-0-0-original_age_clock-O0\\001.o": "14b2a86cfa3fe932ab1a51665098775e2cbb1de653c4a3cb0c1f0711f7571225",
+        "build-0-0-original_age_clock-O0\\002.o": "4865fce04b4d2784537e06a1e25b8ad7b26be6101a1727ecffd61d7d73bd6a26",
+        "build-0-0-original_age_clock-O0\\003.o": "a506f211fc5de3f4b66f08a497e6ab693a39806ad886aa3bf1a56e4be7b86fc6",
+        "build-0-0-original_age_clock-O0\\mod_b111_age_tracer_substep.mod": "dcde83e96236069a609063f8e2b4af7711722b4d72e4f0b96d39e1cb182152df",
+        "build-0-0-original_age_clock-O0\\mod_b111_surface_age_budget.mod": "355643dae7ea2e13060381204e9f0188bfcf70e9023c8ff3274a1173d870da24",
+        "build-0-0-original_age_clock-O0\\mod_solute_compartment_state.mod": "f6a13b34fdd1fdc0b4a74a5af7c877ebf396fb99fab80ac4e084ae2daa81cf3f",
+        "build-0-0-original_age_clock-O0\\test.exe": "f409c2d0704ff115a7f8d24419aae94f59e3f3713f3a5cd95a7a4a4130e2b1a2"
+      },
+      "build": "cold",
+      "case": "original_age_clock",
+      "compile_seconds": 0.9137880001217127,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "28e045193c808aab68033b28156e2bbc6eae00112e035410902ad241e30dba67",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 5,
+      "executable_sha256": "f409c2d0704ff115a7f8d24419aae94f59e3f3713f3a5cd95a7a4a4130e2b1a2",
+      "execution_seconds": 0.07546930015087128,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0"
+      ],
+      "inputs": {
+        "src/process/mod_b111_age_tracer_substep.f90": "080310258fa67ee8bb30e7270290eba3581798faf08bd326b2bc5d4fcd9c016b",
+        "src/process/mod_b111_surface_age_budget.f90": "b6773e7233d3c02edea0d8e8f3b2ad67195957a28ae703d41b6a49efba35666d",
+        "src/process/mod_solute_compartment_state.f90": "1de600a1154bb05678c27bef759efba9bbf4d3a332853f862b5fc04d9adb5ba5",
+        "tests/modularity/test_original_age_clock.f90": "cd46e65b381636d3454061df20e84cf36f7dffd2eb6554cec9eb2681e391f410"
+      },
+      "link_seconds": 0.148180500138551,
+      "optimization": 0,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 6.200280040502548e-06,
+      "sources": [
+        "src/process/mod_solute_compartment_state.f90",
+        "src/process/mod_b111_age_tracer_substep.f90",
+        "src/process/mod_b111_surface_age_budget.f90",
+        "tests/modularity/test_original_age_clock.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "145ce7d886b38819d6f14ffa2fb0bdad8aec0a293113dc2065748d626de9cb05",
+      "total_seconds": 1.7948580998927355,
+      "validation_seconds": 0.546032200101763
+    },
+    {
+      "artifact_sha256": {
+        "build-1-6-original_age_clock-O2\\000.o": "189132f8dfa141a5a2e8914bd11ef349141ffff40830540080a4418468b9b2f7",
+        "build-1-6-original_age_clock-O2\\001.o": "d5cf853130569c393fe6588d9cd4516e265b0ab97bc41f15c12a521b78bafb70",
+        "build-1-6-original_age_clock-O2\\002.o": "6a9b11e75663424c500d2f667d26ebdf19c6e2f507bbec695464565c228171da",
+        "build-1-6-original_age_clock-O2\\003.o": "9334ac841feaf697bf03ecef5c62420b314500c27f90a1a10e2c2332bf1b9215",
+        "build-1-6-original_age_clock-O2\\mod_b111_age_tracer_substep.mod": "dcde83e96236069a609063f8e2b4af7711722b4d72e4f0b96d39e1cb182152df",
+        "build-1-6-original_age_clock-O2\\mod_b111_surface_age_budget.mod": "355643dae7ea2e13060381204e9f0188bfcf70e9023c8ff3274a1173d870da24",
+        "build-1-6-original_age_clock-O2\\mod_solute_compartment_state.mod": "f6a13b34fdd1fdc0b4a74a5af7c877ebf396fb99fab80ac4e084ae2daa81cf3f",
+        "build-1-6-original_age_clock-O2\\test.exe": "18e42e0f0f85913174f5bca97efd42a0ca5602e1a46ae1675060ce4b120084e9"
+      },
+      "build": "cold",
+      "case": "original_age_clock",
+      "compile_seconds": 1.7446835008449852,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "28e045193c808aab68033b28156e2bbc6eae00112e035410902ad241e30dba67",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 5,
+      "executable_sha256": "18e42e0f0f85913174f5bca97efd42a0ca5602e1a46ae1675060ce4b120084e9",
+      "execution_seconds": 0.06935869995504618,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2"
+      ],
+      "inputs": {
+        "src/process/mod_b111_age_tracer_substep.f90": "080310258fa67ee8bb30e7270290eba3581798faf08bd326b2bc5d4fcd9c016b",
+        "src/process/mod_b111_surface_age_budget.f90": "b6773e7233d3c02edea0d8e8f3b2ad67195957a28ae703d41b6a49efba35666d",
+        "src/process/mod_solute_compartment_state.f90": "1de600a1154bb05678c27bef759efba9bbf4d3a332853f862b5fc04d9adb5ba5",
+        "tests/modularity/test_original_age_clock.f90": "cd46e65b381636d3454061df20e84cf36f7dffd2eb6554cec9eb2681e391f410"
+      },
+      "link_seconds": 0.1470452998764813,
+      "optimization": 2,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 6.9998204708099365e-06,
+      "sources": [
+        "src/process/mod_solute_compartment_state.f90",
+        "src/process/mod_b111_age_tracer_substep.f90",
+        "src/process/mod_b111_surface_age_budget.f90",
+        "tests/modularity/test_original_age_clock.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "145ce7d886b38819d6f14ffa2fb0bdad8aec0a293113dc2065748d626de9cb05",
+      "total_seconds": 2.4189041000790894,
+      "validation_seconds": 0.38150980044156313
+    }
+  ],
+  "status": "PASS"
+}

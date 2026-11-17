@@ -62,14 +62,23 @@ def main():
     try:
         for opt in ('O0','O2'):
             build=a.output/opt;build.mkdir(exist_ok=a.resume)
-            (build/'solute.f90').write_bytes(s.source((provider/'swap-selected/solute.f90').read_bytes()))
-            (build/'swap_csv_output.f90').write_bytes(s.csv_source((provider/'swap-selected/swap_csv_output.f90').read_bytes()))
-            (build/'boundtop.f90').write_text(render_linear_pond_conservation((provider/'swap-selected/boundtop.f90').read_text(encoding='cp1252')),encoding='cp1252')
+            generated={'solute.f90':s.source((provider/'swap-selected/solute.f90').read_bytes()),
+                       'swap_csv_output.f90':s.csv_source((provider/'swap-selected/swap_csv_output.f90').read_bytes())}
+            pond=render_linear_pond_conservation((provider/'swap-selected/boundtop.f90').read_text(encoding='cp1252'))
+            import os
+            generated['boundtop.f90']=pond.replace('\n',os.linesep).encode('cp1252')
             flags=['-'+opt,'-std=legacy','-ffree-line-length-none','-fallow-argument-mismatch','-fcheck=bounds',
                    '-ffp-contract=off','-march=x86-64','-mtune=generic','-J'+str(build),'-I'+str(build),'-I'+str(objects),'-I'+str(ttutil)]
             for name in s.PROVIDERS:
-                (build/(name+'.f90')).write_bytes((ROOT/'src/process'/(name+'.f90')).read_bytes())
+                generated[name+'.f90']=(ROOT/'src/process'/(name+'.f90')).read_bytes()
             reused=a.resume and opt in result['profiles']
+            if reused:
+                # Validate before writing: never damage an immutable retained
+                # source/executable pair when a later controller is resumed.
+                assert result['profiles'][opt]['generated_sha256']=={name:hashlib.sha256(raw).hexdigest() for name,raw in generated.items()}
+                assert all((build/name).read_bytes()==raw for name,raw in generated.items())
+            else:
+                for name,raw in generated.items():(build/name).write_bytes(raw)
             if not reused:
                 for name in (*s.PROVIDERS,'solute','swap_csv_output','boundtop'):
                     call(['gfortran',*flags,'-c',build/(name+'.f90'),'-o',build/(name+'.o')],build,name+'-compile')

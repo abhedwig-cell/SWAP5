@@ -12,7 +12,7 @@ POLICY='original-water-midpoint-age-provider-and-explicit-surface-v1'
 PROVIDERS=('mod_solute_compartment_state','mod_b111_age_tracer_substep','mod_b111_surface_age_budget')
 
 
-def source(original):
+def source(original,*,native=False):
     if hashlib.sha256(original).hexdigest()!=ORIGINAL:raise ValueError('Foreign original age source')
     text=original.decode('cp1252').replace('\r\n','\n')
     anchor='    end interface'
@@ -20,8 +20,14 @@ def source(original):
          real(8),intent(out)::values(11)
       end subroutine
 """
+    if native:interface+="""      module subroutine hybrid_age_checkpoint(unit,restoring)
+         integer,intent(in)::unit
+         logical,intent(in)::restoring
+      end subroutine
+"""
     text=text.replace(anchor,interface+anchor,1)
     text=text.replace('   public :: solute_CDE, calc_AgeTracer','   public :: solute_CDE, calc_AgeTracer, hybrid_age_observe',1)
+    if native:text=text.replace('calc_AgeTracer, hybrid_age_observe','calc_AgeTracer, hybrid_age_observe, hybrid_age_checkpoint',1)
     prefix,body=text.split('submodule (MOD_Solute) MOD_calc_AgeTracer',1)
     def replace(old,new):
         nonlocal body
@@ -151,6 +157,8 @@ def source(original):
    values(4:11)=age_cumulative
 end subroutine
 end submodule MOD_calc_AgeTracer""")
+    if native:
+        replace('end submodule MOD_calc_AgeTracer',NATIVE+'\nend submodule MOD_calc_AgeTracer')
     return (prefix+'submodule (MOD_Solute) MOD_calc_AgeTracer'+body).replace('\n','\r\n').encode('cp1252')
 
 
@@ -163,3 +171,43 @@ def csv_source(original):
     rendered=rendered.replace('hybrid_aquifer_cumulative','hybrid_age_observe').replace('aq_values(7)','aq_values(11)')
     rendered=rendered.replace("(a,7(1x,es25.17e3))","(a,11(1x,es25.17e3))")
     return rendered.encode('cp1252')
+
+
+NATIVE="""module subroutine hybrid_age_checkpoint(unit,restoring)
+   use ieee_arithmetic,only:ieee_is_finite
+   use MOD_grid,only:numnod
+   use variables,only:theta,pond
+   integer,intent(in)::unit
+   logical,intent(in)::restoring
+   real(8)::saved_parameters(3),saved_total(3),observed(11),scale,tolerance
+   integer::ios
+   if(swsolu/=2.or..not.allocated(Agemsy))error stop 'Foreign original age native owner'
+   if(restoring)then
+      read(unit,iostat=ios)Agemsy,ageml(1:numnod),cml(1:numnod),age_pond_stock, &
+         Agepond,Agepondm1,saved_parameters,age_cumulative,icAgeTopupw,icAgeTopdwn, &
+         icAgeBot,icAgeRot,icAgeSur,icAgeDra,AgeGwl1m,rottot,sqdra,saved_total
+      if(ios/=0)error stop 'Incomplete original age native state'
+      if(.not.all(ieee_is_finite(Agemsy)).or..not.all(ieee_is_finite(ageml(1:numnod))).or. &
+         .not.all(ieee_is_finite(cml(1:numnod))).or..not.all(ieee_is_finite(age_cumulative)).or. &
+         .not.all(ieee_is_finite(icAgeDra)).or..not.all(ieee_is_finite(saved_total)).or. &
+         .not.all(ieee_is_finite([age_pond_stock,Agepond,Agepondm1,saved_parameters, &
+         icAgeTopupw,icAgeTopdwn,icAgeBot,icAgeRot,icAgeSur,AgeGwl1m,rottot,sqdra]))) &
+         error stop 'Nonfinite original age native state'
+      if(any(Agemsy<0d0).or.any(ageml(1:numnod)<0d0).or.any(cml(1:numnod)<0d0).or. &
+         min(age_pond_stock,Agepond,Agepondm1)<0d0.or.any(Agemsy>1d12/dz(1:numnod)).or. &
+         any(age_cumulative([1,2,3,6,7,8])<0d0))error stop 'Invalid original age native domain'
+      if(any(abs(saved_parameters-[Ageirr,Agedrain,Agepre])>0d0)) &
+         error stop 'Foreign original age native forcing'
+      call hybrid_age_observe(observed)
+      scale=max(1d0,maxval(abs(saved_total)),maxval(abs(observed(1:3))))
+      tolerance=8192d0*epsilon(1d0)*scale
+      if(any(abs(saved_total-observed(1:3))>tolerance).or. &
+         any(abs(ageml(1:numnod)*theta(1:numnod)-Agemsy)*dz(1:numnod)>tolerance).or. &
+         abs(pond*Agepondm1-age_pond_stock)>tolerance)error stop 'Unbalanced original age native stock'
+   else
+      call hybrid_age_observe(observed)
+      write(unit)Agemsy,ageml(1:numnod),cml(1:numnod),age_pond_stock, &
+         Agepond,Agepondm1,[Ageirr,Agedrain,Agepre],age_cumulative,icAgeTopupw,icAgeTopdwn, &
+         icAgeBot,icAgeRot,icAgeSur,icAgeDra,AgeGwl1m,rottot,sqdra,observed(1:3)
+   end if
+end subroutine hybrid_age_checkpoint"""

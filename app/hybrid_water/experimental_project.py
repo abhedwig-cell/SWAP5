@@ -80,7 +80,7 @@ def inspect(directory):
             if not path.is_file():raise ValueError('Missing original crop input: '+name)
             crop_files.add(path.resolve())
             crop_types.setdefault(path.resolve(),set()).add(int(crop_type))
-    mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
+    mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1, 2}, 'SWHYST': {0, 1, 2},
                  'SWSNOW': {0, 1}, 'SWFROST': {0, 1}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
                  'SWTOPBHEA': {1, 2, 3, 4}, 'SWBOTBHEA': {1, 2}, 'SWCROP': {0, 1},
                  'SWMETDETAIL': {0,1}, 'SWRUNON': {0,1}, 'SWKIMPL': {0},
@@ -91,7 +91,9 @@ def inspect(directory):
     for name, allowed in mandatory.items():
         if selected.get(name) not in allowed:
             raise ValueError('Unsupported experimental process/state: '+name)
-    if selected['SWSOLU']:
+    if selected['SWSOLU']==2 and (selected['SWSNOW'] or selected.get('SWBR')!=0 or selected['SWIRFIX']):
+        raise ValueError('Original age qualification currently requires no snow/aquifer/fixed irrigation')
+    if selected['SWSOLU']==1:
         for name in ('SWSP', 'SWDC', 'SWBR'):
             if selected.get(name) not in {0, 1}:
                 raise ValueError('Solute ledger/state does not support '+name)
@@ -110,7 +112,7 @@ def inspect(directory):
             allowed.setdefault(name, set()).add(value)
     # Original dispatches and their explicit process/state adapters. Additional
     # coupling domains remain excluded until their owning contracts are present.
-    allowed.update(SWBOTB=set(range(1, 9)), SWDRA={0, 1}, SWSOPHY={0, 1},
+    allowed.update(SWSOLU={0,1,2}, SWBOTB=set(range(1, 9)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
                    SWSP={0, 1}, SWDC={0, 1}, SWBR={0,1}, SWHEA={0, 1}, SWCALT={1,2},
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
@@ -199,7 +201,7 @@ def inspect(directory):
                 raise ValueError('Original detailed weather/rain cannot use interception1/2 in any future crop')
             if selected['SWETR']==1 and sig.get('SWCF')!=1:
                 raise ValueError('Original prescribed reference ET requires crop factors1 for every referenced future crop')
-            if not selected['SWSOLU'] and sig.get('SWSALINITY')==1:
+            if selected['SWSOLU']!=1 and sig.get('SWSALINITY')==1:
                 raise ValueError('Original salinity stress requires active solute transport')
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):
                 raise ValueError('Original physical oxygen stress requires numerical soil heat for every future crop')
@@ -228,8 +230,10 @@ def inspect(directory):
     nodes = sum(int(row[3]) for row in rows)
     if not 1 <= nodes <= 1000:
         raise ValueError('Unsupported original grid size')
-    return dict(inputs=inputs, start_date=start, end_date=end, nodes=nodes,
-                solute=bool(selected['SWSOLU']), selectors=selected, boundary=boundary)
+    report=dict(inputs=inputs, start_date=start, end_date=end, nodes=nodes,
+                solute=selected['SWSOLU']==1, selectors=selected, boundary=boundary)
+    if selected['SWSOLU']==2:report['age']=True
+    return report
 
 
 def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_table_policy=None):
@@ -258,7 +262,7 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
         raise ValueError('Chemical substep policy requires active SWSOLU1')
     key = hashlib.sha256(json.dumps(report, sort_keys=True).encode()).hexdigest()
     return HybridProject('experimental-'+key, MODEL, report['start_date'], report['nodes'], 1e-10,
-                         solute=report['solute'], end_date=report['end_date'],
+                         solute=report['solute'], age=report.get('age',False), end_date=report['end_date'],
                          input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical,soil_table_policy=soil)
 
 
@@ -269,6 +273,9 @@ def validate(project):
 
 
 def auxiliary_magic(project):
+    if project.age:
+        from conserved_original_age import MAGIC
+        return MAGIC
     selected = inspect(project.input_directory)['selectors']
     history = int(selected['SWHYST']>0)+2*selected['SWSNOW']
     if history:

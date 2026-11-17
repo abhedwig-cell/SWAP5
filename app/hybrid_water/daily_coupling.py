@@ -174,6 +174,13 @@ def validate_bundle(bundle, reference, project):
     if identity.get('conserved_aquifer_solute')!=expected_aquifer:raise ValueError('Foreign original aquifer solute source/state policy')
     if expected_aquifer and (bundle/'mod_aquifer_solute_reservoir.f90').read_bytes()!=aquifer_correction().helper_source():
         raise ValueError('Foreign actual aquifer solute evaluator')
+    from conserved_original_age import metadata as age_metadata,correction as age_correction
+    expected_age=age_metadata() if project.age else None
+    if identity.get('conserved_original_age')!=expected_age:raise ValueError('Foreign original age source/state policy')
+    if expected_age:
+        for name in age_correction().PROVIDERS:
+            if (bundle/(name+'.f90')).read_bytes().replace(b'\r\n',b'\n')!=(h.ROOT/'src/process'/(name+'.f90')).read_bytes().replace(b'\r\n',b'\n'):
+                raise ValueError('Foreign actual original age provider')
     from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled, POLICY as SCHEDULED_SUBSURFACE_POLICY
     expected_subsurface={'policy':SCHEDULED_SUBSURFACE_POLICY,'source_sha256':h.sha(h.APP/'scheduled_subsurface_irrigation.py')} if scheduled_subsurface_enabled(project) else None
     if identity.get('scheduled_subsurface_irrigation')!=expected_subsurface:raise ValueError('Foreign original scheduled subsurface irrigation policy')

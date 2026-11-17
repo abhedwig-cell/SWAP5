@@ -1,0 +1,313 @@
+{
+  "audit": {},
+  "events": [
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_b111_surface_age_budget.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.13883750000968575
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nut-sol\\test_surface_age_budget.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15396869974210858
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.19373910035938025
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-0-0-surface_age_budget-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "9c659e91aac5753ee17931aa52c808eb7d5ab5061fd9e4b18e305cb648e8a409",
+      "wall_seconds": 0.076112300157547
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_b111_surface_age_budget.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15234019979834557
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nut-sol\\test_surface_age_budget.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.1733912997879088
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15391030022874475
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-surface-default-preservation\\build-1-4-surface_age_budget-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "9c659e91aac5753ee17931aa52c808eb7d5ab5061fd9e4b18e305cb648e8a409",
+      "wall_seconds": 0.07287409994751215
+    }
+  ],
+  "head": "85062b0699bdabc00ba97918c4f8646e34fbf5c3",
+  "records": [
+    {
+      "artifact_sha256": {
+        "build-0-0-surface_age_budget-O0\\000.o": "4865fce04b4d2784537e06a1e25b8ad7b26be6101a1727ecffd61d7d73bd6a26",
+        "build-0-0-surface_age_budget-O0\\001.o": "44b04b91bc57245e235bcb480add651c3cc3569e6912c2858aec1a270668562a",
+        "build-0-0-surface_age_budget-O0\\mod_b111_surface_age_budget.mod": "355643dae7ea2e13060381204e9f0188bfcf70e9023c8ff3274a1173d870da24",
+        "build-0-0-surface_age_budget-O0\\test.exe": "884e9f5b5a32302c432c14a02af295fb4075d4e333f40e762356ccdc43777904"
+      },
+      "build": "cold",
+      "case": "surface_age_budget",
+      "compile_seconds": 0.29280619975179434,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "ce86ed7a1d3e6dc5b65b3c7d3c395c413c000a66a20c4cf232ec1824f7ce187b",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "884e9f5b5a32302c432c14a02af295fb4075d4e333f40e762356ccdc43777904",
+      "execution_seconds": 0.076112300157547,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0"
+      ],
+      "inputs": {
+        "src/process/mod_b111_surface_age_budget.f90": "b6773e7233d3c02edea0d8e8f3b2ad67195957a28ae703d41b6a49efba35666d",
+        "tests/nut-sol/test_surface_age_budget.f90": "f31ad0c9e7b03df0f00c3e27304c85a6fb85a439bce1f81ead058fdbc09a037b"
+      },
+      "link_seconds": 0.19373910035938025,
+      "optimization": 0,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 8.299946784973145e-06,
+      "sources": [
+        "src/process/mod_b111_surface_age_budget.f90",
+        "tests/nut-sol/test_surface_age_budget.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "9c659e91aac5753ee17931aa52c808eb7d5ab5061fd9e4b18e305cb648e8a409",
+      "total_seconds": 0.9945976999588311,
+      "validation_seconds": 0.37158200005069375
+    },
+    {
+      "artifact_sha256": {
+        "build-1-4-surface_age_budget-O2\\000.o": "6a9b11e75663424c500d2f667d26ebdf19c6e2f507bbec695464565c228171da",
+        "build-1-4-surface_age_budget-O2\\001.o": "bd66fe6f5b14d432114139b87484308e9166dcc4459e3f2ac6e60352e8040c76",
+        "build-1-4-surface_age_budget-O2\\mod_b111_surface_age_budget.mod": "355643dae7ea2e13060381204e9f0188bfcf70e9023c8ff3274a1173d870da24",
+        "build-1-4-surface_age_budget-O2\\test.exe": "581d7c47f8f5dd865cfc015329d6c7f149c50c8bbd2a44df3d39a058ae8b217e"
+      },
+      "build": "cold",
+      "case": "surface_age_budget",
+      "compile_seconds": 0.32573149958625436,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "ce86ed7a1d3e6dc5b65b3c7d3c395c413c000a66a20c4cf232ec1824f7ce187b",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "581d7c47f8f5dd865cfc015329d6c7f149c50c8bbd2a44df3d39a058ae8b217e",
+      "execution_seconds": 0.07287409994751215,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2"
+      ],
+      "inputs": {
+        "src/process/mod_b111_surface_age_budget.f90": "b6773e7233d3c02edea0d8e8f3b2ad67195957a28ae703d41b6a49efba35666d",
+        "tests/nut-sol/test_surface_age_budget.f90": "f31ad0c9e7b03df0f00c3e27304c85a6fb85a439bce1f81ead058fdbc09a037b"
+      },
+      "link_seconds": 0.15391030022874475,
+      "optimization": 2,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 5.600042641162872e-06,
+      "sources": [
+        "src/process/mod_b111_surface_age_budget.f90",
+        "tests/nut-sol/test_surface_age_budget.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "9c659e91aac5753ee17931aa52c808eb7d5ab5061fd9e4b18e305cb648e8a409",
+      "total_seconds": 1.0607580998912454,
+      "validation_seconds": 0.4573040995746851
+    }
+  ],
+  "status": "PASS"
+}

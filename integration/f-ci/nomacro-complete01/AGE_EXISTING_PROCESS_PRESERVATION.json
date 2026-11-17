@@ -1,0 +1,34 @@
+{
+  "baseline": "bbac102dd8bf6b50126669e1223541129a565f2f",
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "authority_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+  "literal_lines": [
+    939,
+    987
+  ],
+  "runs": {
+    "O0": {
+      "process_stdout": "AGE_LITERAL_150_STEPS_PRODUCTION_UNITS_BALANCE_INVALID_RETRY=PASS\r\n",
+      "oracle_sha256": "ad1e587bf8515abf7fb087663b6e1a075484271373b5594e804700e566b27195",
+      "process_provider_count": 2
+    },
+    "O2": {
+      "process_stdout": "AGE_LITERAL_150_STEPS_PRODUCTION_UNITS_BALANCE_INVALID_RETRY=PASS\r\n",
+      "oracle_sha256": "ad1e587bf8515abf7fb087663b6e1a075484271373b5594e804700e566b27195",
+      "process_provider_count": 2
+    }
+  },
+  "input_sha256": {
+    "integration\\audits\\evidence\\SWAP431_B111_AUTHORITY.tar.gz.b64": "609496d1aecfb397da5a7c9121268799c9d52fc4567f0c7bc233b09d84219622",
+    "tests\\nut-sol\\run_age.py": "f65e548e6c113008b2f60e68ce7ccabc4f19e052ec3a72ce654755f50f6d5e3a",
+    "src\\process\\mod_solute_compartment_state.f90": "1de600a1154bb05678c27bef759efba9bbf4d3a332853f862b5fc04d9adb5ba5",
+    "src\\process\\mod_b111_age_tracer_substep.f90": "080310258fa67ee8bb30e7270290eba3581798faf08bd326b2bc5d4fcd9c016b",
+    "tests\\nut-sol\\test_age_process.f90": "719caf4513103cfcc8bbb8d8c61b33b47bc6c988ea8450f8dcb322deef9905ae"
+  },
+  "cost_seconds": {
+    "process_compile": 3.123866399284452,
+    "process_link": 0.34199379989877343,
+    "process_native": 0.32266040006652474
+  },
+  "status": "PROCESS_PASS"
+}
