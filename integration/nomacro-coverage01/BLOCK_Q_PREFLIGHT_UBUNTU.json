@@ -1,0 +1,123 @@
+{
+  "status": "EXPLICIT_EVENT_CLOSURE_POLICY_AND_ACTUAL_SOURCE_REFUSALS_PASS",
+  "source_commit": "33f7363965c137f017ce756fa6b5a07dc4287051",
+  "driver_sha256": "ebfc97f304770f16be8b653eb63e96f90e65acff7bad4705283d546b66980d64",
+  "negative_controls": [
+    {
+      "name": "default-drained",
+      "error": "Integrated frost drainage requires explicit corrected TimeControl event closure",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/preflight/default-drained",
+        "--reference-work",
+        "/home/runner/work/_temp/provider",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/preflight/default-drained-refused-build"
+      ],
+      "returncode": 2,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Integrated frost drainage requires explicit corrected TimeControl event closure\n",
+      "no_output": true
+    },
+    {
+      "name": "old-dtmax",
+      "error": "Integrated frost drainage requires explicit corrected TimeControl event closure",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/preflight/old-dtmax",
+        "--reference-work",
+        "/home/runner/work/_temp/provider",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/preflight/old-dtmax-refused-build",
+        "--experimental-time-step-policy",
+        "configured-dtmax-daily-v1"
+      ],
+      "returncode": 2,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Integrated frost drainage requires explicit corrected TimeControl event closure\n",
+      "no_output": true
+    },
+    {
+      "name": "old-growth",
+      "error": "Integrated frost drainage requires explicit corrected TimeControl event closure"
+    },
+    {
+      "name": "free-policy",
+      "error": "Corrected event closure is bounded to original water frost drainage",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/preflight/free-policy",
+        "--reference-work",
+        "/home/runner/work/_temp/provider",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/preflight/free-policy-refused-build",
+        "--experimental-time-step-policy",
+        "original-adaptive-event-closure-v1"
+      ],
+      "returncode": 2,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Corrected event closure is bounded to original water frost drainage\n",
+      "no_output": true
+    },
+    {
+      "name": "chemical-drained",
+      "error": "Original drainage reader refuses SWDIVD0 with solute transport",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/preflight/chemical-drained",
+        "--reference-work",
+        "/home/runner/work/_temp/provider",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/preflight/chemical-drained-refused-build",
+        "--experimental-time-step-policy",
+        "original-adaptive-event-closure-v1"
+      ],
+      "returncode": 2,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Original drainage reader refuses SWDIVD0 with solute transport\n",
+      "no_output": true
+    },
+    {
+      "name": "chemical-free-policy",
+      "error": "Corrected event closure is bounded to original water frost drainage"
+    },
+    {
+      "name": "foreign-policy",
+      "error": "Foreign original TimeControl event-closure policy"
+    },
+    {
+      "name": "foreign-time-source",
+      "error": "Foreign actual corrected TimeControl source"
+    },
+    {
+      "name": "foreign-terminal-source",
+      "error": "Foreign actual terminal water receipt source"
+    },
+    {
+      "name": "foreign-original-reference",
+      "refused": true
+    }
+  ],
+  "validated_actual_bundle_sha256": "333b1a3a92375e6eb6c5567f7f008b3e392fcecf0e57f90c9cc2abe99b211fd2",
+  "science": "NOT_QUALIFIED"
+}

@@ -1,0 +1,32 @@
+{
+  "status": "RETAINED_DEVELOPMENT_AND_VERIFICATION_FAILURES",
+  "records": [
+    {
+      "stage": "first standalone driver",
+      "result": "COMPILE_FAIL",
+      "reason": "driver local k collided with original variables module k; corrected local names before model execution"
+    },
+    {
+      "stage": "first event replay ca0cae0f3",
+      "result": "UNCHANGED_DAY21_FAIL",
+      "reason": "candidate inserted in dtmax renderer but actual selected seed was original; generated source inspection shows no timecontrol replacement; Q_event_O0/O2 retained"
+    },
+    {
+      "stage": "clock-only source f83995433",
+      "result": "STRICT_DAY367_FAIL",
+      "reason": "Complete1096 rows fail unchanged independent mass1.0000084094130557e-10; not qualified despite CLI exit0 in diagnostic O2"
+    },
+    {
+      "stage": "terminal first source2d0162c04",
+      "result": "LINK_FAIL",
+      "reason": "new module compiled but missing from donor object list; no model days"
+    },
+    {
+      "stage": "terminal source c6b9a94d8 O0",
+      "result": "VERIFICATION_SETUP_FAIL_AFTER_COMPLETED_PHYSICS_AND_NATIVE",
+      "reason": "foreign-frost metadata test omitted new TimeControl/terminal source files; only test fixture repaired, completed1096/native rows reconsumed by Q_finish_local.py; no period rerun"
+    }
+  ],
+  "raw_methods": "BLOCK_Q_LOCAL_RAW.tar.xz",
+  "scope": "No failure relabeled as physical PASS; narrow completed execution and later verification completion are distinct"
+}

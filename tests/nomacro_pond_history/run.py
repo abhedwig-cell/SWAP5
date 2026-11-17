@@ -14,6 +14,9 @@ def controls(build,reference,project,out,full,data,*,policy_key="scheduled_pond_
     # Foreign format policy must fail before any output/private worker exists.
     foreign=out/'foreign-policy';foreign.mkdir();changed=json.loads((build/'BUILD.json').read_text())
     changed['identity'][policy_key]['policy']='foreign';(foreign/'BUILD.json').write_text(json.dumps(changed))
+    if meta['identity'].get('time_event_closure'):
+        for name in ('timecontrol.f90','terminal_water_receipt.f90'):
+            (foreign/name).write_bytes((build/name).read_bytes())
     try:validate_bundle(foreign,reference,project)
     except ValueError as error:assert ('Foreign original scheduled pond history' if policy_key=='scheduled_pond_history' else 'Foreign bounded original frost reference policy') in str(error)
     else:raise AssertionError('Foreign pond policy accepted')
@@ -58,6 +61,7 @@ def controls(build,reference,project,out,full,data,*,policy_key="scheduled_pond_
         with zipfile.ZipFile(package,'w') as z:
             for n,b in altered.items():z.writestr(n,b)
         target=out/(name+'-refused');command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',m.e.MODEL,'--experimental-project',str(project.input_directory),'--reference-work',str(reference),'--build-bundle',str(build),'--restart',str(package),'--restart-day','199','--days','200','--output',str(target)]
+        command.extend(['--experimental-time-step-policy',project.time_step_policy])
         r=subprocess.run(command,capture_output=True,text=True,timeout=30);(out/(name+'.stderr')).write_text(r.stderr)
         assert r.returncode!=0 and not list(target.glob('accepted-*.zip')),(name,r.stdout,r.stderr)
         diagnostic=''.join(p.read_text(errors='replace') for p in target.rglob('donor.stderr'))

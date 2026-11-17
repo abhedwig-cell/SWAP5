@@ -21,7 +21,7 @@ def main():
   if file:change(case/file,field,value)
   if name=='fake-main-divd':
    path=case/'swap.swp';path.write_text(path.read_text(encoding='cp1252')+'\nSWDIVD = 0\n',encoding='cp1252')
-  try:e.inspect(case)
+  try:e.load(case)
   except ValueError as error:message=str(error)
   else:raise AssertionError('Unsupported frost preflight accepted '+name)
   if name in ('micro-future','actual-divd1','chemical-drained','fake-main-divd'):

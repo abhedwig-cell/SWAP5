@@ -973,7 +973,7 @@ chemical subsurface irrigation refusal, whole science and whole energy remain
 scientific equivalence or all-option completion.
 ## Block P: bounded original partial frost integration
 
-**Qualified snapshot, pending canonical admission.** Runtime
+**Canonically admitted by PR1695.** Runtime
 `7bf2f817b2a025ed25670730d4745dcbb8c4001b` selects the exact admitted
 FROST-GEOMETRY-01 whole original module over FROST-DRAIN-01, with both source
 links pinned to immutable SHA256 values. It promotes no global B1 snapshot.
@@ -1032,3 +1032,60 @@ metadata completion reuses already executed periods and exact assertions.
 archive records own this bounded claim. Integrated frost drainage, closed or
 fully blocked trajectories, other thermal/history combinations and all-option
 completion remain open.
+
+## Block Q: original event closure and complete terminal water receipt
+
+**Qualified snapshot.** Runtime `33f7363965c137f017ce756fa6b5a07dc4287051`
+adds the explicit experimental numerical policy
+`original-adaptive-event-closure-v1` for water frost/drainage, original SWDIVD0,
+closed bottom6, snow1/hysteresis2, numeric heat with prescribed TSS2 and Feddes1
+in all future crops. Chemical SWDIVD0 and SWDIVD1 remain refused. Canonical
+admission is owned by the actual `BLOCK_Q_MERGE.json` receipt when present.
+
+The complete original Snow2/Integral3 observer establishes the old day21 cause:
+accepted2025step durations fall short of a day by4.0436209935990064e-11day,
+while Snow2 updates storage for the full day. Their1.2575851471297028e-10cm
+difference accounts for the extra independent mass residual to1.18e-15cm.
+The isolated reference correction TIME-EVENT-CLOSURE-01 gives TimeControl(3)
+the same near-event clipping already used in TimeControl(1)/(2). Its native
+O0/O2 driver retains original deficits and exact ordinary/event controls.
+The original dtCrit1e-8day and all mass tolerances remain unchanged.
+
+That correction alone remains a failed qualification: full day367 has independent
+residual1.0000084094130557e-10cm. The qualified successor also checks the complete
+terminal water receipt before the last hydraulic trial is accepted. It projects
+all sixteen original Integral3 water channels and six old/new stock slots,
+including original Watstor and canopy storage. Extended precision sums only
+these native double terms, matching the independent Python sum. It changes no
+rate, stock, Jacobian or physical process, and adds no persistent state. The small
+native O0/O2 driver matches all28terms exactly to actual original Integral3 and
+Watstor in12cases per optimization, without mutation; three unsupported domains
+per optimization are refused. Original later canopy updates remain subject to
+the independent complete-day qualification gate.
+
+Windows and Ubuntu each complete1096days at O0/O2: four full trajectories,
+4384model days,16standard and24active seasonal/year native windows, plus four
+short own2to4 controls. Physical rows, complete CSV, native bytes and original
+capsule ownership are exact in every selected restart. Each full profile records
+129days with actual partial frost, minimum factor about0.512433; the initial
+uncomputed datum is excluded. These periods do not establish fully blocked flow.
+Maximum independent water9.997877525869114e-11cm and kernel
+9.998291083945787e-11cm remain below the unchanged1e-10 limits.
+
+All four profiles pass independent origins, inconsistent-mass refusal without
+publication, external discard/replay/recovery, foreign policy and four actual
+rehashed native-state refusals. Windows/Ubuntu explicit policy and source guards
+pass. Default8 and12fresh prior source/input/policy comparisons preserve the
+applicable earlier evidence, including172day/active-native checks of both P free
+frost configurations. No binary identity is inferred. An interrupted O0 negative
+test setup is completed from its already executed full/native artifacts; its
+failure and actual execution source remain distinct from later verification.
+
+The original day21 failure, first clock-only day367 failure, earlier censors and
+chemical incompatibilities stay retained in raw evidence. The complete corrected
+original standalone diagnostic uses the same executed inputs and only the exact
+clock/frost module replacements; common-field differences remain diagnostic.
+`BLOCK_Q_QUALIFICATION.json`, source/native preservation and raw archives own
+the bounded claim. Whole science, whole energy and all-option completion remain
+**NOT_QUALIFIED**. No global B1 snapshot, frozen release, macro or general
+solver/performance campaign is promoted.

@@ -23,7 +23,8 @@ APP = Path(__file__).resolve().parent
 ORIGINAL_TIME_POLICY = 'original-adaptive-day-seed-v1'
 NO_MACRO_TIME_POLICY = 'configured-dtmax-daily-v1'
 PHYSICAL_GROWTH_TIME_POLICY = 'configured-dtmax-physical-growth-v2'
-TIME_POLICIES = (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY,PHYSICAL_GROWTH_TIME_POLICY)
+from time_event_closure import POLICY as EVENT_CLOSURE_TIME_POLICY
+TIME_POLICIES = (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY,PHYSICAL_GROWTH_TIME_POLICY,EVENT_CLOSURE_TIME_POLICY)
 ORIGINAL_SOIL_TABLE_POLICY = 'original-tspack-v1'
 PCHIP_SOIL_TABLE_POLICY = 'original-pchip-v1'
 SOIL_TABLE_POLICIES = (ORIGINAL_SOIL_TABLE_POLICY,PCHIP_SOIL_TABLE_POLICY)
@@ -200,6 +201,12 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     if not project.macro:donor_flags.extend(NO_MACRO_FP_FLAGS)
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
+    if project.time_step_policy == EVENT_CLOSURE_TIME_POLICY:
+        from time_event_closure import source as event_source
+        if project.macro or not project.input_directory:
+            raise ValueError('Event closure requires explicit bounded experimental input')
+        (output/'timecontrol.f90').write_bytes(event_source((donor_build/'swap-selected/timecontrol.f90').read_bytes()))
+        patched.insert(0,'timecontrol')
     if project.soil_table_policy == PCHIP_SOIL_TABLE_POLICY:
         source=(donor_build/'swap-selected/sptabulated.f90').read_text(encoding='cp1252')
         source=replace(source,'logical, parameter :: use_TSPACK = .TRUE.',
@@ -709,6 +716,22 @@ end module plant_interface""")
         patched.insert(0,'frozencond')
         path=output/'swap_csv_output.f90'
         path.write_text(render_witness(path.read_text(encoding='cp1252')),encoding='cp1252')
+    if project.time_step_policy == EVENT_CLOSURE_TIME_POLICY:
+        if not strict_water or not budget_retry:
+            raise ValueError('Corrected event closure requires complete strict terminal water receipt')
+        (output/'terminal_water_receipt.f90').write_bytes((APP/'terminal_water_receipt.f90').read_bytes())
+        patched.insert(0,'terminal_water_receipt')
+        path=output/'headcalc.f90';source=path.read_text(encoding='cp1252')
+        source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
+                       '   use hybrid_terminal_water_receipt, only: terminal_water_residual\n'
+                       '   use variables, only: tcum\n'
+                       '   use hybrid_step_budget, only: projected_water_residual')
+        anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
+        source=replace(source,anchor,anchor+'\n'
+                       '         if(tcum+dt>=1d0-1d-8)then\n'
+                       '            if(abs(terminal_water_residual())>1d-10)flnonconv=.true.\n'
+                       '         end if')
+        path.write_text(source,encoding='cp1252')
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -718,6 +741,7 @@ end module plant_interface""")
     subprocess.run(["gfortran", "-o", str(donor),
                     *(str(replacements.get(p.name, p)) for p in donor_objects),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
+                    *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
     sources = [
@@ -761,6 +785,9 @@ end module plant_interface""")
     }
     if project.input_directory:
         build_identity['experimental_input_adapter'] = sha(APP/'experimental_project.py')
+    if project.time_step_policy == EVENT_CLOSURE_TIME_POLICY:
+        from time_event_closure import metadata as event_metadata
+        build_identity['time_event_closure'] = event_metadata((donor_build/'swap-selected/timecontrol.f90').read_bytes())
     if micro_state:
         from micro_lookup_state import POLICY
         build_identity['micro_lookup_state_policy']=POLICY
