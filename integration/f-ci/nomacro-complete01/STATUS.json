@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-aquifer-source01",
   "last_commit": "bd8bb551c",
-  "status": "AQUIFER_REAL_COMPONENT_O0_O2_PASS_CORRECTED_REFERENCE_PENDING",
+  "status": "AQUIFER_SOURCE_CORRECTION_REFERENCE_IMPLEMENTED_COMPONENT_PASS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -201,7 +201,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Implement exact original aquifer source correction/reference: bottom-node coefficient fixes n+1; supply current microstep soil mass rate (legacy isqdra is cumulative amount), use consistent old-concentration outflow and book reservoir/decay. Then full native/private Cdrain and per-day compound soil+box guards before SWBR1 activation.",
+  "next_code_change": "Execute actual original index-only diagnostic and corrected box/reference O0/O2, verify soil/box/exchange/compound1e-10 guards. Preserve all failed cases; repair source/numerical issues without clipping or tolerance change. SWBR1 preflight remains refused until native/runtime qualification.",
   "recovery_point": "Current canonicale677 verified exact tree5e5395 and real owner PASS. AQ branch in same private worktree: unconnected evaluator/driver commitbd8bb551c, O0/O2 PASS with one provider/3compiler requests each (12.64/1.62s). Legacy O0/O2 bounds35>34 and uncheckedNaN proof retained. Additional source audit: isqdra already includesdtsolu/cumulates within water step, yet original box multiplies it bydtsolu again; surface output uses updated concentration after Euler loss. Correct these explicitly in reference before integrating. SWBR1 remains refused; no model/CI active.",
   "external_blocker": null,
   "test_selection": {
@@ -270,6 +270,15 @@
         "expected_seconds": 10,
         "prior_execution": "PASS",
         "existing_evidence": "Original SWBR array defect proven; canonical source/state baseline immutable. No existing qualified aquifer evaluator found in current process-source closure."
+      },
+      "aquifer_reference": {
+        "changed_dependency": "Original aquifer n+1 index, cumulative amount used as rate, post-update outflow ledger, explicit loss-limited Euler microstep",
+        "scientific_claim": "Actual corrected-original soil+box conservation with exact production evaluator, meaningful original index-only counterexample and bounded nonnegative/stiff/sorbing dynamics",
+        "owner": "NOMACRO-AQUIFER-SOLUTE-01",
+        "authority": "docs/verification/principles.md#reference-chain",
+        "expected_seconds": 180,
+        "prior_execution": "NOT_RUN",
+        "existing_evidence": "Actual original O0/O2 bounds failure plus uncheckedNaN; actual one-provider evaluator+loss-limit O0/O2 PASS."
       }
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
