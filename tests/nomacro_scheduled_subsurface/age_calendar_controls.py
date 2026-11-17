@@ -97,9 +97,13 @@ def transactions(build,reference,project,full,out):
                 return disposition,response
             try:
                 m.h.receive=corrupt
-                try:host.step(1,checkpoint=True)
-                except ValueError as error:checks.append(dict(attack=attack,status='REFUSED',error=str(error)))
-                else:raise AssertionError('Fabricated daily calendar receipt accepted')
+                try:
+                    refused=host.step(1,checkpoint=True)
+                    assert attack=='water-receipt' and not refused['committed'],'Fabricated daily calendar receipt accepted'
+                    checks.append(dict(attack=attack,status='REFUSED',kernel_residual_cm=refused['kernel_residual_cm']))
+                except ValueError as error:
+                    assert attack=='age-production' and 'age' in str(error).lower(),str(error)
+                    checks.append(dict(attack=attack,status='REFUSED',error=str(error)))
             finally:m.h.receive=receive
             assert before==(col.day,col.stocks,col.age_state,col.age_effluent)
             assert not list(target.glob('accepted-*.zip'))
