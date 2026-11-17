@@ -1,0 +1,329 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-REMAINING31",
+  "decision": "FINITE_INITIAL30_POOL_EXHAUSTED_NO_ACTIVE_REFUSAL",
+  "model_routes": 10,
+  "hard_timeout_seconds": 20,
+  "all_uncensored": true,
+  "O0_O2_non_timing_byte_exact": true,
+  "candidate_physics_harness_criteria_changes": false,
+  "active_refusal_rollback_direct_qualification": false,
+  "reason": "All five remaining original strict-initial zero inflow partial contexts converge2iterations with rank1 active throughout. Together with INITIAL30, all seven identified new pool members tested, none refused. Active rollback/direct remains unqualified.",
+  "official_promotion": false,
+  "no_new_observer": true,
+  "initial30_pool_members": 7,
+  "previously_tested_original_attempts": [
+    44,
+    48
+  ],
+  "selected_original_attempts": [
+    36,
+    40,
+    41,
+    43,
+    46
+  ],
+  "untested_pool_members": [],
+  "finite_pool_exhausted": true,
+  "results": [
+    {
+      "optimization": "O0",
+      "context": "G1",
+      "seconds": 1.0704243001528084,
+      "original_attempt": 36,
+      "original_time": 35797.070000000014,
+      "original_dt": 0.002,
+      "original_prefix_rows_byte_exact": 35,
+      "original_extra_line_search_trials": 6.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 3.9381584104880574e-10,
+      "sum_residual": -1.8596576689713003e-10,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        1.38223071497693e-16,
+        1.7050773228229066e-18,
+        -5.963111948670274e-19,
+        1.4907779871675686e-19,
+        0.0
+      ],
+      "inventory_error_cm": -3.7179211532373246e-13,
+      "inventory_limit_cm": 2e-08
+    },
+    {
+      "optimization": "O0",
+      "context": "G2",
+      "seconds": 0.47826649993658066,
+      "original_attempt": 40,
+      "original_time": 35797.07111111112,
+      "original_dt": 0.0008888888888888888,
+      "original_prefix_rows_byte_exact": 37,
+      "original_extra_line_search_trials": 6.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 7.316583727767778e-10,
+      "sum_residual": 5.3994937381147235e-11,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        6.76000054544712e-17,
+        6.257879414314771e-18,
+        3.1916201452542037e-18,
+        -7.962109704190423e-20,
+        -1.6940658945086007e-20
+      ],
+      "inventory_error_cm": 4.807265696626928e-14,
+      "inventory_limit_cm": 8.888888888888889e-09
+    },
+    {
+      "optimization": "O0",
+      "context": "G3",
+      "seconds": 0.49395799986086786,
+      "original_attempt": 41,
+      "original_time": 35797.07111111112,
+      "original_dt": 0.0002962962962962963,
+      "original_prefix_rows_byte_exact": 37,
+      "original_extra_line_search_trials": 1.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 3.7815320319545265e-11,
+      "sum_residual": 3.18372291952364e-11,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        -7.63339739318471e-17,
+        -4.459893165089908e-18,
+        1.7330294100822985e-18,
+        1.8888834723770898e-19,
+        4.404571325722362e-20
+      ],
+      "inventory_error_cm": 9.354523449259244e-15,
+      "inventory_limit_cm": 2.9629629629629633e-09
+    },
+    {
+      "optimization": "O0",
+      "context": "G4",
+      "seconds": 0.5121834001038224,
+      "original_attempt": 43,
+      "original_time": 35797.07120987656,
+      "original_dt": 0.00019753086419753085,
+      "original_prefix_rows_byte_exact": 38,
+      "original_extra_line_search_trials": 1.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 3.3297878343496734e-11,
+      "sum_residual": 3.6028122073070485e-11,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        -7.973872874245417e-17,
+        -5.855909341283402e-18,
+        -5.166900978251232e-20,
+        -1.8888834723770898e-19,
+        -4.573977915173222e-20
+      ],
+      "inventory_error_cm": 7.030956220878404e-15,
+      "inventory_limit_cm": 1.9753086419753086e-09
+    },
+    {
+      "optimization": "O0",
+      "context": "G5",
+      "seconds": 0.4754276000894606,
+      "original_attempt": 46,
+      "original_time": 35797.07123182443,
+      "original_dt": 4.38957475994513e-05,
+      "original_prefix_rows_byte_exact": 39,
+      "original_extra_line_search_trials": 8.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 3.4769964685210653e-12,
+      "sum_residual": -6.056442237254631e-12,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        1.1653533551372848e-16,
+        6.699580626528287e-18,
+        3.1649386074156932e-18,
+        3.3881317890172014e-20,
+        1.9481757786848908e-20
+      ],
+      "inventory_error_cm": -1.3952326707172835e-16,
+      "inventory_limit_cm": 4.38957475994513e-10
+    },
+    {
+      "optimization": "O2",
+      "context": "G1",
+      "seconds": 0.5862873001024127,
+      "original_attempt": 36,
+      "original_time": 35797.070000000014,
+      "original_dt": 0.002,
+      "original_prefix_rows_byte_exact": 35,
+      "original_extra_line_search_trials": 6.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 3.9381584104880574e-10,
+      "sum_residual": -1.8596576689713003e-10,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        1.38223071497693e-16,
+        1.7050773228229066e-18,
+        -5.963111948670274e-19,
+        1.4907779871675686e-19,
+        0.0
+      ],
+      "inventory_error_cm": -3.7179211532373246e-13,
+      "inventory_limit_cm": 2e-08
+    },
+    {
+      "optimization": "O2",
+      "context": "G2",
+      "seconds": 0.545388099970296,
+      "original_attempt": 40,
+      "original_time": 35797.07111111112,
+      "original_dt": 0.0008888888888888888,
+      "original_prefix_rows_byte_exact": 37,
+      "original_extra_line_search_trials": 6.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 7.316583727767778e-10,
+      "sum_residual": 5.3994937381147235e-11,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        6.76000054544712e-17,
+        6.257879414314771e-18,
+        3.1916201452542037e-18,
+        -7.962109704190423e-20,
+        -1.6940658945086007e-20
+      ],
+      "inventory_error_cm": 4.807265696626928e-14,
+      "inventory_limit_cm": 8.888888888888889e-09
+    },
+    {
+      "optimization": "O2",
+      "context": "G3",
+      "seconds": 0.5148581999819726,
+      "original_attempt": 41,
+      "original_time": 35797.07111111112,
+      "original_dt": 0.0002962962962962963,
+      "original_prefix_rows_byte_exact": 37,
+      "original_extra_line_search_trials": 1.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 3.7815320319545265e-11,
+      "sum_residual": 3.18372291952364e-11,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        -7.63339739318471e-17,
+        -4.459893165089908e-18,
+        1.7330294100822985e-18,
+        1.8888834723770898e-19,
+        4.404571325722362e-20
+      ],
+      "inventory_error_cm": 9.354523449259244e-15,
+      "inventory_limit_cm": 2.9629629629629633e-09
+    },
+    {
+      "optimization": "O2",
+      "context": "G4",
+      "seconds": 0.45746930013410747,
+      "original_attempt": 43,
+      "original_time": 35797.07120987656,
+      "original_dt": 0.00019753086419753085,
+      "original_prefix_rows_byte_exact": 38,
+      "original_extra_line_search_trials": 1.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 3.3297878343496734e-11,
+      "sum_residual": 3.6028122073070485e-11,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        -7.973872874245417e-17,
+        -5.855909341283402e-18,
+        -5.166900978251232e-20,
+        -1.8888834723770898e-19,
+        -4.573977915173222e-20
+      ],
+      "inventory_error_cm": 7.030956220878404e-15,
+      "inventory_limit_cm": 1.9753086419753086e-09
+    },
+    {
+      "optimization": "O2",
+      "context": "G5",
+      "seconds": 0.5115130001213402,
+      "original_attempt": 46,
+      "original_time": 35797.07123182443,
+      "original_dt": 4.38957475994513e-05,
+      "original_prefix_rows_byte_exact": 39,
+      "original_extra_line_search_trials": 8.0,
+      "candidate_converged": true,
+      "iterations": 2,
+      "extra_line_search_trials": 0.0,
+      "rank1_active_iterations": 2.0,
+      "guard_counts": {
+        "eligible_partial_zero_inflow": 2
+      },
+      "initially_partial_zero_inflow": true,
+      "max_residual": 3.4769964685210653e-12,
+      "sum_residual": -6.056442237254631e-12,
+      "qualifying_active_refusal": false,
+      "domain_errors_cm": [
+        1.1653533551372848e-16,
+        6.699580626528287e-18,
+        3.1649386074156932e-18,
+        3.3881317890172014e-20,
+        1.9481757786848908e-20
+      ],
+      "inventory_error_cm": -1.3952326707172835e-16,
+      "inventory_limit_cm": 4.38957475994513e-10
+    }
+  ]
+}

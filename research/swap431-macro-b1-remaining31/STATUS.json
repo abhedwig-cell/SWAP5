@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "FINITE_INITIAL30_POOL_EXHAUSTED_NO_ACTIVE_REFUSAL",
   "baseline": "825ca77494b73e3fce34f9e2034d81c395b15552",
   "canonical_remote_unchanged": "be481cfb40f953e337116ef4a6dc5bc3ef64d4f7",
   "workstream": "isolated SWAP431 B1 research",
@@ -10,5 +10,18 @@
   "physical_and_solver_changes": false,
   "invariants": "Keep mass conservation and committed-state transactional semantics, unchanged native restart/input contract. No shared interfaces or official branches touched.",
   "qualification_requires": "Initial I0,L<W,partial factor and actual rank1 activation; genuine solver refusal then original rollback and exact direct smaller retry. Old original refusal or line-search rejection does not qualify.",
-  "official_promotion": false
+  "official_promotion": false,
+  "model_routes": 10,
+  "selected_original_attempts": [
+    36,
+    40,
+    41,
+    43,
+    46
+  ],
+  "finite_pool_exhausted": true,
+  "untested_pool_members": [],
+  "active_refusal_rollback_direct_qualification": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "remaining": "All five converge2iterations with rank1 active twice. Together with INITIAL30 all7 identified new pool contexts tested, none refused. Active rollback/direct remains OPEN; this pool cannot supply that witness. No absence claim beyond this finite pool. No scope expansion."
 }
