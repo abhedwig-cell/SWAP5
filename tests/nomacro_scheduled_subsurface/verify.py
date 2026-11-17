@@ -2,13 +2,14 @@
 from pathlib import Path
 import hashlib,json,math,subprocess
 ROOT=Path(__file__).resolve().parents[2]
+R_RUNTIME='75e5b45a1b7a8705d6d364156a1ad4434107dfdf'
 R_ADMITTED='a9044fdab7e333058c6a4dab34884e56e33c35a9'
 S_RUNTIME='b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2'
 S_UBUNTU='451b28ea4a1b68611952c55437bdcf37c6017ac4'
 S_SEALED='504fd73906740b9c43a2d54371184980d7e42e5a'
 S_PROOF='integration/f-ci/nomacro-complete01/'
 PULSE_ADMITTED='fd162a1ea22c41e798a431f39957aaff9c173e46'
-COMPOSED_RUNTIME='PENDING_COMPOSED_RUNTIME'
+COMPOSED_RUNTIME='26cfa8ed1470953d7efc244723ff6126776efe66'
 COMPOSED_SEALED='PENDING_COMPOSED_SEAL'
 SELF='tests/nomacro_scheduled_subsurface/verify.py'
 TEST='tests/nomacro_scheduled_subsurface/test_verify.py'
