@@ -12,19 +12,21 @@ def main():
  for key in ('water-surface-history','chemical-surface-history'):
   project=m.e.load(out/'inputs'/key,time_step_policy=POLICY)
   for opt in ('O0','O2'):
-   name=key+'-'+opt;original=out/(name+'-build');build=out/(name+'-heat-build');shutil.copytree(original,build);meta=json.loads((original/'BUILD.json').read_text());commands=[]
+   name=key+'-'+opt;original=out/(name+'-build');build=out/(name+'-heat2-build');shutil.copytree(original,build);meta=json.loads((original/'BUILD.json').read_text());commands=[]
    def execute(cmd):
     commands.append(list(map(str,cmd)));r=subprocess.run(commands[-1],cwd=build,capture_output=True,text=True,timeout=45);assert r.returncode==0,r.stderr
    for src in SOURCES:execute(['gfortran','-O2','-ffree-line-length-none','-fcheck=all','-I',build,'-J',build,'-c',ROOT/src])
    raw=(ref/'swap-selected/temperature.f90').read_text(encoding='cp1252');observed=ns['instrument'](raw).replace('audit_solid(1:numnod),audit_face(1:numnod+1))','audit_solid(1:numnod),audit_face(1:numnod+1),detailed=.false.)');assert re.sub(r'! BEGIN HEAT OBSERVATION\n.*?! END HEAT OBSERVATION\n','',observed,flags=re.S)==raw
    src=build/'temperature.f90';src.write_text(observed,encoding='cp1252');flags=['-O2',*meta['identity']['donor_flags'][1:]];execute(['gfortran',*flags,'-I',build,'-I',ref/'swap-obj','-I',ref/'ttutil-obj','-c',src]);exe=build/'heat_observed_donor.exe'
    objects=[build/x.name if (build/x.name).exists() else x for x in sorted((ref/'swap-obj').glob('*.o'))];execute(['gfortran','-o',exe,*objects,build/'hybrid_step_budget.o',*[build/(Path(s).stem+'.o') for s in SOURCES],ref/'ttutil-obj/libttutil.a'])
-   folder=out/(name+'-heat');folder.mkdir();data=[]
+   folder=out/(name+'-heat2');folder.mkdir();data=[]
    def trial():
     with contextlib.ExitStack() as stack:
-     host=m.h.DailyHost(stack,exe,original/'day_kernel.exe',out/'inputs'/key,folder,[m.h.ColumnStart('original',0,None,None)],runtime=True,model=project.model,project=project)
-     for _ in range(1096):
-      row=host.step(1);data.append(row);assert row['committed']
+     binding={**meta['binding'],'heat_observation':{'temperature_source_sha256':m.sha(src),'accounting_sources':{v:m.sha(ROOT/v) for v in SOURCES}}}
+     host=m.h.DailyHost(stack,exe,original/'day_kernel.exe',out/'inputs'/key,folder,[m.h.ColumnStart('original',0,None,None)],runtime=True,checkpoint_enabled=True,binding=binding,model=project.model,project=project)
+     with (folder/'daily.jsonl').open('w') as journal:
+      for day in range(1,1097):
+       row=host.step(1,checkpoint=day in {2,4,6,199,201,211,213,215,365,367,530,532,1094,1096});data.append(row);journal.write(json.dumps(row)+'\n');assert row['committed']
      host.close()
    _,seconds=m.bounded(30,trial);assert m.physical(data)==m.physical(m.rows(out/(name+'-full')))
    report=read_accepted_heat(folder/'original/original-heat-accounting.txt',data,project,compact=True);assert len(report['daily'])==1096 and not report['full_energy_balance_complete']
