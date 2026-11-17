@@ -1,0 +1,66 @@
+name: Fixed RC3 clean source distribution qualification
+on:
+  push:
+    branches: [codex/nomacro-rc3-20261117]
+    paths: ['.github/workflows/nomacro-rc3-qualification.yml']
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: fixed-rc3-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  public:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-26.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            integration/f-ci/nomacro-rc3-20261117
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: fortran-lang/setup-fortran@v1
+        if: runner.os == 'Windows'
+        with:
+          compiler: gcc
+          version: '15'
+      - name: Verify exact carrier and archive, unpack outside Git
+        shell: python
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha || github.sha }}
+        run: |
+          import os,subprocess,json,hashlib,zipfile
+          from pathlib import Path
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==os.environ['EXPECTED_SHA']
+          root=Path('integration/f-ci/nomacro-rc3-20261117')
+          record=json.loads((root/'PACKAGE.json').read_text())
+          archive=root/'candidate-source.zip'
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()==record['sha256']
+          target=Path(os.environ['RUNNER_TEMP'])/'rc3-clean-source';target.mkdir()
+          with zipfile.ZipFile(archive) as z:
+              assert all((target/n).resolve().is_relative_to(target.resolve()) for n in z.namelist())
+              z.extractall(target)
+          assert not (target/'.git').exists()
+          assert json.loads((target/'RELEASE_MANIFEST.json').read_text())['source_commit']==record['source_commit']
+      - name: Fresh public preparation, O0/O2 complete projects and exact own restarts
+        shell: pwsh
+        run: python -B "$env:RUNNER_TEMP/rc3-clean-source/tools/solute/qualify_compiler_profile.py" --output "$env:RUNNER_TEMP/rc3-proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rc3-public-${{ matrix.os }}-${{ github.sha }}
+          path: ${{ runner.temp }}/rc3-proof
+          retention-days: 30
