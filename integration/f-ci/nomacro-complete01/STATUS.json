@@ -3,8 +3,8 @@
   "baseline": "e67710244d84a9a37b30b76e853a3e5b0eeb55d2",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-aquifer-source01",
-  "last_commit": "e67710244d84a9a37b30b76e853a3e5b0eeb55d2",
-  "status": "AQUIFER_ORIGINAL_BOUNDS_DEFECT_PROVEN_COMPONENT_IMPLEMENTED_UNTESTED",
+  "last_commit": "bd8bb551c",
+  "status": "AQUIFER_REAL_COMPONENT_O0_O2_PASS_CORRECTED_REFERENCE_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -126,6 +126,12 @@
       "status": "PASS",
       "proof": "CHEMICAL_QUALIFICATION.json",
       "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    {
+      "test": "Aquifer independent actual production evaluator",
+      "status": "O0_O2_PASS",
+      "proof": "AQUIFER_COMPONENT.json",
+      "scope": "Units/conservation/signed exchange/zero interval/A-B-A/nonmutation/refused output. Caller/native/reference not implemented."
     }
   ],
   "failed_tests": [
@@ -195,8 +201,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Run existing modular real production aquifer_solute_reservoir driver O0/O2 first. Then correct original aquifer storage index to explicit bottom coefficient, pair original/corrected reference, expose conserved box/soil exchange and full native state with unchanged guard before lifting SWBR1 refusal.",
-  "recovery_point": "Both fixed/scheduled chemical source admitted canonicale677 (PR1702/1704 implementation plus1703/1705 exact metadata). Real current owner executed on actuale677, tree5e5395 exact. New branch AQ adds only unconnected pure reservoir evaluator and driver. Original checked O0/O2 proves35>34 storage-array access; unchecked normal1096period contains5480NaN budgets. No SWAP5 SWBR activation, no new codec, no model/CI active. Entire migration PARTIAL/science NOT_QUALIFIED.",
+  "next_code_change": "Implement exact original aquifer source correction/reference: bottom-node coefficient fixes n+1; supply current microstep soil mass rate (legacy isqdra is cumulative amount), use consistent old-concentration outflow and book reservoir/decay. Then full native/private Cdrain and per-day compound soil+box guards before SWBR1 activation.",
+  "recovery_point": "Current canonicale677 verified exact tree5e5395 and real owner PASS. AQ branch in same private worktree: unconnected evaluator/driver commitbd8bb551c, O0/O2 PASS with one provider/3compiler requests each (12.64/1.62s). Legacy O0/O2 bounds35>34 and uncheckedNaN proof retained. Additional source audit: isqdra already includesdtsolu/cumulates within water step, yet original box multiplies it bydtsolu again; surface output uses updated concentration after Euler loss. Correct these explicitly in reference before integrating. SWBR1 remains refused; no model/CI active.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -262,7 +268,7 @@
         "owner": "SWAP5-NOMACRO-COMPLETE01",
         "authority": "AGENTS.md#independent-local-testability; docs/verification/principles.md",
         "expected_seconds": 10,
-        "prior_execution": "NOT_RUN",
+        "prior_execution": "PASS",
         "existing_evidence": "Original SWBR array defect proven; canonical source/state baseline immutable. No existing qualified aquifer evaluator found in current process-source closure."
       }
     },
