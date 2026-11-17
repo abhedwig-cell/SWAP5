@@ -3,8 +3,8 @@
   "baseline": "e67710244d84a9a37b30b76e853a3e5b0eeb55d2",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-aquifer-source01",
-  "last_commit": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
-  "status": "AQUIFER_BRANCH_QUALIFIED_CURRENT_OWNER_CONTROLS_IN_PROGRESS",
+  "last_commit": "384f0d04314fd4d155b48f64c5d00dafd26e4a71",
+  "status": "AQUIFER_BRANCH_QUALIFIED_READY_CANONICAL_ADMISSION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -164,6 +164,12 @@
     },
     {
       "result": "AQUIFER_EVIDENCE_115_CORRUPTIONS_REFUSED_PREDECESSOR_CONTROLS_PRESERVED"
+    },
+    {
+      "result": "AQUIFER_CURRENT_OWNER_DOCS_AND_ACTUAL_SOURCE_REFUSALS_PASS",
+      "docs_strict_seconds": 32.55,
+      "new_evidence_corruptions": 115,
+      "unit_methods": 5
     }
   ],
   "failed_tests": [
@@ -234,7 +240,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Build actual SWBR1 experimental box/soil case O0/O2; first strict day/native own test, then complete model and active external/rejected native source cases. Check soil+box/transfer/global guards unchanged1e-10; keep all failures. Code now enables only development SWBR1 branch, canonicale677 unchanged.",
-  "recovery_point": "Branch codex/nomacro-aquifer-source01; all runtime/controls/preservation/CI complete. No active model/CI process. Seal680df6a5c immutable; new successor test files to commit.",
+  "recovery_point": "Branch codex/nomacro-aquifer-source01; all selected gates terminal PASS, no active model or CI. Sealed AQ proof680df6a5c immutable.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -329,14 +335,14 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "PR1704 actual canonical merge; both parents and complete qualified tree36e24ab exact, actual detached current owner PASS.",
+  "last_commit_role": "Strict current-source owner, five unit methods including115 aquifer evidence attacks, dirty/actual committed source refusal and docs source/strict render PASS.",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Complete strict owner/unit/docs and source-negative controls; integrate bounded aquifer block and verify actual merge, then implement water-age/vapor inventory gap.",
+  "next_action": "Create/merge bounded aquifer PR against exact e677 canonical; verify actual merge parents/full tree/owner, then water-age/vapor source implementation.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61"
