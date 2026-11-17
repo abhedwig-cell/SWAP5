@@ -80,11 +80,12 @@ def main():
             # An unmodified original executable supplies reader/header/cadence
             # observations only. It is not a physical or mass-balance oracle.
             original=case/'original';shutil.copytree(inputs,original);control=original/'swap.swp';text=control.read_text(encoding='cp1252')
-            last=str(date(2002,1,1)+timedelta(days=days-1));text,count=re.subn(r'(?mi)^([ \t]*ENDATE[ \t]*=)[^!\r\n]*',lambda match:match[1]+' '+last,text);assert count==1
+            last=str(date(2002,1,1)+timedelta(days=days-1));text,count=re.subn(r'(?mi)^([ \t]*TEND[ \t]*=)[^!\r\n]*',lambda match:match[1]+' '+last,text);assert count==1
             control.write_text(text,encoding='cp1252');exe=a.reference_work/'build/swap_b0_gfortran.exe';r['original_executable_sha256']=sha(exe)
             r['original']=invoke([exe,'./swap.swp'],original,'original',case);r['original']['swap_ok']=(original/'swap.ok').exists();r['original_outputs']=outputs(original);r['original_claim']='READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE'
             save();print(name,a.optimization,'BASELINE_OBSERVED',r['public_warm']['returncode'],r['original']['returncode'],flush=True)
         q['status']='ORIGINAL_OUTPUT_SELECTOR_BASELINE_OBSERVED_NO_NEW_ADMISSION'
+    except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
 
 
