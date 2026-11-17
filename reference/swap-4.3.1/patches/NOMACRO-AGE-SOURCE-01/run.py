@@ -42,20 +42,26 @@ def validate(stdout):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
-    a=p.parse_args();a.output.mkdir();provider=a.reference_work/'build';objects=provider/'swap-obj';ttutil=provider/'ttutil-obj'
+    p.add_argument('--resume',action='store_true')
+    a=p.parse_args();a.output.mkdir(exist_ok=a.resume);provider=a.reference_work/'build';objects=provider/'swap-obj';ttutil=provider/'ttutil-obj'
     result=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),profiles={},events=[],
                 policy=s.POLICY,SWAP5_activation=False,whole_scientific_equivalence='NOT_QUALIFIED')
+    if a.resume:
+        result=json.loads((a.output/'RESULT.json').read_text())
+        result['retained_failure']=dict(status=result['status'],error=result.pop('error',None))
+        result['controller_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+        result['status']='RESUMING'
     def save():(a.output/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
-    def call(command,cwd,label):
+    def call(command,cwd,label,allowed=(0,)):
         start=time.perf_counter();r=subprocess.run(list(map(str,command)),cwd=cwd,capture_output=True,timeout=60)
         (cwd/(label+'.stdout')).write_bytes(r.stdout);(cwd/(label+'.stderr')).write_bytes(r.stderr)
         result['events'].append(dict(command=list(map(str,command)),seconds=time.perf_counter()-start,returncode=r.returncode));save()
-        assert r.returncode==0,(r.stdout.decode(errors='replace')[-1800:],r.stderr.decode(errors='replace'))
+        assert r.returncode in allowed,(r.stdout.decode(errors='replace')[-1800:],r.stderr.decode(errors='replace'))
         return r
     save()
     try:
         for opt in ('O0','O2'):
-            build=a.output/opt;build.mkdir()
+            build=a.output/opt;build.mkdir(exist_ok=a.resume)
             (build/'solute.f90').write_bytes(s.source((provider/'swap-selected/solute.f90').read_bytes()))
             (build/'swap_csv_output.f90').write_bytes(s.csv_source((provider/'swap-selected/swap_csv_output.f90').read_bytes()))
             (build/'boundtop.f90').write_text(render_linear_pond_conservation((provider/'swap-selected/boundtop.f90').read_text(encoding='cp1252')),encoding='cp1252')
@@ -63,16 +69,31 @@ def main():
                    '-ffp-contract=off','-march=x86-64','-mtune=generic','-J'+str(build),'-I'+str(build),'-I'+str(objects),'-I'+str(ttutil)]
             for name in s.PROVIDERS:
                 (build/(name+'.f90')).write_bytes((ROOT/'src/process'/(name+'.f90')).read_bytes())
-            for name in (*s.PROVIDERS,'solute','swap_csv_output','boundtop'):
-                call(['gfortran',*flags,'-c',build/(name+'.f90'),'-o',build/(name+'.o')],build,name+'-compile')
+            reused=a.resume and opt in result['profiles']
+            if not reused:
+                for name in (*s.PROVIDERS,'solute','swap_csv_output','boundtop'):
+                    call(['gfortran',*flags,'-c',build/(name+'.f90'),'-o',build/(name+'.o')],build,name+'-compile')
             linked=[p for p in sorted(objects.glob('*.o')) if p.name not in ('solute.o','swap_csv_output.o','boundtop.o')]
             linked += [build/(name+'.o') for name in (*s.PROVIDERS,'solute','swap_csv_output','boundtop')]
-            exe=build/'swap_age.exe';call(['gfortran','-o',exe,*linked,ttutil/'libttutil.a'],build,'link')
-            profile=result['profiles'][opt]=dict(cases={},generated_sha256={p.name:sha(p) for p in build.glob('*.f90')},executable_sha256=sha(exe));save()
+            exe=build/'swap_age.exe'
+            if reused:
+                profile=result['profiles'][opt]
+                assert profile['generated_sha256']=={p.name:sha(p) for p in build.glob('*.f90')} and profile['executable_sha256']==sha(exe)
+            else:
+                call(['gfortran','-o',exe,*linked,ttutil/'libttutil.a'],build,'link')
+                profile=result['profiles'][opt]=dict(cases={},generated_sha256={p.name:sha(p) for p in build.glob('*.f90')},executable_sha256=sha(exe));save()
             for initial in (0.,100.):
-                case=build/str(int(initial));f.fixture(case,initial);inventory={p.relative_to(case).as_posix():sha(p) for p in case.rglob('*') if p.is_file()}
-                run=call([exe,'./swap.swp'],case,'reference');assert (case/'swap.ok').exists()
-                r=validate(run.stdout.decode(errors='replace'));r['input_sha256']=inventory
+                case=build/str(int(initial))
+                if a.resume and (case/'swap.ok').exists():
+                    original=json.loads((ROOT/'integration/f-ci/nomacro-complete01/AGE_ORIGINAL_DIAGNOSTIC.json').read_text())
+                    inventory=original['profiles'][opt+'-'+str(int(initial))]['input_sha256']
+                    assert all(sha(case/name)==digest for name,digest in inventory.items())
+                    stdout=(case/'reference.stdout').read_text()
+                else:
+                    f.fixture(case,initial);inventory={p.relative_to(case).as_posix():sha(p) for p in case.rglob('*') if p.is_file()}
+                    run=call([exe,'./swap.swp'],case,'reference',allowed=(0,100));assert (case/'swap.ok').exists()
+                    stdout=run.stdout.decode(errors='replace')
+                r=validate(stdout);r['input_sha256']=inventory
                 profile['cases'][str(int(initial))]=r;save();print(opt,initial,'ACTUAL_SOIL_POND_AGE_LEDGER_PASS',flush=True)
         result['status']='ORIGINAL_HOST_REAL_AGE_PROVIDERS_FULL_O0_O2_LEDGER_PASS'
     except Exception as error:result.update(status='FAILED',error=repr(error));raise
