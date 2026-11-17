@@ -1,5 +1,11 @@
 # Proposed unified local wetting numerical policy
 
+**Current follow-up:** [CLOSURE.md](CLOSURE.md) records the demonstrated dry
+lookup defect, its repair, eight complete exact heat observations, and the
+bounded common-state explanation of the groundwater difference. The remainder
+of this file preserves the initial PR assessment; its open heat condition is
+superseded by that follow-up. Scientific equivalence remains unqualified.
+
 **Functional selected scope tested; scientific equivalence NOT_QUALIFIED;
 not canonically admitted.** This package proposes one explicit policy for
 above-ground irrigation and rain, rather than changing registered defaults.

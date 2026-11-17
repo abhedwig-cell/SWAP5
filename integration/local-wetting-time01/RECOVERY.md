@@ -64,3 +64,24 @@ Next concrete acceptance is scientific disposition/independently qualified
 reference and nonperturbing heat observation; do not re-run unchanged fulls
 or promote this experimental policy without those decisions. PR is the bounded
 requested deliverable, not completion of whole scientific equivalence.
+
+17 November follow-up (current): CLOSURE.md supersedes the old heat blocker.
+Poisoned real lookup stops on562 reading unfilled K_table(430,1); dry row431
+was also uncovered. Physical repair snapshotc3a0a7e17 completes the declared
+original dry-end quadrature, initializes both endpoints, and changes lookup
+native version to2 with431/431 rows and metadata policyv4. Fresh Windows and
+Ubuntu O0/O2 fulls/64 own windows pass; the formerly perturbing original heat
+observer is now exact over all8 complete1096-day profiles at the unchanged
+1e-9 numerical conduction guard. Hosted full run44080859947 passes its model
+steps but fails a heat-test Windows filename; recovered run44081632203 SUCCESS
+reuses those exact artifacts and validates the matching provider/builds.
+
+Nominal original GWL comparison remains2.678/2.783cm. Refine only the late
+three-day interval and share saved362 state: reproduced common-state fine
+GWL gap is-0.000069638363cm; initial water/pond stocks exact, initial recomputed
+GWL differs0.001341cm. This supports temporal/history sensitivity, not universal
+scientific PASS. Original BALDEV still exceeds1e-10 (up to8.435e-7cm), so no
+replacement reference is qualified. Keep failed literal B0 comparisons and
+reference limits visible. Next acceptance is independently balance-qualified
+temporal reference, not another empirical controller or tolerance change.
+closure/ contains new sealed raw outcomes; prior publication remains immutable.

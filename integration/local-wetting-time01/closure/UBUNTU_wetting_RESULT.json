@@ -1,0 +1,630 @@
+{
+  "source": "c3a0a7e17bdc4673140f7bcaa3fb1607a6381e99",
+  "policy": "original-adaptive-local-wetting-v1",
+  "water_guard_cm": 1e-10,
+  "solute_guard_mg_cm2": 1e-10,
+  "tolerances_changed": false,
+  "science": "NOT_QUALIFIED",
+  "cases": {
+    "water-surface-history": {
+      "O0": {
+        "build": {
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "/home/runner/work/_temp/wetting/inputs/water-surface-history",
+            "--experimental-time-step-policy",
+            "original-adaptive-local-wetting-v1",
+            "--reference-work",
+            "/home/runner/work/_temp/provider",
+            "--build-only",
+            "--kernel-opt",
+            "O0",
+            "--donor-opt",
+            "O0",
+            "--output",
+            "/home/runner/work/_temp/wetting/water-surface-history-O0-build"
+          ],
+          "seconds": 2.5338658179999953
+        },
+        "short": {
+          "status": "SHORT_PASS",
+          "days": 215,
+          "budgets": {
+            "days": 215,
+            "max_water_cm": 1.6514567491299204e-13,
+            "max_kernel_cm": 1.652011860642233e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 6.419137004711958e-13
+          },
+          "model_seconds": 0.6519378439999954,
+          "build_sha256": "9cf9940217a531340ebace0bd40af578c5a5b95d89f4151a0c99703cb47d2fa9",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.09270904899999977
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.08716060100000078
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04481687999999906
+            }
+          ]
+        },
+        "full": {
+          "status": "FULL_PASS",
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.6514567491299204e-13,
+            "max_kernel_cm": 1.652011860642233e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 3.2303872567573228e-12
+          },
+          "model_seconds": 5.72422305500001,
+          "build_sha256": "9cf9940217a531340ebace0bd40af578c5a5b95d89f4151a0c99703cb47d2fa9",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.043012713000010194
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.0933416230000006
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.05036042599999746
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.09380278800000497
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03953495300000043
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03954040099999645
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04187712999998894
+            },
+            {
+              "start": 1094,
+              "end": 1096,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.042421265999990965
+            }
+          ]
+        }
+      },
+      "O2": {
+        "build": {
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "/home/runner/work/_temp/wetting/inputs/water-surface-history",
+            "--experimental-time-step-policy",
+            "original-adaptive-local-wetting-v1",
+            "--reference-work",
+            "/home/runner/work/_temp/provider",
+            "--build-only",
+            "--kernel-opt",
+            "O2",
+            "--donor-opt",
+            "O2",
+            "--output",
+            "/home/runner/work/_temp/wetting/water-surface-history-O2-build"
+          ],
+          "seconds": 7.911002682000003
+        },
+        "short": {
+          "status": "SHORT_PASS",
+          "days": 215,
+          "budgets": {
+            "days": 215,
+            "max_water_cm": 1.6514567491299204e-13,
+            "max_kernel_cm": 1.652011860642233e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 6.419137004711958e-13
+          },
+          "model_seconds": 0.5807270809999991,
+          "build_sha256": "7270ad03c9cdbfcb9580ec5ae47756c349f1043bf9df51ddb0c7ba9d984acbbf",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.085693188999997
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.15347333599999757
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03632319199999756
+            }
+          ]
+        },
+        "full": {
+          "status": "FULL_PASS",
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.6514567491299204e-13,
+            "max_kernel_cm": 1.652011860642233e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 3.2303872567573228e-12
+          },
+          "model_seconds": 4.537896515,
+          "build_sha256": "7270ad03c9cdbfcb9580ec5ae47756c349f1043bf9df51ddb0c7ba9d984acbbf",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.036657765000001064
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.08709059599999591
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.0463178559999875
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.14648673899999665
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.035746943999996006
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03773236700000382
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04060250099999507
+            },
+            {
+              "start": 1094,
+              "end": 1096,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03870190400000695
+            }
+          ]
+        }
+      }
+    },
+    "chemical-surface-history": {
+      "O0": {
+        "build": {
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "/home/runner/work/_temp/wetting/inputs/chemical-surface-history",
+            "--experimental-time-step-policy",
+            "original-adaptive-local-wetting-v1",
+            "--reference-work",
+            "/home/runner/work/_temp/provider",
+            "--build-only",
+            "--kernel-opt",
+            "O0",
+            "--donor-opt",
+            "O0",
+            "--output",
+            "/home/runner/work/_temp/wetting/chemical-surface-history-O0-build"
+          ],
+          "seconds": 2.757358711000009
+        },
+        "short": {
+          "status": "SHORT_PASS",
+          "days": 215,
+          "budgets": {
+            "days": 215,
+            "max_water_cm": 1.6514567491299204e-13,
+            "max_kernel_cm": 1.652011860642233e-13,
+            "max_solute_mg_cm2": 1.5683798660834358e-12,
+            "sum_water_residual_cm": 6.419137004711958e-13
+          },
+          "model_seconds": 0.6322660509999878,
+          "build_sha256": "a4688f94fa43f6a4ccde8853c38b03d80e5ab4306c165cf9934fec84bf9b24fc",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.09963308800000448
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.0961439310000003
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04037846800000011
+            }
+          ]
+        },
+        "full": {
+          "status": "FULL_PASS",
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.6514567491299204e-13,
+            "max_kernel_cm": 1.652011860642233e-13,
+            "max_solute_mg_cm2": 1.5683798660834358e-12,
+            "sum_water_residual_cm": 3.2303872567573228e-12
+          },
+          "model_seconds": 5.9752515680000045,
+          "build_sha256": "a4688f94fa43f6a4ccde8853c38b03d80e5ab4306c165cf9934fec84bf9b24fc",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03826141199999711
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.0981633839999887
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.053195603999995456
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.09343390600000134
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.040369494999993094
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03890108699999928
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.048802999000002956
+            },
+            {
+              "start": 1094,
+              "end": 1096,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04071380800000668
+            }
+          ]
+        }
+      },
+      "O2": {
+        "build": {
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "/home/runner/work/_temp/wetting/inputs/chemical-surface-history",
+            "--experimental-time-step-policy",
+            "original-adaptive-local-wetting-v1",
+            "--reference-work",
+            "/home/runner/work/_temp/provider",
+            "--build-only",
+            "--kernel-opt",
+            "O2",
+            "--donor-opt",
+            "O2",
+            "--output",
+            "/home/runner/work/_temp/wetting/chemical-surface-history-O2-build"
+          ],
+          "seconds": 8.313311006999996
+        },
+        "short": {
+          "status": "SHORT_PASS",
+          "days": 215,
+          "budgets": {
+            "days": 215,
+            "max_water_cm": 1.6514567491299204e-13,
+            "max_kernel_cm": 1.652011860642233e-13,
+            "max_solute_mg_cm2": 1.5683798660834358e-12,
+            "sum_water_residual_cm": 6.419137004711958e-13
+          },
+          "model_seconds": 0.5696732840000038,
+          "build_sha256": "1c3d7d90b633fa8411d1091cd161cdaa020f0f11e178a4fca03ad10d660dd626",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.087882864000008
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.08565962000000127
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.036711191999998505
+            }
+          ]
+        },
+        "full": {
+          "status": "FULL_PASS",
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.6514567491299204e-13,
+            "max_kernel_cm": 1.652011860642233e-13,
+            "max_solute_mg_cm2": 1.5683798660834358e-12,
+            "sum_water_residual_cm": 3.2303872567573228e-12
+          },
+          "model_seconds": 4.744157705000006,
+          "build_sha256": "1c3d7d90b633fa8411d1091cd161cdaa020f0f11e178a4fca03ad10d660dd626",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04208622199999468
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.08729499400000407
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.04721762399999818
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.08281334800000195
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03644348499999239
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03760749200000646
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03859178999999813
+            },
+            {
+              "start": 1094,
+              "end": 1096,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.03770186699999556
+            }
+          ]
+        }
+      }
+    }
+  }
+}
