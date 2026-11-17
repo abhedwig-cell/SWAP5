@@ -176,6 +176,9 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Foreign actual aquifer solute evaluator')
     from conserved_original_age import metadata as age_metadata,correction as age_correction
     expected_age=age_metadata() if project.age else None
+    if expected_age is not None:
+        from age_output_calendar import age_identity
+        expected_age=age_identity(expected_age,project)
     if identity.get('conserved_original_age')!=expected_age:raise ValueError('Foreign original age source/state policy')
     from age_fixed_irrigation import enabled as age_fixed_enabled,metadata as age_fixed_metadata
     expected_age_fixed=age_fixed_metadata() if age_fixed_enabled(project) else None
@@ -560,9 +563,10 @@ class CoupledDailyColumn:
                 if not all(math.isfinite(v) and v>=0 for v in conserved):
                     raise ValueError('Unrestartable candidate conserved solute state')
             if self.project.age:
-                from conserved_original_age import MAGIC,validate as validate_age,validate_effluent
+                from conserved_original_age import validate as validate_age,validate_effluent
+                from experimental_project import auxiliary_magic
                 with zipfile.ZipFile(candidate) as z:aux=z.read('macro.bin')
-                if aux[:8]!=MAGIC:raise ValueError('Foreign original age native codec')
+                if aux[:8]!=auxiliary_magic(self.project):raise ValueError('Foreign original age native codec')
                 validate_age(raw['age_state_cm_day'])
                 validate_effluent(raw['age_effluent'])
             if checked != raw:

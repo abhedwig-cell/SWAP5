@@ -1,0 +1,10 @@
+{
+  "status": "BASELINE_FAILURE_OBSERVED",
+  "source_commit": "04b8aef8a41afba77eeda21fbcb000815e969f84",
+  "period": 3,
+  "nprintday": 1,
+  "requested_days": 4,
+  "returncode": 1,
+  "seconds": 21.93,
+  "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1388, in run\n    budget = host.step(column, checkpoint=day == publish_day)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1281, in step\n    stocks = list(map(float, response[\"HYBRID_STOCK_FLUX\"]))\n                             ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\nKeyError: 'HYBRID_STOCK_FLUX'\n"
+}
