@@ -1,0 +1,94 @@
+{
+  "status": "SCHEDULED_CHEMICAL_NATIVE_INPUT_AND_INDEPENDENT_ORIGINS_PASS",
+  "checks": [
+    {
+      "test": "reversed",
+      "optimization": "O0",
+      "status": "REFUSED",
+      "diagnostic": "ERROR STOP Invalid scheduled subsurface irrigation depth interval/profile\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x7b6dacc3\n#4  0x7b7033bf\n#5  0x7b7074e7\n#6  0x7b75b1b0\n#7  0x7b7814f9\n#8  0x7b7819ed\n#9  0x7b6c1156\n#10  0xab90dda6\n#11  0xad15ee4b\n#12  0xffffffff\n\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   MAIZE.CRP with 142 variables parsed by RDINDX\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "test": "reversed",
+      "optimization": "O2",
+      "status": "REFUSED",
+      "diagnostic": "ERROR STOP Invalid scheduled subsurface irrigation depth interval/profile\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0xee44a391\n#4  0xee46dd5d\n#5  0xee4bf75f\n#6  0xee4dca33\n#7  0xee520e2f\n#8  0xee431156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   MAIZE.CRP with 142 variables parsed by RDINDX\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "test": "outside-domain",
+      "optimization": "O0",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   MAIZE.CRP with 142 variables parsed by RDINDX\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n ERROR in RDSDOR: Range error of identifier 'ss_irr_z',\n                  value = -101.00    , range = [ -100.00    ,  0.0000    ]\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 0"
+    },
+    {
+      "test": "outside-domain",
+      "optimization": "O2",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   MAIZE.CRP with 142 variables parsed by RDINDX\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n ERROR in RDSDOR: Range error of identifier 'ss_irr_z',\n                  value = -101.00    , range = [ -100.00    ,  0.0000    ]\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 0"
+    },
+    {
+      "test": "nonfinite-depth",
+      "optimization": "O0",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n\n Error(s) or Warning(s) while reading from maize.crp\n\n Line Error text                               Somewhere here\n ==== ==========                               ==============\n 1019 Value expected                           [  SS_IRR_Z = NaN ! De]\n                                                             ^-^     \n\n\n Number of errors in data file MAIZE.CRP:   1\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 0"
+    },
+    {
+      "test": "nonfinite-depth",
+      "optimization": "O2",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n\n Error(s) or Warning(s) while reading from maize.crp\n\n Line Error text                               Somewhere here\n ==== ==========                               ==============\n 1019 Value expected                           [  SS_IRR_Z = NaN ! De]\n                                                             ^-^     \n\n\n Number of errors in data file MAIZE.CRP:   1\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 0"
+    },
+    {
+      "test": "negative-concentration",
+      "optimization": "O0",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   MAIZE.CRP with 142 variables parsed by RDINDX\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n ERROR in RDSDOR: Range error of identifier 'cirrs',\n                  value = -1.0000    , range = [  0.0000    ,  100.00    ]\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 0"
+    },
+    {
+      "test": "negative-concentration",
+      "optimization": "O2",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   MAIZE.CRP with 142 variables parsed by RDINDX\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n Contents of MAIZE.CRP recovered from TMP file\n ERROR in RDSDOR: Range error of identifier 'cirrs',\n                  value = -1.0000    , range = [  0.0000    ,  100.00    ]\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 0"
+    },
+    {
+      "test": "nonfinite-concentration",
+      "optimization": "O0",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n\n Error(s) or Warning(s) while reading from maize.crp\n\n Line Error text                               Somewhere here\n ==== ==========                               ==============\n  751 Value expected                           [  CIRRS = NaN ! So]\n                                                          ^-^     \n\n\n Number of errors in data file MAIZE.CRP:   1\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 0"
+    },
+    {
+      "test": "nonfinite-concentration",
+      "optimization": "O2",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n\n Error(s) or Warning(s) while reading from maize.crp\n\n Line Error text                               Somewhere here\n ==== ==========                               ==============\n  751 Value expected                           [  CIRRS = NaN ! So]\n                                                          ^-^     \n\n\n Number of errors in data file MAIZE.CRP:   1\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 0"
+    },
+    {
+      "test": "independent-native-origins",
+      "optimization": "O0",
+      "status": "PASS",
+      "alternating_steps": 6,
+      "active_source": true,
+      "physical_exact": true,
+      "origins_unchanged": true
+    },
+    {
+      "test": "independent-native-origins",
+      "optimization": "O2",
+      "status": "PASS",
+      "alternating_steps": 6,
+      "active_source": true,
+      "physical_exact": true,
+      "origins_unchanged": true
+    }
+  ],
+  "source_commit": "6c5b084d93724be546daf387f8bd1d0a31add3c9"
+}
