@@ -98,6 +98,8 @@ def validate(q):
     cli=q['public_cli'];require(cli['status']=='PUBLIC_PERIODIC_AGE_RUN_AND_COLD_NATIVE_PASS' and cli['warm_days']==10 and cli['window']==[4,8] and all(cli[k] is True for k in ('physical_exact','five_sparse_csv_exact','complete_native_exact')),'calendar public CLI missing')
     base=q['base_consumer'];require(base['merge']==BASE and base['exact_complete_tree'] is True and base['actual_detached_owner']['returncode']==0 and base['actual_detached_owner']['result']['status']=='CURRENT_FIXED_YOUNG_AGE_COMPOSED_CHEMICAL_AQUIFER_S_PULSE_R_ADMISSION_PASS','calendar actual canonical parent absent')
     require(q['workflow']['id']==44163300199 and q['workflow']['status']=='SUCCESS','calendar actual Linux gate missing')
+    artifact=q['workflow']['artifact']
+    require((artifact['id'],artifact['run'],artifact['bytes'],artifact['sha256'])==(14364182987,44163300199,138411286,'adfbc218ad13df548007aca5ee71aa87543cff4422525981bae77c8606ffd526') and artifact['all_members_forward_verified'] is True and artifact['member_count']==len(artifact['members'])==16093,'calendar actual Linux artifact identity missing')
 
 
 def verify():
@@ -123,10 +125,19 @@ def verify():
     for path,digest in q['controller_canonical_sha256'].items():require(sha(ROOT/path)==digest,'calendar executed controller changed')
     for path in sorted((ROOT/PROOF).glob('AGE_*_RAW_ARCHIVE.json')):
         r=json.loads(path.read_text());archive=ROOT/PROOF/r['archive']
+        if path.name.startswith('AGE_CALENDAR_'):require(q['archives'].get(path.name)==r,'calendar raw record differs from qualification')
         require(r['all_members_forward_verified'] is True and len(r['members'])==r['member_count'] and archive.stat().st_size==r['bytes'] and hashlib.sha256(archive.read_bytes()).hexdigest()==r['sha256'],'calendar raw identity changed')
         with zipfile.ZipFile(archive) as z:
             require({n for n in z.namelist() if not n.endswith('/')}==set(r['members']),'calendar raw member omitted')
             for name,digest in r['members'].items():require(hashlib.sha256(z.read(name)).hexdigest()==digest,'calendar raw member changed')
+    forwarded={}
+    for name in ('O0','O2','CONTEXT'):
+        r=q['archives']['AGE_CALENDAR_UBUNTU_'+name+'_RAW_ARCHIVE.json']
+        require(r['origin_artifact_sha256']==q['workflow']['artifact']['sha256'],'foreign calendar portable raw archive')
+        for path,digest in r['members'].items():
+            require(path.startswith('age-calendar-ubuntu/'),'foreign portable raw member prefix')
+            tail=path[len('age-calendar-ubuntu/'):];require(tail not in forwarded,'portable raw member forwarded twice');forwarded[tail]=digest
+    require(forwarded==q['workflow']['artifact']['members'],'actual portable artifact members omitted or changed')
     return dict(status='CURRENT_REGULAR_AGE_CALENDAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS',runtime=RUNTIME,
                 functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',water_guard_cm=1e-10,
                 chemical_mass_guard_changed=False,age_units='cm day',native_codec='S5AGE003',daily_native_codec='S5AGE002')

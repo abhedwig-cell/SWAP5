@@ -55,6 +55,8 @@ class CalendarEvidence(unittest.TestCase):
         change(['age_off_preservation','profiles','grass','generated_provider_inputs_exact'],False)
         change(['public_cli','complete_native_exact'],False);change(['base_consumer','actual_detached_owner','returncode'],1)
         change(['workflow','status'],'FAILURE')
+        change(['workflow','artifact','sha256'],'0'*64)
+        change(['workflow','artifact','member_count'],16092)
         print('CALENDAR_EVIDENCE_CORRUPTIONS_REFUSED',count)
 
 
