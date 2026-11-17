@@ -31,3 +31,29 @@ policies, mass tolerances, general solver/macro/performance campaigns and global
 B1 promotion are not selected. Whole science/energy remain NOT_QUALIFIED.
 
 Status: source/ownership selection; no R public activation or qualification yet.
+
+## Measured R phase and bounded derivative reuse selection
+
+Persisted routef6cea125d/f166a327c passes the native15case O0/O2 component and
+four complete positive-table Windows trajectories, standard native windows and
+external/isolation/refusal controls. Signed water and chemical tables pass short
+own2to4, then both refuse51 after50accepted with independent
+1.0010102816093713e-10cm. Those failures remain failures.
+
+Inspect the existing original PondRunoff/HeadCalc owner: the exact eliminated
+linear pond derivative is already qualified in blocks L/M, but selected only
+for drain0 or drain1/runon1, excluding the new DRAMET1 branch. Drainage rates
+are held fixed throughout each original HeadCalc call, so the same original
+pond equation and its derivative apply to this new branch when bottom6,
+snow0, SWKIMPL0 and the existing linear-runoff guards hold. Select one bounded
+reuse extension to actual DRFIL/DRAMET1; add no derivative formula or tolerance.
+No field inferred from output or scalar residual correction is selected.
+
+First retain an actual old-source O2 prefix53 reproduction, then fresh actual
+O0/O2 prefix53 with own50to53. If that gate passes, all affected R positive and
+signed complete periods must execute on the successor; the earlier four
+completed positive periods are not rebound to changed generated HeadCalc.
+The unchanged tangent component evidence is inherited by exact source identity;
+the new coupled branch, mass/native and full trajectories supply the missing
+domain qualification. If this bounded extension fails, reassess the complete
+receipt/owner before selecting another local numerical adjustment.
