@@ -1,5 +1,11 @@
 # Proposed unified local wetting numerical policy
 
+**Current review package:** [independent qualification](independent/README.md)
+contains the completed unshared-original numerical attribution, platform-owned
+time-grid controls and ready-for-review disposition. The nominal full-period
+comparison remains failed; the tested-window explanation is independently
+qualified without a new tolerance or a global accuracy claim.
+
 **Current follow-up:** [CLOSURE.md](CLOSURE.md) records the demonstrated dry
 lookup defect, its repair, eight complete exact heat observations, and the
 bounded common-state explanation of the groundwater difference. The remainder

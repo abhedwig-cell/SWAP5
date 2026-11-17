@@ -1,0 +1,94 @@
+{
+  "status": "QUALIFIED_BOUNDED_INDEPENDENT_NUMERICAL_ATTRIBUTION",
+  "source_scope": "original431 Newton/residual/control; no production HeadCalc or budget object",
+  "window_days": [
+    363,
+    364,
+    365
+  ],
+  "water_guard_cm": 1e-10,
+  "input_tolerances_changed": false,
+  "full_nominal_equivalence": "FAIL_PRESERVED",
+  "universal_reference_qualification": "NOT_CLAIMED",
+  "production_GWL_error_bound": "NOT_CLAIMED",
+  "platforms": {
+    "windows": {
+      "adaptive_0p0004": -3.571216455577,
+      "adaptive_0p0001": -3.601765857476,
+      "adaptive_2p5e-05": -3.603748893621,
+      "nominal_0p04": -2.66621007736,
+      "fine_2p5e-05": -3.601118077265,
+      "same_nominal_grid_difference_cm": 3.888796000328654e-06,
+      "same_fine_grid_difference_cm": 3.566100037488695e-08,
+      "reference_refinement_changes_cm": [
+        0.030549401899000017,
+        0.00198303614499995
+      ],
+      "observed_refinement_order": 1.972680627971344,
+      "maximum_O0_O2_GWL_difference_cm": 0.0,
+      "maximum_model_seconds": 8.784310600254685
+    },
+    "ubuntu": {
+      "adaptive_0p0004": -3.571216455574,
+      "adaptive_0p0001": -3.601765857463,
+      "adaptive_2p5e-05": -3.603748893619,
+      "nominal_0p04": -2.666210077359,
+      "fine_2p5e-05": -3.601118077258,
+      "same_nominal_grid_difference_cm": 3.888795000239753e-06,
+      "same_fine_grid_difference_cm": 3.5654000196672087e-08,
+      "reference_refinement_changes_cm": [
+        0.030549401889000016,
+        0.00198303615600004
+      ],
+      "observed_refinement_order": 1.972680623733836,
+      "maximum_O0_O2_GWL_difference_cm": 0.0,
+      "maximum_model_seconds": 4.678126004999996
+    }
+  },
+  "reference_models": 28,
+  "reference_days": 84,
+  "maximum_BALDEV_cm": 0.0,
+  "ubuntu_owned_trajectory": {
+    "target_GWL_cm": -2.770746986438,
+    "reference_GWL_cm": -2.770750737522,
+    "same_nominal_grid_difference_cm": 3.7510839998589063e-06,
+    "saved_stock_cm": 76.110769252069,
+    "accepted_steps": 456,
+    "capture_seconds": 0.98097189100001,
+    "profiles": {
+      "own-adaptive/O0-0p0004": {
+        "day364_GWL_cm": -3.650648177431,
+        "seconds": 0.218211256999993
+      },
+      "own-adaptive/O0-0p0001": {
+        "day364_GWL_cm": -3.675152609881,
+        "seconds": 4.0739919819999955
+      },
+      "own-adaptive/O0-2p5e-05": {
+        "day364_GWL_cm": -3.677296208955,
+        "seconds": 5.431367026000004
+      },
+      "own-adaptive/O2-0p0004": {
+        "day364_GWL_cm": -3.650648177431,
+        "seconds": 0.2178208039999987
+      },
+      "own-adaptive/O2-0p0001": {
+        "day364_GWL_cm": -3.675152609881,
+        "seconds": 3.7280841529999975
+      },
+      "own-adaptive/O2-2p5e-05": {
+        "day364_GWL_cm": -3.677296208955,
+        "seconds": 4.930833491000001
+      },
+      "own-replay/O0-0p04": {
+        "day364_GWL_cm": -2.770750737522,
+        "seconds": 0.03571818700000051
+      },
+      "own-replay/O2-0p04": {
+        "day364_GWL_cm": -2.770750737522,
+        "seconds": 0.03537165500000583
+      }
+    }
+  },
+  "interpretation": "Original independent physical solve reproduces target on both recorded time grids; original own refinement changes shrink; nominal B0 discrepancy classified as numerical time-grid/history sensitivity in this window. No new scientific tolerance or nominal-equivalence PASS is introduced."
+}

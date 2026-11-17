@@ -1,6 +1,23 @@
 # PR1701 follow-up: repaired heat reproducibility and bounded GWL diagnosis
 
-## Current decision
+## Current independent disposition
+
+The [independent qualification](independent/README.md) closes the bounded
+groundwater-attribution review blocker. Original431 HeadCalc with additional
+original Newton effort, without SWAP5 HeadCalc or its budget module, passes
+28 three-day Windows/Ubuntu O0/O2 references. It reproduces the actual nominal
+Windows and Ubuntu-owned trajectories on their respective accepted grids
+within3.889e-6 /3.752e-6cm, with the unchanged1e-10 balance criterion.
+The earlier shared strict-kernel experiment is no longer the independence basis.
+
+Review readiness is supported for the explicit experimental policy and its
+documented numerical consequences. The failed full nominal B0 comparison remains
+FAIL; no new groundwater allowance, default promotion, whole-period scientific
+equivalence or universal reference is claimed. The physical snapshot and its
+8 full/64 own-restart/8 heat proofs are unchanged. The following sections retain
+the earlier decision points and their then-open conditions as historical context.
+
+## Previous decision before independent qualification
 
 The heat-observation blocker is **repaired and tested** on Windows/Ubuntu O0/O2.
 The 2.8 cm nominal groundwater comparison is **causally explained as temporal

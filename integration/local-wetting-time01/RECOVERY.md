@@ -95,3 +95,29 @@ reference-balance objection, not the need for independent whole-period/temporal
 qualification. The finer6.25e-6day run is censored at20seconds, not PASS; do
 not retry/widen its bound. No production changes afterc3a0a7e17. Failed nominal
 B0 comparisons and draft scientific/default acceptance remain visible.
+
+Current independent workpoint (17 November): independent/README.md and
+QUALIFICATION.json supersede the absence-of-independent-attribution blocker.
+Original431 HeadCalc plus two additional original converged Newton iterations
+links no SWAP5 HeadCalc/budget/kernel/host. All28 three-day reference models
+pass the unchanged1e-10 balance check on Windows/Ubuntu O0/O2. Actual nominal
+Windows449-step and Ubuntu-owned456-step grids reproduce their target GWL
+within3.889e-6 /3.752e-6cm; the shared refined120008-step grid differs3.566e-8cm.
+The independent adaptive refinement is separate from exact-grid replay; DTMAX
+alone does not determine actual step times. Both actual saved states and the
+common-input cross-platform control remain distinct and hash-bound.
+
+Hosted independent run44091311535 SUCCESS at8b1a09652; Ubuntu-owned run
+44093576937 SUCCESS ata6fc4e31d. Source/seed/link/raw-grid/CSV seals are in
+independent/. Models take<=8.79s Windows and<=5.44s Ubuntu, below20s; retired
+censored finer stress is not repeated. No app/src/tools change sincec3a0a7e17;
+inherit exact full/native/heat cohorts, do not duplicate full runs for these
+reference-only changes. There are no existing PR review threads/submissions.
+
+Review decision: ready for the explicit opt-in policy with independently
+qualified bounded numerical difference. Original nominal full comparison stays
+FAIL; whole scientific equivalence, a universal B1 and a production GWL-error
+bound remain NOT_CLAIMED. This is review readiness, not merge/default admission.
+Next safe step after publication is reviewer feedback and selected integration
+checks for an actual candidate postimage, not another empirical limiter, broader
+configuration campaign or repetition of the same short reference ladder.
