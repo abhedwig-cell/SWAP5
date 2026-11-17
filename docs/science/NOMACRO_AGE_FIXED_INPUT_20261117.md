@@ -68,7 +68,7 @@ physical mean-water-age law.
 
 The public build-bundle/run/day4-to6 restart commands reproduce all physical
 and age rows, five CSV windows and the complete native payload. Request
-`--checkpoint-at6` explicitly when the restarted run should publish day6.
+`--checkpoint-at 6` explicitly when the restarted run should publish day6.
 A first verifier expected that unrequested file; the successful physical/CSV
 run and corrected publication control are both retained. Earlier refusal
 controllers mismatched original diagnostic wording and the original exponent
