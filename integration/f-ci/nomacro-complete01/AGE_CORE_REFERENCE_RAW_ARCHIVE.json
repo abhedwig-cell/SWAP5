@@ -1,0 +1,52 @@
+{
+  "archive": "AGE_CORE_REFERENCE_RAW.zip",
+  "bytes": 347692,
+  "sha256": "dd483638ae8613ae3d57035f7ca47337a83fa15da5bc469a1cf7b30ab6acc852",
+  "members": {
+    "Windows/O0/0/reference.stdout": "61ab26544e57986efe8e74050c7ec488c3a395eac8b788ed8084f321f96a233f",
+    "Windows/O0/100/reference.stdout": "f229c8410e834f939a43d0f790fb3115a593afd7f5e2efc95600b65df82cffdc",
+    "Windows/O2/0/reference.stdout": "61ab26544e57986efe8e74050c7ec488c3a395eac8b788ed8084f321f96a233f",
+    "Windows/O2/100/reference.stdout": "f229c8410e834f939a43d0f790fb3115a593afd7f5e2efc95600b65df82cffdc",
+    "Ubuntu/O0/0/reference.stdout": "01ed2942844d46f4fde4fde8917c00a0058434819dcb8d162ca4d23cd0a16e7d",
+    "Ubuntu/O0/100/reference.stdout": "9b3983522caea23a9183e8c168542cbbb117c9e56f145f257aa6ee9bc3ce38fa",
+    "Ubuntu/O2/0/reference.stdout": "01ed2942844d46f4fde4fde8917c00a0058434819dcb8d162ca4d23cd0a16e7d",
+    "Ubuntu/O2/100/reference.stdout": "9b3983522caea23a9183e8c168542cbbb117c9e56f145f257aa6ee9bc3ce38fa"
+  },
+  "member_count": 8,
+  "origins": {
+    "Windows/O0/0/reference.stdout": {
+      "source": "actual recorded Windows reference stdout",
+      "member": "O0/0/reference.stdout"
+    },
+    "Windows/O0/100/reference.stdout": {
+      "source": "actual recorded Windows reference stdout",
+      "member": "O0/100/reference.stdout"
+    },
+    "Windows/O2/0/reference.stdout": {
+      "source": "actual recorded Windows reference stdout",
+      "member": "O2/0/reference.stdout"
+    },
+    "Windows/O2/100/reference.stdout": {
+      "source": "actual recorded Windows reference stdout",
+      "member": "O2/100/reference.stdout"
+    },
+    "Ubuntu/O0/0/reference.stdout": {
+      "source": "AGE_CORE_UBUNTU_RAW.zip",
+      "member": "reference/O0/0/reference.stdout"
+    },
+    "Ubuntu/O0/100/reference.stdout": {
+      "source": "AGE_CORE_UBUNTU_RAW.zip",
+      "member": "reference/O0/100/reference.stdout"
+    },
+    "Ubuntu/O2/0/reference.stdout": {
+      "source": "AGE_CORE_UBUNTU_RAW.zip",
+      "member": "reference/O2/0/reference.stdout"
+    },
+    "Ubuntu/O2/100/reference.stdout": {
+      "source": "AGE_CORE_UBUNTU_RAW.zip",
+      "member": "reference/O2/100/reference.stdout"
+    }
+  },
+  "all_members_forward_verified": true,
+  "purpose": "Exact pre-output age core reference observations; not new mean-output qualification."
+}

@@ -12,17 +12,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            app
-            src
-            tools/solute
-            tools/vq
-            tests
-            integration/audits/evidence
-            reference/swap-4.3.1/projects
-            reference/swap-4.3.1/source-archives
-            reference/swap-4.3.1/patches
-      - name: Qualify original age and preserve actual accepted age owners O0/O2
+            /app/
+            /src/
+            /tools/solute/
+            /tools/vq/
+            /tests/
+            /integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64
+            /integration/f-ci/nomacro-complete01/AGE_CORE_QUALIFICATION.json
+            /integration/f-ci/nomacro-complete01/AGE_CORE_TRAJECTORIES_RAW.zip
+            /integration/f-ci/nomacro-complete01/AGE_CORE_TRAJECTORIES_RAW_ARCHIVE.json
+            /integration/f-ci/nomacro-complete01/AGE_CORE_REFERENCE_RAW.zip
+            /integration/f-ci/nomacro-complete01/AGE_CORE_REFERENCE_RAW_ARCHIVE.json
+            /reference/swap-4.3.1/projects/
+            /reference/swap-4.3.1/source-archives/
+            /reference/swap-4.3.1/patches/
+      - name: Qualify corrected output/native state and exact prior core preservation O0/O2
         run: python3 -B tests/nomacro_scheduled_subsurface/age_ci.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
       - uses: actions/upload-artifact@v4
         if: always()
