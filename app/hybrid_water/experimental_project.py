@@ -93,7 +93,7 @@ def inspect(directory):
             raise ValueError('Unsupported experimental process/state: '+name)
     if selected['SWSOLU']:
         for name in ('SWSP', 'SWDC', 'SWBR'):
-            if selected.get(name) not in ({0} if name == 'SWBR' else {0, 1}):
+            if selected.get(name) not in {0, 1}:
                 raise ValueError('Solute ledger/state does not support '+name)
     if selected['SWIRFIX'] and selected.get('SWIRGFIL') not in (0,1):
         raise ValueError('Unsupported/missing original fixed irrigation input selector')
@@ -108,12 +108,11 @@ def inspect(directory):
     for root in roots:
         for name, value in switches((root/'swap.swp').read_text(encoding='cp1252')).items():
             allowed.setdefault(name, set()).add(value)
-    # Stateless original dispatches; complete original Fortran bodies are kept.
-    # Other bottom variants (8/9), frost and stateful surfacewater remain
-    # excluded until their complete process/state combinations are qualified.
+    # Original dispatches and their explicit process/state adapters. Additional
+    # coupling domains remain excluded until their owning contracts are present.
     allowed.update(SWBOTB=set(range(1, 9)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
-                   SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SWCALT={1,2},
+                   SWSP={0, 1}, SWDC={0, 1}, SWBR={0,1}, SWHEA={0, 1}, SWCALT={1,2},
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},

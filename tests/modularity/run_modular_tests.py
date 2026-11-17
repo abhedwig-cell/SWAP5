@@ -40,6 +40,8 @@ CASES['low_air_physical']={'driver':'tests/modularity/test_low_air_development.f
 DEFAULT_CASES=['boesten','root_oxygen','root_contract','drainage','assimilation']
 CASES['subsurface_solute_source']={'driver':'tests/modularity/test_subsurface_solute_source.f90',
     'marker':'SUBSURFACE_SOLUTE_SOURCE_UNITS_CONSERVATION_NONMUTATION_ABA_REFUSALS=PASS','flags':COMMON}
+CASES['aquifer_solute_reservoir']={'driver':'tests/modularity/test_aquifer_solute_reservoir.f90',
+    'marker':'AQUIFER_SOLUTE_RESERVOIR_CONTRACT=PASS','flags':COMMON}
 
 COMPONENTS={
  'hydraulics':'src/solver/mod_b110_default_mvg_provider.f90',
@@ -193,6 +195,7 @@ class Session:
 # Selection is deliberately bounded to reviewed local seams, not an import-graph
 # admission inference. Anything else needs the existing scientific owner's record.
 LOCAL_SEAMS = {
+ 'src/process/mod_aquifer_solute_reservoir.f90': ['aquifer_solute_reservoir'],
  'src/process/mod_subsurface_solute_source.f90': ['subsurface_solute_source'],
  'src/process/mod_restricted_surface_evaporation.f90': ['boesten'],
  'src/process/mod_root_water_uptake_process.f90': ['root_oxygen', 'root_contract'],
