@@ -10,6 +10,7 @@ ROOT=Path(__file__).resolve().parents[2]
 PROOF='integration/f-ci/nomacro-complete01/'
 PARENT='744eb19ea096bf3622c9e044e8119f4247c9f358'
 CANONICAL='e5b3232926e3f24641c4cb0e58db57f115946b59'
+ADMISSION_CANONICAL='4c0c4de1043c2d8969d4a9ce5369d2a3e81f3b7d'
 RUNTIME='8eff1af5919ff4698b858e5353a13f06cf7a1c5e'
 UBUNTU='304e528438f13270f9b421a2a4f386d71ec451dc'
 SEALED='5912bee4e9f21f4cc8cc142576ac81fa3c7bacd5'
@@ -81,28 +82,31 @@ def validate(q):
 
 def verify():
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty age composition admission surface')
-    for ref in (PARENT,CANONICAL,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
+    for ref in (PARENT,CANONICAL,ADMISSION_CANONICAL,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
+    extra=set(git('diff','--name-only',CANONICAL,ADMISSION_CANONICAL).decode().splitlines())
+    require(all(p.startswith(('tests/saltfarm_cost02/','integration/f-ci/saltfarm-rc3-cost02/')) or p=='docs/science/SALTFARM_RC3_COST02.md' for p in extra),'nonphysical canonical reconciliation changed science')
+    for path in extra:require(blob('HEAD',path)==blob(ADMISSION_CANONICAL,path),'independent canonical cost evidence changed')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'composed age runtime differs from qualification')
     require(set(git('diff','--name-only',RUNTIME,UBUNTU).decode().splitlines())=={'.github/workflows/nomacro-coverage-prescribed-head.yml'},'composition carrier changed science')
     body=blob('HEAD',ENTRY).decode();require(body.count(HOOK)==1 and body.replace(HOOK,'',1)==blob(PARENT,ENTRY).decode(),'literal age admission owner changed')
     for prefix in ('tests','reference','src','app','tools','.github'):
         if prefix in ('app','src','reference','tools'):continue
         delta=set(git('diff','--name-only',RUNTIME,'HEAD','--',prefix).decode().splitlines())
-        require(delta<={SELF,TEST,ENTRY},'executed composition controller changed')
+        require(delta<={SELF,TEST,ENTRY}|extra,'executed composition controller changed')
     # Complete immutable evidence from both actual parents remains literal.
     mutable={PROOF+n for n in ('STATUS.json','GAP_MATRIX.json','CI_SELECTION.json')}
     current=tree('HEAD','integration')
-    for parent in (PARENT,CANONICAL):
+    for parent in (PARENT,ADMISSION_CANONICAL):
         for path,identity in tree(parent,'integration').items():
             if path not in mutable:require(current.get(path)==identity,'immutable parent evidence changed: '+path)
     for path,identity in tree(SEALED,PROOF).items():
         if path not in mutable:require(current.get(path)==identity,'sealed composition evidence changed: '+path)
-    allowed={SELF,TEST,ENTRY,*mutable,PROOF+'AGE_MERGE_RECEIPT.json'}
+    allowed={SELF,TEST,ENTRY,*mutable,PROOF+'AGE_MERGE_RECEIPT.json'}|extra
     require(set(git('diff','--name-only',SEALED,'HEAD').decode().splitlines())<=allowed,'unqualified change after composition seal')
     spec=importlib.util.spec_from_file_location('age_parent',ROOT/ENTRY);parent=importlib.util.module_from_spec(spec);spec.loader.exec_module(parent)
     original=json.loads((ROOT/PROOF/'AGE_QUALIFICATION.json').read_text());parent.validate(original)
     q=json.loads((ROOT/PROOF/'AGE_COMPOSITION_QUALIFICATION.json').read_text());validate(q)
-    for r in (*q['age'].values(),q['preservation']):require(not git('diff',r.get('source',r.get('source_commit')),RUNTIME,'--','app','src','reference','tools'),'actual composed execution source differs')
+    for r in (*q['age'].values(),*q['wetting'].values(),*q['pulse'].values(),q['preservation']):require(not git('diff',r.get('source',r.get('source_commit')),RUNTIME,'--','app','src','reference','tools'),'actual composed execution source differs')
     for path,digest in q['controller_canonical_sha256'].items():require(hashlib.sha256((ROOT/path).read_bytes().replace(b'\r\n',b'\n')).hexdigest()==digest,'composition controller changed')
     for path in sorted((ROOT/PROOF).glob('AGE_*_RAW_ARCHIVE.json')):
         r=json.loads(path.read_text());archive=ROOT/PROOF/r['archive']
