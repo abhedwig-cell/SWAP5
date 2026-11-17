@@ -278,7 +278,8 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         import re
         magics=re.findall(r"'S5[A-Z0-9]{6}'",codec)
         if len(magics)!=2 or len(set(magics))!=1:raise ValueError('Ambiguous original age native format')
-        codec=codec.replace(magics[0],"'S5AGE001'")
+        from conserved_original_age import MAGIC
+        codec=codec.replace(magics[0],"'"+MAGIC.decode()+"'")
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)

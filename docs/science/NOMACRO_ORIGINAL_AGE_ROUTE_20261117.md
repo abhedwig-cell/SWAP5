@@ -48,3 +48,30 @@ accepted age units and policy; the existing chemical1e-10mg/cm2 and water1e-10cm
 guards remain unchanged. Original unsupported snow/macro combinations must stay
 refused. Surface and microstep adapters remain implementation work, not evidence
 of functional admission.
+
+## Effluent output correction in development
+
+The first core stage passed Windows/Ubuntu full source/state/native tests and
+existing-owner preservation, persisted in `AGE_CORE_QUALIFICATION.json` at
+`integration/f-ci/nomacro-complete01`. It is not canonically admitted. Original
+effluent output divided an accumulated age amount (cm day) by output time
+(day), producing cm while labelling the result days. Its drainage-water file
+also labelled accumulated cm as mm/day. These are inherited output defects.
+
+The independent production `mod_age_effluent_observer` computes positive
+exported water and the corresponding age amount separately for bottom, roots
+and each drainage level. Mean effluent age is their ratio, in days. Negative
+drainage is inflow, not exported water in the denominator. Runoff uses the
+already accepted pond-age export. The adapter checks observed age exports
+against the actual transport receipt before accumulating them over the same
+output interval; it does not change transport or accepted core age state.
+
+No-export means are the explicit missing sentinel -9999.9, with zero water and
+age amount. The companion `ageEffluentWater.csv` supplies actual cm exported for
+every mean-age column. `ageEffluentqDrain.csv` reports positive drainage exports
+in cm over that same interval. The native AGE002 owner includes these output
+amount/volume counters. Required gates include weighted-mixture/duration/unit
+counterexamples, native output fidelity, and exact preservation of every prior
+core trajectory. Earlier supported Linux joint-owner preservation is inherited
+only after literal input-closure validation; no repeat is selected for an
+independent new observer or an output-only host change.

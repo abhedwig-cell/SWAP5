@@ -10,9 +10,11 @@ ROOT=Path(__file__).resolve().parents[4]
 ORIGINAL='2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2'
 POLICY='original-water-midpoint-age-provider-and-explicit-surface-v1'
 PROVIDERS=('mod_solute_compartment_state','mod_b111_age_tracer_substep','mod_b111_surface_age_budget')
+OUTPUT_PROVIDERS=('mod_age_effluent_observer',)
+EFFLUENT_POLICY='water-weighted-positive-export-age-over-output-interval-v1'
 
 
-def source(original,*,native=False):
+def source(original,*,native=False,effluent=False):
     if hashlib.sha256(original).hexdigest()!=ORIGINAL:raise ValueError('Foreign original age source')
     text=original.decode('cp1252').replace('\r\n','\n')
     anchor='    end interface'
@@ -25,9 +27,14 @@ def source(original,*,native=False):
          logical,intent(in)::restoring
       end subroutine
 """
+    if effluent:interface+="""      module subroutine hybrid_age_effluent_observe(values)
+         real(8),intent(out)::values(24)
+      end subroutine
+"""
     text=text.replace(anchor,interface+anchor,1)
     text=text.replace('   public :: solute_CDE, calc_AgeTracer','   public :: solute_CDE, calc_AgeTracer, hybrid_age_observe',1)
     if native:text=text.replace('calc_AgeTracer, hybrid_age_observe','calc_AgeTracer, hybrid_age_observe, hybrid_age_checkpoint',1)
+    if effluent:text=text.replace('   public :: swdc','   public :: hybrid_age_effluent_observe\n   public :: swdc',1)
     prefix,body=text.split('submodule (MOD_Solute) MOD_calc_AgeTracer',1)
     def replace(old,new):
         nonlocal body
@@ -157,6 +164,7 @@ def source(original,*,native=False):
    values(4:11)=age_cumulative
 end subroutine
 end submodule MOD_calc_AgeTracer""")
+    if effluent:body=effluent_source(body,native)
     if native:
         replace('   contains\n      module subroutine calc_AgeTracer(task)',"""      integer,save::age_output_day_offset=0
       real(8),save::age_output_period_offset=0d0
@@ -181,7 +189,19 @@ end submodule MOD_calc_AgeTracer""")
         # initialization flags or counters while restoring an age observer.
         body=body.replace('date,comma,daynr,comma,daycum','date,comma,daynr,comma,(daycum+age_output_day_offset)')
         body=body.replace('/outper','/(outper+age_output_period_offset)')
-        replace('end submodule MOD_calc_AgeTracer',NATIVE+'\nend submodule MOD_calc_AgeTracer')
+        native_body=NATIVE
+        if effluent:
+            replace('         if(age_interval_reset_now)age_output_period_offset=0d0',
+                    '         if(age_interval_reset_now)then\n            age_output_period_offset=0d0\n            age_export_water=0d0;age_export_amount=0d0\n         end if')
+            native_body=native_body.replace('sqdra,saved_total','sqdra,age_export_water,age_export_amount,saved_total')
+            native_body=native_body.replace('sqdra,observed(1:3)','sqdra,age_export_water,age_export_amount,observed(1:3)')
+            native_body=native_body.replace('real(8)::saved_output_period','real(8)::saved_output_period,effluent_observed(24)')
+            native_body=native_body.replace('      call hybrid_age_observe(observed)',
+                "      if(.not.all(ieee_is_finite(age_export_water)).or..not.all(ieee_is_finite(age_export_amount))) &\n"
+                "         error stop 'Nonfinite original age effluent native state'\n"
+                "      if(any(age_export_water<0d0).or.any(age_export_amount<0d0))error stop 'Negative original age effluent native state'\n"
+                "      call hybrid_age_effluent_observe(effluent_observed)\n      call hybrid_age_observe(observed)")
+        replace('end submodule MOD_calc_AgeTracer',native_body+'\nend submodule MOD_calc_AgeTracer')
     return (prefix+'submodule (MOD_Solute) MOD_calc_AgeTracer'+body).replace('\n','\r\n').encode('cp1252')
 
 
@@ -194,6 +214,78 @@ def csv_source(original):
     rendered=rendered.replace('hybrid_aquifer_cumulative','hybrid_age_observe').replace('aq_values(7)','aq_values(11)')
     rendered=rendered.replace("(a,7(1x,es25.17e3))","(a,11(1x,es25.17e3))")
     return rendered.encode('cp1252')
+
+
+def effluent_source(body,native):
+    def replace(old,new):
+        nonlocal body
+        if body.count(old)!=1:raise ValueError('Changed age effluent anchor: '+old[:90])
+        body=body.replace(old,new,1)
+    replace('         advance_surface_age_budget,SURFACE_AGE_OK',"""         advance_surface_age_budget,SURFACE_AGE_OK
+      use mod_age_effluent_observer,only:age_effluent_result_t,evaluate_age_effluent,age_effluent_mean,AGE_EFFLUENT_OK""")
+    replace('      real(8),save::age_pond_stock=0d0,age_cumulative(8)=0d0',
+            '      real(8),save::age_pond_stock=0d0,age_cumulative(8)=0d0\n      real(8),save::age_export_water(8)=0d0,age_export_amount(8)=0d0')
+    replace('      logical::age_first_microstep',"""      type(age_effluent_result_t)::age_export
+      real(8)::age_export_concentration(numnod),age_export_tolerance
+      integer::age_export_status
+      logical::age_first_microstep""")
+    replace('         age_cumulative=0d0','         age_cumulative=0d0\n         age_export_water=0d0;age_export_amount=0d0')
+    if not native:
+        replace('only: flzerocumu, q,','only: flzerocumu, flzerointr, q,')
+        replace('         if (flzerocumu) then',
+                '         if(flzerointr)then\n            age_export_water=0d0;age_export_amount=0d0\n         end if\n         if (flzerocumu) then')
+    replace('         icAgesur=icAgesur+age_surface_receipt%runoff_age_export_cm_day',"""         age_export_water(3)=age_export_water(3)+runots
+         age_export_amount(3)=age_export_amount(3)+age_surface_receipt%runoff_age_export_cm_day
+         icAgesur=icAgesur+age_surface_receipt%runoff_age_export_cm_day""")
+    replace('            Agemsy=age_candidate%age_amount/dz(1:numnod)',"""            age_export_concentration=age_before%age_amount/(age_forcing%theta_previous*age_forcing%dz_cm)
+            call evaluate_age_effluent(dtsolu,age_export_concentration,age_forcing%root_sink_cm_day, &
+               age_forcing%qdra_cm_day,age_forcing%q_face_up_cm_day(numnod+1),age_export,age_export_status)
+            if(age_export_status/=AGE_EFFLUENT_OK)error stop 'Original age effluent evaluator rejected'
+            age_export_tolerance=8192d0*epsilon(1d0)*max(1d0,age_receipt%age_before_cm_day,age_receipt%age_after_cm_day)
+            if(abs(age_export%age_amount_cm_day(1)-age_receipt%bottom_export_cm_day)>age_export_tolerance.or. &
+               abs(age_export%age_amount_cm_day(2)-age_receipt%root_export_cm_day)>age_export_tolerance.or. &
+               abs(sum(age_export%age_amount_cm_day(3:))-age_receipt%drain_export_cm_day)>age_export_tolerance) &
+               error stop 'Original age effluent differs from actual transport receipt'
+            age_export_water(1:2)=age_export_water(1:2)+age_export%water_cm(1:2)
+            age_export_amount(1:2)=age_export_amount(1:2)+age_export%age_amount_cm_day(1:2)
+            age_export_water(4:3+nrlevs)=age_export_water(4:3+nrlevs)+age_export%water_cm(3:)
+            age_export_amount(4:3+nrlevs)=age_export_amount(4:3+nrlevs)+age_export%age_amount_cm_day(3:)
+            Agemsy=age_candidate%age_amount/dz(1:numnod)""")
+    replace('integer, save                            :: agep,agee,ageq',
+            'integer, save                            :: agep,agee,ageq,agew')
+    replace("      comma = ','","      real(8)::effluent_view(24)\n      comma = ','")
+    replace("         filtext = 'Drain water effluent (mm/day)'","         filtext = 'Positive drainage water export over age output interval (cm)'")
+    replace("         write (agee,'(3a)')", """         filnam=trim(pathwork)//trim(outfil)//'.ageEffluentWater.csv'
+         agew=getun(iun_min,iun_max)
+         call fopens(agew,filnam,'new','del')
+         filtext='Positive water exports over matching age output interval (cm)'
+         call writehead(agew,1,filnam,filtext,project)
+         write(agew,'(a)')' Date,daynr,daycum,WaterBottom_cm,WaterRoot_cm,WaterRunoff_cm,WaterDrainSys1_cm,WaterDrainSys2_cm,WaterDrainSys3_cm,WaterDrainSys4_cm,WaterDrainSys5_cm'
+         write (agee,'(3a)')""")
+    replace("""         write(agee,16) date,comma,daynr,comma,daycum,comma,AgeGwl1m,comma,&
+                        icAgeBot/outper,comma,icAgeRot/outper,comma,       &
+                        icAgeSur/outper,(comma,icAgeDra(level)/outper,level=1,nrlevs)""", """         call hybrid_age_effluent_observe(effluent_view)
+         write(agee,16)date,comma,daynr,comma,daycum,comma,AgeGwl1m,(comma,effluent_view(16+level),level=1,8)
+         write(agew,16)date,comma,daynr,comma,daycum,(comma,effluent_view(level),level=1,8)
+         write(*,'(a,24(1x,es25.17e3))')'HYBRID_AGE_EFFLUENT',effluent_view""")
+    replace('         write(ageq,16) date,comma,daynr,comma,daycum,(comma,iqdrainout(level),level=1,nrlevs)',
+            '         write(ageq,16)date,comma,daynr,comma,daycum,(comma,effluent_view(3+level),level=1,5)')
+    replace('         close (ageq)','         close (ageq)\n         close (agew)')
+    replace('end submodule MOD_calc_AgeTracer',"""module subroutine hybrid_age_effluent_observe(values)
+   real(8),intent(out)::values(24)
+   real(8)::mean
+   integer::i,status
+   values=0d0;values(17:24)=-9999.9d0
+   values(1:8)=age_export_water;values(9:16)=age_export_amount
+   do i=1,8
+      mean=0d0
+      call age_effluent_mean(age_export_amount(i),age_export_water(i),mean,status)
+      if(status/=AGE_EFFLUENT_OK)error stop 'Invalid original age effluent stock/volume'
+      if(age_export_water(i)>0d0)values(16+i)=mean
+   end do
+end subroutine
+end submodule MOD_calc_AgeTracer""")
+    return body
 
 
 NATIVE="""module subroutine hybrid_age_checkpoint(unit,restoring)

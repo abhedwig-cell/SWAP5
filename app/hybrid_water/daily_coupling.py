@@ -178,7 +178,8 @@ def validate_bundle(bundle, reference, project):
     expected_age=age_metadata() if project.age else None
     if identity.get('conserved_original_age')!=expected_age:raise ValueError('Foreign original age source/state policy')
     if expected_age:
-        for name in age_correction().PROVIDERS:
+        age_source=age_correction()
+        for name in (*age_source.PROVIDERS,*age_source.OUTPUT_PROVIDERS):
             if (bundle/(name+'.f90')).read_bytes().replace(b'\r\n',b'\n')!=(h.ROOT/'src/process'/(name+'.f90')).read_bytes().replace(b'\r\n',b'\n'):
                 raise ValueError('Foreign actual original age provider')
     from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled, POLICY as SCHEDULED_SUBSURFACE_POLICY
@@ -552,10 +553,11 @@ class CoupledDailyColumn:
                 if not all(math.isfinite(v) and v>=0 for v in conserved):
                     raise ValueError('Unrestartable candidate conserved solute state')
             if self.project.age:
-                from conserved_original_age import MAGIC,validate as validate_age
+                from conserved_original_age import MAGIC,validate as validate_age,validate_effluent
                 with zipfile.ZipFile(candidate) as z:aux=z.read('macro.bin')
                 if aux[:8]!=MAGIC:raise ValueError('Foreign original age native codec')
                 validate_age(raw['age_state_cm_day'])
+                validate_effluent(raw['age_effluent'])
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')
             host.close()
