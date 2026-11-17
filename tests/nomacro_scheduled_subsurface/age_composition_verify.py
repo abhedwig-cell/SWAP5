@@ -110,8 +110,10 @@ def verify():
         with zipfile.ZipFile(archive) as z:
             require({n for n in z.namelist() if not n.endswith('/')}==set(r['members']),'age raw members omitted')
             for name,digest in r['members'].items():require(hashlib.sha256(z.read(name)).hexdigest()==digest,'age raw member changed')
-        for name,origin in r.get('origins',{}).items():
-            old=json.loads((ROOT/PROOF/origin['archive_record']).read_text());require(old['members'][origin['member']]==r['members'][name],'composition parent subset rebound')
+        if path.name=='AGE_COMPOSITION_PARENT_RAW_ARCHIVE.json':
+            require(set(r['origins'])==set(r['members']),'composition parent origin omitted')
+            for name,origin in r['origins'].items():
+                old=json.loads((ROOT/PROOF/origin['archive_record']).read_text());require(old['members'][origin['member']]==r['members'][name],'composition parent subset rebound')
     return dict(status='CURRENT_COMPOSED_ORIGINAL_AGE_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS',runtime=RUNTIME,
                 whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL',full_model_days=8768,
                 water_guard_cm=1e-10,chemical_mass_guard_changed=False,age_units='cm day',native_codec='S5AGE002')
