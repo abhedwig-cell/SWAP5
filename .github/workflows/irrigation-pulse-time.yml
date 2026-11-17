@@ -1,0 +1,47 @@
+name: Local irrigation pulse current admission
+on:
+  push:
+    branches: [codex/irrigation-pulse-time01]
+    paths: ['.github/workflows/irrigation-pulse-time.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: irrigation-pulse-admission-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  admission:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 150
+          sparse-checkout: |
+            app
+            src
+            tools
+            tests/hupsel51
+            tests/irrigation_pulse
+            tests/nomacro_mixtures
+            tests/nomacro_pond_history
+            tests/nomacro_drainage
+            tests/nomacro_time_event
+            tests/nomacro_frost
+            integration/irrigation-pulse-time01
+      - name: Current sealed source full native budget and corruption consumer
+        run: |
+          python3 -B tests/irrigation_pulse/test_verify.py
+          python3 -B tests/hupsel51/verify_successor.py
+      - name: Preserve actual current admission receipt
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/admission"
+          git rev-parse HEAD > "$RUNNER_TEMP/admission/source.txt"
+          python3 -B tests/hupsel51/verify_successor.py > "$RUNNER_TEMP/admission/RESULT.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pulse-admission-${{ github.sha }}
+          path: ${{ runner.temp }}/admission
+          retention-days: 30

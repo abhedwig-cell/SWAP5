@@ -1,0 +1,27 @@
+{
+  "source": "a9044fdab7e333058c6a4dab34884e56e33c35a9",
+  "records": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "tests/hupsel51/test_successor.py"
+      ],
+      "returncode": 0,
+      "seconds": 3.7299919000361115,
+      "stdout": "",
+      "stderr": "...........\n----------------------------------------------------------------------\nRan 11 tests in 3.345s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "tests/hupsel51/verify_successor.py"
+      ],
+      "returncode": 0,
+      "seconds": 42.508529799990356,
+      "stdout": "{\n  \"status\": \"HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS\",\n  \"runtime\": \"75e5b45a1b7a8705d6d364156a1ad4434107dfdf\",\n  \"current_N_full_days\": 6576,\n  \"current_N_proof_anchor\": \"4b6e470b64cd0c5b9967cfb0b4e35c778d8fafe5\",\n  \"current_O_full_days\": 8768,\n  \"current_O_proof_anchor\": \"5fcb0622c4ab0c89618d92b9541dcc7f85f4c799\",\n  \"current_P_full_days\": 8768,\n  \"current_P_proof_anchor\": \"3678bcd846a313c6d4f60f27b8d08d6c2f3f7f36\",\n  \"current_Q_full_days\": 4384,\n  \"current_Q_proof_anchor\": \"fde1f3f0090f9c6f8ffaec7b66ddaab441ed34c3\",\n  \"current_R_full_days\": 17536,\n  \"current_R_proof_anchor\": \"779c4714de5b0c3d2e781993d9d85941864317c4\",\n  \"integrated_frost_drainage\": \"QUALIFIED only explicit original-adaptive-event-closure-v1; old day21/day367 FAIL retained\",\n  \"prior_composed_runtime\": \"f1d1c13a295c5b54ec11e03d864de7030ca09008\",\n  \"current_L_proof_anchor\": \"69561229a73b6c0085b2023935b8be09d1262710\",\n  \"current_L_full_days\": 6576,\n  \"current_M_full_days\": 6576,\n  \"current_M_proof_anchor\": \"182d1c464bad3ae011ff18d64103e2a88eb78702\",\n  \"current_M_physical_source\": \"166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad\",\n  \"original_nominal_runon_accuracy\": \"FAILED_NOT_QUALIFIED; retained day200 error6.2864e-10cm, original dtCrit1e-8day unchanged\",\n  \"closed6_current_full_native_O0_O2\": \"INHERITED from sealed L full/native PASS on actual current source preservation\",\n  \"named_full_evidence\": \"INHERITED on exact generated sources/inputs/policies; binary identity NOT claimed\",\n  \"proof_anchor\": \"4ee0e08b095b945870dce54032e0d886478fb4c4\",\n  \"original_canonical_parent\": \"3fb625da73031885624987d42ad922cb184c96e5\",\n  \"actual_composition_parents\": [\n    \"49ac58e473878b21b4050cebbf777ec1a97cc120\",\n    \"a6d4c4c7cfeb7286b3790bcec41dfdcf62a29adb\"\n  ],\n  \"historical_guards\": \"UNCHANGED; not current-source authorities\",\n  \"column_physics\": \"UNCHANGED; live O0/O2 column test remains required\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    }
+  ]
+}
