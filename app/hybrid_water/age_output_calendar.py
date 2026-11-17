@@ -257,8 +257,8 @@ def apply_build(output,donor_build,project,patched):
     path=output/'swap_main.f90';source=path.read_text(encoding='cp1252')
     anchor='use MOD_solute,only:hybrid_age_observe,hybrid_age_effluent_observe';assert source.count(anchor)==1
     source=source.replace(anchor,anchor+'\nuse MOD_integral,only:hybrid_output_calendar_apply',1)
-    anchor="   write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)";assert source.count(anchor)==1
-    source=source.replace(anchor,'   call hybrid_output_calendar_apply()\n'+anchor,1);path.write_text(source,encoding='cp1252')
+    anchor="\n   write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)";assert source.count(anchor)==1
+    source=source.replace(anchor,'\n   call hybrid_output_calendar_apply()'+anchor,1);path.write_text(source,encoding='cp1252')
     patched=[PROVIDER,'hybrid_age_output_state','integral',*patched]
     patched.insert(patched.index('swap'),'age_output_calendar_probe')
     return patched
