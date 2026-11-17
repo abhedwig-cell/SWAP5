@@ -76,7 +76,7 @@ Omdat het residu de macro-uitwisseling aftrekt, is de gemeten macrobijdrage aan 
 | Rij, kolom | Huidige off-tridiagonale J | Gemeten macrobijdrage totaal | Daarvan domein 3 |
 | --- | ---: | ---: | ---: |
 | 52, 50 | 0 | +0,4462934276028285 | +0,3409272299746343 |
-| 53, 51 | 0 | +1,441772196882768 | ongeveer +1,098 |
+| 53, 51 | 0 | +1,441772196882768 | +1,045684295863849 |
 | 52, 57 | 0 | −0,00006139552616302169 | −0,00003124970646833924 |
 
 De exacte domein-3-waarde voor elke rij/kolom en beide proefgroottes staat in SENSITIVITY.json. De twee eps-waarden en O0/O2 geven dezelfde respons binnen de gemeten afronding. De effecten liggen ruim boven die ruis. De koppelingen buiten de tridiagonaal zijn dus echt aanwezig in de provider, terwijl de gebruikte Jacobiaan ze niet bevat en de huidige rang-één-guard uitstaat.
