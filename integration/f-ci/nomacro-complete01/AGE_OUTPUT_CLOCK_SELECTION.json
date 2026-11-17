@@ -1,0 +1,24 @@
+{
+  "status": "BASELINE_CLOCK_AND_INPUT_DIAGNOSTICS_SELECTED",
+  "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
+  "owner": "SWAP5-NOMACRO-COMPLETE01",
+  "contract": "docs/science/NOMACRO_AGE_OUTPUT_CLOCK_20261117.md",
+  "scope": "Original NPRINTDAY2/3 with actual file cadences; annual-only PERIOD0/month0/dates0; inactive monthly selector omission. First unchanged public source baseline.",
+  "guards": {
+    "water_cm": 1e-10,
+    "chemical_mg_cm2": 1e-10,
+    "age": "accepted8192epsilon scaled cm day"
+  },
+  "expected_seconds": {
+    "baseline_O0_O2": 60,
+    "short_clock": 90,
+    "complete_selected_matrix": 600,
+    "portable_selected": 1200
+  },
+  "scientific_impact": "Original output epoch, print counter/event cap and complete state; no new physical equation. Nonbinary frequency3 discriminates event-cap reassociation. Actual reader/cadence inventory before implementation.",
+  "small_production": "Existing actual-increment receipt and four physical age providers unchanged; new clock/input/native integration only.",
+  "long_justification": "Subdaily global counter/event times and annual-only output require warm/cold month/year/crop/terminal checks after short discriminating controls; no repetition of unchanged full components.",
+  "full_moving_fci": "NOT_SELECTED_IMPACT",
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED"
+}
