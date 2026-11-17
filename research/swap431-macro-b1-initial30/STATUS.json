@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "ORIGINAL_OBSERVER_VALIDATED_SELECTION_PERSISTED",
   "baseline": "5ec00670ef095d9e11b1ecad77c7b5adae48680c",
   "canonical_remote": "be481cfb40f953e337116ef4a6dc5bc3ef64d4f7",
   "workstream": "isolated SWAP431 B1 research; no canonical admission",
@@ -9,5 +9,10 @@
   "candidate_source_byte_exact_ZERO29": true,
   "observer_changes": "Logging first original MACRORATE evaluation only; original heads/commit unchanged, target false; bounded stop. No extra physical evaluation.",
   "invariants": "Conservation and transaction/restart semantics preserved; no shared interfaces touched; official B0/B1.12 and no-macro release unchanged",
-  "required": "Initial zero inflow/partial physical guard; real active refusal; original rollback and direct smaller retry exact. Historical refusal or line-search rejection alone insufficient."
+  "required": "Initial zero inflow/partial physical guard; real active refusal; original rollback and direct smaller retry exact. Historical refusal or line-search rejection alone insufficient.",
+  "selected": [
+    "F1",
+    "F2"
+  ],
+  "observer": "279 original attempts exact excluding diagnostic step counter/timing, 141 prefix budget rows exact, 0.632019 sec, 7 new eligible original refusals, choose2 by preregistered rules"
 }
