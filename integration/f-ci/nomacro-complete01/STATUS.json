@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "a9044fdab",
+  "baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-complete01",
-  "last_commit": "486ef8a38fa03250d829e3de8c483b308e5e71ea",
-  "status": "QUALIFIED_SNAPSHOT_PENDING_CURRENT_OWNER_AND_CANONICAL_ADMISSION",
+  "last_commit": "88a9baaf95ece51466d7359272b5f95b4e35ddba",
+  "status": "FINAL_PULSE_COMPOSED_QUALIFIED_PENDING_CANONICAL_ADMISSION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -18,7 +18,12 @@
     "Actual R composition Windows and Ubuntu four full periods each PASS; eight complete physical/CSV/native trajectories exactly preserved",
     "Original reader and active external/native controls PASS on actual composition",
     "All3 actual composed Windows named full/native regressions PASS",
-    "Original chemical SSDI ignored concentration with positive48mg/cm2 surface control: inherited defect proven"
+    "Original chemical SSDI ignored concentration with positive48mg/cm2 surface control: inherited defect proven",
+    "Concurrent canonical pulse policy fd162a reconciled; literal historical entry restored and preserved",
+    "Actual immutable fd162a pulse/R consumer PASS",
+    "Fresh Windows point/interval full/native and named3 full/native on combined pulse/S source PASS",
+    "Actual four selected pulse generated/object/input closures and201-day native windows preserved without repeating original full pulse periods",
+    "Ubuntu44061060754 combined pulse/S source full qualification terminal SUCCESS"
   ],
   "open": [
     "Complete historical selector inventory",
@@ -79,6 +84,24 @@
     {
       "result": "ALL_RAW_MEMBERS_FORWARD_VERIFIED",
       "members": 12572
+    },
+    {
+      "result": "ACTUAL_PULSE_COMPOSITION_ALL_EIGHT_FULL_TRAJECTORIES_NATIVE_AND_ACTIVE_ISOLATION_EXACT",
+      "days": 8768,
+      "windows_pref": "PULSE_COMPOSED_*",
+      "ubuntu_run": 44061060754
+    },
+    {
+      "result": "LITERAL_OLD_PULSE_ENTRY_AND_BODY_PRESERVED_WITH_ACTUAL_IMMUTABLE_CONSUMER_PASS",
+      "source": "fd162a1ea22c41e798a431f39957aaff9c173e46"
+    },
+    {
+      "result": "ALL_14_OWNER_UNIT_TESTS_PASS",
+      "scheduled_negative_evidence_controls": 50
+    },
+    {
+      "result": "FINAL_COMPOSED_RAW_ALL_MEMBERS_VERIFIED",
+      "members": 6412
     }
   ],
   "failed_tests": [
@@ -116,8 +139,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Seal evidence and extend existing bounded current-source selector without changing historical guards; verify negative evidence/source controls, admit PR1699 after live canonical reconciliation, then qualify corrected-reference nodal chemical SSDI source.",
-  "recovery_point": "PR1699 on codex/nomacro-complete01. Read sealed QUALIFICATION.json and current STATUS. Scientific source b97a04d2c; actual Ubuntu carrier451b28ea4 only differs by excluded dispatch alias. Windows/Ubuntu composed full/native and named controls complete. Do not repeat them for evidence-only changes. Finish existing bounded current-owner gate, safe PR admission and actual canonical postimage. Next independent code batch: corrected-reference chemical SSDI source.",
+  "next_code_change": "Seal final pulse-composed proof and route existing current owner through exact combined-source validator. Verify source corruption, docs and final PR source, then integrate1699 and inspect actual merge postimage. Continue corrected-reference chemical SSDI after admission.",
+  "recovery_point": "Latest current proof PULSE_COMPOSED_QUALIFICATION.json; preserve older QUALIFICATION.json and504fd7390 seal. Source120d329b0; Ubuntu8110b4e8b, run44061060754 SUCCESS. Native/physical outputs exact against pre-pulse proof. Actual prior pulse/R consumer passes at immutablefd162a. Existing historical entry restored literal; latest pulse dispatcher forwards to tests/nomacro_scheduled_subsurface/verify.py. Finish final own seal/current integrity and safe PR1699 canonical admission; then actual merge/tree/owner verification and corrected-reference chemical SSDI source.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -144,6 +167,8 @@
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
   },
   "pr": 1699,
-  "qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "qualified_ubuntu_carrier": "451b28ea4a1b68611952c55437bdcf37c6017ac4"
+  "qualified_source": "120d329b0b65ebbb0daa5d5a9ad5088400f8ddae",
+  "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
+  "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
+  "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2"
 }

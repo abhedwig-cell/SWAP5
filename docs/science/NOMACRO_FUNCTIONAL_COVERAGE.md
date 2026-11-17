@@ -30,6 +30,18 @@ merge receipt; this qualified snapshot alone is not admission. The work-unit
 RC1/RC2 remain fixed; all-option functional completion and whole scientific
 equivalence are not claimed.
 
+Concurrent pulse-policy admission `fd162a1ea` is preserved in the final
+`PULSE_COMPOSED_*` records. Fresh Windows/Ubuntu point/interval full periods and
+native controls reproduce every pre-pulse physical/CSV row and terminal native
+payload exactly. The actual immutable pulse/R consumer passes at its original
+canonical checkout. Four selected pulse builds retain their exact generated
+Fortran, provider objects, inputs and flags, with fresh201-day active/native
+controls; only explicitly verified LF/CRLF template/policy metadata identities
+differ, and no old build or checkpoint binding is rewritten. The literal
+historical admission entry and pulse body remain preserved. The current owner
+selects the separately sealed combined source, with its ordinary numerical
+guards, refused chemical SSDI and bounded configuration scope unchanged.
+
 Chemical subsurface delivery remains refused. A separate original4.3.1
 concentration perturbation completes all four surface/subsurface0/20 controls:
 subsurface water actually supplies2.4cm, yet every printed output row is
