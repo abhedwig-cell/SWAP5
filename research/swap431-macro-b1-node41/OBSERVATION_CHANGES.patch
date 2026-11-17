@@ -1,0 +1,165 @@
+--- PERIOD40/guard41_observer.f90
++++ NODE41/guard41_observer.f90
+@@ -0,0 +1,46 @@
++! Observation only: no provider evaluations, no changes to eligibility or solve.
++subroutine guard41_observe(meta)
++use MOD_arrays,only:macp,madm
++use MOD_grid,only:numnod,z
++use MOD_macropore,only:NumDm,ICpTpSatZon,ICpTpPerZon,ICpBtPerZon,FrReduQ
++use MOD_swap_mp,only:swmbf,IcTopMp,IDecMpRat,GwlFlCpZo
++use variables,only:h,pegwl
++use DIAG19,only:attempts,iter_index
++implicit none
++real(8),intent(in)::meta(16)
++real(8)::cm(24,madm),pot(macp,2),valid,g51,gactual,den
++integer::jg,d,ok(5)
++logical,save::opened=.false.
++integer,save::u,uh,ud
++call jac37_get(cm,pot,valid)
++jg=numnod
++do while(jg>1)
++ if(h(jg)<0d0) exit
++ jg=jg-1
++end do
++g51=0d0;gactual=0d0
++den=h(51)-h(50)
++if(den/=0d0) g51=z(51)+h(51)/den*(z(50)-z(51))
++if(jg<numnod) then
++ den=h(jg+1)-h(jg)
++ if(den/=0d0) gactual=z(jg+1)+h(jg+1)/den*(z(jg)-z(jg+1))
++end if
++ok(1)=merge(1,0,ICpTpSatZon==51.and.ICpTpPerZon==51.and.ICpBtPerZon==51)
++ok(2)=merge(1,0,h(50)<0d0.and.h(51)>0d0.and.h(51)<1d0)
++ok(3)=merge(1,0,abs(pegwl-GwlFlCpZo)<=1d-9)
++ok(4)=merge(1,0,abs(g51-GwlFlCpZo)<=1d-9)
++ok(5)=merge(1,0,numnod>=58.and.NumDm==5.and.swmbf==1.and.IcTopMp==1.and.IDecMpRat==0.and.FrReduQ==1d0)
++if(.not.opened) then
++ open(newunit=u,file='guard41_trace.txt',status='replace')
++ open(newunit=uh,file='guard41_heads.txt',status='replace')
++ open(newunit=ud,file='guard41_domains.txt',status='replace')
++ opened=.true.
++end if
++write(u,*) attempts,iter_index,meta(1),valid,numnod,NumDm,swmbf,IcTopMp,IDecMpRat,FrReduQ, &
++ ICpTpSatZon,ICpTpPerZon,ICpBtPerZon,pegwl,GwlFlCpZo,h(50),h(51),g51,jg,gactual,ok
++write(uh,*) attempts,iter_index,h(1:numnod)
++do d=1,NumDm
++ write(ud,*) attempts,iter_index,d,cm(:,d)
++end do
++flush(u);flush(uh);flush(ud)
++end subroutine
+--- PERIOD40/head_diag.f90
++++ NODE41/head_diag.f90
+@@ -599,18 +599,18 @@
+ integer::tr,ff(5)
+ real(8)::fac,hh,dh,jl,jm,ju,mpd
+ if(.not.detail33) return
+-tr=0;fac=0;hh=h(52);dh=0;ff=0;jl=0;jm=0;ju=0;mpd=0
++tr=0;fac=0;hh=h(47);dh=0;ff=0;jl=0;jm=0;ju=0;mpd=0
+ if(stage/=0) then
+- hh=hold(52)
++ hh=hold(47)
+  if(stage==3.or.stage==4.or.stage==5.or.stage==6) then
+-  tr=itry;fac=factor;dh=difh(52)
++  tr=itry;fac=factor;dh=difh(47)
+  end if
+ end if
+ if(stage==2) then
+- jl=dFdhU(52);jm=dFdhM(52);ju=dFdhL(52);mpd=dFdhMp(52)
++ jl=dFdhU(47);jm=dFdhM(47);ju=dFdhL(47);mpd=dFdhMp(47)
+ end if
+-if(stage==4) ff=[merge(1,0,flnonconv),merge(1,0,flnonconv1(52)),merge(1,0,flnonconv2(52)),merge(1,0,flnonconv3),merge(1,0,fldecMPmbf)]
+-write(node_u,*) attempts,iter_index,stage,tr,t1900,dt,IDecMpRat,fac,h(51:53),hh,dh,F(52), &
++if(stage==4) ff=[merge(1,0,flnonconv),merge(1,0,flnonconv1(47)),merge(1,0,flnonconv2(47)),merge(1,0,flnonconv3),merge(1,0,fldecMPmbf)]
++write(node_u,*) attempts,iter_index,stage,tr,t1900,dt,IDecMpRat,fac,h(46:48),hh,dh,F(47), &
+  sum(F(1:NN)),maxval(abs(F(1:NN))),.5d0*dot_product(F(1:NN),F(1:NN)),sumold, &
+  merge(1,0,flunsatok(3)),ff,jl,jm,ju,mpd
+ end subroutine node20_log
+@@ -621,12 +621,12 @@
+ integer,intent(in)::task
+ real(8),intent(in)::grad(macp+1)
+ if(.not.detail33) return
+-write(op_u,*) attempts,iter_index,nvec,task,t1900,dt,h(51:53),theta(52),thetm1(52),FrArMtrx(52),dz(52), &
+- (theta(52)-thetm1(52))*FrArMtrx(52)*dz(52)/dt,sink(52),-source(52),qrot(52), &
+- -kmean(52)*grad(52),kmean(53)*grad(53),-QExcMpMtx(52),F(52),merge(1,0,flunsatok(3)), &
+- FrReduQ,QExcMtxDmCp(1:NumDm,52),QOutMtxUnsDmCp(1:NumDm,52),QOutMtxSatDmCp(1:NumDm,52), &
+- QInMtxSatDmCp(1:NumDm,52),QInIntSatDmCp(1:NumDm,52),FrMpWalWet(1:NumDm,52), &
+- TimAbsCumDmCp(1:NumDm,52),merge(1,0,FlEndSrpEvt(1:NumDm,52)),ICpTpWaSrDm(1:NumDm),ZWaLevDm(1:NumDm)
++write(op_u,*) attempts,iter_index,nvec,task,t1900,dt,h(46:48),theta(47),thetm1(47),FrArMtrx(47),dz(47), &
++ (theta(47)-thetm1(47))*FrArMtrx(47)*dz(47)/dt,sink(47),-source(47),qrot(47), &
++ -kmean(47)*grad(47),kmean(48)*grad(48),-QExcMpMtx(47),F(47),merge(1,0,flunsatok(3)), &
++ FrReduQ,QExcMtxDmCp(1:NumDm,47),QOutMtxUnsDmCp(1:NumDm,47),QOutMtxSatDmCp(1:NumDm,47), &
++ QInMtxSatDmCp(1:NumDm,47),QInIntSatDmCp(1:NumDm,47),FrMpWalWet(1:NumDm,47), &
++ TimAbsCumDmCp(1:NumDm,47),merge(1,0,FlEndSrpEvt(1:NumDm,47)),ICpTpWaSrDm(1:NumDm),ZWaLevDm(1:NumDm)
+ end subroutine node20_operator
+ 
+ subroutine node35_log(stage)
+@@ -634,7 +634,7 @@
+ integer::ic,fc,fh
+ real(8)::hl,step,jl,jm,ju,mpd
+ if(.not.detail33) return
+-do ic=50,57
++do ic=44,57
+  hl=h(ic);step=0d0;jl=0d0;jm=0d0;ju=0d0;mpd=0d0;fc=0;fh=0
+  if(stage/=0) hl=hold(ic)
+  if(stage==3.or.stage==4.or.stage==5.or.stage==6) step=difh(ic)
+@@ -654,7 +654,7 @@
+ real(8),intent(in)::grad(macp+1)
+ integer::ic
+ if(.not.detail33) return
+-do ic=50,57
++do ic=44,57
+  write(op35_u,*) attempts,iter_index,nvec,task,t1900,dt,ic,h(ic),theta(ic),thetm1(ic),F(ic), &
+   (theta(ic)-thetm1(ic))*FrArMtrx(ic)*dz(ic)/dt,sink(ic),-source(ic),qrot(ic), &
+   -kmean(ic)*grad(ic),kmean(ic+1)*grad(ic+1),-QExcMpMtx(ic),FrReduQ, &
+--- PERIOD40/jac37_update.f90
++++ NODE41/jac37_update.f90
+@@ -79,7 +79,7 @@
+ 
+ subroutine jac37_solve(n,a,b,c,r,x,ierror,handled)
+ use MOD_arrays,only:macp
+-use DIAG19,only:attempts,iter_index,active_in_attempt,active_total
++use DIAG19,only:attempts,iter_index,active_in_attempt,active_total,detail33
+ implicit none
+ integer,intent(in)::n
+ real(8),intent(in)::a(n),b(n),c(n),r(n)
+@@ -91,6 +91,7 @@
+ logical,save::opened=.false.
+ integer,save::tu
+ call jac37_terms(n,uu,vv,bl,bd,meta,handled)
++if(detail33) call guard41_observe(meta)
+ M=0d0;M(1,1)=1d0;M(2,2)=1d0;lam=0d0;det=1d0;res=-1d0
+ if(handled) then
+  aa=a;bb=b;aa(51)=aa(51)+bl;bb(51)=bb(51)+bd
+--- PERIOD40/soilwater_native.f90
++++ NODE41/soilwater_native.f90
+@@ -273,11 +273,29 @@
+   call ledger12_dump('ledger_begin')
+  end if
+  ! Numerical activation from the first own head, always guarded by unchanged terms.
+- apply37=.true.;detail33=.false.
++ apply37=.true.;detail33=attempts+1==357
++ if(detail33) then
++  if(abs(t1900-35797.487000006880d0)>1d-10.or.abs(dt-0.001000001146167051d0)>1d-16) error stop 'NODE41 original context mismatch'
++  call inventory_dump('origin')
++  call native09_dump('context_origin')
++  call ledger12_dump('ledger_origin')
++ end if
+  call capture33()
+  call head_start()
+  call headcalc
+  call head_end()
++ if(detail33) then
++  call inventory_dump('returned')
++  call native09_dump('context_returned')
++  call ledger12_dump('ledger_returned')
++  call SoilWaterStateVar(2)
++  call MacroStateVar(2)
++  call inventory_dump('rollback')
++  call native09_dump('context_rollback')
++  call ledger12_dump('ledger_rollback')
++  if(fldecdt.and..not.FlDecMpRat.and.IDecMpRat==0) call finish33('ORIGINAL357_REAL_UNSCALED_REFUSAL')
++  call finish33('UNEXPECTED_SELECTED357_OUTCOME')
++ end if
+  if(fldecdt.or.FlDecMpRat) then
+   open(newunit=u,file='refusal_trace.txt',status='unknown',position='append')
+   write(u,*) attempts,t1900,dt,active_in_attempt,IDecMpRat,merge(1,0,fldecdt),merge(1,0,FlDecMpRat)
