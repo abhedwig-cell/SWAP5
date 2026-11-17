@@ -1,0 +1,57 @@
+{
+  "status": "ORIGINAL_SWBR1_AQUIFER_OUT_OF_BOUNDS_O0_O2_PROVEN",
+  "original_source_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+  "profiles": {
+    "O0": {
+      "returncode": "UNKNOWN_RETAINED_FAILURE",
+      "diagnostic": "At line 464 of file C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-original-checked\\O0\\solute.f90\nFortran runtime error: Index '35' of dimension 1 of array 'bdenskfsatporos' above upper bound of 34\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a2c1ac0\n#3  0x3f8fb12c\n#4  0x3f8f1ebb\n#5  0x3f8af844\n#6  0x3f8cc802\n#7  0x3f921c8f\n#8  0x3f831156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+      "accessed_index": 35,
+      "upper_bound": 34,
+      "flags": [
+        "-O0",
+        "-std=legacy",
+        "-ffree-line-length-none",
+        "-ffixed-line-length-none",
+        "-fallow-argument-mismatch",
+        "-fcheck=bounds",
+        "-fbacktrace",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic",
+        "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-original-checked\\O0",
+        "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-original-checked\\O0",
+        "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+        "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj"
+      ],
+      "solute_object_sha256": "b21c938b4f250d3b75a1406e7fc5fd63783bc2f2cf44c1a46de664398cf37993",
+      "executable_sha256": "4dc5c613a5d4579e2b5c313e12736d1f15447f7b27e4af86fae2de1bd4c307e3",
+      "failure": "ORIGINAL_AQUIFER_STORAGE_INDEX_N_PLUS_ONE"
+    },
+    "O2": {
+      "returncode": 2,
+      "diagnostic": "At line 464 of file C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-original-checked\\O2\\solute.f90\nFortran runtime error: Index '35' of dimension 1 of array 'bdenskfsatporos' above upper bound of 34\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a2c1ac0\n#3  0xa0697ad7\n#4  0xa06914b9\n#5  0xa064f844\n#6  0xa066c802\n#7  0xa06bd60f\n#8  0xa05d1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+      "accessed_index": 35,
+      "upper_bound": 34,
+      "flags": [
+        "-O2",
+        "-std=legacy",
+        "-ffree-line-length-none",
+        "-ffixed-line-length-none",
+        "-fallow-argument-mismatch",
+        "-fcheck=bounds",
+        "-fbacktrace",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic",
+        "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-original-checked\\O2",
+        "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-original-checked\\O2",
+        "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+        "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj"
+      ],
+      "solute_object_sha256": "4543ae1b5d947983242d3797cf9cb2b81d7264ab1ee7b444dfb6e4ee8c4308f9",
+      "executable_sha256": "d6483804dcebd1d2046449cc544173f60e68a35f44327045a9ee25bc212a72f9",
+      "failure": "ORIGINAL_AQUIFER_STORAGE_INDEX_N_PLUS_ONE"
+    }
+  },
+  "SWAP5_activation": false
+}

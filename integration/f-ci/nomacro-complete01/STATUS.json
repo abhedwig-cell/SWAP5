@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "949a61af1b4eee252959208d3d544e17c4895db9",
+  "baseline": "23194d6be22f4c67c2f81c13d730aea621c4ba53",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-scheduled-chemical01",
-  "last_commit": "949a61af1b4eee252959208d3d544e17c4895db9",
-  "status": "SCHEDULED_AND_FIXED_CHEMICAL_CANONICALLY_ADMITTED",
+  "branch": "codex/nomacro-aquifer-admission01",
+  "last_commit": "23194d6be22f4c67c2f81c13d730aea621c4ba53",
+  "status": "AQUIFER_CANONICAL_ADMITTED_ACTUAL_MERGE_PASS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -32,19 +32,22 @@
     "Four201day active pulse/native prefixes preserve prior full physical/CSV results across corrected chemical source",
     "PR1702 canonical55a5a641f: exact parents and complete tree verified; actual detached canonical current owner PASS",
     "Scheduled chemical Windows/Ubuntu eight1096periods O0/O2 source/native/external PASS; Linux44079261977 SUCCESS, both raw digests/1504members checked; native10invalid domain refusals and interleaved6step source origins bothopts PASS; nine admitted-context emitted closures and native prefixes exact without repeated full periods",
-    "PR1704 actual canonical949a61af1: exact e709/200a3e parents and full tree36e24ab, actual detached current owner PASS; scheduled source64/174mg/cm2 admitted"
+    "PR1704 actual canonical949a61af1: exact e709/200a3e parents and full tree36e24ab, actual detached current owner PASS; scheduled source64/174mg/cm2 admitted",
+    "PR1706 actual canonical23194d6be: complete qualified treece096656 exact, exact e677/d658 parents, actual detached source/evidence owner PASS; corrected SWBR1 source/state admitted in bounded no-macro scope."
   ],
   "open": [
     "Complete historical selector inventory",
-    "Original SWBR1 aquifer/source/ledger and full native state; age/vapor and other chemical variants",
+    "Original water-age/vapor and other chemical variants; corrected bounded SWBR1 admitted with unresolved whole-model numeric reference differences.",
     "Remaining drainage/surfacewater/constitutive/weather/state gaps and release consolidation"
   ],
   "dependency_surface": [
+    "src/process/mod_aquifer_solute_reservoir.f90",
+    "app/hybrid_water/conserved_aquifer_solute.py",
     "app/hybrid_water/daily_host.py",
     "app/hybrid_water/daily_coupling.py",
     "app/hybrid_water/experimental_project.py",
-    "app/hybrid_water/conserved_scheduled_subsurface_solute.py",
-    "Shared src/process/mod_subsurface_solute_source.f90 and corrected original source generator remain literal to fixed admission"
+    "reference/swap-4.3.1/patches/NOMACRO-AQUIFER-SOLUTE-01",
+    "tests/nomacro_scheduled_subsurface/aquifer*.py"
   ],
   "invariants": [
     3,
@@ -127,6 +130,47 @@
       "status": "PASS",
       "proof": "CHEMICAL_QUALIFICATION.json",
       "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    {
+      "test": "Aquifer independent actual production evaluator",
+      "status": "O0_O2_PASS",
+      "proof": "AQUIFER_COMPONENT.json",
+      "scope": "Units/conservation/signed exchange/zero interval/A-B-A/nonmutation/refused output. Caller/native/reference not implemented."
+    },
+    {
+      "result": "WINDOWS_AQUIFER_EIGHT_FULL_COMPOUND_AND_EXACT_NATIVE_PASS",
+      "source": "f59e4b3cf",
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/aquifer-runtime-full",
+      "days": 8768,
+      "native_windows": 32,
+      "guard_mg_cm2": 1e-10
+    },
+    {
+      "result": "UBUNTU_AQUIFER_EIGHT_FULL_REFERENCE_NATIVE_TRANSACTION_PASS",
+      "run": 44100595269,
+      "artifact_id": 14335083525,
+      "digest_verified": true,
+      "raw_members": 2691
+    },
+    {
+      "result": "AQUIFER_WINDOWS_NATIVE_REFUSALS_AND_CHEMICAL_COMPOSITION_PASS",
+      "input_refusals": 14,
+      "native_refusals": 18,
+      "chemical_full_days": 2192,
+      "native_windows": 6
+    },
+    {
+      "result": "AQUIFER_OFF_THIRTEEN_ADMITTED_CONTEXTS_EXACT",
+      "full_runs_repeated": false
+    },
+    {
+      "result": "AQUIFER_EVIDENCE_115_CORRUPTIONS_REFUSED_PREDECESSOR_CONTROLS_PRESERVED"
+    },
+    {
+      "result": "AQUIFER_CURRENT_OWNER_DOCS_AND_ACTUAL_SOURCE_REFUSALS_PASS",
+      "docs_strict_seconds": 32.55,
+      "new_evidence_corruptions": 115,
+      "unit_methods": 5
     }
   ],
   "failed_tests": [
@@ -189,11 +233,15 @@
     {
       "test": "Independent scheduled native instance harness",
       "cause": "Two original variants defaulted to same directory name. Added explicit unique ColumnStart.name, retaining same original physical variant; native10domain controls and both interleaved six-step active origin tests pass. No production change."
+    },
+    {
+      "test": "Original SWBR1 audit",
+      "cause": "Unchecked native returns normal completion despite5480NaN output values. Bounds instrumentation identifiesaccess35 above34 atoriginalsolute.f90:464 forO0/O2. Initial diagnostic assertion wrongly assumed SaltFarm-like195nodes; generalized to actualn+1 and consumed retained O0 without rerun; actualO0 returncodeUNKNOWN retained, O2 recorded."
     }
   ],
   "running_ci": [],
-  "next_code_change": "Investigate original SWBR1 aquifer breakthrough source: apparent bdenskfsatporos(i) after node loop indexes numnod+1; reproduce with checked original O0/O2, then implement small real conservative reservoir/source/state contract and corrected reference before enabling input. Preserve literal admitted chemical proof; no macropore/general MODFLOW work.",
-  "recovery_point": "Canonical949a61af1 admits scheduled source viaPR1704 and fixed source viaPR1702. Runtime6c5b, Ubuntu70293c7/run44079261977 and proofa5ee02 retain exact scope; actual merge tree36e24ab/current-owner verified. Metadata receipt admission pending; no active model/CI. Next safe block original SWBR1 source/reference/state; untouched age/vapor and full selector reconciliation remain open. All-scope PARTIAL/science NOT_QUALIFIED.",
+  "next_code_change": "Build actual SWBR1 experimental box/soil case O0/O2; first strict day/native own test, then complete model and active external/rejected native source cases. Check soil+box/transfer/global guards unchanged1e-10; keep all failures. Code now enables only development SWBR1 branch, canonicale677 unchanged.",
+  "recovery_point": "Canonical23194d6be; PR1706 admitted. All AQ proof sealed680df6a5c. No active model/CI. Next original water-age source audit: original calc_AgeTracer and accepted mod_b111_age_tracer_substep, no duplicate science.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -252,6 +300,33 @@
         "expected_seconds": 240,
         "prior_execution": "PASS",
         "existing_evidence": "Exact fixed canonical full/native/platform/source proof; new scheduled full source/state gates. Nine representative fresh builds/native prefixes discriminate accidental selection into previously qualified contexts."
+      },
+      "aquifer_component": {
+        "changed_dependency": "Missing original aquifer source/ledger/native owner; new small stateless real64 evaluator of original forward-Euler concentration equation",
+        "scientific_claim": "Explicit capacity/stock/signed soil exchange/positive-net surface outflow/decay units and independent conservation, A/B/A, invalid/negative/overflow result preservation",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md#independent-local-testability; docs/verification/principles.md",
+        "expected_seconds": 10,
+        "prior_execution": "PASS",
+        "existing_evidence": "Original SWBR array defect proven; canonical source/state baseline immutable. No existing qualified aquifer evaluator found in current process-source closure."
+      },
+      "aquifer_reference": {
+        "changed_dependency": "Original aquifer n+1 index, cumulative amount used as rate, post-update outflow ledger, explicit loss-limited Euler microstep",
+        "scientific_claim": "Actual corrected-original soil+box conservation with exact production evaluator, meaningful original index-only counterexample and bounded nonnegative/stiff/sorbing dynamics",
+        "owner": "NOMACRO-AQUIFER-SOLUTE-01",
+        "authority": "docs/verification/principles.md#reference-chain",
+        "expected_seconds": 180,
+        "prior_execution": "PASS",
+        "existing_evidence": "Actual original O0/O2 bounds failure plus uncheckedNaN; actual one-provider evaluator+loss-limit O0/O2 PASS."
+      },
+      "aquifer_runtime": {
+        "changed_dependency": "Original SWBR1 source, complete privateCDF/native cumulative state, coupled soil/box mass transfer, explicit loss-limited Euler policy",
+        "scientific_claim": "Actual full/native/rejected coupled state closes soil/box/exchange/compound budgets without tolerance changes or concentration clipping",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md; docs/verification/principles.md#transaction-tests",
+        "expected_seconds": 240,
+        "prior_execution": "NOT_RUN",
+        "existing_evidence": "Actual original and corrected reference, real one-provider component O0/O2; unchanged-context preservation still required."
       }
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
@@ -261,11 +336,15 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "PR1704 actual canonical merge; both parents and complete qualified tree36e24ab exact, actual detached current owner PASS.",
+  "last_commit_role": "PR1706 actual canonical merge: exact parents/full tree and actual detached current owner PASS.",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
-  "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7"
+  "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
+  "next_action": "Finalize admission metadata and verify actual merge; then implement original water-age input/process/native route using existing production age providers. Preserve admitted aquifer/S/fixed/scheduled/pulse/R source chains.",
+  "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
+  "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
+  "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61"
 }

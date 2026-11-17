@@ -1,0 +1,313 @@
+{
+  "audit": {},
+  "events": [
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_aquifer_solute_reservoir.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.5257585002109408
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\modularity\\test_aquifer_solute_reservoir.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.14255390036851168
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.3852989999577403
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-0-0-aquifer_solute_reservoir-O0\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "d7c3563c347a4d742d528504567617e4cd2b09f1efae9f9305b56ec67302dffe",
+      "wall_seconds": 0.10836629988625646
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\process\\mod_aquifer_solute_reservoir.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2\\000.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.1849932000041008
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "-J",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2",
+        "-I",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\modularity\\test_aquifer_solute_reservoir.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2\\001.o"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.18534660013392568
+    },
+    {
+      "command": [
+        "C:/msys64/ucrt64/bin\\gfortran.EXE",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2\\000.o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2\\001.o",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.15147839998826385
+    },
+    {
+      "command": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\aquifer-component-loss-limit\\build-1-4-aquifer_solute_reservoir-O2\\test.exe"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "d7c3563c347a4d742d528504567617e4cd2b09f1efae9f9305b56ec67302dffe",
+      "wall_seconds": 0.06814710004255176
+    }
+  ],
+  "head": "a318a9f698616aac2b1bdd81b894277ffa149c46",
+  "records": [
+    {
+      "artifact_sha256": {
+        "build-0-0-aquifer_solute_reservoir-O0\\000.o": "21ca8cdfe1c8b509995e5d8f32f773f49c5b18741688530d1623534ee4177d58",
+        "build-0-0-aquifer_solute_reservoir-O0\\001.o": "8919136b50c92831137ee70861d268493b8c442451835552ee1bd3be173f110e",
+        "build-0-0-aquifer_solute_reservoir-O0\\mod_aquifer_solute_reservoir.mod": "330c3fb6b3ab40b2eac29cbf71f0899a95b33a5382c69650d171930abb0ca2dd",
+        "build-0-0-aquifer_solute_reservoir-O0\\test.exe": "d767b4bf80db7b6894b2f455a4c5ded7dfced69a161862b4343f084b235e39e6"
+      },
+      "build": "cold",
+      "case": "aquifer_solute_reservoir",
+      "compile_seconds": 0.6683124005794525,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "84f995883551d535d1cdc70c5e90edcd0fdbf323330da660318d2860d831d7ad",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "d767b4bf80db7b6894b2f455a4c5ded7dfced69a161862b4343f084b235e39e6",
+      "execution_seconds": 0.10836629988625646,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O0"
+      ],
+      "inputs": {
+        "src/process/mod_aquifer_solute_reservoir.f90": "260e6c62d8bfa285c36c357e3cda57b46a25b43df2dc1408125c7c1592350823",
+        "tests/modularity/test_aquifer_solute_reservoir.f90": "7dad861dcfcc2379f4b76383d56cefb38835406b44b95f63085a226f2b0ee256"
+      },
+      "link_seconds": 0.3852989999577403,
+      "optimization": 0,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 5.8002769947052e-06,
+      "sources": [
+        "src/process/mod_aquifer_solute_reservoir.f90",
+        "tests/modularity/test_aquifer_solute_reservoir.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "d7c3563c347a4d742d528504567617e4cd2b09f1efae9f9305b56ec67302dffe",
+      "total_seconds": 10.754933000076562,
+      "validation_seconds": 9.536286399699748
+    },
+    {
+      "artifact_sha256": {
+        "build-1-4-aquifer_solute_reservoir-O2\\000.o": "44f8ae1f295aed45f0b6a7693730cad9f73d580fd282bf095b259b76f15592db",
+        "build-1-4-aquifer_solute_reservoir-O2\\001.o": "1aa4ef67fc84ea74d70543c5601fd4268c7046cea75d5742ff8cb9d5393d8964",
+        "build-1-4-aquifer_solute_reservoir-O2\\mod_aquifer_solute_reservoir.mod": "330c3fb6b3ab40b2eac29cbf71f0899a95b33a5382c69650d171930abb0ca2dd",
+        "build-1-4-aquifer_solute_reservoir-O2\\test.exe": "8278a099056898a1aea05d4ff2151d4c1f800937ceda3e7d72b5ea1dc63a4d3a"
+      },
+      "build": "cold",
+      "case": "aquifer_solute_reservoir",
+      "compile_seconds": 0.3703398001380265,
+      "compiler_identity": {
+        "-print-file-name=libgfortran-5.dll": {
+          "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+          "sha256": "dcc55fa1d5e533462006e4d17a0ee7f1384f3bf5d562a269c4f5b089c898d29a"
+        },
+        "-print-file-name=libgfortran.a": {
+          "path": "C:\\msys64\\ucrt64\\lib\\libgfortran.a",
+          "sha256": "c0d8ed7506257ef74f88e590bb9c767e69a25143d359ba10ec6b03ff88181a0a"
+        },
+        "-print-libgcc-file-name": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\libgcc.a",
+          "sha256": "8608eb73c587ca0ee8f048565edd425ca97756b543403d17fe34fea3fe703f07"
+        },
+        "-print-prog-name=f951": {
+          "path": "C:\\msys64\\ucrt64\\lib\\gcc\\x86_64-w64-mingw32\\16.2.0\\f951.exe",
+          "sha256": "ad546586a6cde22616a39d082560121fa03d16fbbe20e4c0a4117c91a49ed87d"
+        },
+        "environment_sha256": "84f995883551d535d1cdc70c5e90edcd0fdbf323330da660318d2860d831d7ad",
+        "host": {
+          "machine": "AMD64",
+          "node": "L0178656",
+          "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+          "release": "11",
+          "system": "Windows",
+          "version": "10.0.26200"
+        },
+        "launcher": "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+        "launcher_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+        "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+      },
+      "compiler_requests": 3,
+      "executable_sha256": "8278a099056898a1aea05d4ff2151d4c1f800937ceda3e7d72b5ea1dc63a4d3a",
+      "execution_seconds": 0.06814710004255176,
+      "flags": [
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-O2"
+      ],
+      "inputs": {
+        "src/process/mod_aquifer_solute_reservoir.f90": "260e6c62d8bfa285c36c357e3cda57b46a25b43df2dc1408125c7c1592350823",
+        "tests/modularity/test_aquifer_solute_reservoir.f90": "7dad861dcfcc2379f4b76383d56cefb38835406b44b95f63085a226f2b0ee256"
+      },
+      "link_seconds": 0.15147839998826385,
+      "optimization": 2,
+      "reused_compilations": 0,
+      "round": 0,
+      "route": "focused",
+      "scientific_validation_seconds": 6.400048732757568e-06,
+      "sources": [
+        "src/process/mod_aquifer_solute_reservoir.f90",
+        "tests/modularity/test_aquifer_solute_reservoir.f90"
+      ],
+      "stdin_sha256": null,
+      "stdout_sha256": "d7c3563c347a4d742d528504567617e4cd2b09f1efae9f9305b56ec67302dffe",
+      "total_seconds": 1.1433963002637029,
+      "validation_seconds": 0.4922865997068584
+    }
+  ],
+  "status": "PASS"
+}
