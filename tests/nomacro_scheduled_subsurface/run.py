@@ -40,7 +40,7 @@ def fixture(case, kind):
     for path in case.glob('*.crp'):
         body = path.read_text(encoding='cp1252')
         for name, value in dict(SWSALINITY=0, SCHEDULE=1, ISUAS=2, TCS=6, DCS=2,
-                                IRGTHRESHOLD=0.01, IRR_RATE=0.1).items():
+                                TCSFIX=0, IRGTHRESHOLD=0.01, IRR_RATE=0.1).items():
             body = assignment(body, name, value)
         body = assignment(body, 'SS_IRR_Z', '-15.0' if kind == 'point' else '-10.0 -20.0')
         body, count = re.subn(r'(?mi)^([ \t]*DVS_DC2[ \t]+FID[^\n]*\n)(?:[ \t]*[\d.]+[ \t]+[\d.]+[^\n]*\n){2}',
