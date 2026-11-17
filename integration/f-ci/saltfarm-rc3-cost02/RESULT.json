@@ -1,0 +1,384 @@
+{
+  "status": "NO_SAFE_SPEEDUP_QUALIFIED_RC3_UNCHANGED",
+  "performance_goal_achieved": false,
+  "production_changes": false,
+  "tolerances_changed": false,
+  "release_source": "2cedd9d0eaf8be8e8cdba321e3ab836835c558a3",
+  "profile365": {
+    "days": 365,
+    "instrumented_seconds": 2.825027999933809,
+    "exact_all_physical": true,
+    "exact_native109": true,
+    "phases": {
+      "root": {
+        "calls": 9527,
+        "cpu_seconds": 0.09375,
+        "wall_seconds": 0.1709369
+      },
+      "water_solve": {
+        "calls": 9527,
+        "cpu_seconds": 0.5,
+        "wall_seconds": 0.6274052
+      },
+      "water_update": {
+        "calls": 9527,
+        "cpu_seconds": 0.0625,
+        "wall_seconds": 0.0837658
+      },
+      "heat": {
+        "calls": 9527,
+        "cpu_seconds": 0.046875,
+        "wall_seconds": 0.0564287
+      },
+      "solute": {
+        "calls": 9527,
+        "cpu_seconds": 0.109375,
+        "wall_seconds": 0.1893111
+      }
+    },
+    "commands": [
+      [
+        "gfortran",
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic",
+        "-I",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build",
+        "-I",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\ttutil-obj",
+        "-c",
+        "swap.f90"
+      ],
+      [
+        "gfortran",
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic",
+        "-I",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build",
+        "-I",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\ttutil-obj",
+        "-c",
+        "swap_main.f90"
+      ],
+      [
+        "gfortran",
+        "-o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\profile.exe",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\arrays.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\boundbottom.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\boundtop.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\calcgwl.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\description.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\divdra.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\drainage.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\fixed.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\fluxes.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\frozencond.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\functions.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\headcalc.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\hysteresis.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\initialize.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\integral.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\interface_atmosphere.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\interface_plant.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\irrigation.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\macropore.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\macroporeoutput.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\macrorate.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\management_soil.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\MOD_cropdevelopment.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_drainage.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_meteo.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_MvG_functions.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_RIA.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_runon.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\oxygenstress.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\params.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\readswap.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\rootextraction.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\RWU_micro.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\snow.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\soilwater.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\solute.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\sptabulated.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\surfacewater.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\swap.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\swap_base.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\swap_csv_output.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\swap_main.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\swapoutput.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\temperature.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\tillage.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\timecontrol.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\tridag.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\variables.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\watstor.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\WC_K_models_04_11.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\wofost.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_amendments.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_declarations.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_interface.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_parameters.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_watern.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofostnut.o",
+        "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\profile02\\build\\hybrid_step_budget.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\ttutil-obj\\libttutil.a"
+      ]
+    ],
+    "source_hashes": {
+      "swap.f90": "853dfa95ce94eed71b071ba7fae493ef3cd71efc05d3d5f1302c773f7cfc94ea",
+      "swap_main.f90": "45c14aa532fe37dea0f79b41e0bed34b93b813eb2d8ebc023cf6dd72f16c46b6"
+    },
+    "note": "Diagnostic timings; per-call CPU clock quantization and overlapping instrumentation overhead prevent headline speed claims"
+  },
+  "controls": {
+    "inline02": {
+      "baseline_seconds": [
+        2.6839699000120163,
+        2.146778699941933
+      ],
+      "candidate_seconds": [
+        2.2298568999394774,
+        2.1025314000435174
+      ],
+      "mean_ratio": 0.8968358030522008,
+      "all_exact": true,
+      "decision": "NOT_ADMITTED; no reproducible material whole-run improvement"
+    },
+    "inline03-cpu": {
+      "baseline_seconds": [
+        2.134291799739003,
+        2.2986917002126575
+      ],
+      "candidate_seconds": [
+        2.2319349995814264,
+        2.0993340997956693
+      ],
+      "mean_ratio": 0.9770550915482374,
+      "all_exact": true,
+      "decision": "NOT_ADMITTED; no reproducible material whole-run improvement"
+    },
+    "repeated": {
+      "baseline_seconds": [
+        2.4215138000436127,
+        2.1999743999913335
+      ],
+      "candidate_seconds": [
+        3.4315599999390543,
+        2.9150998000986874
+      ],
+      "mean_ratio": 1.3732935204702568,
+      "all_exact": true,
+      "decision": "NOT_ADMITTED; no reproducible material whole-run improvement"
+    },
+    "boundary": {
+      "baseline_seconds": [
+        2.523300299886614,
+        2.6032034000381827
+      ],
+      "candidate_seconds": [
+        2.38111549988389,
+        2.3319040001370013
+      ],
+      "mean_ratio": 0.9193438210314817,
+      "all_exact": true,
+      "decision": "NOT_ADMITTED; no reproducible material whole-run improvement"
+    },
+    "boundary-full": {
+      "baseline_seconds": [
+        9.57970630005002,
+        8.433992599602789
+      ],
+      "candidate_seconds": [
+        10.057714900001884,
+        9.144208999816328
+      ],
+      "mean_ratio": 1.065962299402501,
+      "all_exact": true,
+      "decision": "NOT_ADMITTED; no reproducible material whole-run improvement"
+    },
+    "whole-block": {
+      "baseline_seconds": [
+        2.173120299819857,
+        2.1498099002055824
+      ],
+      "candidate_seconds": [
+        2.6427162997424603,
+        2.1784428004175425
+      ],
+      "mean_ratio": 1.1152525895818608,
+      "all_exact": true,
+      "decision": "NOT_ADMITTED; no reproducible material whole-run improvement"
+    }
+  },
+  "same_session_original": {
+    "status": "CURRENT_ORIGINAL_CONTROL_EXACT_TO_PRESERVED_INPUT_AND_CSV",
+    "wall_seconds": 7.646981399971992,
+    "input_sha256": {
+      "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+      "fontane.crp": "000eeca30866de5bb015ebd0fe7f931b8675908d0bb908683e36bf8eebe73754",
+      "PREPARATION.json": "65147ab4cde9975dc67ff1f1e704a01ead0c1f9eb6e33b7bff6ed9efb86931bd",
+      "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+      "swap.ini": "3f6539a9c6bfd1e9dfdbccc74418c9ed97e130445f7cd781e4d1e44353915b87",
+      "swap.swp": "769d6663649ff8fc2f3802598e3c8563dd274406206fd51536a0ebebfe23d87c"
+    },
+    "executable_sha256": "d033b50a580fc847049cda141a0af9d1d65d54ced7228983dbbf3ac798bc53de",
+    "command": [
+      "C:\\SWAP5-RC2\\comparison431\\swap431-common.exe",
+      "./swap.swp"
+    ],
+    "cwd": "C:\\SWAP5-testing\\saltfarm-rc3-cost02\\original-current",
+    "returncode": 100,
+    "cap_seconds": 15,
+    "counts": {
+      "original": {
+        "histogram": [
+          [
+            1,
+            2228,
+            2228
+          ],
+          [
+            2,
+            34230,
+            68460
+          ],
+          [
+            3,
+            2280,
+            6840
+          ],
+          [
+            4,
+            34,
+            136
+          ]
+        ],
+        "solves": 38772,
+        "newton_iterations": 77664,
+        "backtracks": 77664
+      },
+      "RC3": {
+        "histogram": [
+          [
+            2,
+            1,
+            2
+          ],
+          [
+            3,
+            15209,
+            45627
+          ],
+          [
+            4,
+            21830,
+            87320
+          ],
+          [
+            5,
+            1010,
+            5050
+          ],
+          [
+            6,
+            15,
+            91
+          ]
+        ],
+        "solves": 38065,
+        "newton_iterations": 138089,
+        "backtracks": 138090
+      }
+    },
+    "interpretation": "Same-session ordered cost control, not randomized paired accuracy-matched speed qualification"
+  },
+  "actual_work_counts": {
+    "original": {
+      "histogram": [
+        [
+          1,
+          2228,
+          2228
+        ],
+        [
+          2,
+          34230,
+          68460
+        ],
+        [
+          3,
+          2280,
+          6840
+        ],
+        [
+          4,
+          34,
+          136
+        ]
+      ],
+      "solves": 38772,
+      "newton_iterations": 77664,
+      "backtracks": 77664
+    },
+    "RC3": {
+      "histogram": [
+        [
+          2,
+          1,
+          2
+        ],
+        [
+          3,
+          15209,
+          45627
+        ],
+        [
+          4,
+          21830,
+          87320
+        ],
+        [
+          5,
+          1010,
+          5050
+        ],
+        [
+          6,
+          15,
+          91
+        ]
+      ],
+      "solves": 38065,
+      "newton_iterations": 138089,
+      "backtracks": 138090
+    }
+  },
+  "newton_iteration_ratio": 1.778031005356407,
+  "preserved_contract": "All observed physical/CSV/native comparisons exact; production/release code unchanged, original RC3 complete own-restart/balance proof inherited without rerun",
+  "stop": "Two targeted numerical/compiler attempts gave no material improvement. Reassessed boundary strategy failed full control, whole-original-block compiler fallback also failed. Stop these lines; do not tune tolerances or report noisy lower unchanged timings as code speedup.",
+  "next": "A future speedup needs a distinct justified native-cost hypothesis; no further campaign or change to solver criteria is selected here."
+}
