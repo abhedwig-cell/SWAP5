@@ -23,7 +23,7 @@ def main():
    def trial():
     with contextlib.ExitStack() as stack:
      binding={**meta['binding'],'heat_observation':{'temperature_source_sha256':m.sha(src),'accounting_sources':{v:m.sha(ROOT/v) for v in SOURCES}}}
-     host=m.h.DailyHost(stack,exe,original/'day_kernel.exe',out/'inputs'/key,folder,[m.h.ColumnStart('original',0,None,None)],runtime=True,checkpoint_enabled=True,binding=binding,model=project.model,project=project)
+     host=m.h.DailyHost(stack,exe,m.h.executable(original,'day_kernel'),out/'inputs'/key,folder,[m.h.ColumnStart('original',0,None,None)],runtime=True,checkpoint_enabled=True,binding=binding,model=project.model,project=project)
      with (folder/'daily.jsonl').open('w') as journal:
       for day in range(1,1097):
        row=host.step(1,checkpoint=day in {2,4,6,199,201,211,213,215,365,367,530,532,1094,1096});data.append(row);journal.write(json.dumps(row)+'\n');assert row['committed']
