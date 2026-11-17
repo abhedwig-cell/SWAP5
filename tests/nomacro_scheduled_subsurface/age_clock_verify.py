@@ -164,6 +164,18 @@ def raw_reports(q):
     return expected
 
 
+def preservation_builds(q):
+    # The existing002 controllers do not publish source_commit. Bind their
+    # measured trajectory build hash and actual production-host identity.
+    expected={}
+    for platform in ('Windows','Ubuntu'):
+        for key,win,linux in [('inactive','age-clock-inactive','inactive'),('daily_fixed_preservation','age-clock-daily-fixed002-preserve','daily-fixed-preserve')]:
+            prefix=('age-clock-ubuntu/'+linux) if platform=='Ubuntu' else win
+            for name,r in q[key][platform]['profiles'].items():
+                expected[prefix+'/'+name+'-build/BUILD.json']=r['coverage']['build_sha256']
+    return expected
+
+
 def verify():
     require(SEALED!='UNSEALED_NOT_QUALIFIED','005 admission is not sealed')
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty005 admission surface')
@@ -183,10 +195,10 @@ def verify():
     spec=importlib.util.spec_from_file_location('clock_schedule_parent',ROOT/ENTRY);parent=importlib.util.module_from_spec(spec);spec.loader.exec_module(parent);parent.validate(json.loads((ROOT/PROOF/'AGE_SCHEDULE_QUALIFICATION.json').read_text()))
     for platform,run in q['platforms'].items():
         for r in run['profiles'].values():require(not git('diff',r['source_commit'],RUNTIME,'--','app','src','reference','tools'),'005 executed profile source differs')
-        for key in ('schedule_preservation','regular_preservation','inactive','daily_fixed_preservation'):unchanged_selection(q[key][platform]['source_commit'])
+        for key in ('schedule_preservation','regular_preservation'):unchanged_selection(q[key][platform]['source_commit'])
     unchanged_selection(q['age_off_preservation']['source_commit'])
     for path,digest in q['controller_canonical_sha256'].items():require(sha(ROOT/path)==digest,'005 executed controller differs')
-    reports=raw_reports(q);observed=set()
+    reports=raw_reports(q);observed=set();preserved=preservation_builds(q);observed_builds=set()
     for path in sorted((ROOT/PROOF).glob('AGE_*_RAW_ARCHIVE.json')):
         r=json.loads(path.read_text());archive=ROOT/PROOF/r['archive']
         if path.name.startswith('AGE_CLOCK_'):require(q['archives'].get(path.name)==r,'005 raw record differs')
@@ -198,7 +210,14 @@ def verify():
                 if name in reports:
                     require(name not in observed and json.loads(data)==reports[name],'005 qualification differs from actual producer report: '+name)
                     observed.add(name)
+                if name in preserved:
+                    require(name not in observed_builds and hashlib.sha256(data).hexdigest()==preserved[name],'005 legacy002 measured build differs')
+                    identity=json.loads(data)['identity']
+                    require(identity['host']==sha(ROOT/'app/hybrid_water/daily_host.py') and identity['experimental_input_adapter']==sha(ROOT/'app/hybrid_water/experimental_project.py'),'005 legacy002 production host/adapter differs')
+                    require(identity['conserved_original_age']['native_codec']=='S5AGE002' and identity['conserved_original_age']['providers']==q['physical_age_providers'],'005 legacy002 compiled state/provider differs')
+                    observed_builds.add(name)
     require(observed==set(reports),'005 actual producer report omitted')
+    require(observed_builds==set(preserved),'005 actual legacy002 build omitted')
     forwarded={}
     for name,r in q['archives'].items():
         if not name.startswith('AGE_CLOCK_UBUNTU_'):continue
