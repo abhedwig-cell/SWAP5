@@ -73,6 +73,10 @@ def verify_s():
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('fixed_chemical_admission',ROOT/'tests/nomacro_scheduled_subsurface/chemical_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     original=verify_s()
     git('merge-base','--is-ancestor',PULSE_ADMITTED,COMPOSED_RUNTIME)
     surface=['app','src','reference','tools','tests/nomacro_scheduled_subsurface/run.py','tests/nomacro_scheduled_subsurface/preflight.py']

@@ -1,0 +1,322 @@
+{
+  "status": "SCHEDULED_CHEMICAL_SELECTION_PRESERVES_ADMITTED_CONTEXTS_PASS",
+  "source_commit": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
+  "profiles": {
+    "fixed-point-O0": {
+      "all_generated_sources_exact": true,
+      "provider_flags_inputs_exact": true,
+      "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-fixed-point-full\\O0-full",
+      "physical_csv_prefix_exact": true,
+      "exact_current_source_binding": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 8,
+        "budgets": {
+          "days": 8,
+          "max_water_cm": 2.120525977034049e-14,
+          "max_kernel_cm": 2.1316282072803006e-14,
+          "max_solute_mg_cm2": 2.0671853985521071e-13,
+          "sum_water_residual_cm": 4.553296758733061e-14
+        },
+        "model_seconds": 0.5433621001429856,
+        "build_sha256": "e4e304f423f77aba4e6526ba03b98cb81629ad66a19e59d88a2f3b4a7c9af8c8",
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.32076859986409545
+          },
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.3389099999330938
+          }
+        ]
+      }
+    },
+    "scheduled-water-O0": {
+      "all_generated_sources_exact": true,
+      "provider_flags_inputs_exact": true,
+      "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-preserve-water-point\\O0-full",
+      "physical_csv_prefix_exact": true,
+      "exact_current_source_binding": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 5,
+        "budgets": {
+          "days": 5,
+          "max_water_cm": 1.4585554986012994e-14,
+          "max_kernel_cm": 1.4585554986012994e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 3.5348406059870774e-14
+        },
+        "model_seconds": 0.4615410999394953,
+        "build_sha256": "700158d4801179879f39005b4e7b5c17b653d464cc24a0914d33aab81ef7facf",
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.2892930000089109
+          }
+        ]
+      }
+    },
+    "fixed-point-O2": {
+      "all_generated_sources_exact": true,
+      "provider_flags_inputs_exact": true,
+      "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-fixed-point-full\\O2-full",
+      "physical_csv_prefix_exact": true,
+      "exact_current_source_binding": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 8,
+        "budgets": {
+          "days": 8,
+          "max_water_cm": 2.120525977034049e-14,
+          "max_kernel_cm": 2.1316282072803006e-14,
+          "max_solute_mg_cm2": 2.0671853985521071e-13,
+          "sum_water_residual_cm": 4.553296758733061e-14
+        },
+        "model_seconds": 0.48857839964330196,
+        "build_sha256": "949d0c56e10893908a3bd3c404b4e68d0df255db26be1bf7576dd83b6ed3bdc7",
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.2903419998474419
+          },
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.32551300013437867
+          }
+        ]
+      }
+    },
+    "scheduled-water-O2": {
+      "all_generated_sources_exact": true,
+      "provider_flags_inputs_exact": true,
+      "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-preserve-water-point\\O2-full",
+      "physical_csv_prefix_exact": true,
+      "exact_current_source_binding": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 5,
+        "budgets": {
+          "days": 5,
+          "max_water_cm": 1.4585554986012994e-14,
+          "max_kernel_cm": 1.4585554986012994e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 3.5348406059870774e-14
+        },
+        "model_seconds": 0.4796581999398768,
+        "build_sha256": "209057e70f482c4f1ff77642e37235421dc39958a1d615987a893493a2ddb746",
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.32316119968891144
+          }
+        ]
+      }
+    },
+    "grass": {
+      "all_generated_sources_exact": true,
+      "provider_flags_inputs_exact": true,
+      "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-current-named\\grass\\full",
+      "physical_csv_prefix_exact": true,
+      "exact_current_source_binding": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 4,
+        "budgets": {
+          "days": 4,
+          "max_water_cm": 1.1178871640203707e-14,
+          "max_kernel_cm": 1.1102230246251565e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": -4.763918436150098e-15
+        },
+        "model_seconds": 0.5007310002110898,
+        "build_sha256": "2b0e9be6698aa80b016d567b90e2c6673e373fc5d64b4d98b96c242379569832",
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.27479200018569827
+          }
+        ]
+      }
+    },
+    "hupsel": {
+      "all_generated_sources_exact": true,
+      "provider_flags_inputs_exact": true,
+      "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-current-named\\hupsel\\full",
+      "physical_csv_prefix_exact": true,
+      "exact_current_source_binding": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 4,
+        "budgets": {
+          "days": 4,
+          "max_water_cm": 1.0644263248593688e-14,
+          "max_kernel_cm": 1.0644263248593688e-14,
+          "max_solute_mg_cm2": 0.0,
+          "sum_water_residual_cm": 1.6932147958031996e-14
+        },
+        "model_seconds": 0.40504479967057705,
+        "build_sha256": "f7230b8f7947496ee859441ef68f9c43ab1c2735b02132d8a869883d54e432fe",
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.2717874003574252
+          }
+        ]
+      }
+    },
+    "salt": {
+      "all_generated_sources_exact": true,
+      "provider_flags_inputs_exact": true,
+      "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-current-named\\salt\\full",
+      "physical_csv_prefix_exact": true,
+      "exact_current_source_binding": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 4,
+        "budgets": {
+          "days": 4,
+          "max_water_cm": 5.145571468911925e-13,
+          "max_kernel_cm": 5.144773496112975e-13,
+          "max_solute_mg_cm2": 1.2403411631112249e-12,
+          "sum_water_residual_cm": 8.791613270719978e-13
+        },
+        "model_seconds": 0.45803190022706985,
+        "build_sha256": "0979bb531127c0856025fe945e9220e98023f641b0fe09dfd9e4bbad890697ca",
+        "own": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.2946942001581192
+          }
+        ]
+      }
+    },
+    "pulse-water": {
+      "all_generated_sources_exact": true,
+      "provider_flags_inputs_exact": true,
+      "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-preserve-pulse\\water-surface-history-O2-prefix201",
+      "physical_csv_prefix_exact": true,
+      "exact_current_source_binding": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.071154441869339e-14,
+          "max_kernel_cm": 3.069766663088558e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 6.788349247413734e-13
+        },
+        "model_seconds": 1.2540488997474313,
+        "build_sha256": "66bc7b4423a60345d296602ec5669e4da9a380702da368b13ad0a62c28098481",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.41698209987953305
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.3422727002762258
+          }
+        ]
+      }
+    },
+    "pulse-chemical": {
+      "all_generated_sources_exact": true,
+      "provider_flags_inputs_exact": true,
+      "old_full_reference": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\chemical-preserve-pulse\\chemical-surface-history-O2-prefix201",
+      "physical_csv_prefix_exact": true,
+      "exact_current_source_binding": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 201,
+        "budgets": {
+          "days": 201,
+          "max_water_cm": 3.071154441869339e-14,
+          "max_kernel_cm": 3.069766663088558e-14,
+          "max_solute_mg_cm2": 1.5251210396579479e-12,
+          "sum_water_residual_cm": 6.788349247413734e-13
+        },
+        "model_seconds": 1.198050200007856,
+        "build_sha256": "056a93ae197c9b75f50e7604e9ca7dacce8532002483a68eb7086d17988dadb3",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.4480821997858584
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.39243080001324415
+          }
+        ]
+      }
+    }
+  },
+  "unchanged_full_periods": "NOT_REPEATED_EXACT_EMITTED_SOURCE_PROVIDER_INPUT_AND_FRESH_NATIVE_PREFIX_CONTROLS"
+}

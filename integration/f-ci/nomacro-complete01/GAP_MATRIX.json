@@ -1,6 +1,6 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
+  "baseline": "949a61af1b4eee252959208d3d544e17c4895db9",
   "status": "SOURCE_BASED_FAMILY_MATRIX_WITH_REMAINING_SELECTOR_RECONCILIATION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -120,10 +120,10 @@
     },
     {
       "function": "Chemical subsurface irrigation",
-      "classification": "INHERITED_DEFECT",
+      "classification": "ADMITTED",
       "original_source": "irrigation.f90, solute.f90",
-      "scope": "Actual original concentration perturbation: positive2.4cm SSDI; concentration0/20 yields every output row identical; surface positive control adds48mg/cm2. Corrected-reference nodal source and strict conserved ledger remain required; current explicit refusal preserved.",
-      "authority": "integration/f-ci/nomacro-complete01/ORIGINAL_CHEMICAL_AUDIT.json",
+      "scope": "Bounded fixed and scheduled point/interval chemical source are canonically admitted via explicit correction/shared evaluator, strict water/solute/native/event/transaction and Windows/Ubuntu O0/O2 controls; no global B1 or whole migration/science promotion.",
+      "authority": "integration/f-ci/nomacro-complete01/SCHEDULED_CHEMICAL_MERGE_RECEIPT.json",
       "authority_present": true
     },
     {
@@ -188,6 +188,22 @@
       "original_source": "macropore.f90",
       "scope": "preserved; audit/contract work not touched",
       "authority": "AGENTS.md",
+      "authority_present": true
+    },
+    {
+      "function": "Corrected fixed chemical subsurface source",
+      "classification": "ADMITTED",
+      "original_source": "irrigation.f90, solute.f90",
+      "scope": "PR1702 corrected producer and CDE source: Windows/Ubuntu point/interval full O0/O2, strict mass, own native and active external/refusal; original source controls, active salinity and admitted preservation. File/inline input; no global B1 or scheduled promotion.",
+      "authority": "integration/f-ci/nomacro-complete01/CHEMICAL_MERGE_RECEIPT.json",
+      "authority_present": true
+    },
+    {
+      "function": "Scheduled chemical subsurface source",
+      "classification": "ADMITTED",
+      "original_source": "irrigation.f90, solute.f90",
+      "scope": "PR1704: separate scheduled policy, unchanged shared source/codec, eight portable full periods,32full+8short native, original16paired, native bad-input/isolation and exact unchanged-context closures/prefixes.",
+      "authority": "integration/f-ci/nomacro-complete01/SCHEDULED_CHEMICAL_MERGE_RECEIPT.json",
       "authority_present": true
     }
   ],

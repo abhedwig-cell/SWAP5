@@ -165,6 +165,11 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     fixed_file=fixed_irrigation_file_enabled(project)
     from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled
     scheduled_subsurface=scheduled_subsurface_enabled(project)
+    from conserved_subsurface_solute import enabled as chemical_source_enabled, correction as chemical_correction
+    chemical_fixed=chemical_source_enabled(project)
+    from conserved_scheduled_subsurface_solute import enabled as chemical_scheduled_enabled
+    chemical_scheduled=chemical_scheduled_enabled(project)
+    chemical_source=chemical_fixed or chemical_scheduled
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
@@ -442,6 +447,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         # interval. Its original order overshot short final fragments and
         # created solute during the day-five saline irrigation event.
         source=(donor_build/'swap-selected/solute.f90').read_text(encoding='cp1252')
+        if chemical_source:
+            source=chemical_correction().source((donor_build/'swap-selected/solute.f90').read_bytes()).decode('cp1252').replace('\r\n','\n')
         end=source.index("      end subroutine solute_CDE",source.index("dtsolu  = min"))
         source=replace(source[:end],"            dtsolu  = min(dtsolu,(dt-tcumsol))\n            dtsolu  = max(dtsolu,dtmin)",
                        "            dtsolu  = max(dtsolu,dtmin)\n            dtsolu  = min(dtsolu,(dt-tcumsol))")+source[end:]
@@ -492,6 +499,9 @@ end submodule MOD_Solute_CDE""")
             source=render_transactional_cde(source)
         (output/'solute.f90').write_text(source,encoding='cp1252')
         patched.insert(0,'solute')
+        if chemical_source:
+            (output/'mod_subsurface_solute_source.f90').write_bytes(chemical_correction().helper_source())
+            patched.insert(0,'mod_subsurface_solute_source')
     if management_state:
         source=(donor_build/'swap-selected/MOD_cropdevelopment.f90').read_text(encoding='cp1252')
         source=replace(source,"            siccaploss = siccaploss + sicact",
@@ -542,12 +552,14 @@ end module MOD_wofost""")
         patched.insert(0,'wofost')
         patched.append('MOD_cropdevelopment')
         source=(donor_build/'swap-selected/irrigation.f90').read_text(encoding='cp1252')
+        if chemical_source:
+            source=chemical_correction().irrigation_source((donor_build/'swap-selected/irrigation.f90').read_bytes()).decode('cp1252').replace('\r\n','\n')
         if scheduled_subsurface:
             from scheduled_subsurface_irrigation import render_irrigation as render_scheduled_subsurface
             source=render_scheduled_subsurface(source)
-        if fixed_file:
+        if fixed_file or chemical_fixed:
             from fixed_irrigation_file import render_irrigation
-            source=render_irrigation(source)
+            source=render_irrigation(source,allow_chemical_subsurface=chemical_fixed)
         source=replace(source,"      subroutine read_irrigation_fixed()",
                        "      subroutine read_irrigation_fixed()\n         use MOD_swap_base,only:swinco")
         source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
@@ -771,6 +783,7 @@ end module plant_interface""")
     ttutil_library = ttutil / "libttutil.a"
     subprocess.run(["gfortran", "-o", str(donor),
                     *(str(replacements.get(p.name, p)) for p in donor_objects),
+                    *([str(output/'mod_subsurface_solute_source.o')] if chemical_source else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
@@ -819,6 +832,12 @@ end module plant_interface""")
     if project.time_step_policy == LOCAL_WETTING_TIME_POLICY:
         from local_wetting_time import metadata as wetting_metadata
         build_identity['local_wetting_time'] = wetting_metadata((donor_build/'swap-selected/timecontrol.f90').read_bytes())
+    if chemical_fixed:
+        from conserved_subsurface_solute import metadata as chemical_metadata
+        build_identity['conserved_subsurface_solute']=chemical_metadata()
+    if chemical_scheduled:
+        from conserved_scheduled_subsurface_solute import metadata as chemical_scheduled_metadata
+        build_identity['conserved_scheduled_subsurface_solute']=chemical_scheduled_metadata()
     if project.time_step_policy == IRRIGATION_PULSE_TIME_POLICY:
         from irrigation_pulse_time import metadata as pulse_metadata
         build_identity['irrigation_pulse_time'] = pulse_metadata((donor_build/'swap-selected/timecontrol.f90').read_bytes())

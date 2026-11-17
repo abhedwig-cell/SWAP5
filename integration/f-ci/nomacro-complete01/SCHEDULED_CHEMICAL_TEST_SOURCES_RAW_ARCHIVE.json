@@ -1,0 +1,78 @@
+{
+  "archive": "SCHEDULED_CHEMICAL_TEST_SOURCES_RAW.zip",
+  "sha256": "faa55def8c1befe54ec2703d70fd34fc6a38d7e34a71502afd7ef67589914f6b",
+  "bytes": 64673,
+  "member_count": 14,
+  "members": {
+    "app/hybrid_water/daily_host.py": {
+      "bytes": 81652,
+      "sha256": "7c619d93ad741c7285bd539c9596bc1ff8e19fd60ec3f86c71a06ca8eff5ab8b",
+      "canonical_LF_sha256": "7c619d93ad741c7285bd539c9596bc1ff8e19fd60ec3f86c71a06ca8eff5ab8b"
+    },
+    "app/hybrid_water/daily_coupling.py": {
+      "bytes": 35247,
+      "sha256": "f23da9aa086a91f39aa09cf17ddc262dbe115950a38df9a5003d2fb195038708",
+      "canonical_LF_sha256": "f23da9aa086a91f39aa09cf17ddc262dbe115950a38df9a5003d2fb195038708"
+    },
+    "app/hybrid_water/experimental_project.py": {
+      "bytes": 18141,
+      "sha256": "2d3f542b16e938e45a4a163e07905a717d22113a6f36d9c1f301408e3abf250c",
+      "canonical_LF_sha256": "fa28b9c41972555ded109e976091dfefe92972f0f13cbb1ca1d2ba0f5aabb0db"
+    },
+    "app/hybrid_water/conserved_scheduled_subsurface_solute.py": {
+      "bytes": 711,
+      "sha256": "f2a03fbb739bfdb992241b7f4347535883c20f7888673acda2e196fce948893c",
+      "canonical_LF_sha256": "f2a03fbb739bfdb992241b7f4347535883c20f7888673acda2e196fce948893c"
+    },
+    "tests/nomacro_scheduled_subsurface/chemical_scheduled.py": {
+      "bytes": 5618,
+      "sha256": "998c0844d5916b5240c507e00db0e4658e14fcc58c19e0b8ef4bbaf6c64f2f30",
+      "canonical_LF_sha256": "998c0844d5916b5240c507e00db0e4658e14fcc58c19e0b8ef4bbaf6c64f2f30"
+    },
+    "tests/nomacro_scheduled_subsurface/chemical_fixed.py": {
+      "bytes": 10234,
+      "sha256": "2780ec8cf10f5647fd43a7b43271a7c878b8bc8711c14a4b023dd366cfde6303",
+      "canonical_LF_sha256": "2ceb7499bf4a104695a15744de60e98b869e6a1b99b124ca3dc102a5745a4131"
+    },
+    "tests/nomacro_scheduled_subsurface/chemical_scheduled_controls.py": {
+      "bytes": 4393,
+      "sha256": "43eb3924e265206b75c96c8b7662088159659d3a5df980cda4363a6dc04aa782",
+      "canonical_LF_sha256": "43eb3924e265206b75c96c8b7662088159659d3a5df980cda4363a6dc04aa782"
+    },
+    "tests/nomacro_scheduled_subsurface/preserve_scheduled_chemical.py": {
+      "bytes": 4528,
+      "sha256": "8c82b39d01e2411f1c4c9f7d4e5f03329fb28318c430d0bb1e10ba982016e3d3",
+      "canonical_LF_sha256": "8c82b39d01e2411f1c4c9f7d4e5f03329fb28318c430d0bb1e10ba982016e3d3"
+    },
+    "tests/nomacro_scheduled_subsurface/chemical_scheduled_reference.py": {
+      "bytes": 3666,
+      "sha256": "9c6bc4f72edd54980adfd7c285cca4aeb2170324a79483624087641983a31568",
+      "canonical_LF_sha256": "3a5f93ec7f67ac6c6f039f637261e135767e474456d4f4b4b5a8ac602e3e3198"
+    },
+    "tests/nomacro_scheduled_subsurface/run.py": {
+      "bytes": 14196,
+      "sha256": "b79a2cadd5a0b3294a8b42e46f2a7883df3c44949b4021e56b78daf13a1f2a32",
+      "canonical_LF_sha256": "b94474fcc515a09c08390fc04bd626cd30c4438bbd02eb8479d2ad8f8d0558e4"
+    },
+    "tests/nomacro_mixtures/run.py": {
+      "bytes": 10803,
+      "sha256": "930a916e889f938e83b0e3e0e6dd952d065c3ccb09cabba14f1f35ca9042d369",
+      "canonical_LF_sha256": "cd98726f6b777d61ca027d67b10640ba04459adbf4411355d68a1c414037909a"
+    },
+    "tools/solute/check_hupsel51_repair.py": {
+      "bytes": 8270,
+      "sha256": "26cc4cb2a8e9dfc31ad24b335ea48563dfb554029b9b4458747d8d26df0e195c",
+      "canonical_LF_sha256": "2b8c54f09931f59de331b988bd4688a17442c52d3e943a27fe3ed6622b0b0eb3"
+    },
+    "actual-reference-controller/scheduled-chemical-reference.py": {
+      "bytes": 3514,
+      "sha256": "1ea4638e8693cc316fcc115865264d3f58678f622ed81c3df5792cbf0baaf308"
+    },
+    "actual-reference-controller/scheduled-chemical-reference-v2.py": {
+      "bytes": 3524,
+      "sha256": "064652a77062d64c28a115d4b381f2b74ad0dde8228a09cea3eb65d8c44422a1"
+    }
+  },
+  "all_members_forward_verified": true,
+  "scope": "Actual unchanged completed-controller source snapshots. Runtime source_commit denotes production Git identity; these oracle files and raw line endings have their own hashes. Initial full O0 model driver81baff610, recovered/native/O2484242e27; no production source delta to6c5b084d9. Native-controls/preservation files unchanged since completed execution; reference prototype sources retained separately from parameterized reproduction entry."
+}

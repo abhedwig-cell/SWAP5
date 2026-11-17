@@ -1,0 +1,76 @@
+{
+  "status": "FIXED_CHEMICAL_FILE_INLINE_AND_NATIVE_INPUT_CONTROLS_PASS",
+  "checks": [
+    {
+      "test": "file-inline",
+      "configuration": "point",
+      "optimization": "O0",
+      "days": 8,
+      "physical_csv_exact": true
+    },
+    {
+      "test": "file-inline",
+      "configuration": "point",
+      "optimization": "O2",
+      "days": 8,
+      "physical_csv_exact": true
+    },
+    {
+      "test": "file-inline",
+      "configuration": "interval",
+      "optimization": "O0",
+      "days": 8,
+      "physical_csv_exact": true
+    },
+    {
+      "test": "file-inline",
+      "configuration": "interval",
+      "optimization": "O2",
+      "days": 8,
+      "physical_csv_exact": true
+    },
+    {
+      "test": "reversed",
+      "optimization": "O0",
+      "status": "REFUSED",
+      "diagnostic": "ERROR STOP Invalid fixed subsurface irrigation depth interval/profile\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x53dfa435\n#4  0x53e55631\n#5  0x53e7ab23\n#6  0x53ea1125\n#7  0x53ea19ed\n#8  0x53de1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   FIXED-IRRIGATION.IRG with   6 variables parsed by RDINDX\n",
+      "error": "Missing {'HYBRID_READY'}, process exited with 1"
+    },
+    {
+      "test": "reversed",
+      "optimization": "O2",
+      "status": "REFUSED",
+      "diagnostic": "ERROR STOP Invalid fixed subsurface irrigation depth interval/profile\n\nError termination. Backtrace:\n#0  0x1a3a9b94\n#1  0x1a324471\n#2  0x1a1d28f4\n#3  0x50ec81c6\n#4  0x50f1cbf1\n#5  0x50f3f884\n#6  0x50f5c773\n#7  0x50fa0e6f\n#8  0x50eb1156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   FIXED-IRRIGATION.IRG with   6 variables parsed by RDINDX\n",
+      "error": "Missing {'HYBRID_READY'}, process exited with 1"
+    },
+    {
+      "test": "outside-domain",
+      "optimization": "O0",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   FIXED-IRRIGATION.IRG with   6 variables parsed by RDINDX\n ERROR in RDSDOR: Range error of identifier 'ir_z',\n                  value = -101.00    , range = [ -100.00    ,  0.0000    ]\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_READY'}, process exited with 0"
+    },
+    {
+      "test": "outside-domain",
+      "optimization": "O2",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   FIXED-IRRIGATION.IRG with   6 variables parsed by RDINDX\n ERROR in RDSDOR: Range error of identifier 'ir_z',\n                  value = -101.00    , range = [ -100.00    ,  0.0000    ]\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_READY'}, process exited with 0"
+    },
+    {
+      "test": "nonfinite",
+      "optimization": "O0",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n\n Error(s) or Warning(s) while reading from fixed-irrigation.irg\n\n Line Error text                               Somewhere here\n ==== ==========                               ==============\n    7 Value expected                           [IR_Z = NaN]\n                                                       ^-^\n\n\n Number of errors in data file FIXED-IRRIGATION.IRG:   1\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_READY'}, process exited with 0"
+    },
+    {
+      "test": "nonfinite",
+      "optimization": "O2",
+      "status": "REFUSED",
+      "diagnostic": "\n Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n\n Error(s) or Warning(s) while reading from fixed-irrigation.irg\n\n Line Error text                               Somewhere here\n ==== ==========                               ==============\n    7 Value expected                           [IR_Z = NaN]\n                                                       ^-^\n\n\n Number of errors in data file FIXED-IRRIGATION.IRG:   1\n Fatal execution error\n",
+      "error": "Missing {'HYBRID_READY'}, process exited with 0"
+    }
+  ],
+  "source_commit": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8"
+}
