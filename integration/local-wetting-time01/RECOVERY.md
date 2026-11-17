@@ -140,3 +140,10 @@ PASS or broad admission. Final evidence commits use skip-ci; model/source
 qualification remains bound to its actual measured source and dependencies.
 Sealed asset-map newline handling is explicit to preserve exact checksum bytes
 on both platforms; no numerical historical result is changed.
+
+Published review state: PR1701 observed open, draft=false, mergeable=true at
+62260141a against canonicale67710244. review/READY.json records the actual
+transition. Docs source and mkdocs --strict pass (37.73s). This final receipt
+changes metadata only; selected scientific/physical evidence is not rebound.
+Next: reviewer feedback and separately selected merge admission; no automatic
+rerun of unchanged full/native/independent-reference cohorts.
