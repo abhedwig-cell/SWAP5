@@ -79,7 +79,7 @@ def render_timecontrol(source):
     if hashlib.sha256(text.encode('cp1252')).hexdigest()!=TIME_SHA:raise ValueError('Changed original output clock owner')
     anchor='   use MOD_timer';assert text.count(anchor)==1
     text=text.replace(anchor,anchor+'\n   use hybrid_age_output_state,only:original_output_start_clock',1)
-    anchor='   select case (task)';assert text.count(anchor)==1
+    anchor='\n   select case (task)';assert text.count(anchor)==1
     text=text.replace(anchor,"""   real(8)::hybrid_age_print_epoch
 ! Original initialization precedes native calendar restoration. Its local print
 ! counter must not cap the persisted DT against the later global output epoch.

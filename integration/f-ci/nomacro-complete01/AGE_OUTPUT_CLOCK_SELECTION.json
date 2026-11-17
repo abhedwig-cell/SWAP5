@@ -37,5 +37,6 @@
     "actual_np2_day1_END_DT": 0.03999999997564507,
     "unchanged_guards": true
   },
-  "repair": "Use physicalTSTART only for TimeControl1 local initialization; original bound epoch for dynamic tasks, preserving exact original operation order and persistedDT. No new physical equation or state field."
+  "repair": "Use physicalTSTART only for TimeControl1 local initialization; original bound epoch for dynamic tasks, preserving exact original operation order and persistedDT. No new physical equation or state field.",
+  "retained_render_failure": "Initial bootstrap insertion matched both main and indented internal select-case substrings. Generation refused before compilation/model. Exact newline/main indentation anchor now identifies one actual owner; original full source SHA still checked."
 }
