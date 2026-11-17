@@ -3,8 +3,8 @@
   "baseline": "e67710244d84a9a37b30b76e853a3e5b0eeb55d2",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-aquifer-source01",
-  "last_commit": "1ab4e396d90746681ba0d42e1c7353856d40d0ef",
-  "status": "AQUIFER_WINDOWS_EIGHT_FULL_NATIVE_PASS_CONTROLS_PRESERVATION_RUNNING",
+  "last_commit": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
+  "status": "AQUIFER_BRANCH_QUALIFIED_CURRENT_OWNER_CONTROLS_IN_PROGRESS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -36,7 +36,7 @@
   ],
   "open": [
     "Complete historical selector inventory",
-    "Original SWBR1 aquifer/source/ledger and full native state; age/vapor and other chemical variants",
+    "Water-age/vapor and other chemical variants; bounded corrected SWBR1 branch qualified awaiting actual canonical admission",
     "Remaining drainage/surfacewater/constitutive/weather/state gaps and release consolidation"
   ],
   "dependency_surface": [
@@ -143,6 +143,27 @@
       "days": 8768,
       "native_windows": 32,
       "guard_mg_cm2": 1e-10
+    },
+    {
+      "result": "UBUNTU_AQUIFER_EIGHT_FULL_REFERENCE_NATIVE_TRANSACTION_PASS",
+      "run": 44100595269,
+      "artifact_id": 14335083525,
+      "digest_verified": true,
+      "raw_members": 2691
+    },
+    {
+      "result": "AQUIFER_WINDOWS_NATIVE_REFUSALS_AND_CHEMICAL_COMPOSITION_PASS",
+      "input_refusals": 14,
+      "native_refusals": 18,
+      "chemical_full_days": 2192,
+      "native_windows": 6
+    },
+    {
+      "result": "AQUIFER_OFF_THIRTEEN_ADMITTED_CONTEXTS_EXACT",
+      "full_runs_repeated": false
+    },
+    {
+      "result": "AQUIFER_EVIDENCE_115_CORRUPTIONS_REFUSED_PREDECESSOR_CONTROLS_PRESERVED"
     }
   ],
   "failed_tests": [
@@ -213,7 +234,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Build actual SWBR1 experimental box/soil case O0/O2; first strict day/native own test, then complete model and active external/rejected native source cases. Check soil+box/transfer/global guards unchanged1e-10; keep all failures. Code now enables only development SWBR1 branch, canonicale677 unchanged.",
-  "recovery_point": "Branch codex/nomacro-aquifer-source01; full controller complete; controls session2541 and preservation session76481. Check real process status before restarting.",
+  "recovery_point": "Branch codex/nomacro-aquifer-source01; all runtime/controls/preservation/CI complete. No active model/CI process. Seal680df6a5c immutable; new successor test files to commit.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -315,5 +336,8 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Complete aquifer controls/preservation; run selected Ubuntu aquifer qualification, then strict evidence/current-source successor and actual canonical admission. No whole-model equivalence promotion."
+  "next_action": "Complete strict owner/unit/docs and source-negative controls; integrate bounded aquifer block and verify actual merge, then implement water-age/vapor inventory gap.",
+  "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
+  "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
+  "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61"
 }

@@ -1,45 +1,23 @@
 {
-  "status": "EXACT_SEALED_SCHEDULED_CHEMICAL_SUCCESSOR_PASS",
-  "runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
-  "canonical_parent": "e709ab5a4b9b858c539e3c7208b8997ea6205ce2",
-  "current_owner": "tests/nomacro_scheduled_subsurface/scheduled_chemical_verify.py",
-  "scientific_claim": "Original scheduled chemical point/interval source with shared unchanged conserved evaluator/CDE, strict daily/native/event/transaction ownership and unchanged mass guards.",
+  "status": "SEALED_AQUIFER_SUCCESSOR_SOURCE_GATES_PENDING",
+  "runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
+  "canonical_parent": "e67710244d84a9a37b30b76e853a3e5b0eeb55d2",
+  "current_owner": "tests/nomacro_scheduled_subsurface/aquifer_verify.py",
   "whole_scientific_equivalence": "NOT_QUALIFIED",
   "functional_completion": "PARTIAL",
-  "full_moving_fci": "NOT_SELECTED_IMPACT: src/reference/tools and daily step/native ownership literal to fixed admission. New original-input selection has full source/native/platform and native bad-input/isolation gates. Nine fresh emitted/provider/flags/input closures and exact native prefixes preserve unchanged contexts; no unexecuted full repeat or moving F-CI PASS claimed.",
+  "full_moving_fci": "NOT_SELECTED_IMPACT: new pure provider/selected original aquifer CDE and native fields; O0/O2 real independent driver and full source/state/compound platform gates. Thirteen fresh unchanged emitted/provider/input closures plus native prefixes preserve admitted contexts. No unrelated full moving F-CI PASS claimed.",
   "retired_highest_low_air": "NOT_SELECTED_POLICY",
-  "small_production": "NOT_SELECTED_IMPACT: all physical/numerical modules and six small production providers unchanged from fixed admission; actual parent FCI44075761879 feedback SUCCESS. New source reuse is exercised by actual O0/O2 full/native/platform runs.",
-  "unit_tests": "16_PASS;67_NEW_SCHEDULED_CHEMICAL_CORRUPTIONS_REFUSED;62_FIXED_CONTROLS_PRESERVED",
-  "docs_source": "PASS",
-  "strict_docs_render": {
-    "status": "PASS",
-    "seconds": 37.01452920027077,
-    "returncode": 0
-  },
+  "small_production": "aquifer_solute_reservoir O0/O2 PASS; one actual provider+driver, three compiler requests per opt",
+  "unit_tests": "5_PASS;115_NEW_AQUIFER_EVIDENCE_CORRUPTIONS;62_FIXED_AND67_SCHEDULED_RETAINED",
+  "selected_ubuntu_run": 44100595269,
+  "source_negative": "PENDING",
+  "docs_source": "PENDING",
+  "strict_docs_render": "PENDING",
   "actual_source_negative": {
     "dirty": {
       "status": "REFUSED",
       "returncode": 1,
-      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 80, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty scheduled chemical surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 22, in require\n    if not test:raise ValueError(message)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty scheduled chemical surface\n"
-    },
-    "committed": {
-      "status": "REFUSED",
-      "commit": "0902efdf78a460d30d0a1467052651533578f77c",
-      "actual_immutable_checkout": "C:/Users/Veldh012/swap5-scheduled-chemical-guard-control",
-      "returncode": 1,
-      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 82, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'scheduled chemical runtime differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-scheduled-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 22, in require\n    if not test:raise ValueError(message)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: scheduled chemical runtime differs from qualification\n"
-    },
-    "qualified_head": "112f1b6aefb24097700a2079cc4fa4e873e28457"
-  },
-  "sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "current_owner_verification": {
-    "status": "CURRENT_FIXED_AND_SCHEDULED_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
-    "runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
-    "scheduled_chemical_full_days": 8768,
-    "fixed_chemical_full_days": 8768,
-    "whole_scientific_equivalence": "NOT_QUALIFIED",
-    "functional_completion": "PARTIAL",
-    "water_guard_cm": 1e-10,
-    "solute_guard_mg_cm2": 1e-10
+      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 85, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty aquifer admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 25, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty aquifer admission surface\n"
+    }
   }
 }

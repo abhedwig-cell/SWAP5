@@ -77,6 +77,10 @@ def validate(q):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('aquifer_admission',ROOT/'tests/nomacro_scheduled_subsurface/aquifer_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty scheduled chemical surface')
     git('merge-base','--is-ancestor',BASE,RUNTIME);git('merge-base','--is-ancestor',RUNTIME,SEALED);git('merge-base','--is-ancestor',SEALED,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'scheduled chemical runtime differs from qualification')
