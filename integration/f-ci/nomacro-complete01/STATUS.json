@@ -3,8 +3,8 @@
   "baseline": "a97978f39b8ce89a4d7aaec64172d43bfef88288",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-schedule01",
-  "last_commit": "860e25d5952299bad4a7d16e3d9d41f65913a89a",
-  "status": "AGE_SCHEDULE_WINDOWS_ALL_GATES_PASS_PORTABLE_SELECTED",
+  "last_commit": "f19bdf187a187e5d241fc3841eba9acfad63bc37",
+  "status": "AGE_SCHEDULE_UBUNTU_RUNNING_WINDOWS_RAW_SEALING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -316,9 +316,15 @@
       "cause": "Unchecked native returns normal completion despite5480NaN output values. Bounds instrumentation identifiesaccess35 above34 atoriginalsolute.f90:464 forO0/O2. Initial diagnostic assertion wrongly assumed SaltFarm-like195nodes; generalized to actualn+1 and consumed retained O0 without rerun; actualO0 returncodeUNKNOWN retained, O2 recorded."
     }
   ],
-  "running_ci": [],
+  "running_ci": [
+    {
+      "id": 44172278079,
+      "status": "IN_PROGRESS",
+      "carrier": "a376307776ea05bd975b6bf04a67e8c7baf7256b"
+    }
+  ],
   "next_code_change": "Portable schedule004 qualification orchestrator reusing exact qualified original reference binaries and immutable raw003 preservation; then strict new evidence owner and canonical integration.",
-  "recovery_point": "All local source29f8APP gates complete:18full/eight own each;18actual unchanged original reference executions;120actualnative+18policy+active/isolation;4readerrefusals;publicCLI35/cold30to34;14regular003+4daily002+8fixed002+13ageoff exact. No active models. Portable next. OverallPARTIAL/NOT_QUALIFIED.",
+  "recovery_point": "Existing Ubuntu44172278079 inprogress; all Windows18full/144fullown +reference18/native120+policy18/readers4/publicCLI35/cold30to34PASS. Exact14regular003/4daily002/8fixed002/13ageoffPASS. Windows archive process running; preserve all failingmonthly/diagnostic artifacts. No local model active.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -420,7 +426,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Dispatch selected schedule004 Ubuntu carrier and follow actual terminal state; prepare sealed raw/evidence owner while it runs.",
+  "next_action": "Poll existing44172278079 to terminal; finish running Windows raw archive process, then actual artifact every-member proof and strict new schedule successor. No duplicate dispatch.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -459,5 +465,7 @@
     "Original subdaily output-clock ownership after cold physical TSTART",
     "Monthly inactive-selector omission combinations: old generic preflight can still demand PERIOD when SWODAT0 remains present; current admitted-bound candidate uses full original decks",
     "Other age/vapor/process combinations and source-valued age forcing"
-  ]
+  ],
+  "qualified_age_schedule_runtime": "f19bdf187a187e5d241fc3841eba9acfad63bc37",
+  "qualified_age_schedule_ubuntu": "a376307776ea05bd975b6bf04a67e8c7baf7256b"
 }
