@@ -231,6 +231,7 @@ subroutine headcalc
       njac=njac+1
       call jacobian_F()
       call diag_log(2)
+      if(detail33.and.attempts==293.and.iter_index==30) call probe35_maybe()
 ! REJECT26 retains the qualified analytic update; no repeated calibration replay.
 
 !     solve the tridiagonal matrix

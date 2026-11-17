@@ -202,3 +202,96 @@ call ieee_get_status(fp_after)
 write(fp_u,*) point_id,transfer(fp_after,[0])
 end subroutine
 end subroutine
+
+
+subroutine probe35_maybe()
+use,intrinsic::ieee_exceptions,only:ieee_status_type,ieee_get_status,ieee_set_status,ieee_all,ieee_get_flag
+use SENSE23_TRANSACTION,only:snapshot
+use DIAG19,only:probe_busy,probe_u,point_id,point_node,point_delta
+use variables,only:h,theta,k,swkimpl,dt
+use MOD_arrays,only:macp
+use MOD_MvG,only:watcon,hconduc
+use MOD_frost,only:rfcp
+use MOD_grid,only:numnod,z,dz
+use MOD_swap_mp,only:FrArMtrx,QExcMpMtx,dFdhMp
+use MOD_macropore,only:QExcMtxDmCp
+implicit none
+character(8)::enable
+integer::u,ru,fu,cu,node,lev,sgn,j,nbytes,partid
+integer,parameter::nodes(4)=[50,51,52,57]
+integer(1),allocatable::original(:),restored(:)
+real(8)::eps,pot(macp),meta(12)
+type(ieee_status_type)::fp
+logical::before_flags(size(ieee_all)),after_flags(size(ieee_all)),same
+call get_environment_variable('PROBE35_ENABLE',enable)
+if(trim(enable)/='1') return
+call ieee_get_status(fp)
+call ieee_get_flag(ieee_all,before_flags)
+call snapshot('probe35_base.bin',1)
+inquire(file='probe35_base.bin',size=nbytes)
+allocate(original(nbytes),restored(nbytes))
+open(newunit=u,file='probe35_base.bin',access='stream',form='unformatted',status='old')
+read(u) original
+close(u)
+open(newunit=cu,file='probe35_context.txt',status='replace')
+write(cu,*) 'h',h(1:numnod)
+write(cu,*) 'z',z(1:numnod)
+write(cu,*) 'dz',dz(1:numnod)
+write(cu,*) 'dt',dt
+write(cu,*) 'swkimpl',swkimpl
+write(cu,*) 'q_total_before',QExcMpMtx(1:numnod)
+write(cu,*) 'q_domain3_before',QExcMtxDmCp(3,1:numnod)
+write(cu,*) 'existing_local_macro_derivative',dFdhMp(1:numnod)
+write(cu,*) 'ieee_flags_before',merge(1,0,before_flags)
+call diagnose35_get(pot,meta)
+write(cu,*) 'meta_before',meta
+write(cu,*) 'pot_before',pot(1:numnod)
+close(cu)
+open(newunit=ru,file='probe35_restore.txt',status='replace')
+open(newunit=fu,file='probe35_points.txt',status='replace')
+open(newunit=probe_u,file='probe35_limits.txt',status='replace')
+probe_busy=.true.;partid=0
+call evaluate(0,0d0)
+do lev=1,2
+ eps=1d-5/dble(lev)
+ do j=1,4
+  node=nodes(j)
+  do sgn=-1,1,2
+   call evaluate(node,dble(sgn)*eps)
+  end do
+ end do
+end do
+call evaluate(0,0d0)
+call restore_state()
+probe_busy=.false.
+close(probe_u);close(fu);close(ru)
+call ieee_set_status(fp)
+deallocate(original,restored)
+contains
+subroutine restore_state()
+call snapshot('probe35_base.bin',2)
+call snapshot('probe35_restored.bin',1)
+open(newunit=u,file='probe35_restored.bin',access='stream',form='unformatted',status='old')
+read(u) restored
+close(u)
+same=all(restored==original)
+call ieee_set_status(fp)
+call ieee_get_flag(ieee_all,after_flags)
+write(ru,*) partid,nbytes,merge(1,0,same),merge(1,0,all(before_flags.eqv.after_flags))
+if(.not.same.or..not.all(before_flags.eqv.after_flags)) error stop 'PROBE35 transaction restore mismatch'
+end subroutine
+subroutine evaluate(ic,delta)
+integer,intent(in)::ic
+real(8),intent(in)::delta
+call restore_state()
+partid=partid+1;point_id=partid;point_node=ic;point_delta=delta
+if(ic/=0) then
+ h(ic)=h(ic)+delta
+ theta(ic)=watcon(ic,h(ic))
+ if(swkimpl==1) k(ic)=FrArMtrx(ic)*hconduc(ic,h(ic),theta(ic),rfcp(ic))
+end if
+call MACRORATE(1)
+call diagnose35_get(pot,meta)
+write(fu,*) partid,ic,delta,meta,h(50:52),QExcMtxDmCp(3,1:numnod),QExcMpMtx(1:numnod),pot(1:numnod)
+end subroutine
+end subroutine

@@ -27,6 +27,7 @@
 
       integer::snap23_unit,snap23_mode
       integer::n24,j24,l24
+      real(8)::pot35(macp),info35(12)
       real(8)::u24(macp),v24(macp),d24(macp),meta24(12)
       real(8)::f24,rho24,g24,den24,dh24,hm24
 
@@ -1466,6 +1467,13 @@
       return
 
       return
+      entry diagnose35_get(pot35,info35)
+      pot35=0d0
+      pot35(1:numnod)=FlwOutMtxSatDmCpPot(3,1:numnod)
+      info35=[lim_in,FlwOutDmTot(3),FlwOutDmExces(3),lim_min,WaSrMpDm(3),GwlFlCpZo, &
+       dble(ICpTpSatZon),lim_frin,FlwInTopExcesTot,FlwOutMtxUnsDmPot(3), &
+       VlMpDmCp(3,ICpTpSatZon)/dz(ICpTpSatZon),dt]
+      return
       entry jac24_terms(n24,u24,v24,d24,meta24)
       u24=0d0;v24=0d0;d24=0d0;meta24=0d0
       if(n24/=numnod.or.swmbf/=1) return
@@ -1786,7 +1794,7 @@ end subroutine
                                swdarcy, frreduq, qoutmtxunsdmcp, dfdhmp, ictopmp, swmbf, swabs, icpbtdmpot, dimtxsat, vlmpdmcp
 
 
-      use DIAG19,only:target,attempts,iter_index,nvec,raw_u,detail33
+      use DIAG19,only:target,attempts,iter_index,nvec,raw_u,detail33,probe_busy
       implicit none
 
       integer::snap23_unit,snap23_mode
@@ -1947,7 +1955,7 @@ end subroutine
              HMp,DelH,RecRes,SorpFac,raw_sorp,raw_darcy,FlwOutMtxUnsDmCpPot(id,ic), &
              merge(1,0,FlSorp(id,ic)),dt,TimAbsCumDmCp(id,ic),ICpTpWaSrDm(id)
             end if
-            if(detail33.and.ic==52) then
+            if(detail33.and.ic==52.and..not.probe_busy) then
              block
              real(8)::hm_log,del_log,rec_log,sf_log
              hm_log=0;del_log=0;rec_log=0;sf_log=0
