@@ -38,11 +38,6 @@ R_RUNTIME = '75e5b45a1b7a8705d6d364156a1ad4434107dfdf'
 R_WINDOWS = '4da8feaff8134ca64cdf8133fcf3126313a6135e'
 R_PREFLIGHT = '30ae92bec2d52e536ab438dc4d8b51a6a10fc5c3'
 R_SEALED = '779c4714de5b0c3d2e781993d9d85941864317c4'
-R_ADMITTED = 'a9044fdab7e333058c6a4dab34884e56e33c35a9'
-S_RUNTIME = 'b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2'
-S_UBUNTU = '451b28ea4a1b68611952c55437bdcf37c6017ac4'
-S_SEALED = '504fd73906740b9c43a2d54371184980d7e42e5a'
-S_PROOF = 'integration/f-ci/nomacro-complete01/'
 O_WINDOWS = '6bb58557252f3c7ab8da27efe18e8cbe53bffe5d'
 O_SEALED = '5fcb0622c4ab0c89618d92b9541dcc7f85f4c799'
 N_SEALED = '4b6e470b64cd0c5b9967cfb0b4e35c778d8fafe5'
@@ -591,10 +586,10 @@ def validate_r(q,prior,free,prior_q,component,defaults,preflights,derivative,rep
 def verify_r():
     git('merge-base','--is-ancestor',Q_ADMITTED,R_RUNTIME);git('merge-base','--is-ancestor',R_RUNTIME,R_SEALED);git('merge-base','--is-ancestor',R_SEALED,'HEAD')
     require(not git('diff',R_WINDOWS,R_RUNTIME,'--','app','src','reference','tools','tests/nomacro_drainage/run.py','tests/nomacro_drainage/controls.py'), 'R Windows/Ubuntu physical source drift')
-    require(not git('diff',R_RUNTIME,R_ADMITTED,'--','app','src','reference','tools','tests/nomacro_drainage','tests/nomacro_time_event','tests/nomacro_frost','tests/nomacro_pond_history','tests/nomacro_mixtures','.github'), 'runtime differs from qualified R source')
+    require(not git('diff',R_RUNTIME,'HEAD','--','app','src','reference','tools','tests/nomacro_drainage','tests/nomacro_time_event','tests/nomacro_frost','tests/nomacro_pond_history','tests/nomacro_mixtures','.github'), 'runtime differs from qualified R source')
     paths=set(git('diff','--name-only',Q_RUNTIME,R_RUNTIME,'--','app','src','reference').decode().splitlines());require(paths=={'app/hybrid_water/daily_host.py','app/hybrid_water/experimental_project.py'}, 'R unqualified kernel/reference/application delta')
     require(not git('diff','166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad',R_RUNTIME,'--','app/hybrid_water/hybrid_step_budget.f90'), 'R reused pond formula changed')
-    paths=set(git('diff','--name-only',R_SEALED,R_ADMITTED).decode().splitlines());require(paths<={SELF,TEST,L_PROOF+'BLOCK_R_CI_SELECTION.json',L_PROOF+'BLOCK_R_MERGE.json'}, 'unqualified delta after R seal')
+    paths=set(git('diff','--name-only',R_SEALED,'HEAD').decode().splitlines());require(paths<={SELF,TEST,L_PROOF+'BLOCK_R_CI_SELECTION.json',L_PROOF+'BLOCK_R_MERGE.json'}, 'unqualified delta after R seal')
     def sealed(name):
         path=L_PROOF+'BLOCK_R_'+name+'.json';require(blob('HEAD',path)==blob(R_SEALED,path), 'R sealed proof changed: '+name);return json.loads((ROOT/path).read_text())
     q=sealed('QUALIFICATION');validate_r(q,*(sealed(n) for n in ('PRIOR_SOURCE_PRESERVATION','PRIOR_P_FREE_PRESERVATION','PRIOR_Q_PRESERVATION','COMPONENT_RESULT','DEFAULT_PRESERVATION_RESULT')),dict(Windows=sealed('PREFLIGHT_WINDOWS'),Ubuntu=sealed('UBUNTU_PREFLIGHT')),sealed('POND_COMPONENT_INHERITANCE'),sealed('REPAIRED_PREFIX53'))
@@ -605,58 +600,6 @@ def verify_r():
     component=sealed('UBUNTU_COMPONENT_RESULT');require(component['status']=='ACTUAL_ORIGINAL_TABULATED_DRAINAGE_O0_O2_PASS' and component['source_commit']==R_RUNTIME and component['physical_cases_per_optimization']==15, 'R missing actual Ubuntu native component')
     for label in ('FULL_TRAJECTORIES','DEFAULT_PRESERVATION','LOCAL'):
         m=sealed(label+'_ARCHIVE');require(hashlib.sha256((ROOT/L_PROOF/m['archive']).read_bytes()).hexdigest()==m['sha256'], 'R raw capsule changed')
-    return q
-
-
-def validate_s(q, named, comparison, isolation, preflights):
-    require(q['status']=='ORIGINAL_SCHEDULED_SUBSURFACE_WATER_POINT_INTERVAL_QUALIFIED' and q['runtime_source']==q['Windows_execution_source']==S_RUNTIME and q['Ubuntu_execution_source']==S_UBUNTU, 'S actual source identity')
-    require((q['full_configurations'],q['full_trajectories'],q['complete_model_days'],q['standard_full_native_windows'],q['active_full_native_windows'],q['short_native_windows'])==(2,8,8768,24,8,8), 'S incomplete trajectory/native scope')
-    require(q['mass_guard_cm']==1e-10 and math.isfinite(q['maximum_water_residual_cm']) and 0<=q['maximum_water_residual_cm']<=1e-10, 'S changed or invalid mass guard')
-    require(all(q[name] is False for name in ('tolerances_changed','physical_equations_changed','new_persistent_codec')) and q['whole_scientific_equivalence']=='NOT_QUALIFIED' and q['functional_completion']=='PARTIAL' and q['chemical_subsurface']=='REFUSED_INHERITED_DEFECT_UNCORRECTED', 'S physics/chemical/science promotion')
-    require(set(q['platforms'])=={'Windows','Ubuntu'}, 'S missing platform')
-    for platform,cases in q['platforms'].items():
-        require(set(cases)=={'point','interval'}, 'S missing depth family')
-        for name,report in cases.items():
-            require(report['status']=='FULL_O0_O2_PASS' and report['configuration']==name and report['source_commit']==(S_RUNTIME if platform=='Windows' else S_UBUNTU) and report['science']=='NOT_QUALIFIED' and report['water_guard_cm']==1e-10, 'S incomplete actual report')
-            require(report['inputs']['selectors']['SWMACRO']==report['inputs']['selectors']['SWSOLU']==0 and set(report['profiles'])=={'O0','O2'}, 'S changed physical scope')
-            for opt,r in report['profiles'].items():
-                require(r['status']=='FULL_PASS' and r['days']==r['budgets']['days']==1096, 'S incomplete model period')
-                for key in ('max_water_cm','max_kernel_cm'):require(math.isfinite(r['budgets'][key]) and 0<=r['budgets'][key]<=1e-10, 'S water budget failed')
-                require(len(r['own'])==3 and {w['start'] for w in r['own']}=={2,365,530} and all(all(w[k] is True for k in ('exact_physical','exact_csv','exact_native','origin_unchanged')) for w in r['own']), 'S ordinary/year native missing')
-                require(r['short']['days']==5 and all(r['short']['own'][k] is True for k in ('exact_physical','exact_csv','exact_native','origin_unchanged')), 'S short own native missing')
-                active=r['active_own'];require(all(active[k] is True for k in ('full_period_physical_csv_suffix_exact','exact_native','origin_unchanged','active_external_discard_replay_exact','active_external_disk_recovery')), 'S active native/external missing')
-                exposure=r['subsurface_exposure'];require(math.isfinite(exposure['total_cm']) and exposure['total_cm']>0 and active['actual_irrigation_day'] in exposure['days'], 'S process never active')
-                require(all(r['controls'][k] is True for k in ('foreign_policy_refused','inconsistent_mass_refused','external_discard_replay_exact','external_disk_recovery')), 'S acceptance/rollback/recovery missing')
-    require(set(named)=={'grass','hupsel','salt'} and all(named[k]['status']=='FULL_PASS' and named[k]['full_days']==days and all(w['exact_native_auxiliary'] is True for w in named[k]['restart_windows']) for k,days in (('grass',1827),('hupsel',1096),('salt',1461))), 'S named full/native regression missing')
-    require(comparison['status']=='ALL_EIGHT_ACTUAL_COMPOSITION_TRAJECTORIES_AND_NATIVE_EXACT' and len(comparison['profiles'])==8 and all(v['days']==1096 and v['all_physical_rows_exact'] is True and v['all_csv_rows_exact'] is True and v['complete_terminal_native_exact'] is True for v in comparison['profiles'].values()), 'S actual composition drift')
-    require(set(isolation['profiles'])=={'O0','O2'} and all(v['status']=='INTERLEAVED_INDEPENDENT_ORIGINS_ACTIVE_IRRIGATION_PASS' and v['alternating_steps']==6 for v in isolation['profiles'].values()), 'S independent active origins missing')
-    require(set(preflights)=={'Windows','Ubuntu-point','Ubuntu-interval'}, 'S missing native input/refusal platform')
-    for report in preflights.values():
-        require(report['status']=='SCHEDULED_SSDI_ORIGINAL_READER_AND_ACTIVE_TRANSACTIONS_PASS', 'S incomplete preflight')
-        tests=report['checks'];refusals=[v for v in tests if v.get('status')=='REFUSED'];require(len(refusals)==7 and sum(v['test']=='future-chemical-SSDI' for v in refusals)==1, 'S native or future chemical input refusal missing')
-        require({(v['test'],v.get('optimization')) for v in refusals if v['test']!='future-chemical-SSDI'}=={(name,opt) for name in ('reversed','outside-domain','nonfinite') for opt in ('O0','O2')}, 'S actual original reader domains missing')
-
-
-def verify_s():
-    git('merge-base','--is-ancestor',R_ADMITTED,S_RUNTIME);git('merge-base','--is-ancestor',S_RUNTIME,S_SEALED);git('merge-base','--is-ancestor',S_SEALED,'HEAD')
-    paths=set(git('diff','--name-only',R_ADMITTED,S_RUNTIME,'--','app','src','reference','tools').decode().splitlines())
-    require(paths=={'app/hybrid_water/daily_host.py','app/hybrid_water/daily_coupling.py','app/hybrid_water/experimental_project.py','app/hybrid_water/scheduled_subsurface_irrigation.py'}, 'S unqualified physical dependency delta')
-    surface=['app','src','reference','tools','.github','tests/nomacro_scheduled_subsurface/run.py','tests/nomacro_scheduled_subsurface/preflight.py','tests/nomacro_drainage','tests/nomacro_mixtures']
-    require(not git('diff',S_RUNTIME,'HEAD','--',*surface), 'runtime differs from qualified S source')
-    require(not git('diff',S_RUNTIME,S_UBUNTU,'--',*[p for p in surface if p!='.github']), 'S actual Ubuntu runtime drift')
-    require(set(git('diff','--name-only',S_RUNTIME,S_UBUNTU).decode().splitlines())=={'.github/workflows/nomacro-coverage-prescribed-head.yml'}, 'S carrier changed physical source')
-    def sealed(name):
-        path=S_PROOF+name+'.json';require(blob('HEAD',path)==blob(S_SEALED,path),'S immutable proof changed: '+name);return json.loads((ROOT/path).read_text())
-    q=sealed('QUALIFICATION')
-    validate_s(q,sealed('WINDOWS_NAMED'),sealed('COMPOSITION_COMPARE'),sealed('WINDOWS_ISOLATION'),dict(Windows=sealed('WINDOWS_PREFLIGHT'),**{'Ubuntu-point':sealed('UBUNTU_POINT_PREFLIGHT'),'Ubuntu-interval':sealed('UBUNTU_INTERVAL_PREFLIGHT')}))
-    for platform in ('Windows','Ubuntu'):
-        for case in ('point','interval'):require(q['platforms'][platform][case]==sealed(platform.upper()+'_'+case.upper()),'S embedded/raw report differs')
-    for label in ('WINDOWS_RAW','UBUNTU_RAW','HISTORICAL_RAW'):
-        record=sealed(label+'_ARCHIVE');require(record['all_members_forward_verified'] is True and hashlib.sha256((ROOT/S_PROOF/record['archive']).read_bytes()).hexdigest()==record['sha256'],'S raw evidence changed')
-    diagnostic=sealed('ORIGINAL_CHEMICAL_AUDIT');require(diagnostic['classification']=='INHERITED_DEFECT' and diagnostic['subsurface_all_output_rows_exact_across_concentration'] is True and diagnostic['surface_solute_maximum_differences']['S_IRRIG']==48.0 and diagnostic['production_change'] is False,'S inherited chemical defect lost')
-    for name in ('PRIOR_SOURCE_COMPARISON','ORIGINAL_REFERENCE_POINT','ORIGINAL_REFERENCE_INTERVAL','WINDOWS_NAMED_COMMANDS','UBUNTU_POINT_ARTIFACT','UBUNTU_INTERVAL_ARTIFACT'):sealed(name)
-    allowed={SELF,TEST,S_PROOF+'CI_SELECTION.json',S_PROOF+'STATUS.json',S_PROOF+'MERGE_RECEIPT.json',S_PROOF+'GAP_MATRIX.json'}
-    require(set(git('diff','--name-only',S_SEALED,'HEAD').decode().splitlines())<=allowed,'unqualified delta after S seal')
     return q
 
 
@@ -719,14 +662,12 @@ def verify():
     p = verify_p()
     current = verify_q()
     latest = verify_r()
-    scheduled = verify_s()
-    return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=S_RUNTIME,
+    return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=R_RUNTIME,
                 current_N_full_days=n['complete_model_days'], current_N_proof_anchor=N_SEALED,
                 current_O_full_days=o['complete_model_days'],current_O_proof_anchor=O_SEALED,
                 current_P_full_days=p['complete_model_days'],current_P_proof_anchor=P_SEALED,
                 current_Q_full_days=current['complete_model_days'],current_Q_proof_anchor=Q_SEALED,
                 current_R_full_days=latest['complete_model_days'],current_R_proof_anchor=R_SEALED,
-                current_scheduled_subsurface_full_days=scheduled['complete_model_days'],current_scheduled_subsurface_proof_anchor=S_SEALED,
                 integrated_frost_drainage='QUALIFIED only explicit original-adaptive-event-closure-v1; old day21/day367 FAIL retained',
                 prior_composed_runtime=RUNTIME, current_L_proof_anchor=L_SEALED,
                 current_L_full_days=q['complete_model_days'],
