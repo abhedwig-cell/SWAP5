@@ -177,6 +177,9 @@ def validate_bundle(bundle, reference, project):
     from conserved_original_age import metadata as age_metadata,correction as age_correction
     expected_age=age_metadata() if project.age else None
     if identity.get('conserved_original_age')!=expected_age:raise ValueError('Foreign original age source/state policy')
+    from age_fixed_irrigation import enabled as age_fixed_enabled,metadata as age_fixed_metadata
+    expected_age_fixed=age_fixed_metadata() if age_fixed_enabled(project) else None
+    if identity.get('original_age_fixed_irrigation')!=expected_age_fixed:raise ValueError('Foreign original fixed young-water age policy')
     if expected_age:
         age_source=age_correction()
         for name in (*age_source.PROVIDERS,*age_source.OUTPUT_PROVIDERS):

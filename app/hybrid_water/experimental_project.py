@@ -91,8 +91,8 @@ def inspect(directory):
     for name, allowed in mandatory.items():
         if selected.get(name) not in allowed:
             raise ValueError('Unsupported experimental process/state: '+name)
-    if selected['SWSOLU']==2 and (selected['SWSNOW'] or selected.get('SWBR')!=0 or selected['SWIRFIX']):
-        raise ValueError('Original age qualification currently requires no snow/aquifer/fixed irrigation')
+    if selected['SWSOLU']==2 and (selected['SWSNOW'] or selected.get('SWBR')!=0):
+        raise ValueError('Original age qualification currently requires no snow/aquifer')
     if selected['SWSOLU']==1:
         for name in ('SWSP', 'SWDC', 'SWBR'):
             if selected.get(name) not in {0, 1}:
