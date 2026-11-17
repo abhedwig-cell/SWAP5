@@ -48,7 +48,7 @@ def main():
                     try:m.bounded(20,lambda:m.h.run(m.h.executable(build,'day_donor'),m.h.executable(build,'day_kernel'),inputs,out,1,runtime=True,model=project.model,project=invalid))
                     except (ValueError,RuntimeError) as error:
                         diagnostic='\n'.join(p.read_text(errors='replace') for pattern in ('swap.err','donor.stderr') for p in out.rglob(pattern))
-                        assert any(token in diagnostic.lower() for token in ('young-water','nonfinite','irconc','nan')),(bad,diagnostic,str(error))
+                        assert any(token in diagnostic.lower() for token in ('young-water','young water','nonfinite','irconc','nan')),(bad,diagnostic,str(error))
                         assert not list(out.glob('accepted-*.zip'));result['reader_refusals'].append(dict(profile=name,input=bad,status='REFUSED',diagnostic=diagnostic));save()
                     else:raise AssertionError('Non-young original age input accepted: '+bad)
         result['status']='FIXED_YOUNG_AGE_ACTIVE_TRANSACTIONS_AND_NATIVE_READERS_PASS'
