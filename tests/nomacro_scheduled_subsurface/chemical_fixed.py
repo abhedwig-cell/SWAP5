@@ -56,7 +56,8 @@ def controls(build,reference,project,full,data,out):
         finally:m.h.receive=receive
         assert host.columns[0].day==4 and host.columns[0].solute_stock==stock and host.columns[0].stocks==water
         assert not list(refused.glob('accepted-*.zip'))
-        host.close()
+        # A refused protocol exchange deliberately leaves the host unusable.
+        # ExitStack terminates its processes; normal close is forbidden here.
     return dict(foreign_policy_refused=True,active_discard_replay_exact=True,active_disk_recovery=True,
                 inconsistent_chemical_mass_refused=True,committed_state_unchanged=True,origin_unchanged=m.sha(source)==digest)
 
@@ -69,10 +70,11 @@ def main():
     p.add_argument('--inline',action='store_true')
     p.add_argument('--short-only',action='store_true')
     p.add_argument('--reuse-build-from',type=Path)
-    args=p.parse_args();out=args.output.resolve();out.mkdir()
+    p.add_argument('--resume',action='store_true')
+    args=p.parse_args();out=args.output.resolve();out.mkdir(exist_ok=args.resume)
     reference=args.reference_work.resolve();m.user_prepare.validate(reference)
     case=args.reuse_build_from.resolve()/'input' if args.reuse_build_from else out/'input'
-    if not args.reuse_build_from:
+    if not args.reuse_build_from and not args.resume:
         create(case,'water-file-subsurface'+('-interval' if args.configuration=='interval' else ''),inline=args.inline)
         path=case/'swap.swp';text=path.read_text(encoding='cp1252')
         for name,value in dict(SWSOLU=1,SWMONTH=0,INLIST_CSV="'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'").items():
@@ -82,6 +84,11 @@ def main():
     result=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                 configuration=args.configuration,inline=args.inline,inputs=m.e.inspect(case),profiles={},
                 chemical_guard_mg_cm2=1e-10,water_guard_cm=1e-10,science='NOT_QUALIFIED')
+    if args.resume:
+        previous=json.loads((out/'RESULT.json').read_text())
+        assert previous['inputs']==json.loads(json.dumps(m.e.inspect(case)))
+        result['retained_failure']=dict(status=previous['status'],error=previous.get('error'))
+        result['original_execution_source']=previous['source_commit']
     def save():(out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
@@ -90,7 +97,7 @@ def main():
             command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',m.e.MODEL,
                      '--experimental-project',str(case),'--reference-work',str(reference),'--build-only',
                      '--kernel-opt',opt,'--donor-opt',opt,'--output',str(build)]
-            if args.reuse_build_from:
+            if args.reuse_build_from or (args.resume and (build/'BUILD.json').exists()):
                 validate_bundle(build,reference,project)
                 result['profiles'][opt]=dict(build_reused=str(build),compilation='NOT_REPEATED')
             else:
@@ -100,15 +107,22 @@ def main():
                 assert run.returncode==0,run.stderr
             last=8 if args.short_only else 1096
             full=out/(opt+'-full')
-            report,data=m.trajectory(build,reference,project,full,last,{2,4,6,365,367,last},60)
+            if args.resume and (full/'daily.jsonl').exists():
+                data=m.rows(full);assert len(data)==last
+                report=dict(status='FULL_PASS' if last==1096 else 'SHORT_PASS',days=last,budgets=m.check(data),
+                            model_seconds='UNKNOWN_RETAINED_PRIOR_EXECUTION',build_sha256=m.sha(build/'BUILD.json'))
+            else:
+                report,data=m.trajectory(build,reference,project,full,last,{2,4,6,365,367,last},60)
             water=sum(row['external_flux_cm'][5] for row in data)
             mass=sum(row['solute_ledger_mg_cm2'][3] for row in data)
             assert abs(water-2.4)<1e-12,(water,mass)
             assert abs(mass-water*20)<1e-10,(water,mass)
             report.update(irrigation_water_cm=water,irrigation_mass_mg_cm2=mass)
-            report['own']=[m.own(build,reference,project,full,data,start,start+2,out/(opt+'-own'+str(start)))
+            suffix='-recovery' if args.resume else ''
+            report['own']=[m.own(build,reference,project,full,data,start,start+2,out/(opt+'-own'+str(start)+suffix))
                            for start in ((2,4) if args.short_only else (2,4,365))]
-            report['controls']=controls(build,reference,project,full,data,out/(opt+'-controls'))
+            result['profiles'][opt].update(report);save()
+            report['controls']=controls(build,reference,project,full,data,out/(opt+'-controls'+suffix))
             result['profiles'][opt].update(report);save()
             print(args.configuration,opt,'SOURCE_MASS_NATIVE_PASS',flush=True)
         result['status']='SHORT_O0_O2_PASS' if args.short_only else 'FULL_O0_O2_PASS'
