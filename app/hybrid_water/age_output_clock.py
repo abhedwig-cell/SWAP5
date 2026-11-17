@@ -7,6 +7,8 @@ import age_output_schedule as schedule
 
 POLICY='original-bound-output-epoch-age-clock-v1'
 MAGIC=b'S5AGE005'
+WATSTOR_SHA='71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c'
+TRIAL_RECEIPT_POLICY='original-integral-clone-elapsed-day-water-guard-v1'
 TIME_SHA='88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84'
 
 
@@ -49,7 +51,9 @@ def metadata(project):
                 source_sha256=sha(Path(__file__)),regular_owner_sha256=sha(Path(regular.__file__)),
                 schedule_owner_sha256=sha(Path(schedule.__file__)),original_timecontrol_sha256=TIME_SHA,
                 receipt_provider_sha256=sha(regular.ROOT/'src/process'/(regular.PROVIDER+'.f90')),
-                original_integral_sha256=regular.INTEGRAL_SHA,undefined_allocation_tails_serialized=False)
+                original_integral_sha256=regular.INTEGRAL_SHA,original_watstor_sha256=WATSTOR_SHA,
+                trial_receipt_policy=TRIAL_RECEIPT_POLICY if selected['mode']=='subdaily' else None,
+                undefined_allocation_tails_serialized=False)
 
 
 def age_identity(original,project):
@@ -88,7 +92,7 @@ def trial_receipt_source(source,watstor):
     source=source.replace('\r\n','\n');watstor=watstor.replace('\r\n','\n')
     if hashlib.sha256(source.encode('cp1252')).hexdigest()!=regular.INTEGRAL_SHA:
         raise ValueError('Changed original trial receipt integral owner')
-    expected='71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c'
+    expected=WATSTOR_SHA
     if hashlib.sha256(watstor.encode('cp1252')).hexdigest()!=expected:
         raise ValueError('Changed original trial receipt stock owner')
     body=source[source.index('   case (3)'):source.index('   case (4)')]

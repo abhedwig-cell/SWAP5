@@ -1,5 +1,5 @@
 {
-  "status": "NPRINT2_3_O0_O2_FRESH_SHORT_CADENCE_THREE_EXACT_NATIVE_WINDOWS_PASS",
+  "status": "NP2_O0_FULL1096_EIGHT_EXACT_NATIVE_AND_ACTUAL_RECEIPT_COMPONENT42_PASS",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "owner": "SWAP5-NOMACRO-COMPLETE01",
   "contract": "docs/science/NOMACRO_AGE_OUTPUT_CLOCK_20261117.md",
@@ -25,7 +25,7 @@
   "baseline_results": "NPRINT2/3 O0/O2 actual day1donor-origin mismatch; annual-only period0 refused; monthly omitPERIOD refused but omitallinactive passes.",
   "implementation": "Reuse literal003/004 generators/providers/state; bind original output epoch in three actual TimeControl print-trigger/event expressions, preserving operation order/global counter and physicalTSTART. New005counter/flag reader; annual-only state; generic monthly preflight excludes inactivePERIOD branch.",
   "cadence_inventory": "Original Swap calls Solute output only on flOutput, while SoilWaterOutput also runs flOutputShort. Inventory primary subdaily versus age daily rows and actual interval exports; no forced age rows or daily-mean promotion.",
-  "next": "Exact-source full1096NP2/3 pilots plusannual371yearshort O0/O2, then complete selectedcoupled/cohort/reference/native/preservation.",
+  "next": "Run16sourceboundshort/full selected matrix; actualreceiptcomponentO2; oldcontextpreservation, nativecontrols and originalreference reuse. Source metadata now explicitly binds strict receipt policy and WatstorSHA.",
   "retained_clock_failure": {
     "source": "b34900ab509490e9eaa6875bb5d1323f69adc778",
     "paths": [
@@ -39,5 +39,50 @@
   },
   "repair": "Use physicalTSTART only for TimeControl1 local initialization; original bound epoch for dynamic tasks, preserving exact original operation order and persistedDT. No new physical equation or state field.",
   "retained_render_failure": "Initial bootstrap insertion matched both main and indented internal select-case substrings. Generation refused before compilation/model. Exact newline/main indentation anchor now identifies one actual owner; original full source SHA still checked.",
-  "small_clock_results": "Source6ce0ab400: four10dayprofiles, exactthree own windows each, original primary2/3rowsperday plusdailyagecadences and actual1/Nprintnativeageoutputperiod retained. No daily-age-mean promotion."
+  "small_clock_results": "Source6ce0ab400: four10dayprofiles, exactthree own windows each, original primary2/3rowsperday plusdailyagecadences and actual1/Nprintnativeageoutputperiod retained. No daily-age-mean promotion.",
+  "cohort": {
+    "subdaily": {
+      "nprintday": [
+        2,
+        3
+      ],
+      "kinds": [
+        "plain",
+        "surface",
+        "subsurface-interval"
+      ],
+      "optimization": [
+        "O0",
+        "O2"
+      ]
+    },
+    "annual": {
+      "nprintday": [
+        1
+      ],
+      "kinds": [
+        "plain",
+        "subsurface-interval"
+      ],
+      "optimization": [
+        "O0",
+        "O2"
+      ]
+    },
+    "profiles": 16,
+    "full_days": 1096,
+    "short_subdaily_days": 10,
+    "short_annual_days": 371
+  },
+  "trial_receipt": {
+    "policy": "original-integral-clone-elapsed-day-water-guard-v1",
+    "guard": "ADDITIONAL strict1e-10*elapsed originalday alongside unchangedhydraulicguard",
+    "source": "SHA-pinned original Integral increment expressions, original Watstor stock and Integral canopy operations",
+    "component": "42actualIntegral3cases exact/nonmutation inO0; sourceidenticalfunction underfinalmetadata postimage",
+    "retained_failures": [
+      "v3np2day364",
+      "v4terminal-onlynp2day364",
+      "v5tracedterminal-onlynp2day364"
+    ]
+  }
 }
