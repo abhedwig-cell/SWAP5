@@ -1,0 +1,34 @@
+name: Local wetting selected canonical admission
+on:
+  push:
+    branches: [codex/local-wetting-time01]
+    paths: ['.github/workflows/local-wetting-admit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  qualify:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: review-composed-a629c6fe9b452f469b96108b042c3fdab077e1cf
+          run-id: 44097197382
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - name: Prepare immutable provider
+        run: python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/provider"
+      - name: Exact emitted closure and changed host O0/O2 prefixes and own restarts
+        run: python3 -B tests/local_wetting/admit.py --reference-work "$RUNNER_TEMP/provider" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/admission"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: local-wetting-admission-${{ github.sha }}
+          path: ${{ runner.temp }}/admission
+          retention-days: 30
