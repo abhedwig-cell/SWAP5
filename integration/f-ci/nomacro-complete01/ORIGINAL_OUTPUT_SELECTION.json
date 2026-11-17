@@ -1,0 +1,45 @@
+{
+  "status": "SOURCE_INVENTORY_PUBLIC_BASELINE_SELECTED_NOT_RUN",
+  "baseline": "b9400bff64a5b21596995aca9eb045f974a52b21",
+  "contract": "docs/science/NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md",
+  "controller": "tests/nomacro_scheduled_subsurface/original_output_baseline.py",
+  "original_reader": {
+    "SWCSV": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "NPRINTDAY": [
+      1,
+      1440
+    ],
+    "FLPRINTDT": "optionallogical",
+    "NUM_DECIMALS": [
+      5,
+      12
+    ]
+  },
+  "cases": [
+    "water-csv0",
+    "water-csv2",
+    "water-csv3",
+    "water-nprint2",
+    "water-monthly",
+    "water-custom-csv5",
+    "age-perstep-monthly",
+    "age-perstep-explicit"
+  ],
+  "optimization": [
+    "O0",
+    "O2"
+  ],
+  "water_guard_cm": 1e-10,
+  "chemical_mass_guard_mg_cm2": 1e-10,
+  "age_policy": "acceptedcmday8192epsilon",
+  "expected_seconds": 300,
+  "full_moving_fci": "NOT_SELECTED_IMPACT",
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "next": "Actualpublicbaseline+originalreader/headerobservations before implementationchoice."
+}
