@@ -1,0 +1,46 @@
+--- TRAJECTORY33/diag_state.f90
++++ PERIOD34/diag_state.f90
+@@ -74,7 +74,7 @@
+ call system_clock(tick);elapsed=dble(tick-origin)/dble(rate);steps=steps+1
+ write(v,*) steps,t1900,dt,numbit,FrReduQ,attempts,spanhead,spanbudget,dble(tick-lastclock)/dble(rate),elapsed
+ if(mod(steps,128)==0) flush(v)
+-done=steps>=512.or.elapsed>=16d0.or.t1900>=35797.125d0
++done=elapsed>=16d0.and.t1900<35798d0
+ spanhead=0;spanbudget=0
+ call system_clock(lastclock)
+ end function
+--- TRAJECTORY33/soilwater_native.f90
++++ PERIOD34/soilwater_native.f90
+@@ -268,6 +268,12 @@
+  character(60)::label
+  integer::i,target_attempt,u
+  handled=.true.
++ if(.not.period_begin_done) then
++  period_begin_done=.true.
++  call inventory_dump('begin')
++  call native09_dump('context_begin')
++  call ledger12_dump('ledger_begin')
++ end if
+  call get_environment_variable('DAY10_MODE',mode)
+  target_attempt=-1
+  if(trim(mode)/='TRAJ') then
+@@ -382,7 +388,7 @@
+   call ledger12_dump('ledger_committed')
+   call finish33('TARGET_RETRY_HOST_COMMITTED')
+  end if
+- if(commit()) call finish33('BOUNDED_CANDIDATE_TRAJECTORY')
++ if(commit()) call finish33('INTERNAL_BUDGET_BEFORE_PERIOD_END')
+ end subroutine
+ 
+ subroutine finish33(reason)
+@@ -423,9 +429,7 @@
+   call inventory_dump('period_final')
+   call native09_dump('context_period_final')
+   call ledger12_dump('ledger_period_final')
+-  if(budget_open) close(budget_unit)
+-  open(newunit=u,file='outcome.txt',status='replace');write(u,*) 'NEXT18_PERIOD_COMPLETE';close(u)
+-  stop 0
++  call finish33('CANDIDATE_PERIOD_COMPLETE')
+  end if
+ end subroutine
+ 
