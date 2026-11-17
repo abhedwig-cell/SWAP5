@@ -1,5 +1,5 @@
 {
-  "status": "EXACT_REGULAR_AGE_CALENDAR_WINDOWS_UBUNTU_QUALIFIED_CANONICAL_PENDING",
+  "status": "EXACT_REGULAR_AGE_CALENDAR_CANONICALLY_ADMITTED_ACTUAL_MERGE_PASS",
   "runtime": "75f4bf12f71286e0021877e9285df43beb6be01d",
   "canonical_parent": "b2b05ae110366dae062663bd97c63d4187cdcd8d",
   "current_owner": "tests/nomacro_scheduled_subsurface/age_calendar_verify.py",
@@ -65,40 +65,27 @@
       "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-fixed-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 125, in <module>\n    if __name__=='__main__':print(json.dumps(verify(),indent=2))\n                                             ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-fixed-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 96, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'fixed age runtime differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-fixed-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 31, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: fixed age runtime differs from qualification\n"
     }
   },
-  "actual_canonical_merge": {
-    "status": "CANONICAL_ADMITTED_ACTUAL_MERGE_VERIFIED",
-    "pr": 1713,
-    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1713",
-    "merge": "c73820ee4e6ba07cbf6f3cbc8bdc88ab597b7a01",
-    "parents": [
-      "17834a639bb9c749c159c79e36faa96d99f3fe1b",
-      "d7803d98a129d66b9229164a2b8f43c0ec4ecc38"
-    ],
-    "qualified_head": "d7803d98a129d66b9229164a2b8f43c0ec4ecc38",
-    "complete_tree": "c7c6fa1bcf2850231d323464dece2ce26ea11e5f",
-    "actual_merge_tree_exact": true,
-    "actual_detached_merge_owner": {
-      "returncode": 0,
-      "seconds": 36.18,
-      "result": {
-        "status": "CURRENT_FIXED_YOUNG_AGE_COMPOSED_CHEMICAL_AQUIFER_S_PULSE_R_ADMISSION_PASS",
-        "runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
-        "whole_scientific_equivalence": "NOT_QUALIFIED",
-        "functional_completion": "PARTIAL",
-        "full_model_days": 17536,
-        "water_guard_cm": 1e-10,
-        "chemical_mass_guard_changed": false,
-        "age_units": "cm day",
-        "native_codec": "S5AGE002"
-      }
-    },
-    "runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
-    "ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
-    "sealed": "56ae017e413503891d6c1a9709d1c882f2a14edb",
-    "whole_scientific_equivalence": "NOT_QUALIFIED",
-    "functional_completion": "PARTIAL"
-  },
+  "actual_canonical_merge": "27d545b951265f63b2be321751123384d1a0c4ca",
   "sealed_proof": "accd67320a4a85db298f5aff55f1e0e87b2d782f",
   "root_owner": "CURRENT_REGULAR_AGE_CALENDAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
-  "next": "Actual current canonical reconcile; root consumer on final candidate and actual merge."
+  "next": "Continue original irregular/monthly/subdaily output family from actual metadata merge; no broad science or release promotion.",
+  "pr": 1715,
+  "actual_canonical_tree": "a42f92351afcaa026867785c483017218c557141",
+  "actual_merge_owner": {
+    "returncode": 0,
+    "seconds": 69.86139900004491,
+    "stdout": "{\n  \"status\": \"CURRENT_REGULAR_AGE_CALENDAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS\",\n  \"runtime\": \"75f4bf12f71286e0021877e9285df43beb6be01d\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"water_guard_cm\": 1e-10,\n  \"chemical_mass_guard_changed\": false,\n  \"age_units\": \"cm day\",\n  \"native_codec\": \"S5AGE003\",\n  \"daily_native_codec\": \"S5AGE002\"\n}\n",
+    "stderr": "",
+    "result": {
+      "status": "CURRENT_REGULAR_AGE_CALENDAR_FIXED_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
+      "runtime": "75f4bf12f71286e0021877e9285df43beb6be01d",
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED",
+      "water_guard_cm": 1e-10,
+      "chemical_mass_guard_changed": false,
+      "age_units": "cm day",
+      "native_codec": "S5AGE003",
+      "daily_native_codec": "S5AGE002"
+    }
+  }
 }
