@@ -1,5 +1,5 @@
 {
-  "status": "BASELINE_DIAGNOSTIC_SELECTED",
+  "status": "THREE_ACTUAL_BASELINE_REFUSALS_MINIMAL_SCHEDULE_ADAPTER_PERSISTED",
   "baseline": "a97978f39b8ce89a4d7aaec64172d43bfef88288",
   "owner": "SWAP5-NOMACRO-COMPLETE01",
   "contract": "docs/science/NOMACRO_AGE_SCHEDULE_OUTPUT_20261117.md",
@@ -20,5 +20,8 @@
   "long_justification": "Original monthly/explicit-date pointer and interval/cumulative owner must survive year/crop/end dates; short month endpoint first, full periods only for newly selected schedule modes. No repeated unchanged full components.",
   "full_moving_fci": "NOT_SELECTED_IMPACT",
   "functional_completion": "PARTIAL",
-  "whole_scientific_equivalence": "NOT_QUALIFIED"
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "baseline_diagnostic": "AGE_SCHEDULE_BASELINE_DIAGNOSTIC.json",
+  "implementation": "Separate schedule004 uses literal regular003 renderer/provider/state/clock/packing. Only zero-period counter guard differs; month branch honors original inactive PERIOD/SWRES/SWODAT. Existing daily002 and regular003 generation remains selected through unchanged old helper.",
+  "next": "Monthly plain O0/O2 short45days, real month endpoint and four exact native windows. No original provider/component repeat because source unchanged."
 }
