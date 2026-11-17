@@ -1,6 +1,6 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "67ddba2692cc13f89cfc29100836f2d6a4b80eec",
+  "baseline": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
   "status": "SOURCE_BASED_FAMILY_MATRIX_WITH_REMAINING_SELECTOR_RECONCILIATION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -66,7 +66,7 @@
       "function": "Other drainage and surfacewater",
       "classification": "PARTIAL",
       "original_source": "drainage.f90, divdra.f90, surfacewater.f90",
-      "scope": "methods other than2/3 and SWDRA2 outside canonical adapter; table method1 concurrently owned by coverage18",
+      "scope": "Original table method1 positive/signed is admitted through R PR1698; other methods and SWDRA2 remain partial. No all-drainage/surfacewater claim.",
       "authority": "app/hybrid_water/experimental_project.py",
       "authority_present": true
     },
@@ -112,10 +112,10 @@
     },
     {
       "function": "Scheduled water-only subsurface irrigation",
-      "classification": "IMPLEMENTED_NOT_QUALIFIED",
+      "classification": "ADMITTED",
       "original_source": "irrigation.f90",
-      "scope": "new focused point/interval production qualification in progress",
-      "authority": "tests/nomacro_scheduled_subsurface/run.py",
+      "scope": "PR1699 source-bound point/interval full O0/O2 Windows/Ubuntu, exact native and active state/external/isolation, canonical R/pulse preservation; no chemical admission.",
+      "authority": "integration/f-ci/nomacro-complete01/MERGE_RECEIPT.json",
       "authority_present": true
     },
     {
