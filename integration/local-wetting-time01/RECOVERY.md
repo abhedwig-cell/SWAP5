@@ -158,3 +158,12 @@ Original full GWL FAIL and bounded independent attribution remain separate;
 full/native/heat cohorts inherit only by the demonstrated exact physical closure.
 Next: expected-head PR1701 merge, verify actual canonical tree/parents/ancestry
 and publish that observation. No additional physics experiment is selected.
+
+Delivered: PR1701 merged at6f5e97db90005a24edcd29d2ef8949ae65b94915.
+Actual remote canonical fetched and verified: parentsedbc66b9e/40bc1ce10,
+tree82598bfd22704d52819928f26462c8f7b540741a exactly equals qualified head,
+head ancestry and all5 sealed index blobs intact. Final docs strict passes38.63s.
+MERGE_RECEIPT.json is a post-merge observation on the development branch only;
+it changes no canonical production code. The selected integration work unit is
+complete; original scientific FAIL/limitations remain. No new model trial or
+automatic broad campaign is selected by this completed delivery.
