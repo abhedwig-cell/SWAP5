@@ -91,3 +91,8 @@ source is also unpacked at `C:/SWAP5-RC3`; local raw output remains at
 `C:/SWAP5-testing/rc3-local01`. Use new output directories for your own runs.
 The release branch/ZIP remain fixed when canonical later advances. Actual
 canonical evidence/manual admission is recorded separately in the PR receipt.
+
+The subsequent [same-laptop original431 comparison](RC3_ORIGINAL431_COMPARISON.md)
+reuses the actual RC3 full cohort and validated original source/input/timing
+evidence. It reports all printed daily differences and observed costs without
+another model execution, new tolerance or whole scientific equivalence claim.
