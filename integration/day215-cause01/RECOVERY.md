@@ -23,3 +23,12 @@ model so refinement is causally isolated to the four-day storm window.
 After two distinguishing refinements classify or inspect original groundwater
 interpolation/hysteresis on observed profiles; do not launch a broad campaign.
 Persist sources/commands/provider/input identities, every failure and findings.
+
+COMPLETED: first211 own histories exact in all controls. Nominal0.04day storm
+grid gives1.39949cm day215 discrepancy. Caps0.004/0.0004 only from212 reduce
+common-grid discrepancy to0.000779/0.000996cm. O0 finest four GWL endpoints are
+exact to O2. Actual pressure/theta profiles converge too; output-only nominal
+controls reproduce original full prefixes. All mass guards unchanged, longest
+model2.235s. No production storm policy or scientific PASS introduced. Publish
+causal report/raw and link to mergedPR1697. Next optional implementation block:
+generic local temporal accuracy during rapid rain wetting with bounded cost.
