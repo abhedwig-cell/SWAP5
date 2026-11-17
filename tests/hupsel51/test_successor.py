@@ -166,5 +166,32 @@ class Boundaries(unittest.TestCase):
             with self.subTest(attack=index),self.assertRaises(ValueError):s.validate_p(*bad)
 
 
+    def test_q_actual_event_terminal_mass_native_and_external_scope(self):
+        load=lambda n:json.loads((s.ROOT/s.L_PROOF/('BLOCK_Q_'+n+'.json')).read_text())
+        values=[load(n) for n in ('QUALIFICATION','PRIOR_SOURCE_PRESERVATION','PRIOR_P_FREE_PRESERVATION','COMPONENT_RESULT','TIME_COMPONENT_RESULT','DEFAULT_PRESERVATION_RESULT')]
+        values.extend([dict(Windows=load('PREFLIGHT_WINDOWS'),Ubuntu=load('PREFLIGHT_UBUNTU')),load('ORIGINAL_REFERENCE_RESULT')])
+        s.validate_q(*values);attacks=[]
+        for field,value in [('runtime_source',s.CURRENT_RUNTIME),('complete_model_days',1096),('numerical_policy','original-adaptive-day-seed-v1'),('mass_guard_cm',1e-9),('maximum_water_residual_cm',float('nan')),('new_Jacobian',True),('new_persistent_codec',True),('whole_scientific_equivalence','PASS'),('retained_failures','PASS')]:
+            bad=copy.deepcopy(values);bad[0][field]=value;attacks.append(bad)
+        for edit in ('mass','year','native','external','initial','forcing'):
+            bad=copy.deepcopy(values);report=bad[0]['platforms']['Ubuntu'];r=report['profiles']['O2']
+            if edit=='mass':r['budgets']['max_water_cm']=1.00001e-10
+            elif edit=='year':r['active_frost_exact_native_windows'].pop()
+            elif edit=='native':r['own'][0]['exact_native']=False
+            elif edit=='external':r['controls']['external_disk_recovery']=False
+            elif edit=='initial':r['frost_witness']['initial_original_uncomputed_diagnostic'][-1]=1
+            else:report['selected_physical_controls']['SWSOLU']=1
+            attacks.append(bad)
+        bad=copy.deepcopy(values);bad[1]['profiles'].pop('water-plate-history');attacks.append(bad)
+        bad=copy.deepcopy(values);bad[2]['profiles']['chemical']['prefix']['own'][1]['exact_csv']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[3]['physical_cases_per_optimization']=11;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[4]['profiles']['O2-corrected']['values'][0][4]=-1e-12;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[5]['profiles'][0]['every_exercised_native_exact']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[6]['Windows']['negative_controls'].pop();attacks.append(bad)
+        bad=copy.deepcopy(values);bad[7]['science']='PASS';attacks.append(bad)
+        for index,bad in enumerate(attacks):
+            with self.subTest(attack=index),self.assertRaises(ValueError):s.validate_q(*bad)
+
+
 if __name__ == '__main__':
     unittest.main()
