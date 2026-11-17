@@ -1,6 +1,6 @@
 # Original age subdaily output clock and annual-only schedule
 
-**Implementation contract; no qualification or admission yet.**
+**Named source/state/output cohorts qualified on Windows and Ubuntu; canonical admission pending.**
 Baseline is actual canonicalb6dc588ef after PR1717/1718 schedule004 admission.
 The actual metadata parents/tree and detached root owner passed, in107.24seconds.
 Historical closure remains PARTIAL, whole science NOT_QUALIFIED and RC3 unchanged.
@@ -110,3 +110,42 @@ numerical predicate changed. Keep the initial Windows proof and failed Linux/
 diagnostic artifacts as counterevidence. Prior004/003/002/age-off generated code
 and provider identities are unaffected; completed exact preservation may be
 inherited on that dependency evidence.
+
+Qualification result (completed across17/18November): source4a3bdf387,
+portable carrier8844c39e6, successful workflow44192970110 and artifact14377848736.
+The actual277875449-byte artifact SHA256 is
+2bae080196e82bf8291dfe8efb9e9ae72b9133ca3a4fc62c946b0ccf380beb56.
+All26142members were checked and forwarded exactly once into six bounded
+archives. The source-bound qualification is
+`integration/f-ci/nomacro-complete01/AGE_CLOCK_QUALIFICATION.json`.
+
+Each platform completed16full1096-day trajectories and128exact full cold
+windows, plus52short/year windows. Actual native005readers rejected126attacks
+and30foreign policies per platform. Eight actual monthly omission inputs and ten
+active input refusals passed per platform. Four active gift discard/replay/disk
+recovery contexts and24interleaved accepted steps passed per platform. The real
+Integral(3)/Watstor projection component passed42bit-exact/nonmutation cases in
+each optimization on each platform. All18schedule004,14regular003 and12daily002
+contexts retained exact emitted/provider/input/physical/CSV/native evidence;
+13age-off contexts and the publicNP3surface CLI/cold4to8 also passed. The only
+changed post-preservation numerical predicate belongs to the separately selected
+005subdaily route; literal selector/delegation and generated closures bind prior
+context inheritance. No old checkpoint is converted or rebound.
+
+Both platforms executed16actual original1096-day inputs on the exact qualified
+original executables, with unchanged providers/compiler/inputs. Completed
+Windows executions were reused rather than repeated after changing the migrated
+predicate. All six NP3original contexts on each platform retain the extra
+2003-01-03 00:00:17 event as NOT_QUALIFIED. Maximum original water residual remains
+3.824774471410108e-6cm on Windows and3.824774471195003e-6cm on Ubuntu. Maximum
+original/migrated soil-water inventory differences are0.012370830213825457cm and
+0.014267067842482106cm; combined age-inventory differences are10.52720628771931
+and10.544184451508045cm day. These are measured unresolved differences, not proof
+of a legacy physical defect. Whole science remains NOT_QUALIFIED.
+
+The draft strict successor validates all named policies, units, budgets, output
+intervals, native/refusal/preservation cases and public CLI. Its1498corruption
+controls passed. Raw report binding separately matches84actualproducer reports
+and builds against the qualification. Admission remains disabled until sealing,
+registered-root checks, source-negative controls and actual canonical postimage
+verification. RC3 packaging and its fixed named release scope are unchanged.

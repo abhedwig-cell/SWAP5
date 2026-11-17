@@ -144,6 +144,26 @@ def unchanged_selection(ref):
     require(set(git('diff','--name-only',ref,RUNTIME,'--','app','src','reference','tools').decode().splitlines())<={'app/hybrid_water/age_output_clock.py'},'005 inherited prior context dependency changed')
 
 
+def raw_reports(q):
+    """Bind the semantic qualification back to the actual archived producers."""
+    expected={}
+    for platform in ('Windows','Ubuntu'):
+        prefix='age-clock-ubuntu/' if platform=='Ubuntu' else ''
+        for name,r in q['platforms'][platform]['profiles'].items():
+            opt=PROFILES[name][3]
+            folder=prefix+('matrix-'+opt if platform=='Ubuntu' else 'age-clock-final-matrix-'+opt)+'/'+name+'/'
+            expected[folder+'RESULT.json']=r
+            expected[folder+'build/BUILD.json']=q['builds'][platform][name]
+        for opt in ('O0','O2'):
+            folder=prefix+('receipt-'+opt if platform=='Ubuntu' else 'age-clock-absolute-receipt-'+opt)
+            expected[folder+'/RESULT.json']=q['components'][platform][opt]
+        for key,win,linux in [('original_reference','age-clock-final-reference','reference'),('controls','age-clock-final-controls','controls'),('reader_controls','age-clock-reader','reader'),('schedule_preservation','age-clock-schedule004-preserve','schedule004-preserve'),('regular_preservation','age-clock-regular003-preserve','regular003-preserve'),('inactive','age-clock-inactive','inactive'),('daily_fixed_preservation','age-clock-daily-fixed002-preserve','daily-fixed-preserve')]:
+            expected[prefix+(linux if platform=='Ubuntu' else win)+'/RESULT.json']=q[key][platform]
+    expected['age-clock-off-preserve/RESULT.json']=q['age_off_preservation']
+    expected['AGE_CLOCK_FINAL_PUBLIC_CLI.json']=q['public_cli']
+    return expected
+
+
 def verify():
     require(SEALED!='UNSEALED_NOT_QUALIFIED','005 admission is not sealed')
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty005 admission surface')
@@ -166,13 +186,19 @@ def verify():
         for key in ('schedule_preservation','regular_preservation','inactive','daily_fixed_preservation'):unchanged_selection(q[key][platform]['source_commit'])
     unchanged_selection(q['age_off_preservation']['source_commit'])
     for path,digest in q['controller_canonical_sha256'].items():require(sha(ROOT/path)==digest,'005 executed controller differs')
+    reports=raw_reports(q);observed=set()
     for path in sorted((ROOT/PROOF).glob('AGE_*_RAW_ARCHIVE.json')):
         r=json.loads(path.read_text());archive=ROOT/PROOF/r['archive']
         if path.name.startswith('AGE_CLOCK_'):require(q['archives'].get(path.name)==r,'005 raw record differs')
         require(r['all_members_forward_verified'] is True and len(r['members'])==r['member_count'] and archive.stat().st_size==r['bytes'] and hashlib.sha256(archive.read_bytes()).hexdigest()==r['sha256'],'005 raw identity changed')
         with zipfile.ZipFile(archive) as z:
             require({n for n in z.namelist() if not n.endswith('/')}==set(r['members']),'005 raw member omitted')
-            for name,digest in r['members'].items():require(hashlib.sha256(z.read(name)).hexdigest()==digest,'005 raw member changed')
+            for name,digest in r['members'].items():
+                data=z.read(name);require(hashlib.sha256(data).hexdigest()==digest,'005 raw member changed')
+                if name in reports:
+                    require(name not in observed and json.loads(data)==reports[name],'005 qualification differs from actual producer report: '+name)
+                    observed.add(name)
+    require(observed==set(reports),'005 actual producer report omitted')
     forwarded={}
     for name,r in q['archives'].items():
         if not name.startswith('AGE_CLOCK_UBUNTU_'):continue
