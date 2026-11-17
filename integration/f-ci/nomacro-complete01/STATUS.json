@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
+  "baseline": "f0e5e39ea3d166755e394700a5a8765700eab875",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-complete01",
-  "last_commit": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
-  "status": "SCHEDULED_SSDI_CANONICALLY_ADMITTED_REMAINING_MIGRATION_ACTIVE",
+  "branch": "codex/nomacro-chemical-source01",
+  "last_commit": "f0e5e39ea3d166755e394700a5a8765700eab875",
+  "status": "CHEMICAL_SSDI_SOURCE_COMPONENT_IMPLEMENTED_NOT_QUALIFIED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -32,11 +32,10 @@
     "Remaining chemical reservoir/age/vapor/drainage/surfacewater/constitutive/weather/state gaps"
   ],
   "dependency_surface": [
-    "app/hybrid_water/experimental_project.py",
-    "app/hybrid_water/daily_host.py",
-    "app/hybrid_water/daily_coupling.py",
-    "app/hybrid_water/scheduled_subsurface_irrigation.py",
-    "original MOD_irrigation, MOD_integral and water solver; existing complete management native codec"
+    "src/process/mod_subsurface_solute_source.f90",
+    "tests/modularity/test_subsurface_solute_source.f90",
+    "tests/modularity/run_modular_tests.py",
+    "Original MOD_solute_CDE source and irrigation qssdi/cirr owners; caller integration not implemented"
   ],
   "invariants": [
     3,
@@ -140,8 +139,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Implement independent conservative nodal chemical SSDI source and qualify corrected original CDE/reference ledger before enabling chemical fixed/scheduled subsurface input. Source defect positive controls already in ORIGINAL_CHEMICAL_AUDIT.json.",
-  "recovery_point": "Canonical admission0b9e4a214. Current task branch codex/nomacro-complete01 contains descriptive admission receipt. Resume from latest versioned STATUS; verify live delta only. All S full/native/platform evidence terminal and sealed; do not repeat for metadata. Next code is chemical source, with separate existing-policy and original-refusal preservation.",
+  "next_code_change": "Run new real production source contract O0/O2, then apply the conserved nodal source and matching ledger to an exact corrected original CDE reference before allowing any chemical subsurface project. Current integrated chemical refusal stays in place.",
+  "recovery_point": "Admitted S/PULSE/R implementation stays canonical f0e5e39ea. Development branch codex/nomacro-chemical-source01 adds only an unconnected, stateless conservative source evaluator and its real one-provider driver. Run --case subsurface_solute_source, retain errors, then corrected original CDE/source ledger qualification. Do not claim chemical SSDI enabled.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
