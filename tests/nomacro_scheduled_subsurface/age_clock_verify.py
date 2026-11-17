@@ -172,7 +172,7 @@ def preservation_builds(q):
         for key,win,linux in [('inactive','age-clock-inactive','inactive'),('daily_fixed_preservation','age-clock-daily-fixed002-preserve','daily-fixed-preserve')]:
             prefix=('age-clock-ubuntu/'+linux) if platform=='Ubuntu' else win
             for name,r in q[key][platform]['profiles'].items():
-                expected[prefix+'/'+name+'-build/BUILD.json']=r['coverage']['build_sha256']
+                expected[prefix+'/'+name+'-build/BUILD.json']=(r['coverage']['build_sha256'],platform)
     return expected
 
 
@@ -211,9 +211,15 @@ def verify():
                     require(name not in observed and json.loads(data)==reports[name],'005 qualification differs from actual producer report: '+name)
                     observed.add(name)
                 if name in preserved:
-                    require(name not in observed_builds and hashlib.sha256(data).hexdigest()==preserved[name],'005 legacy002 measured build differs')
+                    digest,platform=preserved[name]
+                    require(name not in observed_builds and hashlib.sha256(data).hexdigest()==digest,'005 legacy002 measured build differs')
                     identity=json.loads(data)['identity']
-                    require(identity['host']==sha(ROOT/'app/hybrid_water/daily_host.py') and identity['experimental_input_adapter']==sha(ROOT/'app/hybrid_water/experimental_project.py'),'005 legacy002 production host/adapter differs')
+                    # Metadata hashes actual platform bytes: the Windows input
+                    # adapter is CRLF, the portable producer is LF. Compare to
+                    # the exact same-platform qualified build, without changing
+                    # any object/source hash or normalizing its receipt.
+                    qualified=next(iter(q['builds'][platform].values()))['identity']
+                    require(all(identity[key]==qualified[key] for key in ('host','experimental_input_adapter')),'005 legacy002 production host/adapter differs')
                     require(identity['conserved_original_age']['native_codec']=='S5AGE002' and identity['conserved_original_age']['providers']==q['physical_age_providers'],'005 legacy002 compiled state/provider differs')
                     observed_builds.add(name)
     require(observed==set(reports),'005 actual producer report omitted')
