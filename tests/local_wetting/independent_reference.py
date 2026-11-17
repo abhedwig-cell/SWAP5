@@ -33,8 +33,9 @@ def head_source(raw):
 def csvrows(p):return list(csv.DictReader(s for s in p.read_text(encoding='cp1252').splitlines() if s and not s.startswith('*')))
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--provider',type=Path,required=True);p.add_argument('--seed-input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--opt',nargs='+',choices=['O0','O2'],default=['O0','O2']);p.add_argument('--caps',type=float,nargs='+',default=[.0004,.0001,.000025]);a=p.parse_args();provider=a.provider.resolve();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);ref=provider/'build'
+ p=argparse.ArgumentParser();p.add_argument('--provider',type=Path,required=True);p.add_argument('--seed-input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--opt',nargs='+',choices=['O0','O2'],default=['O0','O2']);p.add_argument('--caps',type=float,nargs='+',default=[.0004,.0001,.000025]);p.add_argument('--grid',type=Path);a=p.parse_args();provider=a.provider.resolve();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);ref=provider/'build'
  manifest=json.loads((provider/'PREPARED.json').read_text());result={'kind':'INDEPENDENT_ORIGINAL431_NEWTON_REFERENCE_NUMERICAL_WINDOW_ONLY','provider_manifest_sha256':sha(provider/'PREPARED.json'),'production_imports':False,'shared_swap5_headcalc':False,'shared_swap5_mass_guard':False,'input_tolerances_changed':False,'water_guard_cm':1e-10,'model_timeout_seconds':20,'profiles':{}}
+ compiler=Path(shutil.which('gfortran') or 'missing-gfortran');identity=manifest['toolchain']['gfortran'];assert sha(compiler)==identity['sha256'];assert subprocess.check_output(['gfortran','--version'],text=True).splitlines()[0]==identity['version'];result['validated_compiler']=identity
  # Validate immutable provider bytes named by its preparation manifest.
  def entries(v):
   if isinstance(v,dict):
@@ -51,7 +52,22 @@ def main():
  flags0=['-cpp','-Dlinux','-finit-local-zero','-ffree-line-length-none','-fallow-argument-mismatch','-ffp-contract=off','-march=x86-64','-mtune=generic']
  for opt in a.opt:
   for index,cap in enumerate(a.caps):
-   assert 1e-6<=cap<=.04;name=opt+'-'+format(cap,'.9g').replace('.','p');build=out/(name+'-build');build.mkdir();hp=build/'headcalc.f90';hp.write_text(head,encoding='cp1252');sp=build/'swap.f90';s=(ref/'swap-selected/swap.f90').read_text(encoding='cp1252');s=s.replace('gwl, gwlm1, dt, t1900','gwl, gwlm1, dt, dtmax, t1900');anchor='         call TimeControl(2)';assert s.count(anchor)==1;s=s.replace(anchor,f'         dtmax={cap:.17f}d0;dt=min(dt,dtmax)\n'+anchor);sp.write_text(s,encoding='cp1252');flags=['-'+opt,*flags0,'-I',str(ref/'swap-obj'),'-I',str(ref/'ttutil-obj'),'-I',str(build),'-J',str(build)];exe=build/('original_reference.exe' if __import__('os').name=='nt' else 'original_reference');commands=[]
+   assert 1e-6<=cap<=.04;name=opt+'-'+format(cap,'.9g').replace('.','p');build=out/(name+'-build');build.mkdir();hp=build/'headcalc.f90';hp.write_text(head,encoding='cp1252');sp=build/'swap.f90';s=(ref/'swap-selected/swap.f90').read_text(encoding='cp1252');s=s.replace('gwl, gwlm1, dt, t1900','gwl, gwlm1, dt, dtmax, t1900');anchor='         call TimeControl(2)';assert s.count(anchor)==1;s=s.replace(anchor,f'         dtmax={cap:.17f}d0;dt=min(dt,dtmax)\n'+anchor)
+   if a.grid:
+    anchor='         call TimeControl(4)';assert s.count(anchor)==1;s=s.replace(anchor,anchor+'''
+         block
+          integer,save::grid_unit=0
+          integer::grid_ios
+          real(8)::grid_clock,grid_dt
+          if(grid_unit==0)open(newunit=grid_unit,file='reference-grid.txt',status='old',action='read')
+          read(grid_unit,*,iostat=grid_ios)grid_clock,grid_dt
+          if(grid_ios/=0.or.grid_clock/=t1900.or.grid_dt<=0d0)error stop 'Foreign reference grid/clock'
+          dt=grid_dt
+         end block
+''')
+    anchor='         if (fldecdt .OR. (swmacro == 1 .AND. FlDecMpRat)) then';assert s.count(anchor)==1;s=s.replace(anchor,anchor+"\n            error stop 'Independent original cannot solve proposed replay grid'",1)
+    anchor='      call SoilWater(3)';assert s.count(anchor)==1;s=s.replace(anchor,"      write(*,'(a,1x,*(g0,1x))')'INDEPENDENT_ACCEPTED_GRID',t1900,dt\n"+anchor)
+   sp.write_text(s,encoding='cp1252');flags=['-'+opt,*flags0,'-I',str(ref/'swap-obj'),'-I',str(ref/'ttutil-obj'),'-I',str(build),'-J',str(build)];exe=build/('original_reference.exe' if __import__('os').name=='nt' else 'original_reference');commands=[]
    for source in (sp,hp):commands.append(['gfortran',*flags,'-c',str(source)])
    objects=sorted((ref/'swap-obj').glob('*.o'));assert objects
    linked=[build/v.name if v.name in ('swap.o','headcalc.o') else v for v in objects];commands.append(['gfortran','-o',str(exe),*map(str,linked),str(ref/'ttutil-obj/libttutil.a')])
@@ -63,12 +79,15 @@ def main():
     if f.is_file() and (f.suffix.lower() in ('.swp','.met','.crp','.dra','.ru','.cmd','.inp') or f.name in ('restart.end','macro.bin')):
      shutil.copy2(f,folder/f.name);inputs[f.name]=sha(f)
    control=(folder/'swap.swp').read_text(encoding='cp1252');assert 'SWINITYPE = 2' in control
+   if a.grid:shutil.copy2(a.grid,folder/'reference-grid.txt');inputs['reference-grid.txt']=sha(a.grid)
    start=time.perf_counter();record=dict(optimization=opt,dtmax_day=cap,compile_seconds=compile_seconds,commands=commands,source_sha256={'headcalc.f90':sha(hp),'swap.f90':sha(sp)},executable_sha256=sha(exe),linked_objects={str(x):sha(x) for x in linked},inputs=inputs)
    try:
     with (folder/'stdout').open('wb') as log:r=subprocess.run([str(exe),'./swap.swp'],cwd=folder,stdout=log,stderr=subprocess.STDOUT,timeout=20)
    except subprocess.TimeoutExpired:
     record.update(status='CENSORED_AT_20_SECONDS_NOT_QUALIFIED',seconds=time.perf_counter()-start);result['profiles'][name]=record;save();return
    record.update(seconds=time.perf_counter()-start,returncode=r.returncode);assert r.returncode==100 and (folder/'swap.ok').is_file();data=csvrows(folder/'result_output.csv');assert len(data)==4
+   if a.grid:
+    accepted=[tuple(map(float,s.split()[1:])) for s in (folder/'stdout').read_text().splitlines() if s.startswith('INDEPENDENT_ACCEPTED_GRID')];expected=[tuple(map(float,s.split())) for s in a.grid.read_text().splitlines()];assert accepted==expected;record['accepted_grid_exact']=True;record['accepted_steps']=len(accepted)
    assert all(sha(folder/n)==v for n,v in inputs.items());assert all(math.isfinite(float(v['GWL'])) and abs(float(v['BALDEV']))<=1e-10 for v in data[1:]),'Independent original balance failed'
    record.update(status='COMPLETE_INDEPENDENT_ORIGINAL_BALANCE_PASS',initial=data[0],daily=data[1:],maximum_original_BALDEV_cm=max(abs(float(v['BALDEV'])) for v in data[1:]));result['profiles'][name]=record;save();print(name,record['seconds'],data[2]['GWL'],record['maximum_original_BALDEV_cm'],flush=True)
 if __name__=='__main__':main()
