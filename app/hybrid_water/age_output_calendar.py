@@ -85,6 +85,10 @@ def _layout(source):
     fields += [(n,('numnod',)) for n in ('inqpotrot_day','inqredrot_day')]
     fields += [(n,()) for n in ('iqrot_day','iqreddry_day','iqredsol_day','iptra_day','ialpwet_day','ialpdry_day')]
     fields += [(n,()) for n in ('volini','pondini','ivolbeg','ipondbeg','issnowbeg','isicbeg')]+[('ithetabeg',('numnod',))]
+    # Initialize explicitly defines every output-date entry as zero; the reader
+    # populates the active dates. Preserve the complete defined calendar because
+    # a cold input TSTART rebuilds a shorter annual calendar.
+    fields += [(n,('maout',)) for n in ('outdat','outdatint')]
     fields += [(n,()) for n in ('ipgass','igass','imres','ipgasspot','igasspot','imrespot','tcumold','outper')]
     return fields
 
@@ -105,10 +109,11 @@ def _routines(fields):
 use ieee_arithmetic,only:ieee_is_finite
 use MOD_grid,only:numnod
 use MOD_drain,only:nrlevs
+use MOD_arrays,only:maout
 use MOD_timer,only:tcumold
 use plant_interface,only:ipgass,igass,imres,ipgasspot,igasspot,imrespot,sicact
 use variables,only:volact,pond,volini,pondini,ivolbeg,ipondbeg,issnowbeg,isicbeg,ithetabeg, &
- daycum,cntper,nprintcount,ioutdat,ioutdatint,period,nprintday,swres,outper, &
+ daycum,cntper,nprintcount,ioutdat,ioutdatint,period,nprintday,swres,outper,outdat,outdatint, &
  flzerocumu,flzerointr,floutput,floutputshort,flbaloutput,flheader,flprintshort,flprintdt,t1900
 '''
     nreal='+'.join(lengths)
@@ -132,7 +137,10 @@ if(restoring)then
  if(any(header/=witness_header))error stop 'Original output calendar header witness mismatch'
  if(any(header(1:6)/=[1,numnod,nrlevs,nreal,period,nprintday]))error stop 'Foreign original output calendar shape/policy'
  if(header(12)/=swres.or.minval(header(7:11))<0)error stop 'Invalid original output calendar counters'
+ if(header(8)>=period.or.header(9)/=1)error stop 'Invalid original regular output counters'
+ if(any(header(10:11)<1).or.any(header(10:11)>maout))error stop 'Invalid original output date pointers'
  if(any(header(13:20)<0).or.any(header(13:20)>1))error stop 'Invalid original output calendar flags'
+ if(any(header(19:20)/=0))error stop 'Foreign original regular output flags'
  allocate(values(nreal),witness(nreal));read(unit,iostat=ios)values,witness
  if(ios/=0)error stop 'Incomplete original output calendar values'
  if(.not.all(ieee_is_finite(values)))error stop 'Nonfinite original output calendar values'
@@ -163,6 +171,8 @@ flprintshort=pending_header(19)==1;flprintdt=pending_header(20)==1
 pos=1
 '''+ '\n'.join(unpack)+'''
 if(pos/=size(pending_values)+1)error stop 'Original output calendar layout mismatch'
+if(ioutdat/=1+count(outdat>0d0.and.outdat<t1900-1d-8))error stop 'Inconsistent original output date pointer'
+if(ioutdatint/=1+count(outdatint>0d0.and.outdatint<t1900-1d-8))error stop 'Inconsistent original interval date pointer'
 output_restore_pending=.false.
 ! Original first-day crop initialization resets these six output integrals.
 ! Restore them once after that initialization, before the normal interval reset.
