@@ -5,6 +5,23 @@ import hashlib
 POLICY='original-adaptive-local-wetting-v1'
 SUPPLY_DEPTH_CM=0.02
 IRRIGATION_SUBSTEPS=2048
+MAX_WETTING_INCREMENT=0.002
+
+def render_headcalc(text, *, original_reference=False):
+    anchor='      if (.NOT.flnonconv) then      ! convergence has been reached'
+    if text.count(anchor)!=1:
+        raise ValueError('Foreign original local wetting HeadCalc owner')
+    counter='' if original_reference else '            budget_retries=budget_retries+1\n'
+    return text.replace(anchor,f'''      ! Resolve actual wetting/redistribution, not only external supply.
+      ! Reuse the original rejected-step state rollback before any Integral3.
+      if(.not.flnonconv)then
+         if(maxval(theta(1:numnod)-thetm1(1:numnod))>{MAX_WETTING_INCREMENT:.17g}d0)then
+            if(dt<=dtmin)error stop 'Local wetting resolution cannot be met at DTMIN'
+            fldecdt=.true.
+{counter}            return
+         endif
+      endif
+'''+anchor)
 
 def source(original):
     text=original.decode('cp1252')
@@ -43,5 +60,6 @@ def metadata(original):
     sha=lambda b:hashlib.sha256(b).hexdigest()
     return dict(policy=POLICY,maximum_supply_depth_cm=SUPPLY_DEPTH_CM,
                 irrigation_substeps=IRRIGATION_SUBSTEPS,
+                maximum_wetting_increment=MAX_WETTING_INCREMENT,
                 source_sha256=sha(Path(__file__).read_bytes()),
                 original_sha256=sha(original),generated_source_sha256=sha(source(original)))

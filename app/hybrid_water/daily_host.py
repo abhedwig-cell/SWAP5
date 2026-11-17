@@ -417,6 +417,9 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
             source = replace(source, "      if (iTask == 1 .OR. .NOT. flunsatok(3)) then",
                              "      if (iTask == 1 .OR. .NOT. flunsatok(3) .OR. &\n"
                              "          (t1900 >= 36252.9989d0 .AND. t1900 < 36253d0)) then")
+        if project.time_step_policy == LOCAL_WETTING_TIME_POLICY:
+            from local_wetting_time import render_headcalc as render_wetting_headcalc
+            source=render_wetting_headcalc(source)
         (output / "headcalc.f90").write_text(source, encoding="cp1252")
         patched.append("headcalc")
 

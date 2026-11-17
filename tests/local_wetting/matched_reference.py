@@ -7,7 +7,8 @@ def rows(p):return list(csv.DictReader(s for s in p.read_text(encoding='cp1252')
 def main():
  p=argparse.ArgumentParser();p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve();build=out/'matched-reference-build';build.mkdir();ref=a.reference_work/'build';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
  src=build/'timecontrol.f90';src.write_bytes(policy.source((ref/'swap-selected/timecontrol.f90').read_bytes()));flags=['-O2','-cpp','-Dlinux','-finit-local-zero','-ffree-line-length-none','-fallow-argument-mismatch','-ffp-contract=off','-march=x86-64','-mtune=generic','-I',str(ref/'swap-obj'),'-I',str(ref/'ttutil-obj')];exe=build/'original_with_explicit_wetting_policy.exe'
- commands=[['gfortran',*flags,'-c',str(src)],['gfortran','-o',str(exe),*[str(build/x.name if x.name=='timecontrol.o' else x) for x in sorted((ref/'swap-obj').glob('*.o'))],str(ref/'ttutil-obj/libttutil.a')]]
+ head=build/'headcalc.f90';head.write_text(policy.render_headcalc((ref/'swap-selected/headcalc.f90').read_text(encoding='cp1252'),original_reference=True),encoding='cp1252')
+ commands=[['gfortran',*flags,'-c',str(src)],['gfortran',*flags,'-c',str(head)],['gfortran','-o',str(exe),*[str(build/x.name if x.name in ('timecontrol.o','headcalc.o') else x) for x in sorted((ref/'swap-obj').glob('*.o'))],str(ref/'ttutil-obj/libttutil.a')]]
  for cmd in commands:
   r=subprocess.run(cmd,cwd=build,capture_output=True,text=True,timeout=30);assert r.returncode==0,r.stderr
  result=dict(kind='DIAGNOSTIC_ORIGINAL431_WITH_EXPLICIT_MATCHED_NUMERICAL_POLICY_NOT_B0',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),policy=policy.metadata((ref/'swap-selected/timecontrol.f90').read_bytes()),commands=commands,executable_sha256=sha(exe),provider_manifest_sha256=sha(a.reference_work/'PREPARED.json'),tolerances_changed=False,science='NOT_QUALIFIED',cases={})

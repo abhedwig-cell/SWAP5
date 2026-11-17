@@ -29,3 +29,17 @@ Dedicated Ubuntu repeats affected qualification only; reuse valid earlier
 controls/results when their actual dependencies match. No broad campaign.
 After two unsuccessful repairs reassess; retain all failed/censored outcomes.
 Deliver source/build/input/raw identities and scientific/cost limits in a PR.
+
+First sourcec40be2fd1/hosted2b8e4620a passes all functional/full/native tests
+(run44064080254 SUCCESS), but supply-only control still has2.68733cm maximum
+nominal B0 GWL difference at near-saturation day364. Retain this superseded
+source/results in original output local-wetting-time01 and separate assessment;
+do not relabel it as scientifically qualified. The limiting cause is unresolved
+internal redistribution, even without current external input. Select one
+complete original rollback-based refinement: before acceptance bound actual
+positive theta-thetm1 change per cell to0.002; if exceeded, use original
+fldecdt rollback/reduction, refuse if DTMIN cannot meet resolution. No altered
+physics/mass/scientific tolerances, no saved state. New numerical accuracy
+configuration is explicit and metadata-bound. Test in fresh time02 directories;
+do not overwrite or rebind first-source results. If this second approach fails
+materially, reassess instead of adding finer local fixes.
