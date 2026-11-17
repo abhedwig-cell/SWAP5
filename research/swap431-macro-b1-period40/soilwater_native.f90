@@ -263,7 +263,9 @@ logical function retry07_driver() result(handled)
  use MOD_macropore,only:MacroStateVar
  implicit none
  integer::u
+ character(8)::policy40
  handled=.true.
+ call get_environment_variable('PERIOD34_ORIGINAL_POLICY',policy40)
  if(.not.period_begin_done) then
   period_begin_done=.true.
   call inventory_dump('begin')
@@ -281,7 +283,7 @@ logical function retry07_driver() result(handled)
   write(u,*) attempts,t1900,dt,active_in_attempt,IDecMpRat,merge(1,0,fldecdt),merge(1,0,FlDecMpRat)
   close(u)
  end if
- if(FlDecMpRat.or.IDecMpRat/=0) then
+ if((FlDecMpRat.or.IDecMpRat/=0).and.trim(policy40)/='1') then
   call inventory_dump('refused')
   call native09_dump('context_refused')
   call ledger12_dump('ledger_refused')

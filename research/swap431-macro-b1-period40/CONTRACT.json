@@ -6,7 +6,7 @@
   "maximum_commits": null,
   "internal_stop_seconds": 16,
   "external_hard_seconds": 20,
-  "model_routes": 2,
+  "model_routes": 4,
   "activation": "apply37 true before every head from first; unchanged terms guards and oldrank1 fallback",
   "ordinary_refusal": "unchanged original host rollback/TimeControl5 and retry; no forced failure",
   "stop_scaled_request": true,
@@ -25,5 +25,11 @@
   "stop": "Natural day boundary35798 AFTER original BAL/CSV output, or internal16s, or firstscaledrequest; hard20s each",
   "maximum_commits_note": "Short-observation512cap removed only for explicitly requested samefullperiod. No numerical budget or dt/reduction change.",
   "full_period_balance_requested": true,
-  "no_new_restart_or_canonical_admission": true
+  "no_new_restart_or_canonical_admission": true,
+  "scope_revision": "Two strict same-period routes preserved; two original-policy routes at same fixed35797->35798 horizon, exactly as PERIOD34 precedent. No other period/variant.",
+  "strict_stop_scaled_request": true,
+  "policy_stop_scaled_request": false,
+  "policy": "Original TimeControl5 only; no added factors or changed criteria. Numerical newcorrect guard still requires Fr1; fallback unchanged at reducedflux.",
+  "strict_closure": "native/STRICT/O0 and O2 retain actual first executables/source/objects; strict_source and STRICT_* identities",
+  "policy_limit": "Original internal16s / external20s still retained; no further routes if incomplete"
 }
