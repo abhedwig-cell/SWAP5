@@ -27,11 +27,12 @@ def native(build,reference,project,full,out):
         path=origin/'macro.bin';raw=bytearray(path.read_bytes())
         # Original age payload is unchanged; selected fixture has one drain level.
         age_bytes=24*project.nodes+8*26+20+128
-        start=raw.rfind(struct.pack('<3i',1,project.nodes,1),0,len(raw)-age_bytes)
-        assert start>0
-        header=list(struct.unpack_from('<20i',raw,start));nreal=header[3]
-        assert header==list(struct.unpack_from('<20i',raw,start+80))
-        assert start+160+16*nreal==len(raw)-age_bytes
+        prefix=struct.pack('<3i',1,project.nodes,1);start=raw.find(prefix)
+        while start>=0:
+            header=list(struct.unpack_from('<20i',raw,start));nreal=header[3]
+            if start+160+16*nreal==len(raw)-age_bytes and header==list(struct.unpack_from('<20i',raw,start+80)):break
+            start=raw.find(prefix,start+1)
+        assert start>0,'No complete duplicated calendar header at exact native boundary'
         def hi(index,value,witness=True):
             struct.pack_into('<i',raw,start+4*index,value)
             if witness:struct.pack_into('<i',raw,start+80+4*index,value)
