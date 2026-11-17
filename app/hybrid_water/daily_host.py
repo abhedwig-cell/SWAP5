@@ -173,9 +173,11 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     chemical_source=chemical_fixed or chemical_scheduled
     from conserved_aquifer_solute import enabled as aquifer_enabled, correction as aquifer_correction
     aquifer_source=aquifer_enabled(project)
-    import age_output_schedule as age_calendar_owner
+    import age_output_clock as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
-        import age_output_calendar as age_calendar_owner
+        import age_output_schedule as age_calendar_owner
+        if age_calendar_owner.selection(project) is None:
+            import age_output_calendar as age_calendar_owner
     age_calendar=age_calendar_owner.selection(project)
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=(2 if project.age else int(project.solute)):
@@ -897,7 +899,7 @@ end module plant_interface""")
     if project.age:
         from conserved_original_age import metadata as age_metadata
         build_identity['conserved_original_age']=age_metadata()
-        from age_output_schedule import age_identity
+        from age_output_clock import age_identity
         build_identity['conserved_original_age']=age_identity(build_identity['conserved_original_age'],project)
         from age_fixed_irrigation import enabled as age_fixed_enabled,metadata as age_fixed_metadata
         if age_fixed_enabled(project):build_identity['original_age_fixed_irrigation']=age_fixed_metadata()

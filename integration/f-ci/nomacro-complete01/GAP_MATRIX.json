@@ -1239,5 +1239,13 @@
     "admission_authority": "integration/f-ci/nomacro-complete01/AGE_SCHEDULE_MERGE_RECEIPT.json",
     "remaining": "Subdaily output clock, partial omission of inactive monthly input selectors, other age/vapor/process domains and source-valued age forcing. Whole science NOT_QUALIFIED.",
     "canonical_merge": "9c32d7fc02b49c88839d392d81111760726bacce"
+  },
+  "bounded_subdaily_annual_age_clock": {
+    "classification": "IMPLEMENTED_NOT_QUALIFIED",
+    "source_qualification": "Windows/Ubuntu boundedsource/state/output PASS; sealedadmission/canonicalpending.",
+    "runtime": "4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24",
+    "scope": "16profiles/platform: NP2/3plain/surface/SSDIinterval andannual-onlyplain/interval O0/O2,1096days,128exactfullcoldwindows/platform. Actualmonthlyinactiveomission inputs; old004/003/002/ageoff exactpreserved.",
+    "qualification_authority": "integration/f-ci/nomacro-complete01/AGE_CLOCK_QUALIFICATION.json",
+    "remaining": "FLPRINTDT andotherhistoricaloutput/processdomains; originalwater/profile/cadence/format limitations remain NOT_QUALIFIED. No newRCartifact."
   }
 }

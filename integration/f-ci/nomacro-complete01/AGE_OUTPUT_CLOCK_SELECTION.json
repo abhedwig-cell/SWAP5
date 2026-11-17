@@ -1,0 +1,98 @@
+{
+  "status": "INITIAL_PORTABLE_FAILURE_DIAGNOSED_ABSOLUTE_DAILY_RECEIPT_PREDICATE_REQUALIFICATION_REQUIRED",
+  "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
+  "owner": "SWAP5-NOMACRO-COMPLETE01",
+  "contract": "docs/science/NOMACRO_AGE_OUTPUT_CLOCK_20261117.md",
+  "scope": "Original NPRINTDAY2/3 with actual file cadences; annual-only PERIOD0/month0/dates0; inactive monthly selector omission. First unchanged public source baseline.",
+  "guards": {
+    "water_cm": 1e-10,
+    "chemical_mg_cm2": 1e-10,
+    "age": "accepted8192epsilon scaled cm day"
+  },
+  "expected_seconds": {
+    "baseline_O0_O2": 60,
+    "short_clock": 90,
+    "complete_selected_matrix": 600,
+    "portable_selected": 1200
+  },
+  "scientific_impact": "Original output epoch, print counter/event cap and complete state; no new physical equation. Nonbinary frequency3 discriminates event-cap reassociation. Actual reader/cadence inventory before implementation.",
+  "small_production": "Existing actual-increment receipt and four physical age providers unchanged; new clock/input/native integration only.",
+  "long_justification": "Subdaily global counter/event times and annual-only output require warm/cold month/year/crop/terminal checks after short discriminating controls; no repetition of unchanged full components.",
+  "full_moving_fci": "NOT_SELECTED_IMPACT",
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "baseline_diagnostic": "AGE_OUTPUT_CLOCK_BASELINE_DIAGNOSTIC.json",
+  "baseline_results": "NPRINT2/3 O0/O2 actual day1donor-origin mismatch; annual-only period0 refused; monthly omitPERIOD refused but omitallinactive passes.",
+  "implementation": "Reuse literal003/004 generators/providers/state; bind original output epoch in three actual TimeControl print-trigger/event expressions, preserving operation order/global counter and physicalTSTART. New005counter/flag reader; annual-only state; generic monthly preflight excludes inactivePERIOD branch.",
+  "cadence_inventory": "Original Swap calls Solute output only on flOutput, while SoilWaterOutput also runs flOutputShort. Inventory primary subdaily versus age daily rows and actual interval exports; no forced age rows or daily-mean promotion.",
+  "next": "Fresh00516profileO0/O2 short/full andactualnative controls; selectedportable. Inherit exact unchanged oldcontext preserving emitted/providerclosures, rerun changed005only.",
+  "retained_clock_failure": {
+    "source": "b34900ab509490e9eaa6875bb5d1323f69adc778",
+    "paths": [
+      "age-clock-np2-plain-O0/O2",
+      "age-clock-np3-plain-O0/O2"
+    ],
+    "warm_days": 10,
+    "cause": "TimeControl1 runs before native calendar apply. Global epoch with still-local nprintcount caps loaded END DT to zero/negative; first dynamic day then uses minimum seed instead of saved next proposal. Annual/daily paths did not execute this print cap.",
+    "actual_np2_day1_END_DT": 0.03999999997564507,
+    "unchanged_guards": true
+  },
+  "repair": "Use physicalTSTART only for TimeControl1 local initialization; original bound epoch for dynamic tasks, preserving exact original operation order and persistedDT. No new physical equation or state field.",
+  "retained_render_failure": "Initial bootstrap insertion matched both main and indented internal select-case substrings. Generation refused before compilation/model. Exact newline/main indentation anchor now identifies one actual owner; original full source SHA still checked.",
+  "small_clock_results": "Source6ce0ab400: four10dayprofiles, exactthree own windows each, original primary2/3rowsperday plusdailyagecadences and actual1/Nprintnativeageoutputperiod retained. No daily-age-mean promotion.",
+  "cohort": {
+    "subdaily": {
+      "nprintday": [
+        2,
+        3
+      ],
+      "kinds": [
+        "plain",
+        "surface",
+        "subsurface-interval"
+      ],
+      "optimization": [
+        "O0",
+        "O2"
+      ]
+    },
+    "annual": {
+      "nprintday": [
+        1
+      ],
+      "kinds": [
+        "plain",
+        "subsurface-interval"
+      ],
+      "optimization": [
+        "O0",
+        "O2"
+      ]
+    },
+    "profiles": 16,
+    "full_days": 1096,
+    "short_subdaily_days": 10,
+    "short_annual_days": 371
+  },
+  "trial_receipt": {
+    "policy": "original-integral-clone-absolute-day-water-guard-v1",
+    "guard": "ADDITIONAL absolute1e-10cm actualfull-stockdayreceipt alongside literally unchanged incrementalhydraulic elapsed-dayguard and externaldaily1e-10cm",
+    "source": "SHA-pinned original Integral increment expressions, original Watstor stock and Integral canopy operations",
+    "component": "42actualIntegral3cases exact/nonmutation inO0; sourceidenticalfunction underfinalmetadata postimage",
+    "retained_failures": [
+      "v3np2day364",
+      "v4terminal-onlynp2day364",
+      "v5tracedterminal-onlynp2day364"
+    ]
+  },
+  "portable_counterexample": {
+    "failed_run": 44190746741,
+    "diagnostic_run": 44192180291,
+    "day": 1054,
+    "step_day": 4.2665692277369e-05,
+    "incremental_residual_cm": -1.7027056305705945e-16,
+    "old_additional_scaled_bound_cm": 4.2665692277369004e-15,
+    "actual_full_stock_projection_cm": -4.270617459097508e-15,
+    "stock_ulp_cm": 1.4210854715202004e-14
+  }
+}
