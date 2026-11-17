@@ -48,3 +48,23 @@ Water remains1e-10cm; chemical mass remains1e-10mg/cm2. Age retains the accepted
 original-water and age-profile limitations; qualify any newly demonstrated
 output defect separately. No active macro, snow/aquifer-age, source-valued age
 forcing, new solver, general MODFLOW or performance campaign is selected here.
+
+The NP2 complete pilot rejected day364: independent residual
+1.0023688476468173e-10cm, while the accumulated per-step hydraulic guard was
+-9.987989763998158e-11cm. These are different floating-point ledgers. The new
+subdaily005 owner therefore additionally projects its actual daily receipt at
+terminal Newton convergence. It clones the receipt, extracts the original
+Integral increment expressions/branches from its pinned source, and uses the
+original Watstor soil and Integral canopy operations. No accepted frame or
+physical state changes. The existing hydraulic and external strict guards stay
+active and unchanged; a failed projected receipt requests another original
+Newton iteration. This is an additional acceptance condition for this new scope,
+not a tolerance relaxation or water correction.
+
+Both NP3 full trajectories committed1096days, then the validator refused an
+original primary timestamp such as07:59:60. Original Swap CSV delegates to TTUTIL
+dtdpst; its formatter rounds seconds without carrying. Retain original bytes,
+interpret the emitted components with an explicit60-second carry only in the
+validator, and report the inherited formatting limitation. Require exact file
+bytes across restarts. This does not establish valid ISO timestamp formatting.
+Annual371day O0/O2 pilots and four exact restart windows each passed.

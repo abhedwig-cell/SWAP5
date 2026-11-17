@@ -59,7 +59,7 @@ def age_identity(original,project):
     return result
 
 
-def render_integral(source):
+def render_integral(source,watstor=None):
     text=schedule.render_integral(source)
     old=" if(header(9)/=1)error stop 'Invalid original schedule print counter'"
     assert text.count(old)==1
@@ -71,7 +71,64 @@ def render_integral(source):
  end if""",1)
     old=" if(any(header(19:20)/=0))error stop 'Foreign original regular output flags'"
     assert text.count(old)==1
-    return text.replace(old," if(header(19)/=merge(1,0,nprintday>1).or.header(20)/=0)error stop 'Foreign original age output clock flags'",1)
+    text=text.replace(old," if(header(19)/=merge(1,0,nprintday>1).or.header(20)/=0)error stop 'Foreign original age output clock flags'",1)
+    if watstor is not None:
+        anchor="end module MOD_integral";assert text.count(anchor)==1
+        text=text.replace(anchor,trial_receipt_source(source,watstor)+"\n"+anchor,1)
+    return text
+
+
+
+def trial_receipt_source(source,watstor):
+    """Project the actual original Integral increments on a private receipt clone.
+
+    Expressions/operation order come from SHA-pinned Integral, not a second
+    water law. No original or accepted receipt state is assigned here.
+    """
+    source=source.replace('\r\n','\n');watstor=watstor.replace('\r\n','\n')
+    if hashlib.sha256(source.encode('cp1252')).hexdigest()!=regular.INTEGRAL_SHA:
+        raise ValueError('Changed original trial receipt integral owner')
+    expected='71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c'
+    if hashlib.sha256(watstor.encode('cp1252')).hexdigest()!=expected:
+        raise ValueError('Changed original trial receipt stock owner')
+    body=source[source.index('   case (3)'):source.index('   case (4)')]
+    def line(name):
+        found=re.findall(r'(?mi)^[ \t]*'+name+r'[ \t]*=[ \t]*([^!\n]+)',body)
+        if len(found)!=1:raise ValueError('Changed original trial increment '+name)
+        return name+'='+found[0].strip()
+    def increment(name,slot):
+        found=re.findall(r'(?mi)^[ \t]*'+name+r'\s*=\s*'+name+r'\s*([+-])\s*([^!\n]+)',body)
+        if len(found)!=1:raise ValueError('Changed original trial receipt '+name)
+        op,expr=found[0]
+        return f'trial%flow_cm({slot})=trial%flow_cm({slot})'+op+'('+expr.strip()+')'
+    def block(begin,end):
+        first=body.index(begin);last=body.index(end,first)+len(end)
+        text=body[first:last]
+        for name,slot in [('iintc',8),('iqbdo',16),('iqbup',7)]:
+            pattern=r'(?mi)^([ \t]*)'+name+r'\s*=\s*'+name+r'\s*([+-])\s*([^!\n]+)'
+            text=re.sub(pattern,lambda m:m[1]+f'trial%flow_cm({slot})=trial%flow_cm({slot})'+m[2]+'('+m[3].strip()+')',text)
+        return text
+    uses=source[source.index('      use plant_interface'):source.index('      implicit none')]
+    uses=uses.replace('only: numnod','only: numnod,dz')
+    canopy=re.findall(r'(?mi)^\s*sicact\s*=([^!\n]+)',body);assert len(canopy)==1
+    stock=re.findall(r'(?mi)^\s*volact\s*=([^!\n]+)',watstor)
+    stock=[x.strip() for x in stock if 'sum(theta(1:numnod)*dz(1:numnod))'==x.strip()];assert len(stock)==1
+    lines=[line(k) for k in ('epdts','revats','qbotts','qrotts','qdrats')]
+    lines += [increment('iqrot',10),'do node=1,numnod',increment('iqssdi',6),'end do',
+              block('      if (sw_inter /= 3) then','      end if')]
+    lines += [increment(k,slot) for k,slot in [('iepd',11),('ievap',12),('iruno',9),('irunon',5),('igrai',1),('igird',4)]]
+    lines += [block('      if (qbotts < 0.0d0) then','      end if'),increment('iqdra',14),
+              'projected_canopy='+canopy[0].strip(),'projected_soil='+stock[0]]
+    return ('real(8) function hybrid_output_trial_residual() result(residual)\n'
+            'use iso_fortran_env,only:real128\n'+uses+
+            'implicit none\ntype(output_receipt_frame_t)::trial\n'
+            'real(8)::epdts,revats,qbotts,qrotts,qdrats,projected_canopy,projected_soil,terms(28)\ninteger::node\n'
+            "if(.not.hybrid_output_frame%active)error stop 'Inactive original trial receipt'\n"
+            "if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'\n"
+            'trial=hybrid_output_frame\n'+'\n'.join(lines)+'\n'
+            'terms=[trial%flow_cm(1:7),-trial%flow_cm(8:16),trial%start_stock_cm, &\n'
+            ' -projected_soil,-pond,0d0,-projected_canopy,0d0,0d0]\n'
+            'residual=real(sum(real(terms,real128)),8)\nend function\n')
 
 
 def render_timecontrol(source):
@@ -100,7 +157,7 @@ def apply_build(output,donor_build,project,patched):
     if selected is None:return patched
     (output/(regular.PROVIDER+'.f90')).write_bytes((regular.ROOT/'src/process'/(regular.PROVIDER+'.f90')).read_bytes())
     (output/'hybrid_age_output_state.f90').write_text(regular.state_source(project),encoding='cp1252')
-    (output/'integral.f90').write_text(render_integral((donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252')),encoding='cp1252')
+    (output/'integral.f90').write_text(render_integral((donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252'),(donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252') if selected['mode']=='subdaily' else None),encoding='cp1252')
     (output/'age_output_calendar_probe.f90').write_text(regular.PROBE,encoding='cp1252')
     path=output/'swap.f90';text=regular.render_swap(path.read_text(encoding='cp1252'))
     anchor='use hybrid_day_window, only:';assert text.count(anchor)==1
@@ -116,6 +173,17 @@ def apply_build(output,donor_build,project,patched):
     path.write_text(text.replace(anchor,'\n   call hybrid_output_calendar_apply()'+anchor,1),encoding='cp1252')
     extra=[]
     if selected['mode']=='subdaily':
+        path=output/'headcalc.f90';text=path.read_text(encoding='cp1252')
+        anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
+        text=text.replace(anchor,'   use MOD_integral,only:hybrid_output_trial_residual\n'+anchor,1)
+        anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
+        assert text.count(anchor)==1
+        text=text.replace(anchor,anchor+"\n         if(tcum+dt>=1d0-1d-8)then\n"
+                          "            if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.\n         end if",1)
+        # tcum is the original within-day physical clock; no output-clock reset.
+        anchor='   use MOD_integral,only:hybrid_output_trial_residual'
+        text=text.replace(anchor,'   use variables,only:tcum\n'+anchor,1)
+        path.write_text(text,encoding='cp1252')
         if 'timecontrol' in patched or (output/'timecontrol.f90').exists():raise ValueError('Multiple original output clock owners')
         (output/'timecontrol.f90').write_text(render_timecontrol((donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')),encoding='cp1252');extra=['timecontrol']
     patched=[regular.PROVIDER,'hybrid_age_output_state',*extra,'integral',*patched]

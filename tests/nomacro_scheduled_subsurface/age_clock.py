@@ -23,13 +23,22 @@ def fixture(path,kind,mode,nprint):
     control.write_text(text,encoding='cp1252')
 
 
+def original_timestamp(text):
+    # Original TTUTIL dtdpst can round seconds to60 without carrying minutes.
+    # Retain the exact file bytes; only interpret its actual emitted components.
+    day,clock=text.strip().split(' ')
+    hour,minute,second=map(int,clock.split(':'))
+    assert 0<=hour<=23 and 0<=minute<=59 and 0<=second<=60
+    return datetime.combine(date.fromisoformat(day),datetime.min.time())+timedelta(hours=hour,minutes=minute,seconds=second)
+
+
 def output_values(full,data,project,mode,nprint):
     if mode=='annual':return c.output_values(full/'original',data,project)
     result=daily_age_values(full,data);first=date.fromisoformat(project.start_date)
     profiles=c.records(full/'original/result.ageProfile.csv');assert len(profiles)==len(data)
     assert [line.split(',')[0].strip() for line in profiles]==[str(first+timedelta(days=i)) for i in range(len(data))]
     primary=c.records(full/'original/result_output.csv');assert len(primary)==nprint*len(data)+1
-    stamps=[datetime.fromisoformat(next(csv.reader([line]))[0].strip()) for line in primary]
+    stamps=[original_timestamp(next(csv.reader([line]))[0]) for line in primary]
     start=datetime.combine(first,datetime.min.time())
     assert stamps==[start+timedelta(hours=24*i/nprint) for i in range(len(primary))]
     final=full/f"accepted-column-1-day-{data[-1]['day']}.zip"
@@ -39,6 +48,8 @@ def output_values(full,data,project,mode,nprint):
         assert saved_output_period==1./nprint
     result.update(original_primary_subdaily_and_age_daily_cadences_retained=True,primary_rows=len(primary),
                   age_profile_rows=len(profiles),actual_final_age_output_interval_days=saved_output_period,
+                  original_seconds60_formatter_rows=sum(':60' in next(csv.reader([line]))[0] for line in primary),
+                  original_datetime_formatter_status='INHERITED_FORMAT_LIMITATION_RETAINED',
                   age_output_interval='original output interval sampled by the actual age writer at day end')
     return result
 
@@ -55,7 +66,7 @@ def own(build,reference,project,full,data,start,end,out,mode):
             lines=c.records(path)
             if name=='result_output.csv' and mode=='subdaily':
                 low=datetime.combine(lo,datetime.min.time());high=datetime.combine(hi,datetime.min.time())
-                return [line for line in lines if low<datetime.fromisoformat(next(csv.reader([line]))[0].strip())<=high]
+                return [line for line in lines if low<original_timestamp(next(csv.reader([line]))[0])<=high]
             return [line for line in lines if str(lo)<=line.split(',')[0].strip()[:10]<str(hi)]
         assert selected(out/'original'/name)==selected(full/'original'/name),name
     with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as a,zipfile.ZipFile(out/f'accepted-column-1-day-{end}.zip') as b:
