@@ -3,8 +3,8 @@
   "baseline": "f0e5e39ea3d166755e394700a5a8765700eab875",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-chemical-source01",
-  "last_commit": "f0e5e39ea3d166755e394700a5a8765700eab875",
-  "status": "CHEMICAL_SOURCE_COMPONENT_O0_O2_PASS_CORRECTED_REFERENCE_IMPLEMENTED",
+  "last_commit": "de800eaf275ce571d451675609c4ccae5929e11f",
+  "status": "CORRECTED_ORIGINAL_SOURCE_LEDGER_PASS_SWAP5_CALLER_IMPLEMENTED_UNQUALIFIED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -35,7 +35,11 @@
     "src/process/mod_subsurface_solute_source.f90",
     "tests/modularity/test_subsurface_solute_source.f90",
     "tests/modularity/run_modular_tests.py",
-    "Original MOD_solute_CDE source and irrigation qssdi/cirr owners; caller integration not implemented"
+    "Original MOD_solute_CDE source and irrigation qssdi/cirr owners; caller integration not implemented",
+    "app/hybrid_water/conserved_subsurface_solute.py",
+    "app/hybrid_water/daily_host.py",
+    "app/hybrid_water/daily_coupling.py",
+    "app/hybrid_water/fixed_irrigation_file.py"
   ],
   "invariants": [
     3,
@@ -157,8 +161,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Execute complete corrected original producer plus CDE at O0/O2; check actual water*concentration input, chemical mass and all source-absent/surface preservation. Do not enable chemical SWAP5 input until integrated state/native qualification.",
-  "recovery_point": "Admitted S/PULSE/R implementation stays canonical f0e5e39ea. Development branch codex/nomacro-chemical-source01 adds only an unconnected, stateless conservative source evaluator and its real one-provider driver. Run --case subsurface_solute_source, retain errors, then corrected original CDE/source ledger qualification. Do not claim chemical SSDI enabled.",
+  "next_code_change": "Execute actual experimental corrected fixed chemical source at O0/O2 short, active native4to6, then full profiles/transactions/portability. Scheduled chemical remains refused.",
+  "recovery_point": "Canonical f0e5 remains admitted. New corrected fixed chemical caller is a development candidate only; run tests/nomacro_scheduled_subsurface/chemical_fixed.py using read-only J_windows_provider. Paired original24period reference is PASS; no global B1 promotion.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -187,7 +191,7 @@
         "owner": "NOMACRO-SUBSURFACE-SOLUTE-01",
         "authority": "docs/verification/principles.md#reference-chain",
         "expected_seconds": 180,
-        "prior_execution": "FAILED",
+        "prior_execution": "PASS",
         "diagnosis": "CDE-only source did not receive concentration. Rebuild both touched original modules for same-optimization controls; new producer branch is necessary.",
         "existing_evidence": "Pure source O0/O2 PASS; first CDE-only24periods retained with zero source."
       }
