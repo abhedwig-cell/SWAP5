@@ -1,42 +1,45 @@
 {
-  "status": "EXACT_MONTHLY_EXPLICIT_AGE004_CANONICALLY_ADMITTED_ACTUAL_MERGE_PASS",
-  "runtime": "f19bdf187a187e5d241fc3841eba9acfad63bc37",
-  "canonical_parent": "a97978f39b8ce89a4d7aaec64172d43bfef88288",
-  "current_owner": "tests/nomacro_scheduled_subsurface/age_schedule_verify.py",
+  "status": "SEALED_CLOCK_SOURCE_STATE_OUTPUT_ADMISSION_PASS_CANONICAL_PENDING",
+  "runtime": "4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24",
+  "canonical_parent": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
+  "current_owner": "tests/nomacro_scheduled_subsurface/age_clock_verify.py",
   "whole_scientific_equivalence": "NOT_QUALIFIED",
   "functional_completion": "PARTIAL",
   "full_moving_fci": "NOT_SELECTED_IMPACT: original monthly/explicit calendar state/input only; no production process/reference/public CLI delta. Actual18full/native/reference per platform,120native+18policy+4reader controls, active/isolation/publicCLI and exact14regular003/12daily002/13ageoff preservation; no broad solver/performance campaign.",
   "retired_highest_low_air": "NOT_SELECTED_POLICY",
   "small_production": "Inherited exact canonical regular renderer, actual-increment receipt and four age providers; no physics/equation/component source change or repeated component/reference compilation.",
   "unit_tests": "1116_NEW_SCHEDULE_EVIDENCE_CORRUPTIONS_PASS121.09seconds; prior validators/unit drivers literal to actualcanonicala979, prior controls retained.",
-  "selected_ubuntu_run": 44172278079,
+  "selected_ubuntu_run": 44192970110,
   "source_negative": {
-    "status": "ACTUAL_ROOT_DIRTY_AND_COMMITTED_SCHEDULE_SOURCE_REFUSED",
+    "status": "DIRTY_AND_ACTUAL_COMMITTED_BAD005_GUARD_SOURCE_REFUSED",
+    "base": "35c069af26c28cb1b06303953c8fb3d01569c90c",
+    "control": "C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control",
+    "fixture": "Actual005 trialguard2e-10; nevermerge",
     "checks": [
       {
-        "phase": "dirty",
+        "context": "dirty",
+        "head": "35c069af26c28cb1b06303953c8fb3d01569c90c",
         "returncode": 1,
-        "seconds": 0.7571616000495851,
-        "expected": "dirty original age schedule admission surface",
-        "actual_stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 109, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty original age schedule admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 34, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty original age schedule admission surface\n",
-        "head": "8c756ca0bc47e37b31517de5a484de22a7beb8de"
+        "seconds": 0.8282445999793708,
+        "expected_diagnostic": "dirty005 admission surface",
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 181, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty005 admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 38, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty005 admission surface\n",
+        "status": "REFUSED"
       },
       {
-        "phase": "committed",
+        "context": "committed",
+        "head": "2f141097a493f3ede9f659b7cf676929f6dc4268",
         "returncode": 1,
-        "seconds": 0.7433730000630021,
-        "expected": "schedule runtime differs from qualification",
-        "actual_stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 111, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'schedule runtime differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-schedule-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 34, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: schedule runtime differs from qualification\n",
-        "head": "05093d4c8d37d8194e3c2ad440bcd075e0c0efff"
+        "seconds": 0.7849861001595855,
+        "expected_diagnostic": "005 production differs from qualification",
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'005 production differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-clock-final-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 38, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: 005 production differs from qualification\n",
+        "status": "REFUSED"
       }
     ]
   },
   "docs_source": "PASS",
-  "strict_docs_render": {
-    "returncode": 0,
-    "seconds": 38.59,
-    "existing_info": "Pre-existing m3 anchor info retained; no strict error"
-  },
+  "strict_docs_render": "PASS32.21sec; preexistingm3anchorINFOonly",
   "current_owner_verification": {
     "status": "CURRENT_FIXED_YOUNG_AGE_COMPOSED_CHEMICAL_AQUIFER_S_PULSE_R_ADMISSION_PASS",
     "verified_head": "609860aa3",
@@ -112,17 +115,38 @@
     "runtime": "4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24",
     "canonical_parent": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
     "owner": "tests/nomacro_scheduled_subsurface/age_clock_verify.py",
-    "status": "QUALIFIED_SOURCE_UNSEALED_NOT_ADMITTED",
+    "status": "SEALED_REGISTERED_ROOT_PASS_CANONICAL_PENDING",
     "full_moving_fci": "NOT_SELECTED_IMPACT",
     "actual_receipt_component": "42cases*2opts*2platformsPASS; actualIntegral/Watstor, no copiedwaterlaw",
     "selected_ubuntu_run": 44192970110,
-    "source_negative": "NEXT_AFTER_SEAL",
+    "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_BAD005_GUARD_SOURCE_REFUSED",
     "unit_tests": {
       "status": "PASS",
       "evidence_corruptions": 1498,
       "seconds": 184.468
     },
     "docs_source": "PASS",
-    "strict_docs_render": "PASS51.20sec"
+    "strict_docs_render": "PASS32.21sec",
+    "sealed": "36ce7dc47415478e7b9d86694bca401f26699763",
+    "raw_producer_reports_bound": 84,
+    "measured_legacy002_builds_bound": 24,
+    "current_root_seconds": 175.65230609988794
+  },
+  "current_registered_root": {
+    "returncode": 0,
+    "seconds": 175.65230609988794,
+    "head": "35c069af26c28cb1b06303953c8fb3d01569c90c",
+    "stdout": "{\n  \"status\": \"CURRENT_SUBDAILY_ANNUAL_MONTHLY_AGE_SOURCE_STATE_OUTPUT_ADMISSION_PASS\",\n  \"runtime\": \"4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"water_guard_cm\": 1e-10,\n  \"chemical_mass_guard_changed\": false,\n  \"age_units\": \"cm day\",\n  \"native_codec\": \"S5AGE005\"\n}\n",
+    "stderr": "",
+    "result": {
+      "status": "CURRENT_SUBDAILY_ANNUAL_MONTHLY_AGE_SOURCE_STATE_OUTPUT_ADMISSION_PASS",
+      "runtime": "4a3bdf387ce50c1e497f22eaeeb8c4005c6e9f24",
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED",
+      "water_guard_cm": 1e-10,
+      "chemical_mass_guard_changed": false,
+      "age_units": "cm day",
+      "native_codec": "S5AGE005"
+    }
   }
 }
