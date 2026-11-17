@@ -164,7 +164,10 @@ def validate_bundle(bundle, reference, project):
     from conserved_subsurface_solute import enabled as chemical_enabled, metadata as chemical_metadata, correction as chemical_correction
     expected_chemical=chemical_metadata() if chemical_enabled(project) else None
     if identity.get('conserved_subsurface_solute')!=expected_chemical:raise ValueError('Foreign conserved subsurface solute policy')
-    if expected_chemical and (bundle/'mod_subsurface_solute_source.f90').read_bytes()!=chemical_correction().helper_source():
+    from conserved_scheduled_subsurface_solute import enabled as chemical_scheduled_enabled, metadata as chemical_scheduled_metadata
+    expected_chemical_scheduled=chemical_scheduled_metadata() if chemical_scheduled_enabled(project) else None
+    if identity.get('conserved_scheduled_subsurface_solute')!=expected_chemical_scheduled:raise ValueError('Foreign conserved scheduled subsurface solute policy')
+    if (expected_chemical or expected_chemical_scheduled) and (bundle/'mod_subsurface_solute_source.f90').read_bytes()!=chemical_correction().helper_source():
         raise ValueError('Foreign actual conserved subsurface solute helper')
     from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled, POLICY as SCHEDULED_SUBSURFACE_POLICY
     expected_subsurface={'policy':SCHEDULED_SUBSURFACE_POLICY,'source_sha256':h.sha(h.APP/'scheduled_subsurface_irrigation.py')} if scheduled_subsurface_enabled(project) else None

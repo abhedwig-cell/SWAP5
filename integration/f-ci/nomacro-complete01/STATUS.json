@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
-  "baseline": "55a5a641f0d3a9ed294756f9e245ee3e41193a1e",
+  "baseline": "e709ab5a4b9b858c539e3c7208b8997ea6205ce2",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-chemical-source01",
-  "last_commit": "55a5a641f0d3a9ed294756f9e245ee3e41193a1e",
-  "status": "FIXED_CHEMICAL_CANONICALLY_ADMITTED_NEXT_SCHEDULED_SOURCE",
+  "branch": "codex/nomacro-scheduled-chemical01",
+  "last_commit": "112f1b6ae",
+  "status": "SCHEDULED_CHEMICAL_QUALIFIED_BRANCH_READY_CANONICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -30,7 +30,8 @@
     "Windows file/inline source physical+CSV8days O0/O2 exact; six actual original invalid-depth native refusals PASS",
     "Fresh named3 and scheduled-water4 full trajectories, generated source and native payloads exact to admitted source",
     "Four201day active pulse/native prefixes preserve prior full physical/CSV results across corrected chemical source",
-    "PR1702 canonical55a5a641f: exact parents and complete tree verified; actual detached canonical current owner PASS"
+    "PR1702 canonical55a5a641f: exact parents and complete tree verified; actual detached canonical current owner PASS",
+    "Scheduled chemical Windows/Ubuntu eight1096periods O0/O2 source/native/external PASS; Linux44079261977 SUCCESS, both raw digests/1504members checked; native10invalid domain refusals and interleaved6step source origins bothopts PASS; nine admitted-context emitted closures and native prefixes exact without repeated full periods"
   ],
   "open": [
     "Complete historical selector inventory",
@@ -38,14 +39,11 @@
     "Remaining chemical reservoir/age/vapor/drainage/surfacewater/constitutive/weather/state gaps"
   ],
   "dependency_surface": [
-    "src/process/mod_subsurface_solute_source.f90",
-    "tests/modularity/test_subsurface_solute_source.f90",
-    "tests/modularity/run_modular_tests.py",
-    "Original MOD_solute_CDE source and irrigation qssdi/cirr owners; caller integration not implemented",
-    "app/hybrid_water/conserved_subsurface_solute.py",
     "app/hybrid_water/daily_host.py",
     "app/hybrid_water/daily_coupling.py",
-    "app/hybrid_water/fixed_irrigation_file.py"
+    "app/hybrid_water/experimental_project.py",
+    "app/hybrid_water/conserved_scheduled_subsurface_solute.py",
+    "Shared src/process/mod_subsurface_solute_source.f90 and corrected original source generator remain literal to fixed admission"
   ],
   "invariants": [
     3,
@@ -178,17 +176,23 @@
     {
       "test": "Salinity exposure first two O0 periods",
       "cause": "Both complete periods satisfy mass guards but net salinity reduction was zero. First winter event and second compensated growing-season event are retained as inactive-exposure controls. Growing-season uncompensated source at unchanged original stress thresholds passes O0/O2 with positive3.4921434323cm response."
-    }
-  ],
-  "running_ci": [
+    },
     {
-      "id": 44075761879,
-      "source": "64195df1559ca630f4c0ed27ab83bb527b3af20c",
-      "status": "MODULAR_FEEDBACK_IN_PROGRESS_SELECTION_PREFLIGHT_PASS"
+      "test": "Scheduled chemical original reference input",
+      "cause": "Original RDSDOR refuses integer CIRRS0/20. First input rejected before trajectory. Use literal decimal0.0/20.0; repaired16paired periods pass, retain first diagnostic."
+    },
+    {
+      "test": "Initial scheduled active event selector",
+      "cause": "Both O0 full1096periods and source balances passed, but harness incorrectly asserted first event545. Actual first252;545 is selected later event around retained544 checkpoint. Recovered both complete periods without recompilation or period repetition, then all native/transaction and O2 gates PASS."
+    },
+    {
+      "test": "Independent scheduled native instance harness",
+      "cause": "Two original variants defaulted to same directory name. Added explicit unique ColumnStart.name, retaining same original physical variant; native10domain controls and both interleaved six-step active origin tests pass. No production change."
     }
   ],
-  "next_code_change": "Continue in private worktree C:/Users/Veldh012/swap5-nomacro-scheduled-chemical01, branch codex/nomacro-scheduled-chemical01. Scheduled original paired16period reference O0/O2 now PASS with point64 and interval174mg/cm2; implement separate scheduled selection/metadata and qualify actual source/native/event transactions before admission.",
-  "recovery_point": "Fixed chemical source is canonical55a5a641f viaPR1702; tree8209721e exact to qualified64195df15 and actual canonical owner PASS. Metadata receipt admission pending. Continue scheduled chemical from this canonical; fixed sealed proof6514334f immutable. FCI44075761879 feedback remains monitored; full moving FCI not selected. All-scope PARTIAL/science NOT_QUALIFIED.",
+  "running_ci": [],
+  "next_code_change": "Integrate scheduled chemical branch onto unchanged canonicale709, verify actual parents/tree and real canonical current owner. Then inspect next uncovered original age/vapor/aquifer state/ledger branch and implement the first safe supported contract; no active macro/general MODFLOW/performance work.",
+  "recovery_point": "All scheduled source/reference/full/native/platform/input/isolation/closure/docs and actual owner/dirty+committed-source guards PASS. Branch ready; canonicale709 fixed source admitted. Source6c5b, Ubuntu70293c7/run44079261977 SUCCESS, proofa5ee02. No model/CI process active. Entire migration PARTIAL/science NOT_QUALIFIED.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -229,6 +233,24 @@
         "expected_seconds": 300,
         "prior_execution": "PASS",
         "existing_evidence": "Four full periods per platform and original24paired per platform; admitted anchors/pulse/S exact"
+      },
+      "scheduled_chemical": {
+        "changed_dependency": "Previously refused SCHEDULE1/ISUAS2 chemistry now selects existing conserved CDE source and separate physical policy identity",
+        "scientific_claim": "Original actual qssdi*cirrs source and conserved daily ledger/native/event transactions with no new physical formula or codec",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md; docs/verification/principles.md#transaction-tests",
+        "expected_seconds": 200,
+        "prior_execution": "PASS",
+        "existing_evidence": "Shared real nodal evaluator, original16paired scheduled reference O0/O2, fixed canonical strict state/source qualification"
+      },
+      "scheduled_chemical_preservation": {
+        "changed_dependency": "Shared original-input selection and source-bound metadata; numerical/CDE helper/fixed source and host step/native owner bodies unchanged",
+        "scientific_claim": "Fresh fixed, scheduled-water, named3 and pulse contexts retain exact emitted production/provider/flag/input closure and physical/CSV/native prefixes without repeating unchanged full periods",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "docs/development/workstream-execution-protocol.md#change-impact-qualification",
+        "expected_seconds": 240,
+        "prior_execution": "PASS",
+        "existing_evidence": "Exact fixed canonical full/native/platform/source proof; new scheduled full source/state gates. Nine representative fresh builds/native prefixes discriminate accidental selection into previously qualified contexts."
       }
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
@@ -238,8 +260,11 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "Actual PR1702 canonical implementation: parents and complete qualified tree exact, real detached postimage owner PASS.",
+  "last_commit_role": "Actual clean scheduled owner PASS; subsequent permitted recovery/selection metadata only.",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
-  "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01"
+  "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
+  "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
+  "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
+  "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7"
 }

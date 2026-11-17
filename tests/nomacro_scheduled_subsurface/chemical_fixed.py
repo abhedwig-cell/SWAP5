@@ -16,16 +16,17 @@ from fixed_irrigation_cases import create
 from daily_coupling import CoupledDailyColumn,validate_bundle
 
 
-def controls(build,reference,project,full,data,out):
+def controls(build,reference,project,full,data,out,*,policy_key='conserved_subsurface_solute',policy_error='Foreign conserved subsurface solute policy',active_day=None):
     out.mkdir();meta,case=validate_bundle(build,reference,project)
     foreign=out/'foreign';foreign.mkdir()
     changed=json.loads((build/'BUILD.json').read_text())
-    changed['identity']['conserved_subsurface_solute']['policy']='foreign'
+    changed['identity'][policy_key]['policy']='foreign'
     (foreign/'BUILD.json').write_text(json.dumps(changed))
     try:validate_bundle(foreign,reference,project)
-    except ValueError as error:assert 'Foreign conserved subsurface solute policy' in str(error)
+    except ValueError as error:assert policy_error in str(error)
     else:raise AssertionError('Foreign chemical source accepted')
-    active=next(row['day'] for row in data if row['solute_ledger_mg_cm2'][3]>0)
+    active=active_day if active_day is not None else next(row['day'] for row in data if row['solute_ledger_mg_cm2'][3]>0)
+    assert data[active-1]['solute_ledger_mg_cm2'][3]>0
     first=active-1
     source=full/f'accepted-column-1-day-{first}.zip';digest=m.sha(source)
     column=CoupledDailyColumn(build,reference,out/'external',project,'fixed-chemical',origin=source,day=first,adopt_native=True)
