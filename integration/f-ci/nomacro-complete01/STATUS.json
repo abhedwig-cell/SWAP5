@@ -3,7 +3,7 @@
   "baseline": "67ddba2692cc13f89cfc29100836f2d6a4b80eec",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-complete01",
-  "last_commit": "67ddba2692cc13f89cfc29100836f2d6a4b80eec",
+  "last_commit": "95f0671e27c54f3ec8bad53408fe37bca7fe838b",
   "status": "IMPLEMENTED_NOT_QUALIFIED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -32,8 +32,27 @@
     21,
     23
   ],
-  "latest_test_results": [],
-  "failed_tests": [],
+  "latest_test_results": [
+    {
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/point-short3",
+      "result": "SHORT_O0_O2_PASS",
+      "scope": "5days each, exact native2to4; no full-period admission"
+    }
+  ],
+  "failed_tests": [
+    {
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/point-short",
+      "cause": "Fixture assumed every crop FID was60; potato actual20. Fixed fixture, no model execution."
+    },
+    {
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/point-short2",
+      "cause": "Renderer found same comment in scheduled and fixed readers; scoped original procedure, no physical execution."
+    },
+    {
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/point-full",
+      "cause": "Actual original future potato reader refuses TCS6 with inherited TCSFIX1 after523accepted days. Fixed test input in all future crops; no physical code change."
+    }
+  ],
   "running_ci": [],
   "next_code_change": "Execute real original scheduled subsurface irrigation through O0/O2 production host; diagnose any actual balance/restart defect before admission.",
   "recovery_point": "Read STATUS.json, verify branch/canonical delta; continue tests/nomacro_scheduled_subsurface/run.py with existing provider C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider; never rebind old source identities.",
@@ -49,6 +68,7 @@
         "existing_evidence": "Prior complete management codec and fixed subsurface integration; scheduled ISUAS2 not qualified. Run focused original production route.",
         "prior_execution": "NONE"
       }
-    }
+    },
+    "candidate": "95f0671e27c54f3ec8bad53408fe37bca7fe838b"
   }
 }
