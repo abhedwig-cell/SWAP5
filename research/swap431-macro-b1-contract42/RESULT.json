@@ -1,0 +1,49 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-CONTRACT42",
+  "decision": "BOUNDED_DOCUMENTED_DARCY_CONTRACT_DISCREPANCY_CONFIRMED_NO_CORRECTION_IMPLEMENTED",
+  "source_checkpoint": "07b5d3686",
+  "model_routes": 2,
+  "external_hard_seconds": 20,
+  "all_uncensored": true,
+  "O0_O2_non_timing_byte_exact": true,
+  "physical_adjudication": "Whole-cell ABSORPTION cutoff is intentional code behavior, but its zero Darcy rate for this still-unsaturated water-contacted cell is inconsistent with documented unsaturated-contact/Darcy law. Historical author intent and all other configurations unclaimed.",
+  "primary_authority": "Kroes etal2017 SWAP4 WER2780 pp100/106 eq6.32/6.57; preserved currentmax/factor/stock rules",
+  "smallest_probe_geometry_is_not_exact_tie": true,
+  "saturation_or_stock_or_flow_reduction_does_not_explain_zero": true,
+  "new_correction_or_convergence_fix_implemented": false,
+  "full_period_BAL_new_restart_or_canonical_admission": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 2.167345800437033,
+      "same_original357_all_numerical_outputs_preserved": true,
+      "actual_extra_MACRORATE1_calls": 8,
+      "SENSE23_selected_bytes": 20347880,
+      "numerical_observer_cache_bytes": 3247712,
+      "selected_byte_and_recognized_IEEE_flag_restores": 9,
+      "probe_base_repetition_exact": true,
+      "smallest_offset_cm": 1e-08,
+      "D4_rate_gap_at_smallest_offset": 0.056536152445578504,
+      "D4_documented_Darcy_candidate_at_zero_side": 0.05653615225394495,
+      "geometric_unsaturated_fraction_at_zero_side": 0.9999999949999996,
+      "physical_solver_guard_or_budget_changes": false
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.700456999707967,
+      "same_original357_all_numerical_outputs_preserved": true,
+      "actual_extra_MACRORATE1_calls": 8,
+      "SENSE23_selected_bytes": 20347880,
+      "numerical_observer_cache_bytes": 3247712,
+      "selected_byte_and_recognized_IEEE_flag_restores": 9,
+      "probe_base_repetition_exact": true,
+      "smallest_offset_cm": 1e-08,
+      "D4_rate_gap_at_smallest_offset": 0.056536152445578504,
+      "D4_documented_Darcy_candidate_at_zero_side": 0.05653615225394495,
+      "geometric_unsaturated_fraction_at_zero_side": 0.9999999949999996,
+      "physical_solver_guard_or_budget_changes": false
+    }
+  ]
+}
