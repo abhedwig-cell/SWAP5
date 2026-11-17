@@ -1,5 +1,5 @@
 {
-  "status": "BASELINE_CLOCK_AND_INPUT_DIAGNOSTICS_SELECTED",
+  "status": "ACTUAL_BASELINE_REFUSALS_MINIMAL_CLOCK005_PERSISTED",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "owner": "SWAP5-NOMACRO-COMPLETE01",
   "contract": "docs/science/NOMACRO_AGE_OUTPUT_CLOCK_20261117.md",
@@ -20,5 +20,10 @@
   "long_justification": "Subdaily global counter/event times and annual-only output require warm/cold month/year/crop/terminal checks after short discriminating controls; no repetition of unchanged full components.",
   "full_moving_fci": "NOT_SELECTED_IMPACT",
   "functional_completion": "PARTIAL",
-  "whole_scientific_equivalence": "NOT_QUALIFIED"
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "baseline_diagnostic": "AGE_OUTPUT_CLOCK_BASELINE_DIAGNOSTIC.json",
+  "baseline_results": "NPRINT2/3 O0/O2 actual day1donor-origin mismatch; annual-only period0 refused; monthly omitPERIOD refused but omitallinactive passes.",
+  "implementation": "Reuse literal003/004 generators/providers/state; bind original output epoch in three actual TimeControl print-trigger/event expressions, preserving operation order/global counter and physicalTSTART. New005counter/flag reader; annual-only state; generic monthly preflight excludes inactivePERIOD branch.",
+  "cadence_inventory": "Original Swap calls Solute output only on flOutput, while SoilWaterOutput also runs flOutputShort. Inventory primary subdaily versus age daily rows and actual interval exports; no forced age rows or daily-mean promotion.",
+  "next": "Fast NPRINT2/3 O0/O2 short10days, actual file cadences and three exact cold/native windows; then annual371day/year prefix and selected complete models."
 }

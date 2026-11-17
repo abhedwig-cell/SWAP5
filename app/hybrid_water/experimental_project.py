@@ -119,13 +119,16 @@ def inspect(directory):
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},
                    SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1})
-    if (selected['SWSOLU']==2 and selected.get('SWODAT')==0
+    if (selected['SWSOLU']==2 and selected.get('SWMONTH')==0 and selected.get('SWODAT')==0
             and int(one(text,'PERIOD',r'[+-]?\d+'))>1
             and int(one(text,'NPRINTDAY',r'[+-]?\d+'))==1):
         allowed['SWRES']={0,1} # explicit regular age output/calendar owner
     if (selected['SWSOLU']==2 and int(one(text,'NPRINTDAY',r'[+-]?\d+'))==1
             and (selected.get('SWMONTH')==1 or selected.get('SWODAT')==1)):
         allowed.update(SWMONTH={0,1},SWODAT={0,1},SWRES={0,1})
+    if (selected['SWSOLU']==2 and selected.get('SWMONTH')==0 and selected.get('SWODAT')==0
+            and (int(one(text,'NPRINTDAY',r'[+-]?\d+'))>1 or int(one(text,'PERIOD',r'[+-]?\d+'))==0)):
+        allowed['SWRES']={0,1}
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
     frost_drain_file=None
@@ -284,6 +287,8 @@ def validate(project):
 
 def auxiliary_magic(project):
     if project.age:
+        from age_output_clock import selection as clock,MAGIC as CLOCK_MAGIC
+        if clock(project) is not None:return CLOCK_MAGIC
         from age_output_schedule import selection as scheduled,MAGIC as SCHEDULE_MAGIC
         if scheduled(project) is not None:return SCHEDULE_MAGIC
         from age_output_calendar import selection,MAGIC as CALENDAR_MAGIC
