@@ -208,6 +208,10 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Bundle time-step generator source differs')
     if not project.macro and identity.get('time_step_policy') != project.time_step_policy:
         raise ValueError('Bundle time-step policy differs; rebuild at current source')
+    from irrigation_pulse_time import POLICY as PULSE_POLICY, metadata as pulse_metadata
+    expected_pulse=pulse_metadata((reference/'build/swap-selected/timecontrol.f90').read_bytes()) if project.time_step_policy==PULSE_POLICY else None
+    if identity.get('irrigation_pulse_time') != expected_pulse:
+        raise ValueError('Foreign original irrigation pulse temporal policy')
     if not project.macro and identity.get('floating_point_profile') != h.no_macro_fp_profile():
         raise ValueError('Bundle floating-point profile differs')
     if 'restart_publisher' in identity:
