@@ -31,3 +31,8 @@ for p in P.glob('*.f90'):
 
 # Phase2 original-policy observation is recorded separately in original_policy_observation.patch.
 # Apply it and PERIOD34_ORIGINAL_POLICY environment gate after initial strict preparation.
+
+p=R/'soilwater_native.f90';s=p.read_text().replace(' character(60)::label\n integer::i,target_attempt,u',' character(60)::label\n character(8)::policy34\n integer::i,target_attempt,u',1)
+s=s.replace(" call get_environment_variable('DAY10_MODE',mode)\n target_attempt=-1"," call get_environment_variable('DAY10_MODE',mode)\n call get_environment_variable('PERIOD34_ORIGINAL_POLICY',policy34)\n target_attempt=-1",1)
+s=s.replace('else if(FlDecMpRat.or.IDecMpRat/=0) then',"else if((FlDecMpRat.or.IDecMpRat/=0).and.trim(policy34)/='1') then",1);p.write_text(s)
+p=R/'period34.py';s=p.read_text().replace("env['LEDGER12_REQUIRE']='1'","env['LEDGER12_REQUIRE']='1';env['PERIOD34_ORIGINAL_POLICY']='1' if label=='POLICY' else '0'");p.write_text(s)

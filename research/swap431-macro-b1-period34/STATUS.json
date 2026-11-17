@@ -1,5 +1,5 @@
 {
-  "stage": "STRICT_STOP_PRESERVED_ORIGINAL_POLICY_PAIR_PREREGISTERED",
+  "stage": "INCOMPLETE_BUDGET_LIMITED_NO_FULL_PERIOD_BAL_PASS",
   "baseline": "6406eacea39de3aa533a39669f59453fc7536ae0",
   "remote_main": "be481cfb40f953e337116ef4a6dc5bc3ef64d4f7",
   "workstream": "isolated SWAP431 B1 research",
@@ -12,5 +12,15 @@
   "official_promotion": false,
   "scope_revision": "SCOPE_REVISION.json: two strict routes plus two original-policy routes, same singleperiod/no horizon change",
   "unscaled_full_period_qualified": false,
-  "primary_model_routes_max": 4
+  "primary_model_routes_max": 4,
+  "decision": "INCOMPLETE_BUDGET_LIMITED_NO_FULL_PERIOD_BAL_PASS",
+  "model_routes": 4,
+  "all_processes_normal_uncensored": true,
+  "full_period_BAL_qualified": false,
+  "postreset_nonzero_canopy_origin_qualified": true,
+  "active_refusal_rollback_direct_qualification": false,
+  "POLICY_O0_O2_common_commits_byte_exact": 4243,
+  "POLICY_O0_O2_common_attempts_non_timing_byte_exact": 4876,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "remaining": "Strict stops atinactive fluxrequest t35797.370782734390. Originalpolicy continuation normal internal16s stop, O0t35797.628002865611/O2t35797.677402694862, noendpoint/BAL body. Noactivefailure/noDIRECT. Nextdiagnosis candidateown inactivefailure293 if separatelyscoped; no further period or newrestart run in this round."
 }
