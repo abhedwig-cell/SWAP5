@@ -1,0 +1,50 @@
+name: Local irrigation pulse temporal qualification
+on:
+  push:
+    branches: [codex/irrigation-pulse-time01]
+    paths:
+      - '.github/workflows/irrigation-pulse-time.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: irrigation-pulse-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  affected:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            tests/irrigation_pulse
+            tests/nomacro_mixtures
+            tests/nomacro_pond_history
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Prepare immutable original source and compiler provider
+        run: python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/provider"
+      - name: Original TimeControl component and short O0/O2 pulse restarts
+        run: |
+          python3 -B tests/irrigation_pulse/component.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/component"
+          python3 -B tests/irrigation_pulse/run.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/pulse" --phase short
+      - name: Complete affected periods and exact day restarts O0/O2
+        run: python3 -B tests/irrigation_pulse/run.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/pulse" --phase full
+      - name: Literal original comparison transactions and paired model cost
+        run: python3 -B tests/irrigation_pulse/finish.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/pulse"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: irrigation-pulse-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/component
+            ${{ runner.temp }}/pulse
+          retention-days: 30
