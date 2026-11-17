@@ -131,7 +131,7 @@ def active_own(build, reference, project, full, data, out):
     with m.zipfile.ZipFile(warm/f'accepted-column-1-day-{last}.zip') as a, m.zipfile.ZipFile(cold/f'accepted-column-1-day-{last}.zip') as b:
         for name in ('result.end','macro.bin'): assert a.read(name) == b.read(name),name
     assert m.sha(source) == digest
-    column = CoupledDailyColumn(build,reference,out/'external-active',project,'active-scheduled-ssdi',origin=source,day=first)
+    column = CoupledDailyColumn(build,reference,out/'external-active',project,'active-scheduled-ssdi',origin=source,day=first,adopt_native=True)
     trial = column.prepare(); assert trial.budget['external_flux_cm'][5] > 0
     column.discard(trial); assert column.day==first and m.sha(source)==digest
     replay = column.prepare(); assert replay.budget==trial.budget
