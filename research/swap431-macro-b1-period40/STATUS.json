@@ -1,9 +1,21 @@
 {
-  "stage": "STRICT_STOP_PRESERVED_PREREGISTERED_ORIGINAL_POLICY_CONTINUATION",
+  "stage": "INCOMPLETE_BUDGET_LIMITED_NO_FULL_PERIOD_BAL_PASS",
   "baseline": "b7bfd2715188757bac81cfdba1043fc7ebfd0743",
   "scope": "One full original balanceperiod35797->35798 own continuous corrected candidate; two opt routes only;20s each",
   "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
   "promotion": false,
   "strict_result": "O0/O2 firstscaledrequest366 after360commits t35797.487567908756 nofullBAL",
-  "scope_revision": "Two strict same-period routes preserved; two original-policy routes at same fixed35797->35798 horizon, exactly as PERIOD34 precedent. No other period/variant."
+  "scope_revision": "Two strict same-period routes preserved; two original-policy routes at same fixed35797->35798 horizon, exactly as PERIOD34 precedent. No other period/variant.",
+  "strict_source_checkpoint": "805177a05",
+  "policy_source_checkpoint": "ad015824e",
+  "decision": "INCOMPLETE_BUDGET_LIMITED_NO_FULL_PERIOD_BAL_PASS",
+  "model_routes": 4,
+  "full_original_period_balance_qualified": false,
+  "full_period_BAL_qualified": false,
+  "policy_common_commits": 4499,
+  "policy_common_attempts": 4964,
+  "next_inactive_refusal_attempt": 357,
+  "next_worst_node": 47,
+  "qualification": "Complete TRAJECTORY39 prefix preserved; partial inventories and common O0/O2 prefixes pass; no endpoint/BAL body",
+  "no_further_routes": true
 }
