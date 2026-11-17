@@ -43,8 +43,9 @@ def fixture(case, kind):
                                 IRGTHRESHOLD=0.01, IRR_RATE=0.1).items():
             body = assignment(body, name, value)
         body = assignment(body, 'SS_IRR_Z', '-15.0' if kind == 'point' else '-10.0 -20.0')
-        body, count = re.subn(r'(?m)^([ \t]*[02]\.0[ \t]+)60\.0', r'\g<1>1.0', body)
-        assert count == 2
+        body, count = re.subn(r'(?mi)^([ \t]*DVS_DC2[ \t]+FID[^\n]*\n)(?:[ \t]*[\d.]+[ \t]+[\d.]+[^\n]*\n){2}',
+                             r'\g<1>     0.0 1.0\n     2.0 1.0\n', body)
+        assert count == 1
         path.write_text(body, encoding='cp1252')
     return m.e.inspect(case)
 
@@ -127,14 +128,15 @@ def main():
             print(args.configuration,opt,'SHORT_EXACT_NATIVE_PASS',flush=True)
             if args.short_only: continue
             full = out/(opt+'-full')
-            # Daily native cuts permit causal own continuations around any real
-            # irrigation event without repeating the continuous trajectory.
-            report, data = m.trajectory(build,reference,project,full,1096,set(range(1,1097)),60)
+            cuts = {2,4,365,367,530,532,1096}|set(range(120,163))
+            report, data = m.trajectory(build,reference,project,full,1096,cuts,60)
             report['short'] = brief; result['profiles'][opt] = report; save()
             active = [i+1 for i,row in enumerate(data) if row['external_flux_cm'][5] > 0]
             assert active and all(row['external_flux_cm'][3] == 0 for row in data)
             report['subsurface_exposure'] = dict(days=active,total_cm=sum(row['external_flux_cm'][5] for row in data))
-            starts = sorted({2,365,530}|{max(1,active[0]-1),max(1,active[len(active)//2]-1),max(1,active[-1]-1)})
+            selected = [day for day in active if day-1 in cuts and day+1 in cuts]
+            assert selected, 'No active scheduled SSDI event in selected native window'
+            starts = sorted({2,365,530}|{selected[0]-1,selected[-1]-1})
             report['own'] = [m.own(build,reference,project,full,data,start,start+2,out/(opt+'-own'+str(start))) for start in starts if start+2<=1096]
             target = out/(opt+'-controls'); target.mkdir()
             report['controls'] = controls(build,reference,project,target,data); save()
