@@ -3,8 +3,8 @@
   "baseline": "a9044fdab",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-complete01",
-  "last_commit": "81c2d4ff7a1a41209a7527d912119e9b766d21c4",
-  "status": "VERIFYING_ACTUAL_R_COMPOSITION",
+  "last_commit": "486ef8a38fa03250d829e3de8c483b308e5e71ea",
+  "status": "QUALIFIED_SNAPSHOT_PENDING_CURRENT_OWNER_AND_CANONICAL_ADMISSION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC2_QUALIFIED_NAMED_PROFILES_ONLY",
@@ -14,7 +14,11 @@
     "Windows four full1096 trajectories with exact ordinary and active native windows",
     "Ubuntu44054055449 both matrix jobs SUCCESS; original-reader refusals and active external transactions PASS",
     "Fresh all3 named full/native user-regression on pre-R source PASS",
-    "Actual canonical R drainage a9044fdab merged without conflict"
+    "Actual canonical R drainage a9044fdab merged without conflict",
+    "Actual R composition Windows and Ubuntu four full periods each PASS; eight complete physical/CSV/native trajectories exactly preserved",
+    "Original reader and active external/native controls PASS on actual composition",
+    "All3 actual composed Windows named full/native regressions PASS",
+    "Original chemical SSDI ignored concentration with positive48mg/cm2 surface control: inherited defect proven"
   ],
   "open": [
     "Complete historical selector inventory",
@@ -62,6 +66,19 @@
         "9c5704820e0e977bf9af0f137277b7b1a7f20036e6c960f5c4e920ceecd40b3c"
       ],
       "days": 4384
+    },
+    {
+      "result": "SOURCE_CURRENT_OWNER_UNIT_PASS",
+      "tests": 12,
+      "scheduled_negative_evidence_controls": 25
+    },
+    {
+      "result": "DOCS_SOURCE_AND_STRICT_RENDER_PASS",
+      "strict_seconds": 35.79
+    },
+    {
+      "result": "ALL_RAW_MEMBERS_FORWARD_VERIFIED",
+      "members": 12572
     }
   ],
   "failed_tests": [
@@ -76,11 +93,31 @@
     {
       "path": "C:/Users/Veldh012/swap5-complete01-evidence/point-full",
       "cause": "Actual original future potato reader refuses TCS6 with inherited TCSFIX1 after523accepted days. Fixed test input in all future crops; no physical code change."
+    },
+    {
+      "path": "point-valid / interval-valid initial controller",
+      "cause": "Both complete O0 periods passed; initially selected native days preceded actual irrigation. Retained periods consumed without rerun; short actual day530 suffix established exact active544to546 native control."
+    },
+    {
+      "path": "point-preflight",
+      "cause": "Native reader initializes at actual emergence, after nominal crop start; extended only malformed-input diagnostic horizon, no model law or tolerance change."
+    },
+    {
+      "path": "point-preflight2",
+      "cause": "External constructor correctly rejected native origin without explicit adopt_native; corrected test API to use documented explicit adoption."
+    },
+    {
+      "path": "preservation",
+      "cause": "LF/CRLF policy source hashes differed; verified both actual hashes against unchanged Git blob. Historical plate provider object bytes also differ; recorded source-only comparison and explicitly did not inherit numerical PASS."
+    },
+    {
+      "path": "isolation",
+      "cause": "Diagnostic passed names positionally as unsupported physical variant; corrected named ColumnStart arguments and actual interleaved origins pass on isolated and composed source."
     }
   ],
   "running_ci": [],
-  "next_code_change": "Run actual R-composed Windows/Ubuntu point/interval O0/O2 and named regression; compare every daily physical row to preserved pre-R proof. Seal and extend current bounded source owner, then safe canonical admission.",
-  "recovery_point": "Read STATUS.json, verify branch/canonical delta; continue tests/nomacro_scheduled_subsurface/run.py with existing provider C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider; never rebind old source identities.",
+  "next_code_change": "Seal evidence and extend existing bounded current-source selector without changing historical guards; verify negative evidence/source controls, admit PR1699 after live canonical reconciliation, then qualify corrected-reference nodal chemical SSDI source.",
+  "recovery_point": "PR1699 on codex/nomacro-complete01. Read sealed QUALIFICATION.json and current STATUS. Scientific source b97a04d2c; actual Ubuntu carrier451b28ea4 only differs by excluded dispatch alias. Windows/Ubuntu composed full/native and named controls complete. Do not repeat them for evidence-only changes. Finish existing bounded current-owner gate, safe PR admission and actual canonical postimage. Next independent code batch: corrected-reference chemical SSDI source.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -105,5 +142,8 @@
       }
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
-  }
+  },
+  "pr": 1699,
+  "qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
+  "qualified_ubuntu_carrier": "451b28ea4a1b68611952c55437bdcf37c6017ac4"
 }

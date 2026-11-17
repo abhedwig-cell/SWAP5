@@ -120,10 +120,10 @@
     },
     {
       "function": "Chemical subsurface irrigation",
-      "classification": "PARTIAL",
+      "classification": "INHERITED_DEFECT",
       "original_source": "irrigation.f90, solute.f90",
-      "scope": "no integrated conserved subsurface chemical input owner; explicit refusal",
-      "authority": "app/hybrid_water/fixed_irrigation_file.py",
+      "scope": "Actual original concentration perturbation: positive2.4cm SSDI; concentration0/20 yields every output row identical; surface positive control adds48mg/cm2. Corrected-reference nodal source and strict conserved ledger remain required; current explicit refusal preserved.",
+      "authority": "integration/f-ci/nomacro-complete01/ORIGINAL_CHEMICAL_AUDIT.json",
       "authority_present": true
     },
     {

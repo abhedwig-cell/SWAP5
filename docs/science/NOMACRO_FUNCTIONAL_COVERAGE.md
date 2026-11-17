@@ -1,5 +1,45 @@
 # Original no-macro functional coverage
 
+## Scheduled subsurface water successor, 17 November 2026
+
+The bounded `SWAP5-NOMACRO-COMPLETE01` successor connects original water-only
+`SCHEDULE=1`, `ISUAS=2` through the complete original irrigation owner. Scalar
+and ordered interval depths use the unchanged original allocation/rate equations;
+an interval supplies each selected compartment according to that original law.
+No normalization, new physical formula, persistent format, solver or tolerance is
+introduced. Invalid depth intervals/profile bounds refuse before the original
+grid walk. Build and native reuse require the explicit source-bound policy.
+Registered inputs retain their existing physical selection.
+
+On the actual composition with admitted table-drainage R, Windows and Ubuntu
+each complete point/interval1096 at touched donor/kernel O0/O2: eight complete
+trajectories,8768days,24 ordinary full-period native windows,8 active native
+windows and8 short native windows. Every physical/CSV row and both complete
+terminal native payloads match the separate pre-composition proof exactly.
+Actual original-reader refusals, active external discard/replay/recovery and
+independent active origins pass. Fresh complete Grassgrowth1827/Hupsel1096/
+SaltFarm1461 and their exact own windows pass on the composed Windows source.
+The unchanged `1e-10cm` daily guards apply. No full moving F-CI or unrelated
+macropore/solver campaign is selected by this bounded input extension.
+
+`integration/f-ci/nomacro-complete01/QUALIFICATION.json` and member-verified raw
+archives own the source, commands, input/native evidence, costs and retained
+failed harness observations. Actual canonical admission requires the separate
+merge receipt; this qualified snapshot alone is not admission. The work-unit
+`STATUS.json` and `GAP_MATRIX.json` keep remaining historical families explicit.
+RC1/RC2 remain fixed; all-option functional completion and whole scientific
+equivalence are not claimed.
+
+Chemical subsurface delivery remains refused. A separate original4.3.1
+concentration perturbation completes all four surface/subsurface0/20 controls:
+subsurface water actually supplies2.4cm, yet every printed output row is
+identical across the two concentrations. The surface positive control reports
+the expected48mg/cm2 extra irrigation mass. Original CDE has no nodal SSDI
+source. This is an inherited chemical integration defect, requiring an explicit
+corrected-reference source and conserved ledger qualification before activation.
+It does not affect the admitted water-only law. Original-reference trajectory
+differences and the existing oxygen/thermal/energy limits remain unqualified.
+
 ## Scope and authority
 
 Work unit **SWAP5-NOMACRO-COVERAGE01**, baseline canonical `e157e65ff`, extends
