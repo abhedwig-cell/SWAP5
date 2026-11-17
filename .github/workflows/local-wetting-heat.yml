@@ -1,0 +1,65 @@
+name: Recovered local wetting heat qualification
+on:
+  push:
+    branches: [codex/local-wetting-time01]
+    paths: ['.github/workflows/local-wetting-heat.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  recovered-heat:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            tests/local_wetting
+            tests/nomacro_mixtures
+            reference/swap-4.3.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: local-wetting-c3a0a7e17bdc4673140f7bcaa3fb1607a6381e99
+          run-id: 44080859947
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/recovered
+      - name: Prepare and validate matching provider
+        run: python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/provider"
+      - name: Preserve first platform-path failure and restore artifact permissions
+        run: |
+          python3 - <<'PY'
+          import os, pathlib
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'recovered/wetting'
+          for path in list(root.glob('*-heat2*')):
+              path.rename(path.with_name(path.name+'-failed-platform-path'))
+          for path in root.rglob('*'):
+              if path.is_file() and (path.name in ('day_donor','day_kernel') or path.suffix=='.exe'):
+                  path.chmod(0o755)
+          PY
+      - name: Verify unchanged physical build and observe all four complete runs
+        run: |
+          python3 - <<'PY'
+          import os,pathlib,sys
+          sys.path.insert(0,'tests/local_wetting')
+          from run import m,POLICY
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'recovered/wetting'
+          for key in ('water-surface-history','chemical-surface-history'):
+              project=m.e.load(root/'inputs'/key,time_step_policy=POLICY)
+              for opt in ('O0','O2'):
+                  m.validate_bundle(root/(key+'-'+opt+'-build'),pathlib.Path(os.environ['RUNNER_TEMP'])/'provider',project)
+          PY
+          python3 -B tests/local_wetting/heat.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/recovered/wetting"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: recovered-heat-${{ github.sha }}
+          path: ${{ runner.temp }}/recovered
+          retention-days: 30

@@ -1,0 +1,32 @@
+--- B0/headcalc.f90
++++ reference/headcalc.f90
+@@ -44,6 +44,7 @@
+ 
+ !  local
+    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror
++   integer :: reference_polish
+    real(8), dimension(macp)         :: dFdhL, dFdhM, dFdhU     ! elements of Lower, Main and Upper diagonals in coeffcient matrix
+    real(8), dimension(macp)         :: difh, F                 ! arrays in solution procedure
+    real(8), dimension(macp)         :: sink, source            ! sink/source terms in Richards equation
+@@ -73,6 +74,7 @@
+ 
+ !---------------------------------------------------------------------
+ 
++   reference_polish=0
+ !  reset some variables at the start of a new day
+    if (fldaystart) then
+       flwarn = .TRUE.
+@@ -375,6 +377,13 @@
+ !     save sump voor next iteration
+       sumold = sump
+ 
++      ! Independent reference effort: do not change any original criterion.
++      ! Two further ORIGINAL converged Newton iterations avoid accepting its
++      ! first loose stopping point. All F/sum1 calculations remain original.
++      if (.not.flnonconv.and.reference_polish<2) then
++         reference_polish=reference_polish+1
++         flnonconv=.true.
++      endif
+       if (.NOT.flnonconv) then      ! convergence has been reached
+      
+ !        special case for macropores

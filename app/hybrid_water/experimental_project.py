@@ -242,6 +242,9 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     report = inspect(directory)
     from time_event_closure import POLICY as EVENT_POLICY
     from irrigation_pulse_time import POLICY as PULSE_POLICY
+    from local_wetting_time import POLICY as WETTING_POLICY
+    if policy==WETTING_POLICY and (report['selectors']['SWFROST']!=0 or report['selectors']['SWSNOW']!=0):
+        raise ValueError('Local wetting policy requires absent frost/snow')
     if policy==PULSE_POLICY and (report['selectors']['SWFROST']!=0 or report['selectors']['SWSNOW']!=0 or report['selectors']['SWIRFIX']!=1):
         raise ValueError('Irrigation pulse policy requires fixed irrigation without frost/snow')
     drained_frost = report['selectors']['SWFROST']==1 and report['selectors']['SWDRA']==1

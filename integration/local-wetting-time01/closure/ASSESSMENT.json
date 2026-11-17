@@ -1,0 +1,53 @@
+{
+  "status": "HEAT_ROOT_CAUSE_REPAIRED_GWL_NUMERICAL_CAUSE_SUPPORTED_SCIENCE_NOT_QUALIFIED",
+  "production_snapshot": "c3a0a7e17bdc4673140f7bcaa3fb1607a6381e99",
+  "physical_source_sha256": {
+    "app/hybrid_water/micro_lookup_state.py": "0ce9484984cfefbda1514be2c74f00c1b2983e10aae42c947ea33efe8e6d78f2"
+  },
+  "root_cause": {
+    "old_read_day": 562,
+    "clock": 37817.02774498037,
+    "pressure_head_cm": -19509.494434557197,
+    "interpolation_row": 429,
+    "undefined_endpoint": "K_table(430,1)",
+    "old_serialized_K_rows": 429,
+    "new_serialized_M_K_rows": 431,
+    "native_lookup_version": 2
+  },
+  "heat": {
+    "windows_full_profiles": 4,
+    "ubuntu_full_profiles": 4,
+    "all_1096_days_physical_exact_to_unobserved": true,
+    "limit_j_cm2": 1e-09,
+    "full_physical_energy_complete": false
+  },
+  "reference": {
+    "original_nominal_maximum_GWL_cm": {
+      "Windows": 2.678132051528,
+      "Ubuntu": 2.782672849402
+    },
+    "common_saved_state_fine_GWL_difference_cm": -6.963836299966886e-05,
+    "initial_stock_difference_cm": 0.0,
+    "initial_recomputed_GWL_difference_cm": 0.0013411976320014674,
+    "original_common_BALDEV_cm": [
+      -8.435463382805e-07,
+      6.613322112159e-10,
+      -6.778223047288e-07
+    ],
+    "scientific_equivalence": "NOT_QUALIFIED",
+    "disposition": "NUMERICAL_TEMPORAL_HISTORY_SENSITIVITY_SUPPORTED_NOT_A_QUALIFIED_REPLACEMENT_REFERENCE",
+    "remaining_acceptance": "independently accurate reference at unchanged mass/scientific criteria; no tuning to nominal B0"
+  },
+  "hosted": {
+    "full_run_id": 44080859947,
+    "full_steps_passed": true,
+    "job_terminal": "failure_in_heat_test_platform_path",
+    "base_artifact_id": 14327780879,
+    "base_artifact_sha256": "fc98af9a811498ff7e5650a4fd9b85ea7efa5863df752b0a39639c9a8d374c3e",
+    "recovered_heat_run_id": 44081632203,
+    "recovered_heat_terminal": "success",
+    "recovered_artifact_id": 14328126084,
+    "recovered_artifact_sha256": "ba8e94363dc68c6ec9ab757d66ab75a86b1001eee3706496c510e2dba8897dd7"
+  },
+  "tolerances_changed": false
+}

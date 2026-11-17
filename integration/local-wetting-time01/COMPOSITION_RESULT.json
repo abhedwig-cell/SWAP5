@@ -1,0 +1,411 @@
+{
+  "status": "ACTUAL_SCHEDULED_WETTING_COMPOSITION_GENERATED_INPUT_CLOSURE_AND_NATIVE_EXACT",
+  "source": "55af83d78b3cad3c6a8c7b2278b71edf45b83c8f",
+  "canonical_base": "f0e5e39ea3d166755e394700a5a8765700eab875",
+  "profiles": {
+    "water-surface-history-O0": {
+      "generated": {
+        "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+        "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "4b57ed86a1b2ddf4a5ff2444cc7463d13ae21a3d819281d08d0ac8a99d36366e",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+        "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "closure_fields": [
+        "donor_flags",
+        "kernel_flags",
+        "donor_generated",
+        "donor_objects",
+        "donor_modules",
+        "ttutil_modules",
+        "ttutil_library",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "budget_source",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "irrigation_pulse_time",
+        "local_wetting_time",
+        "time_step_policy"
+      ],
+      "all_emitted_dependencies_and_inputs_exact": true,
+      "prefix_exact_to_qualified_full": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 215,
+        "budgets": {
+          "days": 215,
+          "max_water_cm": 8.643086246706844e-14,
+          "max_kernel_cm": 8.615330671091215e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 5.926469167846782e-13
+        },
+        "model_seconds": 1.7519871001131833,
+        "build_sha256": "607d658d3e6e71060f4df08dc37a4a587e43e8d4ff851bb45cc42f83b92f8239",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.44062340003438294
+          },
+          {
+            "start": 211,
+            "end": 213,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.4134331000968814
+          },
+          {
+            "start": 213,
+            "end": 215,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.35345979989506304
+          }
+        ]
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\local-wetting-time02\\inputs\\water-surface-history",
+        "--experimental-time-step-policy",
+        "original-adaptive-local-wetting-v1",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--donor-opt",
+        "O0",
+        "--output",
+        "C:\\SWAP5-testing\\local-wetting-time02-composed\\water-surface-history-O0-build"
+      ]
+    },
+    "water-surface-history-O2": {
+      "generated": {
+        "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+        "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "4b57ed86a1b2ddf4a5ff2444cc7463d13ae21a3d819281d08d0ac8a99d36366e",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+        "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "closure_fields": [
+        "donor_flags",
+        "kernel_flags",
+        "donor_generated",
+        "donor_objects",
+        "donor_modules",
+        "ttutil_modules",
+        "ttutil_library",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "budget_source",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "irrigation_pulse_time",
+        "local_wetting_time",
+        "time_step_policy"
+      ],
+      "all_emitted_dependencies_and_inputs_exact": true,
+      "prefix_exact_to_qualified_full": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 215,
+        "budgets": {
+          "days": 215,
+          "max_water_cm": 8.643086246706844e-14,
+          "max_kernel_cm": 8.615330671091215e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 5.926469167846782e-13
+        },
+        "model_seconds": 1.5348971001803875,
+        "build_sha256": "75cd574152d3727656bf2defea733900221978711a4b4910ec9fba36dc2602e7",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.4064917000941932
+          },
+          {
+            "start": 211,
+            "end": 213,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.39048180007375777
+          },
+          {
+            "start": 213,
+            "end": 215,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.3302370000164956
+          }
+        ]
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\local-wetting-time02\\inputs\\water-surface-history",
+        "--experimental-time-step-policy",
+        "original-adaptive-local-wetting-v1",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--donor-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\local-wetting-time02-composed\\water-surface-history-O2-build"
+      ]
+    },
+    "chemical-surface-history-O0": {
+      "generated": {
+        "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+        "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "4ac560478819ba11cc41b493e31cd9f14b7774a2b831a53554fcf93451a3a9cb",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+        "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "closure_fields": [
+        "donor_flags",
+        "kernel_flags",
+        "donor_generated",
+        "donor_objects",
+        "donor_modules",
+        "ttutil_modules",
+        "ttutil_library",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "budget_source",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "irrigation_pulse_time",
+        "local_wetting_time",
+        "time_step_policy"
+      ],
+      "all_emitted_dependencies_and_inputs_exact": true,
+      "prefix_exact_to_qualified_full": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 215,
+        "budgets": {
+          "days": 215,
+          "max_water_cm": 8.643086246706844e-14,
+          "max_kernel_cm": 8.615330671091215e-14,
+          "max_solute_mg_cm2": 1.5044057986119894e-12,
+          "sum_water_residual_cm": 5.926469167846782e-13
+        },
+        "model_seconds": 1.8432555999606848,
+        "build_sha256": "c6bb0330147f168563fb27335db4cc062f370a52b1c1832757e43fe0aadf177a",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.4325695999432355
+          },
+          {
+            "start": 211,
+            "end": 213,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.45132149988785386
+          },
+          {
+            "start": 213,
+            "end": 215,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.3358891000971198
+          }
+        ]
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\local-wetting-time02\\inputs\\chemical-surface-history",
+        "--experimental-time-step-policy",
+        "original-adaptive-local-wetting-v1",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--donor-opt",
+        "O0",
+        "--output",
+        "C:\\SWAP5-testing\\local-wetting-time02-composed\\chemical-surface-history-O0-build"
+      ]
+    },
+    "chemical-surface-history-O2": {
+      "generated": {
+        "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+        "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "4ac560478819ba11cc41b493e31cd9f14b7774a2b831a53554fcf93451a3a9cb",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+        "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "closure_fields": [
+        "donor_flags",
+        "kernel_flags",
+        "donor_generated",
+        "donor_objects",
+        "donor_modules",
+        "ttutil_modules",
+        "ttutil_library",
+        "kernel_sources",
+        "adapter",
+        "driver",
+        "budget_source",
+        "lower_boundary_receipt",
+        "scheduled_pond_history",
+        "irrigation_pulse_time",
+        "local_wetting_time",
+        "time_step_policy"
+      ],
+      "all_emitted_dependencies_and_inputs_exact": true,
+      "prefix_exact_to_qualified_full": true,
+      "prefix": {
+        "status": "SHORT_PASS",
+        "days": 215,
+        "budgets": {
+          "days": 215,
+          "max_water_cm": 8.643086246706844e-14,
+          "max_kernel_cm": 8.615330671091215e-14,
+          "max_solute_mg_cm2": 1.5044057986119894e-12,
+          "sum_water_residual_cm": 5.926469167846782e-13
+        },
+        "model_seconds": 1.6247235999908298,
+        "build_sha256": "ad59629616d3e6c0007ef16c3c8933044f27f752ec5b5002448bf1dc90ecbc8f",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.4148032998200506
+          },
+          {
+            "start": 211,
+            "end": 213,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.3841394998598844
+          },
+          {
+            "start": 213,
+            "end": 215,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.32255779998376966
+          }
+        ]
+      },
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\local-wetting-time02\\inputs\\chemical-surface-history",
+        "--experimental-time-step-policy",
+        "original-adaptive-local-wetting-v1",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--donor-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\local-wetting-time02-composed\\chemical-surface-history-O2-build"
+      ]
+    }
+  },
+  "tolerances_changed": false,
+  "science": "NOT_QUALIFIED"
+}

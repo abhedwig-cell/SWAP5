@@ -228,6 +228,10 @@ def validate_bundle(bundle, reference, project):
     expected_pulse=pulse_metadata((reference/'build/swap-selected/timecontrol.f90').read_bytes()) if project.time_step_policy==PULSE_POLICY else None
     if identity.get('irrigation_pulse_time') != expected_pulse:
         raise ValueError('Foreign original irrigation pulse temporal policy')
+    from local_wetting_time import POLICY as WETTING_POLICY, metadata as wetting_metadata
+    expected_wetting=wetting_metadata((reference/'build/swap-selected/timecontrol.f90').read_bytes()) if project.time_step_policy==WETTING_POLICY else None
+    if identity.get('local_wetting_time') != expected_wetting:
+        raise ValueError('Foreign original local wetting temporal policy')
     if not project.macro and identity.get('floating_point_profile') != h.no_macro_fp_profile():
         raise ValueError('Bundle floating-point profile differs')
     if 'restart_publisher' in identity:
