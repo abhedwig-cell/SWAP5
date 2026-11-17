@@ -24,5 +24,15 @@ def main():
     result['fulls']+=1;result['days']+=len(rows);result['full_own_windows']+=len(own)
     result['profiles'][platform+'/'+key+'/'+opt]=dict(days=len(rows),max_water_cm=max(abs(r['independent_residual_cm']) for r in rows),max_solute_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2',0)) for r in rows))
  assert (result['fulls'],result['days'],result['full_own_windows'])==(8,8768,64)
+ heat_profiles=0
+ for prefix in ['windows/','ubuntu/wetting/']:
+  if prefix+'HEAT.json' not in idx['files']:continue
+  heat=json.loads(read(prefix+'HEAT.json'));assert not heat['full_energy_balance_complete'] and heat['energy_budget_j_cm2']==1e-9
+  for v in heat['profiles'].values():
+   assert v['physical_daily_exact'] and v['accepted_days']==1096 and not v['full_energy_balance_complete']
+   assert v['maximum_cell_residual_j_cm2']<=1e-9 and v['maximum_global_step_residual_j_cm2']<=1e-9
+   heat_profiles+=1
+ if heat_profiles:
+  assert heat_profiles==8;result['heat_observer_exactness']='EIGHT_FULL_NUMERICAL_CONDUCTION_PROFILES_EXACT';result['heat_profiles']=heat_profiles
  (root/'VERIFIED.json').write_text(json.dumps(result,indent=2));print(json.dumps({k:v for k,v in result.items() if k!='profiles'}))
 if __name__=='__main__':main()
