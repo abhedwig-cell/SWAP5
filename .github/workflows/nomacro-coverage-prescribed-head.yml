@@ -92,7 +92,9 @@ jobs:
         run: |
           if [ "$TABLE_DRAINAGE" = true ]; then
             python3 -B tests/nomacro_drainage/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B tools/solute/check_tabulated_drainage.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/drain-component"
+            if [ "${{ matrix.configuration }}" = water-drain-table ]; then
+              python3 -B tools/solute/check_tabulated_drainage.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/drain-component"
+            fi
             python3 -B tests/nomacro_drainage/preflight.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
           elif [ "$TIME_EVENT_CLOSURE" = true ]; then
             python3 -B tests/nomacro_time_event/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
