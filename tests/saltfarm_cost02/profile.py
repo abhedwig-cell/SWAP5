@@ -1,11 +1,12 @@
 """Private same-source phase profile; original mathematics/order are untouched."""
 from pathlib import Path
 import argparse,contextlib,json,shutil,subprocess,sys,time,zipfile
-ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'app/hybrid_water'));sys.path.insert(0,str(ROOT/'tools/solute'))
+ROOT=Path(__file__).resolve().parents[2]
+p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--qualification',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
+sys.path.insert(0,str(a.source/'app/hybrid_water'));sys.path.insert(0,str(a.source/'tools/solute'))
 import daily_host as h
 from daily_coupling import validate_bundle
 from check_hupsel51_repair import bounded,physical,rows
-p=argparse.ArgumentParser();p.add_argument('--qualification',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
 reference=a.qualification/'provider';original=a.qualification/'saltfarm-O2-candidate-build';parent=a.qualification/'saltfarm-O2-candidate-full';meta,case=validate_bundle(original,reference,h.SALTFARM);build=out/'build';shutil.copytree(original,build)
 source=(build/'swap.f90').read_text(encoding='cp1252');source=source.replace('end module hybrid_day_window','real(8)::prof_cpu(5)=0d0,prof_start,prof_finish\ninteger(8)::prof_ticks(5)=0,prof_count(5)=0,prof_begin,prof_end,prof_rate\nend module hybrid_day_window')
 source=source.replace('use hybrid_day_window, only: return_at_day_end, budget_step, budget_total, checkpoint_clock','use hybrid_day_window, only: return_at_day_end, budget_step, budget_total, checkpoint_clock, &\nprof_cpu,prof_start,prof_finish,prof_ticks,prof_count,prof_begin,prof_end,prof_rate')
