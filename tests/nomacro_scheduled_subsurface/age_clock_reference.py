@@ -19,7 +19,7 @@ ROOT=old.ROOT
 def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','prior-reference','matrix-O0','matrix-O2','output'):p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);a=p.parse_args();a.output.mkdir()
+    p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);p.add_argument('--reuse-executions',type=Path);a=p.parse_args();a.output.mkdir()
     parent=json.loads((ROOT/'integration/f-ci/nomacro-complete01/AGE_CALENDAR_QUALIFICATION.json').read_text())
     matrix={'profiles':{}}
     for folder in (a.matrix_O0,a.matrix_O2):matrix['profiles'].update(json.loads((folder/'RESULT.json').read_text())['profiles'])
@@ -42,12 +42,26 @@ def main():
             if a.platform=='Ubuntu':exe.chmod(exe.stat().st_mode|0o111)
             for name,profile in matrix['profiles'].items():
                 if profile['optimization']!=opt:continue
-                inputs=Path(profile['input_path']);case=a.output/name;shutil.copytree(inputs,case)
-                hashes={p.relative_to(case).as_posix():sha(p) for p in case.rglob('*') if p.is_file()}
-                started=time.monotonic();r=subprocess.run([str(exe),'./swap.swp'],cwd=case,capture_output=True,text=True,timeout=90)
-                (case/'reference.stdout').write_text(r.stdout);(case/'reference.stderr').write_text(r.stderr)
-                assert r.returncode in (0,100) and (case/'swap.ok').exists(),r.stderr
-                initial,data=old.packets(r.stdout)
+                inputs=Path(profile['input_path']);case=a.output/name
+                hashes={p.relative_to(inputs).as_posix():sha(p) for p in inputs.rglob('*') if p.is_file()}
+                previous=json.loads((a.reuse_executions/'RESULT.json').read_text()) if a.reuse_executions else None
+                reused=previous is not None and name in previous['profiles']
+                started=time.monotonic()
+                if reused:
+                    prior_case=a.reuse_executions/name;prior_result=previous['profiles'][name]
+                    assert prior_result['input_sha256']==hashes and prior_result['executable_sha256']==sha(exe)
+                    assert all(sha(prior_case/key)==value for key,value in hashes.items())
+                    shutil.copytree(prior_case,case)
+                    stdout=(case/'reference.stdout').read_text();returncode=prior_result['returncode']
+                    inherited_files={p.relative_to(case).as_posix():sha(p) for p in case.rglob('*') if p.is_file()}
+                else:
+                    shutil.copytree(inputs,case)
+                    r=subprocess.run([str(exe),'./swap.swp'],cwd=case,capture_output=True,text=True,timeout=90)
+                    (case/'reference.stdout').write_text(r.stdout);(case/'reference.stderr').write_text(r.stderr)
+                    stdout=r.stdout;returncode=r.returncode;inherited_files=None
+                assert returncode in (0,100) and (case/'swap.ok').exists()
+                (case/'EXECUTION.json').write_text(json.dumps(dict(returncode=returncode,input_sha256=hashes,executable_sha256=sha(exe),reused_execution=reused,reused_files_sha256=inherited_files),indent=2)+'\n')
+                initial,data=old.packets(stdout)
                 budget=old.r.validate('\n'.join('AGE_CUMULATIVE '+' '.join(map(repr,v)) for v in [initial,*[row['age_state_cm_day'] for row in data]]))
                 project=old.c.m.e.load(inputs)
                 if profile['mode']=='annual':budget['output']=old.c.output_values(case,data,project)
@@ -56,7 +70,10 @@ def main():
                     primary=old.c.records(case/'result_output.csv');nprint=profile['nprint']
                     stamps=[clock.original_timestamp(next(csv.reader([line]))[0]) for line in primary]
                     first=datetime.fromisoformat(project.start_date)
-                    assert stamps==[first+timedelta(hours=24*i/nprint) for i in range(1096*nprint+1)]
+                    expected=[first+timedelta(hours=24*i/nprint) for i in range(1096*nprint+1)]
+                    assert all(y>x for x,y in zip(stamps,stamps[1:]))
+                    missing=sorted(set(expected)-set(stamps));extra=sorted(set(stamps)-set(expected))
+                    output.update(original_cadence_status='PASS' if stamps==expected else 'NOT_QUALIFIED',missing_nominal_timestamps=list(map(str,missing)),extra_original_timestamps=list(map(str,extra)))
                     assert len(old.c.records(case/'result.ageProfile.csv'))==1096
                     output.update(original_primary_rows=len(primary),original_age_rows=1096,original_seconds60_formatter_rows=sum(':60' in next(csv.reader([line]))[0] for line in primary),original_age_interval_days=1./nprint)
                     budget['output']=output
@@ -69,7 +86,7 @@ def main():
                 for row in data:
                     stock,flow=row['stocks'],row['flow'];delta=math.fsum([*stock[:6],*[-v for v in stock[6:]]]);external=math.fsum([*[flow[i] for i in (0,3,4,5,6)],*[-flow[i] for i in range(7,16)]])
                     errors.append(abs(math.fsum([delta,-external])))
-                residual=max(errors);budget.update(input_sha256=hashes,executable_sha256=sha(exe),returncode=r.returncode,seconds=time.monotonic()-started,maximum_observed_water_residual_cm=residual,original_water_balance_status='PASS' if residual<=1e-10 else 'NOT_QUALIFIED',whole_scientific_equivalence='NOT_QUALIFIED')
+                residual=max(errors);budget.update(input_sha256=hashes,executable_sha256=sha(exe),returncode=returncode,reused_execution=reused,seconds=time.monotonic()-started,maximum_observed_water_residual_cm=residual,original_water_balance_status='PASS' if residual<=1e-10 else 'NOT_QUALIFIED',whole_scientific_equivalence='NOT_QUALIFIED')
                 (case/'daily-observation.jsonl').write_text(''.join(json.dumps(row)+'\n' for row in data));result['profiles'][name]=budget;save();print(name,'ACTUAL_ORIGINAL_CLOCK_LEDGER_OUTPUT_PASS',flush=True)
         result['status']='SIXTEEN_ORIGINAL_AGE_CLOCK_FULL_REFERENCE_EXECUTIONS_PASS'
     except Exception as error:result.update(status='FAILED',error=repr(error));raise

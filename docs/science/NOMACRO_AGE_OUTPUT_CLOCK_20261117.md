@@ -76,3 +76,13 @@ each candidate and apply the same elapsed-day-scaled1e-10 bound alongside the
 existing per-step hydraulic guard. Prevent accumulated ledger error before the
 saturated terminal/minimum step, instead of relying on a terminal polish. Original
 minimum-step behavior and the external strict refusal remain unchanged.
+
+All16Windows short/full005 profiles and six native/transaction control contexts
+passed. Original reference execution then exposed a separate cadence discrepancy:
+NP3 plain O0 emits3290primary rows instead of3289, with an extra2003-01-03
+00:00:17 row. All nominal timestamps remain present and strictly ordered. Record
+this actual original cadence as NOT_QUALIFIED, independently from the already
+retained seconds60 formatting limitation and water/scientific limitations. Do not
+invent a missing migrated event or alter005 timestamps to match this extra row.
+The three completed exact-input/original-executable reference executions are
+reused with their per-file hashes; the fourth validator failure is retained.
