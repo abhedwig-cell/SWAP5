@@ -212,7 +212,7 @@ contains
     ! Surface handoff is explicit. Existing default exclusions are preserved.
     if(f%evaporative_top_retains_age)then
       if(.not.f%accepted_surface_age_available)return
-      if(f%q_face_up_cm_day(1)<0.0_real64.or.f%accepted_surface_age_input_cm_day/=0.0_real64)return
+      if(f%q_face_up_cm_day(1)<0.0_real64.or.abs(f%accepted_surface_age_input_cm_day)>0.0_real64)return
     end if
     if(f%accepted_surface_age_available)then
       if(.not.ieee_is_finite(f%accepted_surface_age_input_cm_day))return
