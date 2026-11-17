@@ -1,41 +1,28 @@
 {
-  "status": "EXACT_SEALED_ORIGINAL_AGE_SUCCESSOR_QUALIFIED_ADMISSION_PENDING",
-  "runtime": "df243e2f43b1d7243ebcb447feb8540a2a9fe03a",
-  "canonical_parent": "edbc66b9e2f9debee588db5763da960aee04b36c",
-  "current_owner": "tests/nomacro_scheduled_subsurface/age_verify.py",
+  "status": "EXACT_CURRENT_RC3_AGE_COMPOSITION_QUALIFIED_ADMISSION_PENDING",
+  "runtime": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
+  "canonical_parent": "e5b3232926e3f24641c4cb0e58db57f115946b59",
+  "current_owner": "tests/nomacro_scheduled_subsurface/age_composition_verify.py",
   "whole_scientific_equivalence": "NOT_QUALIFIED",
   "functional_completion": "PARTIAL",
-  "full_moving_fci": "NOT_SELECTED_IMPACT: selected complete original age/reference/native/rollback platform gates and supported Linux existing age owner with exact input/compiler inheritance. Eleven age-off generated/source/native contexts exact. No broad F-CI claim.",
+  "full_moving_fci": "NOT_SELECTED_IMPACT: exact complete age/source/state/native composition both platforms; nine old-context emitted/native controls; four local-wetting365day/native per platform; accepted canonical RWU dry-end source change selects fresh eight full pulse periods and48full native windows instead of old PASS inheritance. No whole scientific equivalence or broad F-CI promotion.",
   "retired_highest_low_air": "NOT_SELECTED_POLICY",
   "small_production": "original_age_clock, surface_age_budget and age_effluent_observer O0/O2 PASS; actual existing providers",
-  "unit_tests": "6_PASS;135_NEW_AGE_115_AQUIFER_62_FIXED_67_SCHEDULED_CORRUPTIONS_REFUSED",
-  "selected_ubuntu_run": 44119992547,
-  "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_SOURCE_REFUSED",
+  "unit_tests": "7_PASS;125_NEW_COMPOSITION_135_AGE_115_AQUIFER_62_FIXED_67_SCHEDULED_CORRUPTIONS_REFUSED",
+  "selected_ubuntu_run": 44134056082,
+  "source_negative": "PENDING_COMPOSED_OWNER",
   "docs_source": "PASS",
   "strict_docs_render": {
     "status": "PASS",
     "returncode": 0,
     "seconds": 31.0
   },
-  "actual_source_negative": {
-    "dirty": {
-      "returncode": 1,
-      "status": "REFUSED",
-      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 118, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty age admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 48, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty age admission surface\n"
-    },
-    "committed": {
-      "returncode": 1,
-      "status": "REFUSED",
-      "commit": "6f29c8a3fb10e446a6d1937e1a52df28728457fa",
-      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 167, in <module>\n    if __name__=='__main__':print(json.dumps(verify(),indent=2))\n                                             ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 120, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'age runtime differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 48, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: age runtime differs from qualification\n"
-    }
-  },
   "current_owner_verification": {
-    "status": "CURRENT_ORIGINAL_AGE_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
-    "verified_head": "e28475719846b533c0b3726cd6a1a1f3360de575"
+    "status": "PENDING_COMPOSED_OWNER"
   },
   "canonical_reconciliation": {
     "head": "e5b3232926e3f24641c4cb0e58db57f115946b59",
     "overlap": "Shared host/build/experimental identity plus micro_lookup native state; age physics providers unchanged. Fresh composed source/native preservation required before admission."
-  }
+  },
+  "age_subgate_run": 44132663545
 }
