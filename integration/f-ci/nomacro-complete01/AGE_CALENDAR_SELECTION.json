@@ -1,10 +1,15 @@
 {
-  "status": "BASELINE_MISSING_DAILY_RECEIPT_CONFIRMED_COMPONENT_SELECTED",
+  "status": "REAL_COMPONENT_AND_FIRST_SHORT_COMPLETE_NATIVE_PASS_MATRIX_SELECTED",
   "baseline": "b2b05ae110366dae062663bd97c63d4187cdcd8d",
   "owner": "SWAP5-NOMACRO-COMPLETE01",
   "contract": "docs/science/NOMACRO_AGE_OUTPUT_CALENDAR_20261117.md",
   "selected_first": "Existing real age input, PERIOD3/NPRINTDAY1, actual public build and4day request with unchanged source. No macro case.",
-  "expected_seconds": 60,
+  "expected_seconds": {
+    "short_matrix": 360,
+    "full_matrix": 180,
+    "original_reference": 120,
+    "portable_selected": 600
+  },
   "scientific_claim": "No new claim: demonstrate current daily receipt/output-calendar dependency before repair.",
   "unchanged_guards": {
     "water_cm": 1e-10,
@@ -16,5 +21,10 @@
   "baseline_diagnostic": "AGE_CALENDAR_BASELINE_DIAGNOSTIC.json",
   "small_production": "mod_original_output_receipt: observe actual original increments once; no water/age equation. O0/O2 independent pure frame contract, units, signed flow, A/B/A, nonmutation/overflow selected.",
   "expected_component_seconds": 10,
-  "implementation_choice": "Capture the actual original integral increments, rather than subtracting long output-period totals near the unchanged1e-10water limit. Keep the literal original increment expression and operation. Distinct native age output/calendar format only for eligible non-daily projects."
+  "implementation_choice": "Capture the actual original integral increments, rather than subtracting long output-period totals near the unchanged1e-10water limit. Keep the literal original increment expression and operation. Distinct native age output/calendar format only for eligible non-daily projects.",
+  "local_component": "O0/O2 actual one-provider receipt module PASS;3compiler requests each,10.46/1.18seconds.",
+  "first_short": "Actual PERIOD3 plain/O0 ten daily receipts, sparse days3/6/9, complete exact native1to4/3to6/4to8 PASS; real public cold4to8 also completes. No canonical admission.",
+  "selected_matrix": "PERIOD3/7 x plain/surface/subsurface-interval x O0/O2, plus PERIOD7/SWRES1 plain O0/O2:14profiles. Short10day active native first, then complete1096day and seven own windows/profile including year boundary and terminal day.",
+  "long_selection_justification": "Output cadence and complete newly owned interval/cumulative/calendar state require distinct within-interval, boundary, annual reset and terminal continuation. A short prefix alone cannot establish calendar/year/crop-state preservation; local phases are separated and reuse the exact completed builds for full periods. No unrelated F-CI/performance campaign.",
+  "retained_prototypes": "First scope check wrongly excluded the actual Hupsel heat option; retained original heat1. Second initial-observation anchor matched a substring in both initial/day paths; made it newline-specific before compilation. No model/guard change for these fixes."
 }
