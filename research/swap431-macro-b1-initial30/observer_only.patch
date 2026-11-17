@@ -1,0 +1,125 @@
+--- candidate/soilwater_native.f90
++++ observer/soilwater_native.f90
+@@ -241,79 +241,24 @@
+ end subroutine
+ 
+ logical function retry07_driver() result(handled)
+- use DIAG19,only:head_start,head_end,qualification_active
+- use CONTRACT06_CONTROL,only:use_patch
+- use variables,only:t1900,dt,fldecdt
+- use MOD_swap_mp,only:IDecMpRat,FlDecMpRat
+- use MOD_macropore,only:MacroStateVar
+- use MOD_drain,only:drain
+- implicit none
+- character(24)::mode
+- character(60)::label
+- integer::i,u
+- real(8)::selected_time,selected_dt
+- character(80)::env_value
++ use DIAG19,only:head_start,head_end,attempts,finish_target
++ use variables,only:dt
++ implicit none
++ integer::u
+  handled=.true.
+- call get_environment_variable('SELECT27_T',env_value)
+- read(env_value,*) selected_time
+- call get_environment_variable('SELECT27_DT',env_value)
+- read(env_value,*) selected_dt
++ if(attempts>=279) then
++  close(prefix_unit)
++  close(budget_unit)
++  call finish_target()
++  open(newunit=u,file='outcome.txt',status='replace')
++  write(u,*) 'INITIAL30_ORIGINAL_INITIAL_OBSERVER_COMPLETE',attempts
++  close(u)
++  stop 0
++ end if
+  accepted_dt=dt
+- if(abs(t1900-selected_time)>1d-10.or.abs(dt-selected_dt)>1d-14) then
+-  call headcalc
+-  return
+- end if
+- if(IDecMpRat/=0) error stop 'ACTIVE27 original B scope mismatch'
+- call get_environment_variable('DAY10_MODE',mode)
+- call inventory_dump('origin')
+- call native09_dump('context_origin')
+- call ledger12_dump('ledger_origin')
+- use_patch=.true.;qualification_active=.true.
+- if(trim(mode)=='DIRECT') then
+-  fldecdt=.true.
+-  call TimeControl(5)
+-  call drain(2)
+-  call SoilWaterStateVar(1)
+-  call MacroStateVar(1)
+- end if
+- do i=1,4
+-  write(label,'(a,i0)') 'begin_',i
+-  call inventory_dump(trim(label))
+-  call native09_dump('context_'//trim(label))
+-  call ledger12_dump('ledger_'//trim(label))
+-  accepted_dt=dt
+-  call head_start()
+-  call headcalc
+-  call head_end()
+-  write(label,'(a,i0)') 'returned_',i
+-  call inventory_dump(trim(label))
+-  call native09_dump('context_'//trim(label))
+-  call ledger12_dump('ledger_'//trim(label))
+-  if(.not.fldecdt.and..not.FlDecMpRat) then
+-   if(IDecMpRat/=0) error stop 'ACTIVE27 scaled acceptance excluded'
+-   call inventory_dump('accepted_return')
+-   call native09_dump('context_accepted_return')
+-   call ledger12_dump('ledger_accepted_return')
+-   reject26_pending=.true.
+-   return
+-  end if
+-  call SoilWaterStateVar(2)
+-  call MacroStateVar(2)
+-  write(label,'(a,i0)') 'rollback_',i
+-  call inventory_dump(trim(label))
+-  call native09_dump('context_'//trim(label))
+-  call ledger12_dump('ledger_'//trim(label))
+-  if(FlDecMpRat.or.IDecMpRat/=0.or.i==4) then
+-   open(newunit=u,file='outcome.txt',status='replace')
+-   write(u,*) 'ACTIVE27_NO_UNSCALED_ACCEPT_WITHIN_BOUND',i,dt
+-   close(u);stop 0
+-  end if
+-  if(.not.fldecdt) error stop 'ACTIVE27 unclassified refusal'
+-  call TimeControl(5)
+-  call drain(2)
+-  call SoilWaterStateVar(1)
+-  call MacroStateVar(1)
+- end do
++ call head_start()
++ call headcalc
++ call head_end()
+ end function
+ 
+ subroutine retry07_checkpoint()
+--- candidate/macrorate_node.f90
++++ observer/macrorate_node.f90
+@@ -265,7 +265,7 @@
+ !           Excess outflow; compensated in later sections
+             FlwOutDmExces(id) = 0.d0
+             if (WaSrMpDmTmp < WaSrMpDmMin) FlwOutDmExces(id) = WaSrMpDmMin - WaSrMpDmTmp
+-            if(target.and.id==3) then
++            if((target.or.iter_index==0).and.id==3) then
+              lim_min=WaSrMpDmMin;lim_max=WaSrMpDmMax;lim_under=VlMpUndrGwL
+              lim_in=FlwInDmTot;lim_out=FlwOutDmTot(id);lim_tmp=WaSrMpDmTmp;lim_frin=FrFlwIn
+              lim_excess=FlwOutDmExces(id);lim_nodein=FlwInMtxSatCpPot(52)
+@@ -1401,13 +1401,13 @@
+                   FrFlwOut = 0.d0
+                end if
+             end if 
+-            if(target.and.id==3) call limit21_trace(2)
++            if((target.or.iter_index==0).and.id==3) call limit21_trace(2)
+             if (swmbf == 1 .OR. (swmbf == 2 .AND. id > 1)) then
+                QOutMtxSatDmCp(id,IcTopMp:NumNod) = FrFlwOut * FlwOutMtxSatDmCpPot(id,IcTopMp:NumNod)  / dt
+                QOutMtxUnsDmCp(id,IcTopMp:NumNod) = FrFlwOut * FlwOutMtxUnsDmCpPot(id,IcTopMp:NumNod)  / dt
+                if (id == 1) QOutDrRapCp(IcTopMp:NumNod) = FrFlwOut * FlwOutDrRapCpPot(IcTopMp:NumNod) / dt
+             end if
+-            if(target.and.id==3) call limit21_trace(3)
++            if((target.or.iter_index==0).and.id==3) call limit21_trace(3)
+          end do
+       end if
+ 
