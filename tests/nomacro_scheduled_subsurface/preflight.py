@@ -30,8 +30,9 @@ def main():
     else:raise AssertionError('Future chemical SSDI accepted')
     # These inputs deliberately call the actual compiled original reader,
     # bypassing only bundle reuse (not publishing a rebound build/checkpoint).
-    # Each starts cold, has no foreign origin, and must terminate before day121
-    # can be committed. Real Fortran diagnostics establish the refusal cause.
+    # Each starts cold, has no foreign origin, and must terminate when the crop
+    # actually emerges and initializes scheduling. Its nominal sowing date does
+    # not activate the reader. Real Fortran diagnostics establish the cause.
     for name,value in [('reversed','-20.0 -10.0'),('outside-domain','-101.0'),('nonfinite','NaN')]:
         case=out/name;shutil.copytree(source,case)
         crop=case/'maize.crp';crop.write_text(q.assignment(crop.read_text(encoding='cp1252'),'SS_IRR_Z',value),encoding='cp1252')
@@ -39,7 +40,7 @@ def main():
         for opt in ('O0','O2'):
             build=prior/(opt+'-build');target=out/(name+'-'+opt);target.mkdir()
             try:
-                q.m.bounded(20,lambda:q.m.h.run(q.m.h.executable(build,'day_donor'),q.m.h.executable(build,'day_kernel'),case,target,122,
+                q.m.bounded(20,lambda:q.m.h.run(q.m.h.executable(build,'day_donor'),q.m.h.executable(build,'day_kernel'),case,target,300,
                                              runtime=True,model=project.model,project=project))
             except RuntimeError as error:
                 diagnostic='\n'.join(path.read_text(errors='replace') for path in target.rglob('donor.stderr'))
