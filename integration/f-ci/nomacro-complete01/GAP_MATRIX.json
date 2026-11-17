@@ -162,7 +162,7 @@
       "function": "Mixed aquifer reservoir, water age and vapor",
       "classification": "PARTIAL",
       "original_source": "solute.f90, solute1.f90, soilwater.f90",
-      "scope": "Corrected SWBR1 branch qualified with source/state/platform proof; admission pending. Water age and SWVAPOR remain refused/unqualified.",
+      "scope": "Bounded corrected SWBR1 source/state admitted PR1706; original water-age and SWVAPOR still unavailable/unqualified on generic route.",
       "authority": "app/hybrid_water/experimental_project.py",
       "authority_present": true
     },
@@ -208,8 +208,8 @@
     },
     {
       "function": "Corrected original no-macro mixed aquifer SWBR1",
-      "classification": "IMPLEMENTED_NOT_QUALIFIED",
-      "scope": "Branch qualified soil+reservoir/transfer/native state, O0/O2 Windows/Ubuntu, fixed chemical composition; canonical admission pending. Whole-model reference differences unresolved.",
+      "classification": "ADMITTED",
+      "scope": "Canonical23194d6be PR1706; bounded soil+reservoir/transfer/native, Windows/Ubuntu O0/O2, fixed chemical composition. Whole-model reference differences unresolved.",
       "authority": "integration/f-ci/nomacro-complete01/AQUIFER_QUALIFICATION.json",
       "authority_present": true,
       "original_source": "solute.f90"
