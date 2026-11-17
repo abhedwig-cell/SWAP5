@@ -26,7 +26,7 @@ def selection(project):
     if swodat!=0:raise ValueError('Original irregular age output requires separate calendar qualification')
     if period==1:return None
     if not 2<=period<=366:raise ValueError('Original regular age calendar currently requires PERIOD2..366')
-    for key,value in dict(SWSNOW=0,SWBR=0,SWHYST=0,SWHEA=0,SWFROST=0,SWDRA=1,SWMETDETAIL=0).items():
+    for key,value in dict(SWSNOW=0,SWBR=0,SWHYST=0,SWFROST=0,SWDRA=1,SWMETDETAIL=0).items():
         if int(one(key))!=value:raise ValueError('Original regular age output state currently excludes '+key)
     groups={v.strip().upper() for v in one('INLIST_CSV',r"'[^']*'")[1:-1].split(',')}
     if groups!={'WATBAL','GWL'}:raise ValueError('Original regular age output currently requires WATBAL,GWL')
