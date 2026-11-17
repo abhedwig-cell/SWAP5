@@ -33,6 +33,11 @@ P_ADMITTED = '0f12c639da5c4dadf488282dc8e110d2a8ad1874'
 Q_RUNTIME = '33f7363965c137f017ce756fa6b5a07dc4287051'
 Q_WINDOWS = 'c6b9a94d8566ab06526a4083d8c7e8a086229337'
 Q_SEALED = 'fde1f3f0090f9c6f8ffaec7b66ddaab441ed34c3'
+Q_ADMITTED = '67ddba2692cc13f89cfc29100836f2d6a4b80eec'
+R_RUNTIME = '75e5b45a1b7a8705d6d364156a1ad4434107dfdf'
+R_WINDOWS = '4da8feaff8134ca64cdf8133fcf3126313a6135e'
+R_PREFLIGHT = '30ae92bec2d52e536ab438dc4d8b51a6a10fc5c3'
+R_SEALED = '779c4714de5b0c3d2e781993d9d85941864317c4'
 O_WINDOWS = '6bb58557252f3c7ab8da27efe18e8cbe53bffe5d'
 O_SEALED = '5fcb0622c4ab0c89618d92b9541dcc7f85f4c799'
 N_SEALED = '4b6e470b64cd0c5b9967cfb0b4e35c778d8fafe5'
@@ -521,11 +526,11 @@ def validate_q(q,prior,free,component,timer,defaults,preflights,references):
 def verify_q():
     git('merge-base','--is-ancestor',P_ADMITTED,Q_RUNTIME);git('merge-base','--is-ancestor',Q_RUNTIME,Q_SEALED);git('merge-base','--is-ancestor',Q_SEALED,'HEAD')
     require(not git('diff',Q_WINDOWS,Q_RUNTIME,'--','app','src','reference'), 'Q Windows/Ubuntu physical runtime drift')
-    require(not git('diff',Q_RUNTIME,'HEAD','--','app','src','reference','tools','tests/nomacro_time_event','tests/nomacro_frost','tests/nomacro_pond_history','tests/nomacro_mixtures','.github'), 'runtime differs from qualified Q source')
+    require(not git('diff',Q_RUNTIME,Q_ADMITTED,'--','app','src','reference','tools','tests/nomacro_time_event','tests/nomacro_frost','tests/nomacro_pond_history','tests/nomacro_mixtures','.github'), 'runtime differs from qualified Q source')
     reference='reference/swap-4.3.1/patches/TIME-EVENT-CLOSURE-01/'
     changed=set(git('diff','--name-only',CURRENT_RUNTIME,Q_RUNTIME,'--','src','reference').decode().splitlines())
     require(changed=={reference+n for n in ('COMPONENT_RESULT.json','README.md','manifest.json','minimal.patch','run.py','test_time_event.f90')}, 'unqualified Q kernel/reference delta')
-    paths=set(git('diff','--name-only',Q_SEALED,'HEAD').decode().splitlines());require(paths<={SELF,TEST,L_PROOF+'BLOCK_Q_CI_SELECTION.json',L_PROOF+'BLOCK_Q_MERGE.json'}, 'unqualified delta after Q evidence seal')
+    paths=set(git('diff','--name-only',Q_SEALED,Q_ADMITTED).decode().splitlines());require(paths<={SELF,TEST,L_PROOF+'BLOCK_Q_CI_SELECTION.json',L_PROOF+'BLOCK_Q_MERGE.json'}, 'unqualified delta after Q evidence seal')
     def sealed(name):
         path=L_PROOF+'BLOCK_Q_'+name+'.json';require(blob('HEAD',path)==blob(Q_SEALED,path), 'Q sealed evidence changed: '+name);return json.loads((ROOT/path).read_text())
     q=sealed('QUALIFICATION')
@@ -534,6 +539,67 @@ def verify_q():
     for name in ('DAY367_STRICT_FAILURE','ORIGINAL_SNOW_CLOCK_FINDING','VERIFICATION_COMPLETION','ASSESSMENT','PRIOR_P_PREFLIGHT'):sealed(name)
     for label in ('FULL_TRAJECTORIES','DEFAULT_PRESERVATION','LOCAL','OBSERVATION'):
         m=sealed(label+'_ARCHIVE');require(hashlib.sha256((ROOT/L_PROOF/m['archive']).read_bytes()).hexdigest()==m['sha256'], 'Q raw capsule changed')
+    return q
+
+
+def validate_r(q,prior,free,prior_q,component,defaults,preflights,derivative,repair):
+    require(q['status']=='FOUR_ORIGINAL_TABULATED_DRAINAGE_CONFIGURATIONS_QUALIFIED' and q['runtime_source']==R_RUNTIME and q['Windows_execution_source']==R_WINDOWS and q['Ubuntu_execution_source']==R_RUNTIME and q['Windows_preflight_source']==R_PREFLIGHT, 'R actual execution source')
+    require((q['full_configurations'],q['full_trajectories'],q['complete_model_days'],q['full_native_standard_windows'],q['short_native_windows'])==(4,16,17536,64,16), 'R incomplete full/native scope')
+    require(q['mass_guard_cm']==1e-10 and q['tolerances_changed'] is False and q['new_persistent_codec'] is False and q['new_tangent_formula'] is False and q['clock_policy_changed'] is False and q['reused_original_pond_tangent'] is True and q['new_independent_historical_projects']==0, 'R changed physical/numerical policy')
+    require(q['whole_scientific_equivalence']==q['whole_energy']=='NOT_QUALIFIED' and q['all_option_completion'] is False and 'day51' in q['retained_failures'] and 'not rebound' in q['retained_failures'], 'R science/failure promotion')
+    def mass(value):require(type(value) in (float,int) and math.isfinite(value) and 0<=value<=1e-10, 'R hard independent water/solute balance')
+    for key in ('maximum_water_residual_cm','maximum_kernel_residual_cm','maximum_solute_residual_mg_cm2'):mass(q[key])
+    def native(windows,expected):require(len(windows)==len(expected) and {(w['start'],w['end']) for w in windows}==expected and all(all(w[k] is True for k in ('exact_physical','exact_csv','exact_native','origin_unchanged')) for w in windows), 'R missing/nonexact native owner')
+    expected={'water-drain-table','chemical-drain-table','water-drain-signed','chemical-drain-signed'}
+    require(set(q['platforms'])=={'Windows','Ubuntu'}, 'R missing platform')
+    for platform,cases in q['platforms'].items():
+        require(set(cases)==expected, 'R missing/extraneous physical configuration')
+        for key,report in cases.items():
+            require(report['source_commit']==(R_WINDOWS if platform=='Windows' else R_RUNTIME) and report['configuration']==key and report['status']=='COMPLETE_TABULATED_DRAINAGE_O0_O2_PASS' and report['science']=='NOT_QUALIFIED', 'R incomplete actual trajectory report')
+            s=report['selected_physical_controls'];require(s['SWMACRO']==0 and s['SWDRA']==s['SWDIVD']==s['DRAMET']==1 and s['SWSOLU']==int(key.startswith('chemical')) and s['signed_table']==key.endswith('signed'), 'R unsupported physical dispatch')
+            require(set(report['profiles'])=={'O0','O2'}, 'R optimization missing')
+            for r in report['profiles'].values():
+                require(r['status']=='FULL_PASS' and r['days']==r['budgets']['days']==1096, 'R partial period')
+                for name in ('max_water_cm','max_kernel_cm','max_solute_mg_cm2'):mass(r['budgets'][name])
+                native(r['own'],{(2,4),(199,201),(365,367),(530,532)});native([r['short']['own']],{(2,4)});require(r['short']['status']=='SHORT_PASS' and r['short']['days']==5, 'R missing short gate')
+                exposure=r['drainage_signed_exposure'];require(exposure['days_positive']>0 and (exposure['days_negative']>0 if key.endswith('signed') else exposure['days_negative']==0), 'R requested drain/infiltration branch not exercised')
+                c=r['controls'];require(all(c[k] is True for k in ('foreign_policy_refused','independent_origins','inconsistent_mass_refused','external_discard_replay_exact','external_disk_recovery')) and len(c['native_refusals'])==4 and all(x['returncode']!=0 and x['accepted_days']==0 for x in c['native_refusals']), 'R external/isolation/native refusal missing')
+    require(prior['status']=='R_PRIOR_O_J_PLATE_N_M_L5_AND_NAMED_SOURCE_PRESERVATION_PASS' and prior['runtime_source']==R_RUNTIME and len(prior['profiles'])==10 and q['prior_preservation_configs']==13 and all(x['status']=='ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT' and x['generated'] and x['kernel_sources'] and x['inputs'] for x in prior['profiles'].values()), 'R prior source drift')
+    require(free['status']=='P_FREE_FROST_FULL_EVIDENCE_INHERITED_ON_EXACT_SOURCE_AND_ACTIVE_NATIVE' and set(free['profiles'])=={'water','chemical'}, 'R P free preservation missing')
+    for r in free['profiles'].values():
+        require(r['source']==R_RUNTIME and r['generated'] and r['kernel_sources'] and r['inputs'] and r['all_172_physical_rows_exact'] is True and r['prefix']['days']==172, 'R P source/native drift');native(r['prefix']['own'],{(2,4),(170,172)})
+    require(prior_q['status']=='ACTUAL_Q_FROST_DRAINAGE_SOURCE_INPUT_POLICY_AND_NATIVE_PRESERVED' and prior_q['source_commit']==R_RUNTIME and prior_q['generated'] and prior_q['kernel_sources'] and prior_q['inputs'] and prior_q['all_21_physical_rows_exact'] is True and prior_q['prefix']['days']==21, 'R Q conservation/source drift');native([prior_q['prefix']['own']],{(19,21)})
+    require(component['status']=='ACTUAL_ORIGINAL_TABULATED_DRAINAGE_O0_O2_PASS' and component['source_sha256']=='48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc' and component['physical_cases_per_optimization']==15 and set(component['profiles'])=={'O0','O2'}, 'R complete original component missing')
+    for r in component['profiles'].values():require(all(x['returncode']==0 for x in r['records']) and sum(line.startswith('TABLE_DRAIN') for line in r['records'][-1]['stdout'].splitlines())==15, 'R native original branch failure')
+    require(defaults['status']=='EXPERIMENTAL_GENERIC_SURFACE_SMOKE_PASS' and defaults['source_commit']==R_RUNTIME and len(defaults['profiles'])==8 and all(r['every_exercised_native_exact'] for r in defaults['profiles']), 'R default preservation gap')
+    require(set(preflights)=={'Windows','Ubuntu'} and set(preflights['Ubuntu'])==expected, 'R preflight platform gap')
+    for platform,reports in [('Windows',{'water-drain-signed':preflights['Windows']}),('Ubuntu',preflights['Ubuntu'])]:
+        for key,r in reports.items():
+            require(r['source_commit']==(R_PREFLIGHT if platform=='Windows' else R_RUNTIME) and r['status']=='ORIGINAL_TABLE_DRAINAGE_PREFLIGHT_AND_DRFIL_PASS' and r['actual_bundle_validated'] is True and len(r['negative_controls'])==5 and all(x['returncode']!=0 and x['no_output'] is True for x in r['negative_controls']), 'R invalid input accepted')
+            if key=='water-drain-signed':
+                c=r['custom_file_probe'];require(c['actual_selected_drain_file']=='drains/selected.dra' and c['unused_swap_dra_method']==2 and c['days']==53, 'R actual DRFIL owner not tested');native([c['own']],{(50,53)})
+    require(derivative['status']=='EXACT_QUALIFIED_ORIGINAL_LINEAR_POND_FUNCTION_INHERITED_NEW_COUPLED_BRANCH_TESTED' and derivative['actual_template_git_diff_empty'] is True and derivative['derivative_component']['status']=='ORIGINAL_LINEAR_POND_TANGENT_O0_O2_PASS' and derivative['whole_original_native_status']=='ACTUAL_ORIGINAL_SCHEDULED_POND_O0_O2_PASS', 'R original pond owner inheritance changed')
+    require(repair['status']=='ORIGINAL_POND_TANGENT_REUSE_PREFIX53_O0_O2_NATIVE_PASS' and set(repair['profiles'])=={'O0','O2'}, 'R failed-day repair not tested')
+    for r in repair['profiles'].values():require(r['days']==53, 'R prefix incomplete');native([r['own']],{(50,53)})
+
+
+def verify_r():
+    git('merge-base','--is-ancestor',Q_ADMITTED,R_RUNTIME);git('merge-base','--is-ancestor',R_RUNTIME,R_SEALED);git('merge-base','--is-ancestor',R_SEALED,'HEAD')
+    require(not git('diff',R_WINDOWS,R_RUNTIME,'--','app','src','reference','tools','tests/nomacro_drainage/run.py','tests/nomacro_drainage/controls.py'), 'R Windows/Ubuntu physical source drift')
+    require(not git('diff',R_RUNTIME,'HEAD','--','app','src','reference','tools','tests/nomacro_drainage','tests/nomacro_time_event','tests/nomacro_frost','tests/nomacro_pond_history','tests/nomacro_mixtures','.github'), 'runtime differs from qualified R source')
+    paths=set(git('diff','--name-only',Q_RUNTIME,R_RUNTIME,'--','app','src','reference').decode().splitlines());require(paths=={'app/hybrid_water/daily_host.py','app/hybrid_water/experimental_project.py'}, 'R unqualified kernel/reference/application delta')
+    require(not git('diff','166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad',R_RUNTIME,'--','app/hybrid_water/hybrid_step_budget.f90'), 'R reused pond formula changed')
+    paths=set(git('diff','--name-only',R_SEALED,'HEAD').decode().splitlines());require(paths<={SELF,TEST,L_PROOF+'BLOCK_R_CI_SELECTION.json',L_PROOF+'BLOCK_R_MERGE.json'}, 'unqualified delta after R seal')
+    def sealed(name):
+        path=L_PROOF+'BLOCK_R_'+name+'.json';require(blob('HEAD',path)==blob(R_SEALED,path), 'R sealed proof changed: '+name);return json.loads((ROOT/path).read_text())
+    q=sealed('QUALIFICATION');validate_r(q,*(sealed(n) for n in ('PRIOR_SOURCE_PRESERVATION','PRIOR_P_FREE_PRESERVATION','PRIOR_Q_PRESERVATION','COMPONENT_RESULT','DEFAULT_PRESERVATION_RESULT')),dict(Windows=sealed('PREFLIGHT_WINDOWS'),Ubuntu=sealed('UBUNTU_PREFLIGHT')),sealed('POND_COMPONENT_INHERITANCE'),sealed('REPAIRED_PREFIX53'))
+    for platform in ('Windows','Ubuntu'):
+        for mode in ('water','chemical'):
+            for kind in ('table','signed'):require(q['platforms'][platform][mode+'-drain-'+kind]==sealed(platform.upper()+'_'+mode.upper()+'_'+kind.upper()), 'R embedded/raw report differs')
+    for name in ('SIGNED_DAY51_FAILURE','OLD_O2_FAILURE','VERIFICATION_COMPLETION','ASSESSMENT'):sealed(name)
+    component=sealed('UBUNTU_COMPONENT_RESULT');require(component['status']=='ACTUAL_ORIGINAL_TABULATED_DRAINAGE_O0_O2_PASS' and component['source_commit']==R_RUNTIME and component['physical_cases_per_optimization']==15, 'R missing actual Ubuntu native component')
+    for label in ('FULL_TRAJECTORIES','DEFAULT_PRESERVATION','LOCAL'):
+        m=sealed(label+'_ARCHIVE');require(hashlib.sha256((ROOT/L_PROOF/m['archive']).read_bytes()).hexdigest()==m['sha256'], 'R raw capsule changed')
     return q
 
 
@@ -591,11 +657,13 @@ def verify():
     o = verify_o()
     p = verify_p()
     current = verify_q()
-    return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=Q_RUNTIME,
+    latest = verify_r()
+    return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=R_RUNTIME,
                 current_N_full_days=n['complete_model_days'], current_N_proof_anchor=N_SEALED,
                 current_O_full_days=o['complete_model_days'],current_O_proof_anchor=O_SEALED,
                 current_P_full_days=p['complete_model_days'],current_P_proof_anchor=P_SEALED,
                 current_Q_full_days=current['complete_model_days'],current_Q_proof_anchor=Q_SEALED,
+                current_R_full_days=latest['complete_model_days'],current_R_proof_anchor=R_SEALED,
                 integrated_frost_drainage='QUALIFIED only explicit original-adaptive-event-closure-v1; old day21/day367 FAIL retained',
                 prior_composed_runtime=RUNTIME, current_L_proof_anchor=L_SEALED,
                 current_L_full_days=q['complete_model_days'],
