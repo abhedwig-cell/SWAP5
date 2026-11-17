@@ -1,5 +1,12 @@
 # SWAP5 Status-A current architecture
 
+The [fixed RC3 user candidate](../science/RC3_QUALIFICATION.md) packages the
+unchanged baseline6f5e97db9 production architecture. Fresh standalone Windows/
+Ubuntu public day-restart, mass, rollback and instance checks are source-bound;
+registered numerical defaults and external/MODFLOW contracts are unchanged.
+Its included local-wetting option stays explicit and experimental. Whole
+scientific equivalence and complete physical energy remain unqualified.
+
 The [14 November named-scope release decision](../science/NOMACRO_RELEASE_STATUS_20261114.md)
 reconciles current platform, own-restart, balance and measured-cost evidence:
 **RELEASE READY** for registered Grassgrowth/Hupsel/SaltFarm, with the preserved

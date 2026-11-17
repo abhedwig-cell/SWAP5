@@ -1,0 +1,358 @@
+{
+  "status": "ALL_FIXED_RC3_CLEAN_SOURCE_COHORTS_VERIFIED",
+  "source_commit": "2cedd9d0eaf8be8e8cdba321e3ab836835c558a3",
+  "archive_sha256": "cfcb0b5ab515dc8aeb8b5e5e2259556145f2129faf8116d1624e9438bd2f913e",
+  "kernel_optimization": "O0short/O2full",
+  "provider_donor_optimization": "O2",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "original_failed_science": "PRESERVED",
+  "full_physical_energy": "INCOMPLETE",
+  "tolerances_changed": false,
+  "cohorts": {
+    "local": {
+      "profiles": [
+        {
+          "project": "grass",
+          "kernel_opt": "O0",
+          "days": 4,
+          "restart_day": 2,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 1.1178871640203707e-14,
+          "solute_max_mg_cm2": 0,
+          "sum_daily_water_residual_cm": -4.763918436150098e-15,
+          "sum_daily_solute_residual_mg_cm2": 0.0,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 0.26735790027305484
+        },
+        {
+          "project": "grass",
+          "kernel_opt": "O2",
+          "days": 1827,
+          "restart_day": 365,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 1.2831355015544926e-13,
+          "solute_max_mg_cm2": 0,
+          "sum_daily_water_residual_cm": -1.9993334022601785e-13,
+          "sum_daily_solute_residual_mg_cm2": 0.0,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 11.55291170021519
+        },
+        {
+          "project": "hupsel",
+          "kernel_opt": "O0",
+          "days": 4,
+          "restart_day": 2,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 1.0644263248593688e-14,
+          "solute_max_mg_cm2": 0.0,
+          "sum_daily_water_residual_cm": 1.6932147958031996e-14,
+          "sum_daily_solute_residual_mg_cm2": 0.0,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 0.22678769985213876
+        },
+        {
+          "project": "hupsel",
+          "kernel_opt": "O2",
+          "days": 1096,
+          "restart_day": 365,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 9.997037887180676e-11,
+          "solute_max_mg_cm2": 2.159834487009581e-13,
+          "sum_daily_water_residual_cm": 2.6692236513800333e-10,
+          "sum_daily_solute_residual_mg_cm2": -2.5751341639939344e-12,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 4.745502799749374
+        },
+        {
+          "project": "saltfarm",
+          "kernel_opt": "O0",
+          "days": 4,
+          "restart_day": 2,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 5.145571468911925e-13,
+          "solute_max_mg_cm2": 1.2403411631112249e-12,
+          "sum_daily_water_residual_cm": 8.791613270719978e-13,
+          "sum_daily_solute_residual_mg_cm2": -1.0262901639634947e-12,
+          "policy": "configured-dtmax-physical-growth-v2",
+          "model_seconds": 0.2567052999511361
+        },
+        {
+          "project": "saltfarm",
+          "kernel_opt": "O2",
+          "days": 1461,
+          "restart_day": 109,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 2.959653355727454e-12,
+          "solute_max_mg_cm2": 1.3835196877032274e-11,
+          "sum_daily_water_residual_cm": 2.9654271659768083e-10,
+          "sum_daily_solute_residual_mg_cm2": -4.211145607131174e-11,
+          "policy": "configured-dtmax-physical-growth-v2",
+          "model_seconds": 12.195144599769264
+        }
+      ],
+      "source_preparation_seconds": 71.28822650015354,
+      "build_command_seconds": 81.73754360014573,
+      "all_public_command_seconds": 285.9380926010199,
+      "toolchain": {
+        "gfortran": {
+          "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+          "sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+          "target": "x86_64-w64-mingw32"
+        },
+        "gcc": {
+          "version": "gcc.EXE (Rev4, Built by MSYS2 project) 16.2.0",
+          "sha256": "f4120ffea38b73efaf4d770c1942905e220819ae97299c94bfeab3c396b686e2",
+          "target": "x86_64-w64-mingw32"
+        },
+        "ar": {
+          "version": "GNU ar (GNU Binutils) 2.47.20260726",
+          "sha256": "294780eb7e0f0d26035e8b3e59c66046a7472680a4bbdd1d4e36ee4912643d30"
+        }
+      },
+      "refusals": 12,
+      "external_profiles": 6
+    },
+    "ubuntu": {
+      "profiles": [
+        {
+          "project": "grass",
+          "kernel_opt": "O0",
+          "days": 4,
+          "restart_day": 2,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 1.1567449698822511e-14,
+          "solute_max_mg_cm2": 0,
+          "sum_daily_water_residual_cm": -6.2627195193940596e-15,
+          "sum_daily_solute_residual_mg_cm2": 0.0,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 0.022816231999968295
+        },
+        {
+          "project": "grass",
+          "kernel_opt": "O2",
+          "days": 1827,
+          "restart_day": 365,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 1.2820290680911249e-13,
+          "solute_max_mg_cm2": 0,
+          "sum_daily_water_residual_cm": -2.0501121882389723e-13,
+          "sum_daily_solute_residual_mg_cm2": 0.0,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 3.8829867960000684
+        },
+        {
+          "project": "hupsel",
+          "kernel_opt": "O0",
+          "days": 4,
+          "restart_day": 2,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 1.0630385460785874e-14,
+          "solute_max_mg_cm2": 0.0,
+          "sum_daily_water_residual_cm": 1.6959903533647624e-14,
+          "sum_daily_solute_residual_mg_cm2": 0.0,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 0.019009251000056793
+        },
+        {
+          "project": "hupsel",
+          "kernel_opt": "O2",
+          "days": 1096,
+          "restart_day": 365,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 9.99670639778745e-11,
+          "solute_max_mg_cm2": 2.2308871501642002e-13,
+          "sum_daily_water_residual_cm": 2.6687044339391815e-10,
+          "sum_daily_solute_residual_mg_cm2": -2.6559183823665156e-12,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 1.442390615000022
+        },
+        {
+          "project": "saltfarm",
+          "kernel_opt": "O0",
+          "days": 4,
+          "restart_day": 2,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 5.145571468911925e-13,
+          "solute_max_mg_cm2": 1.2327916465437738e-12,
+          "sum_daily_water_residual_cm": 8.79216838223229e-13,
+          "sum_daily_solute_residual_mg_cm2": -9.78772618509538e-13,
+          "policy": "configured-dtmax-physical-growth-v2",
+          "model_seconds": 0.026483573000064098
+        },
+        {
+          "project": "saltfarm",
+          "kernel_opt": "O2",
+          "days": 1461,
+          "restart_day": 109,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 2.9596394779396462e-12,
+          "solute_max_mg_cm2": 1.3832754386378099e-11,
+          "sum_daily_water_residual_cm": 2.9657073368286047e-10,
+          "sum_daily_solute_residual_mg_cm2": -4.175723827181061e-11,
+          "policy": "configured-dtmax-physical-growth-v2",
+          "model_seconds": 3.871096265999995
+        }
+      ],
+      "source_preparation_seconds": 18.928030252999974,
+      "build_command_seconds": 28.262647038999944,
+      "all_public_command_seconds": 79.61767395800018,
+      "toolchain": {
+        "gfortran": {
+          "version": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+          "sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+          "target": "x86_64-linux-gnu"
+        },
+        "gcc": {
+          "version": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+          "sha256": "864711037b900acdb7a449cf48d912cefa935b527fb60c767ccb956779e66136",
+          "target": "x86_64-linux-gnu"
+        },
+        "ar": {
+          "version": "GNU ar (GNU Binutils for Ubuntu) 2.46",
+          "sha256": "22c9d13affd2bea0f0237533ccb1bb2682eb9d22d6a4ed953bcc38445c8c98ab"
+        }
+      },
+      "refusals": 12,
+      "external_profiles": 6
+    },
+    "windows": {
+      "profiles": [
+        {
+          "project": "grass",
+          "kernel_opt": "O0",
+          "days": 4,
+          "restart_day": 2,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 1.1338466199993573e-14,
+          "solute_max_mg_cm2": 0,
+          "sum_daily_water_residual_cm": -4.3128903323961284e-15,
+          "sum_daily_solute_residual_mg_cm2": 0.0,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 0.06492710000003399
+        },
+        {
+          "project": "grass",
+          "kernel_opt": "O2",
+          "days": 1827,
+          "restart_day": 365,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 1.2771024534193507e-13,
+          "solute_max_mg_cm2": 0,
+          "sum_daily_water_residual_cm": -2.031568943222379e-13,
+          "sum_daily_solute_residual_mg_cm2": 0.0,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 7.949141999999995
+        },
+        {
+          "project": "hupsel",
+          "kernel_opt": "O0",
+          "days": 4,
+          "restart_day": 2,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 1.0644263248593688e-14,
+          "solute_max_mg_cm2": 0.0,
+          "sum_daily_water_residual_cm": 3.2183836758820084e-14,
+          "sum_daily_solute_residual_mg_cm2": 0.0,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 0.05335369999994555
+        },
+        {
+          "project": "hupsel",
+          "kernel_opt": "O2",
+          "days": 1096,
+          "restart_day": 365,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 9.99670639778745e-11,
+          "solute_max_mg_cm2": 2.3019408954034093e-13,
+          "sum_daily_water_residual_cm": 2.6637337514804715e-10,
+          "sum_daily_solute_residual_mg_cm2": -2.6559608115570977e-12,
+          "policy": "configured-dtmax-daily-v1",
+          "model_seconds": 2.784251299999994
+        },
+        {
+          "project": "saltfarm",
+          "kernel_opt": "O0",
+          "days": 4,
+          "restart_day": 2,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 5.145571468911925e-13,
+          "solute_max_mg_cm2": 1.2261303083960229e-12,
+          "sum_daily_water_residual_cm": 8.78994793618304e-13,
+          "sum_daily_solute_residual_mg_cm2": -9.827694213981886e-13,
+          "policy": "configured-dtmax-physical-growth-v2",
+          "model_seconds": 0.060934699999961595
+        },
+        {
+          "project": "saltfarm",
+          "kernel_opt": "O2",
+          "days": 1461,
+          "restart_day": 109,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "water_max_cm": 2.9591121220029493e-12,
+          "solute_max_mg_cm2": 1.3378950725062566e-11,
+          "sum_daily_water_residual_cm": 2.965663318220402e-10,
+          "sum_daily_solute_residual_mg_cm2": -4.177751981674098e-11,
+          "policy": "configured-dtmax-physical-growth-v2",
+          "model_seconds": 6.383259699999996
+        }
+      ],
+      "source_preparation_seconds": 24.46368560000002,
+      "build_command_seconds": 46.73514839999996,
+      "all_public_command_seconds": 141.0196201999999,
+      "toolchain": {
+        "gfortran": {
+          "version": "GNU Fortran (x86_64-posix-seh-rev0, Built by MinGW-Builds project) 15.2.0",
+          "sha256": "529504042a6630c71ba022c55258f6ee99af068800eb5bfb69979b247e43a5b4",
+          "target": "x86_64-w64-mingw32"
+        },
+        "gcc": {
+          "version": "gcc.EXE (x86_64-posix-seh-rev0, Built by MinGW-Builds project) 15.2.0",
+          "sha256": "690d171db384af0f69002374a7fc4755128ee82c688d22818bd981f869a65890",
+          "target": "x86_64-w64-mingw32"
+        },
+        "ar": {
+          "version": "GNU ar (GNU Binutils) 2.45",
+          "sha256": "8df18badd7cabc085b10fb5c2ccc38d0ecb21c41a8f69151132ad316e3063113"
+        }
+      },
+      "refusals": 12,
+      "external_profiles": 6
+    }
+  }
+}

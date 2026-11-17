@@ -1,6 +1,13 @@
 # SWAP5 Status-A current status
 
-The [fixed RC2 qualification](../science/RC2_QUALIFICATION.md) provides a frozen
+The [fixed RC3 qualification](../science/RC3_QUALIFICATION.md) supersedes RC2
+as the selected standalone source candidate: fresh laptop/Windows2022/Ubuntu26.04
+public three-project O0short/O2full and exact own-restart/refusal/isolation
+cohorts pass. The fixed ZIP and [guide](../science/RC3_USER_GUIDE.md) preserve
+registered defaults and original scientific FAIL/limitations. This is source
+packaging at baseline6f5e97db9, not a new physical or universal science claim.
+
+The previous [fixed RC2 qualification](../science/RC2_QUALIFICATION.md) provides a frozen
 source branch and checksum-bound standalone ZIP of the current selected source,
 with fresh Windows/Ubuntu public three-project and exact own-restart checks.
 The [RC2 user guide](../science/RC2_USER_GUIDE.md) is included in that ZIP.
