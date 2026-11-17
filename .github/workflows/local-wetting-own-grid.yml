@@ -1,0 +1,66 @@
+name: Independent original on Ubuntu owned trajectory
+on:
+  push:
+    branches: [codex/local-wetting-time01]
+    paths: ['.github/workflows/local-wetting-own-grid.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  owned-numerical-window:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            tests/local_wetting
+            tests/nomacro_mixtures
+            reference/swap-4.3.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: local-wetting-c3a0a7e17bdc4673140f7bcaa3fb1607a6381e99
+          run-id: 44080859947
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/recovered
+      - name: Prepare immutable original provider
+        run: python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/provider"
+      - name: Restore modes and validate exact prior physical bundle
+        run: |
+          python3 - <<'PY'
+          import pathlib,os,sys
+          sys.path.insert(0,'tests/local_wetting')
+          from run import m,POLICY
+          base=pathlib.Path(os.environ['RUNNER_TEMP'])
+          root=base/'recovered/wetting'
+          for p in root.rglob('*'):
+              if p.is_file() and p.name in ('day_donor','day_kernel'):p.chmod(0o755)
+          project=m.e.load(root/'inputs/water-surface-history',time_step_policy=POLICY)
+          m.validate_bundle(root/'water-surface-history-O2-build',base/'provider',project)
+          PY
+      - name: Observe own accepted grid and exact 365-day prefix
+        run: python3 -B tests/local_wetting/capture_grid.py --provider "$RUNNER_TEMP/provider" --prior "$RUNNER_TEMP/recovered/wetting" --candidate-build "$RUNNER_TEMP/recovered/wetting/water-surface-history-O2-build" --control "$RUNNER_TEMP/recovered/wetting/water-surface-history-O2-full" --output "$RUNNER_TEMP/capture"
+      - name: Export the own saved soil state to original input
+        run: python3 -B tests/local_wetting/prepare_reference_seed.py --capture "$RUNNER_TEMP/capture" --output "$RUNNER_TEMP/owned/seed"
+      - name: Independent original adaptive O0 O2 refinement from own state
+        run: python3 -B tests/local_wetting/independent_reference.py --provider "$RUNNER_TEMP/provider" --seed-input "$RUNNER_TEMP/owned/seed" --output "$RUNNER_TEMP/own-adaptive"
+      - name: Independent original on actual own Ubuntu time grid
+        run: python3 -B tests/local_wetting/independent_reference.py --provider "$RUNNER_TEMP/provider" --seed-input "$RUNNER_TEMP/owned/seed" --output "$RUNNER_TEMP/own-replay" --caps 0.04 --grid "$RUNNER_TEMP/owned/own-grid.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: own-grid-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/capture
+            ${{ runner.temp }}/owned
+            ${{ runner.temp }}/own-adaptive
+            ${{ runner.temp }}/own-replay
+          retention-days: 30
