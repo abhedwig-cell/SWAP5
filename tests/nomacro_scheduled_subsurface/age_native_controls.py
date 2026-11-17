@@ -43,7 +43,9 @@ def main():
         # the actual stream's redundant total before interpreting its tail.
         for attack in ('negative-bulk','nonfinite-bulk','negative-age','negative-output-age','negative-pond',
                        'foreign-boundary','changed-production','negative-infiltration','wrong-stock',
-                       'negative-day','negative-period','nonfinite-period','truncated','overflow-stock'):
+                       'negative-day','negative-period','nonfinite-period','truncated','overflow-stock',
+                       'negative-export-water','nonfinite-export-amount','orphan-export-age',
+                       'changed-export-water','changed-export-amount','old-codec'):
             target=a.output/(opt+'-native-'+attack);target.mkdir();origin=target/'origin'
             receipt=m.h.verify_checkpoint(source,367,meta['binding'],origin)
             path=origin/'macro.bin';raw=bytearray(path.read_bytes());length=len(raw)
@@ -51,12 +53,15 @@ def main():
             observer_bytes=128 if meta['identity']['conserved_original_age']['native_codec']=='S5AGE002' else 0
             start=length-24*nodes-8*26-20-observer_bytes
             if attack=='truncated':raw=raw[:-1]
+            elif attack=='old-codec':raw[:8]=b'S5AGE001'
             else:
                 offsets={'negative-bulk':start,'nonfinite-bulk':start,'negative-age':start+8*nodes,
                     'negative-output-age':start+16*nodes,'negative-pond':start+24*nodes,
                     'foreign-boundary':start+24*nodes+24,'changed-production':start+24*nodes+48,
                     'negative-infiltration':start+24*nodes+48+56,'wrong-stock':length-44,
-                    'negative-day':length-20,'negative-period':length-16,'nonfinite-period':length-16,'overflow-stock':start}
+                    'negative-day':length-20,'negative-period':length-16,'nonfinite-period':length-16,'overflow-stock':start,
+                    'negative-export-water':length-172,'nonfinite-export-amount':length-108,
+                    'orphan-export-age':length-108,'changed-export-water':length-172+24,'changed-export-amount':length-108+24}
                 offset=offsets[attack]
                 if attack=='negative-day':struct.pack_into('<i',raw,offset,-1)
                 else:
@@ -70,7 +75,7 @@ def main():
                         binding=meta['binding'],model=project.model,project=project)
             except (ValueError,RuntimeError) as error:
                 diagnostic='\n'.join(p.read_text(errors='replace') for p in target.rglob('donor.stderr'))
-                assert 'age' in diagnostic.lower() or 'age' in str(error).lower(),(attack,diagnostic,str(error))
+                assert 'age' in diagnostic.lower() or 'age' in str(error).lower() or (attack=='old-codec' and 'Foreign nonmacro checkpoint' in diagnostic),(attack,diagnostic,str(error))
                 assert not list(target.glob('accepted-*.zip'))
                 checks.append(dict(optimization=opt,test='native-'+attack,status='REFUSED',diagnostic=diagnostic,error=str(error)));save()
             else:raise AssertionError('Corrupt private age native accepted: '+attack)

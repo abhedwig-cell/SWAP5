@@ -43,9 +43,13 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--resume',action='store_true')
+    p.add_argument('--effluent',action='store_true')
+    p.add_argument('--prior-core-reference-root',type=Path)
     a=p.parse_args();a.output.mkdir(exist_ok=a.resume);provider=a.reference_work/'build';objects=provider/'swap-obj';ttutil=provider/'ttutil-obj'
     result=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),profiles={},events=[],
                 policy=s.POLICY,SWAP5_activation=False,whole_scientific_equivalence='NOT_QUALIFIED')
+    if a.effluent:result['effluent_policy']=s.EFFLUENT_POLICY
+    providers=(*s.PROVIDERS,*s.OUTPUT_PROVIDERS) if a.effluent else s.PROVIDERS
     if a.resume:
         result=json.loads((a.output/'RESULT.json').read_text())
         result['retained_failure']=dict(status=result['status'],error=result.pop('error',None))
@@ -62,14 +66,14 @@ def main():
     try:
         for opt in ('O0','O2'):
             build=a.output/opt;build.mkdir(exist_ok=a.resume)
-            generated={'solute.f90':s.source((provider/'swap-selected/solute.f90').read_bytes()),
+            generated={'solute.f90':s.source((provider/'swap-selected/solute.f90').read_bytes(),effluent=a.effluent),
                        'swap_csv_output.f90':s.csv_source((provider/'swap-selected/swap_csv_output.f90').read_bytes())}
             pond=render_linear_pond_conservation((provider/'swap-selected/boundtop.f90').read_text(encoding='cp1252'))
             import os
             generated['boundtop.f90']=pond.replace('\n',os.linesep).encode('cp1252')
             flags=['-'+opt,'-std=legacy','-ffree-line-length-none','-fallow-argument-mismatch','-fcheck=bounds',
                    '-ffp-contract=off','-march=x86-64','-mtune=generic','-J'+str(build),'-I'+str(build),'-I'+str(objects),'-I'+str(ttutil)]
-            for name in s.PROVIDERS:
+            for name in providers:
                 generated[name+'.f90']=(ROOT/'src/process'/(name+'.f90')).read_bytes()
             reused=a.resume and opt in result['profiles']
             if reused:
@@ -80,10 +84,10 @@ def main():
             else:
                 for name,raw in generated.items():(build/name).write_bytes(raw)
             if not reused:
-                for name in (*s.PROVIDERS,'solute','swap_csv_output','boundtop'):
+                for name in (*providers,'solute','swap_csv_output','boundtop'):
                     call(['gfortran',*flags,'-c',build/(name+'.f90'),'-o',build/(name+'.o')],build,name+'-compile')
             linked=[p for p in sorted(objects.glob('*.o')) if p.name not in ('solute.o','swap_csv_output.o','boundtop.o')]
-            linked += [build/(name+'.o') for name in (*s.PROVIDERS,'solute','swap_csv_output','boundtop')]
+            linked += [build/(name+'.o') for name in (*providers,'solute','swap_csv_output','boundtop')]
             exe=build/'swap_age.exe'
             if reused:
                 profile=result['profiles'][opt]
@@ -103,8 +107,20 @@ def main():
                     run=call([exe,'./swap.swp'],case,'reference',allowed=(0,100));assert (case/'swap.ok').exists()
                     stdout=run.stdout.decode(errors='replace')
                 r=validate(stdout);r['input_sha256']=inventory
+                if a.effluent:
+                    spec=importlib.util.spec_from_file_location('age_output_validation',ROOT/'tests/nomacro_scheduled_subsurface/age_runtime.py')
+                    output=importlib.util.module_from_spec(spec);spec.loader.exec_module(output)
+                    values=[list(map(float,line.split()[1:])) for line in stdout.splitlines() if line.startswith('HYBRID_AGE_EFFLUENT ')]
+                    assert len(values)==1096
+                    data=[dict(day=i+1,age_effluent=v) for i,v in enumerate(values)]
+                    r['effluent_output']=output.output_values_from_directory(case,data)
+                if a.prior_core_reference_root:
+                    old=(a.prior_core_reference_root/opt/str(int(initial))/'reference.stdout').read_text()
+                    probe=lambda text:[line for line in text.splitlines() if line.startswith('AGE_CUMULATIVE ')]
+                    assert probe(stdout)==probe(old),'Corrected effluent changed core reference'
+                    r['all_core_reference_rows_exact']=True
                 profile['cases'][str(int(initial))]=r;save();print(opt,initial,'ACTUAL_SOIL_POND_AGE_LEDGER_PASS',flush=True)
-        result['status']='ORIGINAL_HOST_REAL_AGE_PROVIDERS_FULL_O0_O2_LEDGER_PASS'
+        result['status']='ORIGINAL_HOST_AGE_CORE_AND_CORRECTED_EFFLUENT_FULL_O0_O2_PASS' if a.effluent else 'ORIGINAL_HOST_REAL_AGE_PROVIDERS_FULL_O0_O2_LEDGER_PASS'
     except Exception as error:result.update(status='FAILED',error=repr(error));raise
     finally:save()
 

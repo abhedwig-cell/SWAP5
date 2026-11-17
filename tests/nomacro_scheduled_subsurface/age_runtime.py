@@ -22,7 +22,11 @@ def own(build,reference,project,full,data,start,end,out):
 
 
 def output_values(full,data):
-    def rows(name):return list(csv.reader(m.csvlines(full/'original'/name)))[1:]
+    return output_values_from_directory(full/'original',data)
+
+
+def output_values_from_directory(directory,data):
+    def rows(name):return list(csv.reader(m.csvlines(directory/name)))[1:]
     means=rows('result.ageeffluent.csv');water=rows('result.ageeffluentwater.csv');drains=rows('result.ageeffluentqdrain.csv')
     assert len(means)==len(water)==len(drains)==len(data)
     rounded=lambda v:float(format(v,'.3E'))
@@ -87,8 +91,8 @@ def main():
                 r['effluent_output']=output_values(full,data)
                 if a.prior_core_root:r['prior_core_preservation']=compare_core(full,data,a.prior_core_root/(name+'-full'))
                 r['own']=[own(build,a.reference_work,project,full,data,start,start+2,a.output/(name+'-own'+str(start))) for start in (2,199,365,530)]
-                r['status']='FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS';save();print(name,r['status'],flush=True)
-        result['status']='FOUR_FULL_ORIGINAL_AGE_HOST_O0_O2_NATIVE_PASS'
+                r['status']='FULL_ORIGINAL_AGE_CORRECTED_EFFLUENT_NATIVE_PASS';save();print(name,r['status'],flush=True)
+        result['status']='FOUR_FULL_ORIGINAL_AGE_CORRECTED_EFFLUENT_O0_O2_NATIVE_PASS'
     except Exception as error:result.update(status='FAILED',error=repr(error));raise
     finally:save()
 

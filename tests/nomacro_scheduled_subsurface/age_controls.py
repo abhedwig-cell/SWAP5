@@ -30,7 +30,8 @@ def controls(build,reference,project,full,out):
     except ValueError as error:assert 'Foreign original age source/state policy' in str(error)
     else:raise AssertionError('Foreign age policy accepted')
     attacks={'soil-stock':0,'pond-stock':1,'total-stock':2,'soil-production':3,'pond-production':4,
-             'external-input':5,'drainage':6,'bottom':7,'root':8,'runoff':9,'internal-infiltration':10,'nonfinite':0}
+             'external-input':5,'drainage':6,'bottom':7,'root':8,'runoff':9,'internal-infiltration':10,'nonfinite':0,
+             'effluent-mean':19,'effluent-negative-volume':3,'effluent-nonfinite':11,'effluent-orphan':8}
     checks=[];active=full/'accepted-column-1-day-367.zip';active_digest=m.sha(active)
     for attack,index in attacks.items():
         target=out/attack;target.mkdir();origin=out/(attack+'-origin')
@@ -39,13 +40,14 @@ def controls(build,reference,project,full,out):
             host=m.h.DailyHost(stack,m.h.executable(build,'day_donor'),m.h.executable(build,'day_kernel'),case,target,
                 [m.h.ColumnStart('original',367,origin,receipt)],runtime=True,checkpoint_enabled=True,
                 binding=meta['binding'],model=project.model,project=project)
-            col=host.columns[0];before=(col.day,col.stocks.copy(),col.age_state.copy());receive=m.h.receive
+            col=host.columns[0];before=(col.day,col.stocks.copy(),col.age_state.copy(),col.age_effluent.copy());receive=m.h.receive
             def corrupt(process,*args,**kwargs):
                 disposition,response=receive(process,*args,**kwargs)
-                if process is col.worker and 'HYBRID_AGE_CUMULATIVE' in response:
-                    values=response['HYBRID_AGE_CUMULATIVE'].copy()
-                    values[index]='NaN' if attack=='nonfinite' else str(float(values[index])+1)
-                    response['HYBRID_AGE_CUMULATIVE']=values
+                key='HYBRID_AGE_EFFLUENT' if attack.startswith('effluent') else 'HYBRID_AGE_CUMULATIVE'
+                if process is col.worker and key in response:
+                    values=response[key].copy()
+                    values[index]='NaN' if 'nonfinite' in attack else '-1' if attack=='effluent-negative-volume' else str(float(values[index])+1)
+                    response[key]=values
                 return disposition,response
             try:
                 m.h.receive=corrupt
@@ -54,7 +56,7 @@ def controls(build,reference,project,full,out):
                     assert 'age' in str(error).lower(),str(error);checks.append(dict(attack=attack,status='REFUSED',error=str(error)))
                 else:raise AssertionError('Inconsistent age accepted: '+attack)
             finally:m.h.receive=receive
-            assert before==(col.day,col.stocks,col.age_state)
+            assert before==(col.day,col.stocks,col.age_state,col.age_effluent)
             assert not list(target.glob('accepted-*.zip'))
     target=out/'independent';target.mkdir();starts=[365,530];origins=[]
     for index,start in enumerate(starts):
