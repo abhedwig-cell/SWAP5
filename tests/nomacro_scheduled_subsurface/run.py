@@ -131,8 +131,18 @@ def active_own(build, reference, project, full, data, out):
     with m.zipfile.ZipFile(warm/f'accepted-column-1-day-{last}.zip') as a, m.zipfile.ZipFile(cold/f'accepted-column-1-day-{last}.zip') as b:
         for name in ('result.end','macro.bin'): assert a.read(name) == b.read(name),name
     assert m.sha(source) == digest
+    column = CoupledDailyColumn(build,reference,out/'external-active',project,'active-scheduled-ssdi',origin=source,day=first)
+    trial = column.prepare(); assert trial.budget['external_flux_cm'][5] > 0
+    column.discard(trial); assert column.day==first and m.sha(source)==digest
+    replay = column.prepare(); assert replay.budget==trial.budget
+    column.accept(replay)
+    recovered = CoupledDailyColumn(build,reference,out/'recovered-active',project,'active-scheduled-ssdi',origin=column.checkpoint,day=active)
+    endpoint = recovered.prepare()
+    assert m.physical([{k:v for k,v in endpoint.budget.items() if k!='candidate_only'}|{'committed':True}])==m.physical([data[active]])
+    recovered.discard(endpoint)
     return dict(start=first,end=last,actual_irrigation_day=active,full_period_physical_csv_suffix_exact=True,
-                exact_native=True,origin_unchanged=True,warm_seconds=seconds,cold_seconds=cold_seconds)
+                exact_native=True,origin_unchanged=True,warm_seconds=seconds,cold_seconds=cold_seconds,
+                active_external_discard_replay_exact=True,active_external_disk_recovery=True)
 
 
 def main():
@@ -145,7 +155,9 @@ def main():
     parser.add_argument('--resume', action='store_true', help='Consume completed same-source periods; finish missing checks only')
     args = parser.parse_args()
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=args.resume)
-    reference = args.reference_work.resolve(); m.user_prepare.validate(reference)
+    reference = args.reference_work.resolve()
+    if not (reference/'PREPARED.json').exists(): m.user_prepare.prepare(reference)
+    m.user_prepare.validate(reference)
     if args.reuse_from:
         case = args.reuse_from.resolve()/'input'; descriptor = m.e.inspect(case)
         original = json.loads((args.reuse_from/'RESULT.json').read_text())
