@@ -1,0 +1,134 @@
+--- REPAIR43/soilwater_native.f90
++++ TRAJECTORY44/soilwater_native.f90
+@@ -263,57 +263,24 @@
+  use MOD_macropore,only:MacroStateVar
+  implicit none
+  integer::u
+- character(8)::policy40
+  handled=.true.
+- call get_environment_variable('PERIOD34_ORIGINAL_POLICY',policy40)
+  if(.not.period_begin_done) then
+   period_begin_done=.true.
+   call inventory_dump('begin')
+   call native09_dump('context_begin')
+   call ledger12_dump('ledger_begin')
+  end if
+- ! Numerical activation from the first own head, always guarded by unchanged terms.
+- apply37=.true.;detail33=attempts+1==357
+- if(detail33) then
+-  if(abs(t1900-35797.487000006880d0)>1d-10.or.abs(dt-0.001000001146167051d0)>1d-16) error stop 'NODE41 original context mismatch'
+-  call inventory_dump('origin')
+-  call native09_dump('context_origin')
+-  call ledger12_dump('ledger_origin')
+-  repair43=.true.
+-  call contract43_calibrate()
+-  call inventory_dump('after_probe')
+-  call native09_dump('context_after_probe')
+-  call ledger12_dump('ledger_after_probe')
+- end if
++ apply37=.true.;repair43=.true.;detail33=.false.
+  call capture33()
+  call head_start()
+  call headcalc
+  call head_end()
+- if(detail33) then
+-  call inventory_dump('returned')
+-  call native09_dump('context_returned')
+-  call ledger12_dump('ledger_returned')
+-  if(.not.fldecdt.and..not.FlDecMpRat.and.IDecMpRat==0) then
+-   call inventory_dump('accepted_return')
+-   call native09_dump('context_accepted_return')
+-   call ledger12_dump('ledger_accepted_return')
+-   reject26_pending=.true.
+-   return
+-  end if
+-  call SoilWaterStateVar(2)
+-  call MacroStateVar(2)
+-  call inventory_dump('rollback')
+-  call native09_dump('context_rollback')
+-  call ledger12_dump('ledger_rollback')
+-  if(fldecdt.and..not.FlDecMpRat.and.IDecMpRat==0) call finish33('REPAIRED357_STILL_REFUSED')
+-  call finish33('UNEXPECTED_REPAIRED357_OUTCOME')
+- end if
+  if(fldecdt.or.FlDecMpRat) then
+   open(newunit=u,file='refusal_trace.txt',status='unknown',position='append')
+   write(u,*) attempts,t1900,dt,active_in_attempt,IDecMpRat,merge(1,0,fldecdt),merge(1,0,FlDecMpRat)
+   close(u)
+  end if
+- if((FlDecMpRat.or.IDecMpRat/=0).and.trim(policy40)/='1') then
++ if(FlDecMpRat.or.IDecMpRat/=0) then
+   call inventory_dump('refused')
+   call native09_dump('context_refused')
+   call ledger12_dump('ledger_refused')
+@@ -322,9 +289,9 @@
+   call inventory_dump('rollback')
+   call native09_dump('context_rollback')
+   call ledger12_dump('ledger_rollback')
+-  call finish33('SCALED_REQUEST_BEFORE_PERIOD_END')
+- end if
+- ! Ordinary unscaled refusal is handled by the unchanged original host transaction.
++  call finish33('SCALED_REQUEST_BEFORE_SHORT_TARGET')
++ end if
++ ! Ordinary unscaled refusals use the unchanged original host rollback and retry.
+ end function
+ 
+ subroutine retry07_checkpoint()
+@@ -365,7 +332,9 @@
+   call finish33('TARGET_RETRY_HOST_COMMITTED')
+  end if
+  done35=commit()
+- if(done35) call finish33('INTERNAL_BUDGET_BEFORE_PERIOD_END')
++ if(t1900>=35797.490d0) call finish33('BOUNDED_CONTACT_REPAIRED_TRAJECTORY')
++ if(done35) call finish33('INTERNAL_BUDGET_BEFORE_SHORT_TARGET')
++ if(budget_count>=512) call finish33('COMMIT_CAP_BEFORE_SHORT_TARGET')
+ end subroutine
+ 
+ subroutine finish33(reason)
+--- REPAIR43/macropore_native.f90
++++ TRAJECTORY44/macropore_native.f90
+@@ -1312,8 +1312,8 @@
+ !     File usage         : -           
+ ! ----------------------------------------------------------------------
+       use MOD_grid,      only: numnod, dz,z
+-      use variables,     only: dt,h
+-      use DIAG19,only:repair43
++      use variables,     only: dt,h,t1900
++      use DIAG19,only:repair43,attempts
+       implicit NONE
+ 
+ ! --- global
+@@ -1323,6 +1323,9 @@
+       integer ic, ICpBtUnsMtxDm, id, icgwl
+       real(8) Time, VlHlp, MPWatbal
+       real(8)::history_contact43,wet_top43,wet_span43,overlap43
++      real(8)::old_time44,old_ref44,old_sorp44,awl_before44
++      integer,save::history_unit44
++      logical,save::history_open44=.false.
+       
+ ! ----------------------------------------------------------------------
+ 
+@@ -1446,6 +1449,8 @@
+                   history_contact43=0d0
+                   if(wet_span43>0d0) history_contact43=min(1d0,max(0d0,overlap43/wet_span43))
+                end if
++               old_time44=TimAbsCumDmCp(id,ic);old_ref44=ThtSrpRefDmCp(id,ic)
++               old_sorp44=SorpDmCp(id,ic);awl_before44=AwlCorFac(ic)
+                if (FlEndSrpEvt(id,ic)) then  ! End present Sorptivity event
+                   TimAbsCumDmCp(id,ic) = 0.d0
+                   SorpDmCp(id,ic)      = 0.d0
+@@ -1459,6 +1464,15 @@
+                     * FrMpWalWet(id,ic) * PpDmCp(id,ic) * (4.d0/DiPoCp(ic))   & 
+                     * SorpDmCp(id,ic)   * (dsqrt(Time+DT)-dsqrt(Time))              
+                   TimAbsCumDmCp(id,ic) = TimAbsCumDmCp(id,ic) + DT
++               end if
++               if(repair43.and.swmbf==1.and.ic==ICpTpSatZon) then
++                  if(.not.history_open44) then
++                     open(newunit=history_unit44,file='history44_trace.txt',status='replace');history_open44=.true.
++                  end if
++                  write(history_unit44,*) attempts,t1900,dt,id,ic,ICpTpSatZon,h(ic),GwlFlCpZo,z(ic),dz(ic), &
++                     ZWaLevDm(id),FrMpWalWet(id,ic),history_contact43,merge(1,0,FlEndSrpEvt(id,ic)), &
++                     old_time44,TimAbsCumDmCp(id,ic),old_ref44,ThtSrpRefDmCp(id,ic),old_sorp44,SorpDmCp(id,ic), &
++                     awl_before44,PpDmCp(id,ic),DiPoCp(ic)
+                end if
+             end do
+             do ic = IcTopMp, ICpTpWaSrDm(id)-1
