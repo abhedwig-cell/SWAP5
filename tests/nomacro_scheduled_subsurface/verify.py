@@ -9,8 +9,9 @@ S_UBUNTU='451b28ea4a1b68611952c55437bdcf37c6017ac4'
 S_SEALED='504fd73906740b9c43a2d54371184980d7e42e5a'
 S_PROOF='integration/f-ci/nomacro-complete01/'
 PULSE_ADMITTED='fd162a1ea22c41e798a431f39957aaff9c173e46'
-COMPOSED_RUNTIME='26cfa8ed1470953d7efc244723ff6126776efe66'
-COMPOSED_SEALED='PENDING_COMPOSED_SEAL'
+COMPOSED_RUNTIME='120d329b0b65ebbb0daa5d5a9ad5088400f8ddae'
+COMPOSED_UBUNTU='8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e'
+COMPOSED_SEALED='405ea6aa800cf33abc059a11a8ab6e9760f74b6e'
 SELF='tests/nomacro_scheduled_subsurface/verify.py'
 TEST='tests/nomacro_scheduled_subsurface/test_verify.py'
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT)
@@ -73,15 +74,23 @@ def verify_s():
 
 def verify():
     original=verify_s()
+    git('merge-base','--is-ancestor',PULSE_ADMITTED,COMPOSED_RUNTIME)
+    surface=['app','src','reference','tools','tests/nomacro_scheduled_subsurface/run.py','tests/nomacro_scheduled_subsurface/preflight.py']
+    require(not git('diff',COMPOSED_RUNTIME,COMPOSED_UBUNTU,'--',*surface),'composed actual Ubuntu physical source drift')
     require(blob('HEAD','tests/hupsel51/verify_successor.py')==blob(PULSE_ADMITTED,'tests/hupsel51/verify_successor.py'),'historical pulse/R entry changed')
+    hook="    import importlib.util\n    spec=importlib.util.spec_from_file_location('scheduled_ssdi_admission',ROOT/'tests/nomacro_scheduled_subsurface/verify.py')\n    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)\n    return owner.verify()\n"
+    body=blob('HEAD','tests/irrigation_pulse/verify.py').decode()
+    require(body.count(hook)==1 and body.replace(hook,'',1)==blob(PULSE_ADMITTED,'tests/irrigation_pulse/verify.py').decode(),'literal prior pulse admission body changed')
     require(not git('diff',PULSE_ADMITTED,'HEAD','--','integration/irrigation-pulse-time01'),'pulse sealed proof changed')
     def sealed(name):
         path=S_PROOF+name+'.json';require(blob('HEAD',path)==blob(COMPOSED_SEALED,path),'composed proof changed: '+name);return json.loads((ROOT/path).read_text())
     consumer=sealed('PULSE_BASE_CONSUMER');require(consumer['source']==PULSE_ADMITTED and consumer['returncode']==0 and consumer['result']['status']=='CURRENT_R_PLUS_LOCAL_PULSE_ADMISSION_PASS','actual immutable pulse/R consumer missing')
     q=sealed('PULSE_COMPOSED_QUALIFICATION')
-    validate_s(q,sealed('PULSE_COMPOSED_NAMED'),sealed('PULSE_COMPOSED_COMPARE'),sealed('PULSE_COMPOSED_ISOLATION'),dict(Windows=sealed('PULSE_COMPOSED_PREFLIGHT'),**{'Ubuntu-point':sealed('PULSE_COMPOSED_UBUNTU_POINT_PREFLIGHT'),'Ubuntu-interval':sealed('PULSE_COMPOSED_UBUNTU_INTERVAL_PREFLIGHT')}),runtime=COMPOSED_RUNTIME,ubuntu=q['Ubuntu_execution_source'])
+    validate_s(q,sealed('PULSE_COMPOSED_NAMED'),sealed('PULSE_COMPOSED_COMPARE'),sealed('PULSE_COMPOSED_ISOLATION'),dict(Windows=sealed('PULSE_COMPOSED_PREFLIGHT'),**{'Ubuntu-point':sealed('PULSE_COMPOSED_UBUNTU_POINT_PREFLIGHT'),'Ubuntu-interval':sealed('PULSE_COMPOSED_UBUNTU_INTERVAL_PREFLIGHT')}),runtime=COMPOSED_RUNTIME,ubuntu=COMPOSED_UBUNTU)
     require(q['runtime_source']==COMPOSED_RUNTIME,'foreign composed runtime')
     pulse=sealed('PULSE_CODE_PRESERVATION');require(pulse['status']=='ACTUAL_R_PULSE_COMPOSITION_GENERATED_INPUT_CLOSURE_AND_NATIVE_EXACT' and len(pulse['profiles'])==4 and all(v['all_emitted_dependencies_and_inputs_exact'] and v['prefix_exact_to_qualified_full'] for v in pulse['profiles'].values()),'pulse physical/native preservation missing')
+    for v in pulse['profiles'].values():
+        require(v['prefix']['days']==201 and {(w['start'],w['end']) for w in v['prefix']['own']}=={(4,6),(199,201)} and all(all(w[k] is True for k in ('exact_physical','exact_csv','exact_native','origin_unchanged')) for w in v['prefix']['own']),'pulse active/native preservation missing')
     for label in ('PULSE_COMPOSED_WINDOWS_RAW','PULSE_COMPOSED_UBUNTU_RAW'):
         rec=sealed(label+'_ARCHIVE');require(rec['all_members_forward_verified'] and hashlib.sha256((ROOT/S_PROOF/rec['archive']).read_bytes()).hexdigest()==rec['sha256'],'composed raw identity')
     return dict(status='CURRENT_R_PULSE_AND_SCHEDULED_SSDI_ADMISSION_PASS',runtime=COMPOSED_RUNTIME,scheduled_full_days=q['complete_model_days'],pulse_full_days=consumer['result']['inherited_full_days'],prior_R_full_days=consumer['result']['prior_R_full_days'],whole_scientific_equivalence='NOT_QUALIFIED',mass_guard_cm=1e-10)
