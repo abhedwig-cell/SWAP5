@@ -1,6 +1,15 @@
 {
-  "stage": "PREREGISTERED_SOURCE",
+  "stage": "QUALIFIED_SHORT_OWN_TRAJECTORY_WITH_EXPLICIT_HISTORY_POLICY_LIMIT",
   "baseline": "0eabf94e13e25c7ab5ddefc12332e0df6d3ebd6f",
   "scope": "One owncontact-repaired trajectory fromoriginalnative pasttimeoforiginal357;twooptroutesonly",
-  "promotion": false
+  "promotion": false,
+  "source_checkpoint": "d336ecfc0",
+  "decision": "PASS_SHORT_OWN_REPAIRED_TRAJECTORY_BEYOND_ORIGINAL357_WITH_HISTORY_POLICY_LIMIT_O0_O2",
+  "model_routes": 2,
+  "commits_each": 360,
+  "end_t1900": 35797.49100000917,
+  "history_native_rule_fidelity_qualified": true,
+  "physical_event_semantics_at_zero_END_contact_independently_qualified": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "full_period_BAL_qualified": false
 }
