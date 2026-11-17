@@ -1,5 +1,5 @@
 {
-  "status": "CORRECTED_FIXED_CHEMICAL_SUCCESSOR_SELECTED_SEAL_PENDING",
+  "status": "EXACT_SEALED_FIXED_CHEMICAL_SUCCESSOR_PASS",
   "runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "canonical_parent": "f0e5e39ea3d166755e394700a5a8765700eab875",
   "current_owner": "tests/nomacro_scheduled_subsurface/chemical_verify.py",
@@ -10,5 +10,36 @@
   "unit_tests": "15_PASS;62_NEW_CHEMICAL_EVIDENCE_CORRUPTIONS_REFUSED",
   "small_production": "Existing six selected contracts O0/O2 PASS; new subsurface source independent O0/O2 PASS",
   "owning_preservation": "Actual immutable canonical f0e5 consumer PASS; literal prior S/pulse/R bodies and proof remain. Fresh S/named generated/full/native exact; pulse changed-source active201day physical/CSV/native exact.",
-  "source_guards": "Source dirty/committed-delta and sealed evidence checks still to be executed on the clean successor postimage."
+  "source_guards": {
+    "dirty": {
+      "status": "REFUSED",
+      "returncode": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 102, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty chemical qualified surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-complete01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 23, in require\n    if not test:raise ValueError(message)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty chemical qualified surface\n"
+    },
+    "committed": {
+      "status": "REFUSED",
+      "commit": "f6a0e98549d33804a95b99eb281efe48c883dd91",
+      "actual_immutable_checkout": "C:/Users/Veldh012/swap5-chemical-guard-control",
+      "returncode": 1,
+      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 104, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'chemical runtime differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-chemical-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 23, in require\n    if not test:raise ValueError(message)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: chemical runtime differs from qualification\n"
+    },
+    "qualified_head": "4830f5d698ae1ddbebc954cf4a8d3af68f838ae7"
+  },
+  "sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
+  "current_owner_verification": {
+    "status": "CURRENT_R_PULSE_SCHEDULED_AND_FIXED_CHEMICAL_ADMISSION_PASS",
+    "runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
+    "chemical_full_days": 8768,
+    "prior_scheduled_full_days": 8768,
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "functional_completion": "PARTIAL",
+    "water_guard_cm": 1e-10,
+    "solute_guard_mg_cm2": 1e-10
+  },
+  "docs_source": "PASS",
+  "strict_docs_render": {
+    "status": "PASS",
+    "seconds": 59.5171427000314,
+    "returncode": 0
+  }
 }
