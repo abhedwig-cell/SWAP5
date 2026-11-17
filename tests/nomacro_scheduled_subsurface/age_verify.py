@@ -115,6 +115,10 @@ def validate(q):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('age_composition_admission',ROOT/'tests/nomacro_scheduled_subsurface/age_composition_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty age admission surface')
     for a,b in ((BASE,CORE),(CORE,CORE_SEAL),(CORE_SEAL,RUNTIME),(RUNTIME,SEALED),(SEALED,'HEAD')):git('merge-base','--is-ancestor',a,b)
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'age runtime differs from qualification')
