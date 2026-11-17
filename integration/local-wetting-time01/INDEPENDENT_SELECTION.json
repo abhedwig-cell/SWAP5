@@ -1,0 +1,25 @@
+{
+  "work_unit": "PR1701-INDEPENDENT-GWL01",
+  "base_head": "ca00c3307ef3b9f1ea744b67278cb3ea858979a7",
+  "claim": "Bounded independent numerical attribution of day364 groundwater difference, not whole-period equivalence or a new production error budget",
+  "reference": "Immutable original431 physical objects plus original HeadCalc with two additional original converged Newton iterations; no SWAP5 HeadCalc, budget object or production imports",
+  "input": "Existing saved362 binary seed and explicit original three-day restart deck; past fixed irrigation disabled with both actual period irrigation histories zero",
+  "profiles": ["O0", "O2"],
+  "dtmax_days": [0.0004, 0.0001, 0.000025],
+  "model_timeout_seconds": 20,
+  "expected_model_seconds": "1..10 per three-day model; censor and stop at20, do not widen",
+  "unchanged_water_balance_limit_cm": 1e-10,
+  "checks": [
+    "Validate provider source/object hashes and compiler identity before compilation",
+    "Keep all original input convergence tolerances and physical options unchanged",
+    "Record exact source patch, compile/link/input/seed identities and original BALDEV independently of SWAP5 receipts",
+    "Check finite complete daily output, original swap.ok and successful terminal return",
+    "Measure original temporal refinement and O0/O2 sensitivity without inventing a new groundwater acceptance tolerance",
+    "Compare matching-cap existing SWAP5 results only after independent reference completion",
+    "Retain failed nominal B0 comparison and all previous failures/censored observations",
+    "Scientific disposition applies only to this saved-state/three-day numerical mechanism; no automatic default, universal B1 or whole-run equivalence promotion"
+  ],
+  "production_change": false,
+  "own_restart_and_full_profiles": "Reuse exact unchanged c3a0a7e17 production dependency surface and sealed8 full/64 native/8 heat observations; no duplicate full campaign",
+  "next_deliverable": "Independent reference source/evidence and explicit bounded scientific disposition in PR1701, followed by ready-for-review transition if supported"
+}

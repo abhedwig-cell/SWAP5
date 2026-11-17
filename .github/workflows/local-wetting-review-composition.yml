@@ -1,0 +1,46 @@
+name: Local wetting review merge-postimage qualification
+on:
+  push:
+    branches: [codex/local-wetting-time01]
+    paths: ['.github/workflows/local-wetting-review-composition.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  composed:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    env:
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            tests/local_wetting
+            tests/nomacro_mixtures
+            tests/nomacro_pond_history
+            reference/swap-4.3.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: local-wetting-c3a0a7e17bdc4673140f7bcaa3fb1607a6381e99
+          run-id: 44080859947
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - name: Prepare immutable original source provider
+        run: python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/provider"
+      - name: Actual merged source closure, prefixes and affected complete native runs
+        run: python3 -B tests/local_wetting/integrated.py --reference-work "$RUNNER_TEMP/provider" --prior "$RUNNER_TEMP/prior/wetting" --output "$RUNNER_TEMP/composed"
+      - name: Affected complete original heat observation
+        run: python3 -B tests/local_wetting/heat.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/composed" --profiles chemical-surface-history-O0 chemical-surface-history-O2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: review-composed-${{ github.sha }}
+          path: ${{ runner.temp }}/composed
+          retention-days: 30

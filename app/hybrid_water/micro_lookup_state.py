@@ -5,7 +5,7 @@ Undefined allocation tails are outside the serialized physical domain.
 """
 import re
 
-POLICY = 'original-initialized-micro-top-oxygen-v3'
+POLICY = 'original-complete-dry-end-micro-top-oxygen-v4'
 MAGICS = {
     (False,False): ('S5WML024','S5WMS025','S5WMM026'),
     (True,False): ('S5CML027','S5CMS028','S5CMM029'),
@@ -23,6 +23,35 @@ def enabled(project):
 def render(source):
     if not re.search(r'Mcount\s*=\s*801\b',source) or not re.search(r'wiltpoint\s*=\s*-20000\.0d0',source):
         raise ValueError('Changed original microscopic preprocessing domain')
+    # The original truncates log10(wiltpoint) to row430, leaves K430
+    # unwritten, and can read row431 in the final partial log interval.
+    # Complete the SAME trapezoidal constitutive integral at its declared
+    # -20000cm lower limit; do not fill physical endpoint values with zeros.
+    patches=[
+      ('real(8)                                      :: logphead, c0, c1, phead1, phead2, wcontent, conduc1, conduc2',
+       'real(8)                                      :: logphead, c0, c1, phead1, phead2, wcontent, conduc1, conduc2, conduc_wilt, dry_fraction'),
+      ('allocate(K_table(Mcount, numlay))','allocate(K_table(Mcount, numlay)); K_table=0d0'),
+      ('allocate(M_table(Mcount, numlay))','allocate(M_table(Mcount, numlay)); M_table=0d0'),
+      ('         M_table(start,lay) = 0.0d0',
+       '''         conduc_wilt=hconduc(i,wiltpoint,watcon(i,wiltpoint),10d0)
+         M_table(start+1,lay)=0d0
+         K_table(start+1,lay)=conduc_wilt
+         K_table(start,lay)=conduc1
+         M_table(start,lay)=0.5d0*(conduc_wilt+conduc1)*(phead1-wiltpoint)'''),
+      ('      else if (H > -1.023293d0) then',
+       '''      else if (H < -10d0**dble(int(100d0*dlog10(-wiltpoint)))/100d0) then
+         ! The final coordinate is log10(-wiltpoint), not the fictitious next
+         ! integer grid point. Both endpoint values were filled at initialization.
+         count=int(100d0*dlog10(-wiltpoint))
+         dry_fraction=(dlog10(-wiltpoint)-dlog10(-H))/(dlog10(-wiltpoint)-dble(count)/100d0)
+         M=dry_fraction*M_table(count,lay)
+         if(Kpresent)K=dry_fraction*K_table(count,lay)+(1d0-dry_fraction)*K_table(count+1,lay)
+      else if (H > -1.023293d0) then''')]
+    # Preserve exponent grouping explicitly in the generated Fortran condition.
+    patches[-1]=(patches[-1][0],patches[-1][1].replace('-10d0**dble(int(100d0*dlog10(-wiltpoint)))/100d0','-10d0**(dble(int(100d0*dlog10(-wiltpoint)))/100d0)'))
+    for old,new in patches:
+        if source.count(old)!=1:raise ValueError('Changed original microscopic dry endpoint: '+old)
+        source=source.replace(old,new)
     anchor='   public :: do_RWU_micro, read_rwu_micro_input, PP, PL, UpwPot, swAlpTot, M_table, K_table'
     if source.count(anchor)!=1:raise ValueError('Changed original microscopic module interface')
     source=source.replace(anchor,anchor+'''
@@ -53,13 +82,13 @@ if(restoring)then
   read(unit,iostat=ios)version,flag,owner,drought,micro,layers,nm,nk,clock
   if(ios/=0)error stop 'Incomplete original microscopic lookup header'
 else
-  version=1;flag=merge(1,0,active);clock=t1900
+  version=2;flag=merge(1,0,active);clock=t1900
   owner=0;drought=0;micro=0;layers=0;nm=0;nk=0
   if(active)then
-    owner=icrop;drought=sw_drought;micro=iMicro;layers=numlay;nm=430;nk=429
+    owner=icrop;drought=sw_drought;micro=iMicro;layers=numlay;nm=431;nk=431
   end if
 end if
-if(version/=1.or.flag<0.or.flag>1)error stop 'Invalid original microscopic lookup version/flag'
+if(version/=2.or.flag<0.or.flag>1)error stop 'Invalid original microscopic lookup version/flag'
 if(.not.ieee_is_finite(clock).or.clock/=t1900)error stop 'Foreign original microscopic lookup clock'
 if(flag/=merge(1,0,active))error stop 'Missing or inactive original microscopic lookup context'
 expected=44
@@ -69,7 +98,7 @@ else
   if(owner<1.or.owner>macrop.or.owner/=icrop)error stop 'Foreign original microscopic lookup crop'
   if(drought/=sw_drought.or.(drought/=2.and.drought/=3))error stop 'Foreign original microscopic lookup drought'
   if((drought==2.and.micro/=2).or.(drought==3.and.micro/=1))error stop 'Foreign original microscopic lookup model'
-  if(layers/=numlay.or.nm/=430.or.nk/=429)error stop 'Foreign original microscopic lookup dimensions'
+  if(layers/=numlay.or.nm/=431.or.nk/=431)error stop 'Foreign original microscopic lookup dimensions'
   expected=44+8*(nm+nk)*layers
   if(restoring)then
     allocate(saved_m(nm,layers),saved_k(nk,layers))
@@ -113,8 +142,8 @@ if(.not.fl_cropemergence.or.icrop/=hybrid_lookup_owner.or.sw_drought/=hybrid_loo
 if(t1900/=hybrid_lookup_clock)error stop 'Stale original microscopic lookup context'
 if(.not.allocated(M_table).or..not.allocated(K_table))error stop 'Uninitialized original microscopic crop'
 if(any(shape(M_table)/=[801,numlay]).or.any(shape(K_table)/=[801,numlay]))error stop 'Changed original microscopic allocation'
-M_table(1:430,:)=hybrid_m_lookup
-K_table(1:429,:)=hybrid_k_lookup
+M_table(1:431,:)=hybrid_m_lookup
+K_table(1:431,:)=hybrid_k_lookup
 hybrid_lookup_pending=.false.
 deallocate(hybrid_m_lookup,hybrid_k_lookup)
 end subroutine

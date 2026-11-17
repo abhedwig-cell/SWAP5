@@ -2,16 +2,21 @@
 import argparse,hashlib,io,json,subprocess,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-p=argparse.ArgumentParser(description=__doc__);p.add_argument('--ref',default='HEAD');p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+p=argparse.ArgumentParser(description=__doc__);p.add_argument('--ref',default='HEAD');p.add_argument('--output',type=Path,required=True)
+p.add_argument('--candidate',default='SWAP5-NOMACRO-RC2-20261116')
+p.add_argument('--guide',default='docs/science/RC2_USER_GUIDE.md')
+p.add_argument('--include-patches',action='store_true',help='Include source-bound original correction recipes for optional experimental routes')
+a=p.parse_args()
 if a.output.exists():raise FileExistsError(a.output)
 sha=subprocess.check_output(['git','rev-parse',a.ref+'^{commit}'],cwd=ROOT,text=True).strip()
-paths=['app','src','tools/solute','tools/vq','reference/swap-4.3.1/projects','reference/swap-4.3.1/source-archives','docs/getting-started.md','docs/science/RC2_USER_GUIDE.md','README.md']
+paths=['app','src','tools/solute','tools/vq','reference/swap-4.3.1/projects','reference/swap-4.3.1/source-archives','docs/getting-started.md',a.guide,'README.md']
+if a.include_patches:paths.append('reference/swap-4.3.1/patches')
 raw=subprocess.check_output(['git','archive','--format=zip',sha,*paths],cwd=ROOT)
 files={}
 with zipfile.ZipFile(io.BytesIO(raw)) as source:
  for n in source.namelist():
   if not n.endswith('/'):files[n]=source.read(n)
-manifest=dict(release_candidate='SWAP5-NOMACRO-RC2-20261116',source_commit=sha,scope=['Grassgrowth1827','Hupsel1096','SaltFarm04dS1461'],science='NOT_QUALIFIED whole equivalence; retained scientific limitations',files={n:hashlib.sha256(v).hexdigest() for n,v in sorted(files.items())})
+manifest=dict(release_candidate=a.candidate,source_commit=sha,scope=['Grassgrowth1827','Hupsel1096','SaltFarm04dS1461'],science='NOT_QUALIFIED whole equivalence; retained scientific limitations',files={n:hashlib.sha256(v).hexdigest() for n,v in sorted(files.items())})
 files['RELEASE_MANIFEST.json']=(json.dumps(manifest,indent=2)+'\n').encode()
 a.output.parent.mkdir(parents=True,exist_ok=True)
 with zipfile.ZipFile(a.output,'w',compression=zipfile.ZIP_DEFLATED) as dest:

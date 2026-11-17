@@ -1,0 +1,630 @@
+{
+  "source": "04187a2836b3bedb16655381bd658532c14991db",
+  "policy": "original-adaptive-local-wetting-v1",
+  "water_guard_cm": 1e-10,
+  "solute_guard_mg_cm2": 1e-10,
+  "tolerances_changed": false,
+  "science": "NOT_QUALIFIED",
+  "cases": {
+    "water-surface-history": {
+      "O0": {
+        "build": {
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\SWAP5-testing\\local-wetting-time02\\inputs\\water-surface-history",
+            "--experimental-time-step-policy",
+            "original-adaptive-local-wetting-v1",
+            "--reference-work",
+            "C:\\SWAP5-RC2\\provider",
+            "--build-only",
+            "--kernel-opt",
+            "O0",
+            "--donor-opt",
+            "O0",
+            "--output",
+            "C:\\SWAP5-testing\\local-wetting-time02\\water-surface-history-O0-build"
+          ],
+          "seconds": 18.033731499919668
+        },
+        "short": {
+          "status": "SHORT_PASS",
+          "days": 215,
+          "budgets": {
+            "days": 215,
+            "max_water_cm": 8.643086246706844e-14,
+            "max_kernel_cm": 8.615330671091215e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 5.926469167846782e-13
+          },
+          "model_seconds": 1.6567765998188406,
+          "build_sha256": "c62fb5dc5248331d3bbabbb23c01301c89e11eca3b4192a708d4e5decde89852",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.4302978999912739
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.39399340003728867
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3325617997907102
+            }
+          ]
+        },
+        "full": {
+          "status": "FULL_PASS",
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.468616894761965e-13,
+            "max_kernel_cm": 1.468825061579082e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 3.09247466349238e-12
+          },
+          "model_seconds": 12.753065000055358,
+          "build_sha256": "c62fb5dc5248331d3bbabbb23c01301c89e11eca3b4192a708d4e5decde89852",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.30759930005297065
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.46079370006918907
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3574770998675376
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.4232336999848485
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3386274001095444
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.30402189982123673
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3488702999893576
+            },
+            {
+              "start": 1094,
+              "end": 1096,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.36907869996502995
+            }
+          ]
+        }
+      },
+      "O2": {
+        "build": {
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\SWAP5-testing\\local-wetting-time02\\inputs\\water-surface-history",
+            "--experimental-time-step-policy",
+            "original-adaptive-local-wetting-v1",
+            "--reference-work",
+            "C:\\SWAP5-RC2\\provider",
+            "--build-only",
+            "--kernel-opt",
+            "O2",
+            "--donor-opt",
+            "O2",
+            "--output",
+            "C:\\SWAP5-testing\\local-wetting-time02\\water-surface-history-O2-build"
+          ],
+          "seconds": 17.276823100168258
+        },
+        "short": {
+          "status": "SHORT_PASS",
+          "days": 215,
+          "budgets": {
+            "days": 215,
+            "max_water_cm": 8.643086246706844e-14,
+            "max_kernel_cm": 8.615330671091215e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 5.926469167846782e-13
+          },
+          "model_seconds": 1.572958500124514,
+          "build_sha256": "c281dacd18784a4018933c4170a623f7080af0284d3b673cd79928eac10e2d2e",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.4143362999893725
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.38698829989880323
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.32252540020272136
+            }
+          ]
+        },
+        "full": {
+          "status": "FULL_PASS",
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.468616894761965e-13,
+            "max_kernel_cm": 1.468825061579082e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 3.09247466349238e-12
+          },
+          "model_seconds": 9.170799399958923,
+          "build_sha256": "c281dacd18784a4018933c4170a623f7080af0284d3b673cd79928eac10e2d2e",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.31138120009563863
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.6138269999064505
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.38301910017617047
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3848702998366207
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.32800960005261004
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.29466850007884204
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.34121769992634654
+            },
+            {
+              "start": 1094,
+              "end": 1096,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3467631000094116
+            }
+          ]
+        }
+      }
+    },
+    "chemical-surface-history": {
+      "O0": {
+        "build": {
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\SWAP5-testing\\local-wetting-time02\\inputs\\chemical-surface-history",
+            "--experimental-time-step-policy",
+            "original-adaptive-local-wetting-v1",
+            "--reference-work",
+            "C:\\SWAP5-RC2\\provider",
+            "--build-only",
+            "--kernel-opt",
+            "O0",
+            "--donor-opt",
+            "O0",
+            "--output",
+            "C:\\SWAP5-testing\\local-wetting-time02\\chemical-surface-history-O0-build"
+          ],
+          "seconds": 9.36964870011434
+        },
+        "short": {
+          "status": "SHORT_PASS",
+          "days": 215,
+          "budgets": {
+            "days": 215,
+            "max_water_cm": 8.643086246706844e-14,
+            "max_kernel_cm": 8.615330671091215e-14,
+            "max_solute_mg_cm2": 1.5044057986119894e-12,
+            "sum_water_residual_cm": 5.926469167846782e-13
+          },
+          "model_seconds": 1.738100399961695,
+          "build_sha256": "00d8419e4122360db1ea57917543e2543d573b33cabd305c8b9d3090aaceb05c",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.44066570000723004
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.4287381998728961
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3366715998854488
+            }
+          ]
+        },
+        "full": {
+          "status": "FULL_PASS",
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.468616894761965e-13,
+            "max_kernel_cm": 1.468825061579082e-13,
+            "max_solute_mg_cm2": 1.5044057986119894e-12,
+            "sum_water_residual_cm": 3.09247466349238e-12
+          },
+          "model_seconds": 12.437701500020921,
+          "build_sha256": "00d8419e4122360db1ea57917543e2543d573b33cabd305c8b9d3090aaceb05c",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3547473999205977
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.45130229997448623
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3566137000452727
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.4083270998671651
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3168164000380784
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3082521001342684
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.34952759998850524
+            },
+            {
+              "start": 1094,
+              "end": 1096,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.4172435998916626
+            }
+          ]
+        }
+      },
+      "O2": {
+        "build": {
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\SWAP5-testing\\local-wetting-time02\\inputs\\chemical-surface-history",
+            "--experimental-time-step-policy",
+            "original-adaptive-local-wetting-v1",
+            "--reference-work",
+            "C:\\SWAP5-RC2\\provider",
+            "--build-only",
+            "--kernel-opt",
+            "O2",
+            "--donor-opt",
+            "O2",
+            "--output",
+            "C:\\SWAP5-testing\\local-wetting-time02\\chemical-surface-history-O2-build"
+          ],
+          "seconds": 18.25649209995754
+        },
+        "short": {
+          "status": "SHORT_PASS",
+          "days": 215,
+          "budgets": {
+            "days": 215,
+            "max_water_cm": 8.643086246706844e-14,
+            "max_kernel_cm": 8.615330671091215e-14,
+            "max_solute_mg_cm2": 1.5044057986119894e-12,
+            "sum_water_residual_cm": 5.926469167846782e-13
+          },
+          "model_seconds": 1.5804900999646634,
+          "build_sha256": "2936a4f48295715c602ac81810d04174533abb39210ed21bbf4b993f1ca00763",
+          "own": [
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.42081889999099076
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.45168630010448396
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.32596709998324513
+            }
+          ]
+        },
+        "full": {
+          "status": "FULL_PASS",
+          "days": 1096,
+          "budgets": {
+            "days": 1096,
+            "max_water_cm": 1.468616894761965e-13,
+            "max_kernel_cm": 1.468825061579082e-13,
+            "max_solute_mg_cm2": 1.5044057986119894e-12,
+            "sum_water_residual_cm": 3.09247466349238e-12
+          },
+          "model_seconds": 9.605616100132465,
+          "build_sha256": "2936a4f48295715c602ac81810d04174533abb39210ed21bbf4b993f1ca00763",
+          "own": [
+            {
+              "start": 2,
+              "end": 4,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.2954321999568492
+            },
+            {
+              "start": 4,
+              "end": 6,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.401922499993816
+            },
+            {
+              "start": 199,
+              "end": 201,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3416001999285072
+            },
+            {
+              "start": 211,
+              "end": 213,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.384863399900496
+            },
+            {
+              "start": 213,
+              "end": 215,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.32855159998871386
+            },
+            {
+              "start": 365,
+              "end": 367,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.29175019985996187
+            },
+            {
+              "start": 530,
+              "end": 532,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.34290769998915493
+            },
+            {
+              "start": 1094,
+              "end": 1096,
+              "exact_physical": true,
+              "exact_csv": true,
+              "exact_native": true,
+              "origin_unchanged": true,
+              "seconds": 0.3591231000609696
+            }
+          ]
+        }
+      }
+    }
+  }
+}

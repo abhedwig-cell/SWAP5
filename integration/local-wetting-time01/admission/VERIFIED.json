@@ -1,0 +1,105 @@
+{
+  "status": "SELECTED_ADMISSION_VERIFIED",
+  "tolerances_changed": false,
+  "science": "ORIGINAL_FULL_FAIL_PRESERVED",
+  "profiles": {
+    "windows/water-surface-history-O0": {
+      "model_seconds": 2.574436000082642,
+      "build_seconds": 11.521199100185186,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 8.643086246706844e-14,
+        "max_kernel_cm": 8.615330671091215e-14,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 1.2250826438367501e-12
+      },
+      "physical_source_exact": true
+    },
+    "windows/water-surface-history-O2": {
+      "model_seconds": 2.4153314996510744,
+      "build_seconds": 19.409901900216937,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 8.643086246706844e-14,
+        "max_kernel_cm": 8.615330671091215e-14,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 1.2250826438367501e-12
+      },
+      "physical_source_exact": true
+    },
+    "windows/chemical-surface-history-O0": {
+      "model_seconds": 2.746607500128448,
+      "build_seconds": 11.051234200131148,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 8.643086246706844e-14,
+        "max_kernel_cm": 8.615330671091215e-14,
+        "max_solute_mg_cm2": 1.5044057986119894e-12,
+        "sum_water_residual_cm": 1.2250826438367501e-12
+      },
+      "physical_source_exact": true
+    },
+    "windows/chemical-surface-history-O2": {
+      "model_seconds": 2.784275099635124,
+      "build_seconds": 21.521888199727982,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 8.643086246706844e-14,
+        "max_kernel_cm": 8.615330671091215e-14,
+        "max_solute_mg_cm2": 1.5044057986119894e-12,
+        "sum_water_residual_cm": 1.2250826438367501e-12
+      },
+      "physical_source_exact": true
+    },
+    "ubuntu/water-surface-history-O0": {
+      "model_seconds": 1.0391431299999994,
+      "build_seconds": 4.130899440999997,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 1.6514567491299204e-13,
+        "max_kernel_cm": 1.652011860642233e-13,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 1.2467625537656776e-12
+      },
+      "physical_source_exact": true
+    },
+    "ubuntu/water-surface-history-O2": {
+      "model_seconds": 0.8807964880000014,
+      "build_seconds": 7.319328390999999,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 1.6514567491299204e-13,
+        "max_kernel_cm": 1.652011860642233e-13,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 1.2467625537656776e-12
+      },
+      "physical_source_exact": true
+    },
+    "ubuntu/chemical-surface-history-O0": {
+      "model_seconds": 1.0388278940000077,
+      "build_seconds": 2.248082581999995,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 1.6514567491299204e-13,
+        "max_kernel_cm": 1.652011860642233e-13,
+        "max_solute_mg_cm2": 1.5683798660834358e-12,
+        "sum_water_residual_cm": 1.2467625537656776e-12
+      },
+      "physical_source_exact": true
+    },
+    "ubuntu/chemical-surface-history-O2": {
+      "model_seconds": 0.9403535210000058,
+      "build_seconds": 7.811497938000002,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 1.6514567491299204e-13,
+        "max_kernel_cm": 1.652011860642233e-13,
+        "max_solute_mg_cm2": 1.5683798660834358e-12,
+        "sum_water_residual_cm": 1.2467625537656776e-12
+      },
+      "physical_source_exact": true
+    }
+  },
+  "prefix_days": 2920,
+  "exact_own_windows": 24
+}

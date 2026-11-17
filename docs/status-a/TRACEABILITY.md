@@ -1,5 +1,11 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[RC3 qualification](../science/RC3_QUALIFICATION.md) and
+`integration/f-ci/nomacro-rc3-20261117/QUALIFICATION.json` own the fixed source
+distribution at2cedd9d0e, clean three-project Windows/Ubuntu user proof and laptop
+delivery. SELECTION/INHERITANCE keep production baseline6f5e97db9 and bounded
+experimental scientific evidence separate. Older RC receipts are preserved.
+
 The bounded SaltFarm physical-growth successor is owned by
 [PHYSICAL_ITERATION_POLICY01](../science/PHYSICAL_ITERATION_POLICY01.md) and
 `integration/f-ci/physical-iteration-policy01/STATUS.json`; its proof distinguishes
