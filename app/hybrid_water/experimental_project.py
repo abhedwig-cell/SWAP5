@@ -210,7 +210,7 @@ def inspect(directory):
                     or original_structure(sig) not in list(map(original_structure,drain_signatures))):
                 raise ValueError('Drainage process/state combination is not implemented: '+path.name)
         if path.suffix.lower() == '.dra':
-            if one(body, 'DRAMET', r'[+-]?\d+') not in ('2', '3'):
+            if one(body, 'DRAMET', r'[+-]?\d+') not in ('1', '2', '3'):
                 raise ValueError('Unqualified drainage method')
         if path.suffix.lower() == '.crp' and schedule == '1':
             if one(body, 'ISUAS', r'[+-]?\d+') not in ('0', '1'):

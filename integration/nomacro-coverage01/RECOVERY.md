@@ -1,3 +1,23 @@
+# R complete original table drainage: qualification seal next
+
+Canonical67ddba2692cc13f89cfc29100836f2d6a4b80eec, Q PR1696 actual-tree and
+current-owner PASS. R runtime75e5b45a1b7a8705d6d364156a1ad4434107dfdf,
+branch18. Read BLOCK_R_RECOVERY and BLOCK_R_QUALIFICATION. All four original
+positive/signed water/chemical configurations pass complete1096 O0/O2 on both
+platforms,64standard native and16short own windows, external/isolation/mass and
+native refusals. Ubuntu44050278958 and default8 44050282218 terminal SUCCESS.
+Windows execution4da8feaff is app/src/reference/tools-identical; actual source
+and later verification stay distinct. Initial signed day51 FAILs remain raw.
+The already qualified exact original pond derivative is reused for DRAMET1;
+no formula, mass tolerance or persistent codec change.13fresh prior source/native
+owners preserve applicable earlier evidence, including Q. Whole science open.
+
+Next: finish raw/docs sealing, qualify the existing current-owner successor,
+then exact canonical PR/merge-tree verification. Do not rerun completed model
+periods for metadata. Frozen releases and other workstreams remain unchanged.
+
+Historical recovery entries below retain their recorded scope and chronology.
+
 # Q qualified snapshot: canonical admission next
 
 Canonical baseline0f12c639da5c4dadf488282dc8e110d2a8ad1874 (P PR1695).

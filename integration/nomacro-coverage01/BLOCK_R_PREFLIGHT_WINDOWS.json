@@ -1,0 +1,138 @@
+{
+  "status": "ORIGINAL_TABLE_DRAINAGE_PREFLIGHT_AND_DRFIL_PASS",
+  "source_commit": "30ae92bec2d52e536ab438dc4d8b51a6a10fc5c3",
+  "configuration": "water-drain-signed",
+  "negative_controls": [
+    {
+      "name": "unknown-method",
+      "error": "Unqualified drainage method",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\unknown-method",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+        "--build-only",
+        "--output",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\unknown-method-refused-build"
+      ],
+      "returncode": 2,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unqualified drainage method\n",
+      "no_output": true
+    },
+    {
+      "name": "zero-method",
+      "error": "Unqualified drainage method",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\zero-method",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+        "--build-only",
+        "--output",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\zero-method-refused-build"
+      ],
+      "returncode": 2,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unqualified drainage method\n",
+      "no_output": true
+    },
+    {
+      "name": "table-infiltration-layer",
+      "error": "Drainage process/state combination is not implemented: swap.dra",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\table-infiltration-layer",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+        "--build-only",
+        "--output",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\table-infiltration-layer-refused-build"
+      ],
+      "returncode": 2,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Drainage process/state combination is not implemented: swap.dra\n",
+      "no_output": true
+    },
+    {
+      "name": "table-top-factor",
+      "error": "Drainage process/state combination is not implemented: swap.dra",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\table-top-factor",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+        "--build-only",
+        "--output",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\table-top-factor-refused-build"
+      ],
+      "returncode": 2,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Drainage process/state combination is not implemented: swap.dra\n",
+      "no_output": true
+    },
+    {
+      "name": "chemical-undistributed",
+      "error": "Drainage process/state combination is not implemented: swap.dra",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\chemical-undistributed",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+        "--build-only",
+        "--output",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\R_preflight_local\\chemical-undistributed-refused-build"
+      ],
+      "returncode": 2,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Drainage process/state combination is not implemented: swap.dra\n",
+      "no_output": true
+    }
+  ],
+  "actual_bundle_validated": true,
+  "custom_file_probe": {
+    "status": "SHORT_PASS",
+    "days": 53,
+    "budgets": {
+      "days": 53,
+      "max_water_cm": 3.853167784839684e-14,
+      "max_kernel_cm": 3.4861002973229915e-14,
+      "max_solute_mg_cm2": 0,
+      "sum_water_residual_cm": 3.1974105980069056e-13
+    },
+    "model_seconds": 0.9731792001985013,
+    "build_sha256": "0970b5fcefb1966d2c60008b65689c10d8bc25f9eea44b7e80d1161e9c82d42a",
+    "own": {
+      "start": 50,
+      "end": 53,
+      "exact_physical": true,
+      "exact_csv": true,
+      "exact_native": true,
+      "origin_unchanged": true,
+      "seconds": 0.4304438999388367
+    },
+    "actual_selected_drain_file": "drains/selected.dra",
+    "unused_swap_dra_method": 2
+  },
+  "science": "NOT_QUALIFIED"
+}
