@@ -37,6 +37,17 @@
       "path": "C:/Users/Veldh012/swap5-complete01-evidence/point-short3",
       "result": "SHORT_O0_O2_PASS",
       "scope": "5days each, exact native2to4; no full-period admission"
+    },
+    {
+      "result": "WINDOWS_FOUR_FULL_PERIODS_AND_ORDINARY_NATIVE_PASS",
+      "source": "95f0671e2",
+      "paths": [
+        "C:/Users/Veldh012/swap5-complete01-evidence/point-valid",
+        "C:/Users/Veldh012/swap5-complete01-evidence/interval-valid"
+      ],
+      "days": 4384,
+      "maximum_water_cm": 9.996779120648169e-11,
+      "guard_cm": 1e-10
     }
   ],
   "failed_tests": [
@@ -54,7 +65,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Execute real original scheduled subsurface irrigation through O0/O2 production host; diagnose any actual balance/restart defect before admission.",
+  "next_code_change": "Finish negative original reader and active coupling controls; dispatch focused Ubuntu carrier, preserve unchanged generated sources, qualify exact source and reconcile concurrent drainage before admission.",
   "recovery_point": "Read STATUS.json, verify branch/canonical delta; continue tests/nomacro_scheduled_subsurface/run.py with existing provider C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider; never rebind old source identities.",
   "external_blocker": null,
   "test_selection": {
@@ -67,8 +78,17 @@
         "expected_seconds": 260,
         "existing_evidence": "Prior complete management codec and fixed subsurface integration; scheduled ISUAS2 not qualified. Run focused original production route.",
         "prior_execution": "NONE"
+      },
+      "linux_scheduled_subsurface": {
+        "changed_dependency": "Original water scheduled subsurface input and actual depth guard, active native adoption, refused native domains",
+        "scientific_claim": "Portable actual original O0/O2 full point/interval water/native/transaction qualification",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "docs/verification/principles.md#qualification-dimensions; AGENTS.md#independent-local-testability",
+        "expected_seconds": 500,
+        "existing_evidence": "Windows4 full periods pass; GNU/Linux original reader and native execution not yet measured for this new route",
+        "prior_execution": "NONE"
       }
     },
-    "candidate": "95f0671e27c54f3ec8bad53408fe37bca7fe838b"
+    "candidate": "3fb152925"
   }
 }
