@@ -1,0 +1,784 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-DOMAINS36",
+  "decision": "MINIMAL_POINT_QUALIFIED_CONTRACT_TWO_STOCK_RANK_ONE_TERMS_PLUS_BANDED_DOMAIN1_GEOMETRY_AND_INTERNAL_INFLOW_DIAGONAL",
+  "model_routes": 2,
+  "hard_timeout_seconds": 20,
+  "all_uncensored": true,
+  "O0_O2_non_timing_byte_exact": true,
+  "physical_and_numerical_candidate_changes": false,
+  "operator_response_domain_decomposition": "PASS_FIXED_POINT",
+  "analytic_four_column_shadow": "PASS_112_ROWS_TWO_EPS_BOTH_OPTS",
+  "correction_implemented_or_trajectory_qualified": false,
+  "full_112_by112_Jacobian_qualified": false,
+  "active_refusal_full_period_restart_or_general_admission": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 2.556194999953732,
+      "all_original_INACTIVE35_numerical_exports_byte_exact": true,
+      "snapshot_sha256": "dcd762c36d16ec3dbd37117bbf22a2d658c5f33fb2460ba9ef369afbada45db6",
+      "selected_snapshot_restore_checks": 19,
+      "all_18_real_provider_points_same_active_set": true,
+      "native_head_interpolation": [
+        50,
+        51
+      ],
+      "native_saturated_compartment": 51,
+      "perched_top_and_bottom": [
+        51,
+        51
+      ],
+      "perched_GWL_equals_main": true,
+      "domains": [
+        {
+          "domain": 1,
+          "W": 1.8349816121462899,
+          "L": 1.5,
+          "U": 3.2000000000000006,
+          "I": 0.00025044371962716004,
+          "O": 0.0003012408294001568,
+          "FrIn": 1.0,
+          "FrOut": 1.0,
+          "rho": 0.02,
+          "outgoing_unsaturated": 0.0,
+          "rapid_potential": 0.0002414690257071014,
+          "incoming_internal": 7.183771901029019e-06,
+          "active_minimum_limiter": false,
+          "active_maximum_limiter": false
+        },
+        {
+          "domain": 2,
+          "W": 0.12108698467085469,
+          "L": 0.12108370982811884,
+          "U": 0.45388513513513534,
+          "I": 6.870636689271369e-07,
+          "O": 8.962652335442687e-05,
+          "FrIn": 1.0,
+          "FrOut": 0.04420461997746161,
+          "rho": 0.005,
+          "outgoing_unsaturated": 0.0,
+          "rapid_potential": 0.0,
+          "incoming_internal": 0.0,
+          "active_minimum_limiter": true,
+          "active_maximum_limiter": false
+        },
+        {
+          "domain": 3,
+          "W": 0.030146815539612012,
+          "L": 0.03013536935396029,
+          "U": 0.3612500000000001,
+          "I": 6.870636689271369e-07,
+          "O": 1.4771486991820359e-05,
+          "FrIn": 1.0,
+          "FrOut": 0.8213966087076336,
+          "rho": 0.003918918918918934,
+          "outgoing_unsaturated": 0.0,
+          "rapid_potential": 0.0,
+          "incoming_internal": 0.0,
+          "active_minimum_limiter": true,
+          "active_maximum_limiter": false
+        },
+        {
+          "domain": 4,
+          "W": 0.0010730735554355913,
+          "L": 0.0,
+          "U": 0.2686486486486488,
+          "I": 6.870636689271369e-07,
+          "O": 2.2222016810899444e-07,
+          "FrIn": 1.0,
+          "FrOut": 1.0,
+          "rho": 0.0,
+          "outgoing_unsaturated": 2.2222016810899444e-07,
+          "rapid_potential": 0.0,
+          "incoming_internal": 0.0,
+          "active_minimum_limiter": false,
+          "active_maximum_limiter": false
+        },
+        {
+          "domain": 5,
+          "W": 0.0005116472980321754,
+          "L": 0.0,
+          "U": 0.17621621621621625,
+          "I": 6.870636689271369e-07,
+          "O": 4.5682876700884516e-07,
+          "FrIn": 1.0,
+          "FrOut": 1.0,
+          "rho": 0.0,
+          "outgoing_unsaturated": 4.5682876700884516e-07,
+          "rapid_potential": 0.0,
+          "incoming_internal": 0.0,
+          "active_minimum_limiter": false,
+          "active_maximum_limiter": false
+        }
+      ],
+      "additional_banded_J51_50": 0.0037105477280693863,
+      "additional_banded_J51_51_geometry": 0.013166512395977319,
+      "additional_banded_J51_51_internal_incoming": 0.027629440630022564,
+      "additional_banded_J51_51_total": 0.04079595302599988,
+      "geometry_coefficient_per_GWL": 0.01451397037386036,
+      "two_rank1_stock_update_minor": -1.514568503534415e-05,
+      "potential_U_cosine": 0.592434550441705,
+      "max_error_if_internal_diagonal_omitted": 0.027629440700899954,
+      "max_complete_shadow_error": 1.2295070517254203e-09,
+      "probed_columns": [
+        50,
+        51,
+        52,
+        57
+      ],
+      "output_rows": 112,
+      "all_112_input_columns_qualified": false,
+      "FD": [
+        {
+          "node": 50,
+          "epsilon": 1e-05,
+          "full_four_component_shadow_max_error": 1.2295070517254203e-09,
+          "residual_J52_by_domain": [
+            -0.0,
+            0.10536619734211114,
+            0.3409272289712269,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            0.0037105477190824128,
+            0.014978446319494198,
+            0.05795454942305786,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            0.11163695112240893,
+            0.2953132722628444,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            0.23310904805364221,
+            0.015005823435078974,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 50,
+          "epsilon": 5e-06,
+          "full_four_component_shadow_max_error": 1.7674184338289933e-10,
+          "residual_J52_by_domain": [
+            -0.0,
+            0.105366197627999,
+            0.3409272299746343,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            0.0037105477294907536,
+            0.0149784463601345,
+            0.05795454959364081,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            0.11163695142530791,
+            0.29531327313207095,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            0.2331090486861224,
+            0.015005823479242595,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 51,
+          "epsilon": 1e-05,
+          "full_four_component_shadow_max_error": 2.913118635206047e-10,
+          "residual_J52_by_domain": [
+            -0.0,
+            0.37383926692192804,
+            1.207200228135188,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            0.06842539365600753,
+            0.05388963053232833,
+            0.21609649489721458,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            0.39608790126016213,
+            1.045684296683679,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            0.8270708997335233,
+            0.05313460449858778,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 51,
+          "epsilon": 5e-06,
+          "full_four_component_shadow_max_error": 9.663572164697598e-10,
+          "residual_J52_by_domain": [
+            -0.0,
+            0.3738392666948094,
+            1.2072002271886795,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            0.06842539364698697,
+            0.05388963047108717,
+            0.21609649474441797,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            0.3960879010195261,
+            1.0456842958638488,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            0.8270708992310498,
+            0.05313460445693137,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 52,
+          "epsilon": 1e-05,
+          "full_four_component_shadow_max_error": 3.935097972300461e-11,
+          "residual_J52_by_domain": [
+            0.09081359285678657,
+            0.0009467153392256127,
+            0.009652211860550555,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            -0.0,
+            -8.085802839934739e-06,
+            -0.0005011541318706517,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            -6.0264887104624104e-05,
+            -0.002553681601618653,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            -0.00012583907318952647,
+            -0.00012976082967462374,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 52,
+          "epsilon": 5e-06,
+          "full_four_component_shadow_max_error": 5.239797744999164e-11,
+          "residual_J52_by_domain": [
+            0.09081359285401101,
+            0.000946715339136166,
+            0.009652211918620424,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            -0.0,
+            -8.085802845694563e-06,
+            -0.0005011541218255186,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            -6.0264887145281686e-05,
+            -0.00255368155033589,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            -0.0001258390732979467,
+            -0.00012976082707524903,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 57,
+          "epsilon": 1e-05,
+          "full_four_component_shadow_max_error": 9.147467504332703e-11,
+          "residual_J52_by_domain": [
+            -0.0,
+            -3.0145820361466774e-05,
+            -3.1249647444372974e-05,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            -0.0,
+            -4.285411863016271e-06,
+            -5.312157788303628e-06,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            -3.193991582990056e-05,
+            -2.7068637674203252e-05,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            0.04813043287255069,
+            0.00046520315528366865,
+            0.0001321859546734444,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 57,
+          "epsilon": 5e-06,
+          "full_four_component_shadow_max_error": 1.4780981992567385e-10,
+          "residual_J52_by_domain": [
+            -0.0,
+            -3.014582028015161e-05,
+            -3.1249706468339244e-05,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            -0.0,
+            -4.285411851496623e-06,
+            -5.312167828015745e-06,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            -3.193991574587489e-05,
+            -2.7068688783493663e-05,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            0.04813043287255069,
+            0.00046520315547882504,
+            0.0001321859520713592,
+            -0.0,
+            -0.0
+          ]
+        }
+      ]
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.932063200045377,
+      "all_original_INACTIVE35_numerical_exports_byte_exact": true,
+      "snapshot_sha256": "dcd762c36d16ec3dbd37117bbf22a2d658c5f33fb2460ba9ef369afbada45db6",
+      "selected_snapshot_restore_checks": 19,
+      "all_18_real_provider_points_same_active_set": true,
+      "native_head_interpolation": [
+        50,
+        51
+      ],
+      "native_saturated_compartment": 51,
+      "perched_top_and_bottom": [
+        51,
+        51
+      ],
+      "perched_GWL_equals_main": true,
+      "domains": [
+        {
+          "domain": 1,
+          "W": 1.8349816121462899,
+          "L": 1.5,
+          "U": 3.2000000000000006,
+          "I": 0.00025044371962716004,
+          "O": 0.0003012408294001568,
+          "FrIn": 1.0,
+          "FrOut": 1.0,
+          "rho": 0.02,
+          "outgoing_unsaturated": 0.0,
+          "rapid_potential": 0.0002414690257071014,
+          "incoming_internal": 7.183771901029019e-06,
+          "active_minimum_limiter": false,
+          "active_maximum_limiter": false
+        },
+        {
+          "domain": 2,
+          "W": 0.12108698467085469,
+          "L": 0.12108370982811884,
+          "U": 0.45388513513513534,
+          "I": 6.870636689271369e-07,
+          "O": 8.962652335442687e-05,
+          "FrIn": 1.0,
+          "FrOut": 0.04420461997746161,
+          "rho": 0.005,
+          "outgoing_unsaturated": 0.0,
+          "rapid_potential": 0.0,
+          "incoming_internal": 0.0,
+          "active_minimum_limiter": true,
+          "active_maximum_limiter": false
+        },
+        {
+          "domain": 3,
+          "W": 0.030146815539612012,
+          "L": 0.03013536935396029,
+          "U": 0.3612500000000001,
+          "I": 6.870636689271369e-07,
+          "O": 1.4771486991820359e-05,
+          "FrIn": 1.0,
+          "FrOut": 0.8213966087076336,
+          "rho": 0.003918918918918934,
+          "outgoing_unsaturated": 0.0,
+          "rapid_potential": 0.0,
+          "incoming_internal": 0.0,
+          "active_minimum_limiter": true,
+          "active_maximum_limiter": false
+        },
+        {
+          "domain": 4,
+          "W": 0.0010730735554355913,
+          "L": 0.0,
+          "U": 0.2686486486486488,
+          "I": 6.870636689271369e-07,
+          "O": 2.2222016810899444e-07,
+          "FrIn": 1.0,
+          "FrOut": 1.0,
+          "rho": 0.0,
+          "outgoing_unsaturated": 2.2222016810899444e-07,
+          "rapid_potential": 0.0,
+          "incoming_internal": 0.0,
+          "active_minimum_limiter": false,
+          "active_maximum_limiter": false
+        },
+        {
+          "domain": 5,
+          "W": 0.0005116472980321754,
+          "L": 0.0,
+          "U": 0.17621621621621625,
+          "I": 6.870636689271369e-07,
+          "O": 4.5682876700884516e-07,
+          "FrIn": 1.0,
+          "FrOut": 1.0,
+          "rho": 0.0,
+          "outgoing_unsaturated": 4.5682876700884516e-07,
+          "rapid_potential": 0.0,
+          "incoming_internal": 0.0,
+          "active_minimum_limiter": false,
+          "active_maximum_limiter": false
+        }
+      ],
+      "additional_banded_J51_50": 0.0037105477280693863,
+      "additional_banded_J51_51_geometry": 0.013166512395977319,
+      "additional_banded_J51_51_internal_incoming": 0.027629440630022564,
+      "additional_banded_J51_51_total": 0.04079595302599988,
+      "geometry_coefficient_per_GWL": 0.01451397037386036,
+      "two_rank1_stock_update_minor": -1.514568503534415e-05,
+      "potential_U_cosine": 0.592434550441705,
+      "max_error_if_internal_diagonal_omitted": 0.027629440700899954,
+      "max_complete_shadow_error": 1.2295070517254203e-09,
+      "probed_columns": [
+        50,
+        51,
+        52,
+        57
+      ],
+      "output_rows": 112,
+      "all_112_input_columns_qualified": false,
+      "FD": [
+        {
+          "node": 50,
+          "epsilon": 1e-05,
+          "full_four_component_shadow_max_error": 1.2295070517254203e-09,
+          "residual_J52_by_domain": [
+            -0.0,
+            0.10536619734211114,
+            0.3409272289712269,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            0.0037105477190824128,
+            0.014978446319494198,
+            0.05795454942305786,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            0.11163695112240893,
+            0.2953132722628444,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            0.23310904805364221,
+            0.015005823435078974,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 50,
+          "epsilon": 5e-06,
+          "full_four_component_shadow_max_error": 1.7674184338289933e-10,
+          "residual_J52_by_domain": [
+            -0.0,
+            0.105366197627999,
+            0.3409272299746343,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            0.0037105477294907536,
+            0.0149784463601345,
+            0.05795454959364081,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            0.11163695142530791,
+            0.29531327313207095,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            0.2331090486861224,
+            0.015005823479242595,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 51,
+          "epsilon": 1e-05,
+          "full_four_component_shadow_max_error": 2.913118635206047e-10,
+          "residual_J52_by_domain": [
+            -0.0,
+            0.37383926692192804,
+            1.207200228135188,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            0.06842539365600753,
+            0.05388963053232833,
+            0.21609649489721458,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            0.39608790126016213,
+            1.045684296683679,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            0.8270708997335233,
+            0.05313460449858778,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 51,
+          "epsilon": 5e-06,
+          "full_four_component_shadow_max_error": 9.663572164697598e-10,
+          "residual_J52_by_domain": [
+            -0.0,
+            0.3738392666948094,
+            1.2072002271886795,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            0.06842539364698697,
+            0.05388963047108717,
+            0.21609649474441797,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            0.3960879010195261,
+            1.0456842958638488,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            0.8270708992310498,
+            0.05313460445693137,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 52,
+          "epsilon": 1e-05,
+          "full_four_component_shadow_max_error": 3.935097972300461e-11,
+          "residual_J52_by_domain": [
+            0.09081359285678657,
+            0.0009467153392256127,
+            0.009652211860550555,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            -0.0,
+            -8.085802839934739e-06,
+            -0.0005011541318706517,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            -6.0264887104624104e-05,
+            -0.002553681601618653,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            -0.00012583907318952647,
+            -0.00012976082967462374,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 52,
+          "epsilon": 5e-06,
+          "full_four_component_shadow_max_error": 5.239797744999164e-11,
+          "residual_J52_by_domain": [
+            0.09081359285401101,
+            0.000946715339136166,
+            0.009652211918620424,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            -0.0,
+            -8.085802845694563e-06,
+            -0.0005011541218255186,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            -6.0264887145281686e-05,
+            -0.00255368155033589,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            -0.0,
+            -0.0001258390732979467,
+            -0.00012976082707524903,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 57,
+          "epsilon": 1e-05,
+          "full_four_component_shadow_max_error": 9.147467504332703e-11,
+          "residual_J52_by_domain": [
+            -0.0,
+            -3.0145820361466774e-05,
+            -3.1249647444372974e-05,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            -0.0,
+            -4.285411863016271e-06,
+            -5.312157788303628e-06,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            -3.193991582990056e-05,
+            -2.7068637674203252e-05,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            0.04813043287255069,
+            0.00046520315528366865,
+            0.0001321859546734444,
+            -0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": 57,
+          "epsilon": 5e-06,
+          "full_four_component_shadow_max_error": 1.4780981992567385e-10,
+          "residual_J52_by_domain": [
+            -0.0,
+            -3.014582028015161e-05,
+            -3.1249706468339244e-05,
+            -0.0,
+            -0.0
+          ],
+          "residual_J51_by_domain": [
+            -0.0,
+            -4.285411851496623e-06,
+            -5.312167828015745e-06,
+            -0.0,
+            -0.0
+          ],
+          "residual_J53_by_domain": [
+            -0.0,
+            -3.193991574587489e-05,
+            -2.7068688783493663e-05,
+            -0.0,
+            -0.0
+          ],
+          "residual_J57_by_domain": [
+            0.04813043287255069,
+            0.00046520315547882504,
+            0.0001321859520713592,
+            -0.0,
+            -0.0
+          ]
+        }
+      ]
+    }
+  ]
+}

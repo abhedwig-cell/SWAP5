@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "QUALIFIED_DOMAIN_DECOMPOSITION_AND_POINT_BOUNDED_ANALYTIC_CONTRACT",
   "baseline": "7bc419d2d27696e0125ee2767e3d45326dca3c82",
   "remote_main": "be481cfb40f953e337116ef4a6dc5bc3ef64d4f7",
   "workstream": "isolated SWAP431 B1 research",
@@ -10,5 +10,29 @@
   "routes": 2,
   "bounds": "max20s each, samecontext only, no period/restart/campaign. Bothrealbinaryclosures kept for thisbuild; oldclosures inheritedINACTIVE35.",
   "protected": "B0/B1.12/canonical/no-macrorelease unchanged",
-  "official_promotion": false
+  "official_promotion": false,
+  "decision": "MINIMAL_POINT_QUALIFIED_CONTRACT_TWO_STOCK_RANK_ONE_TERMS_PLUS_BANDED_DOMAIN1_GEOMETRY_AND_INTERNAL_INFLOW_DIAGONAL",
+  "model_routes": 2,
+  "O0_O2_non_timing_byte_exact": true,
+  "active_minimum_limiter_domains": [
+    2,
+    3
+  ],
+  "active_maximum_limiter_domains": [],
+  "required_stock_outer_products": 2,
+  "required_banded_entries": [
+    [
+      51,
+      50
+    ],
+    [
+      51,
+      51
+    ]
+  ],
+  "complete_shadow_max_error": 1.2295070517254203e-09,
+  "implemented_solver_correction": false,
+  "all_112_input_columns_or_trajectory_qualified": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "remaining": "Implement/test only after explicit point/branch contract, retain originalprovider and criteria. Four measured inputcolumns fullyexplained over112rows; dynamicshrink/othercols/mincap ties outsidecurrentprobe. No solverpatch or periodrestart thisround."
 }
