@@ -147,3 +147,14 @@ transition. Docs source and mkdocs --strict pass (37.73s). This final receipt
 changes metadata only; selected scientific/physical evidence is not rebound.
 Next: reviewer feedback and separately selected merge admission; no automatic
 rerun of unchanged full/native/independent-reference cohorts.
+
+Current merge-admission workpoint: owner explicitly requests merge on17November.
+Canonicaledbc66b9e reconciled without conflict at368560902. ADMISSION.md and
+ADMISSION_SELECTION.json own bounded admission, distinct from the historical
+review-only transition. admission/ seals8 fresh365-day O0/O2 prefixes and24
+exact own windows on Windows/Ubuntu, exact emitted/other physical dependencies,
+parent endpoint bytes and unchanged mass guards. Ubuntu44116393811 SUCCESS.
+Original full GWL FAIL and bounded independent attribution remain separate;
+full/native/heat cohorts inherit only by the demonstrated exact physical closure.
+Next: expected-head PR1701 merge, verify actual canonical tree/parents/ancestry
+and publish that observation. No additional physics experiment is selected.

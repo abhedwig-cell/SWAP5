@@ -18,6 +18,7 @@ def main():
    folder=prefix+name+'-prefix365';parent=prefix+name+('-prefix365' if name.startswith('water-') else '-full');data=rows(read,folder)
    assert [r['day'] for r in data]==list(range(1,366));assert physical(data)==physical(rows(old,parent)[:365])
    assert all(r['committed'] and abs(r['independent_residual_cm'])<=1e-10 and abs(r['kernel_residual_cm'])<=1e-10 and abs(r.get('solute_independent_residual_mg_cm2',0))<=1e-10 for r in data)
+   for day in (6,365):assert native(read,folder+'/accepted-column-1-day-'+str(day)+'.zip')==native(old,parent+'/accepted-column-1-day-'+str(day)+'.zip')
    for window in v['coverage']['own']:
     s,e=window['start'],window['end'];cold=prefix+name+'-own'+str(s);assert physical(rows(read,cold))==physical(data[s:e]);assert native(read,cold+'/accepted-column-1-day-'+str(e)+'.zip')==native(read,folder+'/accepted-column-1-day-'+str(e)+'.zip')
     assert all(window[k] for k in ('exact_physical','exact_csv','exact_native','origin_unchanged'));report['exact_own_windows']+=1

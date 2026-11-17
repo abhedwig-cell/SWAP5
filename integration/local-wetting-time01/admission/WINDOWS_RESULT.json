@@ -1,0 +1,378 @@
+{
+  "source": "7dc5de021ba14df344834bf8648d504868ec26fe",
+  "canonical": "edbc66b9e2f9debee588db5763da960aee04b36c",
+  "profiles": {
+    "water-surface-history-O0": {
+      "build_command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\local-wetting-admission02\\inputs\\water-surface-history",
+        "--experimental-time-step-policy",
+        "original-adaptive-local-wetting-v1",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--donor-opt",
+        "O0",
+        "--output",
+        "C:\\SWAP5-testing\\local-wetting-admission02\\water-surface-history-O0-build"
+      ],
+      "build_seconds": 11.521199100185186,
+      "generated_sources": {
+        "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+        "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "4b57ed86a1b2ddf4a5ff2444cc7463d13ae21a3d819281d08d0ac8a99d36366e",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+        "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "changed_identity_fields": [
+        "experimental_input_adapter",
+        "host",
+        "restart_publisher"
+      ],
+      "all_other_identity_fields_exact": true,
+      "aquifer_enabled": false,
+      "input_exact": true,
+      "prefix_physical_exact": true,
+      "coverage": {
+        "status": "SHORT_PASS",
+        "days": 365,
+        "budgets": {
+          "days": 365,
+          "max_water_cm": 8.643086246706844e-14,
+          "max_kernel_cm": 8.615330671091215e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 1.2250826438367501e-12
+        },
+        "model_seconds": 2.574436000082642,
+        "build_sha256": "970f67b107557a083081dae4a670db983231bc37d15c76fa6d21d6c1da58182f",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.47080660006031394
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.3747081998735666
+          },
+          {
+            "start": 362,
+            "end": 365,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.33978249970823526
+          }
+        ]
+      },
+      "inherited": "UNCHANGED_FULL_NATIVE_HEAT_AND_INDEPENDENT_REFERENCE_DEPENDENCIES"
+    },
+    "water-surface-history-O2": {
+      "build_command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\local-wetting-admission02\\inputs\\water-surface-history",
+        "--experimental-time-step-policy",
+        "original-adaptive-local-wetting-v1",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--donor-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\local-wetting-admission02\\water-surface-history-O2-build"
+      ],
+      "build_seconds": 19.409901900216937,
+      "generated_sources": {
+        "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+        "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "4b57ed86a1b2ddf4a5ff2444cc7463d13ae21a3d819281d08d0ac8a99d36366e",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+        "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "changed_identity_fields": [
+        "experimental_input_adapter",
+        "host",
+        "restart_publisher"
+      ],
+      "all_other_identity_fields_exact": true,
+      "aquifer_enabled": false,
+      "input_exact": true,
+      "prefix_physical_exact": true,
+      "coverage": {
+        "status": "SHORT_PASS",
+        "days": 365,
+        "budgets": {
+          "days": 365,
+          "max_water_cm": 8.643086246706844e-14,
+          "max_kernel_cm": 8.615330671091215e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 1.2250826438367501e-12
+        },
+        "model_seconds": 2.4153314996510744,
+        "build_sha256": "4ec9388b2851203a8e2f4b8a68ce0f1c1c99512ac8b542868f9f09fbb5c76da7",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.45962229976430535
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.3522024000994861
+          },
+          {
+            "start": 362,
+            "end": 365,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.33648289972916245
+          }
+        ]
+      },
+      "inherited": "UNCHANGED_FULL_NATIVE_HEAT_AND_INDEPENDENT_REFERENCE_DEPENDENCIES"
+    },
+    "chemical-surface-history-O0": {
+      "build_command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\local-wetting-admission02\\inputs\\chemical-surface-history",
+        "--experimental-time-step-policy",
+        "original-adaptive-local-wetting-v1",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--donor-opt",
+        "O0",
+        "--output",
+        "C:\\SWAP5-testing\\local-wetting-admission02\\chemical-surface-history-O0-build"
+      ],
+      "build_seconds": 11.051234200131148,
+      "generated_sources": {
+        "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+        "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+        "irrigation.f90": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66",
+        "macropore.f90": "4ac560478819ba11cc41b493e31cd9f14b7774a2b831a53554fcf93451a3a9cb",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+        "solute.f90": "e6e85c2bebf7412985c973f7d690890361910ae54be615af6db90fd2513fc0fa",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "changed_identity_fields": [
+        "experimental_input_adapter",
+        "host",
+        "restart_publisher"
+      ],
+      "all_other_identity_fields_exact": true,
+      "aquifer_enabled": false,
+      "input_exact": true,
+      "prefix_physical_exact": true,
+      "coverage": {
+        "status": "SHORT_PASS",
+        "days": 365,
+        "budgets": {
+          "days": 365,
+          "max_water_cm": 8.643086246706844e-14,
+          "max_kernel_cm": 8.615330671091215e-14,
+          "max_solute_mg_cm2": 1.5044057986119894e-12,
+          "sum_water_residual_cm": 1.2250826438367501e-12
+        },
+        "model_seconds": 2.746607500128448,
+        "build_sha256": "02dbb9b0e896dfe3cc57acd1538431794173d70640cae66dcd20dcb200f77c57",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.47073630010709167
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.43160670017823577
+          },
+          {
+            "start": 362,
+            "end": 365,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.36876600002869964
+          }
+        ]
+      },
+      "inherited": "UNCHANGED_FULL_NATIVE_HEAT_AND_INDEPENDENT_REFERENCE_DEPENDENCIES"
+    },
+    "chemical-surface-history-O2": {
+      "build_command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel51-fix\\tools\\solute\\run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:\\SWAP5-testing\\local-wetting-admission02\\inputs\\chemical-surface-history",
+        "--experimental-time-step-policy",
+        "original-adaptive-local-wetting-v1",
+        "--reference-work",
+        "C:\\SWAP5-RC2\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--donor-opt",
+        "O2",
+        "--output",
+        "C:\\SWAP5-testing\\local-wetting-admission02\\chemical-surface-history-O2-build"
+      ],
+      "build_seconds": 21.521888199727982,
+      "generated_sources": {
+        "boundtop.f90": "fc351181d6d2aef9f01696e35f4bfccbb8e03ef18a923eb04d9d03a4ccc2d95a",
+        "headcalc.f90": "d313dbbdcd335072430c97ebdaf2abf866fbaacccb5246b03ac03ff055f14b73",
+        "irrigation.f90": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66",
+        "macropore.f90": "4ac560478819ba11cc41b493e31cd9f14b7774a2b831a53554fcf93451a3a9cb",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "mod_subsurface_solute_source.f90": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+        "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+        "readswap.f90": "3ff999fe5b77ed54affc3df88e7e63021aae7f7e37364ecc5599fadf118e5e83",
+        "RWU_micro.f90": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+        "solute.f90": "e6e85c2bebf7412985c973f7d690890361910ae54be615af6db90fd2513fc0fa",
+        "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "34b848057ef88bd3daada99ee9f9bb0ad11cc6b60f97596440b0ddb477fd4b7b",
+        "timecontrol.f90": "5c59dde1c56e3d2dff947ba949f8e422ce6ae18d14f9caebf3e3d3f3656e585c",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      },
+      "changed_identity_fields": [
+        "experimental_input_adapter",
+        "host",
+        "restart_publisher"
+      ],
+      "all_other_identity_fields_exact": true,
+      "aquifer_enabled": false,
+      "input_exact": true,
+      "prefix_physical_exact": true,
+      "coverage": {
+        "status": "SHORT_PASS",
+        "days": 365,
+        "budgets": {
+          "days": 365,
+          "max_water_cm": 8.643086246706844e-14,
+          "max_kernel_cm": 8.615330671091215e-14,
+          "max_solute_mg_cm2": 1.5044057986119894e-12,
+          "sum_water_residual_cm": 1.2250826438367501e-12
+        },
+        "model_seconds": 2.784275099635124,
+        "build_sha256": "2a2da83403e0c3198bf44ad27271c27402fc3a764db1d88d61aec27c7feb31b0",
+        "own": [
+          {
+            "start": 4,
+            "end": 6,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.5433424999937415
+          },
+          {
+            "start": 199,
+            "end": 201,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.40902379993349314
+          },
+          {
+            "start": 362,
+            "end": 365,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native": true,
+            "origin_unchanged": true,
+            "seconds": 0.3514939001761377
+          }
+        ]
+      },
+      "inherited": "UNCHANGED_FULL_NATIVE_HEAT_AND_INDEPENDENT_REFERENCE_DEPENDENCIES"
+    }
+  },
+  "tolerances_changed": false,
+  "original_full_science": "FAIL_PRESERVED",
+  "full_scientific_equivalence": "NOT_CLAIMED",
+  "status": "SELECTED_CANONICAL_COMPOSITION_PASS"
+}
