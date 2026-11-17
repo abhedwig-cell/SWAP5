@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "QUALIFIED_BOUNDED_OWN_TRAJECTORY_WITH_ACTIVE_REFUSAL_EXCLUSION",
   "baseline": "ac673db870237c576299ab9e0c7efaa3f1cf934b",
   "remote_main": "be481cfb40f953e337116ef4a6dc5bc3ef64d4f7",
   "workstream": "isolated SWAP431 B1 research",
@@ -8,5 +8,17 @@
   "changes": "Five diagnostic/driver sources: compact logging separated from targetactivation, countactualrank1; runoriginalhostcontinuous steps; perstepstockintegrals; observationalstop. No shared format/physics change.",
   "failure_contract": "First actual exhausted refusal with active rank1 stops after original physical rollback. Save failed/rollback state and exact nativeorigin+candidateprefix+attempt coordinates. Conditional TRIAL replay reconstructs full preheadcontext, DIRECT replays identical candidateprefix skippingonlyfailedlarge via originalTimeControl5. Four further routes max,20s each, max4targetattempts; noforcedrefusal, stopscaledrequest.",
   "limits": "No full period, admission, referencepromote, artificialdt/tolerance/MAXIT change. B0/B1.12/canonical/release protected.",
-  "qualification": "Require realactivefailure and same untouched preheadcontext, rollback physicalcore, exactaccepted retry/direct solver/context/ledger/commit, independentwaterinventory. If no witness, preserve exclusion."
+  "qualification": "Require realactivefailure and same untouched preheadcontext, rollback physicalcore, exactaccepted retry/direct solver/context/ledger/commit, independentwaterinventory. If no witness, preserve exclusion.",
+  "decision": "PASS_BOUNDED_OWN_CANDIDATE_TRAJECTORY_WITH_ACTIVE_REFUSAL_EXCLUSION",
+  "model_routes": 2,
+  "O0_O2_non_timing_byte_exact": true,
+  "commits_each": 63,
+  "head_attempts_each": 63,
+  "rank1_active_iterations_each": 81,
+  "active_heads_each": 28,
+  "active_refusal_rollback_direct_qualification": false,
+  "conditional_replay_status": "Implemented/persisted only; not executed or qualified because no refusal occurred",
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "remaining": "Both own continuous trajectories cross fixed threshold35797.125, stop35797.126000000026 unscaled, all inventory criteria pass. No witness; no conditional replay/direct route started. No extended horizon, fullperiod or restart promotion."
 }
