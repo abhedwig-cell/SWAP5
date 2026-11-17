@@ -1,5 +1,5 @@
 {
-  "status": "ACTUAL_BASELINE_REFUSALS_MINIMAL_CLOCK005_PERSISTED",
+  "status": "FOUR_SHORT_PHYSICAL_CADENCE_PASS_COLD_BOOTSTRAP_DT_DIAGNOSED",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "owner": "SWAP5-NOMACRO-COMPLETE01",
   "contract": "docs/science/NOMACRO_AGE_OUTPUT_CLOCK_20261117.md",
@@ -25,5 +25,17 @@
   "baseline_results": "NPRINT2/3 O0/O2 actual day1donor-origin mismatch; annual-only period0 refused; monthly omitPERIOD refused but omitallinactive passes.",
   "implementation": "Reuse literal003/004 generators/providers/state; bind original output epoch in three actual TimeControl print-trigger/event expressions, preserving operation order/global counter and physicalTSTART. New005counter/flag reader; annual-only state; generic monthly preflight excludes inactivePERIOD branch.",
   "cadence_inventory": "Original Swap calls Solute output only on flOutput, while SoilWaterOutput also runs flOutputShort. Inventory primary subdaily versus age daily rows and actual interval exports; no forced age rows or daily-mean promotion.",
-  "next": "Fast NPRINT2/3 O0/O2 short10days, actual file cadences and three exact cold/native windows; then annual371day/year prefix and selected complete models."
+  "next": "Fresh O0/O2 NP2/3 ten-day and three exact cold/native windows; preserve all unqualified prototype inputs/builds/trajectories.",
+  "retained_clock_failure": {
+    "source": "b34900ab509490e9eaa6875bb5d1323f69adc778",
+    "paths": [
+      "age-clock-np2-plain-O0/O2",
+      "age-clock-np3-plain-O0/O2"
+    ],
+    "warm_days": 10,
+    "cause": "TimeControl1 runs before native calendar apply. Global epoch with still-local nprintcount caps loaded END DT to zero/negative; first dynamic day then uses minimum seed instead of saved next proposal. Annual/daily paths did not execute this print cap.",
+    "actual_np2_day1_END_DT": 0.03999999997564507,
+    "unchanged_guards": true
+  },
+  "repair": "Use physicalTSTART only for TimeControl1 local initialization; original bound epoch for dynamic tasks, preserving exact original operation order and persistedDT. No new physical equation or state field."
 }

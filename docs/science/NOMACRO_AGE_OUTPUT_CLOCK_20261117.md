@@ -18,6 +18,12 @@ TSTART, original numerical-policy/event logic and all physical age/water equatio
 remain unchanged. Select nonbinary NPRINTDAY3 as well as2, because counter-origin
 reassociation can change floating-point event caps at a cold restart.
 
+Original TimeControl1 runs before the native calendar is applied. Its counter is
+still local at that point, so initialization must use physical TSTART while
+retaining the persisted DT proposal. Activate the bound global output epoch for
+the dynamic tasks after restoration; do not cap DT against a restored epoch and
+an unrestored counter. This initialization boundary is part of the clock owner.
+
 Reuse the literal admitted regular003/monthly004 renderers, complete defined
 calendar state and actual-increment receipt provider. A separate clock adapter
 may specialize print-counter/flag domains and select annual-only output. Use a

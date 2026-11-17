@@ -45,6 +45,7 @@ def metadata(project):
     if selected is None:return None
     sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
     return dict(policy=POLICY,native_codec=MAGIC.decode(),**selected,original_output_epoch=project.start_clock,
+                initialization_epoch='physical-tstart-before-calendar-state-apply',
                 source_sha256=sha(Path(__file__)),regular_owner_sha256=sha(Path(regular.__file__)),
                 schedule_owner_sha256=sha(Path(schedule.__file__)),original_timecontrol_sha256=TIME_SHA,
                 receipt_provider_sha256=sha(regular.ROOT/'src/process'/(regular.PROVIDER+'.f90')),
@@ -78,8 +79,15 @@ def render_timecontrol(source):
     if hashlib.sha256(text.encode('cp1252')).hexdigest()!=TIME_SHA:raise ValueError('Changed original output clock owner')
     anchor='   use MOD_timer';assert text.count(anchor)==1
     text=text.replace(anchor,anchor+'\n   use hybrid_age_output_state,only:original_output_start_clock',1)
+    anchor='   select case (task)';assert text.count(anchor)==1
+    text=text.replace(anchor,"""   real(8)::hybrid_age_print_epoch
+! Original initialization precedes native calendar restoration. Its local print
+! counter must not cap the persisted DT against the later global output epoch.
+   hybrid_age_print_epoch=tstart
+   if(task/=1)hybrid_age_print_epoch=original_output_start_clock
+"""+anchor,1)
     assert text.count('t1900 - tstart + dtCrit')==1 and text.count('(tstart - t1900)')==2
-    return text.replace('t1900 - tstart + dtCrit','t1900 - original_output_start_clock + dtCrit').replace('(tstart - t1900)','(original_output_start_clock - t1900)')
+    return text.replace('t1900 - tstart + dtCrit','t1900 - hybrid_age_print_epoch + dtCrit').replace('(tstart - t1900)','(hybrid_age_print_epoch - t1900)')
 
 
 def render_macro(source):
