@@ -1,0 +1,520 @@
+{
+  "points": [
+    {
+      "optimization": "O0",
+      "point": "attempt293 iteration30 afterJacobian beforeTRIDAG",
+      "head_interpolation_nodes": [
+        50,
+        51
+      ],
+      "native_saturated_volume_compartment": 51,
+      "base_incoming_top_only_cm": 6.870636689271369e-07,
+      "base_outpotential_cm": 1.4771486991820359e-05,
+      "base_minimum_stock_cm": 0.03013536935396029,
+      "base_stock_cm": 0.030146815539612012,
+      "base_outflow_factor": 0.8213966087076336,
+      "base_GWL_cm": -66.56028506140325,
+      "volume_density_cm_per_cm": 0.003918918918918934,
+      "all_18_points_branch_stable": true,
+      "selected_snapshot_bytes": 20347880,
+      "byte_exact_restore_checks": 19,
+      "recognized_IEEE_flags_restored_each_time": true,
+      "probe_baseline_continuation_byte_exact": true,
+      "snapshot_sha256": "dcd762c36d16ec3dbd37117bbf22a2d658c5f33fb2460ba9ef369afbada45db6",
+      "domain3_stock_chain_shadow_max_error": 8.344536728266405e-10,
+      "other_domain_nonlocal_response_demonstrated": true,
+      "FD": [
+        {
+          "node": 50,
+          "epsilon": 1e-05,
+          "dI": 0.0,
+          "dGWL": 0.25565352714806977,
+          "dminimum_stock": 0.0010018854442253589,
+          "doutpotential_total": 0.0,
+          "domain3_stock_chain_shadow_max_error": 8.344536728266405e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 0.3409272289712269,
+              "residual_J_total_macro": 0.446293426313582,
+              "residual_J_other_domains": 0.10536619734235508,
+              "existing_off_tridiagonal_J": 0
+            },
+            "53": {
+              "residual_J_domain3": 0.2953132722628444,
+              "residual_J_total_macro": 0.4069502233854105,
+              "residual_J_other_domains": 0.11163695112256611,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.015005823435078974,
+              "residual_J_total_macro": 0.2481148714887117,
+              "residual_J_other_domains": 0.23310904805363272,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 50,
+          "epsilon": 5e-06,
+          "dI": 0.0,
+          "dGWL": 0.2556535278586125,
+          "dminimum_stock": 0.0010018854471743888,
+          "doutpotential_total": 0.0,
+          "domain3_stock_chain_shadow_max_error": 1.6895373988745632e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 0.3409272299746343,
+              "residual_J_total_macro": 0.4462934276028285,
+              "residual_J_other_domains": 0.10536619762819416,
+              "existing_off_tridiagonal_J": 0
+            },
+            "53": {
+              "residual_J_domain3": 0.29531327313207095,
+              "residual_J_total_macro": 0.40695022455669577,
+              "residual_J_other_domains": 0.11163695142462482,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.015005823479242595,
+              "residual_J_total_macro": 0.24811487216516712,
+              "residual_J_other_domains": 0.23310904868592452,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 51,
+          "epsilon": 1e-05,
+          "dI": 0.0,
+          "dGWL": 0.9071613114031151,
+          "dminimum_stock": 0.0035550916257717775,
+          "doutpotential_total": -9.110241579610916e-06,
+          "domain3_stock_chain_shadow_max_error": 1.9956480912242114e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 1.207200228135188,
+              "residual_J_total_macro": 1.5810394950570292,
+              "residual_J_other_domains": 0.37383926692184133,
+              "existing_off_tridiagonal_J": null
+            },
+            "53": {
+              "residual_J_domain3": 1.045684296683679,
+              "residual_J_total_macro": 1.4417721979440716,
+              "residual_J_other_domains": 0.3960879012603926,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.05313460449858778,
+              "residual_J_total_macro": 0.8802055042321857,
+              "residual_J_other_domains": 0.8270708997335979,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 51,
+          "epsilon": 5e-06,
+          "dI": 0.0,
+          "dGWL": 0.9071613106925723,
+          "dminimum_stock": 0.0035550916228227476,
+          "doutpotential_total": -9.110241579610916e-06,
+          "domain3_stock_chain_shadow_max_error": 7.469436180684852e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 1.2072002271886795,
+              "residual_J_total_macro": 1.58103949388505,
+              "residual_J_other_domains": 0.3738392666963706,
+              "existing_off_tridiagonal_J": null
+            },
+            "53": {
+              "residual_J_domain3": 1.0456842958638488,
+              "residual_J_total_macro": 1.4417721968827677,
+              "residual_J_other_domains": 0.3960879010189189,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.05313460445693137,
+              "residual_J_total_macro": 0.8802055036880029,
+              "residual_J_other_domains": 0.8270708992310715,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 52,
+          "epsilon": 1e-05,
+          "dI": 0.0,
+          "dGWL": 0.0,
+          "dminimum_stock": 0.0,
+          "doutpotential_total": -1.0547485521736223e-05,
+          "domain3_stock_chain_shadow_max_error": 3.5643031928711544e-11,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 0.009652211860550555,
+              "residual_J_total_macro": 0.1014125200558824,
+              "residual_J_other_domains": 0.09176030819533185,
+              "existing_off_tridiagonal_J": null
+            },
+            "53": {
+              "residual_J_domain3": -0.002553681601618653,
+              "residual_J_total_macro": -0.002613946488427832,
+              "residual_J_other_domains": -6.026488680917902e-05,
+              "existing_off_tridiagonal_J": null
+            },
+            "57": {
+              "residual_J_domain3": -0.00012976082967462374,
+              "residual_J_total_macro": -0.00025559990287499224,
+              "residual_J_other_domains": -0.0001258390732003685,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 52,
+          "epsilon": 5e-06,
+          "dI": 0.0,
+          "dGWL": 0.0,
+          "dminimum_stock": 0.0,
+          "doutpotential_total": -1.0547485521228003e-05,
+          "domain3_stock_chain_shadow_max_error": 2.2426836429612074e-11,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 0.009652211918620424,
+              "residual_J_total_macro": 0.10141252011208744,
+              "residual_J_other_domains": 0.09176030819346702,
+              "existing_off_tridiagonal_J": null
+            },
+            "53": {
+              "residual_J_domain3": -0.00255368155033589,
+              "residual_J_total_macro": -0.002613946437080017,
+              "residual_J_other_domains": -6.026488674412689e-05,
+              "existing_off_tridiagonal_J": null
+            },
+            "57": {
+              "residual_J_domain3": -0.00012976082707524903,
+              "residual_J_total_macro": -0.000255599900272907,
+              "residual_J_other_domains": -0.000125839073197658,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 57,
+          "epsilon": 1e-05,
+          "dI": 0.0,
+          "dGWL": 0.0,
+          "dminimum_stock": 0.0,
+          "doutpotential_total": -1.1180155481689112e-07,
+          "domain3_stock_chain_shadow_max_error": 5.409885729088003e-11,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": -3.1249647444372974e-05,
+              "residual_J_total_macro": -6.139546857020228e-05,
+              "residual_J_other_domains": -3.014582112582931e-05,
+              "existing_off_tridiagonal_J": 0
+            },
+            "53": {
+              "residual_J_domain3": -2.7068637674203252e-05,
+              "residual_J_total_macro": -5.90085532520268e-05,
+              "residual_J_other_domains": -3.193991557782355e-05,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.0001321859546734444,
+              "residual_J_total_macro": 0.04872782198243191,
+              "residual_J_other_domains": 0.04859563602775847,
+              "existing_off_tridiagonal_J": null
+            }
+          }
+        },
+        {
+          "node": 57,
+          "epsilon": 5e-06,
+          "dI": 0.0,
+          "dGWL": 0.0,
+          "dminimum_stock": 0.0,
+          "doutpotential_total": -1.1180155481689112e-07,
+          "domain3_stock_chain_shadow_max_error": 1.1312282356099089e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": -3.1249706468339244e-05,
+              "residual_J_total_macro": -6.139552616302169e-05,
+              "residual_J_other_domains": -3.014581969468244e-05,
+              "existing_off_tridiagonal_J": 0
+            },
+            "53": {
+              "residual_J_domain3": -2.7068688783493663e-05,
+              "residual_J_total_macro": -5.9008604252896994e-05,
+              "residual_J_other_domains": -3.1939915469403335e-05,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.0001321859520713592,
+              "residual_J_total_macro": 0.04872782198017677,
+              "residual_J_other_domains": 0.04859563602810541,
+              "existing_off_tridiagonal_J": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "optimization": "O2",
+      "point": "attempt293 iteration30 afterJacobian beforeTRIDAG",
+      "head_interpolation_nodes": [
+        50,
+        51
+      ],
+      "native_saturated_volume_compartment": 51,
+      "base_incoming_top_only_cm": 6.870636689271369e-07,
+      "base_outpotential_cm": 1.4771486991820359e-05,
+      "base_minimum_stock_cm": 0.03013536935396029,
+      "base_stock_cm": 0.030146815539612012,
+      "base_outflow_factor": 0.8213966087076336,
+      "base_GWL_cm": -66.56028506140325,
+      "volume_density_cm_per_cm": 0.003918918918918934,
+      "all_18_points_branch_stable": true,
+      "selected_snapshot_bytes": 20347880,
+      "byte_exact_restore_checks": 19,
+      "recognized_IEEE_flags_restored_each_time": true,
+      "probe_baseline_continuation_byte_exact": true,
+      "snapshot_sha256": "dcd762c36d16ec3dbd37117bbf22a2d658c5f33fb2460ba9ef369afbada45db6",
+      "domain3_stock_chain_shadow_max_error": 8.344536728266405e-10,
+      "other_domain_nonlocal_response_demonstrated": true,
+      "FD": [
+        {
+          "node": 50,
+          "epsilon": 1e-05,
+          "dI": 0.0,
+          "dGWL": 0.25565352714806977,
+          "dminimum_stock": 0.0010018854442253589,
+          "doutpotential_total": 0.0,
+          "domain3_stock_chain_shadow_max_error": 8.344536728266405e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 0.3409272289712269,
+              "residual_J_total_macro": 0.446293426313582,
+              "residual_J_other_domains": 0.10536619734235508,
+              "existing_off_tridiagonal_J": 0
+            },
+            "53": {
+              "residual_J_domain3": 0.2953132722628444,
+              "residual_J_total_macro": 0.4069502233854105,
+              "residual_J_other_domains": 0.11163695112256611,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.015005823435078974,
+              "residual_J_total_macro": 0.2481148714887117,
+              "residual_J_other_domains": 0.23310904805363272,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 50,
+          "epsilon": 5e-06,
+          "dI": 0.0,
+          "dGWL": 0.2556535278586125,
+          "dminimum_stock": 0.0010018854471743888,
+          "doutpotential_total": 0.0,
+          "domain3_stock_chain_shadow_max_error": 1.6895373988745632e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 0.3409272299746343,
+              "residual_J_total_macro": 0.4462934276028285,
+              "residual_J_other_domains": 0.10536619762819416,
+              "existing_off_tridiagonal_J": 0
+            },
+            "53": {
+              "residual_J_domain3": 0.29531327313207095,
+              "residual_J_total_macro": 0.40695022455669577,
+              "residual_J_other_domains": 0.11163695142462482,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.015005823479242595,
+              "residual_J_total_macro": 0.24811487216516712,
+              "residual_J_other_domains": 0.23310904868592452,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 51,
+          "epsilon": 1e-05,
+          "dI": 0.0,
+          "dGWL": 0.9071613114031151,
+          "dminimum_stock": 0.0035550916257717775,
+          "doutpotential_total": -9.110241579610916e-06,
+          "domain3_stock_chain_shadow_max_error": 1.9956480912242114e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 1.207200228135188,
+              "residual_J_total_macro": 1.5810394950570292,
+              "residual_J_other_domains": 0.37383926692184133,
+              "existing_off_tridiagonal_J": null
+            },
+            "53": {
+              "residual_J_domain3": 1.045684296683679,
+              "residual_J_total_macro": 1.4417721979440716,
+              "residual_J_other_domains": 0.3960879012603926,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.05313460449858778,
+              "residual_J_total_macro": 0.8802055042321857,
+              "residual_J_other_domains": 0.8270708997335979,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 51,
+          "epsilon": 5e-06,
+          "dI": 0.0,
+          "dGWL": 0.9071613106925723,
+          "dminimum_stock": 0.0035550916228227476,
+          "doutpotential_total": -9.110241579610916e-06,
+          "domain3_stock_chain_shadow_max_error": 7.469436180684852e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 1.2072002271886795,
+              "residual_J_total_macro": 1.58103949388505,
+              "residual_J_other_domains": 0.3738392666963706,
+              "existing_off_tridiagonal_J": null
+            },
+            "53": {
+              "residual_J_domain3": 1.0456842958638488,
+              "residual_J_total_macro": 1.4417721968827677,
+              "residual_J_other_domains": 0.3960879010189189,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.05313460445693137,
+              "residual_J_total_macro": 0.8802055036880029,
+              "residual_J_other_domains": 0.8270708992310715,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 52,
+          "epsilon": 1e-05,
+          "dI": 0.0,
+          "dGWL": 0.0,
+          "dminimum_stock": 0.0,
+          "doutpotential_total": -1.0547485521736223e-05,
+          "domain3_stock_chain_shadow_max_error": 3.5643031928711544e-11,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 0.009652211860550555,
+              "residual_J_total_macro": 0.1014125200558824,
+              "residual_J_other_domains": 0.09176030819533185,
+              "existing_off_tridiagonal_J": null
+            },
+            "53": {
+              "residual_J_domain3": -0.002553681601618653,
+              "residual_J_total_macro": -0.002613946488427832,
+              "residual_J_other_domains": -6.026488680917902e-05,
+              "existing_off_tridiagonal_J": null
+            },
+            "57": {
+              "residual_J_domain3": -0.00012976082967462374,
+              "residual_J_total_macro": -0.00025559990287499224,
+              "residual_J_other_domains": -0.0001258390732003685,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 52,
+          "epsilon": 5e-06,
+          "dI": 0.0,
+          "dGWL": 0.0,
+          "dminimum_stock": 0.0,
+          "doutpotential_total": -1.0547485521228003e-05,
+          "domain3_stock_chain_shadow_max_error": 2.2426836429612074e-11,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": 0.009652211918620424,
+              "residual_J_total_macro": 0.10141252011208744,
+              "residual_J_other_domains": 0.09176030819346702,
+              "existing_off_tridiagonal_J": null
+            },
+            "53": {
+              "residual_J_domain3": -0.00255368155033589,
+              "residual_J_total_macro": -0.002613946437080017,
+              "residual_J_other_domains": -6.026488674412689e-05,
+              "existing_off_tridiagonal_J": null
+            },
+            "57": {
+              "residual_J_domain3": -0.00012976082707524903,
+              "residual_J_total_macro": -0.000255599900272907,
+              "residual_J_other_domains": -0.000125839073197658,
+              "existing_off_tridiagonal_J": 0
+            }
+          }
+        },
+        {
+          "node": 57,
+          "epsilon": 1e-05,
+          "dI": 0.0,
+          "dGWL": 0.0,
+          "dminimum_stock": 0.0,
+          "doutpotential_total": -1.1180155481689112e-07,
+          "domain3_stock_chain_shadow_max_error": 5.409885729088003e-11,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": -3.1249647444372974e-05,
+              "residual_J_total_macro": -6.139546857020228e-05,
+              "residual_J_other_domains": -3.014582112582931e-05,
+              "existing_off_tridiagonal_J": 0
+            },
+            "53": {
+              "residual_J_domain3": -2.7068637674203252e-05,
+              "residual_J_total_macro": -5.90085532520268e-05,
+              "residual_J_other_domains": -3.193991557782355e-05,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.0001321859546734444,
+              "residual_J_total_macro": 0.04872782198243191,
+              "residual_J_other_domains": 0.04859563602775847,
+              "existing_off_tridiagonal_J": null
+            }
+          }
+        },
+        {
+          "node": 57,
+          "epsilon": 5e-06,
+          "dI": 0.0,
+          "dGWL": 0.0,
+          "dminimum_stock": 0.0,
+          "doutpotential_total": -1.1180155481689112e-07,
+          "domain3_stock_chain_shadow_max_error": 1.1312282356099089e-10,
+          "coefficients_by_row": {
+            "52": {
+              "residual_J_domain3": -3.1249706468339244e-05,
+              "residual_J_total_macro": -6.139552616302169e-05,
+              "residual_J_other_domains": -3.014581969468244e-05,
+              "existing_off_tridiagonal_J": 0
+            },
+            "53": {
+              "residual_J_domain3": -2.7068688783493663e-05,
+              "residual_J_total_macro": -5.9008604252896994e-05,
+              "residual_J_other_domains": -3.1939915469403335e-05,
+              "existing_off_tridiagonal_J": 0
+            },
+            "57": {
+              "residual_J_domain3": 0.0001321859520713592,
+              "residual_J_total_macro": 0.04872782198017677,
+              "residual_J_other_domains": 0.04859563602810541,
+              "existing_off_tridiagonal_J": null
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
