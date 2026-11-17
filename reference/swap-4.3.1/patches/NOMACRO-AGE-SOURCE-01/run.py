@@ -14,6 +14,7 @@ spec=importlib.util.spec_from_file_location('age_source',Path(__file__).with_nam
 s=importlib.util.module_from_spec(spec);spec.loader.exec_module(s)
 spec=importlib.util.spec_from_file_location('original_age_inputs',ROOT/'tests/nomacro_scheduled_subsurface/age_reference.py')
 f=importlib.util.module_from_spec(spec);spec.loader.exec_module(f)
+from original_pond_budget import render as render_linear_pond_conservation
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 
 
@@ -57,14 +58,15 @@ def main():
             build=a.output/opt;build.mkdir()
             (build/'solute.f90').write_bytes(s.source((provider/'swap-selected/solute.f90').read_bytes()))
             (build/'swap_csv_output.f90').write_bytes(s.csv_source((provider/'swap-selected/swap_csv_output.f90').read_bytes()))
+            (build/'boundtop.f90').write_text(render_linear_pond_conservation((provider/'swap-selected/boundtop.f90').read_text(encoding='cp1252')),encoding='cp1252')
             flags=['-'+opt,'-std=legacy','-ffree-line-length-none','-fallow-argument-mismatch','-fcheck=bounds',
                    '-ffp-contract=off','-march=x86-64','-mtune=generic','-J'+str(build),'-I'+str(build),'-I'+str(objects),'-I'+str(ttutil)]
             for name in s.PROVIDERS:
                 (build/(name+'.f90')).write_bytes((ROOT/'src/process'/(name+'.f90')).read_bytes())
-            for name in (*s.PROVIDERS,'solute','swap_csv_output'):
+            for name in (*s.PROVIDERS,'solute','swap_csv_output','boundtop'):
                 call(['gfortran',*flags,'-c',build/(name+'.f90'),'-o',build/(name+'.o')],build,name+'-compile')
-            linked=[p for p in sorted(objects.glob('*.o')) if p.name not in ('solute.o','swap_csv_output.o')]
-            linked += [build/(name+'.o') for name in (*s.PROVIDERS,'solute','swap_csv_output')]
+            linked=[p for p in sorted(objects.glob('*.o')) if p.name not in ('solute.o','swap_csv_output.o','boundtop.o')]
+            linked += [build/(name+'.o') for name in (*s.PROVIDERS,'solute','swap_csv_output','boundtop')]
             exe=build/'swap_age.exe';call(['gfortran','-o',exe,*linked,ttutil/'libttutil.a'],build,'link')
             profile=result['profiles'][opt]=dict(cases={},generated_sha256={p.name:sha(p) for p in build.glob('*.f90')},executable_sha256=sha(exe));save()
             for initial in (0.,100.):
