@@ -1,81 +1,29 @@
 {
-  "status": "EXACT_CURRENT_RC3_AGE_CANONICALLY_ADMITTED_ACTUAL_MERGE_PASS",
-  "runtime": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
-  "canonical_parent": "e5b3232926e3f24641c4cb0e58db57f115946b59",
-  "current_owner": "tests/nomacro_scheduled_subsurface/age_composition_verify.py",
+  "status": "FIXED_YOUNG_AGE_QUALIFIED_STRICT_ADMISSION_PENDING",
+  "runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
+  "canonical_parent": "17834a639bb9c749c159c79e36faa96d99f3fe1b",
+  "current_owner": "tests/nomacro_scheduled_subsurface/age_fixed_verify.py",
   "whole_scientific_equivalence": "NOT_QUALIFIED",
   "functional_completion": "PARTIAL",
-  "full_moving_fci": "NOT_SELECTED_IMPACT: exact complete age/source/state/native composition both platforms; nine old-context emitted/native controls; four local-wetting365day/native per platform; accepted canonical RWU dry-end source change selects fresh eight full pulse periods and48full native windows instead of old PASS inheritance. No whole scientific equivalence or broad F-CI promotion.",
+  "full_moving_fci": "NOT_SELECTED_IMPACT: input-only fixed young-water age extension, unchanged production Fortran/reference/public driver; explicit complete source/state/native/reference platform gates, four inactive age closures per platform and thirteen age-off closures/native controls. No broad F-CI/performance/science promotion.",
   "retired_highest_low_air": "NOT_SELECTED_POLICY",
-  "small_production": "original_age_clock, surface_age_budget and age_effluent_observer O0/O2 PASS; actual existing providers",
-  "unit_tests": "7_PASS;125_NEW_COMPOSITION_135_AGE_115_AQUIFER_62_FIXED_67_SCHEDULED_CORRUPTIONS_REFUSED",
-  "selected_ubuntu_run": 44134056082,
-  "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_COMPOSED_SOURCE_REFUSED",
-  "docs_source": "PASS",
+  "small_production": "Unchanged real age/surface/effluent providers and reference patch literal to admitted17834a639; no new equation/interface, no repeated process compilation. Actual new reader and active coupled source/state/reference gates selected.",
+  "unit_tests": "8_PASS;232_NEW_FIXED_AGE_CORRUPTIONS;PRIOR_CONTROLS_RETAINED",
+  "selected_ubuntu_run": 44140757783,
+  "source_negative": "PENDING_FIXED_AGE_OWNER",
+  "docs_source": "PENDING",
   "strict_docs_render": {
-    "status": "PASS",
-    "returncode": 0,
-    "seconds": 26.7
+    "status": "PENDING"
   },
   "current_owner_verification": {
-    "status": "CURRENT_COMPOSED_ORIGINAL_AGE_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
-    "verified_head": "263008e66",
-    "root": "tests/hupsel51/verify_successor.py",
-    "legacy_age_source": "PASS",
-    "legacy_surface_age_qualification": "PASS"
+    "status": "PENDING_FIXED_AGE_OWNER"
   },
   "canonical_reconciliation": {
     "head": "e5b3232926e3f24641c4cb0e58db57f115946b59",
     "overlap": "Shared host/build/experimental identity plus micro_lookup native state; age physics providers unchanged. Fresh composed source/native preservation required before admission."
   },
   "age_subgate_run": 44132663545,
-  "actual_source_negative": {
-    "dirty": {
-      "returncode": 1,
-      "status": "REFUSED",
-      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 83, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty age composition admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 27, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty age composition admission surface\n"
-    },
-    "committed": {
-      "returncode": 1,
-      "status": "REFUSED",
-      "commit": "869456d09779278438f910f2a5d793c8d644381a",
-      "diagnostic": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-composition-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 122, in <module>\n    if __name__=='__main__':print(json.dumps(verify(),indent=2))\n                                             ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-composition-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 85, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'composed age runtime differs from qualification')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-composition-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 27, in require\n    if not ok:raise ValueError(why)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: composed age runtime differs from qualification\n"
-    }
-  },
   "admission_canonical_parent": "4c0c4de1043c2d8969d4a9ce5369d2a3e81f3b7d",
   "canonical_nonphysical_reconciliation": "PR1710 cost reports/tests only; exact complete source app/src/reference/tools unchanged; immutable independent evidence preserved. No performance admission.",
-  "admission_guard_development": "Initial new parent-origin check met an older different manifest schema and raised KeyError; new-origin mapping is now explicitly restricted to the new parent subset manifest, while every raw identity/member remains checked. No physical or sealed evidence change.",
-  "actual_canonical_merge": {
-    "status": "CANONICAL_ADMITTED_ACTUAL_MERGE_VERIFIED",
-    "pr": 1711,
-    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1711",
-    "merge": "9e0b9d871e942361ad179095670f42a1db134768",
-    "parents": [
-      "4c0c4de1043c2d8969d4a9ce5369d2a3e81f3b7d",
-      "ef6f6a658443f25d5a77e96f09846439927303c8"
-    ],
-    "qualified_head": "ef6f6a658443f25d5a77e96f09846439927303c8",
-    "complete_tree": "9e29c022d06da3a976c8d367f271612516c316a4",
-    "actual_merge_tree_exact": true,
-    "actual_detached_merge_owner": {
-      "returncode": 0,
-      "seconds": 30.09,
-      "result": {
-        "status": "CURRENT_COMPOSED_ORIGINAL_AGE_AQUIFER_CHEMICAL_S_PULSE_R_ADMISSION_PASS",
-        "runtime": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
-        "whole_scientific_equivalence": "NOT_QUALIFIED",
-        "functional_completion": "PARTIAL",
-        "full_model_days": 8768,
-        "water_guard_cm": 1e-10,
-        "chemical_mass_guard_changed": false,
-        "age_units": "cm day",
-        "native_codec": "S5AGE002"
-      }
-    },
-    "runtime": "8eff1af5919ff4698b858e5353a13f06cf7a1c5e",
-    "ubuntu": "304e528438f13270f9b421a2a4f386d71ec451dc",
-    "sealed": "5912bee4e9f21f4cc8cc142576ac81fa3c7bacd5",
-    "whole_scientific_equivalence": "NOT_QUALIFIED",
-    "functional_completion": "PARTIAL"
-  }
+  "admission_guard_development": "Initial new parent-origin check met an older different manifest schema and raised KeyError; new-origin mapping is now explicitly restricted to the new parent subset manifest, while every raw identity/member remains checked. No physical or sealed evidence change."
 }
