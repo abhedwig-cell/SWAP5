@@ -7,7 +7,7 @@
     "windows-2022",
     "ubuntu-26.04"
   ],
-  "observed": "IN_PROGRESS",
+  "observed": "COMPLETED_SUCCESS_BOTH_JOBS",
   "archive_sha256": "cfcb0b5ab515dc8aeb8b5e5e2259556145f2129faf8116d1624e9438bd2f913e",
-  "next": "Poll existing run to terminal; do not dispatch duplicate cohorts"
+  "next": "Freeze exact source branch, deliver checksum-bound package and integrate proof/manual via PR; do not repeat completed cohorts"
 }

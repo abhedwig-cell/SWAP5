@@ -1,5 +1,10 @@
 # Getting started: standalone no-macro SWAP5
 
+The fixed [RC3 source candidate](science/RC3_QUALIFICATION.md) supplies the
+current qualified standalone ZIP, Windows/Ubuntu proof and
+[build/full-run/day-restart guide](science/RC3_USER_GUIDE.md). RC3 retains the
+registered defaults and explicit scientific restrictions; RC1/RC2 stay immutable.
+
 **RELEASE READY for the named standalone no-macro scope.** PR1663's actual
 canonical source postimage is verified in the versioned release record. This is
 not whole scientific equivalence or an official tagged/public GitHub release.

@@ -1,10 +1,15 @@
 {
-  "status": "FIXED_RC3_LOCAL_PUBLIC_PASS_HOSTED_SELECTED",
+  "status": "FIXED_RC3_QUALIFIED_FROZEN_DELIVERED_READY_FOR_PR",
   "source": "2cedd9d0eaf8be8e8cdba321e3ab836835c558a3",
   "archive_sha256": "cfcb0b5ab515dc8aeb8b5e5e2259556145f2129faf8116d1624e9438bd2f913e",
-  "next": "Wait for selected identical source-ZIP Windows2022/Ubuntu26.04 qualification; then freeze/deliver/admit evidence and guide",
+  "next": "Publish and integrate qualification/manual PR; verify actual canonical postimage and unchanged fixed source ref",
   "local": "Clean source ZIP outside Git; fresh provider; all named O0short/O2 full/control/long own/refusal/external PASS",
   "local_total_measured_command_seconds": 285.9380926010199,
   "hosted_run": 44120507341,
-  "carrier": "3be021995f7158174e670f5e37ad4a6ef279c481"
+  "carrier": "3be021995f7158174e670f5e37ad4a6ef279c481",
+  "hosted": "SUCCESS Windows2022 and Ubuntu26.04",
+  "freeze": "2cedd9d0eaf8be8e8cdba321e3ab836835c558a3",
+  "delivery": "C:\\Users\\Veldh012\\SWAP5-RC3-20261117",
+  "docs_source": "PASS",
+  "mkdocs_strict": "PASS29.23seconds"
 }
