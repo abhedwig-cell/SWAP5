@@ -3,6 +3,7 @@ import argparse,importlib.util,json,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(ROOT/'app/hybrid_water'),str(ROOT/'tools/solute')]
 import drainage_table_cases as cases,user_prepare
+from controls import controls
 spec=importlib.util.spec_from_file_location('original_mixtures',ROOT/'tests/nomacro_mixtures/run.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 
 
@@ -16,8 +17,8 @@ def main():
   build=out/(opt+'-build');cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',m.e.MODEL,'--experimental-project',str(case),'--reference-work',str(ref),'--build-only','--kernel-opt',opt,'--donor-opt',opt,'--output',str(build)];start=time.perf_counter();r=subprocess.run(cmd,capture_output=True,text=True,timeout=180);events.append(dict(command=cmd,seconds=time.perf_counter()-start,returncode=r.returncode,stdout=r.stdout,stderr=r.stderr));save();assert r.returncode==0,r.stderr
   short=out/(opt+'-short');brief,rows=m.trajectory(build,ref,project,short,5,{2,4},30);brief['own']=m.own(build,ref,project,short,rows,2,4,out/(opt+'-short-own'));reports[opt]=dict(short=brief);save();print(a.configuration,opt,'SHORT_EXACT_NATIVE_PASS',flush=True)
   if a.short_only:continue
-  full=out/(opt+'-full');r,rows=m.trajectory(build,ref,project,full,1096,{2,4,199,201,365,367,530,532},60);r['short']=brief;reports[opt]=r;save();r['own']=[m.own(build,ref,project,full,rows,start,end,out/(opt+'-own'+str(start))) for start,end in ((2,4),(199,201),(365,367),(530,532))];r['drainage_signed_exposure']=dict(days_positive=sum(row['drainage_outward_cm']>0 for row in rows),days_negative=sum(row['drainage_outward_cm']<0 for row in rows));save();print(a.configuration,opt,'FULL_BALANCE_NATIVE_PASS',flush=True)
- result['status']='SHORT_TABULATED_DRAINAGE_O0_O2_PASS' if a.short_only else 'FULL_TABULATED_DRAINAGE_NATIVE_O0_O2_PASS_EXTERNAL_NOT_YET_QUALIFIED';save()
+  full=out/(opt+'-full');r,rows=m.trajectory(build,ref,project,full,1096,{2,4,199,201,365,367,530,532},60);r['short']=brief;reports[opt]=r;save();r['own']=[m.own(build,ref,project,full,rows,start,end,out/(opt+'-own'+str(start))) for start,end in ((2,4),(199,201),(365,367),(530,532))];r['drainage_signed_exposure']=dict(days_positive=sum(row['drainage_outward_cm']>0 for row in rows),days_negative=sum(row['drainage_outward_cm']<0 for row in rows));save();controlout=out/(opt+'-controls');controlout.mkdir();r['controls']=controls(m,build,ref,project,controlout,full,rows);save();print(a.configuration,opt,'FULL_BALANCE_NATIVE_AND_EXTERNAL_PASS',flush=True)
+ result['status']='SHORT_TABULATED_DRAINAGE_O0_O2_PASS' if a.short_only else 'COMPLETE_TABULATED_DRAINAGE_O0_O2_PASS';save()
 
 
 if __name__=='__main__':main()

@@ -5,6 +5,10 @@ on:
     paths: ['.github/workflows/nomacro-coverage-prescribed-head.yml']
   workflow_dispatch:
     inputs:
+      table_drainage:
+        type: boolean
+        default: false
+        description: Complete original DRAMET1 positive and signed table drainage
       time_event_closure:
         type: boolean
         default: false
@@ -44,7 +48,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        configuration: ${{ fromJSON(inputs.time_event_closure && '["water-frost-drained"]' || inputs.frost_history && '["water-frost-free","chemical-frost-free"]' || inputs.pond_history && '["water-surface-history","chemical-surface-history"]' || inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
+        configuration: ${{ fromJSON(inputs.table_drainage && '["water-drain-table","chemical-drain-table","water-drain-signed","chemical-drain-signed"]' || inputs.time_event_closure && '["water-frost-drained"]' || inputs.frost_history && '["water-frost-free","chemical-frost-free"]' || inputs.pond_history && '["water-surface-history","chemical-surface-history"]' || inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
     env:
       OMP_NUM_THREADS: '1'
     steps:
@@ -56,6 +60,7 @@ jobs:
             tests/nomacro_pond_history
             tests/nomacro_frost
             tests/nomacro_time_event
+            tests/nomacro_drainage
             reference/swap-4.3.1/patches/TIME-EVENT-CLOSURE-01
             src
             tools/solute
@@ -77,6 +82,7 @@ jobs:
         run: git -c protocol.version=2 fetch --filter=blob:none --no-tags --depth=1 origin 166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad
       - name: Execute selected original boundary and native own restarts O0/O2
         env:
+          TABLE_DRAINAGE: ${{ inputs.table_drainage }}
           TIME_EVENT_CLOSURE: ${{ inputs.time_event_closure }}
           FROST_HISTORY: ${{ inputs.frost_history }}
           POND_HISTORY: ${{ inputs.pond_history }}
@@ -84,7 +90,10 @@ jobs:
           FINISH_SURFACE_RUNON: ${{ inputs.finish_surface_runon }}
           FIXED_IRRIGATION_INPUTS: ${{ inputs.fixed_irrigation_inputs }}
         run: |
-          if [ "$TIME_EVENT_CLOSURE" = true ]; then
+          if [ "$TABLE_DRAINAGE" = true ]; then
+            python3 -B tests/nomacro_drainage/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
+            python3 -B tools/solute/check_tabulated_drainage.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/drain-component"
+          elif [ "$TIME_EVENT_CLOSURE" = true ]; then
             python3 -B tests/nomacro_time_event/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
             python3 -B reference/swap-4.3.1/patches/TIME-EVENT-CLOSURE-01/run.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/time-component"
             python3 -B tools/solute/check_terminal_water_receipt.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/terminal-component"
@@ -108,6 +117,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: nomacro-${{ inputs.time_event_closure && 'time-event' || inputs.frost_history && 'frost-history' || inputs.pond_history && 'pond-history' || inputs.fixed_irrigation_inputs && 'irrigation-file' || inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
+          name: nomacro-${{ inputs.table_drainage && 'drain-table' || inputs.time_event_closure && 'time-event' || inputs.frost_history && 'frost-history' || inputs.pond_history && 'pond-history' || inputs.fixed_irrigation_inputs && 'irrigation-file' || inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30
