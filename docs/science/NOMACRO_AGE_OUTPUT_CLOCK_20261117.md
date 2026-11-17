@@ -86,3 +86,27 @@ retained seconds60 formatting limitation and water/scientific limitations. Do no
 invent a missing migrated event or alter005 timestamps to match this extra row.
 The three completed exact-input/original-executable reference executions are
 reused with their per-file hashes; the fourth validator failure is retained.
+
+Portable counterexample and correction: the initial Linux run44190746741 timed
+out after1053accepted days. Diagnostic-only44192180291 instrumented a generated
+copy, without editing physical equations or production accepted state. At the
+first step of day1054, dt=4.26656922773690009e-5day, the existing incremental
+hydraulic residual converged to-1.70270563057059454e-16cm. Its elapsed-day bound
+was4.26656922773690042e-15cm. The full-stock receipt difference was
+-4.27061745909750805e-15cm, or the adjacent9.94023725610449567e-15cm: its stock
+subtraction jumps by1.4210854715202004e-14cm. Scaling this additional full-stock
+observer to a tiny partial day imposed an unattainable representation boundary
+and forced repeated time-step reduction. This is a defect of the new unadmitted
+acceptance predicate, not an original hydraulic convergence defect.
+
+Use the actual absolute daily receipt limit1e-10cm for this additional predicate
+at every candidate. Keep the existing incremental hydraulic guard and its
+elapsed-day scaling literally unchanged, as well as the external daily limit.
+No mass correction, clipping or relaxed accepted guard is introduced. The
+explicit trial receipt policy is now
+original-integral-clone-absolute-day-water-guard-v1. Rebuild and rerun the sixteen
+selected005profiles and their native/transaction controls because their added
+numerical predicate changed. Keep the initial Windows proof and failed Linux/
+diagnostic artifacts as counterevidence. Prior004/003/002/age-off generated code
+and provider identities are unaffected; completed exact preservation may be
+inherited on that dependency evidence.

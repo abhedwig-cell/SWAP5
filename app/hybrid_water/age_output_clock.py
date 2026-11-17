@@ -8,7 +8,7 @@ import age_output_schedule as schedule
 POLICY='original-bound-output-epoch-age-clock-v1'
 MAGIC=b'S5AGE005'
 WATSTOR_SHA='71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c'
-TRIAL_RECEIPT_POLICY='original-integral-clone-elapsed-day-water-guard-v1'
+TRIAL_RECEIPT_POLICY='original-integral-clone-absolute-day-water-guard-v1'
 TIME_SHA='88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84'
 
 
@@ -182,7 +182,7 @@ def apply_build(output,donor_build,project,patched):
         text=text.replace(anchor,'   use MOD_integral,only:hybrid_output_trial_residual\n'+anchor,1)
         anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
         assert text.count(anchor)==1
-        text=text.replace(anchor,anchor+"\n         if(abs(hybrid_output_trial_residual())>1d-10*(t1900-budget_start+dt))flnonconv=.true.",1)
+        text=text.replace(anchor,anchor+"\n         if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.",1)
         anchor='      if (.NOT.flnonconv) then      ! convergence has been reached';assert text.count(anchor)==1
         text=text.replace(anchor,anchor+"\n         if(tcum+dt>=1d0-1d-8)write(*,'(a,4(1x,es25.17e3))') &\n"
                           "          'AGE_OUTPUT_TERMINAL_WATER',t1900,tcum,dt,hybrid_output_trial_residual()",1)

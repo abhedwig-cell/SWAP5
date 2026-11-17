@@ -1,5 +1,5 @@
 {
-  "status": "NP2_O0_FULL1096_EIGHT_EXACT_NATIVE_AND_ACTUAL_RECEIPT_COMPONENT42_PASS",
+  "status": "INITIAL_PORTABLE_FAILURE_DIAGNOSED_ABSOLUTE_DAILY_RECEIPT_PREDICATE_REQUALIFICATION_REQUIRED",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "owner": "SWAP5-NOMACRO-COMPLETE01",
   "contract": "docs/science/NOMACRO_AGE_OUTPUT_CLOCK_20261117.md",
@@ -25,7 +25,7 @@
   "baseline_results": "NPRINT2/3 O0/O2 actual day1donor-origin mismatch; annual-only period0 refused; monthly omitPERIOD refused but omitallinactive passes.",
   "implementation": "Reuse literal003/004 generators/providers/state; bind original output epoch in three actual TimeControl print-trigger/event expressions, preserving operation order/global counter and physicalTSTART. New005counter/flag reader; annual-only state; generic monthly preflight excludes inactivePERIOD branch.",
   "cadence_inventory": "Original Swap calls Solute output only on flOutput, while SoilWaterOutput also runs flOutputShort. Inventory primary subdaily versus age daily rows and actual interval exports; no forced age rows or daily-mean promotion.",
-  "next": "Run16sourceboundshort/full selected matrix; actualreceiptcomponentO2; oldcontextpreservation, nativecontrols and originalreference reuse. Source metadata now explicitly binds strict receipt policy and WatstorSHA.",
+  "next": "Fresh00516profileO0/O2 short/full andactualnative controls; selectedportable. Inherit exact unchanged oldcontext preserving emitted/providerclosures, rerun changed005only.",
   "retained_clock_failure": {
     "source": "b34900ab509490e9eaa6875bb5d1323f69adc778",
     "paths": [
@@ -75,8 +75,8 @@
     "short_annual_days": 371
   },
   "trial_receipt": {
-    "policy": "original-integral-clone-elapsed-day-water-guard-v1",
-    "guard": "ADDITIONAL strict1e-10*elapsed originalday alongside unchangedhydraulicguard",
+    "policy": "original-integral-clone-absolute-day-water-guard-v1",
+    "guard": "ADDITIONAL absolute1e-10cm actualfull-stockdayreceipt alongside literally unchanged incrementalhydraulic elapsed-dayguard and externaldaily1e-10cm",
     "source": "SHA-pinned original Integral increment expressions, original Watstor stock and Integral canopy operations",
     "component": "42actualIntegral3cases exact/nonmutation inO0; sourceidenticalfunction underfinalmetadata postimage",
     "retained_failures": [
@@ -84,5 +84,15 @@
       "v4terminal-onlynp2day364",
       "v5tracedterminal-onlynp2day364"
     ]
+  },
+  "portable_counterexample": {
+    "failed_run": 44190746741,
+    "diagnostic_run": 44192180291,
+    "day": 1054,
+    "step_day": 4.2665692277369e-05,
+    "incremental_residual_cm": -1.7027056305705945e-16,
+    "old_additional_scaled_bound_cm": 4.2665692277369004e-15,
+    "actual_full_stock_projection_cm": -4.270617459097508e-15,
+    "stock_ulp_cm": 1.4210854715202004e-14
   }
 }
