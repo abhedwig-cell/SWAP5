@@ -162,6 +162,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     lower_receipt=lower_boundary is not None
     from fixed_irrigation_file import enabled as fixed_irrigation_file_enabled
     fixed_file=fixed_irrigation_file_enabled(project)
+    from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled
+    scheduled_subsurface=scheduled_subsurface_enabled(project)
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
@@ -530,6 +532,9 @@ end module MOD_wofost""")
         patched.insert(0,'wofost')
         patched.append('MOD_cropdevelopment')
         source=(donor_build/'swap-selected/irrigation.f90').read_text(encoding='cp1252')
+        if scheduled_subsurface:
+            from scheduled_subsurface_irrigation import render_irrigation as render_scheduled_subsurface
+            source=render_scheduled_subsurface(source)
         if fixed_file:
             from fixed_irrigation_file import render_irrigation
             source=render_irrigation(source)
@@ -825,6 +830,9 @@ end module plant_interface""")
     if fixed_file:
         from fixed_irrigation_file import POLICY as FIXED_FILE_POLICY
         build_identity['fixed_irrigation_file']={'policy':FIXED_FILE_POLICY,'source_sha256':sha(APP/'fixed_irrigation_file.py')}
+    if scheduled_subsurface:
+        from scheduled_subsurface_irrigation import POLICY as SCHEDULED_SUBSURFACE_POLICY
+        build_identity['scheduled_subsurface_irrigation']={'policy':SCHEDULED_SUBSURFACE_POLICY,'source_sha256':sha(APP/'scheduled_subsurface_irrigation.py')}
     if frost:
         from frost_reference import POLICY as FROST_POLICY
         build_identity['frost_reference']={'policy':FROST_POLICY,'source_sha256':sha(APP/'frost_reference.py'),

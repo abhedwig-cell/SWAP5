@@ -48,6 +48,10 @@ def validate(q,composed):
         require(v['all_emitted_dependencies_and_inputs_exact'] and v['prefix_exact_to_qualified_full'] and v['generated'] and v['prefix']['days']==201,'unproven dependency inheritance')
         native(v['prefix']['own'],{(4,6),(199,201)})
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('scheduled_ssdi_admission',ROOT/'tests/nomacro_scheduled_subsurface/verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     git('merge-base','--is-ancestor',BASE,'HEAD');git('merge-base','--is-ancestor',FULL_SEAL,'HEAD');git('merge-base','--is-ancestor',COMPOSED_SEAL,'HEAD')
     require(not git('diff','HEAD','--','src','app','reference','tools','tests','.github','integration'),'dirty qualified surface')
     require(not git('diff',RUNTIME,'HEAD','--','src','app','reference','tools','tests/nomacro_drainage','tests/nomacro_time_event','tests/nomacro_frost','tests/nomacro_pond_history','tests/nomacro_mixtures','tests/irrigation_pulse/run.py','tests/irrigation_pulse/component.py','tests/irrigation_pulse/component.f90','tests/irrigation_pulse/finish.py','tests/irrigation_pulse/compose.py'),'runtime differs from qualified composition')

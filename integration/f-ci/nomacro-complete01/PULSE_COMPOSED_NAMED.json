@@ -1,0 +1,137 @@
+{
+  "grass": {
+    "status": "FULL_PASS",
+    "full_days": 1827,
+    "budgets": {
+      "days": 1827,
+      "max_water_cm": 1.2831355015544926e-13,
+      "max_kernel_cm": 1.2828627049543684e-13,
+      "max_solute_mg_cm2": 0,
+      "sum_water_residual_cm": -1.9993334022601785e-13
+    },
+    "model_seconds": 10.506124699953943,
+    "build_sha256": "42442bd1129b229dbf2c376c2234a6b0ee38098472ac746ad26f59b0816c0f24",
+    "profiles": {
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    "restart_windows": [
+      {
+        "start": 365,
+        "end": 367,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_auxiliary": true,
+        "origin_unchanged": true,
+        "seconds": 0.2554736000020057
+      }
+    ]
+  },
+  "hupsel": {
+    "status": "FULL_PASS",
+    "full_days": 1096,
+    "budgets": {
+      "days": 1096,
+      "max_water_cm": 9.997037887180676e-11,
+      "max_kernel_cm": 9.997380701065595e-11,
+      "max_solute_mg_cm2": 2.159834487009581e-13,
+      "sum_water_residual_cm": 2.6692236513800333e-10
+    },
+    "model_seconds": 4.875319199869409,
+    "build_sha256": "fcfb45768e739d5fb728bced1a65f3ad673b45b6a25135f1a7470ef1c586ecd1",
+    "profiles": {
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    "restart_windows": [
+      {
+        "start": 365,
+        "end": 367,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_auxiliary": true,
+        "origin_unchanged": true,
+        "seconds": 0.3807904999703169
+      }
+    ]
+  },
+  "salt": {
+    "status": "FULL_PASS",
+    "full_days": 1461,
+    "budgets": {
+      "days": 1461,
+      "max_water_cm": 2.959653355727454e-12,
+      "max_kernel_cm": 2.9596325390457423e-12,
+      "max_solute_mg_cm2": 1.3835196877032274e-11,
+      "sum_water_residual_cm": 2.9654271659768083e-10
+    },
+    "model_seconds": 9.977113500004634,
+    "build_sha256": "f5eef9fdcbe0d594c6bef564d37bca2544d74971fe5360b4d3f569cf84df7181",
+    "profiles": {
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    "restart_windows": [
+      {
+        "start": 109,
+        "end": 111,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_auxiliary": true,
+        "origin_unchanged": true,
+        "seconds": 0.3052908000536263
+      }
+    ]
+  }
+}
