@@ -48,6 +48,8 @@ CASES['surface_age_budget']={'driver':'tests/nut-sol/test_surface_age_budget.f90
     'marker':'MC_SOL01_SURFACE_AGE_BUDGET=PASS','flags':COMMON}
 CASES['age_effluent_observer']={'driver':'tests/modularity/test_age_effluent_observer.f90',
     'marker':'AGE_EFFLUENT_WATER_WEIGHTED_UNITS_ABA_AND_REFUSALS=PASS','flags':COMMON}
+CASES['original_output_receipt']={'driver':'tests/modularity/test_original_output_receipt.f90',
+    'marker':'ORIGINAL_OUTPUT_RECEIPT_INCREMENT_UNITS_NONMUTATION_ABA=PASS','flags':COMMON}
 
 COMPONENTS={
  'hydraulics':'src/solver/mod_b110_default_mvg_provider.f90',
@@ -201,6 +203,7 @@ class Session:
 # Selection is deliberately bounded to reviewed local seams, not an import-graph
 # admission inference. Anything else needs the existing scientific owner's record.
 LOCAL_SEAMS = {
+ 'src/process/mod_original_output_receipt.f90': ['original_output_receipt'],
  'src/process/mod_b111_age_tracer_substep.f90': ['original_age_clock'],
  'src/process/mod_b111_surface_age_budget.f90': ['original_age_clock','surface_age_budget'],
  'src/process/mod_age_effluent_observer.f90': ['age_effluent_observer'],

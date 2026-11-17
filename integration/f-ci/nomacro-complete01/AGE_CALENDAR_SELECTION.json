@@ -1,5 +1,5 @@
 {
-  "status": "DIAGNOSTIC_SELECTED_NOT_RUN",
+  "status": "BASELINE_MISSING_DAILY_RECEIPT_CONFIRMED_COMPONENT_SELECTED",
   "baseline": "b2b05ae110366dae062663bd97c63d4187cdcd8d",
   "owner": "SWAP5-NOMACRO-COMPLETE01",
   "contract": "docs/science/NOMACRO_AGE_OUTPUT_CALENDAR_20261117.md",
@@ -12,5 +12,9 @@
     "age": "accepted8192epsilon scaled cm day"
   },
   "full_moving_fci": "NOT_SELECTED_IMPACT",
-  "whole_scientific_equivalence": "NOT_QUALIFIED"
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "baseline_diagnostic": "AGE_CALENDAR_BASELINE_DIAGNOSTIC.json",
+  "small_production": "mod_original_output_receipt: observe actual original increments once; no water/age equation. O0/O2 independent pure frame contract, units, signed flow, A/B/A, nonmutation/overflow selected.",
+  "expected_component_seconds": 10,
+  "implementation_choice": "Capture the actual original integral increments, rather than subtracting long output-period totals near the unchanged1e-10water limit. Keep the literal original increment expression and operation. Distinct native age output/calendar format only for eligible non-daily projects."
 }
