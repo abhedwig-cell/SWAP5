@@ -41,7 +41,7 @@ def native(build,reference,project,full,out):
             if witness:struct.pack_into('<d',raw,start+160+8*nreal+8*index,v)
         if attack=='old-codec':raw[:8]=b'S5AGE002'
         elif attack=='truncated':raw=raw[:-1]
-        elif attack=='header-witness':hi(7,1,witness=False)
+        elif attack=='header-witness':hi(7,header[7]+1,witness=False)
         elif attack=='shape':hi(1,project.nodes+1)
         elif attack=='policy':hi(4,header[4]+1)
         elif attack=='negative-day':hi(6,-1)
