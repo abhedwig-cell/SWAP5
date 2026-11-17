@@ -255,6 +255,8 @@ def effluent_source(body,native):
             'integer, save                            :: agep,agee,ageq,agew')
     replace("      comma = ','","      real(8)::effluent_view(24)\n      comma = ','")
     replace("         filtext = 'Drain water effluent (mm/day)'","         filtext = 'Positive drainage water export over age output interval (cm)'")
+    replace("         filtext = 'Groundwater age effluent (all age-values in days)'",
+            "         filtext = 'Mean positive-export ages (days; -9999 means no export)'")
     replace("         write (agee,'(3a)')", """         filnam=trim(pathwork)//trim(outfil)//'.ageEffluentWater.csv'
          agew=getun(iun_min,iun_max)
          call fopens(agew,filnam,'new','del')
@@ -275,7 +277,7 @@ def effluent_source(body,native):
    real(8),intent(out)::values(24)
    real(8)::mean
    integer::i,status
-   values=0d0;values(17:24)=-9999.9d0
+   values=0d0;values(17:24)=-9999d0
    values(1:8)=age_export_water;values(9:16)=age_export_amount
    do i=1,8
       mean=0d0

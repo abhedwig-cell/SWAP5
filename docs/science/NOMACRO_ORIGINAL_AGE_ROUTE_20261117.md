@@ -66,7 +66,7 @@ already accepted pond-age export. The adapter checks observed age exports
 against the actual transport receipt before accumulating them over the same
 output interval; it does not change transport or accepted core age state.
 
-No-export means are the explicit missing sentinel -9999.9, with zero water and
+No-export means are the explicit missing sentinel -9999, with zero water and
 age amount. The companion `ageEffluentWater.csv` supplies actual cm exported for
 every mean-age column. `ageEffluentqDrain.csv` reports positive drainage exports
 in cm over that same interval. The native AGE002 owner includes these output

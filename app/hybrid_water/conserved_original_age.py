@@ -8,6 +8,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[2]
 PATCH=ROOT/'reference/swap-4.3.1/patches/NOMACRO-AGE-SOURCE-01/source.py'
 MAGIC=b'S5AGE002'
+EFFLUENT_MISSING=-9999.0
 
 
 def correction():
@@ -20,6 +21,7 @@ def metadata():
     return dict(policy=s.POLICY,source_sha256=sha(Path(__file__)),correction_sha256=sha(PATCH),
                 providers={name:sha(ROOT/'src/process'/(name+'.f90')) for name in (*s.PROVIDERS,*s.OUTPUT_PROVIDERS)},
                 effluent_policy=s.EFFLUENT_POLICY,effluent_units='age_amount(cm day)/actual_positive_export_water(cm)',
+                effluent_missing=EFFLUENT_MISSING,
                 age_tolerance='8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)',
                 units='cm day',native_codec=MAGIC.decode(),chemical_mass_guard_changed=False)
 
@@ -41,7 +43,7 @@ def validate_effluent(values):
     for water,amount,mean in zip(values[:8],values[8:16],values[16:]):
         if min(water,amount)<0:raise ValueError('Negative original age effluent amount or volume')
         if water==0:
-            if amount!=0 or mean!=-9999.9:raise ValueError('Inconsistent missing original age effluent')
+            if amount!=0 or mean!=EFFLUENT_MISSING:raise ValueError('Inconsistent missing original age effluent')
         elif abs(amount/water-mean)>tolerance(mean):
             raise ValueError('Original age effluent has inconsistent water-weighted units')
     return values

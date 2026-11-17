@@ -1,5 +1,6 @@
 """Actual original age host full trajectories, native state and all age outputs."""
 import argparse
+import csv
 import importlib.util
 import json
 from pathlib import Path
@@ -14,16 +15,49 @@ m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 
 def own(build,reference,project,full,data,start,end,out):
     report=m.own(build,reference,project,full,data,start,end,out)
-    for name in ('result.ageProfile.csv','result.ageeffluent.csv','result.ageeffluentqdrain.csv'):
+    for name in ('result.ageProfile.csv','result.ageeffluent.csv','result.ageeffluentqdrain.csv','result.ageeffluentwater.csv'):
         assert m.csvlines(out/'original'/name)[-(end-start):]==m.csvlines(full/'original'/name)[start+1:end+1],name
-    report['all_three_age_csv_exact']=True
+    report['all_four_age_csv_exact']=True
     return report
+
+
+def output_values(full,data):
+    def rows(name):return list(csv.reader(m.csvlines(full/'original'/name)))[1:]
+    means=rows('result.ageeffluent.csv');water=rows('result.ageeffluentwater.csv');drains=rows('result.ageeffluentqdrain.csv')
+    assert len(means)==len(water)==len(drains)==len(data)
+    rounded=lambda v:float(format(v,'.3E'))
+    for row,a,w,d in zip(data,means,water,drains):
+        values=row['age_effluent']
+        assert list(map(float,a[4:]))==list(map(rounded,values[16:])),('mean age output',row['day'])
+        assert list(map(float,w[3:]))==list(map(rounded,values[:8])),('export water output',row['day'])
+        assert list(map(float,d[3:]))==list(map(rounded,values[3:8])),('drain export units',row['day'])
+    return dict(all_daily_mean_and_volume_fields_match_full_precision_probe=True,missing_value=-9999.,
+                positive_root_export_days=sum(r['age_effluent'][1]>0 for r in data),
+                positive_runoff_export_days=sum(r['age_effluent'][2]>0 for r in data),
+                positive_drain_export_days=sum(any(v>0 for v in r['age_effluent'][3:8]) for r in data))
+
+
+def compare_core(full,data,prior):
+    import zipfile
+    assert m.physical([{k:v for k,v in row.items() if k!='age_effluent'} for row in data])==m.physical(m.rows(prior))
+    assert m.csvlines(full/'original/result.ageProfile.csv')==m.csvlines(prior/'original/result.ageProfile.csv')
+    for day in (2,4,199,201,365,367,530,532,1096):
+        with zipfile.ZipFile(full/f'accepted-column-1-day-{day}.zip') as new,zipfile.ZipFile(prior/f'accepted-column-1-day-{day}.zip') as old:
+            assert new.read('result.end')==old.read('result.end'),('changed original age/water state',day)
+            a,c=new.read('macro.bin'),old.read('macro.bin')
+            assert a[:8]==b'S5AGE002' and c[:8]==b'S5AGE001'
+            # Only the new sixteen output-volume/amount doubles are projected
+            # out. This comparison never converts or adopts an old checkpoint.
+            assert a[8:-172]+a[-44:]==c[8:],('changed prior private core state',day)
+    return dict(all1096_daily_core_rows_exact=True,all_age_profile_rows_exact=True,
+                all_nine_native_core_projections_exact=True,no_old_checkpoint_adopted_or_rebound=True)
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('input-root','reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--reuse-zero-o0',type=Path);a=p.parse_args();a.output.mkdir()
+    p.add_argument('--reuse-zero-o0',type=Path);p.add_argument('--prior-core-root',type=Path)
+    a=p.parse_args();a.output.mkdir()
     result=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),profiles={},
                 units='cm day',whole_scientific_equivalence='NOT_QUALIFIED',chemical_mass_guard_changed=False,water_guard_cm=1e-10)
     def save():(a.output/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
@@ -50,6 +84,8 @@ def main():
                 r['maximum_fraction_of_accepted_age_tolerance']=max(abs(row[key])/row['age_tolerance_cm_day'] for row in data for key in r['maximum_residual_cm_day'])
                 assert r['maximum_fraction_of_accepted_age_tolerance']<=1
                 r['final_state_cm_day']=data[-1]['age_state_cm_day'];save()
+                r['effluent_output']=output_values(full,data)
+                if a.prior_core_root:r['prior_core_preservation']=compare_core(full,data,a.prior_core_root/(name+'-full'))
                 r['own']=[own(build,a.reference_work,project,full,data,start,start+2,a.output/(name+'-own'+str(start))) for start in (2,199,365,530)]
                 r['status']='FULL_ORIGINAL_AGE_LEDGER_NATIVE_AND_OUTPUT_PASS';save();print(name,r['status'],flush=True)
         result['status']='FOUR_FULL_ORIGINAL_AGE_HOST_O0_O2_NATIVE_PASS'

@@ -48,7 +48,8 @@ def main():
             receipt=m.h.verify_checkpoint(source,367,meta['binding'],origin)
             path=origin/'macro.bin';raw=bytearray(path.read_bytes());length=len(raw)
             assert list(struct.unpack_from('<3d',raw,length-44))==state[:3]
-            start=length-24*nodes-8*26-20
+            observer_bytes=128 if meta['identity']['conserved_original_age']['native_codec']=='S5AGE002' else 0
+            start=length-24*nodes-8*26-20-observer_bytes
             if attack=='truncated':raw=raw[:-1]
             else:
                 offsets={'negative-bulk':start,'nonfinite-bulk':start,'negative-age':start+8*nodes,
