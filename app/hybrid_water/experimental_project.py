@@ -241,6 +241,9 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     if chemical not in SOLUTE_STEP_POLICIES:raise ValueError('Unknown experimental chemical substep policy')
     report = inspect(directory)
     from time_event_closure import POLICY as EVENT_POLICY
+    from irrigation_pulse_time import POLICY as PULSE_POLICY
+    if policy==PULSE_POLICY and (report['selectors']['SWFROST']!=0 or report['selectors']['SWSNOW']!=0 or report['selectors']['SWIRFIX']!=1):
+        raise ValueError('Irrigation pulse policy requires fixed irrigation without frost/snow')
     drained_frost = report['selectors']['SWFROST']==1 and report['selectors']['SWDRA']==1
     if drained_frost and policy != EVENT_POLICY:
         raise ValueError('Integrated frost drainage requires explicit corrected TimeControl event closure')
