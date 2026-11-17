@@ -1,0 +1,442 @@
+{
+  "status": "FULL_O0_O2_PASS",
+  "source_commit": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
+  "configuration": "interval",
+  "inputs": {
+    "inputs": [
+      [
+        "283.met",
+        "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+      ],
+      [
+        "control_plot.inp",
+        "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+      ],
+      [
+        "grass.crp",
+        "adac1a7e40b469e45473f2acf42a15f0a41314173318f32c4cda2993a63ea04c"
+      ],
+      [
+        "maize.crp",
+        "d1655ca0ffe64e8e56504719d4ec7ad40273c722b889503e7c500590b220141a"
+      ],
+      [
+        "plot_swap.cmd",
+        "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+      ],
+      [
+        "potato.crp",
+        "30accb643d7f6b02d5f2b052c49d475539bcddea5866140ba0dea01651572bab"
+      ],
+      [
+        "run_swap.cmd",
+        "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+      ],
+      [
+        "swap.dra",
+        "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+      ],
+      [
+        "swap.swp",
+        "4549f624c2a13650987bd180ac79d10fe2705894b071a44185ced62f915de270"
+      ]
+    ],
+    "start_date": "2002-01-01",
+    "end_date": "2004-12-31",
+    "nodes": 34,
+    "solute": false,
+    "selectors": {
+      "SWSCRE": 0,
+      "SWERROR": 0,
+      "SWMONTH": 0,
+      "SWRES": 0,
+      "SWODAT": 0,
+      "SWYRVAR": 0,
+      "SWHEADER": 0,
+      "SWBAL": 1,
+      "SWBLC": 1,
+      "SWSBA": 0,
+      "SWBMA": 0,
+      "SWCSV": 1,
+      "SWDISCRVERT": 0,
+      "SWEND": 0,
+      "SWENDTYPE": 1,
+      "SWENDFILTER": 0,
+      "SWETR": 0,
+      "SWDIVIDE": 1,
+      "SWMETDETAIL": 0,
+      "SWRAIN": 0,
+      "SWCROP": 1,
+      "SWIRFIX": 0,
+      "SWIRGFIL": 0,
+      "SWINCO": 2,
+      "SWPONDMX": 0,
+      "SWRUNON": 0,
+      "SWCFBS": 0,
+      "SWREDU": 1,
+      "SWSOPHY": 0,
+      "SWHYST": 0,
+      "SWMACRO": 0,
+      "SWSNOW": 0,
+      "SWFROST": 0,
+      "SWKMEAN": 2,
+      "SWKIMPL": 0,
+      "SWDRA": 1,
+      "SWBBCFILE": 0,
+      "SWBOTB": 6,
+      "SW2": 2,
+      "SWBOTB3RESVERT": 0,
+      "SWBOTB3IMPL": 0,
+      "SW3": 1,
+      "SW4": 1,
+      "SWQHBOT": 2,
+      "SWHEA": 1,
+      "SWCALT": 2,
+      "SWTOPBHEA": 1,
+      "SWBOTBHEA": 1,
+      "SWSOLU": 0,
+      "SWBOTBC": 0,
+      "SWSP": 0,
+      "SWDC": 0,
+      "SWBR": 0
+    },
+    "boundary": {
+      "SWSCRE": 0,
+      "SWERROR": 0,
+      "SWMONTH": 0,
+      "SWRES": 0,
+      "SWODAT": 0,
+      "SWYRVAR": 0,
+      "SWHEADER": 0,
+      "SWBAL": 1,
+      "SWBLC": 1,
+      "SWSBA": 0,
+      "SWBMA": 0,
+      "SWCSV": 1,
+      "SWDISCRVERT": 0,
+      "SWEND": 0,
+      "SWENDTYPE": 1,
+      "SWENDFILTER": 0,
+      "SWETR": 0,
+      "SWDIVIDE": 1,
+      "SWMETDETAIL": 0,
+      "SWRAIN": 0,
+      "SWCROP": 1,
+      "SWIRFIX": 0,
+      "SWIRGFIL": 0,
+      "SWINCO": 2,
+      "SWPONDMX": 0,
+      "SWRUNON": 0,
+      "SWCFBS": 0,
+      "SWREDU": 1,
+      "SWSOPHY": 0,
+      "SWHYST": 0,
+      "SWMACRO": 0,
+      "SWSNOW": 0,
+      "SWFROST": 0,
+      "SWKMEAN": 2,
+      "SWKIMPL": 0,
+      "SWDRA": 1,
+      "SWBBCFILE": 0,
+      "SWBOTB": 6,
+      "SW2": 2,
+      "SWBOTB3RESVERT": 0,
+      "SWBOTB3IMPL": 0,
+      "SW3": 1,
+      "SW4": 1,
+      "SWQHBOT": 2,
+      "SWHEA": 1,
+      "SWCALT": 2,
+      "SWTOPBHEA": 1,
+      "SWBOTBHEA": 1,
+      "SWSOLU": 0,
+      "SWBOTBC": 0,
+      "SWSP": 0,
+      "SWDC": 0,
+      "SWBR": 0
+    }
+  },
+  "profiles": {
+    "O0": {
+      "status": "FULL_PASS",
+      "days": 1096,
+      "budgets": {
+        "days": 1096,
+        "max_water_cm": 9.997320809737587e-11,
+        "max_kernel_cm": 9.99751392782855e-11,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 2.6726185047481815e-10
+      },
+      "model_seconds": 2.3948771939999887,
+      "build_sha256": "73f4935534b36ef2c550fc1dc53c3c9488035758016ab61e48fd58d133c899a3",
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 5,
+        "budgets": {
+          "days": 5,
+          "max_water_cm": 1.7347668440637065e-14,
+          "max_kernel_cm": 1.734723475976807e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 2.8027872991248648e-14
+        },
+        "model_seconds": 0.03979814100000567,
+        "build_sha256": "73f4935534b36ef2c550fc1dc53c3c9488035758016ab61e48fd58d133c899a3",
+        "own": {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.02427995800000815
+        }
+      },
+      "subsurface_exposure": {
+        "days": [
+          252,
+          259,
+          266,
+          545,
+          559,
+          566,
+          573,
+          580,
+          587,
+          594,
+          601,
+          608,
+          615,
+          622,
+          629,
+          636,
+          857,
+          871,
+          878,
+          892,
+          899,
+          906,
+          913,
+          920,
+          941,
+          948,
+          955,
+          983,
+          990
+        ],
+        "total_cm": 8.700000000000001
+      },
+      "own": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.025825511999983064
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.11012933000000658
+        },
+        {
+          "start": 530,
+          "end": 532,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.027405058999988796
+        }
+      ],
+      "active_own": {
+        "start": 544,
+        "end": 546,
+        "actual_irrigation_day": 545,
+        "full_period_physical_csv_suffix_exact": true,
+        "exact_native": true,
+        "origin_unchanged": true,
+        "warm_seconds": 0.06099533099998666,
+        "cold_seconds": 0.02930236499997818,
+        "active_external_discard_replay_exact": true,
+        "active_external_disk_recovery": true
+      },
+      "controls": {
+        "foreign_policy_refused": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true
+      }
+    },
+    "O2": {
+      "status": "FULL_PASS",
+      "days": 1096,
+      "budgets": {
+        "days": 1096,
+        "max_water_cm": 9.997320809737587e-11,
+        "max_kernel_cm": 9.99751392782855e-11,
+        "max_solute_mg_cm2": 0,
+        "sum_water_residual_cm": 2.6726185047481815e-10
+      },
+      "model_seconds": 2.291249862000001,
+      "build_sha256": "beb026b2dfd2ccdbb24775fa3e5d74c96e3c323d06aeb27aa343539bb1586a10",
+      "short": {
+        "status": "SHORT_PASS",
+        "days": 5,
+        "budgets": {
+          "days": 5,
+          "max_water_cm": 1.7347668440637065e-14,
+          "max_kernel_cm": 1.734723475976807e-14,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 2.8027872991248648e-14
+        },
+        "model_seconds": 0.03165977799997677,
+        "build_sha256": "beb026b2dfd2ccdbb24775fa3e5d74c96e3c323d06aeb27aa343539bb1586a10",
+        "own": {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.023859364000003325
+        }
+      },
+      "subsurface_exposure": {
+        "days": [
+          252,
+          259,
+          266,
+          545,
+          559,
+          566,
+          573,
+          580,
+          587,
+          594,
+          601,
+          608,
+          615,
+          622,
+          629,
+          636,
+          857,
+          871,
+          878,
+          892,
+          899,
+          906,
+          913,
+          920,
+          941,
+          948,
+          955,
+          983,
+          990
+        ],
+        "total_cm": 8.700000000000001
+      },
+      "own": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.02322653799998875
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.08962827999999945
+        },
+        {
+          "start": 530,
+          "end": 532,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.025972588000001906
+        }
+      ],
+      "active_own": {
+        "start": 544,
+        "end": 546,
+        "actual_irrigation_day": 545,
+        "full_period_physical_csv_suffix_exact": true,
+        "exact_native": true,
+        "origin_unchanged": true,
+        "warm_seconds": 0.05823170299998992,
+        "cold_seconds": 0.028573179000005666,
+        "active_external_discard_replay_exact": true,
+        "active_external_disk_recovery": true
+      },
+      "controls": {
+        "foreign_policy_refused": true,
+        "inconsistent_mass_refused": true,
+        "external_discard_replay_exact": true,
+        "external_disk_recovery": true
+      }
+    }
+  },
+  "events": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input",
+        "--reference-work",
+        "/home/runner/work/_temp/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--donor-opt",
+        "O0",
+        "--output",
+        "/home/runner/work/_temp/proof/O0-build"
+      ],
+      "seconds": 2.534931728999993,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input",
+        "--reference-work",
+        "/home/runner/work/_temp/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--donor-opt",
+        "O2",
+        "--output",
+        "/home/runner/work/_temp/proof/O2-build"
+      ],
+      "seconds": 5.762534346999985,
+      "returncode": 0
+    }
+  ],
+  "physical_equations": "UNCHANGED_ORIGINAL",
+  "science": "NOT_QUALIFIED",
+  "water_guard_cm": 1e-10
+}

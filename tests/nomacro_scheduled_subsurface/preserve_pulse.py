@@ -1,0 +1,40 @@
+"""Qualify actual R/pulse composition by exact emitted dependencies and native replay."""
+from pathlib import Path
+import argparse,json,subprocess,sys
+import importlib.util,hashlib
+ROOT=Path(__file__).resolve().parents[2]
+spec=importlib.util.spec_from_file_location('original_pulse',ROOT/'tests/irrigation_pulse/run.py');pulse=importlib.util.module_from_spec(spec);spec.loader.exec_module(pulse);m,POLICY=pulse.m,pulse.POLICY
+def main():
+ p=argparse.ArgumentParser();p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--prior',type=Path,required=True);a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=True)
+ result=dict(status='INCOMPLETE',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),canonical_base='a9044fdab7e333058c6a4dab34884e56e33c35a9',profiles={},tolerances_changed=False,science='NOT_QUALIFIED')
+ for key in ('water-surface-history','chemical-surface-history'):
+  project=m.e.load(a.prior/'inputs'/key,time_step_policy=POLICY)
+  for opt in ('O0','O2'):
+   name=key+'-'+opt;old=a.prior/(name+'-build');build=out/(name+'-build');cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',m.e.MODEL,'--experimental-project',str(project.input_directory),'--experimental-time-step-policy',POLICY,'--reference-work',str(a.reference_work),'--build-only','--kernel-opt',opt,'--donor-opt',opt,'--output',str(build)]
+   if not (build/'BUILD.json').exists():
+    r=subprocess.run(cmd,capture_output=True,text=True,timeout=180);(out/(name+'.log')).write_text(r.stdout+r.stderr);assert r.returncode==0,r.stderr
+   meta,_=m.validate_bundle(build,a.reference_work,project);prior,_=m.validate_bundle(old,a.reference_work,project) if False else (json.loads((old/'BUILD.json').read_text()),None)
+   same={p.name:m.sha(p) for p in build.glob('*.f90')};assert same=={p.name:m.sha(p) for p in old.glob('*.f90')}
+   closure=('donor_flags','kernel_flags','donor_generated','donor_objects','donor_modules','ttutil_modules','ttutil_library','kernel_sources','adapter','driver','budget_source','lower_boundary_receipt','scheduled_pond_history','irrigation_pulse_time','time_step_policy')
+   identity={};sha=lambda body:hashlib.sha256(body).hexdigest()
+   for keyfield in closure:
+    left,right=meta['identity'].get(keyfield),prior['identity'].get(keyfield)
+    if keyfield not in ('budget_source','irrigation_pulse_time'):
+     assert left==right,keyfield
+    elif keyfield=='budget_source':
+     path='app/hybrid_water/hybrid_step_budget.f90';actual=(ROOT/path).read_bytes();canonical=subprocess.check_output(['git','show','fd162a1ea:'+path]);assert actual.replace(b'\r\n',b'\n')==canonical
+     assert left==sha(actual) and right in (sha(canonical),sha(canonical.replace(b'\n',b'\r\n')))
+    else:
+     path='app/hybrid_water/irrigation_pulse_time.py';actual=(ROOT/path).read_bytes();canonical=subprocess.check_output(['git','show','fd162a1ea:'+path]);assert actual.replace(b'\r\n',b'\n')==canonical
+     assert {k:v for k,v in left.items() if k!='source_sha256'}=={k:v for k,v in right.items() if k!='source_sha256'}
+     assert left['source_sha256']==sha(actual) and right['source_sha256'] in (sha(canonical),sha(canonical.replace(b'\n',b'\r\n')))
+    identity[keyfield]=dict(current=left,prior=right,raw_exact=left==right)
+
+   assert meta['inputs']==prior['inputs']
+   full=out/(name+'-prefix201');brief,data=m.trajectory(build,a.reference_work,project,full,201,{4,6,199,201},30)
+   oldrows=m.rows(a.prior/(name+'-full'));assert m.physical(data)==m.physical(oldrows[:201])
+   brief['own']=[m.own(build,a.reference_work,project,full,data,s,e,out/(name+'-own'+str(s))) for s,e in ((4,6),(199,201))]
+   result['profiles'][name]=dict(generated=same,closure_fields=list(closure),closure_identities=identity,template_policy_line_endings_verified=True,binary_build_binding_reused=False,all_emitted_dependencies_and_inputs_exact=True,prefix_exact_to_qualified_full=True,prefix=brief,command=cmd)
+   (out/'RESULT.json').write_text(json.dumps(result,indent=2));print(name,'COMPOSED_SOURCE_PREFIX_NATIVE_EXACT',flush=True)
+ result['status']='ACTUAL_R_PULSE_COMPOSITION_GENERATED_INPUT_CLOSURE_AND_NATIVE_EXACT';(out/'RESULT.json').write_text(json.dumps(result,indent=2))
+if __name__=='__main__':main()

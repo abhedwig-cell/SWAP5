@@ -1,0 +1,1189 @@
+{
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "baseline": "0b9e4a214d97b15fd8c12fbdfd3d280ccfbe30f7",
+  "status": "SOURCE_BASED_FAMILY_MATRIX_WITH_REMAINING_SELECTOR_RECONCILIATION",
+  "functional_completeness": "PARTIAL",
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "release_readiness": "RC2_NAMED_ONLY",
+  "families": [
+    {
+      "function": "Richards/Mualem-van Genuchten",
+      "classification": "ADMITTED",
+      "original_source": "headcalc.f90, functions.f90",
+      "scope": "named full-period O0/O2, independent mass/native-own",
+      "authority": "integration/f-ci/NOMACRO_RELEASE_20261112.json",
+      "authority_present": true
+    },
+    {
+      "function": "Tabulated/PCHIP and conductivity means",
+      "classification": "ADMITTED",
+      "original_source": "sptabulated.f90, functions.f90",
+      "scope": "bounded SWKMEAN and explicit PCHIP cohorts",
+      "authority": "integration/nomacro-coverage01/BLOCK_G_STATUS.json",
+      "authority_present": true
+    },
+    {
+      "function": "Alternative constitutive models2..11",
+      "classification": "PARTIAL",
+      "original_source": "MOD_MvG_functions.f90",
+      "scope": "model2 passes; models3/5/6/7/9/11 strict FAIL and4/8/10 CENSOR",
+      "authority": "integration/nomacro-coverage01/BLOCK_I_QUALIFICATION.json",
+      "authority_present": true
+    },
+    {
+      "function": "Top atmosphere, pond, runon and scheduled maximum",
+      "classification": "ADMITTED",
+      "original_source": "boundtop.f90, pondrunoff.f90",
+      "scope": "bounded full/native/history windows; no arbitrary mix claim",
+      "authority": "integration/nomacro-coverage01/BLOCK_O_QUALIFICATION.json",
+      "authority_present": true
+    },
+    {
+      "function": "Bottom modes2..8 water and supported chemical",
+      "classification": "ADMITTED",
+      "original_source": "boundbottom.f90, headcalc.f90",
+      "scope": "named modes and bounded later gradient/table/plate cohorts",
+      "authority": "integration/nomacro-coverage01/BLOCK_L_QUALIFICATION.json",
+      "authority_present": true
+    },
+    {
+      "function": "Prescribed groundwater chemical trial receipt and bottom9",
+      "classification": "PARTIAL",
+      "original_source": "boundbottom.f90, headcalc.f90",
+      "scope": "chemical1 preflight refused; bottom9 unreachable in generic adapter",
+      "authority": "app/hybrid_water/experimental_project.py",
+      "authority_present": true
+    },
+    {
+      "function": "Drainage methods2/3 and bounded frost SWDIVD0",
+      "classification": "ADMITTED",
+      "original_source": "drainage.f90, divdra.f90",
+      "scope": "Q water frost/drainage complete O0/O2 and native windows",
+      "authority": "integration/nomacro-coverage01/BLOCK_Q_QUALIFICATION.json",
+      "authority_present": true
+    },
+    {
+      "function": "Other drainage and surfacewater",
+      "classification": "PARTIAL",
+      "original_source": "drainage.f90, divdra.f90, surfacewater.f90",
+      "scope": "Original table method1 positive/signed is admitted through R PR1698; other methods and SWDRA2 remain partial. No all-drainage/surfacewater claim.",
+      "authority": "app/hybrid_water/experimental_project.py",
+      "authority_present": true
+    },
+    {
+      "function": "Daily meteorology, ET and detailed rain",
+      "classification": "ADMITTED",
+      "original_source": "meteo.f90, evapotranspiration.f90",
+      "scope": "eight bounded complete H trajectories; specific temporal failures remain",
+      "authority": "integration/nomacro-coverage01/BLOCK_H_STATUS.json",
+      "authority_present": true
+    },
+    {
+      "function": "Hourly/pulsed weather combinations",
+      "classification": "PARTIAL",
+      "original_source": "meteo.f90, timedata.f90",
+      "scope": "retained temporal364 strict failures; no blanket admission",
+      "authority": "integration/nomacro-coverage01/BLOCK_H_STATUS.json",
+      "authority_present": true
+    },
+    {
+      "function": "Interception, soil evaporation, drought/oxygen/salt uptake",
+      "classification": "ADMITTED",
+      "original_source": "interception.f90, rootextraction.f90, RWU_micro.f90, oxygenstress.f90",
+      "scope": "bounded original controls; inherited oxygen scientific FAILs retained",
+      "authority": "integration/nomacro-coverage01/BLOCK_E_STATUS.json",
+      "authority_present": true
+    },
+    {
+      "function": "Crop growth, rotations and complete initialized lookup history",
+      "classification": "ADMITTED",
+      "original_source": "wofost.f90, grass.f90, cropgrowth.f90, RWU_micro.f90",
+      "scope": "bounded crop signatures and complete J/O native state; arbitrary structures refused",
+      "authority": "integration/nomacro-coverage01/BLOCK_J_QUALIFICATION.json",
+      "authority_present": true
+    },
+    {
+      "function": "Fixed surface/sprinkler and water-only external-file subsurface irrigation",
+      "classification": "ADMITTED",
+      "original_source": "irrigation.f90",
+      "scope": "N complete trajectories and active event own windows",
+      "authority": "integration/nomacro-coverage01/BLOCK_N_QUALIFICATION.json",
+      "authority_present": true
+    },
+    {
+      "function": "Scheduled water-only subsurface irrigation",
+      "classification": "ADMITTED",
+      "original_source": "irrigation.f90",
+      "scope": "PR1699 source-bound point/interval full O0/O2 Windows/Ubuntu, exact native and active state/external/isolation, canonical R/pulse preservation; no chemical admission.",
+      "authority": "integration/f-ci/nomacro-complete01/MERGE_RECEIPT.json",
+      "authority_present": true
+    },
+    {
+      "function": "Chemical subsurface irrigation",
+      "classification": "INHERITED_DEFECT",
+      "original_source": "irrigation.f90, solute.f90",
+      "scope": "Actual original concentration perturbation: positive2.4cm SSDI; concentration0/20 yields every output row identical; surface positive control adds48mg/cm2. Corrected-reference nodal source and strict conserved ledger remain required; current explicit refusal preserved.",
+      "authority": "integration/f-ci/nomacro-complete01/ORIGINAL_CHEMICAL_AUDIT.json",
+      "authority_present": true
+    },
+    {
+      "function": "Numerical/analytic heat and supported boundary choices",
+      "classification": "ADMITTED",
+      "original_source": "heat.f90, heatconductivity.f90",
+      "scope": "bounded E/named supported conduction/storage; whole advective energy remains unqualified",
+      "authority": "integration/f-ci/NOMACRO_HEAT_EXPORT_20261112.json",
+      "authority_present": true
+    },
+    {
+      "function": "Snow and hydraulic hysteresis complete original history",
+      "classification": "ADMITTED",
+      "original_source": "snow.f90, hysteresis.f90",
+      "scope": "J and O complete initialized tables/top history; bounded combinations only",
+      "authority": "integration/nomacro-coverage01/BLOCK_O_QUALIFICATION.json",
+      "authority_present": true
+    },
+    {
+      "function": "Frost geometry/flow/uptake",
+      "classification": "PARTIAL",
+      "original_source": "frozencond.f90, rootextraction.f90",
+      "scope": "P free-bottom partial frost and Q water/drained admitted; closed/front/chemical drainage remain open",
+      "authority": "integration/nomacro-coverage01/BLOCK_Q_QUALIFICATION.json",
+      "authority_present": true
+    },
+    {
+      "function": "Conservative CDE, salinity, sorption and decay",
+      "classification": "ADMITTED",
+      "original_source": "solute.f90",
+      "scope": "bounded original B/F and full named chemical/native checks",
+      "authority": "integration/nomacro-coverage01/BLOCK_B_STATUS.json",
+      "authority_present": true
+    },
+    {
+      "function": "Mixed aquifer reservoir, water age and vapor",
+      "classification": "PARTIAL",
+      "original_source": "solute.f90, solute1.f90, soilwater.f90",
+      "scope": "SWBR and SWVAPOR refused; SWSOLU excludes other modes; original source present",
+      "authority": "app/hybrid_water/experimental_project.py",
+      "authority_present": true
+    },
+    {
+      "function": "Original input/initialization/output selector domain",
+      "classification": "PARTIAL",
+      "original_source": "readswap.f90, swap_csv_output.f90",
+      "scope": "registered/general grids and SWINCO1/2/3; SWCSV0 and arbitrary crop/implicit options remain outside generic route",
+      "authority": "app/hybrid_water/experimental_project.py",
+      "authority_present": true
+    },
+    {
+      "function": "Time control, day/year restart and transaction coupling",
+      "classification": "ADMITTED",
+      "original_source": "timecontrol.f90, integral.f90, swap.f90",
+      "scope": "named and bounded B..Q native/day/year, mass refusal/discard/replay; no arbitrary combination claim",
+      "authority": "app/hybrid_water/donor_sources.py",
+      "authority_present": true
+    },
+    {
+      "function": "Active macropores and macro-only options",
+      "classification": "EXCLUDED_MACRO",
+      "original_source": "macropore.f90",
+      "scope": "preserved; audit/contract work not touched",
+      "authority": "AGENTS.md",
+      "authority_present": true
+    }
+  ],
+  "original_integer_reader_calls": [
+    {
+      "source": "drainage.f90",
+      "line": 240,
+      "input": "DRAMET",
+      "minimum": 1,
+      "maximum": 3,
+      "variable": "dramet"
+    },
+    {
+      "source": "drainage.f90",
+      "line": 244,
+      "input": "SWDIVD",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swdivd"
+    },
+    {
+      "source": "drainage.f90",
+      "line": 280,
+      "input": "SWDISLAY",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swdislay"
+    },
+    {
+      "source": "drainage.f90",
+      "line": 311,
+      "input": "SWDTYP",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "swdtyp"
+    },
+    {
+      "source": "drainage.f90",
+      "line": 328,
+      "input": "IPOS",
+      "minimum": 1,
+      "maximum": 5,
+      "variable": "ipos"
+    },
+    {
+      "source": "drainage.f90",
+      "line": 348,
+      "input": "SWINTFL",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swnrsrf"
+    },
+    {
+      "source": "drainage.f90",
+      "line": 389,
+      "input": "SWLIMINF",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swliminf"
+    },
+    {
+      "source": "fixed.f90",
+      "line": 109,
+      "input": "IDEV",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "idev"
+    },
+    {
+      "source": "fixed.f90",
+      "line": 111,
+      "input": "LCC",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "lcc"
+    },
+    {
+      "source": "fixed.f90",
+      "line": 122,
+      "input": "SWGC",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "swgc"
+    },
+    {
+      "source": "fixed.f90",
+      "line": 145,
+      "input": "SWHARV",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "sw_harv"
+    },
+    {
+      "source": "irrigation.f90",
+      "line": 125,
+      "input": "SCHEDULE",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "schedule"
+    },
+    {
+      "source": "irrigation.f90",
+      "line": 158,
+      "input": "ISUAS",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "isuas"
+    },
+    {
+      "source": "irrigation.f90",
+      "line": 192,
+      "input": "TCS",
+      "minimum": 1,
+      "maximum": 8,
+      "variable": "tcs"
+    },
+    {
+      "source": "irrigation.f90",
+      "line": 250,
+      "input": "TCSFIX",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "tcsfix"
+    },
+    {
+      "source": "irrigation.f90",
+      "line": 256,
+      "input": "IRGDAYFIX",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "irgdayfix"
+    },
+    {
+      "source": "irrigation.f90",
+      "line": 296,
+      "input": "SWCIRRTHRES",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swcirrthres"
+    },
+    {
+      "source": "irrigation.f90",
+      "line": 306,
+      "input": "DCS",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "dcs"
+    },
+    {
+      "source": "irrigation.f90",
+      "line": 340,
+      "input": "DCSLIM",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "dcslim"
+    },
+    {
+      "source": "irrigation.f90",
+      "line": 674,
+      "input": "SWIRGFIL",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swirgfil"
+    },
+    {
+      "source": "macropore.f90",
+      "line": 1950,
+      "input": "SWDARCY",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "SwDarcy"
+    },
+    {
+      "source": "macropore.f90",
+      "line": 1953,
+      "input": "SWDRRAP",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "SwDrRap"
+    },
+    {
+      "source": "macropore.f90",
+      "line": 1958,
+      "input": "NUMLEVRAPDRA",
+      "minimum": 1,
+      "maximum": 5,
+      "variable": "NumLevRapDra"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 479,
+      "input": "SWPREP",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "sw_prep"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 486,
+      "input": "MAXPREPDELAY",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "max_delay_prep"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 569,
+      "input": "SWSOW",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "sw_sow"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 584,
+      "input": "MAXSOWDELAY",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "max_delay_sow"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 676,
+      "input": "SWGERM",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "sw_germ"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 826,
+      "input": "SWCO2",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "sw_co2"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 843,
+      "input": "SWATMOFIL",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "sw_atmofil"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1127,
+      "input": "SWCF",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "swcf"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1255,
+      "input": "SWDROUGHT",
+      "minimum": 1,
+      "maximum": 3,
+      "variable": "sw_drought"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1306,
+      "input": "SWOXYGEN",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "sw_oxygen"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1350,
+      "input": "SWOXYGENTYPE",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "sw_oxygentype"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1415,
+      "input": "SWSALINITY",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "sw_salinity"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1459,
+      "input": "SWCOMPENSATE",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "sw_compensate"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1464,
+      "input": "SWJARVIS",
+      "minimum": 0,
+      "maximum": 4,
+      "variable": "sw_jarvis"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1540,
+      "input": "SWINTER",
+      "minimum": 0,
+      "maximum": 3,
+      "variable": "sw_inter"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1671,
+      "input": "SWRD",
+      "minimum": 1,
+      "maximum": 3,
+      "variable": "swrd"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1715,
+      "input": "SWWRTNONOX",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swwrtnonox"
+    },
+    {
+      "source": "MOD_cropdevelopment.f90",
+      "line": 1988,
+      "input": "SWRDC",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swrdc"
+    },
+    {
+      "source": "MOD_meteo.f90",
+      "line": 200,
+      "input": "SWETR",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swetr"
+    },
+    {
+      "source": "MOD_meteo.f90",
+      "line": 230,
+      "input": "SWMETDETAIL",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swmetdetail"
+    },
+    {
+      "source": "MOD_meteo.f90",
+      "line": 236,
+      "input": "SWDIVIDE",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swdivide"
+    },
+    {
+      "source": "MOD_meteo.f90",
+      "line": 280,
+      "input": "SWRAIN",
+      "minimum": 0,
+      "maximum": 3,
+      "variable": "swrain"
+    },
+    {
+      "source": "MOD_meteo.f90",
+      "line": 291,
+      "input": "NMETDETAIL",
+      "minimum": 24,
+      "maximum": 96,
+      "variable": "n_metdetail"
+    },
+    {
+      "source": "MOD_meteo.f90",
+      "line": 299,
+      "input": "SWRAIN",
+      "minimum": 0,
+      "maximum": 3,
+      "variable": "swrain"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 118,
+      "input": "SWYRVAR",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swyrvar"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 145,
+      "input": "NPRINTDAY",
+      "minimum": 1,
+      "maximum": 1440,
+      "variable": "nprintday"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 152,
+      "input": "SWMONTH",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swmonth"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 182,
+      "input": "PERIOD",
+      "minimum": 0,
+      "maximum": 366,
+      "variable": "period"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 183,
+      "input": "SWRES",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swres"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 184,
+      "input": "SWODAT",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swodat"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 193,
+      "input": "SWHEADER",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swheader"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 198,
+      "input": "SWDISCRVERT",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swdiscrvert"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 208,
+      "input": "SWCSV",
+      "minimum": 0,
+      "maximum": 3,
+      "variable": "swcsv"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 234,
+      "input": "SWETR",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swetr"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 236,
+      "input": "SWMETDETAIL",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swmetdetail"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 247,
+      "input": "SWRAIN",
+      "minimum": 0,
+      "maximum": 3,
+      "variable": "swrain"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 249,
+      "input": "NMETDETAIL",
+      "minimum": 24,
+      "maximum": 96,
+      "variable": "n_metdetail"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 254,
+      "input": "SWIRFIX",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swirfix"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 305,
+      "input": "SWPONDMX",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swpondmx"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 335,
+      "input": "SWCFBS",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swcfbs"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 343,
+      "input": "SWREDU",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swredu"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 373,
+      "input": "IHWCKMODEL",
+      "minimum": 1,
+      "maximum": 12,
+      "variable": "iHWCKmodel"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 384,
+      "input": "SWSOPHY",
+      "minimum": -1,
+      "maximum": 1,
+      "variable": "swsophy"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 399,
+      "input": "SWHYST",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swhyst"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 729,
+      "input": "SWMACRO",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swmacro"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 733,
+      "input": "SWSNOW",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swsnow"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 741,
+      "input": "SWSUBLIM",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swsublim"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 744,
+      "input": "SWFROST",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swfrost"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 769,
+      "input": "MAXIT",
+      "minimum": 5,
+      "maximum": 100,
+      "variable": "MaxIt"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 771,
+      "input": "MAXBACKTR",
+      "minimum": 1,
+      "maximum": 10,
+      "variable": "MaxBackTr"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 782,
+      "input": "SWKMEAN",
+      "minimum": 1,
+      "maximum": 7,
+      "variable": "SWkmean"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 785,
+      "input": "SWKIMPL",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "SwkImpl"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 793,
+      "input": "MAXITERTIME",
+      "minimum": 1,
+      "maximum": 2419200,
+      "variable": "MaxIterTime"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 800,
+      "input": "SWDRA",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swdra"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 805,
+      "input": "SWRUNON",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swrunon"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 819,
+      "input": "SWBBCFILE",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swbbcfile"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 841,
+      "input": "SWBOTB",
+      "minimum": 1,
+      "maximum": 9,
+      "variable": "swbotb"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 870,
+      "input": "SW2",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "sw2"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 893,
+      "input": "SWBOTB3IMPL",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swbotb3Impl"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 906,
+      "input": "SWBOTB3RESVERT ",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "SwBotb3ResVert"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 907,
+      "input": "SW3",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "sw3"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 926,
+      "input": "SW4",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "sw4"
+    },
+    {
+      "source": "readswap.f90",
+      "line": 944,
+      "input": "SWQHBOT",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "swqhbot"
+    },
+    {
+      "source": "RWU_micro.f90",
+      "line": 646,
+      "input": "SWALPTOT",
+      "minimum": 1,
+      "maximum": 3,
+      "variable": "swAlpTot"
+    },
+    {
+      "source": "RWU_micro.f90",
+      "line": 647,
+      "input": "SWO2ECT",
+      "minimum": 0,
+      "maximum": 3,
+      "variable": "swO2EcT"
+    },
+    {
+      "source": "solute.f90",
+      "line": 558,
+      "input": "SWBOTBC",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swbotbc"
+    },
+    {
+      "source": "solute.f90",
+      "line": 627,
+      "input": "SWSP",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swsp"
+    },
+    {
+      "source": "solute.f90",
+      "line": 646,
+      "input": "SWDC",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swdc"
+    },
+    {
+      "source": "solute.f90",
+      "line": 672,
+      "input": "SWBR",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swbr"
+    },
+    {
+      "source": "solute.f90",
+      "line": 688,
+      "input": "SWSBA",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swsba"
+    },
+    {
+      "source": "surfacewater.f90",
+      "line": 717,
+      "input": "SWDIVD",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swdivd"
+    },
+    {
+      "source": "surfacewater.f90",
+      "line": 737,
+      "input": "SWDIVDINF",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swdivdinf"
+    },
+    {
+      "source": "surfacewater.f90",
+      "line": 757,
+      "input": "SWDISLAY",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swdislay"
+    },
+    {
+      "source": "surfacewater.f90",
+      "line": 811,
+      "input": "SWNRSRF",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swnrsrf"
+    },
+    {
+      "source": "surfacewater.f90",
+      "line": 826,
+      "input": "SWSRF",
+      "minimum": 1,
+      "maximum": 3,
+      "variable": "swsrf"
+    },
+    {
+      "source": "surfacewater.f90",
+      "line": 859,
+      "input": "SWSEC",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "swsec"
+    },
+    {
+      "source": "surfacewater.f90",
+      "line": 918,
+      "input": "SWQHR",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "swqhr"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 254,
+      "input": "SWSCRE",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swscre"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 256,
+      "input": "SWERROR",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swerror"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 264,
+      "input": "SWHEA",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swhea"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 267,
+      "input": "SWSOLU",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swsolu"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 269,
+      "input": "SWSNOW",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swsnow"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 270,
+      "input": "SWFROST",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swfrost"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 271,
+      "input": "SWDRA",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swdra"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 272,
+      "input": "SWMACRO",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swmacro"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 273,
+      "input": "SWHYST",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "swhyst"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 274,
+      "input": "SWPONDMX",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "swpondmx"
+    },
+    {
+      "source": "swap_base.f90",
+      "line": 283,
+      "input": "SWINCO",
+      "minimum": 0,
+      "maximum": 3,
+      "variable": "swinco"
+    },
+    {
+      "source": "temperature.f90",
+      "line": 482,
+      "input": "SWTOPBHEA",
+      "minimum": 1,
+      "maximum": 4,
+      "variable": "SwTopbHea"
+    },
+    {
+      "source": "temperature.f90",
+      "line": 489,
+      "input": "SWBOTBHEA",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "SwBotbHea"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 465,
+      "input": "IDSL",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "p_wof"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 500,
+      "input": "SWPHENODAYL",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "p_soy"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 509,
+      "input": "SWTSUM",
+      "minimum": 0,
+      "maximum": 2,
+      "variable": "p_grs"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 515,
+      "input": "TTEMPTSUM",
+      "minimum": 1,
+      "maximum": 20,
+      "variable": "p_grs"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 525,
+      "input": "SWHARV",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "p"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 603,
+      "input": "SWHARVEST",
+      "minimum": 1,
+      "maximum": 2,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 627,
+      "input": "MXGDGRZ",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 637,
+      "input": "MXGDMOW",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 658,
+      "input": "DAYGRZ",
+      "minimum": 1,
+      "maximum": 366,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 665,
+      "input": "SWLOSSGRZ",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "p_agro"
+    },
+    {
+      "source": "wofost.f90",
+      "line": 683,
+      "input": "SWLOSSMOW",
+      "minimum": 0,
+      "maximum": 1,
+      "variable": "p_agro"
+    }
+  ],
+  "unresolved": "Individual admissible selector values and combinations must still be reconciled against exact original reader/process/state owners; this inventory does not claim complete closure."
+}
