@@ -1,0 +1,20 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-REPAIR43",
+  "baseline": "e6358b26a7fff51caa1aae54b7f3afc8669ae43d",
+  "target_attempt": 357,
+  "prior_commits": 356,
+  "clock": 35797.48700000688,
+  "dt": 0.001000001146167051,
+  "physics_repair": "For swmbf1 expose negativehead GWLcell; multiply existing sorption andDarcy amounts by unsaturated/water-wetted wall overlap divided by originalwater-wetted walllength. Preserveoriginalwetfraction, maxselection, stockcaps, perchedexclusion and SATFLOW.",
+  "activation": "Researchflagfalseonprefix; trueonlyselected357/probes. No newcorrectedwholetrajectory.",
+  "derivative": "Expose same eligiblecell in originalABSORPTION derivative loop; originalQ-scaledlocalderivative retained; geometryfactorGWLderivative NOTadded, no fullJacobianclaim.",
+  "probe": "Same immutableCONTRACT42iter10point, nineactualprovider evals incl exacttie; innerSENSE/cache/IEEErestore plusouterhostrestore",
+  "model_routes": 2,
+  "hard_timeout_seconds": 20,
+  "internal_seconds": 16,
+  "stop": "Afterfirstselectedacceptedhostcommit, or originalrealrefusal+rollback; no retries/periodcampaign",
+  "no_solver_tolerance_MAXIT_dt_reduction_changes": true,
+  "exclusions": [
+    "no general perched/movingcell/krimp/globalJac/restart/period admission"
+  ]
+}

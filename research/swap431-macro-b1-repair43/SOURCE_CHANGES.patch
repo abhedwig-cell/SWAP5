@@ -1,0 +1,282 @@
+--- CONTRACT42/contract43_probe.f90
++++ REPAIR43/contract43_probe.f90
+@@ -0,0 +1,123 @@
++! Nine restored, real-provider evaluations at live attempt357 iteration10.
++subroutine contract43_probe()
++use,intrinsic::ieee_exceptions,only:ieee_status_type,ieee_get_status,ieee_set_status,ieee_all,ieee_get_flag
++use SENSE23_TRANSACTION,only:snapshot
++use MOD_arrays,only:macp,madm
++use MOD_grid,only:numnod,z,dz,layer
++use MOD_MvG,only:watcon,hconduc
++use MOD_frost,only:rfcp
++use MOD_macropore,only:NumDm,ICpTpSatZon,ICpTpPerZon,ICpBtPerZon,QExcMtxDmCp,QOutMtxUnsDmCp,QOutMtxSatDmCp, &
++ QInMtxSatDmCp,QInIntSatDmCp,ZWaLevDm,ICpTpWaSrDm,PpDmCp,ShapeFacMp,SorpFacParl,SorpAlfa,FrMpWalWet,FrReduQ,SwDarcy
++use MOD_swap_mp,only:FrArMtrx,DiPoCp,GwlFlCpZo
++use variables,only:h,theta,k,thetas,thetar,swkimpl,pegwl,dt
++use DIAG19,only:probe_busy,probe_u,point_id,point_node,point_delta,attempts,iter_index
++implicit none
++integer::u,pu,ru,du,cu,nbytes,ncache,lev,sgn,d,pid,old_unit,old_id,old_node,ic,lay
++real(8)::targetg,eps,old_delta,cm(24,madm),ins(macp,madm),outs(macp,madm),uns(macp,madm),rapid(macp,madm)
++real(8)::hm,del,rec,sf,qd,unsatfr,base_h47
++logical::old_busy,flags_before(size(ieee_all)),flags_after(size(ieee_all)),same,csame
++type(ieee_status_type)::fp
++integer(1),allocatable::original(:),restored(:),cache_original(:),cache_restored(:)
++if(attempts/=357.or.iter_index/=10) error stop 'CONTRACT42 outside preregistered point'
++old_busy=probe_busy;old_unit=probe_u;old_id=point_id;old_node=point_node;old_delta=point_delta
++call ieee_get_status(fp);call ieee_get_flag(ieee_all,flags_before)
++call snapshot('probe42_base.bin',1)
++open(newunit=u,file='probe42_cache_base.bin',status='replace',access='stream',form='unformatted')
++call contract42_cache_io(u,1);close(u)
++inquire(file='probe42_base.bin',size=nbytes);inquire(file='probe42_cache_base.bin',size=ncache)
++allocate(original(nbytes),restored(nbytes),cache_original(ncache),cache_restored(ncache))
++open(newunit=u,file='probe42_base.bin',status='old',access='stream',form='unformatted');read(u) original;close(u)
++open(newunit=u,file='probe42_cache_base.bin',status='old',access='stream',form='unformatted');read(u) cache_original;close(u)
++open(newunit=pu,file='probe42_points.txt',status='replace')
++open(newunit=du,file='probe42_domains.txt',status='replace')
++open(newunit=ru,file='probe42_restore.txt',status='replace')
++open(newunit=probe_u,file='probe42_limit.txt',status='replace')
++pid=0;base_h47=h(47);probe_busy=.true.
++call evaluate(0d0,.false.)
++do lev=1,3
++ eps=10d0**(-2*lev-2)
++ do sgn=-1,1,2
++  targetg=-60d0+dble(sgn)*eps
++  call evaluate(targetg,.true.)
++ end do
++end do
++call evaluate(-60d0,.true.)
++call evaluate(0d0,.false.)
++call restore()
++close(pu);close(du);close(ru);close(probe_u)
++probe_busy=old_busy;probe_u=old_unit;point_id=old_id;point_node=old_node;point_delta=old_delta
++call ieee_set_status(fp)
++deallocate(original,restored,cache_original,cache_restored)
++contains
++subroutine restore()
++call snapshot('probe42_base.bin',2)
++open(newunit=u,file='probe42_cache_base.bin',status='old',access='stream',form='unformatted')
++call contract42_cache_io(u,2);close(u)
++call snapshot('probe42_restored.bin',1)
++open(newunit=u,file='probe42_cache_restored.bin',status='replace',access='stream',form='unformatted')
++call contract42_cache_io(u,1);close(u)
++open(newunit=u,file='probe42_restored.bin',status='old',access='stream',form='unformatted');read(u) restored;close(u)
++open(newunit=u,file='probe42_cache_restored.bin',status='old',access='stream',form='unformatted');read(u) cache_restored;close(u)
++same=all(original==restored);csame=all(cache_original==cache_restored)
++call ieee_set_status(fp);call ieee_get_flag(ieee_all,flags_after)
++write(ru,*) pid,nbytes,ncache,merge(1,0,same),merge(1,0,csame),merge(1,0,all(flags_before.eqv.flags_after))
++if(.not.same.or..not.csame.or..not.all(flags_before.eqv.flags_after)) error stop 'CONTRACT42 selected transaction restore failed'
++end subroutine
++subroutine evaluate(g,perturb)
++real(8),intent(in)::g
++logical,intent(in)::perturb
++call restore()
++pid=pid+1;point_id=pid;point_node=47;point_delta=0d0
++if(perturb) then
++ ! Invert the ORIGINAL zero-head interpolation while holding h48 and all other heads.
++ h(47)=h(48)*(1d0-(z(47)-z(48))/(g-z(48)))
++ point_delta=h(47)-base_h47
++ theta(47)=watcon(47,h(47))
++ if(swkimpl==1) k(47)=FrArMtrx(47)*hconduc(47,h(47),theta(47),rfcp(47))
++end if
++call MACRORATE(1)
++call diagnose36_get(cm,ins,outs,uns,rapid)
++write(pu,*) pid,merge(1,0,perturb),g,h(47),h(48),GwlFlCpZo,ICpTpSatZon,ICpTpPerZon,ICpBtPerZon,pegwl, &
++ theta(47),thetas(47),k(47),z(47),dz(47),FrReduQ,dt, &
++ QExcMtxDmCp(1:NumDm,47),QOutMtxUnsDmCp(1:NumDm,47),QOutMtxSatDmCp(1:NumDm,47),QInMtxSatDmCp(1:NumDm,47),QInIntSatDmCp(1:NumDm,47)
++ic=47;lay=layer(ic)
++unsatfr=1d0-min(1d0,max(0d0,(GwlFlCpZo-(z(ic)-.5d0*dz(ic)))/dz(ic)))
++do d=1,NumDm
++ hm=max(0d0,ZWaLevDm(d)-z(ic));del=max(0d0,hm-h(ic));rec=0d0;sf=0d0;qd=0d0
++ if(SwDarcy>0.and.ic>ICpTpWaSrDm(d).and.hm>1d-8) then
++  rec=ShapeFacMp*8d0*PpDmCp(d,ic)*dz(ic)*k(ic)/DiPoCp(ic)**2
++  sf=SorpFacParl(lay)+(1d0-SorpFacParl(lay))*(1d0-(max(0d0,thetas(ic)-theta(ic))/(thetas(ic)-thetar(ic)))**SorpAlfa(lay))
++  qd=FrReduQ*rec*del*sf
++ end if
++ write(du,*) pid,d,cm(:,d),ICpTpWaSrDm(d),hm,del,rec,sf,qd,unsatfr,PpDmCp(d,ic),DiPoCp(ic), &
++ ShapeFacMp,SorpFacParl(lay),SorpAlfa(lay),thetar(ic),FrMpWalWet(d,ic),ins(ic,d),outs(ic,d),uns(ic,d),rapid(ic,d)
++end do
++end subroutine
++end subroutine
++
++subroutine contract43_calibrate()
++use SENSE23_TRANSACTION,only:snapshot
++use DIAG19,only:attempts,iter_index,nvec
++use,intrinsic::ieee_exceptions,only:ieee_status_type,ieee_get_status,ieee_set_status
++implicit none
++integer::u,old_attempt,old_iter,old_vec
++type(ieee_status_type)::fp
++old_attempt=attempts;old_iter=iter_index;old_vec=nvec
++call ieee_get_status(fp)
++call snapshot('host43_before.bin',1)
++open(newunit=u,file='host43_cache_before.bin',status='replace',access='stream',form='unformatted')
++call contract42_cache_io(u,1);close(u)
++call snapshot('frozen42_base.bin',2)
++open(newunit=u,file='frozen42_cache.bin',status='old',access='stream',form='unformatted')
++call contract42_cache_io(u,2);close(u)
++attempts=357;iter_index=10;nvec=0
++call contract43_probe()
++call snapshot('host43_before.bin',2)
++open(newunit=u,file='host43_cache_before.bin',status='old',access='stream',form='unformatted')
++call contract42_cache_io(u,2);close(u)
++attempts=old_attempt;iter_index=old_iter;nvec=old_vec
++call snapshot('host43_after.bin',1)
++open(newunit=u,file='host43_cache_after.bin',status='replace',access='stream',form='unformatted')
++call contract42_cache_io(u,1);close(u)
++call ieee_set_status(fp)
++end subroutine
+--- CONTRACT42/diag_state.f90
++++ REPAIR43/diag_state.f90
+@@ -4,7 +4,7 @@
+ logical,save::target=.false.,qualification_active=.true.,detail33=.false.
+ integer,save::active_in_attempt=0,active_total=0
+ integer,save::iter_index=0,node_u,op_u,raw_u,limit_u,macro_seq=0,op35_u,node35_u
+-logical,save::probe_busy=.false.,apply37=.false.
++logical,save::probe_busy=.false.,apply37=.false.,repair43=.false.
+ integer,save::probe_u,point_id=0,point_node=0
+ real(8),save::point_delta=0
+ integer,save::kind=-1,iterations=0,flags(5)=0,worst=0,prelevel=0
+--- CONTRACT42/guard41_observer.f90
++++ REPAIR43/guard41_observer.f90
+@@ -43,5 +43,4 @@
+  write(ud,*) attempts,iter_index,d,cm(:,d)
+ end do
+ flush(u);flush(uh);flush(ud)
+-if(iter_index==10) call contract42_probe()
+ end subroutine
+--- CONTRACT42/macrorate_node.f90
++++ REPAIR43/macrorate_node.f90
+@@ -1866,7 +1866,8 @@
+                                swdarcy, frreduq, qoutmtxunsdmcp, dfdhmp, ictopmp, swmbf, swabs, icpbtdmpot, dimtxsat, vlmpdmcp
+ 
+ 
+-      use DIAG19,only:target,attempts,iter_index,nvec,raw_u,detail33,probe_busy
++      use DIAG19,only:target,attempts,iter_index,nvec,raw_u,detail33,probe_busy,repair43,point_id,macro_seq
++      use MOD_swap_mp,only:GwlFlCpZo
+       implicit none
+ 
+       integer::snap23_unit,snap23_mode
+@@ -1882,6 +1883,9 @@
+       real(8)                             :: AbsDarc, AbsSorp, DelH, raw_sorp, raw_darcy
+       real(8)                             :: Deriv, HMp, RecRes, SatDefMtx
+       real(8)                             :: SorpAct, SorpFac, Time
++      real(8) :: contact43,wet_top43,wet_span43,overlap43
++      integer,save :: contact_unit43
++      logical,save :: contact_open43=.false.
+       real(8)                             :: alfamg, ksatfit, m, wcsminwcr, s_enpr, oneoverm, lambda_adj, relsat, help, diffus_avg
+       real(8), dimension(MaDm,MaCp), save :: DelHDmCp
+       real(8), dimension(MaCp),      save :: Diffusivity
+@@ -1899,7 +1903,8 @@
+       FlEndSrpEvt(id,1:numnod)    = .TRUE.
+ 
+ ! --- Bottom domain considered
+-      icBt = min0(ICpBtDm(id),ICpTpSatZon-1) ! No sorption considered in partly saturated matrix cp of groundwater table
++      icBt = min0(ICpBtDm(id),ICpTpSatZon-1) ! Original whole-cell exclusion.
++      if(repair43.and.swmbf==1) icBt=min0(ICpBtDm(id),ICpTpSatZon)
+ 
+ ! --- Top domain considered
+       if (swmbf == 2 .AND. id == 1) then
+@@ -1934,7 +1939,20 @@
+           
+ ! --- Calculate potential Absorption
+       do ic = icTp, icBt
+-         if (ic > ICpBtPerZon .OR. ic < ICpTpPerZon) then ! No sorption considered in partly saturated matrix cp of perched water table
++         if(repair43.and.swmbf==1.and.ic==ICpTpSatZon) then
++            if(h(ic)>=0d0) cycle
++         end if
++         if (ic > ICpBtPerZon .OR. ic < ICpTpPerZon) then ! Perched exclusion retained.
++            contact43=1d0
++            if(repair43.and.swmbf==1.and.ic==ICpTpSatZon) then
++               ! Relative overlap with the ALREADY wetted wall; its original wet fraction is retained below.
++               wet_top43=min(z(ic)+.5d0*dz(ic),ZWaLevDm(id))
++               wet_span43=max(0d0,wet_top43-(z(ic)-.5d0*dz(ic)))
++               if(wet_span43<=0d0) cycle
++               overlap43=max(0d0,wet_top43-max(z(ic)-.5d0*dz(ic),GwlFlCpZo))
++               contact43=min(1d0,max(0d0,overlap43/wet_span43))
++               if(contact43<=0d0) cycle
++            end if
+             Lay       = Layer(ic)
+ ! I.a By Sorptivity           
+             SatDefMtx = dmax1(0.0d0, ThetaS(ic) - Theta(ic))
+@@ -2010,6 +2028,10 @@
+                end if
+             end if
+ 
++            if(repair43.and.swmbf==1.and.ic==ICpTpSatZon) then
++               AbsSorp=contact43*AbsSorp
++               AbsDarc=contact43*AbsDarc
++            end if
+             raw_sorp=AbsSorp
+             raw_darcy=AbsDarc
+             if (AbsSorp > SorpFac*AbsDarc) then
+@@ -2039,6 +2061,15 @@
+               hm_log,del_log,rec_log,sf_log,FrMpWalWet(id,ic),TimAbsCumDmCp(id,ic),ICpTpWaSrDm(id)
+              end block
+             end if
++            if(repair43.and.detail33.and.ic==47) then
++               if(.not.contact_open43) then
++                  open(newunit=contact_unit43,file='contact43_trace.txt',status='replace');contact_open43=.true.
++               end if
++               write(contact_unit43,*) attempts,iter_index,nvec,macro_seq,merge(1,0,probe_busy),point_id,id,ic, &
++                  ICpTpSatZon,GwlFlCpZo,h(ic),contact43,raw_sorp,raw_darcy,SorpFac,FlwOutMtxUnsDmCpPot(id,ic), &
++                  merge(1,0,FlSorp(id,ic)),FrMpWalWet(id,ic),ICpTpWaSrDm(id)
++               flush(contact_unit43)
++            end if
+             FlwOutMtxUnsDmPot(id) = FlwOutMtxUnsDmPot(id) + FlwOutMtxUnsDmCpPot(id,ic)
+ !
+ ! --- Set Flag to END SoRPtivity EVenT in MACROSTATE
+@@ -2053,6 +2084,9 @@
+       case (2)
+ ! --- Determine derivatives 
+       do ic = icTp, icBt
++         if(repair43.and.swmbf==1.and.ic==ICpTpSatZon) then
++            if(h(ic)>=0d0) cycle
++         end if
+          if (ic > ICpBtPerZon .OR. ic < ICpTpPerZon) then 
+ !
+             if (QOutMtxUnsDmCp(id,ic) > 1.d-7) then
+--- CONTRACT42/soilwater_native.f90
++++ REPAIR43/soilwater_native.f90
+@@ -257,7 +257,7 @@
+ end subroutine
+ 
+ logical function retry07_driver() result(handled)
+- use DIAG19,only:head_start,head_end,attempts,detail33,active_in_attempt,apply37
++ use DIAG19,only:head_start,head_end,attempts,detail33,active_in_attempt,apply37,repair43
+  use variables,only:t1900,dt,fldecdt
+  use MOD_swap_mp,only:IDecMpRat,FlDecMpRat
+  use MOD_macropore,only:MacroStateVar
+@@ -279,6 +279,11 @@
+   call inventory_dump('origin')
+   call native09_dump('context_origin')
+   call ledger12_dump('ledger_origin')
++  repair43=.true.
++  call contract43_calibrate()
++  call inventory_dump('after_probe')
++  call native09_dump('context_after_probe')
++  call ledger12_dump('ledger_after_probe')
+  end if
+  call capture33()
+  call head_start()
+@@ -288,13 +293,20 @@
+   call inventory_dump('returned')
+   call native09_dump('context_returned')
+   call ledger12_dump('ledger_returned')
++  if(.not.fldecdt.and..not.FlDecMpRat.and.IDecMpRat==0) then
++   call inventory_dump('accepted_return')
++   call native09_dump('context_accepted_return')
++   call ledger12_dump('ledger_accepted_return')
++   reject26_pending=.true.
++   return
++  end if
+   call SoilWaterStateVar(2)
+   call MacroStateVar(2)
+   call inventory_dump('rollback')
+   call native09_dump('context_rollback')
+   call ledger12_dump('ledger_rollback')
+-  if(fldecdt.and..not.FlDecMpRat.and.IDecMpRat==0) call finish33('ORIGINAL357_REAL_UNSCALED_REFUSAL')
+-  call finish33('UNEXPECTED_SELECTED357_OUTCOME')
++  if(fldecdt.and..not.FlDecMpRat.and.IDecMpRat==0) call finish33('REPAIRED357_STILL_REFUSED')
++  call finish33('UNEXPECTED_REPAIRED357_OUTCOME')
+  end if
+  if(fldecdt.or.FlDecMpRat) then
+   open(newunit=u,file='refusal_trace.txt',status='unknown',position='append')
