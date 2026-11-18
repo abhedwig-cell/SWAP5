@@ -83,7 +83,12 @@ def render_integral(source,watstor,selected):
       " if(period==0.and.header(8)/=header(7))error stop 'Inconsistent original zero-period day counter'":
       " if((period==0.or.flprintdt).and.header(8)/=header(7))error stop 'Inconsistent original zero-period day counter'",
       " if(header(19)/=merge(1,0,nprintday>1).or.header(20)/=0)error stop 'Foreign original age output clock flags'":
-      " if(header(19)/=merge(1,0,nprintday>1.or.flprintdt).or.header(20)/=merge(1,0,flprintdt))error stop 'Foreign original output step flags'"}
+      " if(header(19)/=merge(1,0,nprintday>1.or.flprintdt).or.header(20)/=merge(1,0,flprintdt))error stop 'Foreign original output step flags'",
+      "if(ioutdatint/=1+count(outdatint>0d0.and.outdatint<t1900-1d-8))error stop 'Inconsistent original interval date pointer'":
+      """! Original FLPRINTDT advances this pointer only when the actual terminal
+! step hits its separate DT-dependent condition. A passed date may remain
+! pending; do not fabricate an advance or normalize original output history.
+if(ioutdatint>1+count(outdatint>0d0.and.outdatint<t1900-1d-8))error stop 'Future original per-step date pointer'"""}
     for old,new in replacements.items():
         assert text.count(old)==1,old
         text=text.replace(old,new,1)
