@@ -1,0 +1,151 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-ROLLBACK49",
+  "decision": "PARTIAL_REAL_REFUSAL_EMPTY_CONTACT47_CACHE_ROLLBACK_DIRECT_PASS_ACTIVE_REFUSAL_NOT_FOUND",
+  "baseline": "4a507f0f830f5d4a09941e1ac4e5f201ad6c1821",
+  "source_checkpoints": {
+    "original297": "9b171a366",
+    "original36": "a611d31eb"
+  },
+  "model_routes": 6,
+  "hard_seconds_per_route": 20,
+  "O0_O2_physical_state_solver_commit_ledger_budget_exact": true,
+  "O0_O2_all_non_timing_byte_exact": false,
+  "diagnostic_exception": "TRIAL36 contact43_trace zero-based field14 SorpFac: six rows have inactive Darcy factor0 in O0 and finite subnormal in O2, rawDarcy0 and chosenSorp1; all other fields exact; inherited uninitialized unused diagnostic, unchanged source",
+  "FEEDBACK48_reference_physics_unchanged": true,
+  "genuine_active_CONTACT47_refusal_rollback_direct_qualified": false,
+  "no_forced_refusal_or_broad_campaign": true,
+  "selection_stopped_after_two_original_contexts": true,
+  "full_period_restart_or_general_admission": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "original297": {
+        "true_unscaled_MAXIT30_refusal": true,
+        "CONTACT47_nonzero_scratch_evaluations": 0,
+        "large_dt_days": 7.639717105455142e-05,
+        "large_max_residual": 0.0046788619160148676,
+        "large_sum_residual": 0.019239922355418975,
+        "rollback_physical_core_and_ledger_restored": true,
+        "cache_invalid_after_rollback": true,
+        "immediate_full_native_byte_identity": false,
+        "inherited_native_scratch_differences": [
+          "sorpdmcp",
+          "subsidcp"
+        ],
+        "small_dt_days": 2.5465723684850474e-05,
+        "small_iterations": 10,
+        "small_max_residual": 1.1124484666780177e-10,
+        "postrollback_direct_solver_context_commit_ledger_budget_exact": true,
+        "TRIAL_inventory": {
+          "inventory_error_cm": -2.8174026832231483e-15,
+          "inventory_limit_cm": 2.5465723684850477e-10,
+          "fresh_V1": true,
+          "ledger_increments_verified": true
+        },
+        "DIRECT_inventory": {
+          "inventory_error_cm": -2.8174026832231483e-15,
+          "inventory_limit_cm": 2.5465723684850477e-10,
+          "fresh_V1": true,
+          "ledger_increments_verified": true
+        }
+      },
+      "original36": {
+        "original_origin_inventory_context_ledger_byte_exact": true,
+        "accepted_iterations": 2,
+        "true_refusal": false,
+        "positive_scratch_evaluations": 6,
+        "committed_reference_increment": 7.406704930487748e-09,
+        "reference_after": 0.4440000074067049,
+        "max_residual": 1.556569080675585e-08,
+        "inventory": {
+          "inventory_error_cm": 1.5168144518185045e-11,
+          "inventory_limit_cm": 2e-08,
+          "fresh_V1": true,
+          "ledger_increments_verified": true
+        }
+      }
+    },
+    {
+      "optimization": "O2",
+      "original297": {
+        "true_unscaled_MAXIT30_refusal": true,
+        "CONTACT47_nonzero_scratch_evaluations": 0,
+        "large_dt_days": 7.639717105455142e-05,
+        "large_max_residual": 0.0046788619160148676,
+        "large_sum_residual": 0.019239922355418975,
+        "rollback_physical_core_and_ledger_restored": true,
+        "cache_invalid_after_rollback": true,
+        "immediate_full_native_byte_identity": false,
+        "inherited_native_scratch_differences": [
+          "sorpdmcp",
+          "subsidcp"
+        ],
+        "small_dt_days": 2.5465723684850474e-05,
+        "small_iterations": 10,
+        "small_max_residual": 1.1124484666780177e-10,
+        "postrollback_direct_solver_context_commit_ledger_budget_exact": true,
+        "TRIAL_inventory": {
+          "inventory_error_cm": -2.8174026832231483e-15,
+          "inventory_limit_cm": 2.5465723684850477e-10,
+          "fresh_V1": true,
+          "ledger_increments_verified": true
+        },
+        "DIRECT_inventory": {
+          "inventory_error_cm": -2.8174026832231483e-15,
+          "inventory_limit_cm": 2.5465723684850477e-10,
+          "fresh_V1": true,
+          "ledger_increments_verified": true
+        }
+      },
+      "original36": {
+        "original_origin_inventory_context_ledger_byte_exact": true,
+        "accepted_iterations": 2,
+        "true_refusal": false,
+        "positive_scratch_evaluations": 6,
+        "committed_reference_increment": 7.406704930487748e-09,
+        "reference_after": 0.4440000074067049,
+        "max_residual": 1.556569080675585e-08,
+        "inventory": {
+          "inventory_error_cm": 1.5168144518185045e-11,
+          "inventory_limit_cm": 2e-08,
+          "fresh_V1": true,
+          "ledger_increments_verified": true
+        }
+      }
+    }
+  ],
+  "runs": [
+    {
+      "optimization": "O0",
+      "profile": "TRIAL_297",
+      "seconds": 2.3493335000239313
+    },
+    {
+      "optimization": "O0",
+      "profile": "DIRECT_297",
+      "seconds": 1.1588985999114811
+    },
+    {
+      "optimization": "O0",
+      "profile": "TRIAL_36",
+      "seconds": 0.9573209001682699
+    },
+    {
+      "optimization": "O2",
+      "profile": "TRIAL_297",
+      "seconds": 1.8564417003653944
+    },
+    {
+      "optimization": "O2",
+      "profile": "DIRECT_297",
+      "seconds": 0.9614384998567402
+    },
+    {
+      "optimization": "O2",
+      "profile": "TRIAL_36",
+      "seconds": 0.7594046001322567
+    }
+  ]
+}
