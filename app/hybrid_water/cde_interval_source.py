@@ -44,6 +44,8 @@ def source(original):
     a=original.index(prefix);head=original[:a];tail=original[a:]
     anchor='    end interface';assert head.count(anchor)==1
     head=head.replace(anchor,INTERFACE+anchor,1)
+    anchor='   public :: sbaldev, sdstor';assert head.count(anchor)==1
+    head=head.replace(anchor,anchor+'\n   public :: hybrid_cde_interval_get,hybrid_cde_interval_set',1)
     anchor='      implicit none';assert tail.startswith(prefix+'\n') and anchor in tail
     tail=tail.replace(anchor,'      use hybrid_cde_interval_receipt,only:cde_day_open,cde_day_observe,CDE_DAY_OK\n'+anchor+
         '\n      real(8),save::sampro0=0d0,rounderr=0d0\n      logical,save::hybrid_cde_interval_initialized=.false.',1)
