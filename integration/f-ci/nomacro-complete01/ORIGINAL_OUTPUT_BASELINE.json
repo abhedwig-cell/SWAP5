@@ -1,0 +1,1811 @@
+{
+  "status": "UNCHANGED_PUBLIC_ORIGINAL_OUTPUT_DIAGNOSIS_COMPLETE",
+  "platform": "Windows",
+  "source": "42bf7e63f549212456f9a237a74ba0fc032c407d",
+  "reports": {
+    "O0": {
+      "status": "ORIGINAL_OUTPUT_SELECTOR_BASELINE_OBSERVED_NO_NEW_ADMISSION",
+      "baseline": "42bf7e63f549212456f9a237a74ba0fc032c407d",
+      "optimization": "O0",
+      "cases": {
+        "water-csv0": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "0186210706b8a1434597b5d34984996229361fa2a126ef705ea413ba96f94513"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "0"
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 2,
+            "seconds": 0.2356692999601364,
+            "stdout": "",
+            "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWCSV\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.5597462998703122,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {},
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-csv2": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "ab7aed513e714725d5c5e6b37adf7f7707cbdcff18a996e305fe2658eece4971"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "2"
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 2,
+            "seconds": 0.23382250033318996,
+            "stdout": "",
+            "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWCSV\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.15263669984415174,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result_input.csv": {
+              "sha256": "72bb6be2111aabbc8dc508093e529101ee7920cc4241f7ec82ab04a524c33fd6",
+              "rows": 0,
+              "first_headers": [
+                "BRUNY,ERUNY,BRUND,ERUND,NUMNOD,NUMLAY,NRLEVS,SWMACRO",
+                "2002,2002,0,4,34,2,1,0"
+              ],
+              "first_data": []
+            },
+            "result_output.csv": {
+              "sha256": "6bf321bdcdfae1e92909e65efce16a0ac2b9219e24cf709708a32e1c6c63aae9",
+              "rows": 5,
+              "first_headers": [
+                "DATE,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-01-01,0.,0.,0.,0.,0.,0.,0.,0.,0.,.062355495037,0.,-76.062309890672,0.,0.,75.125280406226,-.062355498485,3.447132371215E-09"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-csv3": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "16679fc12c4789bd72792044ab77f670793ac068cda6fdf6e5c00619497641be"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "3"
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 2,
+            "seconds": 0.24770230008289218,
+            "stdout": "",
+            "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWCSV\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 3,
+            "seconds": 0.14247879991307855,
+            "stdout": "\n  running swap ....\n",
+            "stderr": "\nProgram received signal SIGSEGV: Segmentation fault - invalid memory reference.\n\nBacktrace for this error:\n#0  0x40299b94\n#1  0x40202253\n#2  0xaaa2f2e3\n#3  0xcdbc107f\n#4  0xad2464ae\n#5  0xad1a4064\n#6  0xad245ded\n#7  0xcdc651d9\n#8  0xcdc6de9b\n#9  0xcdc4972c\n#10  0xcdc66365\n#11  0xcdca8a4f\n#12  0xcdbc1156\n#13  0xab90dda6\n#14  0xad15ee4b\n#15  0xffffffff\n",
+            "swap_ok": false
+          },
+          "original_outputs": {},
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-nprint2": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "e0743f85a1674f84c85637b6e235686a136d3e5037efaf8d16dae0123bab2282"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "2"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 1,
+            "seconds": 21.03795580007136,
+            "stdout": "",
+            "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1401, in run\n    budget = host.step(column, checkpoint=day == publish_day)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1302, in step\n    raise ValueError(f\"Day {day} donor origin differs from committed stocks\")\nValueError: Day 1 donor origin differs from committed stocks\n"
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "2"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_outputs": {
+            "result_output.csv": {
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "rows": 0,
+              "first_headers": [],
+              "first_data": []
+            }
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.1953159999102354,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result_output.csv": {
+              "sha256": "c743edb975370d340f84ba9d0815b163264ec02ad6ac3ef57c18bd3a629c1ab6",
+              "rows": 9,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-01-01 12:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,.032909308477,0.,-75.678645953302,0.,0.,75.154726593094,-.032909311617,3.140112517230E-09"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-monthly": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "87c2c77e8a043ee8522327ef181f38967c45c58b329d22e50c726cd090438a62"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "1"
+            ],
+            "SWODAT": [
+              "0"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 1,
+            "seconds": 9.078935300000012,
+            "stdout": "",
+            "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1401, in run\n    budget = host.step(column, checkpoint=day == publish_day)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1294, in step\n    stocks = list(map(float, response[\"HYBRID_STOCK_FLUX\"]))\n                             ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\nKeyError: 'HYBRID_STOCK_FLUX'\n"
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0"
+            ],
+            "SWODAT": [
+              "0"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_outputs": {
+            "result_output.csv": {
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "rows": 0,
+              "first_headers": [],
+              "first_data": []
+            }
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.18674249993637204,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result_output.csv": {
+              "sha256": "546cd84490bd8e14364fe7e1e1339565fd71aa5ec9f72b4290e153179e20013b",
+              "rows": 3,
+              "first_headers": [
+                "DATE,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-01-31,4.260000000000,0.,0.,0.,0.,.294323396188,.294323396188,0.,0.,3.019081403877,0.,-65.995369276376,0.,0.,76.134237692327,.946601787616,-6.587682159775E-06"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-custom-csv5": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "784407f006aca2b9e3b0f96d18c1aefd2f315f4de735cde10538509166c70a2b"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "5"
+            ],
+            "INLIST_CSV": [
+              "'GWL'"
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 0,
+            "seconds": 9.737082399893552,
+            "stdout": "",
+            "stderr": ""
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'"
+            ],
+            "FLPRINTDT": []
+          },
+          "public_outputs": {
+            "result_output.csv": {
+              "sha256": "71b546e99038034ac2da39f5b9c66faa26698ae46fca572dca5a8e494672d2fb",
+              "rows": 5,
+              "first_headers": [
+                "DATE,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,TREDDRY,TREDWET,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV,CH,CF,TSUM,DVS,LAIPOT,PWSO,PWLV,PWST,PWRT,PDWLV,PDWST,PDWRT,PTWLV,PTWST,PTWRT,PWDM,RDPOT,ICUTPOT,TCUTPOT,PHRVDM,PLOSSDM,VCOVER,LAI,WSO,WLV,WST,WRT,DWLV,DWST,DWRT,TWLV,TWST,TWRT,WDM,RD,ICUT,TCUT,HRVDM,LOSSDM,PGASSTPOT,PGASST,GASSTPOT,GASST,MRESTPOT,MREST",
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000"
+              ],
+              "first_data": [
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000",
+                "2002-01-01,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,.062291288688,0.,-76.061853996105,0.,0.,75.125344616023,-.062291288688,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000"
+              ]
+            }
+          },
+          "public_cold": {
+            "returncode": 0,
+            "seconds": 1.2834112998098135,
+            "stdout": "",
+            "stderr": ""
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.16026519984006882,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result_output.csv": {
+              "sha256": "42aec12f2f55a3c96263d26dafcb99fa2c99a9b63cc1723b642a047f1cc6c262",
+              "rows": 5,
+              "first_headers": [
+                "DATE,GWL",
+                "2001-12-31,-75.00000"
+              ],
+              "first_data": [
+                "2001-12-31,-75.00000",
+                "2002-01-01,-76.06231"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "age-perstep-monthly": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "a86eddc652ee958e99440bb69163ef41ff4d2707ed061ef1e1948a168e04d1cc"
+          },
+          "requested": {
+            "SWSOLU": [
+              "2 "
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "1"
+            ],
+            "SWODAT": [
+              "0"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": [
+              ".TRUE."
+            ]
+          },
+          "public_warm": {
+            "returncode": 0,
+            "seconds": 11.900986599735916,
+            "stdout": "",
+            "stderr": ""
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "2 "
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "1"
+            ],
+            "SWODAT": [
+              "0"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS' "
+            ],
+            "FLPRINTDT": [
+              ".TRUE."
+            ]
+          },
+          "public_outputs": {
+            "result.ageeffluent.csv": {
+              "sha256": "ae292eda454f3990631cba66d73505f35d3004b7947f27192ce7de43f76ac4c6",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,AgeGwl1m,AgeBottom,AgeRootUpt,AgeRunoff,AgeDrainSys1,AgeDrainSys2,AgeDrainSys3,AgeDrainSys4,AgeDrainSys5"
+              ],
+              "first_data": []
+            },
+            "result.ageeffluentqdrain.csv": {
+              "sha256": "99434361c9bbfd7974ebc60cbae02b4177ec2beec7f4260bb6b9a98c09b78953",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,qDrainSys1,qDrainSys2,qDrainSys3,qDrainSys4,qDrainSys5"
+              ],
+              "first_data": []
+            },
+            "result.ageeffluentwater.csv": {
+              "sha256": "f367d57507b08bd65da9c5ad0620e02f73d81634bfc9111ec6650cd563f0ca0f",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,WaterBottom_cm,WaterRoot_cm,WaterRunoff_cm,WaterDrainSys1_cm,WaterDrainSys2_cm,WaterDrainSys3_cm,WaterDrainSys4_cm,WaterDrainSys5_cm"
+              ],
+              "first_data": []
+            },
+            "result.ageProfile.csv": {
+              "sha256": "ae7fa2331e9e9c5f15e0cc0f9acecef4678da16bab38bfa4f3e7825252dcf506",
+              "rows": 0,
+              "first_headers": [
+                "Date,Day,Daycum,Node001,Node002,Node003,Node004,Node005,Node006,Node007,Node008,Node009,Node0010,Node0011,Node0012,Node0013,Node0014,Node0015,Node0016,Node0017,Node0018,Node0019,Node0020,Node0021,Node0022,Node0023,Node0024,Node0025,Node0026,Node0027,Node0028,Node0029,Node0030,Node0031,Node0032,Node0033,Node0034,Node"
+              ],
+              "first_data": []
+            },
+            "result_output.csv": {
+              "sha256": "b7df50c44b1fc45d30f77a3b7e3565bdac18acddbc8e6f9b5ae21d8021525d08",
+              "rows": 2,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,TREDDRY,TREDWET,TREDSOL,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV,CH,CF,TSUM,DVS,LAIPOT,PWSO,PWLV,PWST,PWRT,PDWLV,PDWST,PDWRT,PTWLV,PTWST,PTWRT,PWDM,RDPOT,ICUTPOT,TCUTPOT,PHRVDM,PLOSSDM,VCOVER,LAI,WSO,WLV,WST,WRT,DWLV,DWST,DWRT,TWLV,TWST,TWRT,WDM,RD,ICUT,TCUT,HRVDM,LOSSDM,PGASSTPOT,PGASST,GASSTPOT,GASST,MRESTPOT,MREST,S_RAIN,S_IRRIG,S_DRN,S_UPT,S_STOT,S_BALDEV,S_DSTOR",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0.",
+                "2002-02-01 00:00:00,4.260000000000,0.,0.,0.,0.,.294323396188,.294323396188,0.,0.,0.,0.,0.,3.019074636889,0.,-65.995366986527,0.,0.,76.134237871633,.946601966922,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0."
+              ]
+            }
+          },
+          "public_cold": {
+            "returncode": 1,
+            "seconds": 1.300774899777025,
+            "stdout": "",
+            "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1395, in run\n    host = DailyHost(stack, donor, kernel, case, output, starts,\n                     checkpoint_enabled=checkpoint_day is not None or runtime,\n                     runtime=runtime, binding=checkpoint_binding, model=model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1233, in __init__\n    _, initial = receive(worker, transcript, {\"HYBRID_READY\"})\n                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 991, in receive\n    raise RuntimeError(f\"Missing {prefixes}, process exited with {process.wait()}\")\nRuntimeError: Missing {'HYBRID_READY'}, process exited with 1\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.2149734003469348,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result.ageeffluent.csv": {
+              "sha256": "00a41615622211787c8db0255a63f1fd840bd4cc30c76a77e5616cb5895e94b6",
+              "rows": 1,
+              "first_headers": [
+                "Date,daynr,daycum,AgeGwl1m,AgeBottom,AgeRootUpt,AgeRunoff,AgeDrainSys1,AgeDrainSys2,AgeDrainSys3,AgeDrainSys4,AgeDrainSys5",
+                "2002-02-04 ,  35,    35, 1.350E+02, 0.000E+00, 0.000E+00, 0.000E+00, 1.134E+04"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 1.350E+02, 0.000E+00, 0.000E+00, 0.000E+00, 1.134E+04"
+              ]
+            },
+            "result.ageeffluentqdrain.csv": {
+              "sha256": "49580c7486877a54b265745b4dea32dc62dac04ddc8a8f6ddd0575a57202c5fb",
+              "rows": 1,
+              "first_headers": [
+                "Date,daynr,daycum,qDrainSys1,qDrainSys2,qDrainSys3,qDrainSys4,qDrainSys5",
+                "2002-02-04 ,  35,    35, 6.167E-01"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 6.167E-01"
+              ]
+            },
+            "result.ageProfile.csv": {
+              "sha256": "cf8cdaeab1bb8542ba26d2658b43368aea41787b5eb802f27bca1f6c82cecccf",
+              "rows": 1,
+              "first_headers": [
+                "Date,Day,Daycum,Node001,Node002,Node003,Node004,Node005,Node006,Node007,Node008,Node009,Node0010,Node0011,Node0012,Node0013,Node0014,Node0015,Node0016,Node0017,Node0018,Node0019,Node0020,Node0021,Node0022,Node0023,Node0024,Node0025,Node0026,Node0027,Node0028,Node0029,Node0030,Node0031,Node0032,Node0033,Node0034,Node",
+                "2002-02-04 ,  35,    35, 2.718E+01, 3.188E+01, 3.627E+01, 4.042E+01, 4.453E+01, 4.878E+01, 5.328E+01, 5.802E+01, 6.295E+01, 6.798E+01, 8.322E+01, 1.046E+02, 1.191E+02, 1.276E+02, 1.317E+02, 1.337E+02, 1.345E+02, 1.348E+02, 1.349E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 2.718E+01, 3.188E+01, 3.627E+01, 4.042E+01, 4.453E+01, 4.878E+01, 5.328E+01, 5.802E+01, 6.295E+01, 6.798E+01, 8.322E+01, 1.046E+02, 1.191E+02, 1.276E+02, 1.317E+02, 1.337E+02, 1.345E+02, 1.348E+02, 1.349E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02"
+              ]
+            },
+            "result_output.csv": {
+              "sha256": "b4074c69a66a82eff1fc54cfdb4f75b241dd68719a3ce84dfe593d1127d02cb7",
+              "rows": 3,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-02-01 00:00:00,4.260000000000,0.,0.,0.,0.,.294323396188,.294323396188,0.,0.,3.019081403877,0.,-65.995369276376,0.,0.,76.134237692327,.946601787616,-6.587682159775E-06"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "age-perstep-explicit": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "956c06c99bb08ecbf0423e007f2130ef84edc522ca21caa8f9804cf5478e291b"
+          },
+          "requested": {
+            "SWSOLU": [
+              "2 "
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0"
+            ],
+            "SWODAT": [
+              "1"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": [
+              ".TRUE."
+            ]
+          },
+          "public_warm": {
+            "returncode": 0,
+            "seconds": 11.540075700264424,
+            "stdout": "",
+            "stderr": ""
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "2 "
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0"
+            ],
+            "SWODAT": [
+              "1"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS' "
+            ],
+            "FLPRINTDT": [
+              ".TRUE."
+            ]
+          },
+          "public_outputs": {
+            "result.ageeffluent.csv": {
+              "sha256": "b335a5daabb50cce026d39762fb47343fef212ab8646c3e5389aa3eb0e4db541",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,AgeGwl1m,AgeBottom,AgeRootUpt,AgeRunoff,AgeDrainSys1,AgeDrainSys2,AgeDrainSys3,AgeDrainSys4,AgeDrainSys5"
+              ],
+              "first_data": []
+            },
+            "result.ageeffluentqdrain.csv": {
+              "sha256": "d890216f65f6e8f96d20ca29857a370f1603fc1c14ffc206c52d374658292266",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,qDrainSys1,qDrainSys2,qDrainSys3,qDrainSys4,qDrainSys5"
+              ],
+              "first_data": []
+            },
+            "result.ageeffluentwater.csv": {
+              "sha256": "6d6f14a267033d17cd0fba079accde765d1e5f51c5399f5ad52eda4417b57831",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,WaterBottom_cm,WaterRoot_cm,WaterRunoff_cm,WaterDrainSys1_cm,WaterDrainSys2_cm,WaterDrainSys3_cm,WaterDrainSys4_cm,WaterDrainSys5_cm"
+              ],
+              "first_data": []
+            },
+            "result.ageProfile.csv": {
+              "sha256": "d82298e4f24d455cc23f6e627a9857263c5ce1531023b7cfe356e1ea4a46de88",
+              "rows": 0,
+              "first_headers": [
+                "Date,Day,Daycum,Node001,Node002,Node003,Node004,Node005,Node006,Node007,Node008,Node009,Node0010,Node0011,Node0012,Node0013,Node0014,Node0015,Node0016,Node0017,Node0018,Node0019,Node0020,Node0021,Node0022,Node0023,Node0024,Node0025,Node0026,Node0027,Node0028,Node0029,Node0030,Node0031,Node0032,Node0033,Node0034,Node"
+              ],
+              "first_data": []
+            },
+            "result_output.csv": {
+              "sha256": "eb0f240c0b9b170c7a128af4fd17ed9f8a51573f8d38bb404ff45be8ad62fd98",
+              "rows": 2,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,TREDDRY,TREDWET,TREDSOL,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV,CH,CF,TSUM,DVS,LAIPOT,PWSO,PWLV,PWST,PWRT,PDWLV,PDWST,PDWRT,PTWLV,PTWST,PTWRT,PWDM,RDPOT,ICUTPOT,TCUTPOT,PHRVDM,PLOSSDM,VCOVER,LAI,WSO,WLV,WST,WRT,DWLV,DWST,DWRT,TWLV,TWST,TWRT,WDM,RD,ICUT,TCUT,HRVDM,LOSSDM,PGASSTPOT,PGASST,GASSTPOT,GASST,MRESTPOT,MREST,S_RAIN,S_IRRIG,S_DRN,S_UPT,S_STOT,S_BALDEV,S_DSTOR",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0.",
+                "2002-01-05 00:00:00,0.,0.,0.,0.,0.,.004058619970,.004058619970,0.,0.,0.,0.,0.,.195699325781,0.,-77.519157092944,0.,0.,74.987877958960,-.199757945751,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0."
+              ]
+            }
+          },
+          "public_cold": {
+            "returncode": 1,
+            "seconds": 1.2759898998774588,
+            "stdout": "",
+            "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1395, in run\n    host = DailyHost(stack, donor, kernel, case, output, starts,\n                     checkpoint_enabled=checkpoint_day is not None or runtime,\n                     runtime=runtime, binding=checkpoint_binding, model=model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1233, in __init__\n    _, initial = receive(worker, transcript, {\"HYBRID_READY\"})\n                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 991, in receive\n    raise RuntimeError(f\"Missing {prefixes}, process exited with {process.wait()}\")\nRuntimeError: Missing {'HYBRID_READY'}, process exited with 1\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.1995554999448359,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result.ageeffluent.csv": {
+              "sha256": "ee5ce37c74513d347b1c9679a41a8d1df34cd3a7fb1edb9be9c7981ec823b409",
+              "rows": 1,
+              "first_headers": [
+                "Date,daynr,daycum,AgeGwl1m,AgeBottom,AgeRootUpt,AgeRunoff,AgeDrainSys1,AgeDrainSys2,AgeDrainSys3,AgeDrainSys4,AgeDrainSys5",
+                "2002-02-04 ,  35,    35, 1.350E+02, 0.000E+00, 0.000E+00, 0.000E+00, 1.134E+04"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 1.350E+02, 0.000E+00, 0.000E+00, 0.000E+00, 1.134E+04"
+              ]
+            },
+            "result.ageeffluentqdrain.csv": {
+              "sha256": "f3484e0c12c3b6cc292470403f6ae01c338e7a6450028c24782c37a87697c7ae",
+              "rows": 1,
+              "first_headers": [
+                "Date,daynr,daycum,qDrainSys1,qDrainSys2,qDrainSys3,qDrainSys4,qDrainSys5",
+                "2002-02-04 ,  35,    35, 3.440E+00"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 3.440E+00"
+              ]
+            },
+            "result.ageProfile.csv": {
+              "sha256": "0514988008ac960301acfed48ab479207122cfb592f6be686180e753d5938d6f",
+              "rows": 1,
+              "first_headers": [
+                "Date,Day,Daycum,Node001,Node002,Node003,Node004,Node005,Node006,Node007,Node008,Node009,Node0010,Node0011,Node0012,Node0013,Node0014,Node0015,Node0016,Node0017,Node0018,Node0019,Node0020,Node0021,Node0022,Node0023,Node0024,Node0025,Node0026,Node0027,Node0028,Node0029,Node0030,Node0031,Node0032,Node0033,Node0034,Node",
+                "2002-02-04 ,  35,    35, 2.718E+01, 3.188E+01, 3.627E+01, 4.042E+01, 4.453E+01, 4.878E+01, 5.328E+01, 5.802E+01, 6.295E+01, 6.798E+01, 8.322E+01, 1.046E+02, 1.191E+02, 1.276E+02, 1.317E+02, 1.337E+02, 1.345E+02, 1.348E+02, 1.349E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 2.718E+01, 3.188E+01, 3.627E+01, 4.042E+01, 4.453E+01, 4.878E+01, 5.328E+01, 5.802E+01, 6.295E+01, 6.798E+01, 8.322E+01, 1.046E+02, 1.191E+02, 1.276E+02, 1.317E+02, 1.337E+02, 1.345E+02, 1.348E+02, 1.349E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02"
+              ]
+            },
+            "result_output.csv": {
+              "sha256": "f2f9993d5e002cbcfc857ebb326ebfc8c6a39290d1a341aaf195a61f5ed2d4fb",
+              "rows": 3,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-01-05 00:00:00,0.,0.,0.,0.,0.,.004058619970,.004058619970,0.,0.,.195745302349,0.,-77.519594113807,0.,0.,74.987831978415,-.199803926296,3.977093626650E-09"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        }
+      },
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "O2": {
+      "status": "ORIGINAL_OUTPUT_SELECTOR_BASELINE_OBSERVED_NO_NEW_ADMISSION",
+      "baseline": "42bf7e63f549212456f9a237a74ba0fc032c407d",
+      "optimization": "O2",
+      "cases": {
+        "water-csv0": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "0186210706b8a1434597b5d34984996229361fa2a126ef705ea413ba96f94513"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "0"
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 2,
+            "seconds": 0.23779059993103147,
+            "stdout": "",
+            "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWCSV\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.5565289999358356,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {},
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-csv2": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "ab7aed513e714725d5c5e6b37adf7f7707cbdcff18a996e305fe2658eece4971"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "2"
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 2,
+            "seconds": 0.23395709972828627,
+            "stdout": "",
+            "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWCSV\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.15160330012440681,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result_input.csv": {
+              "sha256": "72bb6be2111aabbc8dc508093e529101ee7920cc4241f7ec82ab04a524c33fd6",
+              "rows": 0,
+              "first_headers": [
+                "BRUNY,ERUNY,BRUND,ERUND,NUMNOD,NUMLAY,NRLEVS,SWMACRO",
+                "2002,2002,0,4,34,2,1,0"
+              ],
+              "first_data": []
+            },
+            "result_output.csv": {
+              "sha256": "6bf321bdcdfae1e92909e65efce16a0ac2b9219e24cf709708a32e1c6c63aae9",
+              "rows": 5,
+              "first_headers": [
+                "DATE,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-01-01,0.,0.,0.,0.,0.,0.,0.,0.,0.,.062355495037,0.,-76.062309890672,0.,0.,75.125280406226,-.062355498485,3.447132371215E-09"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-csv3": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "16679fc12c4789bd72792044ab77f670793ac068cda6fdf6e5c00619497641be"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "3"
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 2,
+            "seconds": 0.24848679965361953,
+            "stdout": "",
+            "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWCSV\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 3,
+            "seconds": 0.13714070012792945,
+            "stdout": "\n  running swap ....\n",
+            "stderr": "\nProgram received signal SIGSEGV: Segmentation fault - invalid memory reference.\n\nBacktrace for this error:\n#0  0x40299b94\n#1  0x40202253\n#2  0xaaa2f2e3\n#3  0xcdbc107f\n#4  0xad2464ae\n#5  0xad1a4064\n#6  0xad245ded\n#7  0xcdc651d9\n#8  0xcdc6de9b\n#9  0xcdc4972c\n#10  0xcdc66365\n#11  0xcdca8a4f\n#12  0xcdbc1156\n#13  0xab90dda6\n#14  0xad15ee4b\n#15  0xffffffff\n",
+            "swap_ok": false
+          },
+          "original_outputs": {},
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-nprint2": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "e0743f85a1674f84c85637b6e235686a136d3e5037efaf8d16dae0123bab2282"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "2"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 1,
+            "seconds": 22.588838300202042,
+            "stdout": "",
+            "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1401, in run\n    budget = host.step(column, checkpoint=day == publish_day)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1302, in step\n    raise ValueError(f\"Day {day} donor origin differs from committed stocks\")\nValueError: Day 1 donor origin differs from committed stocks\n"
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "2"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_outputs": {
+            "result_output.csv": {
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "rows": 0,
+              "first_headers": [],
+              "first_data": []
+            }
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.1834480999968946,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result_output.csv": {
+              "sha256": "812a27020a69d25cf4712aecc7803a7f9a1b1d10671c23d969cd4e039f41df8b",
+              "rows": 9,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-01-01 12:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,.032909308477,0.,-75.678645953302,0.,0.,75.154726593094,-.032909311617,3.140112517230E-09"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-monthly": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "87c2c77e8a043ee8522327ef181f38967c45c58b329d22e50c726cd090438a62"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "1"
+            ],
+            "SWODAT": [
+              "0"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 1,
+            "seconds": 17.433518699835986,
+            "stdout": "",
+            "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1401, in run\n    budget = host.step(column, checkpoint=day == publish_day)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1294, in step\n    stocks = list(map(float, response[\"HYBRID_STOCK_FLUX\"]))\n                             ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\nKeyError: 'HYBRID_STOCK_FLUX'\n"
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0"
+            ],
+            "SWODAT": [
+              "0"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS' "
+            ],
+            "FLPRINTDT": []
+          },
+          "public_outputs": {
+            "result_output.csv": {
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "rows": 0,
+              "first_headers": [],
+              "first_data": []
+            }
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.18146979995071888,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result_output.csv": {
+              "sha256": "8c6fdb9d8c492c1f47c9930f235a8bee09d469e986ecf9db9a7a9191d00529ae",
+              "rows": 3,
+              "first_headers": [
+                "DATE,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-01-31,4.260000000000,0.,0.,0.,0.,.294323396188,.294323396188,0.,0.,3.019081403877,0.,-65.995369276376,0.,0.,76.134237692327,.946601787616,-6.587682159775E-06"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "water-custom-csv5": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "784407f006aca2b9e3b0f96d18c1aefd2f315f4de735cde10538509166c70a2b"
+          },
+          "requested": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "5"
+            ],
+            "INLIST_CSV": [
+              "'GWL'"
+            ],
+            "FLPRINTDT": []
+          },
+          "public_warm": {
+            "returncode": 0,
+            "seconds": 16.992884599603713,
+            "stdout": "",
+            "stderr": ""
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "0"
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0 "
+            ],
+            "SWODAT": [
+              "0                 "
+            ],
+            "PERIOD": [
+              "1"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'"
+            ],
+            "FLPRINTDT": []
+          },
+          "public_outputs": {
+            "result_output.csv": {
+              "sha256": "e8d285b2bcaeb298c7e9d813947585130b98b95dbeb86107acbe4fc22df6e1ca",
+              "rows": 5,
+              "first_headers": [
+                "DATE,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,TREDDRY,TREDWET,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV,CH,CF,TSUM,DVS,LAIPOT,PWSO,PWLV,PWST,PWRT,PDWLV,PDWST,PDWRT,PTWLV,PTWST,PTWRT,PWDM,RDPOT,ICUTPOT,TCUTPOT,PHRVDM,PLOSSDM,VCOVER,LAI,WSO,WLV,WST,WRT,DWLV,DWST,DWRT,TWLV,TWST,TWRT,WDM,RD,ICUT,TCUT,HRVDM,LOSSDM,PGASSTPOT,PGASST,GASSTPOT,GASST,MRESTPOT,MREST",
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000"
+              ],
+              "first_data": [
+                "2001-12-31,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000",
+                "2002-01-01,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,.062291288688,0.,-76.061853996105,0.,0.,75.125344616023,-.062291288688,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000"
+              ]
+            }
+          },
+          "public_cold": {
+            "returncode": 0,
+            "seconds": 1.27988539962098,
+            "stdout": "",
+            "stderr": ""
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.16441769991070032,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result_output.csv": {
+              "sha256": "4cd4b1a2822453e3487396153b3117a0a230e8b775cc698db7c9dafd2133e0f0",
+              "rows": 5,
+              "first_headers": [
+                "DATE,GWL",
+                "2001-12-31,-75.00000"
+              ],
+              "first_data": [
+                "2001-12-31,-75.00000",
+                "2002-01-01,-76.06231"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "age-perstep-monthly": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "a86eddc652ee958e99440bb69163ef41ff4d2707ed061ef1e1948a168e04d1cc"
+          },
+          "requested": {
+            "SWSOLU": [
+              "2 "
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "1"
+            ],
+            "SWODAT": [
+              "0"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": [
+              ".TRUE."
+            ]
+          },
+          "public_warm": {
+            "returncode": 0,
+            "seconds": 19.815737400203943,
+            "stdout": "",
+            "stderr": ""
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "2 "
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "1"
+            ],
+            "SWODAT": [
+              "0"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS' "
+            ],
+            "FLPRINTDT": [
+              ".TRUE."
+            ]
+          },
+          "public_outputs": {
+            "result.ageeffluent.csv": {
+              "sha256": "f52f111c591ac0c53129cb6410a14b8c9a4adfe94b56369d35c318bc3f3ff8f8",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,AgeGwl1m,AgeBottom,AgeRootUpt,AgeRunoff,AgeDrainSys1,AgeDrainSys2,AgeDrainSys3,AgeDrainSys4,AgeDrainSys5"
+              ],
+              "first_data": []
+            },
+            "result.ageeffluentqdrain.csv": {
+              "sha256": "988b267a7449e28cb2c2f98706314578fd277a129183f80cfa4c8820fe248270",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,qDrainSys1,qDrainSys2,qDrainSys3,qDrainSys4,qDrainSys5"
+              ],
+              "first_data": []
+            },
+            "result.ageeffluentwater.csv": {
+              "sha256": "d6b9f627573f2684ca61e0bf5734758c917e8154534b02ecd07e5d2c34725cd8",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,WaterBottom_cm,WaterRoot_cm,WaterRunoff_cm,WaterDrainSys1_cm,WaterDrainSys2_cm,WaterDrainSys3_cm,WaterDrainSys4_cm,WaterDrainSys5_cm"
+              ],
+              "first_data": []
+            },
+            "result.ageProfile.csv": {
+              "sha256": "b393510a0d3064afd80fe6c3e5b22f694e5eed6a5e44f5c1175a925c9f23ba7f",
+              "rows": 0,
+              "first_headers": [
+                "Date,Day,Daycum,Node001,Node002,Node003,Node004,Node005,Node006,Node007,Node008,Node009,Node0010,Node0011,Node0012,Node0013,Node0014,Node0015,Node0016,Node0017,Node0018,Node0019,Node0020,Node0021,Node0022,Node0023,Node0024,Node0025,Node0026,Node0027,Node0028,Node0029,Node0030,Node0031,Node0032,Node0033,Node0034,Node"
+              ],
+              "first_data": []
+            },
+            "result_output.csv": {
+              "sha256": "c0c8f7d1ad702c833460f1cf3dc69a07ab3842dc617b60603d9c74ad48fe998f",
+              "rows": 2,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,TREDDRY,TREDWET,TREDSOL,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV,CH,CF,TSUM,DVS,LAIPOT,PWSO,PWLV,PWST,PWRT,PDWLV,PDWST,PDWRT,PTWLV,PTWST,PTWRT,PWDM,RDPOT,ICUTPOT,TCUTPOT,PHRVDM,PLOSSDM,VCOVER,LAI,WSO,WLV,WST,WRT,DWLV,DWST,DWRT,TWLV,TWST,TWRT,WDM,RD,ICUT,TCUT,HRVDM,LOSSDM,PGASSTPOT,PGASST,GASSTPOT,GASST,MRESTPOT,MREST,S_RAIN,S_IRRIG,S_DRN,S_UPT,S_STOT,S_BALDEV,S_DSTOR",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0.",
+                "2002-02-01 00:00:00,4.260000000000,0.,0.,0.,0.,.294323396188,.294323396188,0.,0.,0.,0.,0.,3.019074636889,0.,-65.995366986527,0.,0.,76.134237871633,.946601966922,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0."
+              ]
+            }
+          },
+          "public_cold": {
+            "returncode": 1,
+            "seconds": 1.1089929998852313,
+            "stdout": "",
+            "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1395, in run\n    host = DailyHost(stack, donor, kernel, case, output, starts,\n                     checkpoint_enabled=checkpoint_day is not None or runtime,\n                     runtime=runtime, binding=checkpoint_binding, model=model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1233, in __init__\n    _, initial = receive(worker, transcript, {\"HYBRID_READY\"})\n                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 991, in receive\n    raise RuntimeError(f\"Missing {prefixes}, process exited with {process.wait()}\")\nRuntimeError: Missing {'HYBRID_READY'}, process exited with 1\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.20513120014220476,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result.ageeffluent.csv": {
+              "sha256": "ee60a333acd2f28c7473646e71d22b0abc64b87a27d35b0d8743b8d95bf87c94",
+              "rows": 1,
+              "first_headers": [
+                "Date,daynr,daycum,AgeGwl1m,AgeBottom,AgeRootUpt,AgeRunoff,AgeDrainSys1,AgeDrainSys2,AgeDrainSys3,AgeDrainSys4,AgeDrainSys5",
+                "2002-02-04 ,  35,    35, 1.350E+02, 0.000E+00, 0.000E+00, 0.000E+00, 1.134E+04"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 1.350E+02, 0.000E+00, 0.000E+00, 0.000E+00, 1.134E+04"
+              ]
+            },
+            "result.ageeffluentqdrain.csv": {
+              "sha256": "15f08b1e0e6b2d9a58d7bf156318a25bba1eac8914e8399b6388a57b2fbb3ea6",
+              "rows": 1,
+              "first_headers": [
+                "Date,daynr,daycum,qDrainSys1,qDrainSys2,qDrainSys3,qDrainSys4,qDrainSys5",
+                "2002-02-04 ,  35,    35, 6.167E-01"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 6.167E-01"
+              ]
+            },
+            "result.ageProfile.csv": {
+              "sha256": "8413777d6b0b48e24f8819854fc14c21d03273b929120b0c7973bd3a484c19d2",
+              "rows": 1,
+              "first_headers": [
+                "Date,Day,Daycum,Node001,Node002,Node003,Node004,Node005,Node006,Node007,Node008,Node009,Node0010,Node0011,Node0012,Node0013,Node0014,Node0015,Node0016,Node0017,Node0018,Node0019,Node0020,Node0021,Node0022,Node0023,Node0024,Node0025,Node0026,Node0027,Node0028,Node0029,Node0030,Node0031,Node0032,Node0033,Node0034,Node",
+                "2002-02-04 ,  35,    35, 2.718E+01, 3.188E+01, 3.627E+01, 4.042E+01, 4.453E+01, 4.878E+01, 5.328E+01, 5.802E+01, 6.295E+01, 6.798E+01, 8.322E+01, 1.046E+02, 1.191E+02, 1.276E+02, 1.317E+02, 1.337E+02, 1.345E+02, 1.348E+02, 1.349E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 2.718E+01, 3.188E+01, 3.627E+01, 4.042E+01, 4.453E+01, 4.878E+01, 5.328E+01, 5.802E+01, 6.295E+01, 6.798E+01, 8.322E+01, 1.046E+02, 1.191E+02, 1.276E+02, 1.317E+02, 1.337E+02, 1.345E+02, 1.348E+02, 1.349E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02"
+              ]
+            },
+            "result_output.csv": {
+              "sha256": "54d70fb504026df4e6bdaee10a4be043fc2073e46c34fec013b200db878b8bfa",
+              "rows": 3,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-02-01 00:00:00,4.260000000000,0.,0.,0.,0.,.294323396188,.294323396188,0.,0.,3.019081403877,0.,-65.995369276376,0.,0.,76.134237692327,.946601787616,-6.587682159775E-06"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        },
+        "age-perstep-explicit": {
+          "input_sha256": {
+            "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "fixed-irrigation.irg": "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26",
+            "grass.crp": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+            "maize.crp": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+            "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "potato.crp": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+            "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "swap.swp": "956c06c99bb08ecbf0423e007f2130ef84edc522ca21caa8f9804cf5478e291b"
+          },
+          "requested": {
+            "SWSOLU": [
+              "2 "
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0"
+            ],
+            "SWODAT": [
+              "1"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,GWL' "
+            ],
+            "FLPRINTDT": [
+              ".TRUE."
+            ]
+          },
+          "public_warm": {
+            "returncode": 0,
+            "seconds": 18.555302100256085,
+            "stdout": "",
+            "stderr": ""
+          },
+          "actual_runtime_controls": {
+            "SWSOLU": [
+              "2 "
+            ],
+            "SWCSV": [
+              "1                  "
+            ],
+            "SWMONTH": [
+              "0"
+            ],
+            "SWODAT": [
+              "1"
+            ],
+            "PERIOD": [
+              "0"
+            ],
+            "NPRINTDAY": [
+              "1"
+            ],
+            "NUM_DECIMALS": [
+              "12"
+            ],
+            "INLIST_CSV": [
+              "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS' "
+            ],
+            "FLPRINTDT": [
+              ".TRUE."
+            ]
+          },
+          "public_outputs": {
+            "result.ageeffluent.csv": {
+              "sha256": "9ea3e45c48176b9f55804eda888051ac87ca51c382330703fea7d7154401196b",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,AgeGwl1m,AgeBottom,AgeRootUpt,AgeRunoff,AgeDrainSys1,AgeDrainSys2,AgeDrainSys3,AgeDrainSys4,AgeDrainSys5"
+              ],
+              "first_data": []
+            },
+            "result.ageeffluentqdrain.csv": {
+              "sha256": "07b45f78162e59208839165e077e88c4727268397ab11fc96d9534ae29dbc1e1",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,qDrainSys1,qDrainSys2,qDrainSys3,qDrainSys4,qDrainSys5"
+              ],
+              "first_data": []
+            },
+            "result.ageeffluentwater.csv": {
+              "sha256": "f802882bc06f277ee2449e974cf84054bb0af0f26de43115af24b5cd4359215f",
+              "rows": 0,
+              "first_headers": [
+                "Date,daynr,daycum,WaterBottom_cm,WaterRoot_cm,WaterRunoff_cm,WaterDrainSys1_cm,WaterDrainSys2_cm,WaterDrainSys3_cm,WaterDrainSys4_cm,WaterDrainSys5_cm"
+              ],
+              "first_data": []
+            },
+            "result.ageProfile.csv": {
+              "sha256": "0f90b07bcaa0ed1aca4fc1361d3e1459c0705b927036a73eb27583ff6cbd9a13",
+              "rows": 0,
+              "first_headers": [
+                "Date,Day,Daycum,Node001,Node002,Node003,Node004,Node005,Node006,Node007,Node008,Node009,Node0010,Node0011,Node0012,Node0013,Node0014,Node0015,Node0016,Node0017,Node0018,Node0019,Node0020,Node0021,Node0022,Node0023,Node0024,Node0025,Node0026,Node0027,Node0028,Node0029,Node0030,Node0031,Node0032,Node0033,Node0034,Node"
+              ],
+              "first_data": []
+            },
+            "result_output.csv": {
+              "sha256": "463c5c880c069c83b26e59bd052afd37e46857ac6ece6f41b053d565eaa26848",
+              "rows": 2,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,TREDDRY,TREDWET,TREDSOL,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV,CH,CF,TSUM,DVS,LAIPOT,PWSO,PWLV,PWST,PWRT,PDWLV,PDWST,PDWRT,PTWLV,PTWST,PTWRT,PWDM,RDPOT,ICUTPOT,TCUTPOT,PHRVDM,PLOSSDM,VCOVER,LAI,WSO,WLV,WST,WRT,DWLV,DWST,DWRT,TWLV,TWST,TWRT,WDM,RD,ICUT,TCUT,HRVDM,LOSSDM,PGASSTPOT,PGASST,GASSTPOT,GASST,MRESTPOT,MREST,S_RAIN,S_IRRIG,S_DRN,S_UPT,S_STOT,S_BALDEV,S_DSTOR",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0.",
+                "2002-01-05 00:00:00,0.,0.,0.,0.,0.,.004058619970,.004058619970,0.,0.,0.,0.,0.,.195699325781,0.,-77.519157092944,0.,0.,74.987877958960,-.199757945751,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,-999.999000000000,0.,0.,0.,0.,0.,0.,0."
+              ]
+            }
+          },
+          "public_cold": {
+            "returncode": 1,
+            "seconds": 1.0973059996031225,
+            "stdout": "",
+            "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 396, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 365, in main\n    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,\n                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,\n                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1395, in run\n    host = DailyHost(stack, donor, kernel, case, output, starts,\n                     checkpoint_enabled=checkpoint_day is not None or runtime,\n                     runtime=runtime, binding=checkpoint_binding, model=model, project=project)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 1233, in __init__\n    _, initial = receive(worker, transcript, {\"HYBRID_READY\"})\n                 ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 991, in receive\n    raise RuntimeError(f\"Missing {prefixes}, process exited with {process.wait()}\")\nRuntimeError: Missing {'HYBRID_READY'}, process exited with 1\n"
+          },
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original": {
+            "returncode": 100,
+            "seconds": 0.2166367000900209,
+            "stdout": "\n  running swap ....\n Swap normal completion!\n",
+            "stderr": "",
+            "swap_ok": true
+          },
+          "original_outputs": {
+            "result.ageeffluent.csv": {
+              "sha256": "2e1202677e9786c243b126f36c607d5eee782cb5a21bc9a0f013d912af2b16cc",
+              "rows": 1,
+              "first_headers": [
+                "Date,daynr,daycum,AgeGwl1m,AgeBottom,AgeRootUpt,AgeRunoff,AgeDrainSys1,AgeDrainSys2,AgeDrainSys3,AgeDrainSys4,AgeDrainSys5",
+                "2002-02-04 ,  35,    35, 1.350E+02, 0.000E+00, 0.000E+00, 0.000E+00, 1.134E+04"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 1.350E+02, 0.000E+00, 0.000E+00, 0.000E+00, 1.134E+04"
+              ]
+            },
+            "result.ageeffluentqdrain.csv": {
+              "sha256": "65290383e88628c78a52db998567c5ca9e8f926b6173bf16a8cf8e05e0099c46",
+              "rows": 1,
+              "first_headers": [
+                "Date,daynr,daycum,qDrainSys1,qDrainSys2,qDrainSys3,qDrainSys4,qDrainSys5",
+                "2002-02-04 ,  35,    35, 3.440E+00"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 3.440E+00"
+              ]
+            },
+            "result.ageProfile.csv": {
+              "sha256": "3363a4ae43f80a2c179d11701fae312f9d1f3bf260745e2cb5a90b3c1ec846b8",
+              "rows": 1,
+              "first_headers": [
+                "Date,Day,Daycum,Node001,Node002,Node003,Node004,Node005,Node006,Node007,Node008,Node009,Node0010,Node0011,Node0012,Node0013,Node0014,Node0015,Node0016,Node0017,Node0018,Node0019,Node0020,Node0021,Node0022,Node0023,Node0024,Node0025,Node0026,Node0027,Node0028,Node0029,Node0030,Node0031,Node0032,Node0033,Node0034,Node",
+                "2002-02-04 ,  35,    35, 2.718E+01, 3.188E+01, 3.627E+01, 4.042E+01, 4.453E+01, 4.878E+01, 5.328E+01, 5.802E+01, 6.295E+01, 6.798E+01, 8.322E+01, 1.046E+02, 1.191E+02, 1.276E+02, 1.317E+02, 1.337E+02, 1.345E+02, 1.348E+02, 1.349E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02"
+              ],
+              "first_data": [
+                "2002-02-04 ,  35,    35, 2.718E+01, 3.188E+01, 3.627E+01, 4.042E+01, 4.453E+01, 4.878E+01, 5.328E+01, 5.802E+01, 6.295E+01, 6.798E+01, 8.322E+01, 1.046E+02, 1.191E+02, 1.276E+02, 1.317E+02, 1.337E+02, 1.345E+02, 1.348E+02, 1.349E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02, 1.350E+02"
+              ]
+            },
+            "result_output.csv": {
+              "sha256": "f9f446ab133b8940324c6086b642373fb6cde73bb4a515281726ea7313a6d944",
+              "rows": 3,
+              "first_headers": [
+                "DATETIME,RAIN,IRRIG,RUNOFF,EIC,EPD,EPOT,EACT,TPOT,TACT,DRN,SSDI,GWL,PD_VOL,IC_VOL,WTOT,DSTOR,BALDEV",
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0."
+              ],
+              "first_data": [
+                "2002-01-01 00:00:00,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,-75.000000000000,0.,0.,75.187635904711,0.,0.",
+                "2002-01-05 00:00:00,0.,0.,0.,0.,0.,.004058619970,.004058619970,0.,0.,.195745302349,0.,-77.519594113807,0.,0.,74.987831978415,-.199803926296,3.977093626650E-09"
+              ]
+            }
+          },
+          "original_claim": "READER_AND_OUTPUT_OBSERVATION_ONLY_NOT_SCIENCE"
+        }
+      },
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    }
+  },
+  "classification": "PARTIAL",
+  "scientific_equivalence": "NOT_QUALIFIED"
+}

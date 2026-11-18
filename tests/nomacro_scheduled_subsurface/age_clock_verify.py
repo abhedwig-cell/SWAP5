@@ -177,6 +177,10 @@ def preservation_builds(q):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('original_output_admission',ROOT/'tests/nomacro_scheduled_subsurface/original_output_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(SEALED!='UNSEALED_NOT_QUALIFIED','005 admission is not sealed')
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty005 admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')

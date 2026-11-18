@@ -1,0 +1,13 @@
+{
+  "audit_id": "NOMACRO-BINARY-OUTPUT-01",
+  "status": "BOUNDED_ORIGINAL_BINARY_LIFETIME_AND_REAL4_COMPONENT_QUALIFIED_NOT_ACTIVE_IN_SWAP5",
+  "original_canonical_sha256": "a1b1b261ec05153d2075099c04cc6bb656f657344d4c1ceb5c9e43d0fd225355",
+  "corrected_canonical_sha256": "94a50f29f199a441942ed8c719b77480e4fcab3d0886c3021fab764f1d51a3bb",
+  "scope": "csv_out localallocatable buffer: case1allocation diesonreturn; allocate actual scratch insidecase2beforebinarywrite. ExactoriginalREAL4streamformat preserved; ASCIIbranch andphysicalformulas unchanged.",
+  "reference_policy": "docs/verification/principles.md#reference-chain",
+  "SWAP5_activation": false,
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "evidence": "integration/f-ci/nomacro-complete01/ORIGINAL_BINARY_OUTPUT_COMPONENT.json",
+  "actual_API": "Original csv_out called through real original initialization;63originalobjectproviderclosure measured, providerobjects/library unchanged.",
+  "controls": "O0/O2 actualoriginalbinaryfailure; explicit allocated(buffer)false observation; correctedASCIIexact5records; correctedbinary5recordsofREAL4valuesbit-exacttoactualoriginalsourceRHS; diagnosticprobeunchangedpayload."
+}

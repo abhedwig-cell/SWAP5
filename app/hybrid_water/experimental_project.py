@@ -60,12 +60,20 @@ def crop_entries(text):
     return re.findall(r"(?m)^[ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+'([^'\n]+)'[ \t]+([12])[ \t]*(?:!.*)?$",text)
 
 
-def inspect(directory):
+def inspect(directory, *, original_output=None):
+    """Describe physical inputs; load() selects the executable output contract.
+
+    None is descriptor-only and exposes original output selectors to process
+    helpers. Executions must select False (compatibility) or True (original).
+    """
     directory = Path(directory).resolve()
     inputs = inventory(directory)
     text = (directory/'swap.swp').read_text(encoding='cp1252')
     check_paths(text, 'swap.swp')
     selected = switches(text)
+    # Descriptor-only helper calls accept the historical output domain. Actual
+    # executions use load() with an explicit compatibility/original choice.
+    if original_output is not False and 'SWCSV' not in selected:selected['SWCSV']=0
     # SWVAPOR is an original per-layer array; inspect every value, not only
     # the first token seen by the scalar SW-selector inventory.
     vapor = re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^!\r\n]+)',text)
@@ -84,7 +92,7 @@ def inspect(directory):
                  'SWSNOW': {0, 1}, 'SWFROST': {0, 1}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
                  'SWTOPBHEA': {1, 2, 3, 4}, 'SWBOTBHEA': {1, 2}, 'SWCROP': {0, 1},
                  'SWMETDETAIL': {0,1}, 'SWRUNON': {0,1}, 'SWKIMPL': {0},
-                 'SWPONDMX': {0,1}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
+                 'SWPONDMX': {0,1}, 'SWIRFIX': {0, 1}, 'SWCSV': ({1} if original_output is False else {0,1,2,3})}
     mandatory.update(SWSOPHY={0, 1}, SWDRA={0, 1}, SWETR={0, 1},
                      SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWREDU={0, 1, 2},
                      SWKMEAN=set(range(1,7)), SWINCO={1, 2, 3}, SWBBCFILE={0, 1})
@@ -159,6 +167,7 @@ def inspect(directory):
         raise ValueError('Snow requires numerical thermal history integration')
     if selected['SWHYST'] and selected['SWSOPHY'] != 0:
         raise ValueError('Original hysteresis requires the analytical hydraulic family')
+    if original_output is not False:allowed.update(SWCSV={0,1,2,3},SWMONTH={0,1},SWODAT={0,1},SWRES={0,1})
     for name, value in selected.items():
         if value not in allowed.get(name, set()):
             raise ValueError('Unimplemented experimental selector: '+name+'='+str(value))
@@ -246,14 +255,21 @@ def inspect(directory):
     return report
 
 
-def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_table_policy=None):
+def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_table_policy=None, original_output=False):
     from daily_host import HybridProject, ORIGINAL_TIME_POLICY, TIME_POLICIES
     from solute_step_policy import LEGACY_SOLUTE_STEP_POLICY, SOLUTE_STEP_POLICIES
     policy=ORIGINAL_TIME_POLICY if time_step_policy is None else time_step_policy
     if policy not in TIME_POLICIES:raise ValueError("Unknown experimental time-step policy")
     chemical=LEGACY_SOLUTE_STEP_POLICY if solute_step_policy is None else solute_step_policy
     if chemical not in SOLUTE_STEP_POLICIES:raise ValueError('Unknown experimental chemical substep policy')
-    report = inspect(directory)
+    if not isinstance(original_output,bool):raise ValueError('Original output mode must be boolean')
+    report = inspect(directory,original_output=original_output)
+    if original_output:report={**report,'original_output_policy':'original-user-output-controls-v1'}
+    else:
+        text=(Path(directory)/'swap.swp').read_text(encoding='cp1252')
+        flags=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^!\r\n]+)',text)
+        if len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F'):
+            raise ValueError('FLPRINTDT requires separately selected --original-output state qualification')
     from time_event_closure import POLICY as EVENT_POLICY
     from irrigation_pulse_time import POLICY as PULSE_POLICY
     from local_wetting_time import POLICY as WETTING_POLICY
@@ -276,16 +292,18 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     key = hashlib.sha256(json.dumps(report, sort_keys=True).encode()).hexdigest()
     return HybridProject('experimental-'+key, MODEL, report['start_date'], report['nodes'], 1e-10,
                          solute=report['solute'], age=report.get('age',False), end_date=report['end_date'],
-                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical,soil_table_policy=soil)
+                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical,soil_table_policy=soil,original_output=original_output)
 
 
 def validate(project):
-    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy,solute_step_policy=project.solute_step_policy,soil_table_policy=project.soil_table_policy) != project:
+    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy,solute_step_policy=project.solute_step_policy,soil_table_policy=project.soil_table_policy,original_output=project.original_output) != project:
         raise ValueError('Experimental input, process configuration or metadata differs')
     return Path(project.input_directory)
 
 
 def auxiliary_magic(project):
+    from original_output import selection as original_selection,magic as original_magic
+    if original_selection(project) is not None:return original_magic(project)
     if project.age:
         from age_output_clock import selection as clock,MAGIC as CLOCK_MAGIC
         if clock(project) is not None:return CLOCK_MAGIC

@@ -186,6 +186,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     from experimental_project import MODEL as experimental_model
     parser.add_argument("--model", choices=[GRASS_MODEL,HUPSEL_MODEL,experimental_model]+[p.model for p in PROJECTS])
+    parser.add_argument('--original-output',action='store_true',
+                        help='Preserve original formats, CSV groups, precision and calendar; requires --experimental-project')
     parser.add_argument('--experimental-project', type=Path,
                         help='Explicit experimental original project directory; no production/science claim')
     parser.add_argument('--experimental-solute-step-policy',choices=host_module.SOLUTE_STEP_POLICIES,
@@ -226,6 +228,7 @@ def main():
     if args.model is None:
         parser.error('--model is required for a build or run')
     experimental = args.experimental_project is not None
+    if args.original_output and not experimental:parser.error('--original-output requires --experimental-project')
     if args.experimental_soil_table_policy is not None and not experimental:
         parser.error('--experimental-soil-table-policy requires --experimental-project')
     if args.experimental_solute_step_policy is not None and not experimental:
@@ -279,7 +282,7 @@ def main():
     try:
         if experimental:
             from experimental_project import load
-            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy)
+            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy,original_output=args.original_output)
         else:
             project={p.model:p for p in PROJECTS}[args.model]
     except (OSError, ValueError) as error:

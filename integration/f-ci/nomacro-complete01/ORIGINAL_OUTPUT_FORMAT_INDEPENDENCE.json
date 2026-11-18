@@ -1,0 +1,61 @@
+{
+  "status": "TEN_OUTPUT_FORMAT_PRECISION_PROFILES_PER_OPT_ALL_PHYSICS_AND_NATIVE_EXACT",
+  "groups": {
+    "water-O0": {
+      "profiles": [
+        "water-csv2",
+        "water-csv3",
+        "water-default-precision",
+        "water-csv0-omitted"
+      ],
+      "all1096_physical_rows_exact": true,
+      "five_complete_native_endpoints_exact": true
+    },
+    "cde-O0": {
+      "profiles": [
+        "cde-solbal-csv1",
+        "cde-solbal-csv2",
+        "cde-solbal-csv3"
+      ],
+      "all1096_physical_rows_exact": true,
+      "five_complete_native_endpoints_exact": true
+    },
+    "age-O0": {
+      "profiles": [
+        "age-csv0",
+        "age-csv2",
+        "age-csv3"
+      ],
+      "all1096_physical_rows_exact": true,
+      "five_complete_native_endpoints_exact": true
+    },
+    "water-O2": {
+      "profiles": [
+        "water-csv2",
+        "water-csv3",
+        "water-default-precision",
+        "water-csv0-omitted"
+      ],
+      "all1096_physical_rows_exact": true,
+      "five_complete_native_endpoints_exact": true
+    },
+    "cde-O2": {
+      "profiles": [
+        "cde-solbal-csv1",
+        "cde-solbal-csv2",
+        "cde-solbal-csv3"
+      ],
+      "all1096_physical_rows_exact": true,
+      "five_complete_native_endpoints_exact": true
+    },
+    "age-O2": {
+      "profiles": [
+        "age-csv0",
+        "age-csv2",
+        "age-csv3"
+      ],
+      "all1096_physical_rows_exact": true,
+      "five_complete_native_endpoints_exact": true
+    }
+  }
+}

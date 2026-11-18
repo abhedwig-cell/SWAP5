@@ -53,6 +53,7 @@ class HybridProject:
     solute_step_policy: str = LEGACY_SOLUTE_STEP_POLICY
     soil_table_policy: str = ORIGINAL_SOIL_TABLE_POLICY
     age: bool = False
+    original_output: bool = False
 
     @property
     def last_day(self):
@@ -173,11 +174,13 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     chemical_source=chemical_fixed or chemical_scheduled
     from conserved_aquifer_solute import enabled as aquifer_enabled, correction as aquifer_correction
     aquifer_source=aquifer_enabled(project)
-    import age_output_clock as age_calendar_owner
+    import original_output as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
-        import age_output_schedule as age_calendar_owner
+        import age_output_clock as age_calendar_owner
         if age_calendar_owner.selection(project) is None:
-            import age_output_calendar as age_calendar_owner
+            import age_output_schedule as age_calendar_owner
+            if age_calendar_owner.selection(project) is None:
+                import age_output_calendar as age_calendar_owner
     age_calendar=age_calendar_owner.selection(project)
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=(2 if project.age else int(project.solute)):
@@ -839,6 +842,7 @@ end module plant_interface""")
                     *([str(output/'mod_aquifer_solute_reservoir.o')] if aquifer_source else []),
                     *([str(output/(name+'.o')) for name in (*age_patch.PROVIDERS,*age_patch.OUTPUT_PROVIDERS)] if project.age else []),
                     *([str(output/(name+'.o')) for name in ('mod_original_output_receipt','hybrid_age_output_state','age_output_calendar_probe')] if age_calendar is not None else []),
+                    *([str(output/'original_cde_output_state.o')] if project.original_output and project.solute else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
@@ -882,6 +886,9 @@ end module plant_interface""")
         "driver": sha(driver),
         "host": sha(Path(__file__)),
     }
+    from original_output import metadata as original_output_metadata
+    selected_output=original_output_metadata(project)
+    if selected_output is not None:build_identity['original_output']=selected_output
     if project.input_directory:
         build_identity['experimental_input_adapter'] = sha(APP/'experimental_project.py')
     if project.time_step_policy == LOCAL_WETTING_TIME_POLICY:
@@ -899,7 +906,7 @@ end module plant_interface""")
     if project.age:
         from conserved_original_age import metadata as age_metadata
         build_identity['conserved_original_age']=age_metadata()
-        from age_output_clock import age_identity
+        from original_output import age_identity
         build_identity['conserved_original_age']=age_identity(build_identity['conserved_original_age'],project)
         from age_fixed_irrigation import enabled as age_fixed_enabled,metadata as age_fixed_metadata
         if age_fixed_enabled(project):build_identity['original_age_fixed_irrigation']=age_fixed_metadata()
@@ -1131,7 +1138,7 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
     if checkpoint_enabled or project.solute:
         control = directory / "swap.swp"
         source = control.read_text(encoding="cp1252")
-        if project.solute or project.input_directory:
+        if (project.solute or project.input_directory) and not project.original_output:
             # Same output-only compatibility already owned by HIGH_PRECISION_REFERENCE.json.
             source,count=re.subn(r"(?mi)^(\s*INLIST_CSV\s*=\s*)'[^']*'",r"\1'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'",source)
             if count!=1:raise ValueError('Missing/ambiguous original CSV groups')
