@@ -17,10 +17,10 @@ CASES={
  'snow-periodic-hys0-none':('periodic',0,0,1,0,1,'interval',None,False),
 }
 PILOTS={
- 'ordinary-explicit-hys0-binary':'cde-interval-ordinary-explicit-{opt}-v3',
- 'snow-monthly-hys2-binary':'cde-interval-snow-monthly-{opt}-v3',
- 'ordinary-periodic-hys1-vector':'cde-interval-ordinary-surface-{opt}-v1',
- 'snow-explicit-hys0-vector':'cde-interval-snow-sprinkler-{opt}-v1',
+ 'ordinary-explicit-hys0-binary':'cde-interval-ordinary-explicit-{opt}-v4',
+ 'snow-monthly-hys2-binary':'cde-interval-snow-monthly-{opt}-v4',
+ 'ordinary-periodic-hys1-vector':'cde-interval-ordinary-surface-{opt}-v2',
+ 'snow-explicit-hys0-vector':'cde-interval-snow-sprinkler-{opt}-v2',
 }
 CONTROLS=tuple(key for key,case in CASES.items() if case[-1])
 PROVIDER_POISONS=('ordinary-explicit-hys0-binary','snow-monthly-hys2-binary')
@@ -61,7 +61,7 @@ def main():
             if key in CONTROLS:
                 target=a.output/('controls-'+key)
                 if a.reuse_pilots and key in PROVIDER_POISONS:
-                    target=a.reuse_pilots/('cde-interval-controls-'+('snow-monthly' if snow else 'ordinary-explicit')+'-'+a.optimization+'-v1')
+                    target=a.reuse_pilots/('cde-interval-controls-'+('snow-monthly' if snow else 'ordinary-explicit')+'-'+a.optimization+'-v2')
                 extra=['--skip-provider-poison'] if key not in PROVIDER_POISONS else []
                 if not (target/'RESULT.json').exists():invoke('cde_interval_controls.py','--reference-work',a.reference_work,'--profile-root',short,'--output',target,*extra)
                 control=read(target);assert control['status']=='CDE_INTERVAL_NATIVE_ACTIVE_POLICY_PROVIDER_PASS'
