@@ -5,6 +5,7 @@ import hashlib,importlib.util,io,json,math,subprocess,sys,tarfile,tempfile,zipfi
 ROOT=Path(__file__).resolve().parents[2]
 BASE='f2fc11124d98e1238d5996ec2af21cbde24e49d9'
 RUNTIME='355559313c8b47f7fd83b88c5c123e84e5b66d03'
+SEALED='0c84f62b39e16ac6184ca39865e337aba8fe261e'
 PROOF='integration/f-ci/saltfarm-newton-work01/'
 ENTRY='tests/nomacro_scheduled_subsurface/thermal_calendar_verify.py'
 HOOK="""    import importlib.util
@@ -95,7 +96,9 @@ def audit(z,platform,producer=RUNTIME):
     return result
 
 def verify():
-    source_guard();q=json.loads((ROOT/PROOF/'PORTABLE.json').read_text());require(q['runtime']==RUNTIME and q['base']==BASE and q['water_guard_cm']==q['solute_guard_mg_cm2']==1e-10,'foreign portable Newton scope')
+    source_guard()
+    require((ROOT/PROOF/'PORTABLE.json').read_bytes()==blob(SEALED,PROOF+'PORTABLE.json'),'sealed Newton platform qualification changed')
+    q=json.loads((ROOT/PROOF/'PORTABLE.json').read_text());require(q['runtime']==RUNTIME and q['base']==BASE and q['water_guard_cm']==q['solute_guard_mg_cm2']==1e-10,'foreign portable Newton scope')
     require(q['whole_scientific_equivalence']=='NOT_QUALIFIED' and q['RC3_changed'] is False,'Newton scientific/release scope promoted')
     prior=predecessor();reports={}
     require(set(q['archives'])=={'Windows','Ubuntu'},'portable Newton platform omitted')
@@ -103,6 +106,7 @@ def verify():
         producer=record['producer_ref'];git('merge-base','--is-ancestor',producer,'HEAD')
         require(not git('diff',RUNTIME,producer,'--','app','src','reference','tools','tests/saltfarm_newton/qualify.py','tests/saltfarm_newton/transactions.py'),'Newton model/controller producer differs')
         raw=(ROOT/PROOF/record['file']).read_bytes();require(digest(raw)==record['sha256'] and len(raw)==record['bytes'],'Newton producer archive changed')
+        if platform=='Ubuntu':require(record['actual_artifact_bytes_preserved'] is True and record['origin_artifact_digest']=='sha256:'+digest(raw),'Ubuntu artifact rebound')
         with zipfile.ZipFile(io.BytesIO(raw)) as z:reports[platform]=audit(z,platform,producer)
     return dict(status='SALTFARM_NEWTON_WINDOWS_UBUNTU_O0_O2_FULL_NATIVE_ADMISSION_PASS',runtime=RUNTIME,base=BASE,platforms=reports,predecessor=prior,whole_scientific_equivalence='NOT_QUALIFIED',RC3_changed=False)
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
