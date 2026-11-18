@@ -49,7 +49,7 @@ def active_selection(project):
     if fmt not in (0,1,2,3) or dates not in (0,1) or not 0<=requested<=366:raise ValueError('Invalid original per-step output selectors')
     precision=one('NUM_DECIMALS',5) if fmt else None
     if precision is not None and not 5<=precision<=12:raise ValueError('Invalid original per-step precision')
-    return dict(perstep_domain=True,kind='water',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=1,swhyst=hys,swcsv=fmt,
+    return dict(perstep_domain=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),thermal_clock=bool(swsnow),thermal_step=bool(swsnow),kind='water',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=1,swhyst=hys,swcsv=fmt,
         nprintday=nprint,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=1,flprintdt=True,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision)
 
@@ -83,7 +83,7 @@ def metadata(project):
         trial_receipt_policy='literal-original-independent-darcy-perstep-family-v1',trial_water_guard_cm=1e-10,
         trial_bottom='actual original Darcy/soil-air constraint before Fluxes; never candidate-volume closure',
         legacy_trial_comparison_diagnostic=not is_snow,physical_equations_changed=False,
-        thermal_output=is_snow,thermal_calendar=is_snow,thermal_clock=is_snow,thermal_step=is_snow)
+        selected_scope_thermal=bool(is_snow))
     if is_snow:result.update(snow_output_source_sha256=sha(Path(__file__).with_name(SNOW_PROVIDER+'.f90')),snow_output_fields=list(SNOW_FIELDS),snow_output_domain_bytes=32,snow_output_value_bytes=56,
         snow_stock='actual MOD_snow ssnow',snow_increment_slots=[2,3,13],soil_trial_guard_cm=1e-10)
     return result
