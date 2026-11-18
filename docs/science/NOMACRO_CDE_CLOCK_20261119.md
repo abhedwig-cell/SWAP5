@@ -78,3 +78,24 @@ behind only a four-line hook at cde_interval_verify.verify. Perform actual produ
 corruptions, a real committed wrong-source refusal, docs strict checks and actual
 canonical source/metadata ordered-parent/full-tree/clean detached owner gates.
 Continue with the next historical gap after admission.
+
+## Actual1440 source-delivery observation and bounded numerical correction
+
+Bothopt ten35day cohorts andsixnative controls pass beforefullperiods. The
+firstactual1440ordinarysubdaily limit completes2days andownnative1to2 with
+strictmass/waterclosure, butplanned48/72mg source delivery is short by about
+1e-7/2e-7mg. Actual rates/transport receipts agree; no balance guard is relaxed.
+Original absolute-epoch print cancellation puts the step just before the local
+irrigation endpoint, and originaldtCrit1e-8 then resets the active irrigation.
+Retain both failing workers beforeanylongperiod. This observation is not a
+whole original-reference equivalence or inherited-defect classification.
+
+Add a small actual production local-event closure interface, before original
+TimeControl resets: if a selected print/forcing event and the local irrigation
+or end-day remainder coincide within the existing originaldtCrit, close that
+local endpoint exactly. Preserve genuinely earlier caps. Do not adjust rate,
+concentration, physical stock or any water/chemical/age guard. Keep the original
+dtCrit unchanged. Explicitly name the new numerical policy and source; selected
+CDEclock paths only. Test finite/domain/idempotence/atomic refusal on the real
+O0/O2 interface first, then rerun actual2day source/native workers before fresh
+O0/O2 short/native/full qualification. No old BUILD/checkpoint is rebound.

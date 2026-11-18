@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-cde-clock01",
-  "last_commit": "b7c6bfaba579702174c6845ae86080c551e45c00",
-  "status": "CDE_CLOCK_FOUR_O0_O2_PILOTS_PASS_NATIVE_CONTROLS_PASS_SELECTED_MATRIX_NEXT",
+  "last_commit": "f76bbed12e728a3c0f3753d88f11013d32454633",
+  "status": "CDE_CLOCK_ACTUAL_1440_LOCAL_SOURCE_EVENT_CLOSURE_CORRECTION_COMPONENT_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run selected ten short/six native/four chemical1440limit gates before six full periods per O0/O2; parallel bounded epoch and explicit reader/public/alias controls. Do not run unrelated old full campaigns.",
+  "next_action": "Persist and test real small local-event closure O0/O2, then integrate only new CDE clock TimeControl and run fresh actual two-day1440 source/native workers before new complete qualification.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -3022,7 +3022,7 @@
     }
   },
   "cde_clock": {
-    "status": "CDE_CLOCK_FOUR_O0_O2_PILOTS_PASS_NATIVE_CONTROLS_PASS_SELECTED_MATRIX_NEXT",
+    "status": "CDE_CLOCK_ACTUAL_1440_LOCAL_SOURCE_EVENT_CLOSURE_CORRECTION_COMPONENT_NEXT",
     "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
     "contract": "docs/science/NOMACRO_CDE_CLOCK_20261119.md",
     "source_audit": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\NEXT_CDE_CLOCK_SOURCE_AUDIT.json",
@@ -3218,6 +3218,400 @@
           "accept_exact": true,
           "recovered_next_day_exact": true,
           "origin_unchanged": true
+        }
+      }
+    },
+    "retained_1440_failure": {
+      "O0": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O0-v1",
+        "matrix_status": "FAILED",
+        "short_contexts": 10,
+        "native_contexts": 6,
+        "full_periods_started": false,
+        "actual_limit": {
+          "status": "FAILED",
+          "source_commit": "ff33b8f0867006cc5c87733d7eee5645b4544820",
+          "nprintday": 1440,
+          "perstep": false,
+          "snow": 0,
+          "source": "point",
+          "rain": null,
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "et": 0,
+          "optimization": "O0",
+          "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O0-v1\\limit-ordinary-subdaily\\input",
+          "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O0-v1\\limit-ordinary-subdaily\\build",
+          "original_output": {
+            "policy": "original-cde-clock-output-and-observed-daily-flux-v1",
+            "native_codec": "S5CCC001",
+            "cde_clock_output": true,
+            "cde_interval_output": true,
+            "thermal_output": false,
+            "thermal_calendar": false,
+            "thermal_clock": false,
+            "thermal_step": false,
+            "kind": "cde",
+            "swsnow": 0,
+            "swhea": 1,
+            "swcalt": 2,
+            "swfrost": 0,
+            "swdra": 1,
+            "swhyst": 0,
+            "swcsv": 3,
+            "nprintday": 1440,
+            "swmonth": 0,
+            "swodat": 1,
+            "swres": 1,
+            "requested_period": 0,
+            "period": 1,
+            "flprintdt": false,
+            "groups": "WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS",
+            "num_decimals": 12,
+            "source_sha256": "058ffcf4b9cadcb1ed97217e06cce9cc5642364baae62cec8aa6c75e28f567b7",
+            "predecessor_owner_sha256": "28ab49dd941cdc338d02584f1ff9a4e99962cba72495ca1e2df8115e20c66945",
+            "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+            "thermal_owner_sha256": "e209d581b3e73edc5676d19084e389dece7dde076c13756f4f7ebdfc03f37d2d",
+            "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+            "domain_source_sha256": null,
+            "native_domain_bytes": 0,
+            "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+            "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+            "original_output_epoch": 37256,
+            "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+            "snow_clock_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+            "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+            "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+            "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+            "original_flprintdt_date_gated": false,
+            "annual_counter_policy": "original-print-period-counter-v1",
+            "timecontrol_composition": "literal-original-bound-output-epoch-v1",
+            "trial_receipt_policy": "literal-original-independent-soil-candidate-bottom-cde-clock-v1",
+            "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+            "private_cde_interval_fields": [
+              "sampro0",
+              "rounderr"
+            ],
+            "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+            "cde_output_state_version": 2,
+            "cde_output_state_reals": 54,
+            "cde_output_state_private_reals": 2,
+            "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+            "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+            "cde_daily_mass_guard_mg_cm2": 1e-10,
+            "calendar_initial_past_date_policy": "original-initial-interval-pointer-remains-one-v1",
+            "original_pending_dates_not_normalized": true,
+            "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+            "conserved_cde_prefix_offset_bytes": 48,
+            "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+            "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+            "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+            "preserves_requested_groups_and_precision": true,
+            "undefined_allocation_tails_serialized": false,
+            "physical_equations_changed": false
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL",
+          "build": {
+            "returncode": 0,
+            "seconds": 13.368440099991858
+          },
+          "trajectory": {
+            "status": "SHORT_PASS",
+            "days": 2,
+            "budgets": {
+              "days": 2,
+              "max_water_cm": 7.903183316115836e-14,
+              "max_kernel_cm": 7.904787935331115e-14,
+              "max_solute_mg_cm2": 5.009326287108706e-12,
+              "sum_water_residual_cm": 7.767307161156748e-14
+            },
+            "model_seconds": 1.47318259999156,
+            "build_sha256": "cc2b47cfc844e5f7a72c8a243d79d8ab4db600b450ed667919aa017e3e668e38"
+          },
+          "requested_controls_preserved": true,
+          "daily_chemical_receipts": {
+            "actual_days": 2,
+            "actual_rows": [
+              [
+                0.0,
+                47.999999898570785,
+                0.0,
+                47.999999898575794,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -5.009326287108706e-12,
+                7.105427357601002e-15,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                7.105427357601002e-15
+              ],
+              [
+                47.999999898570785,
+                119.99999971076784,
+                0.0,
+                71.99999981224516,
+                -4.773243083091037e-11,
+                0.0,
+                0.0,
+                0.0,
+                -3.7841780740601365e-13,
+                -1.9895196601282805e-13,
+                0.0,
+                0.0,
+                -1.2492977804926234e-13,
+                0.0,
+                0.0,
+                0.0,
+                -7.402218796356571e-14
+              ]
+            ],
+            "actual_increment_counts": [
+              [
+                2146,
+                2857,
+                2146,
+                72964,
+                72964,
+                72964
+              ],
+              [
+                1440,
+                1500,
+                1440,
+                48960,
+                48960,
+                48960
+              ]
+            ],
+            "integrated_actual_chemical_residual_mg_cm2": -5.38774409451472e-12
+          },
+          "cold": [
+            {
+              "start": 1,
+              "end": 2,
+              "exact_physical": true,
+              "exact_complete_native": true,
+              "exact_user_output": {
+                "result_output.bin": {
+                  "exact": true,
+                  "continuation_records": 1440,
+                  "kind": "original_REAL4_binary"
+                }
+              },
+              "origin_unchanged": true,
+              "seconds": 0.7865899000316858
+            }
+          ],
+          "actual_fixed_incoming_mg_cm2": [
+            47.999999898575794,
+            71.99999981224516
+          ],
+          "error": "AssertionError()"
+        }
+      },
+      "O2": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O2-v1",
+        "matrix_status": "FAILED",
+        "short_contexts": 10,
+        "native_contexts": 6,
+        "full_periods_started": false,
+        "actual_limit": {
+          "status": "FAILED",
+          "source_commit": "f76bbed12e728a3c0f3753d88f11013d32454633",
+          "nprintday": 1440,
+          "perstep": false,
+          "snow": 0,
+          "source": "point",
+          "rain": null,
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "et": 0,
+          "optimization": "O2",
+          "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O2-v1\\limit-ordinary-subdaily\\input",
+          "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O2-v1\\limit-ordinary-subdaily\\build",
+          "original_output": {
+            "policy": "original-cde-clock-output-and-observed-daily-flux-v1",
+            "native_codec": "S5CCC001",
+            "cde_clock_output": true,
+            "cde_interval_output": true,
+            "thermal_output": false,
+            "thermal_calendar": false,
+            "thermal_clock": false,
+            "thermal_step": false,
+            "kind": "cde",
+            "swsnow": 0,
+            "swhea": 1,
+            "swcalt": 2,
+            "swfrost": 0,
+            "swdra": 1,
+            "swhyst": 0,
+            "swcsv": 3,
+            "nprintday": 1440,
+            "swmonth": 0,
+            "swodat": 1,
+            "swres": 1,
+            "requested_period": 0,
+            "period": 1,
+            "flprintdt": false,
+            "groups": "WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS",
+            "num_decimals": 12,
+            "source_sha256": "058ffcf4b9cadcb1ed97217e06cce9cc5642364baae62cec8aa6c75e28f567b7",
+            "predecessor_owner_sha256": "28ab49dd941cdc338d02584f1ff9a4e99962cba72495ca1e2df8115e20c66945",
+            "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+            "thermal_owner_sha256": "e209d581b3e73edc5676d19084e389dece7dde076c13756f4f7ebdfc03f37d2d",
+            "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+            "domain_source_sha256": null,
+            "native_domain_bytes": 0,
+            "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+            "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+            "original_output_epoch": 37256,
+            "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+            "snow_clock_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+            "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+            "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+            "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+            "original_flprintdt_date_gated": false,
+            "annual_counter_policy": "original-print-period-counter-v1",
+            "timecontrol_composition": "literal-original-bound-output-epoch-v1",
+            "trial_receipt_policy": "literal-original-independent-soil-candidate-bottom-cde-clock-v1",
+            "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+            "private_cde_interval_fields": [
+              "sampro0",
+              "rounderr"
+            ],
+            "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+            "cde_output_state_version": 2,
+            "cde_output_state_reals": 54,
+            "cde_output_state_private_reals": 2,
+            "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+            "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+            "cde_daily_mass_guard_mg_cm2": 1e-10,
+            "calendar_initial_past_date_policy": "original-initial-interval-pointer-remains-one-v1",
+            "original_pending_dates_not_normalized": true,
+            "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+            "conserved_cde_prefix_offset_bytes": 48,
+            "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+            "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+            "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+            "preserves_requested_groups_and_precision": true,
+            "undefined_allocation_tails_serialized": false,
+            "physical_equations_changed": false
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL",
+          "build": {
+            "returncode": 0,
+            "seconds": 18.644829700235277
+          },
+          "trajectory": {
+            "status": "SHORT_PASS",
+            "days": 2,
+            "budgets": {
+              "days": 2,
+              "max_water_cm": 7.903183316115836e-14,
+              "max_kernel_cm": 7.904787935331115e-14,
+              "max_solute_mg_cm2": 5.009326287108706e-12,
+              "sum_water_residual_cm": 7.767307161156748e-14
+            },
+            "model_seconds": 1.153813499957323,
+            "build_sha256": "e2fed043824fd139c84edb196f3985737bfbb79a7efcdacbae8cb2ea3f4f337d"
+          },
+          "requested_controls_preserved": true,
+          "daily_chemical_receipts": {
+            "actual_days": 2,
+            "actual_rows": [
+              [
+                0.0,
+                47.999999898570785,
+                0.0,
+                47.999999898575794,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -5.009326287108706e-12,
+                7.105427357601002e-15,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                7.105427357601002e-15
+              ],
+              [
+                47.999999898570785,
+                119.99999971076784,
+                0.0,
+                71.99999981224516,
+                -4.773243083091037e-11,
+                0.0,
+                0.0,
+                0.0,
+                -3.7841780740601365e-13,
+                -1.9895196601282805e-13,
+                0.0,
+                0.0,
+                -1.2492977804926234e-13,
+                0.0,
+                0.0,
+                0.0,
+                -7.402218796356571e-14
+              ]
+            ],
+            "actual_increment_counts": [
+              [
+                2146,
+                2857,
+                2146,
+                72964,
+                72964,
+                72964
+              ],
+              [
+                1440,
+                1500,
+                1440,
+                48960,
+                48960,
+                48960
+              ]
+            ],
+            "integrated_actual_chemical_residual_mg_cm2": -5.38774409451472e-12
+          },
+          "cold": [
+            {
+              "start": 1,
+              "end": 2,
+              "exact_physical": true,
+              "exact_complete_native": true,
+              "exact_user_output": {
+                "result_output.bin": {
+                  "exact": true,
+                  "continuation_records": 1440,
+                  "kind": "original_REAL4_binary"
+                }
+              },
+              "origin_unchanged": true,
+              "seconds": 0.6494618002325296
+            }
+          ],
+          "actual_fixed_incoming_mg_cm2": [
+            47.999999898575794,
+            71.99999981224516
+          ],
+          "error": "AssertionError()"
         }
       }
     }
