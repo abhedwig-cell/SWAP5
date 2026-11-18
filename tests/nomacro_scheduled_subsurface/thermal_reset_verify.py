@@ -82,11 +82,11 @@ def predecessor():
                     if member.isdir():continue
                     target=snapshot/member.name;require(member.isfile() and target.resolve().is_relative_to(snapshot),'foreign FLPRINTDT predecessor source')
                     target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(archive.extractfile(member).read())
-        script="import importlib.util,json,pathlib;r=pathlib.Path.cwd();s=importlib.util.spec_from_file_location('literal_subdaily',r/"+repr(ENTRY)+");m=importlib.util.module_from_spec(s);s.loader.exec_module(m);m.validate(json.loads((r/"+repr(PROOF+'THERMAL_STEP_QUALIFICATION.json')+").read_text(encoding='utf8')));print('LITERAL_CANONICAL_SUBDAILY_SOURCE_PASS')"
+        script="import importlib.util,json,pathlib;r=pathlib.Path.cwd();s=importlib.util.spec_from_file_location('literal_subdaily',r/"+repr(ENTRY)+");m=importlib.util.module_from_spec(s);s.loader.exec_module(m);m.validate(json.loads((r/"+repr(PROOF+'THERMAL_STEP_QUALIFICATION.json')+").read_text(encoding='utf8')));print('LITERAL_CANONICAL_FLPRINTDT_SOURCE_PASS')"
         result=subprocess.run([sys.executable,'-B','-c',script],cwd=snapshot,capture_output=True,text=True)
-        require(result.returncode==0 and 'LITERAL_CANONICAL_SUBDAILY_SOURCE_PASS' in result.stdout,'literal qualified subdaily predecessor invalid: '+result.stderr)
+        require(result.returncode==0 and 'LITERAL_CANONICAL_FLPRINTDT_SOURCE_PASS' in result.stdout,'literal qualified FLPRINTDT predecessor invalid: '+result.stderr)
     for record in old['archives'].values():raw_archive(record)
-    return 'LITERAL_ACTUAL_CANONICAL_SUBDAILY_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS'
+    return 'LITERAL_ACTUAL_CANONICAL_FLPRINTDT_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS'
 
 
 def period(report,case,opt,phase,build,build_digest):
