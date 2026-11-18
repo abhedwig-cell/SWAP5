@@ -9,7 +9,7 @@ BASE='b4398e00ae978c82f0cdee3d72ff79708a869762'
 SNOW_BASE='a264b7166328f5103bfbb6306d663ae206b5a3ab'
 SNOW_ENTRY='tests/nomacro_scheduled_subsurface/thermal_calendar_verify.py'
 RUNTIME='4d6a9580c79c82c3187c6daf147d19d09235e862'
-SEALED='PENDING_COMPOSED_ACTUAL_SEAL'
+SEALED='53c73ae319cda314821f976facd6d8580f11a1cc'
 ENTRY='tests/saltfarm_newton/verify_successor.py'
 SELF='tests/nomacro_scheduled_subsurface/thermal_clock_verify.py'
 TEST='tests/nomacro_scheduled_subsurface/test_thermal_clock_verify.py'
@@ -382,6 +382,6 @@ def verify():
     require((fulls,windows,refusals,policies,providers,contexts)==(16,256,960,352,16,55),'actual Snow calendar full/native/preservation denominator differs')
     return dict(status='ORIGINAL_SNOW_SUBDAILY_SOIL_CLOCK_NATIVE_ADMISSION_PASS',runtime=RUNTIME,predecessor=prior,actual_full_periods=fulls,
         actual_cold_windows=windows,actual_native_refusals=refusals,actual_policy_refusals=policies,actual_copied_provider_refusals=providers,
-        actual_preserved_contexts=contexts,actual_bound_reports=reports,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
+        actual_preserved_contexts=contexts,actual_saltfarm_preserved_full_periods=4,actual_saltfarm_preserved_cold_windows=20,actual_bound_reports=reports,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
