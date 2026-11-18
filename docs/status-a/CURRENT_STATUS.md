@@ -1,5 +1,12 @@
 # SWAP5 Status-A current status
 
+The [prescribed-groundwater CDE composition](../science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)
+passes28full1096day Windows/Ubuntu periods,232complete cold windows and115prior
+source/native contexts. Its registered owner recomputes actual ledgers and
+native carries. Independent user commands and original reader/policy refusals
+pass. Actual canonical admission is pending; historical closure remains PARTIAL,
+whole science NOT_QUALIFIED and the fixed RC3 named release is unchanged.
+
 The [original snow/thermal output composition](../science/NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md)
 passes56full1096day Windows/Ubuntu periods,107prior preservation contexts,
 eight actual preceding-canonical physics/native comparisons and public/reader/

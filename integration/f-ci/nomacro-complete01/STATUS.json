@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-output-aquifer01",
-  "last_commit": "b3dd19db882edd1f2eb1344ade9bc6f813c150e4",
-  "status": "ORIGINAL_THERMAL_OUTPUT_CANONICALLY_ADMITTED_NEXT_GROUNDWATER_CHEMICAL",
+  "branch": "codex/nomacro-groundwater-chemical01",
+  "last_commit": "3528ae9c224c297c0202a140db35769e4bb46c7f",
+  "status": "PRESCRIBED_GROUNDWATER_CDE_REGISTERED_ROOT_PASS_PENDING_CANONICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -327,8 +327,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Complete annual/subdaily cohort controllers and actual reference/cadence/native controls; no changes to physical providers or literal003/004 helpers.",
-  "recovery_point": "PR1731 actualsourceb3dd19db8 exactDCD/22cadd300parents andcompletece72200tree; actualdetachedregisteredownerPASS88.024s. Metadatareceiptprepared; continuehistoricalnormal-projectblockers.",
+  "next_code_change": "Actual typed groundwater native/input/transaction refusals and source independence controls; fresh fixed-level typed pilots, full/year/end and portable runs; preserve prior routes then actual canonical admission.",
+  "recovery_point": "Windows/Ubuntu28full+32short+232cold PASS;95Windows/20Ubuntu preservation PASS. Raw8archives435441943bytes; Windows202617220byteZIP stored exact64MiBparts. Main44287500505 and preservation44289315415 SUCCESS; failed44288440555 artifact14420985491 retained unchanged. Actual proof3testsPASS5.572s,844producer/source/scope corruptions pluspartoffset refused. Sourceadmission owner persisted but not yet registered/sealed.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -430,7 +430,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Complete actual metadata merge admission, then source-reconcile prescribed groundwater-level chemical preflight and an independent original trial-flux receipt. No general MODFLOW, alternative solver, macro work or tolerance relaxation.",
+  "next_action": "Create source PR for exact persisted qualified tree; verify actual ordered merge parents/fulltree and actual detached current registered root. Write source receipt then metadata PR, verify actual metadata merge/root; continue remaining historical functions.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -651,7 +651,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "b3dd19db882edd1f2eb1344ade9bc6f813c150e4",
+  "canonical_head": "a787476a0f3db2490e75ff18afea097b82476332",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -872,5 +872,67 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-output-thermal01"
+  "working_branch": "codex/nomacro-groundwater-chemical01",
+  "prescribed_groundwater_chemical": {
+    "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
+    "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "contract": "docs/science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md",
+    "source_blocker": "SWSOLU1SWBOTB1preflightrefusal andexistingindependentbudgetcovers5/8not1",
+    "physical_source": "OriginalHeadCalc actualNN/Darcyinterface/prescribedsaturatedtail thenwholeqv/qbotstoragerecurrence; originalFluxesreconstructsbelow-profileqbotafterHeadCalc",
+    "scope": "OrdinaryanalyticalnomacroCDE prescribedlevelwithoriginalminimum5unsaturatedcompartments; no generalMODFLOW/alternativesolver/macros",
+    "next": "Create source PR for exact persisted qualified tree; verify actual ordered merge parents/fulltree and actual detached current registered root. Write source receipt then metadata PR, verify actual metadata merge/root; continue remaining historical functions.",
+    "external_blocker": null,
+    "original_reader_domain": "OriginalReadSwaprequiresallGWLEVEL<=zbotcp(5); retainedHeadCalcfully-saturatedearlybranch isnotoriginalvalid-inputscope",
+    "native_diagnostic": {
+      "path": "C:/Users/Veldh012/swap5-complete01-evidence/groundwater-chemical-cde-native-probe-v1/RESULT.json",
+      "producer": "8730847a9de737c8dc64dd336a64bc5bd0988062",
+      "actual_native_stock_mg_cm2": 55.46075109597839,
+      "reported_fabricated_stock_mg_cm2": 56.46075109597839,
+      "reported_residual_mg_cm2": 8.167772014289199e-14,
+      "source_day_advanced": false,
+      "published": false
+    },
+    "defect_classification": "INHERITED_DEFECT_SWAP5_CDE_EXTERNAL_CANDIDATE_BINDING; nooriginalequationdefectclaim",
+    "repair": "Read-onlyactualnativeSAMPROvsreceiptbeforeexternalprepareandacceptforallexplicitnomacroCDE; retainfrozenAQ7validatorandallphysicalwire/providers. CMSYnotasimplemasssum; nosecondphysicalowner.",
+    "runtime": "c1da10c37",
+    "native_stock_guard": "e991ca01e; actual19wire refusals PASS; fresh Snow35dayO0/O2+4cold each PASS; actual forged1mg reports REFUSED before external prepare bothopts.",
+    "reaction_component": "1eb1e896a; real two-source compile/link O0/O2PASS39checks; independent of unsaturated trial stock and arbitrary trial saturated-tail values; signed rates, invalid inputs unchanged outputs.",
+    "source_implementation": "Original Darcy at actualNN+1 plus prescribed tail storage/signedsink-source-root; projected stock uses actualunsat + imposedtail. Frozen old modes5/8 delegate literally. Original minimum5unsat reader retained.",
+    "typed_native": "a62d90b9d; S5GWC001 output/S5GWC002 default, paired72byte actualdomain +5N+4real hydrauliccarry beforecalendar; original CDEprefix48 remains.",
+    "pilot": "Actual9308430ad within/below10dayO0/O2 oldtypedinitial pilots PASS; crossing oldwire fails exact7to9 by5.55e-16cm; actuala62d90b9d crossingnewtypedO0/O2 ten days+bothcoldwindows exact PASS.",
+    "retained_failures": [
+      "within-v1 publicbuilder strictreceipt flag absent",
+      "within-v2 ambiguous outer HeadCalc declaration anchor",
+      "crossing-v1 exactcoldflux5.55e-16cm",
+      "crossing-v2 native owner compiled but not linked"
+    ],
+    "windows_status": "O0/O2terminalPASS8short+7full1096/opt,6coldwindows/full; 3native/active contexts peropt91native+6fabricatedhydraulicreceipt refusals; format0/3tenphysicaldaysexact.",
+    "public": "ThreeactualpublicCLIwarm/coldcontextsPASS:binarytable,externalBBC,defaultoutput; completephysical/native/useroutputexact.",
+    "reader": "Sixrealoriginalnumeric/depth/date-interval/table reader refusals +7descriptor +12source/nativepolicyrefusals PASSv3. OriginalCheckDate does notvalidateordering; invalid-order test assumptionv1 retained and corrected, no productionreader change.",
+    "ubuntu_run": 44287500505,
+    "ubuntu_carrier": "d28d71f3d0d95226c5fba25cdba4e96c6caf0abb",
+    "ubuntu_runtime": "b96364711612619822f198835c14aa586e4737e4",
+    "ubuntu_status": "SUCCESS",
+    "ubuntu_preservation_run": 44289315415,
+    "ubuntu_preservation_status": "SUCCESS",
+    "preservation": "95Windows+20Ubuntu source/provider/physical/native contexts exact; source compiled fresh; no old full periods repeated.",
+    "raw_archives": 8,
+    "raw_bytes": 435441943,
+    "proof_tests": "3PASS5.572seconds;800actualperiod/ledger/native+44source/scope corruptions refused plusreal64MiBpartoffsetfault",
+    "sealed": "df93f190c65af0d41da9685e8242b5197e10d0db",
+    "registered_root": {
+      "status": "PRESCRIBED_GROUNDWATER_CDE_NATIVE_RECEIPT_ADMISSION_PASS",
+      "runtime": "c1da10c3781d5fbc52eb9deaa725d6802bbc7c8f",
+      "predecessor": "LITERAL_QUALIFIED_THERMAL_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS",
+      "actual_full_periods": 28,
+      "actual_bound_reports": 256,
+      "actual_cold_windows": 232,
+      "actual_preserved_contexts": 115,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "source_negative_commit": "142bc0577024f9b3cb6c86fef8a7207b46f983f3",
+    "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_OMITTED_CDE_NATIVE_COMPARISON_REFUSED",
+    "docs": "SourcechecksPASS; strictMkDocsPASS34.25s with generated site outsidecheckout"
+  }
 }

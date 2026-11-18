@@ -109,6 +109,10 @@ def period(report,case,opt,phase,build,digest):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('groundwater_chemical_admission',ROOT/'tests/nomacro_scheduled_subsurface/groundwater_chemical_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty thermal admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'thermal production differs from qualified actual source')

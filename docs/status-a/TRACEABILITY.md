@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Prescribed-groundwater qualification](../science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)
+and `integration/f-ci/nomacro-complete01/GROUNDWATER_CHEMICAL_QUALIFICATION.json`
+bind productionc1da10c37 to eight immutable archives totalling435441943bytes.
+Actual28full periods,232cold windows and115prior contexts pass. Real component,
+native/input and independent public commands are bound to source;844actual
+producer/source/scope corruptions and an archive-part offset fault are refused.
+The original failed provider-path artifact remains unchanged, and the subsequent
+literal byte-equality checks pass. Registered-root admission passes; actual
+canonical admission is pending. Whole science and fixed RC3 scope are unchanged.
+
 [Snow/thermal qualification](../science/NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md)
 and `integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_QUALIFICATION.json` bind
 production9a06bc72d to eight immutable raw archives totalling717969648bytes,

@@ -177,6 +177,9 @@ def validate_bundle(bundle, reference, project):
     from aquifer_native_receipt import metadata as aquifer_receipt_metadata
     expected_aquifer_receipt=aquifer_receipt_metadata() if expected_aquifer else None
     if identity.get('aquifer_native_receipt')!=expected_aquifer_receipt:raise ValueError('Foreign aquifer native receipt consistency policy')
+    from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
+    expected_cde_receipt=cde_receipt_metadata() if cde_receipt_enabled(project) else None
+    if identity.get('cde_native_receipt')!=expected_cde_receipt:raise ValueError('Foreign CDE native receipt consistency policy; rebuild without rebinding')
     from original_output_thermal import metadata as original_output_metadata
     if identity.get('original_output')!=original_output_metadata(project):raise ValueError('Foreign original output policy; rebuild without rebinding')
     from conserved_original_age import metadata as age_metadata,correction as age_correction
@@ -199,12 +202,18 @@ def validate_bundle(bundle, reference, project):
     from surface_schedule import enabled as surface_schedule_enabled,POLICY as SURFACE_SCHEDULE_POLICY
     expected_schedule={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':h.sha(h.APP/'surface_schedule.py')} if surface_schedule_enabled(project) else None
     if identity.get('surface_schedule')!=expected_schedule:raise ValueError('Foreign original surface schedule')
-    from lower_boundary_receipt import selected_boundary,policy as lower_policy,render_budget
+    from groundwater_boundary_receipt import selected_boundary,metadata as lower_metadata,render_budget
     lower_boundary=selected_boundary(project)
     lower=lower_boundary is not None
-    expected_lower={'policy':lower_policy(lower_boundary),'source_sha256':h.sha(h.APP/'lower_boundary_receipt.py'),
-                    'template_sha256':h.sha(h.APP/'hybrid_step_budget.f90'),'effective_SWBOTB':lower_boundary} if lower else None
+    expected_lower=lower_metadata(project,h.sha,h.APP,h.ROOT)
     if identity.get('lower_boundary_receipt')!=expected_lower:raise ValueError('Foreign original lower-boundary receipt')
+    from groundwater_native import metadata as groundwater_native_metadata
+    if identity.get('groundwater_native_state')!=groundwater_native_metadata(project,h.sha,h.APP):
+        raise ValueError('Foreign prescribed groundwater native carry policy')
+    if lower_boundary==1:
+        reaction=bundle/'mod_prescribed_groundwater_reaction.f90'
+        if reaction.read_bytes()!=(h.ROOT/'src/process/mod_prescribed_groundwater_reaction.f90').read_bytes():
+            raise ValueError('Foreign prescribed groundwater reaction component')
     if lower:
         source=bundle/'hybrid_step_budget.f90'
         if identity['budget_source']!=h.sha(source) or source.read_text(encoding='cp1252')!=render_budget((h.APP/'hybrid_step_budget.f90').read_text(encoding='cp1252'),lower_boundary):
@@ -567,6 +576,10 @@ class CoupledDailyColumn:
                 conserved=struct.unpack_from('<'+str(self.project.nodes+2)+'d',aux,48)
                 if not all(math.isfinite(v) and v>=0 for v in conserved):
                     raise ValueError('Unrestartable candidate conserved solute state')
+                from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
+                if cde_candidate(self.project):validate_cde_candidate(aux,raw,self.project)
+                from groundwater_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+                if groundwater_candidate(self.project):validate_groundwater_candidate(aux,raw,self.project)
                 from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
                 if aquifer_candidate(self.project):validate_aquifer_candidate(aux,raw,self.project)
             if self.project.age:
@@ -607,6 +620,11 @@ class CoupledDailyColumn:
             for name in h.CHECKPOINT_FILES:
                 if (ready / name).read_bytes() != z.read(name):
                     raise ValueError('Prepared native state changed')
+        from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
+        if cde_candidate(self.project):validate_cde_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
+        from groundwater_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+        if groundwater_candidate(self.project):validate_groundwater_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
+
         from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
         if aquifer_candidate(self.project):validate_aquifer_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
         receipt = {**raw, 'coupling': {'id': self.coupling_id, 'revision': self._revision+1,
