@@ -1,0 +1,9 @@
+# FEEDBACK48 - minimale CONTACT47-implementatie
+
+Baseline b997d9d092d8433f0ba2e0a2fc314988353f00bc. Alleen de theoretische increment in de door REPAIR43 nieuw meegenomen main-GWL-contactcel wordt vervangen door de CONTACT47 RATE-increment. Andere cellen behouden hun oorspronkelijke historieformule. Geen node50/domein3/attemptspecifieke activeringsgate. Alle bestaande eventeind-/droogresetregels blijven leidend.
+
+ABSORPTION registreert tijdens bestaande sorptie-evaluatie een scratch increment en domein/node-masker. MACRORATE vervangt de gehele scratch bij iedere nieuwe evaluatie en verzegelt alleen de laatste TASK1 mean-rate, zonder probe. De stamp bevat tijd, dt, poging, iteratie, provider-generatie, nvec en volledige heads. MACROSTATE consumeert precies eenmaal, vóór de owner eindgeometrie verandert; voortgezette main-cell historie vereist het juiste masker. Deze scratch is geen native persistente toestand; begin van poging, nieuwe rate en native rollback maken haar ongeldig. Geen extra provideroproep.
+
+Twee O0/O2-routes, hard20/internal16/512 en dezelfde oorspronkelijke checkpoint/horizon. Vergelijk kandidaat met bewaarde CONTACT47-bewijzen; geen nieuwe contextselectie. De eerste90 worden niet uit de ouder geplakt: terugkoppeling is vanaf de oorspronkelijke checkpoint actief en de eigen corresponderende events moeten worden vastgesteld. Toets dRef, eventklok, S_active-vervolg, referentiecontinuiteit, O0/O2, hostresidu/inventaris/ledger. Een grensoverschrijding of contextverschuiving wordt expliciet gerapporteerd, niet weggekalibreerd.
+
+Geen fluxwet, Jacobiaan, solver, tolerantie, MAXIT, dt, reductie- of budgetwijziging. Alleen geautoriseerd theoretisch referentieherstel. Geen brede campagne/volledige-periode/BAL/herstart- of algemene promotie. Echte afwijzing/rollback is alleen gekwalificeerd als deze daadwerkelijk in de beperkte route optreedt; broninvalidering alleen is geen dynamische rollbacktest.
