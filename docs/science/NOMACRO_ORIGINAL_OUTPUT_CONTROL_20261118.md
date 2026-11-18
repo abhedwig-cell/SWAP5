@@ -1,7 +1,7 @@
 # Original output selector ownership across water, chemical and age models
 
-**Source inventory and unchanged-public-route diagnostic selection. No new
-implementation, qualification or admission.** Baseline is actual canonical
+**Bounded original-output successor: implemented and platform-tested;
+canonical admission pending.** Baseline is actual canonical
 b9400bff64a5b21596995aca9eb045f974a52b21, after PR1719/1720. The actual metadata
 merge has exact3bf/66parents, full1bd8cfc8tree and a detached registered-owner
 PASS in173.997seconds. The005source/state/output block is admitted; historical
@@ -61,7 +61,7 @@ chemical output history/receipt is demonstrably complete. Never silently accept
 an unsupported combination. The binary correction is a source-bound reference
 work unit first, not an already activated feature or mass-conservation claim.
 
-The first prototype is water-only, S5IOW001, and remains unqualified. Descriptor
+The initial prototype was water-only, S5IOW001, and unqualified. Descriptor
 inspection may enumerate historical output choices for existing process helpers;
 load/validate must explicitly select compatibility(False) or original(True)
 before execution. Compatibility still refuses unsupported CSV formats; original
@@ -111,3 +111,43 @@ records exact to actual full-precision output values in ASCII and REAL4 binary,
 including nonzero concentrations. The separate binary scratch correction composes
 with it. This correction is activated only in the unqualified explicit prototype;
 admitted default compatibility sources remain literal.
+
+The final production postimage is98b5b0337a87cadbc4861e67056ec87c51237d47.
+Its actual Integral receipt, physical age providers and all existing physical
+solvers are unchanged. Windows and Ubuntu each complete16profiles in O0 and
+O2:32full1096day trajectories, with198complete full native continuation windows
+and70short windows per platform. Requested ASCII/binary formats, groups,
+precision and calendars are retained. Ten format/precision profiles per
+optimization have identical complete physical trajectories and five identical
+native endpoints. The active CDE cases start with0.1mg/cm3 and apply the actual
+48mg/cm2 fixed surface source on day5. All existing1e-10cm water and1e-10mg/cm2
+chemical guards pass; age uses the unchanged8192epsilon inventory/flux policy
+in cm day. Actual original Integral/Watstor component observers remain exact
+and nonmutating in42cases per optimization/platform.
+
+Each platform refuses202actual corrupt native files and40foreign output
+policies. Eight external transaction contexts preserve discard/replay, acceptance
+and disk recovery. Twelve selected default005/004/003 contexts retain exact
+generated sources, measured object/module/library identities,368physical days,
+all CSV rows, four complete native endpoints and two own windows. Eight active
+daily002 contexts retain their exact original source/native outputs. Public
+command-line waterNP3, active CDE binary/vector and per-step monthly age runs
+continue from their own published checkpoint with exact physical/user/native
+results. Actual omitted inactive monthly controls and defaultSWCSV0 work in four
+O0/O2 contexts per platform;16invalid output/cadence inputs are refused early.
+Portable public proof reuses the actual qualified O2 artifact and validates its
+compiler/provider/binding rather than repeating full trajectories.
+
+The evidence is owned by
+`integration/f-ci/nomacro-complete01/ORIGINAL_OUTPUT_QUALIFICATION.json` and its
+complete raw archives. Successful portable runs are44212855459(matrix/components),
+44214100995(default preservation) and44215748326(public/reader). Earlier controller
+path/preparation/fixture failures are retained and are not scientific PASS claims.
+These bounded source/state/output results do not resolve the original water,
+age-profile, NP3 timestamp/cadence or FLPRINTDT pending-date/output limitations.
+The original per-step monthly/explicit decks may produce no age CSV rows; that
+behavior is recorded, not replaced with invented daily means. Sparse/subdaily
+CDE and per-step cumulative reset1 remain refused. Snow, frost, hysteresis,
+aquifer and other physical combinations require their own complete output state
+owner. Historical completion remains PARTIAL, whole science NOT_QUALIFIED, and
+the fixed RC3 named user release is unchanged.
