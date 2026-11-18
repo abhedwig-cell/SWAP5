@@ -1,0 +1,7 @@
+# ROLLBACK49 - beperkte selectie en transactietoets
+
+Baseline FEEDBACK48 4a507f0f830f5d4a09941e1ac4e5f201ad6c1821. Eerste en voorlopig enige oorspronkelijke context297 uit PERIOD34/ACTIVE38: t35797.370782734390,dt7.639717105455142e-5. Reproduceer originele prefix met oude activatieregels, dan FEEDBACK48 apply37/repair43 bij geselecteerde head/retries. Geen aangepaste forcing, tolerantie, MAXIT, dtkeuze of afwijzingsmechanisme. DIRECT volgt uitsluitend bij een echte ongereduceerde afwijzing. Beide routes gebruiken oorspronkelijke TimeControl5 voor de kleinere dt; TRIAL gebruikt oorspronkelijke saved-state rollback. Tot4 retries is bestaande harnessgrens, geen campagne.
+
+Positieve CONTACT47-scratch in echte afgewezen evaluaties wordt apart bewezen; alleen een oude Jacobiaanactivering telt niet. Leg originele/teruggekeerde/rollback/kleine/commitvoorraad en nativecontext/ledger vast. Scratchgetter observeert alleen validiteit/masker/som/stamp, providertrace buffert alleen bestaande evaluaties. Geen extra fysieke evaluatie. Alle FEEDBACK48-referentie-/flux-/klokcode blijft gelijk; slechts harness en observatie worden toegevoegd.
+
+Hard20 per route, bestaande intern16 en max512, geen brede campagne. Bewaar ook geen-witnessresultaat. Directe retry alleen bij echte afwijzing; geen geforceerde failure of selectoruitbreiding op eigen gezag. Geen volledige nativebyteidentiteit claimen als oorspronkelijke scratch na rollback verschilt. B1 blijft kandidaat met expliciete uitsluitingen; geen periode/BAL/herstart/canonieke toelating.
