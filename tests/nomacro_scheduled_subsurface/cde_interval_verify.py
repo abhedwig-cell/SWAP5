@@ -221,6 +221,13 @@ def user_outputs(z,prefix,report,days,epoch,temporary):
     return actual
 
 
+def preserved_period(key,item,data):
+    # The frozen ordinary groundwater chemical seam is a ten-day driver.
+    # Other selected prior contexts are actual 35-day drivers.
+    days=10 if key=='ordinary-cde-default' else 35
+    require(item['trajectory']['days']==len(data)==days and [row['day'] for row in data]==list(range(1,days+1)) and all(row['committed'] is True for row in data),'fresh seam trajectory censored')
+
+
 def verify():
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty CDE admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
@@ -336,7 +343,7 @@ def verify():
                 require(item['all_physical_exact'] is item['actual_immutable_prior_member_hashes'] is True,'actual preserved CDE seam differs')
                 pp=prefix+'/'+key+'/';build=read(z,pp+'build/BUILD.json');require(build==item['actual_build'],'actual fresh seam build differs');build_files(z,pp+'build/',build)
                 for path,value in build['identity']['kernel_sources']:require(kernel_checkout_digest(path,build['identity']['target'])==value,'preserved actual physical kernel source differs: '+path)
-                data=rows(z,pp+'trajectory/');require(len(data)==35 and all(row['committed'] is True for row in data),'fresh seam trajectory censored')
+                data=rows(z,pp+'trajectory/');preserved_period(key,item,data)
                 for row in data:
                     water=math.fsum([*row['external_flux_cm'][:7],*(-v for v in row['external_flux_cm'][7:]),*row['stock_start_cm'],*(-v for v in row['stock_end_cm'])])
                     require(bounded(water) and bounded(row['independent_residual_cm']) and bounded(row['kernel_residual_cm']),'actual preserved seam water guard exceeded')

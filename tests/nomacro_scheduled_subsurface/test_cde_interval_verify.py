@@ -110,5 +110,20 @@ class Proof(unittest.TestCase):
                 count+=1
         print('ACTUAL_CDE_RAW_RECEIPT_CORRUPTIONS_REFUSED',count,flush=True)
 
+    def test_actual_selected_prior_periods(self):
+        count=0
+        for location in self.q['preservation'].values():
+            with zipfile.ZipFile(io.BytesIO(owner.raw_archive(self.q['archives'][location['archive']]))) as z:
+                for prefix in location['profiles']:
+                    report=owner.read(z,prefix+'/RESULT.json')
+                    for key,item in report['profiles'].items():
+                        data=owner.rows(z,prefix+'/'+key+'/trajectory/');owner.preserved_period(key,item,data)
+                        with self.assertRaises(ValueError):owner.preserved_period(key,item,data[:-1])
+                        count+=1
+                        bad=copy.deepcopy(item);bad['trajectory']['days']+=1
+                        with self.assertRaises(ValueError):owner.preserved_period(key,bad,data)
+                        count+=1
+        print('ACTUAL_CDE_PRIOR_PERIOD_CENSOR_CORRUPTIONS_REFUSED',count,flush=True)
+
 
 if __name__=='__main__':unittest.main()
