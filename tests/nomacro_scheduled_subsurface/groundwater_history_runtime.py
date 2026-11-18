@@ -15,12 +15,15 @@ from groundwater_history_native import metadata,domain,magic
 m=prior.m;ROOT=prior.ROOT
 
 
-def fixture(path,kind,fmt,hys,snow,chemistry=False,boundary_file=False,source_boundaries=False,heat=1,drainage=1,et=0):
+def fixture(path,kind,fmt,hys,snow,chemistry=False,boundary_file=False,source_boundaries=False,heat=1,drainage=1,et=0,oxygen=None):
     prior.fixture(path,kind,fmt,chemistry,boundary_file,source_boundaries)
     p=path/'swap.swp';text=p.read_text(encoding='cp1252')
     for key,value in dict(SWHYST=hys,SWSNOW=snow,SWHEA=heat,SWCALT=2,SWDRA=drainage,SWCFBS=et).items():text=assignment(text,key,value)
     if et:text=assignment(text,'CFBS',0.8)
     p.write_text(text,encoding='cp1252')
+    if oxygen is not None:
+        for crop in path.glob('*.crp'):
+            crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWOXYGEN',oxygen),encoding='cp1252')
 
 
 def own(build,reference,project,full,data,start,end,out):
@@ -54,18 +57,19 @@ def main():
     parser.add_argument('--heat',choices=(0,1),type=int,default=1)
     parser.add_argument('--drainage',choices=(0,1),type=int,default=1)
     parser.add_argument('--et',choices=(0,1),type=int,default=0)
+    parser.add_argument('--oxygen',choices=(0,1,2),type=int)
     parser.add_argument('--phase',choices=('short','full'),default='short')
     parser.add_argument('--reuse-build',type=Path);parser.add_argument('--existing-input',type=Path)
     args=parser.parse_args();out=args.output.resolve();out.mkdir();inputs=args.existing_input or out/'input'
     assert args.hysteresis or args.snow
-    if not args.existing_input:fixture(inputs,args.kind,args.format,args.hysteresis,args.snow,args.chemistry,args.boundary_file,args.source_boundaries,args.heat,args.drainage,args.et)
+    if not args.existing_input:fixture(inputs,args.kind,args.format,args.hysteresis,args.snow,args.chemistry,args.boundary_file,args.source_boundaries,args.heat,args.drainage,args.et,args.oxygen)
     project=m.e.load(inputs,original_output=not args.compatibility_output);build=args.reuse_build or out/'build'
     assert domain(project)[5:7]==[args.hysteresis,args.snow]
     record=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         kind=args.kind,hysteresis=args.hysteresis,snow=args.snow,format=args.format,optimization=args.optimization,
         original_output=project.original_output,input_root=str(inputs),build_root=str(build),native=metadata(project,m.sha,m.h.APP),
         chemistry=args.chemistry,boundary_file=args.boundary_file,source_boundaries=args.source_boundaries,
-        heat=args.heat,drainage=args.drainage,et=args.et,
+        heat=args.heat,drainage=args.drainage,et=args.et,oxygen=args.oxygen,
         functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
     def save():(out/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
     save()
