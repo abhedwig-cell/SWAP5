@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-groundwater-chemical01",
-  "last_commit": "b96364711612619822f198835c14aa586e4737e4",
-  "status": "PRESCRIBED_GROUNDWATER_CDE_QUALIFICATION_SEALED_PENDING_REGISTERED_ROOT",
+  "last_commit": "3528ae9c224c297c0202a140db35769e4bb46c7f",
+  "status": "PRESCRIBED_GROUNDWATER_CDE_REGISTERED_ROOT_PASS_PENDING_CANONICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -430,7 +430,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Seal actual8rawarchives and source contract, register literal successor hook, run source/native/ledger proof and actual root, source negative control/docs, PR and actual canonical plus metadata postimages. Continue inventory after admission.",
+  "next_action": "Create source PR for exact persisted qualified tree; verify actual ordered merge parents/fulltree and actual detached current registered root. Write source receipt then metadata PR, verify actual metadata merge/root; continue remaining historical functions.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -880,7 +880,7 @@
     "source_blocker": "SWSOLU1SWBOTB1preflightrefusal andexistingindependentbudgetcovers5/8not1",
     "physical_source": "OriginalHeadCalc actualNN/Darcyinterface/prescribedsaturatedtail thenwholeqv/qbotstoragerecurrence; originalFluxesreconstructsbelow-profileqbotafterHeadCalc",
     "scope": "OrdinaryanalyticalnomacroCDE prescribedlevelwithoriginalminimum5unsaturatedcompartments; no generalMODFLOW/alternativesolver/macros",
-    "next": "Seal actual8rawarchives and source contract, register literal successor hook, run source/native/ledger proof and actual root, source negative control/docs, PR and actual canonical plus metadata postimages. Continue inventory after admission.",
+    "next": "Create source PR for exact persisted qualified tree; verify actual ordered merge parents/fulltree and actual detached current registered root. Write source receipt then metadata PR, verify actual metadata merge/root; continue remaining historical functions.",
     "external_blocker": null,
     "original_reader_domain": "OriginalReadSwaprequiresallGWLEVEL<=zbotcp(5); retainedHeadCalcfully-saturatedearlybranch isnotoriginalvalid-inputscope",
     "native_diagnostic": {
@@ -918,6 +918,21 @@
     "preservation": "95Windows+20Ubuntu source/provider/physical/native contexts exact; source compiled fresh; no old full periods repeated.",
     "raw_archives": 8,
     "raw_bytes": 435441943,
-    "proof_tests": "3PASS5.572seconds;800actualperiod/ledger/native+44source/scope corruptions refused plusreal64MiBpartoffsetfault"
+    "proof_tests": "3PASS5.572seconds;800actualperiod/ledger/native+44source/scope corruptions refused plusreal64MiBpartoffsetfault",
+    "sealed": "df93f190c65af0d41da9685e8242b5197e10d0db",
+    "registered_root": {
+      "status": "PRESCRIBED_GROUNDWATER_CDE_NATIVE_RECEIPT_ADMISSION_PASS",
+      "runtime": "c1da10c3781d5fbc52eb9deaa725d6802bbc7c8f",
+      "predecessor": "LITERAL_QUALIFIED_THERMAL_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS",
+      "actual_full_periods": 28,
+      "actual_bound_reports": 256,
+      "actual_cold_windows": 232,
+      "actual_preserved_contexts": 115,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "source_negative_commit": "142bc0577024f9b3cb6c86fef8a7207b46f983f3",
+    "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_OMITTED_CDE_NATIVE_COMPARISON_REFUSED",
+    "docs": "SourcechecksPASS; strictMkDocsPASS34.25s with generated site outsidecheckout"
   }
 }

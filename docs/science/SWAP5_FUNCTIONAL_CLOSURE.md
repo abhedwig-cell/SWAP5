@@ -1,5 +1,19 @@
 # Current functional closure of the original projects
 
+## Qualified prescribed-groundwater CDE composition,18November2026
+
+[Prescribed-groundwater CDE](NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)
+now uses an independent original Darcy/prescribed-tail trial receipt and full
+typed hydraulic carry for ordinary analytical daily configurations. Original
+equations and1e-10cm/mg/cm2 guards remain unchanged. Windows/Ubuntu28full periods,
+232cold windows and115prior source/native contexts pass, as do actual invalid
+native/input and independent user commands. The inherited CDE stock/receipt
+binding defect is explicitly corrected and the old private false proposal is
+retained as evidence. Registered-root admission passes; canonical admission is
+pending. Historical closure remains PARTIAL, whole science NOT_QUALIFIED and
+the fixed RC3 named release is unchanged. Groundwater combinations beyond the
+bounded ordinary domain and bottom9 remain separate inventory work.
+
 ## Qualified original snow and thermal output,18November2026
 
 [Snow/thermal output](NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md) observes actual
