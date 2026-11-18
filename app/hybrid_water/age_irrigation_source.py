@@ -89,7 +89,10 @@ def render_context(source):
     first=source.index('   subroutine hybrid_irrigation_checkpoint(');last=source.index('   end subroutine',first)+len('   end subroutine');before,body,after=source[:first],source[first:last],source[last:]
     anchor='      integer::ios'
     if body.count(anchor)!=1:raise ValueError('Changed actual private irrigation native declaration')
-    body=body.replace(anchor,'      use hybrid_age_irrigation_source_domain,only:hybrid_age_irrigation_source_count,hybrid_age_irrigation_source_assert\n      use variables,only:t1900\n'+anchor+',source_entries,first_pending,last_pending',1)
+    body=body.replace(anchor,anchor+',source_entries,first_pending,last_pending',1)
+    anchor='      use plant_interface,only:fl_cropemergence'
+    if body.count(anchor)!=1:raise ValueError('Changed actual private irrigation native imports')
+    body=body.replace(anchor,'      use hybrid_age_irrigation_source_domain,only:hybrid_age_irrigation_source_count,hybrid_age_irrigation_source_assert\n      use variables,only:t1900\n'+anchor,1)
     anchor='         hybrid_irrigation_pending=.true.'
     if body.count(anchor)!=1:raise ValueError('Changed actual private irrigation pending boundary')
     check="""         source_entries=hybrid_age_irrigation_source_count()
