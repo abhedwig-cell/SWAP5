@@ -14,7 +14,9 @@ header,56byte totals and complete prior calendar. A separate actual soil/pond
 receipt observes original net forcing and cmelt; its trial uses the independent
 Darcy/soil-air boundary. Coincident terminal clock events are aligned before
 physical integration. No physical equation changes. All old daily/sparse/CDE/
-age/default routes delegate literally. Registered proof passes; actual canonical
+age/default routes delegate literally. The current canonical SaltFarm policy and
+original owner body are literal; four full SaltFarm contexts/twenty own cold
+windows remain exact. Registered proof passes; actual canonical
 admission is pending.
 
 The implemented [Snow output calendar adapter](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)

@@ -1,6 +1,6 @@
 # Original Snow output with a subdaily clock
 
-**Qualified bounded composition / registered proof PASS / actual canonical admission pending.** Baseline
+**Qualified current canonical composition / registered proof PASS / actual canonical admission pending.** Baseline
 is actual canonicala264b7166 after PR1738/1739. Both actual source and metadata
 merges have exact ordered parents/full qualified trees and pass the registered
 detached Snow-calendar owner. Closure remains PARTIAL, whole science
@@ -178,3 +178,51 @@ instead match the actual new canonical half-interior-policy archives, all
 original data records and eight complete native endpoints plus five own cold
 windows. Keep old qualification/archives and owner bodies literal. No unrelated
 physical component or highest low-air research campaign is selected.
+
+## Final current-canonical composition qualification
+
+Production4d6a9580c, seal53c73ae31 and actual canonicalb439 are bound by
+THERMAL_CLOCK_COMPOSED_QUALIFICATION.json. Nine actual raw records total
+441887679bytes, including the first historical context and the actual failed
+Ubuntu sparse-checkout artifact. Fresh current identity builds pass16Snow
+full1096day periods,256cold windows,960native/352policy/16actual-provider
+refusals and55prior/current contexts. Four full1461day SaltFarm profiles and
+20own cold windows remain source/physical/chemical/native/user exact against
+its actual canonical archives. Nineteen completed Ubuntu contexts are forwarded
+byte-for-byte without another model run; the absent-driver failure remains
+separate and the continuation runs only the missing SaltFarm profiles.
+
+Four proof tests pass19.394seconds, refusing1870actual generated-source,
+executable, stock/flow, native, soil, clock-cadence, schema/source and raw-part
+corruptions. The current registered root recomputes198bound reports. Both
+canonical SaltFarm and prior Snow images are checked literally on their real
+source images with unchanged archives. No ROOT/hash function is rebound in the
+new owner. A real dirty and committed omitted-terminal-step control refuses
+before archives/models; bad commit 5e76a66feed409d34d357ae13892eea82105894b stays in
+its separate private control worktree. Actual canonical source and metadata
+admission remain pending; this batch does not complete historical migration.
+
+## Independent local commands
+
+Run from the repository root with Python and the qualified GNU Fortran toolchain
+available. Use fresh output directories. This real fixture command builds the
+public bundle, runs35days and checks four complete own cold native/user windows:
+
+```powershell
+python -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work C:/SWAP5-Snow/provider
+python -B tests/nomacro_scheduled_subsurface/thermal_clock_runtime.py --reference-work C:/SWAP5-Snow/provider --output C:/SWAP5-Snow/subdaily-O2 --mode periodic --hysteresis 2 --format 3 --nprintday 3 --optimization O2
+```
+
+The independent application commands use that unchanged input/bundle and their
+own warm/cold checkpoints:
+
+```powershell
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project C:/SWAP5-Snow/subdaily-O2/input --original-output --reference-work C:/SWAP5-Snow/provider --build-bundle C:/SWAP5-Snow/subdaily-O2/build --days 35 --checkpoint-at 30 --output C:/SWAP5-Snow/public-warm
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project C:/SWAP5-Snow/subdaily-O2/input --original-output --reference-work C:/SWAP5-Snow/provider --build-bundle C:/SWAP5-Snow/subdaily-O2/build --days 34 --checkpoint-at 34 --restart C:/SWAP5-Snow/public-warm/accepted-column-1-day-30.zip --restart-day 30 --output C:/SWAP5-Snow/public-cold
+python -B tests/hupsel51/verify_successor.py
+```
+
+The registered source/evidence command performs no physical model rerun. Original
+archive paths, compiler/build/input identity and refused-policy diagnostics stay
+visible. On another platform replace the example drive paths with local paths;
+create fresh builds and checkpoints for that exact source/provider identity.

@@ -7,7 +7,7 @@ NPRINTDAY2/3, FLPRINTDTfalse, water Snow1/heat1/calculation2, hysteresis0/1/2,
 analytical soil/drainage1 and lower boundary5/8. The actual original net soil
 forcing plus cmelt is observed separately from daily Snow/canopy storage. Exact
 terminal physical time and complete native counters/output survive cold starts.
-Windows/Ubuntu16full1096day periods,256cold windows,52prior contexts and1764proof
+Windows/Ubuntu16full1096day periods,256cold windows,55prior contexts and1870proof
 corruptions pass. Registered proof passes; actual canonical admission is pending.
 Closure remains PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged. Per-step
 Snow output, CDE/age calendars and other historical combinations remain open.
