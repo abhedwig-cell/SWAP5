@@ -94,3 +94,36 @@ local recovery directory; versioned evidence retains daily records, native
 checkpoints, CSV, counts, build/source identities and relevant diagnostic stdout.
 This is a reviewable current-source numerical-policy proposal, not an update
 of the fixed RC3 archive or its accepted scientific scope.
+
+## Ubuntu and current-canonical composition
+
+Production355559313 incorporates canonicalf2fc11124 without changing the
+qualified SaltFarm mathematics. Fresh Windows O0/O2 runs repeat all1461days,
+five own cold windows and actual external transactions. Their records remain
+exactly equal to the preceding Windows candidate. Fresh Ubuntu26.04
+run44328844150 compiles both generated donor and kernel O0/O2 from the pinned
+original source ZIPs, starts with four-day public probes, and then passes both
+full1461day trajectories, all ten own cold windows, native/CSV equality and
+discard/replay/independent-instance controls. Ubuntu O0/O2 physical records are
+exactly equal; no cross-platform bitwise native claim is made.
+
+Ubuntu maximum water residual5.106084e-11cm and solute7.657819e-12mg/cm2 pass
+their unchanged1e-10limits. Full model/controller times were6.053seconds O0
+and4.644seconds O2, measured on that hosted runner; these are not paired speed
+comparisons with Windows or original431. The original broad checkout was
+canceled before any model ran. A sparse source checkout avoids fetching the
+unrelated historical archive collection. No model test was duplicated for it.
+
+`PORTABLE.json` binds current Windows records and the byte-exact Ubuntu artifact.
+The scoped successor `tests/saltfarm_newton/verify_successor.py` recomputes the
+actual full ledgers, cold/native/CSV comparisons and optimization identity.
+It retains the literal preceding Snow/calendar owner and validates its schema
+on the exact canonical source image, with unchanged archive bytes. This is
+inherited canonical evidence, not a newly qualified old source under a new
+name. Existing CI failures at the stale source boundary remain in
+`CI_PREVIOUS.json`. `test_evidence.py` independently corrupts real daily,
+native, source/build/policy and cold records and requires refusal.
+
+The registered old reader/chemistry and F-CI entry points use this successor
+only for its bounded new source. Neither historical failed comparisons nor
+whole-science qualification are promoted. Fixed RC3 remains unchanged.
