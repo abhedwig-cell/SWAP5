@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-thermal-reset01",
-  "last_commit": "d62c0eea63dfe7ecda6dd23082ecc23a9772ddad",
-  "status": "THERMAL_RESET_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "last_commit": "165b8250f8b82b55c05987ffeb62285a847df884",
+  "status": "THERMAL_RESET_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Original ordinary water/Snow0 FLPRINTDT SWRES1: preserve original annual counter, actual original calendar/native domain and source-owned physical receipts; begin actual reader audit and O0/O2 pilot.",
-  "recovery_point": "codex/nomacro-thermal-reset01; THERMAL_RESET_QUALIFICATION.json; registered root source-sealed and proof PASS; source/metadata admission next.",
+  "recovery_point": "codex/nomacro-thermal-reset01 atactual165b8250f; THERMAL_RESET_MERGE_RECEIPT.json; metadata next then ordinary reset implementation.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Integrate qualified original Snow FLPRINTDT annual-reset source then metadata; verify actual merge ordered parents/full tree/clean detached registered owners; continue ordinary SWRES1 output gap.",
+  "next_action": "Merge metadata and verify actual clean detached registered owner, ordered parents and complete tree; continue ordinary/Snow0 FLPRINTDT SWRES1 native counter gap.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -655,7 +655,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "536a178591e8f887963dcf9981521077547aeba0",
+  "canonical_head": "165b8250f8b82b55c05987ffeb62285a847df884",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -1579,7 +1579,7 @@
     "metadata_docs": "Source checks PASS; strict MkDocs PASS30.70seconds."
   },
   "thermal_reset": {
-    "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
     "baseline": "536a178591e8f887963dcf9981521077547aeba0",
     "original_reader_observation": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-baseline-original-reader-v1",
     "scope": "OriginalwaterSnow1heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather FLPRINTDTtrue NPRINTDAY1 SWRES1 explicit/periodic/PERIOD0 format0..3; nofrost/AQ/CDE/age/macro.",
@@ -1815,6 +1815,35 @@
         "conclusion": "success"
       }
     },
-    "next": "Integrate qualified original Snow FLPRINTDT annual-reset source then metadata; verify actual merge ordered parents/full tree/clean detached registered owners; continue ordinary SWRES1 output gap."
+    "next": "Integrate qualified original Snow FLPRINTDT annual-reset source then metadata; verify actual merge ordered parents/full tree/clean detached registered owners; continue ordinary SWRES1 output gap.",
+    "actual_source_owner": {
+      "status": "ACTUAL_THERMAL_RESET_CANONICAL_MERGE_VERIFIED",
+      "pr": 1744,
+      "merge": "165b8250f8b82b55c05987ffeb62285a847df884",
+      "parents": [
+        "536a178591e8f887963dcf9981521077547aeba0",
+        "2b13605054e7006ea7fde45e80394bb3a080f2c0"
+      ],
+      "qualified_head": "2b13605054e7006ea7fde45e80394bb3a080f2c0",
+      "tree": "2eb4bcc91bd082e4bdaead54b2d06cc5e3044bc6",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 131.25609729997814,
+        "head": "165b8250f8b82b55c05987ffeb62285a847df884",
+        "stdout": "{\n  \"status\": \"ORIGINAL_SNOW_FLPRINTDT_ANNUAL_RESET_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"b9adbefdb6b9779f0ecd3fe8c8f637101649ac8c\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_FLPRINTDT_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 16,\n  \"actual_cold_windows\": 256,\n  \"actual_native_refusals\": 1008,\n  \"actual_policy_refusals\": 432,\n  \"actual_copied_provider_refusals\": 16,\n  \"actual_preserved_contexts\": 79,\n  \"actual_saltfarm_preserved_full_periods\": 4,\n  \"actual_saltfarm_preserved_cold_windows\": 20,\n  \"actual_non_january_periods\": 8,\n  \"actual_epoch_cold_windows\": 32,\n  \"actual_post_year_native_refusals\": 32,\n  \"actual_bound_reports\": 227,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    },
+    "source_docs": "Source checks PASS; strict MkDocs PASS54.64seconds external source site.",
+    "automatic_pr_ci_snapshot": {
+      "head": "2b13605054e7006ea7fde45e80394bb3a080f2c0",
+      "total": 28,
+      "counts": {
+        "('queued', None)": 9,
+        "('in_progress', None)": 19
+      },
+      "role": "Automatic legacy PR checks, outside selected scientific qualification. Pending is not PASS; actual snapshot external thermal-reset-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    }
   }
 }

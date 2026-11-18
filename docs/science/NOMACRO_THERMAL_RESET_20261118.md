@@ -1,6 +1,6 @@
 # Original Snow FLPRINTDT annual reset
 
-**Qualified bounded Windows/Ubuntu source / canonical admission pending.** Actual canonical
+**Current bounded source admitted through PR1744; metadata receipt pending.** Actual canonical
 536a178591e8f887963dcf9981521077547aeba0 is independently verified after
 source PR1742 and metadata PR1743: exact ordered parents, complete qualified
 trees and clean detached registered owners PASS. Whole closure stays PARTIAL,
@@ -95,6 +95,6 @@ and pending pointers remain literal; no uniform output cadence is invented.
 
 ## Actual qualified source evidence
 
-[Original Snow FLPRINTDT annual reset](NOMACRO_THERMAL_RESET_20261118.md) passes16full1096day Windows/Ubuntu periods and256complete cold windows. Eight additional35day non-January periods and32own cold windows validate actual year-reset counters; all32forged post-year native counters are refused. All1008native refusals,432policy refusals,16copied-provider refusals, public/reader/transaction gates and2009proof corruptions pass. All79prior source/native contexts remain exact, including four full SaltFarm periods/twenty cold windows. Source qualification is complete; canonical admission remains pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+[Original Snow FLPRINTDT annual reset](NOMACRO_THERMAL_RESET_20261118.md) passes16full1096day Windows/Ubuntu periods and256complete cold windows. Eight additional35day non-January periods and32own cold windows validate actual year-reset counters; all32forged post-year native counters are refused. All1008native refusals,432policy refusals,16copied-provider refusals, public/reader/transaction gates and2009proof corruptions pass. All79prior source/native contexts remain exact, including four full SaltFarm periods/twenty cold windows. Actual canonical165b8250f passes its clean detached registered owner, exact ordered parents and complete qualified tree; metadata receipt pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
 
-Seven raw records retain475926206bytes, including original GitHub artifact bytes and ordered64MiB parts for the large Windows preservation archive. Five independent proof tests pass in21.853seconds. The registered owner recomputes actual ledgers, native counters, complete warm/cold physical/user bytes and forged post-year worker evidence. The real dirty and committed false-global-counter source control is refused before model execution. Canonical source and metadata mergeresults remain required.
+Seven raw records retain475926206bytes, including original GitHub artifact bytes and ordered64MiB parts for the large Windows preservation archive. Five independent proof tests pass in21.853seconds. The registered owner recomputes actual ledgers, native counters, complete warm/cold physical/user bytes and forged post-year worker evidence. The real dirty and committed false-global-counter source control is refused before model execution. Actual source PR1744 merges165b8250f with exact ordered parents536a178591/2b1360505 and complete tree2eb4bcc91bd082e4bdaead54b2d06cc5e3044bc6. Its clean detached registered owner passes; metadata mergeresult remains required.
