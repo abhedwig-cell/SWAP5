@@ -57,7 +57,7 @@ def main():
             canonical_policy_sources={}
             policy_paths={
               'frost_reference':{'source_sha256':'app/hybrid_water/frost_reference.py'},
-              'time_event_closure':{'source_sha256':'app/hybrid_water/time_event_closure.py'},
+              'time_event_closure':{'source_sha256':'app/hybrid_water/time_event_closure.py','terminal_receipt_sha256':'app/hybrid_water/terminal_water_receipt.f90'},
               'conserved_subsurface_solute':{'source_sha256':'app/hybrid_water/conserved_subsurface_solute.py','correction_sha256':'reference/swap-4.3.1/patches/NOMACRO-SUBSURFACE-SOLUTE-01/source.py','fixed_reader_sha256':'app/hybrid_water/fixed_irrigation_file.py'}}
             for field,paths in policy_paths.items():
                 x,y=actual['identity'].get(field),old['identity'].get(field);assert (x is None)==(y is None)
