@@ -52,7 +52,7 @@ def source(original):
     body,n=re.subn(r'(?mi)^([ \t]*real\(8\)[ \t]*::[ \t]*tcumsol),[ \t]*rounderr[ \t]*$',r'\1',body);assert n==1
     body,n=re.subn(r'(?mi)^[ \t]*real\(8\)[ \t]*::[ \t]*sampro0[ \t]*\n','',body);assert n==1
     anchor='      implicit none';assert body.count(anchor)==1
-    body=body.replace(anchor,anchor+'\n      real(8)::hybrid_cde_observed_increment\n      integer::hybrid_cde_observe_status',1)
+    body=body.replace(anchor,'      use variables,only:daycum\n'+anchor+'\n      real(8)::hybrid_cde_observed_increment\n      integer::hybrid_cde_observe_status',1)
     anchor='         sampro0 = samini';assert body.count(anchor)==1
     body=body.replace(anchor,anchor+'\n         hybrid_cde_interval_initialized=.true.',1)
     first=body.index('      case (2)');last=body.index('      case(3)',first)

@@ -183,7 +183,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     chemical_source=chemical_fixed or chemical_scheduled
     from conserved_aquifer_solute import enabled as aquifer_enabled, correction as aquifer_correction
     aquifer_source=aquifer_enabled(project)
-    import perstep_output_domain as age_calendar_owner
+    import cde_interval_output as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
         import original_output_aquifer as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
