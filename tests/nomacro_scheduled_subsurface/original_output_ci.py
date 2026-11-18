@@ -14,12 +14,18 @@ CASES=('cde-solbal-csv3','age-csv3','water-nprint2','water-csv2','water-csv3','w
 def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--reuse-short-prefix');a=p.parse_args();a.output.mkdir()
+    p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--reuse-short-prefix');p.add_argument('--resume',action='store_true');a=p.parse_args()
+    if not a.resume:a.output.mkdir()
+    else:assert a.output.is_dir()
     sys.path.insert(0,str(ROOT/'tools/solute'));import user_prepare
     if not (a.reference_work/'PREPARED.json').exists():user_prepare.prepare(a.reference_work)
     user_prepare.validate(a.reference_work);shutil.copyfile(a.reference_work/'PREPARED.json',a.output/'PROVIDER.json')
     def run(script,*args):subprocess.run([sys.executable,'-B',str(ROOT/'tests/nomacro_scheduled_subsurface'/script),*map(str,args)],cwd=ROOT,check=True)
     q=dict(status='RUNNING',optimization=a.optimization,cases={},source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
+    if a.resume:
+        previous=json.loads((a.output/'RESULT.json').read_text());assert previous['optimization']==a.optimization
+        q=previous;q.setdefault('retained_failures',[]).append(dict(status=q['status'],error=q.pop('error',None)))
+        q['status']='RUNNING'
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     try:
         for case in CASES:
@@ -27,6 +33,10 @@ def main():
             if not a.reuse_short_prefix:run('original_output_matrix.py','--reference-work',a.reference_work,'--output',short,'--case',case,'--optimization',a.optimization)
             previous=json.loads((short/'RESULT.json').read_text());assert previous['status']=='ORIGINAL_OUTPUT_SHORT_NATIVE_SOURCE_PASS'
             full=a.output/('full-'+case+'-'+a.optimization)
+            if a.resume and case in q['cases']:
+                actual=json.loads((full/'RESULT.json').read_text());assert actual==q['cases'][case]['full'] and actual['status']=='ORIGINAL_OUTPUT_FULL_NATIVE_SOURCE_PASS'
+                m=matrix.m;m.validate_bundle(short/'build',a.reference_work,m.e.load(short/'input',original_output=True));assert actual['trajectory']['build_sha256']==m.sha(short/'build/BUILD.json')
+                m.check(m.rows(full/'trajectory'));continue
             run('original_output_matrix.py','--reference-work',a.reference_work,'--output',full,'--case',case,'--optimization',a.optimization,'--phase','full','--reuse-build',short/'build','--existing-input',short/'input')
             q['cases'][case]=dict(short=previous,full=json.loads((full/'RESULT.json').read_text()));save()
         short=Path(a.reuse_short_prefix+'water-nprint3-'+a.optimization) if a.reuse_short_prefix else a.output/('short-water-nprint3-'+a.optimization)
