@@ -1334,5 +1334,12 @@
     "authority": "integration/f-ci/nomacro-complete01/THERMAL_RESET_QUALIFICATION.json",
     "remaining": "Ordinary/Snow0 FLPRINTDT SWRES1, Snow FLPRINTDT NPRINTDAY2..1440, Snow CDE/age calendars and other original process/selector gaps. Whole closure PARTIAL; science NOT_QUALIFIED.",
     "canonical": "165b8250f8b82b55c05987ffeb62285a847df884"
+  },
+  "ordinary_reset": {
+    "status": "IMPLEMENTED_NOT_QUALIFIED",
+    "qualification": "BOUNDED_SOURCE_QUALIFIED_PENDING_CANONICAL",
+    "scope": "OriginalwaterSnow0heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather FLPRINTDTtrue NPRINTDAY1 SWRES1 explicit/periodic/PERIOD0 format0..3; nofrost/AQ/CDE/age/macro.",
+    "authority": "integration/f-ci/nomacro-complete01/ORDINARY_RESET_QUALIFICATION.json",
+    "remaining": "Ordinary/Snow SWRES0 and NPRINTDAY2..1440 per-step composition, Snow CDE/age calendars and other original process/selector gaps. Whole closure PARTIAL; science NOT_QUALIFIED."
   }
 }
