@@ -6,7 +6,7 @@ S5CTW002 adds a paired32byte header and seven actual MOD_integral Snow totals,
 staged and validated before apply after initialization. The original Integral
 still owns every increment. The actual copied provider is checked before
 coupling; dense daily/CDE/age/groundwater helpers delegate literally. No physical
-equation or release profile changes. Registered proof passes; actual canonical admission is pending.
+equation or release profile changes. Actual canonicalf2fc11124 passes its detached registered owner.
 
 The implemented [groundwater process-history adapter](../science/NOMACRO_GROUNDWATER_HISTORY_20261118.md)
 composes literal original CDE, hysteresis0/1/2 and Snow0/1 owners under SWBOTB1.

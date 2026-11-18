@@ -5,8 +5,7 @@ pass16full1096day Windows/Ubuntu periods,256complete cold windows and40scoped
 prior source/native contexts. Monthly, explicit dates, periodic and PERIOD0
 water output preserve the original annual/TEND records. Seven actual original
 Snow totals now survive cold sparse output; dense daily owners stay literal.
-Public/reader/native/transaction and1329proof corruption gates pass. Registered proof passes;
-actual canonical admission is pending. Closure stays PARTIAL, science
+Public/reader/native/transaction and1329proof corruption gates pass. Actual canonicalf2fc11124 passes its detached registered owner. Closure stays PARTIAL, science
 NOT_QUALIFIED and fixed RC3 unchanged.
 
 The [groundwater hydraulic/snow-history composition](../science/NOMACRO_GROUNDWATER_HISTORY_20261118.md)

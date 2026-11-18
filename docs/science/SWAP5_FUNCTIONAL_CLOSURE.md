@@ -9,7 +9,7 @@ original Snow totals while keeping all physical/calendar owners literal.
 Windows/Ubuntu16full1096day periods,256complete cold windows and40prior
 contexts pass with unchanged guards, exact native/sparse user records and
 independent public/original-reader gates. Original forced annual/TEND output
-is preserved. Registered proof passes; actual canonical admission remains pending.
+is preserved. Actual canonicalf2fc11124 passes its detached registered owner.
 Historical closure stays PARTIAL, whole science NOT_QUALIFIED and fixed RC3
 unchanged; CDE/age/subdaily Snow calendars and other historical gaps continue.
 
