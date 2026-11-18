@@ -302,6 +302,8 @@ def validate(project):
 
 
 def auxiliary_magic(project):
+    from original_output_hysteresis import selection as hysteresis_output_selection,magic as hysteresis_output_magic
+    if hysteresis_output_selection(project) is not None:return hysteresis_output_magic(project)
     from original_output import selection as original_selection,magic as original_magic
     if original_selection(project) is not None:return original_magic(project)
     if project.age:
