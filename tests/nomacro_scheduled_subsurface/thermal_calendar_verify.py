@@ -134,7 +134,7 @@ def native(raw,row,n,hys,selected):
 
 def verify():
     import importlib.util
-    spec=importlib.util.spec_from_file_location('thermal_clock_admission',ROOT/'tests/nomacro_scheduled_subsurface/thermal_clock_verify.py')
+    spec=importlib.util.spec_from_file_location('saltfarm_newton_admission',ROOT/'tests/saltfarm_newton/verify_successor.py')
     owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
     return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty Snow calendar admission surface')

@@ -1,5 +1,14 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[SaltFarm Newton qualification](../science/SALTFARM_NEWTON_WORK01.md) binds
+production355559313 and canonical parentf2fc11124 to the actual Windows
+records and byte-exact Ubuntu artifact44328844150/14438556664 in
+`integration/f-ci/saltfarm-newton-work01/PORTABLE.json`. The scoped successor
+recomputes actual1461day ledgers and all20cold/native/CSV comparisons. It
+retains the literal preceding Snow owner and immutable canonical archives;
+earlier failed source guards and the refused day454 unpolished trial remain
+visible. Whole-science qualification and fixed RC3 are unchanged.
+
 [Snow subdaily qualification](../science/NOMACRO_THERMAL_CLOCK_20261118.md)
 and `integration/f-ci/nomacro-complete01/THERMAL_CLOCK_QUALIFICATION.json`
 bind production1ce21b8e2 to seven immutable raw archives,345104774bytes,
