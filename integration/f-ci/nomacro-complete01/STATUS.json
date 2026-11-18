@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-thermal-reset01",
   "last_commit": "536a178591e8f887963dcf9981521077547aeba0",
-  "status": "THERMAL_RESET_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+  "status": "IMPLEMENTED_PERSISTED_LOCAL_O0_O2_SHORT_EPOCH_NATIVE_TRANSACTION_GATES_PASS_MATRIX_RUNNING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Original FLPRINTDT SWRES1 year reset with full native calendar ownership, first ordinary/Snow scoped original-source audit and actual O0/O2 pilot.",
-  "recovery_point": "codex/nomacro-thermal-reset01 based536a178591; preceding source1742/metadata1743 fully verified.",
+  "recovery_point": "codex/nomacro-thermal-reset01 basedactual536a178591; local short/epoch/native controls all PASS; matrix running; no canonical admission yet.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Implement separate Snow FLPRINTDT SWRES1 native annual counter policy; persist then actual O0/O2 short/year pilots before selected full qualification.",
+  "next_action": "Poll existing thermal-reset-windows-O0/O2-v1 matrix; no duplicate runs. Prepare actual selected portable and 79 prior source/native preservation contexts; then raw independent admission.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -468,7 +468,10 @@
   "qualified_age_calendar_runtime": "75f4bf12f71286e0021877e9285df43beb6be01d",
   "qualified_age_calendar_ubuntu": "9321cc995ceaa327cab10b5ad0044fbb47fb0152",
   "age_calendar_sealed_proof": "accd67320a4a85db298f5aff55f1e0e87b2d782f",
-  "active_local_jobs": [],
+  "active_local_jobs": [
+    "thermal-reset-windows-O0-v1",
+    "thermal-reset-windows-O2-v1"
+  ],
   "schedule_known_next_dependencies": [
     "Original subdaily output-clock ownership after cold physical TSTART",
     "Monthly inactive-selector omission combinations: old generic preflight can still demand PERIOD when SWODAT0 remains present; current admitted-bound candidate uses full original decks",
@@ -1579,10 +1582,78 @@
     "metadata_docs": "Source checks PASS; strict MkDocs PASS30.70seconds."
   },
   "thermal_reset": {
-    "status": "CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+    "status": "IMPLEMENTED_PERSISTED_LOCAL_O0_O2_SHORT_EPOCH_NATIVE_TRANSACTION_GATES_PASS_MATRIX_RUNNING",
     "baseline": "536a178591e8f887963dcf9981521077547aeba0",
     "original_reader_observation": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-baseline-original-reader-v1",
     "scope": "OriginalwaterSnow1heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather FLPRINTDTtrue NPRINTDAY1 SWRES1 explicit/periodic/PERIOD0 format0..3; nofrost/AQ/CDE/age/macro.",
-    "external_blocker": null
+    "external_blocker": null,
+    "production_commit": "90a8d1e9f",
+    "runtime": "fb99f950bda1d8667f0f56f771e1a6c894b4105d",
+    "windows_pilots": {
+      "O0": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-explicit-O0-v1",
+        "days": 35,
+        "cold": 4,
+        "native_refusals": 63,
+        "policy_refusals": 27,
+        "actual_provider_refusal": true,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "O2": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-explicit-O2-v1",
+        "days": 35,
+        "cold": 4,
+        "native_refusals": 63,
+        "policy_refusals": 27,
+        "actual_provider_refusal": true,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      }
+    },
+    "epoch_gates": {
+      "O0": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-epoch-O0-v1",
+        "status": "TWO_NONJANUARY_ORIGINAL_EPOCHS_YEAR_RESET_ACTUAL_NATIVE_COLD_PASS",
+        "cases": [
+          "2002-12-15",
+          "2003-12-15"
+        ],
+        "days": 70,
+        "cold": 8
+      },
+      "O2": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-epoch-O2-v1",
+        "status": "TWO_NONJANUARY_ORIGINAL_EPOCHS_YEAR_RESET_ACTUAL_NATIVE_COLD_PASS",
+        "cases": [
+          "2002-12-15",
+          "2003-12-15"
+        ],
+        "days": 70,
+        "cold": 8
+      }
+    },
+    "year_counter_controls": {
+      "O0": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-year-controls-O0-v1",
+        "status": "EIGHT_ACTUAL_POST_YEAR_NATIVE_COUNTER_FORGERIES_REFUSED",
+        "refusals": 8
+      },
+      "O2": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-year-controls-O2-v1",
+        "status": "EIGHT_ACTUAL_POST_YEAR_NATIVE_COUNTER_FORGERIES_REFUSED",
+        "refusals": 8
+      }
+    }
   }
 }

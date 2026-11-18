@@ -1,6 +1,6 @@
 # Original Snow FLPRINTDT annual reset
 
-**Contract / implementation next / not qualified or admitted.** Actual canonical
+**Implemented / persisted / local O0/O2 short and year-epoch gates pass; full/portable/admission pending.** Actual canonical
 536a178591e8f887963dcf9981521077547aeba0 is independently verified after
 source PR1742 and metadata PR1743: exact ordered parents, complete qualified
 trees and clean detached registered owners PASS. Whole closure stays PARTIAL,
@@ -55,3 +55,14 @@ The change affects original output/native policy and dispatch only; it preserves
 Full Richards, accepted state ownership, transactional commit/discard, numerical
 policies and physical equations. Invariants3,4,7,13,21,23,30 remain binding.
 No broad moving F-CI or retired highest-low-air campaign is selected.
+
+## Local measured progress
+
+The initial35day explicit Snow O0/O2 pilots and four own cold windows each pass.
+Each actual worker refuses63native corruptions,27policy changes and a changed
+actual Snow provider; discard/replay/accept/recovered-day pass. Two independent
+non-January epochs (15December2002 and15December2003) run35days each at both
+optimizations with four byte-exact own cold windows. All16paired-witness forged
+post-year counters are refused by actual workers, including false global and
+previous-year counters. Original full periods and portable/source preservation
+remain required; this progress is not admission.
