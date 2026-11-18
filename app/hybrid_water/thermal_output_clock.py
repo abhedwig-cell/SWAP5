@@ -178,7 +178,7 @@ def apply_build(output,donor_build,project,patched):
     (output/'timecontrol.f90').write_text(clock.render_timecontrol((donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
     text=text.replace(anchor,'   use MOD_integral,only:hybrid_snow_soil_trial_residual\n'+anchor,1)
-    anchor='  implicit none';assert text.count(anchor)==1;text=text.replace(anchor,anchor+'\n  real(8)::hybrid_snow_trial_guard',1)
+    anchor='\n   implicit none\n';assert text.count(anchor)==1;text=text.replace(anchor,anchor+'   real(8)::hybrid_snow_trial_guard\n',1)
     anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.';assert text.count(anchor)==1
     guard="""
          if(swbotb==8.and..not.flboth)then
