@@ -54,12 +54,18 @@ def main():
             for path,digest in actual['identity']['kernel_sources']:
                 current=(ROOT/path).read_bytes();prior=(a.baseline_root/path).read_bytes();assert hashlib.sha256(current).hexdigest()==digest and hashlib.sha256(prior).hexdigest()==dict(old['identity']['kernel_sources'])[path]
                 assert current.replace(b'\r\n',b'\n')==prior.replace(b'\r\n',b'\n');canonical_kernel[path]=hashlib.sha256(current.replace(b'\r\n',b'\n')).hexdigest()
-            for field,filename in [('frost_reference','frost_reference.py'),('time_event_closure','time_event_closure.py'),('conserved_subsurface_solute','conserved_subsurface_solute.py')]:
-                x,y=actual['identity'].get(field),old['identity'].get(field)
-                assert (x is None)==(y is None)
-                if x is not None:
-                    assert {k:v for k,v in x.items() if k!='source_sha256'}=={k:v for k,v in y.items() if k!='source_sha256'},(kind,field)
-                    assert (ROOT/'app/hybrid_water'/filename).read_bytes().replace(b'\r\n',b'\n')==(a.baseline_root/'app/hybrid_water'/filename).read_bytes().replace(b'\r\n',b'\n')
+            canonical_policy_sources={}
+            policy_paths={
+              'frost_reference':{'source_sha256':'app/hybrid_water/frost_reference.py'},
+              'time_event_closure':{'source_sha256':'app/hybrid_water/time_event_closure.py'},
+              'conserved_subsurface_solute':{'source_sha256':'app/hybrid_water/conserved_subsurface_solute.py','correction_sha256':'reference/swap-4.3.1/patches/NOMACRO-SUBSURFACE-SOLUTE-01/source.py','fixed_reader_sha256':'app/hybrid_water/fixed_irrigation_file.py'}}
+            for field,paths in policy_paths.items():
+                x,y=actual['identity'].get(field),old['identity'].get(field);assert (x is None)==(y is None)
+                if x is None:continue
+                assert {k:v for k,v in x.items() if k not in paths}=={k:v for k,v in y.items() if k not in paths},(kind,field)
+                for key,path in paths.items():
+                    current=(ROOT/path).read_bytes();prior=(a.baseline_root/path).read_bytes();assert hashlib.sha256(current).hexdigest()==x[key] and hashlib.sha256(prior).hexdigest()==y[key],(field,key)
+                    assert current.replace(b'\r\n',b'\n')==prior.replace(b'\r\n',b'\n');canonical_policy_sources[path]=hashlib.sha256(current.replace(b'\r\n',b'\n')).hexdigest()
             original=(a.reference_work/'build/swap-selected/integral.f90').read_text(encoding='cp1252');rendered=(out/'current-build/integral.f90').read_text(encoding='cp1252')
             body=lambda text:text[text.index('   case (3)'):text.index('   case default',text.index('   case (3)'))]
             observed=body(rendered)
@@ -77,8 +83,8 @@ def main():
                 with zipfile.ZipFile(out/f'baseline/trajectory/accepted-column-1-day-{day}.zip') as x,zipfile.ZipFile(out/f'current/trajectory/accepted-column-1-day-{day}.zip') as y:
                     raw=y.read('macro.bin');assert raw.count(header+header)==1;offset=raw.index(header+header);oldraw=x.read('macro.bin');assert offset==len(oldraw) and raw[8:offset]==oldraw[8:] and y.read('result.end')==x.read('result.end'),(kind,day)
                     native[str(day)]=dict(complete_old_physical_prefix_exact=True,result_end_exact=True,new_output_domain_offset=offset,old_complete_native_bytes=len(oldraw),projection='comparison only: typed8bytecodec and appended output/calendar state excluded; no checkpoint adoption or rebinding')
-            full=out/'current/trajectory';windows=[probe.own(out/'current-build',a.reference_work,project,full,right,s,t,out/('own-'+str(s))) for s,t in ((2,4),(19,23),(30,34))]
-            q['profiles'][kind]=dict(actual_build=actual,baseline_build_sha256=m.sha(out/'baseline-build/BUILD.json'),baseline_run=json.loads((out/'baseline/RUN.json').read_text()),current_run=json.loads((out/'current/RUN.json').read_text()),physical_provider_inputs_exact=True,canonical_kernel_sources=canonical_kernel,original_integral_task3_statements_exact=True,comparison_only_metadata_projection=dict(case_tag='different explicit output policies, identical complete input bytes and physical project metadata',kernel='actual independently validated raw build identities retained; only Git-canonical LF source bytes compared',integral='one original provider integral.o replaced by observed real Integral with literal original task3 statements; no other provider object differs'),maximum_actual_differences=maxima,native=native,own=windows);save();print(kind,a.optimization,'ACTUAL_CANONICAL_THERMAL_PHYSICS_AND_DENSE_RESET0_NATIVE_PASS',maxima,flush=True)
+            full=out/'current/trajectory';windows=[probe.own(out/'current-build',a.reference_work,project,full,right,s,t,out/('own-'+str(s)),resume=a.resume and (out/('own-'+str(s))).exists()) for s,t in ((2,4),(19,23),(30,34))]
+            q['profiles'][kind]=dict(actual_build=actual,baseline_build_sha256=m.sha(out/'baseline-build/BUILD.json'),baseline_run=json.loads((out/'baseline/RUN.json').read_text()),current_run=json.loads((out/'current/RUN.json').read_text()),physical_provider_inputs_exact=True,canonical_kernel_sources=canonical_kernel,canonical_policy_sources=canonical_policy_sources,original_integral_task3_statements_exact=True,comparison_only_metadata_projection=dict(case_tag='different explicit output policies, identical complete input bytes and physical project metadata',kernel='actual independently validated raw build identities retained; only Git-canonical LF source bytes compared',integral='one original provider integral.o replaced by observed real Integral with literal original task3 statements; no other provider object differs'),maximum_actual_differences=maxima,native=native,own=windows);save();print(kind,a.optimization,'ACTUAL_CANONICAL_THERMAL_PHYSICS_AND_DENSE_RESET0_NATIVE_PASS',maxima,flush=True)
         q['status']='FOUR_ACTUAL_CANONICAL_THERMAL_PHYSICAL_NATIVE_RESET0_CONTEXTS_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()

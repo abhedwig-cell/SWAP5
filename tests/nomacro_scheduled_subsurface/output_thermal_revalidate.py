@@ -13,11 +13,14 @@ def main():
     for key in ('reference-work','matrix-root','output'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args();a.output.mkdir(parents=True)
     original_bytes=(a.matrix_root/'RESULT.json').read_bytes();original=json.loads(original_bytes)
-    assert original['status']=='FAILED' and 'accepted-column-1-day-35.zip' in original['error']
+    assert original['status']=='FAILED' and original['error']=="FileNotFoundError(2, 'No such file or directory')" and original['format_independence']=={}
     assert set(original['cases'])==set(matrix.CASES) and set(original['controls'])==set(matrix.CONTROLS)
     for key,case in matrix.CASES.items():
         assert (a.matrix_root/('short-'+key)/'RESULT.json').is_file() and (a.matrix_root/('short-'+key)/'build/BUILD.json').is_file()
         if case[4]:assert original['cases'][key]['full']['status']=='ORIGINAL_OUTPUT_THERMAL_FULL_SNOW_COMPOUND_NATIVE_USER_FILES_PASS' and (a.matrix_root/('full-'+key)/'RESULT.json').is_file()
+    for key in ('water-csv0','water-csv3','chemical-csv0','chemical-csv3','frost-drained-csv0','frost-drained-csv3'):
+        full=a.matrix_root/('full-'+key)/'trajectory';assert not (full/'accepted-column-1-day-35.zip').exists()
+        assert all((full/f'accepted-column-1-day-{day}.zip').is_file() for day in (4,8,23,34,201,367,532,1096))
     for key in matrix.CONTROLS:assert original['controls'][key]['status']=='ORIGINAL_OUTPUT_THERMAL_ACTUAL_NATIVE_ACTIVE_AND_POLICY_REFUSALS_PASS' and (a.matrix_root/('controls-'+key)/'RESULT.json').is_file()
     def physical_files():
         return {f.relative_to(a.matrix_root).as_posix():hashlib.sha256(f.read_bytes()).hexdigest() for f in a.matrix_root.rglob('*') if f.is_file() and f.relative_to(a.matrix_root).as_posix() not in ('RESULT.json','PROVIDER.json')}
