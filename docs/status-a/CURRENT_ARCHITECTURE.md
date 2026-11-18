@@ -8,7 +8,7 @@ block is an exact consistency witness of the already restored original owner;
 it cannot overwrite a differing original copy. Without hysteresis it restores
 the missing full carry. Ordinary GWC001/002 delegates literally, all CDE prefixes
 remain48bytes and the frozen independent Darcy reaction stays unchanged.
-Registered proof and actual canonical admission are pending.
+Registered proof passes; actual canonical admission is pending.
 
 The qualified [prescribed-groundwater CDE successor](../science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)
 uses the actual original Darcy interface and prescribed saturated-tail storage

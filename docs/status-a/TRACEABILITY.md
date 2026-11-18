@@ -6,7 +6,7 @@ periods per optimization,704complete cold windows,1784native and96hydraulic
 receipt refusals. Fifty selected prior source/native contexts remain exact.
 Actual old and appended hydraulic-copy attacks both refuse before readiness;
 the initial unadmitted reader diagnostic and the failed preservation controller
-artifact are retained separately. Registered proof and canonical admission are
+artifact are retained separately. Registered proof passes; actual canonical admission is
 pending; whole closure/science/release scope is unchanged.
 
 [Prescribed-groundwater qualification](../science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)

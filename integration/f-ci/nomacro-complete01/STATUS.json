@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-groundwater-history01",
-  "last_commit": "243b8e85bfff5b662eb12f8c62993204d893b11e",
-  "status": "GROUNDWATER_HISTORY_PORTABLE_AND_50_PRIOR_CONTEXTS_PASS_PROOF_ADMISSION_IN_PROGRESS",
+  "last_commit": "ca7ae6d4d750f753ad6dc0a18ea5a27fcea1cb7b",
+  "status": "GROUNDWATER_HISTORY_QUALIFIED_PENDING_ACTUAL_CANONICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -964,7 +964,7 @@
     }
   },
   "groundwater_history": {
-    "status": "SEALED_CURRENT_NATIVE_HISTORY_PROOF_TESTS_PASS_PENDING_REGISTERED_ROOT",
+    "status": "QUALIFIED_REGISTERED_ROOT_AND_ACTUAL_SOURCE_NEGATIVE_PASS_PENDING_CANONICAL",
     "baseline": "c40636910a986feea35f19726af1aa6a68083011",
     "scope": "Existing analyticalCDE SWBOTB1 with originalhysteresis0/1/2 andSnow0/1, at leastoneactivehistory; originalthermal prerequisites; nofrost/aquifer/detailedweather/age/macros",
     "contract": "docs/science/NOMACRO_GROUNDWATER_HISTORY_20261118.md",
@@ -975,7 +975,7 @@
       "New typednative actual historydomain before originalcalendar",
       "AllCDEnativeSAMPRO andhydraulicreceipt binding"
     ],
-    "next": "Finish running archive operation without duplicate; seal8actual raw archives; registered root/corruptions/source-negative then actual source+metadata canonical admission.",
+    "next": "Create source PR and merge through canonical procedure; verify actual ordered parents/full tree and detached registered owner, then metadata PR/merge and next historical source gap.",
     "external_blocker": null,
     "runtime": "27815211325bacfa4c2e9b3747a2734dfcdbc8e5",
     "pilot": "O0/O2crossing35days+4coldwindowseachPASS; completephysical/native/userfilesexact; actualSnowandfixedchemicalinputpositive.",
@@ -1009,6 +1009,21 @@
     "sealed": "f18e86686404af7515807a038ac4ecbc6ca0e55d",
     "raw_archives": 8,
     "raw_bytes": 638858582,
-    "proof_tests": "3PASS11.221s;2032actualperiod/ledger/native+39source/scope corruptions refused plus actual archive part offset faults"
+    "proof_tests": "3PASS11.221s;2032actualperiod/ledger/native+39source/scope corruptions refused plus actual archive part offset faults",
+    "registered_root": {
+      "status": "GROUNDWATER_CDE_COMPLETE_HISTORY_NATIVE_ADMISSION_PASS",
+      "runtime": "27815211325bacfa4c2e9b3747a2734dfcdbc8e5",
+      "predecessor": "LITERAL_QUALIFIED_GROUNDWATER_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS",
+      "actual_full_periods": 56,
+      "actual_cold_windows": 704,
+      "actual_native_refusals": 1784,
+      "actual_report_refusals": 96,
+      "actual_preserved_contexts": 50,
+      "actual_bound_reports": 314,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "source_negative_commit": "973cc5709bd8920d8c7a93494849df3c1b44e561",
+    "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_OMITTED_HYDRAULIC_WITNESS_REFUSED"
   }
 }

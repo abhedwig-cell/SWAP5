@@ -9,7 +9,7 @@ cold windows and50selected prior source/native contexts pass. Ten typed codecs
 bind actual process domains; original hydraulic owners and their appended
 witness agree exactly before readiness. Actual native/input/transaction and
 independent public build/restart commands pass with unchanged1e-10guards.
-Registered proof and actual canonical admission are pending. Closure remains
+Registered proof passes; actual canonical admission is pending. Closure remains
 PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged; aquifer/frost/age and
 other groundwater domains and bottom9 remain separate work.
 

@@ -1,6 +1,6 @@
 # Original groundwater CDE with hydraulic and snow histories
 
-**Implemented composition / corrected native-witness qualification in progress / not admitted.** Baseline is actual
+**Qualified composition / registered proof PASS / actual canonical admission pending.** Baseline is actual
 canonicalc40636910 after PR1733/1734. Both source95fc7b7fe and metadata merges
 have exact ordered parents/full qualified trees and pass their actual detached
 registered owners. Historical closure remains PARTIAL, whole science
@@ -140,3 +140,22 @@ Git object, so the temporary snapshot has its own real Git database with a
 read-only object alternate to the actual common database. Extract bounded path
 batches to stay within Windows command-line limits. No ROOT/hash monkeypatch or
 synthetic predecessor PASS is permitted. Recompute all actual old archive bytes.
+
+Eight immutable raw producer archives total638858582bytes. Original Ubuntu ZIP
+bytes are retained exactly; large archives use ordered64MiBbyte parts with
+offset/size/SHA checks. Current corrected production278152113 is bound to all
+actual producer refs, generated native readers and frozen previous providers.
+The registered root recomputes actual water/CDE ledgers, every selected cold
+native endpoint, exact original/appended witnesses and format0/3 endpoint pairs.
+It passes56full periods,704cold windows,1784native and96reported hydraulic
+refusals,50prior contexts and314bound reports/builds. Three proof tests pass
+in11.221seconds:2032actual period/ledger/native and39source/scope corruptions
+are refused, as are invalid actual archive-part offsets. Functional closure
+stays PARTIAL; whole science NOT_QUALIFIED and fixed RC3 unchanged.
+
+A real dirty source and an actual committed negative branch bypass the original
+hydraulic consistency check and restore from the appended copy. Both registered
+root calls refuse before archives or model execution. The deliberately bad commit
+973cc5709bd8920d8c7a93494849df3c1b44e561 is retained in its private control worktree and
+must never merge. All prior owner bodies remain literal behind a four-line
+successor dispatch.

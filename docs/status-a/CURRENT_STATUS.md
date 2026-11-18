@@ -5,8 +5,8 @@ passes56full1096day Windows/Ubuntu periods,704complete cold windows and50selecte
 prior source/native contexts. All ten typed codecs, actual Snow and chemical
 sources, independent public commands and original reader refusals pass. The
 redundant hydraulic-copy reader gap found during development is corrected;
-original physical owners remain literal. Registered proof and canonical
-admission are pending. Whole closure stays PARTIAL, science NOT_QUALIFIED and
+original physical owners remain literal. Registered proof passes; actual canonical
+admission is pending. Whole closure stays PARTIAL, science NOT_QUALIFIED and
 the fixed RC3 named release is unchanged.
 
 The [prescribed-groundwater CDE composition](../science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)
