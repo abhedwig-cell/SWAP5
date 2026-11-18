@@ -32,7 +32,8 @@ def main():
             q['reader_refusals'].append(refuse('reader-'+label,build,bad,project,meta['binding'],(key.lower(),'range','invalid','aquifer')));save()
         for key,value in [('NPRINTDAY',3),('SWMONTH',1),('PERIOD',2),('SWODAT',1),('FLPRINTDT','.TRUE.'),('SWFROST',1),('SWSNOW',1),('SWMETDETAIL',1),('SWSOPHY',1)]:
             bad=a.output/('descriptor-'+key);shutil.copytree(inputs,bad);p=bad/'swap.swp';p.write_text(assignment(p.read_text(encoding='cp1252'),key,value),encoding='cp1252')
-            try:m.e.load(bad,original_output=True)
+            try:
+                candidate=m.e.load(bad,original_output=True);matrix.metadata(candidate)
             except ValueError as error:q['descriptor_refusals'].append(dict(key=key,value=value,status='REFUSED',error=str(error)))
             else:raise AssertionError('Unsupported aquifer output descriptor accepted: '+key)
         assert m.validate_bundle(build,a.reference_work,project)[0]==meta
