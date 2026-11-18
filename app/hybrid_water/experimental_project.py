@@ -255,7 +255,7 @@ def inspect(directory, *, original_output=None):
     return report
 
 
-def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_table_policy=None, original_output=False):
+def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_table_policy=None, original_output=False, age_irrigation_source=False):
     from daily_host import HybridProject, ORIGINAL_TIME_POLICY, TIME_POLICIES
     from solute_step_policy import LEGACY_SOLUTE_STEP_POLICY, SOLUTE_STEP_POLICIES
     policy=ORIGINAL_TIME_POLICY if time_step_policy is None else time_step_policy
@@ -263,6 +263,7 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     chemical=LEGACY_SOLUTE_STEP_POLICY if solute_step_policy is None else solute_step_policy
     if chemical not in SOLUTE_STEP_POLICIES:raise ValueError('Unknown experimental chemical substep policy')
     if not isinstance(original_output,bool):raise ValueError('Original output mode must be boolean')
+    if not isinstance(age_irrigation_source,bool):raise ValueError('Fixed age source mode must be boolean')
     report = inspect(directory,original_output=original_output)
     if original_output:report={**report,'original_output_policy':'original-user-output-controls-v1'}
     else:
@@ -289,19 +290,26 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
         raise ValueError('Soil-table policy requires active SWSOPHY1')
     if chemical!=LEGACY_SOLUTE_STEP_POLICY and not report['solute']:
         raise ValueError('Chemical substep policy requires active SWSOLU1')
+    if age_irrigation_source:report={**report,'age_irrigation_source_policy':'original-fixed-current-irrigation-age-days-v1'}
     key = hashlib.sha256(json.dumps(report, sort_keys=True).encode()).hexdigest()
-    return HybridProject('experimental-'+key, MODEL, report['start_date'], report['nodes'], 1e-10,
+    project=HybridProject('experimental-'+key, MODEL, report['start_date'], report['nodes'], 1e-10,
                          solute=report['solute'], age=report.get('age',False), end_date=report['end_date'],
-                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical,soil_table_policy=soil,original_output=original_output)
+                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical,soil_table_policy=soil,original_output=original_output,age_irrigation_source=age_irrigation_source)
+    if age_irrigation_source:
+        from age_irrigation_source import selection
+        selection(project)
+    return project
 
 
 def validate(project):
-    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy,solute_step_policy=project.solute_step_policy,soil_table_policy=project.soil_table_policy,original_output=project.original_output) != project:
+    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy,solute_step_policy=project.solute_step_policy,soil_table_policy=project.soil_table_policy,original_output=project.original_output,age_irrigation_source=project.age_irrigation_source) != project:
         raise ValueError('Experimental input, process configuration or metadata differs')
     return Path(project.input_directory)
 
 
 def auxiliary_magic(project):
+    from age_irrigation_source import enabled as current_age_source,magic as current_age_magic
+    if current_age_source(project):return current_age_magic(project)
     from original_output_hysteresis import selection as hysteresis_output_selection,magic as hysteresis_output_magic
     if hysteresis_output_selection(project) is not None:return hysteresis_output_magic(project)
     from original_output import selection as original_selection,magic as original_magic

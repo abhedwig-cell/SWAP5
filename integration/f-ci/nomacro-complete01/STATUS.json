@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-irrigation-source01",
   "last_commit": "636f12d83a3e40fe98b9c869505c7bde3cbf96f3",
-  "status": "ORIGINAL_FIXED_AGE_CAPTURE_COUNTEREXAMPLE_O0_O2_OBSERVED",
+  "status": "AGE_IRRIGATION_SOURCE_PROTOTYPE_UNQUALIFIED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -615,12 +615,14 @@
   "age_irrigation_source_results": {
     "work_unit": "NOMACRO-AGE-IRRIGATION-SOURCE01",
     "baseline": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
-    "status": "ORIGINAL_FIXED_AGE_CAPTURE_COUNTEREXAMPLE_O0_O2_OBSERVED",
+    "status": "EXPLICIT_CURRENT_AGE_SOURCE_PROTOTYPE_IMPLEMENTED_UNQUALIFIED",
     "source_findings": "OriginalfixedreaderIRCONC0..1000forSWSOLU>0; irrigationtask1CIRR0,task3CIRRactualevent. OriginalcalcAge task1capturesAgeirr=CIRRonce then usescapturedAgeirr forever. read_AgeTracer forciblysetsrain/drainage/seepageages0; nohistoricalnonzerorainselectorisclaimed. Existingphysicalsurface/soilprovidersalreadyacceptnonzeroageinputs andretainexternalageledger; onlyexplicitfixedyoungguardandhostforcingadapterboundcurrentzeroage.",
     "native_risk": "ExistingAgeirr/Agepre/Agedrain savedparameters arestaticnativeforcing witnesses; dynamicfixedeventagesmustnotreuseoldcodecsorbeaccidentallytreatedasstaticnativeparameters. Preservealloldhelpers,providers/codecs/youngdefaultsemantics.",
-    "next": "Addexplicitdefaultoff --age-irrigation-source withactualfixedsprinkler/surfaceCIRR ages. Preservefrozenyounghelperandphysicalproviders; newnativecodes/pairactualprocessdomain andcompleteexistingirrigationcarry; actualstatecomponentbeforehostactivation. Extendcalendar/outputcompositionsusingliteralowners; subsurfaceageinputsremainseparatestate/sourcework.",
+    "next": "Persistprototype;actualdailyO0/O2positiveandzeroage10day/2to4+4to8native; extendcalendar/output/hys shortprobes onlyafterpassing. No broadmatrixbeforefocusedsource/native guardproof.",
     "external_blocker": null,
     "original_counterexample": "636f12d83 actualoriginal63objectclosure, O0/O2 surface/sprinkler IRCONC0/20 all24eightdayrunsPASS. Originalnonzeroandzeroprofilesexact; nonmutatingprobeexact. Realnird2.4cm/CIRR20/Ageirr0: captures0 ratherthan48cmday. Isolatedrefreshpreserveszeroageandchangesnonzeroageprofile;actual48cmdaycurrentinputbothopts/kinds. NoSWAP5activation.",
-    "probe_failure": "d337640ba scopeddiagnostictoMODULEsubroutine whileimportsareinsubmodule specification; assertionbeforecompilation/model. Retainfirstprefix; fixsubmodulescopeonly;v2PASS."
+    "probe_failure": "d337640ba scopeddiagnostictoMODULEsubroutine whileimportsareinsubmodule specification; assertionbeforecompilation/model. Retainfirstprefix; fixsubmodulescopeonly;v2PASS.",
+    "domain_component": "e868e3e04 actualoriginalmodule-storageO0/O2twelvebase-layoutcontexts exact56pairedheaderbytes/streamposition/nonmutation;120native+6age-range/nonfiniterefusalsPASS. Providerobjects/libraryunchanged.",
+    "prototype": "Explicit--age-irrigation-source defaultFalse; fixedIRCONC0..1000days forsurface/sprinkleronly;currentCIRRhandedtoliteralphysicalsurfaceprovider. Oldyounghelper/ageproviders/sourcepatch/calendar/outputhelpersunchanged; sixnewcodecsandactualpairedprocessdomain appendedafterexistingcompletephysical/calendar/age payload;dynamicCIRRownedbyexistingcompleteirrigationstate, staticAgeirrnativeparameterspreserved."
   }
 }
