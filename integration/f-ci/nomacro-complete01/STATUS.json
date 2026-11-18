@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-thermal-reset01",
-  "last_commit": "165b8250f8b82b55c05987ffeb62285a847df884",
-  "status": "THERMAL_RESET_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+  "branch": "codex/nomacro-ordinary-reset01",
+  "last_commit": "caa0505611f12749d9e147a47d38db018d218edb",
+  "status": "ORDINARY_RESET_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Original ordinary water/Snow0 FLPRINTDT SWRES1: preserve original annual counter, actual original calendar/native domain and source-owned physical receipts; begin actual reader audit and O0/O2 pilot.",
-  "recovery_point": "codex/nomacro-thermal-reset01 atactual165b8250f; THERMAL_RESET_MERGE_RECEIPT.json; metadata next then ordinary reset implementation.",
+  "next_code_change": "Separate ordinary_output_reset.py; retain actual original physical trial receipt and full calendar, optional literal hysteresis domain, typed S5ORW001/S5ORH001.",
+  "recovery_point": "codex/nomacro-ordinary-reset01 basedactualcaa050561; preceding source1744/metadata1745 exact actual trees and detached registered owners PASS.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Merge metadata and verify actual clean detached registered owner, ordered parents and complete tree; continue ordinary/Snow0 FLPRINTDT SWRES1 native counter gap.",
+  "next_action": "Implement ordinary water Snow0/heat1 FLPRINTDT SWRES1 annual counter/native policy; persist before actual O0/O2 pilots and cold workers.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -446,8 +446,8 @@
   "qualified_age_fixed_runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
   "qualified_age_fixed_ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
   "age_fixed_sealed_proof": "56ae017e413503891d6c1a9709d1c882f2a14edb",
-  "active_branch": "codex/nomacro-thermal-reset01",
-  "canonical_baseline": "536a178591e8f887963dcf9981521077547aeba0",
+  "active_branch": "codex/nomacro-ordinary-reset01",
+  "canonical_baseline": "caa0505611f12749d9e147a47d38db018d218edb",
   "calendar_results": {
     "source": "7943551d0",
     "pilot": "O0/O2 ten-day and1096days/seven exact native windows PASS",
@@ -655,7 +655,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "165b8250f8b82b55c05987ffeb62285a847df884",
+  "canonical_head": "caa0505611f12749d9e147a47d38db018d218edb",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -876,7 +876,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-thermal-reset01",
+  "working_branch": "codex/nomacro-ordinary-reset01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -1579,7 +1579,7 @@
     "metadata_docs": "Source checks PASS; strict MkDocs PASS30.70seconds."
   },
   "thermal_reset": {
-    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+    "status": "ADMITTED_SOURCE_AND_METADATA",
     "baseline": "536a178591e8f887963dcf9981521077547aeba0",
     "original_reader_observation": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-baseline-original-reader-v1",
     "scope": "OriginalwaterSnow1heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather FLPRINTDTtrue NPRINTDAY1 SWRES1 explicit/periodic/PERIOD0 format0..3; nofrost/AQ/CDE/age/macro.",
@@ -1844,6 +1844,34 @@
         "('in_progress', None)": 19
       },
       "role": "Automatic legacy PR checks, outside selected scientific qualification. Pending is not PASS; actual snapshot external thermal-reset-source-pr-ci-at-merge.json. No duplicate/cancel requested."
-    }
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_THERMAL_RESET_METADATA_MERGE_VERIFIED",
+      "pr": 1745,
+      "merge": "caa0505611f12749d9e147a47d38db018d218edb",
+      "parents": [
+        "165b8250f8b82b55c05987ffeb62285a847df884",
+        "3ee6a1c74f6b9c02e398e2e5fa1df4cc017bf7ec"
+      ],
+      "qualified_head": "3ee6a1c74f6b9c02e398e2e5fa1df4cc017bf7ec",
+      "tree": "53a7adf0f667b84d5dd3b75f0326ceaf871915d3",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 117.38927980000153,
+        "head": "caa0505611f12749d9e147a47d38db018d218edb",
+        "stdout": "{\n  \"status\": \"ORIGINAL_SNOW_FLPRINTDT_ANNUAL_RESET_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"b9adbefdb6b9779f0ecd3fe8c8f637101649ac8c\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_FLPRINTDT_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 16,\n  \"actual_cold_windows\": 256,\n  \"actual_native_refusals\": 1008,\n  \"actual_policy_refusals\": 432,\n  \"actual_copied_provider_refusals\": 16,\n  \"actual_preserved_contexts\": 79,\n  \"actual_saltfarm_preserved_full_periods\": 4,\n  \"actual_saltfarm_preserved_cold_windows\": 20,\n  \"actual_non_january_periods\": 8,\n  \"actual_epoch_cold_windows\": 32,\n  \"actual_post_year_native_refusals\": 32,\n  \"actual_bound_reports\": 227,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    },
+    "metadata_docs": "Source checks PASS; strict MkDocs PASS42.48seconds external metadata site."
+  },
+  "ordinary_reset": {
+    "status": "CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+    "baseline": "caa0505611f12749d9e147a47d38db018d218edb",
+    "reader_observation": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-baseline-original-reader-v2",
+    "retained_fixture_failure": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-baseline-original-reader-v1\\OBSERVATION.json",
+    "scope": "OriginalwaterSnow0heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather FLPRINTDTtrue NPRINTDAY1 SWRES1 explicit/periodic/PERIOD0 format0..3; nofrost/AQ/CDE/age/macro.",
+    "external_blocker": null
   }
 }
