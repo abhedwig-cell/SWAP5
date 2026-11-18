@@ -1,11 +1,16 @@
 # Current fixed irrigation age source and complete original event carry
 
-**Qualified; canonical admission pending.** Baseline is actual canonical
+**Current / canonically admitted through PR1725, actual merge3063937ee.** Baseline is actual canonical
 04031746ef5b2c9735fad89c1a2754c42cdc1ce6 after PR1723/1724. Productiona5cedc906
 implements the explicit correction below. Qualification is owned by
 `integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_QUALIFICATION.json`
 and seven immutable raw archives, sealed at51f64e62f. Historical closure stays
 PARTIAL, whole science NOT_QUALIFIED and the fixed RC3 named release is unchanged.
+
+The actual merge has the exact04031746e/be8fec96d parents and the complete
+qualified4ff34547tree. Its detached registered owner passes in50.217seconds;
+`integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_MERGE_RECEIPT.json`
+records the actual postimage and owning result.
 
 ## Original defect and explicit input meaning
 

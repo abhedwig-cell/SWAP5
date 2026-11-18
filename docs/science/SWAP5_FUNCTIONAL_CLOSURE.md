@@ -7,7 +7,7 @@ an observed original once-only Ageirr capture through explicit default-off
 `--age-irrigation-source`. Fixed sprinkler/surface IRCONCages0..1000days use
 literal existing age equations and complete native event carry. Windows/Ubuntu
 40full1096day periods and source/native/rollback/reader/public/preservation gates
-pass. Qualification is sealed; canonical admission is pending. Nonzero subsurface
+pass. Qualification is sealed; Actual canonical3063937ee passes its detached registered owner. Nonzero subsurface
 age and other historical gaps remain open. Functional closure is PARTIAL,
 whole science NOT_QUALIFIED and the fixed RC3 named release is unchanged.
 

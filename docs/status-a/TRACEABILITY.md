@@ -6,7 +6,7 @@ bind productiona5cedc906 to seven raw archives,238actual reports/builds and40ful
 Windows/Ubuntu periods. The original capture defect has actual reference/module
 proof. The registered owner verifies accepted age ledgers and literal predecessor
 proof on its pinned source image, with2825corruptions and dirty/committed ignored
-source refusals. Qualification is bounded; canonical admission is pending.
+source refusals. Qualification is bounded; Actual canonical3063937ee passes its detached registered owner.
 
 [Hysteresis/output ownership](../science/NOMACRO_ORIGINAL_OUTPUT_HYSTERESIS_20261118.md)
 and `integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_QUALIFICATION.json`

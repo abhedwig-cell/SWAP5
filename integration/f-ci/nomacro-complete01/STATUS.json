@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-irrigation-source01",
-  "last_commit": "529bb206a23ec17ed5fdd86403640378cd18aa67",
-  "status": "WINDOWS_UBUNTU_CURRENT_SOURCE_QUALIFIED_PENDING_SEALED_OWNER",
+  "last_commit": "3063937eec796d2a863beab0fe7198766ba622e1",
+  "status": "CURRENT_FIXED_AGE_SOURCE_CANONICALLY_ADMITTED_NEXT_SUBSURFACE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -46,7 +46,8 @@
     "PR1719actualcanonical3bf7765ff: 005annual/NP2/3age source/state/output, exactparents/fulltree andactualdetachedrootPASS174.530sec. Completehistoricalmigration remainsPARTIAL andwhole scienceNOT_QUALIFIED.",
     "PR1720actualmetadatacanonicalb9400bff6 exact3bf/66parents/full1bd8tree andactualdetachedregisteredrootPASS173.997sec;005blockfullyadmitted.",
     "PR1721actualcanonical473b295d5 exactb940/c45parents/full6752tree; actualdetachedrootPASS60.383sec. Boundedoriginaloutputsource/state/userfilesadmitted, wholeclosurePARTIAL/scienceNOT_QUALIFIED.",
-    "PR1723 actualcanonical76f1a078b exact4b33/2824parents/full088fd990tree; realdetachedregisteredrootPASS47.838seconds; boundedoriginaloutput+hys1/2 water/dailyCDE/ageadmitted; wholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
+    "PR1723 actualcanonical76f1a078b exact4b33/2824parents/full088fd990tree; realdetachedregisteredrootPASS47.838seconds; boundedoriginaloutput+hys1/2 water/dailyCDE/ageadmitted; wholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
+    "PR1725 actual canonical3063937ee exact040/be8 parents/full4ff34547tree; actual detached registered root PASS50.217seconds. Bounded current fixed sprinkler/surface ages admitted;40actual full periods/238report-build bindings; whole closure PARTIAL/science NOT_QUALIFIED/fixedRC3 unchanged."
   ],
   "open": [
     "Complete historical selector inventory",
@@ -324,7 +325,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Complete annual/subdaily cohort controllers and actual reference/cadence/native controls; no changes to physical providers or literal003/004 helpers.",
-  "recovery_point": "Actualcanonicalb9400bff6 verified; newbranchcodex/nomacro-original-output01 withonlysourceinventory/diagnosticcontroller. NoAPP/sourceprovider changes yet.",
+  "recovery_point": "PR1725 actual canonical3063937ee exact parents/full tree; actual detached registered owner PASS50.217seconds. Metadata receipt and bounded current claims prepared.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -426,7 +427,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Persistwaterprototypebeforecompile. RunfreshpublicSWCSV0 O0/O2 short+actualcold; thenCSV1/2/3/groups/precision/cadence/monthly/native beforeage/CDEactivation. RetainoriginalbinarycorrectioncomponentNOT_ACTIVE untilnewroutequalifies.",
+  "next_action": "Complete actual metadata admission, then implement explicitly owned direct-soil irrigation age input and its ledger/native state for fixed subsurface IRTYPE2. Preserve existing surface source/default routes and physical age providers.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -646,5 +647,25 @@
     "real_reader_failure": "FirstnegativeproperlyrefusedTTUTILSTOP0 withrangeerrorinswap.err beforeHYBRID_READY; controllerdidnotcollectswap.err. Addactualerrfiletospecificdiagnostic; v2sixreal+sevenpolicy+youngdefaultrefusalsPASS. No modelrun ortolerancechange.",
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
+  },
+  "canonical_head": "3063937eec796d2a863beab0fe7198766ba622e1",
+  "age_irrigation_source_admission": {
+    "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
+    "pr": 1725,
+    "merge": "3063937eec796d2a863beab0fe7198766ba622e1",
+    "parents": [
+      "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
+      "be8fec96d0c8a025b16ac14f9adae4e649d8dcbc"
+    ],
+    "qualified_head": "be8fec96d0c8a025b16ac14f9adae4e649d8dcbc",
+    "tree": "4ff345474da6ef3d8c5e3e3538e9aee3d4ca4b4d",
+    "exact_complete_tree": true,
+    "actual_detached_owner": {
+      "returncode": 0,
+      "seconds": 50.216744699981064,
+      "head": "3063937eec796d2a863beab0fe7198766ba622e1",
+      "stdout": "{\n  \"status\": \"CURRENT_FIXED_IRRIGATION_AGE_SOURCE_STATE_OUTPUT_ADMISSION_PASS\",\n  \"runtime\": \"a5cedc906d91e9c020d407dfa5ae739336e0e7a8\",\n  \"predecessor\": \"LITERAL_QUALIFIED_PREDECESSOR_IMAGE_AND_ACTUAL_ARCHIVES_PASS\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"actual_bound_reports\": 238,\n  \"actual_full_periods\": 40,\n  \"native_codecs\": [\n    \"S5AI0002\",\n    \"S5AI0003\",\n    \"S5AI0004\",\n    \"S5AI0005\",\n    \"S5AIO001\",\n    \"S5AIH001\"\n  ],\n  \"age_units\": \"cm day\",\n  \"age_tolerance\": \"8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)\"\n}\n",
+      "stderr": ""
+    }
   }
 }
