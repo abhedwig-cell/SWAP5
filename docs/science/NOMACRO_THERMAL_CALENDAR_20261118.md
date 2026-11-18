@@ -62,7 +62,9 @@ day. Compare requested selector controls with the emitted deck.
 
 Select representative full1096day monthly/hysteresis2/binary, explicit-date/
 hysteresis1/vector, periodic5reset/hysteresis0/ASCII and PERIOD0/hysteresis2/
-no-table contexts across Windows/Ubuntu O0/O2. Include actual month/year/TEND
+ASCII contexts across Windows/Ubuntu O0/O2. Use actual ASCII terminal records
+to observe TEND; short monthly format0/3 pairs cover no-table independence.
+Include actual month/year/TEND
 output and complete cold windows; additional short format/reset/ET controls
 cover the remaining local interface risks. Confirm actual format/cadence output
 records rather than accepting switches or reconstructing a physical oracle.
