@@ -137,6 +137,13 @@ def main():
             except ValueError as error:assert 'Foreign original output policy' in str(error),str(error)
             else:raise AssertionError('Foreign original thermal output policy accepted')
             q['policy_refusals'].append(dict(field=field,status='REFUSED'))
+        target=a.output/'actual-snow-state-provider';target.mkdir();shutil.copyfile(build/'BUILD.json',target/'BUILD.json')
+        helper='thermal_output_snow_calendar_state.f90';(target/helper).write_bytes((build/helper).read_bytes()+b'\n! deliberately foreign actual copied provider\n')
+        try:m.validate_bundle(target,a.reference_work,project)
+        except ValueError as error:
+            assert 'Foreign actual original Snow output calendar state provider' in str(error),str(error)
+            q['actual_provider_refusal']=dict(status='REFUSED',error=str(error),actual_original_metadata_unchanged=True)
+        else:raise AssertionError('Foreign actual Snow state provider accepted')
         q['status']='WATER_SNOW_CALENDAR_FIFTY_NINE_NATIVE_ACTIVE_AND_POLICY_REFUSALS_PASS';print(q['status'],len(q['native_refusals']),flush=True)
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
