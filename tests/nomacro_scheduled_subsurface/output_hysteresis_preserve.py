@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import re
 import zipfile
 import original_output_matrix as ordinary
 import output_hysteresis_baseline as baseline
@@ -55,7 +56,8 @@ def main():
                 with zipfile.ZipFile(full/f'accepted-column-1-day-{day}.zip') as new,zipfile.ZipFile(oldzip) as oldz:
                     for member in ('result.end','macro.bin'):assert new.read(member)==oldz.read(member),(key,day,member)
             files={x.name:hashlib.sha256(x.read_bytes()).hexdigest() for x in (full/'original').glob('*') if x.is_file() and (x.suffix.lower()=='.csv' or x.name.endswith('_output.bin'))}
-            for file in files:assert (full/'original'/file).read_bytes()==(oldfull/'original'/file).read_bytes(),file
+            def stable(raw):return re.sub(rb'(\* Generated at:  )\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}',rb'\g<1>0000-00-00 00:00:00',raw)
+            for file in files:assert stable((full/'original'/file).read_bytes())==stable((oldfull/'original'/file).read_bytes()),file
             if flag:own=[ordinary.own(build,a.reference_work,project,full,data,s,e,out/('own-'+str(s))) for s,e in ((2,4),(4,8))]
             else:own=[baseline.own(build,a.reference_work,project,full,data,s,e,out/('own-'+str(s))) for s,e in ((2,4),(4,8))]
             q['profiles'][key]=dict(actual_build=actual,prior_build_sha256=m.sha(prior/'build/BUILD.json'),prior_root=str(prior),generated_provider_exact=True,all_physical_exact=True,user_files_exact=files,complete_native_exact=True,trajectory=report,own=own);save();print(key,'HYSTERESIS_OUTPUT_DEFAULT_PRESERVED',flush=True)
