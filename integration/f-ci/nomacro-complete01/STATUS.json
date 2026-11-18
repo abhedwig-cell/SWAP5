@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-cde-clock01",
-  "last_commit": "f76bbed12e728a3c0f3753d88f11013d32454633",
-  "status": "CDE_CLOCK_ACTUAL_1440_LOCAL_SOURCE_EVENT_CLOSURE_CORRECTION_COMPONENT_NEXT",
+  "last_commit": "9497aa99fc6c98feaa40bdb0cd74449e19fb6f4a",
+  "status": "CDE_CLOCK_LOCAL_EVENT_COMPONENT_O0_O2_PASS_NEW_PRODUCTION_COUPLED_LIMIT_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Persist and test real small local-event closure O0/O2, then integrate only new CDE clock TimeControl and run fresh actual two-day1440 source/native workers before new complete qualification.",
+  "next_action": "Fresh ordinary subdaily1440 two-day actual O0/O2 builds/native own1to2 first. Verify planned48/72dose and exact unchanged mass guards; retain event-closure old/new dt/limit observations. Then all four limit clock/Snow variants before fresh 35day and full cohorts.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -3022,7 +3022,7 @@
     }
   },
   "cde_clock": {
-    "status": "CDE_CLOCK_ACTUAL_1440_LOCAL_SOURCE_EVENT_CLOSURE_CORRECTION_COMPONENT_NEXT",
+    "status": "CDE_CLOCK_LOCAL_EVENT_COMPONENT_O0_O2_PASS_NEW_PRODUCTION_COUPLED_LIMIT_NEXT",
     "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
     "contract": "docs/science/NOMACRO_CDE_CLOCK_20261119.md",
     "source_audit": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\NEXT_CDE_CLOCK_SOURCE_AUDIT.json",
@@ -3612,6 +3612,52 @@
             71.99999981224516
           ],
           "error": "AssertionError()"
+        }
+      }
+    },
+    "local_event_component": {
+      "status": "ACTUAL_CDE_CLOCK_LOCAL_EVENT_COMPONENT_O0_O2_PASS",
+      "source_commit": "9497aa99fc6c98feaa40bdb0cd74449e19fb6f4a",
+      "cases": {
+        "O0": {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-fcheck=all",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-fno-fast-math",
+            "-ffp-contract=off",
+            "-ffree-line-length-none",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-events-component-v1\\O0\\receipt.exe",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_clock_events.f90",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_events.f90"
+          ],
+          "compile_returncode": 0,
+          "compile_seconds": 0.4980333000421524,
+          "run_returncode": 0,
+          "run_seconds": 0.11190420016646385,
+          "executable_sha256": "e68e6ecdeb4eef5310d10e4e69960d893b447d3dbda1ebfbc8a590dd4c8b1f81"
+        },
+        "O2": {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-fcheck=all",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-fno-fast-math",
+            "-ffp-contract=off",
+            "-ffree-line-length-none",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-events-component-v1\\O2\\receipt.exe",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_clock_events.f90",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_events.f90"
+          ],
+          "compile_returncode": 0,
+          "compile_seconds": 0.4713449999690056,
+          "run_returncode": 0,
+          "run_seconds": 0.09857190027832985,
+          "executable_sha256": "3d4d28e513bbb5b177080b74b2af9ec77b16c8d00adb59af80eaa88c6c0339d8"
         }
       }
     }

@@ -76,6 +76,7 @@ def metadata(project):
         original_timecontrol_sha256=water.clock.TIME_SHA,original_watstor_sha256=water.clock.WATSTOR_SHA,original_flprintdt_date_gated=selected['flprintdt'],
         annual_counter_policy='original-global-or-completed-year-count-v1' if selected['flprintdt'] else 'original-print-period-counter-v1',
         timecontrol_composition='literal-original-snow-perstep-coincident-end-day-v1' if is_snow and selected['flprintdt'] else 'literal-original-snow-subdaily-coincident-end-day-v1' if is_snow else 'literal-original-bound-output-epoch-v1',
+        clock_event_closure_source_sha256=sha(folder/'cde_clock_events.f90'),clock_event_coincidence_policy='actual-local-irrigation-and-end-day-existing-dtcrit-v1',clock_event_dtcrit=1e-8,
         trial_receipt_policy='literal-original-independent-soil-candidate-bottom-cde-clock-v1',
         private_bridge_source_sha256=sha(Path(bridge.__file__)),private_cde_interval_fields=list(bridge.FIELDS),cde_output_state_sha256=sha(folder/'cde_interval_output_state.f90'),
         cde_output_state_version=2,cde_output_state_reals=20+project.nodes,cde_output_state_private_reals=2,cde_daily_receipt_source_sha256=sha(folder/'cde_interval_receipt.f90'),
@@ -181,6 +182,7 @@ def apply_build(output,donor_build,project,patched):
     (output/(regular.PROVIDER+'.f90')).write_bytes((ROOT/'src/process'/(regular.PROVIDER+'.f90')).read_bytes())
     (output/'hybrid_age_output_state.f90').write_text(snow_clock.state_source(project) if is_snow else regular.state_source(project),encoding='cp1252')
     if domain:(output/(domain+'.f90')).write_bytes((folder/(domain+'.f90')).read_bytes())
+    (output/'cde_clock_events.f90').write_bytes((folder/'cde_clock_events.f90').read_bytes())
     (output/'cde_interval_receipt.f90').write_bytes((folder/'cde_interval_receipt.f90').read_bytes())
     (output/'original_cde_output_state.f90').write_bytes((folder/'cde_interval_output_state.f90').read_bytes())
     path=output/'solute.f90';assert 'solute' in patched and path.exists();path.write_text(bridge.source(path.read_text(encoding='cp1252')),encoding='cp1252')
@@ -205,6 +207,18 @@ def apply_build(output,donor_build,project,patched):
     original_time=(donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
     if is_snow:time_source=(water.snow.render_timecontrol if selected['flprintdt'] else snow_clock.render_timecontrol)(original_time)
     else:time_source=water.clock.render_timecontrol(original_time)
+    anchor='   use MOD_timer';assert time_source.count(anchor)==1
+    time_source=time_source.replace(anchor,anchor+'\n   use hybrid_cde_clock_events,only:close_cde_clock_event,CDE_CLOCK_EVENT_OK',1)
+    anchor='      real(8) :: dtEventEOD, dtEventPrint, dtEventRain, dtEventSSDI, dtEventRunon';assert time_source.count(anchor)==1
+    time_source=time_source.replace(anchor,anchor+'\n      real(8)::hybrid_cde_old_dt,hybrid_cde_old_limit\n      integer::hybrid_cde_event_status\n      logical::hybrid_cde_event_changed',1)
+    anchor='   end function get_dtevent';assert time_source.count(anchor)==1
+    closure="""      hybrid_cde_old_dt=dt;hybrid_cde_old_limit=get_dtEvent
+      call close_cde_clock_event(tcum,dt_irr_event,dtCrit,dt,get_dtEvent,hybrid_cde_event_changed,hybrid_cde_event_status)
+      if(hybrid_cde_event_status/=CDE_CLOCK_EVENT_OK)error stop 'Invalid actual local CDE clock event'
+      if(hybrid_cde_event_changed)write(*,'(a,7(1x,es25.17e3))')'CDE_CLOCK_EVENT_CLOSURE', &
+       tcum,hybrid_cde_old_dt,hybrid_cde_old_limit,dt_irr_event,dtCrit,dt,get_dtEvent
+"""
+    time_source=time_source.replace(anchor,closure+anchor,1)
     (output/'timecontrol.f90').write_text(time_source,encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
     function='hybrid_snow_soil_trial_residual' if is_snow else 'hybrid_ordinary_trial_residual'
@@ -228,5 +242,5 @@ def apply_build(output,donor_build,project,patched):
             text=text.replace(anchor,'      else if (swcsv == 3) then ! binary\n         allocate(buffer(parlen-1))\n         ! datetime',1)
         for old,new in ordinary.output_patch('vector').edits(original):assert text.count(old)==1,old;text=text.replace(old,new,1)
         path.write_text(text,encoding='cp1252')
-    extra=[regular.PROVIDER,'cde_interval_receipt','hybrid_age_output_state']+([domain] if domain else [])+['integral']+([SNOW_PROVIDER] if is_snow else [])+['timecontrol']
+    extra=[regular.PROVIDER,'cde_interval_receipt','cde_clock_events','hybrid_age_output_state']+([domain] if domain else [])+['integral']+([SNOW_PROVIDER] if is_snow else [])+['timecontrol']
     patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched

@@ -881,6 +881,7 @@ end module plant_interface""")
                     *([str(output/(name+'.o')) for name in ('mod_original_output_receipt','hybrid_age_output_state','age_output_calendar_probe')] if age_calendar is not None else []),
                     *([str(output/'original_cde_output_state.o')] if project.original_output and project.solute else []),
                     *([str(output/'cde_interval_receipt.o')] if age_calendar and age_calendar.get('cde_interval_output',False) else []),
+                    *([str(output/'cde_clock_events.o')] if age_calendar and age_calendar.get('cde_clock_output',False) else []),
                     *([str(output/'original_output_hysteresis_domain.o')] if age_calendar and age_calendar.get('swhyst',0) in (1,2) and not age_calendar.get('aquifer_output',False) and not age_calendar.get('thermal_output',False) else []),
                     *([str(output/'original_output_aquifer_domain.o')] if age_calendar and age_calendar.get('aquifer_output',False) else []),
                     *([str(output/'original_output_thermal_domain.o')] if age_calendar and age_calendar.get('thermal_output',False) else []),
