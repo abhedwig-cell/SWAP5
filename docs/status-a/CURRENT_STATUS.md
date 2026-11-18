@@ -3,7 +3,7 @@
 The [current fixed age source](../science/NOMACRO_AGE_IRRIGATION_SOURCE_20261118.md)
 is qualified for explicit incoming IRCONCages in fixed sprinkler/surface gifts.
 Windows/Ubuntu40full1096day trajectories, native/input/rollback/public and
-previous-route preservation gates pass. Canonical admission is pending. The
+previous-route preservation gates pass. Actual canonical3063937ee passes its detached registered owner. The
 flag is default off; historical closure stays PARTIAL, whole science NOT_QUALIFIED
 and fixed RC3 remains unchanged.
 

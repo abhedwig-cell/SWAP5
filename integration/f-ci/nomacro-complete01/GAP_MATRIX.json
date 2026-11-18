@@ -1269,9 +1269,11 @@
     "admission_receipt": "integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_MERGE_RECEIPT.json"
   },
   "bounded_current_fixed_age_source": {
-    "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "status": "ADMITTED_BOUNDED",
     "authority": "integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_QUALIFICATION.json",
     "scope": "ExplicitdefaultoffcurrentIRCONC0..1000dayage inputforsprinkler/surface; sixnativecalendar/outputfamilies; literalphysicalproviders; actualoriginalcapturedefectproven",
-    "remaining": "Nonzerosubsurfaceageandotherhistoricalgapsremain; wholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged"
+    "remaining": "Nonzerosubsurfaceageandotherhistoricalgapsremain; wholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged",
+    "canonical_admission": "3063937eec796d2a863beab0fe7198766ba622e1",
+    "admission_receipt": "integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_MERGE_RECEIPT.json"
   }
 }
