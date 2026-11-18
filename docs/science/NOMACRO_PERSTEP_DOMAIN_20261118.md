@@ -1,6 +1,6 @@
 # Original water per-step print-count and reset domain
 
-**Contract / implementation next / not qualified or admitted.** Actual canonical
+**Implementation persisted / selected qualification in progress / not admitted.** Actual canonical
 12e84c8eba9204080462b83b548741aa9b0f060f follows source PR1746 and metadata
 PR1747, with exact ordered parents/full trees and clean detached registered
 owners independently verified. Whole closure PARTIAL, science NOT_QUALIFIED and
@@ -86,3 +86,36 @@ is selected. Continue automatically after every checkpoint or admission.
 
 Invariants3,4,7,13,21,23,30 remain binding. Independent executable drivers must
 invoke real production interfaces and physical workers, not copied equations.
+
+## Current persisted implementation and measured qualification
+
+Production is10aff9a7f; complete selected runtime76942af87decce1c5fade2d7e7a7d0b00aac40b9.
+Four ordinary/Snow35day O0/O2 pilots pass with all four actual own cold workers,
+complete original physical/native state and requested output exact. Four actual
+2day NPRINTDAY1440 periods and own1to2 cold workers pass. First Snow builds failed
+at link because the selection omitted thermal compile/link family flags; retain
+both original failures. Selection owns those flags, and corrected fresh O0/O2
+builds and workers pass. No physical expression or guard changed in that fix.
+
+Selected Ubuntu main44388289582 is terminal SUCCESS on O0/O2; preservation
+44388338346 is terminal SUCCESS. Carriers767f555c743ffff2dbd9b9c3a9c5791eb497bcda
+and3ea1b84c5ee6f1c58064e05d3faeaa60cb899e6f differ from actual runtime only by
+one workflow and are never merged. Original artifact byte verification is in
+progress. Windows O0 completes all11short/six full1096day cohorts and six actual
+native/control families; Windows O2 is still running. Do not infer its PASS from
+Ubuntu or O0. Every compound runner enforces all narrow and limit gates before
+its first full period.
+
+Both Windows optimizations complete eight35day nonJanuary epochs with both Snow
+states and both reset policies,32own cold workers and32actual postyear paired
+counter forgeries each. Six public35day warm/30to34cold user contexts and seven
+actual numeric original reader refusals/13literal selector partitions pass.
+The exact original reset0 input that reached the prior30second cap with0accepted
+days now completes35days and all four cold workers on O0/O2. Preserve its old
+censor and new actual workers separately, with exact input/project/kernel source
+comparison; old builds and checkpoints keep their original identities.
+
+The new independent source/raw owner and corruption drivers are persisted but
+not yet sealed or registered. Prior admitted-context comparisons continue with
+the frozen drivers, including SaltFarm. This progress is not canonical admission
+and does not promote whole-model science or the fixed release scope.
