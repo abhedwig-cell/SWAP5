@@ -1,5 +1,15 @@
 # SWAP5 Status-A current status
 
+The [original snow/thermal output composition](../science/NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md)
+passes56full1096day Windows/Ubuntu periods,107prior preservation contexts,
+eight actual preceding-canonical physics/native comparisons and public/reader/
+terminal-source gates. It observes real snow stock and original increments,
+retaining literal physical owners. Portable final harness failures are closed
+through byte-exact read-only revalidation and a successful remaining-contract
+run, with zero repeated model periods. Canonical admission is pending;
+historical closure stays PARTIAL, whole science NOT_QUALIFIED and fixed RC3
+unchanged.
+
 The [original aquifer/output composition](../science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md)
 has completed Windows/Ubuntu48full1096day periods, complete native/public/
 reader/transaction gates and87current preservation contexts. Existing explicit

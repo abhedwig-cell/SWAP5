@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Snow/thermal qualification](../science/NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md)
+and `integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_QUALIFICATION.json` bind
+production9a06bc72d to eight immutable raw archives totalling717969648bytes,
+56full periods,107prior contexts and eight actual canonical comparisons. Both
+original failed portable artifacts and read-only recovery receipts are retained;
+all32776source/model/build/native/report files remain byte exact without model
+repetition. The remaining-contract workflow ends SUCCESS. The owner recomputes
+actual ledgers/native payloads;963source/scope/producer corruptions are refused.
+Canonical admission is pending; whole science and fixed RC3 scope are unchanged.
+
 [Aquifer/output qualification](../science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md)
 and `integration/f-ci/nomacro-complete01/OUTPUT_AQUIFER_QUALIFICATION.json` bind
 productione01961fcc to seven byte-verified producer archives,48full1096day

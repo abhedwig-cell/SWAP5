@@ -1,6 +1,6 @@
 # Original output with complete snow and thermal history
 
-**Qualified bounded executions / registered admission owner in progress; not admitted.** Baseline is actual
+**Qualified bounded scope / canonical admission pending.** Baseline is actual
 canonicaldcd880bbc0b6ff62fd2a28c68b080ac0811090ac after PR1729/1730. Its actual
 source and metadata merge trees and detached registered owners pass.
 Historical closure remains PARTIAL, science NOT_QUALIFIED, fixed RC3 unchanged.

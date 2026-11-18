@@ -1,5 +1,18 @@
 # Current functional closure of the original projects
 
+## Qualified original snow and thermal output,18November2026
+
+[Snow/thermal output](NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md) observes actual
+snow inventory and three original snow increments through dense daily original
+water/CDE output, hysteresis0/1/2 and existing bounded water frost routes. It
+preserves complete physical/native history and original equations. Windows/
+Ubuntu56full1096periods,448full/272short cold windows and107prior contexts pass;
+eight direct comparisons retain exact preceding-canonical physics/native state.
+Public, reader and true-terminal gifts pass. Actual portable harness failures
+are retained and repaired through read-only evidence and only remaining work.
+Canonical admission is pending. Historical closure remains PARTIAL, whole science
+NOT_QUALIFIED and fixed RC3 unchanged; other thermal cadences/domains remain open.
+
 ## Qualified original aquifer output and native receipts,18November2026
 
 [Original aquifer output](NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md) now composes
