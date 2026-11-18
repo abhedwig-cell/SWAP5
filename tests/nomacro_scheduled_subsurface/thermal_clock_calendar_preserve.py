@@ -9,7 +9,9 @@ def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','prior-calendar-root','evidence-root','output'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--platform',choices=('Windows','Ubuntu'),default='Windows')
-    a=p.parse_args();a.output.mkdir();q=dict(status='RUNNING',optimization=a.optimization,platform=a.platform,profiles={})
+    p.add_argument('--resume',action='store_true')
+    a=p.parse_args();a.output.mkdir(exist_ok=a.resume);q=dict(status='RUNNING',optimization=a.optimization,platform=a.platform,profiles={})
+    if a.resume:q['retained_previous_report']=json.loads((a.output/'RESULT.json').read_text())
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     authority=ROOT/'integration/f-ci/nomacro-complete01/THERMAL_CALENDAR_QUALIFICATION.json'
     qualification=json.loads(authority.read_text(encoding='utf8'))
@@ -31,7 +33,8 @@ def main():
             for path in (build/'BUILD.json',short/'RESULT.json',short/'trajectory/daily.jsonl'):qualified(path)
             out=a.output/name;command=[sys.executable,'-B',str(Path(__file__).with_name(script)),'--reference-work',a.reference_work,
                 '--existing-input',inputs,'--output',out,'--optimization',a.optimization,*options]
-            subprocess.run(list(map(str,command)),cwd=ROOT,check=True,timeout=300)
+            if not out.exists():subprocess.run(list(map(str,command)),cwd=ROOT,check=True,timeout=300)
+            else:assert a.resume and 'PASS' in json.loads((out/'RESULT.json').read_text())['status']
             project=m.e.load(inputs,original_output='--compatibility-output' not in options)
             meta,_=m.validate_bundle(out/'build',a.reference_work,project);previous=json.loads((build/'BUILD.json').read_text())
             assert meta['project']==previous['project'] and meta['inputs']==previous['inputs']
@@ -45,7 +48,11 @@ def main():
                     for member in ('result.end','macro.bin'):assert old.read(member)==new.read(member),(name,day,member)
             for filename in ('result_output.csv','result_output.bin'):
                 left=short/'trajectory/original'/filename;right=out/'trajectory/original'/filename
-                if left.exists():assert left.read_bytes()==right.read_bytes(),(name,filename)
+                if left.exists():
+                    from original_output_files import records
+                    qualified(left)
+                    # Original headers contain the actual execution timestamp.
+                    assert records(left)==records(right),(name,filename)
             report=json.loads((out/'RESULT.json').read_text());assert 'PASS' in report['status']
             q['profiles'][name]=dict(actual_build=meta,prior_build_sha256=m.sha(build/'BUILD.json'),authority_sha256=authority_sha,
                 actual_immutable_prior_member_hashes=True,all_emitted_sources_exact=True,all_physical_exact=True,
