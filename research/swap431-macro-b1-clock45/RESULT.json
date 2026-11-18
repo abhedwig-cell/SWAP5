@@ -1,0 +1,97 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-CLOCK45",
+  "decision": "PASS_CLOCK_CONTINUATION_JUSTIFIED_FOR_SAME90_CONTACT_EVENTS_O0_O2_NO_CHANGE",
+  "source_checkpoint": "87e43fd47",
+  "model_routes": 2,
+  "all_uncensored": true,
+  "hard_timeout_seconds": 20,
+  "extra_provider_evaluations": 0,
+  "O0_O2_non_timing_byte_exact": true,
+  "clock_limit_from_trajectory44_resolved_for_these90": true,
+  "adjudication": "Elapsed age since first macropore-water contact ofcell, not ENDunsaturated-overlap integral. All90 have accepted actualsorption and continuing macropore-waterwetcell, although minimumstock leaves ENDwaterlevel=GWL. No automaticzero-overlap reset justified. Genuine completecellwaterloss resetsmemory at128.",
+  "no_clock_physics_solver_guard_dt_tolerance_MAXIT_reduction_change": true,
+  "END_geometric_reference_formula_physical_accuracy_separately_qualified": false,
+  "full_period_new_restart_or_general_event_clock_admission": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 1.8386625000275671,
+      "entire_trajectory44_numeric_outputs_byte_exact": true,
+      "same90attempts": [
+        36,
+        125
+      ],
+      "all90_actual_sorption_positive_and_gt_1e_minus7": true,
+      "actual_sorption_rate_range": [
+        2.0690775454763708e-07,
+        1.959545330593603e-06
+      ],
+      "potential_sorption_rate_range": [
+        6.276025786669168e-07,
+        2.2000681579377526e-06
+      ],
+      "outflow_factor_range": [
+        0.31572287776582575,
+        0.8906748291063834
+      ],
+      "total_actual_sorption_amount_cm": 7.408149806275835e-08,
+      "RATE_unsat_contact_factor_range": [
+        0.008517682346712034,
+        0.20977514271436373
+      ],
+      "END_macro_waterwet_fraction_range": [
+        0.016554525136683984,
+        0.3377083040605273
+      ],
+      "all90_END_waterstock_equals_minimum_within_cm": 6.938893903907228e-18,
+      "elapsed_clock_increment_days": 0.1800000000000001,
+      "sum_used_dt_days": 0.18,
+      "END_reference_increment_zero": true,
+      "step126_positive_unsat_contact_continues": true,
+      "step128_complete_macro_waterloss_resets_all_history": true,
+      "step129_no_sorption_and_clock_remains_zero": true,
+      "clock_rule_change_needed_for_these90": false
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.3529541003517807,
+      "entire_trajectory44_numeric_outputs_byte_exact": true,
+      "same90attempts": [
+        36,
+        125
+      ],
+      "all90_actual_sorption_positive_and_gt_1e_minus7": true,
+      "actual_sorption_rate_range": [
+        2.0690775454763708e-07,
+        1.959545330593603e-06
+      ],
+      "potential_sorption_rate_range": [
+        6.276025786669168e-07,
+        2.2000681579377526e-06
+      ],
+      "outflow_factor_range": [
+        0.31572287776582575,
+        0.8906748291063834
+      ],
+      "total_actual_sorption_amount_cm": 7.408149806275835e-08,
+      "RATE_unsat_contact_factor_range": [
+        0.008517682346712034,
+        0.20977514271436373
+      ],
+      "END_macro_waterwet_fraction_range": [
+        0.016554525136683984,
+        0.3377083040605273
+      ],
+      "all90_END_waterstock_equals_minimum_within_cm": 6.938893903907228e-18,
+      "elapsed_clock_increment_days": 0.1800000000000001,
+      "sum_used_dt_days": 0.18,
+      "END_reference_increment_zero": true,
+      "step126_positive_unsat_contact_continues": true,
+      "step128_complete_macro_waterloss_resets_all_history": true,
+      "step129_no_sorption_and_clock_remains_zero": true,
+      "clock_rule_change_needed_for_these90": false
+    }
+  ]
+}
