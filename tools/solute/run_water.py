@@ -242,8 +242,8 @@ def main():
         parser.error('--experimental-solute-step-policy requires --experimental-project')
     if args.experimental_time_step_policy is not None and not experimental:
         parser.error("--experimental-time-step-policy requires --experimental-project")
-    if args.donor_opt is not None and not experimental:
-        parser.error('--donor-opt is limited to explicit experimental project qualification')
+    if args.donor_opt is not None and not (experimental or args.no_macro_release):
+        parser.error('--donor-opt requires explicit no-macro qualification')
     if (args.model == experimental_model) != experimental or (experimental and args.no_macro_release):
         parser.error('HYBRID_NOMACRO_WATER requires --experimental-project and cannot claim --no-macro-release')
     if args.no_macro_release and args.model not in (GRASSGROWTH.model,HUPSEL.model,SALTFARM.model):

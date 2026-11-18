@@ -30,6 +30,8 @@ TIME_POLICIES = (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY,PHYSICAL_GROWTH_TIME_
 ORIGINAL_SOIL_TABLE_POLICY = 'original-tspack-v1'
 PCHIP_SOIL_TABLE_POLICY = 'original-pchip-v1'
 SOIL_TABLE_POLICIES = (ORIGINAL_SOIL_TABLE_POLICY,PCHIP_SOIL_TABLE_POLICY)
+ALWAYS_WATER_POLISH = 'strict-water-always-polish-v1'
+INTERIOR_WATER_POLISH = 'strict-water-half-interior-polish-v1'
 NO_MACRO_FP_FLAGS = ('-ffp-contract=off', '-march=x86-64', '-mtune=generic')
 
 
@@ -56,6 +58,7 @@ class HybridProject:
     original_output: bool = False
     age_irrigation_source: bool = False
     age_direct_soil_source: bool = False
+    water_polish_policy: str = ALWAYS_WATER_POLISH
 
     @property
     def last_day(self):
@@ -68,7 +71,7 @@ class HybridProject:
 ANDELST = HybridProject('3.macroporeflow','HYBRID_ANDELST_WATER','1998-01-01',112,1e-6,macro=True,end_date='1999-04-26')
 GRASSGROWTH = HybridProject('2.grassgrowth','HYBRID_GRASSGROWTH_WATER','1980-01-01',113,1e-10,end_date='1984-12-31',time_step_policy=NO_MACRO_TIME_POLICY)
 HUPSEL = HybridProject('1.hupselbrook','HYBRID_HUPSEL_WATER','2002-01-01',34,1e-10,solute=True,end_date='2004-12-31',time_step_policy=NO_MACRO_TIME_POLICY)
-SALTFARM = HybridProject('4.salinitystress-04dS','HYBRID_SALTFARM_WATER','2012-01-01',195,1e-10,solute=True,end_date='2015-12-31',time_step_policy=PHYSICAL_GROWTH_TIME_POLICY)
+SALTFARM = HybridProject('4.salinitystress-04dS','HYBRID_SALTFARM_WATER','2012-01-01',195,1e-10,solute=True,end_date='2015-12-31',time_step_policy=PHYSICAL_GROWTH_TIME_POLICY,water_polish_policy=INTERIOR_WATER_POLISH)
 PROJECTS = (ANDELST,GRASSGROWTH,HUPSEL,SALTFARM)
 
 
@@ -135,9 +138,13 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         raise ValueError('Unknown no-macro daily time-step policy')
     case = project_case(reference, project)
     strict_water = project.solute or bool(project.input_directory and budget_retry)
+    if project.water_polish_policy not in (ALWAYS_WATER_POLISH,INTERIOR_WATER_POLISH):
+        raise ValueError('Unknown strict-water polishing policy')
+    if project.water_polish_policy == INTERIOR_WATER_POLISH and (project.macro or not strict_water or not budget_retry):
+        raise ValueError('Interior polishing requires the strict no-macro water receipt')
     management_state = project.solute or bool(project.input_directory)
-    if donor_opt not in ('O0','O2') or (donor_opt!='O2' and not project.input_directory):
-        raise ValueError('Generated-donor optimization is explicit experimental qualification only')
+    if donor_opt not in ('O0','O2') or (donor_opt!='O2' and project.macro):
+        raise ValueError('Generated-donor optimization requires explicit no-macro qualification')
     if ((not project.macro and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
             or (not project.macro and not project.solute and budget_retry and not project.input_directory)):
         raise ValueError("Macro/Cauchy corrections require the Andelst project")
@@ -421,6 +428,16 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
          end if
       end if
 """+anchor)
+            if project.water_polish_policy == INTERIOR_WATER_POLISH:
+                # Keep the original and strict mass rejection unchanged. Only
+                # omit padding inside a conservative half-guard interior;
+                # near the boundary retain the original extra Newton solve.
+                # This is a named stopping policy, not a relaxed day tolerance
+                # or a retry/fallback after a refused day.
+                source=replace(source,
+                    'if (.not.flnonconv .and. mass_polish_at==0) then',
+                    'if (.not.flnonconv .and. mass_polish_at==0 .and. &\n'
+                    '             abs(budget_total+budget_step)>0.5d0*1d-10*(t1900-budget_start+dt)) then')
             if project.input_directory:
                 from experimental_project import inspect
                 configuration=inspect(project.input_directory)
@@ -988,6 +1005,7 @@ end module plant_interface""")
         if project.solute_step_policy == TRANSACTIONAL_SOLUTE_STEP_POLICY:
             build_identity['solute_step_policy_source'] = sha(APP/'solute_step_policy.py')
         build_identity['time_step_policy'] = project.time_step_policy
+        build_identity['water_polish_policy'] = project.water_polish_policy
         build_identity['time_step_policy_source'] = sha(APP/'donor_sources.py')
         library = compile_restart_publisher(output)
         build_identity['restart_publisher'] = {

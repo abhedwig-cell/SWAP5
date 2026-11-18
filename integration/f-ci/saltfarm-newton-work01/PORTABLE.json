@@ -1,0 +1,36 @@
+{
+  "status": "WINDOWS_UBUNTU_O0_O2_SALTFARM_FULL_NATIVE_QUALIFIED_PENDING_ADMISSION",
+  "base": "f2fc11124d98e1238d5996ec2af21cbde24e49d9",
+  "runtime": "355559313c8b47f7fd83b88c5c123e84e5b66d03",
+  "water_guard_cm": 1e-10,
+  "solute_guard_mg_cm2": 1e-10,
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "RC3_changed": false,
+  "portable_performance": "NOT_QUALIFIED; Linux timing is not a same-host control comparison",
+  "archives": {
+    "Windows": {
+      "file": "WINDOWS_CURRENT.zip",
+      "sha256": "4bb3f1e99743eea7c3f0954fe60042ef700e557a2e17ab79283490d4fcdefad9",
+      "bytes": 13741998,
+      "producer_ref": "355559313c8b47f7fd83b88c5c123e84e5b66d03"
+    },
+    "Ubuntu": {
+      "file": "UBUNTU_CURRENT.zip",
+      "sha256": "c1741213d28bdbf5f384246ec71c1efbf25508b7ad56c18b77766fb15cdcc991",
+      "bytes": 28536414,
+      "producer_ref": "2d39c0ca3e5d6d7014d84e2d7652fc34b4767327",
+      "run": 44328844150,
+      "artifact_id": 14438556664,
+      "origin_artifact_digest": "sha256:c1741213d28bdbf5f384246ec71c1efbf25508b7ad56c18b77766fb15cdcc991",
+      "actual_artifact_bytes_preserved": true
+    }
+  },
+  "cost": {
+    "Linux_O0_full_seconds": 6.053130976999995,
+    "Linux_O2_full_seconds": 4.6441535290000076,
+    "max_model_callback_seconds": 25,
+    "duplicate_model_runs": false,
+    "first_full_checkout_canceled_before_model_execution": 44326805636,
+    "sparse_checkout_success_run": 44328844150
+  }
+}

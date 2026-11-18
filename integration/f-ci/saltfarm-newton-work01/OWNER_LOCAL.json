@@ -1,0 +1,42 @@
+{
+  "status": "SALTFARM_NEWTON_WINDOWS_UBUNTU_O0_O2_FULL_NATIVE_ADMISSION_PASS",
+  "runtime": "355559313c8b47f7fd83b88c5c123e84e5b66d03",
+  "base": "f2fc11124d98e1238d5996ec2af21cbde24e49d9",
+  "platforms": {
+    "Windows": {
+      "O0": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "exact_cold_windows": 5,
+        "build_sha256": "ec7b13800b294e4e44fc24a2c7d11b72659c79e10a2400d06fbbd6ca840f2850"
+      },
+      "O2": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "exact_cold_windows": 5,
+        "build_sha256": "cb7128c696c0b73c8b422b45b14360feeb736f425fa69a9ec8f9bbd164a9e929"
+      }
+    },
+    "Ubuntu": {
+      "O0": {
+        "days": 1461,
+        "max_water_cm": 5.1060836114835695e-11,
+        "max_solute_mg_cm2": 7.657818823503248e-12,
+        "exact_cold_windows": 5,
+        "build_sha256": "6955d1446cbac487a5e616e27638112cb530ad4b7009b50c84fc358978988aaf"
+      },
+      "O2": {
+        "days": 1461,
+        "max_water_cm": 5.1060836114835695e-11,
+        "max_solute_mg_cm2": 7.657818823503248e-12,
+        "exact_cold_windows": 5,
+        "build_sha256": "ac43bd31f5e96b56c3d40484683ff32f6196515e822d6d740683e5f6af793ae0"
+      }
+    }
+  },
+  "predecessor": "EXACT_CANONICAL_SNOW_SOURCE_SCHEMA_AND_UNCHANGED_RAW_ARCHIVES_INHERITED",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "RC3_changed": false
+}

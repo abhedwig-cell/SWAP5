@@ -1,0 +1,35 @@
+{
+  "head": "ee3785e8f684dc40f7c54b8e83f9f268c4750bf0",
+  "preserved_failures": [
+    {
+      "run": 44307013862,
+      "job": 134817167376,
+      "name": "F-CI canonical qualification/modular-feedback",
+      "reason": "ValueError: groundwater production differs from actual qualified source"
+    },
+    {
+      "run": 44307014408,
+      "job": 134811073946,
+      "name": "MC-SOL01 file-driven Reference column",
+      "actual_O0_O2_file_restart_step": "success",
+      "reason": "ValueError: groundwater production differs from actual qualified source"
+    },
+    {
+      "run": 44307014449,
+      "job": 134811073877,
+      "name": "MC-SOL01 original SWP chemistry",
+      "actual_model_reader_fallow_et_steps": "success",
+      "conclusion": "cancelled",
+      "reason": "Source-bound admission reached same predecessor guard; operation canceled"
+    }
+  ],
+  "resolution": "Frozen canonical qualification validated only on its exact source; immutable raw archives inherited, current SaltFarm successor separately qualified against latest canonical. Historical records are not relabelled or edited.",
+  "superseded_queued_ci_head": "355559313c8b47f7fd83b88c5c123e84e5b66d03",
+  "superseded_selected_ubuntu_run_kept": 44326805636,
+  "canceled_checkout_only": {
+    "run": 44326805636,
+    "models_started": false,
+    "model_steps_at_cancellation": "pending",
+    "replacement_sparse_success_run": 44328844150
+  }
+}

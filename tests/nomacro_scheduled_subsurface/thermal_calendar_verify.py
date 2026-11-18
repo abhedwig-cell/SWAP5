@@ -133,6 +133,10 @@ def native(raw,row,n,hys,selected):
     return values
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('saltfarm_newton_admission',ROOT/'tests/saltfarm_newton/verify_successor.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty Snow calendar admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Snow calendar production differs from qualified source')
