@@ -99,13 +99,35 @@ def transactions(build,reference,project,full,out):
     out.mkdir();data=m.rows(full);source=full/'accepted-column-1-day-4.zip';digest=m.sha(source)
     column=CoupledDailyColumn(build,reference,out/'external',project,'original-output',origin=source,day=4,adopt_native=True)
     trial=column.prepare();assert physical(trial)==m.physical([data[4]])
-    assert any(abs(v)>0 for v in trial.budget['aquifer_ledger_mg_cm2']),'Aquifer source/exports not active'
+    assert any(abs(v)>0 for v in trial.budget['aquifer_ledger_mg_cm2']) or trial.budget['aquifer_state'][2]!=data[3]['aquifer_state'][2],'Aquifer source/stock not active'
     column.discard(trial);assert column.day==4
     replay=column.prepare();assert replay.budget==trial.budget;column.accept(replay)
     recovered=CoupledDailyColumn(build,reference,out/'recovered',project,'original-output',origin=column.checkpoint,day=5)
     endpoint=recovered.prepare();assert physical(endpoint)==m.physical([data[5]]);recovered.discard(endpoint)
     assert m.sha(source)==digest
     return dict(discard_no_day_advance=True,replay_exact=True,accept_exact=True,recovered_next_day_exact=True,origin_unchanged=True)
+
+
+def fabricated_receipts(build,reference,project,full,out):
+    out.mkdir();source=full/'accepted-column-1-day-4.zip';digest=m.sha(source);checks=[]
+    for index in range(7):
+        target=out/str(index);column=CoupledDailyColumn(build,reference,target,project,'aquifer-receipt',origin=source,day=4,adopt_native=True)
+        receive=m.h.receive;mutated=[False]
+        def corrupt(process,*args,**kwargs):
+            disposition,response=receive(process,*args,**kwargs)
+            if not mutated[0] and 'HYBRID_DAY_RETURN' in response and 'HYBRID_AQUIFER_CUMULATIVE' in response:
+                values=response['HYBRID_AQUIFER_CUMULATIVE'].copy();values[index]=str(float(values[index])+1.);response['HYBRID_AQUIFER_CUMULATIVE']=values;mutated[0]=True
+            return disposition,response
+        try:
+            m.h.receive=corrupt
+            try:column.prepare()
+            except (ValueError,RuntimeError) as error:
+                assert mutated[0] and 'aquifer' in str(error).lower(),str(error)
+                checks.append(dict(index=index,status='REFUSED_BEFORE_EXTERNAL_CANDIDATE_PUBLICATION',error=str(error)))
+            else:raise AssertionError('Fabricated aquifer state/ledger accepted: '+str(index))
+        finally:m.h.receive=receive
+        assert column.day==4 and m.sha(source)==digest
+    return checks
 
 
 def main():
@@ -117,6 +139,7 @@ def main():
     try:
         q['native_refusals']=native(build,a.reference_work,project,full,a.output/'native');save()
         q['transactions']=transactions(build,a.reference_work,project,full,a.output/'active')
+        q['fabricated_aquifer_refusals']=fabricated_receipts(build,a.reference_work,project,full,a.output/'fabricated')
         for field in ('policy','native_codec','source_sha256','domain_source_sha256','original_hysteresis_sha256','ordinary_owner_sha256','vector_catalog_correction_sha256','cde_output_state_sha256','aquifer_owner','selector_bridge_policy'):
             target=a.output/('policy-'+field);target.mkdir();bad=json.loads((build/'BUILD.json').read_text());bad['identity']['original_output'][field]='foreign';(target/'BUILD.json').write_text(json.dumps(bad))
             for helper in ('mod_subsurface_solute_source.f90','mod_aquifer_solute_reservoir.f90'):

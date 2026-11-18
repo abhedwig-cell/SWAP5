@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-output-aquifer01",
   "last_commit": "76c6251a2f3f6345428b26b1a9e03cf7e0bf917a",
-  "status": "OUTPUT_AQUIFER_CHEMICAL_SOURCE_PASS_LOSS_LIMIT_STRESS_NEXT",
+  "status": "OUTPUT_AQUIFER_NARROW_O0_O2_PASS_COHESIVE_MATRIX_READY",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -428,7 +428,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Resumeexistingstiff-lossO2shortwithoutincorrectearlylimiterassertion. Actualday10decay10/thickness.1counter0isvalid; physics/compoundalreadyPASS. OriginalDECSATreadermax10mustnotbeexceeded. AddseparatepositiveDAQUIF1e-6cmstresswithinoriginalrange toexerciseactualwater-losslimit; requirepositivecounteronlytargetstress. Then17/18short12fullselectedmatrix.",
+  "next_action": "Run19short/12full selectedoriginaloutput+aquifer profiles peropt, 8actualnative/external/receiptcontexts beforefulls. Reusepilotdirectoriesonlythroughcurrentcontroller--resumevalidation, retainingpreviousreports. Prepareportablecarrierfromsameproductionefcaae496. Preserve oldfixedaqsource andalladmittedoutput/source routes beforestrictownerseal/canonicaladmission.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -741,7 +741,7 @@
   },
   "output_aquifer": {
     "baseline": "76c6251a2f3f6345428b26b1a9e03cf7e0bf917a",
-    "status": "OUTPUT_AQUIFER_CHEMICAL_SOURCE_PASS_LOSS_LIMIT_STRESS_NEXT",
+    "status": "OUTPUT_AQUIFER_NARROW_O0_O2_PASS_COHESIVE_MATRIX_READY",
     "contract": "docs/science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md",
     "dependency_surface": [
       "OriginalCDEmixedaq7physical/native/losslimiter",
@@ -750,7 +750,7 @@
       "Newselection/nativeactualdomainwitness anddispatchmetadata"
     ],
     "scope": "Existingexplicit--original-output, SWSOLU1SWBR1SWDRA1analyticaldailycadence, hys0/1/2; no snow/frost/detailedweather",
-    "next": "Resumeexistingstiff-lossO2shortwithoutincorrectearlylimiterassertion. Actualday10decay10/thickness.1counter0isvalid; physics/compoundalreadyPASS. OriginalDECSATreadermax10mustnotbeexceeded. AddseparatepositiveDAQUIF1e-6cmstresswithinoriginalrange toexerciseactualwater-losslimit; requirepositivecounteronlytargetstress. Then17/18short12fullselectedmatrix.",
+    "next": "Run19short/12full selectedoriginaloutput+aquifer profiles peropt, 8actualnative/external/receiptcontexts beforefulls. Reusepilotdirectoriesonlythroughcurrentcontroller--resumevalidation, retainingpreviousreports. Prepareportablecarrierfromsameproductionefcaae496. Preserve oldfixedaqsource andalladmittedoutput/source routes beforestrictownerseal/canonicaladmission.",
     "external_blocker": null,
     "source": "app/hybrid_water/original_output_aquifer.py",
     "domain": "app/hybrid_water/original_output_aquifer_domain.f90",
@@ -760,6 +760,8 @@
     "pilot": "Box-releasefmt3hys0O0/O2ten-daycompound/3coldcompletephysical/native/userfilesPASS; hys1stiff-lossfmt0O0andhys2sorption-decayfmt2O2alsoPASS.",
     "native_controls": "ActualO0box-release49native+10policyrefusalsPASS; activeaqdiscard/replay/accept/recoveryexact. Oldaq9privatefields additionallymutatedundernewtypedoutputcodec; no weakenedguard.",
     "chemical_source": "CurrentO2actualfixedSSDIinterval+originalbinaryoutput10days48/72mg/cm2 withclosedsoil/aq/compoundguard(max7.66e-14)and3exactcompletecoldstatesPASS.",
-    "early_limiter": "Oldstiff-loss10dayrun hasactual0losslimitedstepsdespiteclosedstrongdecay; newcontrollerassertwasoverstrong. DECSAToriginal0..10readerscope retained. Separatepositive1e-6cmDAQUIFstress targetswaterloss-limitedbranchwithoutchangingequation/guard."
+    "early_limiter": "Oldstiff-loss10dayrun hasactual0losslimitedstepsdespiteclosedstrongdecay; newcontrollerassertwasoverstrong. DECSAToriginal0..10readerscope retained. Separatepositive1e-6cmDAQUIFstress targetswaterloss-limitedbranchwithoutchangingequation/guard.",
+    "active_loss_limit": "Separateoriginal-validDAQUIF1e-6cm/DECSAT10stressO0/O2actual281limitedsteps, compoundmax1.40e-23mg/cm2, complete3cold/native/userfilesPASS. No originalreaderbound orproviderchanged.",
+    "cohort": "19short/12fullperopt:4aqregimes, formats0..3,hys0/1/2,actualfixedpoint/interval/varying48/72mg,salinity,inline/surface/sprinkler,groupsSOLBAL-only/noSOLBAL/precision5,8,12 andactivelimitstress.8controls/opt49native+10policy+7fabricatedaqreceiptrefusalsplanned."
   }
 }
