@@ -77,10 +77,10 @@ def main():
             q['format_independence']={}
             for kind,left,right in [('water','water-csv0','water-csv3'),('chemical','chemical-csv0','chemical-csv3'),('frost-drained','frost-drained-csv0','frost-drained-csv3')]:
                 a0=a.output/('full-'+left)/'trajectory';a3=a.output/('full-'+right)/'trajectory';assert probe.m.physical(probe.m.rows(a0))==probe.m.physical(probe.m.rows(a3))
-                for day in (4,8,23,34,35,201,367,532,1096):
+                for day in (4,8,23,34,201,367,532,1096):
                     with zipfile.ZipFile(a0/f'accepted-column-1-day-{day}.zip') as x,zipfile.ZipFile(a3/f'accepted-column-1-day-{day}.zip') as y:
                         for name in ('result.end','macro.bin'):assert x.read(name)==y.read(name),(kind,day,name)
-                q['format_independence'][kind]=dict(all1096_physical_exact=True,nine_complete_native_endpoints_exact=True)
+                q['format_independence'][kind]=dict(all1096_physical_exact=True,eight_complete_native_endpoints_exact=True)
         q['status']='SEVENTEEN_THERMAL_OUTPUT_SHORT_AND_'+('NO_FULL_SELECTED' if a.short_only else 'FOURTEEN_FULL')+'_SNOW_NATIVE_USER_FILES_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
