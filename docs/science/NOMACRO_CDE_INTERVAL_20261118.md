@@ -132,3 +132,11 @@ Because the source/metadata native policy changes, retain all earlier builds,
 checkpoints and failures, and create fresh source-bound coupled qualification.
 The small receipt component and transport equations are unchanged and do not
 need repeated component campaigns. No old BUILD/checkpoint is rebound.
+
+## Actual qualified source evidence
+
+**Qualified bounded Windows/Ubuntu source; canonical admission pending.**
+
+[Original CDE interval output](NOMACRO_CDE_INTERVAL_20261118.md) passes24full1096day Windows/Ubuntu O0/O2 periods,352main cold windows and32nonJanuary periods with128cold windows. Actual native/policy/provider refusals total1536/1296/28;48nonzero private-stock alias forgeries refuse. All33 selected prior water/groundwater/CDE/thermal/frost contexts remain source/physical/native exact. The independent registered owner and4790actual producer corruptions pass. Source qualification is complete; canonical admission remains pending. Whole functional closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
+Eight original raw archives retain failed/censored observations separately. The first wrong-worker portable carrier44411626395 was cancelled and is not PASS. Corrected selected workflows44411697565/44411775012 succeed; exact artifact digests and ordered64MiB byte parts retain original ZIP bytes. Four proof tests reject4790corruptions with measured times in STATUS.json. The actual dirty/committed wrong-source control routes irrigation to the wrong observed increment slot and refuses before models. The old/new initial-past-date comparison retains identical35warm physical rows, physical kernel/input/flags and five complete native endpoints; only generated Integral validation changes, and all corrected own cold windows pass. The unqualified original balance-date reference crash is retained without promoting a supported scope or inherited defect. Canonical source and metadata mergeresults remain required.

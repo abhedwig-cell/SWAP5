@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-cde-interval01",
-  "last_commit": "6442dcc06bb867e0f51c429b7a006cec47feea53",
-  "status": "CDE_INTERVAL_INITIAL_PAST_DATE_NATIVE_VALIDATION_FIX_PERSISTED_NEW_QUALIFICATION_NEXT",
+  "last_commit": "78ebd159d573a7c44021f1f99017e2786397f244",
+  "status": "CDE_INTERVAL_QUALIFIED_PENDING_CANONICAL_ADMISSION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "New cde_interval_output.py and typed providers; expose actual saved sampro0/rounderr in actual original CDE without changing transport/source equations; observe each actual six interval flux increment including corrected ssdi_total exactly once for independent daily host receipt.",
-  "recovery_point": "codex/nomacro-cde-interval01 from verifiedactualmetadata772850032; prior source1748actual917f6b33a and metadata1749actual772850032 exactparents/fulltree/detachedownersPASS; CDE interval contract next.",
+  "next_code_change": "CDE subdaily NPRINTDAY2..1440/FLPRINTDTtrue ordinary and Snow clock composition using actual saved interval state and independent daily receipt. Four original SWCSV1 35-day reader/cadence observations succeed, current public builds refuse; retain first original SWCSV3 crash as unqualified.",
+  "recovery_point": "codex/nomacro-cde-interval01; runtime00658a945, sealc286ebd13; source-bound CDE_INTERVAL_QUALIFICATION.json and actual registered owner PASS; canonical source/metadata next.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -427,14 +427,14 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "PR1720actualmetadatamergeb9400bff6, exact3bf/66parents/full1bd8tree; detachedcurrentrootPASS173.997sec. Newordinary-output-selector sourceinventory only.",
+  "last_commit_role": "Independent CDE interval source/raw admission owner; qualified source pending actual canonical source and metadata checks.",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Implement actual original CDE private interval storage bridge and independent observed daily flux receipt; compose ordinary/Snow non-dense NPRINTDAY1 FLPRINTDTfalse output state; persist before actual O0/O2 short pilots.",
+  "next_action": "Integrate CDE interval source and metadata with actual ordered parents/full tree/clean detached registered owner checks. Then implement actual CDE subdaily/per-step calendar gap.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -446,8 +446,8 @@
   "qualified_age_fixed_runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
   "qualified_age_fixed_ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
   "age_fixed_sealed_proof": "56ae017e413503891d6c1a9709d1c882f2a14edb",
-  "active_branch": "codex/nomacro-perstep-domain01",
-  "canonical_baseline": "12e84c8eba9204080462b83b548741aa9b0f060f",
+  "active_branch": "codex/nomacro-cde-interval01",
+  "canonical_baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
   "calendar_results": {
     "source": "7943551d0",
     "pilot": "O0/O2 ten-day and1096days/seven exact native windows PASS",
@@ -876,7 +876,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-perstep-domain01",
+  "working_branch": "codex/nomacro-cde-interval01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -2409,7 +2409,7 @@
     ]
   },
   "cde_interval": {
-    "status": "CORRECTED_CDE_INTERVAL_WINDOWS_GATES_COMPLETE_PORTABLE_RUNTIME_NEXT",
+    "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scope": "ActualoriginalCDE Snow0/1 heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather SWBR0/frost0 NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0/period2..366 SWRES0/1 formats0..3. Denseperiod1 andallother/nonCDE paths literal.",
     "original_reader_observations": [
@@ -2499,7 +2499,7 @@
     ],
     "short": "Eight actual35day hot/32owncold O0/O2 periods PASS acrossordinary/Snow0/1, hys0/1/2, fixedpoint/interval/surface/sprinkler, active rainCPRE0.01 and ET0/1; complete physical/native/originaldate-only user state exact.",
     "retained_post_validation_failure": "V3models/builds/allcold/native passed butfinalvalidator inheritedFLPRINTDT datetime-only parser. Originalnonstep output isdate-only includinginitialdaybeforeTSTART. Correctedcontrollerd42ff670c; re-auditedalloriginalbyteswithoutbuild/modelreexecution; eachoriginalFAILED_RESULT preserved as RETAINED_FAILED_RESULT.json andoldfailurelogseparate. Physicalproducer8ed7ec326 retained, newvalidatorcommitd42ff670c recorded.",
-    "next": "Persist runtime; dispatch selected Ubuntu O0/O2 CDE short/native/full/epoch/public/alias and targeted O2 eleven prior contexts. Finish Windows public commands. Seal unchanged original raw only after terminal. Independent proof owner and actual badsource refusal before canonical admission.",
+    "next": "Integrate CDE interval source and metadata with actual ordered parents/full tree/clean detached registered owner checks. Then implement actual CDE subdaily/per-step calendar gap.",
     "controls": "Four corrected-source pilot controls: 248 native, 216 policy, 14 actual provider refusals; active discard/replay/recovery PASS. No skipped provider profile relabelled PASS.",
     "initial_stage_full": "Actual WindowsO0/O2 ten35day/six1096day cohorts peropt PASS;12full/176maincold total on oldstage. Retain cde-interval-windows-O0/O2-v1. Not reboundto laternative policy.",
     "epoch_guard_diagnosis": "Bothopt first35daynonJan warm PASS; first2to4cold rejects Inconsistent original interval date pointer. ActualoriginalTimeControl initptr1/pastdate remains1; migratedstrictallpastcountguard wrong. NewCDEonly exactepochguard validates1forinitialpastdate, keepsoldstrictcheckotherwise; noTimeControl/pointer/physicschange.",
@@ -2627,6 +2627,318 @@
         "profiles": 0,
         "cases": 0
       }
+    },
+    "runtime": "00658a9456b041a9b8c65517b4a9147ad941691e",
+    "sealed": "c286ebd13b0bbf43faac8e4dba30125ccea2f746",
+    "registered_root": {
+      "status": "ORIGINAL_CDE_INTERVAL_PRIVATE_STATE_DAILY_MASS_NATIVE_ADMISSION_PASS",
+      "runtime": "00658a9456b041a9b8c65517b4a9147ad941691e",
+      "predecessor": "LITERAL_ACTUAL_CANONICAL_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS",
+      "actual_full_periods": 24,
+      "actual_main_cold_windows": 352,
+      "actual_native_refusals": 1536,
+      "actual_policy_refusals": 1296,
+      "actual_provider_refusals": 28,
+      "actual_preserved_contexts": 33,
+      "actual_non_january_periods": 32,
+      "actual_epoch_cold_windows": 128,
+      "actual_nonzero_private_alias_refusals": 48,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "registered_root_seconds": 175.40257650008425,
+    "source_negative": {
+      "status": "ACTUAL_DIRTY_AND_COMMITTED_WRONG_CDE_SOURCE_REFUSED_BEFORE_MODELS",
+      "original_head": "d496bc241305873342322f49233a12083ae36f6d",
+      "control": "C:\\Users\\Veldh012\\swap5-cde-interval-guard-control",
+      "branch": "codex/nomacro-cde-interval-negative01",
+      "merge": false,
+      "mutation": "Actual original irradiation CDE increment observer routed to precipitation slot; original source expression unchanged.",
+      "cases": {
+        "dirty": {
+          "returncode": 1,
+          "seconds": 1.4291974999941885,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 186, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\ordinary_reset_verify.py\", line 185, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\perstep_domain_verify.py\", line 195, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 213, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty CDE admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 27, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty CDE admission surface\n",
+          "no_models_executed": true
+        },
+        "committed": {
+          "returncode": 1,
+          "seconds": 1.1186652001924813,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 186, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\ordinary_reset_verify.py\", line 185, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\perstep_domain_verify.py\", line 195, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 215, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'CDE production differs from qualified source')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-interval-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 27, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: CDE production differs from qualified source\n",
+          "no_models_executed": true
+        }
+      },
+      "wrong_source_commit": "fa3456e504bacec056679d3c48ea9d7cd451550c"
+    },
+    "proof_tests": {
+      "tests": 4,
+      "seconds": 31.469824800267816,
+      "corruptions": 4790,
+      "denominators": [
+        19,
+        4656,
+        49,
+        66
+      ]
+    },
+    "archives": {
+      "records": 8,
+      "bytes": 768350675
+    },
+    "workflows": {
+      "main": {
+        "runtime": "00658a9456b041a9b8c65517b4a9147ad941691e",
+        "carrier": "f76111976812c39409b0e14e786673e230ae856e",
+        "tree": "d0f6bbb6c3b91af4c2316edad87598dff3b2a1bd",
+        "branch": "codex/nomacro-cde-interval-portable02",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44411697565,
+        "conclusion": "success"
+      },
+      "preservation": {
+        "runtime": "00658a9456b041a9b8c65517b4a9147ad941691e",
+        "carrier": "92b21e096e9fe078d0ebbeabbb0957a768206466",
+        "tree": "a1b2f895cd0d1020cd5b906df686a4cdc67de943",
+        "branch": "codex/nomacro-cde-interval-preservation01",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44411775012,
+        "conclusion": "success"
+      }
+    },
+    "retained_owner_checks": [
+      {
+        "status": "RETAINED_INDEPENDENT_OWNER_CHECKOUT_HASH_VALIDATOR_FAILURE",
+        "head": "d496bc241",
+        "failure": "ValueError: actual physical CDE kernel source changed",
+        "cause": "Independent validator compared normalized source seal hash with exact Windows CRLF compiler-input identity. Original BUILD raw hashes are correct; Ubuntu uses Git LF. Validator now explicitly derives exact platform checkout bytes from pinned RUNTIME Git blob; no original source, BUILD, native file or hash record rewritten.",
+        "models_reexecuted": false,
+        "elapsed_seconds": null,
+        "full_stderr_not_persisted": true
+      },
+      {
+        "returncode": 1,
+        "seconds": 197.28432360012084,
+        "head": "3537b9bcb6457bf4ec67b49748d7c85b58630d32",
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 186, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\ordinary_reset_verify.py\", line 185, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\perstep_domain_verify.py\", line 195, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 339, in verify\n    data=rows(z,pp+'trajectory/');require(len(data)==35 and all(row['committed'] is True for row in data),'fresh seam trajectory censored')\n                                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 28, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: fresh seam trajectory censored\n"
+      }
+    ],
+    "next_cde_clock_baseline": {
+      "status": "FOUR_ACTUAL_ORIGINAL_CDE_SUBDAILY_PERSTEP_READERS_CURRENT_PUBLIC_REFUSALS_RETAINED",
+      "baseline": "3537b9bcb6457bf4ec67b49748d7c85b58630d32",
+      "scientific_claim": false,
+      "profiles": {
+        "ordinary-subdaily": {
+          "snow": 0,
+          "nprintday": 2,
+          "flprintdt": false,
+          "format": 1,
+          "original_returncode": 100,
+          "original_swap_ok": true,
+          "original_seconds": 0.3207628997042775,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "READER_AND_CADENCE_OBSERVATION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2\\ordinary-subdaily\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2\\ordinary-subdaily\\public-build"
+          ],
+          "public_returncode": 1,
+          "public_stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 407, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 352, in main\n    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,\n                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 191, in build\n    if age_calendar_owner.selection(project) is None:\n       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\original_output_hysteresis.py\", line 39, in selection\n    if project.solute and (nprint!=1 or monthly or dates or requested!=1 or perstep):raise ValueError('Original hysteresis CDE output requires daily interval reset cadence')\n                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Original hysteresis CDE output requires daily interval reset cadence\n"
+        },
+        "snow-subdaily": {
+          "snow": 1,
+          "nprintday": 3,
+          "flprintdt": false,
+          "format": 1,
+          "original_returncode": 100,
+          "original_swap_ok": true,
+          "original_seconds": 0.3245513001456857,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "READER_AND_CADENCE_OBSERVATION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2\\snow-subdaily\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2\\snow-subdaily\\public-build"
+          ],
+          "public_returncode": 1,
+          "public_stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 407, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 352, in main\n    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,\n                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 187, in build\n    if age_calendar_owner.selection(project) is None:\n       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_interval_output.py\", line 55, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\perstep_output_domain.py\", line 59, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\ordinary_output_reset.py\", line 56, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\thermal_output_reset.py\", line 55, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\thermal_output_step.py\", line 55, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\thermal_output_clock.py\", line 53, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\thermal_output_calendar.py\", line 57, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\original_output_thermal.py\", line 42, in selection\n    if nprint!=1 or monthly or dates or requested!=1 or perstep:raise ValueError('Original thermal output requires dense daily cadence')\n                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Original thermal output requires dense daily cadence\n"
+        },
+        "ordinary-perstep": {
+          "snow": 0,
+          "nprintday": 1,
+          "flprintdt": true,
+          "format": 1,
+          "original_returncode": 100,
+          "original_swap_ok": true,
+          "original_seconds": 0.20464779995381832,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "READER_AND_CADENCE_OBSERVATION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2\\ordinary-perstep\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2\\ordinary-perstep\\public-build"
+          ],
+          "public_returncode": 1,
+          "public_stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 407, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 352, in main\n    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,\n                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 191, in build\n    if age_calendar_owner.selection(project) is None:\n       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\original_output_hysteresis.py\", line 38, in selection\n    if perstep and reset:raise ValueError('Original hysteresis per-step cumulative reset needs separate qualification')\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Original hysteresis per-step cumulative reset needs separate qualification\n"
+        },
+        "snow-perstep-count3": {
+          "snow": 1,
+          "nprintday": 3,
+          "flprintdt": true,
+          "format": 1,
+          "original_returncode": 100,
+          "original_swap_ok": true,
+          "original_seconds": 0.21682030009105802,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "READER_AND_CADENCE_OBSERVATION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2\\snow-perstep-count3\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2\\snow-perstep-count3\\public-build"
+          ],
+          "public_returncode": 1,
+          "public_stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 407, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py\", line 352, in main\n    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,\n                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\daily_host.py\", line 187, in build\n    if age_calendar_owner.selection(project) is None:\n       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_interval_output.py\", line 55, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\perstep_output_domain.py\", line 59, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\ordinary_output_reset.py\", line 56, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\thermal_output_reset.py\", line 55, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\thermal_output_step.py\", line 55, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\thermal_output_clock.py\", line 53, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\thermal_output_calendar.py\", line 57, in selection\n    return prior.selection(project) if selected is None else selected\n           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\original_output_thermal.py\", line 41, in selection\n    if perstep and reset:raise ValueError('Original hysteresis per-step cumulative reset needs separate qualification')\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Original hysteresis per-step cumulative reset needs separate qualification\n"
+        }
+      }
+    },
+    "wrong_worker_cancellation": {
+      "run": 44411626395,
+      "carrier": "610862461783a918295b5456ec5f79920a306c62",
+      "conclusion": "cancelled",
+      "status": "CANCELLED_NOT_QUALIFICATION_PASS",
+      "retained_original_artifact_bytes": [
+        {
+          "artifact": {
+            "id": 14475609907,
+            "node_id": "MDg6QXJ0aWZhY3QxNDQ3NTYwOTkwNw==",
+            "name": "cde-interval-O2",
+            "size_in_bytes": 272808,
+            "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14475609907",
+            "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14475609907/zip",
+            "expired": false,
+            "digest": "sha256:bf04cc3d165c369efed8137d5adcf1f86503382eafe6ca41d8508154b15bb257",
+            "created_at": "2026-11-18T22:27:15Z",
+            "updated_at": "2026-11-18T22:27:15Z",
+            "expires_at": "2026-12-02T22:27:13Z",
+            "workflow_run": {
+              "id": 44411626395,
+              "repository_id": 1357193305,
+              "head_repository_id": 1357193305,
+              "head_branch": "codex/nomacro-cde-interval-portable01",
+              "head_sha": "610862461783a918295b5456ec5f79920a306c62"
+            }
+          },
+          "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\CDE_INTERVAL_CANCELLED_WRONG_WORKER_cde-interval-O2_RAW.zip",
+          "sha256": "bf04cc3d165c369efed8137d5adcf1f86503382eafe6ca41d8508154b15bb257",
+          "bytes": 272808,
+          "member_count": 40,
+          "members": {
+            "PROVIDER.json": "b2a579487a98435fa5e364fe0f5c6e43ea0084834bd38f53321d4846e8ffddf6",
+            "short-ordinary-explicit-hys0-binary/RESULT.json": "617355aeb98352de5fa2983cf1abf76a80525d1508d15efb8a8eefdaf32bea2b",
+            "RESULT.json": "79c730c888ecdbf72a59bf4171476951d440a5dd01b5d36c9b1e71ede36b3e60",
+            "short-ordinary-explicit-hys0-binary/build/MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77",
+            "short-ordinary-explicit-hys0-binary/build/age_output_calendar_probe.f90": "cf0cdf52687528486c0221f7ae326e08dd86d7708ab1147e24c885541c3f8916",
+            "short-ordinary-explicit-hys0-binary/build/boundtop.f90": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0",
+            "short-ordinary-explicit-hys0-binary/build/headcalc.f90": "6bfb74bd608eaf055c2da5f2ea24d32661bebb62ed5ff04256c4d173a0061489",
+            "short-ordinary-explicit-hys0-binary/build/hybrid_age_output_state.f90": "f115166b4a9ebb9d6ae8e0def3add0b4972464669ade03269e28aab111955e9e",
+            "short-ordinary-explicit-hys0-binary/build/hybrid_age_output_state.mod": "b5eff4dfbccb057312bc1f1ed40430071788be4dca7cbb9be1f61e20dc657487",
+            "short-ordinary-explicit-hys0-binary/build/hybrid_age_output_state.o": "eeb47fcbe280c380c423952a0fae2034f9e86d35d71f9c6c6f497f02c478eeb1",
+            "short-ordinary-explicit-hys0-binary/build/hybrid_step_budget.f90": "068abc1050b1d3c46c32c4e2c7e542bb45ea92f6ae8db9e6b27aa809481c9ef8",
+            "short-ordinary-explicit-hys0-binary/build/hybrid_step_budget.mod": "a93f7c129c9e250d2a9708813bc5761fdbc432ed753a36b1aa7ace79ae568f12",
+            "short-ordinary-explicit-hys0-binary/build/hybrid_step_budget.o": "e28fe2f6154e1c414eaf838503ac8fdf37ea9b4448b0d6f4711976f95ad517da",
+            "short-ordinary-explicit-hys0-binary/build/integral.o": "86601cf33cf45d965d032c3cd1230ca4072fa3afd2e0119a029bdd3ae21009c3",
+            "short-ordinary-explicit-hys0-binary/build/irrigation.f90": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693",
+            "short-ordinary-explicit-hys0-binary/build/integral.f90": "da6bb7c8917d8814d758eb7df595f957cfd2d7741a0455b98f1cf5afb0c6fa0b",
+            "short-ordinary-explicit-hys0-binary/build/macropore.f90": "8bea1b53370c8fd8b9f5bb9a20d572ede38732453ce121ab6d27e560c8a2fb8b",
+            "short-ordinary-explicit-hys0-binary/build/mod_integral.mod": "3ed0a005028e3a1ba3b65d9e76104441e01679bbe8bf709758e5c225311a0fcf",
+            "short-ordinary-explicit-hys0-binary/build/mod_irrigation.mod": "c87a0e30c3e1ab980ef79dce5a96851107348978b58b3947f678dbc128e85d64",
+            "short-ordinary-explicit-hys0-binary/build/mod_original_output_receipt.f90": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+            "short-ordinary-explicit-hys0-binary/build/mod_original_output_receipt.mod": "e2d597d98857d6c2deef89c301da52b0b0810b8be00d1c4e41c0f587d08f7141",
+            "short-ordinary-explicit-hys0-binary/build/mod_original_output_receipt.o": "70748c1a1673c8cb0dfd80a3288682f47af8e51fa1f94fea71c5ea43463a069f",
+            "short-ordinary-explicit-hys0-binary/build/mod_timer.mod": "4f7a6131a225ad2175ea9e5a77aa69bdfe09d7b178a79fc435bca28a4e01770d",
+            "short-ordinary-explicit-hys0-binary/build/readswap.f90": "67e4e8b56e108214eee7a98dc32df690f7ba98fd8f62147ca64e8347f2a0764d",
+            "short-ordinary-explicit-hys0-binary/build/swap.f90": "2f051858703d8edb1878ab10c21c1c57cd37aaeee0a329e6303f45f70b4e2fa9",
+            "short-ordinary-explicit-hys0-binary/build/swap_csv_output.f90": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784",
+            "short-ordinary-explicit-hys0-binary/build/swap_main.f90": "770cb7428f547ad54d576d444fdfee10f4673b90e7961bccb7485a78aa671b7b",
+            "short-ordinary-explicit-hys0-binary/build/swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+            "short-ordinary-explicit-hys0-binary/build/timecontrol.f90": "913071a6ed159bc4db826d761aa1d8e5d61b08ef9d629ff05fdca185ccc49c54",
+            "short-ordinary-explicit-hys0-binary/build/timecontrol.o": "b51529bb94877a82b8ba8de077f6774878cb60312b6f3963772dc48eb173438b",
+            "short-ordinary-explicit-hys0-binary/build/wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+            "short-ordinary-explicit-hys0-binary/input/283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+            "short-ordinary-explicit-hys0-binary/input/control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+            "short-ordinary-explicit-hys0-binary/input/grass.crp": "1300bb75be869b4f1c9fac8e8d6620ed3b9e8ca3f940aaab7e721b9eb6fe3c74",
+            "short-ordinary-explicit-hys0-binary/input/maize.crp": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6",
+            "short-ordinary-explicit-hys0-binary/input/plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+            "short-ordinary-explicit-hys0-binary/input/potato.crp": "f7501fe19ad81bb8023714e267cfecd7cd94a4f775aec83995da5e3e9811bf87",
+            "short-ordinary-explicit-hys0-binary/input/run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+            "short-ordinary-explicit-hys0-binary/input/swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+            "short-ordinary-explicit-hys0-binary/input/swap.swp": "72e4929f20581e3329e4e951ca4c9877dc5fc8a0273ab496be2cf7d63d011aed"
+          },
+          "status": "CANCELLED_NOT_QUALIFICATION_PASS"
+        }
+      ],
+      "terminal_record": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\CDE_INTERVAL_WRONG_WORKER_TERMINAL_RAW.json"
     }
   }
 }
