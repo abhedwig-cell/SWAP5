@@ -206,7 +206,7 @@ def verify():
                             require(stamps==observed['stamps'] and len(actual)==observed['records'],'actual Snow user record inventory censored')
                             if phase=='full':
                                 require(stamps[-1].startswith('2004-12-31'),'actual original Snow TEND record missing')
-                                expected_count={'monthly':37,'explicit':7,'periodic':221,'terminal':2}[case[0]]
+                                expected_count={'monthly':37,'explicit':9,'periodic':221,'terminal':4}[case[0]]
                                 require(len(actual)==expected_count,'actual original Snow month/date/period record censored')
                         for window in report['cold']:
                             start,end=window['start'],window['end'];windows+=1;actual=rows(z,prefix+f'own-{start}/')

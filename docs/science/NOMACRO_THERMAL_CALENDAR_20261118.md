@@ -56,7 +56,7 @@ remain unchanged. A refused/private trial cannot advance accepted state.
 Persist implementation before compiling. Start actual O0/O2 monthly35day pilots
 with real Snow, exact cold physical/complete-native/user-file continuation,
 especially across30to34 and an outstanding monthly counter. Then compose
-explicit dates, five-day reset and terminal-only output. Exercise actual native
+explicit dates, five-day reset and PERIOD0 with original year/TEND output. Exercise actual native
 domain/calendar/foreign-codec refusals and discard/replay/accept/recovered-next
 day. Compare requested selector controls with the emitted deck.
 
@@ -129,3 +129,12 @@ SWBOTB6fixture and correctly refuses before compilation; corrected fixtures
 explicitly select actual head5for hysteresis0/1 and soil-air8for hysteresis2.
 Portable qualification, scoped prior preservation and registered/canonical
 admission remain pending.
+
+Original annual balance dates remain independent of requested interval dates.
+Literal ReadSwap builds OUTDAT separately, and literal TimeControl sets
+floutput/flbaloutput when that date is reached. Actual full PERIOD0 output
+therefore contains initialization plus December31of2002/2003/2004, not only
+TEND. The explicit six-date profile also retains the two additional annual
+records, giving nine records including initialization. Monthly has37records;
+period5has221including forced TEND and initialization. Preserve these actual
+original semantics; do not suppress annual records or normalize PERIOD0.
