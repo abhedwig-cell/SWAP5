@@ -1,11 +1,11 @@
 """Count original, mass and forced-polish work without changing stopping."""
 from pathlib import Path
 import argparse,contextlib,json,shutil,subprocess,sys,zipfile
-p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--qualification',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--days',type=int,default=365);a=p.parse_args();sys.path[:0]=[str(a.source/'app/hybrid_water'),str(a.source/'tools/solute')]
+p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True);p.add_argument('--qualification',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--days',type=int,default=365);p.add_argument('--bundle',type=Path);p.add_argument('--parent',type=Path);a=p.parse_args();sys.path[:0]=[str(a.source/'app/hybrid_water'),str(a.source/'tools/solute')]
 import daily_host as h
 from daily_coupling import validate_bundle
 from check_hupsel51_repair import bounded,physical,rows
-out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);ref=a.qualification/'provider';old=a.qualification/'saltfarm-O2-candidate-build';parent=a.qualification/'saltfarm-O2-candidate-full';meta,case=validate_bundle(old,ref,h.SALTFARM);build=out/'build';shutil.copytree(old,build)
+out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);ref=a.qualification/'provider';old=a.bundle or a.qualification/'saltfarm-O2-candidate-build';parent=a.parent or a.qualification/'saltfarm-O2-candidate-full';meta,case=validate_bundle(old,ref,h.SALTFARM);build=out/'build';shutil.copytree(old,build)
 (build/'newton_counts.f90').write_text('module newton_counts\nimplicit none\ninteger(8)::counts(8)=0,bins(5)=0\nreal(8)::ratio\nend module\n')
 src=(old/'headcalc.f90').read_text(encoding='cp1252');src=src.replace('\nsubroutine headcalc\n','\nsubroutine headcalc\nuse newton_counts\n',1)
 anchor='   mass_polish_at = 0';assert src.count(anchor)==1;src=src.replace(anchor,'   counts(1)=counts(1)+1\n'+anchor)
@@ -43,7 +43,7 @@ def trial():
    for day in range(1,a.days+1):
     row=host.step(1,checkpoint=day==109);assert row['committed'];data.append(row);journal.write(json.dumps(row)+'\n')
   host.close();return data
-data,seconds=bounded(15,trial);assert physical(data)==physical(rows(parent)[:a.days])
+data,seconds=bounded(25,trial);assert physical(data)==physical(rows(parent)[:a.days])
 if a.days>=109:
  with zipfile.ZipFile(folder/'accepted-column-1-day-109.zip') as x,zipfile.ZipFile(parent/'accepted-column-1-day-109.zip') as y:assert all(x.read(n)==y.read(n) for n in ('result.end','macro.bin'))
 words=[s.split()[1:] for s in (folder/'original/donor.stdout').read_text().splitlines() if s.startswith('HYBRID_NEWTON_COUNTS')][-1];values=list(map(int,words));assert len(values)==13;names=['headcalc_calls','original_nonconverged','mass_rejected','forced_polish','accepted','original_nonconverged_after_polish','mass_rejected_after_polish','iterations'];counts=dict(zip(names,values[:8]));assert counts['iterations']==sum(counts[k] for k in ('original_nonconverged','mass_rejected','forced_polish','accepted'))

@@ -1,0 +1,485 @@
+{
+  "status": "WINDOWS_SALTFARM_CONDITIONAL_WORK_QUALIFIED_REVIEW_PENDING",
+  "baseline": "c40636910a986feea35f19726af1aa6a68083011",
+  "code_commit": "1841beb68ebf3fc1a2f705f3b5b49dbcb3fa8a28",
+  "production_sources": {
+    "app/hybrid_water/daily_host.py": "cab9769d71a713fca4e22a1448d202b34c7c28cda9cde7850255c6ae3a929340",
+    "app/hybrid_water/daily_coupling.py": "4c33886a506302c934de5f4643d0022b41bdc7e7f57476d4a2ccfde9fe36a390",
+    "tools/solute/run_water.py": "4063a82c4692c7e35a20d088bbf8e7d57b6969870bde81b66fed4c7029bf5b19"
+  },
+  "tolerances_changed": false,
+  "fixed_RC3_changed": false,
+  "windows_gnu": "16.2.0",
+  "portable_qualification": "NOT_SELECTED; no portable speed claim",
+  "scientific_equivalence": "NOT_QUALIFIED; descriptive comparison, unchanged existing criteria",
+  "full_O0": {
+    "source_commit": "1841beb68ebf3fc1a2f705f3b5b49dbcb3fa8a28",
+    "build_sha256": "6831dae62eb24a0eacf58e27fdd46f303d513c81386ef506d55b2136f427ef6f",
+    "policy": "strict-water-half-interior-polish-v1",
+    "argv": [
+      "tests/saltfarm_newton/qualify.py",
+      "--bundle",
+      "C:\\SWAP5-testing\\saltfarm-newton-work01\\qualified-O0",
+      "--reference",
+      "C:\\SWAP5-testing\\rc3-local01\\provider",
+      "--output",
+      "C:\\SWAP5-testing\\saltfarm-newton-work01\\accept-O0"
+    ],
+    "restarts": [
+      {
+        "start": 109,
+        "end": 111,
+        "seconds": 0.6039490001276135,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      },
+      {
+        "start": 365,
+        "end": 367,
+        "seconds": 0.48506779968738556,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      },
+      {
+        "start": 453,
+        "end": 455,
+        "seconds": 0.43679239973425865,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      },
+      {
+        "start": 1460,
+        "end": 1461,
+        "seconds": 0.4719603997655213,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      },
+      {
+        "start": 109,
+        "end": 1461,
+        "seconds": 18.015276299789548,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      }
+    ],
+    "status": "FULL_PASS",
+    "days": 1461,
+    "seconds": 21.535499300342053,
+    "budgets": {
+      "days": 1461,
+      "max_water_cm": 5.1060856931517407e-11,
+      "max_kernel_cm": 5.1060856931517407e-11,
+      "max_solute_mg_cm2": 7.65545959957592e-12,
+      "sum_water_residual_cm": 2.0294954525962305e-08
+    }
+  },
+  "full_O2": {
+    "source_commit": "1841beb68ebf3fc1a2f705f3b5b49dbcb3fa8a28",
+    "build_sha256": "8dcf6a5cdbd74b4191ca3d59068795de208f3a2b14652e07883e5144bc7819fc",
+    "policy": "strict-water-half-interior-polish-v1",
+    "argv": [
+      "tests/saltfarm_newton/qualify.py",
+      "--bundle",
+      "C:\\SWAP5-testing\\saltfarm-newton-work01\\qualified-O2",
+      "--reference",
+      "C:\\SWAP5-testing\\rc3-local01\\provider",
+      "--output",
+      "C:\\SWAP5-testing\\saltfarm-newton-work01\\accept-O2"
+    ],
+    "restarts": [
+      {
+        "start": 109,
+        "end": 111,
+        "seconds": 0.588913899846375,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      },
+      {
+        "start": 365,
+        "end": 367,
+        "seconds": 0.45768920006230474,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      },
+      {
+        "start": 453,
+        "end": 455,
+        "seconds": 0.5578650003299117,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      },
+      {
+        "start": 1460,
+        "end": 1461,
+        "seconds": 0.5885387999005616,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      },
+      {
+        "start": 109,
+        "end": 1461,
+        "seconds": 19.40044240001589,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native": true,
+        "origin_unchanged": true
+      }
+    ],
+    "status": "FULL_PASS",
+    "days": 1461,
+    "seconds": 22.179618900176138,
+    "budgets": {
+      "days": 1461,
+      "max_water_cm": 5.1060856931517407e-11,
+      "max_kernel_cm": 5.1060856931517407e-11,
+      "max_solute_mg_cm2": 7.65545959957592e-12,
+      "sum_water_residual_cm": 2.0294954525962305e-08
+    }
+  },
+  "transactions": {
+    "O0": {
+      "discard_replay_exact": true,
+      "independent_columns_exact": true,
+      "continuous_day454_exact": true,
+      "origin_unchanged": true,
+      "foreign_policy_refused": true,
+      "seconds": 4.881252599880099
+    },
+    "O2": {
+      "discard_replay_exact": true,
+      "independent_columns_exact": true,
+      "continuous_day454_exact": true,
+      "origin_unchanged": true,
+      "foreign_policy_refused": true,
+      "seconds": 4.919393999967724
+    }
+  },
+  "baseline_trace": {
+    "headcalc_calls": 9527,
+    "original_nonconverged": 9251,
+    "mass_rejected": 6743,
+    "forced_polish": 9527,
+    "accepted": 9527,
+    "original_nonconverged_after_polish": 0,
+    "mass_rejected_after_polish": 0,
+    "iterations": 35048
+  },
+  "candidate_trace": {
+    "headcalc_calls": 9527,
+    "original_nonconverged": 9251,
+    "mass_rejected": 6824,
+    "forced_polish": 2679,
+    "accepted": 9527,
+    "original_nonconverged_after_polish": 0,
+    "mass_rejected_after_polish": 0,
+    "iterations": 28281
+  },
+  "refused_no_polish": {
+    "mode": "none",
+    "requested_days": 1461,
+    "commands": [
+      [
+        "gfortran",
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic",
+        "-I",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build",
+        "-I",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj",
+        "-I",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\ttutil-obj",
+        "-c",
+        "headcalc.f90"
+      ],
+      [
+        "gfortran",
+        "-o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\probe.exe",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\arrays.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\boundbottom.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\boundtop.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\calcgwl.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\description.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\divdra.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\drainage.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\fixed.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\fluxes.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\frozencond.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\functions.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\headcalc.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\hysteresis.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\initialize.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\integral.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\interface_atmosphere.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\interface_plant.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\irrigation.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\macropore.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\macroporeoutput.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\macrorate.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\management_soil.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\MOD_cropdevelopment.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_drainage.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_meteo.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_MvG_functions.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_RIA.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\MOD_runon.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\oxygenstress.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\params.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\readswap.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\rootextraction.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\RWU_micro.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\snow.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\soilwater.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\solute.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\sptabulated.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\surfacewater.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\swap.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\swap_base.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\swap_csv_output.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\swap_main.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\swapoutput.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\temperature.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\tillage.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\timecontrol.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\tridag.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\variables.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\watstor.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\WC_K_models_04_11.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\wofost.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_amendments.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_declarations.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_interface.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_parameters.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofost_soil_watern.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\wofostnut.o",
+        "C:\\SWAP5-testing\\saltfarm-newton-work01\\no-polish1461\\build\\hybrid_step_budget.o",
+        "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\ttutil-obj\\libttutil.a"
+      ]
+    ],
+    "source_sha": "9318d3f243f120f2a4875d7aef578c92aec0bfb22a23e8f74bfab48aeb88e5f8",
+    "status": "FAIL",
+    "error": "ValueError(\"Day refused: 454 {'column': 1, 'day': 454, 'committed': False, 'revision': 453, 'stock_end_cm': [306.0096310074921, 0.0, 0.0, 0.0, 0.0, 0.0], 'stock_start_cm': [306.0254650675984, 0.0, 0.0, 0.0, 0.0, 0.0], 'external_flux_cm': [0.029999999998486602, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.03222106720171959, 0.0, -0.056840106126480335, 0.0, 0.07045309892955072], 'pressure_head_cm': [-88.1675873959379, -87.09985511948803, -86.03807378908633, -84.98189769134704, -83.93099231830145, -82.8850339702124, -81.84370998562355, -80.80671915229146, -79.77377211896886, -78.74459173630783, -77.71891330030972, -76.69648469128134, -75.67706641015315, -74.66043151833084, -73.6463654894692, -72.63466598271806, -71.62514254754693, -70.61761627042007, -69.61191937347489, -68.60789477502333, -67.60539562119256, -66.60428479738549, -65.60443442750177, -64.60572536803961, -63.60804670331353, -62.611295247080754, -61.61537505486703, -60.62019695020392, -59.62567806680105, -58.6317414073209, -57.64495084685345, -56.922666160509515, -56.20052197422525, -55.47577033572209, -54.74630516253737, -54.010562133087205, -53.267408497601046, -52.51603960540764, -51.755890209956405, -50.98656397287128, -50.2077813048846, -49.419343577278696, -48.62111066811973, -47.81298852170177, -46.99492362008693, -46.166901753057815, -45.32894905224326, -44.48113381669262, -43.62356814331884, -42.75640876536214, -41.879856796164326, -40.99415628589272, -40.09959164109205, -39.196484046600816, -38.28518707993206, -37.36608173056244, -36.43957103908318, -35.50607456014939, -34.56602283332179, -33.6198520207338, -32.66799884267265, -31.71089591361921, -30.748967553536122, -29.782626123312486, -28.812268910020407, -27.83827556748204, -26.861006100816073, -25.88079937015856, -24.89797207850686, -23.912818201369102, -22.92560881128657, -21.9365922479574, -20.94599458423412, -19.954020339310144, -18.960853392592274, -17.966658054757023, -16.971580256031938, -15.975748815598132, -14.979276759986794, -13.982262662286729, -12.984791977774192, -11.986938355140184, -10.988764905792152, -9.990325416770277, -8.991665495725174, -7.992823639287655, -6.993832219199522, -5.994718384009338, -4.99550487839306, -3.9962107882593156, -2.99685223081305, -1.9974430359168973, -0.9979955653615967, 0.001477201707270326, 1.0009577090362578, 2.0004357162653283, 2.9999112233944816, 3.999384230423718, 4.998854737353037, 5.998322744182439, 8.996719264370894, 13.993984295520397, 18.991186824171976, 23.988326850325638, 28.985404373981385, 33.98241939513922, 38.979371913799135, 43.97626192996114, 48.97308944362524, 53.96985445479144, 61.46490821779388, 71.45806322513887, 81.45096822249228, 91.44362320985412, 101.43602818722444, 111.42818315460322, 121.42008811199048, 131.41174305938628, 141.40314799679058, 151.39430292420346, 161.3852078416249, 171.37586274905487, 181.3662676464935, 191.35642253394073, 201.3463274113966, 211.3359822788611, 221.32538713633429, 231.31454198381616, 241.30344682130672, 251.292101648806, 261.2805064663141, 271.26866127383084, 281.25656607135636, 291.24422085889074, 301.2316256364339, 311.2187804039858, 321.2056851615466, 331.19233990911624, 341.1787446466947, 351.16489937428213, 361.1508040918784, 371.1364587994836, 381.1218634970977, 391.10701818472074, 401.09192286235276, 411.07657752999376, 421.06098218764373, 431.0451368353027, 441.0290414729706, 451.0126961006476, 460.99610071833365, 470.9792553260287, 480.9621599237329, 490.94481451144605, 500.9272190891684, 510.9093736568998, 520.8912782146404, 530.87293276239, 540.8543373001487, 550.8354918279166, 560.8163963456938, 570.79705085348, 580.7774553512754, 590.75760983908, 600.7375143168939, 610.7171687847169, 620.6965732425492, 630.6757276903907, 640.6546321282414, 650.6332865561013, 660.6116909739706, 670.589845381849, 680.5677497797369, 690.5454041676339, 700.5228085455402, 710.4999629134559, 720.4768672713808, 730.4535216193151, 740.4299259572587, 750.4060802852115, 760.3819846031737, 770.3576389111453, 780.3330432091261, 790.3081974971163, 800.2831017751159, 810.2577560431248, 820.2321603011432, 830.2063145491708, 840.1802187872078, 850.153873015254, 860.1272772333098, 870.1004314413748, 880.0733356394493, 890.045989827533, 900.0183940056263], 'groundwater_cm': -93.4985220190525, 'drainage_outward_cm': -0.056840106126480335, 'bottom_outward_cm': 0.07045309892955072, 'independent_residual_cm': 1.0002533176733941e-10, 'kernel_residual_cm': -1.0002533176733941e-10, 'solute_end_mg_cm2': 300.9807511034029, 'solute_start_mg_cm2': 301.2372378935042, 'solute_ledger_mg_cm2': [300.9807511034029, -0.2564867901012917, 0.0, 0.0, -0.316225741640158, -0.05973895153893162, 0.0, 0.0, -6.535050278699828e-14], 'solute_independent_residual_mg_cm2': -6.535050278699828e-14, 'uptake_terms_cm': [4.394658601154164e-25, 0.0, 0.0, 0.0, 0.0, 0.0], 'budget_step_retries': 0, 'integrated_guard_residual_cm': -9.998204385719064e-11}\")",
+    "completed_days": 454
+  },
+  "work": {
+    "control_iterations": 138089,
+    "candidate_iterations": 110477,
+    "saved_iterations": 27612,
+    "fraction_saved": 0.1999579981026729,
+    "headcalc_calls": 38065
+  },
+  "timing": {
+    "sequence": [
+      {
+        "mode": "control",
+        "days": 1461,
+        "seconds": 17.885119500104338,
+        "donor_cpu": {
+          "user": 11.734375,
+          "system": 1.4375
+        },
+        "budgets": {
+          "days": 1461,
+          "max_water_cm": 2.959653355727454e-12,
+          "max_kernel_cm": 2.9596325390457423e-12,
+          "max_solute_mg_cm2": 1.3835196877032274e-11,
+          "sum_water_residual_cm": 2.9654271659768083e-10
+        },
+        "iterations": 138089,
+        "headcalc_calls": 38065,
+        "histogram": {
+          "2": {
+            "calls": 1,
+            "btr": 2
+          },
+          "3": {
+            "calls": 15209,
+            "btr": 45627
+          },
+          "4": {
+            "calls": 21830,
+            "btr": 87320
+          },
+          "5": {
+            "calls": 1010,
+            "btr": 5050
+          },
+          "6": {
+            "calls": 15,
+            "btr": 91
+          }
+        },
+        "build_sha256": "145fdbbd0c6c8ceaadaffee6b0df6e7bf677004acaa252d9df2a9622b911c904"
+      },
+      {
+        "mode": "candidate",
+        "days": 1461,
+        "seconds": 16.397541999816895,
+        "donor_cpu": {
+          "user": 10.953125,
+          "system": 1.453125
+        },
+        "budgets": {
+          "days": 1461,
+          "max_water_cm": 5.1060856931517407e-11,
+          "max_kernel_cm": 5.1060856931517407e-11,
+          "max_solute_mg_cm2": 7.65545959957592e-12,
+          "sum_water_residual_cm": 2.0294954525962305e-08
+        },
+        "iterations": 110477,
+        "headcalc_calls": 38065,
+        "histogram": {
+          "1": {
+            "calls": 1,
+            "btr": 1
+          },
+          "2": {
+            "calls": 6393,
+            "btr": 12786
+          },
+          "3": {
+            "calls": 29022,
+            "btr": 87066
+          },
+          "4": {
+            "calls": 2622,
+            "btr": 10488
+          },
+          "5": {
+            "calls": 26,
+            "btr": 130
+          },
+          "6": {
+            "calls": 1,
+            "btr": 7
+          }
+        },
+        "build_sha256": "8dcf6a5cdbd74b4191ca3d59068795de208f3a2b14652e07883e5144bc7819fc"
+      },
+      {
+        "mode": "candidate",
+        "days": 1461,
+        "seconds": 15.977270599920303,
+        "donor_cpu": {
+          "user": 10.765625,
+          "system": 1.625
+        },
+        "budgets": {
+          "days": 1461,
+          "max_water_cm": 5.1060856931517407e-11,
+          "max_kernel_cm": 5.1060856931517407e-11,
+          "max_solute_mg_cm2": 7.65545959957592e-12,
+          "sum_water_residual_cm": 2.0294954525962305e-08
+        },
+        "iterations": 110477,
+        "headcalc_calls": 38065,
+        "histogram": {
+          "1": {
+            "calls": 1,
+            "btr": 1
+          },
+          "2": {
+            "calls": 6393,
+            "btr": 12786
+          },
+          "3": {
+            "calls": 29022,
+            "btr": 87066
+          },
+          "4": {
+            "calls": 2622,
+            "btr": 10488
+          },
+          "5": {
+            "calls": 26,
+            "btr": 130
+          },
+          "6": {
+            "calls": 1,
+            "btr": 7
+          }
+        },
+        "build_sha256": "8dcf6a5cdbd74b4191ca3d59068795de208f3a2b14652e07883e5144bc7819fc"
+      },
+      {
+        "mode": "control",
+        "days": 1461,
+        "seconds": 15.035576000344008,
+        "donor_cpu": {
+          "user": 10.71875,
+          "system": 1.484375
+        },
+        "budgets": {
+          "days": 1461,
+          "max_water_cm": 2.959653355727454e-12,
+          "max_kernel_cm": 2.9596325390457423e-12,
+          "max_solute_mg_cm2": 1.3835196877032274e-11,
+          "sum_water_residual_cm": 2.9654271659768083e-10
+        },
+        "iterations": 138089,
+        "headcalc_calls": 38065,
+        "histogram": {
+          "2": {
+            "calls": 1,
+            "btr": 2
+          },
+          "3": {
+            "calls": 15209,
+            "btr": 45627
+          },
+          "4": {
+            "calls": 21830,
+            "btr": 87320
+          },
+          "5": {
+            "calls": 1010,
+            "btr": 5050
+          },
+          "6": {
+            "calls": 15,
+            "btr": 91
+          }
+        },
+        "build_sha256": "145fdbbd0c6c8ceaadaffee6b0df6e7bf677004acaa252d9df2a9622b911c904"
+      }
+    ],
+    "control_mean_seconds": 16.460347750224173,
+    "candidate_mean_seconds": 16.1874062998686,
+    "observed_wall_fraction_saved": 0.016581754802346582,
+    "control_mean_donor_cpu": 12.6875,
+    "candidate_mean_donor_cpu": 12.3984375,
+    "conclusion": "Only small average difference amid substantial run drift; deterministic iteration reduction qualified, material/portable wall speedup NOT_ESTABLISHED"
+  },
+  "scope": "Registered SaltFarm1461, generated donor and kernel O0/O2; original immutable provider remains O2. Other applications keep always-polish. Existing scientific failures/RC3 unchanged."
+}
