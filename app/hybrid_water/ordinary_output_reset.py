@@ -31,6 +31,7 @@ def active_selection(project):
     if len(flags)!=1 or flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F','.TRUE.','TRUE','.T.','T'):
         raise ValueError('Invalid original Snow FLPRINTDT flag')
     if flags[0].strip().upper() in ('.FALSE.','FALSE','.F.','F'):return None
+    if one('SWMONTH')==1 or one('SWRES')!=1:return None
     if one('NPRINTDAY')!=1:raise ValueError('Original ordinary FLPRINTDT currently requires NPRINTDAY1')
     if project.time_step_policy!='original-adaptive-day-seed-v1':raise ValueError('Original ordinary FLPRINTDT requires original day-seed policy')
     for key,value in dict(SWMACRO=0,SWSOLU=0,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWDRA=1,SWMETDETAIL=0,SWSOPHY=0).items():
@@ -76,7 +77,9 @@ def metadata(project):
         preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False,
         original_flprintdt_date_gated=True,original_pending_dates_not_normalized=True,
         annual_counter_policy='original-completed-day-min-global-and-year-ordinal-v1',
-        trial_receipt_policy=clock.TRIAL_RECEIPT_POLICY,trial_water_guard_cm=1e-10,physical_equations_changed=False)
+        trial_receipt_policy='original-integral-clone-independent-darcy-before-fluxes-v1',trial_water_guard_cm=1e-10,
+        original_trial_owner_sha256=sha(Path(clock.__file__)),trial_bottom='actual original Darcy/soil-air constraint before Fluxes; never candidate-volume closure',
+        legacy_trial_comparison_diagnostic=True,physical_equations_changed=False)
 
 
 def age_identity(original,project):
@@ -84,8 +87,24 @@ def age_identity(original,project):
     result=dict(original);result.update(native_codec=magic(project).decode(),original_output=metadata(project));return result
 
 
+def trial_source(original,watstor):
+    source=clock.trial_receipt_source(original,watstor)
+    anchor='real(8) function hybrid_output_trial_residual() result(residual)';assert source.count(anchor)==1
+    source=source.replace(anchor,'real(8) function hybrid_ordinary_trial_residual(candidate_bottom_cm_d) result(residual)',1)
+    anchor='use iso_fortran_env,only:real128';assert source.count(anchor)==1
+    source=source.replace(anchor,anchor+'\nuse ieee_arithmetic,only:ieee_is_finite\nuse variables,only:swbotb,nprintday,flprintdt',1)
+    source=source.replace('implicit none\n','implicit none\nreal(8),intent(in)::candidate_bottom_cm_d\n',1)
+    anchor="if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'";assert source.count(anchor)==1
+    source=source.replace(anchor,"if(swmacro/=0.or.swsnow/=0.or.swdra/=1.or..not.flprintdt.or.nprintday/=1.or. &\n (swbotb/=5.and.swbotb/=8))error stop 'Foreign original ordinary Darcy trial domain'\nif(.not.ieee_is_finite(candidate_bottom_cm_d))error stop 'Nonfinite original ordinary Darcy trial boundary'",1)
+    anchor='qbotts=qbot*dt';assert source.count(anchor)==1;source=source.replace(anchor,'qbotts=candidate_bottom_cm_d*dt',1)
+    anchor='residual=real(sum(real(terms,real128)),8)';assert source.count(anchor)==1
+    return source.replace(anchor,anchor+"\nif(.not.ieee_is_finite(residual))error stop 'Nonfinite original ordinary Darcy trial receipt'",1)
+
+
 def render_integral(original,watstor,selected):
     source=ordinary.render_integral(original,watstor,selected)
+    anchor='end module MOD_integral';assert source.count(anchor)==1
+    source=source.replace(anchor,trial_source(original,watstor)+'\n'+anchor,1)
     anchor='integer::header(20),witness_header(20),ios,nreal';assert source.count(anchor)==1
     source=source.replace(anchor,anchor+'\ninteger::annual_date(6),annual_expected\nreal(4)::annual_seconds\nreal(8)::annual_day,annual_jan1',1)
     anchor=" if((period==0.or.flprintdt).and.header(8)/=header(7))error stop 'Inconsistent original zero-period day counter'"
@@ -136,9 +155,25 @@ def apply_build(output,donor_build,project,patched):
     if 'timecontrol' in patched or (output/'timecontrol.f90').exists():raise ValueError('Multiple original ordinary output clock owners')
     (output/'timecontrol.f90').write_text(clock.render_timecontrol((donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
-    text=text.replace(anchor,'   use MOD_integral,only:hybrid_output_trial_residual\n'+anchor,1)
+    text=text.replace(anchor,'   use MOD_integral,only:hybrid_output_trial_residual,hybrid_ordinary_trial_residual\n   use hybrid_age_output_state,only:original_output_start_clock\n'+anchor,1)
+    anchor='\n   implicit none\n';assert text.count(anchor)==1
+    text=text.replace(anchor,anchor+'   real(8)::hybrid_ordinary_trial_guard,hybrid_ordinary_candidate_bottom\n',1)
     anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.';assert text.count(anchor)==1
-    path.write_text(text.replace(anchor,anchor+'\n         if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.',1),encoding='cp1252')
+    guard="""
+         if(swbotb==8.and..not.flboth)then
+            hybrid_ordinary_candidate_bottom=0d0
+         else
+            hybrid_ordinary_candidate_bottom=-kmean(NN+1)*hgrad(NN+1)
+         end if
+         hybrid_ordinary_trial_guard=hybrid_ordinary_trial_residual(hybrid_ordinary_candidate_bottom)
+         if(.not.flnonconv.and.t1900<original_output_start_clock+1d0)then
+            if(abs(hybrid_ordinary_trial_guard)<=1d-10.and.abs(hybrid_output_trial_residual())>1d-10)then
+               write(*,'(a,6(1x,es25.17e3))')'ORDINARY_STALE_BOTTOM_TRIAL_WITNESS', &
+                t1900,dt,qbot,hybrid_ordinary_candidate_bottom,hybrid_output_trial_residual(),hybrid_ordinary_trial_guard
+            end if
+         end if
+         if(abs(hybrid_ordinary_trial_guard)>1d-10)flnonconv=.true."""
+    path.write_text(text.replace(anchor,anchor+guard,1),encoding='cp1252')
     if selected['swcsv']:
         path=output/'swap_csv_output.f90';text=path.read_text(encoding='cp1252');original=(donor_build/'swap-selected/swap_csv_output.f90').read_bytes()
         if selected['swcsv']==3:
