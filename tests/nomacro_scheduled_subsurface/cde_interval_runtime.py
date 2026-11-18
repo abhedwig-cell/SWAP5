@@ -84,7 +84,10 @@ def audit_daily(path,days,nodes):
         ledger=row['solute_ledger_mg_cm2']
         assert value[0]==row['solute_start_mg_cm2'] and value[1]==row['solute_end_mg_cm2']
         assert value[2:8]==ledger[2:8] and value[8]==ledger[8],index
-    return dict(actual_days=days,actual_rows=values,actual_increment_counts=counts)
+    terms=[values[-1][1],-values[0][0]]
+    for row in values:terms.extend([-row[2],-row[3],-row[4],row[5],row[6],row[7]])
+    integrated=math.fsum(terms);assert abs(integrated)<=1e-10,integrated
+    return dict(actual_days=days,actual_rows=values,actual_increment_counts=counts,integrated_actual_chemical_residual_mg_cm2=integrated)
 
 
 def main():
