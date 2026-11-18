@@ -16,7 +16,7 @@ def main():
     ap=argparse.ArgumentParser()
     for key in ('reference-work','profile-root','output'):ap.add_argument('--'+key,type=Path,required=True)
     a=ap.parse_args();a.output.mkdir();p=m.e.load(a.profile_root/'input',original_output=True);meta,case=m.validate_bundle(a.profile_root/'build',a.reference_work,p)
-    source=a.profile_root/'trajectory/accepted-column-1-day-4.zip';receipt=m.h.verify_checkpoint(source,4,meta['binding'],a.output/'origin')
+    source=a.profile_root/'trajectory/accepted-column-1-day-4.zip';digest=m.sha(source);receipt=m.h.verify_checkpoint(source,4,meta['binding'],a.output/'origin')
     with zipfile.ZipFile(source) as z:aux=z.read('macro.bin')
     actual=validate_candidate(aux,receipt,p);assert actual==receipt['aquifer_state'];offset=48+8*(p.nodes+2);checks=[]
     for field in range(7):
@@ -36,7 +36,7 @@ def main():
         try:validate_candidate(raw,receipt,SimpleNamespace(nodes=n))
         except ValueError as error:checks.append(dict(attack=label,status='REFUSED',error=str(error)))
         else:raise AssertionError('Incomplete or foreign native source shape accepted')
-    assert m.sha(source)==m.sha(source)
+    assert m.sha(source)==digest
     q=dict(status='ACTUAL_AQUIFER_NATIVE_RECEIPT_COMPONENT_TWENTY_REFUSALS_PASS',policy=metadata(),actual_fortran_wire=True,native_offset=offset,actual_aquifer_state=actual,build_sha256=m.sha(a.profile_root/'build/BUILD.json'),refusals=checks)
     assert len(checks)==20;(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n');print(q['status'],flush=True)
 

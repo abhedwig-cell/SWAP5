@@ -148,6 +148,16 @@ def main():
             except ValueError as error:assert 'Foreign original output policy' in str(error),str(error)
             else:raise AssertionError('Foreign original aquifer output policy accepted')
             q['policy_refusals'].append(dict(field=field,status='REFUSED'))
+        from aquifer_native_receipt import metadata as receipt_metadata
+        q['receipt_policy_refusals']=[]
+        for field in receipt_metadata():
+            target=a.output/('receipt-policy-'+field);target.mkdir();bad=json.loads((build/'BUILD.json').read_text());bad['identity']['aquifer_native_receipt'][field]='foreign';(target/'BUILD.json').write_text(json.dumps(bad))
+            for helper in ('mod_subsurface_solute_source.f90','mod_aquifer_solute_reservoir.f90'):
+                if (build/helper).exists():shutil.copyfile(build/helper,target/helper)
+            try:m.validate_bundle(target,a.reference_work,project)
+            except ValueError as error:assert 'Foreign aquifer native receipt consistency policy' in str(error),str(error)
+            else:raise AssertionError('Foreign aquifer native receipt consistency policy accepted')
+            q['receipt_policy_refusals'].append(dict(field=field,status='REFUSED'))
         q['status']='ORIGINAL_OUTPUT_AQUIFER_ACTUAL_NATIVE_ACTIVE_AND_POLICY_REFUSALS_PASS';print(q['status'],len(q['native_refusals']),flush=True)
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
