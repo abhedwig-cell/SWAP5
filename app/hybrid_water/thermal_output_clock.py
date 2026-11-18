@@ -168,6 +168,13 @@ def render_timecontrol(source):
       end if
 """
     text=text.replace(anchor,correction+anchor,1)
+    anchor='! 2.11 set flags and variables';assert text.count(anchor)==1
+    correction="""      if(flprintshort.and..not.flprintdt.and.tcum<1d0.and.dt>0d0)then
+         if(abs(dt-(1d0-tcum))<=dtCrit)dt=1d0-tcum
+      end if
+
+"""
+    text=text.replace(anchor,correction+anchor,1)
     anchor='   end function get_dtevent';assert text.count(anchor)==1
     # Rain/SSDI/runon event caps follow the print cap. Apply the same existing
     # coincidence rule to the final event, rather than leaving a skipped tail.
