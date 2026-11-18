@@ -151,3 +151,30 @@ its separate sparse control worktree and must never merge. The original prior
 Snow-calendar owner body is literal behind the four-line new owner dispatch.
 Actual canonical and metadata admission remain required, then continue the next
 historical composition rather than stopping at this qualified batch.
+
+## Actual concurrent canonical SaltFarm composition
+
+PR1735 actually merged asb4398e00ae978c82f0cdee3d72ff79708a869762 while the
+preceding Snow batch was being qualified. Its exact ordered a264/685a parents
+and fullb72114b9tree pass the clean detached actual canonical owner. Preserve
+that source, policy and original owner body. The new four-line Snow dispatch
+belongs at the SaltFarm owner; the preceding Snow-calendar owner is the literal
+canonical SaltFarm image. No old SaltFarm body or numerical policy is changed.
+
+The added explicit water_polish_policy is in build/checkpoint identity. All
+Snow cases retain strict-water-always-polish-v1; registered SaltFarm alone
+retains strict-water-half-interior-polish-v1. Fresh current builds and complete
+Snow/native/output campaigns are selected for the combined current identity;
+old images and checkpoints remain distinct and cannot be rebound. Preserve the
+first345104774byte campaign as its historical source-qualified record. A new
+composed producer/qualification namespace binds actual current evidence.
+
+New preservation builds compare every original project/input and physical
+source, native payload and user record. An absent old always-policy field is
+checked explicitly against the new always policy, without writing old BUILD
+or checkpoints. The prior old always-polish SaltFarm comparison is not a
+current preservation claim: fresh1461day SaltFarm O0/O2 per platform must
+instead match the actual new canonical half-interior-policy archives, all
+original data records and eight complete native endpoints plus five own cold
+windows. Keep old qualification/archives and owner bodies literal. No unrelated
+physical component or highest low-air research campaign is selected.
