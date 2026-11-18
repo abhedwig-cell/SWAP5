@@ -41,7 +41,7 @@ def arguments(case):
 def main():
     ap=argparse.ArgumentParser()
     for key in ('reference-work','output'):ap.add_argument('--'+key,type=Path,required=True)
-    ap.add_argument('--optimization',choices=('O0','O2'),required=True);ap.add_argument('--resume',action='store_true');ap.add_argument('--short-only',action='store_true')
+    ap.add_argument('--optimization',choices=('O0','O2'),required=True);ap.add_argument('--resume',action='store_true');ap.add_argument('--short-only',action='store_true');ap.add_argument('--reuse-regular-root',type=Path)
     a=ap.parse_args();a.output=a.output.resolve();a.output.mkdir(exist_ok=a.resume)
     sys.path.insert(0,str(probe.ROOT/'tools/solute'));import user_prepare
     if not (a.reference_work/'PREPARED.json').exists():user_prepare.prepare(a.reference_work)
@@ -54,7 +54,7 @@ def main():
     save()
     try:
         for key,case in CASES.items():
-            short=a.output/('short-'+key)
+            short=a.reuse_regular_root if key=='point-regular' and a.reuse_regular_root else a.output/('short-'+key)
             if not (short/'RESULT.json').exists():run('direct_soil_age_matrix.py','--reference-work',a.reference_work,'--output',short,'--optimization',a.optimization,'--phase','short',*arguments(case))
             report=json.loads((short/'RESULT.json').read_text());assert report['status']=='DIRECT_SOIL_AGE_SOURCE_SHORT_CURRENT_FORCING_NATIVE_OUTPUT_PASS'
             build=Path(report['build_root']);inputs=Path(report['input_root']);project=probe.m.e.load(inputs,original_output=case[4],age_direct_soil_source=True);meta,_=probe.m.validate_bundle(build,a.reference_work,project)
