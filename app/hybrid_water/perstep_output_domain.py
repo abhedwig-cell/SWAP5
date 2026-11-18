@@ -180,5 +180,5 @@ def apply_build(output,donor_build,project,patched):
             text=text.replace(anchor,'      else if (swcsv == 3) then ! binary\n         allocate(buffer(parlen-1))\n         ! datetime',1)
         for old,new in ordinary.output_patch('vector').edits(original):assert text.count(old)==1,old;text=text.replace(old,new,1)
         path.write_text(text,encoding='cp1252')
-    extra=[regular.PROVIDER,'hybrid_age_output_state']+([domain] if domain else [])+([SNOW_PROVIDER] if is_snow else [])+['timecontrol','integral']
+    extra=[regular.PROVIDER,'hybrid_age_output_state']+([domain] if domain else [])+(['integral',SNOW_PROVIDER,'timecontrol'] if is_snow else ['timecontrol','integral'])
     patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched
