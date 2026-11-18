@@ -8,8 +8,10 @@ ROOT=prior.ROOT
 regular=prior.regular
 ordinary=prior.ordinary
 DOMAIN=prior.DOMAIN
-POLICY='original-water-snow-output-calendar-carry-v1'
-MAGIC=b'S5CTW001'
+POLICY='original-water-snow-output-calendar-carry-v2'
+MAGIC=b'S5CTW002'
+SNOW_PROVIDER='thermal_output_snow_calendar_state'
+SNOW_FIELDS=('cgsnow','cmelt','csnrai','csubl','isnrai','igsnow','isubl')
 
 
 def calendar_selection(project):
@@ -65,6 +67,8 @@ def metadata(project):
     return dict(policy=POLICY,native_codec=MAGIC.decode(),**selected,source_sha256=sha(Path(__file__)),
         predecessor_owner_sha256=sha(Path(prior.__file__)),ordinary_owner_sha256=sha(Path(ordinary.__file__)),
         domain_source_sha256=sha(Path(prior.__file__).with_name(DOMAIN+'.f90')),
+        snow_output_source_sha256=sha(Path(__file__).with_name(SNOW_PROVIDER+'.f90')),
+        snow_output_fields=list(SNOW_FIELDS),snow_output_domain_bytes=32,snow_output_value_bytes=56,
         calendar_owner_sha256=sha(Path(regular.__file__)),clock_owner_sha256=sha(Path(prior.clock.__file__)),
         receipt_provider_sha256=sha(ROOT/'src/process/mod_original_output_receipt.f90'),
         original_integral_sha256=regular.INTEGRAL_SHA,original_output_epoch=project.start_clock,
@@ -87,11 +91,11 @@ def render_macro(source):
     magics=re.findall(r"'(S5[A-Z0-9]{6})'",source);assert len(magics)==2 and len(set(magics))==1
     source=source.replace("'"+magics[0]+"'","'"+MAGIC.decode()+"'")
     anchors=re.findall(r'(?m)^      use MOD_grid, only: numnod(?:,dz)?$',source);assert len(anchors)==1
-    anchor=anchors[0];source=source.replace(anchor,anchor+'\n      use hybrid_output_thermal_domain,only:hybrid_output_thermal_checkpoint\n      use MOD_integral,only:hybrid_output_calendar_checkpoint',1)
+    anchor=anchors[0];source=source.replace(anchor,anchor+'\n      use hybrid_output_thermal_domain,only:hybrid_output_thermal_checkpoint\n      use hybrid_thermal_output_snow_calendar_state,only:snow_output_calendar_checkpoint\n      use MOD_integral,only:hybrid_output_calendar_checkpoint',1)
     anchor='        read(unit,iostat=ios) trailing';assert source.count(anchor)==1
-    source=source.replace(anchor,'        call hybrid_output_thermal_checkpoint(unit,.true.)\n        call hybrid_output_calendar_checkpoint(unit,.true.)\n'+anchor,1)
+    source=source.replace(anchor,'        call hybrid_output_thermal_checkpoint(unit,.true.)\n        call snow_output_calendar_checkpoint(unit,.true.)\n        call hybrid_output_calendar_checkpoint(unit,.true.)\n'+anchor,1)
     anchor='      end if\n      close(unit)';assert source.count(anchor)==1
-    source=source.replace(anchor,'        call hybrid_output_thermal_checkpoint(unit,.false.)\n        call hybrid_output_calendar_checkpoint(unit,.false.)\n'+anchor,1)
+    source=source.replace(anchor,'        call hybrid_output_thermal_checkpoint(unit,.false.)\n        call snow_output_calendar_checkpoint(unit,.false.)\n        call hybrid_output_calendar_checkpoint(unit,.false.)\n'+anchor,1)
     return prefix+source+suffix
 
 
@@ -103,6 +107,7 @@ def apply_build(output,donor_build,project,patched):
     (output/(regular.PROVIDER+'.f90')).write_bytes((ROOT/'src/process'/(regular.PROVIDER+'.f90')).read_bytes())
     (output/'hybrid_age_output_state.f90').write_text(regular.state_source(project),encoding='cp1252')
     (output/(DOMAIN+'.f90')).write_bytes(Path(prior.__file__).with_name(DOMAIN+'.f90').read_bytes())
+    (output/(SNOW_PROVIDER+'.f90')).write_bytes(Path(__file__).with_name(SNOW_PROVIDER+'.f90').read_bytes())
     original=(donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252')
     (output/'integral.f90').write_text(prior.render_integral(original,None,selected),encoding='cp1252')
     (output/'age_output_calendar_probe.f90').write_text(prior.probe_source(project),encoding='cp1252')
@@ -112,9 +117,9 @@ def apply_build(output,donor_build,project,patched):
     path.write_text(text.replace(anchor,anchor+'\n         call hybrid_output_crop_apply()',1),encoding='cp1252')
     path=output/'macropore.f90';path.write_text(render_macro(path.read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'swap_main.f90';text=path.read_text(encoding='cp1252');anchor='use MOD_grid, only: numnod';assert text.count(anchor)==1
-    text=text.replace(anchor,anchor+'\nuse MOD_integral,only:hybrid_output_calendar_apply',1)
+    text=text.replace(anchor,anchor+'\nuse MOD_integral,only:hybrid_output_calendar_apply\nuse hybrid_thermal_output_snow_calendar_state,only:snow_output_calendar_apply',1)
     anchor="\n   write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)";assert text.count(anchor)==1
-    path.write_text(text.replace(anchor,'\n   call hybrid_output_calendar_apply()\n   call hybrid_original_output_initial_emit()'+anchor,1),encoding='cp1252')
+    path.write_text(text.replace(anchor,'\n   call hybrid_output_calendar_apply()\n   call snow_output_calendar_apply()\n   call hybrid_original_output_initial_emit()'+anchor,1),encoding='cp1252')
     if selected['swcsv']:
         path=output/'swap_csv_output.f90';text=path.read_text(encoding='cp1252');original=(donor_build/'swap-selected/swap_csv_output.f90').read_bytes()
         if selected['swcsv']==3:
@@ -124,5 +129,5 @@ def apply_build(output,donor_build,project,patched):
         for old,new in ordinary.output_patch('vector').edits(original):
             assert text.count(old)==1,old;text=text.replace(old,new,1)
         path.write_text(text,encoding='cp1252')
-    patched=[regular.PROVIDER,'hybrid_age_output_state',DOMAIN,'integral',*patched]
+    patched=[regular.PROVIDER,'hybrid_age_output_state',DOMAIN,'integral',SNOW_PROVIDER,*patched]
     patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched

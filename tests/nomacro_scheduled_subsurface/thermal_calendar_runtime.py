@@ -56,7 +56,7 @@ def main():
     a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=a.existing_input or out/'input'
     if not a.existing_input:fixture(inputs,a.mode,a.hysteresis,a.format,a.reset,a.et)
     project=m.e.load(inputs,original_output=True);build=a.reuse_build or out/'build';selected=metadata(project)
-    assert selected['thermal_calendar'] is True and selected['native_codec']=='S5CTW001'
+    assert selected['thermal_calendar'] is True and selected['native_codec']=='S5CTW002'
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         mode=a.mode,hysteresis=a.hysteresis,format=a.format,reset=a.reset,et=a.et,optimization=a.optimization,input_root=str(inputs),build_root=str(build),
         original_output=selected,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
@@ -84,7 +84,10 @@ def main():
         for day in (2,4,8,days):
             with zipfile.ZipFile(full/f'accepted-column-1-day-{day}.zip') as z:
                 raw=z.read('macro.bin');assert raw[:8]==MAGIC and raw.count(header+header)==1
-                q['native_domains'][str(day)]=dict(bytes=80,actual_domain=True,offset=raw.index(header+header))
+                snow_header=struct.pack('<4i',1,project.nodes,0,7);assert raw.count(snow_header+snow_header)==1
+                snow_offset=raw.index(snow_header+snow_header)+32;values=struct.unpack_from('<7d',raw,snow_offset)
+                assert all(v>=0 for v in values)
+                q['native_domains'][str(day)]=dict(bytes=80,actual_domain=True,offset=raw.index(header+header),snow_output_domain_bytes=32,snow_output_values=list(values))
         files=sorted((full/'original').glob('result_output.*'));q['user_output']={}
         for path in files:
             values=records(path)

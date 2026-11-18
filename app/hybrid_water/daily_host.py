@@ -866,6 +866,7 @@ end module plant_interface""")
                     *([str(output/'original_output_hysteresis_domain.o')] if age_calendar and age_calendar.get('swhyst',0) in (1,2) and not age_calendar.get('aquifer_output',False) and not age_calendar.get('thermal_output',False) else []),
                     *([str(output/'original_output_aquifer_domain.o')] if age_calendar and age_calendar.get('aquifer_output',False) else []),
                     *([str(output/'original_output_thermal_domain.o')] if age_calendar and age_calendar.get('thermal_output',False) else []),
+                    *([str(output/'thermal_output_snow_calendar_state.o')] if age_calendar and age_calendar.get('thermal_calendar',False) else []),
                     *([str(output/'age_irrigation_source_domain.o')] if age_source else []),
                     *([str(output/(name+'.o')) for name in ('mod_direct_soil_age_substep','direct_soil_age_state')] if project.age_direct_soil_source else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
