@@ -249,7 +249,7 @@ def verify():
                         prefix=path(item[phase+'_root']);report=read(z,prefix+'RESULT.json');require(report==item[phase],'actual Snow period producer rebound')
                         period(report,case,opt,phase,build,bd);days=1096 if phase=='full' else 35;data=rows(z,prefix+'trajectory/');ledger(data,days)
                         trial_witness(z,prefix+'trajectory/',build['identity']['original_output']['original_output_epoch'],item['trial_phase_witness'] if phase=='short' else None)
-                        require(max(row['stock_end_cm'][2] for row in data)>0 and sum(row['external_flux_cm'][12] for row in data)>0,'actual Snow stock/sublimation inactive')
+                        require(all(row['stock_start_cm'][2]==row['stock_end_cm'][2]==row['external_flux_cm'][12]==0 for row in data),'unexpected Snow in selected ordinary water trajectory')
                         if phase=='full':fulls+=1
                         else:
                             short_data[key]=physical(data);main_data[platform,opt,key]=(z,prefix,build,data)
