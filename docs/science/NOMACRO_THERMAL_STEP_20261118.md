@@ -1,6 +1,6 @@
 # Original Snow FLPRINTDT output clock
 
-**Source contract / implementation next / not qualified or admitted.** Actual
+**Implemented / Windows scoped model-native gates pass / not qualified or admitted.** Actual
 canonical aad3388b6 after source PR1740 and metadata PR1741 has exact ordered
 parents/full qualified trees and both clean detached registered owners pass.
 The preceding current composition preserves the canonical SaltFarm policy and
@@ -75,3 +75,13 @@ qualified trees and clean detached registered owners, then continue the next gap
 No unrelated science/performance framework, alternative solver or retired highest
 low-air campaign is selected. A green batch is not whole historical closure.
 Affected invariants:3,4,7,13,21,23,30.
+
+The initial monthly O0/O2 pilots pass35days and four exact cold windows each,
+including the actual February1record from the original January31date condition.
+Both accepted daily global and private soil receipts remain below1e-10cm. Each
+of four selected short contexts per optimization refuses61actual native attacks,
+25policy variants and a forged copied provider; active discard/replay/accept/
+recovered-day tests pass. Eight short contexts precede four selected1096day
+periods per optimization, all current Windows gates pass. Portable and scoped
+preservation/admission gates remain required. No uniform per-step output count
+or invented date-pointer advancement is asserted.
