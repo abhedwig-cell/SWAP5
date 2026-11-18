@@ -1,6 +1,6 @@
 # Original prescribed groundwater with chemical transport
 
-**Source reconciliation / confirmed shared CDE receipt defect / not admitted.** Baseline is actual
+**Qualified bounded composition / canonical admission pending.** Baseline is actual
 canonicala787476a0f3db2490e75ff18afea097b82476332 after PR1731/1732. Its source
 and metadata merge parents, full qualified trees and detached owners pass.
 Historical closure stays PARTIAL, whole science NOT_QUALIFIED, fixed RC3 unchanged.
@@ -114,3 +114,58 @@ Initial pre-compilation failures exposed the public builder's mode1 budget
 exclusion and an ambiguous outer/inner HeadCalc declaration anchor; both are
 explicitly corrected, with original failed reports retained. Original mode5/8
 receipt and all prior source providers remain literal through delegation.
+
+## Completed qualification and retained boundaries
+
+Productionc1da10c37 composes original ordinary analytical daily CDE with
+SWBOTB1, no hysteresis, snow, frost, aquifer reservoir or detailed weather.
+Original drainage0/1 remains available. Existing output-off compatibility and
+explicit dense original output have distinct complete native codecs. All old
+mode5/8 receipt helpers and physical providers remain literal. General MODFLOW,
+active macropores and alternative solvers are outside this work.
+
+Windows and Ubuntu O0/O2 each pass eight short10day and seven full1096day
+profiles:28full periods,32short periods and232complete cold windows overall.
+The cohort covers within/below-profile levels, rising/falling levels crossing
+actual nodes, original external BBC input, sorption/decomposition, default and
+original output, and chemical gifts at first day, year boundaries and true
+TEND. Actual first/terminal contributions are48/72mg/cm2. Water and chemical
+guards remain1e-10cm and1e-10mg/cm2; the maximum Windows full integrated trial
+guard is7.662e-11cm. All full native and user-output continuations are exact.
+Formats0/3 retain identical ten-day physical rows.
+
+Three active native/transaction contexts per optimization/platform refuse364
+native corruptions and24fabricated hydraulic reports overall. Discard, replay,
+acceptance and recovered next-day proposals are exact with a real chemical
+gift. Three independent public warm/cold commands per tested public cohort
+pass for inline groundwater, external BBC and compatibility output. Each
+reader cohort refuses six actual original numeric/depth/date-interval/table
+faults, seven unsupported descriptors and twelve foreign source/native policies.
+Original CheckDate checks interval overlap, not table ordering: an initial
+test's ordering assumption was wrong and is retained as a failed harness
+observation. No ordering refusal or original-reader correction is claimed.
+
+The actual prior source/native controls preserve95Windows and20Ubuntu contexts:
+old age/source/calendar/output routes, hysteresis, aquifer, thermal/frost,
+fixed-young age and all three named profiles. No old full-period campaign was
+repeated. Ubuntu main44287500505 and preservation44289315415 end SUCCESS.
+The first preservation run44288440555 stopped before model trajectories because
+a different temporary provider path changed object/archive hashes. Its actual
+artifact14420985491 is retained unchanged. Restoring the original provider path
+makes the literal byte-equality guards pass; no guard or old metadata changed.
+
+Eight raw producer archives total435441943bytes. The large Windows preservation
+ZIP is stored as ordered64MiB byte parts whose concatenation is exactly the
+original ZIP; original GitHub artifact bytes and digests remain unchanged.
+The source-bound successor recomputes actual ledgers, checks the real hydraulic
+and CDE native prefixes, compares every cold payload, and retains the literal
+qualified predecessor image and immutable archives. Three proof tests pass in
+5.572seconds, refusing800actual period/ledger/native corruptions and44source/
+scope corruptions plus a real archive-part offset fault. Actual registered-root
+and canonical admission remain required before calling this composition admitted.
+
+Historical functional closure remains PARTIAL and whole scientific equivalence
+NOT_QUALIFIED. This work introduces no original physical equation correction;
+the inherited coupling defect and exact restart defect are explicitly repaired.
+The fixed RC3 named release is unchanged. Remaining groundwater combinations,
+bottom9 and other inventory gaps continue separately after actual admission.
