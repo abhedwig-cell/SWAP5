@@ -705,5 +705,88 @@
       },
       "role": "Automatic legacy PR checks, not selected scientific qualification. Pending is not PASS; snapshot external thermal-step-source-pr-ci-current.json. No duplicate/cancel requested."
     }
+  },
+  "thermal_reset": {
+    "status": "SELECTED_SOURCE_QUALIFICATION_PASS_CANONICAL_PENDING",
+    "baseline": "536a178591e8f887963dcf9981521077547aeba0",
+    "runtime": "b9adbefdb6b9779f0ecd3fe8c8f637101649ac8c",
+    "registered_root": {
+      "status": "ORIGINAL_SNOW_FLPRINTDT_ANNUAL_RESET_NATIVE_ADMISSION_PASS",
+      "runtime": "b9adbefdb6b9779f0ecd3fe8c8f637101649ac8c",
+      "predecessor": "LITERAL_ACTUAL_CANONICAL_FLPRINTDT_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS",
+      "actual_full_periods": 16,
+      "actual_cold_windows": 256,
+      "actual_native_refusals": 1008,
+      "actual_policy_refusals": 432,
+      "actual_copied_provider_refusals": 16,
+      "actual_preserved_contexts": 79,
+      "actual_saltfarm_preserved_full_periods": 4,
+      "actual_saltfarm_preserved_cold_windows": 20,
+      "actual_non_january_periods": 8,
+      "actual_epoch_cold_windows": 32,
+      "actual_post_year_native_refusals": 32,
+      "actual_bound_reports": 227,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "proof_tests": {
+      "tests": 5,
+      "seconds": 21.853,
+      "corruptions": 2009,
+      "denominators": [
+        80,
+        1472,
+        22,
+        388,
+        47
+      ]
+    },
+    "source_negative": {
+      "status": "DIRTY_AND_ACTUAL_COMMITTED_FALSE_GLOBAL_ANNUAL_COUNTER_REFUSED",
+      "base": "d62c0eea63dfe7ecda6dd23082ecc23a9772ddad",
+      "control": "C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control",
+      "sparse_source_checkout": true,
+      "fixture": "Actual dirty and committed substitution of the global day for the actual original annual reset counter; no model executed; never merge",
+      "checks": [
+        {
+          "stage": "dirty",
+          "returncode": 1,
+          "seconds": 1.768100899644196,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 183, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty Snow calendar admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 25, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty Snow calendar admission surface\n"
+        },
+        {
+          "stage": "committed",
+          "returncode": 1,
+          "seconds": 2.0306883002631366,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 185, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Snow calendar production differs from qualified source')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-thermal-reset-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 25, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Snow calendar production differs from qualified source\n"
+        }
+      ],
+      "bad_commit": "1b057cba667a9a28e3b0eda7e0cb54bdca0221c5"
+    },
+    "workflows": {
+      "main": {
+        "runtime": "b9adbefdb6b9779f0ecd3fe8c8f637101649ac8c",
+        "carrier": "b1dd28e1c3f27f3757940e446d19396c522f5cf2",
+        "tree": "1de1058669926db23c80ce82509fde1db3cbc4d1",
+        "branch": "codex/nomacro-thermal-reset-portable01",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44364299227,
+        "conclusion": "success"
+      },
+      "preservation": {
+        "runtime": "b9adbefdb6b9779f0ecd3fe8c8f637101649ac8c",
+        "carrier": "ee991be2ce9c7b737121185dc1f08ed7e078f74e",
+        "tree": "a45631fbffc5b7db54cf05cbfe839c5dd12a006d",
+        "branch": "codex/nomacro-thermal-reset-preservation01",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44363952246,
+        "conclusion": "success"
+      }
+    },
+    "selection": "Real original FLPRINTDT SWRES1 annual reset. Actual O0/O2 pilots and epoch/native controls precede selected full matrix; 79 prior source/native contexts including 4 full SaltFarm/20 cold. No broad moving F-CI or retired highest-low-air selected."
   }
 }
