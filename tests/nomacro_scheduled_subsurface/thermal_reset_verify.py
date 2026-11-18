@@ -357,7 +357,15 @@ def verify():
                 for attack in control['checks']:
                     completed=date.fromisoformat(epoch)+timedelta(days=29);expected=min(30,completed.timetuple().tm_yday)
                     require(attack['status']=='REFUSED' and attack['day']==30 and attack['actual_counter']==expected and attack['forged_counter']!=expected and 'Inconsistent original Snow annual-reset day counter' in attack['diagnostic'],'actual forged post-year counter not refused');year_refusals+=1
-                    raw=z.read(yp+epoch+'/'+attack['attack']+'/origin/macro.bin')
+                    ap=yp+epoch+'/'+attack['attack']+'/'
+                    diagnostic=z.read(ap+'original/donor.stderr').decode('utf8').replace('\r\n','\n')
+                    require(diagnostic==attack['diagnostic'].replace('\r\n','\n') and 'Inconsistent original Snow annual-reset day counter' in diagnostic,'actual forged-counter worker stderr differs')
+                    require(not any(name.startswith(ap) and Path(name).name.startswith('accepted-') and name.endswith('.zip') for name in z.namelist()),'forged annual worker published accepted state')
+                    raw=z.read(ap+'origin/macro.bin')
+                    with zipfile.ZipFile(io.BytesIO(source)) as checkpoint:expected_raw=bytearray(checkpoint.read('macro.bin'))
+                    snow=struct.pack('<4i',1,build['project']['nodes'],0,7);counter=expected_raw.index(snow+snow)+88
+                    for offset in (28,108):struct.pack_into('<i',expected_raw,counter+offset,attack['forged_counter'])
+                    require(raw==expected_raw,'actual forged annual origin has an unbound mutation')
                     try:native(raw,data[29],build['project']['nodes'],2,selected,epoch)
                     except ValueError:pass
                     else:raise ValueError('actual forged annual native origin independently accepted')
