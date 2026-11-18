@@ -131,6 +131,27 @@ class Proof(unittest.TestCase):
         self.assertEqual(count,388)
         print('ACTUAL_SNOW_SOIL_AND_CADENCE_CORRUPTIONS_REFUSED',count,flush=True)
 
+    def test_actual_non_january_annual_counter_corruptions(self):
+        count=0
+        for location in self.q['epochs']:
+            with zipfile.ZipFile(io.BytesIO(owner.raw_archive(self.q['archives'][location['archive']]))) as z:
+                ep=location['prefix'];run=json.loads(z.read(ep+'RESULT.json'))
+                for epoch,item in run['cases'].items():
+                    prefix=ep+epoch+'/actual/';build=json.loads(z.read(prefix+'build/BUILD.json'));n=build['project']['nodes'];selected=build['identity']['original_output']
+                    rows=[json.loads(line) for line in z.read(prefix+'trajectory/daily.jsonl').splitlines()];row=rows[29]
+                    with zipfile.ZipFile(io.BytesIO(z.read(prefix+'trajectory/accepted-column-1-day-30.zip'))) as checkpoint:raw=checkpoint.read('macro.bin')
+                    owner.native(raw,row,n,2,selected,epoch);snow=struct.pack('<4i',1,n,0,7);pos=raw.index(snow+snow)+88;header=struct.unpack_from('<20i',raw,pos)
+                    self.assertNotEqual(header[7],row['day'])
+                    for index,value in [(7,row['day']),(7,header[7]+365),(7,header[7]+1),(7,0),(11,0),(18,0),(19,0),(4,0),(6,31)]:
+                        bad=bytearray(raw)
+                        for offset in (0,80):struct.pack_into('<i',bad,pos+offset+4*index,value)
+                        with self.assertRaises(ValueError):owner.native(bad,row,n,2,selected,epoch)
+                        count+=1
+                    with self.assertRaises(ValueError):owner.native(raw,row,n,2,selected,'2002-01-01')
+                    count+=1
+        self.assertEqual(count,80)
+        print('ACTUAL_NON_JANUARY_ANNUAL_COUNTER_AND_EPOCH_CORRUPTIONS_REFUSED',count,flush=True)
+
     def test_actual_raw_artifact_and_prior_part_bindings(self):
         count=0
         for record in self.q['archives'].values():
