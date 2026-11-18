@@ -1,6 +1,6 @@
 # Original CDE output with the mixed aquifer owner
 
-**Qualified executions / admission owner in progress; not admitted.** Baseline is actual
+**Qualified bounded scope / canonical admission pending.** Baseline is actual
 canonical76c6251a2f3f6345428b26b1a9e03cf7e0bf917a after PR1727/1728. The actual
 source and metadata merge postimages pass their detached registered owner.
 Historical closure remains PARTIAL, whole science NOT_QUALIFIED, fixed RC3

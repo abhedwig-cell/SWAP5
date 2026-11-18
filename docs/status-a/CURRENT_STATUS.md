@@ -1,5 +1,13 @@
 # SWAP5 Status-A current status
 
+The [original aquifer/output composition](../science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md)
+has completed Windows/Ubuntu48full1096day periods, complete native/public/
+reader/transaction gates and87current preservation contexts. Existing explicit
+`--original-output` now covers the bounded daily CDE aquifer route. All active
+SWBR1 candidates compare actual native state with their receipt before external
+prepare and acceptance. Admission is pending; historical closure remains
+PARTIAL, whole science NOT_QUALIFIED and fixed RC3 unchanged.
+
 The [direct soil age source](../science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md)
 is qualified for explicit current incoming ages in all four fixed irrigation
 forms. Windows/Ubuntu44full1096day periods, complete source/native/output,
