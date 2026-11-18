@@ -111,8 +111,10 @@ def main():
             values=records(path)
             stamps=[row[:19].decode('ascii').strip() if isinstance(row,bytes) else row.split(',')[0].strip() for row in values]
             q['user_output'][path.name]=dict(records=len(values),stamps=stamps)
-            if False and a.mode=='monthly':assert any(s.startswith('2002-01-31') for s in stamps),stamps
-            if False and a.mode=='explicit':assert any(s.startswith('2002-01-04') for s in stamps) and any(s.startswith('2002-01-31') for s in stamps),stamps
+            from datetime import datetime,timedelta
+            initial=datetime.fromisoformat(project.start_date)
+            expected=[(initial+timedelta(days=i/a.nprintday)).strftime('%Y-%m-%d %H:%M:%S') for i in range(days*a.nprintday+1)]
+            assert stamps==expected,(path,len(stamps),len(expected),next(((x,y) for x,y in zip(stamps,expected) if x!=y),None))
         if not a.format:assert not files
         q['status']='ACTUAL_WATER_SNOW_SUBDAILY_'+a.phase.upper()+'_NATIVE_USER_OUTPUT_PASS'
         print(a.mode,a.hysteresis,a.optimization,q['status'],flush=True)
