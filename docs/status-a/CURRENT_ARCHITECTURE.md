@@ -6,8 +6,7 @@ and signed rates for an independent trial receipt. The stateless component
 changes no original equation. S5GWC001/S5GWC002 preserve complete hydraulic carry
 with a72byte actual domain and the unchanged48byte CDE prefix. Read-only checks
 bind native water/head/level and CDE stock to external proposals before prepare
-and acceptance. Original mode5/8 helpers delegate literally. Canonical admission
-is pending; broader groundwater combinations and bottom9 remain separate.
+and acceptance. Original mode5/8 helpers delegate literally. Actual canonical95fc7b7fe passes its detached registered owner; broader groundwater combinations and bottom9 remain separate.
 
 The [snow/thermal output owner](../science/NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md)
 uses actual MOD_snow ssnow and the original Integral snow-rain/gross-snow/

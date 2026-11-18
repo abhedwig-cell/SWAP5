@@ -9,8 +9,7 @@ equations and1e-10cm/mg/cm2 guards remain unchanged. Windows/Ubuntu28full period
 232cold windows and115prior source/native contexts pass, as do actual invalid
 native/input and independent user commands. The inherited CDE stock/receipt
 binding defect is explicitly corrected and the old private false proposal is
-retained as evidence. Registered-root admission passes; canonical admission is
-pending. Historical closure remains PARTIAL, whole science NOT_QUALIFIED and
+retained as evidence. Actual canonical95fc7b7fe passes its detached registered owner; ordered parents and the complete qualified tree are exact. Historical closure remains PARTIAL, whole science NOT_QUALIFIED and
 the fixed RC3 named release is unchanged. Groundwater combinations beyond the
 bounded ordinary domain and bottom9 remain separate inventory work.
 

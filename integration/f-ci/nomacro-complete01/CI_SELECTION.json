@@ -334,7 +334,7 @@
     }
   },
   "prescribed_groundwater_chemical": {
-    "status": "REGISTERED_ROOT_PASS_PENDING_CANONICAL",
+    "status": "ACTUAL_SOURCE_CANONICAL_ADMISSION_PASS",
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "production": "c1da10c37",
     "scope": "Explicit original ordinary analytical daily CDE SWBOTB1, full native state, no active macro; unchanged original equations and strict mass guards.",
@@ -391,6 +391,15 @@
       "functional_completion": "PARTIAL",
       "whole_scientific_equivalence": "NOT_QUALIFIED"
     },
-    "docs": "sourcePASS/strictMkDocsPASS34.25s"
+    "docs": "sourcePASS/strictMkDocsPASS34.25s",
+    "canonical_parent": "a787476a0f3db2490e75ff18afea097b82476332",
+    "canonical_merge": "95fc7b7fe3089e8a18f4503d94fe633b007bf078",
+    "actual_detached_owner": {
+      "returncode": 0,
+      "seconds": 64.82114899996668,
+      "head": "95fc7b7fe3089e8a18f4503d94fe633b007bf078",
+      "stdout": "{\n  \"status\": \"PRESCRIBED_GROUNDWATER_CDE_NATIVE_RECEIPT_ADMISSION_PASS\",\n  \"runtime\": \"c1da10c3781d5fbc52eb9deaa725d6802bbc7c8f\",\n  \"predecessor\": \"LITERAL_QUALIFIED_THERMAL_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 28,\n  \"actual_bound_reports\": 256,\n  \"actual_cold_windows\": 232,\n  \"actual_preserved_contexts\": 115,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    }
   }
 }

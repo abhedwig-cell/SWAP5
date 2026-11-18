@@ -4,7 +4,7 @@ The [prescribed-groundwater CDE composition](../science/NOMACRO_PRESCRIBED_GROUN
 passes28full1096day Windows/Ubuntu periods,232complete cold windows and115prior
 source/native contexts. Its registered owner recomputes actual ledgers and
 native carries. Independent user commands and original reader/policy refusals
-pass. Actual canonical admission is pending; historical closure remains PARTIAL,
+pass. Actual canonical95fc7b7fe passes its detached registered owner; historical closure remains PARTIAL,
 whole science NOT_QUALIFIED and the fixed RC3 named release is unchanged.
 
 The [original snow/thermal output composition](../science/NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md)
