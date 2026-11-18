@@ -20,6 +20,7 @@ class OriginalOutputEvidence(unittest.TestCase):
             count+=1
         for key,value in [('baseline',s.RUNTIME),('runtime',s.BASE),('status','PASS'),('functional_completion','COMPLETE'),('whole_scientific_equivalence','PASS'),('release_readiness','READY'),('water_guard_cm',1.0001e-10),('chemical_mass_guard_mg_cm2',1.0001e-10),('age_units','mg/cm2'),('age_tolerance','1e-10'),('policy','foreign'),('source_canonical_sha256','0'*64),('cde_state_canonical_sha256','0'*64)]:change([key],value)
         for key,value in [('active_macro',True),('original_output_default',True),('snow',True),('physical_providers_changed',True),('perstep_reset',1),('cde_cadence','perstep')]:change(['scope',key],value)
+        change(['source_producer_refs'],[])
         for platform in ('Windows','Ubuntu'):
             for opt in ('O0','O2'):
                 for case in s.CASES:
@@ -53,6 +54,9 @@ class OriginalOutputEvidence(unittest.TestCase):
                 change(['components','binary',platform,'profiles',opt,'roundtrip','real4_values_exact'],False)
                 change(['components','vector',platform,'profiles',opt,'scalar_output_unchanged'],False)
                 change(['components','cde_state',platform,'profiles',opt,'staged_read_nonmutation'],False)
+            change(['components','vector',platform,'catalog_rows',0,0],'FOREIGN')
+            change(['components','binary',platform,'corrected_source_sha256'],'0'*64)
+            change(['components','cde_state',platform,'source_sha256'],'0'*64)
         for key in s.WORKFLOWS:change(['workflows',key,'status'],'FAILURE');change(['workflows',key,'id'],1)
         for name in q['archives']:change(['archives',name,'sha256'],'0'*64);change(['archives',name,'member_count'],0)
         change(['base_consumer','actual_detached_owner','returncode'],1)

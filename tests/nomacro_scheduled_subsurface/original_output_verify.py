@@ -51,6 +51,15 @@ def predecessor():return json.loads((ROOT/PROOF/'AGE_CLOCK_QUALIFICATION.json').
 def archive_records():return {p.name:json.loads(p.read_text()) for p in (ROOT/PROOF).glob('ORIGINAL_*_RAW_ARCHIVE.json')}
 
 
+@lru_cache(maxsize=1)
+def original_vector_catalog():
+    path=ROOT/'reference/swap-4.3.1/patches/NOMACRO-VECTOR-OUTPUT-01/source.py'
+    spec=importlib.util.spec_from_file_location('qualified_original_vector_catalog',path);patch=importlib.util.module_from_spec(spec);spec.loader.exec_module(patch)
+    record=archive_records()['ORIGINAL_VECTOR_OUTPUT_COMPONENT_RAW_ARCHIVE.json']
+    with zipfile.ZipFile(ROOT/PROOF/record['archive']) as z:source=z.read('O0-original-build/swap_csv_output.f90')
+    return [list(row) for row in patch.catalog(source.decode('cp1252').replace('\r\n','\n'))]
+
+
 def expected(case):
     kind='cde' if case.startswith('cde') else 'age' if case.startswith('age') else 'water'
     fmt=int(case[-1]) if '-csv' in case and case[-1] in '023' else 1
@@ -143,10 +152,14 @@ def validate(q):
         reader=q['reader_controls'][platform];require(reader['status']=='FOUR_ORIGINAL_OMITTED_MONTHLY_CONTROLS_NATIVE_AND_SIXTEEN_INPUT_REFUSALS_PASS' and len(reader['profiles'])==4 and len(reader['invalid'])==16 and all(r['status']=='REFUSED' for r in reader['invalid']),'original output reader domain missing')
         for record in reader['profiles'].values():require(record['status']=='ORIGINAL_OUTPUT_SHORT_NATIVE_SOURCE_PASS' and record['original_output']['swcsv']==0 and record['original_output']['swmonth']==1 and record['trajectory']['days']==35 and len(record['own'])==3 and all(w['exact_complete_native'] is True for w in record['own']),'omitted monthly controls not native-safe')
         binary=q['components']['binary'][platform];require(binary['status']=='ORIGINAL_BINARY_SCRATCH_LIFETIME_CORRECTION_O0_O2_REAL4_ROUNDTRIP_PASS_NOT_ACTIVE_IN_SWAP5' and set(binary['profiles'])=={'O0','O2'},'original binary correction unqualified')
+        require(binary['original_source_sha256']=='a1b1b261ec05153d2075099c04cc6bb656f657344d4c1ceb5c9e43d0fd225355' and binary['corrected_source_sha256']=='94a50f29f199a441942ed8c719b77480e4fcab3d0886c3021fab764f1d51a3bb','foreign original binary reference source')
         for r in binary['profiles'].values():require(r['roundtrip']['records']==5 and all(r['roundtrip'][k] is True for k in ('actual_original_API','original_unallocated_lifetime_observed','corrected_ascii_five_rows_exact','real4_values_exact','dates_exact','probe_did_not_change_payload')),'actual original binary correction/REAL4 proof missing')
         vector=q['components']['vector'][platform];require(vector['status']=='ORIGINAL_VECTOR_CATALOG_O0_O2_EXACT_TABLE_SCALAR_PRESERVATION_AND_VECTOR_SERIALIZATION_PASS_NOT_ACTIVE' and len(vector['catalog_rows'])==58 and all(len(row)==5 for row in vector['catalog_rows']),'actual original vector catalog proof missing')
+        manifest=json.loads((ROOT/'reference/swap-4.3.1/patches/NOMACRO-VECTOR-OUTPUT-01/manifest.json').read_text())
+        require(vector['catalog_rows']==original_vector_catalog() and vector['original_source_sha256']==manifest['original_canonical_sha256'] and vector['corrected_source_sha256']==manifest['corrected_canonical_sha256'],'foreign original vector reference catalog/source')
         for r in vector['profiles'].values():require(all(r[k] is True for k in ('original_vector_refused','corrected_58_catalog_records_five_attributes_exact','scalar_output_unchanged','five_vector_ASCII_and_REAL4_source_values_exact','probe_payload_unchanged')),'vector table/value correction not exact')
         cde=q['components']['cde_state'][platform];require(cde['status']=='DAILY_CDE_OUTPUT_STATE_O0_O2_EXACT_STAGED_RESTORE_AND_28_REFUSALS_PASS','actual original CDE storage proof missing')
+        require(cde['source_sha256']==q['cde_state_canonical_sha256'],'foreign actual CDE output storage source')
         for r in cde['profiles'].values():require(r['native_refusals']==14 and all(r[k] is True for k in ('staged_read_nonmutation','bit_exact_live_restore','repeated_apply_noop','actual_original_storage')),'CDE output restore nontransactional')
     require(set(q['workflows'])==set(WORKFLOWS),'portable selected run missing')
     for key,(run,carrier) in WORKFLOWS.items():require(q['workflows'][key]['id']==run and q['workflows'][key]['carrier']==carrier and q['workflows'][key]['status']=='SUCCESS','portable run not terminal qualified')
