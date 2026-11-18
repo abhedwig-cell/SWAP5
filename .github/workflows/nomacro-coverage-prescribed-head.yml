@@ -1,54 +1,13 @@
-name: Original head and surface-file boundary controls
+name: Snow subdaily inactive calendars CDE groundwater and age preservation
 on:
-  push:
-    branches: [codex/nomacro-coverage12]
-    paths: ['.github/workflows/nomacro-coverage-prescribed-head.yml']
   workflow_dispatch:
-    inputs:
-      table_drainage:
-        type: boolean
-        default: false
-        description: Complete original DRAMET1 positive and signed table drainage
-      time_event_closure:
-        type: boolean
-        default: false
-        description: Corrected original TimeControl with frost snow drainage full and native gates
-      frost_history:
-        type: boolean
-        default: false
-        description: Bounded original corrected frost with complete snow history
-      pond_history:
-        type: boolean
-        default: false
-        description: Complete original scheduled-pond history O0/O2 full and native checks
-      fixed_irrigation_inputs:
-        type: boolean
-        default: false
-        description: Select original external fixed irrigation file cohort
-      surface_inputs:
-        type: boolean
-        default: false
-        description: Select scheduled pond and runon file cohort instead of prescribed head
-      surface_runon_only:
-        type: boolean
-        default: false
-        description: Resume only the four affected runon configurations
-      finish_surface_runon:
-        type: boolean
-        default: false
-        description: Finish only remaining verification on fixed run43864567262 artifacts
 permissions:
   contents: read
   actions: read
 jobs:
-  qualify:
+  contracts:
     runs-on: ubuntu-26.04
-    timeout-minutes: 25
-    strategy:
-      fail-fast: false
-      max-parallel: 2
-      matrix:
-        configuration: ${{ fromJSON(inputs.table_drainage && '["water-drain-table","chemical-drain-table","water-drain-signed","chemical-drain-signed"]' || inputs.time_event_closure && '["water-frost-drained"]' || inputs.frost_history && '["water-frost-free","chemical-frost-free"]' || inputs.pond_history && '["water-surface-history","chemical-surface-history"]' || inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
+    timeout-minutes: 40
     env:
       OMP_NUM_THREADS: '1'
     steps:
@@ -56,70 +15,91 @@ jobs:
         with:
           sparse-checkout: |
             app
-            tests/nomacro_mixtures
-            tests/nomacro_pond_history
-            tests/nomacro_frost
-            tests/nomacro_time_event
-            tests/nomacro_drainage
-            reference/swap-4.3.1/patches/TIME-EVENT-CLOSURE-01
             src
             tools/solute
             tools/vq
-            reference/swap-4.3.1/projects
-            reference/swap-4.3.1/source-archives
-            reference/swap-4.3.1/frost-corrections/FROST-DRAIN-01
-            reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01
-      - name: Download immutable executed runon evidence
-        if: inputs.finish_surface_runon
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ github.token }}
-          run-id: 43864567262
-          name: nomacro-surface-input-${{ matrix.configuration }}-166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad
-          path: ${{ runner.temp }}/proof
-      - name: Fetch exact executed source for dependency comparison
-        if: inputs.finish_surface_runon
-        run: git -c protocol.version=2 fetch --filter=blob:none --no-tags --depth=1 origin 166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad
-      - name: Execute selected original boundary and native own restarts O0/O2
-        env:
-          TABLE_DRAINAGE: ${{ inputs.table_drainage }}
-          TIME_EVENT_CLOSURE: ${{ inputs.time_event_closure }}
-          FROST_HISTORY: ${{ inputs.frost_history }}
-          POND_HISTORY: ${{ inputs.pond_history }}
-          SURFACE_INPUTS: ${{ inputs.surface_inputs }}
-          FINISH_SURFACE_RUNON: ${{ inputs.finish_surface_runon }}
-          FIXED_IRRIGATION_INPUTS: ${{ inputs.fixed_irrigation_inputs }}
+            tests/nomacro_scheduled_subsurface
+            tests/nomacro_mixtures
+            tests/saltfarm_newton
+            reference/swap-4.3.1
+      - name: Prepare literal original providers at their actual qualified paths
         run: |
-          if [ "$TABLE_DRAINAGE" = true ]; then
-            python3 -B tests/nomacro_drainage/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            if [ "${{ matrix.configuration }}" = water-drain-table ]; then
-              python3 -B tools/solute/check_tabulated_drainage.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/drain-component"
-            fi
-            python3 -B tests/nomacro_drainage/preflight.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
-          elif [ "$TIME_EVENT_CLOSURE" = true ]; then
-            python3 -B tests/nomacro_time_event/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B reference/swap-4.3.1/patches/TIME-EVENT-CLOSURE-01/run.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/time-component"
-            python3 -B tools/solute/check_terminal_water_receipt.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/terminal-component"
-            python3 -B tests/nomacro_time_event/preflight.py --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
-          elif [ "$FROST_HISTORY" = true ]; then
-            python3 -B tests/nomacro_frost/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B tools/solute/check_bounded_frost.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/frost-component"
-            python3 -B tests/nomacro_frost/preflight.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
-          elif [ "$POND_HISTORY" = true ]; then
-            python3 -B tests/nomacro_pond_history/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B tools/solute/check_top_history_codec.py --scheduled-pond --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/pond-component"
-          elif [ "$FIXED_IRRIGATION_INPUTS" = true ]; then
-            python3 -B tools/solute/check_nomacro_coverage.py --fixed-irrigation-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          elif [ "$FINISH_SURFACE_RUNON" = true ]; then
-            python3 -B tools/solute/check_nomacro_coverage.py --surface-input-options --finish-surface-runon-evidence --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          elif [ "$SURFACE_INPUTS" = true ]; then
-            python3 -B tools/solute/check_nomacro_coverage.py --surface-input-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          else
-            python3 -B tools/solute/check_nomacro_coverage.py --head-boundary-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          fi
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          python3 -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work /tmp/output-hysteresis-provider
+          python3 -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work /tmp/groundwater-chemical-provider
+          mkdir -p integration/f-ci/nomacro-complete01 "$RUNNER_TEMP/thermal-reset-preservation"
+          git show HEAD:integration/f-ci/nomacro-complete01/GROUNDWATER_HISTORY_QUALIFICATION.json > integration/f-ci/nomacro-complete01/GROUNDWATER_HISTORY_QUALIFICATION.json
+          git show HEAD:integration/f-ci/nomacro-complete01/THERMAL_CALENDAR_QUALIFICATION.json > integration/f-ci/nomacro-complete01/THERMAL_CALENDAR_QUALIFICATION.json
+          git show HEAD:integration/f-ci/nomacro-complete01/THERMAL_CLOCK_COMPOSED_QUALIFICATION.json > integration/f-ci/nomacro-complete01/THERMAL_CLOCK_COMPOSED_QUALIFICATION.json
+          git show HEAD:integration/f-ci/nomacro-complete01/THERMAL_STEP_QUALIFICATION.json > integration/f-ci/nomacro-complete01/THERMAL_STEP_QUALIFICATION.json
+          git show HEAD:integration/f-ci/nomacro-complete01/GROUNDWATER_CHEMICAL_QUALIFICATION.json > integration/f-ci/nomacro-complete01/GROUNDWATER_CHEMICAL_QUALIFICATION.json
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 44302590106
+          name: groundwater-history-O2
+          path: ${{ runner.temp }}/prior-groundwater-history-O2
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 44287500505
+          name: groundwater-chemical-O2
+          path: ${{ runner.temp }}/prior-groundwater-ordinary-O2
+      - name: Actual admitted groundwater CDE native domains and generated sources
+        run: python3 -B tests/nomacro_scheduled_subsurface/thermal_clock_composed_groundwater_preserve.py --reference-work /tmp/groundwater-chemical-provider --platform Ubuntu --prior-history-root "$RUNNER_TEMP/prior-groundwater-history-O2" --prior-ordinary-root "$RUNNER_TEMP/prior-groundwater-ordinary-O2" --evidence-root "$RUNNER_TEMP" --output "$RUNNER_TEMP/thermal-reset-preservation/groundwater" --optimization O2
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 44236392888
+          name: age-irrigation-source-O2
+          path: ${{ runner.temp }}/prior-current-age-O2
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 44246149974
+          name: direct-soil-age-O2
+          path: ${{ runner.temp }}/prior-direct-age-O2
+      - name: Literal current fixed irrigation age
+        run: python3 -B tests/nomacro_scheduled_subsurface/direct_soil_age_portable_preserve.py --reference-work /tmp/output-hysteresis-provider --prior-root "$RUNNER_TEMP/prior-current-age-O2" --output "$RUNNER_TEMP/thermal-reset-preservation/current-age"
+      - name: Literal direct soil current age
+        run: python3 -B tests/nomacro_scheduled_subsurface/output_aquifer_direct_age_portable_preserve.py --reference-work /tmp/output-hysteresis-provider --prior-root "$RUNNER_TEMP/prior-direct-age-O2" --output "$RUNNER_TEMP/thermal-reset-preservation/direct-age"
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 44316976705
+          name: thermal-calendar-O2
+          path: ${{ runner.temp }}/prior-snow-calendar-O2
+      - name: Literal admitted original Snow daily monthly explicit and periodic calendars
+        run: python3 -B tests/nomacro_scheduled_subsurface/thermal_clock_composed_calendar_preserve.py --reference-work /tmp/output-hysteresis-provider --platform Ubuntu --prior-calendar-root "$RUNNER_TEMP/prior-snow-calendar-O2" --evidence-root "$RUNNER_TEMP" --output "$RUNNER_TEMP/thermal-reset-preservation/calendar" --optimization O2
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 44341043097
+          name: thermal-clock-composed-O2
+          path: ${{ runner.temp }}/prior-snow-clock-O2
+      - name: Literal admitted original Snow subdaily NPRINTDAY2 and3 clocks
+        run: python3 -B tests/nomacro_scheduled_subsurface/thermal_step_clock_preserve.py --reference-work /tmp/output-hysteresis-provider --platform Ubuntu --prior-calendar-root "$RUNNER_TEMP/prior-snow-clock-O2" --evidence-root "$RUNNER_TEMP" --output "$RUNNER_TEMP/thermal-reset-preservation/clock" --optimization O2
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 44355658289
+          name: thermal-step-O2
+          path: ${{ runner.temp }}/prior-snow-step-O2
+      - name: Literal admitted original Snow FLPRINTDT SWRES0 calendars
+        run: python3 -B tests/nomacro_scheduled_subsurface/thermal_reset_step_preserve.py --reference-work /tmp/output-hysteresis-provider --platform Ubuntu --prior-calendar-root "$RUNNER_TEMP/prior-snow-step-O2" --evidence-root "$RUNNER_TEMP" --output "$RUNNER_TEMP/thermal-reset-preservation/step" --optimization O2
+      - name: Literal current canonical SaltFarm physical sources and both numerical profiles
+        run: |
+          python3 -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work "$RUNNER_TEMP/newton/provider"
+          mkdir -p integration/f-ci/saltfarm-newton-work01
+          git show HEAD:integration/f-ci/saltfarm-newton-work01/PORTABLE.json > integration/f-ci/saltfarm-newton-work01/PORTABLE.json
+          git show HEAD:integration/f-ci/saltfarm-newton-work01/UBUNTU_CURRENT.zip > integration/f-ci/saltfarm-newton-work01/UBUNTU_CURRENT.zip
+          for opt in O0 O2; do
+            python3 -B tests/nomacro_scheduled_subsurface/thermal_clock_composed_saltfarm_preserve.py --platform Ubuntu --reference-work "$RUNNER_TEMP/newton/provider" --output "$RUNNER_TEMP/thermal-reset-preservation/saltfarm-$opt" --optimization "$opt"
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: nomacro-${{ inputs.table_drainage && 'drain-table' || inputs.time_event_closure && 'time-event' || inputs.frost_history && 'frost-history' || inputs.pond_history && 'pond-history' || inputs.fixed_irrigation_inputs && 'irrigation-file' || inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
-          path: ${{ runner.temp }}/proof
-          retention-days: 30
+          name: thermal-reset-preservation
+          path: ${{ runner.temp }}/thermal-reset-preservation
+          retention-days: 14
