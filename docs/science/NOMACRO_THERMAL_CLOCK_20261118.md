@@ -1,6 +1,6 @@
 # Original Snow output with a subdaily clock
 
-**Implemented / narrow Windows source-native-output gates pass / not qualified or admitted.** Baseline
+**Qualified bounded composition / registered proof PASS / actual canonical admission pending.** Baseline
 is actual canonicala264b7166 after PR1738/1739. Both actual source and metadata
 merges have exact ordered parents/full qualified trees and pass the registered
 detached Snow-calendar owner. Closure remains PARTIAL, whole science
@@ -130,3 +130,24 @@ formatter or stored output bytes are rewritten. The original header includes
 actual execution time; preservation compares all data records and complete
 physical/native state separately from that header. Retain the initial overly
 strict ISO/header comparison failures as controller diagnostics.
+
+## Qualified source and actual admission proof
+
+Production1ce21b8e2, corrected metadata sealc5541138b and seven immutable raw
+archives345104774bytes bind16full1096day Windows/Ubuntu O0/O2 periods,
+256complete cold windows,960actual native refusals,352policy refusals,
+16actual copied-provider refusals and52scoped prior contexts. Maximum measured
+independent full-period water residual is7.549036130943802e-14cm. All1764proof
+corruptions pass in four tests. The registered root recomputes185bound reports,
+actual full soil/global receipts, complete native and original output records.
+An initial retained-failure path metadata error was corrected in a new explicit
+seal; no raw archive or accepted model result changed. Earlier seals and failed
+registered-root attempts remain in Git/external logs.
+
+A real dirty and committed negative disables actual terminal-step alignment.
+Both registered-root calls refuse before reading archives or running models.
+The final bad commit 7ebc72c5e08fff3ed2f800325ac0c5c09b5ce1ed is retained in
+its separate sparse control worktree and must never merge. The original prior
+Snow-calendar owner body is literal behind the four-line new owner dispatch.
+Actual canonical and metadata admission remain required, then continue the next
+historical composition rather than stopping at this qualified batch.

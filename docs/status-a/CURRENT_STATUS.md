@@ -1,5 +1,13 @@
 # SWAP5 Status-A current status
 
+The [original Snow subdaily output clock](../science/NOMACRO_THERMAL_CLOCK_20261118.md)
+passes16full1096day Windows/Ubuntu periods,256complete cold windows and52prior
+source/native contexts. NPRINTDAY2/3 retain original requested controls and
+actual output cadence, with separate net soil/pond and unchanged global water
+receipts. All960native refusals, active transactions, public/reader gates and
+1764proof corruptions pass. Registered proof passes; actual canonical admission
+is pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
 The [original Snow output calendars](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
 pass16full1096day Windows/Ubuntu periods,256complete cold windows and40scoped
 prior source/native contexts. Monthly, explicit dates, periodic and PERIOD0

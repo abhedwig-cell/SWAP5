@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Snow subdaily qualification](../science/NOMACRO_THERMAL_CLOCK_20261118.md)
+and `integration/f-ci/nomacro-complete01/THERMAL_CLOCK_QUALIFICATION.json`
+bind production1ce21b8e2 to seven immutable raw archives,345104774bytes,
+16full periods,256cold windows and52prior contexts. Separate actual soil and
+global receipts, native counters and original user cadence are recomputed.
+Initial render/cmelt/terminal-clock/controller failures remain distinct from
+qualified producers. All1764proof corruptions and actual dirty/committed omitted
+terminal-step controls refuse. Registered proof passes; actual canonical admission
+is pending; whole closure/science/RC3 are unchanged.
+
 [Snow calendar qualification](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
 and `integration/f-ci/nomacro-complete01/THERMAL_CALENDAR_QUALIFICATION.json`
 bind production02f1bc2c1 to seven immutable raw archives,313908829bytes,
