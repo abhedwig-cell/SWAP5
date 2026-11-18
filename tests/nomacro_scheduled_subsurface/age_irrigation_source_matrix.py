@@ -64,7 +64,7 @@ def main():
     if not a.existing_input and not a.resume:fixture(inputs,a.kind,a.age_day,a.calendar,a.format,a.hysteresis,a.events,a.inline)
     project=m.e.load(inputs,original_output=a.original_output,age_irrigation_source=True);build=a.reuse_build or a.output/'build'
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),kind=a.kind,age_day=a.age_day,calendar=a.calendar,output_format=a.format,hysteresis=a.hysteresis,original_output=a.original_output,optimization=a.optimization,events=a.events,inline=a.inline,age_irrigation_source=metadata(project),functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
-    if a.resume:q['retained_failure']=json.loads((a.output/'RESULT.json').read_text())
+    if a.resume:q['retained_previous_report']=json.loads((a.output/'RESULT.json').read_text())
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     try:
         if not a.reuse_build and not a.resume:
@@ -72,12 +72,12 @@ def main():
             if a.original_output:command+=['--original-output']
             t=time.monotonic();r=subprocess.run(list(map(str,command)),cwd=ROOT,capture_output=True,text=True,timeout=180);(a.output/'build.stdout').write_text(r.stdout);(a.output/'build.stderr').write_text(r.stderr);q['build']=dict(returncode=r.returncode,seconds=time.monotonic()-t);save();assert r.returncode==0,r.stderr
         meta,_=m.validate_bundle(build,a.reference_work,project);assert meta['identity']['original_age_fixed_irrigation']==metadata(project)
-        days=1096 if a.phase=='full' else 35 if 'monthly' in a.calendar else 10;windows=[(2,4),(4,8)]
+        days=1096 if a.phase=='full' else 35 if 'monthly' in a.calendar else 10;windows=[(2,4),(4,8),(6,10)]
         if 'monthly' in a.calendar:windows.append((30,34))
         if a.phase=='full':windows += [(199,201),(364,367),(530,532),(1094,1096)]
         full=a.output/'trajectory'
         if a.resume:
-            data=m.rows(full);assert len(data)==days;report=q['retained_failure']['trajectory'];assert report['build_sha256']==m.sha(build/'BUILD.json');m.check(data)
+            data=m.rows(full);assert len(data)==days;report=q['retained_previous_report']['trajectory'];assert report['build_sha256']==m.sha(build/'BUILD.json');m.check(data)
         else:report,data=m.trajectory(build,a.reference_work,project,full,days,{2,4,8,days}|{n for w in windows for n in w},150)
         q['trajectory']=report;save()
         actual=data[4]['age_state_cm_day'][5]-data[3]['age_state_cm_day'][5];assert abs(actual-2.4*a.age_day)<=1e-10

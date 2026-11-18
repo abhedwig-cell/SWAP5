@@ -1,5 +1,5 @@
 {
-  "status": "ORIGINAL_SOURCE_COUNTEREXAMPLE_SELECTED",
+  "status": "SOURCE_NATIVE_REFINEMENT_SHORT_GATES_THEN_FULL_SELECTED",
   "baseline": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
   "component": "ActualoriginalcalcAgeTracer andoriginalirrigationreader/run;noSWAP5sourceactivation",
   "optimization": [
@@ -23,5 +23,46 @@
   "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
   "full_moving_fci": "NOT_SELECTED_IMPACT",
   "functional_completion": "PARTIAL",
-  "whole_scientific_equivalence": "NOT_QUALIFIED"
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "runtime": "a5cedc906",
+  "short_profiles_per_optimization": 14,
+  "full_profiles_per_optimization": 10,
+  "full_days": 1096,
+  "expected_seconds_per_optimization": 1200,
+  "full_scientific_question": "ActualchangedcurrentIRCONCsource+acceptedstate across002/003/004/005/ordinary/hysnative families. Fivevaryingfixedgifts spanseason/year/finalperiod; source120cmdayfirsttwoevents, activefuturetableidentity andepochcursor guarded. Tenrepresentative fullprofiles peropt; no unchangedsolver/componentcampaign or defaultfullperiod repeats.",
+  "source_guard_controls": "Realnativecorruptfuture1001previouslyaccepted; now25actualnative+7policyrefusals/opt andvarying48/72cmday externaldiscard/replay/recoveryPASS onrefined regular003route. Extendall6typedfamiliesbeforefull.",
+  "own_windows": [
+    [
+      2,
+      4
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      6,
+      10
+    ],
+    [
+      199,
+      201
+    ],
+    [
+      364,
+      367
+    ],
+    [
+      530,
+      532
+    ],
+    [
+      1094,
+      1096
+    ]
+  ],
+  "additional_monthly_window": [
+    30,
+    34
+  ]
 }
