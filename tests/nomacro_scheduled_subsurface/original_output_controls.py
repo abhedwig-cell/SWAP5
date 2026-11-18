@@ -92,12 +92,12 @@ def transactions(build,reference,project,full,out):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--matrix-prefix',required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();a.output.mkdir()
+    p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--matrix-prefix',required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=('O0','O2'));a=p.parse_args();a.output.mkdir()
     q=dict(status='RUNNING',profiles={})
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     try:
         for case in ('water-nprint3','cde-solbal-csv3','age-csv3','age-perstep-monthly'):
-            for opt in ('O0','O2'):
+            for opt in ((a.optimization,) if a.optimization else ('O0','O2')):
                 name=case+'-'+opt;root=Path(a.matrix_prefix+name);project=m.e.load(root/'input',original_output=True);out=a.output/name;out.mkdir()
                 checks=native(root/'build',a.reference_work,project,root/'trajectory',out/'native')
                 active=transactions(root/'build',a.reference_work,project,root/'trajectory',out/'active')
@@ -109,7 +109,7 @@ def main():
                     else:raise AssertionError('Foreign original output policy accepted')
                     policy.append(dict(field=field,status='REFUSED'))
                 q['profiles'][name]=dict(native_refusals=checks,transactions=active,policy_refusals=policy);save();print(name,'ORIGINAL_OUTPUT_NATIVE_ACTIVE_POLICY_PASS',flush=True)
-        q['status']='ORIGINAL_OUTPUT_EIGHT_CONTEXT_NATIVE_ACTIVE_POLICY_PASS'
+        q['status']='ORIGINAL_OUTPUT_NATIVE_ACTIVE_POLICY_PASS';q['contexts']=len(q['profiles'])
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
 

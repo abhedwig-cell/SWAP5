@@ -31,6 +31,8 @@ def main():
             q['cases'][case]=dict(short=previous,full=json.loads((full/'RESULT.json').read_text()));save()
         short=Path(a.reuse_short_prefix+'water-nprint3-'+a.optimization) if a.reuse_short_prefix else a.output/('short-water-nprint3-'+a.optimization)
         run('age_clock_receipt_component.py','--reference-work',a.reference_work,'--build',short/'build','--optimization',a.optimization,'--output',a.output/'actual-integral-component')
+        prefix=a.reuse_short_prefix or str(a.output/'short-')
+        run('original_output_controls.py','--reference-work',a.reference_work,'--matrix-prefix',prefix,'--output',a.output/'controls','--optimization',a.optimization)
         if not a.reuse_short_prefix and a.optimization=='O0':
             baseline=a.output/'binary-input';baseline.mkdir();matrix.baseline.fixture(baseline/'water-csv3/input','water-csv3')
             run('original_binary_output.py','--reference-work',a.reference_work,'--baseline',baseline,'--output',a.output/'binary-component')
