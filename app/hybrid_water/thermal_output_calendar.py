@@ -76,7 +76,8 @@ def metadata(project):
         vector_catalog_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-VECTOR-OUTPUT-01/source.py') if selected['swcsv'] else None,
         binary_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-BINARY-OUTPUT-01/source.py') if selected['swcsv']==3 else None,
         preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False,
-        conserved_cde_prefix_offset_bytes=None)
+        conserved_cde_prefix_offset_bytes=None,snow_stock='actual MOD_snow ssnow',snow_increment_slots=[2,3,13],
+        physical_equations_changed=False,native_domain_bytes=80)
 
 
 def age_identity(original,project):
