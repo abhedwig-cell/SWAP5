@@ -1,0 +1,74 @@
+--- CLOCK45/macropore_native.f90
++++ REFERENCE46/macropore_native.f90
+@@ -1330,6 +1330,9 @@
+       logical::chosen_sorp45,rate_end45
+       integer,save::clock_unit45
+       logical,save::clock_open45=.false.
++      real(8)::abs46(24)
++      integer,save::reference_unit46
++      logical,save::reference_open46=.false.
+       
+ ! ----------------------------------------------------------------------
+ 
+@@ -1341,6 +1344,11 @@
+        rate_q45=[QOutMtxUnsDmCp(3,50),QOutMtxSatDmCp(3,50),QInMtxSatDmCp(3,50),QInIntSatDmCp(3,50)]
+        pre_hist45=[TimAbsCumDmCp(3,50),ThtSrpRefDmCp(3,50),SorpDmCp(3,50)]
+        rate_end45=FlEndSrpEvt(3,50)
++       call reference46_abs_get(abs46)
++       if(.not.reference_open46) then
++        open(newunit=reference_unit46,file='reference46_trace.txt',status='replace');reference_open46=.true.
++       end if
++       write(reference_unit46,*) attempts,t1900,dt,abs46,FrArMtrx(50)
+       end if
+ !  -- Update water storage in entire macropore domains
+       WaSrMp            = 0.d0
+--- CLOCK45/macrorate_node.f90
++++ REFERENCE46/macrorate_node.f90
+@@ -1879,6 +1879,8 @@
+ 
+       integer::snap23_unit,snap23_mode
+       logical::get45_is_sorption
++      real(8),save::sample46(24)=0d0
++      real(8)::get46(24),pre_contact46
+ 
+ ! --- global                                                         In
+       integer, intent(in)     :: id, ITask
+@@ -1909,6 +1911,7 @@
+       FlwOutMtxUnsDmPot(id)       = 0.d0
+       FlwOutMtxUnsDmCpPot(id,1:numnod) = 0.d0
+       FlEndSrpEvt(id,1:numnod)    = .TRUE.
++      if(ITask==1.and.id==3) sample46=0d0
+ 
+ ! --- Bottom domain considered
+       icBt = min0(ICpBtDm(id),ICpTpSatZon-1) ! Original whole-cell exclusion.
+@@ -2036,6 +2039,7 @@
+                end if
+             end if
+ 
++            if(id==3.and.ic==50) pre_contact46=AbsSorp
+             if(repair43.and.swmbf==1.and.ic==ICpTpSatZon) then
+                AbsSorp=contact43*AbsSorp
+                AbsDarc=contact43*AbsDarc
+@@ -2052,6 +2056,12 @@
+                FlSorp(id,ic)         = .FALSE.
+             end if
+     
++            if(id==3.and.ic==50) then
++               sample46=[dble(attempts),dble(iter_index),dble(nvec),dble(macro_seq),1d0,Time,SorpAct, &
++                SorpDmCp(id,ic),ThtSrpRefDmCp(id,ic),theta(ic),thetas(ic),thetar(ic),SorpMax(lay),SorpAlfa(lay), &
++                AwlCorFac(ic),PpDmCp(id,ic),dz(ic),DiPoCp(ic),FrMpWalWet(id,ic),contact43,pre_contact46, &
++                raw_sorp,FlwOutMtxUnsDmCpPot(id,ic),merge(1d0,0d0,FlSorp(id,ic))]
++            end if
+             if(trace_on.and.ic==45) then
+              write(trace_unit,*) id,ic,lay,H(ic),cofgen(9,lay),cofgen(9,ic),theta(ic),thetas(ic),K(ic), &
+              HMp,DelH,RecRes,SorpFac,raw_sorp,raw_darcy,FlwOutMtxUnsDmCpPot(id,ic), &
+@@ -2124,6 +2134,9 @@
+       end select
+ 
+       return
++      return
++      entry reference46_abs_get(get46)
++      get46=sample46
+       return
+       entry clock45_abs_get(get45_is_sorption)
+       get45_is_sorption=FlSorp(3,50)
