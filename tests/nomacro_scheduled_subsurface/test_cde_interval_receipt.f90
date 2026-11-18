@@ -55,5 +55,20 @@ program test_cde_interval_receipt
   if(status/=CDE_DAY_OK.or.any(ledger/=first))error stop 'A B A receipt differs'
   call cde_day_begin(-1d0,status)
   if(status/=CDE_DAY_INPUT)error stop 'negative stock accepted'
+  call cde_day_open(7,1d0,status)
+  if(status/=CDE_DAY_OK)error stop 'actual day open refused'
+  call cde_day_observe(2,1d0,status)
+  call cde_day_open(7,2d0,status)
+  if(status/=CDE_DAY_OK)error stop 'same-day step refused'
+  call cde_day_open(8,2d0,status)
+  if(status/=CDE_DAY_STATE)error stop 'unclosed day replaced'
+  call cde_day_close(2d0,ledger,status)
+  if(status/=CDE_DAY_OK.or.ledger(2)/=1d0.or.ledger(4)/=1d0)error stop 'same-day flow reset'
+  call cde_day_open(7,2d0,status)
+  if(status/=CDE_DAY_STATE)error stop 'closed day reopened'
+  call cde_day_open(8,2d0,status)
+  if(status/=CDE_DAY_OK)error stop 'next day refused'
+  call cde_day_close(2d0,ledger,status)
+  if(status/=CDE_DAY_OK.or.any(ledger(2:)/=0d0))error stop 'previous day leaked'
   print '(a)','ACTUAL_CDE_INTERVAL_DAILY_RECEIPT_INTERFACE_PASS'
 end program

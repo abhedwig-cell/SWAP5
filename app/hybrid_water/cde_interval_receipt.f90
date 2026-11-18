@@ -5,8 +5,9 @@ module hybrid_cde_interval_receipt
   private
   integer,parameter,public :: CDE_DAY_OK=0,CDE_DAY_INPUT=1,CDE_DAY_STATE=2,CDE_DAY_BALANCE=3
   real(real64),parameter,public :: CDE_DAY_GUARD=1e-10_real64
-  public :: cde_day_begin,cde_day_observe,cde_day_close,cde_day_diagnostics
+  public :: cde_day_begin,cde_day_open,cde_day_observe,cde_day_close,cde_day_diagnostics
   logical,save :: active=.false.
+  integer,save :: day_marker=0
   real(real64),save :: initial_stock=0d0
   real(real128),save :: increments(6)=0.0_real128
   integer(int64),save :: observed(6)=0_int64
@@ -19,8 +20,25 @@ contains
     if(stock<0d0)return
     status=CDE_DAY_STATE
     if(active)return
-    initial_stock=stock;increments=0.0_real128;observed=0_int64;active=.true.
+    initial_stock=stock;increments=0.0_real128;observed=0_int64;active=.true.;day_marker=0
     status=CDE_DAY_OK
+  end subroutine
+
+  subroutine cde_day_open(day,stock,status)
+    integer,intent(in) :: day
+    real(real64),intent(in) :: stock
+    integer,intent(out) :: status
+    status=CDE_DAY_INPUT
+    if(day<1.or..not.ieee_is_finite(stock))return
+    if(stock<0d0)return
+    status=CDE_DAY_STATE
+    if(active)then
+      if(day_marker==day)status=CDE_DAY_OK
+      return
+    end if
+    if(day_marker==day)return
+    call cde_day_begin(stock,status)
+    if(status==CDE_DAY_OK)day_marker=day
   end subroutine
 
   subroutine cde_day_observe(slot,increment,status)
