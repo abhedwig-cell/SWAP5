@@ -2,7 +2,7 @@
 
 ## Original ordinary FLPRINTDT Darcy/annual reset,18November2026
 
-[Original ordinary FLPRINTDT Darcy/annual reset](NOMACRO_ORDINARY_RESET_20261118.md) passes16full1096day Windows/Ubuntu periods and256complete cold windows. Eight additional35day non-January periods and32own cold windows validate actual year-reset counters; all32forged post-year native counters are refused. All600native refusals,544policy refusals,16copied-provider refusals, public/reader/transaction gates and2234proof corruptions pass. All91prior source/native contexts remain exact, including four full SaltFarm periods/twenty cold windows. Source qualification is complete; canonical admission remains pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+[Original ordinary FLPRINTDT Darcy/annual reset](NOMACRO_ORDINARY_RESET_20261118.md) passes16full1096day Windows/Ubuntu periods and256complete cold windows. Eight additional35day non-January periods and32own cold windows validate actual year-reset counters; all32forged post-year native counters are refused. All600native refusals,544policy refusals,16copied-provider refusals, public/reader/transaction gates and2234proof corruptions pass. All91prior source/native contexts remain exact, including four full SaltFarm periods/twenty cold windows. Actual canonicalfcb89d59f passes its clean detached registered owner, exact ordered parents and complete qualified tree; metadata receipt pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
 
 ## Original Snow FLPRINTDT annual reset,18November2026
 

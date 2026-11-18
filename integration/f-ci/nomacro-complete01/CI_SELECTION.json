@@ -818,7 +818,7 @@
     }
   },
   "ordinary_reset": {
-    "status": "SELECTED_SOURCE_QUALIFICATION_PASS_CANONICAL_PENDING",
+    "status": "ACTUAL_CANONICAL_SOURCE_ADMISSION_PASS",
     "baseline": "caa0505611f12749d9e147a47d38db018d218edb",
     "runtime": "023ad8450828b611de2e74d24c6424943db02a40",
     "registered_root": {
@@ -900,6 +900,34 @@
         "conclusion": "success"
       }
     },
-    "selection": "Actual ordinary/Snow0 water FLPRINTDT SWRES1: independent original Darcy/soil-air projection before Fluxes, literal original stock/flow clone, all existing guards unchanged. Fresh O0/O2 pilots after actual retained180s censors; selected full Windows/Ubuntu and91source/native contexts including4fullSaltFarm/20cold. Native annual/counter/phase-worker evidence and actual raw source/binary provenance independently audited. No broad moving F-CI or retired highest-low-air selected."
+    "selection": "Actual ordinary/Snow0 water FLPRINTDT SWRES1: independent original Darcy/soil-air projection before Fluxes, literal original stock/flow clone, all existing guards unchanged. Fresh O0/O2 pilots after actual retained180s censors; selected full Windows/Ubuntu and91source/native contexts including4fullSaltFarm/20cold. Native annual/counter/phase-worker evidence and actual raw source/binary provenance independently audited. No broad moving F-CI or retired highest-low-air selected.",
+    "actual_source_owner": {
+      "status": "ACTUAL_ORDINARY_RESET_CANONICAL_MERGE_VERIFIED",
+      "pr": 1746,
+      "merge": "fcb89d59fa46a7d1ee40b477cdfa1d13ea0eb2c0",
+      "parents": [
+        "caa0505611f12749d9e147a47d38db018d218edb",
+        "7efdf28423340ab44083d5a9eea35493a1945239"
+      ],
+      "qualified_head": "7efdf28423340ab44083d5a9eea35493a1945239",
+      "tree": "f2d6af3990dd243328f41a4426944f2c64c023e9",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 110.78934950008988,
+        "head": "fcb89d59fa46a7d1ee40b477cdfa1d13ea0eb2c0",
+        "stdout": "{\n  \"status\": \"ORIGINAL_ORDINARY_FLPRINTDT_DARCY_ANNUAL_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"023ad8450828b611de2e74d24c6424943db02a40\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_SNOW_RESET_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 16,\n  \"actual_cold_windows\": 256,\n  \"actual_native_refusals\": 600,\n  \"actual_policy_refusals\": 544,\n  \"actual_copied_provider_refusals\": 16,\n  \"actual_preserved_contexts\": 91,\n  \"actual_saltfarm_preserved_full_periods\": 4,\n  \"actual_saltfarm_preserved_cold_windows\": 20,\n  \"actual_non_january_periods\": 8,\n  \"actual_epoch_cold_windows\": 32,\n  \"actual_post_year_native_refusals\": 32,\n  \"actual_retained_censored_periods\": 2,\n  \"actual_corrected_pilot_phase_comparisons\": 1148,\n  \"actual_bound_reports\": 252,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    },
+    "automatic_pr_ci_snapshot": {
+      "head": "7efdf28423340ab44083d5a9eea35493a1945239",
+      "total": 28,
+      "counts": {
+        "('queued', None)": 12,
+        "('in_progress', None)": 16
+      },
+      "role": "Automatic legacy PR checks, outside selected scientific qualification. Pending is not PASS; actual snapshot external ordinary-reset-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    }
   }
 }
