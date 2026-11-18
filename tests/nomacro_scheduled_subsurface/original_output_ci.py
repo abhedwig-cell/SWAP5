@@ -40,9 +40,19 @@ def main():
             run('original_output_matrix.py','--reference-work',a.reference_work,'--output',full,'--case',case,'--optimization',a.optimization,'--phase','full','--reuse-build',short/'build','--existing-input',short/'input')
             q['cases'][case]=dict(short=previous,full=json.loads((full/'RESULT.json').read_text()));save()
         short=Path(a.reuse_short_prefix+'water-nprint3-'+a.optimization) if a.reuse_short_prefix else a.output/('short-water-nprint3-'+a.optimization)
-        run('age_clock_receipt_component.py','--reference-work',a.reference_work,'--build',short/'build','--optimization',a.optimization,'--output',a.output/'actual-integral-component')
+        component=a.output/'actual-integral-component'
+        if a.resume and (component/'RESULT.json').exists():
+            result=json.loads((component/'RESULT.json').read_text());assert result['status']=='ACTUAL_ORIGINAL_TRIAL_RECEIPT_EXACT_NONMUTATION_42_PASS' and result['build_sha256']==matrix.m.sha(short/'build/BUILD.json')
+        else:run('age_clock_receipt_component.py','--reference-work',a.reference_work,'--build',short/'build','--optimization',a.optimization,'--output',component)
         prefix=a.reuse_short_prefix or str(a.output/'short-')
-        run('original_output_controls.py','--reference-work',a.reference_work,'--matrix-prefix',prefix,'--output',a.output/'controls','--optimization',a.optimization)
+        controls=a.output/'controls'
+        if controls.exists():
+            assert a.resume
+            number=1
+            while (a.output/('controls-retry'+str(number))).exists():number+=1
+            controls=a.output/('controls-retry'+str(number))
+        run('original_output_controls.py','--reference-work',a.reference_work,'--matrix-prefix',prefix,'--output',controls,'--optimization',a.optimization)
+        q['components']=dict(actual_integral=str(component),controls=str(controls))
         if not a.reuse_short_prefix and a.optimization=='O0':
             baseline=a.output/'binary-input';baseline.mkdir();matrix.baseline.fixture(baseline/'water-csv3/input','water-csv3')
             run('original_binary_output.py','--reference-work',a.reference_work,'--baseline',baseline,'--output',a.output/'binary-component')

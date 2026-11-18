@@ -4,6 +4,7 @@ import contextlib
 import json
 from pathlib import Path
 import struct
+import shutil
 import original_output_matrix as matrix
 from daily_coupling import CoupledDailyColumn
 from age_calendar_controls import physical
@@ -104,6 +105,10 @@ def main():
                 policy=[]
                 for field in ('policy','native_codec','source_sha256','vector_catalog_correction_sha256','cde_output_state_sha256'):
                     target=out/('policy-'+field);target.mkdir();bad=json.loads((root/'build/BUILD.json').read_text());bad['identity']['original_output'][field]='foreign';(target/'BUILD.json').write_text(json.dumps(bad))
+                    # Earlier accepted chemical owners validate their actual
+                    # helper before this new output-policy boundary is reached.
+                    for helper in ('mod_subsurface_solute_source.f90','mod_aquifer_solute_reservoir.f90'):
+                        if (root/'build'/helper).exists():shutil.copyfile(root/'build'/helper,target/helper)
                     try:m.validate_bundle(target,a.reference_work,project)
                     except ValueError as error:assert 'Foreign original output policy' in str(error),str(error)
                     else:raise AssertionError('Foreign original output policy accepted')
