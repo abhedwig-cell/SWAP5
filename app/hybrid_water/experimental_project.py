@@ -302,8 +302,8 @@ def validate(project):
 
 
 def auxiliary_magic(project):
-    from original_output import selection as original_selection,MAGIC as ORIGINAL_MAGIC
-    if original_selection(project) is not None:return ORIGINAL_MAGIC
+    from original_output import selection as original_selection,magic as original_magic
+    if original_selection(project) is not None:return original_magic(project)
     if project.age:
         from age_output_clock import selection as clock,MAGIC as CLOCK_MAGIC
         if clock(project) is not None:return CLOCK_MAGIC

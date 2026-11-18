@@ -73,3 +73,26 @@ Native output state is appended only within the generated nonmacro checkpoint
 routine; original active-macro procedure bodies stay literal. Existing calendar
 and clock helpers remain literal. Age, CDE and per-step activation wait for their
 own complete state qualification; there is no fallback to the water mode.
+
+Development evidence a2cda30c996a5963aa10bd62c68c1b4d5e16d600 proves public
+SWCSV0 water four-day O0/O2 execution and complete warm/cold native equality at
+day4, with no CSV files enabled. This is a development proof, not admission of
+the later postimage. The next prototype introduces distinct S5IOC001 daily CDE
+and S5IOA001 age native domains. The CDE extension appends seventeen defined
+output scalars and active imqsol(1:numnod+1), stages restore without changing live
+state, and applies it after actual original initialization and calendar restore.
+Its private interval initial stock is reset by the next real daily CDE step;
+therefore sparse, subdaily and per-step CDE are refused. The physical checkpoint
+prefix and its concentration offsets remain unchanged. An actual original
+module-storage O0/O2 component proves exact staged restore and28 invalid-state
+refusals. The initial four-object PE/COFF link failed on real original submodule
+relocations; the successful measured provider closure uses no dummy symbols.
+
+The age extension reuses the admitted age source/state providers and calendar
+renderer literally. Per-step output keeps the original live nprintcount1 and
+unreset cumulative day counter, with original outper/flags retained. Only SWRES0
+is selected initially; no per-step mean is relabeled as a daily mean. Both
+subdaily and per-step paths use the existing cloned original daily receipt
+acceptance condition alongside the unchanged hydraulic guard. Binary scratch
+correction may be used only in this unqualified explicit prototype. No current
+release or canonical admission is implied by this implementation checkpoint.

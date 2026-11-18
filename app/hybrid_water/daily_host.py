@@ -842,6 +842,7 @@ end module plant_interface""")
                     *([str(output/'mod_aquifer_solute_reservoir.o')] if aquifer_source else []),
                     *([str(output/(name+'.o')) for name in (*age_patch.PROVIDERS,*age_patch.OUTPUT_PROVIDERS)] if project.age else []),
                     *([str(output/(name+'.o')) for name in ('mod_original_output_receipt','hybrid_age_output_state','age_output_calendar_probe')] if age_calendar is not None else []),
+                    *([str(output/'original_cde_output_state.o')] if project.original_output and project.solute else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
