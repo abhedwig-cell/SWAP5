@@ -1295,10 +1295,12 @@
     "admission_receipt": "integration/f-ci/nomacro-complete01/OUTPUT_AQUIFER_MERGE_RECEIPT.json"
   },
   "bounded_original_output_thermal": {
-    "status": "QUALIFIED_PENDING_ADMISSION",
+    "status": "ADMITTED_BOUNDED",
     "authority": "integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_QUALIFICATION.json",
     "scope": "ExplicitoriginaloutputSnow/numericthermalhistory,densedailyNP1;water/CDE,hys0/1/2,existingboundedwaterfrost;literalphysicalownersandstate",
     "evidence": "56full1096Windows/Ubuntu,107preservedpriorcontexts,8actualcanonicalphysics/nativecomparisons;public/readers/terminal/transactionsPASS;963claim/sourcecorruptionsrefused;zero-modelportablematrixrevalidationbyteexact",
-    "remaining": "Otherthermalcadences/frostchemicaldomainsandwholeequivalenceremainunqualified;closurePARTIAL/fixedRC3unchanged"
+    "remaining": "Otherthermalcadences/frostchemicaldomainsandwholeequivalenceremainunqualified;closurePARTIAL/fixedRC3unchanged",
+    "canonical_admission": "b3dd19db882edd1f2eb1344ade9bc6f813c150e4",
+    "admission_receipt": "integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_MERGE_RECEIPT.json"
   }
 }

@@ -8,7 +8,7 @@ original failed portable artifacts and read-only recovery receipts are retained;
 all32776source/model/build/native/report files remain byte exact without model
 repetition. The remaining-contract workflow ends SUCCESS. The owner recomputes
 actual ledgers/native payloads;963source/scope/producer corruptions are refused.
-Canonical admission is pending; whole science and fixed RC3 scope are unchanged.
+Actual canonicalb3dd19db8 passes its detached registered owner; whole science and fixed RC3 scope are unchanged.
 
 [Aquifer/output qualification](../science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md)
 and `integration/f-ci/nomacro-complete01/OUTPUT_AQUIFER_QUALIFICATION.json` bind

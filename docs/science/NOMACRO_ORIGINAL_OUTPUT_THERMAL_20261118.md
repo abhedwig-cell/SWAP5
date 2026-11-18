@@ -1,6 +1,6 @@
 # Original output with complete snow and thermal history
 
-**Qualified bounded scope / canonical admission pending.** Baseline is actual
+**Current / canonically admitted through PR1731, actual mergeb3dd19db8.** Baseline is actual
 canonicaldcd880bbc0b6ff62fd2a28c68b080ac0811090ac after PR1729/1730. Its actual
 source and metadata merge trees and detached registered owners pass.
 Historical closure remains PARTIAL, science NOT_QUALIFIED, fixed RC3 unchanged.
@@ -111,3 +111,11 @@ scope/guard corruptions, plus malformed actual archive part offsets. Historical
 closure remains PARTIAL, whole science NOT_QUALIFIED and fixed RC3 unchanged.
 Other thermal output cadences and additional frost/chemical domains remain
 separate; this evidence does not establish a whole-model energy equivalence.
+
+
+The actual source merge has ordered parentsdcd880bbc/22cadd300 and complete
+qualifiedce72200tree. Its detached registered owner passes in88.024seconds:
+367actual report bindings,56full periods,107prior contexts and eight actual
+preceding-canonical physical comparisons. The actual postimage and result are
+retained in
+`integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_MERGE_RECEIPT.json`.
