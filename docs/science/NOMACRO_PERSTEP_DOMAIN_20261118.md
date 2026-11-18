@@ -1,6 +1,6 @@
 # Original water per-step print-count and reset domain
 
-**Implementation persisted / selected qualification in progress / not admitted.** Actual canonical
+**Qualified bounded Windows/Ubuntu source / canonical admission pending.** Actual canonical
 12e84c8eba9204080462b83b548741aa9b0f060f follows source PR1746 and metadata
 PR1747, with exact ordered parents/full trees and clean detached registered
 owners independently verified. Whole closure PARTIAL, science NOT_QUALIFIED and
@@ -125,3 +125,9 @@ refusals. Additionally eight bounded1440count periods/eight own cold windows,
 32nonJanuary35day periods/128cold windows/128postyear forgeries, and two corrected
 prior reset0 periods/eight cold workers pass. The latter preserve the exact old
 censored input/project and kernel source; no earlier failed worker is relabelled.
+
+## Actual qualified source evidence
+
+[Original water per-step count/reset domain](NOMACRO_PERSTEP_DOMAIN_20261118.md) passes24full1096day Windows/Ubuntu periods and368complete cold windows. Eight actual1440limit periods/eight cold workers,32nonJanuary periods/128cold/128counter forgeries and two corrected prior reset0 periods/eight cold workers pass. All1296native refusals,1356policy refusals,24copied-provider refusals, public/reader/transaction gates and3680proof corruptions pass. All103prior contexts remain exact, including four full SaltFarm periods/twenty cold windows. Source qualification is complete; canonical admission remains pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
+Seven proof tests pass in46.607seconds. The registered root independently validates the original raw workers andsource seal; the preceding owner body remains literal behind its four-line hook. Canonical source and metadata mergeresults remain required.
