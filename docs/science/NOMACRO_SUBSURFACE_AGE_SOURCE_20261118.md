@@ -1,6 +1,6 @@
 # Direct soil irrigation age input
 
-**Proposed / implementation in progress; no activation or admission.** Baseline
+**Implemented explicit prototype; qualification and admission pending.** Baseline
 is actual canonical e3cb491d15b9d079062285c397cfba552ab0a86d (PR1725/1726).
 Both actual source and metadata merge postimages pass the detached registered
 owner. The fixed surface/sprinkler current-age policy remains admitted and
@@ -11,8 +11,15 @@ unchanged. Functional closure remains PARTIAL, whole science NOT_QUALIFIED.
 Original fixed IRTYPE2 produces qssdi per soil compartment. Its fixed-event
 branch does not assign CIRR, and the original age equation has no direct qssdi
 age source. Existing young-water SSDI support does not qualify positive input
-ages. This work must prove those observations with actual original executions
-before admitting a correction.
+ages. Actual32original executions on O0/O2 prove these observations: point and
+interval inputs both produce2.4cm actual water, zero current CIRR and no profile
+response to20day input. The corrected current CIRR plus end-microstep source
+adds48cm day, changes positive-age profiles and exactly preserves zero-age
+profiles. Nonmutating diagnostics and plain corrected executions agree.
+The real four-object composed provider passes O0/O2 source, conservation,
+rejection and two-cell temporal refinement checks; errors decrease from
+0.0041117 to0.0020226 to0.0010032 as the microstep is halved. These are
+component/reference results, not integrated model admission.
 
 The proposed direct age input is qssdi(cm/day)*IRCONC(days)*dtsolu(day), in
 cm day per compartment. A dedicated composed provider calls the literal
@@ -53,3 +60,9 @@ and all old guards stay literal. The new API and state schema require standalone
 O0/O2 production-interface drivers, actual original source witnesses, active
 rejected-trial/rollback checks, malformed native refusals and exact cold restart
 through active gifts before portable/full-period qualification and admission.
+
+The persisted prototype exposes `--age-direct-soil-source`, mutually exclusive
+with `--age-irrigation-source`, and defaults off. Six S5DI source codecs append
+a24byte paired domain/direct cumulative state after the complete existing
+56byte source domain. Twelve-field runtime/ledger activation requires its
+actual integrated native/source tests before qualification.

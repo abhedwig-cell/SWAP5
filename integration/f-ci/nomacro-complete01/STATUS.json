@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-subsurface-age-source01",
   "last_commit": "e3cb491d15b9d079062285c397cfba552ab0a86d",
-  "status": "DIRECT_SOIL_AGE_COMPONENT_O0_O2_PASS_ORIGINAL_WITNESS_NEXT",
+  "status": "DIRECT_SOIL_AGE_EXPLICIT_PROTOTYPE_PENDING_PILOT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -427,7 +427,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run32actual original SSDI point/interval zero/20day executions O0/O2, original/probe/corrected/corrected-probe. Then policy activation and own native state.",
+  "next_action": "Run explicit SSDI point O0/O2 ten-day varying48/72cmday, actual complete cold windows2to4/4to8/6to10 and all age CSV, then interval/source zero and native controls. Original32executions O0/O2 PASS; component O0/O2/convergence PASS.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -670,14 +670,17 @@
   },
   "subsurface_age_source": {
     "baseline": "e3cb491d15b9d079062285c397cfba552ab0a86d",
-    "status": "COMPONENT_O0_O2_PASS_NOT_ACTIVE",
+    "status": "EXPLICIT_PROTOTYPE_IMPLEMENTED_NOT_TESTED_NOT_ADMITTED",
     "contract": "docs/science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md",
     "component": "tests/nomacro_scheduled_subsurface/direct_soil_age_component.py",
     "physical_policy": "literal transport then direct per-compartment input each microstep; convergence and corrected-original qualification required",
-    "state_policy": "separate twelve-field age ledger, direct cumulative input appended; native/activation not yet implemented",
-    "next": "Run32actual original SSDI point/interval zero/20day executions O0/O2, original/probe/corrected/corrected-probe. Then policy activation and own native state.",
+    "state_policy": "12fieldprotocol, sixnewS5DI typedcodecs, literal56bytesurfacedomain plus24bytepaired directinputowner atEOF",
+    "next": "Run explicit SSDI point O0/O2 ten-day varying48/72cmday, actual complete cold windows2to4/4to8/6to10 and all age CSV, then interval/source zero and native controls. Original32executions O0/O2 PASS; component O0/O2/convergence PASS.",
     "external_blocker": null,
     "component_result": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-component-v1/report.json",
-    "component_summary": "Real four-object O0/O2 positive point/interval, exact zero-source, committed-state nonmutation, 12 invalid source/transport refusals, 7 malformed ledger refusals/opt; actual two-cell transport refinement errors .0041117,.0020226,.0010032; old providers literal."
+    "component_summary": "Real four-object O0/O2 positive point/interval, exact zero-source, committed-state nonmutation, 12 invalid source/transport refusals, 7 malformed ledger refusals/opt; actual two-cell transport refinement errors .0041117,.0020226,.0010032; old providers literal.",
+    "original_result": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-original-v1/RESULT.json",
+    "original_summary": "32actual original O0/O2 point/interval zero/20days: original CIRR0andidentical profiles; nonmutatingprobes exact; scoped corrected CIRR+endmicrostepinput48cmday changespositiveprofile, preserveszero, plain/probeexact.",
+    "activation": "--age-direct-soil-source; exclusiveof--age-irrigation-source; defaultsFalse"
   }
 }

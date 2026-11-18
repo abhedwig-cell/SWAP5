@@ -55,6 +55,7 @@ class HybridProject:
     age: bool = False
     original_output: bool = False
     age_irrigation_source: bool = False
+    age_direct_soil_source: bool = False
 
     @property
     def last_day(self):
@@ -185,7 +186,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                 if age_calendar_owner.selection(project) is None:
                     import age_output_calendar as age_calendar_owner
     age_calendar=age_calendar_owner.selection(project)
-    import age_irrigation_source as current_age_source
+    import age_direct_soil_source as current_age_source
     age_source=current_age_source.selection(project)
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=(2 if project.age else int(project.solute)):
@@ -617,7 +618,7 @@ end module MOD_wofost""")
             source=render_irrigation(source,allow_chemical_subsurface=chemical_fixed or age_fixed)
         if age_fixed:
             if age_source:
-                source=current_age_source.render_irrigation(source)
+                source=current_age_source.render_irrigation(source,project)
             else:
                 from age_fixed_irrigation import render_irrigation as render_age_fixed
                 source=render_age_fixed(source)
@@ -854,6 +855,7 @@ end module plant_interface""")
                     *([str(output/'original_cde_output_state.o')] if project.original_output and project.solute else []),
                     *([str(output/'original_output_hysteresis_domain.o')] if age_calendar and age_calendar.get('swhyst',0) in (1,2) else []),
                     *([str(output/'age_irrigation_source_domain.o')] if age_source else []),
+                    *([str(output/(name+'.o')) for name in ('mod_direct_soil_age_substep','direct_soil_age_state')] if project.age_direct_soil_source else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
@@ -897,7 +899,7 @@ end module plant_interface""")
         "driver": sha(driver),
         "host": sha(Path(__file__)),
     }
-    from age_irrigation_source import output_metadata as original_output_metadata
+    from age_direct_soil_source import output_metadata as original_output_metadata
     selected_output=original_output_metadata(project)
     if selected_output is not None:build_identity['original_output']=selected_output
     if project.input_directory:
@@ -917,9 +919,9 @@ end module plant_interface""")
     if project.age:
         from conserved_original_age import metadata as age_metadata
         build_identity['conserved_original_age']=age_metadata()
-        from age_irrigation_source import age_identity
+        from age_direct_soil_source import age_identity
         build_identity['conserved_original_age']=age_identity(build_identity['conserved_original_age'],project)
-        from age_irrigation_source import fixed_metadata
+        from age_direct_soil_source import fixed_metadata
         fixed_age=fixed_metadata(project)
         if fixed_age is not None:build_identity['original_age_fixed_irrigation']=fixed_age
     if project.time_step_policy == IRRIGATION_PULSE_TIME_POLICY:
@@ -1274,8 +1276,9 @@ class DailyHost:
             age_state=None
             age_effluent=None
             if project.age:
-                from conserved_original_age import validate as validate_age,validate_effluent
-                age_state=validate_age(list(map(float,initial['HYBRID_AGE_CUMULATIVE'])))
+                from conserved_original_age import validate_effluent
+                from age_direct_soil_source import validate_age
+                age_state=validate_age(list(map(float,initial['HYBRID_AGE_CUMULATIVE'])),project)
                 age_effluent=validate_effluent(list(map(float,initial['HYBRID_AGE_EFFLUENT'])))
                 if start.receipt is not None and age_state!=start.receipt['age_state_cm_day']:
                     raise ValueError('Restored original age state differs from accepted receipt')
@@ -1337,8 +1340,9 @@ class DailyHost:
                 solute_budget.update(aquifer_ledger(current.aquifer_state,list(map(float,response['HYBRID_AQUIFER_CUMULATIVE'])),current.solute_stock,ledger))
         bottom_out = flow[15] - flow[6]
         if self.project.age:
-            from conserved_original_age import ledger as age_ledger,validate_effluent
-            solute_budget.update(age_ledger(current.age_state,list(map(float,response['HYBRID_AGE_CUMULATIVE']))))
+            from conserved_original_age import validate_effluent
+            from age_direct_soil_source import age_ledger
+            solute_budget.update(age_ledger(current.age_state,list(map(float,response['HYBRID_AGE_CUMULATIVE'])),self.project))
             solute_budget['age_effluent']=validate_effluent(list(map(float,response['HYBRID_AGE_EFFLUENT'])))
         reply = [day, math.fsum(stocks[:6]), math.fsum(flow[:7]), math.fsum(flow[7:]),
                  bottom_out, -hydraulic[1], *hydraulic[2:], *stocks[:6]]
