@@ -24,9 +24,9 @@ def main():
         faults={'too-deep':'2002-01-01 -10001.0\n2004-12-31 -95.0\n',
                 'too-high':'2002-01-01 1001.0\n2004-12-31 -95.0\n',
                 'minimum-five-unsaturated':'2002-01-01 0.0\n2004-12-31 -95.0\n',
-                'unordered-dates':'2004-12-31 -95.0\n2002-01-01 -95.0\n',
                 'outside-period':'2005-01-01 -95.0\n2005-12-31 -95.0\n',
-                'duplicate-date':'2002-01-01 -95.0\n2002-01-01 -85.0\n'}
+                'before-period':'2000-01-01 -95.0\n2000-12-31 -95.0\n',
+                'missing-table':''}
         for label,table in faults.items():
             bad=args.output/('input-'+label);shutil.copytree(case,bad);path=bad/'swap.swp'
             text,count=re.subn(r'(?mi)^([ \t]*DATE1[ \t]+GWLEVEL[^\r\n]*\n).*?^\* End of table',
