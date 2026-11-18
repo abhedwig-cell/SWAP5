@@ -919,6 +919,8 @@ end module plant_interface""")
     if aquifer_source:
         from conserved_aquifer_solute import metadata as aquifer_metadata
         build_identity['conserved_aquifer_solute']=aquifer_metadata()
+        from aquifer_native_receipt import metadata as aquifer_receipt_metadata
+        build_identity['aquifer_native_receipt']=aquifer_receipt_metadata()
     if project.age:
         from conserved_original_age import metadata as age_metadata
         build_identity['conserved_original_age']=age_metadata()

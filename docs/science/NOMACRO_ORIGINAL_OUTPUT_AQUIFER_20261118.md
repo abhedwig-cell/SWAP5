@@ -44,3 +44,25 @@ external discard/replay/accept/recovery; independent public run/restart;
 Windows/Ubuntu full qualification and exact existing-route preservation.
 Persist the prototype before compilation. Canonical admission requires its
 actual merge parents, complete qualified tree and detached registered owner.
+
+
+## Discovered inherited candidate receipt defect and required correction
+
+An actual negative execution changes only the reported loss-limit counter from0
+into1. Before this correction, external prepare returns a proposal whose native
+int64 counter is still0 and whose receipt says1. A real cold native reload then
+refuses the candidate. `verify_checkpoint` verified bytes and manifest receipt
+identity, but did not compare the actual seven-field native aquifer payload to
+the receipt; mass balances cannot detect a changed diagnostic counter.
+
+The work unit therefore also strengthens all active SWBR1 external candidates,
+including the pre-existing compatibility route. A small source-bound validator
+reads the real frozen physical wire after the48byte CDE prefix andN+2doubles:
+six real64 values and one int64. It compares all seven fields and native soil
+stock exactly to the proposed receipt before external prepare and again before
+acceptance/publication. The existing physical checkpoint owner, equations,
+wire, tolerances and valid trajectories remain unchanged. Fresh builds record
+the validator policy/source identity; no old build or receipt is rebound.
+
+Retain Windowsv1and the actual counter/reload diagnostic. Rebuild refined
+bundles before qualification because the host/validator source identity changed.
