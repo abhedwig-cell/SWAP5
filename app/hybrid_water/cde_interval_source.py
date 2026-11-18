@@ -3,7 +3,7 @@ import re
 
 ORIGINAL_SHA='6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86'
 FIELDS=('sampro0','rounderr')
-FLUXES={'imsqprec':1,'imsqirrig':2,'imsqbot':3,'imsqdra':4,'imdectot':5,'imrottot':6}
+FLUXES={'imsqprec':1,'imsqirrig':1,'imsqbot':3,'imsqdra':4,'imdectot':5,'imrottot':6}
 INTERFACE='''      module subroutine hybrid_cde_interval_get(values)
         real(8),intent(out)::values(2)
       end subroutine
