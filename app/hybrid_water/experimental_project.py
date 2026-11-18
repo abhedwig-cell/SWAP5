@@ -184,7 +184,10 @@ def inspect(directory, *, original_output=None):
         if boundary['SWBOTB']!=expected_bottom or selected['SWTOPBHEA']!=2:
             raise ValueError('Bounded frost qualification requires prescribed surface temperature and free bottom7 or drained bottom6')
     if selected['SWSOLU'] and boundary['SWBOTB']==1:
-        raise ValueError('Prescribed groundwater-level flux requires a separate independent trial receipt')
+        if (selected['SWSOLU']!=1 or selected['SWSOPHY']!=0 or selected['SWHYST']!=0
+                or selected['SWSNOW']!=0 or selected['SWFROST']!=0 or selected['SWBR']!=0
+                or selected['SWMETDETAIL']!=0):
+            raise ValueError('Prescribed groundwater CDE trial receipt requires ordinary analytical daily no-snow/no-frost/no-aquifer hydraulic history0')
     for name, value in boundary.items():
         if value not in allowed.get(name, set()):
             raise ValueError('Unsupported boundary selector: '+name)

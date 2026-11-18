@@ -162,7 +162,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         if len(values)!=1:raise ValueError('Missing/ambiguous physical selector: '+name)
         return int(values[0])
     micro_state=bool(project.input_directory and not project.macro and (selector('SWHYST') or selector('SWSNOW')))
-    from lower_boundary_receipt import selected_boundary
+    from groundwater_boundary_receipt import selected_boundary
     lower_boundary=selected_boundary(project)
     lower_receipt=lower_boundary is not None
     from fixed_irrigation_file import enabled as fixed_irrigation_file_enabled
@@ -797,15 +797,19 @@ end module plant_interface""")
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
         if lower_receipt:
-            from lower_boundary_receipt import render_budget,render_headcalc
+            from groundwater_boundary_receipt import render_budget,render_headcalc
+            if lower_boundary==1:
+                reaction=output/'mod_prescribed_groundwater_reaction.f90'
+                reaction.write_bytes((ROOT/'src/process/mod_prescribed_groundwater_reaction.f90').read_bytes())
+                subprocess.run([*common,'-c',str(reaction)],cwd=output,check=True)
             budget_source=output/'hybrid_step_budget.f90'
             budget_source.write_text(render_budget((APP/'hybrid_step_budget.f90').read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
             path=output/'headcalc.f90'
             path.write_text(render_headcalc(path.read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
-            if lower_boundary==5:
-                from lower_boundary_receipt import render_readswap
+            if lower_boundary in (1,5):
+                from groundwater_boundary_receipt import render_readswap
                 source=(donor_build/'swap-selected/readswap.f90').read_text(encoding='cp1252')
-                (output/'readswap.f90').write_text(render_readswap(source,project.start_clock),encoding='cp1252')
+                (output/'readswap.f90').write_text(render_readswap(source,project.start_clock,lower_boundary),encoding='cp1252')
                 if 'readswap' in patched:raise ValueError('Multiple original reader state owners')
                 patched.append('readswap')
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
@@ -863,6 +867,7 @@ end module plant_interface""")
                     *([str(output/'age_irrigation_source_domain.o')] if age_source else []),
                     *([str(output/(name+'.o')) for name in ('mod_direct_soil_age_substep','direct_soil_age_state')] if project.age_direct_soil_source else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
+                    *([str(output/'mod_prescribed_groundwater_reaction.o')] if lower_boundary==1 else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
@@ -952,9 +957,8 @@ end module plant_interface""")
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
     if lower_receipt:
-        from lower_boundary_receipt import policy as lower_policy
-        build_identity['lower_boundary_receipt']={'policy':lower_policy(lower_boundary),'source_sha256':sha(APP/'lower_boundary_receipt.py'),
-            'template_sha256':sha(APP/'hybrid_step_budget.f90'),'effective_SWBOTB':lower_boundary}
+        from groundwater_boundary_receipt import metadata as lower_metadata
+        build_identity['lower_boundary_receipt']=lower_metadata(project,sha,APP,ROOT)
     if fixed_file:
         from fixed_irrigation_file import POLICY as FIXED_FILE_POLICY
         build_identity['fixed_irrigation_file']={'policy':FIXED_FILE_POLICY,'source_sha256':sha(APP/'fixed_irrigation_file.py')}

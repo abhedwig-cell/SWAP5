@@ -202,12 +202,15 @@ def validate_bundle(bundle, reference, project):
     from surface_schedule import enabled as surface_schedule_enabled,POLICY as SURFACE_SCHEDULE_POLICY
     expected_schedule={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':h.sha(h.APP/'surface_schedule.py')} if surface_schedule_enabled(project) else None
     if identity.get('surface_schedule')!=expected_schedule:raise ValueError('Foreign original surface schedule')
-    from lower_boundary_receipt import selected_boundary,policy as lower_policy,render_budget
+    from groundwater_boundary_receipt import selected_boundary,metadata as lower_metadata,render_budget
     lower_boundary=selected_boundary(project)
     lower=lower_boundary is not None
-    expected_lower={'policy':lower_policy(lower_boundary),'source_sha256':h.sha(h.APP/'lower_boundary_receipt.py'),
-                    'template_sha256':h.sha(h.APP/'hybrid_step_budget.f90'),'effective_SWBOTB':lower_boundary} if lower else None
+    expected_lower=lower_metadata(project,h.sha,h.APP,h.ROOT)
     if identity.get('lower_boundary_receipt')!=expected_lower:raise ValueError('Foreign original lower-boundary receipt')
+    if lower_boundary==1:
+        reaction=bundle/'mod_prescribed_groundwater_reaction.f90'
+        if reaction.read_bytes()!=(h.ROOT/'src/process/mod_prescribed_groundwater_reaction.f90').read_bytes():
+            raise ValueError('Foreign prescribed groundwater reaction component')
     if lower:
         source=bundle/'hybrid_step_budget.f90'
         if identity['budget_source']!=h.sha(source) or source.read_text(encoding='cp1252')!=render_budget((h.APP/'hybrid_step_budget.f90').read_text(encoding='cp1252'),lower_boundary):
