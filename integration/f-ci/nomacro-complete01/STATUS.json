@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-thermal-reset01",
-  "last_commit": "536a178591e8f887963dcf9981521077547aeba0",
-  "status": "IMPLEMENTED_PERSISTED_LOCAL_O0_O2_SHORT_EPOCH_NATIVE_TRANSACTION_GATES_PASS_MATRIX_RUNNING",
+  "last_commit": "dc81f107b43da8c92c32ab0b7401f529271de30f",
+  "status": "THERMAL_RESET_WINDOWS_MATRIX_PORTABLE_AND_PRESERVATION_RUNNING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -330,9 +330,12 @@
       "cause": "Unchecked native returns normal completion despite5480NaN output values. Bounds instrumentation identifiesaccess35 above34 atoriginalsolute.f90:464 forO0/O2. Initial diagnostic assertion wrongly assumed SaltFarm-like195nodes; generalized to actualn+1 and consumed retained O0 without rerun; actualO0 returncodeUNKNOWN retained, O2 recorded."
     }
   ],
-  "running_ci": [],
+  "running_ci": [
+    44364299227,
+    44363952246
+  ],
   "next_code_change": "Original FLPRINTDT SWRES1 year reset with full native calendar ownership, first ordinary/Snow scoped original-source audit and actual O0/O2 pilot.",
-  "recovery_point": "codex/nomacro-thermal-reset01 basedactual536a178591; local short/epoch/native controls all PASS; matrix running; no canonical admission yet.",
+  "recovery_point": "codex/nomacro-thermal-reset01; RUNTIMEb9adbefdb6; actual owner draft and external archive/seal/negative/admit helpers prepared; not admitted.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +437,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Poll existing thermal-reset-windows-O0/O2-v1 matrix; no duplicate runs. Prepare actual selected portable and 79 prior source/native preservation contexts; then raw independent admission.",
+  "next_action": "Poll existing jobs; preserve current worker evidence. Finish raw archives and actual annual/epoch admission proof after all selected gates succeed; no duplicate runs.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -469,8 +472,10 @@
   "qualified_age_calendar_ubuntu": "9321cc995ceaa327cab10b5ad0044fbb47fb0152",
   "age_calendar_sealed_proof": "accd67320a4a85db298f5aff55f1e0e87b2d782f",
   "active_local_jobs": [
-    "thermal-reset-windows-O0-v1",
-    "thermal-reset-windows-O2-v1"
+    "thermal-reset-windows-O2-v1",
+    "thermal-reset-preserve-O0-v1",
+    "thermal-reset-preserve-O2-v1",
+    "thermal-reset-preserve-young-named-v1"
   ],
   "schedule_known_next_dependencies": [
     "Original subdaily output-clock ownership after cold physical TSTART",
@@ -1654,6 +1659,87 @@
         "status": "EIGHT_ACTUAL_POST_YEAR_NATIVE_COUNTER_FORGERIES_REFUSED",
         "refusals": 8
       }
-    }
+    },
+    "portable": {
+      "main": {
+        "carrier": {
+          "runtime": "b9adbefdb6b9779f0ecd3fe8c8f637101649ac8c",
+          "carrier": "b1dd28e1c3f27f3757940e446d19396c522f5cf2",
+          "tree": "1de1058669926db23c80ce82509fde1db3cbc4d1",
+          "branch": "codex/nomacro-thermal-reset-portable01",
+          "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+          "merge": false
+        },
+        "actual": {
+          "id": 44364299227,
+          "status": "in_progress",
+          "conclusion": null,
+          "head": "b1dd28e1c3f27f3757940e446d19396c522f5cf2",
+          "jobs": [
+            {
+              "id": 135013778711,
+              "name": "qualify (O2)",
+              "status": "in_progress",
+              "conclusion": null
+            },
+            {
+              "id": 135013779357,
+              "name": "qualify (O0)",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        }
+      },
+      "preservation": {
+        "carrier": {
+          "runtime": "b9adbefdb6b9779f0ecd3fe8c8f637101649ac8c",
+          "carrier": "ee991be2ce9c7b737121185dc1f08ed7e078f74e",
+          "tree": "a45631fbffc5b7db54cf05cbfe839c5dd12a006d",
+          "branch": "codex/nomacro-thermal-reset-preservation01",
+          "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+          "merge": false
+        },
+        "actual": {
+          "id": 44363952246,
+          "status": "in_progress",
+          "conclusion": null,
+          "head": "ee991be2ce9c7b737121185dc1f08ed7e078f74e",
+          "jobs": [
+            {
+              "id": 135012547313,
+              "name": "contracts",
+              "status": "in_progress",
+              "conclusion": null
+            }
+          ]
+        }
+      }
+    },
+    "windows_matrix": {
+      "O0": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-windows-O0-v1",
+        "status": "EIGHT_WATER_SNOW_FLPRINTDT_RESET_SHORT_FOUR_FULL_FOUR_NATIVE_CONTEXTS_PASS",
+        "short_cases": 8,
+        "full_cases": 4,
+        "all_short_precede_full": true
+      },
+      "O2": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\thermal-reset-windows-O2-v1",
+        "status": "RUNNING",
+        "short_cases": 8,
+        "full_cases": 3,
+        "all_short_precede_full": true
+      }
+    },
+    "independent_owner": "tests/nomacro_scheduled_subsurface/thermal_reset_verify.py draft persisted; unregistered, unsealed; validates actual annual native+epoch raw bytes after qualification.",
+    "expected_preservation": {
+      "Windows": 50,
+      "Ubuntu": 29,
+      "total": 79,
+      "additional_current_saltfarm_full": 4,
+      "additional_current_saltfarm_cold": 20
+    },
+    "original_step_admission": "PR1742 actual05174068b/source root97.56s; PR1743 actual536a178591/metadata root82.41s; exact parents/full trees/detached owners both PASS."
   }
 }
