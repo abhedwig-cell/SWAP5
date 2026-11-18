@@ -1,5 +1,18 @@
 # Current functional closure of the original projects
 
+## Groundwater hydraulic and snow histories,18November2026
+
+[Groundwater histories](NOMACRO_GROUNDWATER_HISTORY_20261118.md) compose original
+daily CDE and prescribed level with hysteresis0/1/2 and Snow0/1, with at least
+one active history. Corrected Windows/Ubuntu56full1096day periods,704complete
+cold windows and50selected prior source/native contexts pass. Ten typed codecs
+bind actual process domains; original hydraulic owners and their appended
+witness agree exactly before readiness. Actual native/input/transaction and
+independent public build/restart commands pass with unchanged1e-10guards.
+Registered proof and actual canonical admission are pending. Closure remains
+PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged; aquifer/frost/age and
+other groundwater domains and bottom9 remain separate work.
+
 ## Qualified prescribed-groundwater CDE composition,18November2026
 
 [Prescribed-groundwater CDE](NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)

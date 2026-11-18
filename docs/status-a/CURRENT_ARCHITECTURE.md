@@ -1,5 +1,15 @@
 # SWAP5 Status-A current architecture
 
+The implemented [groundwater process-history adapter](../science/NOMACRO_GROUNDWATER_HISTORY_20261118.md)
+composes literal original CDE, hysteresis0/1/2 and Snow0/1 owners under SWBOTB1.
+Ten output/default codecs carry a104byte paired actual domain and5*N+4hydraulic
+values before the original calendar. With active hysteresis this accessible
+block is an exact consistency witness of the already restored original owner;
+it cannot overwrite a differing original copy. Without hysteresis it restores
+the missing full carry. Ordinary GWC001/002 delegates literally, all CDE prefixes
+remain48bytes and the frozen independent Darcy reaction stays unchanged.
+Registered proof and actual canonical admission are pending.
+
 The qualified [prescribed-groundwater CDE successor](../science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)
 uses the actual original Darcy interface and prescribed saturated-tail storage
 and signed rates for an independent trial receipt. The stateless component

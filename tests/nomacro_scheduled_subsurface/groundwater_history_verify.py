@@ -197,6 +197,10 @@ def verify():
                     if '--chemistry' in case[4]:require(sum(r['solute_ledger_mg_cm2'][6] for r in rows)>0,'actual history decomposition omitted')
             require(codecs==set(CODECS),'actual history codec omitted')
             require(physical['hys2-snow1-original']==physical['hys2-snow1-csv0'] and physical['hys0-snow1-original']!=physical['hys2-snow1-original'],'actual history format/process activity assertion differs')
+            left=path(run['cases']['hys2-snow1-original']['short_root']);right=path(run['cases']['hys2-snow1-csv0']['short_root'])
+            for day in (4,8,23,34,35):
+                with zipfile.ZipFile(io.BytesIO(z.read(left+f'trajectory/accepted-column-1-day-{day}.zip'))) as a,zipfile.ZipFile(io.BytesIO(z.read(right+f'trajectory/accepted-column-1-day-{day}.zip'))) as b:
+                    for member in ('result.end','macro.bin'):require(a.read(member)==b.read(member),'actual history output format changes complete native state')
             for key,item in run['controls'].items():
                 control=read(z,path(item['root'])+'RESULT.json');require(control==item['report'],'history control rebound')
                 hys=CASES[key][0];original='--compatibility-output' not in CASES[key][4];count=(39 if hys else 37)-(0 if original else 3)

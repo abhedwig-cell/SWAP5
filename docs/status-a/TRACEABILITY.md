@@ -1,5 +1,14 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Groundwater history qualification](../science/NOMACRO_GROUNDWATER_HISTORY_20261118.md)
+binds corrected production278152113 to actual Windows/Ubuntu16short/14full
+periods per optimization,704complete cold windows,1784native and96hydraulic
+receipt refusals. Fifty selected prior source/native contexts remain exact.
+Actual old and appended hydraulic-copy attacks both refuse before readiness;
+the initial unadmitted reader diagnostic and the failed preservation controller
+artifact are retained separately. Registered proof and canonical admission are
+pending; whole closure/science/release scope is unchanged.
+
 [Prescribed-groundwater qualification](../science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)
 and `integration/f-ci/nomacro-complete01/GROUNDWATER_CHEMICAL_QUALIFICATION.json`
 bind productionc1da10c37 to eight immutable archives totalling435441943bytes.
