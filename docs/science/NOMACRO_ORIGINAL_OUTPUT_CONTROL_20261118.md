@@ -60,3 +60,16 @@ receipt/state ownership. CDE initially requires daily output unless its separate
 chemical output history/receipt is demonstrably complete. Never silently accept
 an unsupported combination. The binary correction is a source-bound reference
 work unit first, not an already activated feature or mass-conservation claim.
+
+The first prototype is water-only, S5IOW001, and remains unqualified. Descriptor
+inspection may enumerate historical output choices for existing process helpers;
+load/validate must explicitly select compatibility(False) or original(True)
+before execution. Compatibility still refuses unsupported CSV formats; original
+mode adds its own bounded selector/state checks. The default project flag is
+False and old case keys remain identical. Requested groups/precision/monthly
+controls are not rewritten in original mode. Initial and daily water witnesses
+come directly from actual stocks and the unchanged Integral receipt provider.
+Native output state is appended only within the generated nonmacro checkpoint
+routine; original active-macro procedure bodies stay literal. Existing calendar
+and clock helpers remain literal. Age, CDE and per-step activation wait for their
+own complete state qualification; there is no fallback to the water mode.
