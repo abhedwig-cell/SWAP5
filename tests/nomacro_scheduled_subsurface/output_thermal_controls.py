@@ -104,15 +104,19 @@ def transactions(build,reference,project,full,out):
 def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','profile-root','output'):p.add_argument('--'+key,type=Path,required=True)
-    a=p.parse_args();a.output.mkdir();cohort=json.loads((a.profile_root/'RESULT.json').read_text());policy='original-adaptive-event-closure-v1' if cohort['kind']=='water-frost-drained' else 'original-adaptive-day-seed-v1';project=m.e.load(a.profile_root/'input',original_output=True,time_step_policy=policy);build=a.profile_root/'build';full=a.profile_root/'trajectory';q=dict(status='RUNNING',build_sha256=m.sha(build/'BUILD.json'),native_refusals=[],policy_refusals=[])
+    p.add_argument('--resume',action='store_true');a=p.parse_args();a.output.mkdir(exist_ok=a.resume);cohort=json.loads((a.profile_root/'RESULT.json').read_text());policy='original-adaptive-event-closure-v1' if cohort['kind']=='water-frost-drained' else 'original-adaptive-day-seed-v1';project=m.e.load(a.profile_root/'input',original_output=True,time_step_policy=policy);build=a.profile_root/'build';full=a.profile_root/'trajectory';q=dict(status='RUNNING',build_sha256=m.sha(build/'BUILD.json'),native_refusals=[],policy_refusals=[])
+    if a.resume:
+        old=json.loads((a.output/'RESULT.json').read_text());assert old['build_sha256']==q['build_sha256'];q['retained_previous_report']=old;q['native_refusals']=old.get('native_refusals',[]);q['transactions']=old.get('transactions',{})
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        q['native_refusals']=native(build,a.reference_work,project,full,a.output/'native');save()
-        q['transactions']=transactions(build,a.reference_work,project,full,a.output/'active')
+        if not q['native_refusals']:q['native_refusals']=native(build,a.reference_work,project,full,a.output/('native-resumed' if a.resume else 'native'));save()
+        assert len(q['native_refusals'])==(44 if project.solute else 39) and all(r['status']=='REFUSED' for r in q['native_refusals'])
+        if not q.get('transactions'):q['transactions']=transactions(build,a.reference_work,project,full,a.output/'active')
+        assert all(v is True for v in q['transactions'].values())
         for field in ('policy','native_codec','source_sha256','domain_source_sha256','original_hysteresis_sha256','ordinary_owner_sha256','vector_catalog_correction_sha256','cde_output_state_sha256','snow_stock','snow_increment_slots','physical_equations_changed','native_domain_bytes'):
-            target=a.output/('policy-'+field);target.mkdir();bad=json.loads((build/'BUILD.json').read_text());bad['identity']['original_output'][field]='foreign';(target/'BUILD.json').write_text(json.dumps(bad))
-            for helper in ('mod_subsurface_solute_source.f90','mod_aquifer_solute_reservoir.f90'):
+            target=a.output/(('policy-resumed-' if a.resume else 'policy-')+field);target.mkdir();bad=json.loads((build/'BUILD.json').read_text());bad['identity']['original_output'][field]='foreign';(target/'BUILD.json').write_text(json.dumps(bad))
+            for helper in ('mod_subsurface_solute_source.f90','mod_aquifer_solute_reservoir.f90','frozencond.f90','timecontrol.f90','terminal_water_receipt.f90'):
                 if (build/helper).exists():shutil.copyfile(build/helper,target/helper)
             try:m.validate_bundle(target,a.reference_work,project)
             except ValueError as error:assert 'Foreign original output policy' in str(error),str(error)

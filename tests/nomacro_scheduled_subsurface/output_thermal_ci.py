@@ -64,7 +64,10 @@ def main():
         for key in CONTROLS:
             out=a.output/('controls-'+key);short=Path(q['cases'][key]['short_root'])
             if not (out/'RESULT.json').exists():run('output_thermal_controls.py','--reference-work',a.reference_work,'--profile-root',short,'--output',out)
-            report=json.loads((out/'RESULT.json').read_text());assert report['status']=='ORIGINAL_OUTPUT_THERMAL_ACTUAL_NATIVE_ACTIVE_AND_POLICY_REFUSALS_PASS' and report['build_sha256']==probe.m.sha(Path(q['cases'][key]['build_root'])/'BUILD.json');q['controls'][key]=report;save()
+            report=json.loads((out/'RESULT.json').read_text())
+            if report['status']!='ORIGINAL_OUTPUT_THERMAL_ACTUAL_NATIVE_ACTIVE_AND_POLICY_REFUSALS_PASS':
+                assert a.resume;run('output_thermal_controls.py','--reference-work',a.reference_work,'--profile-root',short,'--output',out,'--resume');report=json.loads((out/'RESULT.json').read_text())
+            assert report['status']=='ORIGINAL_OUTPUT_THERMAL_ACTUAL_NATIVE_ACTIVE_AND_POLICY_REFUSALS_PASS' and report['build_sha256']==probe.m.sha(Path(q['cases'][key]['build_root'])/'BUILD.json');q['controls'][key]=report;save()
         if not a.short_only:
             for key,case in CASES.items():
                 if not case[4]:continue
