@@ -1,0 +1,27 @@
+{
+  "status": "ORIGINAL_SOURCE_COUNTEREXAMPLE_SELECTED",
+  "baseline": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
+  "component": "ActualoriginalcalcAgeTracer andoriginalirrigationreader/run;noSWAP5sourceactivation",
+  "optimization": [
+    "O0",
+    "O2"
+  ],
+  "irrigation_kinds": [
+    "surface",
+    "sprinkler"
+  ],
+  "input_ages_day": [
+    0,
+    20
+  ],
+  "days": 8,
+  "expected_seconds": 90,
+  "scientific_question": "DoesoriginalAgeirr capture initialCIRR0 andignoreactualfixedIRCONC20? Diagnosticprintnonmutation versusactualsource-refreshvariant andoriginalprofile/sourceeffects.",
+  "water_guard_cm": 1e-10,
+  "chemical_guard_mg_cm2": 1e-10,
+  "age_units": "cm day",
+  "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+  "full_moving_fci": "NOT_SELECTED_IMPACT",
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED"
+}

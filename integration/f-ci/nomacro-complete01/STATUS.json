@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-output-hysteresis01",
-  "last_commit": "76f1a078b1b236b8e7cbdd400c1f5c83aa43e62b",
-  "status": "OUTPUT_HYSTERESIS_ACTUAL_CANONICAL_ADMITTED_METADATA_PENDING",
+  "branch": "codex/nomacro-age-irrigation-source01",
+  "last_commit": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
+  "status": "AGE_IRRIGATION_SOURCE_ORIGINAL_COUNTEREXAMPLE_SELECTED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -54,10 +54,10 @@
     "Remaining drainage/surfacewater/constitutive/weather/state gaps and release consolidation"
   ],
   "dependency_surface": [
-    "Original calc_AgeTracer/read_AgeTracer/outage private Agemsy and pond/effluent state, original age initialization/restart",
-    "src/process/mod_b111_age_tracer_substep.f90 (existing admitted provider, preserve)",
-    "src/process/mod_b111_surface_age_budget.f90 (existing admitted provider, preserve)",
-    "app/hybrid_water/experimental_project.py and daily_host native/ledger route (not yet changed for age)"
+    "OriginalMOD_irrigation CIRR/IRCONC/isua/iramtb/nird andcompleteprivateirrigationstate",
+    "Originalcalc_AgeTracer task1parametercapture/task2surfaceforcing",
+    "Frozenage_fixed_irrigation.py, conserved_original_age.py, NOMACRO-AGE-SOURCE-01/source.py andphysicalproviders",
+    "Potentialnewexplicitpolicy/project/native/sourceadapter: notyetimplemented"
   ],
   "invariants": [
     3,
@@ -608,6 +608,17 @@
     "proof_seal": "40a81d4b0330d85c6820cb5ec1069f6a9d61038a",
     "docs": "FinalsourcePASS+strictMkDocs26.764secondsPASS",
     "canonical_admission": "76f1a078b1b236b8e7cbdd400c1f5c83aa43e62b",
-    "actual_detached_owner_seconds": 47.837577499914914
+    "actual_detached_owner_seconds": 47.837577499914914,
+    "actual_metadata_merge": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
+    "actual_metadata_owner_seconds": 46.89016279997304
+  },
+  "age_irrigation_source_results": {
+    "work_unit": "NOMACRO-AGE-IRRIGATION-SOURCE01",
+    "baseline": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
+    "status": "SOURCE_INVENTORY_ORIGINAL_PROBE_SELECTED_NO_IMPLEMENTATION",
+    "source_findings": "OriginalfixedreaderIRCONC0..1000forSWSOLU>0; irrigationtask1CIRR0,task2CIRRactualevent. OriginalcalcAge task1capturesAgeirr=CIRRonce then usescapturedAgeirr forever. read_AgeTracer forciblysetsrain/drainage/seepageages0; nohistoricalnonzerorainselectorisclaimed. Existingphysicalsurface/soilprovidersalreadyacceptnonzeroageinputs andretainexternalageledger; onlyexplicitfixedyoungguardandhostforcingadapterboundcurrentzeroage.",
+    "native_risk": "ExistingAgeirr/Agepre/Agedrain savedparameters arestaticnativeforcing witnesses; dynamicfixedeventagesmustnotreuseoldcodecsorbeaccidentallytreatedasstaticnativeparameters. Preservealloldhelpers,providers/codecs/youngdefaultsemantics.",
+    "next": "ActualoriginalO0/O2 sourceprobe withIRCONC0vs20andday5surface/sprinklergift; observeactualCIRR/Ageirr andprofileinvariance, thenisolatedrefreshcounterexample before choosingpublicstate/sourceinterface. NoSWAP5activationyet.",
+    "external_blocker": null
   }
 }
