@@ -1,6 +1,6 @@
 # Original groundwater CDE with hydraulic and snow histories
 
-**Qualified composition / registered proof PASS / actual canonical admission pending.** Baseline is actual
+**Canonically admitted bounded composition / actual detached source owner PASS.** Baseline is actual
 canonicalc40636910 after PR1733/1734. Both source95fc7b7fe and metadata merges
 have exact ordered parents/full qualified trees and pass their actual detached
 registered owners. Historical closure remains PARTIAL, whole science
@@ -159,3 +159,10 @@ root calls refuse before archives or model execution. The deliberately bad commi
 973cc5709bd8920d8c7a93494849df3c1b44e561 is retained in its private control worktree and
 must never merge. All prior owner bodies remain literal behind a four-line
 successor dispatch.
+
+Actual source PR1736 merges asf5f0cda95dd8e62e063fdb90b1713e81021df155.
+Its ordered parents are exactc406/9326338b8 and its complete2db3ff0a5tree equals
+the qualified head. The actual clean detached merge passes the registered
+owner; the receipt is versioned asGROUNDWATER_HISTORY_MERGE_RECEIPT.json.
+Metadata admission follows separately. Continue the remaining historical
+selector/process inventory; this batch does not complete the migration.

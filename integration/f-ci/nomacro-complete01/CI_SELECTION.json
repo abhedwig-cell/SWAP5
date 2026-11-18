@@ -403,7 +403,7 @@
     }
   },
   "groundwater_history": {
-    "status": "QUALIFIED_PENDING_ACTUAL_CANONICAL",
+    "status": "ACTUAL_CANONICAL_ADMISSION_PASS",
     "runtime": "27815211325bacfa4c2e9b3747a2734dfcdbc8e5",
     "registered_root": {
       "status": "GROUNDWATER_CDE_COMPLETE_HISTORY_NATIVE_ADMISSION_PASS",
@@ -443,6 +443,25 @@
     },
     "proof_tests": "3PASS11.221s;2032actualperiod/ledger/native+39source/scope corruptions refused plus actual archive part offset faults",
     "full_moving_fci": "NOT_SELECTED_IMPACT: literal physical providers and pure prescribed-groundwater reaction unchanged; selected current history compound/native/ledger/public/input gates and50short prior contexts across Windows/Ubuntu; no unrelated full campaigns.",
-    "retired_highest_low_air": "NOT_SELECTED_POLICY"
+    "retired_highest_low_air": "NOT_SELECTED_POLICY",
+    "canonical": {
+      "status": "ACTUAL_GROUNDWATER_HISTORY_CANONICAL_MERGE_VERIFIED",
+      "pr": 1736,
+      "merge": "f5f0cda95dd8e62e063fdb90b1713e81021df155",
+      "parents": [
+        "c40636910a986feea35f19726af1aa6a68083011",
+        "9326338b8e4b894764144971902100f0b2ac9b16"
+      ],
+      "qualified_head": "9326338b8e4b894764144971902100f0b2ac9b16",
+      "tree": "2db3ff0a563a8f0c0a47381f9b422f4e7057b241",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 157.37530019972473,
+        "head": "f5f0cda95dd8e62e063fdb90b1713e81021df155",
+        "stdout": "{\n  \"status\": \"GROUNDWATER_CDE_COMPLETE_HISTORY_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"27815211325bacfa4c2e9b3747a2734dfcdbc8e5\",\n  \"predecessor\": \"LITERAL_QUALIFIED_GROUNDWATER_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 56,\n  \"actual_cold_windows\": 704,\n  \"actual_native_refusals\": 1784,\n  \"actual_report_refusals\": 96,\n  \"actual_preserved_contexts\": 50,\n  \"actual_bound_reports\": 314,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    }
   }
 }
