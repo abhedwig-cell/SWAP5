@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-subsurface-age-source01",
   "last_commit": "e3cb491d15b9d079062285c397cfba552ab0a86d",
-  "status": "DIRECT_SOIL_AGE_ALL_POINT_INTERVAL_PILOTS_PASS_MATRIX_READY",
+  "status": "DIRECT_SOIL_AGE_CALENDAR_PROTOCOL_FIX_PENDING_RETEST",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -427,7 +427,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run persisted17short/11full direct-age state/output matrix O0/O2 Windows; controls precede fulls. All fourpoint/intervalO0/O2ten-day actual native pilotsPASS. PointO0native19refusals+external first/secondgift discard/replay/accept/recovery+5fabricatedledger refusalsPASS. Do not repeat pilots; retain actual input/build bindings.",
+  "next_action": "First run point regular003 O0/O2 on refined source: old literal calendarprobe still emitted11fields and strict12ledger refused. New wrapper appends directcounter to actual calendarprobe too. Keep failedwindowsv1 and alloldprototypebindings unchanged; freshv2cohort only after regularpilotsPASS.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -670,12 +670,12 @@
   },
   "subsurface_age_source": {
     "baseline": "e3cb491d15b9d079062285c397cfba552ab0a86d",
-    "status": "DIRECT_SOIL_AGE_ALL_POINT_INTERVAL_PILOTS_PASS_MATRIX_READY",
+    "status": "DIRECT_SOIL_AGE_CALENDAR_PROTOCOL_FIX_PENDING_RETEST",
     "contract": "docs/science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md",
     "component": "tests/nomacro_scheduled_subsurface/direct_soil_age_component.py",
     "physical_policy": "literal transport then direct per-compartment input each microstep; convergence and corrected-original qualification required",
     "state_policy": "12fieldprotocol, sixnewS5DI typedcodecs, literal56bytesurfacedomain plus24bytepaired directinputowner atEOF",
-    "next": "Run persisted17short/11full direct-age state/output matrix O0/O2 Windows; controls precede fulls. All fourpoint/intervalO0/O2ten-day actual native pilotsPASS. PointO0native19refusals+external first/secondgift discard/replay/accept/recovery+5fabricatedledger refusalsPASS. Do not repeat pilots; retain actual input/build bindings.",
+    "next": "First run point regular003 O0/O2 on refined source: old literal calendarprobe still emitted11fields and strict12ledger refused. New wrapper appends directcounter to actual calendarprobe too. Keep failedwindowsv1 and alloldprototypebindings unchanged; freshv2cohort only after regularpilotsPASS.",
     "external_blocker": null,
     "component_result": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-component-v1/report.json",
     "component_summary": "Real four-object O0/O2 positive point/interval, exact zero-source, committed-state nonmutation, 12 invalid source/transport refusals, 7 malformed ledger refusals/opt; actual two-cell transport refinement errors .0041117,.0020226,.0010032; old providers literal.",
@@ -689,6 +689,8 @@
     ],
     "short_summary": "48/72cmday actual direct input; twelvefieldledger/guardPASS; exact2to4/4to8/6to10physical+complete native+allfourageCSV each. intervalO2existingprocess pending.",
     "controls_result": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-controls-O0-v1/RESULT.json",
-    "cohort": "17short and11full1096 peroptimization; point/interval,6typedfamilies,format0/3,hys1/2,inline,zero/1000 andsurface/sprinkler newpolicyshort;8native+transactioncontexts/opt"
+    "cohort": "17short and11full1096 peroptimization; point/interval,6typedfamilies,format0/3,hys1/2,inline,zero/1000 andsurface/sprinkler newpolicyshort;8native+transactioncontexts/opt",
+    "calendar_failure": "885aeac20WindowsO0/O2 daily/interval/zero/1000shortsPASS thenregularfirststep refused12fieldledger: age_output_calendar_probe stillliteral11field. No conservation weakening. Retainbothv1folders.",
+    "calendar_refinement": "Only explicitdirect source adapter transforms actual existing calendarprobe observation to12fields, alongsidemain/CSV. Oldcalendarhelpers remainliteral."
   }
 }
