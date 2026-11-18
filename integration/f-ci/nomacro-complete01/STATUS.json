@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-perstep-domain01",
-  "last_commit": "12e84c8eba9204080462b83b548741aa9b0f060f",
-  "status": "PERSTEP_DOMAIN_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+  "last_commit": "429c4c51f83aaf91920a740db471d5d117ceaa3d",
+  "status": "PERSTEP_DOMAIN_O0_O2_SHORT_NATIVE_LIMIT_PASS_SELECTED_FULL_IN_PROGRESS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -2178,7 +2178,7 @@
     "metadata_docs": "Source checks PASS; strict MkDocs PASS35.15seconds external metadata site."
   },
   "perstep_domain": {
-    "status": "CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+    "status": "PERSTEP_DOMAIN_O0_O2_SHORT_NATIVE_LIMIT_PASS_SELECTED_FULL_IN_PROGRESS",
     "baseline": "12e84c8eba9204080462b83b548741aa9b0f060f",
     "original_reader_observations": [
       "C:\\Users\\Veldh012\\swap5-complete01-evidence\\perstep-domain-baseline-ordinary-nprint2-v1",
@@ -2186,6 +2186,20 @@
     ],
     "prior_reset0_observation": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\perstep-domain-baseline-ordinary-reset0-v1",
     "scope": "ExplicitwaterSnow0/1heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather FLPRINTDTtrue NPRINTDAY1..1440 effectiveSWRES0/1 monthly/explicit/periodic/PERIOD0 formats0..3; select new partitions only. Noprimaryfrost/AQ/CDE/age/macro.",
-    "external_blocker": null
+    "external_blocker": null,
+    "production": "10aff9a7f",
+    "driver": "429c4c51f",
+    "short_evidence": [
+      "C:/Users/Veldh012/swap5-complete01-evidence/perstep-domain-ordinary-np2-O0-v2",
+      "C:/Users/Veldh012/swap5-complete01-evidence/perstep-domain-ordinary-np2-O2-v2",
+      "C:/Users/Veldh012/swap5-complete01-evidence/perstep-domain-snow-np3-O0-v2",
+      "C:/Users/Veldh012/swap5-complete01-evidence/perstep-domain-snow-np3-O2-v2"
+    ],
+    "native_refusals": 208,
+    "policy_refusals": 226,
+    "actual_copied_provider_refusals": 4,
+    "limit_cases": "Both actual ordinary/Snow1440counts O0/O2:2days+own1to2 exact complete native physical/output PASS",
+    "full": "Windows two opted workers running;11short,6full1096days,6native contexts per optimization; all short/native/limit gates precede full. Not PASS until terminal reports.",
+    "epochs": "Eight actual35day nonJanuary ordinary/Snow SWRES0/1 per optimization; O0/O2 running."
   }
 }
