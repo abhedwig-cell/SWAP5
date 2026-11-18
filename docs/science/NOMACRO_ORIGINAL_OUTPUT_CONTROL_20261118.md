@@ -1,7 +1,11 @@
 # Original output selector ownership across water, chemical and age models
 
-**Bounded original-output successor: implemented and platform-tested;
-canonical admission pending.** Baseline is actual canonical
+**Current bounded original-output successor, canonically admitted by PR1721
+at473b295d5acc27bfd4c0c6f6448f0e67accdf307.** The actual merge has exact
+b940/c45parents and the complete qualified6752bbccftree. Its detached registered
+owner passes in60.383seconds, binding250actual reports and24measured builds.
+`ORIGINAL_OUTPUT_MERGE_RECEIPT.json` owns this actual admission; the qualification
+record retains its immutable pre-admission status. Baseline was actual canonical
 b9400bff64a5b21596995aca9eb045f974a52b21, after PR1719/1720. The actual metadata
 merge has exact3bf/66parents, full1bd8cfc8tree and a detached registered-owner
 PASS in173.997seconds. The005source/state/output block is admitted; historical

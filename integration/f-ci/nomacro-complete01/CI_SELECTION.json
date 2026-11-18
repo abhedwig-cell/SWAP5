@@ -1,5 +1,5 @@
 {
-  "status": "ORIGINAL_OUTPUT_SEALED_REGISTERED_OWNER_AND_SOURCE_NEGATIVES_PASS_PENDING_CANONICAL",
+  "status": "ORIGINAL_OUTPUT_ACTUAL_CANONICAL_ADMISSION_PASS",
   "runtime": "98b5b0337a87cadbc4861e67056ec87c51237d47",
   "canonical_parent": "b9400bff64a5b21596995aca9eb045f974a52b21",
   "current_owner": "tests/nomacro_scheduled_subsurface/original_output_verify.py",
@@ -219,6 +219,14 @@
     "head": "0c709fe97b693cac0e8e88436c12adf5af9cce8b",
     "returncode": 0,
     "seconds": 60.692468400113285,
+    "stdout": "{\n  \"status\": \"CURRENT_ORIGINAL_OUTPUT_WATER_CDE_AGE_SOURCE_STATE_USER_FILES_ADMISSION_PASS\",\n  \"runtime\": \"98b5b0337a87cadbc4861e67056ec87c51237d47\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"water_guard_cm\": 1e-10,\n  \"chemical_mass_guard_mg_cm2\": 1e-10,\n  \"age_units\": \"cm day\",\n  \"native_codecs\": {\n    \"water\": \"S5IOW001\",\n    \"cde\": \"S5IOC001\",\n    \"age\": \"S5IOA001\"\n  },\n  \"actual_bound_reports\": 250,\n  \"actual_measured_legacy_reader_builds\": 24\n}\n",
+    "stderr": ""
+  },
+  "canonical_admission": "473b295d5acc27bfd4c0c6f6448f0e67accdf307",
+  "actual_canonical_owner": {
+    "returncode": 0,
+    "seconds": 60.38280599983409,
+    "head": "473b295d5acc27bfd4c0c6f6448f0e67accdf307",
     "stdout": "{\n  \"status\": \"CURRENT_ORIGINAL_OUTPUT_WATER_CDE_AGE_SOURCE_STATE_USER_FILES_ADMISSION_PASS\",\n  \"runtime\": \"98b5b0337a87cadbc4861e67056ec87c51237d47\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"water_guard_cm\": 1e-10,\n  \"chemical_mass_guard_mg_cm2\": 1e-10,\n  \"age_units\": \"cm day\",\n  \"native_codecs\": {\n    \"water\": \"S5IOW001\",\n    \"cde\": \"S5IOC001\",\n    \"age\": \"S5IOA001\"\n  },\n  \"actual_bound_reports\": 250,\n  \"actual_measured_legacy_reader_builds\": 24\n}\n",
     "stderr": ""
   }

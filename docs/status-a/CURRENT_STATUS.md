@@ -1,5 +1,13 @@
 # SWAP5 Status-A current status
 
+The [bounded original-output successor](../science/NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md)
+is canonically admitted by PR1721 at473b295d5. The explicit default-off
+`--original-output` route preserves original formats/groups/precision/calendar
+and complete water, daily-CDE and age restart state in its qualified domains.
+Windows/Ubuntu full, native, public and literal default-preservation proofs pass;
+the actual detached canonical owner passes. Historical functional closure remains
+PARTIAL, whole science NOT_QUALIFIED, and the fixed RC3 named release is unchanged.
+
 The [fixed RC3 qualification](../science/RC3_QUALIFICATION.md) supersedes RC2
 as the selected standalone source candidate: fresh laptop/Windows2022/Ubuntu26.04
 public three-project O0short/O2full and exact own-restart/refusal/isolation

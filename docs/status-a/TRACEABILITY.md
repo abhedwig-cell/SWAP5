@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Original output controls](../science/NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md),
+`integration/f-ci/nomacro-complete01/ORIGINAL_OUTPUT_QUALIFICATION.json` and
+`ORIGINAL_OUTPUT_MERGE_RECEIPT.json` own production98b5b0337, immutable complete
+platform evidence and actual canonical473b295d5. The registered successor binds
+250actual producer reports and24measured legacy/reader builds, recomputes actual
+age ledgers and checks complete raw archives. Source negatives reject dirty and
+actual committed relaxed guards. This authority covers bounded original user
+output/state and two proven original output defects; whole historical closure,
+whole science and fixed RC3 release scope remain separate.
+
 [RC3 qualification](../science/RC3_QUALIFICATION.md) and
 `integration/f-ci/nomacro-rc3-20261117/QUALIFICATION.json` own the fixed source
 distribution at2cedd9d0e, clean three-project Windows/Ubuntu user proof and laptop
