@@ -113,8 +113,16 @@ def main():
             q['user_output'][path.name]=dict(records=len(values),stamps=stamps)
             from datetime import datetime,timedelta
             initial=datetime.fromisoformat(project.start_date)
-            expected=[(initial+timedelta(days=i/a.nprintday)).strftime('%Y-%m-%d %H:%M:%S') for i in range(days*a.nprintday+1)]
-            assert stamps==expected,(path,len(stamps),len(expected),next(((x,y) for x,y in zip(stamps,expected) if x!=y),None))
+            expected=[initial+timedelta(days=i/a.nprintday) for i in range(days*a.nprintday+1)]
+            # Keep original bytes, including its rounded seconds field of 60.
+            # Interpret its actual date plus elapsed h/m/s for cadence only;
+            # compare() above still requires byte-exact warm/cold records.
+            decoded=[]
+            for stamp in stamps:
+                day,clock=stamp.split();hour,minute,second=map(int,clock.split(':'))
+                assert 0<=hour<24 and 0<=minute<60 and 0<=second<=60,stamp
+                decoded.append(datetime.fromisoformat(day)+timedelta(hours=hour,minutes=minute,seconds=second))
+            assert decoded==expected,(path,len(stamps),len(expected),next(((x,y) for x,y in zip(decoded,expected) if x!=y),None))
         if not a.format:assert not files
         q['status']='ACTUAL_WATER_SNOW_SUBDAILY_'+a.phase.upper()+'_NATIVE_USER_OUTPUT_PASS'
         print(a.mode,a.hysteresis,a.optimization,q['status'],flush=True)

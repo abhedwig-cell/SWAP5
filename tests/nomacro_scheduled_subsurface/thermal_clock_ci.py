@@ -38,7 +38,7 @@ def main():
     try:
         for key,(mode,hys,fmt,reset,et,nprint,full) in CASES.items():
             short=a.output/('short-'+key)
-            if a.reuse_pilots and key=='periodic-hys2-nprint3-binary':short=a.reuse_pilots/f'thermal-clock-nprint3-{a.optimization}-v6'
+            if a.reuse_pilots and key=='periodic-hys2-nprint3-binary':short=a.reuse_pilots/f'thermal-clock-nprint3-{a.optimization}-v7'
             if a.reuse_pilots and key=='explicit-hys1-nprint2-vector':short=a.reuse_pilots/f'thermal-clock-hys1-nprint2-{a.optimization}-v6'
             options=['--reference-work',a.reference_work,'--mode',mode,'--hysteresis',hys,'--format',fmt,'--reset',reset,'--et',et,'--nprintday',nprint,'--optimization',a.optimization]
             if not (short/'RESULT.json').exists():invoke('thermal_clock_runtime.py',*options,'--output',short)
