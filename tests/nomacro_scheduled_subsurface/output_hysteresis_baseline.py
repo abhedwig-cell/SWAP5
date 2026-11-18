@@ -19,6 +19,9 @@ def fixture(path,kind,mode):
     original.fixture(path,'cde-solbal-csv1');control=path/'swap.swp';text=control.read_text(encoding='cp1252')
     for key,value in [('SWSOLU',{'water':0,'cde':1,'age':2}[kind]),('SWHYST',mode),('INLIST_CSV',"'WATBAL,GWL,SOLBAL'")]:text=original.baseline.assignment(text,key,value)
     control.write_text(text,encoding='cp1252')
+    if kind=='age':
+        p=path/'fixed-irrigation.irg';body=p.read_text();assert '2002-01-05 24.0 20.0' in body
+        p.write_text(body.replace('2002-01-05 24.0 20.0','2002-01-05 24.0 0.0'))
 
 
 def history(raw):
@@ -62,16 +65,22 @@ def own(build,reference,project,full,data,start,end,out):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args();a.output=a.output.resolve();a.output.mkdir()
+    p=argparse.ArgumentParser();p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--reuse-completed',type=Path);a=p.parse_args();a.output=a.output.resolve();a.output.mkdir()
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),optimization=a.optimization,profiles={},functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     def call(cmd,out,label):
         start=time.monotonic();r=subprocess.run(list(map(str,cmd)),cwd=ROOT,capture_output=True,text=True,timeout=180);(out/(label+'.stdout')).write_text(r.stdout);(out/(label+'.stderr')).write_text(r.stderr)
         return r,dict(returncode=r.returncode,seconds=time.monotonic()-start,stdout=r.stdout,stderr=r.stderr)
     try:
+        reused=json.loads((a.reuse_completed/'RESULT.json').read_text()) if a.reuse_completed else None
         for mode in (1,2):
             for kind in ('water','cde','age'):
-                name=kind+'-hys'+str(mode);out=a.output/name;out.mkdir();inputs=out/'input';fixture(inputs,kind,mode);project=m.e.load(inputs)
+                name=kind+'-hys'+str(mode)
+                if reused and name in reused['profiles']:
+                    previous=a.reuse_completed/name;project=m.e.load(previous/'input');m.validate_bundle(previous/'build',a.reference_work,project)
+                    assert m.sha(previous/'build/BUILD.json')==reused['profiles'][name]['build_sha256'];assert len(m.rows(previous/'trajectory'))==10;m.check(m.rows(previous/'trajectory'))
+                    q['profiles'][name]=reused['profiles'][name];q.setdefault('reused_completed_profiles',{})[name]=str(previous);save();continue
+                out=a.output/name;out.mkdir();inputs=out/'input';fixture(inputs,kind,mode);project=m.e.load(inputs)
                 command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',inputs,'--reference-work',a.reference_work,'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization]
                 r,refusal=call([*command,'--original-output','--output',out/'original-output-refused'],out,'original-output-refusal');assert r.returncode!=0 and 'excludes SWHYST' in r.stdout+r.stderr,(r.stdout,r.stderr)
                 build=out/'build';r,compiled=call([*command,'--output',build],out,'compatibility-build');assert r.returncode==0,r.stderr
