@@ -81,3 +81,27 @@ Then continue the remaining historical inventory.
 
 Affected invariants:3,4,7,13,21,23,30. No general MODFLOW, alternative solver,
 active macro research or generic qualification/performance framework.
+
+## Actual sparse Snow output state gap before admission
+
+Initial production3e22a239e compiles and completes35day O0/O2 monthly runs.
+At the30to34cold window all physical rows and both complete native payloads
+agree exactly before the user-file assertion. The actual January31binary
+record differs. Preserve both `thermal-calendar-monthly-O0/O2-v1` failures.
+The literal admitted calendar `_layout` explicitly skips seven original
+MOD_integral scalars: cgsnow,cmelt,csnrai,csubl,isnrai,igsnow,isubl. The old
+dense-daily Snow tests do not establish preservation of these outstanding
+monthly output totals. This is an unadmitted successor-composition gap, not a
+new original physical-equation defect.
+
+Retain the frozen old calendar/domain/thermal owners. Add a separate staging
+adapter for these seven actual original output scalars, with a paired typed
+header, finite/nonnegative validation and apply only after original/calendar
+initialization. The original MOD_integral remains their physical/output owner;
+no increment or equation is reimplemented. Use corrected codecS5CTW002 so that
+the initial incomplete S5CTW001 prototype cannot be read as the corrected wire.
+Keep the literal paired80byte process domain and complete original calendar
+frame; insert the new Snow-output carry as its own record. Actual workers own
+the necessary module closure; decoding and corruption tests use their actual
+Fortran bytes. Persist the correction, then build fresh O0/O2 and repeat the
+failed discriminating monthly/cold/output gate before selecting full periods.
