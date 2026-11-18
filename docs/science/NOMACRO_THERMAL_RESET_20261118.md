@@ -66,3 +66,29 @@ optimizations with four byte-exact own cold windows. All16paired-witness forged
 post-year counters are refused by actual workers, including false global and
 previous-year counters. Original full periods and portable/source preservation
 remain required; this progress is not admission.
+
+## Independent real local commands
+
+Use the repository root, Python and the qualified GNU Fortran toolchain. This
+builds the actual public source route and tests35days plus four complete native
+cold workers. Each worker executes original physical owners and strict soil/day
+receipts; this is not an isolated copied calendar model.
+
+```powershell
+python -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work C:/SWAP5-Snow-Reset/provider
+python -B tests/nomacro_scheduled_subsurface/thermal_reset_runtime.py --reference-work C:/SWAP5-Snow-Reset/provider --output C:/SWAP5-Snow-Reset/explicit-O2 --mode explicit --hysteresis 2 --format 3 --reset 1 --optimization O2
+python -B tests/nomacro_scheduled_subsurface/thermal_reset_controls.py --reference-work C:/SWAP5-Snow-Reset/provider --profile-root C:/SWAP5-Snow-Reset/explicit-O2 --output C:/SWAP5-Snow-Reset/controls-O2
+python -B tests/nomacro_scheduled_subsurface/thermal_reset_epoch.py --reference-work C:/SWAP5-Snow-Reset/provider --output C:/SWAP5-Snow-Reset/epochs-O2 --optimization O2
+python -B tests/nomacro_scheduled_subsurface/thermal_reset_year_controls.py --reference-work C:/SWAP5-Snow-Reset/provider --epoch-root C:/SWAP5-Snow-Reset/epochs-O2 --output C:/SWAP5-Snow-Reset/year-refusals-O2
+```
+
+Run the public application with the same actual input and self-contained bundle:
+
+```powershell
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project C:/SWAP5-Snow-Reset/explicit-O2/input --original-output --reference-work C:/SWAP5-Snow-Reset/provider --build-bundle C:/SWAP5-Snow-Reset/explicit-O2/build --days 35 --checkpoint-at 30 --output C:/SWAP5-Snow-Reset/public-warm
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project C:/SWAP5-Snow-Reset/explicit-O2/input --original-output --reference-work C:/SWAP5-Snow-Reset/provider --build-bundle C:/SWAP5-Snow-Reset/explicit-O2/build --days 34 --checkpoint-at 34 --restart C:/SWAP5-Snow-Reset/public-warm/accepted-column-1-day-30.zip --restart-day 30 --output C:/SWAP5-Snow-Reset/public-cold
+```
+
+Use fresh outputs. On another platform replace drive paths and build that
+platform's own provider/bundle and checkpoints. Original FLPRINTDT date gates
+and pending pointers remain literal; no uniform output cadence is invented.
