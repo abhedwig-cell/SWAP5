@@ -153,6 +153,33 @@ class Proof(unittest.TestCase):
                         count+=1
         self.assertEqual(count,304);print('ACTUAL_ORDINARY_ANNUAL_COUNTER_EPOCH_CORRUPTIONS_REFUSED',count,flush=True)
 
+    def test_actual_bounded_limit_count(self):
+        count=0
+        for platform,opts in self.q['main'].items():
+            for opt,location in opts.items():
+                with zipfile.ZipFile(io.BytesIO(owner.raw_archive(self.q['archives'][location['archive']]))) as z:
+                    run=json.loads(z.read(location['prefix']+'RESULT.json'))
+                    def path(value):
+                        if platform=='Windows':return owner.PureWindowsPath(value).relative_to(owner.PureWindowsPath('C:/Users/Veldh012/swap5-complete01-evidence')).as_posix()+'/'
+                        base=owner.PurePosixPath(run['cases']['ordinary-explicit-hys0-binary']['short_root']).parent
+                        return str(owner.PurePosixPath(value).relative_to(base))+'/'
+                    for snow_key,item in run['limits'].items():
+                        prefix=path(item['root']);report=json.loads(z.read(prefix+'RESULT.json'));blob=z.read(prefix+'build/BUILD.json');build=json.loads(blob);snow=int(snow_key)
+                        case=('periodic',1,3,snow,0,1440,snow,False);owner.period(report,case,opt,'short',build,owner.digest(blob),days=2)
+                        rows=[json.loads(line) for line in z.read(prefix+'trajectory/daily.jsonl').splitlines()]
+                        with zipfile.ZipFile(io.BytesIO(z.read(prefix+'trajectory/accepted-column-1-day-2.zip'))) as checkpoint:raw=checkpoint.read('macro.bin')
+                        n=build['project']['nodes'];selected=build['identity']['original_output'];owner.native(raw,rows[1],n,1,selected);pos,_,_=owner.calendar(raw,n)
+                        for value in (0,1,2,1439,1441):
+                            bad=bytearray(raw)
+                            for offset in (0,80):struct.pack_into('<i',bad,pos+offset+20,value)
+                            with self.assertRaises(ValueError):owner.native(bad,rows[1],n,1,selected)
+                            count+=1
+                        for key,value in [('nprintday',1439),('snow',1-snow),('reset',1-snow)]:
+                            bad=copy.deepcopy(report);bad[key]=value
+                            with self.assertRaises(ValueError):owner.period(bad,case,opt,'short',build,owner.digest(blob),days=2)
+                            count+=1
+        self.assertEqual(count,64);print('ACTUAL_PERSTEP_1440_LIMIT_CORRUPTIONS_REFUSED',count,flush=True)
+
     def test_actual_snow_soil_receipts(self):
         sys.path.insert(0,str(ROOT/'tests/nomacro_scheduled_subsurface'));from thermal_step_verify import soil_receipts
         count=0
