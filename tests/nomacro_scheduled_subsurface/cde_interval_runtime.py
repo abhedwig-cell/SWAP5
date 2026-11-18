@@ -118,8 +118,8 @@ def main():
         q['cold']=[own(build,a.reference_work,project,full,data,s,e,out/('own-'+str(s))) for s,e in windows]
         q['daily_chemical_receipts']=audit_daily(full,days,project.nodes)
         for start,end in windows:audit_daily(out/('own-'+str(start)),end-start,project.nodes)
-        assert data[4]['solute_ledger_mg_cm2'][3]==48. and data[6]['solute_ledger_mg_cm2'][3]==72.
-        q['actual_fixed_incoming_mg_cm2']=[48.,72.]
+        assert abs(data[4]['solute_ledger_mg_cm2'][3]-48.)<=1e-10 and abs(data[6]['solute_ledger_mg_cm2'][3]-72.)<=1e-10
+        q['actual_fixed_incoming_mg_cm2']=[data[4]['solute_ledger_mg_cm2'][3],data[6]['solute_ledger_mg_cm2'][3]]
         q['native_domains']={}
         for day in sorted({2,4,8,days}&cuts):
             with zipfile.ZipFile(full/f'accepted-column-1-day-{day}.zip') as checkpoint:
