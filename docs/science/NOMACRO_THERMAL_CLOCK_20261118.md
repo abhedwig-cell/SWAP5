@@ -1,6 +1,6 @@
 # Original Snow output with a subdaily clock
 
-**Source contract / implementation next / not qualified or admitted.** Baseline
+**Implemented / narrow Windows source-native-output gates pass / not qualified or admitted.** Baseline
 is actual canonicala264b7166 after PR1738/1739. Both actual source and metadata
 merges have exact ordered parents/full qualified trees and pass the registered
 detached Snow-calendar owner. Closure remains PARTIAL, whole science
@@ -107,3 +107,26 @@ is patched. Keep all other original event ordering and old clock helpers literal
 This scoped numerical clock composition requires fresh O0/O2 native/output and
 full-period qualification; the observation does not qualify whole-model legacy
 science or authorize a change to other process routes.
+
+## Current development gates
+
+The final proposed terminal-step alignment also covers the case where the
+adapted suggested step ends within original dtCrit before the true EOD event.
+The NPD2/hysteresis1 O0/O2 pilots and NPD3/hysteresis2 O0/O2 pilots pass35days
+and four byte-exact complete native/user cold windows each. The selected four
+short contexts per optimization pass60actual corrupt native controls each,
+active discard/replay/accept/recovered-day tests and policy/provider refusals.
+Independent public Windows commands and original numeric/descriptor reader
+controls pass. Eight short contexts precede four selected1096day periods per
+optimization; portable and scoped preservation gates remain required.
+Expected local matrix cost is several minutes, selected for the changed Snow
+soil receipt, terminal clock, counter/native restart and actual user cadence.
+No unchanged process primitive or unrelated full science campaign is repeated.
+
+Original output may render a rounded seconds field of60, for example
+`2002-01-12 15:59:60`. The cadence audit interprets original date plus h/m/s,
+while all actual warm/cold record bytes must still agree exactly. No output
+formatter or stored output bytes are rewritten. The original header includes
+actual execution time; preservation compares all data records and complete
+physical/native state separately from that header. Retain the initial overly
+strict ISO/header comparison failures as controller diagnostics.
