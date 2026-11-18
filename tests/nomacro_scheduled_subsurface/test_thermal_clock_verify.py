@@ -38,6 +38,15 @@ class Proof(unittest.TestCase):
                         return str(owner.PurePosixPath(value).relative_to(base))+'/'
                     for key,case in CASES.items():
                         item=run['cases'][key];raw=z.read(path(item['build_root'])+'BUILD.json');build=json.loads(raw);digest=owner.digest(raw)
+                        owner.build_files(z,path(item['build_root']),build)
+                        for group,key in [('executable_sha256','donor'),('executable_sha256','kernel')]:
+                            bad=copy.deepcopy(build);bad[group][key]='0'*64
+                            with self.assertRaises(ValueError):owner.build_files(z,path(item['build_root']),bad)
+                            count+=1
+                        bad=copy.deepcopy(build);key=next(iter(bad['identity']['donor_generated']));bad['identity']['donor_generated'][key]='0'*64
+                        bad['binding']['build']=copy.deepcopy(bad['identity'])
+                        with self.assertRaises(ValueError):owner.build_files(z,path(item['build_root']),bad)
+                        count+=1
                         for phase in ('short','full'):
                             if phase not in item:continue
                             report=item[phase];owner.period(report,case,opt,phase,build,digest)
@@ -75,7 +84,7 @@ class Proof(unittest.TestCase):
                             refused('calendar-nonfinite',bad)
                             bad=bytearray(raw);struct.pack_into('<d',bad,c+160,123.);refused('calendar-value-witness',bad)
                             refused('incomplete-prototype-codec',b'S5CTW002'+raw[8:]);refused('truncated',raw[:-1])
-        self.assertEqual(count,1312)
+        self.assertEqual(count,1408)
         print('ACTUAL_SNOW_PERIOD_LEDGER_SEVEN_TOTALS_NATIVE_CORRUPTIONS_REFUSED',count,flush=True)
 
     def test_actual_soil_and_subdaily_cadence_corruptions(self):

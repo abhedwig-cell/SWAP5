@@ -59,8 +59,8 @@ def validate(q):
         for path,value in q[group].items():require(sha(ROOT/path)==value,'actual Snow calendar source/controller changed: '+path)
     require(q['base_consumer']['merge']==BASE and q['base_consumer']['exact_complete_tree'] is True
         and q['base_consumer']['actual_detached_owner']['returncode']==0,'actual preceding groundwater-history metadata owner absent')
-    require(q['workflows']['main']['id']==44334528550 and q['workflows']['main']['conclusion']=='success'
-        and q['workflows']['preservation']['id']==44335000447 and q['workflows']['preservation']['conclusion']=='success','actual Snow calendar workflows incomplete')
+    require(q['workflows']['main']['id']==44341043097 and q['workflows']['main']['conclusion']=='success'
+        and q['workflows']['preservation']['id']==44341069500 and q['workflows']['preservation']['conclusion']=='success','actual Snow calendar workflows incomplete')
     require(set(q['main'])=={'Windows','Ubuntu'} and all(set(opts)=={'O0','O2'} for opts in q['main'].values()),'Snow calendar platform/optimization omitted')
     require(q['preservation']['Windows']['profiles']=={'thermal-clock-composed-preserve-groundwater-O0-v1':3,'thermal-clock-composed-preserve-groundwater-O2-v1':3,
         'thermal-clock-composed-preserve-calendar-O0-v1':4,'thermal-clock-composed-preserve-calendar-O2-v1':4,
@@ -145,6 +145,7 @@ def period(report,case,opt,phase,build,build_digest):
         and selected['physical_equations_changed'] is False and build['project']['water_tolerance']==1e-10
         and build['identity']['lower_boundary_receipt']['effective_SWBOTB']==(8 if hys==2 else 5),'compiled Snow calendar process policy differs')
     require(all('-'+opt in build['identity'][key] for key in ('donor_flags','kernel_flags')),'actual Snow calendar optimization differs')
+    require(build['identity']['water_polish_policy']=='strict-water-always-polish-v1','foreign composed Snow water polishing policy')
     windows={(2,4),(4,8),(19,23),(30,34)}|({(199,201),(364,367),(530,532),(1094,1096)} if phase=='full' else set())
     require({(r['start'],r['end']) for r in report['cold']}==windows,'Snow calendar cold/month/year/terminal window omitted')
     for item in report['cold']:
@@ -159,6 +160,14 @@ def ledger(rows,days):
         require(len(flow)==16 and len(start)==len(end)==6 and all(finite(v) for v in [*flow,*start,*end,*row['pressure_head_cm']]),'Snow physical receipt malformed')
         water=math.fsum([*flow[:7],*(-v for v in flow[7:]),*start,*(-v for v in end)])
         require(all(bounded(v) for v in (water,row['independent_residual_cm'],row['kernel_residual_cm'],row['integrated_guard_residual_cm'])),'actual independent Snow water guard exceeded')
+
+def build_files(z,prefix,build):
+    require(build['binding']['build']==build['identity'],'actual build/checkpoint policy identity differs')
+    for name,value in build['identity']['donor_generated'].items():
+        require(digest(z.read(prefix+name))==value,'actual generated Snow provider changed: '+name)
+    for kind,name in [('donor','day_donor'),('kernel','day_kernel')]:
+        paths=[prefix+name+suffix for suffix in ('','.exe') if prefix+name+suffix in z.namelist()]
+        require(len(paths)==1 and digest(z.read(paths[0]))==build['executable_sha256'][kind],'actual compiled Snow executable changed: '+kind)
 
 def native(raw,row,n,hys,selected):
     require(raw[:8]==b'S5STW001','actual Snow calendar codec differs')
@@ -258,6 +267,9 @@ def verify():
                 short_data={}
                 for key,case in CASES.items():
                     item=run['cases'][key];bp=path(item['build_root']);raw=z.read(bp+'BUILD.json');build=json.loads(raw);bd=digest(raw);reports+=1;compiled_builds.add(bd)
+                    build_files(z,bp,build)
+                    host=blob(RUNTIME,'app/hybrid_water/daily_host.py').replace(b'\r\n',b'\n')
+                    require(build['identity']['host'] in (digest(host),digest(host.replace(b'\n',b'\r\n'))),'actual composed Snow host source differs')
                     require(digest(z.read(bp+'thermal_output_snow_calendar_state.f90').replace(b'\r\n',b'\n'))==q['frozen_predecessor_sources']['app/hybrid_water/thermal_output_snow_calendar_state.f90'],'actual compiled Snow state provider differs')
                     selected=build['identity']['original_output']
                     require(selected['source_sha256']==q['source_sha256']['app/hybrid_water/thermal_output_clock.py']
