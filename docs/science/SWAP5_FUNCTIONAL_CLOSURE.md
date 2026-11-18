@@ -1,5 +1,18 @@
 # Current functional closure of the original projects
 
+## Original Snow output calendars,18November2026
+
+[Sparse Snow/thermal water output](NOMACRO_THERMAL_CALENDAR_20261118.md)
+now supports the bounded monthly, explicit-date, periodic and PERIOD0 daily
+calendar composition. A separate native adapter restores seven outstanding
+original Snow totals while keeping all physical/calendar owners literal.
+Windows/Ubuntu16full1096day periods,256complete cold windows and40prior
+contexts pass with unchanged guards, exact native/sparse user records and
+independent public/original-reader gates. Original forced annual/TEND output
+is preserved. Registered proof passes; actual canonical admission remains pending.
+Historical closure stays PARTIAL, whole science NOT_QUALIFIED and fixed RC3
+unchanged; CDE/age/subdaily Snow calendars and other historical gaps continue.
+
 ## Groundwater hydraulic and snow histories,18November2026
 
 [Groundwater histories](NOMACRO_GROUNDWATER_HISTORY_20261118.md) compose original

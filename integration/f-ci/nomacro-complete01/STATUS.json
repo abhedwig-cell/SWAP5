@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-thermal-calendar01",
-  "last_commit": "b7fd2c014894e9420314cff2be7eb295cba9cd3d",
-  "status": "THERMAL_CALENDAR_ALL_MODEL_AND_PRIOR_CONTEXTS_PASS_SOURCE_OWNER_NEXT",
+  "last_commit": "980b133b33eed066e67998ede3698b8f8ddd2021",
+  "status": "THERMAL_CALENDAR_QUALIFIED_PENDING_ACTUAL_CANONICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -1056,7 +1056,7 @@
   },
   "canonical_live_overlap": "PR1735 SaltFarm Newton work is open/unmerged on its own branch; not imported or modified by this historical migration batch.",
   "thermal_calendar": {
-    "status": "SEALED_SEVEN_RAW_PRODUCERS_AND_PROOF_CORRUPTIONS_PASS_PENDING_REGISTERED_ROOT",
+    "status": "QUALIFIED_REGISTERED_ROOT_AND_ACTUAL_SOURCE_NEGATIVE_PASS_PENDING_CANONICAL",
     "baseline": "8c09e206d854fec51b2c1b94b3c9b52921e6216b",
     "contract": "docs/science/NOMACRO_THERMAL_CALENDAR_20261118.md",
     "scope": "Explicit original water Snow1 heat1/calc2 hys0/1/2 drainage1 analytical soil bottom5/8 dailyweather nofrost/AQ/macro; NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0or2..366.",
@@ -1065,7 +1065,7 @@
       "C:/Users/Veldh012/swap5-complete01-evidence/thermal-calendar-baseline-monthly-v2"
     ],
     "original_reader": "ASCIImonthly originalexe swap.ok, normal termination100; initial uncorrectedbinaryformat3segfault retained, notscienceoracle/newdefectclaim",
-    "next": "Runactualregisteredroot; actualdirty/committedomittedSnowstagingnegative; docs; sourcePRactualcanonicalparents/fulltree/detachedowner; metadatamergeandcontinuehistoricalinventory.",
+    "next": "Create and merge source PR; verify actual canonical ordered parents/full tree and clean detached registered owner; metadata admission, then next historical composition.",
     "external_blocker": null,
     "runtime": "02f1bc2c1e53e5035279ab6825e702cbf7d0ceb6",
     "failure": "O0/O2 monthly35day complete;30to34cold physical rows andresult.end/macro.bin exact beforeactualJanuary31userbinaryrecord mismatch. Frozen calendar _layout explicitly skips7Snow MOD_integral totals.",
@@ -1093,6 +1093,23 @@
     "raw_archives": 7,
     "raw_bytes": 313908829,
     "proof_tests": "3PASS8.103seconds;1264actualperiod/ledger/7Snow/native+44source/scope+21actualrawartifact/priorpartbindingcorruptionsrefused.",
-    "predecessor": "Literal8c source image validates previousgroundwaterhistoryqualification; actualpreviousrawarchivesunchangedPASS; noROOT/hashmonkeypatch."
+    "predecessor": "Literal8c source image validates previousgroundwaterhistoryqualification; actualpreviousrawarchivesunchangedPASS; noROOT/hashmonkeypatch.",
+    "registered_root": {
+      "status": "ORIGINAL_SNOW_CALENDAR_SEVEN_TOTALS_NATIVE_ADMISSION_PASS",
+      "runtime": "02f1bc2c1e53e5035279ab6825e702cbf7d0ceb6",
+      "predecessor": "LITERAL_QUALIFIED_GROUNDWATER_HISTORY_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS",
+      "actual_full_periods": 16,
+      "actual_cold_windows": 256,
+      "actual_native_refusals": 944,
+      "actual_policy_refusals": 256,
+      "actual_copied_provider_refusals": 16,
+      "actual_preserved_contexts": 40,
+      "actual_bound_reports": 160,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "source_negative_commit": "1bdb0db40051001a0df244e63d9fa852b3cdbb05",
+    "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_OMITTED_SEVEN_SNOW_TOTAL_STAGING_REFUSED",
+    "docs": "SourcechecksPASS; strictMkDocsPASS45.97seconds external site"
   }
 }

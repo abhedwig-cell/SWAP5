@@ -1,6 +1,6 @@
 # Original snow and thermal output calendars
 
-**Source contract / implementation next / not qualified or admitted.** Baseline
+**Qualified bounded composition / registered proof PASS / actual canonical admission pending.** Baseline
 is actual canonical8c09e206d after PR1736/1737. Both actual source and metadata
 merges have exact ordered parents/full qualified trees and pass the registered
 detached groundwater-history owner. Closure remains PARTIAL, whole science
@@ -138,3 +138,28 @@ TEND. The explicit six-date profile also retains the two additional annual
 records, giving nine records including initialization. Monthly has37records;
 period5has221including forced TEND and initialization. Preserve these actual
 original semantics; do not suppress annual records or normalize PERIOD0.
+
+Windows and Ubuntu O0/O2 now complete16full1096day periods and256complete cold
+windows. There are944actual native,256policy and16actual copied-provider
+refusals, with active discard/replay/accept/recovery controls. Forty selected
+prior contexts stay exact:25Windows and15Ubuntu, including actual admitted
+groundwater CDE histories/ordinary state, daily thermal/water/CDE/frost, current
+AI/DI age and young/named routes. No old full campaigns were repeated. Main
+run44316976705 and scoped preservation44318020505 both end SUCCESS.
+
+Seven immutable raw archives total313908829bytes. Original GitHub ZIP bytes
+remain unchanged. The source-bound owner recomputes actual daily water ledgers,
+complete native/calendar/seven-total records, all sparse cold user records,
+format0/3 endpoints and actual old/current gap data. It validates the literal
+preceding8csource image and actual previous archive bytes without source/hash
+monkeypatching. Three tests pass in8.103seconds:1264actual period/ledger/native,
+44source/scope and21actual raw-artifact/prior-part corruptions are refused.
+Actual registered/canonical admission is still required. Whole closure remains
+PARTIAL, whole science NOT_QUALIFIED and fixed RC3 unchanged.
+
+The actual registered root passes160bound reports/builds and all selected
+ledger/native/user-output/preservation denominators. A real dirty and committed
+negative source disables seven-total staging; both registered-root calls refuse
+before archives or model work. The bad commit 1bdb0db40051001a0df244e63d9fa852b3cdbb05
+is retained in its private sparse control worktree and must never merge.
+The predecessor owner remains literal behind a four-line dispatch.
