@@ -19,12 +19,16 @@ from cde_native_receipt import decode as native_stock
 m=prior.m;ROOT=prior.ROOT
 
 
-def fixture(path,mode,hysteresis,fmt,reset=1,et=0,snow=0,source='point'):
-    prior.fixture(path,'chemical-snow-'+source,fmt)
+def fixture(path,mode,hysteresis,fmt,reset=1,et=0,snow=0,source='point',rain=None):
+    prior.fixture(path,'chemical-snow-'+('interval' if source=='interval' else 'point'),fmt)
+    if source in ('sprinkler','surface'):
+        irrigation=path/'fixed-irrigation.irg';raw=irrigation.read_text(encoding='cp1252');assert raw.count(' 2 12.0')==2
+        raw=raw.replace(' 2 12.0',' '+str(0 if source=='sprinkler' else 1)+' 12.0');raw,count=re.subn(r'(?m)^IR_Z[^\n]*\n?','',raw);assert count==1;irrigation.write_text(raw,encoding='cp1252')
     p=path/'swap.swp';text=p.read_text(encoding='cp1252')
     for key,value in dict(SWSNOW=snow,SWHYST=hysteresis,SWMONTH=int(mode=='monthly'),SWODAT=int(mode=='explicit'),PERIOD=0 if mode in ('monthly','explicit','terminal') else 5,
             SWRES=reset,SWCFBS=et,SWBOTB=8 if hysteresis==2 else 5,SWBBCFILE=0,NPRINTDAY=1).items():text=assignment(text,key,value)
     if et:text=assignment(text,'CFBS',0.8)
+    if rain is not None:text=assignment(text,'CPRE',rain)
     if mode=='explicit':
         text,count=re.subn(r'(?mi)^([ \t]*OUTDATINT[ \t]*=[ \t]*\n).*?^\* End of table',
             lambda match:match[1]+'2002-01-04\n2002-01-08\n2002-01-31\n2003-01-01\n2003-06-15\n2004-12-31\n* End of table',text,count=1,flags=re.S);assert count==1
@@ -90,16 +94,16 @@ def main():
     p.add_argument('--hysteresis',choices=(0,1,2),type=int,default=2)
     p.add_argument('--format',choices=(0,1,2,3),type=int,default=3)
     p.add_argument('--reset',choices=(0,1),type=int,default=1);p.add_argument('--et',choices=(0,1),type=int,default=0)
-    p.add_argument('--snow',type=int,choices=(0,1),default=0);p.add_argument('--source',choices=('point','interval'),default='point')
+    p.add_argument('--snow',type=int,choices=(0,1),default=0);p.add_argument('--source',choices=('point','interval','sprinkler','surface'),default='point');p.add_argument('--rain',type=float)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     p.add_argument('--resume',action='store_true');p.add_argument('--phase',choices=('short','full'),default='short');p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
     a=p.parse_args();out=a.output.resolve();out.mkdir(exist_ok=a.resume);old=json.loads((out/'RESULT.json').read_text(encoding='utf8')) if a.resume else None
     inputs=Path(old['input_root']) if old else a.existing_input or out/'input'
-    if not a.existing_input and not a.resume:fixture(inputs,a.mode,a.hysteresis,a.format,a.reset,a.et,a.snow,a.source)
+    if not a.existing_input and not a.resume:fixture(inputs,a.mode,a.hysteresis,a.format,a.reset,a.et,a.snow,a.source,a.rain)
     project=m.e.load(inputs,original_output=True);build=Path(old['build_root']) if old else a.reuse_build or out/'build';selected=metadata(project)
     assert selected['cde_interval_output'] is True and selected['native_codec']==magic(project).decode()
     q=dict(status='RUNNING',source_commit=old['source_commit'] if old else subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-        nprintday=1,snow=a.snow,source=a.source,mode=a.mode,hysteresis=a.hysteresis,format=a.format,reset=a.reset,et=a.et,optimization=a.optimization,input_root=str(inputs),build_root=str(build),
+        nprintday=1,snow=a.snow,source=a.source,rain=a.rain,mode=a.mode,hysteresis=a.hysteresis,format=a.format,reset=a.reset,et=a.et,optimization=a.optimization,input_root=str(inputs),build_root=str(build),
         original_output=selected,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
     if old:
         assert old['status']=='FAILED' and old['error']=="ValueError('not enough values to unpack (expected 2, got 1)')",old
@@ -133,6 +137,8 @@ def main():
         for start,end in windows:audit_daily(out/('own-'+str(start)),end-start,project.nodes)
         assert abs(data[4]['solute_ledger_mg_cm2'][3]-48.)<=1e-10 and abs(data[6]['solute_ledger_mg_cm2'][3]-72.)<=1e-10
         q['actual_fixed_incoming_mg_cm2']=[data[4]['solute_ledger_mg_cm2'][3],data[6]['solute_ledger_mg_cm2'][3]]
+        q['actual_rain_chemical_mg_cm2']=sum(row['solute_ledger_mg_cm2'][2] for row in data)
+        if a.rain is not None and a.rain>0:assert q['actual_rain_chemical_mg_cm2']>0
         q['native_domains']={}
         for day in sorted({2,4,8,days}&cuts):
             with zipfile.ZipFile(full/f'accepted-column-1-day-{day}.zip') as checkpoint:

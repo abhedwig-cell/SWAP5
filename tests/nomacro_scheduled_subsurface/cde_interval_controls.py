@@ -123,7 +123,7 @@ def transactions(build,reference,project,full,out):
 def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','profile-root','output'):p.add_argument('--'+key,type=Path,required=True)
-    a=p.parse_args();a.output.mkdir();cohort=json.loads((a.profile_root/'RESULT.json').read_text(encoding='utf8'));project=m.e.load(Path(cohort['input_root']),original_output=True)
+    p.add_argument('--skip-provider-poison',action='store_true');a=p.parse_args();a.output.mkdir();cohort=json.loads((a.profile_root/'RESULT.json').read_text(encoding='utf8'));project=m.e.load(Path(cohort['input_root']),original_output=True)
     build=Path(cohort['build_root']);full=a.profile_root/'trajectory';selected=metadata(project)
     q=dict(status='RUNNING',build_sha256=m.sha(build/'BUILD.json'),native_refusals=[],policy_refusals=[])
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
@@ -141,7 +141,8 @@ def main():
             else:raise AssertionError('Foreign ordinary output policy accepted')
             q['policy_refusals'].append(dict(field=field,status='REFUSED'));save()
         q['actual_provider_refusals']=[]
-        helpers=['original_cde_output_state.f90','cde_interval_receipt.f90','solute.f90']+(['thermal_output_snow_calendar_state.f90'] if selected['swsnow'] else [])
+        q['provider_poison_selection']='NOT_SELECTED_IDENTICAL_CDE_RECEIPT_STATE_VALIDATOR' if a.skip_provider_poison else 'SELECTED_ACTUAL_COMPILED_CDE_PROVIDER_POISON'
+        helpers=[] if a.skip_provider_poison else (['original_cde_output_state.f90','cde_interval_receipt.f90','solute.f90']+(['thermal_output_snow_calendar_state.f90'] if selected['swsnow'] else []))
         for helper in helpers:
             target=a.output/('actual-provider-'+helper);shutil.copytree(build,target);m.validate_bundle(target,a.reference_work,project)
             path=target/helper;path.write_bytes(path.read_bytes()+b'\n! deliberately foreign actual CDE interval provider\n')
