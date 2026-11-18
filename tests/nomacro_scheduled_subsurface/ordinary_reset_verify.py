@@ -179,9 +179,9 @@ def trial_witness(z,prefix,epoch,report=None):
 
 
 def verify():
-    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty Snow calendar admission surface')
+    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty ordinary annual admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
-    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Snow calendar production differs from qualified source')
+    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'ordinary annual production differs from qualified source')
     q=json.loads((ROOT/PROOF/'ORDINARY_RESET_QUALIFICATION.json').read_text(encoding='utf8'));validate(q)
     require(set(git('diff','--name-only',BASE,RUNTIME,'--','app','src','reference','tools').decode().splitlines())==set(q['source_sha256']),'unqualified Snow production surface')
     mutable={PROOF+n for n in ('STATUS.json','GAP_MATRIX.json','CI_SELECTION.json')};current=tree('HEAD','integration')
@@ -237,15 +237,18 @@ def verify():
                     build_files(z,bp,build)
                     host=blob(RUNTIME,'app/hybrid_water/daily_host.py').replace(b'\r\n',b'\n')
                     require(build['identity']['host'] in (digest(host),digest(host.replace(b'\n',b'\r\n'))),'actual composed Snow host source differs')
-                    require(digest(z.read(bp+'thermal_output_snow_calendar_state.f90').replace(b'\r\n',b'\n'))==q['frozen_predecessor_sources']['app/hybrid_water/thermal_output_snow_calendar_state.f90'],'actual compiled Snow state provider differs')
                     selected=build['identity']['original_output']
-                    require(selected['source_sha256']==q['source_sha256']['app/hybrid_water/ordinary_output_reset.py']
-                        and selected['snow_output_source_sha256']==q['frozen_predecessor_sources']['app/hybrid_water/thermal_output_snow_calendar_state.f90'],'actual Snow compiled source identity differs')
+                    require(selected['source_sha256']==q['source_sha256']['app/hybrid_water/ordinary_output_reset.py'],'actual ordinary compiled source identity differs')
+                    provider='src/process/mod_original_output_receipt.f90'
+                    require(digest(z.read(bp+'mod_original_output_receipt.f90').replace(b'\r\n',b'\n'))==q['frozen_predecessor_sources'][provider],'actual copied original receipt provider differs')
+                    if case[1]:
+                        provider='app/hybrid_water/original_output_hysteresis_domain.f90'
+                        require(digest(z.read(bp+'original_output_hysteresis_domain.f90').replace(b'\r\n',b'\n'))==q['frozen_predecessor_sources'][provider] and selected['domain_source_sha256']==q['frozen_predecessor_sources'][provider],'actual copied original hysteresis provider differs')
                     for phase in ('short','full'):
                         if phase=='full' and not case[-1]:continue
                         prefix=path(item[phase+'_root']);report=read(z,prefix+'RESULT.json');require(report==item[phase],'actual Snow period producer rebound')
                         period(report,case,opt,phase,build,bd);days=1096 if phase=='full' else 35;data=rows(z,prefix+'trajectory/');ledger(data,days)
-                        soil_receipts(z,prefix+'trajectory/',days,report['soil_receipts'])
+                        trial_witness(z,prefix+'trajectory/',build['identity']['original_output']['original_output_epoch'],item['trial_phase_witness'] if phase=='short' else None)
                         require(max(row['stock_end_cm'][2] for row in data)>0 and sum(row['external_flux_cm'][12] for row in data)>0,'actual Snow stock/sublimation inactive')
                         if phase=='full':fulls+=1
                         else:
@@ -257,7 +260,6 @@ def verify():
                             if phase=='full':require(stamps[-1]=='2005-01-01 00:00:00','actual subdaily TEND event missing')
                         for window in report['cold']:
                             start,end=window['start'],window['end'];windows+=1;actual=rows(z,prefix+f'own-{start}/')
-                            soil_receipts(z,prefix+f'own-{start}/',end-start)
                             require(physical(actual)==physical(data[start:end]),'actual Snow cold physical rows differ')
                             with zipfile.ZipFile(io.BytesIO(z.read(prefix+f'trajectory/accepted-column-1-day-{end}.zip'))) as warm,zipfile.ZipFile(io.BytesIO(z.read(prefix+f'own-{start}/accepted-column-1-day-{end}.zip'))) as cold:
                                 for name in ('result.end','macro.bin'):require(warm.read(name)==cold.read(name),'actual Snow complete cold native differs')
@@ -266,17 +268,17 @@ def verify():
                         for day in (2,4,8,days):
                             with zipfile.ZipFile(io.BytesIO(z.read(prefix+f'trajectory/accepted-column-1-day-{day}.zip'))) as checkpoint:
                                 values=native(checkpoint.read('macro.bin'),data[day-1],build['project']['nodes'],case[1],selected,build['project']['start_date'])
-                                require(list(values)==report['native_domains'][str(day)]['snow_output_values'],'actual reported seven Snow totals differ')
-                require(short_data['explicit-hys2-binary']==short_data['explicit-hys2-none'],'actual Snow output format changes physics')
-                left=path(run['cases']['explicit-hys2-binary']['short_root']);right=path(run['cases']['explicit-hys2-none']['short_root'])
+                                require(values==report['native_domains'][str(day)],'actual reported ordinary native domain/counter differs')
+                require(short_data['explicit-hys0-binary']==short_data['explicit-hys0-none'],'actual Snow output format changes physics')
+                left=path(run['cases']['explicit-hys0-binary']['short_root']);right=path(run['cases']['explicit-hys0-none']['short_root'])
                 for day in (4,8,23,34,35):
                     with zipfile.ZipFile(io.BytesIO(z.read(left+f'trajectory/accepted-column-1-day-{day}.zip'))) as a,zipfile.ZipFile(io.BytesIO(z.read(right+f'trajectory/accepted-column-1-day-{day}.zip'))) as b:
                         for name in ('result.end','macro.bin'):require(a.read(name)==b.read(name),'actual Snow format changes complete native')
                 for key,item in run['controls'].items():
                     control=read(z,path(item['root'])+'RESULT.json');require(control==item['report'],'actual Snow controls rebound')
-                    require(control['status']=='ORDINARY_WATER_FLPRINTDT_RESET_SIXTY_THREE_NATIVE_ACTIVE_AND_POLICY_REFUSALS_PASS'
-                        and len(control['native_refusals'])==63 and all(r['status']=='REFUSED' and 'ERROR STOP' in r['diagnostic'] for r in control['native_refusals']),'actual Snow native refusal omitted');refusals+=63
-                    require(len(control['policy_refusals'])==27 and all(r['status']=='REFUSED' for r in control['policy_refusals']),'actual Snow policy refusal omitted');policies+=27
+                    require(control['status']=='ORDINARY_WATER_FLPRINTDT_RESET_NATIVE_ACTIVE_POLICY_PROVIDER_PASS'
+                        and len(control['native_refusals'])==(39 if CASES[key][1] else 33) and all(r['status']=='REFUSED' and 'ERROR STOP' in r['diagnostic'] for r in control['native_refusals']),'actual Snow native refusal omitted');refusals+=(39 if CASES[key][1] else 33)
+                    require(len(control['policy_refusals'])==34 and all(r['status']=='REFUSED' for r in control['policy_refusals']),'actual Snow policy refusal omitted');policies+=34
                     require(control['actual_provider_refusal']['status']=='REFUSED' and control['actual_provider_refusal']['actual_original_metadata_unchanged'] is True,'actual copied Snow provider not bound');providers+=1
                     require(all(control['transactions'][k] is True for k in ('discard_no_day_advance','replay_exact','accept_exact','recovered_next_day_exact','origin_unchanged')),'actual Snow transactions omitted')
         contexts=0
@@ -317,9 +319,10 @@ def verify():
         for location in q['context']:
             z=archives[location['archive']];public=read(z,location['public']+'/RESULT.json');reader=read(z,location['reader']+'/RESULT.json')
             require(public['status']=='THREE_PUBLIC_ORDINARY_WATER_FLPRINTDT_RESET_SELF_CONTAINED_RESTART_CONTEXTS_PASS' and len(public['profiles'])==3,'actual independent Snow public gate missing')
-            require(reader['status']=='SEVEN_ORIGINAL_CALENDAR_READER_TWELVE_SNOW_DESCRIPTOR_REFUSALS_PASS' and len(reader['reader_refusals'])==7 and len(reader['descriptor_refusals'])==12
+            require(reader['status']=='SEVEN_ORDINARY_READER_TWELVE_DESCRIPTOR_FOUR_LITERAL_DELEGATIONS_PASS' and len(reader['reader_refusals'])==7 and len(reader['descriptor_refusals'])==12
                 and reader['build_sha256'] in compiled_builds and all(r['status']=='REFUSED_BEFORE_HYBRID_READY' for r in reader['reader_refusals'])
                 and all(r['status']=='REFUSED' for r in reader['descriptor_refusals']),'actual original Snow reader/domain gate missing')
+            require(len(reader['literal_delegations'])==4 and {v['key'] for v in reader['literal_delegations']}=={'SWRES','SWMONTH','FLPRINTDT','SWSNOW'} and all(v['status']=='LITERAL_PRIOR_METADATA_EXACT_FOREIGN_BUNDLE_REFUSED' and v['metadata']['policy']!='original-ordinary-water-flprintdt-annual-reset-v1' for v in reader['literal_delegations']),'actual literal prior ownership/bundle refusal omitted')
             for name,item in public['profiles'].items():
                 require(item['physical_exact'] is item['complete_native_exact'] is item['origin_unchanged'] is True
                     and all(v['exact'] is True for v in item['user_output_exact'].values()) and item['warm']['returncode']==item['cold']['returncode']==0,'actual public Snow continuation differs')
@@ -338,15 +341,15 @@ def verify():
                 prefix=ep+epoch+'/actual/';report=read(z,prefix+'RESULT.json');raw=z.read(prefix+'build/BUILD.json');build=json.loads(raw);bd=digest(raw)
                 require(report==item['report'] and build['project']['start_date']==epoch and build['identity']['original_output']['source_sha256']==q['source_sha256']['app/hybrid_water/ordinary_output_reset.py'],'actual epoch build/report rebound')
                 build_files(z,prefix+'build/',build);period(report,('explicit',2,3,1,0,False),location['optimization'],'short',build,bd)
-                data=rows(z,prefix+'trajectory/');ledger(data,35);soil_receipts(z,prefix+'trajectory/',35,report['soil_receipts']);epoch_periods+=1
-                selected=build['identity']['original_output'];require(len(item['actual_native_counters'])==8,'actual epoch native inventory censored')
+                data=rows(z,prefix+'trajectory/');ledger(data,35);epoch_periods+=1
+                selected=build['identity']['original_output'];trial_witness(z,prefix+'trajectory/',selected['original_output_epoch']);require(len(item['actual_native_counters'])==8,'actual epoch native inventory censored')
                 for check in item['actual_native_counters']:
                     day=check['day'];completed=date.fromisoformat(epoch)+timedelta(days=day-1);expected=min(day,completed.timetuple().tm_yday)
                     require(check==dict(day=day,completed=completed.isoformat(),global_day=day,annual_counter=expected,expected=expected),'actual epoch native report differs')
                     with zipfile.ZipFile(io.BytesIO(z.read(prefix+f'trajectory/accepted-column-1-day-{day}.zip'))) as checkpoint:native(checkpoint.read('macro.bin'),data[day-1],build['project']['nodes'],2,selected,epoch)
                 for name,observed in report['user_output'].items():output_clock(observed,[stamp(row) for row in user(z,prefix+'trajectory/original/'+name)],35,epoch)
                 for window in report['cold']:
-                    start,end=window['start'],window['end'];epoch_cold+=1;actual=rows(z,prefix+f'own-{start}/');require(physical(actual)==physical(data[start:end]),'actual non-January cold rows differ');soil_receipts(z,prefix+f'own-{start}/',end-start)
+                    start,end=window['start'],window['end'];epoch_cold+=1;actual=rows(z,prefix+f'own-{start}/');require(physical(actual)==physical(data[start:end]),'actual non-January cold rows differ')
                     with zipfile.ZipFile(io.BytesIO(z.read(prefix+f'trajectory/accepted-column-1-day-{end}.zip'))) as warm,zipfile.ZipFile(io.BytesIO(z.read(prefix+f'own-{start}/accepted-column-1-day-{end}.zip'))) as cold:
                         for member in ('result.end','macro.bin'):require(warm.read(member)==cold.read(member),'actual non-January cold native differs')
                         native(cold.read('macro.bin'),data[end-1],build['project']['nodes'],2,selected,epoch)
@@ -362,7 +365,7 @@ def verify():
                     require(not any(name.startswith(ap) and Path(name).name.startswith('accepted-') and name.endswith('.zip') for name in z.namelist()),'forged annual worker published accepted state')
                     raw=z.read(ap+'origin/macro.bin')
                     with zipfile.ZipFile(io.BytesIO(source)) as checkpoint:expected_raw=bytearray(checkpoint.read('macro.bin'))
-                    snow=struct.pack('<4i',1,build['project']['nodes'],0,7);counter=expected_raw.index(snow+snow)+88
+                    counter,_,_=calendar(expected_raw,build['project']['nodes'])
                     for offset in (28,108):struct.pack_into('<i',expected_raw,counter+offset,attack['forged_counter'])
                     require(raw==expected_raw,'actual forged annual origin has an unbound mutation')
                     try:native(raw,data[29],build['project']['nodes'],2,selected,epoch)
@@ -370,7 +373,7 @@ def verify():
                     else:raise ValueError('actual forged annual native origin independently accepted')
         require((epoch_periods,epoch_cold,year_refusals)==(8,32,32),'actual non-January epoch/forgery denominator differs')
         z=archives[q['retained_observations']['archive']]
-        valid=read(z,'ordinary-reset-baseline-original-reader-v1/RESULT.json')
+        valid=read(z,'ordinary-reset-baseline-original-reader-v2/RESULT.json')
         require(valid['original']['swap_ok'] is True and valid['original']['returncode']==100 and valid['scientific_claim'] is False
             and valid['original']['executable_sha256']=='c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71','actual original FLPRINTDT reset reader observation changed/promoted')
     require((fulls,windows,refusals,policies,providers,contexts)==(16,256,600,544,16,91),'actual Snow calendar full/native/preservation denominator differs')
