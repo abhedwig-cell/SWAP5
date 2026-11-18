@@ -166,6 +166,10 @@ def bound_claims(q,reports):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('output_aquifer_admission',ROOT/'tests/nomacro_scheduled_subsurface/output_aquifer_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty direct source admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     allowed={'app/hybrid_water/'+n for n in ('daily_host.py','daily_coupling.py','experimental_project.py','age_direct_soil_source.py','direct_soil_age.py','direct_soil_age_state.f90')}|{'src/process/mod_direct_soil_age_substep.f90','tools/solute/run_water.py'}

@@ -1,5 +1,14 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Aquifer/output qualification](../science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md)
+and `integration/f-ci/nomacro-complete01/OUTPUT_AQUIFER_QUALIFICATION.json` bind
+productione01961fcc to seven byte-verified producer archives,48full1096day
+periods and87preservation contexts. Original portable artifact bytes are
+retained exactly through ordered byte parts when necessary. The successor owner
+recomputes actual aquifer ledgers and native endpoints and validates literal
+previous source/evidence. All945source/scope/producer corruptions are refused.
+Canonical admission is pending; whole science and fixed RC3 scope are unchanged.
+
 [Direct soil age qualification](../science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md)
 and `integration/f-ci/nomacro-complete01/DIRECT_SOIL_AGE_QUALIFICATION.json` bind
 production26724ce75 to seven raw archives,293actual reports/builds and44full

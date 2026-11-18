@@ -1,5 +1,16 @@
 # Current functional closure of the original projects
 
+## Qualified original aquifer output and native receipts,18November2026
+
+[Original aquifer output](NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md) now composes
+with the existing mixed reservoir, original daily CDE output, hysteresis0/1/2,
+fixed chemical gifts and formats0..3. All active SWBR1 external candidates bind
+the receipt to the actual complete native aquifer state, including the limiter
+counter. Windows/Ubuntu48full1096periods, independent public/reader/source/
+rollback/native gates and87prior-current contexts pass. Canonical admission is
+pending. Historical closure remains PARTIAL, whole science NOT_QUALIFIED and
+fixed RC3 unchanged. Other process/output and historical selector gaps remain.
+
 ## Qualified direct soil age source,18November2026
 
 [Direct irrigation age](NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md) adds actual

@@ -311,6 +311,8 @@ def validate(project):
 
 
 def auxiliary_magic(project):
+    from original_output_aquifer import selection as aquifer_output,magic as aquifer_output_magic
+    if aquifer_output(project) is not None:return aquifer_output_magic(project)
     from age_direct_soil_source import enabled as direct_age_source,magic as direct_age_magic
     if direct_age_source(project):return direct_age_magic(project)
     from age_irrigation_source import enabled as current_age_source,magic as current_age_magic

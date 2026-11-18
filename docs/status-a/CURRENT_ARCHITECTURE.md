@@ -1,5 +1,13 @@
 # SWAP5 Status-A current architecture
 
+The [aquifer/output owner](../science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md)
+adds a read-only private SWBR selector bridge and real existing aquifer observer.
+S5IOQ001 preserves the48byte CDE prefix and complete seven-field physical native
+reservoir. Its56byte paired domain precedes literal calendar/private output
+state. A source-bound read-only validator checks all six real fields and the
+int64 counter against receipts before external prepare and acceptance, including
+output-off SWBR1. No physical equation, provider or native wire changes.
+
 The qualified [direct soil age owner](../science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md)
 composes literal age transport then actual direct compartment input each
 microstep. A separate12field ledger and24byte native source owner retain the

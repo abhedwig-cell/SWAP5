@@ -174,7 +174,10 @@ def validate_bundle(bundle, reference, project):
     if identity.get('conserved_aquifer_solute')!=expected_aquifer:raise ValueError('Foreign original aquifer solute source/state policy')
     if expected_aquifer and (bundle/'mod_aquifer_solute_reservoir.f90').read_bytes()!=aquifer_correction().helper_source():
         raise ValueError('Foreign actual aquifer solute evaluator')
-    from age_direct_soil_source import output_metadata as original_output_metadata
+    from aquifer_native_receipt import metadata as aquifer_receipt_metadata
+    expected_aquifer_receipt=aquifer_receipt_metadata() if expected_aquifer else None
+    if identity.get('aquifer_native_receipt')!=expected_aquifer_receipt:raise ValueError('Foreign aquifer native receipt consistency policy')
+    from original_output_aquifer import metadata as original_output_metadata
     if identity.get('original_output')!=original_output_metadata(project):raise ValueError('Foreign original output policy; rebuild without rebinding')
     from conserved_original_age import metadata as age_metadata,correction as age_correction
     expected_age=age_metadata() if project.age else None
@@ -564,6 +567,8 @@ class CoupledDailyColumn:
                 conserved=struct.unpack_from('<'+str(self.project.nodes+2)+'d',aux,48)
                 if not all(math.isfinite(v) and v>=0 for v in conserved):
                     raise ValueError('Unrestartable candidate conserved solute state')
+                from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
+                if aquifer_candidate(self.project):validate_aquifer_candidate(aux,raw,self.project)
             if self.project.age:
                 from conserved_original_age import validate_effluent
                 from age_direct_soil_source import validate_age
@@ -602,6 +607,8 @@ class CoupledDailyColumn:
             for name in h.CHECKPOINT_FILES:
                 if (ready / name).read_bytes() != z.read(name):
                     raise ValueError('Prepared native state changed')
+        from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
+        if aquifer_candidate(self.project):validate_aquifer_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
         receipt = {**raw, 'coupling': {'id': self.coupling_id, 'revision': self._revision+1,
                    'origin_revision': self._revision, 'origin_sha256': self._origin_hash,
                    'origin_day': self._day, 'window_day1900': [proposal.t0_day1900, proposal.t1_day1900],
