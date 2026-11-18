@@ -2409,7 +2409,7 @@
     ]
   },
   "cde_interval": {
-    "status": "CDE_INTERVAL_INITIAL_PAST_DATE_NATIVE_VALIDATION_FIX_PERSISTED_NEW_QUALIFICATION_NEXT",
+    "status": "CORRECTED_CDE_INTERVAL_WINDOWS_GATES_COMPLETE_PORTABLE_RUNTIME_NEXT",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scope": "ActualoriginalCDE Snow0/1 heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather SWBR0/frost0 NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0/period2..366 SWRES0/1 formats0..3. Denseperiod1 andallother/nonCDE paths literal.",
     "original_reader_observations": [
@@ -2426,7 +2426,7 @@
     ],
     "scientific_equivalence": "NOT_QUALIFIED",
     "functional_completion": "PARTIAL",
-    "production": "b7df025ff plus245aacf95/8ed7ec326 dispatch/day import/public bridge fixes",
+    "production": "142d08cb6 exact original initial-past-date validation; receipt/transport/private state unchanged from 46d613ae0 and bridge public exports 8ed7ec326",
     "component": {
       "status": "ACTUAL_CDE_INTERVAL_RECEIPT_COMPONENT_O0_O2_PASS",
       "source_commit": "46d613ae0942efa25cffd887b76682c67ffe8bc9",
@@ -2474,10 +2474,10 @@
       }
     },
     "coupled_pilots": [
-      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-ordinary-explicit-O0-v3",
-      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-ordinary-explicit-O2-v3",
-      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-snow-monthly-O0-v3",
-      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-snow-monthly-O2-v3"
+      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-ordinary-explicit-O0-v4",
+      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-snow-monthly-O0-v4",
+      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-ordinary-explicit-O2-v4",
+      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-snow-monthly-O2-v4"
     ],
     "retained_failures": [
       {
@@ -2491,13 +2491,142 @@
       {
         "roots": "cde-interval-ordinary-explicit/snow-monthly-O0/O2-v2",
         "cause": "Actual new CDE bridge compiled but getters were private in originalparent; typedstate compile refused missingpublic symbols. Added onlyexplicitpublic exports, no physicalexpression change. No models executed."
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-public-windows-v1",
+        "cause": "Wrong invocation reference-work J:/ lacked PREPARED.json; public CLI refused before model execution. Correct prepared provider path used in v2; no source change."
       }
     ],
     "short": "Eight actual35day hot/32owncold O0/O2 periods PASS acrossordinary/Snow0/1, hys0/1/2, fixedpoint/interval/surface/sprinkler, active rainCPRE0.01 and ET0/1; complete physical/native/originaldate-only user state exact.",
     "retained_post_validation_failure": "V3models/builds/allcold/native passed butfinalvalidator inheritedFLPRINTDT datetime-only parser. Originalnonstep output isdate-only includinginitialdaybeforeTSTART. Correctedcontrollerd42ff670c; re-auditedalloriginalbyteswithoutbuild/modelreexecution; eachoriginalFAILED_RESULT preserved as RETAINED_FAILED_RESULT.json andoldfailurelogseparate. Physicalproducer8ed7ec326 retained, newvalidatorcommitd42ff670c recorded.",
-    "next": "Fresh O0/O2 ordinary/Snow pilots andnonJanuary actualworkers on newmetadata/source (no oldbundle rebind). Fresh selected full matrix afterallshort/nativegates. Component/transportsource unchanged inherited. Preserveoldstagev1full andepochfailurebytes; compute actualold/newinput/kernel/generatedsource/physical comparison.",
-    "controls": "Fouractualpilotcontexts:248native refusals/208policyrefusals/14actualproviderrefusals +active discard/replay/recoveredCDE/source PASS. Remainingmatrix controls useexplicitNOT_SELECTED identicalproviderpoison coverage; native/policy/transactions freshly tested.",
+    "next": "Persist runtime; dispatch selected Ubuntu O0/O2 CDE short/native/full/epoch/public/alias and targeted O2 eleven prior contexts. Finish Windows public commands. Seal unchanged original raw only after terminal. Independent proof owner and actual badsource refusal before canonical admission.",
+    "controls": "Four corrected-source pilot controls: 248 native, 216 policy, 14 actual provider refusals; active discard/replay/recovery PASS. No skipped provider profile relabelled PASS.",
     "initial_stage_full": "Actual WindowsO0/O2 ten35day/six1096day cohorts peropt PASS;12full/176maincold total on oldstage. Retain cde-interval-windows-O0/O2-v1. Not reboundto laternative policy.",
-    "epoch_guard_diagnosis": "Bothopt first35daynonJan warm PASS; first2to4cold rejects Inconsistent original interval date pointer. ActualoriginalTimeControl initptr1/pastdate remains1; migratedstrictallpastcountguard wrong. NewCDEonly exactepochguard validates1forinitialpastdate, keepsoldstrictcheckotherwise; noTimeControl/pointer/physicschange."
+    "epoch_guard_diagnosis": "Bothopt first35daynonJan warm PASS; first2to4cold rejects Inconsistent original interval date pointer. ActualoriginalTimeControl initptr1/pastdate remains1; migratedstrictallpastcountguard wrong. NewCDEonly exactepochguard validates1forinitialpastdate, keepsoldstrictcheckotherwise; noTimeControl/pointer/physicschange.",
+    "epoch": "Sixteen actual corrected-source 35-day non-January periods / 64 own cold windows PASS; retain both original pointer-guard failures separately.",
+    "alias": "Twenty-four actual private anchor/cumulative SAMINI alias and malformed private-state native refusals PASS on Windows O0/O2.",
+    "preservation_selection": "Fresh 11 old seam contexts per Windows opt and Ubuntu O2: four perstep water codecs, three groundwater CDE, four thermal/water/frost. Unaffected old age, SaltFarm, Grassgrowth/Hupsel and other calendar families NOT_SELECTED_IMPACT; literal prior owner/raw inherited, no fresh full claim.",
+    "latest_results": {
+      "cde-interval-windows-O0-v2": {
+        "status": "TEN_CDE_INTERVAL_SHORT_SIX_FULL_SIX_NATIVE_CONTEXTS_PASS",
+        "source_commit": "c5b5af3630c5fdc1b8efe3269e41f2e24f1d6d93",
+        "profiles": 0,
+        "cases": 10
+      },
+      "cde-interval-windows-O2-v2": {
+        "status": "TEN_CDE_INTERVAL_SHORT_SIX_FULL_SIX_NATIVE_CONTEXTS_PASS",
+        "source_commit": "c5b5af3630c5fdc1b8efe3269e41f2e24f1d6d93",
+        "profiles": 0,
+        "cases": 10
+      },
+      "cde-interval-controls-ordinary-explicit-O0-v2": {
+        "status": "CDE_INTERVAL_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 0
+      },
+      "cde-interval-controls-ordinary-explicit-O2-v2": {
+        "status": "CDE_INTERVAL_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 0
+      },
+      "cde-interval-controls-snow-monthly-O0-v2": {
+        "status": "CDE_INTERVAL_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 0
+      },
+      "cde-interval-controls-snow-monthly-O2-v2": {
+        "status": "CDE_INTERVAL_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 0
+      },
+      "cde-interval-epoch-O0-v2": {
+        "status": "EIGHT_NONJANUARY_CDE_INTERVAL_EPOCHS_BOTH_RESET_NATIVE_COLD_PASS",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 8
+      },
+      "cde-interval-epoch-O2-v2": {
+        "status": "EIGHT_NONJANUARY_CDE_INTERVAL_EPOCHS_BOTH_RESET_NATIVE_COLD_PASS",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 8
+      },
+      "cde-interval-alias-ordinary-explicit-O0-v1": {
+        "status": "SIX_ACTUAL_NONZERO_CDE_INTERVAL_ALIAS_FORGERIES_REFUSED",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 0
+      },
+      "cde-interval-alias-ordinary-explicit-O2-v1": {
+        "status": "SIX_ACTUAL_NONZERO_CDE_INTERVAL_ALIAS_FORGERIES_REFUSED",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 0
+      },
+      "cde-interval-alias-snow-monthly-O0-v1": {
+        "status": "SIX_ACTUAL_NONZERO_CDE_INTERVAL_ALIAS_FORGERIES_REFUSED",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 0
+      },
+      "cde-interval-alias-snow-monthly-O2-v1": {
+        "status": "SIX_ACTUAL_NONZERO_CDE_INTERVAL_ALIAS_FORGERIES_REFUSED",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 0
+      },
+      "cde-interval-preserve-groundwater-O0-v1": {
+        "status": "THREE_ACTUAL_ADMITTED_GROUNDWATER_CDE_CONTEXTS_SOURCE_NATIVE_EXACT_PASS",
+        "source_commit": null,
+        "profiles": 3,
+        "cases": 0
+      },
+      "cde-interval-preserve-groundwater-O2-v1": {
+        "status": "THREE_ACTUAL_ADMITTED_GROUNDWATER_CDE_CONTEXTS_SOURCE_NATIVE_EXACT_PASS",
+        "source_commit": null,
+        "profiles": 3,
+        "cases": 0
+      },
+      "cde-interval-preserve-thermal-O0-v1": {
+        "status": "FOUR_CURRENT_THERMAL_CDE_WATER_FROST_SOURCE_NATIVE_CONTEXTS_EXACT_PASS",
+        "source_commit": null,
+        "profiles": 4,
+        "cases": 0
+      },
+      "cde-interval-preserve-thermal-O2-v1": {
+        "status": "FOUR_CURRENT_THERMAL_CDE_WATER_FROST_SOURCE_NATIVE_CONTEXTS_EXACT_PASS",
+        "source_commit": null,
+        "profiles": 4,
+        "cases": 0
+      },
+      "cde-interval-preserve-water-O0-v1": {
+        "status": "FOUR_ACTUAL_ADMITTED_WATER_PERSTEP_TYPED_CONTEXTS_SOURCE_NATIVE_USER_EXACT_PASS",
+        "source_commit": null,
+        "profiles": 4,
+        "cases": 0
+      },
+      "cde-interval-preserve-water-O2-v1": {
+        "status": "FOUR_ACTUAL_ADMITTED_WATER_PERSTEP_TYPED_CONTEXTS_SOURCE_NATIVE_USER_EXACT_PASS",
+        "source_commit": null,
+        "profiles": 4,
+        "cases": 0
+      },
+      "cde-interval-public-windows-v2": {
+        "status": "SIX_PUBLIC_CDE_INTERVAL_SELF_CONTAINED_RESTART_CONTEXTS_PASS",
+        "source_commit": null,
+        "profiles": 6,
+        "cases": 0
+      },
+      "cde-interval-reader-windows-v1": {
+        "status": "SEVEN_CDE_INTERVAL_READER_THIRTEEN_LITERAL_PARTITIONS_PASS",
+        "source_commit": null,
+        "profiles": 0,
+        "cases": 0
+      }
+    }
   }
 }
