@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-groundwater-chemical01",
-  "last_commit": "95fc7b7fe3089e8a18f4503d94fe633b007bf078",
-  "status": "PRESCRIBED_GROUNDWATER_CDE_ACTUAL_SOURCE_CANONICAL_PASS",
+  "branch": "codex/nomacro-groundwater-history01",
+  "last_commit": "c40636910a986feea35f19726af1aa6a68083011",
+  "status": "PRESCRIBED_GROUNDWATER_CDE_HISTORY_SOURCE_RECONCILIATION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -328,8 +328,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Actual typed groundwater native/input/transaction refusals and source independence controls; fresh fixed-level typed pilots, full/year/end and portable runs; preserve prior routes then actual canonical admission.",
-  "recovery_point": "PR1733 actual95fc7b7fe exactordered a787/d997 parents andfull34515b464tree. ActualcleandetachedregisteredownerPASS64.821s. Metadatareceiptprepared; continue after actualmetadataadmission.",
+  "next_code_change": "Successor native/domain adapter for original groundwater CDE hysteresis1/2 and snow/thermal carry, delegating ordinary GWC001/002 literally. Retain original independent reaction/provider and 1e-10 guards; source/input/native/pilot before full qualification.",
+  "recovery_point": "PR1733source95fc7b7fe andPR1734metadatac40636910 have exactorderedparents/fullqualifiedtrees andbothactualcleandetachedregisteredownersPASS. Ordinarygroundwaterunit admitted. Newbranchhistory01 begins fromactualc406; no source edits yet.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -431,7 +431,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Verify actual metadata merge; next source reconciliation is remaining groundwater CDE hydraulic/thermal histories and original bottom9 consistency. Keep whole closurePARTIAL; persist new contract before changing frozen admitted helpers.",
+  "next_action": "Persist new history contract, new native successor and bounded selector admission. Actual O0/O2 native/compound pilots before wider runs; no changes to admitted groundwater helper/component bodies.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -652,7 +652,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "95fc7b7fe3089e8a18f4503d94fe633b007bf078",
+  "canonical_head": "c40636910a986feea35f19726af1aa6a68083011",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -873,7 +873,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-groundwater-chemical01",
+  "working_branch": "codex/nomacro-groundwater-history01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -942,6 +942,40 @@
       "head": "95fc7b7fe3089e8a18f4503d94fe633b007bf078",
       "stdout": "{\n  \"status\": \"PRESCRIBED_GROUNDWATER_CDE_NATIVE_RECEIPT_ADMISSION_PASS\",\n  \"runtime\": \"c1da10c3781d5fbc52eb9deaa725d6802bbc7c8f\",\n  \"predecessor\": \"LITERAL_QUALIFIED_THERMAL_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 28,\n  \"actual_bound_reports\": 256,\n  \"actual_cold_windows\": 232,\n  \"actual_preserved_contexts\": 115,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
       "stderr": ""
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_GROUNDWATER_CHEMICAL_METADATA_MERGE_VERIFIED",
+      "pr": 1734,
+      "merge": "c40636910a986feea35f19726af1aa6a68083011",
+      "parents": [
+        "95fc7b7fe3089e8a18f4503d94fe633b007bf078",
+        "faff18947de6be2517bd6faeb9c71b7d025f30d3"
+      ],
+      "qualified_head": "faff18947de6be2517bd6faeb9c71b7d025f30d3",
+      "tree": "4b2167dc6cc9bf836afb1efe004ee1c73c76a659",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 46.49972780002281,
+        "head": "c40636910a986feea35f19726af1aa6a68083011",
+        "stdout": "{\n  \"status\": \"PRESCRIBED_GROUNDWATER_CDE_NATIVE_RECEIPT_ADMISSION_PASS\",\n  \"runtime\": \"c1da10c3781d5fbc52eb9deaa725d6802bbc7c8f\",\n  \"predecessor\": \"LITERAL_QUALIFIED_THERMAL_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 28,\n  \"actual_bound_reports\": 256,\n  \"actual_cold_windows\": 232,\n  \"actual_preserved_contexts\": 115,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
     }
+  },
+  "groundwater_history": {
+    "status": "SOURCE_CONTRACT_BEFORE_IMPLEMENTATION",
+    "baseline": "c40636910a986feea35f19726af1aa6a68083011",
+    "scope": "Existing analyticalCDE SWBOTB1 with originalhysteresis0/1/2 andSnow0/1, at leastoneactivehistory; originalthermal prerequisites; nofrost/aquifer/detailedweather/age/macros",
+    "contract": "docs/science/NOMACRO_GROUNDWATER_HISTORY_20261118.md",
+    "dependency_surface": [
+      "FrozenoriginalDarcy/prescribedtail reaction and originalHeadCalc/BoundBottom",
+      "Existing literalhysteresis scanning/hydraulic/microhistory",
+      "Existing literalSnow/heat and completeheacon/heacap/tetop/tebot",
+      "New typednative actual historydomain before originalcalendar",
+      "AllCDEnativeSAMPRO andhydraulicreceipt binding"
+    ],
+    "next": "Successor native/domain adapter for original groundwater CDE hysteresis1/2 and snow/thermal carry, delegating ordinary GWC001/002 literally. Retain original independent reaction/provider and 1e-10 guards; source/input/native/pilot before full qualification.",
+    "external_blocker": null
   }
 }
