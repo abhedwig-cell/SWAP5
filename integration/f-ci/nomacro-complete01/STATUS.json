@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-output-aquifer01",
-  "last_commit": "1c0bc3b6cdedafcc4a39b33d0bfffb262436fd5c",
-  "status": "THERMAL_OUTPUT_IMPLEMENTATION",
+  "last_commit": "b3dd19db882edd1f2eb1344ade9bc6f813c150e4",
+  "status": "ORIGINAL_THERMAL_OUTPUT_CANONICALLY_ADMITTED_NEXT_GROUNDWATER_CHEMICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -49,7 +49,8 @@
     "PR1723 actualcanonical76f1a078b exact4b33/2824parents/full088fd990tree; realdetachedregisteredrootPASS47.838seconds; boundedoriginaloutput+hys1/2 water/dailyCDE/ageadmitted; wholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
     "PR1725 actual canonical3063937ee exact040/be8 parents/full4ff34547tree; actual detached registered root PASS50.217seconds. Bounded current fixed sprinkler/surface ages admitted;40actual full periods/238report-build bindings; whole closure PARTIAL/science NOT_QUALIFIED/fixedRC3 unchanged.",
     "PR1727 actualcanonical5014520ed exacte3/31aparents/full27401b01tree; actualdetachedregisteredownerPASS. Explicitall4fixed incomingageforms with actualdirectsoilsource/state/output admitted;44fullperiods/293report-buildbindings/3005corruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
-    "PR1729 actualcanonical1c0bc3b6c exactorderedparents/fullqualifiedtree; actualdetachedregisteredownerPASS. OriginaldailyCDE SWBR1output/hys0/1/2 andactual7fieldnative/receiptbindingadmitted.48fullperiods/344reports/87preservedcontexts/945corruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
+    "PR1729 actualcanonical1c0bc3b6c exactorderedparents/fullqualifiedtree; actualdetachedregisteredownerPASS. OriginaldailyCDE SWBR1output/hys0/1/2 andactual7fieldnative/receiptbindingadmitted.48fullperiods/344reports/87preservedcontexts/945corruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
+    "PR1731 actualcanonicalb3dd19db8 exactorderedparents/fullqualifiedtree; actualdetachedregisteredownerPASS. OriginalSnow/thermal output dailywater/CDE,hys0/1/2,boundedwaterfrost admitted;56fullperiods/367reports/107priorcontexts+8actualcanonicalcomparisons/963proofcorruptionsrefused. Portablematrixreadonlyclosure0repeatedmodels;alloriginalfailedartifactsretained. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
   ],
   "open": [
     "Complete historical selector inventory",
@@ -327,7 +328,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Complete annual/subdaily cohort controllers and actual reference/cadence/native controls; no changes to physical providers or literal003/004 helpers.",
-  "recovery_point": "PR1729 actualsource1c0bc3b6c exact76c6251a2/30ba2feeaparents andcomplete80b39c095tree; actualdetachedregisteredrootPASS. Metadatareceiptprepared; no scientific blocker in bounded output work.",
+  "recovery_point": "PR1731 actualsourceb3dd19db8 exactDCD/22cadd300parents andcompletece72200tree; actualdetachedregisteredownerPASS88.024s. Metadatareceiptprepared; continuehistoricalnormal-projectblockers.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -429,7 +430,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Implementseparatesuccessorobserver/selector/witnesswithouteditingoldhelpers; persistthenO0/O2realpilotsactiveSnow+thermal+coldnative",
+  "next_action": "Complete actual metadata merge admission, then source-reconcile prescribed groundwater-level chemical preflight and an independent original trial-flux receipt. No general MODFLOW, alternative solver, macro work or tolerance relaxation.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -650,7 +651,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "dcd880bbc0b6ff62fd2a28c68b080ac0811090ac",
+  "canonical_head": "b3dd19db882edd1f2eb1344ade9bc6f813c150e4",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -804,7 +805,7 @@
   },
   "original_output_thermal": {
     "baseline": "ActualcleandetachedDCDsourcebaseline: O0water-snow/water-hys2/CDE/frostdrained35days+6completeoldnativeprefixes+3reset0coldcontextsPASS; actualphysicaldifferences0. Sourceauditretainsindependentrawmetadata/caseidentities, comparesactualcanonicalcode andliteraloriginalIntegralTask3 afterremovingonlyprivateobservers. O2fourcontextscontinuing.",
-    "status": "QUALIFIED_REGISTERED_OWNER_PASS_READY_FOR_CANONICAL_ADMISSION",
+    "status": "ADMITTED_BOUNDED",
     "contract": "docs/science/NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md",
     "scope": "Existingexplicitoutputwithoriginalsnow/numericthermalhistory,densedailyNP1; water/CDE,hys0/1/2; acceptedboundedwaterfrostonly",
     "dependency_surface": [
@@ -814,7 +815,7 @@
       "Typedactualdomainbeforeliteralcalendar/CDEoutputstate"
     ],
     "inherited_output_limitation": "Alloldoutputownersrefusesnow/frost; receiptscurrentlyhardcodesnowstock0anddo notobserve3snowincrements",
-    "next": "CreatequalifiedsourcePR; exactactualcanonicalorderedparents/fullqualifiedtree anddetachedregisteredowner; actualmergereceiptmetadataPRsameverification; NEXTsource-reconcileremaininghistoricalnormalprojectblockers",
+    "next": "Complete actual metadata merge admission, then source-reconcile prescribed groundwater-level chemical preflight and an independent original trial-flux receipt. No general MODFLOW, alternative solver, macro work or tolerance relaxation.",
     "external_blocker": null,
     "runtime": "9a06bc72d",
     "pilot": "Waterhys2binaryandchemicalhys2textformatsO0/O2actual35days+4coldwindowsPASS. ActualmaxSnow22.0100378cm; all3snowfluxslotspositive; completephysical/native/useroutputexact. Frozenphysicalhelpersunchanged.",
@@ -861,7 +862,15 @@
     },
     "source_negative_commit": "225eb38c4db03f397588453343ad4e5be8706630",
     "source_negative": "ActualdirtyandcommittedoutputprobeSnowstockdroprefusedbeforeraw/modelwork; originalphysicalprovidersandoldproofsunchanged",
-    "docs": "SourcecheckPASS; strictMkDocsPASS30.25seconds withexternalgeneratedsite"
+    "docs": "SourcecheckPASS; strictMkDocsPASS30.25seconds withexternalgeneratedsite",
+    "canonical_admission": "b3dd19db882edd1f2eb1344ade9bc6f813c150e4",
+    "actual_canonical_owner": {
+      "returncode": 0,
+      "seconds": 88.02418809989467,
+      "head": "b3dd19db882edd1f2eb1344ade9bc6f813c150e4",
+      "stdout": "{\n  \"status\": \"ORIGINAL_THERMAL_OUTPUT_SNOW_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"9a06bc72d5a9e3507467da36f18bbca0484c3886\",\n  \"predecessor\": \"LITERAL_QUALIFIED_AQUIFER_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 56,\n  \"actual_bound_reports\": 367,\n  \"actual_preserved_contexts\": 107,\n  \"actual_prior_canonical_thermal_contexts\": 8,\n  \"portable_revalidation_model_executions\": 0,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    }
   },
   "working_branch": "codex/nomacro-output-thermal01"
 }

@@ -6,7 +6,7 @@ sublimation increments in the literal six-stock/sixteen-flow daily receipt.
 S5ITW001/S5ITC001 add an80byte paired actual domain before the existing calendar
 and CDE output owners. Original snow, heat, hydraulic, frost and physical native
 state remain literal; the unchanged CDE prefix stays48bytes. Dense daily output
-uses its existing admitted day-seed or bounded frost/event-closure policy.
+uses its existing admitted day-seed or bounded frost/event-closure policy. Actual canonicalb3dd19db8 passes its detached registered owner.
 
 The [aquifer/output owner](../science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md)
 adds a read-only private SWBR selector bridge and real existing aquifer observer.

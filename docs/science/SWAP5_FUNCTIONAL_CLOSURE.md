@@ -10,7 +10,7 @@ Ubuntu56full1096periods,448full/272short cold windows and107prior contexts pass;
 eight direct comparisons retain exact preceding-canonical physics/native state.
 Public, reader and true-terminal gifts pass. Actual portable harness failures
 are retained and repaired through read-only evidence and only remaining work.
-Canonical admission is pending. Historical closure remains PARTIAL, whole science
+Actual canonicalb3dd19db8 passes its detached registered owner. Historical closure remains PARTIAL, whole science
 NOT_QUALIFIED and fixed RC3 unchanged; other thermal cadences/domains remain open.
 
 ## Qualified original aquifer output and native receipts,18November2026
