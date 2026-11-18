@@ -35,8 +35,7 @@ def main():
             else:command+=['--no-macro-release']
             r=subprocess.run(list(map(str,command)),cwd=ROOT,capture_output=True,text=True,timeout=180);(out/'build.stdout').write_text(r.stdout);(out/'build.stderr').write_text(r.stderr);assert r.returncode==0,r.stderr
             meta,_=m.validate_bundle(build,a.reference_work,project);prior=json.loads((old/'BUILD.json').read_text())
-            projected=dict(meta['project']);assert projected.pop('age_direct_soil_source') is False
-            assert projected==prior['project'] and meta['inputs']==prior['inputs']
+            assert meta['project']==prior['project'] and meta['inputs']==prior['inputs']
             for key in ('donor_generated','donor_flags','kernel_flags','donor_objects','donor_modules','ttutil_modules','ttutil_library','kernel_sources','conserved_original_age','original_age_fixed_irrigation'):
                 assert meta['identity'].get(key)==prior['identity'].get(key),(name,key)
             full=out/'trajectory';report,data=m.trajectory(build,a.reference_work,project,full,days,{2,4,days},45);assert m.physical(data)==m.physical(m.rows(previous)[:days])

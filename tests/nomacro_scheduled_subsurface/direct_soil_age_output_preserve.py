@@ -39,8 +39,7 @@ def main():
             if not (a.resume and (build/'BUILD.json').exists()):
                 r=subprocess.run(cmd,capture_output=True,text=True,timeout=180);(out/'build.log').write_text(r.stdout+r.stderr);assert r.returncode==0,r.stderr
             actual,_=m.validate_bundle(build,a.reference_work,project);old=json.loads((prior/'build/BUILD.json').read_text())
-            projected=dict(actual['project']);assert projected.pop('age_direct_soil_source') is False
-            assert projected==old['project'] and actual['inputs']==old['inputs']
+            assert actual['project']==old['project'] and actual['inputs']==old['inputs']
             for field in ('donor_generated','donor_flags','kernel_flags','donor_objects','donor_modules','ttutil_modules','ttutil_library','kernel_sources','conserved_original_age','original_output'):
                 assert actual['identity'].get(field)==old['identity'].get(field),(key,field)
             days=35 if 'monthly' in key else 10;full=out/'trajectory'

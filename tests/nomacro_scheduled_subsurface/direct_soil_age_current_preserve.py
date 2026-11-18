@@ -20,7 +20,8 @@ def main():
     a=ap.parse_args();a.output=a.output.resolve();a.output.mkdir(exist_ok=a.resume)
     authority=ROOT/'integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_QUALIFICATION.json';oldq=json.loads(authority.read_text())
     q=dict(status='RUNNING',optimization=a.optimization,authority_sha256=m.sha(authority),profiles={})
-    if a.resume:q=json.loads((a.output/'RESULT.json').read_text());q['status']='RUNNING'
+    if a.resume:
+        q=json.loads((a.output/'RESULT.json').read_text());q.setdefault('retained_failures',[]).append(dict(status=q['status'],error=q.pop('error',None)));q['status']='RUNNING'
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
@@ -31,13 +32,13 @@ def main():
             out=a.output/key
             if key in q['profiles']:
                 actual,_=m.validate_bundle(out/'build',a.reference_work,project);assert actual==q['profiles'][key]['actual_build'];continue
-            out.mkdir();build=out/'build'
+            out.mkdir(exist_ok=a.resume);build=out/'build'
             cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',inputs,'--age-irrigation-source','--reference-work',a.reference_work,'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',build]
             if original:cmd+=['--original-output']
-            r=subprocess.run(list(map(str,cmd)),cwd=ROOT,capture_output=True,text=True,timeout=180);(out/'build.stdout').write_text(r.stdout);(out/'build.stderr').write_text(r.stderr);assert r.returncode==0,r.stderr
+            if not (a.resume and (build/'BUILD.json').exists()):
+                r=subprocess.run(list(map(str,cmd)),cwd=ROOT,capture_output=True,text=True,timeout=180);(out/'build.stdout').write_text(r.stdout);(out/'build.stderr').write_text(r.stderr);assert r.returncode==0,r.stderr
             actual,_=m.validate_bundle(build,a.reference_work,project);oldmeta=json.loads((oldbuild/'BUILD.json').read_text())
-            projected=dict(actual['project']);assert projected.pop('age_direct_soil_source') is False
-            assert projected==oldmeta['project'] and actual['inputs']==oldmeta['inputs']
+            assert actual['project']==oldmeta['project'] and actual['inputs']==oldmeta['inputs']
             for field in ('donor_generated','donor_flags','kernel_flags','donor_objects','donor_modules','ttutil_modules','ttutil_library','kernel_sources','conserved_original_age','original_output','original_age_fixed_irrigation'):
                 assert actual['identity'].get(field)==oldmeta['identity'].get(field),(key,field)
             days=old['short']['trajectory']['days'];full=out/'trajectory';report,data=m.trajectory(build,a.reference_work,project,full,days,{2,4,8,days},60)
@@ -50,7 +51,7 @@ def main():
                 with zipfile.ZipFile(full/f'accepted-column-1-day-{day}.zip') as x,zipfile.ZipFile(prior/f'trajectory/accepted-column-1-day-{day}.zip') as y:
                     for member in ('result.end','macro.bin'):assert x.read(member)==y.read(member),(key,day,member)
             own=[prior_probe.own(build,a.reference_work,project,full,data,s,e,out/('own-'+str(s))) for s,e in ((2,4),(4,8))]
-            q['profiles'][key]=dict(actual_build=actual,prior_build_sha256=m.sha(oldbuild/'BUILD.json'),prior_root=str(prior),generated_provider_inputs_exact=True,all_physical_exact=True,user_files_exact={n:hashlib.sha256((full/'original'/n).read_bytes()).hexdigest() for n in names},four_complete_native_endpoints_exact=True,metadata_projection='only newly declared inactive boolean removed for old descriptor comparison; no old record or build is rewritten',trajectory=report,own=own)
+            q['profiles'][key]=dict(actual_build=actual,prior_build_sha256=m.sha(oldbuild/'BUILD.json'),prior_root=str(prior),generated_provider_inputs_exact=True,all_physical_exact=True,user_files_exact={n:hashlib.sha256((full/'original'/n).read_bytes()).hexdigest() for n in names},four_complete_native_endpoints_exact=True,metadata_projection='none: complete actual old project and input metadata exactly equal',trajectory=report,own=own)
             save();print(key,a.optimization,'ACTUAL_PRIOR_CURRENT_AGE_SOURCE_DIRECT_FLAG_FALSE_PRESERVED',flush=True)
         q['status']='EIGHT_PRIOR_CURRENT_AGE_SOURCE_FAMILIES_DIRECT_FLAG_FALSE_EXACT_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
