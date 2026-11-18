@@ -137,6 +137,10 @@ def native(raw,row,policy):
         block=raw[offset:offset+size];require(raw.count(block)==2 and raw.find(block)<offset,'original hydraulic owner and appended consistency witness differ')
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('thermal_calendar_admission',ROOT/'tests/nomacro_scheduled_subsurface/thermal_calendar_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty history admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'history production differs from qualified source')

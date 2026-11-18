@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Snow calendar qualification](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
+and `integration/f-ci/nomacro-complete01/THERMAL_CALENDAR_QUALIFICATION.json`
+bind production02f1bc2c1 to seven immutable raw archives,313908829bytes,
+16full periods,256cold windows and40prior contexts. The actual initial cold
+January31output mismatch and old physical/native equality remain reproducible;
+corrected warm physics/output are unchanged and corrected cold records agree.
+Original binary and fixture failures remain separate from qualified evidence.
+All1329actual producer/source/raw proof corruptions are refused. Registered proof passes;
+actual canonical admission is pending; whole closure/science/RC3 are unchanged.
+
 [Groundwater history qualification](../science/NOMACRO_GROUNDWATER_HISTORY_20261118.md)
 binds corrected production278152113 to actual Windows/Ubuntu16short/14full
 periods per optimization,704complete cold windows,1784native and96hydraulic

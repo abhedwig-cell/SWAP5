@@ -176,7 +176,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     chemical_source=chemical_fixed or chemical_scheduled
     from conserved_aquifer_solute import enabled as aquifer_enabled, correction as aquifer_correction
     aquifer_source=aquifer_enabled(project)
-    import original_output_thermal as age_calendar_owner
+    import thermal_output_calendar as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
         import original_output_aquifer as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
@@ -866,6 +866,7 @@ end module plant_interface""")
                     *([str(output/'original_output_hysteresis_domain.o')] if age_calendar and age_calendar.get('swhyst',0) in (1,2) and not age_calendar.get('aquifer_output',False) and not age_calendar.get('thermal_output',False) else []),
                     *([str(output/'original_output_aquifer_domain.o')] if age_calendar and age_calendar.get('aquifer_output',False) else []),
                     *([str(output/'original_output_thermal_domain.o')] if age_calendar and age_calendar.get('thermal_output',False) else []),
+                    *([str(output/'thermal_output_snow_calendar_state.o')] if age_calendar and age_calendar.get('thermal_calendar',False) else []),
                     *([str(output/'age_irrigation_source_domain.o')] if age_source else []),
                     *([str(output/(name+'.o')) for name in ('mod_direct_soil_age_substep','direct_soil_age_state')] if project.age_direct_soil_source else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
@@ -915,7 +916,7 @@ end module plant_interface""")
     }
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
-    from original_output_thermal import metadata as original_output_metadata
+    from thermal_output_calendar import metadata as original_output_metadata
     selected_output=original_output_metadata(project)
     if selected_output is not None:build_identity['original_output']=selected_output
     if project.input_directory:

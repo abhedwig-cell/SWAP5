@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-groundwater-history01",
-  "last_commit": "f5f0cda95dd8e62e063fdb90b1713e81021df155",
-  "status": "GROUNDWATER_HISTORY_ACTUAL_CANONICAL_ADMISSION_PASS",
+  "branch": "codex/nomacro-thermal-calendar01",
+  "last_commit": "980b133b33eed066e67998ede3698b8f8ddd2021",
+  "status": "THERMAL_CALENDAR_QUALIFIED_PENDING_ACTUAL_CANONICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -329,7 +329,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Complete actual metadata admission; next source change is separate original Snow/thermal non-daily output calendar adapter, retaining literal dense-daily thermal, calendar and physical providers.",
+  "next_code_change": "Separate water Snow non-daily calendar adapter using literal thermal/calendar/process providers; delegate dense daily/CDE/age/groundwater. Actual O0/O2 monthly/cold pilots before full qualification.",
   "recovery_point": "Production278152113 repairs original/appended hydraulic ownership. Freshhys2SnowO0/O2-v2 actual35days+4coldPASS;39native/2fabricatedreports peroptPASS; actualduplicateprobe-after-Ox-v1 REFUSED_BEFORE_READY. BothinitialWindows-v1 fullpositivecohorts complete16short14full12controls/opt butpre-repair; retainonlyasprototype, do notrebind/reuseitsoldbuilds. NextWindows-v2 freshcohorts reuseonlycurrentv2hys2Snowpilot/controls.",
   "external_blocker": null,
   "test_selection": {
@@ -874,7 +874,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-groundwater-history01",
+  "working_branch": "codex/nomacro-thermal-calendar01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -965,7 +965,7 @@
     }
   },
   "groundwater_history": {
-    "status": "ADMITTED_BOUNDED_SOURCE_METADATA_PENDING",
+    "status": "ADMITTED_BOUNDED",
     "baseline": "c40636910a986feea35f19726af1aa6a68083011",
     "scope": "Existing analyticalCDE SWBOTB1 with originalhysteresis0/1/2 andSnow0/1, at leastoneactivehistory; originalthermal prerequisites; nofrost/aquifer/detailedweather/age/macros",
     "contract": "docs/science/NOMACRO_GROUNDWATER_HISTORY_20261118.md",
@@ -1033,7 +1033,83 @@
       "head": "f5f0cda95dd8e62e063fdb90b1713e81021df155",
       "stdout": "{\n  \"status\": \"GROUNDWATER_CDE_COMPLETE_HISTORY_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"27815211325bacfa4c2e9b3747a2734dfcdbc8e5\",\n  \"predecessor\": \"LITERAL_QUALIFIED_GROUNDWATER_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 56,\n  \"actual_cold_windows\": 704,\n  \"actual_native_refusals\": 1784,\n  \"actual_report_refusals\": 96,\n  \"actual_preserved_contexts\": 50,\n  \"actual_bound_reports\": 314,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
       "stderr": ""
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_GROUNDWATER_HISTORY_METADATA_MERGE_VERIFIED",
+      "pr": 1737,
+      "merge": "8c09e206d854fec51b2c1b94b3c9b52921e6216b",
+      "parents": [
+        "f5f0cda95dd8e62e063fdb90b1713e81021df155",
+        "1ca980454f61ce75ada3298432aa5dfeed5a5c6a"
+      ],
+      "qualified_head": "1ca980454f61ce75ada3298432aa5dfeed5a5c6a",
+      "tree": "93f22d7286f2064e6f3f9c18bead144369c4da03",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 170.93612009985372,
+        "head": "8c09e206d854fec51b2c1b94b3c9b52921e6216b",
+        "stdout": "{\n  \"status\": \"GROUNDWATER_CDE_COMPLETE_HISTORY_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"27815211325bacfa4c2e9b3747a2734dfcdbc8e5\",\n  \"predecessor\": \"LITERAL_QUALIFIED_GROUNDWATER_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 56,\n  \"actual_cold_windows\": 704,\n  \"actual_native_refusals\": 1784,\n  \"actual_report_refusals\": 96,\n  \"actual_preserved_contexts\": 50,\n  \"actual_bound_reports\": 314,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
     }
   },
-  "canonical_live_overlap": "PR1735 SaltFarm Newton work is open/unmerged on its own branch; not imported or modified by this historical migration batch."
+  "canonical_live_overlap": "PR1735 SaltFarm Newton work is open/unmerged on its own branch; not imported or modified by this historical migration batch.",
+  "thermal_calendar": {
+    "status": "QUALIFIED_REGISTERED_ROOT_AND_ACTUAL_SOURCE_NEGATIVE_PASS_PENDING_CANONICAL",
+    "baseline": "8c09e206d854fec51b2c1b94b3c9b52921e6216b",
+    "contract": "docs/science/NOMACRO_THERMAL_CALENDAR_20261118.md",
+    "scope": "Explicit original water Snow1 heat1/calc2 hys0/1/2 drainage1 analytical soil bottom5/8 dailyweather nofrost/AQ/macro; NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0or2..366.",
+    "baseline_observations": [
+      "C:/Users/Veldh012/swap5-complete01-evidence/thermal-calendar-baseline-monthly-v1",
+      "C:/Users/Veldh012/swap5-complete01-evidence/thermal-calendar-baseline-monthly-v2"
+    ],
+    "original_reader": "ASCIImonthly originalexe swap.ok, normal termination100; initial uncorrectedbinaryformat3segfault retained, notscienceoracle/newdefectclaim",
+    "next": "Create and merge source PR; verify actual canonical ordered parents/full tree and clean detached registered owner; metadata admission, then next historical composition.",
+    "external_blocker": null,
+    "runtime": "02f1bc2c1e53e5035279ab6825e702cbf7d0ceb6",
+    "failure": "O0/O2 monthly35day complete;30to34cold physical rows andresult.end/macro.bin exact beforeactualJanuary31userbinaryrecord mismatch. Frozen calendar _layout explicitly skips7Snow MOD_integral totals.",
+    "classification": "UNADMITTED_COMPOSITION_MISSING_OUTPUT_STATE_NOT_ORIGINAL_PHYSICAL_DEFECT",
+    "corrected_pilot": "d7c437f91 freshO0/O2monthly35day+4completephysical/native/useroutputcoldwindowsPASS; actual7Snowtotals nowstoredinS5CTW002. Oldv1failuresunchanged; v2passedsource retained.",
+    "current_pilot": "O0/O2v3monthly35day/fourphysical-native-usercoldwindowsPASS;59realnative+16policy+actualcopiedSnowproviderrefusalperoptPASS;discard/replay/accept/recoverednextdayexact.",
+    "output_gap_probe": "ActualreadonlyO0/O2 oldv1vs currentv3confirmswarmphysical/useroutputunchanged;oldcoldphysical/nativeexactbutJan31recorddiffers;newcoldexactall. No models orrebinding.",
+    "retained_matrix_refusal": "WindowsO0/O2matrixv1 selects firstreusedmonthlyPASS then explicit-hys1 fixture retains HupselSWBOTB6, correctly refusedbeforecompile bydeclared5/8scope. Fixfixture explicitly5forhys0/1 and8forhys2; leaveprototypev1recordsunchanged.",
+    "windows_status": "O0/O2terminal8short35day+4full1096/opt,4nativecontextsperopt59native16policy1actualprovider each.128completecoldwindowstotalWindows;format0/3all35physical/fivecompletenativeexact;actualTENDlastrecords2004-12-31.",
+    "public": "Three actual independent public buildbundle/warm/cold commandsPASS acrossmonthly/explicit/terminal source; completephysical/native/useroutputexact.",
+    "reader": "Sevenactualoriginalnumericreader+12unsupportedSnow/cadencedescriptorrefusalsPASS.",
+    "current_windows": [
+      "C:/Users/Veldh012/swap5-complete01-evidence/thermal-calendar-windows-O0-v2",
+      "C:/Users/Veldh012/swap5-complete01-evidence/thermal-calendar-windows-O2-v2"
+    ],
+    "ubuntu_run": 44316976705,
+    "ubuntu_carrier": "04a5af76add83b60cc8494ed3345a211b8e697a7",
+    "ubuntu_status": "SUCCESS",
+    "ubuntu_preservation_run": 44318020505,
+    "ubuntu_preservation_carrier": "bd216ed7c0d27edd43f304477ed52e3134b0facc",
+    "ubuntu_preservation_status": "SUCCESS",
+    "preservation": "25Windows:6actualadmittedCDEgroundwater+8thermal/water/CDE/frost+11young/named;15Ubuntu:3actualGW+6AI+6DI. Source/generated objects/modules/native exact; no oldfullcampaignrepeated.",
+    "qualified_in_progress": "16actualfull1096periods,256completecoldwindows,944native+256policy+16actualcopiedproviderrefusals acrossWindows/Ubuntu O0/O2; actualpublic/originalnumericreader/unsupporteddescriptor gates PASS.",
+    "sealed": "28f0000d367c6e485229031d99f0d131c8ce5862",
+    "raw_archives": 7,
+    "raw_bytes": 313908829,
+    "proof_tests": "3PASS8.103seconds;1264actualperiod/ledger/7Snow/native+44source/scope+21actualrawartifact/priorpartbindingcorruptionsrefused.",
+    "predecessor": "Literal8c source image validates previousgroundwaterhistoryqualification; actualpreviousrawarchivesunchangedPASS; noROOT/hashmonkeypatch.",
+    "registered_root": {
+      "status": "ORIGINAL_SNOW_CALENDAR_SEVEN_TOTALS_NATIVE_ADMISSION_PASS",
+      "runtime": "02f1bc2c1e53e5035279ab6825e702cbf7d0ceb6",
+      "predecessor": "LITERAL_QUALIFIED_GROUNDWATER_HISTORY_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS",
+      "actual_full_periods": 16,
+      "actual_cold_windows": 256,
+      "actual_native_refusals": 944,
+      "actual_policy_refusals": 256,
+      "actual_copied_provider_refusals": 16,
+      "actual_preserved_contexts": 40,
+      "actual_bound_reports": 160,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "source_negative_commit": "1bdb0db40051001a0df244e63d9fa852b3cdbb05",
+    "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_OMITTED_SEVEN_SNOW_TOTAL_STAGING_REFUSED",
+    "docs": "SourcechecksPASS; strictMkDocsPASS45.97seconds external site"
+  }
 }
