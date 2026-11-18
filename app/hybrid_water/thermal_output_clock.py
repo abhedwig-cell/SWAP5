@@ -167,6 +167,14 @@ def render_timecontrol(source):
             abs(dtEventPrint-dtEventEOD)<=dtCrit)dtEventPrint=dtEventEOD
       end if
 """
+    text=text.replace(anchor,correction+anchor,1)
+    anchor='   end function get_dtevent';assert text.count(anchor)==1
+    # Rain/SSDI/runon event caps follow the print cap. Apply the same existing
+    # coincidence rule to the final event, rather than leaving a skipped tail.
+    correction="""      if(flprintshort.and..not.flprintdt.and.tcum<1d0.and.get_dtEvent>0d0)then
+         if(abs(get_dtEvent-(1d0-tcum))<=dtCrit)get_dtEvent=1d0-tcum
+      end if
+"""
     return text.replace(anchor,correction+anchor,1)
 
 
