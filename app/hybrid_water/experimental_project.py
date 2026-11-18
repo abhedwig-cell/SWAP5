@@ -314,6 +314,8 @@ def validate(project):
 
 
 def auxiliary_magic(project):
+    from groundwater_native import enabled as groundwater_native,magic as groundwater_magic
+    if groundwater_native(project):return groundwater_magic(project)
     from original_output_thermal import selection as thermal_output,magic as thermal_output_magic
     if thermal_output(project) is not None:return thermal_output_magic(project)
     from original_output_aquifer import selection as aquifer_output,magic as aquifer_output_magic

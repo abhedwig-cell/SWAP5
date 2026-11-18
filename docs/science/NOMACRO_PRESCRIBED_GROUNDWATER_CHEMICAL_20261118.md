@@ -81,3 +81,36 @@ actual stored SAMPRO at48+8*(actual_nodes+1); do not reconstruct it by summing
 CMSY, whose internal soil-volume representation requires original geometry.
 The physical wire, providers, equations and valid trajectories remain unchanged.
 Fresh bundles must bind the new consistency policy; no old metadata is rebound.
+
+## Persisted component and initial actual executions
+
+Production1eb1e896a adds a pure stateless reaction component. Its real two-source
+compile/link closure passes39 checks under O0/O2 (0.36/0.45seconds compilation,
+0.10/0.09seconds execution). Changes to unsaturated trial storage do not change
+the reaction; prescribed-tail trial values do not replace prescribed saturation.
+Signed tail rates and falling/rising tail storage, below-profile exchange and
+invalid shapes/nonfinite inputs are checked. Invalid calls leave outputs intact.
+
+The all-CDE native stock component passes19 actual-wire refusals. Fresh35day
+Snow/CDE source pilots pass O0/O2 with four complete cold windows each; the
+actual forged receipt is now refused before external prepare in both fresh
+builds. No old BUILD or diagnostic checkpoint was rebound.
+
+Production9308430ad actual ten-day within-profile and below-profile CDE pilots
+pass on O0/O2 with two complete exact native/user-output cold windows each.
+The crossing-level trajectories pass the unchanged water/chemical guards, but
+the7to9cold window differs by5.55e-16cm in one bottom-flux receipt on day8;
+the final day9 physical rows coincide. Preserve these failed comparisons.
+Cold initialization reconstructs hydraulic carry from stored heads. That is
+insufficient for exact prescribed-tail inventory/flux continuation, even with
+SWHYST0. The successor stores actual h,theta,k,kmean,dimoca,gwl,volact in a
+separate typed72byte paired domain plus5*N+4doubles, before optional calendar.
+This observes complete original state, adds no process equation or physical
+store, preserves the48byte CDE prefix and gives output/on-off distinct codecs.
+Validate the entire pending carry before assigning it. Requalify fresh crossing
+and fixed-level trajectories; the initial failed reports remain immutable.
+
+Initial pre-compilation failures exposed the public builder's mode1 budget
+exclusion and an ambiguous outer/inner HeadCalc declaration anchor; both are
+explicitly corrected, with original failed reports retained. Original mode5/8
+receipt and all prior source providers remain literal through delegation.

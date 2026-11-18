@@ -207,6 +207,9 @@ def validate_bundle(bundle, reference, project):
     lower=lower_boundary is not None
     expected_lower=lower_metadata(project,h.sha,h.APP,h.ROOT)
     if identity.get('lower_boundary_receipt')!=expected_lower:raise ValueError('Foreign original lower-boundary receipt')
+    from groundwater_native import metadata as groundwater_native_metadata
+    if identity.get('groundwater_native_state')!=groundwater_native_metadata(project,h.sha,h.APP):
+        raise ValueError('Foreign prescribed groundwater native carry policy')
     if lower_boundary==1:
         reaction=bundle/'mod_prescribed_groundwater_reaction.f90'
         if reaction.read_bytes()!=(h.ROOT/'src/process/mod_prescribed_groundwater_reaction.f90').read_bytes():

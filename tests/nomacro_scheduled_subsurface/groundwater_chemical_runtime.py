@@ -6,10 +6,33 @@ import re
 import subprocess
 import sys
 import time
+import zipfile
 import original_output_matrix as original
 from original_output_baseline import assignment
+from original_output_files import compare
 
 m=original.m;ROOT=original.ROOT
+
+
+def own(build,reference,project,full,data,start,end,out):
+    meta,case=m.validate_bundle(build,reference,project)
+    source=full/f'accepted-column-1-day-{start}.zip';digest=m.sha(source)
+    origin=out.with_name(out.name+'-origin')
+    receipt=m.h.verify_checkpoint(source,start,meta['binding'],origin);out.mkdir()
+    result,seconds=m.bounded(60,lambda:m.h.run(m.h.executable(build,'day_donor'),m.h.executable(build,'day_kernel'),case,out,end,
+        checkpoint_day=start,origin=origin,origin_receipt=receipt,runtime=True,publish_day=end,
+        checkpoint_binding=meta['binding'],model=project.model,project=project))
+    assert result['first_refusal'] is None,result
+    actual=m.rows(out);m.check(actual);assert m.physical(actual)==m.physical(data[start:end])
+    from groundwater_native import magic
+    from original_output import selection
+    with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as a,zipfile.ZipFile(out/f'accepted-column-1-day-{end}.zip') as b:
+        assert a.read('macro.bin')[:8]==magic(project)
+        for member in ('result.end','macro.bin'):assert a.read(member)==b.read(member),member
+    files=compare(full/'original',out/'original',selection(project),start,end,project.start_date)
+    assert m.sha(source)==digest
+    return dict(start=start,end=end,exact_physical=True,exact_complete_native=True,exact_user_output=files,
+                origin_unchanged=True,seconds=seconds)
 
 
 def fixture(path,kind):
@@ -53,7 +76,7 @@ def main():
         if args.phase=='full':windows += [(199,201),(364,367),(530,532),(1094,1096)]
         cuts={i for pair in windows for i in pair}|{days}
         full=out/'trajectory';record['trajectory'],data=m.trajectory(build,args.reference_work,project,full,days,cuts,180);save()
-        record['cold']=[original.own(build,args.reference_work,project,full,data,s,e,out/('own-'+str(s))) for s,e in windows]
+        record['cold']=[own(build,args.reference_work,project,full,data,s,e,out/('own-'+str(s))) for s,e in windows]
         record['status']='ACTUAL_PRESCRIBED_GROUNDWATER_CDE_'+args.phase.upper()+'_NATIVE_USER_FILES_PASS'
         print(args.kind,args.optimization,record['status'],flush=True)
     except Exception as error:record.update(status='FAILED',error=repr(error));raise

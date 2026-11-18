@@ -848,6 +848,8 @@ end module plant_interface""")
     if age_calendar is not None:
         patched=age_calendar_owner.apply_build(output,donor_build,project,patched)
     if age_source:patched=current_age_source.apply_build(output,project,patched)
+    from groundwater_native import apply_build as groundwater_native_build
+    patched=groundwater_native_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -959,6 +961,9 @@ end module plant_interface""")
     if lower_receipt:
         from groundwater_boundary_receipt import metadata as lower_metadata
         build_identity['lower_boundary_receipt']=lower_metadata(project,sha,APP,ROOT)
+    from groundwater_native import metadata as groundwater_native_metadata
+    groundwater_state=groundwater_native_metadata(project,sha,APP)
+    if groundwater_state is not None:build_identity['groundwater_native_state']=groundwater_state
     if fixed_file:
         from fixed_irrigation_file import POLICY as FIXED_FILE_POLICY
         build_identity['fixed_irrigation_file']={'policy':FIXED_FILE_POLICY,'source_sha256':sha(APP/'fixed_irrigation_file.py')}
