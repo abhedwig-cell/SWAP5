@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-groundwater-history01",
-  "last_commit": "c40636910a986feea35f19726af1aa6a68083011",
-  "status": "PRESCRIBED_GROUNDWATER_CDE_HISTORY_SOURCE_RECONCILIATION",
+  "last_commit": "d042b2c060105019d097582de9f363d036b6184a",
+  "status": "GROUNDWATER_HISTORY_HYSTERESIS2_SNOW_O0_O2_PILOT_PASS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -329,7 +329,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Successor native/domain adapter for original groundwater CDE hysteresis1/2 and snow/thermal carry, delegating ordinary GWC001/002 literally. Retain original independent reaction/provider and 1e-10 guards; source/input/native/pilot before full qualification.",
-  "recovery_point": "PR1733source95fc7b7fe andPR1734metadatac40636910 have exactorderedparents/fullqualifiedtrees andbothactualcleandetachedregisteredownersPASS. Ordinarygroundwaterunit admitted. Newbranchhistory01 begins fromactualc406; no source edits yet.",
+  "recovery_point": "d042b2c06 persisted+pushed. Actual35daycrossinggroundwater+CDE+hysteresis2+Snow O0/O2-v1 PASS with4coldphysical/native/useroutputexact andactual48mg gift. Full104byte13fielddomain actualS5GTC005; oldGWC001/002 delegatesliteral. No newhistorycanonicaladmission yet.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -431,7 +431,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Persist new history contract, new native successor and bounded selector admission. Actual O0/O2 native/compound pilots before wider runs; no changes to admitted groundwater helper/component bodies.",
+  "next_action": "Actualhistory native/domain/source/policy andactiveexternal controls; allremaininghys0/1/2+Snow/input outputcodec pilots. Thenselectedfull/year/terminal/platform andpriorordinarygroundwaterpreservation; registersuccessor andactualcanonicaladmission.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -964,7 +964,7 @@
     }
   },
   "groundwater_history": {
-    "status": "SOURCE_CONTRACT_BEFORE_IMPLEMENTATION",
+    "status": "IMPLEMENTED_HYS2_SNOW_PILOT_PASS_NOT_QUALIFIED",
     "baseline": "c40636910a986feea35f19726af1aa6a68083011",
     "scope": "Existing analyticalCDE SWBOTB1 with originalhysteresis0/1/2 andSnow0/1, at leastoneactivehistory; originalthermal prerequisites; nofrost/aquifer/detailedweather/age/macros",
     "contract": "docs/science/NOMACRO_GROUNDWATER_HISTORY_20261118.md",
@@ -975,7 +975,10 @@
       "New typednative actual historydomain before originalcalendar",
       "AllCDEnativeSAMPRO andhydraulicreceipt binding"
     ],
-    "next": "Successor native/domain adapter for original groundwater CDE hysteresis1/2 and snow/thermal carry, delegating ordinary GWC001/002 literally. Retain original independent reaction/provider and 1e-10 guards; source/input/native/pilot before full qualification.",
-    "external_blocker": null
+    "next": "Actualhistory native/domain/source/policy andactiveexternal controls; allremaininghys0/1/2+Snow/input outputcodec pilots. Thenselectedfull/year/terminal/platform andpriorordinarygroundwaterpreservation; registersuccessor andactualcanonicaladmission.",
+    "external_blocker": null,
+    "runtime": "d042b2c060105019d097582de9f363d036b6184a",
+    "pilot": "O0/O2crossing35days+4coldwindowseachPASS; completephysical/native/userfilesexact; actualSnowandfixedchemicalinputpositive.",
+    "native_domain": "104bytepaired13integers fromactualN,macro,solute,boundary,hysteresis,Snow,frost,heat,thermalmethod,drainage,ET; tenhistorycodecs;5N+4actualhydrauliccarry unchangedCDEprefix48."
   }
 }
