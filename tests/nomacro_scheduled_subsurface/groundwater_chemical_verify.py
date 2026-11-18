@@ -223,6 +223,33 @@ def verify():
         for key,count in (('public',3),('reader',6)):
             report=read(z,location[key]+'/RESULT.json');require('PASS' in report['status'] and len(report['profiles'] if key=='public' else report['reader_refusals'])==count,'actual groundwater public/input gate omitted')
             if key=='reader':require(len(report['descriptor_refusals'])==7 and len(report['policy_refusals'])==12,'actual groundwater unsupported scope/policy accepted')
+    for location in q['components']:
+        z=archives[location['archive']]
+        for prefix in location['reaction']:
+            report=read(z,prefix+'/RESULT.json')
+            require(report['status']=='REAL_PRESCRIBED_GROUNDWATER_REACTION_COMPONENT_PASS'
+                    and report['production_sha256']==q['source_sha256']['src/process/mod_prescribed_groundwater_reaction.f90']
+                    and report['driver_sha256']==q['controller_sha256']['tests/nomacro_scheduled_subsurface/groundwater_reaction_driver.f90']
+                    and 'checks=39' in report['stdout'] and len(report['compile_link_closure'])==2,'actual groundwater independent production component omitted')
+        report=read(z,location['cde']+'/RESULT.json')
+        require(report['status']=='ACTUAL_CDE_NATIVE_STOCK_COMPONENT_NINETEEN_REFUSALS_PASS'
+                and len(report['refusals'])==19 and all(r['status']=='REFUSED' for r in report['refusals'])
+                and report['actual_fortran_wire'] is report['source_unchanged'] is True
+                and report['policy']['source_sha256']==q['source_sha256']['app/hybrid_water/cde_native_receipt.py'],
+                'actual CDE stock wire component omitted')
+        for prefix in location['repair']:
+            repair=read(z,prefix+'/RESULT.json')
+            require(repair['status']=='ACTUAL_CDE_PRIVATE_NATIVE_RECEIPT_DIAGNOSTIC_COMPLETE' and repair['published'] is False
+                    and repair['positive']['source_unchanged'] is True
+                    and repair['negative']['status']=='REFUSED_BEFORE_EXTERNAL_PREPARED_CANDIDATE'
+                    and repair['negative']['error']=='Private CDE native stock differs from candidate receipt','actual forged CDE stock was not refused before external prepare')
+        if 'original_defect' in location:
+            old=read(z,location['original_defect']+'/RESULT.json');bad=old['negative'];good=old['positive']
+            require(old['published'] is False and good['source_unchanged'] is True and bad['source_state_advanced'] is False
+                    and bad['status']=='PREPARED_PRIVATE_CANDIDATE_NATIVE_STOCK_RECEIPT_MISMATCH'
+                    and bad['actual_native_stock_mg_cm2']==good['actual_native_stock_mg_cm2']
+                    and bad['reported_stock_mg_cm2']==good['actual_native_stock_mg_cm2']+1.
+                    and bounded(bad['reported_chemical_residual_mg_cm2']),'actual inherited CDE native/receipt defect censored')
     require(fulls==28 and contexts==115 and cold_windows==232,'actual groundwater full/native/preservation denominator differs')
     return dict(status='PRESCRIBED_GROUNDWATER_CDE_NATIVE_RECEIPT_ADMISSION_PASS',runtime=git('rev-parse',RUNTIME).decode().strip(),predecessor=prior,
                 actual_full_periods=fulls,actual_bound_reports=reports,actual_cold_windows=cold_windows,actual_preserved_contexts=contexts,
