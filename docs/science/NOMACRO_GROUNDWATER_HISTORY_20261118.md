@@ -103,4 +103,40 @@ The same actual diagnostic that reached HYBRID_READY before the repair now
 refuses before HYBRID_READY on both optimizations. Source checkpoints remain
 unchanged and no external state is published. Initial complete Windows-v1
 positive cohorts are retained separately; corrected fresh Windows-v2 source
-builds and complete selected cold/year/terminal cohorts are next.
+builds and complete selected cold/year/terminal cohorts follow below.
+
+## Corrected composition and proportional preservation
+
+Corrected Windows O0/O2 matrices and Ubuntu run44302590106 both finish PASS:
+16short35day and14full1096day periods per optimization/platform, all ten codecs,
+704complete cold windows,1784actual native refusals and96forged hydraulic
+receipt refusals. All four first/year/terminal-source profiles execute actual
+chemical inputs. Snow histories observe actual positive snow and sublimation;
+chemistry profiles execute original sorption/decay and external boundary input.
+Format0/3 trajectories and five complete endpoints agree exactly.
+
+The original inactive ordinary groundwater dispatcher must preserve its old
+generated sources, object/library identities, metadata, day rows and five full
+native endpoints. Five discriminating contexts per Windows optimization cover
+within/below/crossing, output off, terminal gifts and chemistry; Ubuntu selects
+the same five O2 contexts. Preserve eight actual Windows thermal/water/CDE/frost
+contexts and eleven young/named routes through literal old controllers. Ubuntu
+also selects six AI, six DI and four aquifer contexts to exercise those unchanged
+early-return/delegation branches. This selects50prior contexts in total, with
+no repeated old full campaigns. The pure Darcy/reaction and physical process
+providers stay literal. Unchanged older full scientific evidence is inherited
+only across exact frozen source identities.
+
+The first scoped Ubuntu preservation44305221327 stops after one successful
+ordinary context because the new Python path resolver name is overwritten by
+the build metadata dictionary. This is a controller error, not a physical failure.
+Retain its actual raw artifact. Correct the local resolver name; continuation
+uses that actual artifact, validates the completed first context afresh and
+executes only remaining contexts. No producer build or report is rewritten.
+
+The new registered successor must validate the preceding literal qualification
+from an actualc406Git source snapshot. The frozen predecessor resolves a runtime
+Git object, so the temporary snapshot has its own real Git database with a
+read-only object alternate to the actual common database. Extract bounded path
+batches to stay within Windows command-line limits. No ROOT/hash monkeypatch or
+synthetic predecessor PASS is permitted. Recompute all actual old archive bytes.
