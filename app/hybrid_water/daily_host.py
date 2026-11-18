@@ -143,8 +143,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     if project.water_polish_policy == INTERIOR_WATER_POLISH and (project.macro or not strict_water or not budget_retry):
         raise ValueError('Interior polishing requires the strict no-macro water receipt')
     management_state = project.solute or bool(project.input_directory)
-    if donor_opt not in ('O0','O2') or (donor_opt!='O2' and not project.input_directory):
-        raise ValueError('Generated-donor optimization is explicit experimental qualification only')
+    if donor_opt not in ('O0','O2') or (donor_opt!='O2' and project.macro):
+        raise ValueError('Generated-donor optimization requires explicit no-macro qualification')
     if ((not project.macro and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
             or (not project.macro and not project.solute and budget_retry and not project.input_directory)):
         raise ValueError("Macro/Cauchy corrections require the Andelst project")
