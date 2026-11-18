@@ -80,7 +80,7 @@ def metadata(project):
         private_bridge_source_sha256=sha(Path(bridge.__file__)),private_cde_interval_fields=list(bridge.FIELDS),cde_output_state_sha256=sha(folder/'cde_interval_output_state.f90'),
         cde_output_state_version=2,cde_output_state_reals=20+project.nodes,cde_output_state_private_reals=2,cde_daily_receipt_source_sha256=sha(folder/'cde_interval_receipt.f90'),
         cde_daily_flux_policy='actual-original-six-rhs-increments-including-corrected-ssdi-v1',cde_daily_mass_guard_mg_cm2=1e-10,
-        calendar_initial_past_date_policy='original-initial-interval-pointer-remains-one-v1',original_pending_dates_not_normalized=True,
+        calendar_initial_past_date_policy='original-initial-pending-one-and-perstep-nonfuture-pointer-v1' if selected['flprintdt'] else 'original-initial-interval-pointer-remains-one-v1',original_pending_dates_not_normalized=True,
         cde_interval_anchor='actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed',
         conserved_cde_prefix_offset_bytes=48,receipt_provider_sha256=sha(ROOT/'src/process/mod_original_output_receipt.f90'),
         vector_catalog_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-VECTOR-OUTPUT-01/source.py') if selected['swcsv'] else None,
@@ -112,7 +112,8 @@ def render_integral(original,watstor,selected):
         source=ordinary.render_integral(original,watstor,selected)
         anchor='end module MOD_integral';assert source.count(anchor)==1
         source=source.replace(anchor,ordinary_trial_source(original,watstor)+'\n'+anchor,1)
-    anchor="if(ioutdatint/=1+count(outdatint>0d0.and.outdatint<t1900-1d-8))error stop 'Inconsistent original interval date pointer'"
+    anchor=("if(ioutdatint>1+count(outdatint>0d0.and.outdatint<t1900-1d-8))error stop 'Future original per-step date pointer'" if selected['flprintdt'] else
+        "if(ioutdatint/=1+count(outdatint>0d0.and.outdatint<t1900-1d-8))error stop 'Inconsistent original interval date pointer'")
     assert source.count(anchor)==1
     guard="""! Original initial explicit date remains pending when it precedes TSTART.
 if(outdatint(1)>0d0.and.outdatint(1)<original_output_start_clock-1d-8)then
