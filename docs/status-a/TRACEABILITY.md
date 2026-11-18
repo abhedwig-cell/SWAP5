@@ -1,5 +1,12 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Hysteresis/output ownership](../science/NOMACRO_ORIGINAL_OUTPUT_HYSTERESIS_20261118.md)
+and `integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_QUALIFICATION.json`
+bind production4aaf71629 to seven immutable raw archives,242actual producer
+reports/builds and64full Windows/Ubuntu periods. The registered successor checks
+actual accepted ledgers/native domains;3003corruptions and dirty/committed guard
+relaxations are refused. Qualification is bounded; canonical admission is pending.
+
 [Original output controls](../science/NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md),
 `integration/f-ci/nomacro-complete01/ORIGINAL_OUTPUT_QUALIFICATION.json` and
 `ORIGINAL_OUTPUT_MERGE_RECEIPT.json` own production98b5b0337, immutable complete
