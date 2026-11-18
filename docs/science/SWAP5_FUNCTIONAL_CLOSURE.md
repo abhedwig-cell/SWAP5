@@ -7,7 +7,7 @@ compartment input through explicit default-off `--age-direct-soil-source`,
 including point and interval SSDI. Literal transport precedes input each
 microstep;12field ledgers and six typed native families own the new source.
 Windows/Ubuntu44full1096periods and actual source/native/output/public,
-rollback, reader and preservation gates pass. Canonical admission is pending.
+rollback, reader and preservation gates pass. Actual canonical5014520ed passes its detached registered owner.
 Historical functional closure remains PARTIAL, whole science NOT_QUALIFIED
 and fixed RC3 remains unchanged.
 

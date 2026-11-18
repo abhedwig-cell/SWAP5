@@ -1277,10 +1277,12 @@
     "admission_receipt": "integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_MERGE_RECEIPT.json"
   },
   "bounded_direct_soil_age_source": {
-    "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "status": "ADMITTED_BOUNDED",
     "authority": "integration/f-ci/nomacro-complete01/DIRECT_SOIL_AGE_QUALIFICATION.json",
     "scope": "Explicitdefaultoffall4fixed incomingageforms0..1000days; actualdirectsoilinputafterliteraltransport;12fieldledger,sixnewtypednativefamilies",
     "evidence": "44actualfull1096Windows/Ubuntu,293report-buildbindings,47Windows+10Ubuntuoldcontexts,source/native/rollback/public/readers/convergencePASS",
-    "remaining": "Otherhistoricalage/processdomainsandwholeequivalenceremainunqualified;wholeclosurePARTIAL/fixedRC3unchanged"
+    "remaining": "Otherhistoricalage/processdomainsandwholeequivalenceremainunqualified;wholeclosurePARTIAL/fixedRC3unchanged",
+    "canonical_admission": "5014520ed5aa37439b9dd4661d58939eba7c15ad",
+    "admission_receipt": "integration/f-ci/nomacro-complete01/DIRECT_SOIL_AGE_MERGE_RECEIPT.json"
   }
 }

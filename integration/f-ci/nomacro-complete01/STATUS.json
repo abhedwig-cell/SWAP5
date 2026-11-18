@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-subsurface-age-source01",
-  "last_commit": "1eed473273444e58bcbcaeea38c1d87460beba00",
-  "status": "DIRECT_SOIL_AGE_REGISTERED_OWNER_PASS_DOCS_AND_CANONICAL_NEXT",
+  "last_commit": "5014520ed5aa37439b9dd4661d58939eba7c15ad",
+  "status": "DIRECT_SOIL_AGE_CANONICALLY_ADMITTED_NEXT_AQUIFER_OUTPUT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -47,7 +47,8 @@
     "PR1720actualmetadatacanonicalb9400bff6 exact3bf/66parents/full1bd8tree andactualdetachedregisteredrootPASS173.997sec;005blockfullyadmitted.",
     "PR1721actualcanonical473b295d5 exactb940/c45parents/full6752tree; actualdetachedrootPASS60.383sec. Boundedoriginaloutputsource/state/userfilesadmitted, wholeclosurePARTIAL/scienceNOT_QUALIFIED.",
     "PR1723 actualcanonical76f1a078b exact4b33/2824parents/full088fd990tree; realdetachedregisteredrootPASS47.838seconds; boundedoriginaloutput+hys1/2 water/dailyCDE/ageadmitted; wholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
-    "PR1725 actual canonical3063937ee exact040/be8 parents/full4ff34547tree; actual detached registered root PASS50.217seconds. Bounded current fixed sprinkler/surface ages admitted;40actual full periods/238report-build bindings; whole closure PARTIAL/science NOT_QUALIFIED/fixedRC3 unchanged."
+    "PR1725 actual canonical3063937ee exact040/be8 parents/full4ff34547tree; actual detached registered root PASS50.217seconds. Bounded current fixed sprinkler/surface ages admitted;40actual full periods/238report-build bindings; whole closure PARTIAL/science NOT_QUALIFIED/fixedRC3 unchanged.",
+    "PR1727 actualcanonical5014520ed exacte3/31aparents/full27401b01tree; actualdetachedregisteredownerPASS. Explicitall4fixed incomingageforms with actualdirectsoilsource/state/output admitted;44fullperiods/293report-buildbindings/3005corruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
   ],
   "open": [
     "Complete historical selector inventory",
@@ -325,7 +326,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Complete annual/subdaily cohort controllers and actual reference/cadence/native controls; no changes to physical providers or literal003/004 helpers.",
-  "recovery_point": "Sealede4a31277c; registered1eed47327rootPASS56.824sec,3tests3005corruptionsrefused; actualbad34513b4cignoredqssdi source rejected, nevermerge. Production26724ce75unchanged.",
+  "recovery_point": "PR1727 actual source merge5014520ed exacte3/31aparents andcomplete27401b01tree; actual detached registered root PASS. Metadata receipt and bounded current claims prepared.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -427,7 +428,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Runsourceandstrictdocschecks; pushfinalhead andrunregisteredroot. CreateboundedsourcePR, mergeonlyqualifiedhead, verifyactualcanonicalparents/fulltree+detachedregisteredroot; metadatareceiptadmission thenNEXT: reconcileoriginalCDEoutput withSWBR1aquiferowner/state beforeboundedactivation.",
+  "next_action": "Complete actual metadata merge admission, then reconcile and implement bounded original CDE output with existing SWBR1 aquifer physical/native owner. Preserve all admitted output/source routes and original aquifer equations/providers.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -648,7 +649,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "e3cb491d15b9d079062285c397cfba552ab0a86d",
+  "canonical_head": "5014520ed5aa37439b9dd4661d58939eba7c15ad",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -670,12 +671,12 @@
   },
   "subsurface_age_source": {
     "baseline": "e3cb491d15b9d079062285c397cfba552ab0a86d",
-    "status": "DIRECT_SOIL_AGE_REGISTERED_OWNER_PASS_DOCS_AND_CANONICAL_NEXT",
+    "status": "ADMITTED_BOUNDED",
     "contract": "docs/science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md",
     "component": "tests/nomacro_scheduled_subsurface/direct_soil_age_component.py",
     "physical_policy": "literal transport then direct per-compartment input each microstep; convergence and corrected-original qualification required",
     "state_policy": "12fieldprotocol, sixnewS5DI typedcodecs, literal56bytesurfacedomain plus24bytepaired directinputowner atEOF",
-    "next": "Runsourceandstrictdocschecks; pushfinalhead andrunregisteredroot. CreateboundedsourcePR, mergeonlyqualifiedhead, verifyactualcanonicalparents/fulltree+detachedregisteredroot; metadatareceiptadmission thenNEXT: reconcileoriginalCDEoutput withSWBR1aquiferowner/state beforeboundedactivation.",
+    "next": "Complete actual metadata merge admission, then reconcile and implement bounded original CDE output with existing SWBR1 aquifer physical/native owner. Preserve all admitted output/source routes and original aquifer equations/providers.",
     "external_blocker": null,
     "component_result": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-component-v1/report.json",
     "component_summary": "Real four-object O0/O2 positive point/interval, exact zero-source, committed-state nonmutation, 12 invalid source/transport refusals, 7 malformed ledger refusals/opt; actual two-cell transport refinement errors .0041117,.0020226,.0010032; old providers literal.",
@@ -728,6 +729,14 @@
     "registered_owner": "Semantic293actualreports/44fullsPASS; literalqualifiede3predecessorimage+actualalloldarchivesPASS5.168sec. Initialsnapshotmissedreferencepatchrun.py import: boundedsourceclosureexpandedtoreferencepatchPythononly; oldowner/code/metadataunchanged.",
     "registered_root": "PASS56.824seconds:293actualreport/buildbindings,44actualfullperiods andliteralqualifiedpreviousimage/rawarchives",
     "corruptions": "3testsPASS10.704seconds,2928actualproducer+77source/scope/guardcorruptions refused",
-    "source_negative_commit": "34513b4cd32beb5f00d2451f6ee9acf3183de8b2"
+    "source_negative_commit": "34513b4cd32beb5f00d2451f6ee9acf3183de8b2",
+    "canonical_admission": "5014520ed5aa37439b9dd4661d58939eba7c15ad",
+    "actual_canonical_owner": {
+      "returncode": 0,
+      "seconds": 56.59059249982238,
+      "head": "5014520ed5aa37439b9dd4661d58939eba7c15ad",
+      "stdout": "{\n  \"status\": \"DIRECT_SOIL_AGE_SOURCE_STATE_OUTPUT_ADMISSION_PASS\",\n  \"runtime\": \"26724ce758cb1dfb22e7e722046fae724fa6bd61\",\n  \"predecessor\": \"LITERAL_QUALIFIED_CURRENT_AGE_IMAGE_AND_ACTUAL_ARCHIVES_PASS\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"actual_bound_reports\": 293,\n  \"actual_full_periods\": 44,\n  \"native_codecs\": [\n    \"S5DI0002\",\n    \"S5DI0003\",\n    \"S5DI0004\",\n    \"S5DI0005\",\n    \"S5DIO001\",\n    \"S5DIH001\"\n  ],\n  \"age_units\": \"cm day\",\n  \"age_tolerance\": \"8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)\"\n}\n",
+      "stderr": ""
+    }
   }
 }
