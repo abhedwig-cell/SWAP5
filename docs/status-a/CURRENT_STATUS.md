@@ -1,5 +1,12 @@
 # SWAP5 Status-A current status
 
+The [direct soil age source](../science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md)
+is qualified for explicit current incoming ages in all four fixed irrigation
+forms. Windows/Ubuntu44full1096day periods, complete source/native/output,
+active transactions and independent user commands pass. All47Windows prior
+contexts remain exact. Canonical admission is pending; whole closure stays
+PARTIAL, science NOT_QUALIFIED and fixed RC3 is unchanged.
+
 The [current fixed age source](../science/NOMACRO_AGE_IRRIGATION_SOURCE_20261118.md)
 is qualified for explicit incoming IRCONCages in fixed sprinkler/surface gifts.
 Windows/Ubuntu40full1096day trajectories, native/input/rollback/public and

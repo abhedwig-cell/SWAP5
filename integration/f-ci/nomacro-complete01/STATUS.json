@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-subsurface-age-source01",
-  "last_commit": "e3cb491d15b9d079062285c397cfba552ab0a86d",
-  "status": "DIRECT_SOIL_AGE_WINDOWS_UBUNTU_FULL_QUALIFIED_SEAL_READY",
+  "last_commit": "1eed473273444e58bcbcaeea38c1d87460beba00",
+  "status": "DIRECT_SOIL_AGE_REGISTERED_OWNER_PASS_DOCS_AND_CANONICAL_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -325,7 +325,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Complete annual/subdaily cohort controllers and actual reference/cadence/native controls; no changes to physical providers or literal003/004 helpers.",
-  "recovery_point": "Actual source PR1725 and metadata PR1726 exact full trees/parents; detached registered owner PASS50.217/50.851sec. New contract/component only; existing runtime and old providers unchanged.",
+  "recovery_point": "Sealede4a31277c; registered1eed47327rootPASS56.824sec,3tests3005corruptionsrefused; actualbad34513b4cignoredqssdi source rejected, nevermerge. Production26724ce75unchanged.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -427,7 +427,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Seal7actualrawarchives+293report/buildbindings+44actualfullperiods. SetregisteredownerSEALED tothisproofcommit, insertliteral4linehook intoexistingage_irrigation_source_verify.verify. Run3proofcorruptiontests, actualregisteredroot andactualcommittedignoredsource-negative. Thenboundeddocsstrictbuild+canonicalPR/actualmerge+metadata+NEXT.",
+  "next_action": "Runsourceandstrictdocschecks; pushfinalhead andrunregisteredroot. CreateboundedsourcePR, mergeonlyqualifiedhead, verifyactualcanonicalparents/fulltree+detachedregisteredroot; metadatareceiptadmission thenNEXT: reconcileoriginalCDEoutput withSWBR1aquiferowner/state beforeboundedactivation.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -670,12 +670,12 @@
   },
   "subsurface_age_source": {
     "baseline": "e3cb491d15b9d079062285c397cfba552ab0a86d",
-    "status": "DIRECT_SOIL_AGE_WINDOWS_UBUNTU_FULL_QUALIFIED_SEAL_READY",
+    "status": "DIRECT_SOIL_AGE_REGISTERED_OWNER_PASS_DOCS_AND_CANONICAL_NEXT",
     "contract": "docs/science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md",
     "component": "tests/nomacro_scheduled_subsurface/direct_soil_age_component.py",
     "physical_policy": "literal transport then direct per-compartment input each microstep; convergence and corrected-original qualification required",
     "state_policy": "12fieldprotocol, sixnewS5DI typedcodecs, literal56bytesurfacedomain plus24bytepaired directinputowner atEOF",
-    "next": "Seal7actualrawarchives+293report/buildbindings+44actualfullperiods. SetregisteredownerSEALED tothisproofcommit, insertliteral4linehook intoexistingage_irrigation_source_verify.verify. Run3proofcorruptiontests, actualregisteredroot andactualcommittedignoredsource-negative. Thenboundeddocsstrictbuild+canonicalPR/actualmerge+metadata+NEXT.",
+    "next": "Runsourceandstrictdocschecks; pushfinalhead andrunregisteredroot. CreateboundedsourcePR, mergeonlyqualifiedhead, verifyactualcanonicalparents/fulltree+detachedregisteredroot; metadatareceiptadmission thenNEXT: reconcileoriginalCDEoutput withSWBR1aquiferowner/state beforeboundedactivation.",
     "external_blocker": null,
     "component_result": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-component-v1/report.json",
     "component_summary": "Real four-object O0/O2 positive point/interval, exact zero-source, committed-state nonmutation, 12 invalid source/transport refusals, 7 malformed ledger refusals/opt; actual two-cell transport refinement errors .0041117,.0020226,.0010032; old providers literal.",
@@ -725,6 +725,9 @@
     "windows_status": "O0/O2matrixterminalPASS:17short+11full1096/opt;158fullcoldwindows/platform,106shortcoldwindows/platform;8controls/opt each19native+5fabricatedledgerrefusals andactivefirst/secondgift transactions.",
     "preservation": "47freshWindowscontextsPASS:16currentagefamilies,20ordinary+hys,8youngfixedforms,3named. Entireproject/actualemittedsource/provider/physical/nativeexact; oldcontrollersliteral. Ubuntu6current+4oldoutput/hysfreshcontextsPASS.",
     "raw": "7immutableZIPs forwardverified: WindowsO0/O289309923/89662780bytes,context13749392,preservation81040051; actualUbuntuO0/O293456314/86110224,contracts19382376bytesunchangedartifacts.",
-    "registered_owner": "Semantic293actualreports/44fullsPASS; literalqualifiede3predecessorimage+actualalloldarchivesPASS5.168sec. Initialsnapshotmissedreferencepatchrun.py import: boundedsourceclosureexpandedtoreferencepatchPythononly; oldowner/code/metadataunchanged."
+    "registered_owner": "Semantic293actualreports/44fullsPASS; literalqualifiede3predecessorimage+actualalloldarchivesPASS5.168sec. Initialsnapshotmissedreferencepatchrun.py import: boundedsourceclosureexpandedtoreferencepatchPythononly; oldowner/code/metadataunchanged.",
+    "registered_root": "PASS56.824seconds:293actualreport/buildbindings,44actualfullperiods andliteralqualifiedpreviousimage/rawarchives",
+    "corruptions": "3testsPASS10.704seconds,2928actualproducer+77source/scope/guardcorruptions refused",
+    "source_negative_commit": "34513b4cd32beb5f00d2451f6ee9acf3183de8b2"
   }
 }
