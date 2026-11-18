@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-thermal-calendar01",
-  "last_commit": "f2fc11124d98e1238d5996ec2af21cbde24e49d9",
-  "status": "THERMAL_CALENDAR_ACTUAL_CANONICAL_ADMISSION_PASS",
+  "branch": "codex/nomacro-thermal-clock01",
+  "last_commit": "21a244506d8130191f6c4c611e35fa0acf620256",
+  "status": "THERMAL_CLOCK_COMPOSED_QUALIFIED_PENDING_ACTUAL_CANONICAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -330,7 +330,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Finish actual metadata admission; source-reconcile originalSnow subdaily output/currentdailyopportunity preflight and strictsoil/globaldaily receipt domains before new adapter.",
+  "next_code_change": "Create source PR against actual canonicalb439; expected-head merge; verify exact actual orderedparents/fulltree/cleandetachedregisteredowner; metadata admission then next historical gap.",
   "recovery_point": "Production278152113 repairs original/appended hydraulic ownership. Freshhys2SnowO0/O2-v2 actual35days+4coldPASS;39native/2fabricatedreports peroptPASS; actualduplicateprobe-after-Ox-v1 REFUSED_BEFORE_READY. BothinitialWindows-v1 fullpositivecohorts complete16short14full12controls/opt butpre-repair; retainonlyasprototype, do notrebind/reuseitsoldbuilds. NextWindows-v2 freshcohorts reuseonlycurrentv2hys2Snowpilot/controls.",
   "external_blocker": null,
   "test_selection": {
@@ -875,7 +875,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-thermal-calendar01",
+  "working_branch": "codex/nomacro-thermal-clock01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -1057,7 +1057,7 @@
   },
   "canonical_live_overlap": "PR1735 SaltFarm Newton work is open/unmerged on its own branch; not imported or modified by this historical migration batch.",
   "thermal_calendar": {
-    "status": "ADMITTED_BOUNDED_SOURCE_METADATA_PENDING",
+    "status": "ADMITTED_BOUNDED",
     "baseline": "8c09e206d854fec51b2c1b94b3c9b52921e6216b",
     "contract": "docs/science/NOMACRO_THERMAL_CALENDAR_20261118.md",
     "scope": "Explicit original water Snow1 heat1/calc2 hys0/1/2 drainage1 analytical soil bottom5/8 dailyweather nofrost/AQ/macro; NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0or2..366.",
@@ -1119,6 +1119,80 @@
       "head": "f2fc11124d98e1238d5996ec2af21cbde24e49d9",
       "stdout": "{\n  \"status\": \"ORIGINAL_SNOW_CALENDAR_SEVEN_TOTALS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"02f1bc2c1e53e5035279ab6825e702cbf7d0ceb6\",\n  \"predecessor\": \"LITERAL_QUALIFIED_GROUNDWATER_HISTORY_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 16,\n  \"actual_cold_windows\": 256,\n  \"actual_native_refusals\": 944,\n  \"actual_policy_refusals\": 256,\n  \"actual_copied_provider_refusals\": 16,\n  \"actual_preserved_contexts\": 40,\n  \"actual_bound_reports\": 160,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
       "stderr": ""
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_THERMAL_CALENDAR_METADATA_MERGE_VERIFIED",
+      "pr": 1739,
+      "merge": "a264b7166328f5103bfbb6306d663ae206b5a3ab",
+      "parents": [
+        "f2fc11124d98e1238d5996ec2af21cbde24e49d9",
+        "a7c05d53e42a88e66a347f5f982abf802f1c61ca"
+      ],
+      "qualified_head": "a7c05d53e42a88e66a347f5f982abf802f1c61ca",
+      "tree": "001ded1dbf5a9e6ea552e3f5ab04ff6e850e93e9",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 97.69890749966726,
+        "head": "a264b7166328f5103bfbb6306d663ae206b5a3ab",
+        "stdout": "{\n  \"status\": \"ORIGINAL_SNOW_CALENDAR_SEVEN_TOTALS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"02f1bc2c1e53e5035279ab6825e702cbf7d0ceb6\",\n  \"predecessor\": \"LITERAL_QUALIFIED_GROUNDWATER_HISTORY_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 16,\n  \"actual_cold_windows\": 256,\n  \"actual_native_refusals\": 944,\n  \"actual_policy_refusals\": 256,\n  \"actual_copied_provider_refusals\": 16,\n  \"actual_preserved_contexts\": 40,\n  \"actual_bound_reports\": 160,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
     }
+  },
+  "thermal_clock": {
+    "status": "CURRENT_CANONICAL_COMPOSITION_QUALIFIED_REGISTERED_SOURCE_NEGATIVE_PASS_PENDING_ADMISSION",
+    "baseline": "a264b7166328f5103bfbb6306d663ae206b5a3ab",
+    "contract": "docs/science/NOMACRO_THERMAL_CLOCK_20261118.md",
+    "scope": "OriginalwaterSnow1heat1/calc2hys0/1/2 drain1analyticsoil bottom5/8 dailyweather;NPRINTDAY2/3first original2..1440domain,FLPRINTDTfalse;nofrost/AQ/CDE/age/macros",
+    "baseline_observation": "C:/Users/Veldh012/swap5-complete01-evidence/thermal-clock-baseline-nprint3-v1",
+    "source_reconciliation": "Originalswap Integral2 thenSnow2onlyflDayStart thensoilsubsteps/Integral3; oldabsoluteoutputtrialreceiptexplicitlyexcludesSnow. Separateactualnet-forcingsoil+pondreceipt, retainactualSnow/globaldayledger andindependentDarcyboundary.",
+    "next": "Create source PR against actual canonicalb439; expected-head merge; verify exact actual orderedparents/fulltree/cleandetachedregisteredowner; metadata admission then next historical gap.",
+    "external_blocker": null,
+    "implementation": "app/hybrid_water/thermal_output_clock.py",
+    "development_observations": {
+      "initial_v1": "render scope anchor refusal before compilation",
+      "v2": "missing actual original cmelt transfer; original day7 real workers stopped deliberately; retained raw builds",
+      "v3": "whole global ledger day13 refused1.02145e-10cm despite actual soil receipt near roundoff; actual terminalprint day event truncation",
+      "v4": "NPD3hys2actualO0/O2 35days and4cold exact;60native plus transactions/policy/provider controlsPASS. NPD2hys1fullclock shortrefused day12 due later rain event cap coincidence; not qualified"
+    },
+    "functional_completion": "PARTIAL",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "production_commit": "8a0e09a52",
+    "windows_matrix_roots": [
+      "C:/Users/Veldh012/swap5-complete01-evidence/thermal-clock-windows-O0-v3",
+      "C:/Users/Veldh012/swap5-complete01-evidence/thermal-clock-windows-O2-v3"
+    ],
+    "runtime": "4d6a9580c79c82c3187c6daf147d19d09235e862",
+    "registered_root": {
+      "status": "ORIGINAL_SNOW_SUBDAILY_SOIL_CLOCK_NATIVE_ADMISSION_PASS",
+      "runtime": "4d6a9580c79c82c3187c6daf147d19d09235e862",
+      "predecessor": "LITERAL_CANONICAL_SALTFARM_AND_SNOW_IMAGES_ACTUAL_UNCHANGED_PRODUCERS_PASS",
+      "actual_full_periods": 16,
+      "actual_cold_windows": 256,
+      "actual_native_refusals": 960,
+      "actual_policy_refusals": 352,
+      "actual_copied_provider_refusals": 16,
+      "actual_preserved_contexts": 55,
+      "actual_saltfarm_preserved_full_periods": 4,
+      "actual_saltfarm_preserved_cold_windows": 20,
+      "actual_bound_reports": 198,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_OMITTED_TERMINAL_CLOCK_STEP_REFUSED",
+    "source_negative_commit": "5e76a66feed409d34d357ae13892eea82105894b",
+    "proof_tests": "4PASS19.394seconds;1408actualperiod/generated/binary/ledger/native+388soil/cadence+48source/scope+26rawartifact/priorpartcorruptions=1870.",
+    "archives": "9actualimmutablecurrent/historical-contextrecords441887679bytes; originalfirst345104774bytecampaignretainedseparately. FailedUbuntucheckoutartifactretained,19completedcontextsforwardexactandonlymissing2SaltFarmprofilesrun.",
+    "concurrent_canonical": "b4398e00ae978c82f0cdee3d72ff79708a869762",
+    "composed_baseline": "b4398e00ae978c82f0cdee3d72ff79708a869762",
+    "composed_source": "a0414af4971047383b12f3e1eb91b8f111fecc11",
+    "composed_windows_matrix": [
+      "C:/Users/Veldh012/swap5-complete01-evidence/thermal-clock-composed-windows-O0-v1",
+      "C:/Users/Veldh012/swap5-complete01-evidence/thermal-clock-composed-windows-O2-v1"
+    ],
+    "qualified_baseline": "b4398e00ae978c82f0cdee3d72ff79708a869762",
+    "qualification": "integration/f-ci/nomacro-complete01/THERMAL_CLOCK_COMPOSED_QUALIFICATION.json",
+    "docs": "SourcechecksPASS; strictMkDocsPASS32.19seconds externalcurrentcomposedsite; originalm3anchorINFOunchanged."
   }
 }

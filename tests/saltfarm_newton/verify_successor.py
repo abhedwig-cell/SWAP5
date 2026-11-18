@@ -109,6 +109,10 @@ def audit(z,platform,producer=RUNTIME):
     return result
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('thermal_clock_admission',ROOT/'tests/nomacro_scheduled_subsurface/thermal_clock_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     source_guard()
     require((ROOT/PROOF/'PORTABLE.json').read_bytes()==blob(SEALED,PROOF+'PORTABLE.json'),'sealed Newton platform qualification changed')
     q=json.loads((ROOT/PROOF/'PORTABLE.json').read_text());require(q['runtime']==RUNTIME and q['base']==BASE and q['water_guard_cm']==q['solute_guard_mg_cm2']==1e-10,'foreign portable Newton scope')

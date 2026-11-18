@@ -9,6 +9,17 @@ retains the literal preceding Snow owner and immutable canonical archives;
 earlier failed source guards and the refused day454 unpolished trial remain
 visible. Whole-science qualification and fixed RC3 are unchanged.
 
+[Snow subdaily qualification](../science/NOMACRO_THERMAL_CLOCK_20261118.md)
+and `integration/f-ci/nomacro-complete01/THERMAL_CLOCK_COMPOSED_QUALIFICATION.json`
+bind production4d6a9580c and actual canonicalb439 to nine immutable raw records,
+441887679bytes,
+16full periods,256cold windows and55prior contexts. Separate actual soil and
+global receipts, native counters and original user cadence are recomputed.
+Initial render/cmelt/terminal-clock/controller failures remain distinct from
+qualified producers. All1870proof corruptions and actual dirty/committed omitted
+terminal-step controls refuse. Registered proof passes; actual canonical admission
+is pending; whole closure/science/RC3 are unchanged.
+
 [Snow calendar qualification](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
 and `integration/f-ci/nomacro-complete01/THERMAL_CALENDAR_QUALIFICATION.json`
 bind production02f1bc2c1 to seven immutable raw archives,313908829bytes,

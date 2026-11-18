@@ -8,6 +8,17 @@ iteration remains near the guard; only half-interior padding is omitted.
 Other registered projects retain always-polish, and native state formats are
 unchanged. Windows/Ubuntu O0/O2 exact own continuations are source-bound.
 
+The [Snow subdaily adapter](../science/NOMACRO_THERMAL_CLOCK_20261118.md)
+uses S5STW001 with the literal80byte thermal domain, paired32byte seven-Snow
+header,56byte totals and complete prior calendar. A separate actual soil/pond
+receipt observes original net forcing and cmelt; its trial uses the independent
+Darcy/soil-air boundary. Coincident terminal clock events are aligned before
+physical integration. No physical equation changes. All old daily/sparse/CDE/
+age/default routes delegate literally. The current canonical SaltFarm policy and
+original owner body are literal; four full SaltFarm contexts/twenty own cold
+windows remain exact. Registered proof passes; actual canonical
+admission is pending.
+
 The implemented [Snow output calendar adapter](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
 retains the literal thermal-domain80byte frame and complete original calendar.
 S5CTW002 adds a paired32byte header and seven actual MOD_integral Snow totals,
