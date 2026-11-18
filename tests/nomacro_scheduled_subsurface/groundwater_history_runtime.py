@@ -15,8 +15,8 @@ from groundwater_history_native import metadata,domain,magic
 m=prior.m;ROOT=prior.ROOT
 
 
-def fixture(path,kind,fmt,hys,snow):
-    prior.fixture(path,kind,fmt)
+def fixture(path,kind,fmt,hys,snow,chemistry=False,boundary_file=False,source_boundaries=False):
+    prior.fixture(path,kind,fmt,chemistry,boundary_file,source_boundaries)
     p=path/'swap.swp';text=p.read_text(encoding='cp1252')
     for key,value in dict(SWHYST=hys,SWSNOW=snow,SWHEA=1,SWCALT=2).items():text=assignment(text,key,value)
     p.write_text(text,encoding='cp1252')
@@ -47,15 +47,20 @@ def main():
     parser.add_argument('--snow',choices=(0,1),type=int,required=True)
     parser.add_argument('--format',choices=(0,1,2,3),type=int,default=3)
     parser.add_argument('--compatibility-output',action='store_true')
+    parser.add_argument('--chemistry',action='store_true')
+    parser.add_argument('--boundary-file',action='store_true')
+    parser.add_argument('--source-boundaries',action='store_true')
     parser.add_argument('--phase',choices=('short','full'),default='short')
     parser.add_argument('--reuse-build',type=Path);parser.add_argument('--existing-input',type=Path)
     args=parser.parse_args();out=args.output.resolve();out.mkdir();inputs=args.existing_input or out/'input'
     assert args.hysteresis or args.snow
-    if not args.existing_input:fixture(inputs,args.kind,args.format,args.hysteresis,args.snow)
+    if not args.existing_input:fixture(inputs,args.kind,args.format,args.hysteresis,args.snow,args.chemistry,args.boundary_file,args.source_boundaries)
     project=m.e.load(inputs,original_output=not args.compatibility_output);build=args.reuse_build or out/'build'
+    assert domain(project)[5:7]==[args.hysteresis,args.snow]
     record=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         kind=args.kind,hysteresis=args.hysteresis,snow=args.snow,format=args.format,optimization=args.optimization,
         original_output=project.original_output,input_root=str(inputs),build_root=str(build),native=metadata(project,m.sha,m.h.APP),
+        chemistry=args.chemistry,boundary_file=args.boundary_file,source_boundaries=args.source_boundaries,
         functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
     def save():(out/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
     save()
@@ -68,6 +73,8 @@ def main():
             (out/'build.stdout').write_text(compiled.stdout,encoding='utf8');(out/'build.stderr').write_text(compiled.stderr,encoding='utf8')
             record['build']=dict(returncode=compiled.returncode,seconds=time.perf_counter()-start);save();compiled.check_returncode()
         else:m.validate_bundle(build,args.reference_work,project)
+        actual_build,_=m.validate_bundle(build,args.reference_work,project)
+        assert all('-'+args.optimization in actual_build['identity'][key] for key in ('donor_flags','kernel_flags'))
         days=1096 if args.phase=='full' else 35;windows=[(2,4),(4,8),(19,23),(30,34)]
         if args.phase=='full':windows += [(199,201),(364,367),(530,532),(1094,1096)]
         cuts={i for w in windows for i in w}|{days};full=out/'trajectory'
@@ -84,6 +91,10 @@ def main():
             sublimation_cm=sum(r['external_flux_cm'][12] for r in data),bottom_min_cm=min(r['bottom_outward_cm'] for r in data),
             bottom_max_cm=max(r['bottom_outward_cm'] for r in data),irrigation_mg_cm2=sum(r['solute_ledger_mg_cm2'][3] for r in data))
         assert record['process_observations']['irrigation_mg_cm2']>0
+        if args.source_boundaries:
+            assert abs(data[0]['solute_ledger_mg_cm2'][3]-48.)<=1e-10
+            if days==1096:assert abs(data[-1]['solute_ledger_mg_cm2'][3]-72.)<=1e-10
+        if args.chemistry:assert sum(r['solute_ledger_mg_cm2'][6] for r in data)>0
         if args.snow:assert record['process_observations']['maximum_snow_cm']>0 and record['process_observations']['sublimation_cm']>0
         record['status']='ACTUAL_GROUNDWATER_CDE_HISTORY_'+args.phase.upper()+'_COMPOUND_NATIVE_USER_FILES_PASS'
         print(args.hysteresis,args.snow,args.optimization,record['status'],flush=True)
