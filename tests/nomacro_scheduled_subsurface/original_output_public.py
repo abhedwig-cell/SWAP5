@@ -20,7 +20,7 @@ def main():
     try:
         for case in ('water-nprint3','cde-solbal-csv3','age-perstep-monthly'):
             short=Path(a.short_prefix+case+'-O2');build=short/'build';inputs=short/'input';project=m.e.load(inputs,original_output=True);meta,_=m.validate_bundle(build,a.reference_work,project)
-            out=a.output/case;out.mkdir();days,cut,end=(35,30,34) if 'monthly' in case else (10,4,8)
+            out=a.output/case;out.mkdir();days,cut,end=(35,30,34) if 'monthly' in case else (10,4,9)
             command=[sys.executable,'-B',str(matrix.ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',inputs,'--original-output','--reference-work',a.reference_work,'--build-bundle',build,'--donor-opt','O2','--kernel-opt','O2']
             def call(label,*args):
                 start=time.monotonic();r=subprocess.run(list(map(str,[*command,*args])),cwd=matrix.ROOT,capture_output=True,text=True,timeout=90)
@@ -29,7 +29,7 @@ def main():
             warm=call('warm','--days',days,'--checkpoint-at',cut,'--output',out/'warm');source=out/f'warm/accepted-column-1-day-{cut}.zip';digest=m.sha(source)
             cold=call('cold','--days',end,'--checkpoint-at',end,'--restart',source,'--restart-day',cut,'--output',out/'cold')
             left=m.rows(out/'warm');right=m.rows(out/'cold');m.check(left);m.check(right);assert m.physical(right)==m.physical(left[cut:end])
-            full=a.full_root/f'full-{case}-O2/trajectory'
+            full=short/'trajectory'
             with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as x,zipfile.ZipFile(out/f'cold/accepted-column-1-day-{end}.zip') as y:
                 assert all(x.read(n)==y.read(n) for n in ('result.end','macro.bin'))
             from original_output import selection
