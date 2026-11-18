@@ -1,0 +1,444 @@
+{
+  "status": "DAILY_CDE_OUTPUT_STATE_O0_O2_EXACT_STAGED_RESTORE_AND_28_REFUSALS_PASS",
+  "scope": "Daily defined CDE output storage only; no chemical law or scientific oracle",
+  "source_sha256": "eb82d50ec0ff0d6b74c17c4eafe658504758f8f6d0f7bb8118798815e85fc286",
+  "original_sources": {
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-selected\\variables.f90": "327a064ca74f6c4bebc327a38de367824c7fe535baa1a8611879f9a6a479c856",
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-selected\\solute.f90": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+    "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\original_cde_output_state.f90": "eb82d50ec0ff0d6b74c17c4eafe658504758f8f6d0f7bb8118798815e85fc286",
+    "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O0\\driver.f90": "5796a898ecc0ec9d96d6f3e8442fc1bc8fc6df33603d9e486dbf8ed141edeb67",
+    "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O2\\driver.f90": "5796a898ecc0ec9d96d6f3e8442fc1bc8fc6df33603d9e486dbf8ed141edeb67"
+  },
+  "profiles": {
+    "O0": {
+      "flags": [
+        "-O0",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffp-contract=off",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O0",
+        "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O0",
+        "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+        "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj"
+      ],
+      "builds": [
+        {
+          "returncode": 0,
+          "seconds": 0.19088600017130375,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "returncode": 0,
+          "seconds": 0.3762340000830591,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "returncode": 0,
+          "seconds": 0.14962559984996915,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "returncode": 0,
+          "seconds": 0.15611420013010502,
+          "stderr": "",
+          "stdout": ""
+        }
+      ],
+      "runs": {
+        "write": {
+          "returncode": 0,
+          "seconds": 0.17670619999989867,
+          "stderr": "",
+          "stdout": "CDE_OUTPUT_COMPONENT_PASS\n"
+        },
+        "read": {
+          "returncode": 0,
+          "seconds": 0.029806500300765038,
+          "stderr": "",
+          "stdout": "CDE_OUTPUT_COMPONENT_PASS\n"
+        },
+        "pending-read": {
+          "returncode": 1,
+          "seconds": 0.03313069976866245,
+          "stderr": "ERROR STOP Original CDE output restore already pending\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b2ef2\n#4  0x498b181a\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "pending-write": {
+          "returncode": 1,
+          "seconds": 0.031299200374633074,
+          "stderr": "ERROR STOP Cannot publish pending original CDE output restore\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b38b1\n#4  0x498b18c7\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "reset": {
+          "returncode": 1,
+          "seconds": 0.0310975001193583,
+          "stderr": "ERROR STOP Original CDE output requires a daily reset boundary\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b1e02\n#4  0x498b18ea\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "shape": {
+          "returncode": 1,
+          "seconds": 0.09273150004446507,
+          "stderr": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b3154\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "header-witness": {
+          "returncode": 1,
+          "seconds": 0.047832599841058254,
+          "stderr": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b3154\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "version": {
+          "returncode": 1,
+          "seconds": 0.04358640033751726,
+          "stderr": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b3154\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "length": {
+          "returncode": 1,
+          "seconds": 0.04100130032747984,
+          "stderr": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b3154\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "value-witness": {
+          "returncode": 1,
+          "seconds": 0.04155609989538789,
+          "stderr": "ERROR STOP Original CDE output witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b36e7\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "nan": {
+          "returncode": 1,
+          "seconds": 0.043020599987357855,
+          "stderr": "ERROR STOP Nonfinite original CDE output values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b33f0\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "inf": {
+          "returncode": 1,
+          "seconds": 0.04458320001140237,
+          "stderr": "ERROR STOP Nonfinite original CDE output values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b33f0\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "negative-initial": {
+          "returncode": 1,
+          "seconds": 0.04380649980157614,
+          "stderr": "ERROR STOP Negative original CDE balance-period initial stock\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b378b\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "truncated-header": {
+          "returncode": 1,
+          "seconds": 0.04766929987818003,
+          "stderr": "ERROR STOP Incomplete original CDE output header\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b3046\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "truncated-values": {
+          "returncode": 1,
+          "seconds": 0.04151319991797209,
+          "stderr": "ERROR STOP Incomplete original CDE output values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x498b3208\n#4  0x498b126e\n#5  0x498c496a\n#6  0x497d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        }
+      },
+      "link": {
+        "returncode": 0,
+        "seconds": 0.3104763999581337,
+        "stderr": "",
+        "stdout": ""
+      },
+      "link_closure": {
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O0\\variables.o": "79759dac8499c45418ddf966b9f2f3cad4cd3ff3357940e7a50cf55ad64cf830",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O0\\solute.o": "67738bac618efe9390011e2cfe57f6ad986b49531acb45ada98b72efd9efa5f6",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O0\\original_cde_output_state.o": "a54b94b85ff9f2a4b2a0f7437872a47e3004ed97fe89285a119fc7e56ab1470e",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O0\\driver.o": "fc903c92c1c691ac94850f1f11256f05c9cac67534c447ed5f9ccc12855b34f0",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o": "79ff773732082c8f7f8a1eccfe050a778dd4998317a1a421c174bcfc96aba9c5",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o": "d7792662aeae49b1aa25c3d9b460c65c8b19ff004e77f9aa106ce8275cfc802c",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundtop.o": "60aeac9914818cc58ef5767c7c70b3b0551dd33651f4550b5cbf98c549aa028d",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o": "ae2070aadc4c4ef04ba594325531b271173bbfff6ef356b519c099f4c8d74587",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o": "1f5494e116137f46ca524d9ee39b347137a3a1d706c6887e567004ce5b6147ce",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o": "cb51b1337c306eae4c94d2c545a37d54794faf4049f2f0f815bb9f59aa809d48",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o": "2265f621785070835219039b72d150250c23fb62d4b1ea293b488c3d9f0b2555",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o": "907b3bf649dca9fa8265acdcbd2d2fd003912401404da90f129c28a21b4b76b9",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o": "8313ebdaf7ce8c7e9a97fb390302b5b9a0aa3d35a05acbf531489420e7fe1bd5",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\frozencond.o": "25a269eb9a33d4d8084c720b1639030c970e85800c06db334e9214949d48010a",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o": "ec4da77fe62cb5a4b0d7eeedc0d331c8aee3e7172da5d80f8106d501de8864f3",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o": "119324a6fce869d337ce1a4b529ea02bb465354c226370efae575b3ea9968a72",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o": "a2e0b18ed3eb8e90c37c268a853c692197766ad0da4d064bec1e65b34e5420c3",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o": "cfdc8efdae03fd0fb77a90beb57f97c417828e9c620daa6d710423648a519f34",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o": "afd10a03c60efc3e4537da2d33b2f57e340ef15748018d928078c6477d441718",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o": "e5643ea08b45b32a145485fb4608cf6d26ec42ee7f25c753c2a464f90b5bf347",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o": "51ce7157703bacf88c879080f6dbc223bc65bc946206ce8ac84e602139e4c01f",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o": "646ec3da3e88259f808162f294b328d3cc6ecd090324830f1504159b1dee925c",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o": "507f0edfa80404ef6033662367152f14ea0f9335f8b0d33cf8318d6457a6b596",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o": "d35c06445319bd42b82028dd60155f765b62f2d911cc2429683e222ff062a531",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o": "e00449cd15eb619358dcbbdc2d1480626c5934dacd1278ea0b29dce9cfe4d6bb",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o": "d4911d9006e759468a70231bc6ca6b793b2840a52c3a7a85a5ac94fd315b1640",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o": "ac9c6e3da21c5db7f6cff55bb07eff953e16f4448e19bf310531c60b38a5b924",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o": "d95ae215b175a2cfd0b54825c5b87f378bb1e1a3a9dea85048a1336fcdd305e0",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o": "d0fa9a9b84bef010d68fc7015086d97197c1921a42409c65ab234ad36c0e8472",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o": "aa4fc22633da01169503ba4d96d0eb39c19bee6dd7ad3c85f298015dfc46712a",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o": "a44e6dab520c240820c34bb182e82db4fd6dd418801896ea3716cc351871d9f1",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o": "18a9890f0a9f4121e2bba996eb1373692dfa93bab9adb3652880509fe6876099",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o": "19f13736a58b7773a89c98dd02f03781bbaf15b6c0332b7d39b0d7fc4fc9461c",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o": "1804dc2c84e10826e26f1f76213267640466402eab5b9eba1ef8795a02f84ab9",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\oxygenstress.o": "def142e4c2dfe1b69ea7a4fbf892d78ab86df87ab8e2812ea0083f95e30731e8",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o": "bef21883691e080d928caa30730895672b784a399afb5a8ab6696d0478b06770",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o": "ab46c8eccf73085e7eaf5e81f5bb7b954d6eba2c8cc52850d2ed31a024f64c81",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o": "25de0dc4d43083119fd9cbbe96bfb834f14ac7810b1bc5211603c0785207e820",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o": "21db38566a38c2a8ab3e9b35559c90217fb2cda2b3fa4c337689a9399dade7c3",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o": "30cd382de46b1ebbd7c2250945ab2804f27a2dc97f166da4f3987686cd3f418e",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o": "66e250b663890d3aeeb88fdd33093a4f445ab8fa7394f015274ddc05e3658ada",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o": "c2c69fdc38efd106c2ebc96597f0e0cb082a8c139ef3643452dff3f1f717898d",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o": "2d88def7210be8738463c5c87bfec78a2218c32e6dcd5d20d6bf71d128e1c0dc",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o": "d3a7d97eeec79b5bcbc22829a1b4cd9c6e61e6aa230653deca4c2601c0590269",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o": "90266a510bc8f20f638cc2e4bf2ec85689a74cab3885d3fe7848e823b6e5d2bb",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_csv_output.o": "d0991312d4877dab943ba1e3b066af712ccc1cc86f43e29d3a7f15842940a2af",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o": "29b5c74e39d02652d7bdde454e99b0d9f7b9e3f009a4643dfd82d13da2a8c4da",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o": "5bc2828f3dc58e4f851c0c66c0c4b10afb4bdaca2378c4e247408157ea01d043",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o": "5bdc6998fc8579efb19216226d93416508ddc036ee6482f6eabbf48afe183dbf",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o": "d4bb41108b9bb950241722228ad50c1b2d951f08332c66826c5ebeab33758e82",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o": "278e93358ff41854bc52b77faaeb9db1de2ecb6328a8f2ef4ee53a12b803fffb",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o": "e41cab1a706ac3a0a9e30abe6a0e5031a66d314302449be7d63b217411e90a27",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o": "8bf0ef90963a9cef05573d99c80f04aa3c229e4cf83e04372f22465e9278160d",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o": "89b3ff5de96528ce6f2c52064ce59a67be06132cb692c3c0cc3123118f0df194",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o": "c9af3deb388020f474b28c0066359f7cd1a9d96a438f486e3fd956f65a74edda",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o": "9eb2a4edc8d5677d19f4942a848887674e49438edc1e746123931cb20ded00b4",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o": "02e1b954c7383231688f62aab637e8b5b1888613c585bab7e245e6db502a7cde",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o": "ea867cb2543f0108e6736b2e518d4b6576488c47b014e37f2e707bfa2357453c",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o": "0dde038c09d92bb6cb37bbaadaaf9e23f41d38f9455982f4bca118814be2a181",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o": "49309782166ad747a43650c8eff9aae7c5e177ab98e411630a436ac1ca4ee70f",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o": "0eac2450ca0cfb01dcce4a904ee34955d3e3a8aee76e1bf9219df5c00946b207",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o": "609d00d3a2dafb830838055ffb0e0a778e7a1511b286e7db1ff57c7e56b5eb36",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o": "26c3fa33ffdd260afe9ddbe2dea088bc87f52acf1c12bff817c2f070c58412b0",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o": "92ad2f4cdae158334ed31b953bf134c6969d279aeb05715a90d0e4403a7b5573",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a": "f8b18e8eae671b76f73897435bf93acaffb731eb8fb44e44c7deec28e706afe3"
+      },
+      "executable_sha256": "12f35b6e7014ad25a39a51b5c260e86227435a87b1b87179b04bc2f86cceb3ac",
+      "staged_read_nonmutation": true,
+      "bit_exact_live_restore": true,
+      "repeated_apply_noop": true,
+      "actual_original_storage": true,
+      "native_refusals": 14
+    },
+    "O2": {
+      "flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffp-contract=off",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-JC:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O2",
+        "-IC:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O2",
+        "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+        "-IC:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj"
+      ],
+      "builds": [
+        {
+          "returncode": 0,
+          "seconds": 0.18830189993605018,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "returncode": 0,
+          "seconds": 1.2012852998450398,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "returncode": 0,
+          "seconds": 0.22058970015496016,
+          "stderr": "",
+          "stdout": ""
+        },
+        {
+          "returncode": 0,
+          "seconds": 0.19003980001434684,
+          "stderr": "",
+          "stdout": ""
+        }
+      ],
+      "runs": {
+        "write": {
+          "returncode": 0,
+          "seconds": 0.10020310012623668,
+          "stderr": "",
+          "stdout": "CDE_OUTPUT_COMPONENT_PASS\n"
+        },
+        "read": {
+          "returncode": 0,
+          "seconds": 0.03038010001182556,
+          "stderr": "",
+          "stdout": "CDE_OUTPUT_COMPONENT_PASS\n"
+        },
+        "pending-read": {
+          "returncode": 1,
+          "seconds": 0.03213459998369217,
+          "stderr": "ERROR STOP Original CDE output restore already pending\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c2499\n#4  0x428c15dc\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "pending-write": {
+          "returncode": 1,
+          "seconds": 0.03160890005528927,
+          "stderr": "ERROR STOP Cannot publish pending original CDE output restore\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c24e9\n#4  0x428c1419\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "reset": {
+          "returncode": 1,
+          "seconds": 0.03162370016798377,
+          "stderr": "ERROR STOP Original CDE output requires a daily reset boundary\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c1c55\n#4  0x428c141e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "shape": {
+          "returncode": 1,
+          "seconds": 0.03647859999909997,
+          "stderr": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c24c1\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "header-witness": {
+          "returncode": 1,
+          "seconds": 0.03367660008370876,
+          "stderr": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c24c1\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "version": {
+          "returncode": 1,
+          "seconds": 0.032844099681824446,
+          "stderr": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c24c1\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "length": {
+          "returncode": 1,
+          "seconds": 0.036353699862957,
+          "stderr": "ERROR STOP Foreign original CDE output shape/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c24c1\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "value-witness": {
+          "returncode": 1,
+          "seconds": 0.033112899865955114,
+          "stderr": "ERROR STOP Original CDE output witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c2485\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "nan": {
+          "returncode": 1,
+          "seconds": 0.035431900061666965,
+          "stderr": "ERROR STOP Nonfinite original CDE output values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c2073\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "inf": {
+          "returncode": 1,
+          "seconds": 0.03563249995931983,
+          "stderr": "ERROR STOP Nonfinite original CDE output values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c2073\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "negative-initial": {
+          "returncode": 1,
+          "seconds": 0.03663240000605583,
+          "stderr": "ERROR STOP Negative original CDE balance-period initial stock\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c24fd\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "truncated-header": {
+          "returncode": 1,
+          "seconds": 0.0353389997035265,
+          "stderr": "ERROR STOP Incomplete original CDE output header\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c24ad\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        },
+        "truncated-values": {
+          "returncode": 1,
+          "seconds": 0.0334459999576211,
+          "stderr": "ERROR STOP Incomplete original CDE output values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x428c24d5\n#4  0x428c122e\n#5  0x428ce69f\n#6  0x427e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+          "stdout": ""
+        }
+      },
+      "link": {
+        "returncode": 0,
+        "seconds": 0.30117749981582165,
+        "stderr": "",
+        "stdout": ""
+      },
+      "link_closure": {
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O2\\variables.o": "697850966882960844028951914a9b1e6f26d4c69b7f4d392a826f57e2ac8fee",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O2\\solute.o": "93b4911e0447b4b98e12fb51baecf3a2883685cbbe8274c1dda00affca9118dd",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O2\\original_cde_output_state.o": "87c6958e28439d2122f9e75dcd6f310b78388c04782b52d8a9de9334052d0877",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\original-cde-output-component-v2\\O2\\driver.o": "e2933b0412b649afb1693f4c42cca241029a76376fbd8ce27bc558cc5f68d0b3",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o": "79ff773732082c8f7f8a1eccfe050a778dd4998317a1a421c174bcfc96aba9c5",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o": "d7792662aeae49b1aa25c3d9b460c65c8b19ff004e77f9aa106ce8275cfc802c",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundtop.o": "60aeac9914818cc58ef5767c7c70b3b0551dd33651f4550b5cbf98c549aa028d",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o": "ae2070aadc4c4ef04ba594325531b271173bbfff6ef356b519c099f4c8d74587",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o": "1f5494e116137f46ca524d9ee39b347137a3a1d706c6887e567004ce5b6147ce",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o": "cb51b1337c306eae4c94d2c545a37d54794faf4049f2f0f815bb9f59aa809d48",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o": "2265f621785070835219039b72d150250c23fb62d4b1ea293b488c3d9f0b2555",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o": "907b3bf649dca9fa8265acdcbd2d2fd003912401404da90f129c28a21b4b76b9",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o": "8313ebdaf7ce8c7e9a97fb390302b5b9a0aa3d35a05acbf531489420e7fe1bd5",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\frozencond.o": "25a269eb9a33d4d8084c720b1639030c970e85800c06db334e9214949d48010a",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o": "ec4da77fe62cb5a4b0d7eeedc0d331c8aee3e7172da5d80f8106d501de8864f3",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o": "119324a6fce869d337ce1a4b529ea02bb465354c226370efae575b3ea9968a72",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o": "a2e0b18ed3eb8e90c37c268a853c692197766ad0da4d064bec1e65b34e5420c3",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o": "cfdc8efdae03fd0fb77a90beb57f97c417828e9c620daa6d710423648a519f34",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o": "afd10a03c60efc3e4537da2d33b2f57e340ef15748018d928078c6477d441718",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o": "e5643ea08b45b32a145485fb4608cf6d26ec42ee7f25c753c2a464f90b5bf347",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o": "51ce7157703bacf88c879080f6dbc223bc65bc946206ce8ac84e602139e4c01f",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o": "646ec3da3e88259f808162f294b328d3cc6ecd090324830f1504159b1dee925c",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o": "507f0edfa80404ef6033662367152f14ea0f9335f8b0d33cf8318d6457a6b596",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o": "d35c06445319bd42b82028dd60155f765b62f2d911cc2429683e222ff062a531",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o": "e00449cd15eb619358dcbbdc2d1480626c5934dacd1278ea0b29dce9cfe4d6bb",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o": "d4911d9006e759468a70231bc6ca6b793b2840a52c3a7a85a5ac94fd315b1640",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o": "ac9c6e3da21c5db7f6cff55bb07eff953e16f4448e19bf310531c60b38a5b924",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o": "d95ae215b175a2cfd0b54825c5b87f378bb1e1a3a9dea85048a1336fcdd305e0",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o": "d0fa9a9b84bef010d68fc7015086d97197c1921a42409c65ab234ad36c0e8472",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o": "aa4fc22633da01169503ba4d96d0eb39c19bee6dd7ad3c85f298015dfc46712a",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o": "a44e6dab520c240820c34bb182e82db4fd6dd418801896ea3716cc351871d9f1",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o": "18a9890f0a9f4121e2bba996eb1373692dfa93bab9adb3652880509fe6876099",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o": "19f13736a58b7773a89c98dd02f03781bbaf15b6c0332b7d39b0d7fc4fc9461c",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o": "1804dc2c84e10826e26f1f76213267640466402eab5b9eba1ef8795a02f84ab9",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\oxygenstress.o": "def142e4c2dfe1b69ea7a4fbf892d78ab86df87ab8e2812ea0083f95e30731e8",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o": "bef21883691e080d928caa30730895672b784a399afb5a8ab6696d0478b06770",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o": "ab46c8eccf73085e7eaf5e81f5bb7b954d6eba2c8cc52850d2ed31a024f64c81",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o": "25de0dc4d43083119fd9cbbe96bfb834f14ac7810b1bc5211603c0785207e820",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o": "21db38566a38c2a8ab3e9b35559c90217fb2cda2b3fa4c337689a9399dade7c3",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o": "30cd382de46b1ebbd7c2250945ab2804f27a2dc97f166da4f3987686cd3f418e",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o": "66e250b663890d3aeeb88fdd33093a4f445ab8fa7394f015274ddc05e3658ada",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o": "c2c69fdc38efd106c2ebc96597f0e0cb082a8c139ef3643452dff3f1f717898d",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o": "2d88def7210be8738463c5c87bfec78a2218c32e6dcd5d20d6bf71d128e1c0dc",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o": "d3a7d97eeec79b5bcbc22829a1b4cd9c6e61e6aa230653deca4c2601c0590269",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o": "90266a510bc8f20f638cc2e4bf2ec85689a74cab3885d3fe7848e823b6e5d2bb",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_csv_output.o": "d0991312d4877dab943ba1e3b066af712ccc1cc86f43e29d3a7f15842940a2af",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o": "29b5c74e39d02652d7bdde454e99b0d9f7b9e3f009a4643dfd82d13da2a8c4da",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o": "5bc2828f3dc58e4f851c0c66c0c4b10afb4bdaca2378c4e247408157ea01d043",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o": "5bdc6998fc8579efb19216226d93416508ddc036ee6482f6eabbf48afe183dbf",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o": "d4bb41108b9bb950241722228ad50c1b2d951f08332c66826c5ebeab33758e82",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o": "278e93358ff41854bc52b77faaeb9db1de2ecb6328a8f2ef4ee53a12b803fffb",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o": "e41cab1a706ac3a0a9e30abe6a0e5031a66d314302449be7d63b217411e90a27",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o": "8bf0ef90963a9cef05573d99c80f04aa3c229e4cf83e04372f22465e9278160d",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o": "89b3ff5de96528ce6f2c52064ce59a67be06132cb692c3c0cc3123118f0df194",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o": "c9af3deb388020f474b28c0066359f7cd1a9d96a438f486e3fd956f65a74edda",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o": "9eb2a4edc8d5677d19f4942a848887674e49438edc1e746123931cb20ded00b4",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o": "02e1b954c7383231688f62aab637e8b5b1888613c585bab7e245e6db502a7cde",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o": "ea867cb2543f0108e6736b2e518d4b6576488c47b014e37f2e707bfa2357453c",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o": "0dde038c09d92bb6cb37bbaadaaf9e23f41d38f9455982f4bca118814be2a181",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o": "49309782166ad747a43650c8eff9aae7c5e177ab98e411630a436ac1ca4ee70f",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o": "0eac2450ca0cfb01dcce4a904ee34955d3e3a8aee76e1bf9219df5c00946b207",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o": "609d00d3a2dafb830838055ffb0e0a778e7a1511b286e7db1ff57c7e56b5eb36",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o": "26c3fa33ffdd260afe9ddbe2dea088bc87f52acf1c12bff817c2f070c58412b0",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o": "92ad2f4cdae158334ed31b953bf134c6969d279aeb05715a90d0e4403a7b5573",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a": "f8b18e8eae671b76f73897435bf93acaffb731eb8fb44e44c7deec28e706afe3"
+      },
+      "executable_sha256": "ba5bcd241d795db8443adfe0103c25697574cff683f768f901bb96bf031becfe",
+      "staged_read_nonmutation": true,
+      "bit_exact_live_restore": true,
+      "repeated_apply_noop": true,
+      "actual_original_storage": true,
+      "native_refusals": 14
+    }
+  }
+}
