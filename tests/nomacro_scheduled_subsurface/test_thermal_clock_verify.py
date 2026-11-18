@@ -8,7 +8,7 @@ owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
 
 class Proof(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):cls.q=json.loads((ROOT/owner.PROOF/'THERMAL_CLOCK_QUALIFICATION.json').read_text(encoding='utf8'))
+    def setUpClass(cls):cls.q=json.loads((ROOT/owner.PROOF/'THERMAL_CLOCK_COMPOSED_QUALIFICATION.json').read_text(encoding='utf8'))
 
     def test_actual_source_scope(self):
         owner.validate(self.q);count=0
@@ -131,7 +131,7 @@ class Proof(unittest.TestCase):
             bad=copy.deepcopy(record);bad['byte_parts'][0]['offset']=1
             with self.assertRaises(ValueError):owner.raw_archive(bad)
             count+=1
-        self.assertEqual(count,21)
+        self.assertEqual(count,23)
         print('ACTUAL_SNOW_RAW_ARTIFACT_PRIOR_PART_BINDING_CORRUPTIONS_REFUSED',count,flush=True)
 
 if __name__=='__main__':unittest.main()

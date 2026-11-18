@@ -5,9 +5,11 @@ import hashlib,io,json,math,struct,subprocess,sys,tarfile,tempfile,zipfile
 
 ROOT=Path(__file__).resolve().parents[2]
 PROOF='integration/f-ci/nomacro-complete01/'
-BASE='a264b7166328f5103bfbb6306d663ae206b5a3ab'
-RUNTIME='1ce21b8e2a8be4e829c67df62a90207e90edc8dc'
-SEALED='c5541138beaf5d8ac9f51f175f3de5ce2d9bba82'
+BASE='b4398e00ae978c82f0cdee3d72ff79708a869762'
+SNOW_BASE='a264b7166328f5103bfbb6306d663ae206b5a3ab'
+SNOW_ENTRY='tests/nomacro_scheduled_subsurface/thermal_calendar_verify.py'
+RUNTIME='4d6a9580c79c82c3187c6daf147d19d09235e862'
+SEALED='PENDING_COMPOSED_ACTUAL_SEAL'
 ENTRY='tests/saltfarm_newton/verify_successor.py'
 SELF='tests/nomacro_scheduled_subsurface/thermal_clock_verify.py'
 TEST='tests/nomacro_scheduled_subsurface/test_thermal_clock_verify.py'
@@ -60,14 +62,14 @@ def validate(q):
     require(q['workflows']['main']['id']==44334528550 and q['workflows']['main']['conclusion']=='success'
         and q['workflows']['preservation']['id']==44335000447 and q['workflows']['preservation']['conclusion']=='success','actual Snow calendar workflows incomplete')
     require(set(q['main'])=={'Windows','Ubuntu'} and all(set(opts)=={'O0','O2'} for opts in q['main'].values()),'Snow calendar platform/optimization omitted')
-    require(q['preservation']['Windows']['profiles']=={'thermal-clock-preserve-groundwater-O0-v1':3,'thermal-clock-preserve-groundwater-O2-v1':3,
-        'thermal-clock-preserve-calendar-O0-v1':4,'thermal-clock-preserve-calendar-O2-v1':4,
-        'thermal-clock-preserve-thermal-O0-v1':4,'thermal-clock-preserve-thermal-O2-v1':4,'thermal-clock-preserve-young-named-v1':11}
-        and q['preservation']['Ubuntu']['profiles']=={'groundwater':3,'current-age':6,'direct-age':6,'calendar':4},'scoped Snow calendar preservation omitted')
+    require(q['preservation']['Windows']['profiles']=={'thermal-clock-composed-preserve-groundwater-O0-v1':3,'thermal-clock-composed-preserve-groundwater-O2-v1':3,
+        'thermal-clock-composed-preserve-calendar-O0-v1':4,'thermal-clock-composed-preserve-calendar-O2-v1':4,
+        'thermal-clock-composed-preserve-thermal-O0-v1':4,'thermal-clock-composed-preserve-thermal-O2-v1':4,'thermal-clock-composed-preserve-young-named-v1':10,'thermal-clock-composed-preserve-saltfarm-O0-v1':1,'thermal-clock-composed-preserve-saltfarm-O2-v1':1}
+        and q['preservation']['Ubuntu']['profiles']=={'groundwater':3,'current-age':6,'direct-age':6,'calendar':4,'saltfarm-O0':1,'saltfarm-O2':1},'scoped Snow calendar preservation omitted')
 
 def predecessor():
     old=json.loads((ROOT/PROOF/'THERMAL_CALENDAR_QUALIFICATION.json').read_text(encoding='utf8'))
-    paths={ENTRY,PROOF+'THERMAL_CALENDAR_QUALIFICATION.json',*old['source_sha256'],*old['controller_sha256'],*old['frozen_predecessor_sources'],*old['frozen_predecessor_controllers']}
+    paths={SNOW_ENTRY,PROOF+'THERMAL_CALENDAR_QUALIFICATION.json',*old['source_sha256'],*old['controller_sha256'],*old['frozen_predecessor_sources'],*old['frozen_predecessor_controllers']}
     with tempfile.TemporaryDirectory(prefix='s5-snow-calendar-parent-') as directory:
         snapshot=Path(directory).resolve();batches=[];batch=[];length=0
         for path in sorted(paths):
@@ -75,16 +77,55 @@ def predecessor():
             batch.append(path);length+=len(path)+3
         if batch:batches.append(batch)
         for batch in batches:
-            with tarfile.open(fileobj=io.BytesIO(git('archive',BASE,'--',*batch))) as archive:
+            with tarfile.open(fileobj=io.BytesIO(git('archive',SNOW_BASE,'--',*batch))) as archive:
                 for member in archive.getmembers():
                     if member.isdir():continue
                     target=snapshot/member.name;require(member.isfile() and target.resolve().is_relative_to(snapshot),'foreign Snow predecessor source')
                     target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(archive.extractfile(member).read())
-        script="import importlib.util,json,pathlib;r=pathlib.Path.cwd();s=importlib.util.spec_from_file_location('literal_history',r/"+repr(ENTRY)+");m=importlib.util.module_from_spec(s);s.loader.exec_module(m);m.validate(json.loads((r/"+repr(PROOF+'THERMAL_CALENDAR_QUALIFICATION.json')+").read_text(encoding='utf8')));print('LITERAL_THERMAL_CALENDAR_BASELINE_PASS')"
+        script="import importlib.util,json,pathlib;r=pathlib.Path.cwd();s=importlib.util.spec_from_file_location('literal_history',r/"+repr(SNOW_ENTRY)+");m=importlib.util.module_from_spec(s);s.loader.exec_module(m);m.validate(json.loads((r/"+repr(PROOF+'THERMAL_CALENDAR_QUALIFICATION.json')+").read_text(encoding='utf8')));print('LITERAL_THERMAL_CALENDAR_BASELINE_PASS')"
         result=subprocess.run([sys.executable,'-B','-c',script],cwd=snapshot,capture_output=True,text=True)
         require(result.returncode==0 and 'LITERAL_THERMAL_CALENDAR_BASELINE_PASS' in result.stdout,'literal qualified groundwater-history predecessor invalid: '+result.stderr)
     for record in old['archives'].values():raw_archive(record)
-    return 'LITERAL_QUALIFIED_THERMAL_CALENDAR_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS'
+    return saltfarm_predecessor()
+
+def saltfarm_predecessor():
+    """Run the literal canonical guard/auditor on a real private exact Git image.
+
+    The original owner and its ROOT/hash functions are never rebound. The
+    current repository is only an immutable Git object alternate, not a model
+    runtime or a source substitution in the historical audit.
+    """
+    common=Path(git('rev-parse','--git-common-dir').decode().strip())
+    if not common.is_absolute():common=ROOT/common
+    objects=(common.resolve()/'objects');require(objects.is_dir(),'canonical object store absent')
+    with tempfile.TemporaryDirectory(prefix='s5-literal-saltfarm-clock-') as directory:
+        snapshot=Path(directory).resolve()
+        require(snapshot.is_relative_to(Path(tempfile.gettempdir()).resolve()),'foreign private canonical snapshot')
+        def local(*args):subprocess.run(['git',*args],cwd=snapshot,check=True,capture_output=True)
+        local('init','--quiet')
+        (snapshot/'.git/objects/info/alternates').write_bytes((objects.as_posix()+'\n').encode())
+        local('config','core.autocrlf','false');local('config','core.sparseCheckout','true')
+        (snapshot/'.git/info/sparse-checkout').write_bytes(b'/app/\n/src/\n/reference/\n/tools/\n/tests/\n/.github/\n/integration/f-ci/saltfarm-newton-work01/\n')
+        local('update-ref','refs/heads/literal',BASE);local('symbolic-ref','HEAD','refs/heads/literal');local('read-tree','-mu','HEAD')
+        script="""import importlib.util,json,pathlib,io,zipfile
+r=pathlib.Path.cwd();p=r/'tests/saltfarm_newton/verify_successor.py'
+s=importlib.util.spec_from_file_location('literal_canonical_saltfarm',p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+m.source_guard()
+raw=(r/m.PROOF/'PORTABLE.json').read_bytes();m.require(raw==m.blob(m.SEALED,m.PROOF+'PORTABLE.json'),'literal canonical SaltFarm seal changed')
+q=json.loads(raw);m.require(q['runtime']==m.RUNTIME and q['base']==m.BASE and q['water_guard_cm']==q['solute_guard_mg_cm2']==1e-10,'foreign canonical SaltFarm scope')
+m.require(q['whole_scientific_equivalence']=='NOT_QUALIFIED' and q['RC3_changed'] is False and set(q['archives'])=={'Windows','Ubuntu'},'canonical SaltFarm scope promoted')
+for platform,record in q['archives'].items():
+ raw=(r/m.PROOF/record['file']).read_bytes();m.require(m.digest(raw)==record['sha256'] and len(raw)==record['bytes'],'canonical SaltFarm actual producer changed')
+ if platform=='Ubuntu':m.require(record['actual_artifact_bytes_preserved'] is True and record['origin_artifact_digest']=='sha256:'+m.digest(raw),'canonical SaltFarm artifact rebound')
+ m.git('merge-base','--is-ancestor',record['producer_ref'],'HEAD')
+ m.require(not m.git('diff',m.RUNTIME,record['producer_ref'],'--','app','src','reference','tools','tests/saltfarm_newton/qualify.py','tests/saltfarm_newton/transactions.py'),'canonical SaltFarm producer source differs')
+ with zipfile.ZipFile(io.BytesIO(raw)) as z:m.audit(z,platform,record['producer_ref'])
+print('LITERAL_CANONICAL_SALTFARM_SOURCE_NATIVE_AUDIT_PASS')
+"""
+        result=subprocess.run([sys.executable,'-B','-c',script],cwd=snapshot,capture_output=True,text=True,timeout=300)
+        require(result.returncode==0 and 'LITERAL_CANONICAL_SALTFARM_SOURCE_NATIVE_AUDIT_PASS' in result.stdout,'literal canonical SaltFarm source/audit failed: '+result.stderr)
+    return 'LITERAL_CANONICAL_SALTFARM_AND_SNOW_IMAGES_ACTUAL_UNCHANGED_PRODUCERS_PASS'
+
 
 def period(report,case,opt,phase,build,build_digest):
     mode,hys,fmt,reset,et,nprint,_=case;days=1096 if phase=='full' else 35
@@ -165,14 +206,14 @@ def verify():
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty Snow calendar admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Snow calendar production differs from qualified source')
-    q=json.loads((ROOT/PROOF/'THERMAL_CLOCK_QUALIFICATION.json').read_text(encoding='utf8'));validate(q)
+    q=json.loads((ROOT/PROOF/'THERMAL_CLOCK_COMPOSED_QUALIFICATION.json').read_text(encoding='utf8'));validate(q)
     require(set(git('diff','--name-only',BASE,RUNTIME,'--','app','src','reference','tools').decode().splitlines())==set(q['source_sha256']),'unqualified Snow production surface')
     mutable={PROOF+n for n in ('STATUS.json','GAP_MATRIX.json','CI_SELECTION.json')};current=tree('HEAD','integration')
     for ref in (BASE,SEALED):
         for path,identity in tree(ref,'integration').items():
             if path not in mutable:require(current.get(path)==identity,'immutable Snow/predecessor evidence changed: '+path)
     docs={'docs/science/NOMACRO_THERMAL_CLOCK_20261118.md','docs/science/SWAP5_FUNCTIONAL_CLOSURE.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
-    require(set(git('diff','--name-only',SEALED,'HEAD').decode().splitlines())<={SELF,TEST,ENTRY,*mutable,*docs,PROOF+'THERMAL_CLOCK_MERGE_RECEIPT.json'},'unqualified Snow post-seal change')
+    require(set(git('diff','--name-only',SEALED,'HEAD').decode().splitlines())<={SELF,TEST,ENTRY,*mutable,*docs,PROOF+'THERMAL_CLOCK_COMPOSED_MERGE_RECEIPT.json'},'unqualified Snow post-seal change')
     require((ROOT/ENTRY).read_text(encoding='utf8').replace(HOOK,'',1).encode()==blob(BASE,ENTRY).replace(b'\r\n',b'\n'),'literal predecessor groundwater-history owner body changed')
     for ref in q['source_producer_refs']:require(not git('diff',ref,RUNTIME,'--','app','src','reference','tools'),'actual Snow model producer source differs')
     for workflow in q['workflows'].values():
@@ -288,7 +329,7 @@ def verify():
         original=read(failed,'thermal-clock-baseline-nprint3-v1/RESULT.json')
         require(original['original']['swap_ok'] is True and original['original']['returncode']==100
             and original['scientific_claim'] is False,'actual original Snow subdaily reader observation missing/relabelled')
-    require((fulls,windows,refusals,policies,providers,contexts)==(16,256,960,352,16,52),'actual Snow calendar full/native/preservation denominator differs')
+    require((fulls,windows,refusals,policies,providers,contexts)==(16,256,960,352,16,55),'actual Snow calendar full/native/preservation denominator differs')
     return dict(status='ORIGINAL_SNOW_SUBDAILY_SOIL_CLOCK_NATIVE_ADMISSION_PASS',runtime=RUNTIME,predecessor=prior,actual_full_periods=fulls,
         actual_cold_windows=windows,actual_native_refusals=refusals,actual_policy_refusals=policies,actual_copied_provider_refusals=providers,
         actual_preserved_contexts=contexts,actual_bound_reports=reports,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
