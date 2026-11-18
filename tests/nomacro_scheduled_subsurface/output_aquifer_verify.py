@@ -134,6 +134,7 @@ def verify():
                 item=run['cases'][key];sp=prefix+'short-'+key+'/'
                 if platform=='Windows' and key=='box-csv3':sp='output-aquifer-receipt-refined-'+opt+'-v2/'
                 build_bytes=z.read(sp+'build/BUILD.json');build=json.loads(build_bytes);digest=hashlib.sha256(build_bytes).hexdigest();reports+=1
+                require(build['identity']['original_output']['source_sha256']==q['source_sha256']['app/hybrid_water/original_output_aquifer.py'] and build['identity']['original_output']['domain_source_sha256']==q['source_sha256']['app/hybrid_water/original_output_aquifer_domain.f90'] and build['identity']['aquifer_native_receipt']['source_sha256']==q['source_sha256']['app/hybrid_water/aquifer_native_receipt.py'],'actual compiled source policy rebound')
                 require(read(z,sp+'RESULT.json')==item['short'],'actual short producer rebound');period(item['short'],case,opt,'short',build,digest)
                 if not case[8]:continue
                 fulls+=1;fp=prefix+'full-'+key+'/';report=read(z,fp+'RESULT.json');require(report==item['full'],'actual full producer rebound');period(report,case,opt,'full',build,digest)
@@ -168,7 +169,9 @@ def verify():
         z=archives[location['archive']]
         for prefix,count in location['profiles'].items():
             report=read(z,prefix+'/RESULT.json');require(any(s in report['status'] for s in ('PASS','PRESERVED')) and len(report['profiles'])==count,'prior current route omitted');contexts+=count
-            for p in report['profiles'].values():
+            for key,p in report['profiles'].items():
+                build_path=prefix+'/'+key+('/current-build/BUILD.json' if 'actual_default_aquifer_native_guard' in p else '/build/BUILD.json')
+                require(read(z,build_path)==p['actual_build'],'actual preserved build metadata rebound')
                 if 'actual_default_aquifer_native_guard' in p:
                     require(p['actual_default_aquifer_native_guard'] is True and p['ten_physical_days_exact'] is True and p['four_complete_native_endpoints_exact'] is True and len(p['fabricated_receipt_refusals'])==7,'actual canonical default aquifer not preserved/guarded')
                 else:require(any(v is True for k,v in p.items() if 'exact' in k),'actual prior native/source observation omitted')
