@@ -44,7 +44,7 @@ def arguments(case):
 def main():
     ap=argparse.ArgumentParser()
     for key in ('reference-work','output'):ap.add_argument('--'+key,type=Path,required=True)
-    ap.add_argument('--optimization',choices=('O0','O2'),required=True);ap.add_argument('--resume',action='store_true');ap.add_argument('--short-only',action='store_true');ap.add_argument('--reuse-pilots',type=Path)
+    ap.add_argument('--optimization',choices=('O0','O2'),required=True);ap.add_argument('--resume',action='store_true');ap.add_argument('--short-only',action='store_true');ap.add_argument('--reuse-pilots',type=Path);ap.add_argument('--reuse-box-root',type=Path)
     a=ap.parse_args();a.output=a.output.resolve();a.output.mkdir(exist_ok=a.resume)
     sys.path.insert(0,str(probe.ROOT/'tools/solute'));import user_prepare
     if not (a.reference_work/'PREPARED.json').exists():user_prepare.prepare(a.reference_work)
@@ -59,6 +59,9 @@ def main():
     try:
         for key,case in CASES.items():
             short=a.output/('short-'+key)
+            if key=='box-csv3' and a.reuse_box_root:
+                short=a.reuse_box_root
+                if key not in q['cases']:run('output_aquifer_runtime.py','--reference-work',a.reference_work,'--output',short,'--optimization',a.optimization,'--phase','short','--resume',*arguments(case))
             if a.reuse_pilots and key in reuse:
                 prior=a.reuse_pilots/(reuse[key]+a.optimization+'-v1')
                 if (prior/'RESULT.json').exists():
