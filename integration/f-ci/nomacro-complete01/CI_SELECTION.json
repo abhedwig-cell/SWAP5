@@ -1084,7 +1084,7 @@
     }
   },
   "cde_interval": {
-    "status": "ACTUAL_CANONICAL_SOURCE_ADMISSION_PASS",
+    "status": "ACTUAL_SOURCE_AND_METADATA_CANONICAL_ADMISSION_PASS",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scientific_impact": "ActualCDE interval stock/roundoff state, originalnon-dailyglobal/private carry, independent observed dailychemicalflows andcompleteSnow calendar processcoupling.",
     "selected": [
@@ -1213,6 +1213,43 @@
         "('in_progress', None)": 20
       },
       "role": "Automatic legacy PR checks outside selected scientific qualification. Queued/in-progress is not PASS; exact external cde-interval-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_CDE_INTERVAL_METADATA_MERGE_VERIFIED",
+      "pr": 1751,
+      "merge": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+      "parents": [
+        "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+        "819956fe73e79af06f22954d5c3151a52941a2f2"
+      ],
+      "qualified_head": "819956fe73e79af06f22954d5c3151a52941a2f2",
+      "tree": "d3356c61bdbdac6865c6433e1d3f15e70740c735",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 169.50239200005308,
+        "head": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+        "stdout": "{\n  \"status\": \"ORIGINAL_CDE_INTERVAL_PRIVATE_STATE_DAILY_MASS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"00658a9456b041a9b8c65517b4a9147ad941691e\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1536,\n  \"actual_policy_refusals\": 1296,\n  \"actual_provider_refusals\": 28,\n  \"actual_preserved_contexts\": 33,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
     }
+  },
+  "cde_clock": {
+    "status": "CONTRACT_SELECTION_IMPLEMENTATION_NEXT",
+    "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+    "scientific_impact": "Original subdaily/perstep clock and complete CDE private interval/Snow/chemical daily receipt composition.",
+    "selected": [
+      "Unchanged real receipt/private provider source-bound small component proof inherited literally",
+      "Fresh ordinary NPD2 and Snow perstep NPD3 actual O0/O2 35day native cold before wider matrix",
+      "Actual reader/private/native/transaction/source controls and bounded1440limit2day; nonJanuary/year/leap/TEND",
+      "Representative selected full Windows/Ubuntu O0/O2 after all narrow gates",
+      "Fresh current CDE interval and genuinely affected clock seams; explicit source/selector impact selection for other old families"
+    ],
+    "not_selected": [
+      "Moving full F-CI",
+      "Retired highest-low-air",
+      "Automatic repeat of unaffected old full campaigns"
+    ],
+    "expected_cost": "Actual original source build previously20..40seconds; short models/cold typically seconds; record compile/link/model/validation and retain all failures/censors."
   }
 }

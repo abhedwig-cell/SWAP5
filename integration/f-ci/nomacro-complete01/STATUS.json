@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-cde-interval01",
-  "last_commit": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
-  "status": "CDE_INTERVAL_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+  "branch": "codex/nomacro-cde-clock01",
+  "last_commit": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+  "status": "CDE_CLOCK_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "CDE subdaily NPRINTDAY2..1440/FLPRINTDTtrue ordinary and Snow clock composition using actual saved interval state and independent daily receipt. Four original SWCSV1 35-day reader/cadence observations succeed, current public builds refuse; retain first original SWCSV3 crash as unqualified.",
-  "recovery_point": "codex/nomacro-cde-interval01 at actual366c52e91; CDE_INTERVAL_MERGE_RECEIPT.json; metadata admission next, then CDE subdaily/perstep clock implementation.",
+  "next_code_change": "New cde_clock_output.py bounded selector/native/calendar/timecontrol composition plus literal import dispatch in daily_host/daily_coupling/experimental_project; old CDE interval/native/provider/controller bodies unchanged.",
+  "recovery_point": "codex/nomacro-cde-clock01 from actual metadata c8b3029fe; CDE interval source1750 and metadata1751 exact ordered parents/full trees/clean detached owners PASS; docs/science/NOMACRO_CDE_CLOCK_20261119.md next production.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Merge CDE metadata; verify actual ordered parents/full tree and clean detached registered owner. Then create CDE clock successor branch and persist bounded source/state contract before actual implementation.",
+  "next_action": "Implement actual CDE subdaily/perstep adapter, preserve literal private state/observed daily receipt and compose existing original clock/trial owners. Persist production before fresh small O0/O2 ordinary NPD2 and Snow perstep NPD3 warm/cold gates.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -446,8 +446,8 @@
   "qualified_age_fixed_runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
   "qualified_age_fixed_ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
   "age_fixed_sealed_proof": "56ae017e413503891d6c1a9709d1c882f2a14edb",
-  "active_branch": "codex/nomacro-cde-interval01",
-  "canonical_baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
+  "active_branch": "codex/nomacro-cde-clock01",
+  "canonical_baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
   "calendar_results": {
     "source": "7943551d0",
     "pilot": "O0/O2 ten-day and1096days/seven exact native windows PASS",
@@ -655,7 +655,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+  "canonical_head": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -876,7 +876,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-cde-interval01",
+  "working_branch": "codex/nomacro-cde-clock01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -2409,7 +2409,7 @@
     ]
   },
   "cde_interval": {
-    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+    "status": "ADMITTED",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scope": "ActualoriginalCDE Snow0/1 heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather SWBR0/frost0 NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0/period2..366 SWRES0/1 formats0..3. Denseperiod1 andallother/nonCDE paths literal.",
     "original_reader_observations": [
@@ -3000,6 +3000,35 @@
         "('in_progress', None)": 20
       },
       "role": "Automatic legacy PR checks outside selected scientific qualification. Queued/in-progress is not PASS; exact external cde-interval-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_CDE_INTERVAL_METADATA_MERGE_VERIFIED",
+      "pr": 1751,
+      "merge": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+      "parents": [
+        "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+        "819956fe73e79af06f22954d5c3151a52941a2f2"
+      ],
+      "qualified_head": "819956fe73e79af06f22954d5c3151a52941a2f2",
+      "tree": "d3356c61bdbdac6865c6433e1d3f15e70740c735",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 169.50239200005308,
+        "head": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+        "stdout": "{\n  \"status\": \"ORIGINAL_CDE_INTERVAL_PRIVATE_STATE_DAILY_MASS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"00658a9456b041a9b8c65517b4a9147ad941691e\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1536,\n  \"actual_policy_refusals\": 1296,\n  \"actual_provider_refusals\": 28,\n  \"actual_preserved_contexts\": 33,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
     }
+  },
+  "cde_clock": {
+    "status": "CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+    "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+    "contract": "docs/science/NOMACRO_CDE_CLOCK_20261119.md",
+    "source_audit": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\NEXT_CDE_CLOCK_SOURCE_AUDIT.json",
+    "original_reader_observations": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2",
+    "retained_original_binary_reference_failure": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v1",
+    "scientific_equivalence": "NOT_QUALIFIED",
+    "functional_completion": "PARTIAL"
   }
 }
