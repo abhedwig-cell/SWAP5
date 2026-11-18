@@ -48,9 +48,9 @@ def render_headcalc(source,boundary=8):
     replace('   use hybrid_step_budget, only: projected_water_residual',
             '   use mod_prescribed_groundwater_reaction, only: prescribed_groundwater_reaction\n'
             '   use hybrid_step_budget, only: projected_water_residual')
-    replace('   implicit none','   implicit none\n'
+    replace('   implicit none\n\n!  local','   implicit none\n'
             '   real(8)::groundwater_bottom,groundwater_delta\n'
-            '   integer::groundwater_status')
+            '   integer::groundwater_status\n\n!  local')
     for anchor in ('         budget_step=projected_water_residual()',
                    '            budget_step = projected_water_residual()'):
         indent=anchor[:len(anchor)-len(anchor.lstrip())]
