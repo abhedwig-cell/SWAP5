@@ -20,12 +20,13 @@ def main():
     for key in ('reference-work','prior-root','evidence-root','output'):parser.add_argument('--'+key,type=Path,required=True)
     parser.add_argument('--optimization',choices=('O0','O2'),required=True)
     parser.add_argument('--platform',choices=('Windows','Ubuntu'),default='Windows')
-    args=parser.parse_args();args.output.mkdir();old=json.loads((args.prior_root/'RESULT.json').read_text())
+    parser.add_argument('--resume',action='store_true')
+    args=parser.parse_args();args.output.mkdir(exist_ok=args.resume);old=json.loads((args.prior_root/'RESULT.json').read_text())
     authority=ROOT/'integration/f-ci/nomacro-complete01/GROUNDWATER_CHEMICAL_QUALIFICATION.json';qualified=json.loads(authority.read_text(encoding='utf8'))
     members={path:value for name,record in qualified['archives'].items() if name==f'GROUNDWATER_CHEMICAL_{args.platform.upper()}_{args.optimization}_RAW_ARCHIVE.json' for path,value in record['members'].items()}
     def check_source(path):
         name=path.relative_to(args.evidence_root if args.platform=='Windows' else args.prior_root).as_posix();assert hashlib.sha256(path.read_bytes()).hexdigest()==members[name],name
-    def actual(path):
+    def resolve_prior(path):
         if args.platform=='Windows':return Path(path)
         base=PurePosixPath(old['cases']['within-csv3']['short_root']).parent
         return args.prior_root/PurePosixPath(path).relative_to(base)
@@ -34,12 +35,13 @@ def main():
     save()
     try:
         for key,(kind,fmt,extra) in CASES.items():
-            item=old['cases'][key];oldbuild=actual(item['build_root']);oldshort=actual(item['short_root']);inputs=actual(item['input_root'])
+            item=old['cases'][key];oldbuild=resolve_prior(item['build_root']);oldshort=resolve_prior(item['short_root']);inputs=resolve_prior(item['input_root'])
             check_source(oldbuild/'BUILD.json');check_source(oldshort/'RESULT.json');check_source(oldshort/'trajectory/daily.jsonl')
             out=args.output/key
             command=[sys.executable,'-B',str(Path(__file__).with_name('groundwater_chemical_runtime.py')),'--reference-work',args.reference_work,
                 '--output',out,'--existing-input',inputs,'--kind',kind,'--format',fmt,'--optimization',args.optimization,*extra]
-            subprocess.run(list(map(str,command)),cwd=ROOT,check=True,timeout=300)
+            if not (args.resume and (out/'RESULT.json').exists()):
+                subprocess.run(list(map(str,command)),cwd=ROOT,check=True,timeout=300)
             project=m.e.load(inputs,original_output='--compatibility-output' not in extra)
             actual,_=m.validate_bundle(out/'build',args.reference_work,project);prior=json.loads((oldbuild/'BUILD.json').read_text())
             assert actual['project']==prior['project'] and actual['inputs']==prior['inputs']
