@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-irrigation-source01",
-  "last_commit": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
-  "status": "AGE_IRRIGATION_SOURCE_ORIGINAL_COUNTEREXAMPLE_SELECTED",
+  "last_commit": "636f12d83a3e40fe98b9c869505c7bde3cbf96f3",
+  "status": "ORIGINAL_FIXED_AGE_CAPTURE_COUNTEREXAMPLE_O0_O2_OBSERVED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -615,10 +615,12 @@
   "age_irrigation_source_results": {
     "work_unit": "NOMACRO-AGE-IRRIGATION-SOURCE01",
     "baseline": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
-    "status": "SOURCE_INVENTORY_ORIGINAL_PROBE_SELECTED_NO_IMPLEMENTATION",
-    "source_findings": "OriginalfixedreaderIRCONC0..1000forSWSOLU>0; irrigationtask1CIRR0,task2CIRRactualevent. OriginalcalcAge task1capturesAgeirr=CIRRonce then usescapturedAgeirr forever. read_AgeTracer forciblysetsrain/drainage/seepageages0; nohistoricalnonzerorainselectorisclaimed. Existingphysicalsurface/soilprovidersalreadyacceptnonzeroageinputs andretainexternalageledger; onlyexplicitfixedyoungguardandhostforcingadapterboundcurrentzeroage.",
+    "status": "ORIGINAL_FIXED_AGE_CAPTURE_COUNTEREXAMPLE_O0_O2_OBSERVED",
+    "source_findings": "OriginalfixedreaderIRCONC0..1000forSWSOLU>0; irrigationtask1CIRR0,task3CIRRactualevent. OriginalcalcAge task1capturesAgeirr=CIRRonce then usescapturedAgeirr forever. read_AgeTracer forciblysetsrain/drainage/seepageages0; nohistoricalnonzerorainselectorisclaimed. Existingphysicalsurface/soilprovidersalreadyacceptnonzeroageinputs andretainexternalageledger; onlyexplicitfixedyoungguardandhostforcingadapterboundcurrentzeroage.",
     "native_risk": "ExistingAgeirr/Agepre/Agedrain savedparameters arestaticnativeforcing witnesses; dynamicfixedeventagesmustnotreuseoldcodecsorbeaccidentallytreatedasstaticnativeparameters. Preservealloldhelpers,providers/codecs/youngdefaultsemantics.",
-    "next": "ActualoriginalO0/O2 sourceprobe withIRCONC0vs20andday5surface/sprinklergift; observeactualCIRR/Ageirr andprofileinvariance, thenisolatedrefreshcounterexample before choosingpublicstate/sourceinterface. NoSWAP5activationyet.",
-    "external_blocker": null
+    "next": "Addexplicitdefaultoff --age-irrigation-source withactualfixedsprinkler/surfaceCIRR ages. Preservefrozenyounghelperandphysicalproviders; newnativecodes/pairactualprocessdomain andcompleteexistingirrigationcarry; actualstatecomponentbeforehostactivation. Extendcalendar/outputcompositionsusingliteralowners; subsurfaceageinputsremainseparatestate/sourcework.",
+    "external_blocker": null,
+    "original_counterexample": "636f12d83 actualoriginal63objectclosure, O0/O2 surface/sprinkler IRCONC0/20 all24eightdayrunsPASS. Originalnonzeroandzeroprofilesexact; nonmutatingprobeexact. Realnird2.4cm/CIRR20/Ageirr0: captures0 ratherthan48cmday. Isolatedrefreshpreserveszeroageandchangesnonzeroageprofile;actual48cmdaycurrentinputbothopts/kinds. NoSWAP5activation.",
+    "probe_failure": "d337640ba scopeddiagnostictoMODULEsubroutine whileimportsareinsubmodule specification; assertionbeforecompilation/model. Retainfirstprefix; fixsubmodulescopeonly;v2PASS."
   }
 }
