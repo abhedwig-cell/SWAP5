@@ -207,10 +207,13 @@ def validate_bundle(bundle, reference, project):
     lower=lower_boundary is not None
     expected_lower=lower_metadata(project,h.sha,h.APP,h.ROOT)
     if identity.get('lower_boundary_receipt')!=expected_lower:raise ValueError('Foreign original lower-boundary receipt')
-    from groundwater_native import metadata as groundwater_native_metadata
+    from groundwater_history_native import metadata as groundwater_native_metadata
     if identity.get('groundwater_native_state')!=groundwater_native_metadata(project,h.sha,h.APP):
         raise ValueError('Foreign prescribed groundwater native carry policy')
     if lower_boundary==1:
+        state_name='groundwater_history_native_state.f90' if expected_lower and identity['groundwater_native_state']['domain_bytes']==104 else 'groundwater_native_state.f90'
+        if (bundle/state_name).read_bytes()!=(h.APP/state_name).read_bytes():
+            raise ValueError('Foreign actual prescribed groundwater native state provider')
         reaction=bundle/'mod_prescribed_groundwater_reaction.f90'
         if reaction.read_bytes()!=(h.ROOT/'src/process/mod_prescribed_groundwater_reaction.f90').read_bytes():
             raise ValueError('Foreign prescribed groundwater reaction component')
@@ -578,7 +581,7 @@ class CoupledDailyColumn:
                     raise ValueError('Unrestartable candidate conserved solute state')
                 from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
                 if cde_candidate(self.project):validate_cde_candidate(aux,raw,self.project)
-                from groundwater_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+                from groundwater_history_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
                 if groundwater_candidate(self.project):validate_groundwater_candidate(aux,raw,self.project)
                 from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
                 if aquifer_candidate(self.project):validate_aquifer_candidate(aux,raw,self.project)
@@ -622,7 +625,7 @@ class CoupledDailyColumn:
                     raise ValueError('Prepared native state changed')
         from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
         if cde_candidate(self.project):validate_cde_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
-        from groundwater_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+        from groundwater_history_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
         if groundwater_candidate(self.project):validate_groundwater_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
 
         from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate

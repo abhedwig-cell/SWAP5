@@ -1,0 +1,84 @@
+"""Real producer and original/witness-native corruptions, without model reruns."""
+import copy,importlib.util,io,json,struct,sys,unittest,zipfile
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[2]
+spec=importlib.util.spec_from_file_location('history_owner',Path(__file__).with_name('groundwater_history_verify.py'))
+owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+
+class Proof(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):cls.q=json.loads((ROOT/owner.PROOF/'GROUNDWATER_HISTORY_QUALIFICATION.json').read_text(encoding='utf8'))
+
+    def test_actual_source_scope(self):
+        owner.validate(self.q);refused=0
+        for group in ('scope','source_sha256','controller_sha256','frozen_predecessor_sources','frozen_predecessor_controllers'):
+            values=list(self.q[group].items())
+            if group.startswith('frozen'):values=values[:1]
+            for key,value in values:
+                bad=copy.deepcopy(self.q)
+                bad[group][key]=(not value) if type(value) is bool else value+1 if type(value) in (int,float) else value+['FOREIGN'] if isinstance(value,list) else value+'-FOREIGN'
+                with self.assertRaises(ValueError,msg=group+'/'+key):owner.validate(bad)
+                refused+=1
+        for key in ('runtime','functional_completion','whole_scientific_equivalence','release_readiness','water_guard_cm','chemical_mass_guard_mg_cm2','native_codecs','native_domain_bytes','conserved_cde_prefix_offset_bytes'):
+            bad=copy.deepcopy(self.q);value=bad[key]
+            bad[key]=value+1 if type(value) in (int,float) else value+['FOREIGN'] if isinstance(value,list) else value+'-FOREIGN'
+            with self.assertRaises(ValueError,msg=key):owner.validate(bad)
+            refused+=1
+        print('ACTUAL_HISTORY_SOURCE_SCOPE_REFUSALS',refused,flush=True)
+
+    def test_actual_period_ledger_native(self):
+        sys.path.insert(0,str(ROOT/'tests/nomacro_scheduled_subsurface'));from groundwater_history_ci import CASES
+        refused=0
+        for platform,opts in self.q['main'].items():
+            for opt,location in opts.items():
+                with zipfile.ZipFile(io.BytesIO(owner.raw_archive(self.q['archives'][location['archive']]))) as z:
+                    run=json.loads(z.read(location['prefix']+'RESULT.json'))
+                    def path(value):
+                        if platform=='Windows':return owner.PureWindowsPath(value).relative_to(owner.PureWindowsPath('C:/Users/Veldh012/swap5-complete01-evidence')).as_posix()+'/'
+                        base=owner.PurePosixPath(run['cases']['hys1-snow0-original']['short_root']).parent
+                        return str(owner.PurePosixPath(value).relative_to(base))+'/'
+                    for key,case in CASES.items():
+                        item=run['cases'][key];raw=z.read(path(item['build_root'])+'BUILD.json');build=json.loads(raw);digest=owner.digest(raw)
+                        for phase in ('short','full'):
+                            if phase not in item:continue
+                            report=item[phase];owner.period(report,case,opt,phase,build,digest)
+                            for parts,value in [(('status',),'FOREIGN'),(('optimization',),'FOREIGN'),(('kind',),'FOREIGN'),(('hysteresis',),3),
+                                (('trajectory','days'),1),(('trajectory','build_sha256'),'FOREIGN'),(('cold',0,'exact_physical'),False),
+                                (('cold',0,'exact_complete_native'),False),(('cold',0,'origin_unchanged'),False)]:
+                                bad=copy.deepcopy(report);target=bad
+                                for part in parts[:-1]:target=target[part]
+                                target[parts[-1]]=value
+                                with self.assertRaises(ValueError,msg=str((platform,opt,key,phase,parts))):owner.period(bad,case,opt,phase,build,digest)
+                                refused+=1
+                        prefix=path(item['short_root']);rows=[json.loads(line) for line in z.read(prefix+'trajectory/daily.jsonl').splitlines()];owner.ledger(rows,35)
+                        for field,index in [('stock_end_cm',0),('stock_end_cm',2),('external_flux_cm',6),('solute_ledger_mg_cm2',0),('solute_ledger_mg_cm2',3)]:
+                            row=copy.deepcopy(rows[0]);row[field][index]+=1.
+                            with self.assertRaises(ValueError,msg=field):owner.ledger([row],1)
+                            refused+=1
+                        with zipfile.ZipFile(io.BytesIO(z.read(prefix+'trajectory/accepted-column-1-day-4.zip'))) as checkpoint:
+                            native=checkpoint.read('macro.bin');policy=build['identity']['groundwater_native_state'];n=build['project']['nodes']
+                            owner.native(native,rows[3],policy);header=struct.pack('<13i',*policy['actual_domain']);offset=native.index(header+header)+104
+                            attacks=[('head',offset,123.),('water',offset+8*n,-1.),('level',offset+8*(5*n+2),123.),
+                                ('volume',offset+8*(5*n+3),123.),('cde',48+8*(n+1),123.),('nonfinite',offset,float('nan'))]
+                            if case[0]:attacks.append(('original-head',native.find(native[offset:offset+8*(5*n+4)]),123.))
+                            for label,pos,value in attacks:
+                                bad=bytearray(native);struct.pack_into('<d',bad,pos,value)
+                                with self.assertRaises(ValueError,msg=label):owner.native(bad,rows[3],policy)
+                                refused+=1
+                            for label,bad in [('codec',b'FOREIGN!'+native[8:]),('domain',native[:offset-104]+b'X'+native[offset-103:]),('truncation',native[:offset+4])]:
+                                with self.assertRaises(ValueError,msg=label):owner.native(bad,rows[3],policy)
+                                refused+=1
+        self.assertEqual(refused,2032)
+        print('ACTUAL_HISTORY_PERIOD_LEDGER_NATIVE_CORRUPTIONS_REFUSED',refused,flush=True)
+
+    def test_actual_part_offsets(self):
+        count=0
+        for record in self.q['archives'].values():
+            if 'byte_parts' not in record:continue
+            bad=copy.deepcopy(record);bad['byte_parts'][0]['offset']=1
+            with self.assertRaises(ValueError):owner.raw_archive(bad)
+            count+=1
+        self.assertGreater(count,0)
+
+if __name__=='__main__':unittest.main()

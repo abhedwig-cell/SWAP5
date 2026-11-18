@@ -848,7 +848,7 @@ end module plant_interface""")
     if age_calendar is not None:
         patched=age_calendar_owner.apply_build(output,donor_build,project,patched)
     if age_source:patched=current_age_source.apply_build(output,project,patched)
-    from groundwater_native import apply_build as groundwater_native_build
+    from groundwater_history_native import apply_build as groundwater_native_build
     patched=groundwater_native_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
@@ -870,7 +870,7 @@ end module plant_interface""")
                     *([str(output/(name+'.o')) for name in ('mod_direct_soil_age_substep','direct_soil_age_state')] if project.age_direct_soil_source else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output/'mod_prescribed_groundwater_reaction.o')] if lower_boundary==1 else []),
-                    *([str(output/'groundwater_native_state.o')] if lower_boundary==1 else []),
+                    *([str(output/(name+'.o')) for name in ('groundwater_native_state','groundwater_history_native_state') if name in patched] if lower_boundary==1 else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
@@ -962,7 +962,7 @@ end module plant_interface""")
     if lower_receipt:
         from groundwater_boundary_receipt import metadata as lower_metadata
         build_identity['lower_boundary_receipt']=lower_metadata(project,sha,APP,ROOT)
-    from groundwater_native import metadata as groundwater_native_metadata
+    from groundwater_history_native import metadata as groundwater_native_metadata
     groundwater_state=groundwater_native_metadata(project,sha,APP)
     if groundwater_state is not None:build_identity['groundwater_native_state']=groundwater_state
     if fixed_file:
