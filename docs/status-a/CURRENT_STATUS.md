@@ -1,5 +1,13 @@
 # SWAP5 Status-A current status
 
+The [SaltFarm conditional Newton policy](../science/SALTFARM_NEWTON_WORK01.md)
+passes complete1461day Windows/Ubuntu O0/O2 trajectories,20exact own cold
+windows and independent external discard/replay/native controls. Only numerical
+padding inside the half-guard interior is omitted; original convergence and
+all1e-10water/solute limits remain unchanged. Full Newton work falls19.996%;
+a material portable wall-speed improvement is not established. Fixed RC3 and
+whole scientific NOT_QUALIFIED remain unchanged.
+
 The [original Snow output calendars](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
 pass16full1096day Windows/Ubuntu periods,256complete cold windows and40scoped
 prior source/native contexts. Monthly, explicit dates, periodic and PERIOD0

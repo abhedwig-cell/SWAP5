@@ -1,5 +1,13 @@
 # SWAP5 Status-A current architecture
 
+The [SaltFarm Newton policy](../science/SALTFARM_NEWTON_WORK01.md) separates
+conditional numerical polishing from physical processes. Its named policy
+participates in build/checkpoint identity; foreign-policy recovery is refused.
+Original Newton and cumulative mass rejection remain literal. The full extra
+iteration remains near the guard; only half-interior padding is omitted.
+Other registered projects retain always-polish, and native state formats are
+unchanged. Windows/Ubuntu O0/O2 exact own continuations are source-bound.
+
 The implemented [Snow output calendar adapter](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
 retains the literal thermal-domain80byte frame and complete original calendar.
 S5CTW002 adds a paired32byte header and seven actual MOD_integral Snow totals,

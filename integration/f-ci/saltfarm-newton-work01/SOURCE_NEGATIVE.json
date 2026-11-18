@@ -1,0 +1,18 @@
+{
+  "status": "ACTUAL_DIRTY_AND_COMMITTED_RELAXED_WATER_GUARD_REFUSED",
+  "base": "01e7881c81302ee8ded4e7f9e03f2b98e63b39a9",
+  "unadmitted_private_commit": "c4894c235df0f0590943673d39c5eb8b295f8c8f",
+  "private_image": "C:\\SWAP5-testing\\saltfarm-newton-close01\\source-negative02\\image",
+  "checks": [
+    {
+      "stage": "actual_dirty_2e-10_water_guard",
+      "refused": true,
+      "reason": "dirty Newton qualification surface"
+    },
+    {
+      "stage": "actual_committed_2e-10_water_guard",
+      "refused": true,
+      "reason": "production differs from qualified Newton source"
+    }
+  ]
+}
