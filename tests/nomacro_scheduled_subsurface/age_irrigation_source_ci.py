@@ -5,6 +5,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import zipfile
 import age_irrigation_source_matrix as probe
 
 # kind, calendar, format, hysteresis, original-output, inline, age, events, full
@@ -24,6 +25,15 @@ CASES={
  'sprinkler-hys2-output0':('sprinkler','daily',0,2,True,False,20.,'varying',True),
  'surface-inline-daily':('surface','daily',1,0,False,True,20.,'varying',False)}
 CONTROLS=('surface-daily','surface-regular','sprinkler-monthly','surface-np3','surface-output3','surface-hys1-output3','sprinkler-hys2-output0')
+
+
+def compare_formats(output):
+    plain=output/'full-surface-output0/trajectory';binary=output/'full-surface-output3/trajectory'
+    assert probe.m.physical(probe.m.rows(plain))==probe.m.physical(probe.m.rows(binary))
+    for day in (4,8,10,201,367,532,1096):
+        with zipfile.ZipFile(plain/f'accepted-column-1-day-{day}.zip') as x,zipfile.ZipFile(binary/f'accepted-column-1-day-{day}.zip') as y:
+            for member in ('result.end','macro.bin'):assert x.read(member)==y.read(member),(day,member)
+    return dict(status='ACTUAL_CURRENT_AGE_SOURCE_FORMAT_INDEPENDENCE_PASS',all1096_physical_exact=True,seven_complete_native_endpoints_exact=True,profiles=['surface-output0','surface-output3'])
 
 
 def arguments(case):
@@ -66,6 +76,7 @@ def main():
                 build=Path(q['cases'][key]['build_root']);inputs=Path(q['cases'][key]['input_root']);full=a.output/('full-'+key)
                 if not (full/'RESULT.json').exists():run('age_irrigation_source_matrix.py','--reference-work',a.reference_work,'--output',full,'--optimization',a.optimization,'--phase','full','--reuse-build',build,'--existing-input',inputs,*arguments(case))
                 r=json.loads((full/'RESULT.json').read_text());assert r['status']=='AGE_IRRIGATION_SOURCE_FULL_CURRENT_FORCING_NATIVE_OUTPUT_PASS' and r['trajectory']['build_sha256']==probe.m.sha(build/'BUILD.json');q['cases'][key]['full']=r;save()
+            q['format_independence']=compare_formats(a.output);save()
         q['status']='FOURTEEN_CURRENT_AGE_SOURCE_SHORT_AND_'+('NO_FULL_SELECTED' if a.short_only else 'TEN_FULL')+'_NATIVE_STATE_USER_OUTPUT_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()

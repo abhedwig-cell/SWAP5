@@ -14,18 +14,24 @@ ROOT=fixed.ROOT
 def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','evidence-root','output'):p.add_argument('--'+key,type=Path,required=True)
-    a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();specs=[];e=a.evidence_root
+    p.add_argument('--resume',action='store_true')
+    a=p.parse_args();a.output=a.output.resolve();a.output.mkdir(exist_ok=a.resume);specs=[];e=a.evidence_root
     for opt in ('O0','O2'):
         for kind in ('sprinkler','surface','subsurface','subsurface-interval'):
             prior=e/'age-fixed';specs.append((kind+'-'+opt,m.e.load(prior/'inputs'/kind),prior/(kind+'-'+opt+'-build'),prior/(kind+'-'+opt+'-short'),8,opt))
     for name,project in [('grass',m.h.GRASSGROWTH),('hupsel',m.h.HUPSEL),('salt',m.h.SALTFARM)]:
         prior=e/'age-canonical-preservation';specs.append((name,project,prior/(name+'-build'),prior/(name+'-prefix'),4,'O2'))
     q=dict(status='RUNNING',profiles={},functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
+    if a.resume:
+        q=json.loads((a.output/'RESULT.json').read_text());q.setdefault('retained_failures',[]).append(dict(status=q['status'],error=q.pop('error',None)));q['status']='RUNNING'
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     try:
         for name,project,old,previous,days,opt in specs:
-            assert project.age_irrigation_source is False;out=a.output/name;out.mkdir();build=out/'build';command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--reference-work',a.reference_work,'--build-only','--donor-opt',opt,'--kernel-opt',opt,'--output',build]
-            if project.input_directory:command+=['--experimental-project',project.input_directory]
+            assert project.age_irrigation_source is False;out=a.output/name
+            if name in q['profiles']:
+                actual,_=m.validate_bundle(out/'build',a.reference_work,project);assert actual==q['profiles'][name]['actual_build'];m.check(m.rows(out/'trajectory'));continue
+            out.mkdir(exist_ok=a.resume);build=out/'build';command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--reference-work',a.reference_work,'--build-only','--kernel-opt',opt,'--output',build]
+            if project.input_directory:command+=['--experimental-project',project.input_directory,'--donor-opt',opt]
             else:command+=['--no-macro-release']
             r=subprocess.run(list(map(str,command)),cwd=ROOT,capture_output=True,text=True,timeout=180);(out/'build.stdout').write_text(r.stdout);(out/'build.stderr').write_text(r.stderr);assert r.returncode==0,r.stderr
             meta,_=m.validate_bundle(build,a.reference_work,project);prior=json.loads((old/'BUILD.json').read_text())
