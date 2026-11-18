@@ -73,7 +73,8 @@ reference was reused. Candidate versus current control maximum GWL change is
 0.018153260030cm). The complete column comparison is sealed in `raw.zip`.
 These descriptive differences establish no new scientific threshold. Existing
 oxygen failures, underqualified references and whole-science NOT_QUALIFIED
-remain visible. Ubuntu and portable performance are not qualified here.
+remain visible. At this Windows checkpoint Ubuntu was not yet qualified; the completed
+follow-up is below. Portable speedup remains unqualified.
 
 ## Reproduce without rebinding
 
@@ -83,7 +84,7 @@ no-macro preparation command. From repository root, with GNU tools on PATH:
 ```powershell
 python -B tools/solute/run_water.py --model HYBRID_SALTFARM_WATER --reference-work C:\SWAP5-testing\rc3-local01\provider --build-only --kernel-opt O2 --donor-opt O2 --no-macro-release --output C:\SWAP5-testing\newton-O2
 python -B tests/saltfarm_newton/qualify.py --reference C:\SWAP5-testing\rc3-local01\provider --bundle C:\SWAP5-testing\newton-O2 --output C:\SWAP5-testing\newton-O2-accept
-python -B integration/f-ci/saltfarm-newton-work01/verify.py
+python -B tests/saltfarm_newton/verify_successor.py
 ```
 
 Use new output directories; select both O0 flags for the O0 qualification.
