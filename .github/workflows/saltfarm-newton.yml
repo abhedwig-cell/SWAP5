@@ -1,0 +1,59 @@
+name: SaltFarm conditional Newton Ubuntu O0 O2
+on:
+  push:
+    branches: [codex/saltfarm-newton-work01]
+    paths: ['.github/workflows/saltfarm-newton.yml']
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Exact source to qualify
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  saltfarm:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact source and fresh original provider
+        env:
+          EXPECTED: ${{ inputs.expected_sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED"
+          python3 -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work "$RUNNER_TEMP/newton/provider"
+      - name: Short probes then complete O0 O2 and own cold trajectories
+        run: |
+          for opt in O0 O2; do
+            python3 -B tools/solute/run_water.py --model HYBRID_SALTFARM_WATER --reference-work "$RUNNER_TEMP/newton/provider" --build-only --kernel-opt "$opt" --donor-opt "$opt" --no-macro-release --output "$RUNNER_TEMP/newton/qualified-$opt"
+            python3 -B tools/solute/run_water.py --model HYBRID_SALTFARM_WATER --reference-work "$RUNNER_TEMP/newton/provider" --build-bundle "$RUNNER_TEMP/newton/qualified-$opt" --no-macro-release --days 4 --checkpoint-at 2 --timeout-seconds 25 --output "$RUNNER_TEMP/newton/short-$opt"
+            python3 -B tests/saltfarm_newton/qualify.py --bundle "$RUNNER_TEMP/newton/qualified-$opt" --reference "$RUNNER_TEMP/newton/provider" --output "$RUNNER_TEMP/newton/accept-$opt"
+          done
+      - name: Actual discard replay and independent native columns
+        run: |
+          python3 -B tests/saltfarm_newton/transactions.py --work "$RUNNER_TEMP/newton" --reference "$RUNNER_TEMP/newton/provider"
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          w=Path(os.environ['RUNNER_TEMP'])/'newton'
+          def data(opt):return [{k:v for k,v in json.loads(s).items() if k not in ('column','revision')} for s in (w/f'accept-{opt}/full/daily.jsonl').read_text().splitlines()]
+          assert data('O0')==data('O2')
+          (w/'PROFILE_EQUALITY.json').write_text(json.dumps(dict(exact_all1461_physical=True,source=os.environ['GITHUB_SHA'])))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: saltfarm-newton-ubuntu-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/newton/accept-*
+            ${{ runner.temp }}/newton/qualified-*/BUILD.json
+            ${{ runner.temp }}/newton/qualified-*/*.f90
+            ${{ runner.temp }}/newton/short-*
+            ${{ runner.temp }}/newton/transactions
+            ${{ runner.temp }}/newton/PROFILE_EQUALITY.json
+            ${{ runner.temp }}/newton/provider/PREPARED.json
+          retention-days: 14
