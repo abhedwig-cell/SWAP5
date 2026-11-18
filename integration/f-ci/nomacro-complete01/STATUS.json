@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-subsurface-age-source01",
-  "last_commit": "5014520ed5aa37439b9dd4661d58939eba7c15ad",
-  "status": "DIRECT_SOIL_AGE_CANONICALLY_ADMITTED_NEXT_AQUIFER_OUTPUT",
+  "branch": "codex/nomacro-output-aquifer01",
+  "last_commit": "76c6251a2f3f6345428b26b1a9e03cf7e0bf917a",
+  "status": "ORIGINAL_OUTPUT_AQUIFER_CONTRACT_RECONCILED_IMPLEMENT_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -326,7 +326,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Complete annual/subdaily cohort controllers and actual reference/cadence/native controls; no changes to physical providers or literal003/004 helpers.",
-  "recovery_point": "PR1727 actual source merge5014520ed exacte3/31aparents andcomplete27401b01tree; actual detached registered root PASS. Metadata receipt and bounded current claims prepared.",
+  "recovery_point": "PR1727actual501sourcePASS56.591sec; PR1728actual76c625metadata exact501/024parents/full1a213de8tree, detachedrootPASS59.228sec. Newbranchoutput-aquifer01 contractonly; no runtimechange yet.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -428,7 +428,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Complete actual metadata merge admission, then reconcile and implement bounded original CDE output with existing SWBR1 aquifer physical/native owner. Preserve all admitted output/source routes and original aquifer equations/providers.",
+  "next_action": "Implement bounded original CDE output+SWBR1 successor: actualaq7dailyobserver, literaloldoutput/calendar/CDEprivate17scalarstate, completeoldaqnativepayload andnewtypedactualdomain56bytes. Alloldhelpers/providersliteral. PersistthenactualO0/O2output/native/sourcepilots againstfreshcompatibilitybaseline.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -649,7 +649,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "5014520ed5aa37439b9dd4661d58939eba7c15ad",
+  "canonical_head": "76c6251a2f3f6345428b26b1a9e03cf7e0bf917a",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -738,5 +738,19 @@
       "stdout": "{\n  \"status\": \"DIRECT_SOIL_AGE_SOURCE_STATE_OUTPUT_ADMISSION_PASS\",\n  \"runtime\": \"26724ce758cb1dfb22e7e722046fae724fa6bd61\",\n  \"predecessor\": \"LITERAL_QUALIFIED_CURRENT_AGE_IMAGE_AND_ACTUAL_ARCHIVES_PASS\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"actual_bound_reports\": 293,\n  \"actual_full_periods\": 44,\n  \"native_codecs\": [\n    \"S5DI0002\",\n    \"S5DI0003\",\n    \"S5DI0004\",\n    \"S5DI0005\",\n    \"S5DIO001\",\n    \"S5DIH001\"\n  ],\n  \"age_units\": \"cm day\",\n  \"age_tolerance\": \"8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)\"\n}\n",
       "stderr": ""
     }
+  },
+  "output_aquifer": {
+    "baseline": "76c6251a2f3f6345428b26b1a9e03cf7e0bf917a",
+    "status": "CONTRACT_RECONCILED_NOT_IMPLEMENTED",
+    "contract": "docs/science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md",
+    "dependency_surface": [
+      "OriginalCDEmixedaq7physical/native/losslimiter",
+      "Originaloutputdailyprobe currentlymissingaqobservation",
+      "Literaloldcalendar/clock/receipt/CDEprivateoutputstate",
+      "Newselection/nativeactualdomainwitness anddispatchmetadata"
+    ],
+    "scope": "Existingexplicit--original-output, SWSOLU1SWBR1SWDRA1analyticaldailycadence, hys0/1/2; no snow/frost/detailedweather",
+    "next": "Implement bounded original CDE output+SWBR1 successor: actualaq7dailyobserver, literaloldoutput/calendar/CDEprivate17scalarstate, completeoldaqnativepayload andnewtypedactualdomain56bytes. Alloldhelpers/providersliteral. PersistthenactualO0/O2output/native/sourcepilots againstfreshcompatibilitybaseline.",
+    "external_blocker": null
   }
 }
