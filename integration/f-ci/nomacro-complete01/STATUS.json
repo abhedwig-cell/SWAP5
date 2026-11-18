@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-ordinary-reset01",
   "last_commit": "caa0505611f12749d9e147a47d38db018d218edb",
-  "status": "ORDINARY_RESET_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+  "status": "IMPLEMENTED_FIRST_O0_O2_MODEL_CENSORED_TRIAL_PHASE_DIAGNOSIS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Implement ordinary water Snow0/heat1 FLPRINTDT SWRES1 annual counter/native policy; persist before actual O0/O2 pilots and cold workers.",
+  "next_action": "Correct selected private observer to actual independent original Darcy/soil-air evaluation before original Fluxes, preserving old clone and all tolerances. Fix selection partition to delegate SWRES0/monthly before new constraints, then fresh O0/O2 source-bound pilots.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -1867,11 +1867,29 @@
     "metadata_docs": "Source checks PASS; strict MkDocs PASS42.48seconds external metadata site."
   },
   "ordinary_reset": {
-    "status": "CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+    "status": "IMPLEMENTED_FIRST_O0_O2_MODEL_CENSORED_TRIAL_PHASE_DIAGNOSIS",
     "baseline": "caa0505611f12749d9e147a47d38db018d218edb",
     "reader_observation": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-baseline-original-reader-v2",
     "retained_fixture_failure": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-baseline-original-reader-v1\\OBSERVATION.json",
     "scope": "OriginalwaterSnow0heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather FLPRINTDTtrue NPRINTDAY1 SWRES1 explicit/periodic/PERIOD0 format0..3; nofrost/AQ/CDE/age/macro.",
-    "external_blocker": null
+    "external_blocker": null,
+    "production_commit": "2c0915420",
+    "failures": {
+      "O0": {
+        "root": "C:/Users/Veldh012/swap5-complete01-evidence/ordinary-reset-explicit-O0-v1",
+        "build_seconds": 26.99052909994498,
+        "model_cap_seconds": 180,
+        "accepted_days": 0,
+        "error": "TimeoutError: model wall cap; actual workers killed and reaped by owning bounded helper."
+      },
+      "O2": {
+        "root": "C:/Users/Veldh012/swap5-complete01-evidence/ordinary-reset-explicit-O2-v1",
+        "build_seconds": 32.682933799922466,
+        "model_cap_seconds": 180,
+        "accepted_days": 0,
+        "error": "TimeoutError: model wall cap; actual workers killed and reaped by owning bounded helper."
+      }
+    },
+    "next": "Correct selected private observer to actual independent original Darcy/soil-air evaluation before original Fluxes, preserving old clone and all tolerances. Fix selection partition to delegate SWRES0/monthly before new constraints, then fresh O0/O2 source-bound pilots."
   }
 }

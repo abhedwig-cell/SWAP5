@@ -67,3 +67,26 @@ Affected invariants3,4,7,13,21,23,30 remain binding. A separate small executable
 driver must invoke the real production builder and actual physical workers; a
 copied calendar/physics model cannot establish admission. No broad moving F-CI
 or retired highest-low-air campaign is selected. A checkpoint is not closure.
+
+## First actual O0/O2 refusal and phase audit
+
+The first actual O0/O2 sources build in26.99/32.68seconds, reach HYBRID_READY,
+but accept zero days before the180second model cap. Retain both complete failed
+roots separately. Do not increase that cap or relax a conservation guard.
+
+Original BoundBottom does not update qbot for head boundary5; Fluxes computes
+it later from the accepted water increment for boundary5/8. The frozen ordinary
+trial clone currently reads qbot*dt inside HeadCalc, before that phase. This is
+a migrated observer phase mismatch, not proof of a defect in original physics.
+The new selected observer must instead accept the actual independent original
+Darcy boundary evaluation from HeadCalc, with zero for bottom8's actual unsaturated
+soil-air branch. Never use Fluxes' same-candidate volume closure as the independent
+trial flux, and never assign a replacement to original qbot. Retain the complete
+original whole soil/pond/canopy stock/flow clone and1e-10cm limits unchanged.
+
+Keep the old private clone literal as a diagnostic comparator. A bounded first-day
+witness may observe the stale and Darcy-projected residuals when all original
+convergence checks and the new independent guard pass. It must not change accepted
+state, stock, flux or tolerance. Fresh source-bound O0/O2 builds and actual worker
+runs must establish the result before qualification. Nonselected SWRES0/monthly
+and every other admitted route must delegate before the new process constraints.
