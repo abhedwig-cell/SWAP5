@@ -117,3 +117,24 @@ periods remain censored. Actual before/after inputs, kernel source manifests and
 flags are exact; only generated Integral/HeadCalc sources change. The actual
 kernel binaries differ only at PE timestamp/checksum bytes; their original
 separate hashes are retained without normalization or rewriting.
+
+## Independent real production commands
+
+Use the repository root, Python and the qualified GNU Fortran toolchain. These
+commands invoke actual original physical workers, independent trial/day guards,
+complete native cold restoration and original output. Use fresh output roots.
+
+```powershell
+python -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work C:/SWAP5-Ordinary-Reset/provider
+python -B tests/nomacro_scheduled_subsurface/ordinary_reset_runtime.py --reference-work C:/SWAP5-Ordinary-Reset/provider --output C:/SWAP5-Ordinary-Reset/explicit-O2 --mode explicit --hysteresis 0 --format 3 --optimization O2
+python -B tests/nomacro_scheduled_subsurface/ordinary_reset_controls.py --reference-work C:/SWAP5-Ordinary-Reset/provider --profile-root C:/SWAP5-Ordinary-Reset/explicit-O2 --output C:/SWAP5-Ordinary-Reset/controls-O2
+python -B tests/nomacro_scheduled_subsurface/ordinary_reset_epoch.py --reference-work C:/SWAP5-Ordinary-Reset/provider --output C:/SWAP5-Ordinary-Reset/epochs-O2 --optimization O2
+python -B tests/nomacro_scheduled_subsurface/ordinary_reset_year_controls.py --reference-work C:/SWAP5-Ordinary-Reset/provider --epoch-root C:/SWAP5-Ordinary-Reset/epochs-O2 --output C:/SWAP5-Ordinary-Reset/year-refusals-O2
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project C:/SWAP5-Ordinary-Reset/explicit-O2/input --original-output --reference-work C:/SWAP5-Ordinary-Reset/provider --build-bundle C:/SWAP5-Ordinary-Reset/explicit-O2/build --days 35 --checkpoint-at 30 --output C:/SWAP5-Ordinary-Reset/public-warm
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project C:/SWAP5-Ordinary-Reset/explicit-O2/input --original-output --reference-work C:/SWAP5-Ordinary-Reset/provider --build-bundle C:/SWAP5-Ordinary-Reset/explicit-O2/build --days 34 --checkpoint-at 34 --restart C:/SWAP5-Ordinary-Reset/public-warm/accepted-column-1-day-30.zip --restart-day 30 --output C:/SWAP5-Ordinary-Reset/public-cold
+```
+
+On another platform replace drive paths and build that platform's actual source
+provider, bundle and native checkpoints. Do not rebind an earlier failed bundle.
+Original date gates and pending pointers remain unchanged; a uniform per-step
+record cadence is not asserted.
