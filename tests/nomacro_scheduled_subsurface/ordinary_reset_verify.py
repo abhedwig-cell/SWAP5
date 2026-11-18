@@ -144,7 +144,7 @@ def native(raw,row,n,hys,selected,epoch='2002-01-01'):
     require(raw[:8]==CODECS[int(hys>0)].encode(),'actual ordinary codec differs');c,header,nreal=calendar(raw,n)
     if hys:
         domain=struct.pack('<5i',1,n,0,hys,0);require(raw.count(domain+domain)==1 and raw[c-40:c]==domain+domain,'actual original hysteresis domain differs')
-    require(header[:2]==(1,n) and header[4:7]==(1,1,row['day']) and header[11]==1 and all(flag in (0,1) for flag in header[12:20]),'actual original ordinary calendar policy/day differs')
+    require(header[:2]==(1,n) and header[4:7]==(1,1,row['day']) and header[11]==1 and all(1<=v<=nreal for v in header[9:11]) and all(flag in (0,1) for flag in header[12:20]),'actual original ordinary calendar policy/day differs')
     original=struct.unpack_from('<'+str(nreal)+'d',raw,c+160);witness=struct.unpack_from('<'+str(nreal)+'d',raw,c+160+8*nreal)
     require(original==witness and all(map(math.isfinite,original)) and original[-1]>=0,'actual ordinary calendar values/witness differ')
     completed=date.fromisoformat(epoch)+timedelta(days=row['day']-1);expected=min(row['day'],completed.timetuple().tm_yday) if row['day'] else 0
