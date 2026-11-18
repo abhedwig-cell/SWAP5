@@ -7,7 +7,7 @@ from daily_coupling import validate_bundle
 from check_hupsel51_repair import bounded,physical,rows
 out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);ref=a.qualification/'provider';old=a.qualification/'saltfarm-O2-candidate-build';parent=a.qualification/'saltfarm-O2-candidate-full';meta,case=validate_bundle(old,ref,h.SALTFARM);build=out/'build';shutil.copytree(old,build)
 (build/'newton_counts.f90').write_text('module newton_counts\nimplicit none\ninteger(8)::counts(8)=0,bins(5)=0\nreal(8)::ratio\nend module\n')
-src=(old/'headcalc.f90').read_text(encoding='cp1252');src=src.replace('subroutine headcalc\n','subroutine headcalc\nuse newton_counts\n',1)
+src=(old/'headcalc.f90').read_text(encoding='cp1252');src=src.replace('\nsubroutine headcalc\n','\nsubroutine headcalc\nuse newton_counts\n',1)
 anchor='   mass_polish_at = 0';assert src.count(anchor)==1;src=src.replace(anchor,'   counts(1)=counts(1)+1\n'+anchor)
 anchor='      if (flnonconv) hybrid_physical_iterations=0';assert src.count(anchor)==1
 src=src.replace(anchor,'      counts(8)=counts(8)+1\n      if(flnonconv)then\n       counts(2)=counts(2)+1\n       if(mass_polish_at>0)counts(6)=counts(6)+1\n      endif\n'+anchor)
