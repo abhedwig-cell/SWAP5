@@ -1,5 +1,7 @@
 # SWAP5 Status-A current architecture
 
+The [Snow FLPRINTDT adapter](../science/NOMACRO_THERMAL_STEP_20261118.md) selects explicit NPRINTDAY1/SWRES0 water Snow output and codec S5SPW001. It retains the literal80byte thermal, paired32byte Snow header,56byte totals and original complete calendar. Actual original date gates and pending dates remain unchanged; the independent soil/pond and global1e-10cm guards remain strict. Nonselected routes delegate to the frozen predecessor. Source-qualified; canonical admission pending.
+
 The [SaltFarm Newton policy](../science/SALTFARM_NEWTON_WORK01.md) separates
 conditional numerical polishing from physical processes. Its named policy
 participates in build/checkpoint identity; foreign-policy recovery is refused.

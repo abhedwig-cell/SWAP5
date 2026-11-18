@@ -1,6 +1,6 @@
 # Original Snow FLPRINTDT output clock
 
-**Implemented / Windows scoped model-native gates pass / not qualified or admitted.** Actual
+**Qualified bounded Windows/Ubuntu source / canonical admission pending.** Actual
 canonical aad3388b6 after source PR1740 and metadata PR1741 has exact ordered
 parents/full qualified trees and both clean detached registered owners pass.
 The preceding current composition preserves the canonical SaltFarm policy and
@@ -111,3 +111,9 @@ Use fresh output directories. On another platform replace the drive paths and
 create that platform's own exact source/provider build and checkpoints. Original
 FLPRINTDT does not imply a uniform record count; preserve its actual date gates
 and initialization/continuation records.
+
+## Actual qualification
+
+[Original Snow FLPRINTDT output](NOMACRO_THERMAL_STEP_20261118.md) passes16full1096day Windows/Ubuntu periods,256complete cold windows and67prior source/native contexts. Its actual original date gates and pending dates are preserved; FLPRINTDT does not imply uniform output at every accepted step. All976native refusals,400policy refusals,16copied-provider refusals, public/reader/transaction gates and1926proof corruptions pass. The four current SaltFarm1461day/20cold comparisons remain exact. Source qualification is complete; canonical admission remains pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
+Seven immutable raw records contain424098595bytes. Registered independent owner recomputes actual native/physical/user records and receipts; four proof tests pass in14.354seconds. The selected main44355658289 and preservation44356207574 both conclude SUCCESS. Canonical source and metadata mergeresults remain to be checked.

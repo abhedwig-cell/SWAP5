@@ -1,5 +1,9 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Original Snow FLPRINTDT output](../science/NOMACRO_THERMAL_STEP_20261118.md) passes16full1096day Windows/Ubuntu periods,256complete cold windows and67prior source/native contexts. Its actual original date gates and pending dates are preserved; FLPRINTDT does not imply uniform output at every accepted step. All976native refusals,400policy refusals,16copied-provider refusals, public/reader/transaction gates and1926proof corruptions pass. The four current SaltFarm1461day/20cold comparisons remain exact. Source qualification is complete; canonical admission remains pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
+`integration/f-ci/nomacro-complete01/THERMAL_STEP_QUALIFICATION.json` binds runtimebd6c586171 to seven immutable raw records/424098595bytes, actual Ubuntu44355658289/44356207574 and literal predecessor images. Original reader3day fixture failure and35day acceptance remain separate observations. Real dirty/committed source misclassification f9e6e5e833 is refused.
+
 [SaltFarm Newton qualification](../science/SALTFARM_NEWTON_WORK01.md) binds
 production355559313 and canonical parentf2fc11124 to the actual Windows
 records and byte-exact Ubuntu artifact44328844150/14438556664 in
