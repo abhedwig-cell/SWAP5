@@ -2,7 +2,7 @@
 import argparse
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path,PurePosixPath
 import subprocess
 import sys
 import zipfile
@@ -19,17 +19,22 @@ def main():
     parser=argparse.ArgumentParser()
     for key in ('reference-work','prior-root','evidence-root','output'):parser.add_argument('--'+key,type=Path,required=True)
     parser.add_argument('--optimization',choices=('O0','O2'),required=True)
+    parser.add_argument('--platform',choices=('Windows','Ubuntu'),default='Windows')
     args=parser.parse_args();args.output.mkdir();old=json.loads((args.prior_root/'RESULT.json').read_text())
     authority=ROOT/'integration/f-ci/nomacro-complete01/GROUNDWATER_CHEMICAL_QUALIFICATION.json';qualified=json.loads(authority.read_text(encoding='utf8'))
-    members={path:value for name,record in qualified['archives'].items() if name==f'GROUNDWATER_CHEMICAL_WINDOWS_{args.optimization}_RAW_ARCHIVE.json' for path,value in record['members'].items()}
+    members={path:value for name,record in qualified['archives'].items() if name==f'GROUNDWATER_CHEMICAL_{args.platform.upper()}_{args.optimization}_RAW_ARCHIVE.json' for path,value in record['members'].items()}
     def check_source(path):
-        name=path.relative_to(args.evidence_root).as_posix();assert hashlib.sha256(path.read_bytes()).hexdigest()==members[name],name
+        name=path.relative_to(args.evidence_root if args.platform=='Windows' else args.prior_root).as_posix();assert hashlib.sha256(path.read_bytes()).hexdigest()==members[name],name
+    def actual(path):
+        if args.platform=='Windows':return Path(path)
+        base=PurePosixPath(old['cases']['within-csv3']['short_root']).parent
+        return args.prior_root/PurePosixPath(path).relative_to(base)
     record=dict(status='RUNNING',optimization=args.optimization,authority_sha256=m.sha(authority),profiles={})
     def save():(args.output/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
     save()
     try:
         for key,(kind,fmt,extra) in CASES.items():
-            item=old['cases'][key];oldbuild=Path(item['build_root']);oldshort=Path(item['short_root']);inputs=Path(item['input_root'])
+            item=old['cases'][key];oldbuild=actual(item['build_root']);oldshort=actual(item['short_root']);inputs=actual(item['input_root'])
             check_source(oldbuild/'BUILD.json');check_source(oldshort/'RESULT.json');check_source(oldshort/'trajectory/daily.jsonl')
             out=args.output/key
             command=[sys.executable,'-B',str(Path(__file__).with_name('groundwater_chemical_runtime.py')),'--reference-work',args.reference_work,
