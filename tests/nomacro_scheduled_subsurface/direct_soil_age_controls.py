@@ -94,8 +94,10 @@ def transactions(build,reference,project,full,out):
 def main():
     ap=argparse.ArgumentParser()
     for key in ('reference-work','profile-root','output'):ap.add_argument('--'+key,type=Path,required=True)
-    a=ap.parse_args();a.output=a.output.resolve();a.output.mkdir();project=m.e.load(a.profile_root/'input',age_direct_soil_source=True);build=a.profile_root/'build';full=a.profile_root/'trajectory'
-    q=dict(status='RUNNING',native=[],transactions=None)
+    a=ap.parse_args();a.output=a.output.resolve();a.output.mkdir();run=json.loads((a.profile_root/'RESULT.json').read_text());inputs=Path(run.get('input_root',str(a.profile_root/'input')));project=m.e.load(inputs,original_output=run.get('original_output',False),age_direct_soil_source=True);build=Path(run.get('build_root',str(a.profile_root/'build')));full=a.profile_root/'trajectory'
+    from age_direct_soil_source import metadata
+    q=dict(status='RUNNING',native=[],transactions=None,build_sha256=m.sha(build/'BUILD.json'),
+           profile_root=str(a.profile_root.resolve()),policy=metadata(project),optimization=run['optimization'])
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
