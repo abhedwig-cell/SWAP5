@@ -1,6 +1,6 @@
 # Original ordinary water FLPRINTDT annual reset
 
-**Contract / implementation next / not qualified or admitted.** Actual canonical
+**Implemented / corrected observer persisted / local O0/O2 short and epoch gates pass; full/preservation/portable/admission pending.** Actual canonical
 caa0505611f12749d9e147a47d38db018d218edb is independently verified after
 source PR1744 and metadata PR1745: exact ordered parents, complete qualified
 trees and clean detached registered owners PASS. Whole closure stays PARTIAL,
@@ -90,3 +90,23 @@ convergence checks and the new independent guard pass. It must not change accept
 state, stock, flux or tolerance. Fresh source-bound O0/O2 builds and actual worker
 runs must establish the result before qualification. Nonselected SWRES0/monthly
 and every other admitted route must delegate before the new process constraints.
+
+## Actual corrected-source local evidence
+
+All six initial35day profiles (hysteresis0/1/2 at O0/O2) and four exact own cold
+workers each pass on fresh corrected source. Both no-hysteresis profiles show574
+actual first-day comparison witnesses: the old stale-bottom residual reaches
+0.5847413878396073cm while the independent Darcy residual remains at most
+4.003686598866177e-11cm. The actual accepted whole-day water residual is at most
+5.902396627011086e-16cm. The first measured candidate reads stored qbot0 versus
+Darcy -2923.706939198083cm/day over0.0002day; the residual difference equals the
+actual flux-phase difference. No original qbot, stock, flux or tolerance is changed.
+
+Each initial actual worker refuses33corrupt native payloads,34foreign policy
+fields and one modified copied provider; external discard/replay/accept/recovered
+day and source-origin preservation pass. Four additional non-January35day periods
+and16own cold workers pass at both optimizations, and16false post-year counters
+are refused. Actual independent public and original reader/descriptor gates pass,
+including four byte-literal prior metadata delegations and foreign-bundle refusal.
+The complete Windows matrix and91prior source/native contexts are running;
+portable, independent raw proof and actual canonical admission remain required.

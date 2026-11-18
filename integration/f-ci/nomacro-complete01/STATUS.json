@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-ordinary-reset01",
-  "last_commit": "caa0505611f12749d9e147a47d38db018d218edb",
-  "status": "IMPLEMENTED_FIRST_O0_O2_MODEL_CENSORED_TRIAL_PHASE_DIAGNOSIS",
+  "last_commit": "3f537bd29f274733a3bcbfad30e9935d38c38522",
+  "status": "CORRECTED_ORIGINAL_DARCY_PHASE_O0_O2_SHORT_EPOCH_NATIVE_PUBLIC_GATES_PASS_FULL_PRESERVATION_RUNNING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Separate ordinary_output_reset.py; retain actual original physical trial receipt and full calendar, optional literal hysteresis domain, typed S5ORW001/S5ORH001.",
-  "recovery_point": "codex/nomacro-ordinary-reset01 basedactualcaa050561; preceding source1744/metadata1745 exact actual trees and detached registered owners PASS.",
+  "recovery_point": "codex/nomacro-ordinary-reset01 basedactualcaa050561; corrected App6c9e8fcd9; actual first180s censors retained; corrected six short profiles, epoch/native/public/reader gates PASS; full/preservation and portable next.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Correct selected private observer to actual independent original Darcy/soil-air evaluation before original Fluxes, preserving old clone and all tolerances. Fix selection partition to delegate SWRES0/monthly before new constraints, then fresh O0/O2 source-bound pilots.",
+  "next_action": "Poll existing ordinary-reset-windows-O0/O2-v1 and preservation jobs; prepare selected portable actual model and91prior contexts. Then raw actual independent source/native/ledger/user qualification; no rerun of completed pilots.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -468,7 +468,12 @@
   "qualified_age_calendar_runtime": "75f4bf12f71286e0021877e9285df43beb6be01d",
   "qualified_age_calendar_ubuntu": "9321cc995ceaa327cab10b5ad0044fbb47fb0152",
   "age_calendar_sealed_proof": "accd67320a4a85db298f5aff55f1e0e87b2d782f",
-  "active_local_jobs": [],
+  "active_local_jobs": [
+    "ordinary-reset-windows-O0-v1",
+    "ordinary-reset-windows-O2-v1",
+    "ordinary-reset-preserve-O0-v1",
+    "ordinary-reset-preserve-O2-v1"
+  ],
   "schedule_known_next_dependencies": [
     "Original subdaily output-clock ownership after cold physical TSTART",
     "Monthly inactive-selector omission combinations: old generic preflight can still demand PERIOD when SWODAT0 remains present; current admitted-bound candidate uses full original decks",
@@ -1867,7 +1872,7 @@
     "metadata_docs": "Source checks PASS; strict MkDocs PASS42.48seconds external metadata site."
   },
   "ordinary_reset": {
-    "status": "IMPLEMENTED_FIRST_O0_O2_MODEL_CENSORED_TRIAL_PHASE_DIAGNOSIS",
+    "status": "CORRECTED_ORIGINAL_DARCY_PHASE_O0_O2_SHORT_EPOCH_NATIVE_PUBLIC_GATES_PASS_FULL_PRESERVATION_RUNNING",
     "baseline": "caa0505611f12749d9e147a47d38db018d218edb",
     "reader_observation": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-baseline-original-reader-v2",
     "retained_fixture_failure": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-baseline-original-reader-v1\\OBSERVATION.json",
@@ -1890,6 +1895,96 @@
         "error": "TimeoutError: model wall cap; actual workers killed and reaped by owning bounded helper."
       }
     },
-    "next": "Correct selected private observer to actual independent original Darcy/soil-air evaluation before original Fluxes, preserving old clone and all tolerances. Fix selection partition to delegate SWRES0/monthly before new constraints, then fresh O0/O2 source-bound pilots."
+    "next": "Correct selected private observer to actual independent original Darcy/soil-air evaluation before original Fluxes, preserving old clone and all tolerances. Fix selection partition to delegate SWRES0/monthly before new constraints, then fresh O0/O2 source-bound pilots.",
+    "corrected_production": "6c9e8fcd9",
+    "source_dependency": "Unchanged original BoundBottom/HeadCalc/Fluxes/Integral/Watstor; selected private clone now observes actual independent Darcy before original Fluxes; old private clone remains literal diagnostic.",
+    "pilots": {
+      "O0": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-explicit-O0-v2",
+        "status": "ACTUAL_ORDINARY_WATER_FLPRINTDT_RESET_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "days": 35,
+        "cold": 4,
+        "budgets": {
+          "days": 35,
+          "max_water_cm": 5.902396627011086e-16,
+          "max_kernel_cm": 8.881784197001252e-16,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 1.2394006312791209e-15
+        },
+        "native_refusals": 33,
+        "policy_refusals": 34,
+        "actual_provider_refusal": {
+          "status": "REFUSED",
+          "provider": "mod_original_output_receipt.f90",
+          "error": "Generated donor differs: mod_original_output_receipt.f90",
+          "actual_original_metadata_unchanged": true
+        },
+        "actual_trial_count": 574,
+        "old_stale_max_cm": 0.5847413878396073,
+        "new_independent_max_cm": 4.003686598866177e-11
+      },
+      "O2": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-explicit-O2-v2",
+        "status": "ACTUAL_ORDINARY_WATER_FLPRINTDT_RESET_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "days": 35,
+        "cold": 4,
+        "budgets": {
+          "days": 35,
+          "max_water_cm": 5.902396627011086e-16,
+          "max_kernel_cm": 8.881784197001252e-16,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": 1.2394006312791209e-15
+        },
+        "native_refusals": 33,
+        "policy_refusals": 34,
+        "actual_provider_refusal": {
+          "status": "REFUSED",
+          "provider": "mod_original_output_receipt.f90",
+          "error": "Generated donor differs: mod_original_output_receipt.f90",
+          "actual_original_metadata_unchanged": true
+        },
+        "actual_trial_count": 574,
+        "old_stale_max_cm": 0.5847413878396073,
+        "new_independent_max_cm": 4.003686598866177e-11
+      }
+    },
+    "epochs": {
+      "O0": {
+        "status": "TWO_NONJANUARY_ORDINARY_EPOCHS_YEAR_RESET_NATIVE_COLD_PASS",
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-epoch-O0-v1",
+        "periods": 2,
+        "days": 70,
+        "cold": 8
+      },
+      "O2": {
+        "status": "TWO_NONJANUARY_ORDINARY_EPOCHS_YEAR_RESET_NATIVE_COLD_PASS",
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-epoch-O2-v1",
+        "periods": 2,
+        "days": 70,
+        "cold": 8
+      }
+    },
+    "counter_controls": {
+      "O0": {
+        "status": "EIGHT_ACTUAL_ORDINARY_POST_YEAR_NATIVE_COUNTER_FORGERIES_REFUSED",
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-year-controls-O0-v1",
+        "refusals": 8
+      },
+      "O2": {
+        "status": "EIGHT_ACTUAL_ORDINARY_POST_YEAR_NATIVE_COUNTER_FORGERIES_REFUSED",
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\ordinary-reset-year-controls-O2-v1",
+        "refusals": 8
+      }
+    },
+    "public": "THREE_PUBLIC_ORDINARY_WATER_FLPRINTDT_RESET_SELF_CONTAINED_RESTART_CONTEXTS_PASS",
+    "reader": "SEVEN_ORDINARY_READER_TWELVE_DESCRIPTOR_FOUR_LITERAL_DELEGATIONS_PASS",
+    "retained_controller_import_failure": "ordinary-reset-controls-explicit-O0/O2-v1.log: missing app path import before main, no model executed; corrected driver order, actual v2 logs and v1 output roots PASS.",
+    "expected_preservation": {
+      "Windows": 58,
+      "Ubuntu": 33,
+      "total": 91,
+      "current_saltfarm_full": 4,
+      "current_saltfarm_cold": 20
+    }
   }
 }
