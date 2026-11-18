@@ -1,5 +1,5 @@
 """Actual original calendar numeric-reader and bounded Snow descriptor refusals."""
-import argparse,contextlib,json,shutil
+import argparse,contextlib,json,re,shutil
 from pathlib import Path
 import thermal_calendar_runtime as runtime
 from thermal_output_calendar import metadata
@@ -34,7 +34,7 @@ def main():
             ('SWSOPHY',1),('SWMETDETAIL',1),('SWDRA',0),('SWHEA',0),('SWCALT',1),('SWBOTB',6)]:
             bad=a.output/('descriptor-'+key+'-'+str(value));shutil.copytree(inputs,bad);path=bad/'swap.swp'
             if key=='FLPRINTDT':
-                text=path.read_text(encoding='cp1252');text=assignment(text,key,value) if 'FLPRINTDT' in text else text+'\nFLPRINTDT = '+value+'\n'
+                text=path.read_text(encoding='cp1252');text=assignment(text,key,value) if re.search(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=',text) else text+'\nFLPRINTDT = '+value+'\n'
             else:text=assignment(path.read_text(encoding='cp1252'),key,value)
             path.write_text(text,encoding='cp1252')
             try:metadata(m.e.load(bad,original_output=True))
