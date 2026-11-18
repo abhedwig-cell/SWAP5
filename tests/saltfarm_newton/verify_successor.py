@@ -4,6 +4,7 @@ import hashlib,importlib.util,io,json,math,subprocess,sys,tarfile,tempfile,zipfi
 
 ROOT=Path(__file__).resolve().parents[2]
 BASE='f2fc11124d98e1238d5996ec2af21cbde24e49d9'
+METADATA_BASE='a264b7166328f5103bfbb6306d663ae206b5a3ab'
 RUNTIME='355559313c8b47f7fd83b88c5c123e84e5b66d03'
 SEALED='0c84f62b39e16ac6184ca39865e337aba8fe261e'
 PROOF='integration/f-ci/saltfarm-newton-work01/'
@@ -27,10 +28,13 @@ def source_guard():
     changed=set(git('diff','--name-only',BASE,RUNTIME,'--','app','src','reference','tools').decode().splitlines())
     require(changed=={'app/hybrid_water/daily_host.py','app/hybrid_water/daily_coupling.py','tools/solute/run_water.py'},'foreign Newton production delta')
     require((ROOT/ENTRY).read_text(encoding='utf8').replace(HOOK,'',1).encode()==blob(BASE,ENTRY).replace(b'\r\n',b'\n'),'literal preceding Snow owner changed')
+    git('merge-base','--is-ancestor',METADATA_BASE,'HEAD')
+    require(not git('diff',BASE,METADATA_BASE,'--','app','src','reference','tools'),'canonical metadata advance changes production')
     current=tree('HEAD','integration')
-    for path,value in tree(BASE,'integration').items():require(current.get(path)==value,'historical evidence rewritten: '+path)
+    for path,value in tree(METADATA_BASE,'integration').items():require(current.get(path)==value,'historical evidence rewritten: '+path)
     allowed={ENTRY,'.github/workflows/saltfarm-newton.yml','docs/science/SALTFARM_NEWTON_WORK01.md',
         'docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
+    allowed.update(git('diff','--name-only',BASE,METADATA_BASE).decode().splitlines())
     delta=git('diff','--name-only',RUNTIME,'HEAD').decode().splitlines()
     require(all(p in allowed or p.startswith((PROOF,'tests/saltfarm_newton/')) for p in delta),'unqualified Newton post-runtime change')
 
