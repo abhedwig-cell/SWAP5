@@ -1,5 +1,20 @@
 # Current functional closure of the original projects
 
+## Bounded original-output successor,18November2026
+
+[Original output control ownership](NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md)
+and `integration/f-ci/nomacro-complete01/ORIGINAL_OUTPUT_QUALIFICATION.json`
+qualify explicit original formats0..3, groups/precision, non-daily water/age
+calendars, bounded per-step age continuation and complete daily CDE output state.
+Two actual original output defects have independent component qualifications.
+Windows/Ubuntu each pass32full1096day trajectories,198full own windows and20
+literal default-preservation contexts, with native/policy/transaction/public and
+omitted-reader controls. PR1721 actual canonical473b295d5 has exact qualified
+parents/tree and a detached registered-owner PASS. The immutable merge receipt
+owns admission. Other process/output combinations and original scientific
+limitations remain open; historical closure is PARTIAL, whole science remains
+NOT_QUALIFIED, and the fixed RC3 named release is unchanged.
+
 ## Standalone user-release successor
 
 The [supported user commands](../getting-started.md) close independent PR1662's

@@ -1,5 +1,16 @@
 # SWAP5 Status-A current architecture
 
+The [original-output owner](../science/NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md)
+adds an explicit default-off project/binding choice, actual Integral receipts
+independent from CSV callbacks and distinct complete native domains for water,
+daily CDE and age. Defined CDE output history is staged until original
+initialization and calendar restoration finish. Separate qualified original
+binary-scratch and vector-catalog corrections affect this explicit route only.
+Physical providers, conservation thresholds and admitted default generated
+closures remain unchanged. Actual canonical473b295d5 and its detached registered
+owner admit the bounded source/state/output contract; unsupported output/process
+combinations remain explicit refusals.
+
 The [fixed RC3 user candidate](../science/RC3_QUALIFICATION.md) packages the
 unchanged baseline6f5e97db9 production architecture. Fresh standalone Windows/
 Ubuntu public day-restart, mass, rollback and instance checks are source-bound;

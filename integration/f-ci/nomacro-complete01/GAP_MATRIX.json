@@ -170,7 +170,7 @@
       "function": "Original input/initialization/output selector domain",
       "classification": "PARTIAL",
       "original_source": "readswap.f90, swap_csv_output.f90",
-      "scope": "registered/general grids and SWINCO1/2/3; SWCSV0 and arbitrary crop/implicit options remain outside generic route",
+      "scope": "Registered/general grids andSWINCO1/2/3; bounded explicit originaloutput0..3/groups/precision/calendar/perstep/daily-CDE state nowadmittedPR1721. Otheroriginalselector/crop/implicit/output-processdomains remainPARTIAL.",
       "authority": "app/hybrid_water/experimental_project.py",
       "authority_present": true
     },
@@ -1251,10 +1251,12 @@
     "admission_authority": "integration/f-ci/nomacro-complete01/AGE_CLOCK_MERGE_RECEIPT.json"
   },
   "bounded_original_output_controls": {
-    "classification": "IMPLEMENTED_NOT_QUALIFIED",
+    "classification": "ADMITTED",
     "qualification_authority": "integration/f-ci/nomacro-complete01/ORIGINAL_OUTPUT_QUALIFICATION.json",
     "runtime": "98b5b0337a87cadbc4861e67056ec87c51237d47",
-    "scope": "Explicitdefault-offoriginaloutput: formats0..3, originalgroups/precision/monthly/explicit/NP2/3/perstepSWRES0; dailyCDEcompleteoutputstate. Windows/Ubuntu32full1096+198fullownwindows/platform,202native+40policyrefusals/platform,20literaldefaultcontexts,publicandreaderPASS. Strictsuccessorownerandcanonicaladmissionpending.",
-    "remaining": "Wholehistoricalselector/processclosurePARTIAL; sparseCDE,perstepreset1,snow/frost/hysteresis/aquiferoutputneedowningstate. Originalwater/profile/NP3format/cadenceandperstepoutputlimitations remain NOT_QUALIFIED. FixedRC3namedreleaseunchanged."
+    "scope": "Explicitdefault-offoriginaloutput: formats0..3, originalgroups/precision/monthly/explicit/NP2/3/perstepSWRES0; dailyCDEcompleteoutputstate. Windows/Ubuntu32full1096+198fullownwindows/platform,202native+40policyrefusals/platform,20literaldefaultcontexts,publicandreaderPASS. Actualregisteredowner250reports/24measuredbuilds andactualdetachedcanonicalPASS60.383seconds.",
+    "remaining": "Wholehistoricalselector/processclosurePARTIAL; sparseCDE,perstepreset1,snow/frost/hysteresis/aquiferoutputneedowningstate. Originalwater/profile/NP3format/cadenceandperstepoutputlimitations remain NOT_QUALIFIED. FixedRC3namedreleaseunchanged.",
+    "canonical_merge": "473b295d5acc27bfd4c0c6f6448f0e67accdf307",
+    "admission_authority": "integration/f-ci/nomacro-complete01/ORIGINAL_OUTPUT_MERGE_RECEIPT.json"
   }
 }
