@@ -37,7 +37,12 @@ def main():
                         if a.resume and stem+'-'+name in q['profiles']:
                             m.validate_bundle(out/'build',a.reference_work,m.e.load(out/'prior/input'));continue
                         out.mkdir(exist_ok=a.resume);prior=out/'prior';selected={}
-                        matches=[n for n in record['members'] if n.endswith('/'+name+'/input/swap.swp')];assert len(matches)==1,(record_name,name,matches)
+                        if a.platform=='Windows':
+                            original=parent['platforms']['Windows']['profiles'][name]['input_path'].replace('\\','/')
+                            anchor=original.split('/swap5-complete01-evidence/',1)[1].rsplit('/input',1)[0]+'/input/swap.swp'
+                            matches=[n for n in record['members'] if n==anchor]
+                        else:matches=[n for n in record['members'] if n.endswith('/'+name+'/input/swap.swp')]
+                        assert len(matches)==1,(record_name,name,matches)
                         prefix=matches[0][:-len('input/swap.swp')]
                         for member,digest in record['members'].items():
                             if not member.startswith(prefix):continue
