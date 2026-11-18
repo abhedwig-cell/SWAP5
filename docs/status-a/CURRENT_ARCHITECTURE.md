@@ -1,5 +1,13 @@
 # SWAP5 Status-A current architecture
 
+The [snow/thermal output owner](../science/NOMACRO_ORIGINAL_OUTPUT_THERMAL_20261118.md)
+uses actual MOD_snow ssnow and the original Integral snow-rain/gross-snow/
+sublimation increments in the literal six-stock/sixteen-flow daily receipt.
+S5ITW001/S5ITC001 add an80byte paired actual domain before the existing calendar
+and CDE output owners. Original snow, heat, hydraulic, frost and physical native
+state remain literal; the unchanged CDE prefix stays48bytes. Dense daily output
+uses its existing admitted day-seed or bounded frost/event-closure policy.
+
 The [aquifer/output owner](../science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md)
 adds a read-only private SWBR selector bridge and real existing aquifer observer.
 S5IOQ001 preserves the48byte CDE prefix and complete seven-field physical native
