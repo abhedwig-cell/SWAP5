@@ -1,6 +1,6 @@
 # Original Snow FLPRINTDT annual reset
 
-**Implemented / persisted / local O0/O2 short and year-epoch gates pass; full/portable/admission pending.** Actual canonical
+**Qualified bounded Windows/Ubuntu source / canonical admission pending.** Actual canonical
 536a178591e8f887963dcf9981521077547aeba0 is independently verified after
 source PR1742 and metadata PR1743: exact ordered parents, complete qualified
 trees and clean detached registered owners PASS. Whole closure stays PARTIAL,
@@ -92,3 +92,9 @@ python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-
 Use fresh outputs. On another platform replace drive paths and build that
 platform's own provider/bundle and checkpoints. Original FLPRINTDT date gates
 and pending pointers remain literal; no uniform output cadence is invented.
+
+## Actual qualified source evidence
+
+[Original Snow FLPRINTDT annual reset](NOMACRO_THERMAL_RESET_20261118.md) passes16full1096day Windows/Ubuntu periods and256complete cold windows. Eight additional35day non-January periods and32own cold windows validate actual year-reset counters; all32forged post-year native counters are refused. All1008native refusals,432policy refusals,16copied-provider refusals, public/reader/transaction gates and2009proof corruptions pass. All79prior source/native contexts remain exact, including four full SaltFarm periods/twenty cold windows. Source qualification is complete; canonical admission remains pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
+Seven raw records retain475926206bytes, including original GitHub artifact bytes and ordered64MiB parts for the large Windows preservation archive. Five independent proof tests pass in21.853seconds. The registered owner recomputes actual ledgers, native counters, complete warm/cold physical/user bytes and forged post-year worker evidence. The real dirty and committed false-global-counter source control is refused before model execution. Canonical source and metadata mergeresults remain required.
