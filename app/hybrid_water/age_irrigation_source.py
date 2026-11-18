@@ -89,8 +89,9 @@ def render_macro(source,project):
     old=base_magic(project).decode();codes=re.findall(r"'(S5[A-Z0-9]{6})'",body)
     if codes!=[old,old]:raise ValueError('Changed native age source preimage')
     body=body.replace("'"+old+"'","'"+magic(project).decode()+"'")
-    anchor='      use MOD_grid, only: numnod,dz'
-    if body.count(anchor)!=1:raise ValueError('Changed actual native hydraulic import')
+    imports=re.findall(r'(?m)^      use MOD_grid, only: numnod(?:,dz)?$',body)
+    if len(imports)!=1:raise ValueError('Changed actual native hydraulic import')
+    anchor=imports[0]
     body=body.replace(anchor,anchor+'\n      use hybrid_age_irrigation_source_domain,only:hybrid_age_irrigation_source_checkpoint',1)
     layout=LAYOUTS[base_magic(project)];anchor='        read(unit,iostat=ios) trailing'
     if body.count(anchor)!=1:raise ValueError('Changed native age source trailing boundary')
