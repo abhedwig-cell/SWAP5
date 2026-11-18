@@ -1084,7 +1084,7 @@
     }
   },
   "cde_interval": {
-    "status": "SELECTED_SOURCE_QUALIFICATION_PASS_CANONICAL_PENDING",
+    "status": "ACTUAL_CANONICAL_SOURCE_ADMISSION_PASS",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scientific_impact": "ActualCDE interval stock/roundoff state, originalnon-dailyglobal/private carry, independent observed dailychemicalflows andcompleteSnow calendar processcoupling.",
     "selected": [
@@ -1185,6 +1185,34 @@
         "conditional_snow_provider": "daily_coupling selects new Snow kind1 validator only for explicit cde_interval_output metadata flag.",
         "unchanged_original_physics": "All old physical helpers/solvers/numerical policies and providers/controllers remain literal; actual prior root and raw inherited. SaltFarm/Grass/Hupsel/age and other old calendar full campaigns not re-executed."
       }
+    },
+    "actual_source_owner": {
+      "status": "ACTUAL_CDE_INTERVAL_CANONICAL_MERGE_VERIFIED",
+      "pr": 1750,
+      "merge": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+      "parents": [
+        "772850032abf4ef5caccfa1cab2ea253e7a21b18",
+        "079303d1e3295a3c2135b971ed9b8f7221f18db9"
+      ],
+      "qualified_head": "079303d1e3295a3c2135b971ed9b8f7221f18db9",
+      "tree": "aaec4eb078e80b0b4b9e6c2090672cc1852d2271",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 180.5936106001027,
+        "head": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+        "stdout": "{\n  \"status\": \"ORIGINAL_CDE_INTERVAL_PRIVATE_STATE_DAILY_MASS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"00658a9456b041a9b8c65517b4a9147ad941691e\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1536,\n  \"actual_policy_refusals\": 1296,\n  \"actual_provider_refusals\": 28,\n  \"actual_preserved_contexts\": 33,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    },
+    "automatic_pr_ci_snapshot": {
+      "head": "079303d1e3295a3c2135b971ed9b8f7221f18db9",
+      "total": 28,
+      "counts": {
+        "('queued', None)": 8,
+        "('in_progress', None)": 20
+      },
+      "role": "Automatic legacy PR checks outside selected scientific qualification. Queued/in-progress is not PASS; exact external cde-interval-source-pr-ci-at-merge.json. No duplicate/cancel requested."
     }
   }
 }

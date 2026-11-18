@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-cde-interval01",
-  "last_commit": "78ebd159d573a7c44021f1f99017e2786397f244",
-  "status": "CDE_INTERVAL_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "last_commit": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+  "status": "CDE_INTERVAL_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "CDE subdaily NPRINTDAY2..1440/FLPRINTDTtrue ordinary and Snow clock composition using actual saved interval state and independent daily receipt. Four original SWCSV1 35-day reader/cadence observations succeed, current public builds refuse; retain first original SWCSV3 crash as unqualified.",
-  "recovery_point": "codex/nomacro-cde-interval01; runtime00658a945, sealc286ebd13; source-bound CDE_INTERVAL_QUALIFICATION.json and actual registered owner PASS; canonical source/metadata next.",
+  "recovery_point": "codex/nomacro-cde-interval01 at actual366c52e91; CDE_INTERVAL_MERGE_RECEIPT.json; metadata admission next, then CDE subdaily/perstep clock implementation.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Integrate CDE interval source and metadata with actual ordered parents/full tree/clean detached registered owner checks. Then implement actual CDE subdaily/per-step calendar gap.",
+  "next_action": "Merge CDE metadata; verify actual ordered parents/full tree and clean detached registered owner. Then create CDE clock successor branch and persist bounded source/state contract before actual implementation.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -655,7 +655,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
+  "canonical_head": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -2409,7 +2409,7 @@
     ]
   },
   "cde_interval": {
-    "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scope": "ActualoriginalCDE Snow0/1 heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather SWBR0/frost0 NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0/period2..366 SWRES0/1 formats0..3. Denseperiod1 andallother/nonCDE paths literal.",
     "original_reader_observations": [
@@ -2939,6 +2939,67 @@
         }
       ],
       "terminal_record": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\CDE_INTERVAL_WRONG_WORKER_TERMINAL_RAW.json"
+    },
+    "actual_source_owner": {
+      "status": "ACTUAL_CDE_INTERVAL_CANONICAL_MERGE_VERIFIED",
+      "pr": 1750,
+      "merge": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+      "parents": [
+        "772850032abf4ef5caccfa1cab2ea253e7a21b18",
+        "079303d1e3295a3c2135b971ed9b8f7221f18db9"
+      ],
+      "qualified_head": "079303d1e3295a3c2135b971ed9b8f7221f18db9",
+      "tree": "aaec4eb078e80b0b4b9e6c2090672cc1852d2271",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 180.5936106001027,
+        "head": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+        "stdout": "{\n  \"status\": \"ORIGINAL_CDE_INTERVAL_PRIVATE_STATE_DAILY_MASS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"00658a9456b041a9b8c65517b4a9147ad941691e\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1536,\n  \"actual_policy_refusals\": 1296,\n  \"actual_provider_refusals\": 28,\n  \"actual_preserved_contexts\": 33,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    },
+    "source_candidate_owner": {
+      "returncode": 0,
+      "seconds": 211.76830409979448,
+      "head": "079303d1e3295a3c2135b971ed9b8f7221f18db9",
+      "tree": "aaec4eb078e80b0b4b9e6c2090672cc1852d2271",
+      "stdout": "{\n  \"status\": \"ORIGINAL_CDE_INTERVAL_PRIVATE_STATE_DAILY_MASS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"00658a9456b041a9b8c65517b4a9147ad941691e\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1536,\n  \"actual_policy_refusals\": 1296,\n  \"actual_provider_refusals\": 28,\n  \"actual_preserved_contexts\": 33,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    },
+    "source_docs": [
+      {
+        "command": [
+          "python",
+          "-B",
+          "tools/docs/check_docs.py"
+        ],
+        "returncode": 0,
+        "seconds": 28.148455100134015
+      },
+      {
+        "command": [
+          "python",
+          "-B",
+          "-m",
+          "mkdocs",
+          "build",
+          "--strict",
+          "--site-dir",
+          "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-source-site"
+        ],
+        "returncode": 0,
+        "seconds": 38.6708955001086
+      }
+    ],
+    "automatic_pr_ci_snapshot": {
+      "head": "079303d1e3295a3c2135b971ed9b8f7221f18db9",
+      "total": 28,
+      "counts": {
+        "('queued', None)": 8,
+        "('in_progress', None)": 20
+      },
+      "role": "Automatic legacy PR checks outside selected scientific qualification. Queued/in-progress is not PASS; exact external cde-interval-source-pr-ci-at-merge.json. No duplicate/cancel requested."
     }
   }
 }
