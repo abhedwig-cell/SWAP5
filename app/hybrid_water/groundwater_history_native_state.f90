@@ -31,8 +31,16 @@ contains
       if(any(water<0d0).or.any(conductivity<0d0).or.any(interfaces<0d0).or.any(capacity<0d0).or.volume<0d0) &
         error stop 'Invalid groundwater history hydraulic carry'
       if(abs(sum(water*dz(1:n))-volume)>1d-10)error stop 'Unbalanced groundwater history hydraulic carry'
-      h(1:n)=heads;theta(1:n)=water;k(1:n+1)=conductivity;kmean(1:n+1)=interfaces
-      dimoca(1:n)=capacity;gwl=level;volact=volume
+      if(swhyst>0)then
+        ! Original hysteresis already restored the authoritative hydraulic
+        ! carry. The appended accessible block is its consistency witness.
+        if(any(heads/=h(1:n)).or.any(water/=theta(1:n)).or.any(conductivity/=k(1:n+1)).or. &
+           any(interfaces/=kmean(1:n+1)).or.any(capacity/=dimoca(1:n)).or.level/=gwl.or.volume/=volact) &
+          error stop 'Inconsistent groundwater history hydraulic witness'
+      else
+        h(1:n)=heads;theta(1:n)=water;k(1:n+1)=conductivity;kmean(1:n+1)=interfaces
+        dimoca(1:n)=capacity;gwl=level;volact=volume
+      end if
     else
       write(unit)expected,expected
       write(unit)h(1:n),theta(1:n),k(1:n+1),kmean(1:n+1),dimoca(1:n),gwl,volact

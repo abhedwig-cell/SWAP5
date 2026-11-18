@@ -23,6 +23,7 @@ def native(build,reference,project,full,out):
     attacks += ['unbalanced-volume','cde-native-nan']
     if project.original_output:attacks += ['calendar-witness','cde-output-witness','prior-output-domain-witness']
     attacks += ['other-history-codec']
+    if selection(project)['hysteresis']:attacks += ['divergent-original-hydraulic-copy','divergent-appended-hydraulic-copy']
     checks=[]
     for attack in attacks:
         target=out/attack;target.mkdir(parents=True);origin=target/'origin'
@@ -37,6 +38,11 @@ def native(build,reference,project,full,out):
             block=struct.pack('<'+str(len(values))+'i',*values)*2
             assert raw[d-len(block):d]==block
             raw[d-len(block)]+=1
+        elif attack.startswith('divergent-'):
+            size=8*(5*project.nodes+4);block=bytes(raw[offset:offset+size]);original=raw.find(block)
+            assert original<offset and raw.count(block)==2
+            pos=original if attack=='divergent-original-hydraulic-copy' else offset
+            old=struct.unpack_from('<d',raw,pos)[0];struct.pack_into('<d',raw,pos,old+1.)
         elif attack=='truncated':raw=raw[:-1]
         elif attack=='trailing':raw+=b'x'
         elif attack=='truncated-carry':raw=raw[:offset+8]
@@ -64,6 +70,7 @@ def native(build,reference,project,full,out):
         except (ValueError,RuntimeError) as error:
             diagnostic='\n'.join(p.read_text(errors='replace') for p in target.rglob('donor.stderr'))
             assert 'ERROR STOP' in diagnostic and not list(target.glob('accepted-*.zip')),(attack,diagnostic,str(error))
+            if attack.startswith('divergent-'):assert 'Inconsistent groundwater history hydraulic witness' in diagnostic
             checks.append(dict(attack=attack,status='REFUSED',diagnostic=diagnostic,error=str(error)))
         else:raise AssertionError('Corrupt prescribed groundwater native accepted: '+attack)
         assert m.sha(source)==digest
