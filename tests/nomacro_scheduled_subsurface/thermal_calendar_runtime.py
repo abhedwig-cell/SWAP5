@@ -19,7 +19,8 @@ m=prior.m;ROOT=prior.ROOT
 def fixture(path,mode,hysteresis,fmt,reset=1,et=0):
     prior.fixture(path,('water-snow','water-hys1','water-hys2')[hysteresis],fmt)
     p=path/'swap.swp';text=p.read_text(encoding='cp1252')
-    for key,value in dict(SWMONTH=int(mode=='monthly'),SWODAT=int(mode=='explicit'),PERIOD=0 if mode in ('monthly','explicit','terminal') else 5,SWRES=reset,SWCFBS=et).items():
+    for key,value in dict(SWMONTH=int(mode=='monthly'),SWODAT=int(mode=='explicit'),PERIOD=0 if mode in ('monthly','explicit','terminal') else 5,SWRES=reset,SWCFBS=et,
+            SWBOTB=8 if hysteresis==2 else 5,SWBBCFILE=0).items():
         text=assignment(text,key,value)
     if et:text=assignment(text,'CFBS',0.8)
     if mode=='explicit':
