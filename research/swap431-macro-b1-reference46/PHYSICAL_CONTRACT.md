@@ -1,0 +1,5 @@
+# Beperkt fysisch oordeel - REFERENCE46
+
+Zie REPORT.md voor bewijs en primaire bron. Voor exact de 90 reeds geselecteerde stappen is een identiek blijvende theoretische eigen-sorptiereferentie niet consistent met de gedocumenteerde theorie en de geaccepteerde positieve sorptiebijdrage. Oorzaak is de in REPAIR43 toegevoegde vermenigvuldiging met nul eindcontact bij de native history-owner. Dit is een referentiegeheugenfout binnen het bestaande discrete mean-rate contract; geen reden om de contactklok stil te zetten of de watervoorraad aan te passen.
+
+Een eventuele volgende implementatie moet een tijdstapconsistente contactweging van de theoretische increment vastleggen, met oorspronkelijke sorptiviteit en behoud van bestaande eventstart/einde en contactleeftijd. De keuze van geometrisch tijdniveau en eventuele voorraadweging is nog geen uniek gekwalificeerde reparatie. De algebraische positieve RATE- en voorraadgewogen schaduwen zijn diagnose, geen formuletoelating. Geen algemene uitspraak over andere nat-/droogovergangen, perched situaties of volledige periode.

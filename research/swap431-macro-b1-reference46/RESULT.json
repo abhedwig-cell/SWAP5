@@ -1,0 +1,80 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-REFERENCE46",
+  "decision": "BOUNDED_THEORETICAL_REFERENCE_END_CONTACT_INCONSISTENCY_CONFIRMED_NO_REPAIR_O0_O2",
+  "source_checkpoint": "1d3386188",
+  "model_routes": 2,
+  "hard_timeout_seconds": 20,
+  "extra_provider_evaluations": 0,
+  "source_physics_exact_parent": true,
+  "O0_O2_non_timing_byte_exact": true,
+  "clock_continuation_remains_justified": true,
+  "shadow_is_not_implemented_or_uniquely_prescribed_replacement": true,
+  "no_physics_reference_clock_solver_budget_change": true,
+  "full_period_new_restart_or_general_admission": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 2.087220299988985,
+      "events": 90,
+      "attempt_range": [
+        36,
+        125
+      ],
+      "parent_numeric_outputs_exact": true,
+      "native_reference_increment": {
+        "min": 0.0,
+        "max": 0.0,
+        "sum": 0.0
+      },
+      "RATE_theoretical_shadow": {
+        "min": 1.644316590749996e-10,
+        "max": 5.977810260870391e-10,
+        "sum": 1.7829320835654965e-08
+      },
+      "stock_limited_shadow": {
+        "min": 5.49654923064791e-11,
+        "max": 5.324285132531121e-10,
+        "sum": 9.400413081582368e-09
+      },
+      "actual_theta_contribution": {
+        "min": 2.131881625804114e-10,
+        "max": 2.0190247071000644e-09,
+        "sum": 3.816507140520828e-08
+      },
+      "reference_value": 0.4440013882531527
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.7329819998703897,
+      "events": 90,
+      "attempt_range": [
+        36,
+        125
+      ],
+      "parent_numeric_outputs_exact": true,
+      "native_reference_increment": {
+        "min": 0.0,
+        "max": 0.0,
+        "sum": 0.0
+      },
+      "RATE_theoretical_shadow": {
+        "min": 1.644316590749996e-10,
+        "max": 5.977810260870391e-10,
+        "sum": 1.7829320835654965e-08
+      },
+      "stock_limited_shadow": {
+        "min": 5.49654923064791e-11,
+        "max": 5.324285132531121e-10,
+        "sum": 9.400413081582368e-09
+      },
+      "actual_theta_contribution": {
+        "min": 2.131881625804114e-10,
+        "max": 2.0190247071000644e-09,
+        "sum": 3.816507140520828e-08
+      },
+      "reference_value": 0.4440013882531527
+    }
+  ]
+}
