@@ -24,7 +24,7 @@ def fixture(path,name):
     control=path/'swap.swp';text=control.read_text(encoding='cp1252')
     if name.startswith('cde-'):text=baseline.assignment(text,'SWSOLU',1)
     if name.startswith('age-csv'):text=baseline.assignment(text,'SWSOLU',2)
-    if name.startswith('cde-solbal-csv'):text=baseline.assignment(text,'INLIST_CSV',"'WATBAL,GWL,SOLBAL,C,Q'")
+    if name.startswith('cde-solbal-csv'):text=baseline.assignment(text,'INLIST_CSV',"'WATBAL,GWL,SOLBAL,S_CONC,Q'")
     if name=='water-nprint3':text=baseline.assignment(text,'NPRINTDAY',3)
     if name=='water-csv0-omitted':
         for key in ('SWCSV','INLIST_CSV','NUM_DECIMALS'):text=re.sub(r'(?mi)^[ \t]*'+key+r'[ \t]*=[^\r\n]*\r?\n','',text)
