@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Current fixed age ownership](../science/NOMACRO_AGE_IRRIGATION_SOURCE_20261118.md)
+and `integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_QUALIFICATION.json`
+bind productiona5cedc906 to seven raw archives,238actual reports/builds and40full
+Windows/Ubuntu periods. The original capture defect has actual reference/module
+proof. The registered owner verifies accepted age ledgers and literal predecessor
+proof on its pinned source image, with2825corruptions and dirty/committed ignored
+source refusals. Qualification is bounded; canonical admission is pending.
+
 [Hysteresis/output ownership](../science/NOMACRO_ORIGINAL_OUTPUT_HYSTERESIS_20261118.md)
 and `integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_QUALIFICATION.json`
 bind production4aaf71629 to seven immutable raw archives,242actual producer

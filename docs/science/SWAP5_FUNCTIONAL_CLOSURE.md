@@ -1,5 +1,16 @@
 # Current functional closure of the original projects
 
+## Qualified current fixed age source,18November2026
+
+[Current irrigation source age](NOMACRO_AGE_IRRIGATION_SOURCE_20261118.md) corrects
+an observed original once-only Ageirr capture through explicit default-off
+`--age-irrigation-source`. Fixed sprinkler/surface IRCONCages0..1000days use
+literal existing age equations and complete native event carry. Windows/Ubuntu
+40full1096day periods and source/native/rollback/reader/public/preservation gates
+pass. Qualification is sealed; canonical admission is pending. Nonzero subsurface
+age and other historical gaps remain open. Functional closure is PARTIAL,
+whole science NOT_QUALIFIED and the fixed RC3 named release is unchanged.
+
 ## Qualified hysteresis/output composition,18November2026
 
 [Original output with hysteresis](NOMACRO_ORIGINAL_OUTPUT_HYSTERESIS_20261118.md)
