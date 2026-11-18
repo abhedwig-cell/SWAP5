@@ -20,14 +20,15 @@ def native(build,reference,project,full,out):
     attacks += ['domain-'+str(i) for i in range(9)]
     attacks += ['nonfinite-'+str(i) for i in (0,project.nodes,2*project.nodes,3*project.nodes+1,4*project.nodes+2,5*project.nodes+2,5*project.nodes+3)]
     attacks += ['negative-'+str(i) for i in (project.nodes,2*project.nodes,3*project.nodes+1,4*project.nodes+2,5*project.nodes+3)]
-    attacks += ['unbalanced-volume','calendar-witness','cde-output-witness','cde-native-nan']
+    attacks += ['unbalanced-volume','cde-native-nan']
+    if project.original_output:attacks += ['calendar-witness','cde-output-witness']
     checks=[]
     for attack in attacks:
         target=out/attack;target.mkdir(parents=True);origin=target/'origin'
         receipt=m.h.verify_checkpoint(source,4,meta['binding'],origin)
         path=origin/'macro.bin';raw=bytearray(path.read_bytes());carry=decode(raw,project);offset=carry['offset'];d=offset-72
-        if attack=='prior-output-codec':raw[:8]=b'S5IOC001'
-        elif attack=='other-groundwater-codec':raw[:8]=b'S5GWC002'
+        if attack=='prior-output-codec':raw[:8]=b'S5IOC001' if project.original_output else b'S5HUP012'
+        elif attack=='other-groundwater-codec':raw[:8]=b'S5GWC002' if project.original_output else b'S5GWC001'
         elif attack=='truncated':raw=raw[:-1]
         elif attack=='trailing':raw+=b'x'
         elif attack=='truncated-carry':raw=raw[:offset+8]
@@ -98,7 +99,9 @@ def main():
     parser=argparse.ArgumentParser()
     for key in ('reference-work','profile-root','output'):parser.add_argument('--'+key,type=Path,required=True)
     args=parser.parse_args();args.output.mkdir()
-    project=m.e.load(args.profile_root/'input',original_output=True);build=args.profile_root/'build';full=args.profile_root/'trajectory'
+    profile=json.loads((args.profile_root/'RESULT.json').read_text())
+    project=m.e.load(Path(profile.get('input_root',args.profile_root/'input')),original_output=profile.get('original_output',True))
+    build=Path(profile.get('build_root',args.profile_root/'build'));full=args.profile_root/'trajectory'
     record=dict(status='RUNNING',build_sha256=m.sha(build/'BUILD.json'))
     def save():(args.output/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
     save()
