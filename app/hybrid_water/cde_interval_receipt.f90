@@ -15,7 +15,8 @@ contains
     real(real64),intent(in) :: stock
     integer,intent(out) :: status
     status=CDE_DAY_INPUT
-    if(.not.ieee_is_finite(stock).or.stock<0d0)return
+    if(.not.ieee_is_finite(stock))return
+    if(stock<0d0)return
     status=CDE_DAY_STATE
     if(active)return
     initial_stock=stock;increments=0.0_real128;observed=0_int64;active=.true.
@@ -45,7 +46,8 @@ contains
     integer,intent(out) :: status
     real(real64) :: candidate(9)
     ledger=0d0;status=CDE_DAY_INPUT
-    if(.not.ieee_is_finite(stock).or.stock<0d0)return
+    if(.not.ieee_is_finite(stock))return
+    if(stock<0d0)return
     status=CDE_DAY_STATE
     if(.not.active)return
     candidate(1)=stock;candidate(2)=stock-initial_stock
