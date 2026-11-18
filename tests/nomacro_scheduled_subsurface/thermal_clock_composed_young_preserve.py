@@ -36,7 +36,7 @@ def main():
             r=subprocess.run(list(map(str,command)),cwd=ROOT,capture_output=True,text=True,timeout=180);(out/'build.stdout').write_text(r.stdout);(out/'build.stderr').write_text(r.stderr);assert r.returncode==0,r.stderr
             meta,_=m.validate_bundle(build,a.reference_work,project);prior=json.loads((old/'BUILD.json').read_text())
             current_project=dict(meta['project'])
-            assert current_project.pop('water_polish_policy')==m.h.ALWAYS_WATER_POLISH
+            assert project.water_polish_policy==m.h.ALWAYS_WATER_POLISH
             assert 'water_polish_policy' not in prior['project'] and 'water_polish_policy' not in prior['identity']
             assert meta['identity']['water_polish_policy']==m.h.ALWAYS_WATER_POLISH
             assert current_project==prior['project'] and meta['inputs']==prior['inputs']

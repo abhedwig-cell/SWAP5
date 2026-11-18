@@ -41,7 +41,7 @@ def main():
             report=json.loads((out/'RESULT.json').read_text());assert report['status']==oldreport['status']
             actual,_=m.validate_bundle(out/'build',args.reference_work,project);previous=json.loads((source/'build/BUILD.json').read_text())
             current_project=dict(actual['project'])
-            assert current_project.pop('water_polish_policy')==m.h.ALWAYS_WATER_POLISH
+            assert project.water_polish_policy==m.h.ALWAYS_WATER_POLISH
             assert 'water_polish_policy' not in previous['project'] and 'water_polish_policy' not in previous['identity']
             assert actual['identity']['water_polish_policy']==m.h.ALWAYS_WATER_POLISH
             assert current_project==previous['project'] and actual['inputs']==previous['inputs']

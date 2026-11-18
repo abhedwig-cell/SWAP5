@@ -38,7 +38,7 @@ def main():
             project=m.e.load(inputs,original_output='--compatibility-output' not in options)
             meta,_=m.validate_bundle(out/'build',a.reference_work,project);previous=json.loads((build/'BUILD.json').read_text())
             current_project=dict(meta['project'])
-            assert current_project.pop('water_polish_policy')==m.h.ALWAYS_WATER_POLISH
+            assert project.water_polish_policy==m.h.ALWAYS_WATER_POLISH
             assert 'water_polish_policy' not in previous['project'] and 'water_polish_policy' not in previous['identity']
             assert meta['identity']['water_polish_policy']==m.h.ALWAYS_WATER_POLISH
             assert current_project==previous['project'] and meta['inputs']==previous['inputs']
