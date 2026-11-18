@@ -48,7 +48,7 @@ def own(build,reference,project,full,data,start,end,out):
 def audit_soil(path,days):
     import math
     values=[]
-    for line in (path/'kernel.stdout').read_text(encoding='utf8').splitlines():
+    for line in (path/'original/donor.stdout').read_text(encoding='utf8').splitlines():
         if not line.startswith('HYBRID_SNOW_SOIL_RECEIPT '):continue
         row=list(map(float,line.split()[1:]));assert len(row)==29 and all(map(math.isfinite,row))
         residual=math.fsum(row[12:19]+[-x for x in row[19:28]]+row[6:12]+[-x for x in row[:6]])

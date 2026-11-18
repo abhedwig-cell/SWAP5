@@ -42,7 +42,7 @@ rebinding or old-helper monkeypatching.
 Retain the unchanged independent soil trial constraint and1e-10cm whole-day
 soil+Snow+pond+canopy coupling ledger. For the additional absolute trial receipt,
 observe a separate soil+pond control volume from the actual original Integral
-net precipitation/net irrigation, runon, subsurface input, bottom exchange,
+net precipitation/net irrigation, actual cmelt snowmelt, runon, subsurface input, bottom exchange,
 runoff, root extraction, evaporation and drainage increments. Exclude Snow and
 canopy inventories from that private soil-clock receipt; their exchanges enter
 through the original net soil forcing. Keep the original whole-day six-stock/

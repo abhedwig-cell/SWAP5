@@ -103,6 +103,8 @@ def soil_trial_source(original,watstor):
     for old,new in [('igrai','inrai'),('igird','inird')]:
         before='('+expression(old)+')';after='('+expression(new)+')';assert source.count(before)==1
         source=source.replace(before,after,1)
+    anchor='terms=[trial%flow_cm(1:7)';assert source.count(anchor)==1
+    source=source.replace(anchor,'trial%flow_cm(3)=trial%flow_cm(3)+('+expression('cmelt')+')\n'+anchor,1)
     anchor='qbotts=qbot*dt';assert source.count(anchor)==1;source=source.replace(anchor,'qbotts=candidate_bottom_cm_d*dt',1)
     anchor='terms=[trial%flow_cm(1:7)';assert source.count(anchor)==1;source=source.replace(anchor,'trial%flow_cm(8)=0d0\n'+anchor,1)
     anchor='-projected_soil,-pond,0d0,-projected_canopy,0d0,0d0';assert source.count(anchor)==1;source=source.replace(anchor,'-projected_soil,-pond,0d0,0d0,0d0,0d0',1)
@@ -122,7 +124,7 @@ def render_integral(original,watstor,selected):
         found.append(int(slot))
         return match[0]+'\n'+indent+f'call observe_output_increment(hybrid_soil_output_frame,{slot},{expr},hybrid_receipt_status)\n'+indent+"if(hybrid_receipt_status/=OUTPUT_RECEIPT_OK)error stop 'Original Snow soil increment rejected'"
     source=re.sub(pattern,duplicate,source);assert sorted(found)==sorted(slots),found
-    for name,slot in [('inrai',1),('inird',4)]:
+    for name,slot in [('inrai',1),('inird',4),('cmelt',3)]:
         pattern=r'(?mi)^([ \t]*)'+name+r'\s*=\s*'+name+r'\s*\+\s*([^!\n]+)[ \t]*$'
         def net(match):
             indent,expr=match.groups()
