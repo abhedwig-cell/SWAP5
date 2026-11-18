@@ -83,7 +83,7 @@ def predecessor():
         subprocess.run(['git','init','--quiet',str(snapshot)],check=True,capture_output=True)
         common=Path(git('rev-parse','--git-common-dir').decode().strip())
         if not common.is_absolute():common=ROOT/common
-        (snapshot/'.git/objects/info/alternates').write_text((common/'objects').resolve().as_posix()+'\n',encoding='utf8')
+        (snapshot/'.git/objects/info/alternates').write_bytes(((common/'objects').resolve().as_posix()+'\n').encode('utf8'))
         script="import importlib.util,json,pathlib;r=pathlib.Path.cwd();s=importlib.util.spec_from_file_location('literal_groundwater',r/"+repr(ENTRY)+");m=importlib.util.module_from_spec(s);s.loader.exec_module(m);m.validate(json.loads((r/"+repr(PROOF+'GROUNDWATER_CHEMICAL_QUALIFICATION.json')+").read_text()));print('LITERAL_GROUNDWATER_BASELINE_PASS')"
         result=subprocess.run([sys.executable,'-B','-c',script],cwd=snapshot,capture_output=True,text=True)
         require(result.returncode==0 and 'LITERAL_GROUNDWATER_BASELINE_PASS' in result.stdout,'literal qualified groundwater predecessor invalid: '+result.stderr)
