@@ -24,7 +24,10 @@ def fixture(path,name):
     control=path/'swap.swp';text=control.read_text(encoding='cp1252')
     if name.startswith('cde-'):text=baseline.assignment(text,'SWSOLU',1)
     if name.startswith('age-csv'):text=baseline.assignment(text,'SWSOLU',2)
-    if name.startswith('cde-solbal-csv'):text=baseline.assignment(text,'INLIST_CSV',"'WATBAL,GWL,SOLBAL,S_CONC,Q'")
+    if name.startswith('cde-solbal-csv'):
+        text=baseline.assignment(text,'INLIST_CSV',"'WATBAL,GWL,SOLBAL,S_CONC,Q'")
+        text=baseline.assignment(text,'SWIRFIX',1)
+        text,count=re.subn(r'(?mi)^([ \t]*CMLTB[ \t]*=[ \t]*\n).*?^\* End of table',lambda match:match[1]+' -10.0 0.1\n -95.0 0.1\n* End of table',text,count=1,flags=re.S);assert count==1
     if name=='water-nprint3':text=baseline.assignment(text,'NPRINTDAY',3)
     if name=='water-csv0-omitted':
         for key in ('SWCSV','INLIST_CSV','NUM_DECIMALS'):text=re.sub(r'(?mi)^[ \t]*'+key+r'[ \t]*=[^\r\n]*\r?\n','',text)
