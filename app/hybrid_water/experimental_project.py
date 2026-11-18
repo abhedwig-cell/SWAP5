@@ -184,10 +184,10 @@ def inspect(directory, *, original_output=None):
         if boundary['SWBOTB']!=expected_bottom or selected['SWTOPBHEA']!=2:
             raise ValueError('Bounded frost qualification requires prescribed surface temperature and free bottom7 or drained bottom6')
     if selected['SWSOLU'] and boundary['SWBOTB']==1:
-        if (selected['SWSOLU']!=1 or selected['SWSOPHY']!=0 or selected['SWHYST']!=0
-                or selected['SWSNOW']!=0 or selected['SWFROST']!=0 or selected['SWBR']!=0
+        if (selected['SWSOLU']!=1 or selected['SWSOPHY']!=0
+                or selected['SWFROST']!=0 or selected['SWBR']!=0
                 or selected['SWMETDETAIL']!=0):
-            raise ValueError('Prescribed groundwater CDE trial receipt requires ordinary analytical daily no-snow/no-frost/no-aquifer hydraulic history0')
+            raise ValueError('Prescribed groundwater CDE trial receipt requires analytical daily no-frost/no-aquifer process history')
     for name, value in boundary.items():
         if value not in allowed.get(name, set()):
             raise ValueError('Unsupported boundary selector: '+name)
@@ -314,7 +314,7 @@ def validate(project):
 
 
 def auxiliary_magic(project):
-    from groundwater_native import enabled as groundwater_native,magic as groundwater_magic
+    from groundwater_history_native import enabled as groundwater_native,magic as groundwater_magic
     if groundwater_native(project):return groundwater_magic(project)
     from original_output_thermal import selection as thermal_output,magic as thermal_output_magic
     if thermal_output(project) is not None:return thermal_output_magic(project)
