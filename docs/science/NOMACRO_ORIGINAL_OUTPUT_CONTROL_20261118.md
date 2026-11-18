@@ -96,3 +96,18 @@ subdaily and per-step paths use the existing cloned original daily receipt
 acceptance condition alongside the unchanged hydraulic guard. Binary scratch
 correction may be used only in this unqualified explicit prototype. No current
 release or canonical admission is implied by this implementation checkpoint.
+
+The broader vector selection exposed an additional original GNU-build defect:
+all58 public vars_v catalog names/units are NUL at startup despite the original
+DATA declaration. Both C (capacity) and S_CONC (solute concentration) are declared
+vector names; their refusal was initially misdiagnosed as fixture vocabulary.
+That diagnosis is withdrawn. Actual freshly compiled original O0/O2 executions
+refuse vector output. NOMACRO-VECTOR-OUTPUT-01 mechanically extracts all58
+original catalog records and five attributes from the exact source DATA table
+and assigns them explicitly before actual csv_out initialization. No vector
+values or physical laws are reimplemented. The actual original component proves
+all290 catalog attributes exact, scalar ASCII output unchanged, and five vector
+records exact to actual full-precision output values in ASCII and REAL4 binary,
+including nonzero concentrations. The separate binary scratch correction composes
+with it. This correction is activated only in the unqualified explicit prototype;
+admitted default compatibility sources remain literal.

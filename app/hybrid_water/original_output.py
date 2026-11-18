@@ -43,10 +43,13 @@ def selection(project):
                 groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision)
 
 
-def binary_patch():
-    path=ROOT/'reference/swap-4.3.1/patches/NOMACRO-BINARY-OUTPUT-01/source.py'
-    spec=importlib.util.spec_from_file_location('original_binary_output_correction',path)
+def output_patch(kind):
+    path=ROOT/('reference/swap-4.3.1/patches/NOMACRO-'+kind.upper()+'-OUTPUT-01/source.py')
+    spec=importlib.util.spec_from_file_location('original_'+kind+'_output_correction',path)
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
+
+
+def binary_patch():return output_patch('binary')
 
 
 def metadata(project):
@@ -59,6 +62,7 @@ def metadata(project):
                 original_integral_sha256=regular.INTEGRAL_SHA,
                 original_output_epoch=project.start_clock,
                 cde_output_state_sha256=sha(Path(__file__).with_name('original_cde_output_state.f90')) if project.solute else None,
+                vector_catalog_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-VECTOR-OUTPUT-01/source.py') if selected['swcsv'] else None,
                 binary_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-BINARY-OUTPUT-01/source.py') if selected['swcsv']==3 else None,
                 preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False)
 
@@ -195,6 +199,12 @@ def apply_build(output,donor_build,project,patched):
         original=(donor_build/'swap-selected/swap_csv_output.f90').read_bytes().replace(b'\r\n',b'\n')
         assert corrected==original.replace(anchor,b'      else if (swcsv == 3) then ! binary\n         allocate(buffer(parlen-1))\n         ! datetime',1)
         path.write_bytes(normalized.replace(anchor,b'      else if (swcsv == 3) then ! binary\n         allocate(buffer(parlen-1))\n         ! datetime',1))
+    if selected['swcsv']:
+        path=output/'swap_csv_output.f90';text=path.read_text(encoding='cp1252')
+        for old,new in output_patch('vector').edits((donor_build/'swap-selected/swap_csv_output.f90').read_bytes()):
+            assert text.count(old)==1,old
+            text=text.replace(old,new,1)
+        path.write_text(text,encoding='cp1252')
     patched=[regular.PROVIDER,'hybrid_age_output_state',*extra,'integral',*patched]
     patched.insert(patched.index('swap'),'age_output_calendar_probe')
     return patched

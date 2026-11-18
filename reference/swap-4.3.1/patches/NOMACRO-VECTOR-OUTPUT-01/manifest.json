@@ -1,9 +1,11 @@
 {
   "audit_id": "NOMACRO-VECTOR-OUTPUT-01",
-  "status": "OBSERVED_GNU_VECTOR_DATA_INITIALIZATION_FAILURE_CORRECTION_COMPONENT_SELECTED_NOT_ACTIVE",
+  "status": "BOUNDED_ORIGINAL_GNU_VECTOR_CATALOG_AND_SERIALIZATION_COMPONENT_QUALIFIED_NOT_CANONICALLY_ACTIVE",
   "original_canonical_sha256": "a1b1b261ec05153d2075099c04cc6bb656f657344d4c1ceb5c9e43d0fd225355",
   "scope": "Actual original GNU-built vars_v names/units are NUL at startup despite DATA declarations. Explicitly assign all58 catalog records and five attributes mechanically extracted from the SHA-pinned original DATA table before csv_out initialization. No vector values, physical equations, numerical guards or native state changed.",
   "SWAP5_activation": false,
   "scientific_equivalence": "NOT_QUALIFIED",
-  "qualification": "Actual original O0/O2 component and unchanged scalar CSV plus vector source-RHS checks required before activation."
+  "qualification": "ORIGINAL_VECTOR_CATALOG_O0_O2_EXACT_TABLE_SCALAR_PRESERVATION_AND_VECTOR_SERIALIZATION_PASS_NOT_ACTIVE",
+  "corrected_canonical_sha256": "c958b0fb873180e9b32060b7223f87f1aeb55526e455a08beed3124036731ff8",
+  "evidence": "integration/f-ci/nomacro-complete01/ORIGINAL_VECTOR_OUTPUT_COMPONENT.json"
 }
