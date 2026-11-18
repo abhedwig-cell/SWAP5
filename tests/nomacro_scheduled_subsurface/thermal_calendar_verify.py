@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[2]
 PROOF='integration/f-ci/nomacro-complete01/'
 BASE='8c09e206d854fec51b2c1b94b3c9b52921e6216b'
 RUNTIME='02f1bc2c1e53e5035279ab6825e702cbf7d0ceb6'
-SEALED='PENDING_THERMAL_CALENDAR_SEAL'
+SEALED='28f0000d367c6e485229031d99f0d131c8ce5862'
 ENTRY='tests/nomacro_scheduled_subsurface/groundwater_history_verify.py'
 SELF='tests/nomacro_scheduled_subsurface/thermal_calendar_verify.py'
 TEST='tests/nomacro_scheduled_subsurface/test_thermal_calendar_verify.py'
@@ -161,7 +161,7 @@ def verify():
     require(len(CASES)==8 and sum(case[-1] for case in CASES.values())==4 and len(CONTROLS)==4,'actual Snow calendar cohort changed')
     physical=lambda rows:[{k:v for k,v in row.items() if k not in ('column','revision')} for row in rows]
     def rows(z,prefix):return [json.loads(line) for line in z.read(prefix+'daily.jsonl').splitlines()]
-    main_data={}
+    main_data={};compiled_builds=set()
     with tempfile.TemporaryDirectory(prefix='s5-snow-user-records-') as directory:
         cache={};temporary=Path(directory)
         def user(z,path):
@@ -187,7 +187,7 @@ def verify():
                     return str(PurePosixPath(original).relative_to(base))+'/'
                 short_data={}
                 for key,case in CASES.items():
-                    item=run['cases'][key];bp=path(item['build_root']);raw=z.read(bp+'BUILD.json');build=json.loads(raw);bd=digest(raw);reports+=1
+                    item=run['cases'][key];bp=path(item['build_root']);raw=z.read(bp+'BUILD.json');build=json.loads(raw);bd=digest(raw);reports+=1;compiled_builds.add(bd)
                     require(digest(z.read(bp+'thermal_output_snow_calendar_state.f90').replace(b'\r\n',b'\n'))==q['source_sha256']['app/hybrid_water/thermal_output_snow_calendar_state.f90'],'actual compiled Snow state provider differs')
                     selected=build['identity']['original_output']
                     require(selected['source_sha256']==q['source_sha256']['app/hybrid_water/thermal_output_calendar.py']
@@ -242,7 +242,8 @@ def verify():
             z=archives[location['archive']];public=read(z,location['public']+'/RESULT.json');reader=read(z,location['reader']+'/RESULT.json')
             require(public['status']=='THREE_PUBLIC_WATER_SNOW_CALENDAR_SELF_CONTAINED_RESTART_CONTEXTS_PASS' and len(public['profiles'])==3,'actual independent Snow public gate missing')
             require(reader['status']=='SEVEN_ORIGINAL_CALENDAR_READER_TWELVE_SNOW_DESCRIPTOR_REFUSALS_PASS' and len(reader['reader_refusals'])==7 and len(reader['descriptor_refusals'])==12
-                and all(r['status']=='REFUSED_BEFORE_HYBRID_READY' for r in reader['reader_refusals']) and all(r['status']=='REFUSED' for r in reader['descriptor_refusals']),'actual original Snow reader/domain gate missing')
+                and reader['build_sha256'] in compiled_builds and all(r['status']=='REFUSED_BEFORE_HYBRID_READY' for r in reader['reader_refusals'])
+                and all(r['status']=='REFUSED' for r in reader['descriptor_refusals']),'actual original Snow reader/domain gate missing')
             for name,item in public['profiles'].items():
                 require(item['physical_exact'] is item['complete_native_exact'] is item['origin_unchanged'] is True
                     and all(v['exact'] is True for v in item['user_output_exact'].values()) and item['warm']['returncode']==item['cold']['returncode']==0,'actual public Snow continuation differs')
