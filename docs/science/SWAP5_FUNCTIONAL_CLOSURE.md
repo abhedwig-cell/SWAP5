@@ -1,5 +1,16 @@
 # Current functional closure of the original projects
 
+## Qualified hysteresis/output composition,18November2026
+
+[Original output with hysteresis](NOMACRO_ORIGINAL_OUTPUT_HYSTERESIS_20261118.md)
+adds both original scanning initializations to bounded water, daily CDE and age
+output/state domains. Windows/Ubuntu each pass32full1096day trajectories and196
+complete cold windows; original equations and earlier helpers remain literal.
+Native/policy/transaction/public/reader and exact prior-route preservation gates
+pass. Qualification is sealed; canonical admission is pending. Other historical
+combinations and nonzero age-valued sources remain open. Historical functional
+closure is PARTIAL, whole science NOT_QUALIFIED and fixed RC3 remains unchanged.
+
 ## Bounded original-output successor,18November2026
 
 [Original output control ownership](NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md)

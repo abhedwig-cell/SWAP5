@@ -1,5 +1,12 @@
 # SWAP5 Status-A current architecture
 
+The qualified [hysteresis/output successor](../science/NOMACRO_ORIGINAL_OUTPUT_HYSTERESIS_20261118.md)
+composes literal output/calendar/clock and physical-history owners with a40byte
+actual process-domain witness and distinct S5IHW001/S5IHC001/S5IHA001 codecs.
+The CDE prefix remains at48bytes; no physical equation, tolerance or default
+source image changes. Its additive registered owner retains the preceding body
+literally. Canonical admission remains pending.
+
 The [original-output owner](../science/NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md)
 adds an explicit default-off project/binding choice, actual Integral receipts
 independent from CSV callbacks and distinct complete native domains for water,
