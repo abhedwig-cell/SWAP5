@@ -320,6 +320,34 @@ def verify():
                 report=read(z,prefix+'/RESULT.json');require(any(word in report['status'] for word in ('PASS','PRESERVED')) and len(report['profiles'])==count,'actual prior Snow-dispatch context omitted');contexts+=count
                 for key,item in report['profiles'].items():
                     require(read(z,prefix+'/'+key+'/build/BUILD.json')==item['actual_build'] and any(value is True for field,value in item.items() if 'exact' in field),'actual preserved source/native/build rebound')
+                if 'saltfarm' in prefix:
+                    item=report['profiles']['saltfarm'];base=prefix+'/saltfarm/';build=item['actual_build'];opt=report['optimization']
+                    require(report['status']=='ACTUAL_CANONICAL_SALTFARM_POLICY_FULL_SOURCE_NATIVE_USER_EXACT_PASS'
+                        and build['identity']['water_polish_policy']=='strict-water-half-interior-polish-v1','actual canonical SaltFarm policy changed')
+                    build_files(z,base+'build/',build)
+                    authority=json.loads((ROOT/'integration/f-ci/saltfarm-newton-work01/PORTABLE.json').read_text(encoding='utf8'))
+                    record=authority['archives'][platform];raw=(ROOT/'integration/f-ci/saltfarm-newton-work01'/record['file']).read_bytes()
+                    require(digest(raw)==record['sha256']==report['actual_prior_raw_sha256'],'canonical SaltFarm prior producer changed')
+                    with zipfile.ZipFile(io.BytesIO(raw)) as prior_salt:
+                        old=json.loads(prior_salt.read('qualified-'+opt+'/BUILD.json'))
+                        for field in ('donor_generated','donor_flags','kernel_flags','donor_objects','donor_modules','ttutil_modules','ttutil_library','kernel_sources','water_polish_policy'):
+                            require(build['identity'].get(field)==old['identity'].get(field),'actual canonical SaltFarm physical source/policy differs: '+field)
+                        data=rows(z,base+'accept/full/');ledger(data,1461)
+                        original=[json.loads(line) for line in prior_salt.read('accept-'+opt+'/full/daily.jsonl').splitlines()]
+                        require(physical(data)==physical(original),'actual canonical SaltFarm1461day physical/chemical rows differ')
+                        warm=user(z,base+'accept/full/original/result_output.csv')
+                        require(warm==user(prior_salt,'accept-'+opt+'/full/original/result_output.csv'),'actual canonical SaltFarm data records differ')
+                        for day in (109,111,365,367,453,455,1460,1461):
+                            with zipfile.ZipFile(io.BytesIO(prior_salt.read('accept-'+opt+f'/full/accepted-column-1-day-{day}.zip'))) as oldzip,zipfile.ZipFile(io.BytesIO(z.read(base+f'accept/full/accepted-column-1-day-{day}.zip'))) as actual:
+                                for member in ('result.end','macro.bin'):require(oldzip.read(member)==actual.read(member),'actual canonical SaltFarm native endpoint differs')
+                        result=read(z,base+'accept/RESULT.json')
+                        require(result['status']=='FULL_PASS' and result['days']==1461 and len(result['restarts'])==5,'actual canonical SaltFarm preservation censored')
+                        for start,end in ((109,111),(365,367),(453,455),(1460,1461),(109,1461)):
+                            target=base+f'accept/restart{start}-{end}/';actual=rows(z,target)
+                            require(physical(actual)==physical(data[start:end]),'actual canonical SaltFarm own cold differs')
+                            require(user(z,target+'original/result_output.csv')[-(end-start):]==warm[start+1:end+1],'actual canonical SaltFarm own cold user differs')
+                            with zipfile.ZipFile(io.BytesIO(z.read(base+f'accept/full/accepted-column-1-day-{end}.zip'))) as full,zipfile.ZipFile(io.BytesIO(z.read(target+f'accepted-column-1-day-{end}.zip'))) as cold:
+                                for member in ('result.end','macro.bin'):require(full.read(member)==cold.read(member),'actual canonical SaltFarm own cold native differs')
         for location in q['context']:
             z=archives[location['archive']];public=read(z,location['public']+'/RESULT.json');reader=read(z,location['reader']+'/RESULT.json')
             require(public['status']=='THREE_PUBLIC_WATER_SNOW_SUBDAILY_SELF_CONTAINED_RESTART_CONTEXTS_PASS' and len(public['profiles'])==3,'actual independent Snow public gate missing')
