@@ -11,6 +11,7 @@ thermal=prior.thermal
 clock=thermal.clock
 DOMAIN=prior.DOMAIN
 SNOW_PROVIDER=prior.SNOW_PROVIDER
+SNOW_FIELDS=prior.prior.SNOW_FIELDS
 POLICY='original-water-snow-flprintdt-clock-v1'
 MAGIC=b'S5SPW001'
 
@@ -65,7 +66,7 @@ def metadata(project):
         predecessor_owner_sha256=sha(Path(prior.__file__)),ordinary_owner_sha256=sha(Path(ordinary.__file__)),
         domain_source_sha256=sha(Path(__file__).with_name(DOMAIN+'.f90')),
         snow_output_source_sha256=sha(Path(__file__).with_name(SNOW_PROVIDER+'.f90')),
-        snow_output_fields=list(prior.SNOW_FIELDS),snow_output_domain_bytes=32,snow_output_value_bytes=56,
+        snow_output_fields=list(SNOW_FIELDS),snow_output_domain_bytes=32,snow_output_value_bytes=56,
         calendar_owner_sha256=sha(Path(regular.__file__)),clock_owner_sha256=sha(Path(clock.__file__)),
         receipt_provider_sha256=sha(ROOT/'src/process/mod_original_output_receipt.f90'),
         original_integral_sha256=regular.INTEGRAL_SHA,original_watstor_sha256=clock.WATSTOR_SHA,original_timecontrol_sha256=clock.TIME_SHA,
