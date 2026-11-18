@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-thermal-calendar01",
-  "last_commit": "980b133b33eed066e67998ede3698b8f8ddd2021",
-  "status": "THERMAL_CALENDAR_QUALIFIED_PENDING_ACTUAL_CANONICAL",
+  "last_commit": "f2fc11124d98e1238d5996ec2af21cbde24e49d9",
+  "status": "THERMAL_CALENDAR_ACTUAL_CANONICAL_ADMISSION_PASS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -52,7 +52,8 @@
     "PR1729 actualcanonical1c0bc3b6c exactorderedparents/fullqualifiedtree; actualdetachedregisteredownerPASS. OriginaldailyCDE SWBR1output/hys0/1/2 andactual7fieldnative/receiptbindingadmitted.48fullperiods/344reports/87preservedcontexts/945corruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
     "PR1731 actualcanonicalb3dd19db8 exactorderedparents/fullqualifiedtree; actualdetachedregisteredownerPASS. OriginalSnow/thermal output dailywater/CDE,hys0/1/2,boundedwaterfrost admitted;56fullperiods/367reports/107priorcontexts+8actualcanonicalcomparisons/963proofcorruptionsrefused. Portablematrixreadonlyclosure0repeatedmodels;alloriginalfailedartifactsretained. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
     "PR1733 actualcanonical95fc7b7fe exactorderedparents/fullqualified34515b464tree; actualdetachedregisteredownerPASS. Originalprescribedgroundwater ordinaryCDE+completehydraulicnativeandactualallCDEstockreceiptbinding admitted;28fullperiods/232cold/115priorcontexts/844proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
-    "PR1736 actualcanonicalf5f0cda95 exactorderedc406/932parents/full2db3ff0a5tree; actualdetachedregisteredownerPASS. Groundwater originalCDE/hys0..2/Snow0..1 histories admitted:56fullperiods/704cold/50priorcontexts/2071proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
+    "PR1736 actualcanonicalf5f0cda95 exactorderedc406/932parents/full2db3ff0a5tree; actualdetachedregisteredownerPASS. Groundwater originalCDE/hys0..2/Snow0..1 histories admitted:56fullperiods/704cold/50priorcontexts/2071proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
+    "PR1738 actualcanonicalf2fc11124 exactordered8c/de0parents/full8551bfb82tree; actualdetachedregisteredownerPASS. OriginalwaterSnow non dailycalendars+7actualoriginalSnowtotalnativecarry admitted:16fullperiods/256cold/40priorcontexts/1329proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
   ],
   "open": [
     "Complete historical selector inventory",
@@ -329,7 +330,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Separate water Snow non-daily calendar adapter using literal thermal/calendar/process providers; delegate dense daily/CDE/age/groundwater. Actual O0/O2 monthly/cold pilots before full qualification.",
+  "next_code_change": "Finish actual metadata admission; source-reconcile originalSnow subdaily output/currentdailyopportunity preflight and strictsoil/globaldaily receipt domains before new adapter.",
   "recovery_point": "Production278152113 repairs original/appended hydraulic ownership. Freshhys2SnowO0/O2-v2 actual35days+4coldPASS;39native/2fabricatedreports peroptPASS; actualduplicateprobe-after-Ox-v1 REFUSED_BEFORE_READY. BothinitialWindows-v1 fullpositivecohorts complete16short14full12controls/opt butpre-repair; retainonlyasprototype, do notrebind/reuseitsoldbuilds. NextWindows-v2 freshcohorts reuseonlycurrentv2hys2Snowpilot/controls.",
   "external_blocker": null,
   "test_selection": {
@@ -1056,7 +1057,7 @@
   },
   "canonical_live_overlap": "PR1735 SaltFarm Newton work is open/unmerged on its own branch; not imported or modified by this historical migration batch.",
   "thermal_calendar": {
-    "status": "QUALIFIED_REGISTERED_ROOT_AND_ACTUAL_SOURCE_NEGATIVE_PASS_PENDING_CANONICAL",
+    "status": "ADMITTED_BOUNDED_SOURCE_METADATA_PENDING",
     "baseline": "8c09e206d854fec51b2c1b94b3c9b52921e6216b",
     "contract": "docs/science/NOMACRO_THERMAL_CALENDAR_20261118.md",
     "scope": "Explicit original water Snow1 heat1/calc2 hys0/1/2 drainage1 analytical soil bottom5/8 dailyweather nofrost/AQ/macro; NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0or2..366.",
@@ -1065,7 +1066,7 @@
       "C:/Users/Veldh012/swap5-complete01-evidence/thermal-calendar-baseline-monthly-v2"
     ],
     "original_reader": "ASCIImonthly originalexe swap.ok, normal termination100; initial uncorrectedbinaryformat3segfault retained, notscienceoracle/newdefectclaim",
-    "next": "Create and merge source PR; verify actual canonical ordered parents/full tree and clean detached registered owner; metadata admission, then next historical composition.",
+    "next": "Admit actual metadata merge with exact parents/fulltree/detachedowner; next originalwaterSnow subdaily clock requires separate originalsplit-domain trial receipt reconciliation.",
     "external_blocker": null,
     "runtime": "02f1bc2c1e53e5035279ab6825e702cbf7d0ceb6",
     "failure": "O0/O2 monthly35day complete;30to34cold physical rows andresult.end/macro.bin exact beforeactualJanuary31userbinaryrecord mismatch. Frozen calendar _layout explicitly skips7Snow MOD_integral totals.",
@@ -1110,6 +1111,14 @@
     },
     "source_negative_commit": "1bdb0db40051001a0df244e63d9fa852b3cdbb05",
     "source_negative": "DIRTY_AND_ACTUAL_COMMITTED_OMITTED_SEVEN_SNOW_TOTAL_STAGING_REFUSED",
-    "docs": "SourcechecksPASS; strictMkDocsPASS45.97seconds external site"
+    "docs": "SourcechecksPASS; strictMkDocsPASS45.97seconds external site",
+    "canonical_admission": "f2fc11124d98e1238d5996ec2af21cbde24e49d9",
+    "actual_canonical_owner": {
+      "returncode": 0,
+      "seconds": 100.43728110007942,
+      "head": "f2fc11124d98e1238d5996ec2af21cbde24e49d9",
+      "stdout": "{\n  \"status\": \"ORIGINAL_SNOW_CALENDAR_SEVEN_TOTALS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"02f1bc2c1e53e5035279ab6825e702cbf7d0ceb6\",\n  \"predecessor\": \"LITERAL_QUALIFIED_GROUNDWATER_HISTORY_IMAGE_AND_ACTUAL_UNCHANGED_ARCHIVE_BYTES_PASS\",\n  \"actual_full_periods\": 16,\n  \"actual_cold_windows\": 256,\n  \"actual_native_refusals\": 944,\n  \"actual_policy_refusals\": 256,\n  \"actual_copied_provider_refusals\": 16,\n  \"actual_preserved_contexts\": 40,\n  \"actual_bound_reports\": 160,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    }
   }
 }

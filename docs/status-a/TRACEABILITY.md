@@ -16,8 +16,7 @@ bind production02f1bc2c1 to seven immutable raw archives,313908829bytes,
 January31output mismatch and old physical/native equality remain reproducible;
 corrected warm physics/output are unchanged and corrected cold records agree.
 Original binary and fixture failures remain separate from qualified evidence.
-All1329actual producer/source/raw proof corruptions are refused. Registered proof passes;
-actual canonical admission is pending; whole closure/science/RC3 are unchanged.
+All1329actual producer/source/raw proof corruptions are refused. Actual canonicalf2fc11124 passes its detached registered owner; whole closure/science/RC3 are unchanged.
 
 [Groundwater history qualification](../science/NOMACRO_GROUNDWATER_HISTORY_20261118.md)
 binds corrected production278152113 to actual Windows/Ubuntu16short/14full
