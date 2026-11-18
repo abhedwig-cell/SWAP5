@@ -60,7 +60,8 @@ def validate(q):
     require(q['base_consumer']['merge']==BASE and q['base_consumer']['exact_complete_tree'] is True
         and q['base_consumer']['actual_detached_owner']['returncode']==0,'actual preceding groundwater-history metadata owner absent')
     require(q['workflows']['main']['id']==44341043097 and q['workflows']['main']['conclusion']=='success'
-        and q['workflows']['preservation']['id']==44341069500 and q['workflows']['preservation']['conclusion']=='success','actual Snow calendar workflows incomplete')
+        and q['workflows']['preservation']['id']==44342998914 and q['workflows']['preservation']['conclusion']=='success'
+        and q['workflows']['failed_preservation']['id']==44341069500 and q['workflows']['failed_preservation']['conclusion']=='failure','actual Snow calendar workflows incomplete')
     require(set(q['main'])=={'Windows','Ubuntu'} and all(set(opts)=={'O0','O2'} for opts in q['main'].values()),'Snow calendar platform/optimization omitted')
     require(q['preservation']['Windows']['profiles']=={'thermal-clock-composed-preserve-groundwater-O0-v1':3,'thermal-clock-composed-preserve-groundwater-O2-v1':3,
         'thermal-clock-composed-preserve-calendar-O0-v1':4,'thermal-clock-composed-preserve-calendar-O2-v1':4,
@@ -369,6 +370,15 @@ def verify():
         original=read(failed,'thermal-clock-baseline-nprint3-v1/RESULT.json')
         require(original['original']['swap_ok'] is True and original['original']['returncode']==100
             and original['scientific_claim'] is False,'actual original Snow subdaily reader observation missing/relabelled')
+        location=q['retained_observations']['failed_preservation'];record=q['archives'][location['archive']];failed=archives[location['archive']]
+        report=read(failed,'saltfarm-O0/RESULT.json')
+        diagnostic=failed.read('saltfarm-O0/saltfarm/qualify.stderr').decode('utf8')
+        require(report['status']=='FAILED' and "can't open file" in diagnostic and 'tests/saltfarm_newton/qualify.py' in diagnostic,'actual missing-driver environment failure censored')
+        current=archives[q['preservation']['Ubuntu']['archive']];forward=read(current,'CONTINUATION.json')
+        expected={name:value for name,value in record['members'].items() if name.startswith(('groundwater/','current-age/','direct-age/','calendar/'))}
+        require(forward['status']=='NINETEEN_ACTUAL_CONTEXTS_BYTES_FORWARDED_NO_MODEL_RERUN' and forward['source_run']==44341069500
+            and forward['actual_contexts']==19 and forward['members']==expected,'actual completed-context continuation rebound')
+        for name,value in expected.items():require(digest(current.read(name))==value,'actual copied completed producer bytes changed: '+name)
     require((fulls,windows,refusals,policies,providers,contexts)==(16,256,960,352,16,55),'actual Snow calendar full/native/preservation denominator differs')
     return dict(status='ORIGINAL_SNOW_SUBDAILY_SOIL_CLOCK_NATIVE_ADMISSION_PASS',runtime=RUNTIME,predecessor=prior,actual_full_periods=fulls,
         actual_cold_windows=windows,actual_native_refusals=refusals,actual_policy_refusals=policies,actual_copied_provider_refusals=providers,

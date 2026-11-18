@@ -140,7 +140,7 @@ class Proof(unittest.TestCase):
             bad=copy.deepcopy(record);bad['byte_parts'][0]['offset']=1
             with self.assertRaises(ValueError):owner.raw_archive(bad)
             count+=1
-        self.assertEqual(count,23)
+        self.assertEqual(count,26)
         print('ACTUAL_SNOW_RAW_ARTIFACT_PRIOR_PART_BINDING_CORRUPTIONS_REFUSED',count,flush=True)
 
 if __name__=='__main__':unittest.main()
