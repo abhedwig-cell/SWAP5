@@ -1,5 +1,31 @@
 # Current functional closure of the original projects
 
+## Original Snow output calendars,18November2026
+
+[Sparse Snow/thermal water output](NOMACRO_THERMAL_CALENDAR_20261118.md)
+now supports the bounded monthly, explicit-date, periodic and PERIOD0 daily
+calendar composition. A separate native adapter restores seven outstanding
+original Snow totals while keeping all physical/calendar owners literal.
+Windows/Ubuntu16full1096day periods,256complete cold windows and40prior
+contexts pass with unchanged guards, exact native/sparse user records and
+independent public/original-reader gates. Original forced annual/TEND output
+is preserved. Registered proof passes; actual canonical admission remains pending.
+Historical closure stays PARTIAL, whole science NOT_QUALIFIED and fixed RC3
+unchanged; CDE/age/subdaily Snow calendars and other historical gaps continue.
+
+## Groundwater hydraulic and snow histories,18November2026
+
+[Groundwater histories](NOMACRO_GROUNDWATER_HISTORY_20261118.md) compose original
+daily CDE and prescribed level with hysteresis0/1/2 and Snow0/1, with at least
+one active history. Corrected Windows/Ubuntu56full1096day periods,704complete
+cold windows and50selected prior source/native contexts pass. Ten typed codecs
+bind actual process domains; original hydraulic owners and their appended
+witness agree exactly before readiness. Actual native/input/transaction and
+independent public build/restart commands pass with unchanged1e-10guards.
+Actual canonicalf5f0cda95 passes its detached registered owner. Closure remains
+PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged; aquifer/frost/age and
+other groundwater domains and bottom9 remain separate work.
+
 ## Qualified prescribed-groundwater CDE composition,18November2026
 
 [Prescribed-groundwater CDE](NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)

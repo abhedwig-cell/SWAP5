@@ -1,5 +1,23 @@
 # SWAP5 Status-A current architecture
 
+The implemented [Snow output calendar adapter](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
+retains the literal thermal-domain80byte frame and complete original calendar.
+S5CTW002 adds a paired32byte header and seven actual MOD_integral Snow totals,
+staged and validated before apply after initialization. The original Integral
+still owns every increment. The actual copied provider is checked before
+coupling; dense daily/CDE/age/groundwater helpers delegate literally. No physical
+equation or release profile changes. Registered proof passes; actual canonical admission is pending.
+
+The implemented [groundwater process-history adapter](../science/NOMACRO_GROUNDWATER_HISTORY_20261118.md)
+composes literal original CDE, hysteresis0/1/2 and Snow0/1 owners under SWBOTB1.
+Ten output/default codecs carry a104byte paired actual domain and5*N+4hydraulic
+values before the original calendar. With active hysteresis this accessible
+block is an exact consistency witness of the already restored original owner;
+it cannot overwrite a differing original copy. Without hysteresis it restores
+the missing full carry. Ordinary GWC001/002 delegates literally, all CDE prefixes
+remain48bytes and the frozen independent Darcy reaction stays unchanged.
+Actual canonicalf5f0cda95 passes its detached registered owner.
+
 The qualified [prescribed-groundwater CDE successor](../science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)
 uses the actual original Darcy interface and prescribed saturated-tail storage
 and signed rates for an independent trial receipt. The stateless component

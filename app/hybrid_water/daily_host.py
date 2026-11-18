@@ -183,7 +183,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     chemical_source=chemical_fixed or chemical_scheduled
     from conserved_aquifer_solute import enabled as aquifer_enabled, correction as aquifer_correction
     aquifer_source=aquifer_enabled(project)
-    import original_output_thermal as age_calendar_owner
+    import thermal_output_calendar as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
         import original_output_aquifer as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
@@ -865,7 +865,7 @@ end module plant_interface""")
     if age_calendar is not None:
         patched=age_calendar_owner.apply_build(output,donor_build,project,patched)
     if age_source:patched=current_age_source.apply_build(output,project,patched)
-    from groundwater_native import apply_build as groundwater_native_build
+    from groundwater_history_native import apply_build as groundwater_native_build
     patched=groundwater_native_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
@@ -883,11 +883,12 @@ end module plant_interface""")
                     *([str(output/'original_output_hysteresis_domain.o')] if age_calendar and age_calendar.get('swhyst',0) in (1,2) and not age_calendar.get('aquifer_output',False) and not age_calendar.get('thermal_output',False) else []),
                     *([str(output/'original_output_aquifer_domain.o')] if age_calendar and age_calendar.get('aquifer_output',False) else []),
                     *([str(output/'original_output_thermal_domain.o')] if age_calendar and age_calendar.get('thermal_output',False) else []),
+                    *([str(output/'thermal_output_snow_calendar_state.o')] if age_calendar and age_calendar.get('thermal_calendar',False) else []),
                     *([str(output/'age_irrigation_source_domain.o')] if age_source else []),
                     *([str(output/(name+'.o')) for name in ('mod_direct_soil_age_substep','direct_soil_age_state')] if project.age_direct_soil_source else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output/'mod_prescribed_groundwater_reaction.o')] if lower_boundary==1 else []),
-                    *([str(output/'groundwater_native_state.o')] if lower_boundary==1 else []),
+                    *([str(output/(name+'.o')) for name in ('groundwater_native_state','groundwater_history_native_state') if name in patched] if lower_boundary==1 else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
@@ -932,7 +933,7 @@ end module plant_interface""")
     }
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
-    from original_output_thermal import metadata as original_output_metadata
+    from thermal_output_calendar import metadata as original_output_metadata
     selected_output=original_output_metadata(project)
     if selected_output is not None:build_identity['original_output']=selected_output
     if project.input_directory:
@@ -979,7 +980,7 @@ end module plant_interface""")
     if lower_receipt:
         from groundwater_boundary_receipt import metadata as lower_metadata
         build_identity['lower_boundary_receipt']=lower_metadata(project,sha,APP,ROOT)
-    from groundwater_native import metadata as groundwater_native_metadata
+    from groundwater_history_native import metadata as groundwater_native_metadata
     groundwater_state=groundwater_native_metadata(project,sha,APP)
     if groundwater_state is not None:build_identity['groundwater_native_state']=groundwater_state
     if fixed_file:

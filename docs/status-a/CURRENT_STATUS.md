@@ -1,5 +1,22 @@
 # SWAP5 Status-A current status
 
+The [original Snow output calendars](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
+pass16full1096day Windows/Ubuntu periods,256complete cold windows and40scoped
+prior source/native contexts. Monthly, explicit dates, periodic and PERIOD0
+water output preserve the original annual/TEND records. Seven actual original
+Snow totals now survive cold sparse output; dense daily owners stay literal.
+Public/reader/native/transaction and1329proof corruption gates pass. Registered proof passes;
+actual canonical admission is pending. Closure stays PARTIAL, science
+NOT_QUALIFIED and fixed RC3 unchanged.
+
+The [groundwater hydraulic/snow-history composition](../science/NOMACRO_GROUNDWATER_HISTORY_20261118.md)
+passes56full1096day Windows/Ubuntu periods,704complete cold windows and50selected
+prior source/native contexts. All ten typed codecs, actual Snow and chemical
+sources, independent public commands and original reader refusals pass. The
+redundant hydraulic-copy reader gap found during development is corrected;
+original physical owners remain literal. Actual canonicalf5f0cda95 passes its detached registered owner. Whole closure stays PARTIAL, science NOT_QUALIFIED and
+the fixed RC3 named release is unchanged.
+
 The [prescribed-groundwater CDE composition](../science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md)
 passes28full1096day Windows/Ubuntu periods,232complete cold windows and115prior
 source/native contexts. Its registered owner recomputes actual ledgers and
