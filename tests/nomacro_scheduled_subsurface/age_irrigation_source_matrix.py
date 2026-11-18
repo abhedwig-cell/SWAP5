@@ -64,6 +64,7 @@ def main():
     if not a.existing_input and not a.resume:fixture(inputs,a.kind,a.age_day,a.calendar,a.format,a.hysteresis,a.events,a.inline)
     project=m.e.load(inputs,original_output=a.original_output,age_irrigation_source=True);build=a.reuse_build or a.output/'build'
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),kind=a.kind,age_day=a.age_day,calendar=a.calendar,output_format=a.format,hysteresis=a.hysteresis,original_output=a.original_output,optimization=a.optimization,events=a.events,inline=a.inline,age_irrigation_source=metadata(project),functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
+    q.update(build_root=str(build),input_root=str(inputs))
     if a.resume:q['retained_previous_report']=json.loads((a.output/'RESULT.json').read_text())
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     try:

@@ -48,23 +48,24 @@ def main():
     def run(script,*args):subprocess.run([sys.executable,'-B',str(Path(__file__).with_name(script)),*map(str,args)],cwd=probe.ROOT,check=True)
     try:
         for key,case in CASES.items():
-            short=a.reuse_regular_root if key=='surface-regular' and a.reuse_regular_root else a.output/('short-'+key)
-            if not (short/'RESULT.json').exists():run('age_irrigation_source_matrix.py','--reference-work',a.reference_work,'--output',short,'--optimization',a.optimization,*arguments(case))
+            short=a.output/('short-'+key)
+            reuse=['--reuse-build',a.reuse_regular_root/'build','--existing-input',a.reuse_regular_root/'input'] if key=='surface-regular' and a.reuse_regular_root else []
+            if not (short/'RESULT.json').exists():run('age_irrigation_source_matrix.py','--reference-work',a.reference_work,'--output',short,'--optimization',a.optimization,*arguments(case),*reuse)
             report=json.loads((short/'RESULT.json').read_text());assert report['status']=='AGE_IRRIGATION_SOURCE_SHORT_CURRENT_FORCING_NATIVE_OUTPUT_PASS'
-            project=probe.m.e.load(short/'input',original_output=case[4],age_irrigation_source=True);meta,_=probe.m.validate_bundle(short/'build',a.reference_work,project)
+            inputs=Path(report['input_root']);build=Path(report['build_root']);project=probe.m.e.load(inputs,original_output=case[4],age_irrigation_source=True);meta,_=probe.m.validate_bundle(build,a.reference_work,project)
             assert report['age_irrigation_source']==probe.metadata(project)==meta['identity']['original_age_fixed_irrigation']
             assert (report['kind'],report['calendar'],report['output_format'],report['hysteresis'],report['original_output'],report['inline'],report['age_day'],report['events'])==case[:8]
-            q['cases'].setdefault(key,{}).update(short_root=str(short),short=report);save()
+            q['cases'].setdefault(key,{}).update(short_root=str(short),build_root=str(build),input_root=str(inputs),short=report);save()
         for key in CONTROLS:
             out=a.output/('controls-'+key);short=Path(q['cases'][key]['short_root'])
             if not (out/'RESULT.json').exists():run('age_irrigation_source_controls.py','--reference-work',a.reference_work,'--profile-root',short,'--output',out)
-            r=json.loads((out/'RESULT.json').read_text());assert r['status']=='FIXED_CURRENT_AGE_NATIVE_INPUT_IDENTITY_AND_VARYING_EXTERNAL_TRANSACTIONS_PASS' and r['build_sha256']==probe.m.sha(short/'build/BUILD.json');q['controls'][key]=r;save()
+            r=json.loads((out/'RESULT.json').read_text());assert r['status']=='FIXED_CURRENT_AGE_NATIVE_INPUT_IDENTITY_AND_VARYING_EXTERNAL_TRANSACTIONS_PASS' and r['build_sha256']==probe.m.sha(Path(q['cases'][key]['build_root'])/'BUILD.json');q['controls'][key]=r;save()
         if not a.short_only:
             for key,case in CASES.items():
                 if not case[8]:continue
-                short=Path(q['cases'][key]['short_root']);full=a.output/('full-'+key)
-                if not (full/'RESULT.json').exists():run('age_irrigation_source_matrix.py','--reference-work',a.reference_work,'--output',full,'--optimization',a.optimization,'--phase','full','--reuse-build',short/'build','--existing-input',short/'input',*arguments(case))
-                r=json.loads((full/'RESULT.json').read_text());assert r['status']=='AGE_IRRIGATION_SOURCE_FULL_CURRENT_FORCING_NATIVE_OUTPUT_PASS' and r['trajectory']['build_sha256']==probe.m.sha(short/'build/BUILD.json');q['cases'][key]['full']=r;save()
+                build=Path(q['cases'][key]['build_root']);inputs=Path(q['cases'][key]['input_root']);full=a.output/('full-'+key)
+                if not (full/'RESULT.json').exists():run('age_irrigation_source_matrix.py','--reference-work',a.reference_work,'--output',full,'--optimization',a.optimization,'--phase','full','--reuse-build',build,'--existing-input',inputs,*arguments(case))
+                r=json.loads((full/'RESULT.json').read_text());assert r['status']=='AGE_IRRIGATION_SOURCE_FULL_CURRENT_FORCING_NATIVE_OUTPUT_PASS' and r['trajectory']['build_sha256']==probe.m.sha(build/'BUILD.json');q['cases'][key]['full']=r;save()
         q['status']='FOURTEEN_CURRENT_AGE_SOURCE_SHORT_AND_'+('NO_FULL_SELECTED' if a.short_only else 'TEN_FULL')+'_NATIVE_STATE_USER_OUTPUT_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()

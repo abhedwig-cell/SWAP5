@@ -81,7 +81,7 @@ def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','profile-root','output'):p.add_argument('--'+key,type=Path,required=True)
     a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();run=json.loads((a.profile_root/'RESULT.json').read_text());assert run['status']=='AGE_IRRIGATION_SOURCE_SHORT_CURRENT_FORCING_NATIVE_OUTPUT_PASS' and run['events']=='varying'
-    project=m.e.load(a.profile_root/'input',original_output=run['original_output'],age_irrigation_source=True);build=a.profile_root/'build';q=dict(status='RUNNING',profile=dict(kind=run['kind'],calendar=run['calendar'],optimization=run['optimization']),build_sha256=m.sha(build/'BUILD.json'))
+    project=m.e.load(Path(run.get('input_root',a.profile_root/'input')),original_output=run['original_output'],age_irrigation_source=True);build=Path(run.get('build_root',a.profile_root/'build'));q=dict(status='RUNNING',profile=dict(kind=run['kind'],calendar=run['calendar'],optimization=run['optimization']),build_sha256=m.sha(build/'BUILD.json'))
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     try:
         q['native_refusals']=native(build,a.reference_work,project,a.profile_root/'trajectory',a.output/'native',run['kind']);save()
