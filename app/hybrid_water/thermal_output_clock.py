@@ -156,6 +156,20 @@ def render_macro(source):
     return source.replace("'S5CTW002'","'"+MAGIC.decode()+"'")
 
 
+def render_timecontrol(source):
+    text=clock.render_timecontrol(source)
+    anchor='      get_dtEvent = min(dtEventEOD, dtEventPrint)';assert text.count(anchor)==1
+    # The final print and day event are mathematically the same event. Absolute
+    # epoch subtraction can put print just before EOD; the original day flag
+    # then skips that remainder, although Snow has advanced a full day already.
+    correction="""      if(flprintshort.and..not.flprintdt.and.tcum<1d0)then
+         if(abs(tcum+dtEventEOD-1d0)<=epsilon(1d0)*8d0.and. &
+            abs(dtEventPrint-dtEventEOD)<=dtCrit)dtEventPrint=dtEventEOD
+      end if
+"""
+    return text.replace(anchor,correction+anchor,1)
+
+
 def apply_build(output,donor_build,project,patched):
     selected=clock_selection(project)
     if selected is None:return prior.apply_build(output,donor_build,project,patched)
@@ -177,7 +191,7 @@ def apply_build(output,donor_build,project,patched):
     anchor="\n   write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)";assert text.count(anchor)==1
     path.write_text(text.replace(anchor,'\n   call hybrid_output_calendar_apply()\n   call snow_output_calendar_apply()\n   call hybrid_original_output_initial_emit()'+anchor,1),encoding='cp1252')
     if 'timecontrol' in patched or (output/'timecontrol.f90').exists():raise ValueError('Multiple original Snow output clock owners')
-    (output/'timecontrol.f90').write_text(clock.render_timecontrol((donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')),encoding='cp1252')
+    (output/'timecontrol.f90').write_text(render_timecontrol((donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
     text=text.replace(anchor,'   use MOD_integral,only:hybrid_snow_soil_trial_residual\n'+anchor,1)
     anchor='\n   implicit none\n';assert text.count(anchor)==1;text=text.replace(anchor,anchor+'   real(8)::hybrid_snow_trial_guard\n',1)

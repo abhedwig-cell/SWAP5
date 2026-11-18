@@ -90,3 +90,20 @@ historical gap. A green batch is not whole-migration or whole-science completion
 
 Affected invariants:3,4,7,13,21,23,30. No active macro research, general MODFLOW,
 alternative solver, speculative framework or general performance campaign.
+
+## Development observation: coincident terminal print/day events
+
+The actual first O0/O2 implementations stop on day13 at the unchanged global
+1e-10cm guard. The separate actual soil receipt is near roundoff. Actual cmelt
+integration is1.33499999989787432cm while the daily Snow owner advances a full
+1.335cm transfer. The original absolute-epoch print event subtraction puts the
+last print slightly before the day event; its dtCrit day flag skips the tiny
+remaining physical interval. Preserve these failed builds and raw records.
+
+The new adapter explicitly coalesces only a print event within original dtCrit
+of the exact local end-of-day event into that end-of-day event, before solving
+or integrating it. No stock, rate, accepted receipt, output value or tolerance
+is patched. Keep all other original event ordering and old clock helpers literal.
+This scoped numerical clock composition requires fresh O0/O2 native/output and
+full-period qualification; the observation does not qualify whole-model legacy
+science or authorize a change to other process routes.
