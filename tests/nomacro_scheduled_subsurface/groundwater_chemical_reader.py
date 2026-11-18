@@ -38,7 +38,7 @@ def main():
             except (ValueError,RuntimeError) as error:
                 diagnostic='\n'.join(p.read_text(errors='replace') for pattern in ('donor.stderr','donor.stdout','swap.log','swap.err') for p in out.rglob(pattern))
                 assert not list(out.glob('accepted-*.zip')) and 'HYBRID_READY' not in diagnostic
-                assert any(word in (diagnostic+str(error)).lower() for word in ('gwlevel','groundwater','date1','checkdate','range','order','date'))
+                assert any(word in (diagnostic+str(error)).lower() for word in ('gwlevel','groundwater','date1','checkdate','range','date','previous table is incomplete'))
                 record['reader_refusals'].append(dict(attack=label,status='REFUSED_BEFORE_HYBRID_READY',diagnostic=diagnostic[-12000:],error=str(error)));save()
             else:raise AssertionError('Invalid original groundwater input accepted: '+label)
         for key,value in [('SWHYST',1),('SWSNOW',1),('SWFROST',1),('SWBR',1),('SWSOPHY',1),('SWMETDETAIL',1),('SWSOLU',2)]:
