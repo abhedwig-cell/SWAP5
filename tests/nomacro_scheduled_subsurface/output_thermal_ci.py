@@ -49,8 +49,8 @@ def main():
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     def run(script,*args):subprocess.run([sys.executable,'-B',str(Path(__file__).with_name(script)),*map(str,args)],cwd=probe.ROOT,check=True,timeout=1800)
     reuse={'water-hys2-csv3':'pilot-'+a.optimization+'-v2','chemical-csv2':'chemical-'+a.optimization+'-v1','frost-free-csv1':'water-frost-free-'+a.optimization+'-v1','frost-drained-csv1':'water-frost-drained-'+a.optimization+'-v1'}
-    if a.optimization=='O0':reuse['chemical-point-csv3']='fixed-O0-v1'
-    if a.optimization=='O2':reuse['chemical-interval-csv3']='fixed-O2-v1'
+    if a.optimization=='O0':reuse['chemical-point-csv3']='fixed-O0-v2'
+    if a.optimization=='O2':reuse['chemical-interval-csv3']='fixed-O2-v2'
     save()
     try:
         for key,case in CASES.items():

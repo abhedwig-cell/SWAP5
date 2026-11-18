@@ -33,7 +33,7 @@ def fixture(path,kind,fmt,groups=None,precision=12):
     if re.search(r'(?mi)^\s*NUM_DECIMALS\s*=',text):text=assignment(text,'NUM_DECIMALS',precision)
     else:text+='\nNUM_DECIMALS = '+str(precision)+'\n'
     if kind in ('chemical-snow-point','chemical-snow-interval'):
-        text=assignment(assignment(text,'SWIRFIX',1),'SWIRGFIL',1)
+        text=assignment(assignment(assignment(text,'SWIRFIX',1),'SWIRGFIL',1),'IRGFIL',repr('fixed-irrigation'))
         zone='-30.0' if kind.endswith('point') else '-20.0 -40.0'
         (path/'fixed-irrigation.irg').write_text('IRDATE IRDEPTH IRCONC IRTYPE IRRATE\n2002-01-05 24.0 20.0 2 12.0\n2002-01-07 12.0 60.0 2 12.0\nIR_Z = '+zone+'\n')
     p.write_text(text,encoding='cp1252')
