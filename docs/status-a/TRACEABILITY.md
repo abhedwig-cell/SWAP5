@@ -7,7 +7,7 @@ periods and87preservation contexts. Original portable artifact bytes are
 retained exactly through ordered byte parts when necessary. The successor owner
 recomputes actual aquifer ledgers and native endpoints and validates literal
 previous source/evidence. All945source/scope/producer corruptions are refused.
-Canonical admission is pending; whole science and fixed RC3 scope are unchanged.
+Actual canonical1c0bc3b6c passes its detached registered owner; whole science and fixed RC3 scope are unchanged.
 
 [Direct soil age qualification](../science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md)
 and `integration/f-ci/nomacro-complete01/DIRECT_SOIL_AGE_QUALIFICATION.json` bind

@@ -1286,10 +1286,12 @@
     "admission_receipt": "integration/f-ci/nomacro-complete01/DIRECT_SOIL_AGE_MERGE_RECEIPT.json"
   },
   "bounded_original_output_aquifer": {
-    "status": "QUALIFIED_PENDING_ADMISSION",
+    "status": "ADMITTED_BOUNDED",
     "authority": "integration/f-ci/nomacro-complete01/OUTPUT_AQUIFER_QUALIFICATION.json",
     "scope": "Explicitoriginaloutput dailyCDE SWBR1SWDRA1hys0/1/2 formats0..3; allSWBR1actualnative/receipt binding; frozenphysicalowners/wire",
     "evidence": "48full1096Windows/Ubuntu;87preservedcurrentcontexts; actualsource/native/public/reader/transactionPASS; 945proofcorruptionsrefused",
-    "remaining": "Otherhistoricalprocess/output/selectorfamiliesandwholeequivalenceremainunqualified;closurePARTIAL/fixedRC3unchanged"
+    "remaining": "Otherhistoricalprocess/output/selectorfamiliesandwholeequivalenceremainunqualified;closurePARTIAL/fixedRC3unchanged",
+    "canonical_admission": "1c0bc3b6cdedafcc4a39b33d0bfffb262436fd5c",
+    "admission_receipt": "integration/f-ci/nomacro-complete01/OUTPUT_AQUIFER_MERGE_RECEIPT.json"
   }
 }

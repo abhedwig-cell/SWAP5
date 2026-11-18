@@ -1,6 +1,6 @@
 # Original CDE output with the mixed aquifer owner
 
-**Qualified bounded scope / canonical admission pending.** Baseline is actual
+**Current / canonically admitted through PR1729, actual merge1c0bc3b6c.** Baseline is actual
 canonical76c6251a2f3f6345428b26b1a9e03cf7e0bf917a after PR1727/1728. The actual
 source and metadata merge postimages pass their detached registered owner.
 Historical closure remains PARTIAL, whole science NOT_QUALIFIED, fixed RC3
@@ -118,3 +118,10 @@ equivalence NOT_QUALIFIED, and RC3 remains the fixed named-profile release.
 Aquifer cumulative diagnostics and the original whole-model differences are
 not resolved by this output/native receipt change. Snow/frost, detailed weather
 and additional CDE output cadences remain outside this bounded composition.
+
+
+The actual source merge has ordered parents76c6251a2/30ba2feea and complete
+qualified80b39c095tree. Its detached registered owner passes344actual report
+bindings,48full periods and87preserved contexts. The exact result and actual
+postimage are retained in
+`integration/f-ci/nomacro-complete01/OUTPUT_AQUIFER_MERGE_RECEIPT.json`.
