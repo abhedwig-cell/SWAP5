@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-thermal-clock01",
-  "last_commit": "21a244506d8130191f6c4c611e35fa0acf620256",
-  "status": "THERMAL_CLOCK_COMPOSED_QUALIFIED_PENDING_ACTUAL_CANONICAL",
+  "last_commit": "7dfe0ed8f2d70c8ff76355016fbd23990c76fcfb",
+  "status": "THERMAL_CLOCK_COMPOSED_ACTUAL_CANONICAL_ADMISSION_PASS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -53,7 +53,8 @@
     "PR1731 actualcanonicalb3dd19db8 exactorderedparents/fullqualifiedtree; actualdetachedregisteredownerPASS. OriginalSnow/thermal output dailywater/CDE,hys0/1/2,boundedwaterfrost admitted;56fullperiods/367reports/107priorcontexts+8actualcanonicalcomparisons/963proofcorruptionsrefused. Portablematrixreadonlyclosure0repeatedmodels;alloriginalfailedartifactsretained. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
     "PR1733 actualcanonical95fc7b7fe exactorderedparents/fullqualified34515b464tree; actualdetachedregisteredownerPASS. Originalprescribedgroundwater ordinaryCDE+completehydraulicnativeandactualallCDEstockreceiptbinding admitted;28fullperiods/232cold/115priorcontexts/844proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
     "PR1736 actualcanonicalf5f0cda95 exactorderedc406/932parents/full2db3ff0a5tree; actualdetachedregisteredownerPASS. Groundwater originalCDE/hys0..2/Snow0..1 histories admitted:56fullperiods/704cold/50priorcontexts/2071proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
-    "PR1738 actualcanonicalf2fc11124 exactordered8c/de0parents/full8551bfb82tree; actualdetachedregisteredownerPASS. OriginalwaterSnow non dailycalendars+7actualoriginalSnowtotalnativecarry admitted:16fullperiods/256cold/40priorcontexts/1329proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
+    "PR1738 actualcanonicalf2fc11124 exactordered8c/de0parents/full8551bfb82tree; actualdetachedregisteredownerPASS. OriginalwaterSnow non dailycalendars+7actualoriginalSnowtotalnativecarry admitted:16fullperiods/256cold/40priorcontexts/1329proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
+    "PR1740 actualcanonical7dfe0ed8f exactorderedb439/5fffparents/full855e83489tree; cleanactualdetachedregisteredownerPASS138.090seconds. OriginalwaterSnowNPRINTDAY2/3/S5STW001admitted:16full/256cold/55prior/currentcontexts,1870proofcorruptions. CanonicalSaltFarm source/policy and bothliteralownerspreserved;4fullSaltFarm/20coldexact. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
   ],
   "open": [
     "Complete historical selector inventory",
@@ -330,7 +331,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Create source PR against actual canonicalb439; expected-head merge; verify exact actual orderedparents/fulltree/cleandetachedregisteredowner; metadata admission then next historical gap.",
+  "next_code_change": "Actual metadata merge exactparents/fulltree/cleandetachedowner; then originalSnowFLPRINTDTtrue perstep domain/native/calendar qualification, preserving all old helpers and strict soil/global receipts.",
   "recovery_point": "Production278152113 repairs original/appended hydraulic ownership. Freshhys2SnowO0/O2-v2 actual35days+4coldPASS;39native/2fabricatedreports peroptPASS; actualduplicateprobe-after-Ox-v1 REFUSED_BEFORE_READY. BothinitialWindows-v1 fullpositivecohorts complete16short14full12controls/opt butpre-repair; retainonlyasprototype, do notrebind/reuseitsoldbuilds. NextWindows-v2 freshcohorts reuseonlycurrentv2hys2Snowpilot/controls.",
   "external_blocker": null,
   "test_selection": {
@@ -1141,13 +1142,13 @@
     }
   },
   "thermal_clock": {
-    "status": "CURRENT_CANONICAL_COMPOSITION_QUALIFIED_REGISTERED_SOURCE_NEGATIVE_PASS_PENDING_ADMISSION",
+    "status": "ADMITTED_BOUNDED_CURRENT_CANONICAL_SOURCE_METADATA_PENDING",
     "baseline": "a264b7166328f5103bfbb6306d663ae206b5a3ab",
     "contract": "docs/science/NOMACRO_THERMAL_CLOCK_20261118.md",
     "scope": "OriginalwaterSnow1heat1/calc2hys0/1/2 drain1analyticsoil bottom5/8 dailyweather;NPRINTDAY2/3first original2..1440domain,FLPRINTDTfalse;nofrost/AQ/CDE/age/macros",
     "baseline_observation": "C:/Users/Veldh012/swap5-complete01-evidence/thermal-clock-baseline-nprint3-v1",
     "source_reconciliation": "Originalswap Integral2 thenSnow2onlyflDayStart thensoilsubsteps/Integral3; oldabsoluteoutputtrialreceiptexplicitlyexcludesSnow. Separateactualnet-forcingsoil+pondreceipt, retainactualSnow/globaldayledger andindependentDarcyboundary.",
-    "next": "Create source PR against actual canonicalb439; expected-head merge; verify exact actual orderedparents/fulltree/cleandetachedregisteredowner; metadata admission then next historical gap.",
+    "next": "Actual metadata merge exactparents/fulltree/cleandetachedowner; then originalSnowFLPRINTDTtrue perstep domain/native/calendar qualification, preserving all old helpers and strict soil/global receipts.",
     "external_blocker": null,
     "implementation": "app/hybrid_water/thermal_output_clock.py",
     "development_observations": {
@@ -1193,6 +1194,217 @@
     ],
     "qualified_baseline": "b4398e00ae978c82f0cdee3d72ff79708a869762",
     "qualification": "integration/f-ci/nomacro-complete01/THERMAL_CLOCK_COMPOSED_QUALIFICATION.json",
-    "docs": "SourcechecksPASS; strictMkDocsPASS32.19seconds externalcurrentcomposedsite; originalm3anchorINFOunchanged."
+    "docs": "SourcechecksPASS; strictMkDocsPASS32.19seconds externalcurrentcomposedsite; originalm3anchorINFOunchanged.",
+    "canonical_admission": "7dfe0ed8f2d70c8ff76355016fbd23990c76fcfb",
+    "actual_canonical_owner": {
+      "returncode": 0,
+      "seconds": 138.0902223000303,
+      "head": "7dfe0ed8f2d70c8ff76355016fbd23990c76fcfb",
+      "stdout": "{\n  \"status\": \"ORIGINAL_SNOW_SUBDAILY_SOIL_CLOCK_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"4d6a9580c79c82c3187c6daf147d19d09235e862\",\n  \"predecessor\": \"LITERAL_CANONICAL_SALTFARM_AND_SNOW_IMAGES_ACTUAL_UNCHANGED_PRODUCERS_PASS\",\n  \"actual_full_periods\": 16,\n  \"actual_cold_windows\": 256,\n  \"actual_native_refusals\": 960,\n  \"actual_policy_refusals\": 352,\n  \"actual_copied_provider_refusals\": 16,\n  \"actual_preserved_contexts\": 55,\n  \"actual_saltfarm_preserved_full_periods\": 4,\n  \"actual_saltfarm_preserved_cold_windows\": 20,\n  \"actual_bound_reports\": 198,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    },
+    "automatic_PR_checks_at_source_merge": {
+      "head": "5fff9e6ecddd0e14e219116df266af5b056840f8",
+      "classification": "OBSERVED_QUEUED_OR_CHECKOUT_NOT_CLAIMED_PASS_SELECTED_SCOPE_QUALIFICATION_ALREADY_TERMINAL_SUCCESS",
+      "checks": [
+        {
+          "id": 134951425433,
+          "name": "selection-preflight",
+          "status": "queued",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346848093/job/134951425433"
+        },
+        {
+          "id": 134951421903,
+          "name": "startup-attribution",
+          "status": "queued",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847736/job/134951421903"
+        },
+        {
+          "id": 134951421799,
+          "name": "inverse-qualification",
+          "status": "queued",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847736/job/134951421799"
+        },
+        {
+          "id": 134951421727,
+          "name": "qualify",
+          "status": "queued",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346848048/job/134951421727"
+        },
+        {
+          "id": 134951421720,
+          "name": "poison-workspace",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847999/job/134951421720"
+        },
+        {
+          "id": 134951421703,
+          "name": "qualify",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847594/job/134951421703"
+        },
+        {
+          "id": 134951421658,
+          "name": "provider-consistent-stage",
+          "status": "queued",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847736/job/134951421658"
+        },
+        {
+          "id": 134951421622,
+          "name": "qualify",
+          "status": "queued",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346848058/job/134951421622"
+        },
+        {
+          "id": 134951421422,
+          "name": "qualify",
+          "status": "queued",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847911/job/134951421422"
+        },
+        {
+          "id": 134951421280,
+          "name": "smooth-mechanism",
+          "status": "queued",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847736/job/134951421280"
+        },
+        {
+          "id": 134951420940,
+          "name": "qualify",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346848055/job/134951420940"
+        },
+        {
+          "id": 134951420919,
+          "name": "b1-poison",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420919"
+        },
+        {
+          "id": 134951420900,
+          "name": "ahl-default-off",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420900"
+        },
+        {
+          "id": 134951420896,
+          "name": "ahl-scale",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420896"
+        },
+        {
+          "id": 134951420887,
+          "name": "ahl-provider",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420887"
+        },
+        {
+          "id": 134951420735,
+          "name": "ahl-matrix",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420735"
+        },
+        {
+          "id": 134951420617,
+          "name": "ahl-failclosed",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420617"
+        },
+        {
+          "id": 134951420570,
+          "name": "planvalid",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420570"
+        },
+        {
+          "id": 134951420500,
+          "name": "fkt22",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420500"
+        },
+        {
+          "id": 134951420499,
+          "name": "ahl-application",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420499"
+        },
+        {
+          "id": 134951420387,
+          "name": "ahl-ownership",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420387"
+        },
+        {
+          "id": 134951420020,
+          "name": "ppa",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847498/job/134951420020"
+        },
+        {
+          "id": 134951419898,
+          "name": "Validate and build",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847506/job/134951419898"
+        },
+        {
+          "id": 134951419893,
+          "name": "qualification",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847470/job/134951419893"
+        },
+        {
+          "id": 134951419134,
+          "name": "qualify",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847603/job/134951419134"
+        },
+        {
+          "id": 134951418999,
+          "name": "qualify",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847460/job/134951418999"
+        },
+        {
+          "id": 134951418696,
+          "name": "qualify",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847502/job/134951418696"
+        },
+        {
+          "id": 134951418656,
+          "name": "qualify",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44346847440/job/134951418656"
+        }
+      ]
+    },
+    "metadata_docs": "SourcechecksPASS; strictMkDocsPASS41.51seconds externalmetadata site."
   }
 }

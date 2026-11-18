@@ -1,6 +1,6 @@
 # Original Snow output with a subdaily clock
 
-**Qualified current canonical composition / registered proof PASS / actual canonical admission pending.** Baseline
+**Canonically admitted bounded current composition / actual detached source owner PASS.** Baseline
 is actual canonicala264b7166 after PR1738/1739. Both actual source and metadata
 merges have exact ordered parents/full qualified trees and pass the registered
 detached Snow-calendar owner. Closure remains PARTIAL, whole science
@@ -226,3 +226,12 @@ The registered source/evidence command performs no physical model rerun. Origina
 archive paths, compiler/build/input identity and refused-policy diagnostics stay
 visible. On another platform replace the example drive paths with local paths;
 create fresh builds and checkpoints for that exact source/provider identity.
+
+Actual source PR1740 merges as7dfe0ed8f2d70c8ff76355016fbd23990c76fcfb.
+Its orderedb4398e00/5fff9e6ecparents and complete855e83489tree are exact.
+The clean detached actual canonical owner passes in138.090seconds; the real
+THERMAL_CLOCK_COMPOSED_MERGE_RECEIPT.json records that postimage. Broad automatic
+PR checks were still queued/checkout at merge and are recorded separately from
+the terminal successful selected qualification workflows; no such pending job
+is labelled PASS. Metadata admission follows separately. Continue the original
+Snow per-step output and remaining historical selector/process gaps afterwards.

@@ -17,8 +17,7 @@ bind production4d6a9580c and actual canonicalb439 to nine immutable raw records,
 global receipts, native counters and original user cadence are recomputed.
 Initial render/cmelt/terminal-clock/controller failures remain distinct from
 qualified producers. All1870proof corruptions and actual dirty/committed omitted
-terminal-step controls refuse. Registered proof passes; actual canonical admission
-is pending; whole closure/science/RC3 are unchanged.
+terminal-step controls refuse. Actual canonical7dfe0ed8f passes its detached registered owner; whole closure/science/RC3 are unchanged.
 
 [Snow calendar qualification](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
 and `integration/f-ci/nomacro-complete01/THERMAL_CALENDAR_QUALIFICATION.json`

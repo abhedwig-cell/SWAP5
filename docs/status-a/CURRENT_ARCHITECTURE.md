@@ -16,8 +16,7 @@ Darcy/soil-air boundary. Coincident terminal clock events are aligned before
 physical integration. No physical equation changes. All old daily/sparse/CDE/
 age/default routes delegate literally. The current canonical SaltFarm policy and
 original owner body are literal; four full SaltFarm contexts/twenty own cold
-windows remain exact. Registered proof passes; actual canonical
-admission is pending.
+windows remain exact. Actual canonical7dfe0ed8f passes its detached registered owner.
 
 The implemented [Snow output calendar adapter](../science/NOMACRO_THERMAL_CALENDAR_20261118.md)
 retains the literal thermal-domain80byte frame and complete original calendar.
