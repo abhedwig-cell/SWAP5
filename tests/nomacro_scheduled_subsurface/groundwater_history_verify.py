@@ -228,7 +228,9 @@ def verify():
     for location in q['components']:
         z=archives[location['archive']];component=read(z,location['native']+'/RESULT.json')
         require(component['status']=='ACTUAL_GROUNDWATER_HISTORY_NATIVE_COMPONENT_THIRTY_EIGHT_REFUSALS_PASS' and len(component['refusals'])==38
-            and component['actual_fortran_wire'] is component['source_unchanged'] is True,'actual history native component omitted')
+            and component['actual_fortran_wire'] is component['source_unchanged'] is True
+            and component['native_policy']['source_sha256']==q['source_sha256']['app/hybrid_water/groundwater_history_native.py']
+            and component['native_policy']['provider_sha256']==q['source_sha256']['app/hybrid_water/groundwater_history_native_state.f90'],'actual history native component/source omitted')
         for prefix in location['witness']:
             witness=read(z,prefix+'/RESULT.json')
             require(witness['status']=='ACTUAL_GROUNDWATER_HISTORY_DUPLICATE_NATIVE_DIAGNOSTIC_COMPLETE' and witness['published'] is False
@@ -238,6 +240,9 @@ def verify():
         if 'before' in location:
             before=read(z,location['before']+'/RESULT.json');require(before['published'] is False and before['positive']['original_source_unchanged'] is True
                 and before['divergent-original-copy']['status']=='HYBRID_READY' and before['final_state_overridden_by_appended_copy'] is True,'actual unadmitted reader defect censored')
+            original='groundwater-history-hys2-snow-O0-v1/'
+            require(digest(z.read(original+'build/BUILD.json'))==before['build_sha256']
+                and digest(z.read(original+'trajectory/accepted-column-1-day-4.zip'))==before['source_checkpoint_sha256'],'actual initial witness diagnostic producer rebound')
         if 'cde' in location:
             cde=read(z,location['cde']+'/RESULT.json');probe=read(z,location['cde_probe']+'/RESULT.json')
             require(len(cde['refusals'])==19 and 'PASS' in cde['status'] and probe['published'] is False
