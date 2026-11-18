@@ -142,6 +142,11 @@ class Proof(unittest.TestCase):
                 bad=copy.deepcopy(record);bad['origin_artifact']['digest']='sha256:'+'0'*64
                 with self.assertRaises(ValueError):owner.raw_archive(bad)
                 count+=1
+        for record in self.q['archives'].values():
+            if 'byte_parts' not in record:continue
+            bad=copy.deepcopy(record);bad['byte_parts'][0]['offset']=1
+            with self.assertRaises(ValueError):owner.raw_archive(bad)
+            count+=1
         old=json.loads((ROOT/owner.PROOF/'GROUNDWATER_HISTORY_QUALIFICATION.json').read_text(encoding='utf8'))
         for record in old['archives'].values():
             if 'byte_parts' not in record:continue
