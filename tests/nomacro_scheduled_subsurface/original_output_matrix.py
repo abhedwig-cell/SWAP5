@@ -57,7 +57,7 @@ def main():
     for key in ('reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--case',required=True);p.add_argument('--optimization',choices=('O0','O2'),required=True)
     p.add_argument('--phase',choices=('short','full'),default='short');p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
-    a=p.parse_args();a.output.mkdir();inputs=a.existing_input or a.output/'input'
+    a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();inputs=a.existing_input or a.output/'input'
     if not a.existing_input:fixture(inputs,a.case)
     project=m.e.load(inputs,original_output=True);build=a.reuse_build or a.output/'build'
     from original_output import metadata

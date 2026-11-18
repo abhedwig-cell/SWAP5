@@ -15,6 +15,7 @@ def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--reuse-short-prefix');p.add_argument('--resume',action='store_true');a=p.parse_args()
+    a.output=a.output.resolve()
     if not a.resume:a.output.mkdir()
     else:assert a.output.is_dir()
     sys.path.insert(0,str(ROOT/'tools/solute'));import user_prepare
