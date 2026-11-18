@@ -1,12 +1,18 @@
 """Read-only recomputation from actual trajectories and native checkpoints."""
 from pathlib import Path
 from decimal import Decimal
-import hashlib,io,json,math,re,zipfile
+import hashlib,io,json,math,re,zipfile,sys,subprocess
 here=Path(__file__).resolve().parent;root=here.parents[2];sha=lambda b:hashlib.sha256(b).hexdigest();load=lambda p:json.loads(p.read_bytes());seal=load(here/'SEAL.json');index=load(here/'FILES.json');r=load(here/'RESULT.json')
 assert sha((here/'RESULT.json').read_bytes())==seal['result_sha256'];assert sha((here/'FILES.json').read_bytes())==seal['index_sha256'];assert sha((here/seal['archive']).read_bytes())==seal['sha256'];assert not r['tolerances_changed'] and not r['fixed_RC3_changed']
 # Compare checkout text without claiming portable model qualification. Raw
 # executed Windows source hashes remain immutable in each actual build.
-for p,digest in r['production_source_lf_sha256'].items():assert sha((root/p).read_bytes().replace(b'\r\n',b'\n'))==digest,p
+historical=None
+if len(sys.argv)>1:
+ assert sys.argv[1:]==['--historical-source',r['code_commit']]
+ historical=r['code_commit']
+for p,digest in r['production_source_lf_sha256'].items():
+ data=subprocess.check_output(['git','show',historical+':'+p],cwd=root) if historical else (root/p).read_bytes()
+ assert sha(data.replace(b'\r\n',b'\n'))==digest,p
 def records(z,p):return [json.loads(s) for s in z.read(p).decode().splitlines()]
 def physical(data):return [{k:v for k,v in x.items() if k not in ('column','revision')} for x in data]
 def native(z,p):
