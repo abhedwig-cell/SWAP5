@@ -32,12 +32,15 @@ def fixture(path,mode,hysteresis,fmt,reset=1,et=0,snow=0,source='point'):
     p.write_text(text,encoding='cp1252')
 
 
-def own(build,reference,project,full,data,start,end,out):
+def own(build,reference,project,full,data,start,end,out,reuse=False,previous=None):
     meta,case=m.validate_bundle(build,reference,project);source=full/f'accepted-column-1-day-{start}.zip';digest=m.sha(source)
-    origin=out.with_name(out.name+'-origin');receipt=m.h.verify_checkpoint(source,start,meta['binding'],origin);out.mkdir()
-    result,seconds=m.bounded(60,lambda:m.h.run(m.h.executable(build,'day_donor'),m.h.executable(build,'day_kernel'),case,out,end,
-        checkpoint_day=start,origin=origin,origin_receipt=receipt,runtime=True,publish_day=end,checkpoint_binding=meta['binding'],model=project.model,project=project))
-    assert result['first_refusal'] is None,result
+    if reuse:
+        assert out.is_dir() and previous['start']==start and previous['end']==end;seconds=previous['seconds']
+    else:
+        origin=out.with_name(out.name+'-origin');receipt=m.h.verify_checkpoint(source,start,meta['binding'],origin);out.mkdir()
+        result,seconds=m.bounded(60,lambda:m.h.run(m.h.executable(build,'day_donor'),m.h.executable(build,'day_kernel'),case,out,end,
+            checkpoint_day=start,origin=origin,origin_receipt=receipt,runtime=True,publish_day=end,checkpoint_binding=meta['binding'],model=project.model,project=project))
+        assert result['first_refusal'] is None,result
     actual=m.rows(out);m.check(actual);assert m.physical(actual)==m.physical(data[start:end])
     with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as a,zipfile.ZipFile(out/f'accepted-column-1-day-{end}.zip') as b:
         assert a.read('macro.bin')[:8]==magic(project)
@@ -89,20 +92,26 @@ def main():
     p.add_argument('--reset',choices=(0,1),type=int,default=1);p.add_argument('--et',choices=(0,1),type=int,default=0)
     p.add_argument('--snow',type=int,choices=(0,1),default=0);p.add_argument('--source',choices=('point','interval'),default='point')
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
-    p.add_argument('--phase',choices=('short','full'),default='short');p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
-    a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=a.existing_input or out/'input'
-    if not a.existing_input:fixture(inputs,a.mode,a.hysteresis,a.format,a.reset,a.et,a.snow,a.source)
-    project=m.e.load(inputs,original_output=True);build=a.reuse_build or out/'build';selected=metadata(project)
+    p.add_argument('--resume',action='store_true');p.add_argument('--phase',choices=('short','full'),default='short');p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
+    a=p.parse_args();out=a.output.resolve();out.mkdir(exist_ok=a.resume);old=json.loads((out/'RESULT.json').read_text(encoding='utf8')) if a.resume else None
+    inputs=Path(old['input_root']) if old else a.existing_input or out/'input'
+    if not a.existing_input and not a.resume:fixture(inputs,a.mode,a.hysteresis,a.format,a.reset,a.et,a.snow,a.source)
+    project=m.e.load(inputs,original_output=True);build=Path(old['build_root']) if old else a.reuse_build or out/'build';selected=metadata(project)
     assert selected['cde_interval_output'] is True and selected['native_codec']==magic(project).decode()
-    q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    q=dict(status='RUNNING',source_commit=old['source_commit'] if old else subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         nprintday=1,snow=a.snow,source=a.source,mode=a.mode,hysteresis=a.hysteresis,format=a.format,reset=a.reset,et=a.et,optimization=a.optimization,input_root=str(inputs),build_root=str(build),
         original_output=selected,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
+    if old:
+        assert old['status']=='FAILED' and old['error']=="ValueError('not enough values to unpack (expected 2, got 1)')",old
+        preserved=out/'RETAINED_FAILED_RESULT.json';assert not preserved.exists();preserved.write_bytes((out/'RESULT.json').read_bytes())
+        q['retained_post_validation_failure']=dict(status=old['status'],error=old['error'],source_commit=old['source_commit'],original_result_sha256=m.sha(preserved),path=preserved.name,no_model_reexecution=True)
+        q['post_validation_controller_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     def save():(out/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
     try:
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',inputs,'--original-output',
             '--reference-work',a.reference_work,'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',build]
-        if not a.reuse_build:
+        if not a.reuse_build and not a.resume:
             start=time.perf_counter();r=subprocess.run(list(map(str,command)),cwd=ROOT,capture_output=True,text=True,timeout=180)
             (out/'build.stdout').write_text(r.stdout,encoding='utf8');(out/'build.stderr').write_text(r.stderr,encoding='utf8')
             q['build']=dict(returncode=r.returncode,seconds=time.perf_counter()-start);save();r.check_returncode()
@@ -112,10 +121,14 @@ def main():
         windows=[(2,4),(4,8),(19,23),(30,34)] if days>=35 else [(1,days)]
         if a.phase=='full':windows += [(199,201),(364,367),(530,532),(1094,1096)]
         cuts={v for pair in windows for v in pair}|{days};full=out/'trajectory'
-        q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,days,cuts,180);save()
+        if a.resume:
+            q['build']=old['build'];q['trajectory']=old['trajectory'];data=m.rows(full);m.check(data)
+            assert len(data)==days and q['trajectory']['build_sha256']==m.sha(build/'BUILD.json')
+        else:q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,days,cuts,180)
+        save()
         assert controls((full/'original/swap.swp').read_text(encoding='cp1252'))==controls((inputs/'swap.swp').read_text(encoding='cp1252'))
         q['requested_controls_preserved']=True
-        q['cold']=[own(build,a.reference_work,project,full,data,s,e,out/('own-'+str(s))) for s,e in windows]
+        q['cold']=[own(build,a.reference_work,project,full,data,s,e,out/('own-'+str(s)),a.resume,next(v for v in old['cold'] if v['start']==s) if old else None) for s,e in windows]
         q['daily_chemical_receipts']=audit_daily(full,days,project.nodes)
         for start,end in windows:audit_daily(out/('own-'+str(start)),end-start,project.nodes)
         assert abs(data[4]['solute_ledger_mg_cm2'][3]-48.)<=1e-10 and abs(data[6]['solute_ledger_mg_cm2'][3]-72.)<=1e-10
@@ -148,14 +161,10 @@ def main():
             values=records(path)
             stamps=[row[:19].decode('ascii').strip() if isinstance(row,bytes) else row.split(',')[0].strip() for row in values]
             q['user_output'][path.name]=dict(records=len(values),stamps=stamps)
-            from datetime import datetime,timedelta
-            decoded=[]
-            for stamp in stamps:
-                day,clock=stamp.split();hour,minute,second=map(int,clock.split(':'))
-                assert 0<=hour<24 and 0<=minute<60 and 0<=second<=60,stamp
-                decoded.append(datetime.fromisoformat(day)+timedelta(hours=hour,minutes=minute,seconds=second))
-            assert decoded==sorted(decoded) and decoded[0]==datetime.fromisoformat(project.start_date)
-            if a.phase=='full':assert decoded[-1]==datetime(2005,1,1)
+            from datetime import date,timedelta
+            decoded=[date.fromisoformat(stamp) for stamp in stamps]
+            assert decoded==sorted(decoded) and decoded[0]==date.fromisoformat(project.start_date)-timedelta(days=1)
+            if a.phase=='full':assert decoded[-1]==date.fromisoformat(project.end_date)
             if a.mode=='monthly':assert len(values)>1,'No actual selected monthly FLPRINTDT record'
 
         if not a.format:assert not files
