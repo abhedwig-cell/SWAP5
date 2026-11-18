@@ -1,0 +1,134 @@
+--- TRAJECTORY44/diag_state.f90
++++ CLOCK45/diag_state.f90
+@@ -10,6 +10,7 @@
+ integer,save::kind=-1,iterations=0,flags(5)=0,worst=0,prelevel=0
+ real(8),save::residual=0,maxres=0,trialdt=0,headwall=0,budgetwall=0,spanhead=0,spanbudget=0
+ integer(8),save::origin,lastclock,hclock,bclock,rate
++real(8),save::start45(12)=0d0
+ contains
+ subroutine start()
+ call system_clock(origin,rate);lastclock=origin
+--- TRAJECTORY44/macropore_native.f90
++++ CLOCK45/macropore_native.f90
+@@ -1313,7 +1313,7 @@
+ ! ----------------------------------------------------------------------
+       use MOD_grid,      only: numnod, dz,z
+       use variables,     only: dt,h,t1900
+-      use DIAG19,only:repair43,attempts
++      use DIAG19,only:repair43,attempts,start45
+       implicit NONE
+ 
+ ! --- global
+@@ -1326,9 +1326,22 @@
+       real(8)::old_time44,old_ref44,old_sorp44,awl_before44
+       integer,save::history_unit44
+       logical,save::history_open44=.false.
+-      
+-! ----------------------------------------------------------------------
+-
++      real(8)::meta45(24),pot45(2),stamp45(7),rate_geo45(3),rate_q45(4),pre_hist45(3),end_cf45,top45,span45
++      logical::chosen_sorp45,rate_end45
++      integer,save::clock_unit45
++      logical,save::clock_open45=.false.
++      
++! ----------------------------------------------------------------------
++
++! Observation before the native owner changes waterlevel/geometry/history.
++      if(repair43) then
++       call clock45_rate_get(meta45,pot45,stamp45)
++       call clock45_abs_get(chosen_sorp45)
++       rate_geo45=[ZWaLevDm(3),FrMpWalWet(3,50),WaSrMpDm(3)]
++       rate_q45=[QOutMtxUnsDmCp(3,50),QOutMtxSatDmCp(3,50),QInMtxSatDmCp(3,50),QInIntSatDmCp(3,50)]
++       pre_hist45=[TimAbsCumDmCp(3,50),ThtSrpRefDmCp(3,50),SorpDmCp(3,50)]
++       rate_end45=FlEndSrpEvt(3,50)
++      end if
+ !  -- Update water storage in entire macropore domains
+       WaSrMp            = 0.d0
+ 
+@@ -1488,6 +1501,19 @@
+          end do
+       end if
+ !
++! Buffered receipt for the same D3/node50 across all original accepted steps.
++      if(repair43) then
++       top45=min(z(50)+.5d0*dz(50),ZWaLevDm(3));span45=max(0d0,top45-(z(50)-.5d0*dz(50)))
++       end_cf45=0d0
++       if(span45>0d0) end_cf45=min(1d0,max(0d0,(top45-max(z(50)-.5d0*dz(50),GwlFlCpZo))/span45))
++       if(.not.clock_open45) then
++        open(newunit=clock_unit45,file='clock45_trace.txt',status='replace');clock_open45=.true.
++       end if
++       write(clock_unit45,*) attempts,t1900,dt,start45,meta45,pot45,stamp45,rate_geo45,rate_q45, &
++        merge(1,0,chosen_sorp45),merge(1,0,rate_end45),WaSrMpDm(3),ZWaLevDm(3),FrMpWalWet(3,50), &
++        end_cf45,pre_hist45,TimAbsCumDmCp(3,50),ThtSrpRefDmCp(3,50),SorpDmCp(3,50), &
++        ICpTpSatZon,h(50),z(50),dz(50),GwlFlCpZo
++      end if
+ ! --- Update factor for correcting vertical area wall for sorptivity calculations
+       do ic = IcTopMp, NumNod
+          AwlCorFac(ic) = dsqrt(1.0d0-VlMpDmCp(1,ic)/PpDmCp(1,ic)/dz(ic))
+--- TRAJECTORY44/macrorate_node.f90
++++ CLOCK45/macrorate_node.f90
+@@ -30,6 +30,7 @@
+       real(8),save::canonical37(24,madm)=0d0,head37(macp)=0d0,time37=0d0,dt37=0d0
+       integer,save::task37=-1,attempt37=-1,iteration37=-1
+       logical,save::ready37=.false.
++      real(8)::get45_meta(24),get45_pot(2),get45_stamp(7)
+       real(8)::get37_meta(24,madm),get37_potential(macp,2),get37_valid
+ 
+       real(8)::pot35(macp),info35(12)
+@@ -1528,6 +1529,12 @@
+        read(snap23_unit) canonical37,head37,time37,dt37,task37,attempt37,iteration37,ready37
+        read(snap23_unit) obs36_meta,obs36_in,obs36_outsat,obs36_outuns,obs36_rapid
+       end if
++      return
++      entry clock45_rate_get(get45_meta,get45_pot,get45_stamp)
++      get45_meta=canonical37(:,3)
++      get45_pot=[FlwOutMtxUnsDmCpPot(3,50),FlwOutMtxSatDmCpPot(3,50)]
++      get45_stamp=[time37,dt37,dble(task37),dble(attempt37),dble(iteration37), &
++       merge(1d0,0d0,ready37),merge(1d0,0d0,all(head37(1:numnod)==h(1:numnod)))]
+       return
+       entry jac37_invalidate()
+       ready37=.false.
+@@ -1871,6 +1878,7 @@
+       implicit none
+ 
+       integer::snap23_unit,snap23_mode
++      logical::get45_is_sorption
+ 
+ ! --- global                                                         In
+       integer, intent(in)     :: id, ITask
+@@ -2117,6 +2125,9 @@
+ 
+       return
+       return
++      entry clock45_abs_get(get45_is_sorption)
++      get45_is_sorption=FlSorp(3,50)
++      return
+       entry sense23_abs_io(snap23_unit,snap23_mode)
+       if(snap23_mode==1) then
+       write(snap23_unit) DelHDmCp,Diffusivity,FlSorp
+--- TRAJECTORY44/soilwater_native.f90
++++ CLOCK45/soilwater_native.f90
+@@ -257,10 +257,10 @@
+ end subroutine
+ 
+ logical function retry07_driver() result(handled)
+- use DIAG19,only:head_start,head_end,attempts,detail33,active_in_attempt,apply37,repair43
+- use variables,only:t1900,dt,fldecdt
+- use MOD_swap_mp,only:IDecMpRat,FlDecMpRat
+- use MOD_macropore,only:MacroStateVar
++ use DIAG19,only:head_start,head_end,attempts,detail33,active_in_attempt,apply37,repair43,start45
++ use variables,only:t1900,dt,fldecdt,gwl,h,theta
++ use MOD_swap_mp,only:IDecMpRat,FlDecMpRat,GwlFlCpZo
++ use MOD_macropore,only:MacroStateVar,ZWaLevDm,WaSrMpDm,FrMpWalWet,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp,QOutMtxUnsDmCp,FlEndSrpEvt
+  implicit none
+  integer::u
+  handled=.true.
+@@ -271,6 +271,8 @@
+   call ledger12_dump('ledger_begin')
+  end if
+  apply37=.true.;repair43=.true.;detail33=.false.
++ start45=[gwl,GwlFlCpZo,ZWaLevDm(3),WaSrMpDm(3),FrMpWalWet(3,50),TimAbsCumDmCp(3,50), &
++  ThtSrpRefDmCp(3,50),SorpDmCp(3,50),h(50),theta(50),QOutMtxUnsDmCp(3,50),merge(1d0,0d0,FlEndSrpEvt(3,50))]
+  call capture33()
+  call head_start()
+  call headcalc
