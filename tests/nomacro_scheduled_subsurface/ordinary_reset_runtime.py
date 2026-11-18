@@ -1,4 +1,4 @@
-"""Real original Snow FLPRINTDT date-gated output, soil receipts and cold workers."""
+"""Real ordinary water FLPRINTDT annual reset, trial witnesses and cold workers."""
 import argparse
 import json
 from pathlib import Path
@@ -45,6 +45,31 @@ def own(build,reference,project,full,data,start,end,out):
     assert m.sha(source)==digest
     return dict(start=start,end=end,exact_physical=True,exact_complete_native=True,exact_user_output=files,origin_unchanged=True,seconds=seconds)
 
+
+
+def calendar(raw,n):
+    positions=[];prefix=struct.pack('<2i',1,n);start=raw.find(prefix)
+    while start>=0:
+        if start+160<=len(raw):
+            header=struct.unpack_from('<20i',raw,start);nreal=header[3]
+            if nreal>100 and start+160+16*nreal==len(raw) and header==struct.unpack_from('<20i',raw,start+80):positions.append((start,header,nreal))
+        start=raw.find(prefix,start+1)
+    assert len(positions)==1,positions
+    return positions[0]
+
+
+def audit_trial_witness(path,epoch):
+    import math,sys
+    values=[]
+    for line in (path/'original/donor.stdout').read_text(encoding='utf8').splitlines():
+        if not line.startswith('ORDINARY_STALE_BOTTOM_TRIAL_WITNESS '):continue
+        row=list(map(float,line.split()[1:]));assert len(row)==6 and all(map(math.isfinite,row))
+        clock,dt,stale,darcy,old,new=row
+        assert epoch<=clock<epoch+1 and dt>0 and abs(old)>1e-10 and abs(new)<=1e-10,row
+        error=math.fsum([new,-old,-(darcy-stale)*dt])
+        assert abs(error)<=64*sys.float_info.epsilon*max(1,abs(old),abs(new),abs((darcy-stale)*dt)),(row,error)
+        values.append(row)
+    return dict(actual_trial_count=len(values),actual_rows=values,old_stale_max_cm=max((abs(row[-2]) for row in values),default=0),independent_darcy_max_cm=max((abs(row[-1]) for row in values),default=0))
 
 
 def main():
