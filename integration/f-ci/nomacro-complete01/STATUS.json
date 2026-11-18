@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-cde-interval01",
-  "last_commit": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
-  "status": "CDE_INTERVAL_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+  "last_commit": "8ed7ec3269e0bf9568a4d4f013ff3abdf411040c",
+  "status": "CDE_INTERVAL_COMPONENT_O0_O2_PASS_COUPLED_PILOTS_RUNNING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -468,7 +468,18 @@
   "qualified_age_calendar_runtime": "75f4bf12f71286e0021877e9285df43beb6be01d",
   "qualified_age_calendar_ubuntu": "9321cc995ceaa327cab10b5ad0044fbb47fb0152",
   "age_calendar_sealed_proof": "accd67320a4a85db298f5aff55f1e0e87b2d782f",
-  "active_local_jobs": [],
+  "active_local_jobs": [
+    {
+      "scope": "Fouractual35dayCDEordinary/SnowO0O2 pilotworkers",
+      "roots": [
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-ordinary-explicit-O0-v3",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-ordinary-explicit-O2-v3",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-snow-monthly-O0-v3",
+        "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-snow-monthly-O2-v3"
+      ],
+      "phase": "Build then actual35day/4cold; inspect actualRESULT before anyrerun"
+    }
+  ],
   "schedule_known_next_dependencies": [
     "Original subdaily output-clock ownership after cold physical TSTART",
     "Monthly inactive-selector omission combinations: old generic preflight can still demand PERIOD when SWODAT0 remains present; current admitted-bound candidate uses full original decks",
@@ -2409,7 +2420,7 @@
     ]
   },
   "cde_interval": {
-    "status": "CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+    "status": "CDE_INTERVAL_COMPONENT_O0_O2_PASS_COUPLED_PILOTS_RUNNING",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scope": "ActualoriginalCDE Snow0/1 heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather SWBR0/frost0 NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0/period2..366 SWRES0/1 formats0..3. Denseperiod1 andallother/nonCDE paths literal.",
     "original_reader_observations": [
@@ -2425,6 +2436,73 @@
       "Observe actual six rhsincrements at originalassignment sites includingcorrectedSSDI source; do not derivefluxfrominventoryclosure."
     ],
     "scientific_equivalence": "NOT_QUALIFIED",
-    "functional_completion": "PARTIAL"
+    "functional_completion": "PARTIAL",
+    "production": "b7df025ff plus245aacf95/8ed7ec326 dispatch/day import/public bridge fixes",
+    "component": {
+      "status": "ACTUAL_CDE_INTERVAL_RECEIPT_COMPONENT_O0_O2_PASS",
+      "source_commit": "46d613ae0942efa25cffd887b76682c67ffe8bc9",
+      "cases": {
+        "O0": {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-fcheck=all",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-fno-fast-math",
+            "-ffp-contract=off",
+            "-ffree-line-length-none",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-component-v3\\O0\\receipt.exe",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_interval_receipt.f90",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_interval_receipt.f90"
+          ],
+          "compile_returncode": 0,
+          "compile_seconds": 0.5592722999863327,
+          "run_returncode": 0,
+          "run_seconds": 0.123424899764359,
+          "executable_sha256": "3660c4dccc8303b61462b3d77688d32b382aed54f4c728de27e3c55e1ce28657"
+        },
+        "O2": {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-fcheck=all",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-fno-fast-math",
+            "-ffp-contract=off",
+            "-ffree-line-length-none",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-component-v3\\O2\\receipt.exe",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_interval_receipt.f90",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_interval_receipt.f90"
+          ],
+          "compile_returncode": 0,
+          "compile_seconds": 0.5234945002011955,
+          "run_returncode": 0,
+          "run_seconds": 0.1113502997905016,
+          "executable_sha256": "2346dccf79bbdd03db08ad2a29c61cc2738d63e81c562494f8274ceb4a5368aa"
+        }
+      }
+    },
+    "coupled_pilots": [
+      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-ordinary-explicit-O0-v3",
+      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-ordinary-explicit-O2-v3",
+      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-snow-monthly-O0-v3",
+      "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-snow-monthly-O2-v3"
+    ],
+    "retained_failures": [
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-component-v1",
+        "cause": "Strictinvalid trap caught NaN ordered comparison before its rejection; fixed finitecheck first, componentv2/v3O0O2PASS. No physical model executed."
+      },
+      {
+        "roots": "cde-interval-ordinary-explicit/snow-monthly-O0/O2-v1",
+        "cause": "Initial build owner import still selected frozen perstep owner despite new metadata imports; actualpublic refused old daily scope before compilation/models."
+      },
+      {
+        "roots": "cde-interval-ordinary-explicit/snow-monthly-O0/O2-v2",
+        "cause": "Actual new CDE bridge compiled but getters were private in originalparent; typedstate compile refused missingpublic symbols. Added onlyexplicitpublic exports, no physicalexpression change. No models executed."
+      }
+    ]
   }
 }
