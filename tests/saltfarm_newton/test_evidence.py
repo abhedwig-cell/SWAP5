@@ -25,6 +25,8 @@ class ActualRecords(unittest.TestCase):
     def test_actual_cold_state_and_csv(self):
         p='accept-O0/restart109-111/daily.jsonl';rows=[json.loads(s) for s in self.z.read(p).splitlines()];rows[0]['pressure_head_cm'][0]+=1e-4;self.refuse({p:'\n'.join(map(json.dumps,rows)).encode()})
         p='accept-O0/restart109-111/original/result_output.csv';self.refuse({p:self.z.read(p)+b'FOREIGN\n'})
+    def test_actual_flow_with_unchanged_claimed_residual(self):
+        p='accept-O0/full/daily.jsonl';rows=[json.loads(s) for s in self.z.read(p).splitlines()];rows[0]['external_flux_cm'][0]+=1e-4;self.refuse({p:'\n'.join(map(json.dumps,rows)).encode()})
     def test_actual_native_and_instance_payload(self):
         for p in ('accept-O0/restart109-111/accepted-column-1-day-111.zip','transactions/O0/left/accepted-column-1-day-454.zip'):
             with zipfile.ZipFile(io.BytesIO(self.z.read(p))) as q:

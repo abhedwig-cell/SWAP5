@@ -77,6 +77,15 @@ def audit(z,platform,producer=RUNTIME):
         require([r['day'] for r in data[opt]]==list(range(1,1462)),'censored Newton trajectory')
         def balance(values):
             require(all(r['committed'] and all(math.isfinite(r[k]) and abs(r[k])<=1e-10 for k in ('independent_residual_cm','kernel_residual_cm','solute_independent_residual_mg_cm2')) for r in values),'Newton mass acceptance changed or failed')
+            for r in values:
+                start,end,flow=r['stock_start_cm'],r['stock_end_cm'],r['external_flux_cm'];ledger=r['solute_ledger_mg_cm2']
+                require(len(start)==len(end)==6 and len(flow)==16 and len(r['pressure_head_cm'])==195 and len(ledger)==9,'incomplete actual Newton state/ledger')
+                require(all(math.isfinite(v) for v in [*start,*end,*flow,*ledger,*r['pressure_head_cm'],*r['uptake_terms_cm']]),'nonfinite actual Newton state')
+                water=math.fsum([*flow[:7],*(-v for v in flow[7:]),*start,*(-v for v in end)])
+                stock,delta,rain,irrig,bottom,drain,decay,root,reported=ledger
+                solute=math.fsum([stock,-r['solute_start_mg_cm2'],-rain,-irrig,-bottom,drain,decay,root])
+                require(water==r['independent_residual_cm'] and solute==r['solute_independent_residual_mg_cm2'] and abs(reported)<=1e-10,'actual stock/flux ledger differs from claimed Newton balance')
+            require(all(b['stock_start_cm']==a['stock_end_cm'] and b['solute_start_mg_cm2']==a['solute_end_mg_cm2'] for a,b in zip(values,values[1:])),'actual Newton daily stock continuity differs')
         balance(data[opt]);require(max(abs(r['independent_residual_cm']) for r in data[opt])==report['budgets']['max_water_cm'],'reported Newton water balance differs')
         windows=[(v['start'],v['end']) for v in report['restarts']];require(windows==[(109,111),(365,367),(453,455),(1460,1461),(109,1461)],'Newton cold window omitted')
         for start,end in windows:
