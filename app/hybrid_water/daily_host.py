@@ -54,6 +54,7 @@ class HybridProject:
     soil_table_policy: str = ORIGINAL_SOIL_TABLE_POLICY
     age: bool = False
     original_output: bool = False
+    age_irrigation_source: bool = False
 
     @property
     def last_day(self):
@@ -184,6 +185,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                 if age_calendar_owner.selection(project) is None:
                     import age_output_calendar as age_calendar_owner
     age_calendar=age_calendar_owner.selection(project)
+    import age_irrigation_source as current_age_source
+    age_source=current_age_source.selection(project)
     if lower_receipt and not budget_retry:raise ValueError('Implicit lower boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=(2 if project.age else int(project.solute)):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
@@ -613,8 +616,11 @@ end module MOD_wofost""")
             from fixed_irrigation_file import render_irrigation
             source=render_irrigation(source,allow_chemical_subsurface=chemical_fixed or age_fixed)
         if age_fixed:
-            from age_fixed_irrigation import render_irrigation as render_age_fixed
-            source=render_age_fixed(source)
+            if age_source:
+                source=current_age_source.render_irrigation(source)
+            else:
+                from age_fixed_irrigation import render_irrigation as render_age_fixed
+                source=render_age_fixed(source)
         source=replace(source,"      subroutine read_irrigation_fixed()",
                        "      subroutine read_irrigation_fixed()\n         use MOD_swap_base,only:swinco")
         source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
@@ -832,6 +838,7 @@ end module plant_interface""")
         path.write_text(source,encoding='cp1252')
     if age_calendar is not None:
         patched=age_calendar_owner.apply_build(output,donor_build,project,patched)
+    if age_source:patched=current_age_source.apply_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -846,6 +853,7 @@ end module plant_interface""")
                     *([str(output/(name+'.o')) for name in ('mod_original_output_receipt','hybrid_age_output_state','age_output_calendar_probe')] if age_calendar is not None else []),
                     *([str(output/'original_cde_output_state.o')] if project.original_output and project.solute else []),
                     *([str(output/'original_output_hysteresis_domain.o')] if age_calendar and age_calendar.get('swhyst',0) in (1,2) else []),
+                    *([str(output/'age_irrigation_source_domain.o')] if age_source else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
@@ -889,7 +897,7 @@ end module plant_interface""")
         "driver": sha(driver),
         "host": sha(Path(__file__)),
     }
-    from original_output_hysteresis import metadata as original_output_metadata
+    from age_irrigation_source import output_metadata as original_output_metadata
     selected_output=original_output_metadata(project)
     if selected_output is not None:build_identity['original_output']=selected_output
     if project.input_directory:
@@ -909,10 +917,11 @@ end module plant_interface""")
     if project.age:
         from conserved_original_age import metadata as age_metadata
         build_identity['conserved_original_age']=age_metadata()
-        from original_output_hysteresis import age_identity
+        from age_irrigation_source import age_identity
         build_identity['conserved_original_age']=age_identity(build_identity['conserved_original_age'],project)
-        from age_fixed_irrigation import enabled as age_fixed_enabled,metadata as age_fixed_metadata
-        if age_fixed_enabled(project):build_identity['original_age_fixed_irrigation']=age_fixed_metadata()
+        from age_irrigation_source import fixed_metadata
+        fixed_age=fixed_metadata(project)
+        if fixed_age is not None:build_identity['original_age_fixed_irrigation']=fixed_age
     if project.time_step_policy == IRRIGATION_PULSE_TIME_POLICY:
         from irrigation_pulse_time import metadata as pulse_metadata
         build_identity['irrigation_pulse_time'] = pulse_metadata((donor_build/'swap-selected/timecontrol.f90').read_bytes())

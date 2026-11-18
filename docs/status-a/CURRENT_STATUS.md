@@ -1,5 +1,12 @@
 # SWAP5 Status-A current status
 
+The [current fixed age source](../science/NOMACRO_AGE_IRRIGATION_SOURCE_20261118.md)
+is qualified for explicit incoming IRCONCages in fixed sprinkler/surface gifts.
+Windows/Ubuntu40full1096day trajectories, native/input/rollback/public and
+previous-route preservation gates pass. Canonical admission is pending. The
+flag is default off; historical closure stays PARTIAL, whole science NOT_QUALIFIED
+and fixed RC3 remains unchanged.
+
 The [hysteresis/output composition](../science/NOMACRO_ORIGINAL_OUTPUT_HYSTERESIS_20261118.md)
 is qualified on Windows/Ubuntu for both original scanning initializations with
 water, daily CDE and bounded age/calendars. Actual64full1096day trajectories,

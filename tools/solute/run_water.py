@@ -186,6 +186,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     from experimental_project import MODEL as experimental_model
     parser.add_argument("--model", choices=[GRASS_MODEL,HUPSEL_MODEL,experimental_model]+[p.model for p in PROJECTS])
+    parser.add_argument('--age-irrigation-source',action='store_true',
+                        help='Use current fixed sprinkler/surface IRCONC as incoming water age in days; explicit original capture correction')
     parser.add_argument('--original-output',action='store_true',
                         help='Preserve original formats, CSV groups, precision and calendar; requires --experimental-project')
     parser.add_argument('--experimental-project', type=Path,
@@ -229,6 +231,7 @@ def main():
         parser.error('--model is required for a build or run')
     experimental = args.experimental_project is not None
     if args.original_output and not experimental:parser.error('--original-output requires --experimental-project')
+    if args.age_irrigation_source and not experimental:parser.error('--age-irrigation-source requires --experimental-project')
     if args.experimental_soil_table_policy is not None and not experimental:
         parser.error('--experimental-soil-table-policy requires --experimental-project')
     if args.experimental_solute_step_policy is not None and not experimental:
@@ -282,7 +285,7 @@ def main():
     try:
         if experimental:
             from experimental_project import load
-            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy,original_output=args.original_output)
+            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy,original_output=args.original_output,age_irrigation_source=args.age_irrigation_source)
         else:
             project={p.model:p for p in PROJECTS}[args.model]
     except (OSError, ValueError) as error:

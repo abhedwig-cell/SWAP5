@@ -1267,5 +1267,11 @@
     "remaining": "Snow/frost/aquifer/detailedweatheroutput andnonzeroageforcing remainseparate. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
     "canonical_admission": "76f1a078b1b236b8e7cbdd400c1f5c83aa43e62b",
     "admission_receipt": "integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_MERGE_RECEIPT.json"
+  },
+  "bounded_current_fixed_age_source": {
+    "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "authority": "integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_QUALIFICATION.json",
+    "scope": "ExplicitdefaultoffcurrentIRCONC0..1000dayage inputforsprinkler/surface; sixnativecalendar/outputfamilies; literalphysicalproviders; actualoriginalcapturedefectproven",
+    "remaining": "Nonzerosubsurfaceageandotherhistoricalgapsremain; wholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged"
   }
 }

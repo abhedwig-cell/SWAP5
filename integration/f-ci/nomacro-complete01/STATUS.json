@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-output-hysteresis01",
-  "last_commit": "76f1a078b1b236b8e7cbdd400c1f5c83aa43e62b",
-  "status": "OUTPUT_HYSTERESIS_ACTUAL_CANONICAL_ADMITTED_METADATA_PENDING",
+  "branch": "codex/nomacro-age-irrigation-source01",
+  "last_commit": "529bb206a23ec17ed5fdd86403640378cd18aa67",
+  "status": "WINDOWS_UBUNTU_CURRENT_SOURCE_QUALIFIED_PENDING_SEALED_OWNER",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -54,10 +54,10 @@
     "Remaining drainage/surfacewater/constitutive/weather/state gaps and release consolidation"
   ],
   "dependency_surface": [
-    "Original calc_AgeTracer/read_AgeTracer/outage private Agemsy and pond/effluent state, original age initialization/restart",
-    "src/process/mod_b111_age_tracer_substep.f90 (existing admitted provider, preserve)",
-    "src/process/mod_b111_surface_age_budget.f90 (existing admitted provider, preserve)",
-    "app/hybrid_water/experimental_project.py and daily_host native/ledger route (not yet changed for age)"
+    "OriginalMOD_irrigation CIRR/IRCONC/isua/iramtb/nird andcompleteprivateirrigationstate",
+    "Originalcalc_AgeTracer task1parametercapture/task2surfaceforcing",
+    "Frozenage_fixed_irrigation.py, conserved_original_age.py, NOMACRO-AGE-SOURCE-01/source.py andphysicalproviders",
+    "Potentialnewexplicitpolicy/project/native/sourceadapter: notyetimplemented"
   ],
   "invariants": [
     3,
@@ -608,6 +608,43 @@
     "proof_seal": "40a81d4b0330d85c6820cb5ec1069f6a9d61038a",
     "docs": "FinalsourcePASS+strictMkDocs26.764secondsPASS",
     "canonical_admission": "76f1a078b1b236b8e7cbdd400c1f5c83aa43e62b",
-    "actual_detached_owner_seconds": 47.837577499914914
+    "actual_detached_owner_seconds": 47.837577499914914,
+    "actual_metadata_merge": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
+    "actual_metadata_owner_seconds": 46.89016279997304
+  },
+  "age_irrigation_source_results": {
+    "work_unit": "NOMACRO-AGE-IRRIGATION-SOURCE01",
+    "baseline": "04031746ef5b2c9735fad89c1a2754c42cdc1ce6",
+    "status": "WINDOWS_UBUNTU_CURRENT_SOURCE_QUALIFIED_PENDING_SEALED_OWNER",
+    "source_findings": "OriginalfixedreaderIRCONC0..1000forSWSOLU>0; irrigationtask1CIRR0,task3CIRRactualevent. OriginalcalcAge task1capturesAgeirr=CIRRonce then usescapturedAgeirr forever. read_AgeTracer forciblysetsrain/drainage/seepageages0; nohistoricalnonzerorainselectorisclaimed. Existingphysicalsurface/soilprovidersalreadyacceptnonzeroageinputs andretainexternalageledger; onlyexplicitfixedyoungguardandhostforcingadapterboundcurrentzeroage.",
+    "native_risk": "ExistingAgeirr/Agepre/Agedrain savedparameters arestaticnativeforcing witnesses; dynamicfixedeventagesmustnotreuseoldcodecsorbeaccidentallytreatedasstaticnativeparameters. Preservealloldhelpers,providers/codecs/youngdefaultsemantics.",
+    "next": "Sealcurrentraw/qualification; addnewregisteredownerhook preservingliteralprecedingbody; actualsource/evidence/root, corruptiontests anddirty+actualcommittedignored-source negative; docs; canonical+metadata actualpostimageverification; next historicalgap.",
+    "external_blocker": null,
+    "original_counterexample": "636f12d83 actualoriginal63objectclosure, O0/O2 surface/sprinkler IRCONC0/20 all24eightdayrunsPASS. Originalnonzeroandzeroprofilesexact; nonmutatingprobeexact. Realnird2.4cm/CIRR20/Ageirr0: captures0 ratherthan48cmday. Isolatedrefreshpreserveszeroageandchangesnonzeroageprofile;actual48cmdaycurrentinputbothopts/kinds. NoSWAP5activation.",
+    "probe_failure": "d337640ba scopeddiagnostictoMODULEsubroutine whileimportsareinsubmodule specification; assertionbeforecompilation/model. Retainfirstprefix; fixsubmodulescopeonly;v2PASS.",
+    "domain_component": "e868e3e04 actualoriginalmodule-storageO0/O2twelvebase-layoutcontexts exact56pairedheaderbytes/streamposition/nonmutation;120native+6age-range/nonfiniterefusalsPASS. Providerobjects/libraryunchanged.",
+    "prototype": "Explicit--age-irrigation-source defaultFalse; fixedIRCONC0..1000days forsurface/sprinkleronly;currentCIRRhandedtoliteralphysicalsurfaceprovider. Oldyounghelper/ageproviders/sourcepatch/calendar/outputhelpersunchanged; sixnewcodecsandactualpairedprocessdomain appendedafterexistingcompletephysical/calendar/age payload;dynamicCIRRownedbyexistingcompleteirrigationstate, staticAgeirrnativeparameterspreserved.",
+    "pilot": "3ea174ac7production surface20andsprinkler0O0/O2 each10dayPASS; true48cmdayexternalgift;completecurrenttypednative+physical+allactualuseroutputexact2to4and4to8. Sourceflowanddomainactualmoduleflagschecked.",
+    "zero_preservation": "Newzeroagepipeline entire10dayphysicalexact toactualadmittedoldyoungfull;completeoldnativepayload andoriginalresult.end exactdays2/4/8afterremovingONLYnewcodecand56bytedomain. BothoptsPASS.",
+    "pilot_failures": "4b63ac273 generationrefusedmissingDZanchorbeforemodel because002numnod-only vsphysicalhistorynumnod,dz. Fixedwholerealimportmatchingonly. V2real10days andfirstcoldnativepassed, thencontrollerusedSWswitchinventoryforNPRINTDAY=>KeyError aftermodel. Fixedactualkeyregex;reusedsamebuild/trajectory/completedcoldstate,retainedfailedreport;no productionorparameterchange.",
+    "extended_short": "3ea174ac7production O0/O2nineselectedvaryingagecalendar/output/hysprofiles eachPASS: incoming48+72cmday,completeownnative/useroutput/physicalexact across002/003/004/005/ordinary/hysdomains. Priorpositive/zero4contextsPASS.",
+    "native_diagnostic": "IsolatedactualO0regular003native day4: futureIRCONC10 changedto1001afterouterZIPverification. Existinginheritedprivateirrigationreader acceptedatinitialization; sourceguardwouldonlyrefusewhenfuturegiftoccurs. Diagnosticpreserved age-irrigation-source-future-native-diagnostic; noacceptedcheckpointmodified. Newsourceflagneedsimmediatenativeinputidentityguard.",
+    "native_refinement": "Fornewflagonly, retainactualoriginalreaderIFND asimmutableinputshape(reconstructedatworkerinitialization,notphysicalrestartstate). CompareONLYactualactiveoriginalirdate/irtype/irdepth/irrate/irconc tosavedpendingnativecontext; validateactualtimecursor/currentCIRRbeforeapply. Nevercompareundefinedtails. Literaloldprivateowner retainedwhenflagFalse; noextraageequationorchangedbalancepolicy.",
+    "refined_pilot": "a5cedc906actualregular003O0/O2ten-daypositive48+72cmday /completeownnative+physical+useroutputPASS;50native+14policyrefusals total and2varyingexternalfirst/secondgift discard/replay/accept/recoverycontextsPASS. Future1001/negative/NaN/foreignage,tabledate/type/rate/depth andcursor rejectedbeforeHYBRID_READY.",
+    "windows_full": "Currenta5production:14shortprofiles/opt +10full1096/opt allPASS,144fullcoldwindows and88shortcoldwindows total; actualsource48+72cmday variablegifts, all6typednativefamilies, year/season/lastgift nativeexact. Format0/3 all1096physical and7completenativeendpoints exactO0/O2.",
+    "windows_controls": "7contexts/opt:350native+98policyrefusals total;14varyingexternalfirst/secondgift rollback/replay/accept/recoverycontextsPASS.",
+    "original_plain_component": "ActualplaincorrectedoriginalO0/O2eightcases exact toretainedrefresheddiagnostic;zerooriginalpreserved/nonzeroprofilechanges. Original24diagnosticpairs andproviderclosureunchanged; no newSWAP5activationbysuchreference.",
+    "domain_component_refined": "Currentdomainmodule source_count reconstructedfromactualIFND;12layouts/120native+14age/shape refusalsPASS;actualflags/56bytes/nonmutation. Oldcomponent andunsafe-future diagnosticretained.",
+    "preservation": "O0priorordinary+hys10contextsPASS;O2running. All8fixedyoungforms/opts emittedclosure/nativeprefixPASS. Named3 controllerwronglypassed--donor-opt: argparseprebuildrefusal; correctedcontrollerresumesonly3namedcases withoutrepeating8completedones.",
+    "ubuntu_run": 44236392888,
+    "ubuntu_status": "SUCCESS",
+    "ubuntu_contract_run": 44238067805,
+    "ubuntu_contract_status": "SUCCESS",
+    "portable": "Actual20full1096/Ubuntu plus14short/opt,350native+98policyrefusals/platform,14varyingexternalcontexts/platform; original24+plain8referencecases/domain120+14refusals actualPASS. Contracts3public/6realreader+7descriptor+defaultyoungguard and4prior-sourcefalseclosuresPASS.",
+    "windows_preservation": "31freshflagFalsecontexts actualsource/provider/native/physical/useroutput exactPASS:20ordinary/hys,8youngfixedforms,3named. Wrongnamed--donor-opt argumentfailurebeforemodel retained; missing-onlyresumePASS.",
+    "boundary": "FirstdateandtrueTEND giftO0/O2ten-dayactual48+72cmday complete6coldwindowsPASS; savedstaticAgeirr nativeparameterwitness remainsliteral andvalid.",
+    "real_reader_failure": "FirstnegativeproperlyrefusedTTUTILSTOP0 withrangeerrorinswap.err beforeHYBRID_READY; controllerdidnotcollectswap.err. Addactualerrfiletospecificdiagnostic; v2sixreal+sevenpolicy+youngdefaultrefusalsPASS. No modelrun ortolerancechange.",
+    "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
+    "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   }
 }

@@ -1,0 +1,13 @@
+{
+  "audit_id": "NOMACRO-AGE-IRRIGATION-SOURCE-01",
+  "status": "ORIGINAL_SOURCE_CAPTURE_COUNTEREXAMPLE_QUALIFIED_EXPLICIT_ADAPTER_NOT_QUALIFIED",
+  "original_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+  "corrected_canonical_sha256": "4a5fb3b41c4619c84fe7ebbb5c357a2922a36520bf0a8ad1d8e551edbe143a09",
+  "base_age_adapter_canonical_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+  "scope": "Originaltask1Ageirr capturesCIRR0; task3irrigationCIRR changesperfixedsprinkler/surfacegift; sourcecorrectionconsumescurrentCIRR. SWAP5adapterfeedsactualcurrentvalue toexistingphysicalsurfaceprovider withoutchangingstaticnativeparameters.",
+  "reference_policy": "docs/verification/principles.md#reference-chain",
+  "SWAP5_activation": "EXPLICIT_UNQUALIFIED_PROTOTYPE_ONLY",
+  "scientific_equivalence": "NOT_QUALIFIED",
+  "evidence": "integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_ORIGINAL.json",
+  "actual_controls": "O0/O2actualoriginalsurface/sprinkler8days IRCONC0/20: literaloriginalprofilesexact,diagnosticnonmutation,actual2.4cm*20days=48cmday ignored; refreshpreserveszeroandchangespositiveprofile. Actualproviderobjects/libraryunchanged."
+}
