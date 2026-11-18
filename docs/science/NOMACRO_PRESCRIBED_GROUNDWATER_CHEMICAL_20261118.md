@@ -1,6 +1,6 @@
 # Original prescribed groundwater with chemical transport
 
-**Qualified bounded composition / canonical admission pending.** Baseline is actual
+**Canonically admitted bounded composition.** Baseline is actual
 canonicala787476a0f3db2490e75ff18afea097b82476332 after PR1731/1732. Its source
 and metadata merge parents, full qualified trees and detached owners pass.
 Historical closure stays PARTIAL, whole science NOT_QUALIFIED, fixed RC3 unchanged.
@@ -161,8 +161,9 @@ The source-bound successor recomputes actual ledgers, checks the real hydraulic
 and CDE native prefixes, compares every cold payload, and retains the literal
 qualified predecessor image and immutable archives. Three proof tests pass in
 5.572seconds, refusing800actual period/ledger/native corruptions and44source/
-scope corruptions plus a real archive-part offset fault. Actual registered-root
-and canonical admission remain required before calling this composition admitted.
+scope corruptions plus a real archive-part offset fault. Actual canonical95fc7b7fe has exact ordered parents/full qualified tree and
+passes its clean detached registered owner in64.821seconds. The versioned
+GROUNDWATER_CHEMICAL_MERGE_RECEIPT.json records that actual postimage.
 
 Historical functional closure remains PARTIAL and whole scientific equivalence
 NOT_QUALIFIED. This work introduces no original physical equation correction;
