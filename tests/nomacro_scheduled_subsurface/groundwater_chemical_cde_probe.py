@@ -23,17 +23,17 @@ def main():
         with zipfile.ZipFile(candidate) as z:actual=struct.unpack_from('<d',z.read('macro.bin'),48+8*(project.nodes+1))[0]
         assert actual==trial.budget['solute_end_mg_cm2'] and positive.day==4
         q['positive']=dict(actual_native_stock_mg_cm2=actual,reported_stock_mg_cm2=trial.budget['solute_end_mg_cm2'],source_unchanged=m.sha(source)==digest,private_candidate=str(candidate));save()
-        negative=CoupledDailyColumn(build,a.reference_work,a.output/'reported-mismatch',project,'cde-stock-probe',origin=source,day=4,adopt_native=True);receive=m.h.receive;changed=[False]
+        negative=CoupledDailyColumn(build,a.reference_work,a.output/'reported-mismatch',project,'cde-stock-probe',origin=source,day=4,adopt_native=True);receive=m.h.receive;changed=[False];forged=[None]
         def corrupt(process,*args,**kwargs):
             disposition,response=receive(process,*args,**kwargs)
             if not changed[0] and 'HYBRID_DAY_RETURN' in response and 'HYBRID_SOLUTE_LEDGER' in response:
-                values=response['HYBRID_SOLUTE_LEDGER'].copy();values[0]=str(float(values[0])+1.);values[2]=str(float(values[2])+1.);response['HYBRID_SOLUTE_LEDGER']=values;changed[0]=True
+                values=response['HYBRID_SOLUTE_LEDGER'].copy();values[0]=str(float(values[0])+1.);values[2]=str(float(values[2])+1.);response['HYBRID_SOLUTE_LEDGER']=values;changed[0]=True;forged[0]=float(values[0])
             return disposition,response
         try:
             m.h.receive=corrupt
             try:proposal=negative.prepare()
             except (ValueError,RuntimeError) as error:
-                assert changed[0];q['negative']=dict(status='REFUSED_BEFORE_EXTERNAL_PREPARED_CANDIDATE',error=str(error))
+                assert changed[0];q['negative']=dict(status='REFUSED_BEFORE_EXTERNAL_PREPARED_CANDIDATE',error=str(error),reported_stock_mg_cm2=forged[0])
             else:
                 candidate=negative._candidate[3]
                 with zipfile.ZipFile(candidate) as z:actual=struct.unpack_from('<d',z.read('macro.bin'),48+8*(project.nodes+1))[0]
