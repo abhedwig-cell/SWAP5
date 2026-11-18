@@ -39,10 +39,7 @@ def main():
     if args.resume:record['retained_previous_report']=json.loads((args.output/'RESULT.json').read_text())
     def save():(args.output/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
     def invoke(script,*options):subprocess.run([sys.executable,'-B',str(Path(__file__).with_name(script)),*map(str,options)],cwd=runtime.ROOT,check=True,timeout=1800)
-    reuse={'hys1-snow0-original':f'groundwater-history-hys1-snow0-{args.optimization}-v1',
-           'hys0-snow1-original':f'groundwater-history-hys0-snow1-{args.optimization}-v1',
-           'hys2-snow1-original':f'groundwater-history-hys2-snow-{args.optimization}-v1',
-           'hys1-heat0-drain0-et1-default':f'groundwater-history-hys1-heat0-drain0-et1-default-{args.optimization}-v2'}
+    reuse={'hys2-snow1-original':f'groundwater-history-hys2-snow-{args.optimization}-v2'}
     save()
     try:
         for key,(hys,snow,fmt,kind,extra,full_selected) in CASES.items():
@@ -58,7 +55,7 @@ def main():
             record['cases'][key]=dict(short_root=str(short),input_root=str(inputs),build_root=str(build),short=report);save()
             if key in CONTROLS:
                 target=args.output/('controls-'+key)
-                if args.reuse_pilots and key=='hys2-snow1-original':target=args.reuse_pilots/f'groundwater-history-controls-hys2-snow-{args.optimization}-v1'
+                if args.reuse_pilots and key=='hys2-snow1-original':target=args.reuse_pilots/f'groundwater-history-controls-hys2-snow-{args.optimization}-v2'
                 if not (target/'RESULT.json').exists():invoke('groundwater_history_controls.py','--reference-work',args.reference_work,'--profile-root',short,'--output',target)
                 control=json.loads((target/'RESULT.json').read_text())
                 assert control['status']=='GROUNDWATER_HISTORY_ACTUAL_NATIVE_ACTIVE_AND_REPORTED_REFUSALS_PASS' and control['build_sha256']==runtime.m.sha(build/'BUILD.json')

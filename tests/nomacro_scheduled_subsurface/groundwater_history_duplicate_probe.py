@@ -23,7 +23,7 @@ def main():
     record=dict(status='RUNNING',build_sha256=m.sha(build/'BUILD.json'),source_checkpoint_sha256=digest,
                 original_hydraulic_offset=original,appended_hydraulic_offset=offset,published=False,
                 scope='Private original native reader initialization only; no daily step or external proposal is executed',
-                final_state_overridden_by_appended_copy=True)
+                final_state_overridden_by_appended_copy=None)
     def save():(args.output/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
     save()
     try:
@@ -46,6 +46,7 @@ def main():
                 observation=dict(status='REFUSED_INCONSISTENT_HYDRAULIC_WITNESS_BEFORE_READY',diagnostic=diagnostic,error=str(error))
             record[label]=observation;save()
         assert m.sha(source)==digest
+        record['final_state_overridden_by_appended_copy']=record['divergent-original-copy']['status']=='HYBRID_READY'
         record['status']='ACTUAL_GROUNDWATER_HISTORY_DUPLICATE_NATIVE_DIAGNOSTIC_COMPLETE'
         print(record['status'],record['divergent-original-copy']['status'],flush=True)
     except Exception as error:record.update(status='FAILED',error=repr(error));raise
