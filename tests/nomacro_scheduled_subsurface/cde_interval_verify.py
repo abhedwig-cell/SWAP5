@@ -2,6 +2,7 @@
 from pathlib import Path,PureWindowsPath,PurePosixPath
 from datetime import date,timedelta
 import hashlib,io,json,math,struct,subprocess,sys,tarfile,tempfile,zipfile
+from functools import lru_cache
 
 ROOT=Path(__file__).resolve().parents[2]
 PROOF='integration/f-ci/nomacro-complete01/'
@@ -36,6 +37,17 @@ def tree(ref,path):return {line.split('\t',1)[1]:line.split('\t',1)[0] for line 
 def physical(data):return [{k:v for k,v in row.items() if k not in ('column','revision')} for row in data]
 def rows(z,prefix):return [json.loads(line) for line in z.read(prefix+'daily.jsonl').splitlines()]
 def read(z,path):return json.loads(z.read(path))
+
+
+@lru_cache(maxsize=None)
+def kernel_checkout_digest(path,target):
+    raw=blob(RUNTIME,path)
+    # BUILD records exact compiler-input bytes, unlike the normalized source seal.
+    # Windows used core.autocrlf=true; Ubuntu compiled the literal Git LF blob.
+    # Keep both original BUILD hashes and raw artifacts unchanged.
+    if target=='x86_64-w64-mingw32':raw=raw.replace(b'\r\n',b'\n').replace(b'\n',b'\r\n')
+    else:require(target=='x86_64-linux-gnu','foreign actual kernel checkout target')
+    return digest(raw)
 
 
 def raw_archive(record):
@@ -242,7 +254,7 @@ def verify():
             for key,case in CASES.items():
                 item=run['cases'][key];bp=locate(item['build_root']);buildraw=z.read(bp+'BUILD.json');build=json.loads(buildraw);bd=digest(buildraw);build_files(z,bp,build)
                 for name,value in build['inputs'].items():require(digest(z.read(locate(item['input_root'])+name))==value,'actual CDE input changed')
-                for path,value in build['identity']['kernel_sources']:require(sha(ROOT/path)==value,'actual physical CDE kernel source changed')
+                for path,value in build['identity']['kernel_sources']:require(kernel_checkout_digest(path,build['identity']['target'])==value,'actual physical CDE kernel source changed: '+path)
                 require(build['identity']['original_output']['source_sha256']==q['source_sha256']['app/hybrid_water/cde_interval_output.py'],'compiled CDE owner source differs')
                 for phase in ('short','full'):
                     if phase=='full' and not case[-1]:continue
@@ -323,7 +335,7 @@ def verify():
             for key,item in report['profiles'].items():
                 require(item['all_physical_exact'] is item['actual_immutable_prior_member_hashes'] is True,'actual preserved CDE seam differs')
                 pp=prefix+'/'+key+'/';build=read(z,pp+'build/BUILD.json');require(build==item['actual_build'],'actual fresh seam build differs');build_files(z,pp+'build/',build)
-                for path,value in build['identity']['kernel_sources']:require(sha(ROOT/path)==value,'preserved actual physical kernel source differs')
+                for path,value in build['identity']['kernel_sources']:require(kernel_checkout_digest(path,build['identity']['target'])==value,'preserved actual physical kernel source differs: '+path)
                 data=rows(z,pp+'trajectory/');require(len(data)==35 and all(row['committed'] is True for row in data),'fresh seam trajectory censored')
                 for row in data:
                     water=math.fsum([*row['external_flux_cm'][:7],*(-v for v in row['external_flux_cm'][7:]),*row['stock_start_cm'],*(-v for v in row['stock_end_cm'])])
