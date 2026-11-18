@@ -1,5 +1,5 @@
 {
-  "status": "ORIGINAL_OUTPUT_HYSTERESIS_SOURCE_AND_BASELINE_SELECTED",
+  "status": "SHORT_SOURCE_NATIVE_PASSED_FULL_SELECTED",
   "baseline": "4b33ac69f93386658c34d03461b85c014e181d0f",
   "contract": "docs/science/NOMACRO_ORIGINAL_OUTPUT_HYSTERESIS_20261118.md",
   "hysteresis_modes": [
@@ -32,5 +32,36 @@
   "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
   "full_moving_fci": "NOT_SELECTED_IMPACT",
   "whole_scientific_equivalence": "NOT_QUALIFIED",
-  "functional_completion": "PARTIAL"
+  "functional_completion": "PARTIAL",
+  "full_days": 1096,
+  "full_profiles_per_optimization": 16,
+  "full_expected_seconds_per_optimization": 1500,
+  "full_scientific_impact": "Changed original output and complete hysteresis carry composition crosses original daily/year/calendar boundaries. Twelve kind/mode/format0or3 profiles plus NP3 water/age, monthly water and perstepmonthly age. Original equations literal; no solver component repeat. Cold seasonal/year/terminal windows expose accepted hydraulic/history/calendar state omitted by short tests.",
+  "full_own_windows": [
+    [
+      2,
+      4
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      199,
+      201
+    ],
+    [
+      364,
+      367
+    ],
+    [
+      530,
+      532
+    ],
+    [
+      1094,
+      1096
+    ]
+  ],
+  "portable_selection": "Same changed source/state boundary on Ubuntu after local shorts; no full moving F-CI."
 }

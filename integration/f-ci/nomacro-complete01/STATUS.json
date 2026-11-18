@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-age-output-clock01",
-  "last_commit": "6ce0ab4001b3bfa17490bee4c48f61752412d11f",
-  "status": "AGE_CLOCK_NPRINT2_3_O0_O2_SHORT_EXACT_NATIVE_PASS",
+  "branch": "codex/nomacro-output-hysteresis01",
+  "last_commit": "4aaf71629ea0bff04d2fc7fc329c6718aff54478",
+  "status": "OUTPUT_HYSTERESIS_18_SHORT_NATIVE_PILOTS_PASS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -575,18 +575,19 @@
     "actual_metadata_owner_seconds": 53.96444470016286
   },
   "output_hysteresis_results": {
-    "status": "SOURCE_INVENTORY_AND_BASELINE_SELECTED_NO_NEW_IMPLEMENTATION",
+    "status": "IMPLEMENTED_SHORT_TESTED_NOT_QUALIFIED",
     "baseline": "O0/O2sixactual10daycompatibilitycontexts each allwater/CDE/age,hys1/2 activehistory and24coldwindows totalPASS; all12original-outputpreflightrefusalsobserved. Completedwater/CDE reusedexactlyafteragefixturefix.",
     "work_unit": "NOMACRO-ORIGINAL-OUTPUT-HYSTERESIS01",
     "physical_source": "Originalhysteresisupdatesh/indeks/fhyst/delp/dimocaafterSoilWater/watstor/fluxes, preservingtheta; existingresult.end+hydraulicandmicro native ownersretainacceptedcarry. Integralwaterincrementsunchanged; nosnowselected.",
     "interfaces": "Explicitoriginal_outputproject/bindingonly; preserveoriginal_output.py/calendar/clock/physicalhelpersliterally. Anewprocess-domainownerneedsitsowncodecs/domainwitnessanddefaultdelegation; no sourcemetadatarebinding.",
-    "next": "PersistprototypethenfocusedO0/O2dailyCSV0water/CDE/age andNP3/binary/calendar coldprobes; verifyactualbaselinephysics/sourcehistory/domain beforelongmatrix.",
+    "next": "Complete remaining seven short profiles/opt, then selected16 full1096/opt and seasonal cold windows; new native/domain/transaction negatives and affected default preservation. Freeze production metadata before long matrix.",
     "scientific_impact": "Historicaloriginaloutput0..3/calendar withalreadyimplementedhysteresis; no constitutiverelation, solver, energy, tolerance or macrochange.",
-    "recovery_point": "4b33ac69f93386658c34d03461b85c014e181d0f",
+    "recovery_point": "4aaf71629ea0bff04d2fc7fc329c6718aff54478",
     "baseline_first": "01e4aef45 bothO0/O2 actualwater+hys1 andCDE+hys1 ten-day/2to4+4to8completephysical/native/CSVexact; mixedindex/fhyst0.8338384..1 provesactualscanning. AgefixturecorrectlyrefusedIRCONC20 byexistingyoung-onlyguard beforemodel; nothysteresisfailure.",
     "baseline_failure": "Retainoutput-hysteresis-baseline-O0/O2 andactualageinitializationerror; fixagefixtureIRCONC0 only, keepchemical20. Reuseverifiedcompletedwater/CDEcases, executeonlymissingcontexts.",
     "historical_age_source": "Originalcalc_AgeTracer initializesAgeirr=cirr andAgepre=cpre; nonzeroage-valuedinflows arehistoricallyexpressible andremainseparateunmigratedsourcework, neverrelaxyoung-onlyguardinthisoutputunit.",
     "domain_component": "2918753d3 actualoriginalmodule-storageO0/O2 twelvekind/modecontexts, exact40bytepairedheaders/streamposition/nonmutation+92refusalsPASS; originalproviderobjects/libraryunchanged.",
-    "prototype": "UNQUALIFIED original_output_hysteresis.py composesliteralordinary/calendar/clock/receipt/physicalhelpers;S5IHW001/S5IHC001/S5IHA001 anddomainwitness afterphysicalhistory beforecalendar;CDEprefix48 unchanged; newmetadata/defaultdelegation routes connected, nochangedphysicalfunctions."
+    "prototype": "UNQUALIFIED original_output_hysteresis.py composesliteralordinary/calendar/clock/receipt/physicalhelpers;S5IHW001/S5IHC001/S5IHA001 anddomainwitness afterphysicalhistory beforecalendar;CDEprefix48 unchanged; newmetadata/defaultdelegation routes connected, nochangedphysicalfunctions.",
+    "pilots": "18 actual O0/O2 profiles PASS: all three kinds hys2 CSV0 and hys1 CSV3; waterhys2 NP3 binary, agehys1 NP3 ASCII, agehys2 perstepmonthly REAL4. Actual physical/native/useroutput cold exact. Six daily CSV0 cases exact old compatibility physics."
   }
 }
