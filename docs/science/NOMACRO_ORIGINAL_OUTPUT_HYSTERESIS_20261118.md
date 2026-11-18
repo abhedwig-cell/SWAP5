@@ -43,3 +43,13 @@ unchanged. Rejected trials cannot change committed state. No active macro,
 broad MODFLOW, new solver or performance campaign is selected. No full moving
 F-CI or long/portable matrix is selected before the focused baseline identifies
 the actual changed source/state dependency surface.
+
+The initial domain ABI is two identical five-integer records in the native
+stream: version1, active node count, SWMACRO0, original SWHYST1/2 and SWSOLU0/1/2.
+Reading compares both records to the actual original module globals and changes
+no live state. It is appended after the existing physical/history payload and
+before output-calendar state; the conserved CDE prefix must stay at byte48.
+Proposed distinct codecs are S5IHW001, S5IHC001 and S5IHA001. A small component
+links actual original module storage and tests all six kind/mode combinations,
+exact stream position, nonmutation and malformed/foreign domain refusal before
+any production route activates this ABI.
