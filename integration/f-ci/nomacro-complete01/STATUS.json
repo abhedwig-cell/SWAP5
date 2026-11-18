@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-thermal-step01",
-  "last_commit": "2e04963ca612de4ae9ca299a18680a9d64387e8c",
-  "status": "THERMAL_STEP_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "last_commit": "05174068bbb1696231a3c4de993f1b273bb520cc",
+  "status": "THERMAL_STEP_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Original FLPRINTDT SWRES1 year reset with full native calendar ownership, first ordinary/Snow scoped original-source audit and actual O0/O2 pilot.",
-  "recovery_point": "codex/nomacro-thermal-step01; THERMAL_STEP_QUALIFICATION.json; registered tests/hupsel51/verify_successor.py",
+  "recovery_point": "codex/nomacro-thermal-step01 at actual source merge05174068b; THERMAL_STEP_MERGE_RECEIPT.json",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Integrate qualified FLPRINTDT source then metadata; verify actual merge parents/full tree/clean detached registered owner. Continue original SWRES1 output-clock gap.",
+  "next_action": "Merge metadata and verify actual clean detached registered owner; then implement original annual SWRES1 FLPRINTDT native counter reconciliation.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -655,7 +655,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "aad3388b627988dee9fe8ef7b095cb6600248990",
+  "canonical_head": "05174068bbb1696231a3c4de993f1b273bb520cc",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -1424,10 +1424,19 @@
         "stdout": "{\n  \"status\": \"ORIGINAL_SNOW_SUBDAILY_SOIL_CLOCK_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"4d6a9580c79c82c3187c6daf147d19d09235e862\",\n  \"predecessor\": \"LITERAL_CANONICAL_SALTFARM_AND_SNOW_IMAGES_ACTUAL_UNCHANGED_PRODUCERS_PASS\",\n  \"actual_full_periods\": 16,\n  \"actual_cold_windows\": 256,\n  \"actual_native_refusals\": 960,\n  \"actual_policy_refusals\": 352,\n  \"actual_copied_provider_refusals\": 16,\n  \"actual_preserved_contexts\": 55,\n  \"actual_saltfarm_preserved_full_periods\": 4,\n  \"actual_saltfarm_preserved_cold_windows\": 20,\n  \"actual_bound_reports\": 198,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
         "stderr": ""
       }
+    },
+    "automatic_pr_ci_latest": {
+      "total": 46,
+      "counts": {
+        "('completed', 'skipped')": 17,
+        "('completed', 'success')": 24,
+        "('completed', 'cancelled')": 5
+      },
+      "role": "Actual terminal snapshot:24success17skipped5cancelled; cancelled not PASS."
     }
   },
   "thermal_step": {
-    "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
     "baseline": "aad3388b627988dee9fe8ef7b095cb6600248990",
     "contract": "docs/science/NOMACRO_THERMAL_STEP_20261118.md",
     "baseline_observation": "C:/Users/Veldh012/swap5-complete01-evidence/thermal-step-baseline-original-reader-v2",
@@ -1518,6 +1527,35 @@
         "conclusion": "success"
       }
     },
-    "retained_admission_failure": "Owner v1 read empty original.stderr instead of actual original-reader/swap.err; real retained failure validated in v2. No model or raw evidence rerun/rewrite."
+    "retained_admission_failure": "Owner v1 read empty original.stderr instead of actual original-reader/swap.err; real retained failure validated in v2. No model or raw evidence rerun/rewrite.",
+    "actual_source_owner": {
+      "status": "ACTUAL_THERMAL_STEP_CANONICAL_MERGE_VERIFIED",
+      "pr": 1742,
+      "merge": "05174068bbb1696231a3c4de993f1b273bb520cc",
+      "parents": [
+        "aad3388b627988dee9fe8ef7b095cb6600248990",
+        "a740d5b6acb1989d8b21a9ee55d97bcf1501a4c4"
+      ],
+      "qualified_head": "a740d5b6acb1989d8b21a9ee55d97bcf1501a4c4",
+      "tree": "43d335ca002486ae89d317b6eba33513919445d7",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 97.56130919978023,
+        "head": "05174068bbb1696231a3c4de993f1b273bb520cc",
+        "stdout": "{\n  \"status\": \"ORIGINAL_SNOW_FLPRINTDT_SOIL_CLOCK_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"bd6c5861718333f56ab16be06ea4fc54be316e3b\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_SUBDAILY_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 16,\n  \"actual_cold_windows\": 256,\n  \"actual_native_refusals\": 976,\n  \"actual_policy_refusals\": 400,\n  \"actual_copied_provider_refusals\": 16,\n  \"actual_preserved_contexts\": 67,\n  \"actual_saltfarm_preserved_full_periods\": 4,\n  \"actual_saltfarm_preserved_cold_windows\": 20,\n  \"actual_bound_reports\": 197,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    },
+    "source_docs": "Source checks PASS; strict MkDocs PASS40.17seconds external source site.",
+    "automatic_pr_ci_snapshot": {
+      "head": "a740d5b6acb1989d8b21a9ee55d97bcf1501a4c4",
+      "total": 28,
+      "counts": {
+        "('queued', None)": 8,
+        "('in_progress', None)": 20
+      },
+      "role": "Automatic legacy PR checks, not selected scientific qualification. Pending is not PASS; snapshot external thermal-step-source-pr-ci-current.json. No duplicate/cancel requested."
+    }
   }
 }
