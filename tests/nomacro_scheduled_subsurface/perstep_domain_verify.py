@@ -428,13 +428,26 @@ def verify():
         failed=read(z,'perstep-domain-baseline-ordinary-reset0-v1/RESULT.json')
         require(failed['status']=='ACTUAL_PRIOR_ORDINARY_RESET0_MODEL_CENSORED' and failed['scientific_claim'] is False
           and failed['error']=='Model wall cap 30s' and failed['actual_accepted_days']==0,'actual prior reset0 censor hidden/promoted')
+        old_prefix='perstep-domain-baseline-ordinary-reset0-v1/';old=read(z,old_prefix+'build/BUILD.json');build_files(z,old_prefix+'build/',old)
+        require('HYBRID_READY' in z.read(old_prefix+'trajectory/original/donor.stdout').decode('utf8'),'actual prior reset0 worker never initialized')
+        for opt in ('O0','O2'):
+            prefix=f'perstep-domain-corrected-reset0-{opt}-v1/';report=read(z,prefix+'RESULT.json');raw=z.read(prefix+'build/BUILD.json');build=json.loads(raw);selected=build['identity']['original_output']
+            build_files(z,prefix+'build/',build);period(report,('explicit',0,3,0,0,1,0,False),opt,'short',build,digest(raw))
+            require(build['project']==old['project'] and build['inputs']==old['inputs'] and build['identity']['kernel_sources']==old['identity']['kernel_sources'],'actual corrected reset0 changes physical input/kernel source')
+            data=rows(z,prefix+'trajectory/');ledger(data,35);require(trial_witness(z,prefix+'trajectory/',selected['original_output_epoch'],report['trial_phase_witness'])['actual_trial_count']>0,'actual formerly blocked ordinary observer not exercised')
+            for window in report['cold']:
+                start,end=window['start'],window['end'];actual=rows(z,prefix+f'own-{start}/');require(physical(actual)==physical(data[start:end]),'corrected reset0 cold differs')
+                with zipfile.ZipFile(io.BytesIO(z.read(prefix+f'trajectory/accepted-column-1-day-{end}.zip'))) as warm,zipfile.ZipFile(io.BytesIO(z.read(prefix+f'own-{start}/accepted-column-1-day-{end}.zip'))) as cold:
+                    for name in ('result.end','macro.bin'):require(warm.read(name)==cold.read(name),'actual corrected reset0 complete native differs')
+                    native(warm.read('macro.bin'),data[end-1],build['project']['nodes'],0,selected)
+                user_cold(z,prefix+'trajectory/original/',prefix+f'own-{start}/original/',report['user_output'],start,end,build['project']['start_date'])
         for opt in ('O0','O2'):
             failure=read(z,f'perstep-domain-snow-np3-{opt}-v1/RESULT.json')
             diagnostic=z.read(f'perstep-domain-snow-np3-{opt}-v1/build.stderr').decode('utf8')
             require(failure['status']=='FAILED' and failure['build']['returncode']==1 and 'original_output_hysteresis_domain.o' in diagnostic and 'cannot find' in diagnostic,'actual first Snow link refusal hidden')
     require((fulls,windows,refusals,policies,providers,contexts)==(24,368,1296,1356,24,103),'actual Snow calendar full/native/preservation denominator differs')
     return dict(status='ORIGINAL_WATER_PERSTEP_COUNT_RESET_NATIVE_ADMISSION_PASS',runtime=RUNTIME,predecessor=prior,actual_full_periods=fulls,
-        actual_cold_windows=windows,actual_bounded_limit_periods=8,actual_bounded_limit_cold_windows=8,actual_native_refusals=refusals,actual_policy_refusals=policies,actual_copied_provider_refusals=providers,
+        actual_cold_windows=windows,actual_corrected_prior_reset0_periods=2,actual_corrected_prior_reset0_cold_windows=8,actual_retained_prior_reset0_censors=1,actual_bounded_limit_periods=8,actual_bounded_limit_cold_windows=8,actual_native_refusals=refusals,actual_policy_refusals=policies,actual_copied_provider_refusals=providers,
         actual_preserved_contexts=contexts,actual_saltfarm_preserved_full_periods=4,actual_saltfarm_preserved_cold_windows=20,actual_non_january_periods=epoch_periods,actual_epoch_cold_windows=epoch_cold,actual_post_year_native_refusals=year_refusals,actual_bound_reports=reports,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
