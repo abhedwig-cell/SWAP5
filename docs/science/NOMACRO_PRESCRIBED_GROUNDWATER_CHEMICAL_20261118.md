@@ -1,6 +1,6 @@
 # Original prescribed groundwater with chemical transport
 
-**Source reconciliation / not implemented or admitted.** Baseline is actual
+**Source reconciliation / confirmed shared CDE receipt defect / not admitted.** Baseline is actual
 canonicala787476a0f3db2490e75ff18afea097b82476332 after PR1731/1732. Its source
 and metadata merge parents, full qualified trees and detached owners pass.
 Historical closure stays PARTIAL, whole science NOT_QUALIFIED, fixed RC3 unchanged.
@@ -24,14 +24,16 @@ an independent unsaturated trial input.
 Reconcile a read-only constraint-reaction receipt from the actual original Darcy
 interface and prescribed tail, without changing original equations or the
 accepted Full Richards solver. The trial stock must use the prescribed tail
-before original assignment, without mutating a rejected state. The special
-fully prescribed/no-unsaturated-node branch needs an explicit source contract;
-do not silently accept an unvalidated branch. Preserve signed exchanges and
+before original assignment, without mutating a rejected state. Original ReadSwap rejects any GWLEVEL above zbotcp(5), explicitly requiring
+five unsaturated compartments. The fully prescribed/no-unsaturated-node
+HeadCalc branch is therefore outside this original valid-input domain; retain
+the original refusal rather than inventing broader support. Preserve signed exchanges and
 actual concentration input, all complete native state, chronology and source
 input identity. Inspect original groundwater table/cold validation as well.
 
 First target ordinary analytical no-macro chemical profiles with prescribed
-levels and at least one unsaturated node, no snow/frost and original drainage.
+levels, the original minimum of five unsaturated compartments, no snow/frost
+and original drainage.
 Other combinations remain separate unless source dependencies and executions
 support them. Inspect actual CDE native/receipt consistency before extending
 external candidates; a demonstrated shared defect must be repaired explicitly,
@@ -53,3 +55,29 @@ and detached owner, including metadata admission, then continue the inventory.
 No general MODFLOW, alternative solver or active-macro work is authorized here.
 
 Affected invariants:3,4,7,13,21,23,30. No tolerance relaxation or implicit fallback.
+
+
+## Actual shared CDE native/receipt defect
+
+The persisted probe uses an actual current ordinary original-output CDE build,
+input and day4checkpoint. Its normal private proposal reports55.46075109597839
+mg/cm2 and the actual native SAMPRO is exactly the same. Changing only the
+reported total stock and reported rain input by1mg/cm2 returns a private
+prepared proposal reporting56.46075109597839mg/cm2, while native SAMPRO remains
+55.46075109597839. The reported mass residual is8.167772014289199e-14mg/cm2,
+so the unchanged mass guard alone cannot reject this mutually fabricated report.
+The accepted external day stays4, the source checkpoint is unchanged, and no
+external accepted state is published. Failed/private diagnostic artifacts remain
+separate; existing qualified data are not edited or rebound.
+
+`daily_coupling.py` checks the native codec, prefix shape/nonnegative domain and
+manifest/receipt identity. Aquifer candidates additionally compare their actual
+seven fields and soil stock, but ordinary CDE candidates lack that final native
+stock comparison. This is an inherited SWAP5 coupling defect, not an original
+SWAP equation defect. Add a source-bound read-only native total-stock check for
+all explicit no-macro CDE candidates before returning prepare and again before
+acceptance/publication. Keep the existing aquifer validator literal. Read the
+actual stored SAMPRO at48+8*(actual_nodes+1); do not reconstruct it by summing
+CMSY, whose internal soil-volume representation requires original geometry.
+The physical wire, providers, equations and valid trajectories remain unchanged.
+Fresh bundles must bind the new consistency policy; no old metadata is rebound.
