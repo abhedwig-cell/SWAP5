@@ -35,7 +35,7 @@ def own(build,reference,project,full,data,start,end,out):
                 origin_unchanged=True,seconds=seconds)
 
 
-def fixture(path,kind,fmt=3):
+def fixture(path,kind,fmt=3,chemistry=False,boundary_file=False,source_boundaries=False):
     original.fixture(path,'cde-solbal-csv3')
     control=path/'swap.swp';text=control.read_text(encoding='cp1252')
     for key,value in dict(SWBOTB=1,SWBBCFILE=0,SWHYST=0,SWSNOW=0,SWFROST=0,SWBR=0,SWBOTBC=1,SWCSV=fmt).items():
@@ -48,6 +48,20 @@ def fixture(path,kind,fmt=3):
     text,count=re.subn(r'(?mi)^([ \t]*DATE1[ \t]+GWLEVEL[^\r\n]*\n).*?^\* End of table',
                        lambda match:match[1]+table+'* End of table',text,count=1,flags=re.S)
     assert count==1
+    if chemistry:
+        text=assignment(assignment(text,'SWSP',1),'SWDC',1)
+        text,count=re.subn(r'(?mi)^([ \t]*DECPOT[ \t]+FDEPTH[^\r\n]*\n).*?^\* End of Table',
+                           lambda match:match[1]+'0.001 1.0\n0.001 0.65\n* End of Table',text,count=1,flags=re.S)
+        assert count==1
+    if boundary_file:
+        text=assignment(assignment(text,'SWBBCFILE',1),'BBCFIL',repr('groundwater'))
+        (path/'groundwater.bbc').write_text('SWBOTB = 1\nDATE1 GWLEVEL\n'+table+'* End of table\n',encoding='cp1252')
+    if source_boundaries:
+        name=m.e.one(text,'IRGFIL',r"'[^']+'").strip("'")
+        (path/(name+'.irg')).write_text('IRDATE IRDEPTH IRCONC IRTYPE IRRATE\n'
+            '2002-01-01 24.0 20.0 2 12.0\n2002-01-05 24.0 20.0 2 12.0\n'
+            '2003-01-01 8.0 10.0 2 4.0\n2003-06-15 6.0 100.0 2 6.0\n'
+            '2004-12-31 12.0 60.0 2 12.0\nIR_Z = -30.0\n',encoding='cp1252')
     control.write_text(text,encoding='cp1252')
 
 
@@ -61,13 +75,17 @@ def main():
     parser.add_argument('--existing-input',type=Path)
     parser.add_argument('--format',choices=(0,1,2,3),type=int,default=3)
     parser.add_argument('--compatibility-output',action='store_true')
+    parser.add_argument('--chemistry',action='store_true')
+    parser.add_argument('--boundary-file',action='store_true')
+    parser.add_argument('--source-boundaries',action='store_true')
     args=parser.parse_args();out=args.output.resolve();out.mkdir();inputs=out/'input'
     inputs=args.existing_input or inputs
-    if not args.existing_input:fixture(inputs,args.kind,args.format)
+    if not args.existing_input:fixture(inputs,args.kind,args.format,args.chemistry,args.boundary_file,args.source_boundaries)
     project=m.e.load(inputs,original_output=not args.compatibility_output);build=args.reuse_build or out/'build'
     record=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                 kind=args.kind,optimization=args.optimization,build_root=str(build),input_root=str(inputs),
                 original_output=project.original_output,format=args.format,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
+    record.update(chemistry=args.chemistry,boundary_file=args.boundary_file,source_boundaries=args.source_boundaries)
     def save():(out/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
     save()
     try:
@@ -85,6 +103,13 @@ def main():
         if args.phase=='full':windows += [(199,201),(364,367),(530,532),(1094,1096)]
         cuts={i for pair in windows for i in pair}|{days}
         full=out/'trajectory';record['trajectory'],data=m.trajectory(build,args.reference_work,project,full,days,cuts,180);save()
+        record['process_observations']=dict(bottom_min_cm=min(r['bottom_outward_cm'] for r in data),
+            bottom_max_cm=max(r['bottom_outward_cm'] for r in data),chemical_irrigation_mg_cm2=sum(r['solute_ledger_mg_cm2'][3] for r in data),
+            decomposition_mg_cm2=sum(r['solute_ledger_mg_cm2'][6] for r in data))
+        if args.source_boundaries:
+            assert abs(data[0]['solute_ledger_mg_cm2'][3]-48.)<=1e-10
+            if days==1096:assert abs(data[-1]['solute_ledger_mg_cm2'][3]-72.)<=1e-10
+        if args.chemistry:assert record['process_observations']['decomposition_mg_cm2']>0
         record['cold']=[own(build,args.reference_work,project,full,data,s,e,out/('own-'+str(s))) for s,e in windows]
         record['status']='ACTUAL_PRESCRIBED_GROUNDWATER_CDE_'+args.phase.upper()+'_NATIVE_USER_FILES_PASS'
         print(args.kind,args.optimization,record['status'],flush=True)
