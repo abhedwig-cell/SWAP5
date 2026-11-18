@@ -1,0 +1,36 @@
+{
+  "status": "ORIGINAL_OUTPUT_HYSTERESIS_SOURCE_AND_BASELINE_SELECTED",
+  "baseline": "4b33ac69f93386658c34d03461b85c014e181d0f",
+  "contract": "docs/science/NOMACRO_ORIGINAL_OUTPUT_HYSTERESIS_20261118.md",
+  "hysteresis_modes": [
+    1,
+    2
+  ],
+  "kinds": [
+    "water",
+    "cde",
+    "age"
+  ],
+  "optimization": [
+    "O0",
+    "O2"
+  ],
+  "short_days": 10,
+  "own_windows": [
+    [
+      2,
+      4
+    ],
+    [
+      4,
+      8
+    ]
+  ],
+  "expected_seconds": 300,
+  "water_guard_cm": 1e-10,
+  "chemical_guard_mg_cm2": 1e-10,
+  "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+  "full_moving_fci": "NOT_SELECTED_IMPACT",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "functional_completion": "PARTIAL"
+}
