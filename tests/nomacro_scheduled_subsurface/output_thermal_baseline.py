@@ -64,7 +64,9 @@ def main():
             body=lambda text:text[text.index('   case (3)'):text.index('   case default',text.index('   case (3)'))]
             observed=body(rendered)
             pattern=r"(?m)^([ \t]*)hybrid_receipt_increment=([^\n]+)\n[ \t]*call observe_output_increment\([^\n]+\n[ \t]*if\(hybrid_receipt_status[^\n]+\n[ \t]*(\w+)\s*=\s*\3\s*([+-])\s*hybrid_receipt_increment[ \t]*$"
-            observed,count=re.subn(pattern,lambda m:m[1]+m[3]+' = '+m[3]+' '+m[4]+' '+m[2].strip(),observed);assert count>=15,count
+            observed,count=re.subn(pattern,lambda m:m[1]+m[3]+' = '+m[3]+' '+m[4]+' '+m[2].strip(),observed)
+            inherited=r"(?m)^([ \t]*)hybrid_receipt_increment=([^\n]+)\n[ \t]*(\w+)\s*=\s*\3\s*([+-])\s*hybrid_receipt_increment\s*\n[ \t]*if\(hybrid_output_frame%active\)then\n[ \t]*call observe_output_increment\([^\n]+\n[ \t]*if\(hybrid_receipt_status[^\n]+\n[ \t]*end if[ \t]*$"
+            observed,oldcount=re.subn(inherited,lambda m:m[1]+m[3]+' = '+m[3]+' '+m[4]+' '+m[2].strip(),observed);assert count==3 and oldcount>=12,(count,oldcount)
             tokens=lambda text:re.sub(r'\s+','',re.sub(r'(?m)!.*$','',text)).lower()
             assert tokens(observed)==tokens(body(original)),'Original physical Integral task3 statements changed'
             left=m.rows(out/'baseline/trajectory');right=m.rows(out/'current/trajectory');maxima={}
