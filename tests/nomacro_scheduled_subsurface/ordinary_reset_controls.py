@@ -1,10 +1,10 @@
 """Actual ordinary annual-output native, policy and transactional controls."""
 import argparse,contextlib,json,shutil,struct
 from pathlib import Path
+import ordinary_reset_runtime as matrix
 from daily_coupling import CoupledDailyColumn
 from age_calendar_controls import physical
 from ordinary_output_reset import magic,metadata,selection
-import ordinary_reset_runtime as matrix
 
 m=matrix.m
 POLICY_FIELDS=('policy','native_codec','source_sha256','predecessor_owner_sha256','ordinary_owner_sha256','history_owner_sha256','domain_source_sha256','native_domain_bytes',
