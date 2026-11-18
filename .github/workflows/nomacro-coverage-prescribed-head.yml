@@ -1,54 +1,16 @@
-name: Original head and surface-file boundary controls
+name: Original output with complete hysteresis carry
 on:
-  push:
-    branches: [codex/nomacro-coverage12]
-    paths: ['.github/workflows/nomacro-coverage-prescribed-head.yml']
   workflow_dispatch:
-    inputs:
-      table_drainage:
-        type: boolean
-        default: false
-        description: Complete original DRAMET1 positive and signed table drainage
-      time_event_closure:
-        type: boolean
-        default: false
-        description: Corrected original TimeControl with frost snow drainage full and native gates
-      frost_history:
-        type: boolean
-        default: false
-        description: Bounded original corrected frost with complete snow history
-      pond_history:
-        type: boolean
-        default: false
-        description: Complete original scheduled-pond history O0/O2 full and native checks
-      fixed_irrigation_inputs:
-        type: boolean
-        default: false
-        description: Select original external fixed irrigation file cohort
-      surface_inputs:
-        type: boolean
-        default: false
-        description: Select scheduled pond and runon file cohort instead of prescribed head
-      surface_runon_only:
-        type: boolean
-        default: false
-        description: Resume only the four affected runon configurations
-      finish_surface_runon:
-        type: boolean
-        default: false
-        description: Finish only remaining verification on fixed run43864567262 artifacts
 permissions:
   contents: read
-  actions: read
 jobs:
   qualify:
     runs-on: ubuntu-26.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     strategy:
       fail-fast: false
-      max-parallel: 2
       matrix:
-        configuration: ${{ fromJSON(inputs.table_drainage && '["water-drain-table","chemical-drain-table","water-drain-signed","chemical-drain-signed"]' || inputs.time_event_closure && '["water-frost-drained"]' || inputs.frost_history && '["water-frost-free","chemical-frost-free"]' || inputs.pond_history && '["water-surface-history","chemical-surface-history"]' || inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
+        optimization: [O0, O2]
     env:
       OMP_NUM_THREADS: '1'
     steps:
@@ -56,70 +18,28 @@ jobs:
         with:
           sparse-checkout: |
             app
-            tests/nomacro_mixtures
-            tests/nomacro_pond_history
-            tests/nomacro_frost
-            tests/nomacro_time_event
-            tests/nomacro_drainage
-            reference/swap-4.3.1/patches/TIME-EVENT-CLOSURE-01
             src
             tools/solute
             tools/vq
-            reference/swap-4.3.1/projects
-            reference/swap-4.3.1/source-archives
-            reference/swap-4.3.1/frost-corrections/FROST-DRAIN-01
-            reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01
-      - name: Download immutable executed runon evidence
-        if: inputs.finish_surface_runon
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ github.token }}
-          run-id: 43864567262
-          name: nomacro-surface-input-${{ matrix.configuration }}-166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad
-          path: ${{ runner.temp }}/proof
-      - name: Fetch exact executed source for dependency comparison
-        if: inputs.finish_surface_runon
-        run: git -c protocol.version=2 fetch --filter=blob:none --no-tags --depth=1 origin 166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad
-      - name: Execute selected original boundary and native own restarts O0/O2
-        env:
-          TABLE_DRAINAGE: ${{ inputs.table_drainage }}
-          TIME_EVENT_CLOSURE: ${{ inputs.time_event_closure }}
-          FROST_HISTORY: ${{ inputs.frost_history }}
-          POND_HISTORY: ${{ inputs.pond_history }}
-          SURFACE_INPUTS: ${{ inputs.surface_inputs }}
-          FINISH_SURFACE_RUNON: ${{ inputs.finish_surface_runon }}
-          FIXED_IRRIGATION_INPUTS: ${{ inputs.fixed_irrigation_inputs }}
+            tests/nomacro_scheduled_subsurface
+            tests/nomacro_mixtures
+            reference/swap-4.3.1
+      - name: Prepare compiler
         run: |
-          if [ "$TABLE_DRAINAGE" = true ]; then
-            python3 -B tests/nomacro_drainage/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            if [ "${{ matrix.configuration }}" = water-drain-table ]; then
-              python3 -B tools/solute/check_tabulated_drainage.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/drain-component"
-            fi
-            python3 -B tests/nomacro_drainage/preflight.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
-          elif [ "$TIME_EVENT_CLOSURE" = true ]; then
-            python3 -B tests/nomacro_time_event/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B reference/swap-4.3.1/patches/TIME-EVENT-CLOSURE-01/run.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/time-component"
-            python3 -B tools/solute/check_terminal_water_receipt.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/terminal-component"
-            python3 -B tests/nomacro_time_event/preflight.py --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
-          elif [ "$FROST_HISTORY" = true ]; then
-            python3 -B tests/nomacro_frost/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B tools/solute/check_bounded_frost.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/frost-component"
-            python3 -B tests/nomacro_frost/preflight.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
-          elif [ "$POND_HISTORY" = true ]; then
-            python3 -B tests/nomacro_pond_history/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B tools/solute/check_top_history_codec.py --scheduled-pond --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/pond-component"
-          elif [ "$FIXED_IRRIGATION_INPUTS" = true ]; then
-            python3 -B tools/solute/check_nomacro_coverage.py --fixed-irrigation-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          elif [ "$FINISH_SURFACE_RUNON" = true ]; then
-            python3 -B tools/solute/check_nomacro_coverage.py --surface-input-options --finish-surface-runon-evidence --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          elif [ "$SURFACE_INPUTS" = true ]; then
-            python3 -B tools/solute/check_nomacro_coverage.py --surface-input-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          else
-            python3 -B tools/solute/check_nomacro_coverage.py --head-boundary-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          fi
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+      - name: Actual hysteresis output qualification
+        run: python3 -B tests/nomacro_scheduled_subsurface/output_hysteresis_ci.py --reference-work /tmp/output-hysteresis-provider --output "$RUNNER_TEMP/output-hysteresis-${{ matrix.optimization }}" --optimization ${{ matrix.optimization }}
+      - name: Actual native domain and external transaction controls
+        run: python3 -B tests/nomacro_scheduled_subsurface/output_hysteresis_controls.py --reference-work /tmp/output-hysteresis-provider --matrix-root "$RUNNER_TEMP/output-hysteresis-${{ matrix.optimization }}" --output "$RUNNER_TEMP/output-hysteresis-${{ matrix.optimization }}/controls"
+      - name: Actual original trial receipt component
+        run: python3 -B tests/nomacro_scheduled_subsurface/age_clock_receipt_component.py --reference-work /tmp/output-hysteresis-provider --build "$RUNNER_TEMP/output-hysteresis-${{ matrix.optimization }}/short-water-hys2-csv3-np3/build" --optimization ${{ matrix.optimization }} --output "$RUNNER_TEMP/output-hysteresis-${{ matrix.optimization }}/receipt-component"
+      - name: Original process-domain storage component
+        if: matrix.optimization == 'O0'
+        run: python3 -B tests/nomacro_scheduled_subsurface/output_hysteresis_domain_component.py --reference-work /tmp/output-hysteresis-provider --output "$RUNNER_TEMP/output-hysteresis-${{ matrix.optimization }}/domain-component"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: nomacro-${{ inputs.table_drainage && 'drain-table' || inputs.time_event_closure && 'time-event' || inputs.frost_history && 'frost-history' || inputs.pond_history && 'pond-history' || inputs.fixed_irrigation_inputs && 'irrigation-file' || inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
-          path: ${{ runner.temp }}/proof
-          retention-days: 30
+          name: output-hysteresis-${{ matrix.optimization }}
+          path: ${{ runner.temp }}/output-hysteresis-${{ matrix.optimization }}
+          retention-days: 7
