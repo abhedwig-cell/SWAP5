@@ -5,7 +5,7 @@ and `integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_QUALIFICATION.json`
 bind production4aaf71629 to seven immutable raw archives,242actual producer
 reports/builds and64full Windows/Ubuntu periods. The registered successor checks
 actual accepted ledgers/native domains;3003corruptions and dirty/committed guard
-relaxations are refused. Qualification is bounded; canonical admission is pending.
+relaxations are refused. Qualification is bounded; actual canonical76f1a078b passes its detached registered owner.
 
 [Original output controls](../science/NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md),
 `integration/f-ci/nomacro-complete01/ORIGINAL_OUTPUT_QUALIFICATION.json` and

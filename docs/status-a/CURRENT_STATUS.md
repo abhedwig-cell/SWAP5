@@ -4,7 +4,7 @@ The [hysteresis/output composition](../science/NOMACRO_ORIGINAL_OUTPUT_HYSTERESI
 is qualified on Windows/Ubuntu for both original scanning initializations with
 water, daily CDE and bounded age/calendars. Actual64full1096day trajectories,
 complete native/transaction/user-command and prior-route preservation gates pass.
-Canonical admission is pending; historical closure stays PARTIAL, whole science
+Actual canonical76f1a078b passes its detached registered owner; historical closure stays PARTIAL, whole science
 NOT_QUALIFIED and the fixed RC3 named release is unchanged.
 
 The [bounded original-output successor](../science/NOMACRO_ORIGINAL_OUTPUT_CONTROL_20261118.md)
