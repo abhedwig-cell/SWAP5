@@ -1,6 +1,6 @@
 # Original groundwater CDE with hydraulic and snow histories
 
-**Source contract / not yet implemented or admitted.** Baseline is actual
+**Implemented composition / corrected native-witness qualification in progress / not admitted.** Baseline is actual
 canonicalc40636910 after PR1733/1734. Both source95fc7b7fe and metadata merges
 have exact ordered parents/full qualified trees and pass their actual detached
 registered owners. Historical closure remains PARTIAL, whole science
@@ -92,3 +92,15 @@ remains necessary because the original thermal wire alone lacks it. Add actual
 old/appended-copy refusal controls and prove rejection before HYBRID_READY.
 Fresh source-bound builds and appropriate cold/year/terminal gates must qualify
 the corrected reader. Do not rebind old builds or checkpoints.
+
+Corrected production278152113 preserves the original hydraulic owner and checks
+all5*N+4appended values against it before assignment when SWHYST1/2 is active.
+The original authoritative values remain in place. SWHYST0/Snow1 still restores
+its necessary full carry from the new domain. Fresh O0/O2 hysteresis2/Snow1
+35day/four-cold-window pilots pass;39actual native corruptions per optimization
+are refused, including independently changed original and appended copies.
+The same actual diagnostic that reached HYBRID_READY before the repair now
+refuses before HYBRID_READY on both optimizations. Source checkpoints remain
+unchanged and no external state is published. Initial complete Windows-v1
+positive cohorts are retained separately; corrected fresh Windows-v2 source
+builds and complete selected cold/year/terminal cohorts are next.
