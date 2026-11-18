@@ -16,7 +16,7 @@ CASES={
     'explicit-hys1-ascii':('explicit',1,1,1,0,True),
     'periodic-hys0-cumulative-et1':('periodic',0,1,1,1,False),
     'terminal-hys2-binary':('terminal',2,3,1,0,False),
-    'explicit-hys0-none':('explicit',0,0,1,0,False),
+    'explicit-hys2-none':('explicit',2,0,1,0,False),
     'periodic-hys2-vector':('periodic',2,2,1,0,False),
 }
 CONTROLS=tuple(key for key,case in CASES.items() if case[-1])
@@ -65,7 +65,7 @@ def main():
             if fmt:
                 for observed in full['user_output'].values():assert observed['stamps'][-1]=='2005-01-01 00:00:00',observed
             item.update(full_root=str(target),full=full);save();print(key,a.optimization,'ACTUAL_FULL_CALENDAR_SOURCE_NATIVE_PASS',flush=True)
-        left=Path(q['cases']['monthly-hys2-binary']['short_root'])/'trajectory';right=Path(q['cases']['monthly-hys2-none']['short_root'])/'trajectory'
+        left=Path(q['cases']['explicit-hys2-binary']['short_root'])/'trajectory';right=Path(q['cases']['explicit-hys2-none']['short_root'])/'trajectory'
         assert runtime.m.physical(runtime.m.rows(left))==runtime.m.physical(runtime.m.rows(right))
         for day in (4,8,23,34,35):
             with zipfile.ZipFile(left/f'accepted-column-1-day-{day}.zip') as a0,zipfile.ZipFile(right/f'accepted-column-1-day-{day}.zip') as b:

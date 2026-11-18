@@ -130,7 +130,7 @@ def main():
     save()
     try:
         if not q['native_refusals']:q['native_refusals']=native(build,a.reference_work,project,full,a.output/('native-resumed' if a.resume else 'native'));save()
-        assert len(q['native_refusals'])==61 and all(r['status']=='REFUSED' for r in q['native_refusals'])
+        assert len(q['native_refusals'])==63 and all(r['status']=='REFUSED' for r in q['native_refusals'])
         if not q.get('transactions'):q['transactions']=transactions(build,a.reference_work,project,full,a.output/'active')
         assert all(v is True for v in q['transactions'].values())
         for field in ('policy','native_codec','source_sha256','domain_source_sha256','original_hysteresis_sha256','ordinary_owner_sha256','vector_catalog_correction_sha256','cde_output_state_sha256','snow_stock','snow_increment_slots','physical_equations_changed','native_domain_bytes','snow_output_source_sha256','snow_output_fields','snow_output_domain_bytes','snow_output_value_bytes','clock_owner_sha256','soil_trial_control_volume','soil_trial_bottom','soil_trial_guard_cm','requested_period','nprintday','original_flprintdt_date_gated','original_pending_dates_not_normalized','thermal_step','thermal_reset','annual_counter_policy'):
