@@ -45,7 +45,7 @@
   handled=.true.
   if(.not.period_begin_done) then
    period_begin_done=.true.
-@@ -270,31 +275,113 @@
+@@ -270,31 +275,115 @@
    call native09_dump('context_begin')
    call ledger12_dump('ledger_begin')
   end if
@@ -100,8 +100,10 @@
 +  end if
 +  return
 + end if
-+ if(abs(t1900-35797.370782734390d0)>1d-10) error stop 'ACTIVE38 original clock mismatch'
++ if(target_attempt/=36.and.abs(t1900-35797.370782734390d0)>1d-10) error stop 'ACTIVE38 original clock mismatch'
 + select case(target_attempt)
++ case(36)
++  if(abs(t1900-35797.070000000014d0)>1d-10.or.dt/=.002d0) error stop 'ROLLBACK49 original36 mismatch'
 + case(296)
 +  if(abs(dt-0.00022919151316365426d0)>1d-16) error stop 'ACTIVE38 dt296 mismatch'
 + case(297)
