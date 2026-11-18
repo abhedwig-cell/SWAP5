@@ -8,6 +8,11 @@ s=importlib.util.module_from_spec(spec);spec.loader.exec_module(s)
 
 
 class OriginalOutputEvidence(unittest.TestCase):
+    def test_all_claimed_actual_producer_paths_exist(self):
+        q=json.loads((s.ROOT/s.PROOF/'ORIGINAL_OUTPUT_QUALIFICATION.json').read_text());reports,builds,daily=s.reports(q)
+        available={(record,name) for record,r in q['archives'].items() for name in r['members']}
+        self.assertFalse(set(reports)-available);self.assertFalse(set(builds)-available);self.assertFalse(set(daily)-available)
+
     def test_source_native_user_files_and_actual_component_corruptions(self):
         q=json.loads((s.ROOT/s.PROOF/'ORIGINAL_OUTPUT_QUALIFICATION.json').read_text());s.validate(q);count=0
         def change(path,value):

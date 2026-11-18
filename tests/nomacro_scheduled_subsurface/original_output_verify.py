@@ -205,7 +205,9 @@ def reports(q):
             case,opt=name.rsplit('-',1);add(raw,prefix+case+'/'+opt+'/RESULT.json',r)
             build_digests[(raw,prefix+case+'/'+opt+'/build/BUILD.json')]=(r['trajectory']['build_sha256'],platform)
         for key,windows,folder in [('binary','ORIGINAL_BINARY_OUTPUT_COMPONENT_RAW_ARCHIVE.json','binary-component'),('vector','ORIGINAL_VECTOR_OUTPUT_COMPONENT_RAW_ARCHIVE.json','vector-component'),('cde_state','ORIGINAL_CDE_OUTPUT_COMPONENT_RAW_ARCHIVE.json','cde-output-component')]:
-            raw=windows if platform=='Windows' else 'ORIGINAL_OUTPUT_UBUNTU_O0_RAW_ARCHIVE.json';name='RESULT.json' if platform=='Windows' else folder+'/RESULT.json';add(raw,name,q['components'][key][platform])
+            raw=windows if platform=='Windows' else 'ORIGINAL_OUTPUT_UBUNTU_O0_RAW_ARCHIVE.json'
+            name=('original-binary-output-component/RESULT.json' if key=='binary' else 'RESULT.json') if platform=='Windows' else folder+'/RESULT.json'
+            add(raw,name,q['components'][key][platform])
     return result,build_digests,daily
 
 
