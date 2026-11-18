@@ -57,8 +57,8 @@ def validate(q):
         for path,value in q[group].items():require(sha(ROOT/path)==value,'actual Snow calendar source/controller changed: '+path)
     require(q['base_consumer']['merge']==BASE and q['base_consumer']['exact_complete_tree'] is True
         and q['base_consumer']['actual_detached_owner']['returncode']==0,'actual preceding groundwater-history metadata owner absent')
-    require(q['workflows']['main']['id']=='PENDING_MAIN_RUN' and q['workflows']['main']['conclusion']=='success'
-        and q['workflows']['preservation']['id']=='PENDING_PRESERVATION_RUN' and q['workflows']['preservation']['conclusion']=='success','actual Snow FLPRINTDT workflows incomplete')
+    require(q['workflows']['main']['id']==44364299227 and q['workflows']['main']['conclusion']=='success'
+        and q['workflows']['preservation']['id']==44363952246 and q['workflows']['preservation']['conclusion']=='success','actual Snow FLPRINTDT workflows incomplete')
     require(set(q['main'])=={'Windows','Ubuntu'} and all(set(opts)=={'O0','O2'} for opts in q['main'].values()),'Snow calendar platform/optimization omitted')
     require(q['preservation']['Windows']['profiles']=={'thermal-reset-preserve-groundwater-O0-v1':3,'thermal-reset-preserve-groundwater-O2-v1':3,
         'thermal-reset-preserve-calendar-O0-v1':4,'thermal-reset-preserve-calendar-O2-v1':4,
@@ -329,6 +329,39 @@ def verify():
                 with zipfile.ZipFile(io.BytesIO(main.read(mp+'trajectory/accepted-column-1-day-34.zip'))) as a,zipfile.ZipFile(io.BytesIO(z.read(prefix+'cold/accepted-column-1-day-34.zip'))) as b:
                     for member in ('result.end','macro.bin'):require(a.read(member)==b.read(member),'actual public Snow complete native differs')
                 user_cold(z,prefix+'warm/original/',prefix+'cold/original/',item['user_output_exact'],30,34,build['project']['start_date'])
+        require(len(q['epochs'])==4 and {(v['platform'],v['optimization']) for v in q['epochs']}=={(p,o) for p in ('Windows','Ubuntu') for o in ('O0','O2')},'actual epoch platform omitted')
+        epoch_periods=0;epoch_cold=0;year_refusals=0
+        for location in q['epochs']:
+            z=archives[location['archive']];ep=location['prefix'];yp=location['controls'];run=read(z,ep+'RESULT.json');controls=read(z,yp+'RESULT.json')
+            require(run['status']=='TWO_NONJANUARY_ORIGINAL_EPOCHS_YEAR_RESET_ACTUAL_NATIVE_COLD_PASS' and set(run['cases'])=={'2002-12-15','2003-12-15'} and run['optimization']==location['optimization'],'actual original epoch period omitted')
+            require(controls['status']=='EIGHT_ACTUAL_POST_YEAR_NATIVE_COUNTER_FORGERIES_REFUSED' and controls['optimization']==location['optimization'] and set(controls['cases'])==set(run['cases']),'actual post-year source/native refusal omitted')
+            for epoch,item in run['cases'].items():
+                prefix=ep+epoch+'/actual/';report=read(z,prefix+'RESULT.json');raw=z.read(prefix+'build/BUILD.json');build=json.loads(raw);bd=digest(raw)
+                require(report==item['report'] and build['project']['start_date']==epoch and build['identity']['original_output']['source_sha256']==q['source_sha256']['app/hybrid_water/thermal_output_reset.py'],'actual epoch build/report rebound')
+                build_files(z,prefix+'build/',build);period(report,('explicit',2,3,1,0,False),location['optimization'],'short',build,bd)
+                data=rows(z,prefix+'trajectory/');ledger(data,35);soil_receipts(z,prefix+'trajectory/',35,report['soil_receipts']);epoch_periods+=1
+                selected=build['identity']['original_output'];require(len(item['actual_native_counters'])==8,'actual epoch native inventory censored')
+                for check in item['actual_native_counters']:
+                    day=check['day'];completed=date.fromisoformat(epoch)+timedelta(days=day-1);expected=min(day,completed.timetuple().tm_yday)
+                    require(check==dict(day=day,completed=completed.isoformat(),global_day=day,annual_counter=expected,expected=expected),'actual epoch native report differs')
+                    with zipfile.ZipFile(io.BytesIO(z.read(prefix+f'trajectory/accepted-column-1-day-{day}.zip'))) as checkpoint:native(checkpoint.read('macro.bin'),data[day-1],build['project']['nodes'],2,selected,epoch)
+                for name,observed in report['user_output'].items():output_clock(observed,[stamp(row) for row in user(z,prefix+'trajectory/original/'+name)],35,epoch)
+                for window in report['cold']:
+                    start,end=window['start'],window['end'];epoch_cold+=1;actual=rows(z,prefix+f'own-{start}/');require(physical(actual)==physical(data[start:end]),'actual non-January cold rows differ');soil_receipts(z,prefix+f'own-{start}/',end-start)
+                    with zipfile.ZipFile(io.BytesIO(z.read(prefix+f'trajectory/accepted-column-1-day-{end}.zip'))) as warm,zipfile.ZipFile(io.BytesIO(z.read(prefix+f'own-{start}/accepted-column-1-day-{end}.zip'))) as cold:
+                        for member in ('result.end','macro.bin'):require(warm.read(member)==cold.read(member),'actual non-January cold native differs')
+                        native(cold.read('macro.bin'),data[end-1],build['project']['nodes'],2,selected,epoch)
+                    user_cold(z,prefix+'trajectory/original/',prefix+f'own-{start}/original/',report['user_output'],start,end,epoch)
+                control=controls['cases'][epoch];source=z.read(prefix+'trajectory/accepted-column-1-day-30.zip');require(digest(source)==control['source_sha256'],'actual post-year native origin rebound')
+                require({v['attack'] for v in control['checks']}=={'global-counter','previous-year-counter','shifted-epoch-counter','zero-counter'} and len(control['checks'])==4,'actual annual counter attack omitted')
+                for attack in control['checks']:
+                    completed=date.fromisoformat(epoch)+timedelta(days=29);expected=min(30,completed.timetuple().tm_yday)
+                    require(attack['status']=='REFUSED' and attack['day']==30 and attack['actual_counter']==expected and attack['forged_counter']!=expected and 'Inconsistent original Snow annual-reset day counter' in attack['diagnostic'],'actual forged post-year counter not refused');year_refusals+=1
+                    raw=z.read(yp+epoch+'/'+attack['attack']+'/origin/macro.bin')
+                    try:native(raw,data[29],build['project']['nodes'],2,selected,epoch)
+                    except ValueError:pass
+                    else:raise ValueError('actual forged annual native origin independently accepted')
+        require((epoch_periods,epoch_cold,year_refusals)==(8,32,32),'actual non-January epoch/forgery denominator differs')
         z=archives[q['retained_observations']['archive']]
         valid=read(z,'thermal-reset-baseline-original-reader-v1/RESULT.json')
         require(valid['original']['swap_ok'] is True and valid['original']['returncode']==100 and valid['scientific_claim'] is False
@@ -336,6 +369,6 @@ def verify():
     require((fulls,windows,refusals,policies,providers,contexts)==(16,256,1008,432,16,79),'actual Snow calendar full/native/preservation denominator differs')
     return dict(status='ORIGINAL_SNOW_FLPRINTDT_ANNUAL_RESET_NATIVE_ADMISSION_PASS',runtime=RUNTIME,predecessor=prior,actual_full_periods=fulls,
         actual_cold_windows=windows,actual_native_refusals=refusals,actual_policy_refusals=policies,actual_copied_provider_refusals=providers,
-        actual_preserved_contexts=contexts,actual_saltfarm_preserved_full_periods=4,actual_saltfarm_preserved_cold_windows=20,actual_bound_reports=reports,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
+        actual_preserved_contexts=contexts,actual_saltfarm_preserved_full_periods=4,actual_saltfarm_preserved_cold_windows=20,actual_non_january_periods=epoch_periods,actual_epoch_cold_windows=epoch_cold,actual_post_year_native_refusals=year_refusals,actual_bound_reports=reports,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
