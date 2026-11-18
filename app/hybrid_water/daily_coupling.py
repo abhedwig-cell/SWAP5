@@ -177,6 +177,9 @@ def validate_bundle(bundle, reference, project):
     from aquifer_native_receipt import metadata as aquifer_receipt_metadata
     expected_aquifer_receipt=aquifer_receipt_metadata() if expected_aquifer else None
     if identity.get('aquifer_native_receipt')!=expected_aquifer_receipt:raise ValueError('Foreign aquifer native receipt consistency policy')
+    from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
+    expected_cde_receipt=cde_receipt_metadata() if cde_receipt_enabled(project) else None
+    if identity.get('cde_native_receipt')!=expected_cde_receipt:raise ValueError('Foreign CDE native receipt consistency policy; rebuild without rebinding')
     from original_output_thermal import metadata as original_output_metadata
     if identity.get('original_output')!=original_output_metadata(project):raise ValueError('Foreign original output policy; rebuild without rebinding')
     from conserved_original_age import metadata as age_metadata,correction as age_correction
@@ -567,6 +570,8 @@ class CoupledDailyColumn:
                 conserved=struct.unpack_from('<'+str(self.project.nodes+2)+'d',aux,48)
                 if not all(math.isfinite(v) and v>=0 for v in conserved):
                     raise ValueError('Unrestartable candidate conserved solute state')
+                from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
+                if cde_candidate(self.project):validate_cde_candidate(aux,raw,self.project)
                 from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
                 if aquifer_candidate(self.project):validate_aquifer_candidate(aux,raw,self.project)
             if self.project.age:
@@ -607,6 +612,9 @@ class CoupledDailyColumn:
             for name in h.CHECKPOINT_FILES:
                 if (ready / name).read_bytes() != z.read(name):
                     raise ValueError('Prepared native state changed')
+        from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
+        if cde_candidate(self.project):validate_cde_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
+
         from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
         if aquifer_candidate(self.project):validate_aquifer_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
         receipt = {**raw, 'coupling': {'id': self.coupling_id, 'revision': self._revision+1,

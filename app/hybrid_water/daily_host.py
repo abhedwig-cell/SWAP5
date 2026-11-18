@@ -905,6 +905,8 @@ end module plant_interface""")
         "driver": sha(driver),
         "host": sha(Path(__file__)),
     }
+    from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
+    if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from original_output_thermal import metadata as original_output_metadata
     selected_output=original_output_metadata(project)
     if selected_output is not None:build_identity['original_output']=selected_output
