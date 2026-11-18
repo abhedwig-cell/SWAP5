@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import shutil
+import zipfile
 import output_hysteresis as probe
 
 CASES=[(kind,mode,fmt,'daily') for kind in ('water','cde','age') for mode in (1,2) for fmt in (0,3)]+[
@@ -21,6 +23,9 @@ def main():
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     p.add_argument('--reuse-pilot-prefix');p.add_argument('--short-only',action='store_true')
     a=p.parse_args();a.output=a.output.resolve();a.output.mkdir()
+    sys.path.insert(0,str(probe.ROOT/'tools/solute'));import user_prepare
+    if not (a.reference_work/'PREPARED.json').exists():user_prepare.prepare(a.reference_work)
+    user_prepare.validate(a.reference_work);shutil.copyfile(a.reference_work/'PREPARED.json',a.output/'PROVIDER.json')
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),optimization=a.optimization,cases={},functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     def run(case,out,*extra):
@@ -43,6 +48,17 @@ def main():
                 key=name(case);short=Path(q['cases'][key]['short_root']);full=a.output/('full-'+key)
                 run(case,full,'--phase','full','--reuse-build',short/'build','--existing-input',short/'input')
                 q['cases'][key]['full']=json.loads((full/'RESULT.json').read_text());save()
+            independent=[]
+            for kind in ('water','cde','age'):
+                for mode in (1,2):
+                    plain=a.output/('full-'+name((kind,mode,0,'daily')))/'trajectory'
+                    binary=a.output/('full-'+name((kind,mode,3,'daily')))/'trajectory'
+                    assert probe.m.physical(probe.m.rows(plain))==probe.m.physical(probe.m.rows(binary))
+                    for day in (4,8,201,367,532,1096):
+                        with zipfile.ZipFile(plain/f'accepted-column-1-day-{day}.zip') as x,zipfile.ZipFile(binary/f'accepted-column-1-day-{day}.zip') as y:
+                            for member in ('result.end','macro.bin'):assert x.read(member)==y.read(member),(kind,mode,day,member)
+                    independent.append(dict(kind=kind,mode=mode,all1096physical_exact=True,six_complete_native_endpoints_exact=True))
+            q['format_independence']=independent;save()
         q['status']='SIXTEEN_HYSTERESIS_ORIGINAL_OUTPUT_'+('SHORT' if a.short_only else 'FULL')+'_SOURCE_NATIVE_USER_OUTPUT_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
