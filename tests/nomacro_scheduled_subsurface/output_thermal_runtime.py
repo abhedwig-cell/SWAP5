@@ -33,6 +33,9 @@ def fixture(path,kind,fmt,groups=None,precision=12):
     if re.search(r'(?mi)^\s*NUM_DECIMALS\s*=',text):text=assignment(text,'NUM_DECIMALS',precision)
     else:text+='\nNUM_DECIMALS = '+str(precision)+'\n'
     p.write_text(text,encoding='cp1252')
+    if not kind.startswith('chemical'):
+        for crop in path.glob('*.crp'):
+            crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
 
 
 def own(build,reference,project,full,data,start,end,out,resume=False):
