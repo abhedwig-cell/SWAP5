@@ -1,6 +1,6 @@
 # Original ordinary water FLPRINTDT annual reset
 
-**Implemented / corrected observer persisted / local O0/O2 short and epoch gates pass; full/preservation/portable/admission pending.** Actual canonical
+**Qualified bounded Windows/Ubuntu source / canonical admission pending.** Actual canonical
 caa0505611f12749d9e147a47d38db018d218edb is independently verified after
 source PR1744 and metadata PR1745: exact ordered parents, complete qualified
 trees and clean detached registered owners PASS. Whole closure stays PARTIAL,
@@ -138,3 +138,9 @@ On another platform replace drive paths and build that platform's actual source
 provider, bundle and native checkpoints. Do not rebind an earlier failed bundle.
 Original date gates and pending pointers remain unchanged; a uniform per-step
 record cadence is not asserted.
+
+## Actual qualified source evidence
+
+[Original ordinary FLPRINTDT Darcy/annual reset](NOMACRO_ORDINARY_RESET_20261118.md) passes16full1096day Windows/Ubuntu periods and256complete cold windows. Eight additional35day non-January periods and32own cold windows validate actual year-reset counters; all32forged post-year native counters are refused. All600native refusals,544policy refusals,16copied-provider refusals, public/reader/transaction gates and2234proof corruptions pass. All91prior source/native contexts remain exact, including four full SaltFarm periods/twenty cold windows. Source qualification is complete; canonical admission remains pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
+Seven raw records retain475878035bytes, including original GitHub artifact bytes and ordered64MiB parts for the large Windows preservation archive. Five independent proof tests pass in15.761seconds. The registered owner recomputes actual ledgers, native counters, complete warm/cold physical/user bytes and forged post-year worker evidence. The real dirty and committed stale pre-Fluxes observer source control is refused before model execution. Canonical source and metadata mergeresults remain required.
