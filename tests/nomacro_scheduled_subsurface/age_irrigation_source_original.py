@@ -14,8 +14,8 @@ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 
 def source(original,refresh=False):
     text=original.decode('cp1252').replace('\r\n','\n')
-    first=text.index('      module subroutine calc_AgeTracer(task)')
-    last=text.index('      end subroutine calc_AgeTracer',first)
+    first=text.index('submodule (MOD_Solute) MOD_calc_AgeTracer')
+    last=text.index('end submodule MOD_calc_AgeTracer',first)
     before,body,after=text[:first],text[first:last],text[last:]
     anchor='      use variables,     only: dt';assert body.count(anchor)==1
     body=body.replace(anchor,anchor+',daycum,t1900',1)
