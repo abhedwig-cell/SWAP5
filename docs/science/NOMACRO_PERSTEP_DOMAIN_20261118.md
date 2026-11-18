@@ -100,10 +100,9 @@ builds and workers pass. No physical expression or guard changed in that fix.
 Selected Ubuntu main44388289582 is terminal SUCCESS on O0/O2; preservation
 44388338346 is terminal SUCCESS. Carriers767f555c743ffff2dbd9b9c3a9c5791eb497bcda
 and3ea1b84c5ee6f1c58064e05d3faeaa60cb899e6f differ from actual runtime only by
-one workflow and are never merged. Original artifact byte verification is in
-progress. Windows O0 completes all11short/six full1096day cohorts and six actual
-native/control families; Windows O2 is still running. Do not infer its PASS from
-Ubuntu or O0. Every compound runner enforces all narrow and limit gates before
+one workflow and are never merged. All original Ubuntu artifact digests and members are verified. Windows O0 andO2
+complete all11short/six full1096day cohorts and six actual native/control families.
+Windows original-byte archives are being produced from terminal workers. Every compound runner enforces all narrow and limit gates before
 its first full period.
 
 Both Windows optimizations complete eight35day nonJanuary epochs with both Snow
@@ -116,6 +115,13 @@ censor and new actual workers separately, with exact input/project/kernel source
 comparison; old builds and checkpoints keep their original identities.
 
 The new independent source/raw owner and corruption drivers are persisted but
-not yet sealed or registered. Prior admitted-context comparisons continue with
-the frozen drivers, including SaltFarm. This progress is not canonical admission
+not yet sealed or registered. All103actual prior admitted-context comparisons pass with the frozen drivers,
+including four1461day SaltFarm periods/twenty cold workers. This progress is not canonical admission
 and does not promote whole-model science or the fixed release scope.
+
+Selected main totals are24full1096day periods,368complete native cold windows,
+1296actual corrupt-native refusals,1356policy refusals and24actual copied-provider
+refusals. Additionally eight bounded1440count periods/eight own cold windows,
+32nonJanuary35day periods/128cold windows/128postyear forgeries, and two corrected
+prior reset0 periods/eight cold workers pass. The latter preserve the exact old
+censored input/project and kernel source; no earlier failed worker is relabelled.
