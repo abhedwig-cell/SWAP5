@@ -11,11 +11,24 @@ from output_aquifer_controls import fabricated_receipts,transactions
 m=probe.m;ROOT=probe.ROOT
 BASE='76c6251a2f3f6345428b26b1a9e03cf7e0bf917a'
 RUNNER='''from pathlib import Path
-import importlib.util,json,sys,subprocess
+import importlib.util,json,sys,subprocess,zipfile
 root,build,reference,inputs,out=map(Path,sys.argv[1:])
 spec=importlib.util.spec_from_file_location('actual_source_mixtures',root/'tests/nomacro_mixtures/run.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
-p=m.e.load(inputs);report,data=m.trajectory(build,reference,p,out,10,{2,4,8,10},60)
-own=[m.own(build,reference,p,out,data,s,e,out.parent/('own-'+str(s))) for s,e in ((2,4),(4,8),(6,10))]
+p=m.e.load(inputs)
+if out.exists():
+    data=m.rows(out);assert len(data)==10;meta,_=m.validate_bundle(build,reference,p);assert json.loads((out/'BUILD.json').read_text())==meta
+    report=dict(status='ACTUAL_COMPLETED_TRAJECTORY_REVALIDATED',days=10,budgets=m.check(data),build_sha256=m.sha(build/'BUILD.json'))
+else:report,data=m.trajectory(build,reference,p,out,10,{2,4,8,10},60)
+own=[]
+for s,e in ((2,4),(4,8),(8,10)):
+    cold=out.parent/('own-'+str(s))
+    if cold.exists():
+        actual=m.rows(cold);m.check(actual);assert len(actual)==e-s and m.physical(actual)==m.physical(data[s:e])
+        assert m.csvlines(cold/'original/result_output.csv')[-(e-s):]==m.csvlines(out/'original/result_output.csv')[s+2:e+2]
+        with zipfile.ZipFile(cold/f'accepted-column-1-day-{e}.zip') as a,zipfile.ZipFile(out/f'accepted-column-1-day-{e}.zip') as b:
+            for name in ('result.end','macro.bin'):assert a.read(name)==b.read(name)
+        own.append(dict(start=s,end=e,exact_physical=True,exact_csv=True,exact_native=True,actual_completed_cold_revalidated=True))
+    else:own.append(m.own(build,reference,p,out,data,s,e,cold))
 (out.parent/'RUN.json').write_text(json.dumps(dict(status='ACTUAL_DEFAULT_AQUIFER_SOURCE_NATIVE_PREFIX_PASS',head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),trajectory=report,own=own),indent=2)+'\\n')
 '''
 
@@ -23,20 +36,24 @@ own=[m.own(build,reference,p,out,data,s,e,out.parent/('own-'+str(s))) for s,e in
 def main():
     ap=argparse.ArgumentParser()
     for key in ('reference-work','baseline-root','output'):ap.add_argument('--'+key,type=Path,required=True)
-    ap.add_argument('--optimization',choices=('O0','O2'),required=True);a=ap.parse_args();a.output=a.output.resolve();a.output.mkdir()
+    ap.add_argument('--optimization',choices=('O0','O2'),required=True);ap.add_argument('--resume',action='store_true');a=ap.parse_args();a.output=a.output.resolve();a.output.mkdir(exist_ok=a.resume)
     assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=a.baseline_root,text=True).strip()==BASE
     assert not subprocess.check_output(['git','status','--porcelain'],cwd=a.baseline_root,text=True).strip()
     runner=a.output/'actual-source-runner.py';runner.write_text(RUNNER)
     q=dict(status='RUNNING',baseline=BASE,optimization=a.optimization,profiles={})
+    if a.resume:q['retained_previous_report']=json.loads((a.output/'RESULT.json').read_text())
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
         for kind in ('soil-transfer','box-release','sorption-decay','stiff-loss'):
-            out=a.output/kind;out.mkdir();inputs=out/'input';probe.fixture(inputs,kind,1,0);p=m.e.load(inputs);images={}
+            out=a.output/kind;out.mkdir(exist_ok=a.resume);inputs=out/'input'
+            if not inputs.exists():probe.fixture(inputs,kind,1,0)
+            p=m.e.load(inputs);images={}
             for label,root in [('baseline',a.baseline_root),('current',ROOT)]:
-                build=out/(label+'-build');run=out/label;run.mkdir()
+                build=out/(label+'-build');run=out/label;run.mkdir(exist_ok=a.resume)
                 command=[sys.executable,'-B',str(root/'tools/solute/run_water.py'),'--model',p.model,'--experimental-project',inputs,'--reference-work',a.reference_work,'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',build]
-                r=subprocess.run(list(map(str,command)),cwd=root,capture_output=True,text=True,timeout=180);(run/'build.stdout').write_text(r.stdout);(run/'build.stderr').write_text(r.stderr);assert r.returncode==0,r.stderr
+                if not (a.resume and (build/'BUILD.json').exists()):
+                    r=subprocess.run(list(map(str,command)),cwd=root,capture_output=True,text=True,timeout=180);(run/'build.stdout').write_text(r.stdout);(run/'build.stderr').write_text(r.stderr);assert r.returncode==0,r.stderr
                 r=subprocess.run([sys.executable,'-B',str(runner),str(root),str(build),str(a.reference_work),str(inputs),str(run/'trajectory')],cwd=root,capture_output=True,text=True,timeout=120);(run/'run.stdout').write_text(r.stdout);(run/'run.stderr').write_text(r.stderr);assert r.returncode==0,r.stderr
                 images[label]=json.loads((build/'BUILD.json').read_text())
             actual,old=images['current'],images['baseline'];assert actual['project']==old['project'] and actual['inputs']==old['inputs']
