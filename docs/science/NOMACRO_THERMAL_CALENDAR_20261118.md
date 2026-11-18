@@ -1,6 +1,6 @@
 # Original snow and thermal output calendars
 
-**Qualified bounded composition / registered proof PASS / actual canonical admission pending.** Baseline
+**Canonically admitted bounded composition / actual detached source owner PASS.** Baseline
 is actual canonical8c09e206d after PR1736/1737. Both actual source and metadata
 merges have exact ordered parents/full qualified trees and pass the registered
 detached groundwater-history owner. Closure remains PARTIAL, whole science
@@ -163,3 +163,10 @@ negative source disables seven-total staging; both registered-root calls refuse
 before archives or model work. The bad commit 1bdb0db40051001a0df244e63d9fa852b3cdbb05
 is retained in its private sparse control worktree and must never merge.
 The predecessor owner remains literal behind a four-line dispatch.
+
+Actual source PR1738 merges asf2fc11124d98e1238d5996ec2af21cbde24e49d9.
+Its ordered8c09e206d/de0c2dabbparents and complete8551bfb82tree are exact.
+The clean detached merge passes the actual registered owner in100.437seconds;
+THERMAL_CALENDAR_MERGE_RECEIPT.json records the real postimage. Metadata
+admission follows separately. Continue the original Snow subdaily clock and
+remaining historical process/selector inventory; whole migration is unfinished.
