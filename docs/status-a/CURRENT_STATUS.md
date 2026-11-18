@@ -5,7 +5,7 @@ has completed Windows/Ubuntu48full1096day periods, complete native/public/
 reader/transaction gates and87current preservation contexts. Existing explicit
 `--original-output` now covers the bounded daily CDE aquifer route. All active
 SWBR1 candidates compare actual native state with their receipt before external
-prepare and acceptance. Admission is pending; historical closure remains
+prepare and acceptance. Actual canonical1c0bc3b6c passes its detached registered owner; historical closure remains
 PARTIAL, whole science NOT_QUALIFIED and fixed RC3 unchanged.
 
 The [direct soil age source](../science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md)

@@ -6,7 +6,7 @@ S5IOQ001 preserves the48byte CDE prefix and complete seven-field physical native
 reservoir. Its56byte paired domain precedes literal calendar/private output
 state. A source-bound read-only validator checks all six real fields and the
 int64 counter against receipts before external prepare and acceptance, including
-output-off SWBR1. No physical equation, provider or native wire changes.
+output-off SWBR1. No physical equation, provider or native wire changes. Actual canonical1c0bc3b6c passes its detached registered owner.
 
 The qualified [direct soil age owner](../science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md)
 composes literal age transport then actual direct compartment input each
