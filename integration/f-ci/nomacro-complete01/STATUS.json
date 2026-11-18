@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-output-aquifer01",
   "last_commit": "76c6251a2f3f6345428b26b1a9e03cf7e0bf917a",
-  "status": "ORIGINAL_OUTPUT_AQUIFER_CONTRACT_RECONCILED_IMPLEMENT_NEXT",
+  "status": "ORIGINAL_OUTPUT_AQUIFER_PROTOTYPE_IMPLEMENTED_PENDING_PILOT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -428,7 +428,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Implement bounded original CDE output+SWBR1 successor: actualaq7dailyobserver, literaloldoutput/calendar/CDEprivate17scalarstate, completeoldaqnativepayload andnewtypedactualdomain56bytes. Alloldhelpers/providersliteral. PersistthenactualO0/O2output/native/sourcepilots againstfreshcompatibilitybaseline.",
+  "next_action": "Compileactualbox-releaseoriginaloutputbinarySWBR1O0/O2ten-day/3coldwindows. NewreadonlyprivateSWBRselectorbridge+dailyactualaq7observer,56byteactualdomain/S5IOQ001; oldaqphysical/native equationsandalloldoutputprovidersunchanged. Diagnoseanyfailurebeforebroadqualification.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -741,7 +741,7 @@
   },
   "output_aquifer": {
     "baseline": "76c6251a2f3f6345428b26b1a9e03cf7e0bf917a",
-    "status": "CONTRACT_RECONCILED_NOT_IMPLEMENTED",
+    "status": "IMPLEMENTED_NOT_TESTED_NOT_ADMITTED",
     "contract": "docs/science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md",
     "dependency_surface": [
       "OriginalCDEmixedaq7physical/native/losslimiter",
@@ -750,7 +750,10 @@
       "Newselection/nativeactualdomainwitness anddispatchmetadata"
     ],
     "scope": "Existingexplicit--original-output, SWSOLU1SWBR1SWDRA1analyticaldailycadence, hys0/1/2; no snow/frost/detailedweather",
-    "next": "Implement bounded original CDE output+SWBR1 successor: actualaq7dailyobserver, literaloldoutput/calendar/CDEprivate17scalarstate, completeoldaqnativepayload andnewtypedactualdomain56bytes. Alloldhelpers/providersliteral. PersistthenactualO0/O2output/native/sourcepilots againstfreshcompatibilitybaseline.",
-    "external_blocker": null
+    "next": "Compileactualbox-releaseoriginaloutputbinarySWBR1O0/O2ten-day/3coldwindows. NewreadonlyprivateSWBRselectorbridge+dailyactualaq7observer,56byteactualdomain/S5IOQ001; oldaqphysical/native equationsandalloldoutputprovidersunchanged. Diagnoseanyfailurebeforebroadqualification.",
+    "external_blocker": null,
+    "source": "app/hybrid_water/original_output_aquifer.py",
+    "domain": "app/hybrid_water/original_output_aquifer_domain.f90",
+    "selector_bridge": "OriginalSWBRprivateinMOD_Solute_CDE; newpureintegerobserverbridge onlywhenoutputaqselected, no newphysicalstore orstateassignment."
   }
 }
