@@ -15,7 +15,7 @@ from original_output_thermal import metadata,selection,magic
 from original_output_baseline import assignment
 
 m=original.m;ROOT=original.ROOT
-KINDS=('water-snow','water-hys1','water-hys2','chemical-snow','water-frost-free','water-frost-drained')
+KINDS=('water-snow','water-hys1','water-hys2','chemical-snow','chemical-snow-point','chemical-snow-interval','water-frost-free','water-frost-drained')
 
 
 def fixture(path,kind,fmt,groups=None,precision=12):
@@ -24,14 +24,18 @@ def fixture(path,kind,fmt,groups=None,precision=12):
     else:
         shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',path)
     p=path/'swap.swp';text=p.read_text(encoding='cp1252')
-    changes=dict(SWMACRO=0,SWSOLU=int(kind=='chemical-snow'),SWSNOW=1,SWHEA=1,SWCALT=2,SWBR=0,SWCSV=fmt,NPRINTDAY=1,SWMONTH=0,PERIOD=1,SWODAT=0,SWRES=1)
-    if 'frost' not in kind:changes.update(SWFROST=0,SWHYST=1 if kind=='water-hys1' else 2 if kind in ('water-hys2','chemical-snow') else 0)
-    if kind in ('water-hys2','chemical-snow'):changes.update(SWBOTB=8,SWBBCFILE=0)
+    changes=dict(SWMACRO=0,SWSOLU=int(kind.startswith('chemical')),SWSNOW=1,SWHEA=1,SWCALT=2,SWBR=0,SWCSV=fmt,NPRINTDAY=1,SWMONTH=0,PERIOD=1,SWODAT=0,SWRES=1)
+    if 'frost' not in kind:changes.update(SWFROST=0,SWHYST=1 if kind=='water-hys1' else 2 if (kind=='water-hys2' or kind.startswith('chemical')) else 0)
+    if (kind=='water-hys2' or kind.startswith('chemical')):changes.update(SWBOTB=8,SWBBCFILE=0)
     for key,value in changes.items():text=assignment(text,key,value)
-    if kind in ('water-hys2','chemical-snow'):text+='\nHPLATE = -50.0\n'
+    if (kind=='water-hys2' or kind.startswith('chemical')):text+='\nHPLATE = -50.0\n'
     text=assignment(text,'INLIST_CSV',repr(groups or 'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'))
     if re.search(r'(?mi)^\s*NUM_DECIMALS\s*=',text):text=assignment(text,'NUM_DECIMALS',precision)
     else:text+='\nNUM_DECIMALS = '+str(precision)+'\n'
+    if kind in ('chemical-snow-point','chemical-snow-interval'):
+        text=assignment(assignment(text,'SWIRFIX',1),'SWIRGFIL',1)
+        zone='-30.0' if kind.endswith('point') else '-20.0 -40.0'
+        (path/'fixed-irrigation.irg').write_text('IRDATE IRDEPTH IRCONC IRTYPE IRRATE\n2002-01-05 24.0 20.0 2 12.0\n2002-01-07 12.0 60.0 2 12.0\nIR_Z = '+zone+'\n')
     p.write_text(text,encoding='cp1252')
     if not kind.startswith('chemical'):
         for crop in path.glob('*.crp'):
@@ -81,6 +85,9 @@ def main():
             data=m.rows(full);assert len(data)==days;m.check(data);q['trajectory']=q['retained_previous_report']['trajectory'];assert q['trajectory']['build_sha256']==m.sha(build/'BUILD.json')
         else:q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,days,cuts,180)
         q['snow_observation']=dict(maximum_stock_cm=max(row['stock_end_cm'][2] for row in data),snow_rain_cm=sum(row['external_flux_cm'][1] for row in data),gross_snow_cm=sum(row['external_flux_cm'][2] for row in data),sublimation_cm=sum(row['external_flux_cm'][12] for row in data))
+        if a.kind in ('chemical-snow-point','chemical-snow-interval'):
+            assert abs(data[4]['solute_ledger_mg_cm2'][3]-48.)<=1e-10 and abs(data[6]['solute_ledger_mg_cm2'][3]-72.)<=1e-10
+            q['actual_irrigation_mg_cm2']=[data[4]['solute_ledger_mg_cm2'][3],data[6]['solute_ledger_mg_cm2'][3]]
         save();q['own']=[own(build,a.reference_work,project,full,data,s,e,a.output/('own-'+str(s)),a.resume) for s,e in windows]
         selected=selection(project);header=struct.pack('<10i',1,project.nodes,0,int(project.solute),selected['swhyst'],1,selected['swfrost'],selected['swdra'],1,2);q['native_domains']={}
         for day in (2,4,8,days):
