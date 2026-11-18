@@ -7,7 +7,7 @@ periods. Actual original source defects, four-object conservation/refinement,
 transactional native/source/output,47prior Windows contexts and ten portable
 contexts pass. The registered owner checks actual ledgers/native endpoints;
 3005proof corruptions and actual ignored-source commits are refused.
-Qualification is bounded; canonical admission is pending.
+Qualification is bounded; Actual canonical5014520ed passes its detached registered owner.
 
 [Current fixed age ownership](../science/NOMACRO_AGE_IRRIGATION_SOURCE_20261118.md)
 and `integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_QUALIFICATION.json`

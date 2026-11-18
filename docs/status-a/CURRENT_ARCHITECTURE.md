@@ -4,7 +4,7 @@ The qualified [direct soil age owner](../science/NOMACRO_SUBSURFACE_AGE_SOURCE_2
 composes literal age transport then actual direct compartment input each
 microstep. A separate12field ledger and24byte native source owner retain the
 complete existing event/physical/calendar state and all four age providers.
-Six new typed codecs preserve inactive routes. Canonical admission is pending.
+Six new typed codecs preserve inactive routes. Actual canonical5014520ed passes its detached registered owner.
 
 The qualified [fixed irrigation age source](../science/NOMACRO_AGE_IRRIGATION_SOURCE_20261118.md)
 uses actual current CIRR with literal physical age providers. Existing complete

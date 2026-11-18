@@ -1,10 +1,15 @@
 # Direct soil irrigation age input and complete restart
 
-**Qualified; canonical admission pending.** Baseline is actual canonical
+**Current / canonically admitted through PR1727, actual merge5014520ed.** Baseline is actual canonical
 e3cb491d15b9d079062285c397cfba552ab0a86d (PR1725/1726). Production26724ce75
 implements explicit `--age-direct-soil-source`; default is false and selecting
 it together with `--age-irrigation-source` is refused. Historical functional
 closure remains PARTIAL, whole science NOT_QUALIFIED and fixed RC3 is unchanged.
+
+The actual source merge has the exact e3cb491d1/31a931a79 parents and complete
+qualified27401b01tree. Its detached registered owner passes; the actual
+postimage/result is recorded by
+`integration/f-ci/nomacro-complete01/DIRECT_SOIL_AGE_MERGE_RECEIPT.json`.
 
 ## Original defect and explicit correction
 
