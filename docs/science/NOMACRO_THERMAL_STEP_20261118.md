@@ -85,3 +85,29 @@ recovered-day tests pass. Eight short contexts precede four selected1096day
 periods per optimization, all current Windows gates pass. Portable and scoped
 preservation/admission gates remain required. No uniform per-step output count
 or invented date-pointer advancement is asserted.
+
+## Independent local commands
+
+From the repository root with Python and the qualified GNU Fortran toolchain,
+prepare a fresh provider and run the actual monthly FLPRINTDT fixture. The
+fixture controller checks35days, four complete cold workers, independent soil
+and global receipts and byte-exact native/user continuation.
+
+```powershell
+python -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work C:/SWAP5-Snow-Step/provider
+python -B tests/nomacro_scheduled_subsurface/thermal_step_runtime.py --reference-work C:/SWAP5-Snow-Step/provider --output C:/SWAP5-Snow-Step/monthly-O2 --mode monthly --hysteresis 2 --format 3 --optimization O2
+python -B tests/nomacro_scheduled_subsurface/thermal_step_controls.py --reference-work C:/SWAP5-Snow-Step/provider --profile-root C:/SWAP5-Snow-Step/monthly-O2 --output C:/SWAP5-Snow-Step/controls-O2
+```
+
+Independent public application runs use that exact input and build, with their
+own accepted source checkpoint:
+
+```powershell
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project C:/SWAP5-Snow-Step/monthly-O2/input --original-output --reference-work C:/SWAP5-Snow-Step/provider --build-bundle C:/SWAP5-Snow-Step/monthly-O2/build --days 35 --checkpoint-at 30 --output C:/SWAP5-Snow-Step/public-warm
+python -B tools/solute/run_water.py --model HYBRID_NOMACRO_WATER --experimental-project C:/SWAP5-Snow-Step/monthly-O2/input --original-output --reference-work C:/SWAP5-Snow-Step/provider --build-bundle C:/SWAP5-Snow-Step/monthly-O2/build --days 34 --checkpoint-at 34 --restart C:/SWAP5-Snow-Step/public-warm/accepted-column-1-day-30.zip --restart-day 30 --output C:/SWAP5-Snow-Step/public-cold
+```
+
+Use fresh output directories. On another platform replace the drive paths and
+create that platform's own exact source/provider build and checkpoints. Original
+FLPRINTDT does not imply a uniform record count; preserve its actual date gates
+and initialization/continuation records.
