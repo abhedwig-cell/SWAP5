@@ -189,9 +189,9 @@ def trial_witness(z,prefix,epoch,report=None):
 
 
 def verify():
-    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty ordinary annual admission surface')
+    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty per-step domain admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
-    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'ordinary annual production differs from qualified source')
+    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'per-step domain production differs from qualified source')
     q=json.loads((ROOT/PROOF/'PERSTEP_DOMAIN_QUALIFICATION.json').read_text(encoding='utf8'));validate(q)
     require(set(git('diff','--name-only',BASE,RUNTIME,'--','app','src','reference','tools').decode().splitlines())==set(q['source_sha256']),'unqualified Snow production surface')
     mutable={PROOF+n for n in ('STATUS.json','GAP_MATRIX.json','CI_SELECTION.json')};current=tree('HEAD','integration')
