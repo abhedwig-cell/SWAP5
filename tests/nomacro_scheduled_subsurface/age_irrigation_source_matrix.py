@@ -16,8 +16,16 @@ m=fixed.m
 ROOT=fixed.ROOT
 
 
-def fixture(path,kind,age,calendar,fmt,hysteresis):
-    fixed.fixture(path,kind);p=path/'fixed-irrigation.irg';text=p.read_text();assert '2002-01-05 24.0 0.0' in text;p.write_text(text.replace('2002-01-05 24.0 0.0','2002-01-05 24.0 '+str(age)))
+def fixture(path,kind,age,calendar,fmt,hysteresis,events='single',inline=False):
+    fixed.fixture(path,kind,inline=inline);p=path/'swap.swp' if inline else path/'fixed-irrigation.irg';text=p.read_text(encoding='cp1252');assert '2002-01-05 24.0 0.0' in text
+    text=text.replace('2002-01-05 24.0 0.0','2002-01-05 24.0 '+str(age))
+    if events=='varying':
+        code=1 if kind=='surface' else 0
+        first='2002-01-05 24.0 '+str(age)+' '+str(code)+' 12.0'
+        assert text.count(first)==1
+        extra='\n'.join(date+' '+str(depth)+' '+str(value)+' '+str(code)+' '+str(rate) for date,depth,value,rate in [('2002-01-07',12.,60.,12.),('2003-01-01',8.,10.,4.),('2003-06-15',6.,100.,6.),('2004-12-30',4.,35.,4.)])
+        text=text.replace(first,first+'\n'+extra,1)
+    p.write_text(text,encoding='cp1252')
     p=path/'swap.swp';text=p.read_text(encoding='cp1252')
     from original_output_baseline import assignment
     for key,value in [('SWCSV',fmt),('SWHYST',hysteresis),('PERIOD',7 if calendar=='regular' else 0 if calendar=='annual' else 1),('NPRINTDAY',3 if calendar=='np3' else 1),('SWMONTH',int('monthly' in calendar)),('SWRES',0)]:text=assignment(text,key,value)
@@ -50,11 +58,12 @@ def main():
     p.add_argument('--kind',choices=('surface','sprinkler'),required=True);p.add_argument('--age-day',type=float,default=20.)
     p.add_argument('--calendar',choices=('daily','regular','monthly','np3','annual','perstep-monthly'),default='daily');p.add_argument('--format',choices=(0,1,2,3),type=int,default=1);p.add_argument('--hysteresis',choices=(0,1,2),type=int,default=0);p.add_argument('--original-output',action='store_true')
     p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--phase',choices=('short','full'),default='short');p.add_argument('--existing-input',type=Path);p.add_argument('--reuse-build',type=Path)
+    p.add_argument('--events',choices=('single','varying'),default='single');p.add_argument('--inline',action='store_true')
     p.add_argument('--resume',action='store_true')
     a=p.parse_args();a.output=a.output.resolve();a.output.mkdir(exist_ok=a.resume);inputs=a.existing_input or a.output/'input'
-    if not a.existing_input and not a.resume:fixture(inputs,a.kind,a.age_day,a.calendar,a.format,a.hysteresis)
+    if not a.existing_input and not a.resume:fixture(inputs,a.kind,a.age_day,a.calendar,a.format,a.hysteresis,a.events,a.inline)
     project=m.e.load(inputs,original_output=a.original_output,age_irrigation_source=True);build=a.reuse_build or a.output/'build'
-    q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),kind=a.kind,age_day=a.age_day,calendar=a.calendar,output_format=a.format,hysteresis=a.hysteresis,original_output=a.original_output,optimization=a.optimization,age_irrigation_source=metadata(project),functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
+    q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),kind=a.kind,age_day=a.age_day,calendar=a.calendar,output_format=a.format,hysteresis=a.hysteresis,original_output=a.original_output,optimization=a.optimization,events=a.events,inline=a.inline,age_irrigation_source=metadata(project),functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
     if a.resume:q['retained_failure']=json.loads((a.output/'RESULT.json').read_text())
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     try:
@@ -73,6 +82,9 @@ def main():
         q['trajectory']=report;save()
         actual=data[4]['age_state_cm_day'][5]-data[3]['age_state_cm_day'][5];assert abs(actual-2.4*a.age_day)<=1e-10
         q['actual_event_age_cm_day']=actual;q['age_units']='cm day';domains={}
+        if a.events=='varying':
+            second=data[6]['age_state_cm_day'][5]-data[5]['age_state_cm_day'][5];assert abs(second-72.)<=1e-10
+            q['actual_second_age_cm_day']=second
         header=struct.pack('<7i',1,34,0,2,1,a.hysteresis,LAYOUTS[base_magic(project)])
         for day in (2,4,8,days):
             with zipfile.ZipFile(full/f'accepted-column-1-day-{day}.zip') as z:
