@@ -741,7 +741,7 @@
   },
   "output_aquifer": {
     "baseline": "76c6251a2f3f6345428b26b1a9e03cf7e0bf917a",
-    "status": "SEALED_RAW_QUALIFICATION_REGISTERED_OWNER_ACTIVATED_PENDING_GATE",
+    "status": "QUALIFIED_REGISTERED_OWNER_PASS_READY_FOR_CANONICAL_ADMISSION",
     "contract": "docs/science/NOMACRO_ORIGINAL_OUTPUT_AQUIFER_20261118.md",
     "dependency_surface": [
       "OriginalCDEmixedaq7physical/native/losslimiter",
@@ -750,7 +750,7 @@
       "Newselection/nativeactualdomainwitness anddispatchmetadata"
     ],
     "scope": "Existingexplicit--original-output, SWSOLU1SWBR1SWDRA1analyticaldailycadence, hys0/1/2; no snow/frost/detailedweather",
-    "next": "Runregisteredowneronpersistedcleanhead; actualdirty+committedsourcecounterguardnegative; strictdocs; qualifiedsourcePRactualcanonicalmerge+metadataactualmerge; NEXTotherhistoricalgap",
+    "next": "CreatequalifiedsourcePR; actualcanonicalmergeexactparents/fulltree+detachedregisteredroot; sourcereceiptandmetadataPRactualmergeverification; NEXTotherhistoricalgap",
     "external_blocker": null,
     "source": "app/hybrid_water/original_output_aquifer.py",
     "domain": "app/hybrid_water/original_output_aquifer_domain.f90",
@@ -781,6 +781,16 @@
     "ubuntu_contract_status": "SUCCESS",
     "raw_bytes": 662353231,
     "raw_archives": 7,
-    "proof_corruptions": "868actualperiod+77source/scope/guard corruptions refused; three tests PASS6.266s"
+    "proof_corruptions": "868actualperiod+77source/scope/guard corruptions refused; three tests PASS6.266s",
+    "registered_root": {
+      "status": "OUTPUT_AQUIFER_NATIVE_RECEIPT_ADMISSION_PASS",
+      "head": "58a7631e7f8f0dffbdd845d63a75fe967da549d4",
+      "actual_full_periods": 48,
+      "actual_bound_reports": 344,
+      "actual_preserved_contexts": 87
+    },
+    "source_negative_commit": "29b21f7253e365755a564ebaf627ca16b724b868",
+    "source_negative": "Actualdirtyandcommittednativecountercomparisonomissionrefusedbeforeraw/modelwork; noexistingprooforphysicalproviderchanged",
+    "docs": "SourcecheckPASS; strictMkDocsPASS28.83s withgeneratedsiteoutsidecheckout"
   }
 }
