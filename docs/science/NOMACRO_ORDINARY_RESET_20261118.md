@@ -71,7 +71,7 @@ or retired highest-low-air campaign is selected. A checkpoint is not closure.
 ## First actual O0/O2 refusal and phase audit
 
 The first actual O0/O2 sources build in26.99/32.68seconds, reach HYBRID_READY,
-but accept zero days before the180second model cap. Retain both complete failed
+but reach only1(O0)/2(O2) accepted days before the180second model cap. Retain both complete failed
 roots separately. Do not increase that cap or relax a conservation guard.
 
 Original BoundBottom does not update qbot for head boundary5; Fluxes computes
@@ -110,3 +110,10 @@ are refused. Actual independent public and original reader/descriptor gates pass
 including four byte-literal prior metadata delegations and foreign-bundle refusal.
 The complete Windows matrix and91prior source/native contexts are running;
 portable, independent raw proof and actual canonical admission remain required.
+
+The final retained raw daily records correct the earlier in-flight zero-day
+observation:1(O0)/2(O2) accepted days precede the180second cap. The35day
+periods remain censored. Actual before/after inputs, kernel source manifests and
+flags are exact; only generated Integral/HeadCalc sources change. The actual
+kernel binaries differ only at PE timestamp/checksum bytes; their original
+separate hashes are retained without normalization or rewriting.

@@ -1884,14 +1884,14 @@
         "root": "C:/Users/Veldh012/swap5-complete01-evidence/ordinary-reset-explicit-O0-v1",
         "build_seconds": 26.99052909994498,
         "model_cap_seconds": 180,
-        "accepted_days": 0,
+        "accepted_days": 1,
         "error": "TimeoutError: model wall cap; actual workers killed and reaped by owning bounded helper."
       },
       "O2": {
         "root": "C:/Users/Veldh012/swap5-complete01-evidence/ordinary-reset-explicit-O2-v1",
         "build_seconds": 32.682933799922466,
         "model_cap_seconds": 180,
-        "accepted_days": 0,
+        "accepted_days": 2,
         "error": "TimeoutError: model wall cap; actual workers killed and reaped by owning bounded helper."
       }
     },
@@ -1985,6 +1985,66 @@
       "total": 91,
       "current_saltfarm_full": 4,
       "current_saltfarm_cold": 20
+    },
+    "corrected_accepted_prefix_observation": "Earlier zero-day count was observed while workers were running; final retained raw rows after the180s cap contain1(O0)/2(O2) accepted days. These partial prefixes are retained, not qualified full periods.",
+    "actual_phase_comparison": {
+      "status": "ACTUAL_RETAINED_V1_V2_INPUT_AND_PHYSICAL_SOURCE_PHASE_COMPARISON",
+      "optimizations": {
+        "O0": {
+          "original_failed_source": "2c09154207ede17fb1ccec3c7d6f15cfe4470674",
+          "corrected_source": "6c9e8fcd9076d337f80b12561e26200b5f615109",
+          "input_manifest_exact": true,
+          "kernel_sources_and_flags_exact": true,
+          "kernel_binary_exact": false,
+          "kernel_binary_difference_offsets": [
+            136,
+            137,
+            216,
+            217
+          ],
+          "kernel_pe_header_offset": 128,
+          "kernel_differences_only_timestamp_checksum": true,
+          "original_kernel_sha256": "ed2a62440b614241847fe352006d843c25080d9af7c52d6532bbb4d519e84af6",
+          "corrected_kernel_sha256": "ee54acabdf7fb3976362415f68554ef64875ff14cec80fda8f6d3c5a9fbd84b5",
+          "only_generated_source_changes": [
+            "integral.f90",
+            "headcalc.f90"
+          ],
+          "only_production_file_change": [
+            "app/hybrid_water/ordinary_output_reset.py"
+          ],
+          "accepted_days_before": 1,
+          "accepted_days_after": 35,
+          "original_status": "CENSORED_PARTIAL_ACCEPTED_PREFIX_NOT_FULL_PERIOD"
+        },
+        "O2": {
+          "original_failed_source": "2c09154207ede17fb1ccec3c7d6f15cfe4470674",
+          "corrected_source": "6c9e8fcd9076d337f80b12561e26200b5f615109",
+          "input_manifest_exact": true,
+          "kernel_sources_and_flags_exact": true,
+          "kernel_binary_exact": false,
+          "kernel_binary_difference_offsets": [
+            136,
+            137,
+            216,
+            217
+          ],
+          "kernel_pe_header_offset": 128,
+          "kernel_differences_only_timestamp_checksum": true,
+          "original_kernel_sha256": "597d78e3811f5defd3c39a01c9d7febb9c917e427bc026b79b6046edc1645637",
+          "corrected_kernel_sha256": "050d0ef3bf5806869b48261e126d5cae0639a162a1d868c0c86e5ae2d5167daf",
+          "only_generated_source_changes": [
+            "integral.f90",
+            "headcalc.f90"
+          ],
+          "only_production_file_change": [
+            "app/hybrid_water/ordinary_output_reset.py"
+          ],
+          "accepted_days_before": 2,
+          "accepted_days_after": 35,
+          "original_status": "CENSORED_PARTIAL_ACCEPTED_PREFIX_NOT_FULL_PERIOD"
+        }
+      }
     }
   }
 }
