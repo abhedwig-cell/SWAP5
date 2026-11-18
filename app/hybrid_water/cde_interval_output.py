@@ -72,6 +72,7 @@ def metadata(project):
         private_bridge_source_sha256=sha(Path(bridge.__file__)),private_cde_interval_fields=list(bridge.FIELDS),cde_output_state_sha256=sha(folder/'cde_interval_output_state.f90'),
         cde_output_state_version=2,cde_output_state_reals=20+project.nodes,cde_output_state_private_reals=2,cde_daily_receipt_source_sha256=sha(folder/'cde_interval_receipt.f90'),
         cde_daily_flux_policy='actual-original-six-rhs-increments-including-corrected-ssdi-v1',cde_daily_mass_guard_mg_cm2=1e-10,
+        calendar_initial_past_date_policy='original-initial-interval-pointer-remains-one-v1',original_pending_dates_not_normalized=True,
         cde_interval_anchor='actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed',
         conserved_cde_prefix_offset_bytes=48,receipt_provider_sha256=sha(ROOT/'src/process/mod_original_output_receipt.f90'),
         vector_catalog_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-VECTOR-OUTPUT-01/source.py') if selected['swcsv'] else None,
@@ -85,6 +86,20 @@ def metadata(project):
 def age_identity(original,project):
     if active_selection(project) is None:return prior.age_identity(original,project)
     result=dict(original);result.update(native_codec=magic(project).decode(),original_output=metadata(project));return result
+
+
+def render_integral(original,selected):
+    source=thermal.render_integral(original,None,selected) if selected['swsnow'] else ordinary.render_integral(original,None,selected)
+    anchor="if(ioutdatint/=1+count(outdatint>0d0.and.outdatint<t1900-1d-8))error stop 'Inconsistent original interval date pointer'"
+    assert source.count(anchor)==1
+    guard="""! Original TimeControl initializes ioutdatint=1 and advances it only
+! when its actual selected date equals the completed day. An initial date
+! before the immutable TSTART therefore remains pending; never advance it.
+if(outdatint(1)>0d0.and.outdatint(1)<original_output_start_clock-1d-8)then
+ if(ioutdatint/=1)error stop 'Inconsistent original pending initial interval date pointer'
+else
+ """+anchor+"\nend if"
+    return source.replace(anchor,guard,1)
 
 
 def render_macro(original,project,selected):
@@ -151,7 +166,7 @@ def apply_build(output,donor_build,project,patched):
     patched.insert(patched.index('solute')+1,'original_cde_output_state')
     if is_snow:(output/(SNOW_PROVIDER+'.f90')).write_bytes((folder/'cde_interval_snow_state.f90').read_bytes())
     original=(donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252')
-    (output/'integral.f90').write_text(thermal.render_integral(original,None,selected) if is_snow else ordinary.render_integral(original,None,selected),encoding='cp1252')
+    (output/'integral.f90').write_text(render_integral(original,selected),encoding='cp1252')
     (output/'age_output_calendar_probe.f90').write_text(probe_source(project,selected),encoding='cp1252')
     path=output/'swap.f90';text=regular.render_swap(path.read_text(encoding='cp1252'));anchor='use hybrid_day_window, only:';assert text.count(anchor)==1
     text=text.replace(anchor,'use MOD_integral,only:hybrid_output_crop_apply\n'+anchor,1)

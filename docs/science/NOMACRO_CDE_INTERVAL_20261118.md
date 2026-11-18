@@ -104,3 +104,31 @@ refusal. Check actual canonical source and metadata merge parents/full trees and
 clean detached owners, then continue. Never rebind old builds/checkpoints,
 ROOT/hash/source authorities or reference data. Invariants3,4,7,13,21,23,30 remain
 binding; historical output is not an automatic science oracle.
+
+## Actual initial CDE stage and discovered native guard mismatch
+
+The first physical stage completes eight35day O0/O2 source-form pilots, each with four cold workers (32total), and selected Windows O0/O2 ten-short/
+six-full matrices. Actual source/native/private/policy/provider/transaction
+controls pass. These original bytes remain evidence of that persisted stage,
+not evidence rebound to a later build or validation policy.
+
+The actual nonJanuary epoch starts2002-12-15 with earlier explicit dates.
+Original TimeControl initializes ioutdatint1 and advances only on a selected
+completed-day date match. The first old date therefore remains pending at1,
+including35actual warm days. The inherited migrated calendar reader incorrectly
+requires1+count(all earlier dates) and refuses the first own cold worker. This
+is a migrated validation mismatch, not an original physical-law defect. Add an
+exact immutable-epoch branch: initial selected date before TSTART implies actual
+pointer1; other cases retain the original strict count check. Never repair the
+pointer or change TimeControl. New metadata names this policy explicitly.
+
+Original balance-date output also resets interval and cumulative CDE values at
+its own year boundary; do not require SAMINI and SAMPRO0 to differ at that same
+boundary. Their distinct roles are actually exercised by ordinary/monthly or
+explicit intervals within a year. Preserve both saved values and the actual
+calendar regardless of equality in a particular checkpoint.
+
+Because the source/metadata native policy changes, retain all earlier builds,
+checkpoints and failures, and create fresh source-bound coupled qualification.
+The small receipt component and transport equations are unchanged and do not
+need repeated component campaigns. No old BUILD/checkpoint is rebound.

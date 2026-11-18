@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-cde-interval01",
-  "last_commit": "322bfe11fea0c95d3a8f158f52b148e1a025d703",
-  "status": "EIGHT_SHORT_O0_O2_CDE_SOURCE_FORMS_PASS_FOUR_NATIVE_CONTROL_CONTEXTS_PASS",
+  "last_commit": "6442dcc06bb867e0f51c429b7a006cec47feea53",
+  "status": "CDE_INTERVAL_INITIAL_PAST_DATE_NATIVE_VALIDATION_FIX_PERSISTED_NEW_QUALIFICATION_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -2409,7 +2409,7 @@
     ]
   },
   "cde_interval": {
-    "status": "EIGHT_SHORT_O0_O2_CDE_SOURCE_FORMS_PASS_FOUR_NATIVE_CONTROL_CONTEXTS_PASS",
+    "status": "CDE_INTERVAL_INITIAL_PAST_DATE_NATIVE_VALIDATION_FIX_PERSISTED_NEW_QUALIFICATION_NEXT",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scope": "ActualoriginalCDE Snow0/1 heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather SWBR0/frost0 NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0/period2..366 SWRES0/1 formats0..3. Denseperiod1 andallother/nonCDE paths literal.",
     "original_reader_observations": [
@@ -2495,7 +2495,9 @@
     ],
     "short": "Eight actual35day hot/32owncold O0/O2 periods PASS acrossordinary/Snow0/1, hys0/1/2, fixedpoint/interval/surface/sprinkler, active rainCPRE0.01 and ET0/1; complete physical/native/originaldate-only user state exact.",
     "retained_post_validation_failure": "V3models/builds/allcold/native passed butfinalvalidator inheritedFLPRINTDT datetime-only parser. Originalnonstep output isdate-only includinginitialdaybeforeTSTART. Correctedcontrollerd42ff670c; re-auditedalloriginalbyteswithoutbuild/modelreexecution; eachoriginalFAILED_RESULT preserved as RETAINED_FAILED_RESULT.json andoldfailurelogseparate. Physicalproducer8ed7ec326 retained, newvalidatorcommitd42ff670c recorded.",
-    "next": "Inspect four actualcontrols roots; fixanyworker/controlerrorswithoutloosening. Add thirdhysteresis/periodic/PERIOD0/format/ET cases, publicreader andreal source-preservation impact audit. Onlyafterallshort/nativegates select6? representativefull1096day Windows/Ubuntu O0/O2 plusyear/native; persistRUNTIMEbeforeportablecarriers.",
-    "controls": "Fouractualpilotcontexts:248native refusals/208policyrefusals/14actualproviderrefusals +active discard/replay/recoveredCDE/source PASS. Remainingmatrix controls useexplicitNOT_SELECTED identicalproviderpoison coverage; native/policy/transactions freshly tested."
+    "next": "Fresh O0/O2 ordinary/Snow pilots andnonJanuary actualworkers on newmetadata/source (no oldbundle rebind). Fresh selected full matrix afterallshort/nativegates. Component/transportsource unchanged inherited. Preserveoldstagev1full andepochfailurebytes; compute actualold/newinput/kernel/generatedsource/physical comparison.",
+    "controls": "Fouractualpilotcontexts:248native refusals/208policyrefusals/14actualproviderrefusals +active discard/replay/recoveredCDE/source PASS. Remainingmatrix controls useexplicitNOT_SELECTED identicalproviderpoison coverage; native/policy/transactions freshly tested.",
+    "initial_stage_full": "Actual WindowsO0/O2 ten35day/six1096day cohorts peropt PASS;12full/176maincold total on oldstage. Retain cde-interval-windows-O0/O2-v1. Not reboundto laternative policy.",
+    "epoch_guard_diagnosis": "Bothopt first35daynonJan warm PASS; first2to4cold rejects Inconsistent original interval date pointer. ActualoriginalTimeControl initptr1/pastdate remains1; migratedstrictallpastcountguard wrong. NewCDEonly exactepochguard validates1forinitialpastdate, keepsoldstrictcheckotherwise; noTimeControl/pointer/physicschange."
   }
 }
