@@ -1,6 +1,8 @@
 """Typed complete original groundwater hydraulic carry; no process equation."""
 from pathlib import Path
+import math
 import re
+import struct
 from groundwater_boundary_receipt import selected_boundary
 
 POLICY='original-prescribed-groundwater-complete-hydraulic-carry-v1'
@@ -21,6 +23,27 @@ def metadata(project,sha,app):
                 domain_bytes=72,hydraulic_doubles='5*actual_nodes+4',
                 placement='after complete old physical state before optional original output calendar',
                 cde_prefix_offset=48)
+
+
+def decode(raw,project):
+    if raw[:8]!=magic(project):raise ValueError('Foreign prescribed groundwater native codec')
+    n=project.nodes
+    header=struct.pack('<9i',1,n,0,1,1,0,0,0,1)
+    if raw.count(header+header)!=1:raise ValueError('Foreign prescribed groundwater native domain')
+    offset=raw.index(header+header)+72
+    if len(raw)<offset+8*(5*n+4):raise ValueError('Incomplete prescribed groundwater hydraulic carry')
+    values=struct.unpack_from('<'+str(5*n+4)+'d',raw,offset)
+    if not all(map(math.isfinite,values)):raise ValueError('Nonfinite prescribed groundwater hydraulic carry')
+    if any(v<0 for v in values[n:5*n+2]) or values[-1]<0:
+        raise ValueError('Invalid prescribed groundwater hydraulic carry')
+    return dict(heads=list(values[:n]),level=values[-2],volume=values[-1],offset=offset)
+
+
+def validate_candidate(raw,receipt,project):
+    actual=decode(raw,project)
+    if (actual['heads']!=receipt.get('pressure_head_cm') or actual['level']!=receipt.get('groundwater_cm')
+            or actual['volume']!=receipt.get('stock_end_cm',[None])[0]):
+        raise ValueError('Private prescribed groundwater native carry differs from candidate receipt')
 
 
 def apply_build(output,project,patched):

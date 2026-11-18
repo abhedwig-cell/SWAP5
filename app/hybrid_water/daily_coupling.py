@@ -578,6 +578,8 @@ class CoupledDailyColumn:
                     raise ValueError('Unrestartable candidate conserved solute state')
                 from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
                 if cde_candidate(self.project):validate_cde_candidate(aux,raw,self.project)
+                from groundwater_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+                if groundwater_candidate(self.project):validate_groundwater_candidate(aux,raw,self.project)
                 from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
                 if aquifer_candidate(self.project):validate_aquifer_candidate(aux,raw,self.project)
             if self.project.age:
@@ -620,6 +622,8 @@ class CoupledDailyColumn:
                     raise ValueError('Prepared native state changed')
         from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
         if cde_candidate(self.project):validate_cde_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
+        from groundwater_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+        if groundwater_candidate(self.project):validate_groundwater_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
 
         from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
         if aquifer_candidate(self.project):validate_aquifer_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
