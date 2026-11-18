@@ -1141,13 +1141,22 @@
     }
   },
   "thermal_clock": {
-    "status": "CONTRACT_PERSISTED_NOT_IMPLEMENTED",
+    "status": "IMPLEMENTED_PERSISTED_NARROW_GATES_PARTIAL_NOT_QUALIFIED",
     "baseline": "a264b7166328f5103bfbb6306d663ae206b5a3ab",
     "contract": "docs/science/NOMACRO_THERMAL_CLOCK_20261118.md",
     "scope": "OriginalwaterSnow1heat1/calc2hys0/1/2 drain1analyticsoil bottom5/8 dailyweather;NPRINTDAY2/3first original2..1440domain,FLPRINTDTfalse;nofrost/AQ/CDE/age/macros",
     "baseline_observation": "C:/Users/Veldh012/swap5-complete01-evidence/thermal-clock-baseline-nprint3-v1",
     "source_reconciliation": "Originalswap Integral2 thenSnow2onlyflDayStart thensoilsubsteps/Integral3; oldabsoluteoutputtrialreceiptexplicitlyexcludesSnow. Separateactualnet-forcingsoil+pondreceipt, retainactualSnow/globaldayledger andindependentDarcyboundary.",
-    "next": "Persist new observation/clock composition before compiling; freshO0/O2NPD3Snow35day andcold/userfiles; no templateinputproxy, no guard/tolerance weakening.",
-    "external_blocker": null
+    "next": "Fresh v5 real NPD2hys1 and NPD3hys2O0/O2 after final original event caps; then dependency ordered short/controls/full/portable/preservation/admission",
+    "external_blocker": null,
+    "implementation": "app/hybrid_water/thermal_output_clock.py",
+    "development_observations": {
+      "initial_v1": "render scope anchor refusal before compilation",
+      "v2": "missing actual original cmelt transfer; original day7 real workers stopped deliberately; retained raw builds",
+      "v3": "whole global ledger day13 refused1.02145e-10cm despite actual soil receipt near roundoff; actual terminalprint day event truncation",
+      "v4": "NPD3hys2actualO0/O2 35days and4cold exact;60native plus transactions/policy/provider controlsPASS. NPD2hys1fullclock shortrefused day12 due later rain event cap coincidence; not qualified"
+    },
+    "functional_completion": "PARTIAL",
+    "whole_scientific_equivalence": "NOT_QUALIFIED"
   }
 }

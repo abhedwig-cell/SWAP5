@@ -38,17 +38,18 @@ def main():
     try:
         for key,(mode,hys,fmt,reset,et,nprint,full) in CASES.items():
             short=a.output/('short-'+key)
-            if a.reuse_pilots and key=='periodic-hys2-nprint3-binary':short=a.reuse_pilots/f'thermal-clock-nprint3-{a.optimization}-v4'
+            if a.reuse_pilots and key=='periodic-hys2-nprint3-binary':short=a.reuse_pilots/f'thermal-clock-nprint3-{a.optimization}-v5'
+            if a.reuse_pilots and key=='explicit-hys1-nprint2-vector':short=a.reuse_pilots/f'thermal-clock-hys1-nprint2-{a.optimization}-v5'
             options=['--reference-work',a.reference_work,'--mode',mode,'--hysteresis',hys,'--format',fmt,'--reset',reset,'--et',et,'--nprintday',nprint,'--optimization',a.optimization]
             if not (short/'RESULT.json').exists():invoke('thermal_clock_runtime.py',*options,'--output',short)
             report=json.loads((short/'RESULT.json').read_text());assert report['status']=='ACTUAL_WATER_SNOW_SUBDAILY_SHORT_NATIVE_USER_OUTPUT_PASS'
-            assert (report['mode'],report['hysteresis'],report['format'],report['reset'],report['et'],report['optimization'])==(mode,hys,fmt,reset,et,a.optimization)
+            assert (report['mode'],report['hysteresis'],report['format'],report['reset'],report['et'],report['optimization'],report['nprintday'])==(mode,hys,fmt,reset,et,a.optimization,nprint)
             inputs=Path(report['input_root']);build=Path(report['build_root']);project=runtime.m.e.load(inputs,original_output=True)
             meta,_=runtime.m.validate_bundle(build,a.reference_work,project);assert meta['identity']['original_output']==report['original_output']
             q['cases'][key]=dict(short_root=str(short),input_root=str(inputs),build_root=str(build),short=report);save()
             if key in CONTROLS:
                 target=a.output/('controls-'+key)
-                if a.reuse_pilots and key=='periodic-hys2-nprint3-binary':target=a.reuse_pilots/f'thermal-clock-controls-{a.optimization}-v1'
+                if a.reuse_pilots and key=='periodic-hys2-nprint3-binary':target=a.reuse_pilots/f'thermal-clock-controls-{a.optimization}-v2'
                 if not (target/'RESULT.json').exists():invoke('thermal_clock_controls.py','--reference-work',a.reference_work,'--profile-root',short,'--output',target)
                 control=json.loads((target/'RESULT.json').read_text());assert control['status']=='WATER_SNOW_SUBDAILY_SIXTY_NATIVE_ACTIVE_AND_POLICY_REFUSALS_PASS'
                 assert control['build_sha256']==runtime.m.sha(build/'BUILD.json') and len(control['native_refusals'])==60
