@@ -23,8 +23,8 @@ LIMITS={
  'snow-perstep':('explicit',2,1,1,0,1,'sprinkler',0.01,1440,True,False),
 }
 PILOTS={
- 'ordinary-explicit-hys0-binary':'cde-clock-ordinary-{opt}-v2',
- 'snow-monthly-hys2-binary':'cde-clock-snow-{opt}-v2',
+ 'ordinary-explicit-hys0-binary':'cde-clock-ordinary-{opt}-v3',
+ 'snow-monthly-hys2-binary':'cde-clock-snow-{opt}-v3',
 }
 CONTROLS=tuple(key for key,case in CASES.items() if case[-1])
 PROVIDER_POISONS=('ordinary-explicit-hys0-binary','snow-monthly-hys2-binary')
@@ -65,18 +65,22 @@ def main():
             if key in CONTROLS:
                 target=a.output/('controls-'+key)
                 if a.reuse_pilots and key in PROVIDER_POISONS:
-                    target=a.reuse_pilots/('cde-clock-controls-'+('snow' if snow else 'ordinary')+'-'+a.optimization+'-v1')
+                    target=a.reuse_pilots/('cde-clock-controls-'+('snow' if snow else 'ordinary')+'-'+a.optimization+'-v2')
                 extra=['--skip-provider-poison'] if key not in PROVIDER_POISONS else []
                 if not (target/'RESULT.json').exists():invoke('cde_clock_controls.py','--reference-work',a.reference_work,'--profile-root',short,'--output',target,*extra)
                 control=read(target);assert control['status']=='CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS'
                 assert control['build_sha256']==runtime.m.sha(build/'BUILD.json') and len(control['native_refusals'])==(80 if snow else 56 if hys else 50)
-                assert len(control['actual_provider_refusals'])==((6 if snow else 5) if key in PROVIDER_POISONS else 0)
+                assert len(control['actual_provider_refusals'])==((7 if snow else 6) if key in PROVIDER_POISONS else 0)
                 q['controls'][key]=dict(root=str(target),report=control);save()
-            print(key,a.optimization,'ACTUAL_SHORT_CDE_INTERVAL_SOURCE_NATIVE_PASS',flush=True)
+            print(key,a.optimization,'ACTUAL_SHORT_CDE_CLOCK_SOURCE_NATIVE_PASS',flush=True)
         for key,case in LIMITS.items():
             target=a.output/('limit-'+key)
+            if a.reuse_pilots:target=a.reuse_pilots/('cde-clock-limit-'+key+'-'+a.optimization+'-v2')
             if not (target/'RESULT.json').exists():invoke('cde_clock_runtime.py',*options(case),'--phase','limit','--output',target)
             report=read(target);assert report['status']=='ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS' and report['nprintday']==1440 and report['trajectory']['days']==2
+            project=runtime.m.e.load(Path(report['input_root']),original_output=True);meta,_=runtime.m.validate_bundle(Path(report['build_root']),a.reference_work,project)
+            assert meta['identity']['original_output']==report['original_output']
+            assert (report['mode'],report['hysteresis'],report['format'],report['reset'],report['et'],report['snow'],report['source'],report.get('rain'),report['nprintday'],report['perstep'])==case[:-1]
             q['limits'][key]=dict(root=str(target),report=report);save();print(key,a.optimization,'ACTUAL_TWO_DAY_1440_CHEMICAL_CLOCK_NATIVE_PASS',flush=True)
         q['all_short_native_limit_gates_precede_full']=True;save()
         for key,case in CASES.items():
@@ -87,7 +91,7 @@ def main():
             full=read(target);assert full['status']=='ACTUAL_CDE_CLOCK_FULL_NATIVE_USER_OUTPUT_PASS',full
             assert full['trajectory']['build_sha256']==runtime.m.sha(Path(item['build_root'])/'BUILD.json')
             for observed in full['user_output'].values():assert runtime.timestamp(observed['stamps'][-1])==runtime.datetime(2005,1,1),observed
-            item.update(full_root=str(target),full=full);save();print(key,a.optimization,'ACTUAL_FULL_CDE_INTERVAL_SOURCE_NATIVE_PASS',flush=True)
+            item.update(full_root=str(target),full=full);save();print(key,a.optimization,'ACTUAL_FULL_CDE_CLOCK_SOURCE_NATIVE_PASS',flush=True)
         left=Path(q['cases']['ordinary-explicit-hys0-binary']['short_root'])/'trajectory'
         right=Path(q['cases']['ordinary-explicit-hys0-none']['short_root'])/'trajectory'
         assert runtime.m.physical(runtime.m.rows(left))==runtime.m.physical(runtime.m.rows(right))

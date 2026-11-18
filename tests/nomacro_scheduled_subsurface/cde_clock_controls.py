@@ -144,7 +144,7 @@ def main():
             q['policy_refusals'].append(dict(field=field,status='REFUSED'));save()
         q['actual_provider_refusals']=[]
         q['provider_poison_selection']='NOT_SELECTED_IDENTICAL_CDE_RECEIPT_STATE_VALIDATOR' if a.skip_provider_poison else 'SELECTED_ACTUAL_COMPILED_CDE_CLOCK_PRIVATE_TIME_INTEGRAL_PROVIDER_POISON'
-        helpers=[] if a.skip_provider_poison else (['original_cde_output_state.f90','cde_interval_receipt.f90','solute.f90','timecontrol.f90','integral.f90']+(['thermal_output_snow_calendar_state.f90'] if selected['swsnow'] else []))
+        helpers=[] if a.skip_provider_poison else (['original_cde_output_state.f90','cde_interval_receipt.f90','solute.f90','timecontrol.f90','integral.f90','cde_clock_events.f90']+(['thermal_output_snow_calendar_state.f90'] if selected['swsnow'] else []))
         for helper in helpers:
             target=a.output/('actual-provider-'+helper);shutil.copytree(build,target);m.validate_bundle(target,a.reference_work,project)
             path=target/helper;path.write_bytes(path.read_bytes()+b'\n! deliberately foreign actual CDE interval provider\n')
