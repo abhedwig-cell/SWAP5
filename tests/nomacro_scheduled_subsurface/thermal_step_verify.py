@@ -327,7 +327,7 @@ def verify():
                 user_cold(z,prefix+'warm/original/',prefix+'cold/original/',item['user_output_exact'],30,34,build['project']['start_date'])
         z=archives[q['retained_observations']['archive']]
         first=read(z,'thermal-step-baseline-original-reader-v1/RESULT.json');valid=read(z,'thermal-step-baseline-original-reader-v2/RESULT.json')
-        diagnostic=z.read('thermal-step-baseline-original-reader-v1/original.stderr').decode('utf8')
+        diagnostic=z.read('thermal-step-baseline-original-reader-v1/original-reader/swap.err').decode('utf8')
         require(first['original']['swap_ok'] is False and 'no input date within simulation period' in diagnostic,'actual original out-of-window irrigation fixture failure censored')
         require(valid['original']['swap_ok'] is True and valid['original']['returncode']==100 and valid['scientific_claim'] is False
             and valid['original']['executable_sha256']=='c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71','actual original FLPRINTDT reader observation changed/promoted')
