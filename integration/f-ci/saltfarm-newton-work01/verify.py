@@ -38,6 +38,7 @@ with zipfile.ZipFile(here/seal['archive']) as z:
  import csv
  parsed=lambda p:list(csv.DictReader(csvlines(z,p)))
  a=parsed('accept-O2/full/original/result_output.csv');b=parsed('timing/0-control/original/result_output.csv');old=parsed('original431.csv');assert len(a)==len(b)==len(old)==1462;assert [d['DATE'] for d in a]==[d['DATE'] for d in old]
+ assert set(comparison['fields'])==set(a[0])-{'DATE'}
  for k,v in comparison['fields'].items():
   assert max(abs(Decimal(x[k])-Decimal(y[k])) for x,y in zip(a,b))==Decimal(v['candidate_control_max']);assert max(abs(Decimal(x[k])-Decimal(y[k])) for x,y in zip(a,old))==Decimal(v['candidate_original_max'])
  print('FULL_O0_O2_BALANCES_EXACT_NATIVE_CSV_RESTART_REFUSAL_AND_ORIGINAL_COMPARISON_VERIFIED')
