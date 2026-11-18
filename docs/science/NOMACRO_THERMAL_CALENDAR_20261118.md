@@ -107,3 +107,25 @@ frame; insert the new Snow-output carry as its own record. Actual workers own
 the necessary module closure; decoding and corruption tests use their actual
 Fortran bytes. Persist the correction, then build fresh O0/O2 and repeat the
 failed discriminating monthly/cold/output gate before selecting full periods.
+
+Corrected state productiond7c437f91 passes fresh O0/O2 monthly35day/four-cold
+physical/native/user-file pilots. Final source02f1bc2c1 also binds the actual
+copied Snow-state provider before coupling and records the full inherited Snow
+observer semantics in metadata. Fresh v3pilots and59real native,16policy and
+one actual-provider refusal per optimization pass; discard/replay/accept and
+recovered-next-day remain exact. Read-only old/current diagnostics confirm
+unchanged warm physical and user-output records, the actual former sparse cold
+record difference and exact corrected January31record, without model repetition
+or report/build rebinding.
+
+Windows O0/O2 terminal matrices now pass eight short35day and four full1096day
+contexts per optimization, all short/native gates before full periods. This is
+eight actual full periods,128complete cold windows,472native and128policy plus
+eight copied-provider refusals. Format0/3 physical rows and five complete native
+endpoints are exact. Three independent public build-bundle/warm/cold commands
+pass, as do seven actual original numeric-reader and twelve unsupported process/
+cadence descriptor refusals. The initial matrix v1retains an inherited Hupsel
+SWBOTB6fixture and correctly refuses before compilation; corrected fixtures
+explicitly select actual head5for hysteresis0/1 and soil-air8for hysteresis2.
+Portable qualification, scoped prior preservation and registered/canonical
+admission remain pending.
