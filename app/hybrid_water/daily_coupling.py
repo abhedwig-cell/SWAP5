@@ -177,7 +177,7 @@ def validate_bundle(bundle, reference, project):
     from aquifer_native_receipt import metadata as aquifer_receipt_metadata
     expected_aquifer_receipt=aquifer_receipt_metadata() if expected_aquifer else None
     if identity.get('aquifer_native_receipt')!=expected_aquifer_receipt:raise ValueError('Foreign aquifer native receipt consistency policy')
-    from original_output_aquifer import metadata as original_output_metadata
+    from original_output_thermal import metadata as original_output_metadata
     if identity.get('original_output')!=original_output_metadata(project):raise ValueError('Foreign original output policy; rebuild without rebinding')
     from conserved_original_age import metadata as age_metadata,correction as age_correction
     expected_age=age_metadata() if project.age else None
