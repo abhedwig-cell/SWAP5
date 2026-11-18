@@ -2,7 +2,7 @@
 
 ## Original Snow FLPRINTDT,18November2026
 
-[Original Snow FLPRINTDT output](NOMACRO_THERMAL_STEP_20261118.md) passes16full1096day Windows/Ubuntu periods,256complete cold windows and67prior source/native contexts. Its actual original date gates and pending dates are preserved; FLPRINTDT does not imply uniform output at every accepted step. All976native refusals,400policy refusals,16copied-provider refusals, public/reader/transaction gates and1926proof corruptions pass. The four current SaltFarm1461day/20cold comparisons remain exact. Source qualification is complete; canonical admission remains pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+[Original Snow FLPRINTDT output](NOMACRO_THERMAL_STEP_20261118.md) passes16full1096day Windows/Ubuntu periods,256complete cold windows and67prior source/native contexts. Its actual original date gates and pending dates are preserved; FLPRINTDT does not imply uniform output at every accepted step. All976native refusals,400policy refusals,16copied-provider refusals, public/reader/transaction gates and1926proof corruptions pass. The four current SaltFarm1461day/20cold comparisons remain exact. Actual canonical05174068b passes its clean detached registered owner, exact ordered parents and complete qualified tree; metadata receipt pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
 
 ## Original Snow subdaily output,18November2026
 

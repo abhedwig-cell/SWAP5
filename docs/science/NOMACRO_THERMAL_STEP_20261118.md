@@ -1,6 +1,6 @@
 # Original Snow FLPRINTDT output clock
 
-**Qualified bounded Windows/Ubuntu source / canonical admission pending.** Actual
+**Current bounded source admitted through PR1742; metadata receipt pending.** Actual
 canonical aad3388b6 after source PR1740 and metadata PR1741 has exact ordered
 parents/full qualified trees and both clean detached registered owners pass.
 The preceding current composition preserves the canonical SaltFarm policy and
@@ -114,6 +114,6 @@ and initialization/continuation records.
 
 ## Actual qualification
 
-[Original Snow FLPRINTDT output](NOMACRO_THERMAL_STEP_20261118.md) passes16full1096day Windows/Ubuntu periods,256complete cold windows and67prior source/native contexts. Its actual original date gates and pending dates are preserved; FLPRINTDT does not imply uniform output at every accepted step. All976native refusals,400policy refusals,16copied-provider refusals, public/reader/transaction gates and1926proof corruptions pass. The four current SaltFarm1461day/20cold comparisons remain exact. Source qualification is complete; canonical admission remains pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+[Original Snow FLPRINTDT output](NOMACRO_THERMAL_STEP_20261118.md) passes16full1096day Windows/Ubuntu periods,256complete cold windows and67prior source/native contexts. Its actual original date gates and pending dates are preserved; FLPRINTDT does not imply uniform output at every accepted step. All976native refusals,400policy refusals,16copied-provider refusals, public/reader/transaction gates and1926proof corruptions pass. The four current SaltFarm1461day/20cold comparisons remain exact. Actual canonical05174068b passes its clean detached registered owner, exact ordered parents and complete qualified tree; metadata receipt pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
 
-Seven immutable raw records contain424098595bytes. Registered independent owner recomputes actual native/physical/user records and receipts; four proof tests pass in14.354seconds. The selected main44355658289 and preservation44356207574 both conclude SUCCESS. Canonical source and metadata mergeresults remain to be checked.
+Seven immutable raw records contain424098595bytes. Registered independent owner recomputes actual native/physical/user records and receipts; four proof tests pass in14.354seconds. The selected main44355658289 and preservation44356207574 both conclude SUCCESS. Actual source PR1742 merges05174068b with ordered parents aad3388b6/a740d5b6a and complete tree43d335ca002486ae89d317b6eba33513919445d7. Its clean detached registered owner passes; metadata mergeresult remains to be checked.
