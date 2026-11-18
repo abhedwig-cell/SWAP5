@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-perstep-domain01",
   "last_commit": "429c4c51f83aaf91920a740db471d5d117ceaa3d",
-  "status": "WINDOWS_UBUNTU_MAIN_ALL_PASS_RAW_ARCHIVING_LOCAL_PRESERVATION_IN_PROGRESS",
+  "status": "PERSTEP_DOMAIN_ALL_SELECTED_PHYSICAL_NATIVE_PRESERVATION_PASS_RAW_ARCHIVING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -2178,7 +2178,7 @@
     "metadata_docs": "Source checks PASS; strict MkDocs PASS35.15seconds external metadata site."
   },
   "perstep_domain": {
-    "status": "WINDOWS_UBUNTU_MAIN_ALL_PASS_RAW_ARCHIVING_LOCAL_PRESERVATION_IN_PROGRESS",
+    "status": "PERSTEP_DOMAIN_ALL_SELECTED_PHYSICAL_NATIVE_PRESERVATION_PASS_RAW_ARCHIVING",
     "baseline": "12e84c8eba9204080462b83b548741aa9b0f060f",
     "original_reader_observations": [
       "C:\\Users\\Veldh012\\swap5-complete01-evidence\\perstep-domain-baseline-ordinary-nprint2-v1",
@@ -2217,6 +2217,9 @@
     "source_owner": "89b47c7f5 preliminary raw owner/corruption drivers persisted; not sealed/registered/admitted yet.",
     "current_recovery_commit": "5bfa0c66c862429bfd561f1c485d1757f5ca039c",
     "raw": "Ubuntu original exact O0 118586280bytes/16605members artifact14467377901; O2 119138146bytes/16605 artifact14465534940; preservation96735831bytes/7519 artifact14467900658. Bothmain raw split into ordered64MiBparts; digest/memberverificationPASS. Windows main/context archiveproducer running, do not stage untilterminal.",
-    "next": "Finish selected actual Windows literal preservation; archivefourterminalWindowsrecords; seal source/raw qualification; independently registered owner andactualcorruption/sourcecontrols; strictdocs; actualsource+metadata canonical merges; NEXT."
+    "next": "Finish selected actual Windows literal preservation; archivefourterminalWindowsrecords; seal source/raw qualification; independently registered owner andactualcorruption/sourcecontrols; strictdocs; actualsource+metadata canonical merges; NEXT.",
+    "preservation": "Allactual103priorcontextsPASS Windows66/Ubuntu37;4fullSaltFarm1461days/20cold source/physical/native/userexact; frozenallpriorcontrollers.",
+    "literal_predecessor": "Actual original metadata owner snapshot/base12e84c8/source-controller hashes andallfrozen raw producer bytes PASS45.459416s.",
+    "remaining": "Both Windows archiveproducers running (main/context99430,preservationnew); neverstageinflight. Then source/rawseal, registeredowner+proofcontrols+sourceguardnegative, strictdocs, actualsourceandmetadata canonicalmerges. NEXTwithoutstop."
   }
 }
