@@ -75,13 +75,43 @@ def render_irrigation(source):
     anchor='      subroutine read_irrigation_fixed()'
     read="         if (swsolu > 0) call rdfdor ('irconc',0.d0,1000.d0,irconc,mairg,ifnd)"
     if source.count(anchor)!=1 or source.count(read)!=1:raise ValueError('Changed original fixed age reader')
-    source=source.replace(anchor,anchor+'\n         use hybrid_age_irrigation_source_domain,only:hybrid_age_irrigation_source_assert',1)
+    source=source.replace(anchor,anchor+'\n         use hybrid_age_irrigation_source_domain,only:hybrid_age_irrigation_source_assert,hybrid_age_irrigation_source_register',1)
     return source.replace(read,read+"""
          if(swsolu/=2)error stop 'Foreign original fixed irrigation age kind'
          if(any(irtype(1:ifnd)==2))error stop 'Fixed current-age source supports sprinkler and surface irrigation only'
          do i=1,ifnd
             call hybrid_age_irrigation_source_assert(irconc(i))
-         end do""",1)
+         end do
+         call hybrid_age_irrigation_source_register(ifnd)""",1)
+
+
+def render_context(source):
+    first=source.index('   subroutine hybrid_irrigation_checkpoint(');last=source.index('   end subroutine',first)+len('   end subroutine');before,body,after=source[:first],source[first:last],source[last:]
+    anchor='      integer::ios'
+    if body.count(anchor)!=1:raise ValueError('Changed actual private irrigation native declaration')
+    body=body.replace(anchor,'      use hybrid_age_irrigation_source_domain,only:hybrid_age_irrigation_source_count,hybrid_age_irrigation_source_assert\n      use variables,only:t1900\n'+anchor+',source_entries,first_pending,last_pending',1)
+    anchor='         hybrid_irrigation_pending=.true.'
+    if body.count(anchor)!=1:raise ValueError('Changed actual private irrigation pending boundary')
+    check="""         source_entries=hybrid_age_irrigation_source_count()
+         if(source_entries<1.or.source_entries>size(irdate))error stop 'Foreign fixed age source shape'
+         if(any(hybrid_irrigation_snapshot%irdate(1:source_entries)/=irdate(1:source_entries)).or. &
+            any(hybrid_irrigation_snapshot%irtype(1:source_entries)/=irtype(1:source_entries)).or. &
+            any(hybrid_irrigation_snapshot%irdepth(1:source_entries)/=irdepth(1:source_entries)).or. &
+            any(hybrid_irrigation_snapshot%irrate(1:source_entries)/=irrate(1:source_entries)).or. &
+            any(hybrid_irrigation_snapshot%irconc(1:source_entries)/=irconc(1:source_entries))) &
+            error stop 'Foreign fixed age source native input table'
+         first_pending=1+count(irdate(1:source_entries)<t1900-1d-3)
+         last_pending=1+count(irdate(1:source_entries)<=t1900+1d-3)
+         if(hybrid_irrigation_snapshot%nirri<first_pending.or.hybrid_irrigation_snapshot%nirri>last_pending) &
+            error stop 'Foreign fixed age source native event cursor'
+         call hybrid_age_irrigation_source_assert(hybrid_irrigation_snapshot%cirr)
+         if(hybrid_irrigation_snapshot%cirr/=0d0)then
+            if(hybrid_irrigation_snapshot%nirri<2)error stop 'Foreign fixed age source native current age'
+            if(hybrid_irrigation_snapshot%cirr/=irconc(hybrid_irrigation_snapshot%nirri-1)) &
+               error stop 'Foreign fixed age source native current age'
+         end if
+"""
+    return before+body.replace(anchor,check+anchor,1)+after
 
 
 def render_macro(source,project):
@@ -109,5 +139,6 @@ def apply_build(output_path,project,patched):
     if source.count(anchor)!=1:raise ValueError('Changed actual original age submodule')
     path.write_text(source.replace(anchor,anchor+'\n      use hybrid_age_irrigation_source_domain,only:hybrid_age_irrigation_source_assert',1),encoding='cp1252')
     path=output_path/'macropore.f90';path.write_text(render_macro(path.read_text(encoding='cp1252'),project),encoding='cp1252')
+    path=output_path/'irrigation.f90';path.write_text(render_context(path.read_text(encoding='cp1252')),encoding='cp1252')
     (output_path/(DOMAIN+'.f90')).write_bytes(Path(__file__).with_name(DOMAIN+'.f90').read_bytes())
     return [DOMAIN,*patched]
