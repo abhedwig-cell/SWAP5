@@ -1260,10 +1260,12 @@
     "admission_authority": "integration/f-ci/nomacro-complete01/ORIGINAL_OUTPUT_MERGE_RECEIPT.json"
   },
   "bounded_output_hysteresis": {
-    "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "status": "ADMITTED_BOUNDED_SOURCE_STATE_USER_OUTPUT",
     "authority": "integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_QUALIFICATION.json",
     "scope": "Originalhys1/2 water/dailyCDE/young-inflowage, output0..3 andboundedwater/agecalendars; literalphysicalproviders,completeexistinghistory+newtypedactualdomainwitness",
     "evidence": "Windows/Ubuntu64full1096,392fullownwindows total;20existingroutepreservationcontexts; native/policy/rollback/public/reader/componentPASS",
-    "remaining": "Snow/frost/aquifer/detailedweatheroutput andnonzeroageforcing remainseparate. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
+    "remaining": "Snow/frost/aquifer/detailedweatheroutput andnonzeroageforcing remainseparate. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
+    "canonical_admission": "76f1a078b1b236b8e7cbdd400c1f5c83aa43e62b",
+    "admission_receipt": "integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_MERGE_RECEIPT.json"
   }
 }

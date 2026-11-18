@@ -7,7 +7,7 @@ adds both original scanning initializations to bounded water, daily CDE and age
 output/state domains. Windows/Ubuntu each pass32full1096day trajectories and196
 complete cold windows; original equations and earlier helpers remain literal.
 Native/policy/transaction/public/reader and exact prior-route preservation gates
-pass. Qualification is sealed; canonical admission is pending. Other historical
+pass. Qualification is sealed; actual canonical76f1a078b passes its detached registered owner. Other historical
 combinations and nonzero age-valued sources remain open. Historical functional
 closure is PARTIAL, whole science NOT_QUALIFIED and fixed RC3 remains unchanged.
 

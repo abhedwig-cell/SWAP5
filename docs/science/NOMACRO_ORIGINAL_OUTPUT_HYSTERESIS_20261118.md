@@ -1,6 +1,6 @@
 # Original output with the existing hysteresis state owner
 
-**Qualified; canonical admission pending.** Actual baseline is canonical
+**Qualified and canonically admitted by PR1723 at76f1a078b.** Actual baseline is canonical
 4b33ac69f93386658c34d03461b85c014e181d0f. Production4aaf71629 adds the bounded
 composition below. `integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_QUALIFICATION.json`
 and seven immutable raw archives own qualification. Historical closure remains
@@ -96,5 +96,7 @@ and vector-catalog correction authorities. No new physical law, solver policy,
 energy claim or tolerance change is introduced here. Original water/profile and
 NP3 formatting/cadence limitations, and potentially absent per-step monthly age
 mean rows, remain bounded original behavior rather than a scientific oracle.
-Other historical selector/process gaps remain open. Actual canonical merge and
-detached postimage verification must be recorded separately from this qualification.
+Other historical selector/process gaps remain open. PR1723 actual canonical76f1a078b has the exact4b33/2824parents and complete
+088fd990tree of the qualified head. The actual detached registered root passes
+in47.838seconds. `integration/f-ci/nomacro-complete01/OUTPUT_HYSTERESIS_MERGE_RECEIPT.json`
+owns that admission separately from the sealed qualification.
