@@ -870,6 +870,7 @@ end module plant_interface""")
                     *([str(output/(name+'.o')) for name in ('mod_direct_soil_age_substep','direct_soil_age_state')] if project.age_direct_soil_source else []),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output/'mod_prescribed_groundwater_reaction.o')] if lower_boundary==1 else []),
+                    *([str(output/'groundwater_native_state.o')] if lower_boundary==1 else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
