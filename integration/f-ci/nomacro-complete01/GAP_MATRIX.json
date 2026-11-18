@@ -1344,11 +1344,12 @@
     "canonical": "fcb89d59fa46a7d1ee40b477cdfa1d13ea0eb2c0"
   },
   "perstep_domain": {
-    "status": "IMPLEMENTED_NOT_QUALIFIED",
+    "status": "ADMITTED",
     "scope": "OriginalwaterSnow0/1 heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8dailyweather FLPRINTDTtrue NPRINTDAY1..1440 effectiveSWRES0/1 all4calendars/formats0..3, new partitions only; oldNPD1Snowbothreset/ordinaryreset1 literal.",
     "contract": "docs/science/NOMACRO_PERSTEP_DOMAIN_20261118.md",
-    "qualification": "BOUNDED_SOURCE_QUALIFIED_PENDING_CANONICAL",
+    "qualification": "BOUNDED_SOURCE_ACTUAL_CANONICAL_OWNER_PASS",
     "remaining": "Canonical source/metadata admission next. Snow CDE/age calendars and other historical physical/boundary/forcing/soil selectors remain separate. Whole closurePARTIAL scienceNOT_QUALIFIED.",
-    "authority": "integration/f-ci/nomacro-complete01/PERSTEP_DOMAIN_QUALIFICATION.json"
+    "authority": "integration/f-ci/nomacro-complete01/PERSTEP_DOMAIN_QUALIFICATION.json",
+    "canonical": "917f6b33ae3af690a99bda71b1e7400ff2fad200"
   }
 }
