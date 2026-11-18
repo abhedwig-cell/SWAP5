@@ -1,4 +1,4 @@
-"""Source-bound actual original Snow output calendar native/ledger admission."""
+"""Source-bound actual ordinary output, independent Darcy trials and annual native admission."""
 from pathlib import Path,PureWindowsPath,PurePosixPath
 from datetime import date,timedelta
 import hashlib,io,json,math,struct,subprocess,sys,tarfile,tempfile,zipfile
@@ -279,7 +279,18 @@ def verify():
                     require(control['status']=='ORDINARY_WATER_FLPRINTDT_RESET_NATIVE_ACTIVE_POLICY_PROVIDER_PASS'
                         and len(control['native_refusals'])==(39 if CASES[key][1] else 33) and all(r['status']=='REFUSED' and 'ERROR STOP' in r['diagnostic'] for r in control['native_refusals']),'actual Snow native refusal omitted');refusals+=(39 if CASES[key][1] else 33)
                     require(len(control['policy_refusals'])==34 and all(r['status']=='REFUSED' for r in control['policy_refusals']),'actual Snow policy refusal omitted');policies+=34
-                    require(control['actual_provider_refusal']['status']=='REFUSED' and control['actual_provider_refusal']['actual_original_metadata_unchanged'] is True,'actual copied Snow provider not bound');providers+=1
+                    provider='original_output_hysteresis_domain.f90' if CASES[key][1] else 'mod_original_output_receipt.f90'
+                    require(control['actual_provider_refusal']['status']=='REFUSED' and control['actual_provider_refusal']['actual_original_metadata_unchanged'] is True
+                        and control['actual_provider_refusal']['provider']==provider and control['actual_provider_refusal']['error']=='Generated donor differs: '+provider,'actual copied ordinary provider not bound');providers+=1
+                    cp=path(item['root']);bp=path(run['cases'][key]['build_root'])
+                    require(z.read(cp+'actual-compiled-provider/BUILD.json')==z.read(bp+'BUILD.json')
+                        and z.read(cp+'actual-compiled-provider/'+provider)==z.read(bp+provider)+b'\n! deliberately foreign actual copied provider\n','actual copied provider mutation differs')
+                    short_prefix=path(run['cases'][key]['short_root']);trial_witness(z,short_prefix+'trajectory/',run['cases'][key]['short']['original_output']['original_output_epoch'],control['trial_phase_witness'])
+                    for attack in control['native_refusals']:
+                        ap=cp+'native/'+attack['attack']+'/'
+                        actual_stderr=z.read(ap+'original/donor.stderr').decode('utf8').replace('\r\n','\n')
+                        require(actual_stderr==attack['diagnostic'].replace('\r\n','\n') and 'ERROR STOP' in actual_stderr,'actual native refusal stderr differs')
+                        require(not any(name.startswith(ap) and Path(name).name.startswith('accepted-') and name.endswith('.zip') for name in z.namelist()),'corrupt ordinary native published accepted state')
                     require(all(control['transactions'][k] is True for k in ('discard_no_day_advance','replay_exact','accept_exact','recovered_next_day_exact','origin_unchanged')),'actual Snow transactions omitted')
         contexts=0
         for platform,location in q['preservation'].items():
@@ -376,9 +387,35 @@ def verify():
         valid=read(z,'ordinary-reset-baseline-original-reader-v2/RESULT.json')
         require(valid['original']['swap_ok'] is True and valid['original']['returncode']==100 and valid['scientific_claim'] is False
             and valid['original']['executable_sha256']=='c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71','actual original FLPRINTDT reset reader observation changed/promoted')
+        failed_reader=read(z,'ordinary-reset-baseline-original-reader-v1/OBSERVATION.json')
+        diagnostic=z.read('ordinary-reset-baseline-original-reader-v1/public.stderr').decode('utf8')
+        require(failed_reader['scientific_claim'] is False and failed_reader['public_returncode']==2 and 'Original physical oxygen stress requires numerical soil heat for every future crop' in diagnostic,'actual retained heat0 oxygen-stress fixture refusal censored')
+        require(not any(name.startswith('ordinary-reset-baseline-original-reader-v1/original-reader/') for name in z.namelist()),'unexecuted original fixture labeled reader evidence')
+        comparison=read(z,'ORDINARY_RESET_PHASE_COMPARISON.json');require(comparison==q['actual_phase_comparison'] and comparison['status']=='ACTUAL_RETAINED_V1_V2_INPUT_AND_PHYSICAL_SOURCE_PHASE_COMPARISON','actual observer phase comparison rebound')
+        corrected_phase_witnesses=0
+        for opt in ('O0','O2'):
+            before=f'ordinary-reset-explicit-{opt}-v1/';failed=read(z,before+'RESULT.json');old=read(z,before+'build/BUILD.json');build_files(z,before+'build/',old)
+            data=rows(z,before+'trajectory/');expected_days=1 if opt=='O0' else 2;ledger(data,expected_days)
+            require(failed['status']=='FAILED' and failed['error']=="TimeoutError('Model wall cap 180s')",'actual original stale trial censor hidden')
+            location=q['main']['Windows'][opt];current=archives[location['archive']];run=read(current,location['prefix']+'RESULT.json');item=run['cases']['explicit-hys0-binary']
+            after=PureWindowsPath(item['short_root']).relative_to(PureWindowsPath('C:/Users/Veldh012/swap5-complete01-evidence')).as_posix()+'/'
+            bp=PureWindowsPath(item['build_root']).relative_to(PureWindowsPath('C:/Users/Veldh012/swap5-complete01-evidence')).as_posix()+'/'
+            fixed=read(current,bp+'BUILD.json');require(old['project']==fixed['project'] and old['inputs']==fixed['inputs'],'observer correction changes original physical input')
+            require(old['identity']['kernel_sources']==fixed['identity']['kernel_sources'] and old['identity']['kernel_flags']==fixed['identity']['kernel_flags'],'observer correction changes physical kernel source/flags')
+            changed=[name for name in old['identity']['donor_generated'] if old['identity']['donor_generated'][name]!=fixed['identity']['donor_generated'][name]]
+            require(set(changed)=={'integral.f90','headcalc.f90'},'observer correction changes another generated physical source')
+            require(git('diff','--name-only',failed['source_commit'],item['short']['source_commit'],'--','app','src','reference','tools').decode().splitlines()==['app/hybrid_water/ordinary_output_reset.py'],'actual phase source delta exceeds selected observer')
+            require(old['identity']['original_output']['source_sha256']==digest(blob(failed['source_commit'],'app/hybrid_water/ordinary_output_reset.py').replace(b'\r\n',b'\n')),'actual retained old observer source rebound')
+            left=z.read(before+'build/day_kernel.exe');right=current.read(bp+'day_kernel.exe');require(len(left)==len(right),'physical kernel image length changes')
+            pe=struct.unpack_from('<I',left,0x3c)[0];require(struct.unpack_from('<I',right,0x3c)[0]==pe and left[pe:pe+4]==b'PE\0\0','actual physical PE header differs')
+            offsets=[i for i,(x,y) in enumerate(zip(left,right)) if x!=y]
+            require(set(offsets)<=set(range(pe+8,pe+12))|set(range(pe+88,pe+92)),'physical kernel binary changes outside actual timestamp/checksum; no normalization allowed')
+            record=comparison['optimizations'][opt]
+            require(record==dict(original_failed_source=failed['source_commit'],corrected_source=item['short']['source_commit'],input_manifest_exact=True,kernel_sources_and_flags_exact=True,kernel_binary_exact=left==right,kernel_binary_difference_offsets=offsets,kernel_pe_header_offset=pe,kernel_differences_only_timestamp_checksum=True,original_kernel_sha256=digest(left),corrected_kernel_sha256=digest(right),only_generated_source_changes=changed,only_production_file_change=['app/hybrid_water/ordinary_output_reset.py'],accepted_days_before=expected_days,accepted_days_after=35,original_status='CENSORED_PARTIAL_ACCEPTED_PREFIX_NOT_FULL_PERIOD'),'actual before/after observer evidence differs')
+            evidence=trial_witness(current,after+'trajectory/',fixed['identity']['original_output']['original_output_epoch']);require(evidence['actual_trial_count']>0,'actual stale-versus-Darcy comparison omitted');corrected_phase_witnesses+=evidence['actual_trial_count']
     require((fulls,windows,refusals,policies,providers,contexts)==(16,256,600,544,16,91),'actual Snow calendar full/native/preservation denominator differs')
     return dict(status='ORIGINAL_ORDINARY_FLPRINTDT_DARCY_ANNUAL_NATIVE_ADMISSION_PASS',runtime=RUNTIME,predecessor=prior,actual_full_periods=fulls,
         actual_cold_windows=windows,actual_native_refusals=refusals,actual_policy_refusals=policies,actual_copied_provider_refusals=providers,
-        actual_preserved_contexts=contexts,actual_saltfarm_preserved_full_periods=4,actual_saltfarm_preserved_cold_windows=20,actual_non_january_periods=epoch_periods,actual_epoch_cold_windows=epoch_cold,actual_post_year_native_refusals=year_refusals,actual_bound_reports=reports,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
+        actual_preserved_contexts=contexts,actual_saltfarm_preserved_full_periods=4,actual_saltfarm_preserved_cold_windows=20,actual_non_january_periods=epoch_periods,actual_epoch_cold_windows=epoch_cold,actual_post_year_native_refusals=year_refusals,actual_retained_censored_periods=2,actual_corrected_pilot_phase_comparisons=corrected_phase_witnesses,actual_bound_reports=reports,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
