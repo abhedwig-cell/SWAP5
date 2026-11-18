@@ -82,8 +82,7 @@ def metadata(project):
         original_flprintdt_date_gated=True,original_pending_dates_not_normalized=True,annual_counter_policy='original-global-or-completed-year-count-v1',
         trial_receipt_policy='literal-original-independent-darcy-perstep-family-v1',trial_water_guard_cm=1e-10,
         trial_bottom='actual original Darcy/soil-air constraint before Fluxes; never candidate-volume closure',
-        legacy_trial_comparison_diagnostic=not is_snow,physical_equations_changed=False,
-        selected_scope_thermal=bool(is_snow))
+        legacy_trial_comparison_diagnostic=not is_snow,physical_equations_changed=False)
     if is_snow:result.update(snow_output_source_sha256=sha(Path(__file__).with_name(SNOW_PROVIDER+'.f90')),snow_output_fields=list(SNOW_FIELDS),snow_output_domain_bytes=32,snow_output_value_bytes=56,
         snow_stock='actual MOD_snow ssnow',snow_increment_slots=[2,3,13],soil_trial_guard_cm=1e-10)
     return result
