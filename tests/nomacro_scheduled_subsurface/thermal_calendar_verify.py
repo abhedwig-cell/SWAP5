@@ -258,6 +258,7 @@ def verify():
             main,mp,build,data=main_data['Windows',location['optimization'],'monthly-hys2-binary']
             require(physical(rows(z,old+'trajectory/'))==physical(data)
                 and user(z,old+'trajectory/original/result_output.bin')==user(main,mp+'trajectory/original/result_output.bin'),'actual corrected warm Snow physics/output changed')
+            require(physical(rows(z,old+'own-30/'))==physical(data[30:34]),'actual old sparse Snow cold physical rows differ')
             require(probe['checks']['before']['january31_user_output_exact'] is False and probe['checks']['corrected']['january31_user_output_exact'] is True
                 and all(probe['checks'][phase][field] is True for phase in ('before','corrected') for field in ('physical_exact','complete_native_exact','source_unchanged')),'actual before/corrected native/user Snow gap claim differs')
             warm=user(z,old+'trajectory/original/result_output.bin');cold=user(z,old+'own-30/original/result_output.bin')
@@ -265,6 +266,8 @@ def verify():
             with zipfile.ZipFile(io.BytesIO(z.read(old+'trajectory/accepted-column-1-day-34.zip'))) as a,zipfile.ZipFile(io.BytesIO(z.read(old+'own-30/accepted-column-1-day-34.zip'))) as b:
                 require(a.read('result.end')==b.read('result.end') and a.read('macro.bin')==b.read('macro.bin') and a.read('macro.bin')[:8]==b'S5CTW001','actual old physical/native gap diagnostic rebound')
             require(digest(z.read(old+'build/BUILD.json'))==probe['checks']['before']['build_sha256'] and digest(main.read(mp+'build/BUILD.json'))==probe['checks']['corrected']['build_sha256'],'actual Snow gap build source rebound')
+            require(digest(z.read(old+'trajectory/accepted-column-1-day-30.zip'))==probe['checks']['before']['original_source_checkpoint_sha256']
+                and digest(main.read(mp+'trajectory/accepted-column-1-day-30.zip'))==probe['checks']['corrected']['original_source_checkpoint_sha256'],'actual Snow gap origin checkpoint rebound')
         failed=archives[q['retained_observations']['archive']]
         for prefix in q['retained_observations']['failed_fixture_matrices']:
             report=read(failed,prefix+'/RESULT.json');require(report['status']=='FAILED' and set(report['cases'])=={'monthly-hys2-binary'},'actual inherited-boundary fixture failure censored')
