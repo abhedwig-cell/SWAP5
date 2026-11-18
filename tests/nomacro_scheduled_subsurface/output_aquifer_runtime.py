@@ -14,7 +14,7 @@ from original_output_files import compare
 from original_output_aquifer import metadata,selection,magic
 
 m=original.m;ROOT=original.ROOT
-PHYSICS={'soil-transfer':(1.,0.,0.,0.,100.),'box-release':(0.,1.,0.,0.,100.),'sorption-decay':(1.,.25,.2,.001,100.),'stiff-loss':(0.,1.,0.,10.,.1)}
+PHYSICS={'soil-transfer':(1.,0.,0.,0.,100.),'box-release':(0.,1.,0.,0.,100.),'sorption-decay':(1.,.25,.2,.001,100.),'stiff-loss':(0.,1.,0.,10.,.1),'loss-limit-active':(0.,1.,0.,10.,1e-6)}
 
 
 def fixture(path,kind,fmt,hys,irrigation='none',inline=False,salinity=False,groups=None,precision=12):
@@ -82,7 +82,7 @@ def main():
             data=m.rows(full);assert len(data)==days;m.check(data);q['trajectory']=q['retained_previous_report']['trajectory'];assert q['trajectory']['build_sha256']==m.sha(build/'BUILD.json')
         else:q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,days,{2,4,8,days}|{i for w in windows for i in w},150)
         fields=('aquifer_residual_mg_cm2','aquifer_exchange_residual_mg_cm2','soil_aquifer_residual_mg_cm2');q['maximum_residuals']={k:max(abs(row[k]) for row in data) for k in fields};assert all(v<=1e-10 for v in q['maximum_residuals'].values())
-        if a.kind=='stiff-loss':assert data[-1]['aquifer_state'][6]>0,'Loss-limited aquifer policy did not activate'
+        if a.kind=='loss-limit-active':assert data[-1]['aquifer_state'][6]>0,'Targeted aquifer loss-limit stress did not activate'
         if a.irrigation!='none':
             assert abs(data[4]['solute_ledger_mg_cm2'][3]-48.)<1e-10
             assert abs(data[6]['solute_ledger_mg_cm2'][3]-72.)<1e-10
