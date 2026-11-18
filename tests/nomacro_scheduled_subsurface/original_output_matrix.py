@@ -17,11 +17,14 @@ ROOT=baseline.ROOT
 def fixture(path,name):
     base=name
     if name.startswith('cde-'):base='water-'+name[4:]
+    if name.startswith(('age-csv','cde-solbal-csv')):base='water-csv'+name[-1]
     if name in ('water-csv0-omitted','water-default-precision'):base='water-csv0' if 'omitted' in name else 'water-custom-csv5'
     if name=='water-nprint3':base='water-nprint2'
     baseline.fixture(path,base)
     control=path/'swap.swp';text=control.read_text(encoding='cp1252')
     if name.startswith('cde-'):text=baseline.assignment(text,'SWSOLU',1)
+    if name.startswith('age-csv'):text=baseline.assignment(text,'SWSOLU',2)
+    if name.startswith('cde-solbal-csv'):text=baseline.assignment(text,'INLIST_CSV',"'WATBAL,GWL,SOLBAL,C,Q'")
     if name=='water-nprint3':text=baseline.assignment(text,'NPRINTDAY',3)
     if name=='water-csv0-omitted':
         for key in ('SWCSV','INLIST_CSV','NUM_DECIMALS'):text=re.sub(r'(?mi)^[ \t]*'+key+r'[ \t]*=[^\r\n]*\r?\n','',text)
@@ -40,7 +43,10 @@ def own(build,reference,project,full,data,start,end,out):
         assert a.read('macro.bin')[:8]==magic(project)
         for member in ('result.end','macro.bin'):assert a.read(member)==b.read(member),member
     assert m.sha(source)==digest
-    return dict(start=start,end=end,exact_physical=True,exact_complete_native=True,origin_unchanged=True,seconds=seconds)
+    from original_output import selection
+    from original_output_files import compare
+    files=compare(full/'original',out/'original',selection(project),start,end,project.start_date)
+    return dict(start=start,end=end,exact_physical=True,exact_complete_native=True,exact_user_output=files,origin_unchanged=True,seconds=seconds)
 
 
 def main():
@@ -62,6 +68,7 @@ def main():
             start=time.monotonic();r=subprocess.run(list(map(str,cmd)),capture_output=True,text=True,timeout=180);(a.output/'build.stdout').write_text(r.stdout);(a.output/'build.stderr').write_text(r.stderr);q['build']=dict(returncode=r.returncode,seconds=time.monotonic()-start);save();assert r.returncode==0,r.stderr
         last=1096 if a.phase=='full' else 35 if selected['swmonth'] or selected['swodat'] else 10
         windows=[(2,4),(last-3,last-1)]
+        if selected['swmonth'] or selected['swodat']:windows.append((30,34))
         if last==1096:windows += [(199,201),(364,367),(530,532),(1094,1096)]
         cuts={x for pair in windows for x in pair}
         full=a.output/'trajectory';result,data=m.trajectory(build,a.reference_work,project,full,last,cuts,120);q['trajectory']=result;save()
