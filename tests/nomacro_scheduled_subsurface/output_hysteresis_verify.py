@@ -132,6 +132,10 @@ def validate(q):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('age_irrigation_source_admission',ROOT/'tests/nomacro_scheduled_subsurface/age_irrigation_source_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty hysteresis admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     allowed={'app/hybrid_water/'+n for n in ('daily_coupling.py','daily_host.py','experimental_project.py','original_output_hysteresis.py','original_output_hysteresis_domain.f90')}
