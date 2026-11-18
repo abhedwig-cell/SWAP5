@@ -2,6 +2,7 @@
 import argparse
 import contextlib
 import json
+import re
 from pathlib import Path
 import shutil
 import output_aquifer_runtime as matrix
@@ -31,7 +32,7 @@ def main():
             label=key+'-'+str(index);bad=a.output/('input-'+label);shutil.copytree(case,bad);p=bad/'swap.swp';p.write_text(assignment(p.read_text(encoding='cp1252'),key,value),encoding='cp1252')
             q['reader_refusals'].append(refuse('reader-'+label,build,bad,project,meta['binding'],(key.lower(),'range','invalid','aquifer')));save()
         for key,value in [('NPRINTDAY',3),('SWMONTH',1),('PERIOD',2),('SWODAT',1),('FLPRINTDT','.TRUE.'),('SWFROST',1),('SWSNOW',1),('SWMETDETAIL',1),('SWSOPHY',1)]:
-            bad=a.output/('descriptor-'+key);shutil.copytree(inputs,bad);p=bad/'swap.swp';p.write_text(assignment(p.read_text(encoding='cp1252'),key,value),encoding='cp1252')
+            bad=a.output/('descriptor-'+key);shutil.copytree(inputs,bad);p=bad/'swap.swp';text=p.read_text(encoding='cp1252');text=assignment(text,key,value) if re.search(r'(?mi)^\s*'+key+r'\s*=',text) else text+'\n'+key+' = '+str(value)+'\n';p.write_text(text,encoding='cp1252')
             try:
                 candidate=m.e.load(bad,original_output=True);matrix.metadata(candidate)
             except ValueError as error:q['descriptor_refusals'].append(dict(key=key,value=value,status='REFUSED',error=str(error)))
