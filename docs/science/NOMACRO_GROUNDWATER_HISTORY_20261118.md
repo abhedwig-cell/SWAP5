@@ -64,3 +64,31 @@ reconstruction. No bottom9 implementation or defect claim is made by this unit.
 
 Affected invariants:3,4,7,13,21,23,30. No general MODFLOW, alternative solver,
 active-macro work, new physical state owner or implicit process fallback.
+
+## Actual initial composition and redundant-copy reader gap
+
+Productiond042b2c06 passes actual35day O0/O2 crossing groundwater/CDE/hysteresis2/
+Snow pilots with four complete physical/native/user-output cold windows each.
+Hysteresis1 without snow, snow without hysteresis and an explicit heat0/drain0/
+ET1/empirical-oxygen1 profile also pass. An initial heat0 fixture retaining
+physical oxygen2 is correctly refused before model work; that original numeric
+heat requirement is retained, not weakened.
+
+The new serializer also writes5*N+4hydraulic values when original SWHYST1/2
+already owns that complete carry. These appended values must be a consistency
+witness, not a competing physical owner. An actual native diagnostic locates
+the two byte-exact blocks, changes only the original stored head, and observes
+HYBRID_READY because the appended block silently overwrites the differing
+original copy. Final restored state still matches the accepted receipt, but the
+native record is internally inconsistent. No day step or external proposal is
+executed; source checkpoint and accepted day4 remain unchanged.
+
+This is an unadmitted successor-reader defect, not a legacy physical-equation
+defect. Preserve the initial complete positive runs and actual diagnostic.
+Before admission, require exact equality between all original and appended
+hydraulic values whenever original hysteresis owns that carry. Validate the
+entire pending record before applying it. For SWHYST0/Snow1 the appended carry
+remains necessary because the original thermal wire alone lacks it. Add actual
+old/appended-copy refusal controls and prove rejection before HYBRID_READY.
+Fresh source-bound builds and appropriate cold/year/terminal gates must qualify
+the corrected reader. Do not rebind old builds or checkpoints.
