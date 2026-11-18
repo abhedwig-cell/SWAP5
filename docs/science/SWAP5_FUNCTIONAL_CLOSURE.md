@@ -1,5 +1,16 @@
 # Current functional closure of the original projects
 
+## Qualified direct soil age source,18November2026
+
+[Direct irrigation age](NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md) adds actual
+compartment input through explicit default-off `--age-direct-soil-source`,
+including point and interval SSDI. Literal transport precedes input each
+microstep;12field ledgers and six typed native families own the new source.
+Windows/Ubuntu44full1096periods and actual source/native/output/public,
+rollback, reader and preservation gates pass. Canonical admission is pending.
+Historical functional closure remains PARTIAL, whole science NOT_QUALIFIED
+and fixed RC3 remains unchanged.
+
 ## Qualified current fixed age source,18November2026
 
 [Current irrigation source age](NOMACRO_AGE_IRRIGATION_SOURCE_20261118.md) corrects

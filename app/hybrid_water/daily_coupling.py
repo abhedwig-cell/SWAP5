@@ -174,15 +174,15 @@ def validate_bundle(bundle, reference, project):
     if identity.get('conserved_aquifer_solute')!=expected_aquifer:raise ValueError('Foreign original aquifer solute source/state policy')
     if expected_aquifer and (bundle/'mod_aquifer_solute_reservoir.f90').read_bytes()!=aquifer_correction().helper_source():
         raise ValueError('Foreign actual aquifer solute evaluator')
-    from age_irrigation_source import output_metadata as original_output_metadata
+    from age_direct_soil_source import output_metadata as original_output_metadata
     if identity.get('original_output')!=original_output_metadata(project):raise ValueError('Foreign original output policy; rebuild without rebinding')
     from conserved_original_age import metadata as age_metadata,correction as age_correction
     expected_age=age_metadata() if project.age else None
     if expected_age is not None:
-        from age_irrigation_source import age_identity
+        from age_direct_soil_source import age_identity
         expected_age=age_identity(expected_age,project)
     if identity.get('conserved_original_age')!=expected_age:raise ValueError('Foreign original age source/state policy')
-    from age_irrigation_source import fixed_metadata
+    from age_direct_soil_source import fixed_metadata
     expected_age_fixed=fixed_metadata(project)
     if identity.get('original_age_fixed_irrigation')!=expected_age_fixed:raise ValueError('Foreign original fixed age input policy')
     if expected_age:
@@ -565,11 +565,12 @@ class CoupledDailyColumn:
                 if not all(math.isfinite(v) and v>=0 for v in conserved):
                     raise ValueError('Unrestartable candidate conserved solute state')
             if self.project.age:
-                from conserved_original_age import validate as validate_age,validate_effluent
+                from conserved_original_age import validate_effluent
+                from age_direct_soil_source import validate_age
                 from experimental_project import auxiliary_magic
                 with zipfile.ZipFile(candidate) as z:aux=z.read('macro.bin')
                 if aux[:8]!=auxiliary_magic(self.project):raise ValueError('Foreign original age native codec')
-                validate_age(raw['age_state_cm_day'])
+                validate_age(raw['age_state_cm_day'],self.project)
                 validate_effluent(raw['age_effluent'])
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')

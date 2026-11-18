@@ -1,5 +1,14 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+[Direct soil age qualification](../science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md)
+and `integration/f-ci/nomacro-complete01/DIRECT_SOIL_AGE_QUALIFICATION.json` bind
+production26724ce75 to seven raw archives,293actual reports/builds and44full
+periods. Actual original source defects, four-object conservation/refinement,
+transactional native/source/output,47prior Windows contexts and ten portable
+contexts pass. The registered owner checks actual ledgers/native endpoints;
+3005proof corruptions and actual ignored-source commits are refused.
+Qualification is bounded; canonical admission is pending.
+
 [Current fixed age ownership](../science/NOMACRO_AGE_IRRIGATION_SOURCE_20261118.md)
 and `integration/f-ci/nomacro-complete01/AGE_IRRIGATION_SOURCE_QUALIFICATION.json`
 bind productiona5cedc906 to seven raw archives,238actual reports/builds and40full

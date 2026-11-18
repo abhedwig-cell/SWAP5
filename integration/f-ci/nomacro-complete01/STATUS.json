@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-age-irrigation-source01",
-  "last_commit": "3063937eec796d2a863beab0fe7198766ba622e1",
-  "status": "CURRENT_FIXED_AGE_SOURCE_CANONICALLY_ADMITTED_NEXT_SUBSURFACE",
+  "branch": "codex/nomacro-subsurface-age-source01",
+  "last_commit": "1eed473273444e58bcbcaeea38c1d87460beba00",
+  "status": "DIRECT_SOIL_AGE_REGISTERED_OWNER_PASS_DOCS_AND_CANONICAL_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -325,7 +325,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Complete annual/subdaily cohort controllers and actual reference/cadence/native controls; no changes to physical providers or literal003/004 helpers.",
-  "recovery_point": "PR1725 actual canonical3063937ee exact parents/full tree; actual detached registered owner PASS50.217seconds. Metadata receipt and bounded current claims prepared.",
+  "recovery_point": "Sealede4a31277c; registered1eed47327rootPASS56.824sec,3tests3005corruptionsrefused; actualbad34513b4cignoredqssdi source rejected, nevermerge. Production26724ce75unchanged.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -427,7 +427,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Complete actual metadata admission, then implement explicitly owned direct-soil irrigation age input and its ledger/native state for fixed subsurface IRTYPE2. Preserve existing surface source/default routes and physical age providers.",
+  "next_action": "Runsourceandstrictdocschecks; pushfinalhead andrunregisteredroot. CreateboundedsourcePR, mergeonlyqualifiedhead, verifyactualcanonicalparents/fulltree+detachedregisteredroot; metadatareceiptadmission thenNEXT: reconcileoriginalCDEoutput withSWBR1aquiferowner/state beforeboundedactivation.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -648,7 +648,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "3063937eec796d2a863beab0fe7198766ba622e1",
+  "canonical_head": "e3cb491d15b9d079062285c397cfba552ab0a86d",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -667,5 +667,67 @@
       "stdout": "{\n  \"status\": \"CURRENT_FIXED_IRRIGATION_AGE_SOURCE_STATE_OUTPUT_ADMISSION_PASS\",\n  \"runtime\": \"a5cedc906d91e9c020d407dfa5ae739336e0e7a8\",\n  \"predecessor\": \"LITERAL_QUALIFIED_PREDECESSOR_IMAGE_AND_ACTUAL_ARCHIVES_PASS\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"actual_bound_reports\": 238,\n  \"actual_full_periods\": 40,\n  \"native_codecs\": [\n    \"S5AI0002\",\n    \"S5AI0003\",\n    \"S5AI0004\",\n    \"S5AI0005\",\n    \"S5AIO001\",\n    \"S5AIH001\"\n  ],\n  \"age_units\": \"cm day\",\n  \"age_tolerance\": \"8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)\"\n}\n",
       "stderr": ""
     }
+  },
+  "subsurface_age_source": {
+    "baseline": "e3cb491d15b9d079062285c397cfba552ab0a86d",
+    "status": "DIRECT_SOIL_AGE_REGISTERED_OWNER_PASS_DOCS_AND_CANONICAL_NEXT",
+    "contract": "docs/science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md",
+    "component": "tests/nomacro_scheduled_subsurface/direct_soil_age_component.py",
+    "physical_policy": "literal transport then direct per-compartment input each microstep; convergence and corrected-original qualification required",
+    "state_policy": "12fieldprotocol, sixnewS5DI typedcodecs, literal56bytesurfacedomain plus24bytepaired directinputowner atEOF",
+    "next": "Runsourceandstrictdocschecks; pushfinalhead andrunregisteredroot. CreateboundedsourcePR, mergeonlyqualifiedhead, verifyactualcanonicalparents/fulltree+detachedregisteredroot; metadatareceiptadmission thenNEXT: reconcileoriginalCDEoutput withSWBR1aquiferowner/state beforeboundedactivation.",
+    "external_blocker": null,
+    "component_result": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-component-v1/report.json",
+    "component_summary": "Real four-object O0/O2 positive point/interval, exact zero-source, committed-state nonmutation, 12 invalid source/transport refusals, 7 malformed ledger refusals/opt; actual two-cell transport refinement errors .0041117,.0020226,.0010032; old providers literal.",
+    "original_result": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-original-v1/RESULT.json",
+    "original_summary": "32actual original O0/O2 point/interval zero/20days: original CIRR0andidentical profiles; nonmutatingprobes exact; scoped corrected CIRR+endmicrostepinput48cmday changespositiveprofile, preserveszero, plain/probeexact.",
+    "activation": "--age-direct-soil-source; exclusiveof--age-irrigation-source; defaultsFalse",
+    "short_results": [
+      "direct-soil-age-point-O0-v1",
+      "direct-soil-age-subsurface-O2-v1",
+      "direct-soil-age-subsurface-interval-O0-v1"
+    ],
+    "short_summary": "48/72cmday actual direct input; twelvefieldledger/guardPASS; exact2to4/4to8/6to10physical+complete native+allfourageCSV each. intervalO2existingprocess pending.",
+    "controls_result": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-controls-O0-v1/RESULT.json",
+    "cohort": "17short and11full1096 peroptimization; point/interval,6typedfamilies,format0/3,hys1/2,inline,zero/1000 andsurface/sprinkler newpolicyshort;8native+transactioncontexts/opt",
+    "calendar_failure": "885aeac20WindowsO0/O2 daily/interval/zero/1000shortsPASS thenregularfirststep refused12fieldledger: age_output_calendar_probe stillliteral11field. No conservation weakening. Retainbothv1folders.",
+    "calendar_refinement": "Only explicitdirect source adapter transforms actual existing calendarprobe observation to12fields, alongsidemain/CSV. Oldcalendarhelpers remainliteral.",
+    "regular_refined": "26724ce75pointregular003O0/O2 actual12fields ten-day48/72source/native2to4/4to8/6to10alluseroutputPASS; frozenoldcalendar untouched.",
+    "windows_running": {
+      "O0": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-windows-O0-v2",
+      "O2": "C:/Users/Veldh012/swap5-complete01-evidence/direct-soil-age-windows-O2-v2"
+    },
+    "ubuntu_run": 44246149974,
+    "ubuntu_carrier": "fef591e9058b556fe509e2f8dad0e7b2ead1a693",
+    "ubuntu_runtime": "a3c9e2b995d951c7b26e2d619091cac6586f642a",
+    "preservation_controller_failure": "NewcontrollerwronglyassumedBUILDprojectserializednewdataclassboolean; actualprojectisunchanged5fieldsummary. Removeprojection andrequireexactentireoldmetadata. Resumeactualcompletedfreshbuild only; no old ornewbuildrewritten.",
+    "ubuntu_status": "SUCCESS",
+    "ubuntu_artifacts": {
+      "O0": {
+        "id": 14402550231,
+        "bytes": 93456314,
+        "members": 14843
+      },
+      "O2": {
+        "id": 14402570349,
+        "bytes": 86110224,
+        "members": 14025
+      }
+    },
+    "ubuntu_contract_run": 44247509054,
+    "ubuntu_contract_carrier": "298e31efc5662476a7d86366ebb2b7e020f32c5f",
+    "ubuntu_contract_runtime": "aa90aa217b6d6dc9272bdd6cc132a1d06bd538ff",
+    "windows_public": "3actualpublicwarm/coldsource-nativecommandsPASS",
+    "windows_reader": "6realoriginalreader+9descriptorrefusalsPASS; oldyoungdefaultguardwillbecheckedbyexistingportablepreservationbuild",
+    "windows_boundary": "O0/O2 firstday48andtrueTENDday10 cumulative120cmday with6coldwindowsPASS",
+    "zero_projection": "ActualimmutableAGE_FIXED_WINDOWS_RAW.zip7ebc803a: O0/O2tendaysphysical andentireoldnativepayload2/4/8exact aftercomparison-only removalnewcodec+80byteownership/zeroprotocolfields. No checkpointadoption/rebinding.",
+    "preservation_policy": "Existingold31routecontrollersareusedliterally. Unexecutedduplicatecopiesremoved; currentage8families/opt haveownfreshdirectflagFalsecontroller. Entireoldprojectmetadataexact, noprojection.",
+    "windows_status": "O0/O2matrixterminalPASS:17short+11full1096/opt;158fullcoldwindows/platform,106shortcoldwindows/platform;8controls/opt each19native+5fabricatedledgerrefusals andactivefirst/secondgift transactions.",
+    "preservation": "47freshWindowscontextsPASS:16currentagefamilies,20ordinary+hys,8youngfixedforms,3named. Entireproject/actualemittedsource/provider/physical/nativeexact; oldcontrollersliteral. Ubuntu6current+4oldoutput/hysfreshcontextsPASS.",
+    "raw": "7immutableZIPs forwardverified: WindowsO0/O289309923/89662780bytes,context13749392,preservation81040051; actualUbuntuO0/O293456314/86110224,contracts19382376bytesunchangedartifacts.",
+    "registered_owner": "Semantic293actualreports/44fullsPASS; literalqualifiede3predecessorimage+actualalloldarchivesPASS5.168sec. Initialsnapshotmissedreferencepatchrun.py import: boundedsourceclosureexpandedtoreferencepatchPythononly; oldowner/code/metadataunchanged.",
+    "registered_root": "PASS56.824seconds:293actualreport/buildbindings,44actualfullperiods andliteralqualifiedpreviousimage/rawarchives",
+    "corruptions": "3testsPASS10.704seconds,2928actualproducer+77source/scope/guardcorruptions refused",
+    "source_negative_commit": "34513b4cd32beb5f00d2451f6ee9acf3183de8b2"
   }
 }

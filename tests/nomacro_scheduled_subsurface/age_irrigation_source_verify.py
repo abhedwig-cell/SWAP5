@@ -163,6 +163,10 @@ def predecessor():
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('direct_soil_age_admission',ROOT/'tests/nomacro_scheduled_subsurface/direct_soil_age_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty current-age admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     allowed={'app/hybrid_water/'+n for n in ('daily_host.py','daily_coupling.py','experimental_project.py','age_irrigation_source.py','age_irrigation_source_domain.f90')}|{'tools/solute/run_water.py'}|{'reference/swap-4.3.1/patches/NOMACRO-AGE-IRRIGATION-SOURCE-01/'+n for n in ('source.py','manifest.json')}
