@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-age-irrigation-source01",
-  "last_commit": "3063937eec796d2a863beab0fe7198766ba622e1",
-  "status": "CURRENT_FIXED_AGE_SOURCE_CANONICALLY_ADMITTED_NEXT_SUBSURFACE",
+  "branch": "codex/nomacro-subsurface-age-source01",
+  "last_commit": "e3cb491d15b9d079062285c397cfba552ab0a86d",
+  "status": "DIRECT_SOIL_AGE_COMPONENT_IMPLEMENTED_NOT_TESTED_NOT_ACTIVE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -325,7 +325,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Complete annual/subdaily cohort controllers and actual reference/cadence/native controls; no changes to physical providers or literal003/004 helpers.",
-  "recovery_point": "PR1725 actual canonical3063937ee exact parents/full tree; actual detached registered owner PASS50.217seconds. Metadata receipt and bounded current claims prepared.",
+  "recovery_point": "Actual source PR1725 and metadata PR1726 exact full trees/parents; detached registered owner PASS50.217/50.851sec. New contract/component only; existing runtime and old providers unchanged.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -427,7 +427,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Complete actual metadata admission, then implement explicitly owned direct-soil irrigation age input and its ledger/native state for fixed subsurface IRTYPE2. Preserve existing surface source/default routes and physical age providers.",
+  "next_action": "Run actual four-object direct-soil age source O0/O2 component, ledger rejection and transport/input convergence. Then actual original SSDI age defect/reference proof before explicit source activation, native state and full qualification.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -648,7 +648,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "3063937eec796d2a863beab0fe7198766ba622e1",
+  "canonical_head": "e3cb491d15b9d079062285c397cfba552ab0a86d",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -667,5 +667,15 @@
       "stdout": "{\n  \"status\": \"CURRENT_FIXED_IRRIGATION_AGE_SOURCE_STATE_OUTPUT_ADMISSION_PASS\",\n  \"runtime\": \"a5cedc906d91e9c020d407dfa5ae739336e0e7a8\",\n  \"predecessor\": \"LITERAL_QUALIFIED_PREDECESSOR_IMAGE_AND_ACTUAL_ARCHIVES_PASS\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"actual_bound_reports\": 238,\n  \"actual_full_periods\": 40,\n  \"native_codecs\": [\n    \"S5AI0002\",\n    \"S5AI0003\",\n    \"S5AI0004\",\n    \"S5AI0005\",\n    \"S5AIO001\",\n    \"S5AIH001\"\n  ],\n  \"age_units\": \"cm day\",\n  \"age_tolerance\": \"8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)\"\n}\n",
       "stderr": ""
     }
+  },
+  "subsurface_age_source": {
+    "baseline": "e3cb491d15b9d079062285c397cfba552ab0a86d",
+    "status": "IMPLEMENTED_NOT_TESTED_NOT_ACTIVE",
+    "contract": "docs/science/NOMACRO_SUBSURFACE_AGE_SOURCE_20261118.md",
+    "component": "tests/nomacro_scheduled_subsurface/direct_soil_age_component.py",
+    "physical_policy": "literal transport then direct per-compartment input each microstep; convergence and corrected-original qualification required",
+    "state_policy": "separate twelve-field age ledger, direct cumulative input appended; native/activation not yet implemented",
+    "next": "O0/O2 real four-object component before original source witness and activation",
+    "external_blocker": null
   }
 }
