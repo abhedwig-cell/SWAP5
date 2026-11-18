@@ -932,7 +932,7 @@
   },
   "perstep_domain": {
     "base": "12e84c8eba9204080462b83b548741aa9b0f060f",
-    "status": "SELECTED_SHORT_PILOTS_PASS_MAIN_IN_PROGRESS",
+    "status": "WINDOWS_MAIN_IN_PROGRESS_UBUNTU_MAIN_SUCCESS_RAW_DOWNLOAD_IN_PROGRESS",
     "scientific_impact": "Actual printcount1..1440 original FLPRINTDT state/calendar counter semantics and independent existing water/Snow observers. Physical expressions/absolute guards unchanged.",
     "selected": [
       "O0/O2 11short before6full1096days perplatform/opt",
@@ -949,6 +949,18 @@
     ],
     "expected_cost": "Short builds about30..47seconds on concurrent Windows; selected warm/cold periods bounded180seconds each, whole compound600seconds percase. Full6peropt only after all short andnative gates. Portable jobs40min uppercap; not elapsed prediction.",
     "functional_completion": "PARTIAL",
-    "whole_scientific_equivalence": "NOT_QUALIFIED"
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "workflows": {
+      "main": {
+        "id": 44388289582,
+        "carrier": "767f555c743ffff2dbd9b9c3a9c5791eb497bcda",
+        "conclusion": "success"
+      },
+      "preservation": {
+        "id": 44388338346,
+        "carrier": "3ea1b84c5ee6f1c58064e05d3faeaa60cb899e6f",
+        "conclusion": "in_progress"
+      }
+    }
   }
 }

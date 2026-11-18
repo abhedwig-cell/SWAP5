@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-perstep-domain01",
   "last_commit": "429c4c51f83aaf91920a740db471d5d117ceaa3d",
-  "status": "PERSTEP_DOMAIN_O0_O2_SHORT_NATIVE_LIMIT_PASS_SELECTED_FULL_IN_PROGRESS",
+  "status": "WINDOWS_MAIN_IN_PROGRESS_UBUNTU_MAIN_SUCCESS_RAW_DOWNLOAD_IN_PROGRESS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -2178,7 +2178,7 @@
     "metadata_docs": "Source checks PASS; strict MkDocs PASS35.15seconds external metadata site."
   },
   "perstep_domain": {
-    "status": "PERSTEP_DOMAIN_O0_O2_SHORT_NATIVE_LIMIT_PASS_SELECTED_FULL_IN_PROGRESS",
+    "status": "WINDOWS_MAIN_IN_PROGRESS_UBUNTU_MAIN_SUCCESS_RAW_DOWNLOAD_IN_PROGRESS",
     "baseline": "12e84c8eba9204080462b83b548741aa9b0f060f",
     "original_reader_observations": [
       "C:\\Users\\Veldh012\\swap5-complete01-evidence\\perstep-domain-baseline-ordinary-nprint2-v1",
@@ -2200,6 +2200,20 @@
     "actual_copied_provider_refusals": 4,
     "limit_cases": "Both actual ordinary/Snow1440counts O0/O2:2days+own1to2 exact complete native physical/output PASS",
     "full": "Windows two opted workers running;11short,6full1096days,6native contexts per optimization; all short/native/limit gates precede full. Not PASS until terminal reports.",
-    "epochs": "Eight actual35day nonJanuary ordinary/Snow SWRES0/1 per optimization; O0/O2 running."
+    "epochs": "Windows O0/O2 each8actual35day epochs with32owncold and32counterforgeries PASS; Ubuntu bothopt same terminal selected workflow SUCCESS",
+    "runtime": "76942af87decce1c5fade2d7e7a7d0b00aac40b9",
+    "main_workflow": {
+      "id": 44388289582,
+      "carrier": "767f555c743ffff2dbd9b9c3a9c5791eb497bcda",
+      "conclusion": "success"
+    },
+    "preservation_workflow": {
+      "id": 44388338346,
+      "carrier": "3ea1b84c5ee6f1c58064e05d3faeaa60cb899e6f",
+      "conclusion": "in_progress"
+    },
+    "public": "Windows six actual public warm35/cold30to34 physical/native/output exact PASS",
+    "reader": "Windows seven original numeric reader refusals and13literal partitions PASS",
+    "source_owner": "89b47c7f5 preliminary raw owner/corruption drivers persisted; not sealed/registered/admitted yet."
   }
 }
