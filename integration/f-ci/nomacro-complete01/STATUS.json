@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-perstep-domain01",
   "last_commit": "429c4c51f83aaf91920a740db471d5d117ceaa3d",
-  "status": "WINDOWS_MAIN_IN_PROGRESS_UBUNTU_MAIN_SUCCESS_RAW_DOWNLOAD_IN_PROGRESS",
+  "status": "WINDOWS_UBUNTU_MAIN_ALL_PASS_RAW_ARCHIVING_LOCAL_PRESERVATION_IN_PROGRESS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -2178,7 +2178,7 @@
     "metadata_docs": "Source checks PASS; strict MkDocs PASS35.15seconds external metadata site."
   },
   "perstep_domain": {
-    "status": "WINDOWS_MAIN_IN_PROGRESS_UBUNTU_MAIN_SUCCESS_RAW_DOWNLOAD_IN_PROGRESS",
+    "status": "WINDOWS_UBUNTU_MAIN_ALL_PASS_RAW_ARCHIVING_LOCAL_PRESERVATION_IN_PROGRESS",
     "baseline": "12e84c8eba9204080462b83b548741aa9b0f060f",
     "original_reader_observations": [
       "C:\\Users\\Veldh012\\swap5-complete01-evidence\\perstep-domain-baseline-ordinary-nprint2-v1",
@@ -2199,8 +2199,8 @@
     "policy_refusals": 226,
     "actual_copied_provider_refusals": 4,
     "limit_cases": "Both actual ordinary/Snow1440counts O0/O2:2days+own1to2 exact complete native physical/output PASS",
-    "full": "Windows two opted workers running;11short,6full1096days,6native contexts per optimization; all short/native/limit gates precede full. Not PASS until terminal reports.",
-    "epochs": "Windows O0/O2 each8actual35day epochs with32owncold and32counterforgeries PASS; Ubuntu bothopt same terminal selected workflow SUCCESS",
+    "full": "Windows and Ubuntu O0/O2 each11short/six full1096days/sixnative activepolicy/provider/two1440limit cases allPASS. All narrow gates precede full.",
+    "epochs": "All4platform/opt each8nonJanuary35day periods/32cold/32forgeries PASS.",
     "runtime": "76942af87decce1c5fade2d7e7a7d0b00aac40b9",
     "main_workflow": {
       "id": 44388289582,
@@ -2210,10 +2210,13 @@
     "preservation_workflow": {
       "id": 44388338346,
       "carrier": "3ea1b84c5ee6f1c58064e05d3faeaa60cb899e6f",
-      "conclusion": "in_progress"
+      "conclusion": "success"
     },
     "public": "Windows six actual public warm35/cold30to34 physical/native/output exact PASS",
     "reader": "Windows seven original numeric reader refusals and13literal partitions PASS",
-    "source_owner": "89b47c7f5 preliminary raw owner/corruption drivers persisted; not sealed/registered/admitted yet."
+    "source_owner": "89b47c7f5 preliminary raw owner/corruption drivers persisted; not sealed/registered/admitted yet.",
+    "current_recovery_commit": "5bfa0c66c862429bfd561f1c485d1757f5ca039c",
+    "raw": "Ubuntu original exact O0 118586280bytes/16605members artifact14467377901; O2 119138146bytes/16605 artifact14465534940; preservation96735831bytes/7519 artifact14467900658. Bothmain raw split into ordered64MiBparts; digest/memberverificationPASS. Windows main/context archiveproducer running, do not stage untilterminal.",
+    "next": "Finish selected actual Windows literal preservation; archivefourterminalWindowsrecords; seal source/raw qualification; independently registered owner andactualcorruption/sourcecontrols; strictdocs; actualsource+metadata canonical merges; NEXT."
   }
 }
