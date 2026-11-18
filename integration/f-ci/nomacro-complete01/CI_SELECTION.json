@@ -932,7 +932,7 @@
   },
   "perstep_domain": {
     "base": "12e84c8eba9204080462b83b548741aa9b0f060f",
-    "status": "ACTUAL_CANONICAL_SOURCE_ADMISSION_PASS",
+    "status": "ACTUAL_SOURCE_AND_METADATA_ADMISSION_PASS",
     "scientific_impact": "Actual printcount1..1440 original FLPRINTDT state/calendar counter semantics and independent existing water/Snow observers. Physical expressions/absolute guards unchanged.",
     "selected": [
       "O0/O2 11short before6full1096days perplatform/opt",
@@ -1062,6 +1062,43 @@
         "('in_progress', None)": 20
       },
       "role": "Automatic legacy PR checks outside selected scientific qualification. Queued/inprogress is not PASS; exact snapshot external perstep-domain-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_PERSTEP_DOMAIN_METADATA_MERGE_VERIFIED",
+      "pr": 1749,
+      "merge": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
+      "parents": [
+        "917f6b33ae3af690a99bda71b1e7400ff2fad200",
+        "e51d495587056680ccaf3db31a3982f6d134b9ea"
+      ],
+      "qualified_head": "e51d495587056680ccaf3db31a3982f6d134b9ea",
+      "tree": "c405b9b5bd7fe541902cb8ceb66338af3ddbb79b",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 158.54791390011087,
+        "head": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
+        "stdout": "{\n  \"status\": \"ORIGINAL_WATER_PERSTEP_COUNT_RESET_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"76942af87decce1c5fade2d7e7a7d0b00aac40b9\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_ORDINARY_RESET_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_cold_windows\": 368,\n  \"actual_corrected_prior_reset0_periods\": 2,\n  \"actual_corrected_prior_reset0_cold_windows\": 8,\n  \"actual_retained_prior_reset0_censors\": 1,\n  \"actual_bounded_limit_periods\": 8,\n  \"actual_bounded_limit_cold_windows\": 8,\n  \"actual_native_refusals\": 1296,\n  \"actual_policy_refusals\": 1356,\n  \"actual_copied_provider_refusals\": 24,\n  \"actual_preserved_contexts\": 103,\n  \"actual_saltfarm_preserved_full_periods\": 4,\n  \"actual_saltfarm_preserved_cold_windows\": 20,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_post_year_native_refusals\": 128,\n  \"actual_bound_reports\": 336,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
     }
+  },
+  "cde_interval": {
+    "status": "CONTRACT_SELECTION_IMPLEMENTATION_NEXT",
+    "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
+    "scientific_impact": "ActualCDE interval stock/roundoff state, originalnon-dailyglobal/private carry, independent observed dailychemicalflows andcompleteSnow calendar processcoupling.",
+    "selected": [
+      "Small actualreceipt production driver O0/O2 first",
+      "Actual35day ordinary/Snow monthly/explicit O0/O2 native cold beforelongperiods",
+      "Originalreader controls; source/private/native/transaction/coldrefusals",
+      "Representative full1096days onWindows/UbuntuO0/O2 fourcalendars SWRES0/1hys0/1/2formats0..3 fixedpoint/interval; nonJanuary/year/leap/TEND",
+      "Sourceboundimmutablepredecessor/raw proof plus genuinely affected existingCDEdense/waterSnowprovider/hostvalidation seams; impactselect allothercontexts"
+    ],
+    "not_selected": [
+      "MovingfullF-CI",
+      "Retiredhighest-low-air",
+      "Automatic repeatofunaffected oldfullcampaigns"
+    ],
+    "expected_cost": "Receiptcompile/link seconds; fulloriginalcoupledshortbuild previously30..47seconds underconcurrency, modelscapped180seconds. Fullperiods onlyafterallnarrowgates. Recordactualcosts andfailed/censoredbytes."
   }
 }

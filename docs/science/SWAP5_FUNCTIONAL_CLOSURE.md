@@ -2,7 +2,7 @@
 
 ## Original water per-step print-count/reset domain,18November2026
 
-[Original water per-step count/reset domain](NOMACRO_PERSTEP_DOMAIN_20261118.md) passes24full1096day Windows/Ubuntu periods and368complete cold windows. Eight actual1440limit periods/eight cold workers,32nonJanuary periods/128cold/128counter forgeries and two corrected prior reset0 periods/eight cold workers pass. All1296native refusals,1356policy refusals,24copied-provider refusals, public/reader/transaction gates and3680proof corruptions pass. All103prior contexts remain exact, including four full SaltFarm periods/twenty cold windows. Actual canonical917f6b33a passes its clean detached registered owner, exact ordered parents and complete qualified tree; metadata receipt pending. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+[Original water per-step count/reset domain](NOMACRO_PERSTEP_DOMAIN_20261118.md) passes24full1096day Windows/Ubuntu periods and368complete cold windows. Eight actual1440limit periods/eight cold workers,32nonJanuary periods/128cold/128counter forgeries and two corrected prior reset0 periods/eight cold workers pass. All1296native refusals,1356policy refusals,24copied-provider refusals, public/reader/transaction gates and3680proof corruptions pass. All103prior contexts remain exact, including four full SaltFarm periods/twenty cold windows. Actual canonical917f6b33a passes its clean detached registered owner, exact ordered parents and complete qualified tree; actual metadata772850032 also passes its clean detached owner and exact parents/full tree. Closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
 
 ## Original ordinary FLPRINTDT Darcy/annual reset,18November2026
 
