@@ -1,5 +1,123 @@
 {
-  "stage": "PREREGISTERED_CONTRACT_ONLY_UNCHANGED_SOURCES",
+  "work_unit": "SWAP431-MACRO-B1-CONTACT47",
+  "decision": "PASS_BOUNDED_RATE_CONTACT_CONTRACT_ALGEBRA_O0_O2_NO_IMPLEMENTATION",
+  "source_checkpoint": "49334bcb8",
+  "model_routes": 2,
+  "hard_timeout_seconds": 20,
+  "extra_provider_evaluations": 0,
+  "source_physics_exact_parent": true,
+  "O0_O2_non_timing_byte_exact": true,
+  "clock_continuation_remains_justified": true,
+  "contract_selected_RATE_geometry_initial_sorptivity_no_stock_factor": true,
+  "contract_selection_is_discrete_design_not_unique_manual_requirement": true,
+  "reference_repair_fed_back": false,
+  "rollback_new_restart_not_tested": true,
+  "no_physics_reference_clock_solver_budget_change": true,
+  "full_period_new_restart_or_general_admission": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 1.7366752000525594,
+      "events": 90,
+      "attempt_range": [
+        36,
+        125
+      ],
+      "parent_numeric_outputs_exact": true,
+      "native_reference_increment": {
+        "min": 0.0,
+        "max": 0.0,
+        "sum": 0.0
+      },
+      "RATE_theoretical_shadow": {
+        "min": 1.644316590749996e-10,
+        "max": 5.977810260870391e-10,
+        "sum": 1.7829320835654965e-08
+      },
+      "stock_limited_shadow": {
+        "min": 5.49654923064791e-11,
+        "max": 5.324285132531121e-10,
+        "sum": 9.400413081582368e-09
+      },
+      "actual_theta_contribution": {
+        "min": 2.131881625804114e-10,
+        "max": 2.0190247071000644e-09,
+        "sum": 3.816507140520828e-08
+      },
+      "reference_value": 0.4440013882531527,
+      "max_geometry_relative_error": 9.033793072000326e-15,
+      "max_sorption_law_relative_error": 6.625208099643122e-16,
+      "max_actual_law_relative_error": 6.036267830890946e-16,
+      "effective_contact": {
+        "min": 0.0025811537931161865,
+        "max": 0.007550573014121653,
+        "sum": 0.3287043519379651
+      },
+      "double_wet_shadow": {
+        "min": 3.891956057482674e-12,
+        "max": 2.063892058033435e-10,
+        "sum": 3.571662129917554e-09
+      },
+      "double_contact_shadow": {
+        "min": 1.5217237525634786e-12,
+        "max": 3.8972288828440995e-11,
+        "sum": 5.789925113212536e-10
+      }
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.511464400216937,
+      "events": 90,
+      "attempt_range": [
+        36,
+        125
+      ],
+      "parent_numeric_outputs_exact": true,
+      "native_reference_increment": {
+        "min": 0.0,
+        "max": 0.0,
+        "sum": 0.0
+      },
+      "RATE_theoretical_shadow": {
+        "min": 1.644316590749996e-10,
+        "max": 5.977810260870391e-10,
+        "sum": 1.7829320835654965e-08
+      },
+      "stock_limited_shadow": {
+        "min": 5.49654923064791e-11,
+        "max": 5.324285132531121e-10,
+        "sum": 9.400413081582368e-09
+      },
+      "actual_theta_contribution": {
+        "min": 2.131881625804114e-10,
+        "max": 2.0190247071000644e-09,
+        "sum": 3.816507140520828e-08
+      },
+      "reference_value": 0.4440013882531527,
+      "max_geometry_relative_error": 9.033793072000326e-15,
+      "max_sorption_law_relative_error": 6.625208099643122e-16,
+      "max_actual_law_relative_error": 6.036267830890946e-16,
+      "effective_contact": {
+        "min": 0.0025811537931161865,
+        "max": 0.007550573014121653,
+        "sum": 0.3287043519379651
+      },
+      "double_wet_shadow": {
+        "min": 3.891956057482674e-12,
+        "max": 2.063892058033435e-10,
+        "sum": 3.571662129917554e-09
+      },
+      "double_contact_shadow": {
+        "min": 1.5217237525634786e-12,
+        "max": 3.8972288828440995e-11,
+        "sum": 5.789925113212536e-10
+      }
+    }
+  ],
+  "stage": "QUALIFIED_SAME90_CONTACT_CONTRACT_NO_IMPLEMENTATION",
   "baseline": "a88e2eb9f21bfeb880c62402b048862e2bfd85bd",
-  "promotion": false
+  "recovery": "CONTACT_CONTRACT.md; REPORT.md; RESULT.json; CODEX_FOLLOWUP.md; EVIDENCE.json",
+  "next_safe_step": "Minimal separately scoped reference update using current accepted RATE geometry; own feedback and transaction qualification required."
 }
