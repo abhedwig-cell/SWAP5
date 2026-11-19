@@ -887,6 +887,8 @@ end module plant_interface""")
     patched=implicit_finite_build(output,project,patched)
     from weather_terminal_receipt import apply_build as weather_terminal_build
     patched=weather_terminal_build(output,donor_build,project,patched)
+    from weather_root_state import apply_build as weather_root_build
+    patched=weather_root_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -916,6 +918,7 @@ end module plant_interface""")
                     *([str(output/'implicit_pond_availability.o')] if 'implicit_pond_availability' in patched else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     *([str(output/'hybrid_weather_terminal_receipt.o')] if 'hybrid_weather_terminal_receipt' in patched else []),
+                    *([str(output/'hybrid_weather_root_state.o')] if 'hybrid_weather_root_state' in patched else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
     sources = [
@@ -964,6 +967,9 @@ end module plant_interface""")
     from weather_terminal_receipt import metadata as weather_terminal_metadata
     weather_terminal=weather_terminal_metadata(project)
     if weather_terminal is not None:build_identity['weather_terminal_receipt']=weather_terminal
+    from weather_root_state import metadata as weather_root_metadata
+    weather_root=weather_root_metadata(project)
+    if weather_root is not None:build_identity['weather_root_state']=weather_root
     from implicit_conductivity import metadata as implicit_metadata
     implicit_policy=implicit_metadata(project)
     if implicit_policy is not None:build_identity['implicit_conductivity']=implicit_policy
@@ -1366,6 +1372,10 @@ class DailyHost:
                 raise ValueError("Column start day must match its origin")
             directory = output / name
             prepare_column(case, directory, start, checkpoint_enabled, runtime, project)
+            from weather_root_state import enabled as weather_root_enabled,validate_candidate as validate_weather_root
+            if start.origin is not None and weather_root_enabled(project):
+                if start.receipt is None:raise ValueError('Hourly root stress restore requires accepted receipt')
+                validate_weather_root((directory/'macro-origin.bin').read_bytes(),start.receipt,project)
             from implicit_groundwater_state import enabled as implicit_groundwater,validate_candidate as validate_implicit_groundwater
             if start.origin is not None and implicit_groundwater(project):
                 if start.receipt is None:raise ValueError('Implicit groundwater restore requires accepted receipt')
@@ -1487,6 +1497,16 @@ class DailyHost:
                                                    *stocks[6:], *(-q for q in stocks[:6])]),
             "kernel_residual_cm": float(result[disposition][3]),
         }
+        from weather_root_state import enabled as weather_root_enabled
+        if weather_root_enabled(self.project):
+            memory=list(map(float,response.get('WEATHER_ROOT_MEMORY',[])))
+            if (len(memory)!=3 or not all(map(math.isfinite,memory))
+                    or memory[0]!=self.project.start_clock+day or any(v<0 or v>1 for v in memory[1:])):
+                raise ValueError('Invalid original hourly root stress witness')
+            budget['weather_root_memory']=memory[1:]
+            if committed and checkpoint:
+                from weather_root_state import validate_candidate as validate_weather_root
+                validate_weather_root((current.directory/'macro.bin').read_bytes(),budget,self.project)
         budget.update(solute_budget)
         if "HYBRID_BUDGET_RETRIES" in response:
             count, residual = response["HYBRID_BUDGET_RETRIES"]

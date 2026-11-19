@@ -326,6 +326,8 @@ def validate(project):
 
 
 def auxiliary_magic(project):
+    from weather_root_state import enabled as weather_root_enabled,MAGIC as WEATHER_ROOT_MAGIC
+    if weather_root_enabled(project):return WEATHER_ROOT_MAGIC
     from implicit_groundwater_state import enabled as implicit_groundwater,magic as implicit_magic
     if implicit_groundwater(project):return implicit_magic(project)
     from age_groundwater_output import native_enabled as groundwater_native,native_magic as groundwater_magic

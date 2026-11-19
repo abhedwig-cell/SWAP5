@@ -148,6 +148,9 @@ def validate_bundle(bundle, reference, project):
     from weather_terminal_receipt import metadata as weather_terminal_metadata
     if identity.get('weather_terminal_receipt')!=weather_terminal_metadata(project):
         raise ValueError('Weather terminal water receipt policy differs from build')
+    from weather_root_state import metadata as weather_root_metadata
+    if identity.get('weather_root_state')!=weather_root_metadata(project):
+        raise ValueError('Hourly root stress native policy differs from build')
     from direct_day_kernel import validate as validate_direct
     validate_direct(bundle,identity.get('direct_day_kernel'),project)
     from implicit_conductivity import metadata as implicit_metadata
@@ -671,6 +674,9 @@ class CoupledDailyColumn:
                 validate_effluent(raw['age_effluent'])
                 from age_groundwater_output import active_selection as age_groundwater,validate_candidate as validate_age_groundwater
                 if age_groundwater(self.project) is not None:validate_age_groundwater(aux,raw,self.project)
+            from weather_root_state import enabled as weather_root_enabled,validate_candidate as validate_weather_root
+            if weather_root_enabled(self.project):
+                with zipfile.ZipFile(candidate) as z:validate_weather_root(z.read('macro.bin'),raw,self.project)
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')
             from implicit_groundwater_state import enabled as implicit_groundwater,validate_candidate as validate_implicit_groundwater
@@ -700,6 +706,8 @@ class CoupledDailyColumn:
         if h.sha(candidate) != digest:
             raise ValueError('Private proposal changed')
         # Verify the bytes actually being published, not only the retained ZIP.
+        from weather_root_state import enabled as weather_root_enabled,validate_candidate as validate_weather_root
+        if weather_root_enabled(self.project):validate_weather_root((ready/'macro.bin').read_bytes(),raw,self.project)
         with zipfile.ZipFile(candidate) as z:
             for name in h.CHECKPOINT_FILES:
                 if (ready / name).read_bytes() != z.read(name):

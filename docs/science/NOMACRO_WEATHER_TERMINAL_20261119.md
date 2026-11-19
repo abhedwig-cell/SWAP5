@@ -40,6 +40,25 @@ persisted candidate applies the complete receipt at every trial using exactly
 the existing elapsed-day `1e-10*(t1900-budget_start+dt)` criterion. Its actual
 test outcome must be recorded separately; no successful correction is claimed.
 
+Actual fcfc74dab Windows O0/O2 now completes both1096-day trajectories with
+unchanged water/CDE bounds. Pulsed own cold5windows/opt are exact. Hourly
+cold530→532 diverges on day532: day531 water/CDE receipts and macro.bin are
+exact, but original result.end root-depth/distribution fields already differ.
+The read-only root witness at3bdfdd5e9 identifies the missing dependence:
+hourly cold day531 has exactly1/6 less integrated wet/dry root stress while
+demand, actual uptake, biomass rates and the starting root depths are equal.
+Original Integral integrates MOD_re_global.alpwetnoddrz/alpdrynodrtz also
+during zero-demand hours, when the root routine leaves their saved values
+untouched. The first four hours after cold initialization lose that carry.
+
+The pending bounded hourly codec S5WRH001 therefore appends precisely those
+two original saved factors, with108bytes of typed domain/clock/duplicate value
+validation. Restoration is deferred until original crop initialization ends.
+The accepted day includes the actual original factor witness; preworker and
+candidate/publication checks bind it to the native bytes. This introduces no
+new physical store, root law, normalization, repaired checkpoint or input.
+Actual exact native and affected dependency qualification are still required.
+
 Qualification must use the exact sealed H physical inputs, local O0/O2,
 the affected complete periods, independent daily ledgers and own native cold
 windows across day364 and crop/year boundaries. Prior unrelated periods are
