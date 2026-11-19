@@ -1413,7 +1413,7 @@
     "status": "IMPLEMENTED_NOT_QUALIFIED",
     "scope": "Original SWKIMPL1 default analytic MvG without examined-Ksat interpolation; actual original35day water/CDE/AGE runs pass, public gate currently refuses.",
     "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
-    "runtime_head": "97220b822ad1fa15c58a4164510d0c4dca585446",
+    "runtime_head": "8e6c5d98bc5bd03e93b7a4ba083a2c6e1008e8eb",
     "selected_gate": {
       "controller": "tests/nomacro_scheduled_subsurface/implicit_conductivity_ci.py",
       "eleven_short_per_platform_optimization": true,
@@ -1422,7 +1422,8 @@
       "cost_seconds_per_optimization_estimate": 600,
       "justification": "Changed explicit original nonlinear conductivity selection needs actual strict whole-day conservation, derivative domain, hysteresis/three transported states/bottom1/5/8, numerical-origin refusal, complete native cold/year/leap/TEND. New typed water groundwater state needs both ordinary/history complete cold and attacks. Ten physical contexts plus numerical-only Kmean pair avoid Cartesian expansion. Full1096days are selected to expose annual/year/leap/output native state under this changed iteration; unrelated full F-CI/highest low-air remain NOT_SELECTED_IMPACT.",
       "excluded_unchanged_physical_campaigns": "NOT_SELECTED_IMPACT_NOT_FRESH_PASS"
-    }
+    },
+    "limitation": "Actual ordinary/hysteretic water,CDE,AGE shorts/native succeed; waterGW full day584 and positiveCDEGW full day622 are not closed. Current original daily frame guard prevents bad acceptance but convergence remains under diagnosis. --original-output required."
   },
   "water_groundwater_complete_state_subdaily": {
     "status": "PARTIAL",
