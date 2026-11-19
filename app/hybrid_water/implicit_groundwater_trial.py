@@ -26,12 +26,13 @@ def apply_build(output,donor_build,project,patched):
     source=(donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252')
     stock=(donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')
     trial=original.trial_source(source,stock).replace('hybrid_groundwater_age_trial',FUNCTION).replace('Foreign original AGE groundwater trial domain','Foreign implicit groundwater trial domain')
-    # Diagnostic carrier only: read actual exported trial terms; no equation,
-    # tolerance, time policy or physical state assignment changes.
-    trial=trial.replace('use variables,only:swbotb,thetm1','use variables,only:swbotb,thetm1,t1900',1)
+    # Diagnostic-only counter limits logging; physical state stays read-only.
+    trace_clock='37877d0' if project.solute else '37839.974d0'
+    trial=trial.replace('use variables,only:swbotb,thetm1','use variables,only:swbotb,thetm1,t1900,pondm1,qtop\nuse MOD_top,only:q0,ftoph,hsurf',1)
+    trial=trial.replace('integer::node','integer::node\ninteger,save::trial_trace_count=0',1)
     anchor='residual=real(sum(real(terms,real128)),8)'
     assert trial.count(anchor)==1
-    trial=trial.replace(anchor,anchor+"\nif(abs(residual)>1d-10.and.dt>=1d-5.and.t1900>=37839d0)then\n write(*,'(a,*(1x,es25.17e3))')'ACTUAL_IMPLICIT_GROUNDWATER_TRIAL',t1900,dt,residual,candidate_bottom_cm_d,candidate_matrix_delta_cm,projected_soil,pond,trial%start_stock_cm,trial%flow_cm\n flush(6)\nend if",1)
+    trial=trial.replace(anchor,anchor+"\nif(abs(residual)>1d-10.and.t1900>="+trace_clock+".and.trial_trace_count<128)then\n trial_trace_count=trial_trace_count+1\n write(*,'(a,*(1x,es25.17e3))')'ACTUAL_IMPLICIT_GROUNDWATER_TRIAL',t1900,dt,residual,candidate_bottom_cm_d,candidate_matrix_delta_cm,projected_soil,pond,trial%start_stock_cm,trial%flow_cm,epd,reva,q0,qtop,pondm1,hsurf,merge(1d0,0d0,ftoph)\n flush(6)\nend if",1)
     path=output/'integral.f90';text=path.read_text(encoding='cp1252');anchor='end module MOD_integral';assert text.count(anchor)==1
     path.write_text(text.replace(anchor,trial+'\n'+anchor,1),encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
