@@ -10,7 +10,7 @@ def source(text):
     begin='      real(8) function dhconduc';end='      end function dhconduc'
     assert text.count(begin)==text.count(end)==1
     first=text.index(begin);last=text.index(end,first)+len(end);body=text[first:last]
-    anchor='              relsat = (theta-wcr(node))/wcsMINwcr(node)';assert body.count(anchor)==1
+    anchor='relsat = (theta-wcr(node))/wcsMINwcr(node)';assert body.count(anchor)==1
     body=body.replace(anchor,anchor+'''
               ! Literal original hconduc returns constant KSATFIT here.
               if((h_enpr(node)>h_crit.and.relsat>1d0-1d-6).or. &
