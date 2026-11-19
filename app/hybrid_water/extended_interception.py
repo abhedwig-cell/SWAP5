@@ -6,4 +6,4 @@ def render(source):
     source=source.replace(old,'      use MOD_swap_base,only:swmacro,swdra\n'+old,1)
     old='      if (aintcdt < small) then'
     assert source.count(old)==1
-    return source.replace(old,'''      if (aintcdt < small.and..not.(swmacro==0.and.swdra==2.and.aintcdt>0d0)) then''',1)
+    return source.replace(old,'''      if (aintcdt < small.and..not.(swmacro==0.and.swdra==2.and.aintcdt>1d-5)) then''',1)
