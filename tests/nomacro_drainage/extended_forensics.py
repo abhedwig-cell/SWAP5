@@ -9,6 +9,7 @@ import hashlib
 import io
 import json
 import math
+import re
 from pathlib import Path
 import struct
 import sys
@@ -20,6 +21,17 @@ from cde_clock_verify import ledger as chemical_ledger
 
 def rows(path):return [json.loads(line) for line in path.read_text(encoding='utf8').splitlines() if line.strip()]
 def bounded(values,label):require(finite(values) and max(map(abs,values),default=0)<=1e-10,label)
+
+def geometry(text):
+    require(re.search(r'(?mi)^\s*SWDISCRVERT\s*=\s*0\b',text) is not None,'Unqualified original rediscretization')
+    match=re.search(r'(?mi)^[ \t]*ISUBLAY[ \t]+ISOILLAY[ \t]+HSUBLAY[ \t]+NCOMP[^\r\n]*\r?\n((?:[ \t]*\d+[^\r\n]*\r?\n)+)',text)
+    require(match is not None,'Missing actual original soil geometry')
+    result=[]
+    for index,line in enumerate(match[1].splitlines(),1):
+        fields=line.split();require(len(fields)==4 and int(fields[0])==index,'Malformed actual original sublayer')
+        height,count=float(fields[2]),int(fields[3]);require(height>0 and count>0,'Nonpositive original soil geometry')
+        result.extend([height/count]*count)
+    return result
 
 def inventory(data):
     require(bool(data),'Empty actual extended trajectory')
@@ -48,10 +60,13 @@ def observed(raw,data,build):
     epoch=build['project']['start_date'];original_observations(raw,data,epoch)
     domain=build['identity']['extended_drainage']['domain'];n,r,pri=domain[1],domain[2],domain[5]
     clock=(date.fromisoformat(epoch)-date(1900,1,1)).days+1
-    state=None;flux=None;count=0
+    state=None;flux=None;count=0;surface_origin=None
     for line in raw.decode('utf8').splitlines():
         if line.startswith('HYBRID_EXTENDED_DRAIN_STATE '):
             tokens=line.split()[1:];state=dict(clock=float(tokens[0]),adjustments=int(tokens[1]),count=int(tokens[2]),values=list(map(float,tokens[3:])))
+        elif line.startswith('HYBRID_READY '):
+            require(state is not None and state['clock']==clock+data[0]['day']-1,'Missing original initial secondary state')
+            surface_origin=state['values'][2]
         elif line.startswith('HYBRID_EXTENDED_DRAIN_FLUX '):flux=line.split()[1:]
         elif line.startswith('HYBRID_DAY_RETURN '):
             require(count<len(data) and state is not None and flux is not None,'Missing actual extended state/flux witness')
@@ -61,14 +76,15 @@ def observed(raw,data,build):
             require(len(v)==13+2*r and finite(v) and v[1]>=1 and v[2]>=0 and v[1]==s['accepted_steps'] and v[2]==s['rejected_steps'],'Malformed actual extended flux witness')
             names=['stock_start_cm','stock_end_cm','secondary_exchange_cm','primary_exchange_cm','runoff_from_soil_cm','supply_cm','discharge_cm','prescribed_stage_reaction_cm']
             require(v[3:11]==[s[k] for k in names] and v[11:13]==[f[13],f[8]] and v[13+r:]==s['independent_level_exchange_cm'],'Actual original extended flux/report differs')
+            require(surface_origin==v[3],'Actual original secondary initial/continuation origin differs')
             require((domain[4]==2 and v[10]==0 and s['authority']=='original simulated surfacewater') or (domain[4]==1 and v[8]==v[9]==0 and s['authority']=='original prescribed-stage volume constraint'),'Mixed original stage/flux authority')
             original=v[13:13+r];independent=v[13+r:]
             bounded([*(a-b for a,b in zip(original,independent)),math.fsum([*original,-f[13]]),math.fsum([*independent[:pri],-v[6]]),math.fsum([*independent[pri:],-v[5]]),math.fsum([v[5],v[6],-f[13]]),v[7]-f[8]],'Actual original level/soil/surface transfer differs')
-            count+=1;state=flux=None
+            count+=1;surface_origin=v[4];state=flux=None
     require(count==len(data),'Censored actual extended witness')
     return count
 
-def checkpoint(path,build,row):
+def checkpoint(path,build,row,dz=None):
     domain=build['identity']['extended_drainage']['domain'];n,r=domain[1:3];nv=11+3*r+r*n;length=92+16*nv
     clock=(date.fromisoformat(build['project']['start_date'])-date(1900,1,1)).days+1+row['day']
     with zipfile.ZipFile(io.BytesIO(path) if isinstance(path,bytes) else path) as z:
@@ -91,17 +107,21 @@ def checkpoint(path,build,row):
         if 'solute_end_mg_cm2' in row:
             chemical=struct.unpack_from('<'+str(n+2)+'d',wire,48)
             require(finite(chemical) and min(chemical)>=0 and chemical[-1]==row['solute_end_mg_cm2'],'Actual conserved CDE native stock differs')
+            require(dz is not None and len(dz)==n,'Missing original conserved CDE geometry')
+            bounded([math.fsum([*(v*thickness for v,thickness in zip(chemical[:n],dz)),chemical[-2],-chemical[-1]])],'Actual original nodal/surface CDE inventory differs')
         return {name:z.read(name) for name in ('result.end','macro.bin')}
 
 def audit(root):
     result=json.loads((root/'RESULT.json').read_text(encoding='utf8'))
     require(result['status']=='ACTUAL_EXTENDED_ORIGINAL_SOIL_SURFACE_COMBINED_NATIVE_PERIOD_PASS','Incomplete actual extended campaign')
     warm=root/'trajectory';build=json.loads((warm/'BUILD.json').read_text(encoding='utf8'));data=rows(warm/'daily.jsonl')
+    dz=geometry((root/'input/swap.swp').read_text(encoding='cp1252'))
+    require(len(dz)==build['project']['nodes'],'Actual original geometry/native node count differs')
     require(len(data)==result['requested_days'] and data[0]['day']==1,'Actual campaign day count differs')
     report=inventory(data);observed((warm/'original/donor.stdout').read_bytes(),data,build)
     checkpoints={}
     for path in warm.glob('accepted-column-1-day-*.zip'):
-        day=int(path.stem.rsplit('-',1)[1]);checkpoints[day]=checkpoint(path,build,data[day-1])
+        day=int(path.stem.rsplit('-',1)[1]);checkpoints[day]=checkpoint(path,build,data[day-1],dz)
     report['actual_native_checkpoints']=len(checkpoints);report['cold_windows']=[]
     for window in result['cold']:
         low,high=window['start'],window['end'];cold=root/('cold-'+str(low));continuation=rows(cold/'daily.jsonl')
@@ -110,7 +130,7 @@ def audit(root):
         physical=lambda rr:[{k:v for k,v in row.items() if k!='revision'} for row in rr]
         require(physical(continuation)==physical(data[low:high]),'Actual cold physical receipts differ')
         inventory(continuation);observed((cold/'original/donor.stdout').read_bytes(),continuation,build)
-        native=checkpoint(cold/('accepted-column-1-day-'+str(high)+'.zip'),build,continuation[-1])
+        native=checkpoint(cold/('accepted-column-1-day-'+str(high)+'.zip'),build,continuation[-1],dz)
         require(native==checkpoints[high],'Actual cold complete original native bytes differ')
         report['cold_windows'].append([low,high])
     return report

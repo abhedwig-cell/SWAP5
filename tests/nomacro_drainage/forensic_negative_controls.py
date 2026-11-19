@@ -7,11 +7,12 @@ import json
 from pathlib import Path
 import struct
 import zipfile
-from extended_forensics import inventory,observed,checkpoint,rows
+from extended_forensics import inventory,observed,checkpoint,rows,geometry
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('evidence',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     root=a.evidence/'trajectory';data=rows(root/'daily.jsonl');build=json.loads((root/'BUILD.json').read_text());raw=(root/'original/donor.stdout').read_bytes()
+    dz=geometry((a.evidence/'input/swap.swp').read_text(encoding='cp1252'))
     refusals=[]
     def refuse(name,callback):
         try:callback()
@@ -40,7 +41,7 @@ def main():
         stream=io.BytesIO()
         with zipfile.ZipFile(stream,'w') as z:
             for name,body in forged.items():z.writestr(name,body)
-        refuse('native-rehashed-'+label,lambda:checkpoint(stream.getvalue(),build,row))
+        refuse('native-rehashed-'+label,lambda:checkpoint(stream.getvalue(),build,row,dz))
     with a.output.open('x',encoding='utf8') as f:json.dump(dict(status='ACTUAL_EVIDENCE_MUTANTS_REFUSED',count=len(refusals),refusals=refusals),f,indent=2)
     print('ACTUAL_EVIDENCE_MUTANTS_REFUSED',len(refusals))
 
