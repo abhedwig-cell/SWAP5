@@ -61,7 +61,9 @@ Actual exact native and affected dependency qualification are still required.
 
 ## Acceptance authority and measured scope
 
-The owning historical H gate is `check_hupsel51_repair.check`: the actual daily
+Historical H enforces the accepted-day guard in `check_nomacro_coverage.py`
+at `bc1adba5cfc123f69eb98010026e15ca9bee70ac` lines422–423. The current
+`check_hupsel51_repair.check` retains those same water/CDE criteria: the daily
 kernel and independently recomputed daily water receipt retain their existing
 `1e-10 cm` limits. The existing CDE ledger also independently retains its
 `1e-10 mg/cm2` daily and integrated inventory limits. The new independent
