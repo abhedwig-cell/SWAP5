@@ -13,7 +13,7 @@ def sha(p):
 def save(p,q): p.write_text(json.dumps(q,indent=2)+'\n',encoding='utf-8')
 def run(opt,mode):
     profile=opt+'_'+mode
-    out=R/'data'/profile
+    out=WORK/'evidence/data'/profile
     c=WORK/profile
     assert not out.exists() and not c.exists(), 'immutable route already exists'
     c.mkdir(parents=True)

@@ -1,0 +1,26 @@
+{
+  "models_launched": 4,
+  "new_builds": 0,
+  "all_raw_capsule_members_hash_verified": true,
+  "cold_extraction_and_zero_model_reassessment": "PASS: RESULT.json byte-identical",
+  "inherited_actual_executables_verified_in_central_git_archive": [
+    {
+      "opt": "O0",
+      "exe_sha256": "7b8414467082c1c8fdb5156dd0c040c41691af28eeb9d440d61b26714a3ce619",
+      "retained_members": [
+        "native/O0/native09.exe"
+      ]
+    },
+    {
+      "opt": "O2",
+      "exe_sha256": "aece95d2e5f688712e4b8a73c231ffc154dc5eacc992279b81fd1e545a6c4e35",
+      "retained_members": [
+        "native/O2/native09.exe"
+      ]
+    }
+  ],
+  "preregistration_git_timing_limitation": "contract written before route1; Git sparse-add failed; contract committed after route1 before routes2..4",
+  "new_raw_unique_blobs": 137,
+  "new_raw_logical_files": 344,
+  "scientific_gate": "BOUNDED_UNRESOLVED"
+}
