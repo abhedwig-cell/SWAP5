@@ -1,13 +1,198 @@
 {
   "work_unit": "SWAP431-MACRO-B1-DTMIN58",
-  "baseline": "d6f3285f81bae950cdb79ed59103e9e01735cf7e",
-  "stage": "PREREGISTERED",
-  "routes": [
-    "O0 RESTART_D2",
-    "O2 RESTART_D2"
-  ],
+  "decision": "MINIMAL_PRODUCT_UPDATE_VERIFIED_O0_O2_CONVERGENCE_NOT_REACHED",
+  "model_routes": 2,
   "hard_seconds_per_route": 20,
-  "internal_seconds": 16,
-  "implementation": "one update expression; inherited observer unchanged",
-  "no_broad_campaign": true
+  "O0_O2_physical_and_full_array_traces_exact": true,
+  "physical_text_files_compared": 45,
+  "product_update_implemented": true,
+  "product_update_tested": true,
+  "convergence_qualified": false,
+  "accepted_follow_qualified": false,
+  "physics_clock_Jacobian_guards_criteria_dt_reduction_budgets_unchanged": true,
+  "rollback_to_native_origin_qualified_for_actual_refusal": true,
+  "forced_rejection_direct_smaller_retry_not_selected": true,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 2.2771785999648273,
+      "returncode": 0,
+      "censored": false,
+      "source_one_expression_only_verified": true,
+      "full_array_trials": 254,
+      "unchanged_full_trial_prefix": 168,
+      "first_changed_trial": [
+        2,
+        31,
+        2
+      ],
+      "special_dtmin_trials": 87,
+      "special_M_range": [
+        2.1240390164810365e-05,
+        0.0006348700039836746
+      ],
+      "cap_active_trials": 0,
+      "step_formula_max_abs_error_cm": 0,
+      "repeated_identical_trial_states": 0,
+      "operator_sum_max_error": 2.7755575615628914e-17,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0951312035156963e-05,
+          "iterations": 30,
+          "real_line_trials": 86,
+          "provider_evaluations": 87,
+          "best_Fmax": 0.0011252294679932884,
+          "best_iteration": 9,
+          "final_Fmax": 0.0021218091917013238,
+          "final_sum_F": 0.008637543343477884,
+          "final_worst_node": 52,
+          "end_worst_node_counts": {
+            "52": 30
+          },
+          "exhausted_iterations": [
+            10,
+            11,
+            17,
+            18,
+            22,
+            28
+          ],
+          "fresh_convergence_checks": 0
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "iterations": 60,
+          "real_line_trials": 168,
+          "provider_evaluations": 169,
+          "best_Fmax": 6.838039125461881e-06,
+          "best_iteration": 53,
+          "final_Fmax": 2.2491570572547026e-05,
+          "final_sum_F": 9.643422493501127e-05,
+          "final_worst_node": 52,
+          "end_worst_node_counts": {
+            "57": 1,
+            "52": 59
+          },
+          "exhausted_iterations": [
+            2,
+            9,
+            15,
+            22,
+            28,
+            31,
+            38,
+            45,
+            50,
+            54,
+            55
+          ],
+          "fresh_convergence_checks": 0
+        }
+      ],
+      "local_residual_limit": 1e-06,
+      "total_residual_limit": 1e-05,
+      "final_Fmax_improvement_factor": 9.609701911007225,
+      "final_sum_improvement_factor": 15.740376266470276,
+      "scaled_request_IDecMpRat": 1,
+      "FrReduQ": 1.0,
+      "follow_hostcommits": 0,
+      "rollback_native_context_exact_except_dt_dtold": true,
+      "no_time_or_ledger_advance": true
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.9169447999447584,
+      "returncode": 0,
+      "censored": false,
+      "source_one_expression_only_verified": true,
+      "full_array_trials": 254,
+      "unchanged_full_trial_prefix": 168,
+      "first_changed_trial": [
+        2,
+        31,
+        2
+      ],
+      "special_dtmin_trials": 87,
+      "special_M_range": [
+        2.1240390164810365e-05,
+        0.0006348700039836746
+      ],
+      "cap_active_trials": 0,
+      "step_formula_max_abs_error_cm": 0,
+      "repeated_identical_trial_states": 0,
+      "operator_sum_max_error": 2.7755575615628914e-17,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0951312035156963e-05,
+          "iterations": 30,
+          "real_line_trials": 86,
+          "provider_evaluations": 87,
+          "best_Fmax": 0.0011252294679932884,
+          "best_iteration": 9,
+          "final_Fmax": 0.0021218091917013238,
+          "final_sum_F": 0.008637543343477884,
+          "final_worst_node": 52,
+          "end_worst_node_counts": {
+            "52": 30
+          },
+          "exhausted_iterations": [
+            10,
+            11,
+            17,
+            18,
+            22,
+            28
+          ],
+          "fresh_convergence_checks": 0
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "iterations": 60,
+          "real_line_trials": 168,
+          "provider_evaluations": 169,
+          "best_Fmax": 6.838039125461881e-06,
+          "best_iteration": 53,
+          "final_Fmax": 2.2491570572547026e-05,
+          "final_sum_F": 9.643422493501127e-05,
+          "final_worst_node": 52,
+          "end_worst_node_counts": {
+            "57": 1,
+            "52": 59
+          },
+          "exhausted_iterations": [
+            2,
+            9,
+            15,
+            22,
+            28,
+            31,
+            38,
+            45,
+            50,
+            54,
+            55
+          ],
+          "fresh_convergence_checks": 0
+        }
+      ],
+      "local_residual_limit": 1e-06,
+      "total_residual_limit": 1e-05,
+      "final_Fmax_improvement_factor": 9.609701911007225,
+      "final_sum_improvement_factor": 15.740376266470276,
+      "scaled_request_IDecMpRat": 1,
+      "FrReduQ": 1.0,
+      "follow_hostcommits": 0,
+      "rollback_native_context_exact_except_dt_dtold": true,
+      "no_time_or_ledger_advance": true
+    }
+  ],
+  "stage": "TESTED_MINIMAL_IMPLEMENTATION_RETAINED_REFUSAL",
+  "recovery": "REPORT.md; RESULT.json; MINIMAL.patch; CODEX_FOLLOWUP.md; EVIDENCE.json",
+  "no_broad_campaign": true,
+  "official_promotion": false
 }
