@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-groundwater01",
-  "last_commit": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
-  "status": "AGE_GROUNDWATER_INITIAL_COMPOSITION_PERSISTED_NOT_TESTED",
+  "last_commit": "e6a70a3483d9824817f66c3a9cd908ea4701db66",
+  "status": "AGE_GROUNDWATER_CURRENT_SHORT_NATIVE_LIMIT_PASS_MATRIX_AND_EPOCH_RUNNING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "New age_groundwater_output.py wrapping existing frozen boundary/history/output providers; bounded public inspector and build/native identity dispatch for SWSOLU2 SWBOTB1.",
-  "recovery_point": "codex/nomacro-age-groundwater01; baselineae88b7a53; contract and actual historical reader/public refusal audit persisted before compilation.",
+  "recovery_point": "codex/nomacro-age-groundwater01; physical source c6de7eea6 + driver updates; source is pushed through28e2619b9; current local controllers ate6a70a3483d9824817f66c3a9cd908ea4701db66; current matrix roots age-groundwater-windows-O0/O2-v1 and epoch-O0-v1 under external evidence root.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Compile and run real ordinary/history groundwater AGE35day O0/O2 strict physical/native/cold drivers; diagnose actual failures before broader qualification.",
+  "next_action": "Follow existing Windows O0/O2 source-bound matrices and O0epoch to terminal; no duplicate models. Complete O2epochs/yearcontrols/public/reader and independent actual user-output validation. Qualify selected prior AGE perstep/CDE groundwater/clock seams, then freeze runtime for portable Windows/Ubuntu source evidence and independent root before canonical admission.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -24821,14 +24821,470 @@
     }
   },
   "age_groundwater": {
-    "status": "INITIAL_COMPOSITION_IMPLEMENTED_NOT_TESTED",
+    "status": "IMPLEMENTED_CURRENT_SHORT_NATIVE_LIMIT_PASS_FULL_MATRIX_RUNNING",
     "baseline": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
     "contract": "docs/science/NOMACRO_AGE_GROUNDWATER_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_SOURCE_AUDIT.json",
     "source_audit_runtime": "ef30cd72157d9a614ddacc10b7691040e28565fa",
     "physical_equations_changed": false,
     "whole_scientific_equivalence": "NOT_QUALIFIED",
-    "qualification": "NOT_RUN",
-    "invariants": "Strict water/AGE conservation; actual prescribed saturated-tail reaction; atomic native carry/rollback/restart; immutable source and provider identities."
+    "qualification": "NOT_YET_QUALIFIED",
+    "invariants": "Strict water/AGE conservation; actual prescribed saturated-tail reaction; atomic native carry/rollback/restart; immutable source and provider identities.",
+    "source_observation_utc": "2026-11-19T03:08:59.999379+00:00",
+    "current_source_head": "e6a70a3483d9824817f66c3a9cd908ea4701db66",
+    "actual_observations": [
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-baseline-v1",
+        "status": "THREE_ACTUAL_ORIGINAL_AGE_GROUNDWATER_EXECUTIONS_PASS_CURRENT_PUBLIC_REFUSALS",
+        "sha256_at_observation": "2a0452dca54d7baedfe07305444009320c288e63c53b18bde36284fdc4043e47",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-controls-history-O0-current-v1",
+        "status": "AGE_GROUNDWATER_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS",
+        "sha256_at_observation": "48deb1af28b795d16c30d4881b8d5441500c07b476cdfee4c2d7e66ff4ffbc63",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 81,
+        "completed_policy_refusals": 47,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-controls-history-O0-v1",
+        "status": "FAILED",
+        "sha256_at_observation": "34ebc82cbf4a7274e9d1c49c71f0fa55ee8b972a36205b06b7e2c96eefa3669a",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": "TypeError(\"'bytes' object is not callable\")"
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-controls-history-O0-v2",
+        "status": "AGE_GROUNDWATER_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS",
+        "sha256_at_observation": "a5f719cf1dc06e54cb8c0de33178359ba71450f8e906475dc59077e23f1b99c0",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 81,
+        "completed_policy_refusals": 47,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-controls-ordinary-O0-current-v1",
+        "status": "AGE_GROUNDWATER_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS",
+        "sha256_at_observation": "17a90306398368567272ce0605e3d960c128b7a87791a8d8bb3be34ae5b280c9",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 75,
+        "completed_policy_refusals": 47,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-controls-ordinary-O0-v1",
+        "status": "FAILED",
+        "sha256_at_observation": "2842bf1cd4beeb6120b3b13b92af85d497a99a547f78da14b7d094452d24a301",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": "AssertionError(('ground-head', '', 'Restored donor state differs from the accepted checkpoint receipt'))"
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-controls-perstep-O2-v1",
+        "status": "AGE_GROUNDWATER_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS",
+        "sha256_at_observation": "2a7b53110bd04c0a8a965a27d749cd2f6c8e56a0c043d37b006449d4e9a41773",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 81,
+        "completed_policy_refusals": 47,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-epoch-O0-v1",
+        "status": "RUNNING",
+        "sha256_at_observation": "17eef5fdfc9a0f03b63cd33751b81d6d3c4439aa6edf48fd0e0a7ce08bf57bc6",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 2,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-history-O0-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "bb6896f1bf229d1395d60d951e5705da53dac685dfbacb729f4367a5d99b2619",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 14.421949400100857
+        },
+        "maximum_age_tolerance_fraction": 0.03630046781477891,
+        "actual_fixed_input_cm": 2.3999999999999977,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-history-O0-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "95a6d20f1bf92aed66ad9cad63d84aea1963502970cb2bab58e181674dcf3883",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 13.948657399974763
+        },
+        "maximum_age_tolerance_fraction": 0.03630046781477891,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-history-O2-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "b249e6c085b7023b7234d9d366357490992da40e410706b12c50b6c9e200b4a0",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 26.643576900009066
+        },
+        "maximum_age_tolerance_fraction": 0.03630046781477891,
+        "actual_fixed_input_cm": 2.3999999999999977,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-history-O2-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "64b08f792789f5d037ec530eac877efb04171cb2e04add3716496936b333e62c",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 26.05408040015027
+        },
+        "maximum_age_tolerance_fraction": 0.03630046781477891,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-limit-history-O0-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_LIMIT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "043abb4b9449b925a0b9d334381622e53e7bc2e8fc75d86f54f0fea37d5fdeb4",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 19.724758999887854
+        },
+        "maximum_age_tolerance_fraction": 0.011286093058085976,
+        "actual_fixed_input_cm": 2.4000000000000363,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-limit-history-O2-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_LIMIT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "6fed748140a2b2ad2fd5996cf314f8c832071c7bf2290abae886e1577b6e141e",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 23.26925370004028
+        },
+        "maximum_age_tolerance_fraction": 0.011286093058085976,
+        "actual_fixed_input_cm": 2.4000000000000363,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-limit-ordinary-O0-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_LIMIT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "1f01032a85640552c2cc2a544bef4c954469d3e5339275e1b43965531b8a36b5",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 14.650045600254089
+        },
+        "maximum_age_tolerance_fraction": 0.011233798158809738,
+        "actual_fixed_input_cm": 2.4000000000000066,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-limit-ordinary-O2-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_LIMIT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "5aad581766354d5766a45ae68eeb34d8ba56394f879c7a130eb27b060d1dfb6f",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 26.893658600281924
+        },
+        "maximum_age_tolerance_fraction": 0.011233798158809738,
+        "actual_fixed_input_cm": 2.4000000000000066,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-ordinary-O0-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "d63d4766f807aef25da5d651f9fff8639dcb2fdf965e987d0abbb62955f0a846",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 20.472153699956834
+        },
+        "maximum_age_tolerance_fraction": 0.01802181002374849,
+        "actual_fixed_input_cm": 2.4000000000000026,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-ordinary-O0-v1",
+        "status": "FAILED",
+        "sha256_at_observation": "de23dd0472eb4270f5dbacd204411cbb38cbc210ff1a60115ed9b80e98d79288",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 1,
+          "seconds": 6.69961419980973
+        },
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\age-groundwater-ordinary-O0-v1\\\\input', '--original-output', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', 'O0', '--kernel-opt', 'O0', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\age-groundwater-ordinary-O0-v1\\\\build'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 407, in <module>\\n    raise SystemExit(main())\\n                     ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 324, in main\\n    profile[\\'budget_retry\\']=project.solute or inspect(project.input_directory)[\\'boundary\\'][\\'SWBOTB\\'] != 1\\n                                              ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\experimental_project.py\", line 193, in inspect\\n    raise ValueError(\\'Prescribed groundwater CDE trial receipt requires analytical daily no-frost/no-aquifer process history\\')\\nValueError: Prescribed groundwater CDE trial receipt requires analytical daily no-frost/no-aquifer process history\\n')"
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-ordinary-O0-v2",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "06ce21fa93069defa1e2cfdd69e7ff50875acf823952a80df739a7a014b46964",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 22.49799339985475
+        },
+        "maximum_age_tolerance_fraction": 0.01802181002374849,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-ordinary-O2-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "1a986888de60750279b8ad48361f78fdb9fa390c2302bb3b7fbe55c3ba17e1f9",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 31.14988509984687
+        },
+        "maximum_age_tolerance_fraction": 0.01802181002374849,
+        "actual_fixed_input_cm": 2.4000000000000026,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-ordinary-O2-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "0ad4d4ff6e4f5c5c31585921eb5ab9272e0707cec4f12e5ccc93b70bc4ed3d96",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 25.06198909971863
+        },
+        "maximum_age_tolerance_fraction": 0.01802181002374849,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-perstep-O0-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "be9d647264d5c2c45ac0c715d3754c8ade38719667f4b9aa540e9f2a6159a17c",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 14.462640500161797
+        },
+        "maximum_age_tolerance_fraction": 0.010071943881763672,
+        "actual_fixed_input_cm": 2.4000000000000004,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-perstep-O0-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "2b3c2a32bedf856cfb2e57b894634377445821f6efe02fd368066ab3205a7c11",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 14.439295100048184
+        },
+        "maximum_age_tolerance_fraction": 0.010071943881763672,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-perstep-O2-current-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "b417cc254b935712bcdb6f4f0d882a5317cc0602474afe26681695586449e8d6",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 33.01691380003467
+        },
+        "maximum_age_tolerance_fraction": 0.010071943881763672,
+        "actual_fixed_input_cm": 2.4000000000000004,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-perstep-O2-v1",
+        "status": "ACTUAL_ORIGINAL_AGE_GROUNDWATER_SHORT_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "sha256_at_observation": "dfdf86cba68b41200dffb4ea6be57ae797645f507e4cfef7330fd99917637a70",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": {
+          "returncode": 0,
+          "seconds": 27.313728000037372
+        },
+        "maximum_age_tolerance_fraction": 0.010071943881763672,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-private-level-gap-v1",
+        "status": "ACTUAL_ORDINARY_PRIVATE_GROUNDWATER_LEVEL_ACCEPTED_BEFORE_NEW_RECEIPT_VALIDATION",
+        "sha256_at_observation": "82259b5bee7257f344d5a80e0d025d7c2d6782c839cf8bb28cf6a9fa645377b6",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 0,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-windows-O0-v1",
+        "status": "RUNNING",
+        "sha256_at_observation": "5d0986028e788fd745f66af7af35d534240ea8bddfbc7ddf4bdaa057ff3e95f4",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 8,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-groundwater-windows-O2-v1",
+        "status": "RUNNING",
+        "sha256_at_observation": "9f72b797e1d9260f0f89c892b4800cd5df69434c369be90e40dd169e148f1b3c",
+        "role": "Observed checkpoint only; RUNNING bytes may advance",
+        "build": null,
+        "maximum_age_tolerance_fraction": null,
+        "actual_fixed_input_cm": null,
+        "completed_cases": 8,
+        "completed_native_refusals": 0,
+        "completed_policy_refusals": 0,
+        "error": null
+      }
+    ],
+    "private_level_comparison": {
+      "status": "IDENTICAL_ACTUAL_PRIVATE_GROUNDWATER_LEVEL_BYTES_REFUSED_BEFORE_WORKER",
+      "current_host_commit": "e2086ff90f412d3380e3b13d343890d6c3ac6a95",
+      "prior_observation": {
+        "source_commit": "cd798e27f8f42e5f0035b95c6d1795484cdd427c",
+        "actual_ordinary_private_level_before": -81.66666665126345,
+        "actual_corruption": -80.66666665126345,
+        "source_checkpoint_sha256": "6c86c825128559d83d722ab635190e5dc3e61576263ca7e1e00c75ff003997ee",
+        "status": "ACTUAL_ORDINARY_PRIVATE_GROUNDWATER_LEVEL_ACCEPTED_BEFORE_NEW_RECEIPT_VALIDATION",
+        "published": false,
+        "seconds": 0.3583551999181509,
+        "source_unchanged": true
+      },
+      "exact_bad_bytes_sha256": "58bb7a416b522d2470dabf9b64e28501199d728c0f93ec0bf24c0aaa5f318ac9",
+      "prior_bad_bytes_sha256": "58bb7a416b522d2470dabf9b64e28501199d728c0f93ec0bf24c0aaa5f318ac9",
+      "actual_current_fresh_build": true,
+      "build_sha256": "137852cb207cdc48ef56dba56113a6f8d744fe44a073829e2c31ca34bc428dc4",
+      "current_source_checkpoint_sha256": "f619dccacd997cdc3d4c2c7142cb7ea50aac27f3d819ff838258b49d3727f70e",
+      "before_worker": true,
+      "published": false,
+      "error": "Actual AGE groundwater hydraulic state differs from receipt",
+      "seconds": 0.4411908998154104,
+      "retained_helper_observation": "Initial comparison correctly refused the old build after daily_host.py changed. Current-source fresh build and its own checkpoint are now used; copied known-bad payload bytes serve only as an explicit negative corruption, never a positive adopted checkpoint."
+    },
+    "retained_failures": [
+      "Initial build before models: CLI budget_retry inspected the new AGE groundwater descriptor through its old CDE-only route; actual no-model failure6.6996s retained.",
+      "First native controller shadowed the imported domain function with actual hysteresis bytes; corrected controller only, all original model bytes retained.",
+      "Ordinary ground-head attack was correctly refused by host receipt matching, while the first controller required ERROR STOP. Then an isolated actual ground-level attack was accepted before publication: new host validates typed native state against its own accepted receipt before worker start and on candidate publication.",
+      "Initial same-byte comparison correctly refused the old bundle after host source changed; use actual current-source fresh build and deliberately identical bad bytes solely as a negative corruption."
+    ],
+    "physical_source_files": [
+      "app/hybrid_water/age_groundwater_output.py",
+      "app/hybrid_water/daily_host.py",
+      "app/hybrid_water/daily_coupling.py",
+      "app/hybrid_water/experimental_project.py",
+      "tools/solute/run_water.py"
+    ]
   }
 }
