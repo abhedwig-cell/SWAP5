@@ -1,6 +1,6 @@
 """Independent receipt and binary evidence checks for implicit conductivity."""
 from datetime import date,timedelta
-import hashlib,io,json,math,struct,zipfile
+import hashlib,io,json,math,re,struct,zipfile
 
 
 def require(ok,message):
@@ -28,22 +28,44 @@ def water(data):
 
 
 def original_observations(raw,data,epoch):
-    stocks=flows=hydraulic=None;observed=[];initial=None
+    stocks=flows=hydraulic=chemical=None;observed=[];initial=None
     for line in raw.decode('utf8').splitlines():
         if line.startswith('HYBRID_READY '):
             require(initial is None,'Duplicated actual original ready clock');initial=float(line.split()[1])
         elif line.startswith('HYBRID_STOCK_FLUX '):stocks=list(map(float,line.split()[1:]))
         elif line.startswith('HYBRID_EXTERNAL_FLUX '):flows=list(map(float,line.split()[1:]))
         elif line.startswith('HYBRID_HYDRAULIC '):hydraulic=list(map(float,line.split()[1:]))
+        elif line.startswith('HYBRID_SOLUTE_LEDGER '):chemical=list(map(float,line.split()[1:]))
         elif line.startswith('HYBRID_DAY_RETURN '):
             require(len(observed)<len(data),'Extra actual original day return');row=data[len(observed)];parts=line.split()
             require(stocks==row['stock_end_cm']+row['stock_start_cm'] and flows==row['external_flux_cm'],'Actual original stock/flux witness differs from report')
             require(hydraulic is not None and hydraulic[0]==row['groundwater_cm'] and hydraulic[2:]==row['pressure_head_cm'],'Actual original hydraulic witness differs from report')
+            if 'solute_ledger_mg_cm2' in row:require(chemical==row['solute_ledger_mg_cm2'] and chemical[0]==row['solute_end_mg_cm2'],'Actual original chemical stock/flux witness differs from report')
             require(int(parts[1])==row['day'] and float(parts[2])==initial+len(observed)+1,'Actual original accepted day/clock differs')
-            observed.append(row['day']);stocks=flows=hydraulic=None
+            observed.append(row['day']);stocks=flows=hydraulic=chemical=None
     clock=(date.fromisoformat(epoch)-date(1900,1,1)).days+1
     require(initial==clock+data[0]['day']-1 and len(observed)==len(data),'Actual original initial epoch or complete day observations differ')
     return dict(actual_original_days=len(observed),initial_clock=initial)
+
+
+def output_records(raw,name):
+    """Read saved original ASCII/REAL4 records without temporary file copies."""
+    if name.endswith('.csv'):return [line.strip() for line in raw.decode('cp1252').splitlines() if re.match(r'\d{4}-\d{2}-\d{2}',line)]
+    labels=[v for v in (raw.find(b'DATE                    '),raw.find(b'DATETIME                ')) if v>=0];require(len(labels)==1,'Ambiguous original REAL4 date header')
+    match=re.search(rb'\d{4}-\d{2}-\d{2}',raw[labels[0]:]);require(match is not None,'Missing original REAL4 records');first=labels[0]+match.start();require((first-labels[0])%24==0,'Invalid original REAL4 column width')
+    columns=(first-labels[0])//24-1;size=19+4*columns;require(columns>0 and (len(raw)-first)%size==0,'Invalid original REAL4 record framing')
+    result=[raw[pos:pos+size] for pos in range(first,len(raw),size)];require(all(re.match(rb'\d{4}-\d{2}-\d{2}',row) for row in result),'Invalid original REAL4 date record')
+    return result
+
+
+def output_continuation(warm,cold,selected,low,high,epoch):
+    require(set(warm)==set(cold),'Original warm/cold output inventory differs');result={};short=selected['flprintdt'] or selected['nprintday']>1
+    start=date.fromisoformat(epoch);lo=str(start+timedelta(days=low))+(' 00:00:00' if short else '');hi=str(start+timedelta(days=high))+(' 00:00:00' if short else '')
+    for name,records in warm.items():
+        stamp=lambda row:row[:19].decode('ascii').strip() if isinstance(row,bytes) else row.split(',')[0].strip()
+        expected=[row for row in records[1:] if (lo<stamp(row)<=hi if short else lo<=stamp(row)<hi)];require(bool(cold[name]) and cold[name][1:]==expected,'Actual original output continuation differs')
+        result[name]=dict(exact=True,continuation_records=len(expected),kind='original_REAL4_binary' if name.endswith('.bin') else 'original_ASCII')
+    return result
 
 
 def sequential_records(raw):

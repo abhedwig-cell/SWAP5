@@ -120,19 +120,14 @@ def actual_period(z,prefix,report,build,opt,selected,dz,phase):
             if name.startswith(pp+'accepted-column-1-day-') and name.endswith('.zip'):
                 day=int(name.rsplit('-',1)[1][:-4]);row=next(v for v in actual if v['day']==day);forensic.general_checkpoint(z.read(name),build,row,selected,dz)
     checkpoints(prefix+'trajectory/',data)
-    from original_output_files import compare
+    def outputs(pp):return {Path(name).name:forensic.output_records(z.read(name),name) for name in z.namelist() if name.startswith(pp) and '/' not in name[len(pp):] and Path(name).name in ('result_output.csv','result_output.bin')}
+    warm_outputs=outputs(prefix+'trajectory/original/')
     for item in report['cold']:
         low,high=item['start'],item['end'];cp=prefix+f'own-{low}/';cold=rows(z,cp);require(physical(cold)==physical(data[low:high]),'Actual cold physical trajectory differs');forensic.water(cold);forensic.original_observations(z.read(cp+'original/donor.stdout'),cold,build['project']['start_date']);checkpoints(cp,cold)
         names=[prefix+f'trajectory/accepted-column-1-day-{high}.zip',cp+f'accepted-column-1-day-{high}.zip']
         with zipfile.ZipFile(io.BytesIO(z.read(names[0]))) as a,zipfile.ZipFile(io.BytesIO(z.read(names[1]))) as b:require(all(a.read(name)==b.read(name) for name in ('result.end','macro.bin')),'Complete actual cold native differs')
         require(item['exact_physical'] is item['exact_complete_native'] is item['origin_unchanged'] is True,'Actual native/physical/origin assertion differs')
-        with tempfile.TemporaryDirectory(prefix='s5-implicit-output-') as folder:
-            root=Path(folder)
-            for label,source in [('warm',prefix+'trajectory/original/'),('cold',cp+'original/')]:
-                (root/label).mkdir()
-                for name in z.namelist():
-                    if name.startswith(source) and '/' not in name[len(source):] and (name.endswith('.csv') or name.endswith('_output.bin')):(root/label/Path(name).name).write_bytes(z.read(name))
-            require(compare(root/'warm',root/'cold',selected,low,high,build['project']['start_date'])==item['exact_original_output'],'Actual original user output continuation differs')
+        require(forensic.output_continuation(warm_outputs,outputs(cp+'original/'),selected,low,high,build['project']['start_date'])==item['exact_original_output'],'Actual original user output continuation differs')
     return len(report['cold'])
 
 
@@ -142,7 +137,7 @@ def verify():
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Unqualified implicit production source change')
     q=json.loads((ROOT/PROOF/'IMPLICIT_CONDUCTIVITY_QUALIFICATION.json').read_text(encoding='utf8'))
-    require((q['baseline'],q['runtime'],q['status'])==(BASE,RUNTIME,'BOUNDED_IMPLICIT_WATER_CDE_QUALIFIED_PENDING_ADMISSION'),'Foreign implicit qualification scope')
+    require((q['baseline'],q['runtime'],q['status'])==(BASE,RUNTIME,'BOUNDED_IMPLICIT_WATER_CDE_QUALIFICATION_RECORD'),'Foreign implicit qualification scope')
     require(q['functional_completion']=='PARTIAL' and q['whole_scientific_equivalence']=='NOT_QUALIFIED' and q['water_guard_cm']==q['chemical_mass_guard_mg_cm2']==1e-10 and q['age_admission'] is False and q['weighted_history_full_admission'] is False,'Implicit scientific/guard/blocked scope promoted')
     for group in ('source_sha256','controller_sha256'):
         require(q[group] and all(sha(ROOT/path)==value for path,value in q[group].items()),'Changed sealed implicit source/controller: '+group)
@@ -227,15 +222,16 @@ def scientific(q,archives,prior):
             report=item['report'];require(report['parameters']['nprintday']==1440,'Maximum cadence input changed');period(z,locate(item['root'],location),report,location,location['optimization'],'limit')
     for location in q['weighted_short']:
         z=archives[location['archive']];pp=location['prefix'];report=read(z,pp+'RESULT.json');require((report['parameters']['solute'],report['parameters']['hysteresis'],report['parameters']['kmean'])==(0,2,6),'Actual sixth mean short context substituted');period(z,pp,report,location,location['optimization'],'short')
-    from original_output_files import compare
     for location in q['public']:
         z=archives[location['archive']];run=read(z,location['prefix']+'RESULT.json');require(run['status']=='SIX_PUBLIC_IMPLICIT_WATER_CDE_COMPLETE_NATIVE_RESTART_CONTEXTS_PASS' and len(run['profiles'])==6,'Actual public contexts censored')
         for name,item in run['profiles'].items():
             old,item_source,build,selected,dz,source_location=contexts[location['platform'],location['optimization'],name];pp=location['prefix']+name+'/';warm=rows(z,pp+'warm/');cold=rows(z,pp+'cold/');original=rows(old,locate(item_source['short_root'],source_location)+'trajectory/')
             require(len(warm)==35 and physical(warm)==physical(original) and physical(cold)==physical(warm[30:34]) and item['physical_exact'] is item['complete_native_exact'] is item['origin_unchanged'] is True and item['warm']['returncode']==item['cold']['returncode']==0,'Actual public physical/native provenance differs');forensic.water(warm);forensic.water(cold)
+            forensic.original_observations(z.read(pp+'warm/original/donor.stdout'),warm,build['project']['start_date']);forensic.original_observations(z.read(pp+'cold/original/donor.stdout'),cold,build['project']['start_date'])
             actual=z.read(pp+'cold/accepted-column-1-day-34.zip');forensic.general_checkpoint(actual,build,cold[-1],selected,dz)
             with zipfile.ZipFile(io.BytesIO(actual)) as a,zipfile.ZipFile(io.BytesIO(old.read(locate(item_source['short_root'],source_location)+'trajectory/accepted-column-1-day-34.zip'))) as b:require(all(a.read(v)==b.read(v) for v in ('result.end','macro.bin')),'Actual public complete native differs')
-            require(all(v['exact'] is True for v in item['user_output_exact'].values()),'Actual public user output differs');publics+=1
+            output=lambda source:{Path(v).name:forensic.output_records(z.read(v),v) for v in z.namelist() if v.startswith(source) and '/' not in v[len(source):] and Path(v).name in ('result_output.csv','result_output.bin')}
+            require(forensic.output_continuation(output(pp+'warm/original/'),output(pp+'cold/original/'),selected,30,34,build['project']['start_date'])==item['user_output_exact'],'Actual public user output differs');publics+=1
     require((fulls,shorts,colds,limits,publics,native_refusals)==(32,48,376,8,24,352),'Actual bounded implicit period/native/public denominator differs')
     return dict(status='BOUNDED_ORIGINAL_IMPLICIT_WATER_CDE_SOURCE_RAW_NATIVE_ADMISSION_PASS',runtime=RUNTIME,predecessor=prior,actual_full_periods=fulls,actual_short_periods=shorts,actual_complete_native_cold_windows=colds,actual_limits=limits,actual_public_contexts=publics,actual_native_refusals=native_refusals,actual_policy_provider_refusals=policy_refusals,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',implicit_age_admission=False,weighted_history_full_admission=False)
 
