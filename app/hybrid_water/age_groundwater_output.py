@@ -134,7 +134,7 @@ def trial_source(original,watstor):
       'implicit none\n':'use variables,only:swbotb,thetm1\nimplicit none\nreal(8),intent(in)::candidate_bottom_cm_d,candidate_matrix_delta_cm\n',
       "if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'":"if(swmacro/=0.or.swsnow/=0.or.swbotb/=1.or.swdra<0.or.swdra>1)error stop 'Foreign original AGE groundwater trial domain'",
       'qbotts=qbot*dt':'qbotts=candidate_bottom_cm_d*dt',
-      'projected_soil=sum(theta(1:numnod)*dz(1:numnod))':'projected_soil=sum(thetm1(1:numnod)*dz(1:numnod))+candidate_matrix_delta_cm'}
+      'projected_soil=sum(theta(1:numnod)*dz(1:numnod))':'projected_soil=sum(thetm1(1:numnod)*dz(1:numnod))+0d0'}
     for old,new in replacements.items():
         assert source.count(old)==1,old
         source=source.replace(old,new,1)
