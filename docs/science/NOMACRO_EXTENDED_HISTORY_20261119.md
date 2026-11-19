@@ -38,3 +38,47 @@ and boundary derivative exactly once before opening SWKIMPL1. Keep it refused
 while those dependencies and integrated conservation remain unqualified.
 
 Initial current-source35-day water/history1 O0 and CDE/history2 O2 complete with three exact native/output cold windows each. Independent history Fortran-free decoding checks both paired domains, physical5*nodes+4 carry, actual pressure/groundwater receipt, weighted theta inventory, complete calendar/CDE state and original counter segments. The first consumer attempt compared an enriched history selection against the producer ordinary-output selection; it was corrected to check ordinary selection and explicit declared hysteresis separately, without changing raw data or rerunning the models. Other modes/platforms and full periods remain pending.
+
+## Completed source/raw qualification, admission pending
+
+The selected Windows/Ubuntu O0/O2 water/history1 monthly text2 and
+CDE/history2 daily binary3 campaigns complete eight1096-day periods with48
+exact complete physical/history/calendar/native/output cold windows. All eight
+35-day water/CDE/history1,2 contexts independently pass, with24 cold windows.
+Four subdaily/per-step contexts add8 windows. Four history-off five-day
+postimages preserve admitted input/generated Fortran/compiler/kernel/physical
+and native evidence without repeating earlier full periods.
+
+Actual controls contain435 public and405 original compiled invalid-native
+refusals. Every forged, rehashed payload is independently decoded; the exact
+mutant delivered to each real loader and its actual failure log are checked.
+Fourteen positive native/CLI/discard/replay/accept/recovery contexts pass. Four
+additional real CLI scope refusals cover compatibility without the explicit
+calendar, AGE, invalid history3 and still-excluded implicit1.
+
+The first compatibility negative fixture accidentally selected SWRES1 before
+its intended guard; that earlier diagnostic remains raw evidence. Its corrected
+fixture found that the intended guard refused late, after generating source,
+with a traceback. The guard was moved into project load, before build sources,
+compiler, worker or publication. The actual corrected four-case campaign passes.
+Only two input-reader lines change between full source8fc2f88f0 and current
+source60ebf4adc. They are false for all explicit original-output cases and all
+history-off/nonextended routes. Four actual current Windows O0/O2 six-day
+postimages retain exact generated Fortran/input/compiler/kernel/physical/native
+results and active CLI/transaction semantics. Original Ubuntu full numerical
+proof is inherited over that literal, inert input guard; its original BUILD
+and source identities remain8fc, never labelled newly compiled60eb evidence.
+
+Original Ubuntu run44616221474 succeeds in both optimizations. Its original ZIPs
+and all member hashes remain unrepacked. Windows archives store each actual
+reused short/full compiler bundle once; an explicit alias inventory binds every
+profile to the exact original BUILD hash, without changing producer metadata.
+Actual source capsules preserve full/current filesystem bytes and separate
+Git controller epochs. Prototypes and failed scope attempts remain separately
+retained and are not admitted. Actual Windows publisher variants differ only
+in verified PE loader relocation/link metadata; both original bytes remain.
+
+Daily soil/secondary/combined water and daily/integrated CDE guards remain
+absolute1e-10. Integrated water is reported separately, not qualified1e-10.
+Physical process equations and every previous scientific body remain unchanged.
+No historical-family count or whole-science claim is promoted.
