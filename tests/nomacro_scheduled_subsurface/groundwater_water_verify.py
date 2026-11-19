@@ -156,7 +156,7 @@ def controls_verify(q,archives,caps,periods):
   for pp,data in [(root+'warm/',warm),(root+'cold/',cold)]:p.original_observations(z.read(pp+'original/donor.stdout'),data,build['project']['start_date'])
   require(control['public_physical_complete_native_exact'] is True and all(control['transactions'].values()) and set(control['transactions'])=={'discard_no_day_advance','replay_exact','accept_exact','recovered_next_day_exact','origin_unchanged'},'Actual public/active transaction gate omitted')
   raw=z.read(root+'warm/accepted-column-1-day-4.zip');checkpoint(raw,build,warm[3],selected,dz,CASES[item['name']][0])
-  raw=z.read(root+'cold/accepted-column-1-day-9.zip');checkpoint(raw,build,warm[8],selected,dz,CASES[item['name']][0])
+  raw=z.read(root+'cold/accepted-column-1-day-9.zip');checkpoint(raw,build,cold[-1],selected,dz,CASES[item['name']][0])
   with zipfile.ZipFile(io.BytesIO(raw)) as a,zipfile.ZipFile(io.BytesIO(z.read(prior_root+'trajectory/accepted-column-1-day-9.zip'))) as b:require(all(a.read(name)==b.read(name) for name in ('result.end','macro.bin')),'Actual complete public payload differs from qualified physical producer')
   require(p.output_continuation(outputs(z,root+'warm/original/'),outputs(z,root+'cold/original/'),selected,4,9,build['project']['start_date'])==control['public_output'],'Actual public user output differs')
   require(len(control['native_refusals'])==42 and len({v['attack'] for v in control['native_refusals']})==42,'Actual native refusal denominator differs')
