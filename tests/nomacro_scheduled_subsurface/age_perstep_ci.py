@@ -1,5 +1,5 @@
 """Selected original AGE perstep short/native/1440 gates before full periods."""
-import argparse,json,subprocess,sys,zipfile
+import argparse,hashlib,json,subprocess,sys,zipfile
 from pathlib import Path
 import age_perstep_runtime as c
 
@@ -26,7 +26,13 @@ def main():
  p=argparse.ArgumentParser()
  for key in ('reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
  p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--pilot-root',type=Path);p.add_argument('--limit-root',type=Path);p.add_argument('--control-root',type=Path)
- a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),optimization=a.optimization,cases={},controls={},limits={})
+ p.add_argument('--resume-cadence',action='store_true')
+ a=p.parse_args();a.output=a.output.resolve();a.output.mkdir(exist_ok=a.resume_cadence);q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),optimization=a.optimization,cases={},controls={},limits={})
+ if a.resume_cadence:
+  raw=(a.output/'RESULT.json').read_bytes();old=json.loads(raw);assert old['status']=='FAILED' and old['all_short_native_limit_gates_precede_full'] is True and len(old['cases'])==8 and len(old['controls'])==3 and len(old['limits'])==2
+  first=json.loads((a.output/'full-ordinary-explicit-h0-binary/RESULT.json').read_text(encoding='utf8'));assert first['status']=='ACTUAL_AGE_PERSTEP_FULL_SOURCE_NATIVE_OUTPUT_PASS' and first['post_validation_role'].startswith('Actual complete existing source-bound trajectory')
+  original=json.loads((a.output/'full-ordinary-explicit-h0-binary/RETAINED_FAILED_RESULT.json').read_bytes());assert original['error'].startswith("AssertionError({'result.ageProfile.csv':") and original['trajectory']['days']==1096
+  backup=a.output/'RETAINED_FAILED_MATRIX_RESULT.json';assert not backup.exists();backup.write_bytes(raw);q['retained_cadence_failure']=dict(path=backup.name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
  def run(script,target,arguments):
   command=[sys.executable,'-B',str(Path(__file__).with_name(script)),'--reference-work',str(a.reference_work),'--output',str(target),*map(str,arguments)]
@@ -39,19 +45,19 @@ def main():
   report=json.loads((path/'RESULT.json').read_text(encoding='utf8'));assert report['status']=='ACTUAL_AGE_PERSTEP_'+phase.upper()+'_SOURCE_NATIVE_OUTPUT_PASS'
   params=report['parameters'];assert tuple(params[k] for k in ('mode','hysteresis','format','reset','nprintday','source','optimization'))==tuple(case[:6])+(a.optimization,)
   assert params.get('et',0)==case[6]
-  project=c.m.e.load(path/'input',original_output=True);c.m.validate_bundle(path/'build',a.reference_work,project)
+  project=c.m.e.load(Path(report.get('input_root',path/'input')),original_output=True);c.m.validate_bundle(Path(report.get('build_root',path/'build')),a.reference_work,project)
   return report
  save()
  try:
   for key,case in CASES.items():
    family={'ordinary-explicit-h0-binary':'ordinary','history-monthly-h2-vector':'history'}.get(key)
    short=a.pilot_root/f'age-perstep-{family}-{a.optimization}-v4' if a.pilot_root and family else a.output/('short-'+key)
-   report=reused(short,case,'short') if a.pilot_root and family else run('age_perstep_runtime.py',short,arguments(case))
+   report=reused(short,case,'short') if (a.pilot_root and family) or (a.resume_cadence and short.exists()) else run('age_perstep_runtime.py',short,arguments(case))
    q['cases'][key]=dict(short_root=str(short),input_root=report.get('input_root',str(short/'input')),build_root=report.get('build_root',str(short/'build')),short=report);save();print(key,'SHORT_PASS',flush=True)
   for key in CONTROLS:
    family={'ordinary-explicit-h0-binary':'ordinary','history-monthly-h2-vector':'history'}.get(key)
    target=a.control_root/f'age-perstep-controls-{family}-{a.optimization}-v2' if a.control_root and family else a.output/('control-'+key)
-   report=json.loads((target/'RESULT.json').read_text(encoding='utf8')) if a.control_root and family else run('age_perstep_controls.py',target,['--profile-root',q['cases'][key]['short_root']])
+   report=json.loads((target/'RESULT.json').read_text(encoding='utf8')) if (a.control_root and family) or (a.resume_cadence and target.exists()) else run('age_perstep_controls.py',target,['--profile-root',q['cases'][key]['short_root']])
    assert report['status']=='AGE_PERSTEP_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS';q['controls'][key]=dict(root=str(target),report=report);save()
   for key,case in LIMITS.items():
    target=a.limit_root/f'age-perstep-limit-{key}-{a.optimization}-v2' if a.limit_root else a.output/('limit-'+key)
@@ -69,7 +75,7 @@ def main():
   for key,case in CASES.items():
    if not case[-1]:continue
    item=q['cases'][key];target=a.output/('full-'+key)
-   item['full']=run('age_perstep_runtime.py',target,arguments(case)+['--phase','full','--reuse-build',item['build_root'],'--existing-input',item['input_root']]);item['full_root']=str(target);save();print(key,'FULL_PASS',flush=True)
+   item['full']=reused(target,case,'full') if a.resume_cadence and target.exists() else run('age_perstep_runtime.py',target,arguments(case)+['--phase','full','--reuse-build',item['build_root'],'--existing-input',item['input_root']]);item['full_root']=str(target);save();print(key,'FULL_PASS',flush=True)
   q['status']='EIGHT_AGE_PERSTEP_SHORT_SIX_FULL_THREE_NATIVE_TWO_LIMIT_CONTEXTS_PASS';print(q['status'],flush=True)
  except Exception as error:q.update(status='FAILED',error=repr(error));raise
  finally:save()

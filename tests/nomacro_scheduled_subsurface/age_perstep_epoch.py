@@ -1,5 +1,5 @@
 """Actual nonJanuary AGE perstep epochs with private/calendar clock identity."""
-import argparse,json,subprocess,sys,struct,zipfile
+import argparse,hashlib,json,subprocess,sys,struct,zipfile
 from datetime import date,timedelta
 from pathlib import Path
 import age_perstep_runtime as runtime
@@ -9,18 +9,25 @@ from original_output_baseline import assignment
 def main():
  p=argparse.ArgumentParser()
  for key in ('reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
- p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args();a.output.mkdir();q=dict(status='RUNNING',optimization=a.optimization,cases={})
+ p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--resume-cadence',action='store_true');a=p.parse_args();a.output.mkdir(exist_ok=a.resume_cadence);q=dict(status='RUNNING',optimization=a.optimization,cases={})
+ if a.resume_cadence:
+  raw=(a.output/'RESULT.json').read_bytes();old=json.loads(raw);assert old['status']=='FAILED' and not old['cases']
+  first=a.output/'hys0-reset0-np1-2002-12-15/actual';report=json.loads((first/'RESULT.json').read_text(encoding='utf8'));original=json.loads((first/'RETAINED_FAILED_RESULT.json').read_bytes())
+  assert report['status']=='ACTUAL_AGE_PERSTEP_SHORT_SOURCE_NATIVE_OUTPUT_PASS' and report['post_validation_role'].startswith('Actual complete existing source-bound trajectory') and original['error'].startswith("AssertionError({'result.ageProfile.csv':") and original['trajectory']['days']==35
+  backup=a.output/'RETAINED_FAILED_EPOCH_RESULT.json';assert not backup.exists();backup.write_bytes(raw);q['retained_cadence_failure']=dict(path=backup.name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
  save()
  try:
   cases=[(0,0,'2002-12-15',1),(0,1,'2003-12-15',3),(1,0,'2003-12-15',2),(1,1,'2002-12-15',1),(2,0,'2002-12-15',3),(2,1,'2003-12-15',2)]
   for hys,reset,epoch,npd in cases:
-   key=f'hys{hys}-reset{reset}-np{npd}-{epoch}';root=a.output/key;root.mkdir();inputs=root/'input'
-   runtime.fixture(inputs,'explicit',hys,3,reset,npd,'interval' if hys else 'point')
-   path=inputs/'swap.swp';path.write_text(assignment(path.read_text(encoding='cp1252'),'TSTART',epoch),encoding='cp1252')
-   path=inputs/'fixed-irrigation.irg';text=path.read_text(encoding='cp1252');assert text.count('2002-01-05')==1;path.write_text(text.replace('2002-01-05',(date.fromisoformat(epoch)+timedelta(days=4)).isoformat()),encoding='cp1252')
+   key=f'hys{hys}-reset{reset}-np{npd}-{epoch}';root=a.output/key;existing=root.exists();root.mkdir(exist_ok=a.resume_cadence);inputs=root/'input'
+   if not existing:
+    runtime.fixture(inputs,'explicit',hys,3,reset,npd,'interval' if hys else 'point')
+    path=inputs/'swap.swp';path.write_text(assignment(path.read_text(encoding='cp1252'),'TSTART',epoch),encoding='cp1252')
+    path=inputs/'fixed-irrigation.irg';text=path.read_text(encoding='cp1252');assert text.count('2002-01-05')==1;path.write_text(text.replace('2002-01-05',(date.fromisoformat(epoch)+timedelta(days=4)).isoformat()),encoding='cp1252')
    cmd=[sys.executable,'-B',str(Path(runtime.__file__)),'--reference-work',a.reference_work,'--output',root/'actual','--existing-input',inputs,'--mode','explicit','--hysteresis',hys,'--format',3,'--reset',reset,'--nprintday',npd,'--source','interval' if hys else 'point','--optimization',a.optimization]
-   result=subprocess.run(list(map(str,cmd)),cwd=runtime.ROOT,capture_output=True,text=True,timeout=300);(root/'stdout').write_text(result.stdout,encoding='utf8');(root/'stderr').write_text(result.stderr,encoding='utf8');result.check_returncode()
+   if not existing:
+    result=subprocess.run(list(map(str,cmd)),cwd=runtime.ROOT,capture_output=True,text=True,timeout=300);(root/'stdout').write_text(result.stdout,encoding='utf8');(root/'stderr').write_text(result.stderr,encoding='utf8');result.check_returncode()
    report=json.loads((root/'actual/RESULT.json').read_text(encoding='utf8'));assert report['status']=='ACTUAL_AGE_PERSTEP_SHORT_SOURCE_NATIVE_OUTPUT_PASS';meta=json.loads((Path(report['build_root'])/'BUILD.json').read_text(encoding='utf8'));checks=[]
    for day in (2,4,8,19,23,30,34,35):
     with zipfile.ZipFile(root/f'actual/trajectory/accepted-column-1-day-{day}.zip') as cp:raw=cp.read('macro.bin')
