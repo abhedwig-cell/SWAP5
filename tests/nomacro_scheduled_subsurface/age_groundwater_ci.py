@@ -45,7 +45,11 @@ def main():
    item=reused(root,'SHORT') if a.pilot_root and family else run('age_groundwater_runtime.py',root,arguments(case)+['--optimization',a.optimization])[0]
    q['cases'][key]=dict(short_root=str(root),short=item,input_root=item.get('input_root',str(root/'input')),build_root=item.get('build_root',str(root/'build')));save();print(key,'SHORT_PASS',flush=True)
   for key in PILOTS:
-   root=a.output/('control-'+key);item,seconds=run('age_groundwater_controls.py',root,['--profile-root',q['cases'][key]['short_root']]);assert item['status']=='AGE_GROUNDWATER_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS';q['controls'][key]=dict(root=str(root),report=item,seconds=seconds);save()
+   old=a.pilot_root/f'age-groundwater-controls-{PILOTS[key]}-{a.optimization}-current-v1' if a.pilot_root else None
+   if old and (old/'RESULT.json').exists():
+    root=old;item=json.loads((root/'RESULT.json').read_text(encoding='utf8'));assert item['status']=='AGE_GROUNDWATER_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS' and item['build_sha256']==c.m.sha(Path(q['cases'][key]['build_root'])/'BUILD.json');seconds=None
+   else:root=a.output/('control-'+key);item,seconds=run('age_groundwater_controls.py',root,['--profile-root',q['cases'][key]['short_root']])
+   assert item['status']=='AGE_GROUNDWATER_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS';q['controls'][key]=dict(root=str(root),report=item,seconds=seconds,actual_prior_current_source_gate_reused=bool(old and root==old));save()
   for key,case in LIMITS.items():
    root=a.pilot_root/f'age-groundwater-limit-{key}-{a.optimization}-current-v1' if a.pilot_root else a.output/('limit-'+key)
    item=reused(root,'LIMIT') if a.pilot_root else run('age_groundwater_runtime.py',root,arguments(case)+['--optimization',a.optimization,'--phase','limit'])[0]
