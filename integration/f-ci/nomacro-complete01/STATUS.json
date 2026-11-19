@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-cde-clock01",
-  "last_commit": "05b134dd6b3baadaef42a309589e757ad41a3c3f",
-  "status": "CDE_CLOCK_BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
+  "last_commit": "1ebd75daad36f04a61035fbe841229df98f515a8",
+  "status": "CDE_CLOCK_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "After actual CDE clock source and metadata admission: source-audit and implement bounded missing AGE plus original heat/hysteresis/Snow state/calendar composition.",
-  "recovery_point": "codex/nomacro-cde-clock01; immutable runtime0038a20fc and seal8e0731453; registered owner PASS; source/metadata admission next.",
+  "next_code_change": "Source-audited AGE ordinary/hysteresis calendar and perstep complete state/restart, limited to genuine historical reader support; no Snow+AGE (original explicitly forbidden).",
+  "recovery_point": "codex/nomacro-cde-clock01 at actual1ebd75daa; CDE_CLOCK_MERGE_RECEIPT.json; metadata admission next, then bounded AGE calendar/perstep native qualification and missing state implementation.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Persist source qualification documentation; run docs checks and clean exact qualified-head registered owner. Push and admit source then metadata through actual ordered parents/full tree/clean detached owner. Continue next source-audited historical AGE/process gap.",
+  "next_action": "Merge metadata and verify actual ordered parents/full tree/clean detached owner; then AGE source-audited calendar/per-step composition, preserving existing implemented paths. Original reader expressly forbids snow plus AGE; do not classify it as missing historical functionality.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -662,7 +662,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+  "canonical_head": "1ebd75daad36f04a61035fbe841229df98f515a8",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -3029,7 +3029,7 @@
     }
   },
   "cde_clock": {
-    "status": "BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
+    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
     "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
     "contract": "docs/science/NOMACRO_CDE_CLOCK_20261119.md",
     "source_audit": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\NEXT_CDE_CLOCK_SOURCE_AUDIT.json",
@@ -4709,6 +4709,54 @@
       "elapsed_seconds": 17.55025149974972,
       "stdout": "ACTUAL_CDE_CLOCK_RAW_RECEIPT_CORRUPTIONS_REFUSED 21\nACTUAL_CDE_CLOCK_LIMIT_EPOCH_EVENT_CORRUPTIONS_REFUSED 340\nACTUAL_CDE_CLOCK_PRIOR_PERIOD_CENSOR_CORRUPTIONS_REFUSED 42\nACTUAL_CDE_CLOCK_SCOPE_SOURCE_CORRUPTIONS_REFUSED 52\n",
       "stderr": "..E..\n======================================================================\nERROR: test_actual_native_ledger_and_period (__main__.Proof.test_actual_native_ledger_and_period)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_verify.py\", line 89, in test_actual_native_ledger_and_period\n    owner.daily(z,pp+'trajectory/',data,n,item['short']['daily_chemical_receipts'])\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 124, in daily\n    require(len(values)==len(counts)==len(data),'actual CDE daily observation omitted')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 29, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: actual CDE daily observation omitted\n\n----------------------------------------------------------------------\nRan 5 tests in 17.314s\n\nFAILED (errors=1)\n"
+    },
+    "actual_source_owner": {
+      "status": "ACTUAL_CDE_CLOCK_CANONICAL_MERGE_VERIFIED",
+      "pr": 1752,
+      "merge": "1ebd75daad36f04a61035fbe841229df98f515a8",
+      "parents": [
+        "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+        "5a1f112e6b2d0e6f7db6617b5c6803f4a3951ab3"
+      ],
+      "qualified_head": "5a1f112e6b2d0e6f7db6617b5c6803f4a3951ab3",
+      "tree": "ea568539457efcec0c2949a8e4b586d4209ee78a",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 203.6084903003648,
+        "head": "1ebd75daad36f04a61035fbe841229df98f515a8",
+        "stdout": "{\n  \"status\": \"ORIGINAL_CDE_CLOCK_LOCAL_EVENT_PRIVATE_STATE_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_CDE_INTERVAL_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1608,\n  \"actual_policy_refusals\": 1656,\n  \"actual_provider_refusals\": 52,\n  \"actual_preserved_contexts\": 21,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"actual_1440_two_day_periods\": 16,\n  \"actual_1440_cold_windows\": 16,\n  \"actual_postyear_counter_refusals\": 128,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    },
+    "source_candidate_owner": {
+      "head": "5a1f112e6b2d0e6f7db6617b5c6803f4a3951ab3",
+      "elapsed_seconds": 213.9756643003784,
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"ORIGINAL_CDE_CLOCK_LOCAL_EVENT_PRIVATE_STATE_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_CDE_INTERVAL_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1608,\n  \"actual_policy_refusals\": 1656,\n  \"actual_provider_refusals\": 52,\n  \"actual_preserved_contexts\": 21,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"actual_1440_two_day_periods\": 16,\n  \"actual_1440_cold_windows\": 16,\n  \"actual_postyear_counter_refusals\": 128,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    },
+    "source_docs": {
+      "head": "5a1f112e6b2d0e6f7db6617b5c6803f4a3951ab3",
+      "cases": {
+        "check": {
+          "returncode": 0,
+          "seconds": 24.071681800298393
+        },
+        "strict": {
+          "returncode": 0,
+          "seconds": 51.12789440015331
+        }
+      }
+    },
+    "automatic_pr_ci_snapshot": {
+      "head": "5a1f112e6b2d0e6f7db6617b5c6803f4a3951ab3",
+      "total": 28,
+      "counts": {
+        "('queued', None)": 8,
+        "('in_progress', None)": 20
+      },
+      "role": "Automatic legacy PR checks outside selected qualification. Queued/in-progress is not PASS; exact external cde-clock-source-pr-ci-at-merge.json. No duplicate/cancel requested."
     }
   }
 }
