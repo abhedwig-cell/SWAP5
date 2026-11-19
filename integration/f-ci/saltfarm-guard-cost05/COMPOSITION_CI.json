@@ -1,0 +1,17 @@
+{
+  "status": "CONTROLLER_FIXTURE_AND_EXACT_WORKFLOW_PROJECTION_CORRECTED",
+  "failed_run": 44508514434,
+  "failed_head": "38797f89f22003542559db74bc9009bffe89e63d",
+  "physical_steps": "All original native input, water bootstrap, daily MET, ETref, mass and restart stages passed before controller-fixture failure",
+  "cause": "Sparse checkout omitted historical JSON fixtures used by the unchanged eleven controller unit tests. Their original workflow comparison also needed the exact operational checkout removed before comparing unchanged historical test commands.",
+  "correction": "Include the actual two historical metadata roots; project only the separately exact checkout block in the historical workflow unit input; original comparison and changed-command negative controls remain intact.",
+  "local_tests": {
+    "historical_controller_cases": 11,
+    "direct_admission_cases": 4,
+    "composition_admission_cases": 2,
+    "all_pass": true
+  },
+  "runtime_changed": false,
+  "tolerances_changed": false,
+  "historical_evidence_rewritten": false
+}
