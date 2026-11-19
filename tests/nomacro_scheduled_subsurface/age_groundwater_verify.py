@@ -287,7 +287,7 @@ def user_outputs(z,prefix,report,data,build,temporary):
 
 def verify():
     import importlib.util
-    spec=importlib.util.spec_from_file_location('saltfarm_direct_admission',ROOT/'tests/saltfarm_newton/direct_admission.py')
+    spec=importlib.util.spec_from_file_location('implicit_conductivity_admission',ROOT/'tests/nomacro_scheduled_subsurface/implicit_conductivity_verify.py')
     owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
     return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty AGE admission surface')

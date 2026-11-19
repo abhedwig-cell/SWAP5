@@ -169,7 +169,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         if len(values)!=1:raise ValueError('Missing/ambiguous physical selector: '+name)
         return int(values[0])
     micro_state=bool(project.input_directory and not project.macro and (selector('SWHYST') or selector('SWSNOW')))
-    from age_groundwater_output import selected_boundary
+    from implicit_groundwater_state import selected_boundary
     lower_boundary=selected_boundary(project)
     lower_receipt=lower_boundary is not None
     from fixed_irrigation_file import enabled as fixed_irrigation_file_enabled
@@ -865,8 +865,26 @@ end module plant_interface""")
     if age_calendar is not None:
         patched=age_calendar_owner.apply_build(output,donor_build,project,patched)
     if age_source:patched=current_age_source.apply_build(output,project,patched)
-    from age_groundwater_output import native_apply_build as groundwater_native_build
+    from implicit_groundwater_trial import apply_build as implicit_groundwater_trial_build
+    patched=implicit_groundwater_trial_build(output,donor_build,project,patched)
+    from implicit_conductivity_retry import apply_build as implicit_retry_build
+    patched=implicit_retry_build(output,donor_build,project,patched)
+    from implicit_conductivity_jacobian import apply_build as implicit_jacobian_build
+    patched=implicit_jacobian_build(output,project,patched)
+    from implicit_groundwater_state import native_apply_build as groundwater_native_build
     patched=groundwater_native_build(output,project,patched)
+    from implicit_pond_event import apply_build as implicit_pond_build
+    patched=implicit_pond_build(output,project,patched)
+    from implicit_root_finalization import apply_build as implicit_root_build
+    patched=implicit_root_build(output,donor_build,project,patched)
+    from implicit_pond_availability import apply_build as implicit_availability_build
+    patched=implicit_availability_build(output,project,patched)
+    from implicit_interception_partition import apply_build as implicit_interception_build
+    patched=implicit_interception_build(output,donor_build,project,patched)
+    from implicit_saturation_derivative import apply_build as implicit_saturation_build
+    patched=implicit_saturation_build(output,donor_build,project,patched)
+    from implicit_finite_newton import apply_build as implicit_finite_build
+    patched=implicit_finite_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -891,6 +909,9 @@ end module plant_interface""")
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output/'mod_prescribed_groundwater_reaction.o')] if lower_boundary==1 else []),
                     *([str(output/(name+'.o')) for name in ('groundwater_native_state','groundwater_history_native_state','age_groundwater_native_state') if name in patched] if lower_boundary==1 else []),
+                    *([str(output/'implicit_groundwater_native_state.o')] if 'implicit_groundwater_native_state' in patched else []),
+                    *([str(output/'implicit_pond_event_state.o')] if 'implicit_pond_event_state' in patched else []),
+                    *([str(output/'implicit_pond_availability.o')] if 'implicit_pond_availability' in patched else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
@@ -937,6 +958,36 @@ end module plant_interface""")
         "host": sha(Path(__file__)),
     }
     if direct_kernel is not None:build_identity['direct_day_kernel']=direct_kernel
+    from implicit_conductivity import metadata as implicit_metadata
+    implicit_policy=implicit_metadata(project)
+    if implicit_policy is not None:build_identity['implicit_conductivity']=implicit_policy
+    from implicit_groundwater_trial import metadata as implicit_trial_metadata
+    implicit_trial=implicit_trial_metadata(project)
+    if implicit_trial is not None:build_identity['implicit_groundwater_trial']=implicit_trial
+    from implicit_conductivity_retry import metadata as implicit_retry_metadata
+    implicit_retry=implicit_retry_metadata(project)
+    if implicit_retry is not None:build_identity['implicit_conductivity_retry']=implicit_retry
+    from implicit_conductivity_jacobian import metadata as implicit_jacobian_metadata
+    implicit_jacobian=implicit_jacobian_metadata(project)
+    if implicit_jacobian is not None:build_identity['implicit_conductivity_jacobian']=implicit_jacobian
+    from implicit_pond_event import metadata as implicit_pond_metadata
+    implicit_pond=implicit_pond_metadata(project)
+    if implicit_pond is not None:build_identity['implicit_pond_event']=implicit_pond
+    from implicit_root_finalization import metadata as implicit_root_metadata
+    implicit_root=implicit_root_metadata(project)
+    if implicit_root is not None:build_identity['implicit_root_finalization']=implicit_root
+    from implicit_pond_availability import metadata as implicit_availability_metadata
+    implicit_availability=implicit_availability_metadata(project)
+    if implicit_availability is not None:build_identity['implicit_pond_availability']=implicit_availability
+    from implicit_interception_partition import metadata as implicit_interception_metadata
+    implicit_interception=implicit_interception_metadata(project)
+    if implicit_interception is not None:build_identity['implicit_interception_partition']=implicit_interception
+    from implicit_saturation_derivative import metadata as implicit_saturation_metadata
+    implicit_saturation=implicit_saturation_metadata(project)
+    if implicit_saturation is not None:build_identity['implicit_saturation_derivative']=implicit_saturation
+    from implicit_finite_newton import metadata as implicit_finite_metadata
+    implicit_finite=implicit_finite_metadata(project)
+    if implicit_finite is not None:build_identity['implicit_finite_newton']=implicit_finite
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from age_groundwater_output import metadata as original_output_metadata
@@ -984,9 +1035,9 @@ end module plant_interface""")
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
     if lower_receipt:
-        from age_groundwater_output import boundary_metadata as lower_metadata
+        from implicit_groundwater_state import boundary_metadata as lower_metadata
         build_identity['lower_boundary_receipt']=lower_metadata(project,sha,APP,ROOT)
-    from age_groundwater_output import native_metadata as groundwater_native_metadata
+    from implicit_groundwater_state import native_metadata as groundwater_native_metadata
     groundwater_state=groundwater_native_metadata(project,sha,APP)
     if groundwater_state is not None:build_identity['groundwater_native_state']=groundwater_state
     if fixed_file:
@@ -1309,6 +1360,10 @@ class DailyHost:
                 raise ValueError("Column start day must match its origin")
             directory = output / name
             prepare_column(case, directory, start, checkpoint_enabled, runtime, project)
+            from implicit_groundwater_state import enabled as implicit_groundwater,validate_candidate as validate_implicit_groundwater
+            if start.origin is not None and implicit_groundwater(project):
+                if start.receipt is None:raise ValueError('Implicit groundwater restore requires accepted receipt')
+                validate_implicit_groundwater((directory/'macro-origin.bin').read_bytes(),start.receipt,project)
             if project.age and start.origin is not None:
                 from age_groundwater_output import active_selection as age_groundwater,validate_candidate as validate_age_groundwater
                 if age_groundwater(project) is not None:

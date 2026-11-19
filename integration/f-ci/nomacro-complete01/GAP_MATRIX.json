@@ -1,10 +1,10 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "c73820ee4e6ba07cbf6f3cbc8bdc88ab597b7a01",
-  "status": "SOURCE_BASED_FAMILY_MATRIX_WITH_REMAINING_SELECTOR_RECONCILIATION",
+  "status": "SOURCE_BASED_FUNCTIONAL_COVERAGE_WITH_EXPLICIT_REMAINING_GAPS_ACCELERATE02",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
-  "release_readiness": "RC2_NAMED_ONLY",
+  "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
   "families": [
     {
       "function": "Richards/Mualem-van Genuchten",
@@ -12,7 +12,9 @@
       "original_source": "headcalc.f90, functions.f90",
       "scope": "named full-period O0/O2, independent mass/native-own",
       "authority": "integration/f-ci/NOMACRO_RELEASE_20261112.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Tabulated/PCHIP and conductivity means",
@@ -20,7 +22,9 @@
       "original_source": "sptabulated.f90, functions.f90",
       "scope": "bounded SWKMEAN and explicit PCHIP cohorts",
       "authority": "integration/nomacro-coverage01/BLOCK_G_STATUS.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Alternative constitutive models2..11",
@@ -28,7 +32,9 @@
       "original_source": "MOD_MvG_functions.f90",
       "scope": "model2 passes; models3/5/6/7/9/11 strict FAIL and4/8/10 CENSOR",
       "authority": "integration/nomacro-coverage01/BLOCK_I_QUALIFICATION.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Top atmosphere, pond, runon and scheduled maximum",
@@ -36,7 +42,9 @@
       "original_source": "boundtop.f90, pondrunoff.f90",
       "scope": "bounded full/native/history windows; no arbitrary mix claim",
       "authority": "integration/nomacro-coverage01/BLOCK_O_QUALIFICATION.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Bottom modes2..8 water and supported chemical",
@@ -44,7 +52,9 @@
       "original_source": "boundbottom.f90, headcalc.f90",
       "scope": "named modes and bounded later gradient/table/plate cohorts",
       "authority": "integration/nomacro-coverage01/BLOCK_L_QUALIFICATION.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Prescribed groundwater chemical trial receipt and bottom9",
@@ -52,7 +62,9 @@
       "original_source": "boundbottom.f90, headcalc.f90",
       "scope": "Ordinary analytical CDE1 prescribedgroundwater admittedPR1733; original hydraulic/Snow histories admittedPR1736 actualf5f0cda95 with56fullperiods/704cold/50priorcontexts, unchangedoriginalDarcyreaction andcomplete typednativecarry. Groundwater aquifer/frost/age domains and original bottom9 pairedhead/flux consistency remain separate.",
       "authority": "docs/science/NOMACRO_PRESCRIBED_GROUNDWATER_CHEMICAL_20261118.md",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Drainage methods2/3 and bounded frost SWDIVD0",
@@ -60,7 +72,9 @@
       "original_source": "drainage.f90, divdra.f90",
       "scope": "Q water frost/drainage complete O0/O2 and native windows",
       "authority": "integration/nomacro-coverage01/BLOCK_Q_QUALIFICATION.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Other drainage and surfacewater",
@@ -68,7 +82,9 @@
       "original_source": "drainage.f90, divdra.f90, surfacewater.f90",
       "scope": "Original table method1 positive/signed is admitted through R PR1698; other methods and SWDRA2 remain partial. No all-drainage/surfacewater claim.",
       "authority": "app/hybrid_water/experimental_project.py",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Daily meteorology, ET and detailed rain",
@@ -76,7 +92,9 @@
       "original_source": "meteo.f90, evapotranspiration.f90",
       "scope": "eight bounded complete H trajectories; specific temporal failures remain",
       "authority": "integration/nomacro-coverage01/BLOCK_H_STATUS.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Hourly/pulsed weather combinations",
@@ -84,7 +102,9 @@
       "original_source": "meteo.f90, timedata.f90",
       "scope": "retained temporal364 strict failures; no blanket admission",
       "authority": "integration/nomacro-coverage01/BLOCK_H_STATUS.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Interception, soil evaporation, drought/oxygen/salt uptake",
@@ -92,7 +112,9 @@
       "original_source": "interception.f90, rootextraction.f90, RWU_micro.f90, oxygenstress.f90",
       "scope": "bounded original controls; inherited oxygen scientific FAILs retained",
       "authority": "integration/nomacro-coverage01/BLOCK_E_STATUS.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Crop growth, rotations and complete initialized lookup history",
@@ -100,7 +122,9 @@
       "original_source": "wofost.f90, grass.f90, cropgrowth.f90, RWU_micro.f90",
       "scope": "bounded crop signatures and complete J/O native state; arbitrary structures refused",
       "authority": "integration/nomacro-coverage01/BLOCK_J_QUALIFICATION.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Fixed surface/sprinkler and water-only external-file subsurface irrigation",
@@ -108,7 +132,9 @@
       "original_source": "irrigation.f90",
       "scope": "N complete trajectories and active event own windows",
       "authority": "integration/nomacro-coverage01/BLOCK_N_QUALIFICATION.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Scheduled water-only subsurface irrigation",
@@ -116,7 +142,9 @@
       "original_source": "irrigation.f90",
       "scope": "PR1699 source-bound point/interval full O0/O2 Windows/Ubuntu, exact native and active state/external/isolation, canonical R/pulse preservation; no chemical admission.",
       "authority": "integration/f-ci/nomacro-complete01/MERGE_RECEIPT.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Chemical subsurface irrigation",
@@ -124,7 +152,9 @@
       "original_source": "irrigation.f90, solute.f90",
       "scope": "Bounded fixed and scheduled point/interval chemical source are canonically admitted via explicit correction/shared evaluator, strict water/solute/native/event/transaction and Windows/Ubuntu O0/O2 controls; no global B1 or whole migration/science promotion.",
       "authority": "integration/f-ci/nomacro-complete01/SCHEDULED_CHEMICAL_MERGE_RECEIPT.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Numerical/analytic heat and supported boundary choices",
@@ -132,7 +162,9 @@
       "original_source": "heat.f90, heatconductivity.f90",
       "scope": "bounded E/named supported conduction/storage; whole advective energy remains unqualified",
       "authority": "integration/f-ci/NOMACRO_HEAT_EXPORT_20261112.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Snow and hydraulic hysteresis complete original history",
@@ -140,7 +172,9 @@
       "original_source": "snow.f90, hysteresis.f90",
       "scope": "J and O complete initialized tables/top history; bounded combinations only",
       "authority": "integration/nomacro-coverage01/BLOCK_O_QUALIFICATION.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Frost geometry/flow/uptake",
@@ -148,7 +182,9 @@
       "original_source": "frozencond.f90, rootextraction.f90",
       "scope": "P free-bottom partial frost and Q water/drained admitted; closed/front/chemical drainage remain open",
       "authority": "integration/nomacro-coverage01/BLOCK_Q_QUALIFICATION.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Conservative CDE, salinity, sorption and decay",
@@ -156,7 +192,9 @@
       "original_source": "solute.f90",
       "scope": "bounded original B/F and full named chemical/native checks",
       "authority": "integration/nomacro-coverage01/BLOCK_B_STATUS.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Mixed aquifer reservoir, water age and vapor",
@@ -164,7 +202,9 @@
       "original_source": "solute.f90, solute1.f90, soilwater.f90",
       "scope": "Bounded correctedSWBR1, original daily/fixed-young age002, regular003, monthly/explicit004 and annual/NP2/3age005 source/state/output admitted. Other age/process combinations and SWVAPOR remain open; no all-combinations/whole-science promotion.",
       "authority": "app/hybrid_water/experimental_project.py",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Original input/initialization/output selector domain",
@@ -172,7 +212,9 @@
       "original_source": "readswap.f90, swap_csv_output.f90",
       "scope": "Registered/general grids andSWINCO1/2/3; bounded explicit originaloutput0..3/groups/precision/calendar/perstep/daily-CDE state nowadmittedPR1721. Otheroriginalselector/crop/implicit/output-processdomains remainPARTIAL.",
       "authority": "app/hybrid_water/experimental_project.py",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Time control, day/year restart and transaction coupling",
@@ -180,7 +222,9 @@
       "original_source": "timecontrol.f90, integral.f90, swap.f90",
       "scope": "named and bounded B..Q native/day/year, mass refusal/discard/replay; no arbitrary combination claim",
       "authority": "app/hybrid_water/donor_sources.py",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Active macropores and macro-only options",
@@ -188,7 +232,9 @@
       "original_source": "macropore.f90",
       "scope": "preserved; audit/contract work not touched",
       "authority": "AGENTS.md",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "OUT_OF_SCOPE",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Corrected fixed chemical subsurface source",
@@ -196,7 +242,9 @@
       "original_source": "irrigation.f90, solute.f90",
       "scope": "PR1702 corrected producer and CDE source: Windows/Ubuntu point/interval full O0/O2, strict mass, own native and active external/refusal; original source controls, active salinity and admitted preservation. File/inline input; no global B1 or scheduled promotion.",
       "authority": "integration/f-ci/nomacro-complete01/CHEMICAL_MERGE_RECEIPT.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Scheduled chemical subsurface source",
@@ -204,7 +252,9 @@
       "original_source": "irrigation.f90, solute.f90",
       "scope": "PR1704: separate scheduled policy, unchanged shared source/codec, eight portable full periods,32full+8short native, original16paired, native bad-input/isolation and exact unchanged-context closures/prefixes.",
       "authority": "integration/f-ci/nomacro-complete01/SCHEDULED_CHEMICAL_MERGE_RECEIPT.json",
-      "authority_present": true
+      "authority_present": true,
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     },
     {
       "function": "Corrected original no-macro mixed aquifer SWBR1",
@@ -212,7 +262,9 @@
       "scope": "Canonical23194d6be PR1706; bounded soil+reservoir/transfer/native, Windows/Ubuntu O0/O2, fixed chemical composition. Whole-model reference differences unresolved.",
       "authority": "integration/f-ci/nomacro-complete01/AQUIFER_QUALIFICATION.json",
       "authority_present": true,
-      "original_source": "solute.f90"
+      "original_source": "solute.f90",
+      "full_historical_family_closed": "UNKNOWN",
+      "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed."
     }
   ],
   "original_integer_reader_calls": [
@@ -1403,10 +1455,326 @@
   },
   "age_groundwater": {
     "status": "ADMITTED",
-    "scope": "Source-proven ordinary/history original AGE SWBOTB1 actual35day availability; public currently refuses. Bounded new composition not yet implemented.",
+    "scope": "Bounded original AGE prescribed-groundwater ordinary/history composition admitted through PR1756/1757; other domains remain separate.",
     "contract": "docs/science/NOMACRO_AGE_GROUNDWATER_20261119.md",
-    "remaining": "Actual canonical source and metadata admission; other historical selectors and whole scientific equivalence remain open.",
+    "remaining": "No pending metadata admission for this admitted bounded scope. Whole historical and scientific closure remains open.",
     "qualification": "BOUNDED_SOURCE_ACTUAL_CANONICAL_OWNER_PASS",
     "canonical": "e4322da80977c86861ab3aafe8f3035267c77582"
+  },
+  "implicit_conductivity": {
+    "status": "BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
+    "scope": "Bounded actual original SWKIMPL1 analytic default Mualem, means1..6 and original output; water/CDE current implementation, AGE dryout explicitly blocked.",
+    "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
+    "runtime_head": "5bdfcb347",
+    "selected_gate": {
+      "controller": "tests/nomacro_scheduled_subsurface/implicit_conductivity_ci.py",
+      "short_contexts_per_optimization": 8,
+      "full_contexts_per_optimization": 6,
+      "separate_active_chemistry": "3short2full; unchanged physical chemistry reused",
+      "qualification_class": "A numerical correction plus B existing state composition",
+      "unchanged_predecessor": "C inheritance with explicit literal SWKIMPL0 delegation; no fresh full legacy campaigns"
+    },
+    "limitation": "Windows/Ubuntu O0/O2 independent bounded water/CDE qualification passes. Actual canonical admission pending. AGE dryout and full weighted-harmonic history remain unqualified; groundwater old0 carry/subdaily remains next composition gap. No full-family closure inferred.",
+    "inherited_explicit_route_observation": "Original SWKIMPL0 also retains aintcdt<small net-input omission while Integral books interception. This unit changes newSWKIMPL1 only, not oldqualifiedscope or fixedRC3."
+  },
+  "water_groundwater_complete_state_subdaily": {
+    "status": "PARTIAL",
+    "evidence": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-groundwater-swkimpl0-observation-v1\\RESULT.json",
+    "scope": "New implicit daily water carry repairs observed ordinary/history short cold only. Original explicit numerical water groundwater native carry and all water groundwater subdaily trial/calendar composition remain open."
+  },
+  "implicit_age_surface_dryout": {
+    "status": "IMPLEMENTED_NOT_QUALIFIED",
+    "source": "f7f23dbe531b579991d3a77fd2b67cb05a08f67a",
+    "last_accepted_day": 163,
+    "case": "AGE head/history SWHYST2 SWBOTB5 SWKMEAN6 FLPRINTDT original output",
+    "invariant": "Retained surface-age stock cannot be silently lost when all surface water evaporates.",
+    "public_state": "Explicit unqualified implicit AGE refusal; oldSWKIMPL0 AGE unchanged.",
+    "next": "Separate explicit evaporation-age/dry-state semantics and qualified state owner; retain actual failure and original equations."
+  },
+  "coverage": {
+    "canonical_reconciled": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
+    "authority": "This object extends existing GAP_MATRIX; STATUS.json remains sole recovery record. Existing26boundedfamily rows and original_integer_reader_calls are inherited, not recounted as full closure.",
+    "denominator_status": "INCOMPLETE_VALID_CONFIGURATION_CONSTRAINT_RECONCILIATION",
+    "full_historical_families_closed": "UNKNOWN",
+    "remaining_global_counts": {
+      "MISSING_IMPLEMENTATION": "UNKNOWN",
+      "MISSING_COMPOSITION": "UNKNOWN",
+      "OVERRESTRICTIVE_GUARD": "UNKNOWN",
+      "NUMERICAL_FAILURE": "UNKNOWN",
+      "REFERENCE_DEFECT": "UNKNOWN",
+      "EVIDENCE_ONLY": "UNKNOWN"
+    },
+    "no_percentage": true,
+    "feature_rows": [
+      {
+        "id": "implicit-water-cde",
+        "function": "Original SWKIMPL1 analytic Mualem, means1..6, water/CDE",
+        "gap_classification": "NUMERICAL_FAILURE",
+        "historical_availability": {
+          "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:789",
+          "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/headcalc.f90:208",
+          "supported": "SWKIMPL0/1 and means1..6, original explicit limits retained"
+        },
+        "current_availability": "Implemented current5bdfcb347, fresh integrated O0/O2 cohorts in progress; not canonically admitted. Original Newton, endpoint derivative/root/pond/interception defects explicitly corrected.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Implemented current5bdfcb347, fresh integrated O0/O2 cohorts in progress; not canonically admitted. Original Newton, endpoint derivative/root/pond/interception defects explicitly corrected.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "High: historical implicit projects blocked",
+        "remaining_effort": "Current block; complete qualification/admission",
+        "batch": "implicit"
+      },
+      {
+        "id": "implicit-examined-ksat",
+        "function": "Implicit examined-Ksat interpolation",
+        "gap_classification": "OUT_OF_SCOPE",
+        "historical_availability": {
+          "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90:851",
+          "condition": "KSATEXM>KSATFIT, relsat above original threshold, no macro; original dhconduc explicitly unimplemented"
+        },
+        "current_availability": "Hard refusal correct; no historically implemented option to migrate.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Hard refusal correct; no historically implemented option to migrate.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "No valid original route",
+        "remaining_effort": "No implementation in this task",
+        "batch": "excluded"
+      },
+      {
+        "id": "implicit-mean7",
+        "function": "SWKIMPL1 plus SWKMEAN7",
+        "gap_classification": "OUT_OF_SCOPE",
+        "historical_availability": {
+          "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:793",
+          "supported": false,
+          "reason": "Literal original reader forbids combination"
+        },
+        "current_availability": "Hard refusal correct.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Hard refusal correct.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "Invalid original input",
+        "remaining_effort": "None",
+        "batch": "excluded"
+      },
+      {
+        "id": "implicit-age-dryout",
+        "function": "Retained AGE when pond completely evaporates",
+        "gap_classification": "MISSING_IMPLEMENTATION",
+        "historical_availability": {
+          "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/solute.f90",
+          "actual_execution": "Actual implicit AGE passes short prototypes but fails day164 retained surface AGE budget; original zeroing is not a conserved scientific oracle"
+        },
+        "current_availability": "Actual age stock remains with no surface water; explicit public refusal. Requires a scientific dry-age/evaporation state decision, not disposal or epsilon water.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Actual age stock remains with no surface water; explicit public refusal. Requires a scientific dry-age/evaporation state decision, not disposal or epsilon water.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "High for AGE; independent W/C can proceed",
+        "remaining_effort": "Scientific state/semantics blocker; effort UNKNOWN",
+        "batch": "age-state"
+      },
+      {
+        "id": "groundwater-water-native",
+        "function": "Complete original water SWBOTB1 state and subdaily calendar",
+        "gap_classification": "MISSING_COMPOSITION",
+        "historical_availability": {
+          "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90",
+          "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/headcalc.f90",
+          "supported": "Original prescribed groundwater and water output calendars"
+        },
+        "current_availability": "New implicit daily typed hydro state exists; oldSWKIMPL0 ordinary/history native state gap and water subdaily composition remain. Existing hydraulic/calendar owners provide components.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "New implicit daily typed hydro state exists; oldSWKIMPL0 ordinary/history native state gap and water subdaily composition remain. Existing hydraulic/calendar owners provide components.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "High: common groundwater projects and restart",
+        "remaining_effort": "Medium: one existing state-owner composition",
+        "batch": "groundwater"
+      },
+      {
+        "id": "explicit-szym-mean7",
+        "function": "Original explicit Szymkiewicz SWKMEAN7",
+        "gap_classification": "OVERRESTRICTIVE_GUARD",
+        "historical_availability": {
+          "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:789",
+          "initialization": "sub_Kavg_Szym(1) at line790",
+          "supported": "SWKIMPL0 only; original initializer/process domain must be composed"
+        },
+        "current_availability": "experimental_project mandatory and allowed sets restrict every route to means1..6. Read real initializer/provider and bound history/table interactions before opening guard.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "experimental_project mandatory and allowed sets restrict every route to means1..6. Read real initializer/provider and bound history/table interactions before opening guard.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "Medium/high for original numerical input compatibility",
+        "remaining_effort": "Medium; no new averaging equation",
+        "batch": "hydraulic-options"
+      },
+      {
+        "id": "detailed-weather-events",
+        "function": "Detailed/pulsed weather, event clocks and source interaction",
+        "gap_classification": "NUMERICAL_FAILURE",
+        "historical_availability": {
+          "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:236",
+          "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/swap.f90",
+          "constraints": "SWETR1 forces detailed0; detailed weather uses rain0. Do not count impossible reader combinations."
+        },
+        "current_availability": "Daily bounded family admitted; actual temporal364 strict failures and uncomposed combinations remain. Reuse existing weather/interception/event owners, investigate actual failure only.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Daily bounded family admitted; actual temporal364 strict failures and uncomposed combinations remain. Reuse existing weather/interception/event owners, investigate actual failure only.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "High: hourly rainfall and irrigation projects",
+        "remaining_effort": "Medium; focused real event/native windows then affected representative period",
+        "batch": "weather"
+      },
+      {
+        "id": "extended-drainage",
+        "function": "Extended drainage/surface water SWDRA2",
+        "gap_classification": "MISSING_COMPOSITION",
+        "historical_availability": {
+          "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:807",
+          "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/swap.f90:447",
+          "supported": "Original drain1/2 and drain3 surfacewater update whenSWDRA2"
+        },
+        "current_availability": "Public descriptor restricts SWDRA0/1; basic drainage methods1..3 already qualified. Extended state/flux/calendar coupling not admitted.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Public descriptor restricts SWDRA0/1; basic drainage methods1..3 already qualified. Extended state/flux/calendar coupling not admitted.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "High for Dutch managed drainage/surface water projects",
+        "remaining_effort": "Medium/high; inventory existing drain owner states before implementation",
+        "batch": "drainage"
+      },
+      {
+        "id": "alternative-hydraulic",
+        "function": "Alternative constitutive models2..12",
+        "gap_classification": "NUMERICAL_FAILURE",
+        "historical_availability": {
+          "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:369",
+          "scalar_and_per_layer_range": "1..12, original exponential2/testing, bimodal3, PDI4..11, RIA12",
+          "dispatch": "MOD_MvG_functions.f90 branches12 at325/455/614/818; RIA_Reader readswap556, original reader rejects RIA with hysteresis."
+        },
+        "current_availability": "Bounded model2 PASS; existing models3/5/6/7/9/11 FAIL and4/8/10 CENSOR. Reuse BLOCK_I evidence; not mere guards. The earlier BLOCK_I inventory omitted reader-supported RIA12; exact RIA public/state admission remains UNKNOWN and requires source audit, not automatic failure classification.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Bounded model2 PASS; existing models3/5/6/7/9/11 FAIL and4/8/10 CENSOR. Reuse BLOCK_I evidence; not mere guards.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "Medium; specialized original soil projects",
+        "remaining_effort": "High/UNKNOWN until each existing failure classified",
+        "batch": "constitutive"
+      },
+      {
+        "id": "vapor",
+        "function": "Per-layer SWVAPOR1",
+        "gap_classification": "MISSING_IMPLEMENTATION",
+        "historical_availability": {
+          "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:618",
+          "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:724",
+          "supported": "Per-layer0/1 original reader; physical constitutive composition and heat coupling need exact audit"
+        },
+        "current_availability": "Public reader rejects any nonzero layer. Source/process/native/heat dependency closure not qualified.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Public reader rejects any nonzero layer. Source/process/native/heat dependency closure not qualified.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "Medium; drying and thermal profiles",
+        "remaining_effort": "High/UNKNOWN; no broad new architecture",
+        "batch": "constitutive"
+      },
+      {
+        "id": "frost-open-domains",
+        "function": "Other original frost lower boundaries and chemical/drain coupling",
+        "gap_classification": "NUMERICAL_FAILURE",
+        "historical_availability": {
+          "sources": [
+            "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90",
+            "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+            "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90"
+          ],
+          "supported": "Reachable original domains must respect original SWDIVD/solute reader restrictions"
+        },
+        "current_availability": "Bounded water/drained frost admitted; closed/front/chemical failures and state compositions remain; do not unguard proven strict failures.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Bounded water/drained frost admitted; closed/front/chemical failures and state compositions remain; do not unguard proven strict failures.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "Medium/high for cold-season projects",
+        "remaining_effort": "High/UNKNOWN; preserve current frost authority",
+        "batch": "later"
+      },
+      {
+        "id": "osmotic-comment-only",
+        "function": "Commented SWSALINITY2 proposal",
+        "gap_classification": "OUT_OF_SCOPE",
+        "historical_availability": {
+          "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:1428",
+          "supported": false,
+          "reason": "Actual reader allows0..1 despite rootextraction comment about2"
+        },
+        "current_availability": "Current root_controls0/1 agrees with original reader; do not manufacture a guard gap from a comment.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Current root_controls0/1 agrees with original reader; do not manufacture a guard gap from a comment.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "Not a historically readable option",
+        "remaining_effort": "None",
+        "batch": "excluded"
+      },
+      {
+        "id": "macro",
+        "function": "Active macropores",
+        "gap_classification": "OUT_OF_SCOPE",
+        "historical_availability": {
+          "supported": "Outside explicit user migration scope"
+        },
+        "current_availability": "Preserve existing macro route; do not develop or qualify.",
+        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
+        "missing_composition_or_guard": "Preserve existing macro route; do not develop or qualify.",
+        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "user_interest": "Excluded",
+        "remaining_effort": "None",
+        "batch": "excluded"
+      },
+      {
+        "id": "implicit-weighted-history-wetdry",
+        "function": "SWKIMPL1 SWKMEAN6 SWHYST2 head5 full wet/dry history",
+        "gap_classification": "NUMERICAL_FAILURE",
+        "historical_availability": "Original reader permits means6/history2; exact complete strict-equivalent original period UNKNOWN.",
+        "current_availability": "Actual short35/native PASS O0/O2; full180s caps at day164 after163 accepted days.",
+        "implementation_completeness": "Partial numerical domain, not admitted full combination.",
+        "evidence_status": "Actual source5bdf and read-only numerical clock diagnostic retained.",
+        "user_interest": "Specialized full weighted harmonic/hysteresis interaction; independent default water/CDE routes not blocked by its incomplete period.",
+        "remaining_effort": "UNKNOWN pending original nonlinear wet/dry transition investigation",
+        "batch": "implicit-numerical-followup"
+      }
+    ],
+    "next_batches": [
+      {
+        "order": 1,
+        "id": "groundwater",
+        "class": "B",
+        "goal": "Complete water SWBOTB1 state/calendar across original numerical selectors and ordinary/history, daily/subdaily/print reset; reuse existing hydraulic and calendar processes.",
+        "gates": "Targeted actual nonJan/year native windows, independent water, invalid domain, public command; representative full only where new periodic state needs it."
+      },
+      {
+        "order": 2,
+        "id": "hydraulic-options",
+        "class": "C/B",
+        "goal": "Open historically valid explicit SWKMEAN7 through existing initializer/process; retain original implicit prohibition and qualify actual reached combinations together.",
+        "gates": "Real mean interface/reader, initialized state/cold proof, representative hydraulic input interactions; no copied equation."
+      },
+      {
+        "order": 3,
+        "id": "weather",
+        "class": "B/A only for actual defects",
+        "goal": "Close coherent detailed/pulsed forcing and event/interception interactions using existing physical owners.",
+        "gates": "Reproduce retained364 strict failure, actual event clocks and conservation; requalify affected dependency only."
+      },
+      {
+        "order": 4,
+        "id": "drainage",
+        "class": "B",
+        "goal": "Compose original extended drainage and surfacewater state/flux family behind existing exchange ownership.",
+        "gates": "Original reader/state audit, independent signed water exchange, transaction and complete native; no external MODFLOW."
+      },
+      {
+        "order": 5,
+        "id": "constitutive",
+        "class": "A/B",
+        "goal": "Classify actual alternative-model and vapor gaps, reuse original providers, implement supported missing couplings as one hydraulic/thermal family.",
+        "gates": "Reuse existing BLOCK_I failures; independent constitutive/scientific checks only for actual changed implementation."
+      }
+    ]
   }
 }
