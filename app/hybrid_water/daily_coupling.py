@@ -145,6 +145,9 @@ def validate_bundle(bundle, reference, project):
     require_transport(project)
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
+    from weather_terminal_receipt import metadata as weather_terminal_metadata
+    if identity.get('weather_terminal_receipt')!=weather_terminal_metadata(project):
+        raise ValueError('Weather terminal water receipt policy differs from build')
     from direct_day_kernel import validate as validate_direct
     validate_direct(bundle,identity.get('direct_day_kernel'),project)
     from implicit_conductivity import metadata as implicit_metadata

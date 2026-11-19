@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-explicit-szym-weather01",
   "last_commit": "ef5010a83e83f879254af534bf0dd9cfcdbf3a85",
-  "status": "GROUNDWATER_WATER_CANONICALLY_ADMITTED_HISTORICAL_WEATHER_INVESTIGATION",
+  "status": "WEATHER_TERMINAL_RECEIPT_IMPLEMENTED_NOT_TESTED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run persisted weather_surface_runtime.py at O0 with exact sealed pulsed/hourly H inputs through367 and actual own cold363/364. Investigate current residual only if reproduced; then affected O0/O2 full/native qualification. Explicit Szym7 depends on unavailable profile-specific scientific table; source assessment retained, no invented physics.",
+  "next_action": "Run current persisted bounded weather terminal receipt O0 exact H pulsed/hourly367 and own363/364 cold. First actual canonical ef501 controls both reproduce day364 refusal; retained in protected evidence/weather-current-*-O0-v2. Do not alter these raw controls.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -30387,8 +30387,9 @@
       21,
       23
     ],
-    "production_changes": false,
+    "production_changes": true,
     "test_status": "PERSISTED_NOT_YET_EXECUTED",
-    "qualification_status": "NOT_QUALIFIED"
+    "qualification_status": "NOT_QUALIFIED",
+    "implementation": "Bounded read-only complete terminal receipt composed with original weather CDE; no physical or accepted state assignment"
   }
 }
