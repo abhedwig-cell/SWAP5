@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-extended-drainage01",
   "last_commit": "beff97988beeeed23bbf6367ed4efb0cac22c682",
-  "status": "EXTENDED_PRESCRIBED_CDE_COMPLETE_LEDGER_AND_EXACT_NATIVE_PASS_MANAGED_BATCH_NEXT",
+  "status": "EXTENDED_DRAINAGE_REAL_DAY36_DTMIN_NONCONVERGENCE_REPRODUCED_STRICT_COMPOSITION_PENDING_TEST",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -333,7 +333,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Run grouped actual35day fixed/automatic CDE managedsurfacewater O0 with native2to4/14to17/30to35 and separate/combined inventories. Then representative water/primary-prescribed/QH-table/O2 contexts and independent raw owner; select fulls only after process/native gates pass.",
+  "next_code_change": "Run new37day targeted fixed/automatic CDE O0/O2 with strict original retry + complete receipt, own35to37 across actualfailure. Persist failedfull35prefixes and rawwitness diagnosis. Only afterthese pass resume coherent affectedfull qualification.",
   "recovery_point": "Current branchcodex/nomacro-extended-drainage01 includes actual canonicalbc9271bcc. WEATHER_MERGE_RECEIPT.json owns exactparents/tree and actual clean detached root PASS112.224684s. Original drainage state component0f61c648 has O0/O2 realprocess/native/refusal proof sealed at1b67400b3. PublicSWDRA2 remains hard-refused until next source/native/exchange composition is implemented and independently admitted.",
   "external_blocker": null,
   "test_selection": {
@@ -30534,7 +30534,15 @@
       "own_cold": "2to4 physical/CSV/result.end/macro.bin exact; origin unchanged",
       "full_public_qualification": false
     },
-    "controller": "tests/nomacro_drainage/extended_runtime.py"
+    "controller": "tests/nomacro_drainage/extended_runtime.py",
+    "short_managed_contexts": "FixedCDE O0/O2, automaticCDE O0(initialhigh)/O2(activelow), QHtableCDE O0/O2 and3levelwater O0/O2:35days/all3native windows PASS. Activewater supply2.05cm and automaticCDE supply1.3183cm/discharge0.2564cm actuallyobserved.",
+    "failed_full_periods": {
+      "fixed_O0": "35accepted, refusedday36; original soil budget6.859325e-4cm. Surface combined guard refuses; full-v1 rawretained.",
+      "automatic_O0": "35accepted, refusedday36; actual original soil residual-0.11617194162949cm, surface-3.74215e-14cm, combined-0.11617194162952cm. No acceptedday36 published.",
+      "actual_source": "a3ce888d0 controller; app1fb3875db unchanged",
+      "classification": "Original DTMIN permits exhausted nonconverged no-macro trial; same known strict original retry composition needed forSWDRA2."
+    },
+    "strict_numerical_composition": "Reuse literal admitted implicit_conductivity_retry HeadCalc/TimeControl with selector1->0 only in selected extended compiledclosure; original reductionfactor and8ULPfloor. Reuse exact admitted weather no-snow complete original28term receipt at every candidate, onlySWDRA1->2/module rename. No physical assignments, input/checkpoint/BUILD repair, fallback or tolerance relaxation."
   },
   "coverage_batch_report": {
     "canonical": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",

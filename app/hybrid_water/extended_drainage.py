@@ -11,6 +11,7 @@ import struct
 
 POLICY = 'original-extended-drainage-atomic-state-v1'
 MODULE = 'hybrid_extended_drainage_state'
+TERMINAL_MODULE = 'hybrid_extended_drain_terminal'
 MAGIC = b'S5EDR001'
 TEMPLATE = Path(__file__).with_name('extended_drainage_state.f90')
 SURFACE_SOURCE_LF_SHA256 = '734aac3c4f186775be36b169cf4d6e63332f07d6f69ee5ebfc6be3d7f958b0df'
@@ -42,6 +43,33 @@ def surfacewater_source(original):
         assert text.count(old)==1,old
         text=text.replace(old,new,1)
     return text
+
+
+def terminal_source():
+    # Reuse the admitted no-snow complete original double receipt. Only the
+    # selected drainage dispatch differs; no store or physical flux is changed.
+    from weather_terminal_receipt import source, MODULE as previous
+    text=source();assert text.count('swdra/=1')==1
+    return text.replace(previous,TERMINAL_MODULE).replace('swdra/=1','swdra/=2').replace('WEATHER_TERMINAL_WATER','EXTENDED_DRAIN_TERMINAL_WATER')
+
+
+def strict_trial_build(output, donor_build, patched):
+    import implicit_conductivity_retry as retry
+    path=output/'headcalc.f90';text=path.read_text(encoding='cp1252')
+    old='   use hybrid_step_budget, only: projected_water_residual';assert text.count(old)==1
+    text=text.replace(old,'   use '+TERMINAL_MODULE+',only:terminal_water_residual\n'+old,1)
+    old='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
+    assert text.count(old)==1
+    text=text.replace(old,old+'\n         if(abs(terminal_water_residual())>1d-10*(t1900-budget_start+dt))flnonconv=.true.',1)
+    text=retry.headcalc_source(text);assert text.count('swmacro==0.and.swkimpl==1')==1
+    path.write_text(text.replace('swmacro==0.and.swkimpl==1','swmacro==0.and.swkimpl==0'),encoding='cp1252')
+    path=output/'timecontrol.f90';text=(path if path.exists() else donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
+    text=retry.time_source(text);assert text.count('swmacro==0.and.swkimpl==1')==1
+    text=text.replace('swmacro==0.and.swkimpl==1','swmacro==0.and.swkimpl==0').replace('implicit original','extended-drain original').replace('Implicit original','Extended-drain original').replace('Named implicit policy','Named extended-drain policy')
+    path.write_text(text,encoding='cp1252')
+    (output/(TERMINAL_MODULE+'.f90')).write_text(terminal_source(),encoding='cp1252')
+    if 'timecontrol' not in patched:patched.append('timecontrol')
+    return patched
 
 
 def describe(directory, selected, original_output):
@@ -101,6 +129,10 @@ def metadata(project):
     if not enabled(project):return None
     sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
     return dict(policy=POLICY,source_sha256=sha(Path(__file__)),template_sha256=sha(TEMPLATE),
+                terminal_renderer_sha256=sha(Path(__file__).with_name('weather_terminal_receipt.py')),
+                terminal_template_sha256=sha(Path(__file__).with_name('terminal_water_receipt.f90')),
+                strict_retry_source_sha256=sha(Path(__file__).with_name('implicit_conductivity_retry.py')),
+                strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
                 codec=MAGIC.decode(),domain=domain(project),bytes=size(project),
                 ownership='Original MOD_drain dynamic values; exact rejected-trial restore, no new physical store',
                 physical_equations_changed=False,original_surfacewater_lf_sha256=SURFACE_SOURCE_LF_SHA256,
@@ -171,6 +203,7 @@ def flux_witness(tokens, project, receipt, origin):
 
 def apply_build(output, donor_build, project, patched):
     if not enabled(project):return patched
+    patched=strict_trial_build(output,donor_build,patched)
     (output/(MODULE+'.f90')).write_bytes(TEMPLATE.read_bytes())
     (output/'surfacewater.f90').write_text(surfacewater_source((donor_build/'swap-selected/surfacewater.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')
@@ -202,4 +235,4 @@ def apply_build(output, donor_build, project, patched):
     lines=text.splitlines(keepends=True);assert sum("'HYBRID_HYDRAULIC'" in line for line in lines)==2
     text=''.join(line+('   call extended_drain_witness()\n' if "'HYBRID_HYDRAULIC'" in line else '') for line in lines)
     path.write_text(text,encoding='cp1252')
-    return [MODULE,'surfacewater',*patched]
+    return [TERMINAL_MODULE,MODULE,'surfacewater',*patched]

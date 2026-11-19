@@ -75,7 +75,7 @@ def fixture(case, output):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--case',choices=CASES,required=True)
-    p.add_argument('--days',type=int,choices=(5,35,1096),default=35)
+    p.add_argument('--days',type=int,choices=(5,35,37,1096),default=35)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
     a=p.parse_args();a.output.mkdir();q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),case=a.case,optimization=a.optimization,requested_days=a.days,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',public_admission=False)
@@ -92,6 +92,7 @@ def main():
         q['build']=dict(command=command,returncode=r.returncode,seconds=time.monotonic()-start);save();r.check_returncode()
         windows=[(2,4)]
         if a.days>=35:windows += [(14,17),(30,35)]
+        if a.days>=37:windows += [(35,37)]
         if a.days==1096:windows += [(363,367),(530,532),(1094,1096)]
         q['trajectory'],data=m.trajectory(build,a.reference_work,project,a.output/'trajectory',a.days,{a.days,*(v for pair in windows for v in pair)},240)
         q['cold']=[];save()
