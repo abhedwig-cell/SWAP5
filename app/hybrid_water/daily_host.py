@@ -1499,7 +1499,7 @@ class DailyHost:
         }
         from weather_root_state import enabled as weather_root_enabled
         if weather_root_enabled(self.project):
-            memory=list(map(float,response.get('WEATHER_ROOT_MEMORY',[])))
+            memory=list(map(float,response.get('HYBRID_WEATHER_ROOT_MEMORY',[])))
             if (len(memory)!=3 or not all(map(math.isfinite,memory))
                     or memory[0]!=self.project.start_clock+day or any(v<0 or v>1 for v in memory[1:])):
                 raise ValueError('Invalid original hourly root stress witness')

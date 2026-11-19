@@ -99,7 +99,7 @@ end subroutine
 subroutine weather_root_witness()
 use variables,only:t1900
 use MOD_re_global,only:alpwetnoddrz,alpdrynodrtz
-write(*,'(a,3(1x,es25.17e3))') 'WEATHER_ROOT_MEMORY',t1900,alpwetnoddrz,alpdrynodrtz
+write(*,'(a,3(1x,es25.17e3))') 'HYBRID_WEATHER_ROOT_MEMORY',t1900,alpwetnoddrz,alpdrynodrtz
 end subroutine
 end module
 '''
