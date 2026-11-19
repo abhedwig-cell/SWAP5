@@ -19,7 +19,7 @@ m=previous.m
 ROOT=previous.ROOT
 
 
-def fixture(case,output,mode,fmt,nprint,age=False,end_date=None,hysteresis=0,implicit=False):
+def fixture(case,output,mode,fmt,nprint,age=False,end_date=None,hysteresis=0,implicit=False,water_only=False):
     info=previous.fixture(case,output)
     path=output/'swap.swp';text=path.read_text(encoding='cp1252')
     values=dict(SWCSV=fmt,NPRINTDAY=nprint,SWMONTH=int(mode=='monthly'),
@@ -44,6 +44,12 @@ def fixture(case,output,mode,fmt,nprint,age=False,end_date=None,hysteresis=0,imp
         text+='\nAGEMLTB =\n -10.0 100.0\n -95.0 100.0\n* End of table\n'
         for crop in output.glob('*.crp'):
             crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
+    if water_only:
+        assert case=='automatic' and not age,'Declared primary water-only fixture requires automatic drainage without AGE'
+        text=assignment(text,'SWSOLU',0)
+        for crop in output.glob('*.crp'):
+            crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
+        info['declared_water_only']='Original automatic primary/secondary drainage unchanged; SWSOLU0 and every original crop SWSALINITY0'
     if end_date is not None:text=assignment(text,'TEND',end_date)
     if hysteresis:
         text=assignment(text,'SWHYST',hysteresis)
@@ -94,6 +100,7 @@ def main():
     p.add_argument('--age',action='store_true')
     p.add_argument('--hysteresis',type=int,choices=(0,1,2),default=0)
     p.add_argument('--implicit',action='store_true')
+    p.add_argument('--water-only',action='store_true')
     p.add_argument('--reuse-build',type=Path)
     p.add_argument('--nprintday',type=int)
     p.add_argument('--end-date')
@@ -108,7 +115,7 @@ def main():
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,a.nprintday if a.nprintday is not None else (3 if a.mode=='subdaily' else 1),a.age,a.end_date,a.hysteresis,a.implicit)
+        q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,a.nprintday if a.nprintday is not None else (3 if a.mode=='subdaily' else 1),a.age,a.end_date,a.hysteresis,a.implicit,a.water_only)
         project=m.e.load(a.output/'input',original_output=True);build=a.reuse_build or a.build_root/a.case
         q.update(input_root=str(a.output/'input'),build_root=str(build),output_selection=original_output.selection(project));save()
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,
