@@ -1783,7 +1783,7 @@
         "class": "B",
         "goal": "Compose original extended drainage and surfacewater state/flux family behind existing exchange ownership.",
         "gates": "Original reader/state audit, independent signed water exchange, transaction and complete native; no external MODFLOW.",
-        "status": "BOUNDED_QUALIFIED_CURRENT_OWNER_PASS_CANONICAL_PENDING"
+        "status": "BOUNDED_CANONICALLY_ADMITTED_PR1763_66D6297B1_NEXT_OUTPUT_COMPOSITION_ACTIVE"
       },
       {
         "order": 5,
@@ -1812,7 +1812,7 @@
     "receipt": "WEATHER_MERGE_RECEIPT.json"
   },
   "extended_drainage_state_and_surfacewater": {
-    "status": "BOUNDED_QUALIFIED_CANONICAL_PENDING",
+    "status": "ACTUAL_CANONICAL_BOUNDED_ADMITTED",
     "runtime": "ec4cb79a974f86bc248aa10eb037a588a1b2f249",
     "qualification": "EXTENDED_DRAINAGE_QUALIFICATION.json",
     "source_admission": "EXTENDED_DRAINAGE_SOURCE_ADMISSION.json",
@@ -1829,6 +1829,8 @@
     ],
     "full_family_closed": "UNKNOWN",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
-    "RC3_changed": false
+    "RC3_changed": false,
+    "canonical": "66d6297b1ac0462c9be17f8df3db10c1773d1595",
+    "receipt": "EXTENDED_DRAINAGE_MERGE_RECEIPT.json"
   }
 }
