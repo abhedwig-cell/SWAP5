@@ -104,6 +104,19 @@ def render_macro(original,project,selected):
     return source
 
 
+def render_solute(original):
+    source=regular.render_solute(original).decode('cp1252')
+    anchor='   use hybrid_age_output_state,only:output_assert_age_clock';assert source.count(anchor)==1
+    source=source.replace(anchor,anchor+',pending_header',1)
+    anchor='      call output_assert_age_clock(saved_output_day,saved_output_period)';assert source.count(anchor)==1
+    check="""
+      if(transfer(age_saved_cumulative_reset,0)/=pending_header(13).or. &
+         transfer(age_saved_interval_reset,0)/=pending_header(14)) &
+         error stop 'Inconsistent original AGE private reset flags and calendar'
+"""
+    return source.replace(anchor,anchor+check,1).encode('cp1252')
+
+
 def apply_build(output,donor_build,project,patched):
     selected=active_selection(project)
     if selected is None:return prior.apply_build(output,donor_build,project,patched)
@@ -116,7 +129,7 @@ def apply_build(output,donor_build,project,patched):
     original=(donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252');watstor=(donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')
     (output/'integral.f90').write_text(render_integral(original,watstor,selected),encoding='cp1252')
     (output/'age_output_calendar_probe.f90').write_text(ordinary.PROBE[:ordinary.PROBE.index('subroutine hybrid_age_output_day_emit()')]+regular.PROBE,encoding='cp1252')
-    path=output/'solute.f90';path.write_bytes(regular.render_solute(path.read_bytes()))
+    path=output/'solute.f90';path.write_bytes(render_solute(path.read_bytes()))
     path=output/'swap.f90';text=regular.render_swap(path.read_text(encoding='cp1252'));anchor='use hybrid_day_window, only:';assert text.count(anchor)==1
     text=text.replace(anchor,'use MOD_integral,only:hybrid_output_crop_apply\n'+anchor,1)
     anchor='         call hybrid_apply_wofost(fl_cropemergence)';assert text.count(anchor)==1;path.write_text(text.replace(anchor,anchor+'\n         call hybrid_output_crop_apply()',1),encoding='cp1252')

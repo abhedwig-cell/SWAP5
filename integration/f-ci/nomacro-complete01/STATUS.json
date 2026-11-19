@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-perstep01",
-  "last_commit": "c2a6f3ef2675826018b4b1f6d69002d39aa4f5dd",
-  "status": "AGE_PERSTEP_LOCAL_SHORT_NATIVE_COLD_PASS_LIMIT_AND_INVALID_STATE_IN_PROGRESS",
+  "last_commit": "c05c69132cb48a741d7af7ca9a6e98d105c5e413",
+  "status": "AGE_PERSTEP_ACTUAL_PRIVATE_FLAG_GAP_FIXED_FRESH_QUALIFICATION_REQUIRED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Poll existing two-day1440 O0/O2 limit and actual native/private controls first. Diagnose any counter/AGE-private/source-delivery failure without tolerance change before full or portable runs.",
+  "next_action": "Rebuild fresh ordinary/history O0/O2 short/native/limit pilots on persisted new reset-flag guard before full/portable qualification. Keep all oldsource v1/v2/v3 and limits/control artifacts unchanged.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -6411,6 +6411,633 @@
       },
       "fresh_pass_claim": false,
       "new_generated_integral": "Actual existing perstep_output_domain.render_integral, existing Darcy candidate-bottom routine and complete original AGE/calendar/private/hysteresis composition receive fresh real O0/O2 trajectories and cold native processes; no new physical equations."
-    }
+    },
+    "prior_source_limits_before_guard": {
+      "ordinary-O0": {
+        "status": "ACTUAL_AGE_PERSTEP_LIMIT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "1fbda1227a2dce9286f02bb7364c869ff481233a",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O0-v1",
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "nprintday": 1440,
+          "source": "point",
+          "optimization": "O0",
+          "phase": "limit",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O0-v1\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O0-v1\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APA001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 0,
+          "swcsv": 3,
+          "nprintday": 1440,
+          "swmonth": 0,
+          "swodat": 1,
+          "swres": 1,
+          "requested_period": 0,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "d03bbab7fa70a2913386ee7c753c2176888693a698f4d5a9253786d502eccb05",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": null,
+          "native_domain_bytes": 0,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 17.30346169974655,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.28049914421835e-13,
+            "max_kernel_cm": 1.2789769243681803e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 1.3068795576089468e-13
+          },
+          "model_seconds": 1.0369136999361217,
+          "build_sha256": "cf450bd493a20731f19db7dab6b7041a189bf916d7d3423452749bfd0f17f5ca"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.5392346996814013
+          }
+        ],
+        "actual_fixed_input_cm": 2.400000000000013,
+        "maximum_age_tolerance_fraction": 0.00043439610207152536
+      },
+      "ordinary-O2": {
+        "status": "ACTUAL_AGE_PERSTEP_LIMIT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "1fbda1227a2dce9286f02bb7364c869ff481233a",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O2-v1",
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "nprintday": 1440,
+          "source": "point",
+          "optimization": "O2",
+          "phase": "limit",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O2-v1\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O2-v1\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APA001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 0,
+          "swcsv": 3,
+          "nprintday": 1440,
+          "swmonth": 0,
+          "swodat": 1,
+          "swres": 1,
+          "requested_period": 0,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "d03bbab7fa70a2913386ee7c753c2176888693a698f4d5a9253786d502eccb05",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": null,
+          "native_domain_bytes": 0,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 31.55460500018671,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.28049914421835e-13,
+            "max_kernel_cm": 1.2789769243681803e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 1.3068795576089468e-13
+          },
+          "model_seconds": 0.6888736998662353,
+          "build_sha256": "c79c0d364f812b416254b368eb9fcd1ccc48f06d4e6df485ef6129750a165b0c"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.40161960013210773
+          }
+        ],
+        "actual_fixed_input_cm": 2.400000000000013,
+        "maximum_age_tolerance_fraction": 0.00043439610207152536
+      },
+      "history-O0": {
+        "status": "ACTUAL_AGE_PERSTEP_LIMIT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "1fbda1227a2dce9286f02bb7364c869ff481233a",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O0-v1",
+          "mode": "periodic",
+          "hysteresis": 2,
+          "format": 2,
+          "reset": 0,
+          "nprintday": 1440,
+          "source": "interval",
+          "optimization": "O0",
+          "phase": "limit",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O0-v1\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O0-v1\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APH001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 2,
+          "swcsv": 2,
+          "nprintday": 1440,
+          "swmonth": 0,
+          "swodat": 0,
+          "swres": 0,
+          "requested_period": 5,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "d03bbab7fa70a2913386ee7c753c2176888693a698f4d5a9253786d502eccb05",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+          "native_domain_bytes": 40,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": null
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 18.180268300231546,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 6.587742504282623e-14,
+            "max_kernel_cm": 6.572520305780927e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 8.40585887266381e-14
+          },
+          "model_seconds": 1.0059588002040982,
+          "build_sha256": "4ff3eef8edb60318781fcac09d26379481c0eeb539915f99d653325c6c07dbf7"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.48669280018657446
+          }
+        ],
+        "actual_fixed_input_cm": 2.4000000000000328,
+        "maximum_age_tolerance_fraction": 0.000365685577265209
+      },
+      "history-O2": {
+        "status": "ACTUAL_AGE_PERSTEP_LIMIT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "1fbda1227a2dce9286f02bb7364c869ff481233a",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O2-v1",
+          "mode": "periodic",
+          "hysteresis": 2,
+          "format": 2,
+          "reset": 0,
+          "nprintday": 1440,
+          "source": "interval",
+          "optimization": "O2",
+          "phase": "limit",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O2-v1\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O2-v1\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APH001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 2,
+          "swcsv": 2,
+          "nprintday": 1440,
+          "swmonth": 0,
+          "swodat": 0,
+          "swres": 0,
+          "requested_period": 5,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "d03bbab7fa70a2913386ee7c753c2176888693a698f4d5a9253786d502eccb05",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+          "native_domain_bytes": 40,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": null
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 31.990540899802,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 6.587742504282623e-14,
+            "max_kernel_cm": 6.572520305780927e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 8.40585887266381e-14
+          },
+          "model_seconds": 0.7579774996265769,
+          "build_sha256": "b27d11cce9d1de4a109ffef4159792444f5067e1d5c77a8afeea9e71c56da4ee"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.4164678999222815
+          }
+        ],
+        "actual_fixed_input_cm": 2.4000000000000328,
+        "maximum_age_tolerance_fraction": 0.000365685577265209
+      }
+    },
+    "actual_private_flag_validation_gap": {
+      "ordinary": {
+        "status": "FAILED",
+        "build_sha256": "274e8cd5a8eb90beaa0dfa6c314171e51ba689af3c58fd40ce1a3d71dc5a2c2b",
+        "native_refusals": [],
+        "policy_refusals": [],
+        "error": "AssertionError('Corrupt original ordinary native accepted: age-cumulative-reset')"
+      },
+      "history": {
+        "status": "FAILED",
+        "build_sha256": "80ad895646731c9a73f65d173d2908b324d91e08095d4ce22b4e92b97a59db67",
+        "native_refusals": [],
+        "policy_refusals": [],
+        "error": "AssertionError('Corrupt original ordinary native accepted: age-cumulative-reset')"
+      }
+    },
+    "private_flag_correction": "Actual original new-family native worker accepted a toggled private cumulative-reset flag while the duplicated calendar retained its original flag. Fresh adapter validates the actual private logical representations exactly against pending calendar13/14 before restore. Old frozen providers/source bodies unchanged. No proven physical trajectory drift or broader legacy-defect claim; original accepted bad-loader worker evidence retained."
   }
 }
