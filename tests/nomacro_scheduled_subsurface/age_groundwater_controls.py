@@ -108,8 +108,10 @@ def native(build,reference,project,full,out):
                 m.h.DailyHost(stack,m.h.executable(build,'day_donor'),m.h.executable(build,'day_kernel'),case,target,[m.h.ColumnStart('original',4,origin,receipt)],runtime=True,checkpoint_enabled=True,binding=meta['binding'],model=project.model,project=project)
         except (ValueError,RuntimeError) as error:
             diagnostic='\n'.join(p.read_text(encoding='utf8',errors='replace') for p in target.rglob('donor.stderr'))
-            assert 'ERROR STOP' in diagnostic and not list(target.glob('accepted-*.zip')),(attack,diagnostic,str(error))
-            checks.append(dict(attack=attack,status='REFUSED',diagnostic=diagnostic,error=str(error)))
+            before_worker=str(error) in ('Foreign original AGE groundwater native domain','Incomplete original AGE groundwater hydraulic state','Invalid original AGE groundwater hydraulic state','Actual AGE groundwater hydraulic state differs from receipt')
+            assert ('ERROR STOP' in diagnostic or before_worker) and not list(target.glob('accepted-*.zip')),(attack,diagnostic,str(error))
+            if before_worker:assert not list(target.rglob('donor.stdout'))
+            checks.append(dict(attack=attack,status='REFUSED',diagnostic=diagnostic,error=str(error),refusal_owner='actual receipt before worker' if before_worker else 'actual compiled native loader'))
         else:raise AssertionError('Corrupt original ordinary native accepted: '+attack)
         assert m.sha(source)==digest
     return checks

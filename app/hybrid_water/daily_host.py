@@ -1291,6 +1291,11 @@ class DailyHost:
                 raise ValueError("Column start day must match its origin")
             directory = output / name
             prepare_column(case, directory, start, checkpoint_enabled, runtime, project)
+            if project.age and start.origin is not None:
+                from age_groundwater_output import active_selection as age_groundwater,validate_candidate as validate_age_groundwater
+                if age_groundwater(project) is not None:
+                    if start.receipt is None:raise ValueError('Original AGE groundwater restore requires accepted receipt')
+                    validate_age_groundwater((directory/'macro-origin.bin').read_bytes(),start.receipt,project)
             worker, transcript = start_process(stack, [donor, "./swap.swp"], directory, "donor")
             _, initial = receive(worker, transcript, {"HYBRID_READY"})
             if list(map(float, initial["HYBRID_READY"])) != [project.start_clock + start.day]:

@@ -606,6 +606,8 @@ class CoupledDailyColumn:
                 if aux[:8]!=auxiliary_magic(self.project):raise ValueError('Foreign original age native codec')
                 validate_age(raw['age_state_cm_day'],self.project)
                 validate_effluent(raw['age_effluent'])
+                from age_groundwater_output import active_selection as age_groundwater,validate_candidate as validate_age_groundwater
+                if age_groundwater(self.project) is not None:validate_age_groundwater(aux,raw,self.project)
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')
             host.close()
