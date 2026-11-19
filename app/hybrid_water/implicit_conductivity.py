@@ -17,10 +17,12 @@ def selection(text, selectors, boundary):
         raise ValueError('Original implicit conductivity requires bounded analytical daily no-snow/no-frost/no-aquifer inputs')
     active = '\n'.join(line.split('!', 1)[0].strip() for line in text.splitlines()
                        if line.strip() and not line.lstrip().startswith('*'))
-    if re.search(r'(?mi)^SWAP_SOILS_DB\s*=', active):
+    if re.search(r'(?i)\bSWAP_SOILS_DB\b', active):
         raise ValueError('Implicit conductivity soil database requires separate parameter-domain qualification')
     models = re.findall(r'(?mi)^IHWCKMODEL\s*=\s*(.*)$', active)
-    if len(models) > 1 or models and not re.fullmatch(r'1(?:\s+1)*\s*', models[0]):
+    remainder = re.sub(r'(?mi)^IHWCKMODEL\s*=\s*[^\r\n]*$', '', active)
+    if (re.search(r'(?i)\bIHWCKMODEL\b', remainder) or len(models) > 1
+            or models and not re.fullmatch(r'1(?:[ \t]+1)*[ \t]*', models[0])):
         raise ValueError('Original implicit conductivity requires default Mualem model1')
     # Read the actual original named parameter table. Original TTUTIL remains
     # authoritative for numeric ranges; this guard excludes its unsupported
