@@ -29,7 +29,8 @@ TYPED = 'tests/saltfarm_newton/typed_admission07.py'
 COMPOSED = 'tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py'
 SELF = 'tests/nomacro_scheduled_subsurface/weather_surface_verify.py'
 FORENSIC_PATH = 'tests/nomacro_scheduled_subsurface/weather_surface_forensics.py'
-WEATHER_CHECKOUT = '            /integration/f-ci/nomacro-complete01/WEATHER_*\n'
+WEATHER_CHECKOUT = ('            /integration/f-ci/nomacro-complete01/WEATHER_*\n'
+                    '            /integration/nomacro-coverage01/BLOCK_H_LAST_TEMPORAL_RAW.tar.xz\n')
 HOOK = """    import importlib.util
     spec=importlib.util.spec_from_file_location('weather_terminal_admission',ROOT/'tests/nomacro_scheduled_subsurface/weather_surface_verify.py')
     owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
@@ -123,7 +124,7 @@ def source(q):
     for path, info in tree(SEALED, PROOF).items():
         if Path(path).name.startswith('WEATHER_'):require(current.get(path) == info, 'Sealed weather evidence rewritten: '+path)
     for path in mutable:
-        meta = json.loads((ROOT/path).read_text(encoding='utf8'))
+        meta = json.loads(blob('HEAD',path))
         require(meta['functional_completeness'] == 'PARTIAL' and meta['scientific_equivalence'] == 'NOT_QUALIFIED'
                 and meta['release_readiness'] == 'RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY', 'Historical closure or fixed RC3 scope inflated')
     for name in ('portable_main', 'portable_uniform'):
