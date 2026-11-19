@@ -42,6 +42,7 @@ def main():
             ('implicit_conductivity_retry','Foreign explicit original implicit-conductivity retry policy'),
             ('implicit_conductivity_jacobian','Foreign exact original implicit-conductivity boundary Jacobian policy'),
             ('implicit_root_finalization','Foreign original implicit microscopic root finalization policy'),
+            ('implicit_pond_availability','Foreign original implicit pond availability policy'),
             ('implicit_pond_event','Foreign original implicit pond event ownership policy')]:
             policy=meta['identity'].get(owner)
             for field in [None,*(policy or {})]:
@@ -49,8 +50,10 @@ def main():
                 if field is None:bad['identity'][owner]='foreign'
                 else:bad['identity'][owner][field]='foreign'
                 (target/'BUILD.json').write_text(json.dumps(bad),encoding='utf8')
-                if owner=='implicit_root_finalization':
+                if owner in ('implicit_root_finalization','implicit_pond_availability'):
                     shutil.copyfile(build/'implicit_pond_event_state.f90',target/'implicit_pond_event_state.f90')
+                if owner=='implicit_pond_availability':
+                    shutil.copyfile(build/'RWU_micro.f90',target/'RWU_micro.f90')
                 try:m.validate_bundle(target,a.reference_work,project)
                 except ValueError as error:assert expected in str(error),(owner,field,str(error))
                 else:raise AssertionError('Foreign numerical owner accepted: '+owner+' '+str(field))
@@ -70,6 +73,14 @@ def main():
         except ValueError as error:assert 'Foreign actual original implicit microscopic root provider' in str(error)
         else:raise AssertionError('Foreign compiled microscopic root provider accepted')
         q['numerical_owner_refusals'].append(dict(owner='implicit_root_finalization',field='actual_provider_bytes',status='REFUSED_BEFORE_WORKER'));save()
+        target=a.output/'owner-actual-availability-provider';target.mkdir()
+        (target/'BUILD.json').write_bytes((build/'BUILD.json').read_bytes())
+        for name in ('implicit_pond_event_state.f90','RWU_micro.f90'):shutil.copyfile(build/name,target/name)
+        (target/'implicit_pond_availability.f90').write_bytes((build/'implicit_pond_availability.f90').read_bytes()+b'\n! foreign availability source\n')
+        try:m.validate_bundle(target,a.reference_work,project)
+        except ValueError as error:assert 'Foreign actual original implicit pond availability provider' in str(error)
+        else:raise AssertionError('Foreign compiled pond availability provider accepted')
+        q['numerical_owner_refusals'].append(dict(owner='implicit_pond_availability',field='actual_provider_bytes',status='REFUSED_BEFORE_WORKER'));save()
         for label,changes,extra in [
             ('snow',{'SWSNOW':1},''),('frost',{'SWFROST':1},''),('aquifer',{'SWBR':1},''),
             ('tables',{'SWSOPHY':1},''),('heat',{'SWHEA':0},''),('analytic-heat',{'SWCALT':1},''),
