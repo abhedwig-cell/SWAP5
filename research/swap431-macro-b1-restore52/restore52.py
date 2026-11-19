@@ -7,7 +7,7 @@ body=(P/'native09.py').read_text();body=body[body.index('def build(opt):'):body.
 def run(opt,mode,label=''):
  profile=mode+('_'+label if label else '')
  assert mode in ['TRIAL','DIRECT'] and label=='D2'
- c=W/(opt+'-'+profile+'-FINAL-RENDER');c.mkdir(parents=True,exist_ok=True);assert not (c/'outcome.txt').exists()
+ c=W/(opt+'-'+profile+'-DIRTY-RENDER');c.mkdir(parents=True,exist_ok=True);assert not (c/'outcome.txt').exists()
  for x in json.loads((P/'CASE_IDENTITY.json').read_text()):
   src=Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/x['path'];assert m.sha(src)==x['sha256'];(c/x['path']).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,c/x['path'])
  cal=R.parent/'swap431-macro-b1-sense23/data'/opt/'RESUME_IEEE/trial23_base.bin'
