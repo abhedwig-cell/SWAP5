@@ -41,6 +41,7 @@ def main():
             ('implicit_groundwater_trial','Foreign original implicit groundwater daily trial receipt policy'),
             ('implicit_conductivity_retry','Foreign explicit original implicit-conductivity retry policy'),
             ('implicit_conductivity_jacobian','Foreign exact original implicit-conductivity boundary Jacobian policy'),
+            ('implicit_root_finalization','Foreign original implicit microscopic root finalization policy'),
             ('implicit_pond_event','Foreign original implicit pond event ownership policy')]:
             policy=meta['identity'].get(owner)
             for field in [None,*(policy or {})]:
