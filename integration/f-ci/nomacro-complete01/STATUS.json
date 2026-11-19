@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-groundwater-water-calendar01",
-  "last_commit": "83cad6fb0",
-  "status": "COMPOSED_GROUNDWATER_WATER_SOURCE_QUALIFIED_CANONICAL_PENDING",
+  "branch": "codex/nomacro-explicit-szym-weather01",
+  "last_commit": "ef5010a83e83f879254af534bf0dd9cfcdbf3a85",
+  "status": "GROUNDWATER_WATER_CANONICALLY_ADMITTED_HISTORICAL_WEATHER_INVESTIGATION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Push reconciled source to existing PR1760, merge against actual b287 with expected qualified head, verify ordered parents and full qualified tree, run actual clean detached registered primary owner. Then immediately implement original explicit SWKMEAN7.",
+  "next_action": "Run persisted weather_surface_runtime.py at O0 with exact sealed pulsed/hourly H inputs through367 and actual own cold363/364. Investigate current residual only if reproduced; then affected O0/O2 full/native qualification. Explicit Szym7 depends on unavailable profile-specific scientific table; source assessment retained, no invented physics.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -30356,7 +30356,9 @@
         "preserved_literal": true,
         "fresh_models": 0
       }
-    }
+    },
+    "canonical_admission_receipt": "GROUNDWATER_WATER_MERGE_RECEIPT.json",
+    "actual_canonical": "ef5010a83e83f879254af534bf0dd9cfcdbf3a85"
   },
   "storage_policy": {
     "task": "01a1e8b4-228b-75f1-8ac4-b07ca1e15713",
@@ -30371,5 +30373,22 @@
     "active_resources": "One source checkout; named current clean-canonical and actual committed negative-control dependencies registered/protected. Do not finish/release this chat until the ongoing user goal is complete.",
     "cleanup_preview": "No eligible released resources; all registered candidates retained active. About167.9GiB free.",
     "new_intermediates": "Use allocate under work_directory; scratch active-python-scratch. Keep unique input/raw evidence protected, never register it disposable. Set PYTHONDONTWRITEBYTECODE=1 and TEMP/TMP to scratch for probes."
+  },
+  "hydraulic_weather_next_batch": {
+    "baseline": "ef5010a83e83f879254af534bf0dd9cfcdbf3a85",
+    "strategy": "C/B for Szym original table composition; A/B if actual weather numerical correction is required",
+    "mean7_assessment": "EXPLICIT_SZYMKIEWICZ_SOURCE_ASSESSMENT.json",
+    "weather_controller": "tests/nomacro_scheduled_subsurface/weather_surface_runtime.py",
+    "invariants": [
+      3,
+      4,
+      7,
+      13,
+      21,
+      23
+    ],
+    "production_changes": false,
+    "test_status": "PERSISTED_NOT_YET_EXECUTED",
+    "qualification_status": "NOT_QUALIFIED"
   }
 }
