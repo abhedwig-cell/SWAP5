@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-implicit-conductivity01",
-  "last_commit": "914a575e306fe24eac9f65f701c937e6e39bd8c4",
+  "last_commit": "bf007df0cfb33d856d55df71c9544724c18bfc4c",
   "status": "IMPLICIT_STABLE_CANDIDATE_O0_O2_HARD_WATER_FULL_NATIVE_PASS_COHORT_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "If hard water still refuses, inspect exact last state before another numerical correction. Otherwise production freeze: complete selected qualification and add interception component to portable draft; do not rerun unchanged original derivative/mean/root/event components merely for branch advances.",
-  "recovery_point": "codex/nomacro-implicit-conductivity01 914a575e306fe24eac9f65f701c937e6e39bd8c4 plus this stable-candidate persistence. Whole PARTIAL/science NOT_QUALIFIED/fixedRC3 unchanged; exact canonical cce2561e. No implicit carrier/seal/admission.",
+  "recovery_point": "codex/nomacro-implicit-conductivity01 bf007df0cfb33d856d55df71c9544724c18bfc4c plus this metadata commit. Four actual current-source campaigns recorded with live session IDs; check first, never duplicate. App production frozen at f7f23dbe531b579991d3a77fd2b67cb05a08f67a. Whole PARTIAL/science NOT_QUALIFIED/fixedRC3 unchanged.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -28020,7 +28020,53 @@
       "water_full_actual_status": "FAILED",
       "qualified_claim": "Positive head1096/native PASS at actual source829721. Water/CDE prescribed groundwater remain under targeted verification. All old failed30/5 cases remain raw observations."
     },
-    "pending_actual_jobs": [],
+    "pending_actual_jobs": [
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-windows-O0-v2",
+        "session": 28449,
+        "status": "RUNNING",
+        "completed_short_contexts": [
+          "water-head",
+          "water-air-history",
+          "water-groundwater",
+          "water-groundwater-history",
+          "cde-head"
+        ],
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-windows-O2-v2",
+        "session": 92217,
+        "status": "RUNNING",
+        "completed_short_contexts": [
+          "water-head",
+          "water-air-history",
+          "water-groundwater"
+        ],
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v3",
+        "session": 58743,
+        "status": "RUNNING",
+        "completed_short_contexts": [
+          "head",
+          "air-history",
+          "groundwater-history"
+        ],
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v3",
+        "session": 99581,
+        "status": "RUNNING",
+        "completed_short_contexts": [
+          "head",
+          "air-history"
+        ],
+        "error": null
+      }
+    ],
     "actual_pond_event_components": {
       "O0": {
         "status": "REAL_POND_EVENT_TWO_ACTUAL_THREE_INACTIVE_FIVE_REFUSALS_PASS",
@@ -29042,6 +29088,12 @@
         "continuity_test_threshold": 1e-06,
         "threshold_role": "Original micro inner-solver numerical response criterion, not a mass tolerance. Actual integrated water/CDE guards remain1e-10.",
         "failed_component_v1": "Retained O0/O2 driver initialization error: attempted node-index34 into layer-index25 KSATFIT. Fixed driver uses actual node-first-in-layer values, production unchanged."
+      },
+      "portable_crop_bytes": {
+        "source_commit": "bf007df0c",
+        "ownership": "Actual original crop raw bytes retained in fixture base64 and checked against original raw SHA before real reader. Git .crp normalization affects readable copy only. Prior reports untouched.",
+        "O0": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-root-finalization-component-O0-v3\\RESULT.json",
+        "O2": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-root-finalization-component-O2-v3\\RESULT.json"
       }
     },
     "surface_remaining": {
