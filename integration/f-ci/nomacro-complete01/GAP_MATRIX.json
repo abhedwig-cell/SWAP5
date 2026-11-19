@@ -1724,6 +1724,18 @@
         "user_interest": "Excluded",
         "remaining_effort": "None",
         "batch": "excluded"
+      },
+      {
+        "id": "implicit-weighted-history-wetdry",
+        "function": "SWKIMPL1 SWKMEAN6 SWHYST2 head5 full wet/dry history",
+        "gap_classification": "NUMERICAL_FAILURE",
+        "historical_availability": "Original reader permits means6/history2; exact complete strict-equivalent original period UNKNOWN.",
+        "current_availability": "Actual short35/native PASS O0/O2; full180s caps at day164 after163 accepted days.",
+        "implementation_completeness": "Partial numerical domain, not admitted full combination.",
+        "evidence_status": "Actual source5bdf and read-only numerical clock diagnostic retained.",
+        "user_interest": "Specialized full weighted harmonic/hysteresis interaction; independent default water/CDE routes not blocked by its incomplete period.",
+        "remaining_effort": "UNKNOWN pending original nonlinear wet/dry transition investigation",
+        "batch": "implicit-numerical-followup"
       }
     ],
     "next_batches": [

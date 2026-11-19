@@ -29339,12 +29339,14 @@
     },
     "actual_current_positive_chemistry": {
       "O0": {
-        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v3\\RESULT.json",
-        "status": "THREE_POSITIVE_CHEMICAL_SHORT_TWO_FULL_IMPLICIT_CONDUCTIVITY_NATIVE_PASS"
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v7\\RESULT.json",
+        "status": "THREE_POSITIVE_CHEMICAL_SHORT_TWO_FULL_IMPLICIT_CONDUCTIVITY_NATIVE_PASS",
+        "production_source": "5bdfcb347"
       },
       "O2": {
-        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v3\\RESULT.json",
-        "status": "THREE_POSITIVE_CHEMICAL_SHORT_TWO_FULL_IMPLICIT_CONDUCTIVITY_NATIVE_PASS"
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v7\\RESULT.json",
+        "status": "THREE_POSITIVE_CHEMICAL_SHORT_TWO_FULL_IMPLICIT_CONDUCTIVITY_NATIVE_PASS",
+        "production_source": "5bdfcb347"
       }
     },
     "implicit_age_dryout": {
@@ -29809,6 +29811,36 @@
       ],
       "model_delta": "Only implicit conductivity policy and implicit root composition helper; frozen physical provider sources and all SWKIMPL0 routes unchanged",
       "input_selection": "Explicit three scheduled crops TOL_2=MYTOLX=1e-10 TOLCONV=1e-9; MAXIT100/MAXBACKTR10; water/CDE guards1e-10"
+    },
+    "weighted_harmonic_history_full": {
+      "status": "NUMERICAL_FAILURE_CENSORED_NOT_QUALIFIED",
+      "source": "5bdfcb347",
+      "actual_reports": {
+        "O0": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-weighted-harmonic-water-history-O0-v2\\RESULT.json",
+        "O2": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-weighted-harmonic-water-history-O2-v2\\RESULT.json"
+      },
+      "short_context": "Both actual35day/native pass; inherit these exact current-source short reports without repeating unchanged inputs.",
+      "full_context": "Both180s caps after163 accepted days; no full PASS.",
+      "actual_diagnostic": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-finite-diagnostic-weighted-water-v1\\RESULT.json",
+      "actual_diagnostic_source": "afe2025e99cb69e9af539e78448f6902335216d3",
+      "observed": "Advancing finite clocks, about6.666666666666666e-7day accepted steps; repeated actual original Newton exhaustion near wet/dry top. No larger wall cap selected. Cause requires further numerical/reference investigation.",
+      "admission_limit": "Bounded representative main water/CDE and active chemistry may proceed independently; no all-configurations/full weighted-history claim. Separate actual AGE scientific state blocker remains."
+    },
+    "actual_current_public": {
+      "O0": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-cde-public-windows-O0-v2\\RESULT.json",
+        "status": "SIX_PUBLIC_IMPLICIT_WATER_CDE_COMPLETE_NATIVE_RESTART_CONTEXTS_PASS"
+      },
+      "O2": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-cde-public-windows-O2-v2\\RESULT.json",
+        "status": "SIX_PUBLIC_IMPLICIT_WATER_CDE_COMPLETE_NATIVE_RESTART_CONTEXTS_PASS"
+      }
+    },
+    "actual_selector_zero_inheritance": {
+      "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\IMPLICIT_CONDUCTIVITY_O0_LITERAL_DELEGATION_INHERITANCE.json",
+      "status": "SEVENTEEN_ACTUAL_PRIOR_SELECTOR_ZERO_DELEGATIONS_INHERIT_NO_MODEL_RUNS",
+      "fresh_physical_pass_claim": false,
+      "platform_reason": "Pure original selector0 dispatch/source identity, no changed generated Fortran/native/physical path; actual immutable prior inputs and hashes checked. Existing Windows/Ubuntu predecessor qualification is inherited."
     }
   },
   "accelerate02": {
