@@ -183,7 +183,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     chemical_source=chemical_fixed or chemical_scheduled
     from conserved_aquifer_solute import enabled as aquifer_enabled, correction as aquifer_correction
     aquifer_source=aquifer_enabled(project)
-    import cde_clock_output as age_calendar_owner
+    import age_perstep_output as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
         import original_output_aquifer as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
@@ -935,7 +935,7 @@ end module plant_interface""")
     }
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
-    from cde_clock_output import metadata as original_output_metadata
+    from age_perstep_output import metadata as original_output_metadata
     selected_output=original_output_metadata(project)
     if selected_output is not None:build_identity['original_output']=selected_output
     if project.input_directory:
@@ -957,7 +957,7 @@ end module plant_interface""")
     if project.age:
         from conserved_original_age import metadata as age_metadata
         build_identity['conserved_original_age']=age_metadata()
-        from age_direct_soil_source import age_identity
+        from age_perstep_output import source_age_identity as age_identity
         build_identity['conserved_original_age']=age_identity(build_identity['conserved_original_age'],project)
         from age_direct_soil_source import fixed_metadata
         fixed_age=fixed_metadata(project)

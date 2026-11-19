@@ -249,6 +249,10 @@ def preserved_period(key,item,data):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('age_perstep_admission',ROOT/'tests/nomacro_scheduled_subsurface/age_perstep_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty CDE admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'CDE production differs from qualified source')
