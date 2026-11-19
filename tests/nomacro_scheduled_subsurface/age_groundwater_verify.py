@@ -286,6 +286,10 @@ def user_outputs(z,prefix,report,data,build,temporary):
     return actual
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('saltfarm_direct_admission',ROOT/'tests/saltfarm_newton/direct_admission.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty AGE admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'AGE production differs from qualified source')

@@ -1,0 +1,38 @@
+{
+  "status": "BOUNDED_DIRECT_DAY_KERNEL_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "base": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
+  "runtime": "e7e24ab31f8a70b2bab68529ab085d2164d903d9",
+  "native_producer": "8ba61729a79a365b41c00140dfb296f9bb821b24",
+  "pr": 1758,
+  "model": "HYBRID_SALTFARM_WATER",
+  "protocol": "swap5-direct-day-kernel-1",
+  "scope": "registered original macro-free SaltFarm; external CoupledDailyColumn keeps pipe transport",
+  "water_guard_cm": 1e-10,
+  "solute_guard_mg_cm2": 1e-10,
+  "full_periods": 4,
+  "cold_windows": 20,
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "RC3_changed": false,
+  "predecessor": "tests/nomacro_scheduled_subsurface/age_groundwater_verify.py",
+  "predecessor_receipt": "integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_MERGE_RECEIPT.json",
+  "owner": "tests/saltfarm_newton/direct_admission.py",
+  "test_selection": {
+    "reason": "Register the bounded transport successor at the current F-CI owner without rewriting any historical producer/validator body; all app/src unchanged from qualified e7e24ab31",
+    "local": [
+      "strict source/projection guards",
+      "sealed actual four full periods and twenty cold workers",
+      "negative admission controls"
+    ],
+    "inherited": [
+      "literal generated original sources",
+      "original431 full comparison",
+      "unchanged nonselected routes and existing raw archives"
+    ],
+    "not_selected": [
+      "new physical models",
+      "new tolerance experiments",
+      "repeated full model runs at unchanged runtime dependency hashes"
+    ],
+    "expected_seconds": 90
+  }
+}

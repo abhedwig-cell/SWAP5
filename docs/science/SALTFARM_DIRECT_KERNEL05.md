@@ -130,3 +130,16 @@ Functional project coverage stays unchanged; the implementation removes a measur
 architectural cost while retaining qualified complete trajectories and restart
 contracts. Next is review/admission of this block through canonical's PR route,
 not another tolerance or convergence experiment. No merge is claimed here.
+
+## Canonical admission owner
+
+`tests/saltfarm_newton/direct_admission.py` is the bounded current owner. It
+checks the exact qualified production delta, literal inactive-hook projection
+for all other routes, actual sealed raw SaltFarm evidence and negative controls.
+The prior AGE owner forwards to it without changing its historical validator
+body. The prior source/schema is validated in a literal canonical snapshot; its
+already executed canonical audit and unchanged Git objects are inherited, never
+relabelled as fresh current AGE runs. Historical qualification records and raw
+archives are untouched. The registered F-CI entry remains the existing
+`tests/hupsel51/verify_successor.py` chain. The merge receipt records actual
+parents, complete tree and a detached run of that registered entry.
