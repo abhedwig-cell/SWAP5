@@ -1,0 +1,11 @@
+--- CAUSE66/head_observer66.f90
++++ FOLLOW67/head_follow67.f90
+@@ -989,7 +989,7 @@
+  before=deepgw;endpoint=t1900+dt
+  call get_environment_variable('CAUSE66_ENDPOINT',mode,status=st)
+  if(st/=0) mode='NONE'
+- if(abs(t1900-35797.290431125148d0)>1d-10.or.swbotb/=3.or.swbotb3impl/=1.or.sw3/=2.or.sw4/=0) &
++ if((abs(t1900-35797.290431125148d0)>1d-10.and.abs(t1900-35797.290441125151d0)>1d-10).or.swbotb/=3.or.swbotb3impl/=1.or.sw3/=2.or.sw4/=0) &
+     error stop 'CAUSE66 outside preregistered boundary context'
+  if(stage==0) then
+   select case(trim(mode))

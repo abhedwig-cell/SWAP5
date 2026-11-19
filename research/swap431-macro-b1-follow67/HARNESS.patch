@@ -1,0 +1,61 @@
+--- REJECT64/soilwater_native.f90
++++ FOLLOW67/soilwater_follow67.f90
+@@ -16,6 +16,8 @@
+    real(8),save::pre_theta(macp),pre_domain(madm),pre_pond,pre_canopy
+    integer,save::inventory_unit
+ 
++   logical,save::cut_done67=.false.
++   character(24),save::run_mode67
+    contains
+ ! File VersionID:
+ !   $Id: soilwater.f90 369 2018-01-22 13:18:25Z heine003 $
+@@ -237,7 +239,7 @@
+ subroutine prefix14_start()
+  use DIAG19,only:start,qualification_active,apply37,repair43
+  use CONTRACT06_CONTROL,only:use_patch
+- use variables,only:dt,dtmin,fldtmin
++ use variables,only:dt,dtmin,fldtmin,t1900
+  implicit none
+  character(24)::mode55
+  character(80)::control64
+@@ -249,12 +251,12 @@
+   follow55=.true.;resume55=.true.;stage55=1
+   apply37=.true.;repair43=.true.;qualification_active=.true.
+  end if
+- original_dt64=dt
+- call get_environment_variable('REJECT64_DT',control64,status=stat64)
+- if(stat64/=0.or.len_trim(control64)==0) error stop 'REJECT64 requires preregistered proposal'
+- read(control64,*) proposal64
+- if(proposal64<dtmin.or.proposal64>2.0951312035156963d-5) error stop 'REJECT64 proposal outside original bounds'
+- dt=proposal64;fldtmin=(dt<=dtmin)
++ call get_environment_variable('FOLLOW67_MODE',run_mode67)
++ if(trim(run_mode67)/='CONT'.and.trim(run_mode67)/='RESTART') error stop 'FOLLOW67 missing mode'
++ if(trim(run_mode67)=='CONT'.and.abs(t1900-35797.290431125148d0)>1d-10) error stop 'FOLLOW67 CONT origin'
++ if(trim(run_mode67)=='RESTART'.and.abs(t1900-35797.290441125151d0)>1d-10) error stop 'FOLLOW67 RESTART origin'
++ original_dt64=dt;proposal64=dt
++ if(dt<=0d0) error stop 'FOLLOW67 invalid saved proposal'
+  open(newunit=u64,file='input_control64.txt',status='replace')
+  write(u64,*) original_dt64,dt,dtmin,merge(1,0,fldtmin)
+  close(u64)
+@@ -441,9 +443,18 @@
+    return
+   else
+    call inventory_dump('follow_committed');call native09_dump('context_follow_committed');call ledger12_dump('ledger_follow_committed')
+-   call write55('follow')
+-   if(resume55) call finish33('NATIVE55_RESTART_ONE_FULL_STEP')
+-   call finish33('NATIVE55_CONTINUOUS_ONE_FULL_STEP')
++   if(trim(run_mode67)=='CONT'.and..not.cut_done67) then
++    call inventory_dump('cut67');call native09_dump('context_cut67');call ledger12_dump('ledger_cut67')
++    call write55('cut67')
++    call inventory_dump('cut67_after_io');call native09_dump('context_cut67_after_io');call ledger12_dump('ledger_cut67_after_io')
++    if(abs(t1900-35797.290441125151d0)>1d-10) call finish33('FOLLOW67_WRONG_ACCEPTED_CUT')
++    cut_done67=.true.;reject26_pending=.false.
++    if(done35) call finish33('FOLLOW67_INTERNAL16_BEFORE_NEXT_STEP')
++    return
++   end if
++   call write55('follow67')
++   if(resume55) call finish33('FOLLOW67_ONE_NEXT_STEP_ACCEPTED')
++   call finish33('FOLLOW67_ONE_NEXT_STEP_ACCEPTED')
+   end if
+  end if
+  done35=commit()

@@ -1,0 +1,11 @@
+--- CAUSE66/swap_repair66.f90
++++ FOLLOW67/swap_follow67.f90
+@@ -799,7 +799,7 @@
+  call get_environment_variable('CAUSE66_REPAIR',enabled,status=st)
+  if(st/=0.or.trim(enabled)/='1') return
+  call get_environment_variable('NATIVE55_MODE',mode)
+- if(abs(t1900-35797.290431125148d0)>1d-10.or.dt/=1d-5.or.swmacro/=1.or. &
++ if((abs(t1900-35797.290431125148d0)>1d-10.and.abs(t1900-35797.290441125151d0)>1d-10).or.dt/=1d-5.or.swmacro/=1.or. &
+     swbotb/=3.or.swbotb3impl/=1.or.swbotb3resvert/=0.or.sw3/=2.or.sw4/=0.or.trim(mode)/='RESTART') &
+     error stop 'CAUSE66 repair outside qualified original D2 boundary'
+  before=deepgw;qbefore=qbot
