@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-implicit-conductivity01",
-  "last_commit": "30c0d275cdac7de2f9dba72dbfc0b613273e61c5",
-  "status": "IMPLICIT_NUMERICAL_CORRECTIONS_PERSISTED_TARGETED_ORIGINAL_BUDGET_QUALIFICATION",
+  "last_commit": "d141b1b8b5c68066a60aaba8c089c992761b1653",
+  "status": "IMPLICIT_POND_EVENT_COMPONENTS_PASS_LONG_GROUNDWATER_UNQUALIFIED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Extend numerical-policy controls for new retry, original daily trial and boundary-mean metadata. Main CI carrier draft must select terminal current source/matrixv2 rather than failed v1, include positive-CDE/retry/mean components and compatibility refusals. No artifacts sealed/no carrier dispatched for implicit unit.",
-  "recovery_point": "codex/nomacro-implicit-conductivity01 30c0d275cdac7de2f9dba72dbfc0b613273e61c5; actual production remains829721. Branch last pushed570f767a3, push this recovery commit. Whole closurePARTIAL, scienceNOT_QUALIFIED, fixedRC3 unchanged. Do not rerun unchanged failed full candidates without a new discriminating question.",
+  "recovery_point": "codex/nomacro-implicit-conductivity01 d141b1b8b5c68066a60aaba8c089c992761b1653 plus this recovery commit; canonical remains cce2561eb87e992f671d97a35baef84ddb8d91e0. Whole PARTIAL/science NOT_QUALIFIED/fixedRC3 unchanged.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Check existing exec42908 water100/10 full and exec65453/O074403/O2 positive current-source campaigns, no duplicates. Head100/10 positive1096 and7native windows alreadyPASS under source829721 and can be reused only after current-source bundle validation plus exact input inventory; O0 positive controller does so explicitly. If groundwater target passes, freeze production and run remaining selected current-source O0/O2 cohorts/preservation/portable, independent seal/root and actual admissions.",
+  "next_action": "Inspect existing node diagnostic sessions2288/33972 at ec600c183. Water cap last595; CDE982 clock-floor. Diagnose actual worst-node residual, watcon/moiscap finite differences, sink/root extraction and boundary terms before next numerical correction. No unchanged long reruns. Extend metadata/native controls after production stabilizes; then selected current-source O0/O2/portable/root/admissions.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -25728,7 +25728,7 @@
     "scientific_equivalence_claim": false
   },
   "implicit_conductivity": {
-    "status": "IMPLEMENTED_NOT_QUALIFIED_EXPLICIT_ORIGINAL_ITERATION_BUDGET_TARGETS",
+    "status": "IMPLEMENTED_NOT_QUALIFIED_POND_EVENT_AND_REMAINING_NODE_DIAGNOSIS",
     "baseline": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
     "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_SOURCE_AUDIT.json",
@@ -25736,7 +25736,7 @@
     "qualification": "NOT_RUN",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "invariants": "Immutable numerical policy/input/source identity; literal original conductivity and HeadCalc; unchanged strict water/chemical/AGE guards; complete native/rollback/restart.",
-    "implementation_head": "30c0d275cdac7de2f9dba72dbfc0b613273e61c5",
+    "implementation_head": "d141b1b8b5c68066a60aaba8c089c992761b1653",
     "production_files": [
       "app/hybrid_water/implicit_conductivity.py",
       "app/hybrid_water/implicit_groundwater_state.py",
@@ -26242,7 +26242,7 @@
       },
       "cold_error": "Restored donor state differs from the accepted checkpoint receipt"
     },
-    "current_source": "829721797b684154f85b8b8d3388714d7c3d7dd7",
+    "current_source": "8574ee8141ab82140efefff91d0ee76b1d9d2f2c",
     "actual_derivative_component_production_arithmetic": {
       "O0": {
         "status": "REAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_DERIVATIVE_INTERFACE_PASS",
@@ -27159,13 +27159,16 @@
     },
     "actual_retry_components": {
       "O0": {
-        "status": "REAL_ORIGINAL_IMPLICIT_RETRY_FIVE_CONTRACTS_THREE_REFUSALS_PASS",
+        "status": "REAL_ORIGINAL_IMPLICIT_RETRY_SIX_CONTRACTS_THREE_REFUSALS_PASS",
         "optimization": "O0",
-        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "pond_event_owner_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622",
+        "actual_pond_event_source_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+        "additional_numerical_compilation_units": 1,
+        "source_commit": "d141b1b8b5c68066a60aaba8c089c992761b1653",
         "numerical_owner_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
         "original_timecontrol_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
-        "actual_generated_source_sha256": "9eb183ca186641f2a9084ddcef58480313d058ededc8f20a1bc8071e220d28f0",
-        "driver_sha256": "6311694cb6d4fbbd8045130fb8accb48e60fc604153ee08abeae38e608626301",
+        "actual_generated_source_sha256": "76d6b1fc41e46ba8ccf451015f8a4594f441fa8665eba99bff3448136695f577",
+        "driver_sha256": "fa612b7bb127b2f0d5bb6e23e28d83205cb070564883e37f21f6845c96320020",
         "floating_point_profile": {
           "id": "gnu-x86_64-separate-ops-v1",
           "flags": [
@@ -27342,43 +27345,47 @@
         ],
         "object_count": 41,
         "closure_reason": "Original public TimeControl shares original timer, irrigation, meteo and diagnostic modules. Resolve and link actual original providers; no stand-ins or copied physical equations.",
-        "compile_original_seconds": 0.25277299992740154,
-        "compile_link_seconds": 0.48068050015717745,
-        "native_seconds": 0.3404258997179568,
-        "stdout": "REAL_ORIGINAL_IMPLICIT_RETRY_PASS 5\n",
+        "compile_event_seconds": 0.20918969996273518,
+        "compile_original_seconds": 0.2311275997199118,
+        "compile_link_seconds": 0.508184100035578,
+        "native_seconds": 0.3104556002654135,
+        "stdout": "REAL_ORIGINAL_IMPLICIT_RETRY_PASS 6\n",
         "stderr": "",
         "refusals": [
           {
             "mode": "clock-stop",
             "returncode": 1,
-            "seconds": 0.05427120020613074,
+            "seconds": 0.03622879972681403,
             "stdout": "",
-            "stderr": "ERROR STOP Implicit original retry reached clock resolution\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x955d449c\n#4  0x955d18b4\n#5  0x955d1fb2\n#6  0x955d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+            "stderr": "ERROR STOP Implicit original retry reached clock resolution\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x17944629\n#4  0x179418b4\n#5  0x17942113\n#6  0x17941156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
           },
           {
             "mode": "nan-stop",
             "returncode": 1,
-            "seconds": 0.04419889999553561,
+            "seconds": 0.03456519963219762,
             "stdout": "",
-            "stderr": "Note: The following floating-point exceptions are signalling: IEEE_INVALID_FLAG\nERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x955d4357\n#4  0x955d19a9\n#5  0x955d1fb2\n#6  0x955d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+            "stderr": "Note: The following floating-point exceptions are signalling: IEEE_INVALID_FLAG\nERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x179444b7\n#4  0x179419a9\n#5  0x17942113\n#6  0x17941156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
           },
           {
             "mode": "zero-stop",
             "returncode": 1,
-            "seconds": 0.040074999909847975,
+            "seconds": 0.03779279999434948,
             "stdout": "",
-            "stderr": "ERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x955d4357\n#4  0x955d19e1\n#5  0x955d1fb2\n#6  0x955d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+            "stderr": "ERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x179444b7\n#4  0x179419e1\n#5  0x17942113\n#6  0x17941156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
           }
         ]
       },
       "O2": {
-        "status": "REAL_ORIGINAL_IMPLICIT_RETRY_FIVE_CONTRACTS_THREE_REFUSALS_PASS",
+        "status": "REAL_ORIGINAL_IMPLICIT_RETRY_SIX_CONTRACTS_THREE_REFUSALS_PASS",
         "optimization": "O2",
-        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "pond_event_owner_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622",
+        "actual_pond_event_source_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+        "additional_numerical_compilation_units": 1,
+        "source_commit": "d141b1b8b5c68066a60aaba8c089c992761b1653",
         "numerical_owner_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
         "original_timecontrol_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
-        "actual_generated_source_sha256": "9eb183ca186641f2a9084ddcef58480313d058ededc8f20a1bc8071e220d28f0",
-        "driver_sha256": "6311694cb6d4fbbd8045130fb8accb48e60fc604153ee08abeae38e608626301",
+        "actual_generated_source_sha256": "76d6b1fc41e46ba8ccf451015f8a4594f441fa8665eba99bff3448136695f577",
+        "driver_sha256": "fa612b7bb127b2f0d5bb6e23e28d83205cb070564883e37f21f6845c96320020",
         "floating_point_profile": {
           "id": "gnu-x86_64-separate-ops-v1",
           "flags": [
@@ -27555,32 +27562,33 @@
         ],
         "object_count": 41,
         "closure_reason": "Original public TimeControl shares original timer, irrigation, meteo and diagnostic modules. Resolve and link actual original providers; no stand-ins or copied physical equations.",
-        "compile_original_seconds": 0.4667118997313082,
-        "compile_link_seconds": 0.4861486000008881,
-        "native_seconds": 0.2854106002487242,
-        "stdout": "REAL_ORIGINAL_IMPLICIT_RETRY_PASS 5\n",
+        "compile_event_seconds": 0.1955273998901248,
+        "compile_original_seconds": 0.40704620024189353,
+        "compile_link_seconds": 0.45270120026543736,
+        "native_seconds": 0.3135528997518122,
+        "stdout": "REAL_ORIGINAL_IMPLICIT_RETRY_PASS 6\n",
         "stderr": "",
         "refusals": [
           {
             "mode": "clock-stop",
             "returncode": 1,
-            "seconds": 0.03886390011757612,
+            "seconds": 0.03920889971777797,
             "stdout": "",
-            "stderr": "ERROR STOP Implicit original retry reached clock resolution\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xbbc364e\n#4  0xbbc19b6\n#5  0xbc8f5df\n#6  0xbbc1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+            "stderr": "ERROR STOP Implicit original retry reached clock resolution\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x8ab836c9\n#4  0x8ab81aa1\n#5  0x8ac4fb9f\n#6  0x8ab81156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
           },
           {
             "mode": "nan-stop",
             "returncode": 1,
-            "seconds": 0.03820659965276718,
+            "seconds": 0.03443400003015995,
             "stdout": "",
-            "stderr": "ERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xbbc3951\n#4  0xbbc1a07\n#5  0xbc8f5df\n#6  0xbbc1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+            "stderr": "ERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x8ab83afa\n#4  0x8ab81af2\n#5  0x8ac4fb9f\n#6  0x8ab81156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
           },
           {
             "mode": "zero-stop",
             "returncode": 1,
-            "seconds": 0.040432299952954054,
+            "seconds": 0.03615369973704219,
             "stdout": "",
-            "stderr": "ERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xbbc3951\n#4  0xbbc19dd\n#5  0xbc8f5df\n#6  0xbbc1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+            "stderr": "ERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x8ab83afa\n#4  0x8ab81ac8\n#5  0x8ac4fb9f\n#6  0x8ab81156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
           }
         ]
       }
@@ -28014,17 +28022,519 @@
     },
     "pending_actual_jobs": [
       {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-iteration-audit-full-v1",
-        "status": "FAILED"
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-water-100-v2",
+        "session": 2288,
+        "purpose": "Read-only actual node residuals, constitutive finite differences, actual original 45s bounded trajectory; never qualification"
       },
       {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v1",
-        "status": "FAILED"
-      },
-      {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v1",
-        "status": "RUNNING"
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-positive-cde-100-v2",
+        "session": 33972,
+        "purpose": "Read-only actual node residuals, constitutive finite differences, actual original 45s bounded trajectory; never qualification"
       }
-    ]
+    ],
+    "actual_pond_event_components": {
+      "O0": {
+        "status": "REAL_POND_EVENT_TWO_ACTUAL_THREE_INACTIVE_FIVE_REFUSALS_PASS",
+        "source_commit": "d398f4255527345a946fc56a97d21269c4c41467",
+        "optimization": "O0",
+        "source_sha256": {
+          "app\\hybrid_water\\implicit_pond_event_state.f90": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+          "tests\\nomacro_scheduled_subsurface\\implicit_pond_event_driver.f90": "d74cd7b62b94da22feaf16b462c90e769af162972e70d470a2dfe3e815860f0f",
+          "tests\\nomacro_scheduled_subsurface\\implicit_pond_event_inputs.json": "31edea4e7d99670ef2e1da61b8616c136a9ab1e799701fa93d4e3f5b72bf89ed"
+        },
+        "compile_link_closure": [
+          "app\\hybrid_water\\implicit_pond_event_state.f90",
+          "tests\\nomacro_scheduled_subsurface\\implicit_pond_event_driver.f90"
+        ],
+        "actual_original_exported_fixture": {
+          "status": "ACTUAL_ORIGINAL_EXPORTED_POND_EVENT_INPUTS_NOT_PHYSICAL_ORACLE",
+          "cases": [
+            {
+              "name": "water584",
+              "producer_source": "e38235b025e9d71721221d8a6289347804d6fff3",
+              "raw_member": "implicit-groundwater-diagnostic-water-v2/trajectory/original/donor.stdout",
+              "raw_sha256": "649f3c608027289301ac09dcfe2b123b345e8dcc4651d385069d1010499dd84b",
+              "actual_exported_row": [
+                37839.97439470215,
+                0.0010034960888988898,
+                -2.4904026729456394e-05,
+                0.0006458854664486358,
+                -3.427877221492959e-05,
+                69.63653780205532,
+                0.0,
+                69.6723744806369,
+                0.030475265227920205,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0007721804464956867,
+                0.0,
+                0.0,
+                0.036753274674498876,
+                0.03035575360823537,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.03112139601828979,
+                0.0,
+                -0.03112139601828979,
+                1.3179631397995432e-13,
+                6.326173659973574e-06,
+                -275000.0,
+                1.0
+              ],
+              "deficit_origin": "Original pond conservation identity from actual exported q0/qtop/pond; original atmospheric branch sets runots0. No Darcy or evaporation equation copied.",
+              "inputs": [
+                37839.97439470215,
+                0.0010034960888988898,
+                6.326173659973574e-06,
+                0.0,
+                -0.03112139601828979,
+                1.3179631397995432e-13,
+                2.490402552532145e-05
+              ]
+            },
+            {
+              "name": "water594",
+              "producer_source": "39f28422d0e3718e5988ddcbf1a8c4a531770dc5",
+              "raw_member": "implicit-groundwater-diagnostic-water-100-v1/trajectory/original/donor.stdout",
+              "raw_sha256": "583396519bac45835820234ddb1a30080dff3c809298ac9a804651ec13af34a3",
+              "actual_exported_row": [
+                37849.004308235395,
+                0.0043082353950012475,
+                -2.4192325543786645e-05,
+                0.00017495777127647988,
+                -6.522664978100834e-05,
+                69.43821342143426,
+                0.0,
+                69.43834361569459,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0008616470790002496,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.5077833756538655e-06,
+                0.0007566882076713419,
+                0.0,
+                0.00013197773467491062,
+                0.0001288755059090956,
+                5.669685905867526e-16,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.029913756815290793,
+                0.0,
+                -0.01773256640834492,
+                1.3160104390645955e-13,
+                5.220374852309706e-05,
+                -275000.0,
+                1.0
+              ],
+              "deficit_origin": "Original pond conservation identity from actual exported q0/qtop/pond; original atmospheric branch sets runots0. No Darcy or evaporation equation copied.",
+              "inputs": [
+                37849.004308235395,
+                0.0043082353950012475,
+                5.220374852309706e-05,
+                0.0,
+                -0.01773256640834492,
+                1.3160104390645955e-13,
+                2.41923217209777e-05
+              ]
+            }
+          ]
+        },
+        "floating_point_profile": {
+          "id": "gnu-x86_64-separate-ops-v1",
+          "flags": [
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "cases": [
+          {
+            "label": "water584",
+            "mode": "valid",
+            "status": "PASS",
+            "seconds": 0.1305022002197802,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_EVENT_PASS  2.03274096582380960E-004\n",
+            "stderr": ""
+          },
+          {
+            "label": "water594",
+            "mode": "valid",
+            "status": "PASS",
+            "seconds": 0.03577089961618185,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_EVENT_PASS  2.94394772427963294E-003\n",
+            "stderr": ""
+          },
+          {
+            "label": "dry",
+            "mode": "dry",
+            "status": "PASS",
+            "seconds": 0.0359219997189939,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_INACTIVE_PASS\n",
+            "stderr": ""
+          },
+          {
+            "label": "filled",
+            "mode": "filled",
+            "status": "PASS",
+            "seconds": 0.03669159999117255,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_INACTIVE_PASS\n",
+            "stderr": ""
+          },
+          {
+            "label": "no-deficit",
+            "mode": "no-deficit",
+            "status": "PASS",
+            "seconds": 0.04043029993772507,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_INACTIVE_PASS\n",
+            "stderr": ""
+          },
+          {
+            "label": "pending-stop",
+            "mode": "pending-stop",
+            "status": "REFUSED",
+            "seconds": 0.03951920010149479,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Unconsumed original implicit pond event at accepted boundary\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x364e1575\n#4  0x364e2013\n#5  0x364e25ab\n#6  0x364e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "label": "foreign-clock",
+            "mode": "foreign-clock",
+            "status": "REFUSED",
+            "seconds": 0.03516600001603365,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Foreign original implicit pond retry clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x364e1619\n#4  0x364e20ec\n#5  0x364e25ab\n#6  0x364e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "label": "nan-stop",
+            "mode": "nan-stop",
+            "status": "REFUSED",
+            "seconds": 0.03491090005263686,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Nonfinite original implicit pond event\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x364e1801\n#4  0x364e1f9b\n#5  0x364e25ab\n#6  0x364e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "label": "negative-stop",
+            "mode": "negative-stop",
+            "status": "REFUSED",
+            "seconds": 0.04099000012502074,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Invalid original implicit pond event\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x364e1865\n#4  0x364e1f9b\n#5  0x364e25ab\n#6  0x364e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "label": "clock-stop",
+            "mode": "clock-stop",
+            "status": "REFUSED",
+            "seconds": 0.034150199964642525,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Original implicit pond event reached clock resolution\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x364e1a96\n#4  0x364e1f9b\n#5  0x364e25ab\n#6  0x364e1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          }
+        ],
+        "compile_link_seconds": 0.5124500002712011
+      },
+      "O2": {
+        "status": "REAL_POND_EVENT_TWO_ACTUAL_THREE_INACTIVE_FIVE_REFUSALS_PASS",
+        "source_commit": "d398f4255527345a946fc56a97d21269c4c41467",
+        "optimization": "O2",
+        "source_sha256": {
+          "app\\hybrid_water\\implicit_pond_event_state.f90": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+          "tests\\nomacro_scheduled_subsurface\\implicit_pond_event_driver.f90": "d74cd7b62b94da22feaf16b462c90e769af162972e70d470a2dfe3e815860f0f",
+          "tests\\nomacro_scheduled_subsurface\\implicit_pond_event_inputs.json": "31edea4e7d99670ef2e1da61b8616c136a9ab1e799701fa93d4e3f5b72bf89ed"
+        },
+        "compile_link_closure": [
+          "app\\hybrid_water\\implicit_pond_event_state.f90",
+          "tests\\nomacro_scheduled_subsurface\\implicit_pond_event_driver.f90"
+        ],
+        "actual_original_exported_fixture": {
+          "status": "ACTUAL_ORIGINAL_EXPORTED_POND_EVENT_INPUTS_NOT_PHYSICAL_ORACLE",
+          "cases": [
+            {
+              "name": "water584",
+              "producer_source": "e38235b025e9d71721221d8a6289347804d6fff3",
+              "raw_member": "implicit-groundwater-diagnostic-water-v2/trajectory/original/donor.stdout",
+              "raw_sha256": "649f3c608027289301ac09dcfe2b123b345e8dcc4651d385069d1010499dd84b",
+              "actual_exported_row": [
+                37839.97439470215,
+                0.0010034960888988898,
+                -2.4904026729456394e-05,
+                0.0006458854664486358,
+                -3.427877221492959e-05,
+                69.63653780205532,
+                0.0,
+                69.6723744806369,
+                0.030475265227920205,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0007721804464956867,
+                0.0,
+                0.0,
+                0.036753274674498876,
+                0.03035575360823537,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.03112139601828979,
+                0.0,
+                -0.03112139601828979,
+                1.3179631397995432e-13,
+                6.326173659973574e-06,
+                -275000.0,
+                1.0
+              ],
+              "deficit_origin": "Original pond conservation identity from actual exported q0/qtop/pond; original atmospheric branch sets runots0. No Darcy or evaporation equation copied.",
+              "inputs": [
+                37839.97439470215,
+                0.0010034960888988898,
+                6.326173659973574e-06,
+                0.0,
+                -0.03112139601828979,
+                1.3179631397995432e-13,
+                2.490402552532145e-05
+              ]
+            },
+            {
+              "name": "water594",
+              "producer_source": "39f28422d0e3718e5988ddcbf1a8c4a531770dc5",
+              "raw_member": "implicit-groundwater-diagnostic-water-100-v1/trajectory/original/donor.stdout",
+              "raw_sha256": "583396519bac45835820234ddb1a30080dff3c809298ac9a804651ec13af34a3",
+              "actual_exported_row": [
+                37849.004308235395,
+                0.0043082353950012475,
+                -2.4192325543786645e-05,
+                0.00017495777127647988,
+                -6.522664978100834e-05,
+                69.43821342143426,
+                0.0,
+                69.43834361569459,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0008616470790002496,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.5077833756538655e-06,
+                0.0007566882076713419,
+                0.0,
+                0.00013197773467491062,
+                0.0001288755059090956,
+                5.669685905867526e-16,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.029913756815290793,
+                0.0,
+                -0.01773256640834492,
+                1.3160104390645955e-13,
+                5.220374852309706e-05,
+                -275000.0,
+                1.0
+              ],
+              "deficit_origin": "Original pond conservation identity from actual exported q0/qtop/pond; original atmospheric branch sets runots0. No Darcy or evaporation equation copied.",
+              "inputs": [
+                37849.004308235395,
+                0.0043082353950012475,
+                5.220374852309706e-05,
+                0.0,
+                -0.01773256640834492,
+                1.3160104390645955e-13,
+                2.41923217209777e-05
+              ]
+            }
+          ]
+        },
+        "floating_point_profile": {
+          "id": "gnu-x86_64-separate-ops-v1",
+          "flags": [
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "cases": [
+          {
+            "label": "water584",
+            "mode": "valid",
+            "status": "PASS",
+            "seconds": 0.1284801997244358,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_EVENT_PASS  2.03274096582380960E-004\n",
+            "stderr": ""
+          },
+          {
+            "label": "water594",
+            "mode": "valid",
+            "status": "PASS",
+            "seconds": 0.031289299950003624,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_EVENT_PASS  2.94394772427963294E-003\n",
+            "stderr": ""
+          },
+          {
+            "label": "dry",
+            "mode": "dry",
+            "status": "PASS",
+            "seconds": 0.03464850038290024,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_INACTIVE_PASS\n",
+            "stderr": ""
+          },
+          {
+            "label": "filled",
+            "mode": "filled",
+            "status": "PASS",
+            "seconds": 0.03269249992445111,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_INACTIVE_PASS\n",
+            "stderr": ""
+          },
+          {
+            "label": "no-deficit",
+            "mode": "no-deficit",
+            "status": "PASS",
+            "seconds": 0.03478159988299012,
+            "returncode": 0,
+            "stdout": "REAL_IMPLICIT_POND_INACTIVE_PASS\n",
+            "stderr": ""
+          },
+          {
+            "label": "pending-stop",
+            "mode": "pending-stop",
+            "status": "REFUSED",
+            "seconds": 0.03656810009852052,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Unconsumed original implicit pond event at accepted boundary\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xcdcf1536\n#4  0xcdcf1f07\n#5  0xcdcf2b6f\n#6  0xcdcf1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "label": "foreign-clock",
+            "mode": "foreign-clock",
+            "status": "REFUSED",
+            "seconds": 0.0355635997839272,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Foreign original implicit pond retry clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xcdcf15e6\n#4  0xcdcf1b84\n#5  0xcdcf2b6f\n#6  0xcdcf1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "label": "nan-stop",
+            "mode": "nan-stop",
+            "status": "REFUSED",
+            "seconds": 0.03505029994994402,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Nonfinite original implicit pond event\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xcdcf18ae\n#4  0xcdcf1afa\n#5  0xcdcf2b6f\n#6  0xcdcf1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "label": "negative-stop",
+            "mode": "negative-stop",
+            "status": "REFUSED",
+            "seconds": 0.04130209982395172,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Invalid original implicit pond event\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xcdcf189a\n#4  0xcdcf1afa\n#5  0xcdcf2b6f\n#6  0xcdcf1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "label": "clock-stop",
+            "mode": "clock-stop",
+            "status": "REFUSED",
+            "seconds": 0.0366181000135839,
+            "returncode": 1,
+            "stdout": "",
+            "stderr": "ERROR STOP Original implicit pond event reached clock resolution\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xcdcf17b4\n#4  0xcdcf1afa\n#5  0xcdcf2b6f\n#6  0xcdcf1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          }
+        ],
+        "compile_link_seconds": 0.5506171998567879
+      }
+    },
+    "current_pond_observations": {
+      "implicit-conductivity-water-groundwater-O0-v6": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-O0-v6\\RESULT.json",
+        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "source_commit": "d398f4255527345a946fc56a97d21269c4c41467",
+        "error": "",
+        "last_actual_day": 35
+      },
+      "implicit-conductivity-water-groundwater-full-O0-v6": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-full-O0-v6\\RESULT.json",
+        "status": "FAILED",
+        "source_commit": "d398f4255527345a946fc56a97d21269c4c41467",
+        "error": "TimeoutError('Model wall cap 180s')",
+        "last_actual_day": 595
+      },
+      "implicit-conductivity-positive-cde-windows-O0-current-v2": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v2\\RESULT.json",
+        "status": "FAILED",
+        "source_commit": "d398f4255527345a946fc56a97d21269c4c41467",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-current-v2\\\\full-groundwater-history', '--optimization', 'O0', '--solute', '1', '--hysteresis', '2', '--bottom', '1', '--kmean', '4', '--mode', 'daily', '--reset', '0', '--existing-input', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-current-v2\\\\input-groundwater-history', '--phase', 'full', '--reuse-build', 'C:\\\\U",
+        "last_actual_day": null
+      },
+      "implicit-conductivity-positive-cde-windows-O0-current-v2/full-head": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v2\\full-head\\RESULT.json",
+        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_FULL_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "source_commit": "d398f4255527345a946fc56a97d21269c4c41467",
+        "error": "",
+        "last_actual_day": 1096
+      },
+      "implicit-conductivity-positive-cde-windows-O0-current-v2/full-groundwater-history": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v2\\full-groundwater-history\\RESULT.json",
+        "status": "FAILED",
+        "source_commit": "d398f4255527345a946fc56a97d21269c4c41467",
+        "error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 1\")",
+        "last_actual_day": 981
+      }
+    },
+    "pond_event_recovery": {
+      "production_source": "8574ee8141ab82140efefff91d0ee76b1d9d2f2c",
+      "physical_equations_changed": false,
+      "ownership": "Actual original converged pond deficit requests a predicted depletion substep; original rollback owns state; TimeControl consumes pending target; native read/write and HeadCalc assert no pending event.",
+      "actual_component": "O0/O2 two actual recorded original pond inputs, three inactive branches, five fatal ownership/domain refusals PASS; actual original TimeControl six valid/three clock refusals PASS.",
+      "remaining": "Water full accepted595 then censored180s. Positive CDE head1096+7cold PASS at current source; positive groundwater accepted981 then clock-floor refused. Do not claim full groundwater PASS or repeat unchanged full runs.",
+      "diagnostic_head": "ec600c183",
+      "diagnostic_root": "C:/Users/Veldh012/swap5-implicit-groundwater-diagnostic"
+    }
   }
 }
