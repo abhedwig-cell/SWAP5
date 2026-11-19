@@ -37,7 +37,53 @@ reference-defect investigation remains open. This component explicitly selects
 SWSRF2/3 and SWSEC1/2 with an actual secondary level. This is a bounded
 selection, without a whole-family closure claim.
 
-## State interface and ownership
+## Integrated development status after the initial component
+
+The selected development host now composes the actual original reader,
+atomic rejected-trial state, typed S5EDR001 native tail, public receipt/native
+binding and read-only soil/secondary/combined ledgers. Original-output/calendar
+composition remains refused. These development results do not admit SWDRA2
+on canonical and do not close the whole historical drainage family.
+
+At83868c79e, fixed/automatic CDE O0/O2 all pass37actual days, including exact
+physical receipts, compatibility CSV and complete result.end/macro.bin at four
+cold windows:2to4,14to17,30to35,35to37. Independent raw-worker/native audits
+pass with maximum daily residual below2.75e-14cm. The prior37physical-day
+prefix and24complete native checkpoints remain exact under the later complete
+pond solver. The owning historical H daily water and integrated CDE guards
+remain1e-10. Integrated soil-water drift is reported separately; no additional
+whole-period water equivalence is claimed.
+
+Actual original PondRunoff defects are separately reproduced at O0/O2:
+the small-flux shortcut books nonzero runoff without reducing pond storage;
+the old inundation search excludes roots above the no-exchange h0max; and the
+old1e-6 root stopping rule permits excessive residual. The retained component
+fixtures measure residuals4.950495e-7,-.89500000015,8.036459e-7 and-2.584363e-7cm.
+EXTENDED_DRAINAGE_POND_COMPONENT_RAW.json seals the actual original/corrected
+sources, executables, raw observations, commands and producer source blobs.
+
+The selected correction preserves the original runoff() body literally.
+For WLS<=PONDMX, RSROEXP exactly1 and RSRO>=1e-3 it reuses the admitted exact
+linear solution. Other selected no-macro extended cases evaluate that same
+original function within a complete monotone bracket, stopping at the best
+representable root. It does not adjust a physical stock after the calculation.
+The original early return below PONDMX remains unchanged. The piecewise
+analytic derivative includes the original storage-table-limited and
+level-limited inundation branches. Five actual-routine perturbation checks
+per opt differ by at most4.55e-11; corrected component inventories close
+within5.56e-17cm. Original retry reduction and8ULPclock floor remain unchanged.
+
+The first outward-only full attempts retain211fixed and1053automatic
+accepted days before a nonlinear pond floor refusal. At1c744a732 the complete
+root/tangent is integrated with MOD_top compiled before its HeadCalc caller.
+Four affected full-period executions are being assessed from their actual
+terminal results. No failed build, input, checkpoint or result is repaired.
+
+The following sections retain the initial component assessment and its
+then-pending integration actions; the development status above supersedes
+those implementation-pending statements without changing the raw evidence.
+
+## Initial component state interface and ownership
 
 The initial hybrid_extended_drainage_state component at0f61c648 captures the
 existing original dynamic values: WLP,WLS,SWST,WLSTAR,WETPER,QDRD,QDRTOT,
