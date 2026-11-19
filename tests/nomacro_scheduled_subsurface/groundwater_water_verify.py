@@ -8,7 +8,7 @@ sys.path.insert(0,str(ROOT/'tests/nomacro_scheduled_subsurface'))
 import implicit_conductivity_verify as old
 import implicit_conductivity_forensics as p
 import groundwater_water_forensics as f
-from age_groundwater_verify import geometry
+from age_groundwater_verify import geometry,raw_archive as age_raw_archive
 from perstep_domain_verify import build_files as compiled_files
 
 BASE='b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1'
@@ -176,7 +176,7 @@ def controls_verify(q,archives,caps,periods):
 
 def inheritance_verify(q,archives):
  selected=q['inheritance'];z=archives[selected['archive']];record=read(z,selected['prior_compiled']);require(record['status']=='THREE_ACTUAL_PRIOR_COMPILED_FORTRAN_CLOSURES_EXACT_NO_MODEL_PERIODS' and record['model_periods_executed']==0 and set(record['profiles'])=={'implicit-daily-water','implicit-daily-cde','explicit-groundwater-age'},'Unchanged prior compiled closure evidence missing')
- base_records={key:json.loads(blob(BASE,PROOF+key)) for key in ('IMPLICIT_CONDUCTIVITY_WINDOWS_O0_RAW_ARCHIVE.json','AGE_GROUNDWATER_WINDOWS_O0_RAW_ARCHIVE.json')};prior_archives={key:zipfile.ZipFile(io.BytesIO(old.raw_archive(value))) for key,value in base_records.items()};location=dict(platform='Windows',producer_root='C:/Users/Veldh012/swap5-complete01-evidence')
+ base_records={key:json.loads(blob(BASE,PROOF+key)) for key in ('IMPLICIT_CONDUCTIVITY_WINDOWS_O0_RAW_ARCHIVE.json','AGE_GROUNDWATER_WINDOWS_O0_RAW_ARCHIVE.json')};prior_archives={key:zipfile.ZipFile(io.BytesIO((age_raw_archive if key.startswith('AGE_') else old.raw_archive)(value))) for key,value in base_records.items()};location=dict(platform='Windows',producer_root='C:/Users/Veldh012/swap5-complete01-evidence')
  for name,item in record['profiles'].items():
   prior=prior_archives['AGE_GROUNDWATER_WINDOWS_O0_RAW_ARCHIVE.json' if name=='explicit-groundwater-age' else 'IMPLICIT_CONDUCTIVITY_WINDOWS_O0_RAW_ARCHIVE.json'];bp=old.locate(item['current_build'],location);pp=old.locate(item['prior_build'],location)
   require(digest(z.read(bp+'BUILD.json'))==item['current_build_sha256'] and digest(prior.read(pp+'BUILD.json'))==item['prior_build_sha256'] and item['changed_emitted_providers']==[],'Actual prior build binding changed')
