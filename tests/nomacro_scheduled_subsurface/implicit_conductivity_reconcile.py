@@ -30,7 +30,10 @@ def main():
      with zipfile.ZipFile(root/f'trajectory/accepted-column-1-day-{high}.zip') as warm,zipfile.ZipFile(cold/f'accepted-column-1-day-{high}.zip') as restored:
       for member in ('result.end','macro.bin'):assert warm.read(member)==restored.read(member),(name,phase,member)
       for z in (warm,restored):
-       checkpoint=json.loads(z.read('checkpoint.json'));assert checkpoint['binding']==meta['binding'] and checkpoint['receipt']==data[high-1]
+       checkpoint=json.loads(z.read('checkpoint.json'));assert checkpoint['binding']==meta['binding'],(name,phase,'binding')
+       # A cold worker has its own column/revision while preserving every
+       # actual physical receipt field and the complete native payload.
+       assert c.m.physical([checkpoint['receipt']])==c.m.physical([data[high-1]]),(name,phase,'physical receipt')
    if controls:
     control=original['controls'][name];report=json.loads((Path(control['root'])/'RESULT.json').read_text());assert report==control['report'] and report['status']=='IMPLICIT_CONDUCTIVITY_NUMERICAL_NATIVE_TRANSACTION_DOMAIN_PASS' and report['build_sha256']==c.m.sha(build/'BUILD.json')
     q['controls'][name]=control
