@@ -1,5 +1,8 @@
 name: SaltFarm isolated original current profile07
 on:
+  push:
+    branches: [codex/saltfarm-isolated07]
+    paths: ['.github/workflows/saltfarm-isolated07.yml']
   workflow_dispatch:
     inputs:
       expected_sha:
@@ -29,7 +32,7 @@ jobs:
             reference/swap-4.3.1/source-archives
       - name: Exact persisted source and sequential original/current builds
         env:
-          EXPECTED: ${{ inputs.expected_sha }}
+          EXPECTED: ${{ inputs.expected_sha || github.sha }}
         run: |
           test "$(git rev-parse HEAD)" = "$EXPECTED"
           python3 -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work "$RUNNER_TEMP/isolated07/provider"
