@@ -35,10 +35,14 @@ def main():
   for key in keys:
    item=run['cases'][key];prior=item['short'];bd=prior['trajectory']['build_sha256'];matches=[path for path,value in members.items() if path.endswith('/build/BUILD.json') and value==bd];assert len(matches)==1,(key,matches)
    oldbuildpath=location(matches[0]);oldbuild=data(oldbuildpath);oldroot=oldbuildpath.parent.parent;oldreport=data(oldroot/'RESULT.json');assert oldreport==prior
-   inputs=Path(oldbuild['project']['input_directory']) if a.platform=='Windows' else oldroot/PurePosixPath(oldbuild['project']['input_directory']).name
+   inputs=oldroot/'input';assert inputs.is_dir(),inputs
    for child in oldbuild['inputs']:checked(inputs/child)
    oldtrajectory=oldroot/'trajectory';checked(oldtrajectory/'daily.jsonl');olddata=m.rows(oldtrajectory);days=prior['trajectory']['days'];assert len(olddata)==days and days in (10,35)
-   args={k:oldbuild['project'][k] for k in ('time_step_policy','solute_step_policy','soil_table_policy','original_output','age_irrigation_source','age_direct_soil_source') if k in oldbuild['project']}
+   args={k:oldbuild['identity'][k] for k in ('time_step_policy','solute_step_policy','soil_table_policy')}
+   args['original_output']=oldbuild['identity'].get('original_output') is not None
+   source_policy=oldbuild['identity'].get('conserved_original_age',{}).get('irrigation_source',{}).get('policy')
+   args['age_irrigation_source']=source_policy=='original-fixed-current-irrigation-age-days-v1'
+   args['age_direct_soil_source']=source_policy=='original-fixed-direct-soil-age-transport-then-input-v1'
    project=m.e.load(inputs,**args);out=a.output/key;out.mkdir();build=out/'build';cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
    for flag in ('original_output','age_irrigation_source','age_direct_soil_source'):
     if getattr(project,flag):cmd.append('--'+flag.replace('_','-'))
