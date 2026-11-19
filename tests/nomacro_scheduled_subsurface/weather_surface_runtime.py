@@ -17,7 +17,7 @@ import implicit_conductivity_runtime as prior
 m = prior.m
 ROOT = prior.ROOT
 PROOF = ROOT / 'integration/nomacro-coverage01'
-CASES = {'pulsed': 'PULSED_RAIN', 'hourly': 'HOURLY'}
+CASES = {'pulsed': 'PULSED_RAIN', 'hourly': 'HOURLY', 'uniform': None}
 
 
 def sha(raw):
@@ -31,12 +31,20 @@ def inputs(case, out):
     archive = PROOF / 'BLOCK_H_LAST_TEMPORAL_RAW.tar.xz'
     sealed = json.loads((PROOF / 'BLOCK_H_LAST_TEMPORAL_ARCHIVE.json').read_text())
     assert sha(archive.read_bytes()) == sealed['sha256']
-    failed = json.loads((PROOF / ('BLOCK_H_' + label + '364_FAILURE.json')).read_text())
+    failed = (json.loads((PROOF / ('BLOCK_H_' + label + '364_FAILURE.json')).read_text())
+              if label is not None else None)
     out.mkdir()
     hashes = {}
     with tarfile.open(archive) as raw:
-        directory = '/input-' + ('rain-detailed' if case == 'pulsed' else 'weather-hourly') + '/'
-        for name, expected in failed['input_sha256'].items():
+        directory = '/input-' + {'pulsed':'rain-detailed', 'hourly':'weather-hourly', 'uniform':'rain-detailed-uniform'}[case] + '/'
+        if failed is None:
+            candidates = [v for v in raw.getmembers() if v.name.endswith('/rain-detailed-uniform-O0-build/BUILD.json')]
+            assert len(candidates) == 1
+            baseline = json.loads(raw.extractfile(candidates[0]).read())
+            expected_inputs = baseline['inputs']
+        else:
+            expected_inputs = failed['input_sha256']
+        for name, expected in expected_inputs.items():
             assert Path(name).name == name
             members = [v for v in raw.getmembers() if v.name.endswith(directory + name)]
             assert len(members) <= 1
@@ -46,8 +54,9 @@ def inputs(case, out):
             hashes[name] = expected
     return dict(archive=archive.name, archive_sha256=sealed['sha256'],
                 exact_original_input_sha256=hashes,
-                prior_accepted_days=failed['committed_days'],
-                prior_first_refusal=failed['first_refusal'])
+                prior_accepted_days=failed['committed_days'] if failed else None,
+                prior_first_refusal=failed['first_refusal'] if failed else None,
+                inherited_input_role='sealed original uniform qualified build' if failed is None else 'sealed original day364 failure input')
 
 
 def main():
