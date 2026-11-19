@@ -65,7 +65,8 @@ def qualification():
 @lru_cache(maxsize=1)
 def source():
     q=qualification()
-    require(not git('diff',RUNTIME,'--',*SURFACES),'Actual drainage compiler source differs from qualified runtime')
+    import calendar_verify as calendar
+    calendar.guard_previous_source()
     changed=git('diff','--name-only',BASE,RUNTIME,'--',*SURFACES).decode().splitlines()
     require(changed==sorted([*OLD_APP,*NEW_APP]),'Unexpected original physical compiler surface changed')
     for path in OLD_APP:
@@ -130,6 +131,8 @@ def scientific():
     return dict(metrics=metrics,actual_full_periods=16,actual_primary_exact_cold_windows=112,actual_table_exact_cold_windows=16,actual_public_native_refusals=312,actual_compiled_native_refusals=288,actual_cli_contexts=12,actual_transaction_contexts=12,nonselected=preserved)
 
 def verify():
+    import calendar_verify as calendar
+    return calendar.verify()
     source();current=scientific()
     import weather_surface_verify as old
     q=json.loads((ROOT/PROOF/'WEATHER_TERMINAL_QUALIFICATION.json').read_bytes());old.validate(q)

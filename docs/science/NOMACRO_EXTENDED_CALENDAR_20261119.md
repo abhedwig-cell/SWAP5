@@ -74,7 +74,7 @@ The complete-receipt correction exposes an actual AGE dry-pond conservation
 failure on day365 in both O0/O2;364 accepted days are retained, with no day365
 publication. Actual observed pond-start2.7309710278648297e-4cm, upward
 soil flux7.0565128332235306e-4cm and pond evaporation9.7874838610883608e-4cm
-close the water balance exactly, leaving zero final pond or outgoing capacity
+close the water balance within5.5e-20cm, leaving zero final pond or outgoing capacity
 to carry retained positive age. The failed microstep duration/age stock were
 not logged and are not claimed reconstructed. A separate real production
 surface-age component probe uses explicitly controlled duration/stock and the
