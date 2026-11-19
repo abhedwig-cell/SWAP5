@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-extended-history01",
   "last_commit": "8f1766270ed8a940b60fcf6a6fa07689a6baa632",
-  "status": "EIGHT_HISTORY_SHORT_O0_O2_INDEPENDENT_PASS_NATIVE_CONTROLS_RUNNING_FULL_COMPOSITION_SELECTED_PR1764_CHECKS_PENDING",
+  "status": "HISTORY_SHORT_NATIVE_CONTROLS_PASS_WINDOWS_FULL_REUSE_AND_UBUNTU_FIRST_FULL_RUNNING_PR1764_FINAL_CHECKS_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -30855,6 +30855,19 @@
     "selected_full_cases": [
       "water/monthly/text2/history1",
       "automatic-CDE/daily/binary3/history2"
+    ],
+    "actual_short_public_refusals": 145,
+    "actual_short_compiled_refusals": 135,
+    "actual_short_CLI_contexts": 2,
+    "actual_short_transaction_contexts": 2,
+    "source_runtime_full": "8fc2f88f0",
+    "running_ci": [
+      {
+        "run": 44616221474,
+        "source": "b6fa245ab866758c8377104c1c80a2f77179ef9f",
+        "phase": "first_full",
+        "status": "in_progress"
+      }
     ]
   }
 }

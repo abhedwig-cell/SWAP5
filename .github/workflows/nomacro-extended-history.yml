@@ -1,9 +1,6 @@
 name: Original extended drainage hydraulic history qualification
 on:
   workflow_dispatch:
-  push:
-    branches: [codex/nomacro-extended-history01]
-    paths: [.github/workflows/nomacro-extended-history.yml]
 permissions:
   contents: read
 concurrency:
