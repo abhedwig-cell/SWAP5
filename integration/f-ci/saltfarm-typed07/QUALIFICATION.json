@@ -1,0 +1,76 @@
+{
+  "status": "TYPED_DAY_REPLY_BOUNDED_QUALIFICATION",
+  "baseline": "b28706d8b16661d8a9e85339d317256eaca51206",
+  "runtime": "9f640a440fde680c7dfed3618044ed83f6ad062f",
+  "model": "HYBRID_SALTFARM_WATER",
+  "water_guard_cm": 1e-10,
+  "solute_guard_mg_cm2": 1e-10,
+  "full_periods_ubuntu": 2,
+  "cold_windows_ubuntu": 10,
+  "windows_role": "Actual new Python SDK on unchanged byte-bound admitted Windows O0/O2 Fortran libraries and complete actual input-word streams; not fresh Windows public-build full runs",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "functional_completion": "PARTIAL",
+  "RC3_changed": false,
+  "archives": {
+    "ISOLATED_RAW.zip": {
+      "bytes": 53332046,
+      "sha256": "1f201632e430588b977a9997ac30508a092fd119892e189d16f31ce36c759811"
+    },
+    "TYPED_UBUNTU.zip": {
+      "bytes": 28538698,
+      "sha256": "fbae49a613aa19d1e30d964a5d0a7a5c50bbbb8779228b86097e337233385263"
+    },
+    "FAILED_INPUT.zip": {
+      "bytes": 209440,
+      "sha256": "a5981514af967359e6390e003f754f9f8639577b80f4073b0cce433b71b90948"
+    }
+  },
+  "workflows": {
+    "profile": {
+      "run": 44521313489,
+      "artifact": 14527034223,
+      "source": "b87300a6ba0e6e0f18a9353112c589ba9ced1ec8",
+      "conclusion": "success"
+    },
+    "production": {
+      "run": 44522728349,
+      "artifact": 14527924730,
+      "source": "c40482abfd680794321e801a7966dab9e6973d09",
+      "conclusion": "success"
+    }
+  },
+  "analysis": {
+    "control_seconds": [
+      4.599492464999997,
+      4.524187816999984
+    ],
+    "typed_seconds": [
+      4.300842558999989,
+      4.386715340999984
+    ],
+    "control_parent_cpu": [
+      0.7336081999999999,
+      0.7011895030000002
+    ],
+    "typed_parent_cpu": [
+      0.480761545,
+      0.5132354540000001
+    ],
+    "wall_fraction_saved": 0.047801146962638486,
+    "parent_cpu_fraction_saved": 0.30722150103693047,
+    "all_typed_below_all_control": true,
+    "actual_reply_words_per_full": 302427,
+    "decimal_conversions_removed_per_full": 604854,
+    "interpretation": "One sequential isolated Ubuntu26.04 GNU15 cohort; source-frozen prototype matches the new production send path; bounded observation, not a portable speed guarantee or whole scientific equivalence."
+  },
+  "baseline_audit_sha256": "8d6ef4c74557ba306afb34d9261e8b74ba180f8ec02de1cb546b63f283f6bb50",
+  "windows_component_sha256": "36b35b972fe149ceaff19992f540ad34fcbc4ad827b208627ec427d97c420790",
+  "next_deliverable": "Registered current raw/source/negative owner, current F-CI and reviewable scoped PR; no whole closure claim",
+  "negative_attempt": {
+    "run": 44520011188,
+    "source": "4742844a25e9e28bdc112467a59b4d651f211829",
+    "conclusion": "failure",
+    "reason": "Literal unsupported output request refused before model execution; no performance or scientific PASS",
+    "archive": "FAILED_INPUT.zip"
+  }
+}
