@@ -1,7 +1,7 @@
 {
   "baseline": "f4520283e952f5236025a1f8883021a25615ad8f",
   "low": 2.09058598123548e-05,
-  "high": 2.0908533472519632e-05,
+  "high": 2.0907196642437215e-05,
   "candidates": [
     {
       "profile": "SELECT1",
@@ -11,10 +11,19 @@
       "active_W": 9,
       "active_V": 2,
       "seconds": 0.9528606999665499
+    },
+    {
+      "profile": "SELECT2",
+      "dt": 2.0907196642437215e-05,
+      "accepted": false,
+      "iterations": 30,
+      "active_W": 25,
+      "active_V": 0,
+      "seconds": 1.4540013996884227
     }
   ],
   "max_O0_midpoints": 8,
-  "remaining_O0_selections": 7,
+  "remaining_O0_selections": 6,
   "found_active_V_rejection": false,
-  "next_dt": 2.0907196642437215e-05
+  "next_dt": 2.0906528227396007e-05
 }
