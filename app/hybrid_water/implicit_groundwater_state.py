@@ -84,7 +84,7 @@ def validate_candidate(raw,receipt,project):
     if raw[:8]!=magic(project) or raw.count(header+header)!=1:raise ValueError('Foreign implicit groundwater native domain')
     if len(raw)<36:raise ValueError('Incomplete groundwater native prefix')
     nodes,clock,step,canopy=struct.unpack_from('<i3d',raw,8)
-    if (nodes!=n or not all(map(math.isfinite,(clock,step,canopy))) or not 0<step<=1 or canopy<0
+    if (nodes!=n or not all(map(math.isfinite,(clock,step,canopy))) or not 0<step<=1 or canopy<-1
             or clock!=project.start_clock+receipt.get('day',-1)
             or canopy!=receipt.get('stock_end_cm',[None]*4)[3]):
         raise ValueError('Actual groundwater native prefix differs from accepted receipt')
