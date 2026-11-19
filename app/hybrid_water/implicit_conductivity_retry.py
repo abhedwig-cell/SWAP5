@@ -48,6 +48,13 @@ def headcalc_source(source):
          merge(1d0,0d0,any(flnonconv1)),merge(1d0,0d0,any(flnonconv2)), &
          merge(1d0,0d0,flnonconv3),merge(1d0,0d0,ftoph),merge(1d0,0d0,fldtmin), &
          h(1),h(NN),pond,pondm1,epd,reva,qtop,k(1),kmean(1),hgrad(1),hold(1),theta(1),thetm1(1)
+      do i=1,NN
+         write(*,'(a,*(1x,es25.17e3))')'ACTUAL_FAILED_IMPLICIT_NODE',t1900,dt,dble(i), &
+            h(i),hold(i),theta(i),thetm1(i),dimoca(i),F(i),difh(i), &
+            k(i),dkdh(i),qrot(i),sink(i),source(i), &
+            watcon(i,h(i)+1d-5),watcon(i,h(i)-1d-5),moiscap(i,h(i)),dz(i), &
+            hgrad(i),hgrad(i+1),kmean(i),kmean(i+1)
+      end do
       flush(6)
    end if
 '''
@@ -63,7 +70,7 @@ def metadata(project):
 def apply_build(output,donor_build,project,patched):
     if not enabled(project):return patched
     path=output/'headcalc.f90';text=headcalc_source(path.read_text(encoding='cp1252'))
-    clock='38237d0' if project.solute else '37849d0'
+    clock='38237d0' if project.solute else '37851d0'
     text=text.replace('if(implicit_failed_trace_count<64)then','if(implicit_failed_trace_count<64.and.t1900>='+clock+')then',1)
     path.write_text(text,encoding='cp1252')
     path=output/'timecontrol.f90'
