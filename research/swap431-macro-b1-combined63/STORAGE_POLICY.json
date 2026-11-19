@@ -1,0 +1,23 @@
+{
+  "task_id": "01a1d419-6607-7c12-b0dc-f8ae427e8330",
+  "policy": "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\AGENTS.md",
+  "policy_sha256": "09a5bd958c186851172f72b0572a86991ac5d738c889ffd3d5a5deefde21ce0d",
+  "scope_verified_common_git_dir": "C:/Users/Veldh012/OneDrive - Wageningen University & Research/Documents/ChatGPT/SWAP5-finaliseren/SWAP5/.git",
+  "shared_tool": "tools/storage/cleanup.py",
+  "started": true,
+  "own_checkout_preexisting_registration": true,
+  "duplicate_registration_refused_without_mutation": true,
+  "protected_paths": [
+    "C:/Users/Veldh012/swap431-state02",
+    "C:/Users/Veldh012/swap431-combined63-work",
+    "C:/Users/Veldh012/swap431-combined63-final-work",
+    "C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case"
+  ],
+  "cleanup_preview": "All registered resources retained: active tasks; no eligible cleanup candidates",
+  "free_gib": 167.94873428344727,
+  "no_new_build_after_policy_received": true,
+  "legacy_build_dirs_not_registered_disposable": true,
+  "unique_source_inputs_raw_evidence_retention": "Versioned current/initial source, raw outputs and streamed source/build/evidence archive in shared central Git store, with source refs and accepted SHA; verify committed archive bytes centrally before finish",
+  "finish_plan": "After archive verification, push and clean upstream HEAD: leave checkout, finish currenttask only from policyworkspace. Shared tool retains recovery ref/reports; do not bypass any refused cleanup",
+  "other_tasks_never_finished": true
+}
