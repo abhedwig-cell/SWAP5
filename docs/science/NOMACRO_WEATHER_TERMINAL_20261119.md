@@ -33,6 +33,13 @@ reduction below input DTMIN; the same original factor and8ULP clock floor
 remain binding. This is a numerical legacy correction, not a fallback after
 a rejected day. This extension remains unqualified until actually tested.
 
+Strict terminal-only reduction reaches the8ULP floor in both actual O0
+controls, after363 accepted days. No rejected day is published. Checking only
+the final trial discovers an accumulated discrepancy too late. The next
+persisted candidate applies the complete receipt at every trial using exactly
+the existing elapsed-day `1e-10*(t1900-budget_start+dt)` criterion. Its actual
+test outcome must be recorded separately; no successful correction is claimed.
+
 Qualification must use the exact sealed H physical inputs, local O0/O2,
 the affected complete periods, independent daily ledgers and own native cold
 windows across day364 and crop/year boundaries. Prior unrelated periods are

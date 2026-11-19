@@ -72,10 +72,12 @@ def apply_build(output, donor_build, project, patched):
                         '   use variables,only:tcum\n' + old, 1)
     old = '         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
     assert text.count(old) == 1
+    # A terminal-only check can discover an already accumulated discrepancy
+    # after all remaining degrees of freedom are exhausted. Apply the same
+    # elapsed-day limit as the existing soil receipt to the complete receipt
+    # at every candidate step. This preserves the final1e-10 bound exactly.
     text = text.replace(old, old + '\n'
-                        '         if(tcum+dt>=1d0-1d-8)then\n'
-                        '            if(abs(terminal_water_residual())>1d-10)flnonconv=.true.\n'
-                        '         end if', 1)
+                        '         if(abs(terminal_water_residual())>1d-10*(t1900-budget_start+dt))flnonconv=.true.', 1)
     # Original HeadCalc otherwise accepts exhausted Newton trials at DTMIN.
     # Reuse the already qualified strict rollback/retry implementation while
     # selecting only this explicit weather domain; do not change its owner.
