@@ -24,11 +24,12 @@ def calendar(raw,n):
 
 def age_outputs(full,data,project):
     # Original FLPRINTDT selects SoilWaterOutput short events; Solute(3) is
-    # reached only through flOutput, including the actual final TEND event.
+    # reached through flOutput, including original annual balance and TEND events.
     names=('result.ageProfile.csv','result.ageeffluent.csv','result.ageeffluentqdrain.csv','result.ageeffluentwater.csv')
     lines={name:records(full/'original'/name) for name in names}
     days={name:[int(next(csv.reader([v]))[2]) for v in values] for name,values in lines.items()}
-    expected=[len(data)] if date.fromisoformat(project.start_date)+timedelta(days=len(data)-1)==date.fromisoformat(project.end_date) else []
+    first=date.fromisoformat(project.start_date);last=date.fromisoformat(project.end_date)
+    expected=[i+1 for i in range(len(data)) if (first+timedelta(days=i)).strftime('%m-%d')=='12-31' or first+timedelta(days=i)==last]
     assert all(values==expected for values in days.values()),days
     rounded=lambda v:float(format(v,'.3E'))
     for index,day in enumerate(expected):
@@ -36,7 +37,7 @@ def age_outputs(full,data,project):
         assert list(map(float,a[4:]))==list(map(rounded,values[16:]))
         assert list(map(float,w[3:]))==list(map(rounded,values[:8]))
         assert list(map(float,d[3:]))==list(map(rounded,values[3:8]))
-    return dict(actual_global_days=days,original_floutput_tend_age_cadence_retained=True,actual_written_means_and_volumes_match_full_precision_probe=True)
+    return dict(actual_global_days=days,original_floutput_annual_balance_and_tend_age_cadence_retained=True,actual_written_means_and_volumes_match_full_precision_probe=True)
 
 
 def fixture(path,mode,hysteresis,fmt,reset,npd,source,et=0):
