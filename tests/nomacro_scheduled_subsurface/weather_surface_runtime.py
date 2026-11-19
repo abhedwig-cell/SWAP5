@@ -26,16 +26,19 @@ def sha(raw):
 
 def inputs(case, out):
     label = CASES[case]
-    archive = PROOF / ('BLOCK_H_' + label + '_REFUSAL_RAW.tar.xz')
-    sealed = json.loads((PROOF / ('BLOCK_H_' + label + '_REFUSAL_ARCHIVE.json')).read_text())
+    # The refusal archive preserves worker-normalized output decks. Reuse the
+    # sealed original input directory, whose hashes the failure receipt names.
+    archive = PROOF / 'BLOCK_H_LAST_TEMPORAL_RAW.tar.xz'
+    sealed = json.loads((PROOF / 'BLOCK_H_LAST_TEMPORAL_ARCHIVE.json').read_text())
     assert sha(archive.read_bytes()) == sealed['sha256']
     failed = json.loads((PROOF / ('BLOCK_H_' + label + '364_FAILURE.json')).read_text())
     out.mkdir()
     hashes = {}
     with tarfile.open(archive) as raw:
+        directory = '/input-' + ('rain-detailed' if case == 'pulsed' else 'weather-hourly') + '/'
         for name, expected in failed['input_sha256'].items():
             assert Path(name).name == name
-            members = [v for v in raw.getmembers() if v.name.endswith('/O0/warm/original/' + name)]
+            members = [v for v in raw.getmembers() if v.name.endswith(directory + name)]
             assert len(members) <= 1
             data = raw.extractfile(members[0]).read() if members else (ROOT / 'reference/swap-4.3.1/projects/1.hupselbrook' / name).read_bytes()
             assert sha(data) == expected, name
