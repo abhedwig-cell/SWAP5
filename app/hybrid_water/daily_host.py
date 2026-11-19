@@ -889,6 +889,8 @@ end module plant_interface""")
     patched=weather_terminal_build(output,donor_build,project,patched)
     from weather_root_state import apply_build as weather_root_build
     patched=weather_root_build(output,project,patched)
+    from extended_drainage import apply_build as extended_drainage_build
+    patched=extended_drainage_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -1000,6 +1002,9 @@ end module plant_interface""")
     from implicit_finite_newton import metadata as implicit_finite_metadata
     implicit_finite=implicit_finite_metadata(project)
     if implicit_finite is not None:build_identity['implicit_finite_newton']=implicit_finite
+    from extended_drainage import metadata as extended_drainage_metadata
+    extended=extended_drainage_metadata(project)
+    if extended is not None:build_identity['extended_drainage']=extended
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from groundwater_water_output import metadata as original_output_metadata
@@ -1392,6 +1397,10 @@ class DailyHost:
                 if age_groundwater(project) is not None:
                     if start.receipt is None:raise ValueError('Original AGE groundwater restore requires accepted receipt')
                     validate_age_groundwater((directory/'macro-origin.bin').read_bytes(),start.receipt,project)
+            from extended_drainage import enabled as extended_enabled,validate_candidate as validate_extended
+            if start.origin is not None and extended_enabled(project):
+                if start.receipt is None:raise ValueError('Extended drain restore requires accepted receipt')
+                validate_extended((directory/'macro-origin.bin').read_bytes(),start.receipt,project)
             worker, transcript = start_process(stack, [donor, "./swap.swp"], directory, "donor")
             _, initial = receive(worker, transcript, {"HYBRID_READY"})
             if list(map(float, initial["HYBRID_READY"])) != [project.start_clock + start.day]:
@@ -1514,6 +1523,10 @@ class DailyHost:
             if committed and checkpoint:
                 from weather_root_state import validate_candidate as validate_weather_root
                 validate_weather_root((current.directory/'macro.bin').read_bytes(),budget,self.project)
+        from extended_drainage import enabled as extended_enabled,state_witness as extended_witness,validate_candidate as validate_extended
+        if extended_enabled(self.project):
+            budget['extended_drainage_state']=extended_witness(response.get('HYBRID_EXTENDED_DRAIN_STATE',[]),self.project,day)
+            if committed and checkpoint:validate_extended((current.directory/'macro.bin').read_bytes(),budget,self.project)
         budget.update(solute_budget)
         if "HYBRID_BUDGET_RETRIES" in response:
             count, residual = response["HYBRID_BUDGET_RETRIES"]
