@@ -420,6 +420,7 @@ subroutine retry07_checkpoint()
   call native09_dump('context_committed')
   call ledger12_dump('ledger_committed')
   if(stage55==0) then
+   call inventory_dump('checkpoint');call native09_dump('context_checkpoint');call ledger12_dump('ledger_checkpoint')
    call write55('candidate')
    call inventory_dump('checkpoint_after_io');call native09_dump('context_checkpoint_after_io');call ledger12_dump('ledger_checkpoint_after_io')
    if(done35) call finish33('INTERNAL16_BEFORE_NATIVE55_CONTINUATION')
