@@ -6,6 +6,7 @@ No production adapter or decoder is imported.
 """
 from datetime import date,timedelta
 import hashlib
+import io
 import json
 import math
 from pathlib import Path
