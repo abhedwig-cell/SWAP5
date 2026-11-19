@@ -94,7 +94,7 @@ use variables,only:t1900
 use MOD_re_global,only:alpwetnoddrz,alpdrynodrtz
 if(.not.pending)return
 if(t1900/=saved_clock)error stop 'Stale hourly root stress restoration'
-alpwetnoddrz=saved(1);alpdrynodrtz=saved(2);pending=.false.
+alpwetnoddrz=0d0;alpdrynodrtz=saved(2);pending=.false.
 end subroutine
 subroutine weather_root_witness()
 use variables,only:t1900
