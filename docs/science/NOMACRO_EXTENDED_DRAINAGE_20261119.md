@@ -1,7 +1,10 @@
 # Original extended drainage and surfacewater composition
 
-Experimental component development; public admission not implemented. The
-existing public SWDRA2 refusal remains. Whole historical closure is PARTIAL,
+Experimental integrated development; canonical public admission is pending.
+Canonicalbc9271bcc still refuses SWDRA2. Developmentbeff97988 implements the
+reader/host/native compatibility-daily route and passes an actual5day CDE O0
+period with exact complete-native2to4restart. Full process qualification and
+independent secondary/combined inventories are pending. Whole historical closure is PARTIAL,
 science NOT_QUALIFIED and fixed RC3 unchanged. This is the next coherent
 functional batch after bounded original detailed weather PR1762.
 
@@ -84,3 +87,12 @@ probes and representative affected complete periods only where necessary.
 Preserve the existing named transport, water/CDE/AGE domains and qualified
 weather source through literal source and selected physical/native seams.
 Only the next independent composed owner can admit the new public route.
+
+
+A second original defect is now reproduced independently on O0/O2: with zero
+exchange, actual positive surface storage5e-8cm is discarded by the original
+WLEVBAL swstmax<1e-7 dry branch. The resulting5e-8cm loss exceeds the existing
+1e-10cm conservation boundary. The unchanged original driver and failure are
+preserved separately. A correction must preserve positive water and be
+qualified as a reference-defect correction before new combined inventory
+claims; no artificial mass correction or tolerance change is permitted.
