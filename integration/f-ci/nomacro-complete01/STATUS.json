@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-age-perstep01",
-  "last_commit": "ef30cd72157d9a614ddacc10b7691040e28565fa",
-  "status": "AGE_PERSTEP_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+  "branch": "codex/nomacro-age-groundwater01",
+  "last_commit": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
+  "status": "AGE_GROUNDWATER_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "New bounded original AGE prescribed-groundwater state/receipt composition. Actual source audit age-groundwater-baseline-v1 has ordinary daily/history periodic/ordinary perstep original35day success with public refusal. Compose existing actual groundwater reaction and hydraulic state with literal AGE providers; no new physical equations.",
-  "recovery_point": "codex/nomacro-age-perstep01; actual sourceef30cd721/PR1754 and AGE_PERSTEP_MERGE_RECEIPT.json; metadata admission next.",
+  "next_code_change": "New age_groundwater_output.py wrapping existing frozen boundary/history/output providers; bounded public inspector and build/native identity dispatch for SWSOLU2 SWBOTB1.",
+  "recovery_point": "codex/nomacro-age-groundwater01; baselineae88b7a53; contract and actual historical reader/public refusal audit persisted before compilation.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Admit metadata with actual ordered parents/full tree/clean detached root. Then implement source-audited original AGE prescribed-groundwater coupling; three actual original35day readers succeed while current public entry refuses. Preserve original physical providers and all admitted CDE/water/AGE dispatches.",
+  "next_action": "Implement literal AGE/prescribed-groundwater reaction/hydraulic/calendar composition; persist before real O0/O2 short/native production gates.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -662,7 +662,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "ef30cd72157d9a614ddacc10b7691040e28565fa",
+  "canonical_head": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -4779,7 +4779,7 @@
     }
   },
   "age_perstep": {
-    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+    "status": "ACTUAL_SOURCE_AND_METADATA_ADMITTED",
     "baseline": "f83ec4b257f0bcda6a170924585082a208c54dc5",
     "contract": "docs/science/NOMACRO_AGE_PERSTEP_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/AGE_PERSTEP_SOURCE_AUDIT.json",
@@ -24696,7 +24696,26 @@
       },
       "role": "Automatic legacy PR checks outside selected qualification. Queued/in-progress is not PASS; exact external age-perstep-source-pr-ci-at-merge.json. No duplicate/cancel requested."
     },
-    "retained_external_admission_helper_observation": "First source merge helper retained an incorrect CDE LOCAL_EVENT status label after generation; its terminal assertion was external to the unchanged root. Corrected helper reruns clean detached root. No source/raw/guard changes."
+    "retained_external_admission_helper_observation": "First source merge helper retained an incorrect CDE LOCAL_EVENT status label after generation; its terminal assertion was external to the unchanged root. Corrected helper reruns clean detached root. No source/raw/guard changes.",
+    "actual_metadata_owner": {
+      "status": "ACTUAL_AGE_PERSTEP_METADATA_MERGE_VERIFIED",
+      "pr": 1755,
+      "merge": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
+      "parents": [
+        "ef30cd72157d9a614ddacc10b7691040e28565fa",
+        "c54cd708349feef3b365171c1bf22365f2bc641a"
+      ],
+      "qualified_head": "c54cd708349feef3b365171c1bf22365f2bc641a",
+      "tree": "154a29a3b31b46d588777b609bf44d540450cd8c",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 143.63715590024367,
+        "head": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
+        "stdout": "{\n  \"status\": \"ORIGINAL_AGE_PERSTEP_PRIVATE_CALENDAR_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"9d86ac77b987d4f523840b576d184fe7c5619c23\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_CDE_CLOCK_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 320,\n  \"actual_native_private_refusals\": 600,\n  \"actual_policy_refusals\": 564,\n  \"actual_provider_refusals\": 12,\n  \"actual_1440_two_day_periods\": 8,\n  \"actual_1440_cold_windows\": 8,\n  \"actual_non_january_periods\": 24,\n  \"actual_epoch_cold_windows\": 96,\n  \"actual_postyear_counter_refusals\": 96,\n  \"actual_public_contexts\": 18,\n  \"actual_preserved_contexts\": 21,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    }
   },
   "next_age_groundwater_audit": {
     "status": "THREE_ACTUAL_ORIGINAL_AGE_GROUNDWATER_EXECUTIONS_PASS_CURRENT_PUBLIC_REFUSALS",
@@ -24800,5 +24819,16 @@
         "public_stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--age-direct-soil-source] [--age-irrigation-source]\n                    [--original-output]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Prescribed groundwater CDE trial receipt requires analytical daily no-frost/no-aquifer process history\n"
       }
     }
+  },
+  "age_groundwater": {
+    "status": "CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+    "baseline": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
+    "contract": "docs/science/NOMACRO_AGE_GROUNDWATER_20261119.md",
+    "source_audit": "integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_SOURCE_AUDIT.json",
+    "source_audit_runtime": "ef30cd72157d9a614ddacc10b7691040e28565fa",
+    "physical_equations_changed": false,
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "qualification": "NOT_RUN",
+    "invariants": "Strict water/AGE conservation; actual prescribed saturated-tail reaction; atomic native carry/rollback/restart; immutable source and provider identities."
   }
 }
