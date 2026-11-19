@@ -1,6 +1,7 @@
 """Actual original output/calendar composed with extended drainage state."""
 import argparse
 import json
+import hashlib
 import re
 from pathlib import Path
 import subprocess
@@ -45,6 +46,8 @@ def fixture(case,output,mode,fmt,nprint,age=False):
             crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
     text+='\nFLPRINTDT = '+('.TRUE.' if mode=='perstep' else '.FALSE.')+'\n'
     path.write_text(text,encoding='cp1252')
+    info['pre_output_input_inventory']=info['inputs']
+    info['inputs']={file.name:hashlib.sha256(file.read_bytes()).hexdigest() for file in sorted(output.iterdir()) if file.is_file()}
     return info
 
 
@@ -74,8 +77,9 @@ def main():
     p.add_argument('--mode',choices=('daily','subdaily','monthly','terminal','perstep','explicit','combined'),required=True)
     p.add_argument('--age',action='store_true')
     p.add_argument('--reuse-build',type=Path)
-    p.add_argument('--format',type=int,choices=(1,2,3),default=3)
-    p.add_argument('--days',type=int,choices=(5,35,1096),default=5)
+    p.add_argument('--nprintday',type=int)
+    p.add_argument('--format',type=int,choices=(0,1,2,3),default=3)
+    p.add_argument('--days',type=int,choices=(2,5,35,1096),default=5)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
     a=p.parse_args();a.output.mkdir()
@@ -85,7 +89,7 @@ def main():
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,3 if a.mode=='subdaily' else 1,a.age)
+        q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,a.nprintday if a.nprintday is not None else (3 if a.mode=='subdaily' else 1),a.age)
         project=m.e.load(a.output/'input',original_output=True);build=a.reuse_build or a.build_root/a.case
         q.update(input_root=str(a.output/'input'),build_root=str(build),output_selection=original_output.selection(project));save()
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,
@@ -98,7 +102,7 @@ def main():
             start=time.monotonic();r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
             (a.output/'build.stdout').write_text(r.stdout);(a.output/'build.stderr').write_text(r.stderr)
             q['build']=dict(command=command,returncode=r.returncode,seconds=time.monotonic()-start);save();r.check_returncode()
-        windows=[(2,4)]
+        windows=[(1,2)] if a.days==2 else [(2,4)]
         if a.days>=35:windows += [(14,17),(30,35)]
         if a.days==1096:windows += [(363,367),(530,532),(1094,1096)]
         full=a.output/'trajectory'

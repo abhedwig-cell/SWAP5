@@ -136,7 +136,7 @@ def selected_input(path):
     requested=0 if monthly else int(one('PERIOD'));reset=0 if monthly else int(one('SWRES'));dates=0 if monthly else int(one('SWODAT'))
     return dict(kind={0:'water',1:'cde',2:'age'}[solute],swcsv=fmt,nprintday=npd,swmonth=monthly,swodat=dates,swres=reset,
                 requested_period=requested,period=1 if npd>1 or step else requested,flprintdt=step,
-                groups=one('INLIST_CSV',r"'[^']*'")[1:-1],num_decimals=int(one('NUM_DECIMALS')))
+                groups=one('INLIST_CSV',r"'[^']*'")[1:-1] if fmt else None,num_decimals=int(one('NUM_DECIMALS')) if fmt else None)
 
 
 class ActualFiles:
@@ -154,6 +154,8 @@ def audit_root(root,compiled_root=None):
     actual_build=(compiled/'BUILD.json').read_bytes()
     require(len(data)==q['parameters']['days'] and q['trajectory']['build_sha256']==hashlib.sha256(actual_build).hexdigest() and json.loads(actual_build)==build,'Censored or rebound actual calendar period')
     dz=geometry((root/'input/swap.swp').read_text(encoding='cp1252'));require(len(dz)==build['project']['nodes'],'Original calendar soil geometry differs')
+    for name,digest in build['inputs'].items():
+        require(Path(name).name==name and hashlib.sha256((root/'input'/name).read_bytes()).hexdigest()==digest,'Actual final original input/build bytes differ')
     levels=build['identity']['extended_drainage']['domain'][2]
     def check_directory(directory,rows):
         result=inventory(rows);observed((directory/'original/donor.stdout').read_bytes(),rows,build)
