@@ -1,5 +1,5 @@
 """Real original microscopic API with exported actual initialized input carry."""
-from pathlib import Path
+from pathlib import Path,PureWindowsPath
 import argparse,base64,hashlib,json,os,subprocess,sys,time
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -44,7 +44,7 @@ def main():
    for path in before:selected.update(lookup[symbol] for symbol in undefined[path] if symbol in lookup)
    if selected==before:break
   original=ref/'swap-selected/RWU_micro.f90';baseline=micro_lookup_state.render(original.read_text(encoding='cp1252'))
-  actual=Path(inputs['raw_original_stdout']).parents[2]/'build/RWU_micro.f90'
+  actual=Path(PureWindowsPath(inputs['raw_original_stdout']).as_posix()).parents[2]/'build/RWU_micro.f90'
   if actual.exists():assert actual.read_text(encoding='cp1252')==baseline and sha(actual)==inputs['actual_generated_micro_sha256']
   q.update(original_source_sha256=sha(original),fixture_sha256=sha(fixture),crop_sha256=sha(crop),driver_sha256=sha(driver),numerical_owner_sha256=sha(Path(correction.__file__)),original_lookup_owner_sha256=sha(Path(micro_lookup_state.__file__)),original_input_provenance=inputs|{'fields':{'actual_clock':data['META'][-1]}},object_count=len(selected),actual_original_object_closure=[dict(name=f.name,sha256=sha(f)) for f in sorted(selected)],closure_reason='Actual original public do_RWU_micro initialization and rate calls, original reader and original constitutive/table providers; restore exported initialized carry as explicit API input. No mock or copied physical equation.')
   flags=['gfortran','-'+a.optimization,'-ffree-line-length-none','-fcheck=all','-fimplicit-none','-finit-local-zero',*NO_MACRO_FP_FLAGS,'-I'+str(objects),'-I'+str(ref/'ttutil-obj')]
