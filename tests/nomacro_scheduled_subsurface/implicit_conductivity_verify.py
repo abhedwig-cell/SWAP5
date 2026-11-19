@@ -39,6 +39,7 @@ def physical(data):return [{k:v for k,v in row.items() if k not in ('column','re
 
 
 def numerical_policy(raw,mean):
+    require(type(mean) is int and 1<=mean<=6,'Original implicit mean domain differs')
     lines=raw.decode('cp1252').splitlines();heads=[i for i,line in enumerate(lines) if re.match(r'^\s*ORES\s+OSAT\b',line,re.I)];require(len(heads)==1,'Ambiguous actual original Mualem table');i=heads[0];names=lines[i].split('!',1)[0].upper().split();values=[]
     for line in lines[i+1:]:
         if re.match(r'^\s*\*\s*END OF TABLE',line,re.I):break
@@ -258,6 +259,9 @@ def scientific(q,archives,prior):
         elif kind=='compatibility':require(len(report['cases'])==3 and all(v['status']=='REFUSED_BEFORE_COMPILATION' and v['public_returncode']!=0 for v in report['cases'].values()),'Actual compatibility refusal missing')
         else:
             require(report['optimization']==location['optimization'] and report['floating_point_profile']==dict(id='gnu-x86_64-separate-ops-v1',flags=['-ffp-contract=off','-march=x86-64','-mtune=generic']),'Actual component optimization/arithmetic differs')
+            capsule=capsules[location['archive'],location['capsule_prefix']]
+            if 'driver_sha256' in report:require(any(item.get('sha256')==report['driver_sha256'] for name,item in capsule.items() if name.startswith('tests/nomacro_scheduled_subsurface/implicit') and name.endswith('_driver.f90')),'Actual component driver differs from its source producer')
+            if 'fixture_sha256' in report:require(any(item.get('sha256')==report['fixture_sha256'] for name,item in capsule.items() if name.startswith('tests/nomacro_scheduled_subsurface/implicit') and name.endswith('_inputs.json')),'Actual component input fixture differs from its source producer')
             if 'executions' in report:
                 require(len(report['executions'])==(1 if kind=='dry_lookup' else 2),'Actual original/corrected executions omitted')
                 for execution in report['executions']:require(execution['returncode']==0 and digest(z.read(pp+execution['mode']+'.f90'))==execution['actual_source_sha256'] and execution['native_seconds']>0,'Actual compiled component source/execution differs')
