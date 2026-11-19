@@ -1,6 +1,6 @@
 # Original AGE prescribed groundwater composition, 19 November 2026
 
-**Contract persisted before implementation; not qualified or admitted.**
+**Qualified bounded Windows/Ubuntu source; canonical admission pending.**
 
 Exact baseline is actual AGE perstep metadata ae88b7a53eb4ea66168b5728cb21c674989be95c. Its ordered parents/full qualified tree and clean detached owner pass in 143.63715590024367seconds.
 
@@ -27,3 +27,17 @@ The initial ordinary/history/perstep O0/O2 35day compositions complete with unch
 A deliberate ordinary private groundwater-level change was accepted by the first new loader/host, with no publication. The new-family host now compares actual typed h/level/soil-stock values with its accepted checkpoint receipt before starting the worker, and validates actual prepared/published bytes. The exact same bad bytes refuse on a current-source fresh build. This is a bounded new adapter validation correction, not proof of a broad historical physical defect. Hysteresis native state remains authoritative and its hydraulic witness must agree exactly.
 
 Retain the initial CLI descriptor/budget gate failure, native test-controller domain-name shadowing, and the initial same-byte probe against an old bundle that correctly failed its source guard. No old bundle or checkpoint is rebound, no physical equation changes, and all original payload bytes remain available.
+
+## Actual source qualification
+
+[Original AGE with prescribed groundwater](NOMACRO_AGE_GROUNDWATER_20261119.md) passes 24 complete 1,096-day Windows/Ubuntu O0/O2 periods, 264 main cold windows, eight two-day NPRINTDAY1440 cases and 24 nonJanuary periods with 96 cold windows. All 948 native, 564 policy, 24 provider and 96 postyear counter corruptions refuse. Eighteen public restart contexts and 42 selected prior AGE/CDE/groundwater seams pass. The registered independent owner and 17,254 evidence corruptions pass. Source qualification is complete; canonical admission remains pending. Whole functional closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
+Immutable runtime `11ef02b1eb6d6a6e49655219229a01a8a60748de` and seal `9a95176a9` bind eight original complete ZIP archives, totalling 478838907bytes. Main portable44450054465 and selected preservation44450860675 both finish SUCCESS. Each archive, every member, actual compiler input, generated source, executable, complete native payload and daily physical receipt is independently consumed. All files are below100MiB; no transport splitting or artifact normalization was needed.
+
+Five proof tests refuse17,254 actual corruptions:192 epoch/private,16,904 hydraulic/native/ledger/period/worker,19 raw identity,84 prior period censor and55 source/scope. The current proof passes in 123.89906350011006seconds; the registered root passes at `509d8028c28acf0a8f402173c213a280e9152953` in 216.14031539997086seconds. The retained negative branch `codex/nomacro-age-groundwater-negative01` at `f91dd25d07598a662c537ead9a54c9417901e1a2` changes the actual generated trial storage expression and is never merged. Both dirty and committed guards refuse before models.
+
+Retained independent-validator observations: ordinary nonstep primary initialization is dated the preceding day, whereas short output uses TSTART midnight. The literal original perstep gate abs(outdatint-t1900+dt)<1e-3 may emit AGE on a requested date or its preceding day; this is preserved. Real subdaily output also emits intermediate full-precision AGE states. Every such state receives the same8192epsilon balance check, and only the actual AGE_DAILY_RECEIPT frame supplies the daily receipt. Windows generated source bytes are CRLF while logical generator/template hashes use LF: both actual forms are checked without changing BUILD metadata.
+
+The first full owner correctly reached the early1440 evidence but assumed explicit input_root/build_root fields that those original reports omit. The validator now consumes their actual input/build members below the original proof root. All original reports, failed owner output, model bytes and guards remain unchanged. The second full root and repeated five proof tests pass on the persisted corrected owner.
+
+Fresh preservation selects42 actual seams, including prior AGE perstep/nonstep/corrected-source and CDE ordinary/history/groundwater/Snow paths. Every complete prior native payload remains exact; no codec projection or old checkpoint adoption is used. Unchanged named full campaigns remain NOT_SELECTED_IMPACT through literal early dispatch and unchanged physical sources, without a fresh-pass claim. Original Snow+AGE remains expressly forbidden. Unresolved original AGE profile differences and whole scientific equivalence remain unresolved. Actual source and metadata merge parents/full qualified tree/clean detached owner remain required.

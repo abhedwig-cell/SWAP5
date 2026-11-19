@@ -1592,7 +1592,7 @@
     }
   },
   "age_groundwater": {
-    "status": "SELECTED_CURRENT_SOURCE_WINDOWS_GATES_RUNNING_PORTABLE_PENDING",
+    "status": "BOUNDED_SOURCE_QUALIFICATION_PASS_CANONICAL_PENDING",
     "baseline": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
     "physical_equations_changed": false,
     "source_surface": [
@@ -2032,6 +2032,84 @@
         "completed_policy_refusals": 0,
         "error": null
       }
-    ]
+    ],
+    "actual_counts": {
+      "status": "ORIGINAL_AGE_GROUNDWATER_REACTION_PRIVATE_CALENDAR_NATIVE_ADMISSION_PASS",
+      "runtime": "11ef02b1eb6d6a6e49655219229a01a8a60748de",
+      "predecessor": "LITERAL_ACTUAL_CANONICAL_AGE_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS",
+      "actual_full_periods": 24,
+      "actual_main_cold_windows": 264,
+      "actual_native_private_refusals": 948,
+      "actual_policy_refusals": 564,
+      "actual_provider_refusals": 24,
+      "actual_1440_two_day_periods": 8,
+      "actual_1440_cold_windows": 8,
+      "actual_non_january_periods": 24,
+      "actual_epoch_cold_windows": 96,
+      "actual_postyear_counter_refusals": 96,
+      "actual_public_contexts": 18,
+      "actual_preserved_contexts": 42,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "actual_registered_owner": {
+      "head": "509d8028c28acf0a8f402173c213a280e9152953",
+      "elapsed_seconds": 216.14031539997086,
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"ORIGINAL_AGE_GROUNDWATER_REACTION_PRIVATE_CALENDAR_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"11ef02b1eb6d6a6e49655219229a01a8a60748de\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_AGE_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 264,\n  \"actual_native_private_refusals\": 948,\n  \"actual_policy_refusals\": 564,\n  \"actual_provider_refusals\": 24,\n  \"actual_1440_two_day_periods\": 8,\n  \"actual_1440_cold_windows\": 8,\n  \"actual_non_january_periods\": 24,\n  \"actual_epoch_cold_windows\": 96,\n  \"actual_postyear_counter_refusals\": 96,\n  \"actual_public_contexts\": 18,\n  \"actual_preserved_contexts\": 42,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    },
+    "actual_corruption_proof": {
+      "head": "509d8028c28acf0a8f402173c213a280e9152953",
+      "returncode": 0,
+      "elapsed_seconds": 123.89906350011006,
+      "stdout": "ACTUAL_AGE_GROUNDWATER_EPOCH_PRIVATE_CORRUPTIONS_REFUSED 192\nACTUAL_AGE_GROUNDWATER_NATIVE_LEDGER_PERIOD_WORKER_CORRUPTIONS_REFUSED 16904\nACTUAL_AGE_GROUNDWATER_ORIGINAL_RAW_CORRUPTIONS_REFUSED 19\nACTUAL_AGE_GROUNDWATER_PRIOR_PERIOD_CENSOR_CORRUPTIONS_REFUSED 84\nACTUAL_AGE_GROUNDWATER_SOURCE_SCOPE_CORRUPTIONS_REFUSED 55\n",
+      "stderr": ".....\n----------------------------------------------------------------------\nRan 5 tests in 123.273s\n\nOK\n"
+    },
+    "actual_wrong_source_control": {
+      "status": "ACTUAL_AGE_GROUNDWATER_DIRTY_AND_COMMITTED_WRONG_SOURCE_REFUSED",
+      "base": "d26bc3208125449473475bd3d901726899c56453",
+      "control_head": "f91dd25d07598a662c537ead9a54c9417901e1a2",
+      "branch": "codex/nomacro-age-groundwater-negative01",
+      "never_merge": true,
+      "dirty": {
+        "label": "actual dirty prescribed storage reaction source",
+        "head": "d26bc3208125449473475bd3d901726899c56453",
+        "seconds": 1.6487488998100162,
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 186, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\ordinary_reset_verify.py\", line 185, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\perstep_domain_verify.py\", line 195, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 235, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 255, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_perstep_verify.py\", line 245, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_groundwater_verify.py\", line 289, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty AGE admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_groundwater_verify.py\", line 31, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty AGE admission surface\n"
+      },
+      "committed": {
+        "label": "actual committed prescribed storage reaction source",
+        "head": "f91dd25d07598a662c537ead9a54c9417901e1a2",
+        "seconds": 0.997390900272876,
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 186, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\ordinary_reset_verify.py\", line 185, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\perstep_domain_verify.py\", line 195, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 235, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 255, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_perstep_verify.py\", line 245, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_groundwater_verify.py\", line 291, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'AGE production differs from qualified source')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-age-groundwater-guard-control\\tests\\nomacro_scheduled_subsurface\\age_groundwater_verify.py\", line 31, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: AGE production differs from qualified source\n"
+      }
+    },
+    "workflows": {
+      "main": {
+        "runtime": "95735dbb331914c48ea6730123eff110c5073e50",
+        "carrier": "2931ab778a56ef6211565d4c6574fb3a7b09feab",
+        "tree": "42bdcec96aac8eafe096d17f9bbaa466eb68e29b",
+        "branch": "codex/nomacro-age-groundwater-portable01",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44450054465,
+        "conclusion": "success"
+      },
+      "preservation": {
+        "runtime": "11ef02b1eb6d6a6e49655219229a01a8a60748de",
+        "carrier": "9e3aed46120587dd4472a6ff3cae703b20b9eb6c",
+        "tree": "d27ebc2bd44057b72665339d68ad3ffa0c1273f6",
+        "branch": "codex/nomacro-age-groundwater-preservation01",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44450860675,
+        "conclusion": "success"
+      }
+    }
   }
 }
