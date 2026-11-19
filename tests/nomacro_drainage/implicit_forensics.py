@@ -81,7 +81,9 @@ def audit_root(root,compiled_root=None):
     def check_directory(directory,rows):
         result=inventory(rows);observed((directory/'original/donor.stdout').read_bytes(),rows,build)
         actual_hydraulic=[list(map(float,line.split()[1:])) for line in (directory/'original/donor.stdout').read_text().splitlines() if line.startswith('HYBRID_HYDRAULIC ')]
-        require(len(actual_hydraulic)==len(rows) and all(values[1]==0 for values in actual_hydraulic),'Actual original bottom6 emitted nonzero bottom flux')
+        require(len(actual_hydraulic)==len(rows)+1,'Actual original hydraulic initial/day frame count changed')
+        require(all(values[1]==0 for values in actual_hydraulic),'Actual original bottom6 emitted nonzero bottom flux')
+        result['actual_zero_bottom_hydraulic_initial_and_day_frames']=len(actual_hydraulic)
         result['original_counter_segments']=audit(directory,levels)
         if 'age_state_cm_day' in rows[0]:age_observations(ActualFiles(directory),'',rows,build['project']['start_date'])
         return result
