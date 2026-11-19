@@ -120,8 +120,6 @@ def describe(directory, selected, original_output):
         raise ValueError('Unqualified extended drainage process composition')
     if selected.get('SWSOLU') not in (0,1) or selected.get('SWBOTB') != 6:
         raise ValueError('Extended drainage requires bounded water/CDE bottom6')
-    if original_output is True:
-        raise ValueError('Extended drainage original output/calendar composition is not yet implemented')
     directory = Path(directory)
     main = (directory/'swap.swp').read_text(encoding='cp1252')
     name = one(main,'DRFIL',r"'[^']+'").strip("'")
@@ -153,6 +151,9 @@ def selection(project):
 def enabled(project):return selection(project) is not None
 
 
+def magic(project):return b'S5EDO001' if project.original_output else MAGIC
+
+
 def domain(project):
     s = selection(project)
     return [1,project.nodes,s['levels'],s['swsrf'],s['swsec'],s['nrpri'],s['nrsec'],s['swdivd']]
@@ -178,7 +179,7 @@ def metadata(project):
                 positive_interception_renderer_sha256=sha(Path(__file__).with_name('extended_interception.py')),
                 exact_pond_scope='Original runoff() unchanged; exact linear outward solve or complete monotone original root bracket, with piecewise analytic tangent',
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
-                codec=MAGIC.decode(),domain=domain(project),bytes=size(project),
+                codec=magic(project).decode(),domain=domain(project),bytes=size(project),
                 ownership='Original MOD_drain dynamic values; exact rejected-trial restore, no new physical store',
                 physical_equations_changed=False,original_surfacewater_lf_sha256=SURFACE_SOURCE_LF_SHA256,
                 reference_defect_correction='Original positive storage is preserved; swstmax<=0 replaces lossy1e-7 dry cutoff',
@@ -199,7 +200,7 @@ def state_witness(tokens, project, day):
 def validate_candidate(raw, receipt, project):
     if not enabled(project):return
     length=size(project);expected=domain(project);count=(length-92)//16
-    if len(raw) < length+48 or raw[:8] != MAGIC:
+    if len(raw) < length+48 or raw[:8] != magic(project):
         raise ValueError('Foreign original extended drain codec')
     start=len(raw)-length
     header=struct.unpack_from('<8i',raw,start);copy=struct.unpack_from('<8i',raw,start+32)
@@ -258,7 +259,7 @@ def apply_build(output, donor_build, project, patched):
     last=text.index('    end subroutine hybrid_macro_checkpoint',first)
     body=text[first:last];codecs=re.findall(r"'(S5[A-Z0-9]{6})'",body)
     assert len(codecs)==2 and len(set(codecs))==1
-    body=body.replace(codecs[0],MAGIC.decode())
+    body=body.replace(codecs[0],magic(project).decode())
     old='      use MOD_grid, only: numnod';assert body.count(old)==1
     body=body.replace(old,'      use '+MODULE+',only:extended_drain_checkpoint\n'+old,1)
     for restoring,anchor in [('.true.','        read(unit,iostat=ios) trailing'),('.false.','      end if\n      close(unit)')]:

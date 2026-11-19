@@ -35,6 +35,9 @@ def selection(project):
     if project.solute and (nprint!=1 or monthly or dates or requested!=1 or perstep):
         raise ValueError('Original CDE output currently requires daily interval reset cadence')
     for key,value in dict(SWSNOW=0,SWBR=0,SWHYST=0,SWFROST=0,SWDRA=1,SWMETDETAIL=0).items():
+        if key=='SWDRA' and one(key)==2:
+            from extended_drainage import enabled as extended_drainage_enabled
+            if extended_drainage_enabled(project):continue
         if one(key)!=value:raise ValueError('Original output pilot currently excludes '+key)
     precision=one('NUM_DECIMALS',5) if fmt else None
     if precision is not None and not 5<=precision<=12:raise ValueError('Invalid original output precision')

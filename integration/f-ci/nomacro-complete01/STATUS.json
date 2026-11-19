@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-extended-drainage01",
-  "last_commit": "7b2b36e88e690c5f6f3f7bbf8e30e8a76b2c7778",
-  "status": "EXTENDED_DRAINAGE_COMPLETE_QUALIFIED_CURRENT_SOURCE_OWNER_PASS_CLEAN_DETACHED_ADMISSION_PENDING",
+  "branch": "codex/nomacro-extended-calendar01",
+  "last_commit": "0dd926f363c90976605d1ac3bc129354fcb6d364",
+  "status": "EXTENDED_DRAINAGE_PR1763_CHECKS_RUNNING_NEXT_OUTPUT_COMPOSITION_SMALL_PROTOTYPE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -333,7 +333,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "After canonical drainage admission, compose original-output/calendar and remaining existing process interactions using GAP_MATRIX dependency evidence.",
+  "next_code_change": "Validate new output codec layering and original integral calendar state over actual extended drainage, first daily CDE and subdaily water.",
   "recovery_point": "EXTENDED_DRAINAGE_SOURCE_ADMISSION.json",
   "external_blocker": null,
   "test_selection": {
@@ -424,7 +424,7 @@
     },
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
   },
-  "pr": 1699,
+  "pr": 1763,
   "qualified_source": "120d329b0b65ebbb0daa5d5a9ad5088400f8ddae",
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
@@ -436,7 +436,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Clean detached 22-pattern actual public owner; required PR checks; verify complete tree/parents and safely merge; immediately compose next historical output/calendar drainage block.",
+  "next_action": "Monitor actual PR1763 checks through safe merge; run selected next output composition small original O0/O2 contract and exact native/output seams. Do not repeat qualified drainage full periods for metadata.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -448,7 +448,7 @@
   "qualified_age_fixed_runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
   "qualified_age_fixed_ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
   "age_fixed_sealed_proof": "56ae017e413503891d6c1a9709d1c882f2a14edb",
-  "active_branch": "codex/nomacro-groundwater-water-calendar01",
+  "active_branch": "codex/nomacro-extended-calendar01",
   "canonical_baseline": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
   "calendar_results": {
     "source": "7943551d0",
@@ -878,7 +878,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-groundwater-water-calendar01",
+  "working_branch": "codex/nomacro-extended-calendar01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -30672,7 +30672,8 @@
     "full_periods": 16,
     "primary_cold_windows": 112,
     "table_cold_windows": 16,
-    "ubuntu_run": 44577404691
+    "ubuntu_run": 44577404691,
+    "clean_detached_owner": "EXTENDED_DRAINAGE_CLEAN_DETACHED_OWNER_V1.json"
   },
   "coverage_batch_report": {
     "fully_closed_historical_families": "UNKNOWN",
@@ -30684,5 +30685,24 @@
     "added": "Bounded original extended primary/secondary drainage, prescribed/fixed/automatic surfacewater water/CDE and exact native transaction ownership",
     "canonical_head": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
     "next_batch": "Original output/calendar and existing extended-drainage process compositions"
+  },
+  "extended_calendar_batch": {
+    "status": "DEVELOPMENT_NOT_QUALIFIED",
+    "classification": "B existing original process and existing calendar/native ownership composition",
+    "base": "0dd926f363c90976605d1ac3bc129354fcb6d364",
+    "prototype": [
+      "daily CDE original binary output",
+      "subdaily water original binary output"
+    ],
+    "source_audit": "Existing age_output_calendar._layout captures all original MOD_integral real values, including CQDRAIN/CQDRAININ/CQDRAINOUT and INQDRA active level/node dimensions. New physical state remains the admitted extended owner. No copied process or new store.",
+    "codec": "S5EDO001 composed original output plus final extended tail; compatibility S5EDR001 unchanged",
+    "selection": {
+      "changed_dependency": "Previously refused original output/calendar with existing SWDRA2 state owner; source/receipt and codec dispatch only",
+      "scientific_claim": "Actual soil/secondary/combined 1e-10 daily and exact native/output continuation; no whole claim",
+      "owner": "SWAP5-NOMACRO-COMPLETE01",
+      "expected_seconds_per_short_context": 90,
+      "prior_execution": "NONE",
+      "existing_evidence": "Sixteen drainage full periods/112primary native plus four short table periods/16native, and original calendar unchanged implementations. Full reruns not selected for first small composition contract."
+    }
   }
 }
