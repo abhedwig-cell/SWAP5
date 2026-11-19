@@ -1,6 +1,6 @@
 """Corrupt actual sealed native/receipt/input bytes; execute no models."""
 from pathlib import Path
-import copy,io,json,struct,tempfile,unittest,zipfile
+import copy,io,json,re,struct,tempfile,unittest,zipfile
 import implicit_conductivity_verify as owner
 import implicit_conductivity_forensics as p
 from age_groundwater_verify import geometry
@@ -69,7 +69,8 @@ class ActualEvidence(unittest.TestCase):
             else:self.refuse(lambda:p.water(data))
         expected=owner.numerical_policy(a['input'],3);self.assertEqual(expected,a['report']['numerical_policy'])
         for mean in [0,7,True]:self.refuse(lambda mean=mean:owner.numerical_policy(a['input'],mean))
-        self.refuse(lambda:owner.numerical_policy(a['input'].replace(b'ORES',b'FOREIGN',1),3))
+        bad,count=re.subn(rb'(?mi)^([ \t]*)ORES([ \t]+OSAT\b)',rb'\1FOREIGN\2',a['input'],count=1);self.assertEqual(count,1)
+        self.refuse(lambda:owner.numerical_policy(bad,3))
         raw=self.z.read(a['prefix']+'trajectory/original/donor.stdout');lines=raw.decode().splitlines();end=next(i for i,line in enumerate(lines) if line.startswith('HYBRID_DAY_RETURN '));index=max(i for i in range(end) if lines[i].startswith('HYBRID_SOLUTE_LEDGER '));parts=lines[index].split();parts[1]='999';lines[index]=' '.join(parts)
         self.refuse(lambda:p.original_observations('\n'.join(lines).encode(),a['data'],a['build']['project']['start_date']))
 
