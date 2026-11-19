@@ -933,6 +933,9 @@ end module plant_interface""")
         "driver": sha(driver),
         "host": sha(Path(__file__)),
     }
+    from implicit_conductivity import metadata as implicit_metadata
+    implicit_policy=implicit_metadata(project)
+    if implicit_policy is not None:build_identity['implicit_conductivity']=implicit_policy
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from age_groundwater_output import metadata as original_output_metadata

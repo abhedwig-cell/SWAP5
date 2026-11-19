@@ -91,7 +91,7 @@ def inspect(directory, *, original_output=None):
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1, 2}, 'SWHYST': {0, 1, 2},
                  'SWSNOW': {0, 1}, 'SWFROST': {0, 1}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
                  'SWTOPBHEA': {1, 2, 3, 4}, 'SWBOTBHEA': {1, 2}, 'SWCROP': {0, 1},
-                 'SWMETDETAIL': {0,1}, 'SWRUNON': {0,1}, 'SWKIMPL': {0},
+                 'SWMETDETAIL': {0,1}, 'SWRUNON': {0,1}, 'SWKIMPL': {0,1},
                  'SWPONDMX': {0,1}, 'SWIRFIX': {0, 1}, 'SWCSV': ({1} if original_output is False else {0,1,2,3})}
     mandatory.update(SWSOPHY={0, 1}, SWDRA={0, 1}, SWETR={0, 1},
                      SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWREDU={0, 1, 2},
@@ -124,7 +124,7 @@ def inspect(directory, *, original_output=None):
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
                    SWSP={0, 1}, SWDC={0, 1}, SWBR={0,1}, SWHEA={0, 1}, SWCALT={1,2},
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
-                   SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
+                   SWKIMPL={0,1}, SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},
                    SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1})
     if (selected['SWSOLU']==2 and selected.get('SWMONTH')==0 and selected.get('SWODAT')==0
@@ -258,6 +258,9 @@ def inspect(directory, *, original_output=None):
     report=dict(inputs=inputs, start_date=start, end_date=end, nodes=nodes,
                 solute=selected['SWSOLU']==1, selectors=selected, boundary=boundary)
     if selected['SWSOLU']==2:report['age']=True
+    from implicit_conductivity import selection as implicit_selection
+    implicit = implicit_selection(text, selected, boundary)
+    if implicit is not None:report['implicit_conductivity']=implicit
     return report
 
 
@@ -273,6 +276,8 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     if not isinstance(age_direct_soil_source,bool):raise ValueError('Direct soil age source mode must be boolean')
     if age_direct_soil_source and age_irrigation_source:raise ValueError('Select one explicit incoming-age source policy')
     report = inspect(directory,original_output=original_output)
+    if report.get('implicit_conductivity') and policy!=ORIGINAL_TIME_POLICY:
+        raise ValueError('Original implicit conductivity requires the original time-step policy')
     if report.get('age') and report['boundary']['SWBOTB']==1 and (age_irrigation_source or age_direct_soil_source):
         raise ValueError('Original AGE groundwater currently requires historical young-water source policy')
     if original_output:report={**report,'original_output_policy':'original-user-output-controls-v1'}
