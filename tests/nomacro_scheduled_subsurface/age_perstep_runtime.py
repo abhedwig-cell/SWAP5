@@ -1,5 +1,5 @@
 """Actual original AGE per-step composition and independent cold processes."""
-import argparse,csv,json,re,subprocess,sys,time,zipfile
+import argparse,csv,json,re,struct,subprocess,sys,time,zipfile
 from pathlib import Path
 from datetime import date,datetime,timedelta
 import age_fixed as fixed
@@ -9,6 +9,17 @@ from original_output_files import records,compare
 from age_perstep_output import metadata,magic
 
 m=fixed.m;ROOT=fixed.ROOT
+
+
+def calendar(raw,n):
+    candidates=[];start=raw.find(struct.pack('<3i',1,n,1))
+    while start>=0:
+        if start+160<=len(raw):
+            h=struct.unpack_from('<20i',raw,start);nr=h[3]
+            if nr>100 and start+160+16*nr<len(raw) and h==struct.unpack_from('<20i',raw,start+80):candidates.append((start,h,nr))
+        start=raw.find(struct.pack('<3i',1,n,1),start+1)
+    assert len(candidates)==1,candidates
+    return candidates[0]
 
 
 def age_outputs(full,data,project):
@@ -58,19 +69,28 @@ def main():
     p.add_argument('--mode',choices=('monthly','explicit','periodic','terminal'),default='explicit');p.add_argument('--hysteresis',type=int,choices=(0,1,2),default=0)
     p.add_argument('--format',type=int,choices=(0,1,2,3),default=3);p.add_argument('--reset',type=int,choices=(0,1),default=1);p.add_argument('--nprintday',type=int,default=1)
     p.add_argument('--source',choices=('point','interval','surface','sprinkler'),default='point');p.add_argument('--optimization',choices=('O0','O2'),required=True)
-    a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=out/'input';fixture(inputs,a.mode,a.hysteresis,a.format,a.reset,a.nprintday,a.source)
-    project=m.e.load(inputs,original_output=True);build=out/'build';q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),parameters=vars(a)|dict(output=str(out),reference_work=str(a.reference_work)),original_output=metadata(project),whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
+    p.add_argument('--phase',choices=('short','full','limit'),default='short');p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
+    a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=a.existing_input or out/'input'
+    if not a.existing_input:
+        fixture(inputs,a.mode,a.hysteresis,a.format,a.reset,a.nprintday,a.source)
+        if a.phase=='limit':
+            path=inputs/'fixed-irrigation.irg';s=path.read_text(encoding='cp1252');assert s.count('2002-01-05')==1;path.write_text(s.replace('2002-01-05','2002-01-01'),encoding='cp1252')
+    project=m.e.load(inputs,original_output=True);build=a.reuse_build or out/'build';q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),parameters={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},input_root=str(inputs),build_root=str(build),original_output=metadata(project),whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
     def save():(out/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
     try:
         cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--original-output','--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
-        t=time.perf_counter();r=subprocess.run(cmd,capture_output=True,text=True,timeout=180);q.update(build_returncode=r.returncode,build_seconds=time.perf_counter()-t);(out/'build.stdout').write_text(r.stdout,encoding='utf8');(out/'build.stderr').write_text(r.stderr,encoding='utf8');save();r.check_returncode()
+        if not a.reuse_build:
+            t=time.perf_counter();r=subprocess.run(cmd,capture_output=True,text=True,timeout=180);q.update(build_returncode=r.returncode,build_seconds=time.perf_counter()-t);(out/'build.stdout').write_text(r.stdout,encoding='utf8');(out/'build.stderr').write_text(r.stderr,encoding='utf8');save();r.check_returncode()
         meta,_=m.validate_bundle(build,a.reference_work,project);assert meta['identity']['conserved_original_age']['native_codec']==magic(project).decode()
-        full=out/'trajectory';q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,35,{2,4,8,30,34,35},90);save()
-        q['age_output']=age_outputs(full,data,project);q['cold']=[own(build,a.reference_work,project,full,data,s,e,out/f'own-{s}') for s,e in ((2,4),(4,8),(30,34))]
+        last={'short':35,'full':1096,'limit':2}[a.phase];windows=[(1,2)] if a.phase=='limit' else [(2,4),(4,8),(19,23),(30,34)]
+        if a.phase=='full':windows.extend([(199,201),(364,367),(530,532),(1094,1096)])
+        cuts={last,*(v for pair in windows for v in pair)};full=out/'trajectory';q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,last,cuts,120);save()
+        q['age_output']=age_outputs(full,data,project);q['cold']=[own(build,a.reference_work,project,full,data,s,e,out/f'own-{s}') for s,e in windows];save()
+        q['actual_fixed_input_cm']=sum(row['external_flux_cm'][3]+row['external_flux_cm'][5] for row in data);assert abs(q['actual_fixed_input_cm']-2.4)<=1e-10;save()
         q['maximum_age_tolerance_fraction']=max(abs(row[k])/row['age_tolerance_cm_day'] for row in data for k in ('age_soil_residual_cm_day','age_pond_residual_cm_day','age_combined_residual_cm_day'));assert q['maximum_age_tolerance_fraction']<=1
         assert all(row['age_state_cm_day'][5]==0 for row in data)
-        q['status']='ACTUAL_AGE_PERSTEP_SHORT_SOURCE_NATIVE_OUTPUT_PASS';print(q['status'],flush=True)
+        q['status']='ACTUAL_AGE_PERSTEP_'+a.phase.upper()+'_SOURCE_NATIVE_OUTPUT_PASS';print(q['status'],flush=True)
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
 
