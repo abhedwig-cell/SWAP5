@@ -68,7 +68,7 @@ def outward_pond_source(source):
     return source
 
 
-def strict_trial_build(output, donor_build, patched):
+def strict_trial_build(output, donor_build, patched, project):
     import implicit_conductivity_retry as retry
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252')
     old='   use hybrid_step_budget, only: projected_water_residual';assert text.count(old)==1
@@ -105,7 +105,11 @@ def strict_trial_build(output, donor_build, patched):
     path=output/'boundtop.f90'
     from extended_pond import render as converged_pond_source
     path.write_text(converged_pond_source(outward_pond_source(path.read_text(encoding='cp1252'))),encoding='cp1252')
-    (output/(TERMINAL_MODULE+'.f90')).write_text(terminal_source(),encoding='cp1252')
+    terminal=terminal_source()
+    if project.original_output:
+        from extended_output_receipt import terminal_source as output_terminal_source
+        terminal=output_terminal_source(TERMINAL_MODULE)
+    (output/(TERMINAL_MODULE+'.f90')).write_text(terminal,encoding='cp1252')
     if 'timecontrol' not in patched:patched.append('timecontrol')
     return patched
 
@@ -118,10 +122,10 @@ def describe(directory, selected, original_output):
                     SWHEA=1, SWCALT=2, SWKIMPL=0, SWMETDETAIL=0, SWBBCFILE=0)
     if any(selected.get(k) != v for k,v in required.items()) or selected.get('SWBR',0) != 0:
         raise ValueError('Unqualified extended drainage process composition')
+    if selected.get('SWSOLU')==2:
+        raise ValueError('Extended drainage AGE retained-age dry-pond closure is not qualified')
     if selected.get('SWSOLU') not in (0,1) or selected.get('SWBOTB') != 6:
         raise ValueError('Extended drainage requires bounded water/CDE bottom6')
-    if original_output is True:
-        raise ValueError('Extended drainage original output/calendar composition is not yet implemented')
     directory = Path(directory)
     main = (directory/'swap.swp').read_text(encoding='cp1252')
     name = one(main,'DRFIL',r"'[^']+'").strip("'")
@@ -153,6 +157,9 @@ def selection(project):
 def enabled(project):return selection(project) is not None
 
 
+def magic(project):return b'S5EDO001' if project.original_output else MAGIC
+
+
 def domain(project):
     s = selection(project)
     return [1,project.nodes,s['levels'],s['swsrf'],s['swsec'],s['nrpri'],s['nrsec'],s['swdivd']]
@@ -161,6 +168,12 @@ def domain(project):
 def size(project):
     s = selection(project)
     return 92+16*(11+3*s['levels']+s['levels']*project.nodes)
+
+
+def state_source_bytes(project):
+    if not project.original_output:return TEMPLATE.read_bytes()
+    from extended_output_receipt import state_source
+    return state_source(TEMPLATE.read_text(encoding='cp1252')).encode('cp1252')
 
 
 def metadata(project):
@@ -178,7 +191,8 @@ def metadata(project):
                 positive_interception_renderer_sha256=sha(Path(__file__).with_name('extended_interception.py')),
                 exact_pond_scope='Original runoff() unchanged; exact linear outward solve or complete monotone original root bracket, with piecewise analytic tangent',
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
-                codec=MAGIC.decode(),domain=domain(project),bytes=size(project),
+                **({'output_receipt_renderer_sha256':sha(Path(__file__).with_name('extended_output_receipt.py'))} if project.original_output else {}),
+                codec=magic(project).decode(),domain=domain(project),bytes=size(project),
                 ownership='Original MOD_drain dynamic values; exact rejected-trial restore, no new physical store',
                 physical_equations_changed=False,original_surfacewater_lf_sha256=SURFACE_SOURCE_LF_SHA256,
                 reference_defect_correction='Original positive storage is preserved; swstmax<=0 replaces lossy1e-7 dry cutoff',
@@ -199,7 +213,7 @@ def state_witness(tokens, project, day):
 def validate_candidate(raw, receipt, project):
     if not enabled(project):return
     length=size(project);expected=domain(project);count=(length-92)//16
-    if len(raw) < length+48 or raw[:8] != MAGIC:
+    if len(raw) < length+48 or raw[:8] != magic(project):
         raise ValueError('Foreign original extended drain codec')
     start=len(raw)-length
     header=struct.unpack_from('<8i',raw,start);copy=struct.unpack_from('<8i',raw,start+32)
@@ -213,6 +227,9 @@ def validate_candidate(raw, receipt, project):
             or not all(map(math.isfinite,values)) or min(values[2],values[4]) < 0 or values != witness
             or dict(adjustments=adjustments,values=list(values)) != receipt.get('extended_drainage_state')):
         raise ValueError('Original extended drain native state differs from accepted receipt')
+    if project.original_output:
+        from extended_output_receipt import validate_candidate as validate_output_candidate
+        validate_output_candidate(raw,receipt,project)
 
 
 def flux_witness(tokens, project, receipt, origin):
@@ -248,17 +265,31 @@ def flux_witness(tokens, project, receipt, origin):
 
 def apply_build(output, donor_build, project, patched):
     if not enabled(project):return patched
-    patched=strict_trial_build(output,donor_build,patched)
+    if project.original_output:
+        from original_output import selection as output_selection
+        selected_output=output_selection(project)
+        if selected_output['nprintday']>1 or selected_output['flprintdt']:
+            path=output/'integral.f90';text=path.read_text(encoding='cp1252')
+            old="if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'"
+            assert text.count(old)==1
+            path.write_text(text.replace(old,old.replace('swdra/=1','swdra/=2'),1),encoding='cp1252')
+    if project.original_output:
+        from extended_output_receipt import integral_terms
+        path=output/'integral.f90'
+        path.write_text(integral_terms(path.read_text(encoding='cp1252'),
+            (donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252'),
+            (donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')),encoding='cp1252')
+    patched=strict_trial_build(output,donor_build,patched,project)
     from extended_interception import render as positive_interception_source
     (output/'MOD_meteo.f90').write_text(positive_interception_source((donor_build/'swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')),encoding='cp1252')
-    (output/(MODULE+'.f90')).write_bytes(TEMPLATE.read_bytes())
+    (output/(MODULE+'.f90')).write_bytes(state_source_bytes(project))
     (output/'surfacewater.f90').write_text(surfacewater_source((donor_build/'swap-selected/surfacewater.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')
     first=text.index('    subroutine hybrid_macro_checkpoint(')
     last=text.index('    end subroutine hybrid_macro_checkpoint',first)
     body=text[first:last];codecs=re.findall(r"'(S5[A-Z0-9]{6})'",body)
     assert len(codecs)==2 and len(set(codecs))==1
-    body=body.replace(codecs[0],MAGIC.decode())
+    body=body.replace(codecs[0],magic(project).decode())
     old='      use MOD_grid, only: numnod';assert body.count(old)==1
     body=body.replace(old,'      use '+MODULE+',only:extended_drain_checkpoint\n'+old,1)
     for restoring,anchor in [('.true.','        read(unit,iostat=ios) trailing'),('.false.','      end if\n      close(unit)')]:
@@ -284,4 +315,8 @@ def apply_build(output, donor_build, project, patched):
     path.write_text(text,encoding='cp1252')
     # HeadCalc imports the selected MOD_top derivative; compile its actual
     # defining module before compiling the caller.
+    if project.original_output:
+        index=patched.index('integral')+1
+        return ['MOD_meteo',*patched[:index],TERMINAL_MODULE,MODULE,'surfacewater','boundtop',
+                *(name for name in patched[index:] if name not in ('boundtop','MOD_meteo'))]
     return ['MOD_meteo',TERMINAL_MODULE,MODULE,'surfacewater','boundtop',*(name for name in patched if name not in ('boundtop','MOD_meteo'))]

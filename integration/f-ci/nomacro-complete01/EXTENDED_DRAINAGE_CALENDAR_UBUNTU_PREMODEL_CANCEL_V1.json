@@ -1,0 +1,177 @@
+{
+  "run": 44596725698,
+  "reason": "Local actual compiled calendar refusal succeeds; test stderr matcher omitted original zero-period diagnostic. Cancel provider-stage jobs before any selected model to update only the test consumer; no physical source or full-period result invalidated.",
+  "actual_jobs_before_cancel": {
+    "total_count": 2,
+    "jobs": [
+      {
+        "id": 135816876805,
+        "run_id": 44596725698,
+        "workflow_name": "Original extended drainage output and AGE calendar qualification",
+        "head_branch": "codex/nomacro-extended-calendar01",
+        "run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/44596725698",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOUOUgWc8AAAAfn1ETBQ",
+        "head_sha": "2cc5c0edbda10cd601799fb5aca7d454896cdfa7",
+        "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/jobs/135816876805",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44596725698/job/135816876805",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-19T19:17:11Z",
+        "started_at": "2026-11-19T19:17:14Z",
+        "completed_at": null,
+        "name": "qualify (O0)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-19T19:17:15Z",
+            "completed_at": "2026-11-19T19:17:18Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-19T19:17:18Z",
+            "completed_at": "2026-11-19T19:17:25Z"
+          },
+          {
+            "name": "Preserve actual source and prepare original provider",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 3,
+            "started_at": "2026-11-19T19:17:25Z",
+            "completed_at": null
+          },
+          {
+            "name": "Qualify selected original calendar and AGE compositions",
+            "status": "pending",
+            "conclusion": null,
+            "number": 4,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Retain exact compiled bytes and original provider identity",
+            "status": "pending",
+            "conclusion": null,
+            "number": 5,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "pending",
+            "conclusion": null,
+            "number": 6,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "pending",
+            "conclusion": null,
+            "number": 12,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/check-runs/135816876805",
+        "labels": [
+          "ubuntu-26.04"
+        ],
+        "runner_id": 1000369358,
+        "runner_name": "GitHub Actions 1000369358",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 135816877323,
+        "run_id": 44596725698,
+        "workflow_name": "Original extended drainage output and AGE calendar qualification",
+        "head_branch": "codex/nomacro-extended-calendar01",
+        "run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/44596725698",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOUOUgWc8AAAAfn1EVCw",
+        "head_sha": "2cc5c0edbda10cd601799fb5aca7d454896cdfa7",
+        "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/jobs/135816877323",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44596725698/job/135816877323",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-19T19:17:11Z",
+        "started_at": "2026-11-19T19:17:13Z",
+        "completed_at": null,
+        "name": "qualify (O2)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-19T19:17:14Z",
+            "completed_at": "2026-11-19T19:17:15Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-19T19:17:15Z",
+            "completed_at": "2026-11-19T19:17:17Z"
+          },
+          {
+            "name": "Preserve actual source and prepare original provider",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 3,
+            "started_at": "2026-11-19T19:17:17Z",
+            "completed_at": null
+          },
+          {
+            "name": "Qualify selected original calendar and AGE compositions",
+            "status": "pending",
+            "conclusion": null,
+            "number": 4,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Retain exact compiled bytes and original provider identity",
+            "status": "pending",
+            "conclusion": null,
+            "number": 5,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "status": "pending",
+            "conclusion": null,
+            "number": 6,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "pending",
+            "conclusion": null,
+            "number": 12,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/check-runs/135816877323",
+        "labels": [
+          "ubuntu-26.04"
+        ],
+        "runner_id": 1000369359,
+        "runner_name": "GitHub Actions 1000369359",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

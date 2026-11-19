@@ -185,3 +185,16 @@ scientific equivalence NOT_QUALIFIED, global family/gap counts UNKNOWN and fixed
 RC3 unchanged. Complete clean detached source admission and required PR checks
 precede canonical integration. The next functional batch composes existing
 original-output/calendar processes with this state owner.
+
+
+## Actual canonical admission
+
+PR1763 admits the bounded drainage composition on actual canonical
+66d6297b1ac0462c9be17f8df3db10c1773d1595. Ordered parents are bc9271bcc
+and 0dd926f36; the complete d4b3322c588a3d2348c96eaa960766712b792bdb
+tree equals the qualified candidate. All48PR checks completed without failure.
+The actual clean detached22-pattern public owner passes in151.247505seconds
+with empty stderr and clean Git status including ignored files. The merge
+receipt is preserved with the next functional calendar batch. Earlier pending
+labels above remain qualification chronology. Whole closure remains PARTIAL,
+science NOT_QUALIFIED, global family/gap counts UNKNOWN and fixed RC3 unchanged.

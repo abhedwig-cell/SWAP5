@@ -1536,7 +1536,7 @@ class DailyHost:
             budget['extended_drainage_state']=extended_witness(response.get('HYBRID_EXTENDED_DRAIN_STATE',[]),self.project,day)
             from extended_drainage import flux_witness as extended_flux_witness
             budget['surfacewater']=extended_flux_witness(response.get('HYBRID_EXTENDED_DRAIN_FLUX',[]),self.project,budget,current.extended_drainage_state)
-            if committed and checkpoint:validate_extended((current.directory/'macro.bin').read_bytes(),budget,self.project)
+            if committed and checkpoint:validate_extended((current.directory/'macro.bin').read_bytes(),{**budget,**solute_budget},self.project)
         budget.update(solute_budget)
         if "HYBRID_BUDGET_RETRIES" in response:
             count, residual = response["HYBRID_BUDGET_RETRIES"]

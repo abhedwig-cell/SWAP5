@@ -1,0 +1,54 @@
+{
+  "status": "ACTUAL_COUNTER_SEGMENT_INDEPENDENT_AUDIT_AND_MUTANTS_PASS",
+  "original_stdout_sha256": "b4b45ce976a6229b53fdf01858388bfbc1aa17ec50c7abde62c27f8dbaaee55d",
+  "actual_contexts": {
+    "trajectory": {
+      "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+      "actual_days": 35,
+      "reset_segments": 106,
+      "maximum_transfer_difference_cm": 1.8041124150158794e-15,
+      "water_guard_cm": 1e-10,
+      "physical_equations_changed": false,
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "cold-2": {
+      "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+      "actual_days": 2,
+      "reset_segments": 6,
+      "maximum_transfer_difference_cm": 9.71445146547012e-17,
+      "water_guard_cm": 1e-10,
+      "physical_equations_changed": false,
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "cold-14": {
+      "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+      "actual_days": 3,
+      "reset_segments": 9,
+      "maximum_transfer_difference_cm": 5.759281940243e-16,
+      "water_guard_cm": 1e-10,
+      "physical_equations_changed": false,
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "cold-30": {
+      "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+      "actual_days": 5,
+      "reset_segments": 15,
+      "maximum_transfer_difference_cm": 1.7277845820728999e-15,
+      "water_guard_cm": 1e-10,
+      "physical_equations_changed": false,
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    }
+  },
+  "refused_actual_raw_mutants": {
+    "reset_origin": "Reset observer changed its actual origin",
+    "reported_segment_total": "Actual original reset reconstruction differs",
+    "foreign_day_clock": "Foreign reset clock/shape",
+    "incomplete_final_shape": "Foreign final original counter shape",
+    "unobserved_nonzero_reset": "Actual original reset reconstruction differs",
+    "foreign_daily_transfer": "Original reset segments violate soil/surface transfer"
+  },
+  "initial_control_selection": "Deleting a zero-effect first reset was nondiscriminating and accepted; retained scratchv1 is not counted as a refused mutant. V2 removes an actual nonzero segment.",
+  "new_model_executions": 0,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED"
+}

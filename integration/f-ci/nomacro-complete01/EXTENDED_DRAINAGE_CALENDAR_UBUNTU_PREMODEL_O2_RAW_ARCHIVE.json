@@ -1,0 +1,21 @@
+{
+  "status": "ACTUAL_PROVIDER_STAGE_CANCELLED_BEFORE_SELECTED_MODELS",
+  "archive": "EXTENDED_DRAINAGE_CALENDAR_UBUNTU_PREMODEL_O2_RAW_ARCHIVE.zip",
+  "bytes": 4044380,
+  "sha256": "87bac5f0f00cc9f2e78924deca8ca71b453bf708e43d6bc42e4512ddcee8240e",
+  "origin_run": 44596725698,
+  "origin_artifact": 14565892007,
+  "producer_source": "2cc5c0edbda10cd601799fb5aca7d454896cdfa7",
+  "repacked": false,
+  "selected_model_step": "SKIPPED",
+  "actual_selected_model_periods": 0,
+  "actual_component_or_model_claim": false,
+  "members": {
+    "controller-source.tar": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source/RESULT.json": "4ddfe71958a93d585b0ede8e1d8be6e0b0856389c1f55992c6957d00dec57ff0",
+    "source/actual-producer-source.zip": "30c8da648e8b54e50ff6370aac27bff45cc55618dd02788fdefdff4d79e5eb05"
+  },
+  "member_count": 3,
+  "all_members_forward_verified": true,
+  "reason": "Actual native reader correctly rejected changed calendar day using original zero-period error; test consumer message whitelist corrected before Ubuntu selected models. Provider-phase cancellation and raw source artifacts retained."
+}

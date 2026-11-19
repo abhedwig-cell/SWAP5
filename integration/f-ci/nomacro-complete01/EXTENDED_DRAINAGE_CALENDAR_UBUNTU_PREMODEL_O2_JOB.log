@@ -1,0 +1,309 @@
+﻿2026-11-19T19:17:14.6453876Z Current runner version: '2.338.2'
+2026-11-19T19:17:14.6478323Z ##[group]Runner Image Provisioner
+2026-11-19T19:17:14.6479107Z Hosted Compute Agent
+2026-11-19T19:17:14.6479631Z Version: 20261103.629
+2026-11-19T19:17:14.6480238Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+2026-11-19T19:17:14.6480996Z Build Date: 2026-11-03T17:26:59Z
+2026-11-19T19:17:14.6481602Z Worker ID: {1cd916f7-b32b-4b8a-b39d-43c40d67dbce}
+2026-11-19T19:17:14.6482295Z Region: westus3
+2026-11-19T19:17:14.6482781Z Cloud: Azure
+2026-11-19T19:17:14.6483265Z ##[endgroup]
+2026-11-19T19:17:14.6484677Z ##[group]Operating System
+2026-11-19T19:17:14.6485220Z Ubuntu
+2026-11-19T19:17:14.6485901Z 26.04.1
+2026-11-19T19:17:14.6486373Z LTS
+2026-11-19T19:17:14.6486862Z ##[endgroup]
+2026-11-19T19:17:14.6487442Z ##[group]Runner Image
+2026-11-19T19:17:14.6488002Z Image: ubuntu-26.04
+2026-11-19T19:17:14.6488548Z Version: 20261111.196.1
+2026-11-19T19:17:14.6489705Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261111.196/images/ubuntu/Ubuntu2604-Readme.md
+2026-11-19T19:17:14.6491142Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261111.196
+2026-11-19T19:17:14.6491995Z ##[endgroup]
+2026-11-19T19:17:14.6493104Z ##[group]GITHUB_TOKEN Permissions
+2026-11-19T19:17:14.6494938Z Contents: read
+2026-11-19T19:17:14.6495556Z Metadata: read
+2026-11-19T19:17:14.6496229Z ##[endgroup]
+2026-11-19T19:17:14.6498745Z Secret source: Actions
+2026-11-19T19:17:14.6499581Z Cache mode: write
+2026-11-19T19:17:14.6500225Z Prepare workflow directory
+2026-11-19T19:17:14.6926127Z Prepare all required actions
+2026-11-19T19:17:14.6975059Z Getting action download info
+2026-11-19T19:17:14.9983265Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-19T19:17:15.1029850Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-19T19:17:15.2452279Z Complete job name: qualify (O2)
+2026-11-19T19:17:15.3226010Z ##[group]Run actions/checkout@v4
+2026-11-19T19:17:15.3226989Z with:
+2026-11-19T19:17:15.3228644Z   sparse-checkout: app
+src
+tools/solute
+tools/vq
+tests/nomacro_mixtures
+tests/nomacro_scheduled_subsurface
+tests/nomacro_drainage
+tests/saltfarm_newton
+reference/swap-4.3.1/projects
+reference/swap-4.3.1/source-archives
+reference/swap-4.3.1/patches
+
+2026-11-19T19:17:15.3230351Z   repository: abhedwig-cell/SWAP5
+2026-11-19T19:17:15.3237293Z   token: ***
+2026-11-19T19:17:15.3238212Z   ssh-strict: true
+2026-11-19T19:17:15.3238935Z   ssh-user: git
+2026-11-19T19:17:15.3239764Z   persist-credentials: true
+2026-11-19T19:17:15.3240291Z   clean: true
+2026-11-19T19:17:15.3240786Z   sparse-checkout-cone-mode: true
+2026-11-19T19:17:15.3241378Z   fetch-depth: 1
+2026-11-19T19:17:15.3241857Z   fetch-tags: false
+2026-11-19T19:17:15.3242332Z   show-progress: true
+2026-11-19T19:17:15.3242819Z   lfs: false
+2026-11-19T19:17:15.3243293Z   submodules: false
+2026-11-19T19:17:15.3243908Z   set-safe-directory: true
+2026-11-19T19:17:15.3244456Z   allow-unsafe-pr-checkout: false
+2026-11-19T19:17:15.3245470Z env:
+2026-11-19T19:17:15.3246282Z   OMP_NUM_THREADS: 1
+2026-11-19T19:17:15.3246851Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-19T19:17:15.3247403Z   PYTHONUTF8: 1
+2026-11-19T19:17:15.3247871Z ##[endgroup]
+2026-11-19T19:17:15.5744037Z Syncing repository: abhedwig-cell/SWAP5
+2026-11-19T19:17:15.5746084Z ##[group]Getting Git version info
+2026-11-19T19:17:15.5747251Z Working directory is '/home/runner/work/SWAP5/SWAP5'
+2026-11-19T19:17:15.5748769Z [command]/usr/bin/git version
+2026-11-19T19:17:15.5768157Z git version 2.56.1
+2026-11-19T19:17:15.5788307Z ##[endgroup]
+2026-11-19T19:17:15.5807498Z Temporarily overriding HOME='/home/runner/work/_temp/c510fd50-12d6-4d1f-8c95-e523312e3d8a' before making global git config changes
+2026-11-19T19:17:15.5809874Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-19T19:17:15.5814279Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/SWAP5/SWAP5
+2026-11-19T19:17:15.5872451Z Deleting the contents of '/home/runner/work/SWAP5/SWAP5'
+2026-11-19T19:17:15.5876278Z ##[group]Initializing the repository
+2026-11-19T19:17:15.5880315Z [command]/usr/bin/git init /home/runner/work/SWAP5/SWAP5
+2026-11-19T19:17:15.5970219Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-19T19:17:15.5972629Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-19T19:17:15.5974391Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-19T19:17:15.5975943Z hint: call:
+2026-11-19T19:17:15.5976766Z hint:
+2026-11-19T19:17:15.5977627Z hint: 	git config --global init.defaultBranch <name>
+2026-11-19T19:17:15.5978676Z hint:
+2026-11-19T19:17:15.5979630Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-19T19:17:15.5981141Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-19T19:17:15.5982531Z hint:
+2026-11-19T19:17:15.5983268Z hint: 	git branch -m <name>
+2026-11-19T19:17:15.5984170Z hint:
+2026-11-19T19:17:15.5985372Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-19T19:17:15.5987437Z Initialized empty Git repository in /home/runner/work/SWAP5/SWAP5/.git/
+2026-11-19T19:17:15.5997948Z [command]/usr/bin/git remote add origin https://github.com/abhedwig-cell/SWAP5
+2026-11-19T19:17:15.6034484Z ##[endgroup]
+2026-11-19T19:17:15.6036219Z ##[group]Disabling automatic garbage collection
+2026-11-19T19:17:15.6039318Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-19T19:17:15.6067944Z ##[endgroup]
+2026-11-19T19:17:15.6069082Z ##[group]Setting up auth
+2026-11-19T19:17:15.6075318Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-19T19:17:15.6104861Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-19T19:17:15.6498738Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-19T19:17:15.6532477Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-19T19:17:15.6764102Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-19T19:17:15.6794524Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-19T19:17:15.7022420Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-19T19:17:15.7060990Z ##[endgroup]
+2026-11-19T19:17:15.7062373Z ##[group]Fetching the repository
+2026-11-19T19:17:15.7073223Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin +2cc5c0edbda10cd601799fb5aca7d454896cdfa7:refs/remotes/origin/codex/nomacro-extended-calendar01
+2026-11-19T19:17:16.3341716Z From https://github.com/abhedwig-cell/SWAP5
+2026-11-19T19:17:16.3344680Z  * [new ref]         2cc5c0edbda10cd601799fb5aca7d454896cdfa7 -> origin/codex/nomacro-extended-calendar01
+2026-11-19T19:17:16.3369322Z ##[endgroup]
+2026-11-19T19:17:16.3371233Z ##[group]Determining the checkout info
+2026-11-19T19:17:16.3373077Z ##[endgroup]
+2026-11-19T19:17:16.3374809Z ##[group]Setting up sparse checkout
+2026-11-19T19:17:16.3379432Z [command]/usr/bin/git sparse-checkout set app src tools/solute tools/vq tests/nomacro_mixtures tests/nomacro_scheduled_subsurface tests/nomacro_drainage tests/saltfarm_newton reference/swap-4.3.1/projects reference/swap-4.3.1/source-archives reference/swap-4.3.1/patches
+2026-11-19T19:17:16.3404799Z ##[endgroup]
+2026-11-19T19:17:16.3406557Z ##[group]Checking out the ref
+2026-11-19T19:17:16.3412401Z [command]/usr/bin/git checkout --progress --force -B codex/nomacro-extended-calendar01 refs/remotes/origin/codex/nomacro-extended-calendar01
+2026-11-19T19:17:17.7365444Z Updating files:   0% (1/1461)
+2026-11-19T19:17:17.7373382Z Updating files:   1% (15/1461)
+2026-11-19T19:17:17.7391739Z Updating files:   2% (30/1461)
+2026-11-19T19:17:17.7401199Z Updating files:   3% (44/1461)
+2026-11-19T19:17:17.7409025Z Updating files:   4% (59/1461)
+2026-11-19T19:17:17.7420965Z Updating files:   5% (74/1461)
+2026-11-19T19:17:17.7430438Z Updating files:   6% (88/1461)
+2026-11-19T19:17:17.7440555Z Updating files:   7% (103/1461)
+2026-11-19T19:17:17.7455255Z Updating files:   8% (117/1461)
+2026-11-19T19:17:17.7474793Z Updating files:   9% (132/1461)
+2026-11-19T19:17:17.7484471Z Updating files:  10% (147/1461)
+2026-11-19T19:17:17.7491879Z Updating files:  11% (161/1461)
+2026-11-19T19:17:17.7499219Z Updating files:  12% (176/1461)
+2026-11-19T19:17:17.7509336Z Updating files:  13% (190/1461)
+2026-11-19T19:17:17.7516732Z Updating files:  14% (205/1461)
+2026-11-19T19:17:17.7524923Z Updating files:  15% (220/1461)
+2026-11-19T19:17:17.7530841Z Updating files:  16% (234/1461)
+2026-11-19T19:17:17.7538323Z Updating files:  17% (249/1461)
+2026-11-19T19:17:17.7556131Z Updating files:  18% (263/1461)
+2026-11-19T19:17:17.7566651Z Updating files:  19% (278/1461)
+2026-11-19T19:17:17.7577475Z Updating files:  20% (293/1461)
+2026-11-19T19:17:17.7591926Z Updating files:  21% (307/1461)
+2026-11-19T19:17:17.7618254Z Updating files:  22% (322/1461)
+2026-11-19T19:17:17.7624083Z Updating files:  23% (337/1461)
+2026-11-19T19:17:17.7631348Z Updating files:  24% (351/1461)
+2026-11-19T19:17:17.7637263Z Updating files:  25% (366/1461)
+2026-11-19T19:17:17.7644678Z Updating files:  26% (380/1461)
+2026-11-19T19:17:17.7655567Z Updating files:  27% (395/1461)
+2026-11-19T19:17:17.7660858Z Updating files:  28% (410/1461)
+2026-11-19T19:17:17.7666037Z Updating files:  29% (424/1461)
+2026-11-19T19:17:17.7672539Z Updating files:  30% (439/1461)
+2026-11-19T19:17:17.7680284Z Updating files:  31% (453/1461)
+2026-11-19T19:17:17.7690274Z Updating files:  32% (468/1461)
+2026-11-19T19:17:17.7694056Z Updating files:  33% (483/1461)
+2026-11-19T19:17:17.7699708Z Updating files:  34% (497/1461)
+2026-11-19T19:17:17.7707409Z Updating files:  35% (512/1461)
+2026-11-19T19:17:17.7712939Z Updating files:  36% (526/1461)
+2026-11-19T19:17:17.7722167Z Updating files:  37% (541/1461)
+2026-11-19T19:17:17.7728527Z Updating files:  38% (556/1461)
+2026-11-19T19:17:17.7737502Z Updating files:  39% (570/1461)
+2026-11-19T19:17:17.7742771Z Updating files:  40% (585/1461)
+2026-11-19T19:17:17.7750351Z Updating files:  41% (600/1461)
+2026-11-19T19:17:17.7758640Z Updating files:  42% (614/1461)
+2026-11-19T19:17:17.7766324Z Updating files:  43% (629/1461)
+2026-11-19T19:17:17.7774442Z Updating files:  44% (643/1461)
+2026-11-19T19:17:17.7785201Z Updating files:  45% (658/1461)
+2026-11-19T19:17:17.7794877Z Updating files:  46% (673/1461)
+2026-11-19T19:17:17.7803510Z Updating files:  47% (687/1461)
+2026-11-19T19:17:17.7809571Z Updating files:  48% (702/1461)
+2026-11-19T19:17:17.7817732Z Updating files:  49% (716/1461)
+2026-11-19T19:17:17.7826940Z Updating files:  50% (731/1461)
+2026-11-19T19:17:17.7834132Z Updating files:  51% (746/1461)
+2026-11-19T19:17:17.7845074Z Updating files:  52% (760/1461)
+2026-11-19T19:17:17.7868721Z Updating files:  53% (775/1461)
+2026-11-19T19:17:17.7879235Z Updating files:  54% (789/1461)
+2026-11-19T19:17:17.7888941Z Updating files:  55% (804/1461)
+2026-11-19T19:17:17.7897100Z Updating files:  56% (819/1461)
+2026-11-19T19:17:17.7904504Z Updating files:  57% (833/1461)
+2026-11-19T19:17:17.7912892Z Updating files:  58% (848/1461)
+2026-11-19T19:17:17.7919707Z Updating files:  59% (862/1461)
+2026-11-19T19:17:17.7928208Z Updating files:  60% (877/1461)
+2026-11-19T19:17:17.7937548Z Updating files:  61% (892/1461)
+2026-11-19T19:17:17.7943617Z Updating files:  62% (906/1461)
+2026-11-19T19:17:17.7951762Z Updating files:  63% (921/1461)
+2026-11-19T19:17:17.7959542Z Updating files:  64% (936/1461)
+2026-11-19T19:17:17.7970159Z Updating files:  65% (950/1461)
+2026-11-19T19:17:17.7978843Z Updating files:  66% (965/1461)
+2026-11-19T19:17:17.7988443Z Updating files:  67% (979/1461)
+2026-11-19T19:17:17.7997073Z Updating files:  68% (994/1461)
+2026-11-19T19:17:17.8005590Z Updating files:  69% (1009/1461)
+2026-11-19T19:17:17.8014864Z Updating files:  70% (1023/1461)
+2026-11-19T19:17:17.8023693Z Updating files:  71% (1038/1461)
+2026-11-19T19:17:17.8031191Z Updating files:  72% (1052/1461)
+2026-11-19T19:17:17.8039433Z Updating files:  73% (1067/1461)
+2026-11-19T19:17:17.8046466Z Updating files:  74% (1082/1461)
+2026-11-19T19:17:17.8057901Z Updating files:  75% (1096/1461)
+2026-11-19T19:17:17.8064963Z Updating files:  76% (1111/1461)
+2026-11-19T19:17:17.8074398Z Updating files:  77% (1125/1461)
+2026-11-19T19:17:17.8083459Z Updating files:  78% (1140/1461)
+2026-11-19T19:17:17.8091020Z Updating files:  79% (1155/1461)
+2026-11-19T19:17:17.8096464Z Updating files:  80% (1169/1461)
+2026-11-19T19:17:17.8105607Z Updating files:  81% (1184/1461)
+2026-11-19T19:17:17.8111113Z Updating files:  82% (1199/1461)
+2026-11-19T19:17:17.8118658Z Updating files:  83% (1213/1461)
+2026-11-19T19:17:17.8127224Z Updating files:  84% (1228/1461)
+2026-11-19T19:17:17.8131733Z Updating files:  85% (1242/1461)
+2026-11-19T19:17:17.8142208Z Updating files:  86% (1257/1461)
+2026-11-19T19:17:17.8148166Z Updating files:  87% (1272/1461)
+2026-11-19T19:17:17.8153854Z Updating files:  88% (1286/1461)
+2026-11-19T19:17:17.8160049Z Updating files:  89% (1301/1461)
+2026-11-19T19:17:17.8166552Z Updating files:  90% (1315/1461)
+2026-11-19T19:17:17.8175306Z Updating files:  91% (1330/1461)
+2026-11-19T19:17:17.8181187Z Updating files:  92% (1345/1461)
+2026-11-19T19:17:17.8187016Z Updating files:  93% (1359/1461)
+2026-11-19T19:17:17.8195366Z Updating files:  94% (1374/1461)
+2026-11-19T19:17:17.8203590Z Updating files:  95% (1388/1461)
+2026-11-19T19:17:17.8210601Z Updating files:  96% (1403/1461)
+2026-11-19T19:17:17.8217126Z Updating files:  97% (1418/1461)
+2026-11-19T19:17:17.8222612Z Updating files:  98% (1432/1461)
+2026-11-19T19:17:17.8227275Z Updating files:  99% (1447/1461)
+2026-11-19T19:17:17.8227930Z Updating files: 100% (1461/1461)
+2026-11-19T19:17:17.8228241Z Updating files: 100% (1461/1461), done.
+2026-11-19T19:17:17.8361175Z Switched to a new branch 'codex/nomacro-extended-calendar01'
+2026-11-19T19:17:17.8365505Z branch 'codex/nomacro-extended-calendar01' set up to track 'origin/codex/nomacro-extended-calendar01'.
+2026-11-19T19:17:17.8374943Z ##[endgroup]
+2026-11-19T19:17:17.8417463Z [command]/usr/bin/git log -1 --format=%H
+2026-11-19T19:17:17.8439569Z 2cc5c0edbda10cd601799fb5aca7d454896cdfa7
+2026-11-19T19:17:17.8640045Z ##[group]Run mkdir -p "$RUNNER_TEMP/proof"
+2026-11-19T19:17:17.8640606Z [36;1mmkdir -p "$RUNNER_TEMP/proof"[0m
+2026-11-19T19:17:17.8641184Z [36;1mpython3 -B tests/nomacro_drainage/calendar_runtime.py --help > /dev/null[0m
+2026-11-19T19:17:17.8641896Z [36;1mpython3 -B tests/nomacro_drainage/calendar_forensics.py --help > /dev/null[0m
+2026-11-19T19:17:17.8642537Z [36;1mpython3 -B tests/nomacro_drainage/extended_controls.py --help > /dev/null[0m
+2026-11-19T19:17:17.8643287Z [36;1mpython3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"[0m
+2026-11-19T19:17:17.8644388Z [36;1mgit archive HEAD tests/nomacro_drainage tests/nomacro_scheduled_subsurface tests/nomacro_mixtures .github/workflows/nomacro-extended-calendar.yml > "$RUNNER_TEMP/proof/controller-source.tar"[0m
+2026-11-19T19:17:17.8645414Z [36;1mpython3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'[0m
+2026-11-19T19:17:17.8678615Z shell: /usr/bin/bash -e {0}
+2026-11-19T19:17:17.8678977Z env:
+2026-11-19T19:17:17.8679219Z   OMP_NUM_THREADS: 1
+2026-11-19T19:17:17.8679496Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-19T19:17:17.8679785Z   PYTHONUTF8: 1
+2026-11-19T19:17:17.8680044Z   PYTHONPATH: app/hybrid_water
+2026-11-19T19:17:17.8680322Z ##[endgroup]
+2026-11-19T19:17:18.8038295Z ACTUAL_SOURCE_BYTES_PRESERVED_WITH_SEPARATE_GIT_AND_LF_IDENTITY 1465 4102836
+2026-11-19T19:19:03.3114779Z ##[error]The operation was canceled.
+2026-11-19T19:19:03.3171512Z ##[group]Run import os,shutil
+2026-11-19T19:19:03.3171831Z [36;1mimport os,shutil[0m
+2026-11-19T19:19:03.3172084Z [36;1mfrom pathlib import Path[0m
+2026-11-19T19:19:03.3172498Z [36;1mroot=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)[0m
+2026-11-19T19:19:03.3172938Z [36;1mprovider=root/'provider/PREPARED.json'[0m
+2026-11-19T19:19:03.3173371Z [36;1mif provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')[0m
+2026-11-19T19:19:03.3173834Z [36;1mfor build in sorted((root/'builds').glob('*/*')):[0m
+2026-11-19T19:19:03.3174164Z [36;1m    if not build.is_dir():continue[0m
+2026-11-19T19:19:03.3174516Z [36;1m    target=proof/(build.parent.name+'-build');target.mkdir()[0m
+2026-11-19T19:19:03.3174889Z [36;1m    for path in sorted(build.iterdir()):[0m
+2026-11-19T19:19:03.3175495Z [36;1m        if path.is_file() and (path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.exe','.dll','.so')):[0m
+2026-11-19T19:19:03.3176450Z [36;1m            shutil.copyfile(path,target/path.name)[0m
+2026-11-19T19:19:03.3199451Z shell: /usr/bin/python {0}
+2026-11-19T19:19:03.3199729Z env:
+2026-11-19T19:19:03.3199920Z   OMP_NUM_THREADS: 1
+2026-11-19T19:19:03.3200147Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-19T19:19:03.3200381Z   PYTHONUTF8: 1
+2026-11-19T19:19:03.3200574Z ##[endgroup]
+2026-11-19T19:19:03.3575398Z ##[group]Run actions/upload-artifact@v4
+2026-11-19T19:19:03.3575950Z with:
+2026-11-19T19:19:03.3576273Z   name: extended-calendar-O2-2cc5c0edbda10cd601799fb5aca7d454896cdfa7
+2026-11-19T19:19:03.3576668Z   path: /home/runner/work/_temp/proof
+2026-11-19T19:19:03.3576916Z   retention-days: 30
+2026-11-19T19:19:03.3577127Z   if-no-files-found: warn
+2026-11-19T19:19:03.3577349Z   compression-level: 6
+2026-11-19T19:19:03.3577556Z   overwrite: false
+2026-11-19T19:19:03.3577774Z   include-hidden-files: false
+2026-11-19T19:19:03.3578009Z env:
+2026-11-19T19:19:03.3578232Z   OMP_NUM_THREADS: 1
+2026-11-19T19:19:03.3578471Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-19T19:19:03.3578696Z   PYTHONUTF8: 1
+2026-11-19T19:19:03.3578886Z ##[endgroup]
+2026-11-19T19:19:03.5215038Z (node:2478) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-19T19:19:03.5216499Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-19T19:19:03.5273794Z With the provided path, there will be 3 files uploaded
+2026-11-19T19:19:03.5279928Z Artifact name is valid!
+2026-11-19T19:19:03.5280489Z Root directory input is valid!
+2026-11-19T19:19:03.8950342Z Beginning upload of artifact content to blob storage
+2026-11-19T19:19:04.0712705Z (node:2478) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-19T19:19:04.7234846Z Uploaded bytes 4044380
+2026-11-19T19:19:04.7820538Z Finished uploading artifact content to blob storage!
+2026-11-19T19:19:04.7822409Z SHA256 digest of uploaded artifact zip is 87bac5f0f00cc9f2e78924deca8ca71b453bf708e43d6bc42e4512ddcee8240e
+2026-11-19T19:19:04.7824226Z Finalizing artifact upload
+2026-11-19T19:19:05.1723238Z Artifact extended-calendar-O2-2cc5c0edbda10cd601799fb5aca7d454896cdfa7.zip successfully finalized. Artifact ID 14565892007
+2026-11-19T19:19:05.1724721Z Artifact extended-calendar-O2-2cc5c0edbda10cd601799fb5aca7d454896cdfa7 has been successfully uploaded! Final size is 4044380 bytes. Artifact ID is 14565892007
+2026-11-19T19:19:05.1730832Z Artifact download URL: https://github.com/abhedwig-cell/SWAP5/actions/runs/44596725698/artifacts/14565892007
+2026-11-19T19:19:05.1943813Z Post job cleanup.
+2026-11-19T19:19:05.2808417Z [command]/usr/bin/git version
+2026-11-19T19:19:05.2856072Z git version 2.56.1
+2026-11-19T19:19:05.2900822Z Temporarily overriding HOME='/home/runner/work/_temp/e779bbb0-e848-416a-a0da-12d31a16ca35' before making global git config changes
+2026-11-19T19:19:05.2902327Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-19T19:19:05.2907236Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/SWAP5/SWAP5
+2026-11-19T19:19:05.2946339Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-19T19:19:05.2979619Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-19T19:19:05.3237725Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-19T19:19:05.3261211Z http.https://github.com/.extraheader
+2026-11-19T19:19:05.3272511Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-19T19:19:05.3304661Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-19T19:19:05.3594203Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-19T19:19:05.3649128Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-19T19:19:05.4019196Z Cleaning up orphan processes
+2026-11-19T19:19:05.4305627Z Terminate orphan process: pid (2432) (git)
+2026-11-19T19:19:05.4326176Z Terminate orphan process: pid (2433) (git)
+2026-11-19T19:19:05.4349237Z Terminate orphan process: pid (2434) (git)
+2026-11-19T19:19:05.4368802Z Terminate orphan process: pid (2435) (git-remote-https)
+2026-11-19T19:19:05.4454976Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+
