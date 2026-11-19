@@ -23,6 +23,16 @@ Original Newton iteration and rollback handle rejected trials. No physical
 store, flux, checkpoint, input or tolerance is repaired. Invariants3/4/7/13/21/23
 remain binding. Other configurations delegate literally.
 
+The first actual terminal-receipt run still refuses day364. Its diagnostic
+shows all28 projected terms exactly equal the refused day's published terms;
+the projection is correct. Original HeadCalc accepts an exhausted Newton trial
+at input DTMIN. The bounded composition therefore also reuses the already
+qualified strict implicit rollback/reduction implementation with its selector
+changed to this explicit weather domain. Only actual nonconvergence permits
+reduction below input DTMIN; the same original factor and8ULP clock floor
+remain binding. This is a numerical legacy correction, not a fallback after
+a rejected day. This extension remains unqualified until actually tested.
+
 Qualification must use the exact sealed H physical inputs, local O0/O2,
 the affected complete periods, independent daily ledgers and own native cold
 windows across day364 and crop/year boundaries. Prior unrelated periods are

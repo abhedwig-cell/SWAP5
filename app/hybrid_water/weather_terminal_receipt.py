@@ -54,11 +54,13 @@ def metadata(project):
         return None
     return dict(policy=POLICY, source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 template_sha256=hashlib.sha256(Path(__file__).with_name('terminal_water_receipt.f90').read_bytes()).hexdigest(),
+                retry_template_sha256=hashlib.sha256(Path(__file__).with_name('implicit_conductivity_retry.py').read_bytes()).hexdigest(),
+                minimum='Original factor may reduce below DTMIN only after nonconvergence; existing8ULP floor',
                 water_guard_cm=1e-10, physical_equations_changed=False,
                 ownership='Read-only original cumulative water receipt before terminal trial acceptance')
 
 
-def apply_build(output, project, patched):
+def apply_build(output, donor_build, project, patched):
     if not enabled(project):
         return patched
     (output / (MODULE + '.f90')).write_text(source(), encoding='cp1252')
@@ -74,5 +76,21 @@ def apply_build(output, project, patched):
                         '         if(tcum+dt>=1d0-1d-8)then\n'
                         '            if(abs(terminal_water_residual())>1d-10)flnonconv=.true.\n'
                         '         end if', 1)
-    path.write_text(text, encoding='cp1252')
+    # Original HeadCalc otherwise accepts exhausted Newton trials at DTMIN.
+    # Reuse the already qualified strict rollback/retry implementation while
+    # selecting only this explicit weather domain; do not change its owner.
+    import implicit_conductivity_retry as retry
+    rendered = retry.headcalc_source(text)
+    assert rendered.count('swmacro==0.and.swkimpl==1') == 1
+    rendered = rendered.replace('swmacro==0.and.swkimpl==1', 'swmacro==0.and.swkimpl==0')
+    path.write_text(rendered, encoding='cp1252')
+    path = output / 'timecontrol.f90'
+    original = (path if path.exists() else donor_build / 'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
+    rendered = retry.time_source(original)
+    assert rendered.count('swmacro==0.and.swkimpl==1') == 1
+    rendered = rendered.replace('swmacro==0.and.swkimpl==1', 'swmacro==0.and.swkimpl==0')
+    rendered = rendered.replace('Named implicit policy', 'Named detailed-weather policy').replace('implicit original', 'detailed-weather original').replace('Implicit original', 'Detailed-weather original')
+    path.write_text(rendered, encoding='cp1252')
+    if 'timecontrol' not in patched:
+        patched.append('timecontrol')
     return [MODULE, *patched]

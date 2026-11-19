@@ -886,7 +886,7 @@ end module plant_interface""")
     from implicit_finite_newton import apply_build as implicit_finite_build
     patched=implicit_finite_build(output,project,patched)
     from weather_terminal_receipt import apply_build as weather_terminal_build
-    patched=weather_terminal_build(output,project,patched)
+    patched=weather_terminal_build(output,donor_build,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
