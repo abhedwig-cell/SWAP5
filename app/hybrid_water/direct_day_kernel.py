@@ -124,17 +124,27 @@ class NativeDayKernel:
         elif self.stage == 4:
             if len(values) != self.nodes + 12:
                 raise ValueError('Incomplete candidate day state')
-            reply = (c.c_double * len(values))(*map(float, values))
-            result, status = (c.c_double * 4)(), c.c_int()
-            self.lib.dk_apply(self.handle, self.column, self.day, len(values), reply,
-                              result, c.byref(status))
-            self.checked(status, (0, 1))
-            key = 'DAILY_ACCEPTED' if status.value == 1 else 'DAILY_REFUSED'
-            self.queue.append((key, list(map(str, [self.column, self.day, int(result[0]),
-                                                   result[1], result[2]]))))
-            self.stage = 3
+            self.submit(tuple(map(float, values)))
         else:
             raise ValueError('Invalid direct day kernel lifecycle')
+
+    def submit(self, values):
+        """Consume the existing binary64 reply without a decimal round trip."""
+        if self.cancelled:
+            raise TimeoutError('Direct day kernel cancelled')
+        if self.done or self.stage != 4:
+            raise ValueError('Invalid direct day kernel reply lifecycle')
+        if len(values) != self.nodes + 12:
+            raise ValueError('Incomplete candidate day state')
+        reply = (c.c_double * len(values))(*values)
+        result, status = (c.c_double * 4)(), c.c_int()
+        self.lib.dk_apply(self.handle, self.column, self.day, len(values), reply,
+                          result, c.byref(status))
+        self.checked(status, (0, 1))
+        key = 'DAILY_ACCEPTED' if status.value == 1 else 'DAILY_REFUSED'
+        self.queue.append((key, list(map(str, [self.column, self.day, int(result[0]),
+                                               result[1], result[2]]))))
+        self.stage = 3
 
     def receive(self, prefixes):
         if self.cancelled:
