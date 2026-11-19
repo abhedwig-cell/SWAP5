@@ -112,3 +112,91 @@ def period(root,z,prefix,opt,days,compiled_prefix=None):
     return result,build,rows
 
 
+
+def component(root,opt,provider):
+ q=json.loads((root/'RESULT.json').read_text())
+ require(q['status']=='ACTUAL_ORIGINAL_IMPLICIT_EXTENDED_POND_DERIVATIVE_AND_NONMUTATION_PASS' and q['optimization']==opt and q['actual_returncode']==0,'Actual real-original tangent component incomplete')
+ require(prior.digest((root/'boundtop.f90').read_bytes())==q['actual_source_sha256'] and prior.digest((root/'probe.exe').read_bytes())==q['executable_sha256'],'Actual tangent compiler/executable bytes differ')
+ require(all(provider['provider_files']['build/swap-obj/'+name]==value for name,value in q['original_objects'].items()),'Actual tangent original provider changed')
+ require(not (root/'actual.stderr').read_bytes() and all(v['returncode']==0 and '-'+opt in v['command'] and '-ffp-contract=off' in v['command'] for v in q['compile']),'Actual tangent compiler arithmetic/failure differs')
+ rows=[line.split() for line in (root/'actual.stdout').read_text().splitlines() if line.startswith('ACTUAL_IMPLICIT_POND_TANGENT ')]
+ require(len(rows)==40 and {tuple(map(int,v[1:4])) for v in rows}=={(t,b,k) for t in (1,2) for b in range(1,6) for k in range(1,5)},'Actual tangent numerical branch denominator changed')
+ import math
+ for row in rows:
+  partial,tangent,fd,error,old=map(float,row[4:]);require(all(math.isfinite(v) for v in (partial,tangent,fd,error,old)) and abs(fd-tangent)<=1e-8 and abs(error)<=1e-8,'Actual tangent central difference fails')
+  if row[3]=='1':require(tangent==old,'Actual fixed-K tangent limit differs')
+ require('ACTUAL_ORIGINAL_IMPLICIT_EXTENDED_POND_CHAIN_RULE_PASS 40' in (root/'actual.stdout').read_text(),'Actual nonmutation/component completion omitted')
+ return dict(actual_cases=40,derivative_probe_absolute_threshold=1e-8,mass_guards_unchanged=True)
+
+
+def phase_postimage(root,full,short,aliases):
+ a=aliases[full]['actual_build_prefix'];b=aliases[short]['actual_build_prefix'];now=root/a;old=root/b
+ build=json.loads((now/'BUILD.json').read_text());before=json.loads((old/'BUILD.json').read_text())
+ require({p.name:p.read_bytes() for p in now.glob('*.f90')}=={p.name:p.read_bytes() for p in old.glob('*.f90')},'Implicit short/full generated numerical source changed')
+ require(build['inputs']==before['inputs'] and build['project']==before['project'],'Implicit short/full input changed')
+ changed=differences(before['identity'],build['identity']);require(set(changed)<={'implicit_conductivity.source_sha256','restart_publisher.library_sha256'},'Implicit short/full compiler/provider changed')
+ if 'restart_publisher.library_sha256' in changed:publisher_equivalence(old/'restart_publish.dll',now/'restart_publish.dll')
+ data=prior.lines((root/full/'trajectory/daily.jsonl').read_bytes());shortdata=prior.lines((root/short/'trajectory/daily.jsonl').read_bytes());require(prior.physical(data[:35])==prior.physical(shortdata),'Implicit selector-only source phase changed actual physical results')
+ for day in (2,4,14,17,30,35):require(prior.package((root/full/f'trajectory/accepted-column-1-day-{day}.zip').read_bytes())[1]==prior.package((root/short/f'trajectory/accepted-column-1-day-{day}.zip').read_bytes())[1],'Implicit selector-only source phase changed native bytes')
+ return dict(exact_days=35,exact_native_days=[2,4,14,17,30,35],changed_source_roles=changed)
+
+
+def nonselected(root,z,opt,proof,aliases):
+ import history_forensics,calendar_forensics
+ reports={}
+ with zipfile.ZipFile(proof/f'EXTENDED_DRAINAGE_HISTORY_WINDOWS_{opt}_RAW_ARCHIVE.zip') as old:
+  before_aliases=json.loads(old.read('ACTUAL_COMPILED_ALIASES.json'))['profiles']
+  for case,h in [('water',0),('automatic',0),('water',1),('automatic',2)]:
+   prefix=f'off-{case}-h{h}';oldprefix='off-'+case if h==0 else 'current-'+('water' if case=='water' else 'cde');bp=aliases[prefix]['actual_build_prefix'];obp=before_aliases[oldprefix]['actual_build_prefix']
+   build=json.loads(z.read(bp+'/BUILD.json'));before=json.loads(old.read(obp+'/BUILD.json'));prior.build_files(z,bp+'/',build)
+   expected={name[len(obp+'/'):]:old.read(name) for name in old.namelist() if name.startswith(obp+'/') and '/' not in name[len(obp+'/'):] and name.endswith('.f90')}
+   require(expected=={p.name:p.read_bytes() for p in (root/bp).glob('*.f90')},'Implicit-off actual Fortran changed')
+   require(build['inputs']==before['inputs'] and build['project']==before['project'],'Implicit-off actual input/project changed')
+   changed=differences(before['identity'],build['identity']);require(set(changed)<={'extended_drainage.source_sha256','experimental_input_adapter','restart_publisher.library_sha256'},'Implicit-off provider/compiler changed')
+   if 'restart_publisher.library_sha256' in changed:
+    with __import__('tempfile').TemporaryDirectory() as temporary:
+     previous=Path(temporary)/'before.dll';previous.write_bytes(old.read(obp+'/restart_publish.dll'));publisher_equivalence(previous,root/bp/'restart_publish.dll')
+   rows=prior.lines(z.read(prefix+'/trajectory/daily.jsonl'));previous=prior.lines(old.read(oldprefix+'/trajectory/daily.jsonl'));require(len(rows)==(6 if h else 5) and prior.physical(rows)==prior.physical(previous),'Implicit-off actual physical prefix changed')
+   for day in (2,4):require(prior.package(z.read(prefix+f'/trajectory/accepted-column-1-day-{day}.zip'))[1]==prior.package(old.read(oldprefix+f'/trajectory/accepted-column-1-day-{day}.zip'))[1],'Implicit-off actual complete native changed')
+   reports[prefix]=(history_forensics if h else calendar_forensics).audit_root(root/prefix,root/bp)
+ return reports
+
+
+def windows(path,opt):
+ with extracted(path.with_name('EXTENDED_DRAINAGE_IMPLICIT_WINDOWS_SOURCE_RAW_ARCHIVE.zip')) as (sources,_):
+  cap=capsule(sources);shortcap=capsule(sources,'short-source');provider=json.loads((sources/'provider-PREPARED.json').read_text())
+ reports={}
+ with extracted(path) as (root,z):
+  aliases=json.loads(z.read('ACTUAL_COMPILED_ALIASES.json'))['profiles']
+  expected={'full-water','full-cde',*(f'short-{c}-h{h}' for c in ('water','automatic') for h in (0,1,2)),*(f'off-{c}-h{h}' for c,h in [('water',0),('automatic',0),('water',1),('automatic',2)]),'ordinary-s0-h0','ordinary-s1-h2'}
+  require(set(aliases)==expected,'Actual implicit profile/build inventory differs')
+  for prefix,item in aliases.items():
+   q=json.loads(z.read(prefix+'/RESULT.json'));raw=z.read(item['actual_build_prefix']+'/BUILD.json');require(prior.digest(raw)==item['actual_build_sha256']==q['trajectory']['build_sha256'] and item['producer_source']==q['source'],'Actual implicit source/build phase rebound')
+  for label,case,h in [('water','water',0),('cde','automatic',2)]:
+   prefix='full-'+label;bp=aliases[prefix]['actual_build_prefix'];report,build,rows=period(root,z,prefix,opt,1096,bp);source_binding(build,cap,provider)
+   report['controls']=controls(root,prefix,build,rows,cap,compiled_prefix=bp,control_name='controls-v1');report['short_full_postimage']=phase_postimage(root,prefix,f'short-{case}-h{h}',aliases);reports[prefix]=report
+  for case in ('water','automatic'):
+   for h in (0,1,2):
+    prefix=f'short-{case}-h{h}';report,build,_=period(root,z,prefix,opt,35,aliases[prefix]['actual_build_prefix']);source_binding(build,shortcap,provider);reports[prefix]=report
+  import implicit_zero_boundary_forensics as ordinary
+  for solu,h in [(0,0),(1,2)]:
+   prefix=f'ordinary-s{solu}-h{h}';bp=aliases[prefix]['actual_build_prefix'];build=json.loads(z.read(bp+'/BUILD.json'));prior.build_files(z,bp+'/',build);reports[prefix]=ordinary.audit(root/prefix,root/bp)
+   require(build['identity']['implicit_conductivity']['source_sha256']==cap['members']['app/hybrid_water/implicit_conductivity.py']['sha256'],'Actual ordinary boundary implicit source changed')
+  reports['explicit-off']=nonselected(root,z,opt,path.parent,aliases);reports['component']=component(root/'component',opt,provider)
+ return reports
+
+
+def ubuntu(path,opt):
+ record=json.loads(path.with_suffix('.json').read_text());require(record['repacked'] is False and record['origin_job_conclusion']=='success','Original Ubuntu implicit artifact repacked or not terminal success')
+ with extracted(path) as (root,z):
+  cap=capsule(root);provider=json.loads((root/'provider-PREPARED.json').read_text());reports={}
+  for label in ('water','cde'):
+   report,build,rows=period(root,z,label,opt,1096);source_binding(build,cap,provider);report['controls']=controls(root,label,build,rows,cap);reports[label]=report
+ return reports
+
+if __name__=='__main__':
+ import argparse
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('archive',type=Path);p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);p.add_argument('--output',type=Path,required=True)
+ a=p.parse_args();reports=(windows if a.platform=='Windows' else ubuntu)(a.archive,a.optimization)
+ with a.output.open('x') as stream:json.dump(dict(status='INDEPENDENT_ACTUAL_IMPLICIT_ARCHIVE_SOURCE_COMPILER_NATIVE_OBSERVATION_CONTROLS_PASS',reports=reports,model_executions=0,public_admission=False),stream,indent=2)
+ print('INDEPENDENT_IMPLICIT_ARCHIVE_PASS',a.platform,a.optimization)

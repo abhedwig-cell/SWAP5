@@ -1495,7 +1495,7 @@
     "next": "Separate explicit evaporation-age/dry-state semantics and qualified state owner; retain actual failure and original equations."
   },
   "coverage": {
-    "canonical_reconciled": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
+    "canonical_reconciled": "ff1db48993ab801dc38202540d68686baa4fd2a2",
     "authority": "This object extends existing GAP_MATRIX; STATUS.json remains sole recovery record. Existing26boundedfamily rows and original_integer_reader_calls are inherited, not recounted as full closure.",
     "denominator_status": "INCOMPLETE_VALID_CONFIGURATION_CONSTRAINT_RECONCILIATION",
     "full_historical_families_closed": "UNKNOWN",
@@ -1518,7 +1518,7 @@
           "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/headcalc.f90:208",
           "supported": "SWKIMPL0/1 and means1..6, original explicit limits retained"
         },
-        "current_availability": "Bounded water/CDE admitted on actual canonical b24dd2b7a via PR1759; exact parents/tree and clean detached owner PASS. No all-combinations closure claim.",
+        "current_availability": "Bounded water/CDE admitted on actual canonical b24dd2b7a via PR1759; exact parents/tree and clean detached owner PASS. No all-combinations closure claim. Extended SWDRA2 numerical composition now implemented;12short35day contexts, real tangent40cases/opt and Windows water1096 O0/O2 PASS, remaining selected full/native qualification pending. Ordinary SWDRA1 bottom6 four35day exact native contexts pass.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
         "missing_composition_or_guard": "Separate implicit AGE dryout and full mean6/history wetdry blockers retain their own rows.",
         "evidence_status": "BOUNDED_CANONICALLY_ADMITTED_WHOLE_NOT_QUALIFIED",
@@ -1834,17 +1834,18 @@
     "receipt": "EXTENDED_DRAINAGE_MERGE_RECEIPT.json"
   },
   "extended_drainage_original_calendar": {
-    "classification": "MISSING_COMPOSITION",
-    "implementation": "BOUNDED_IMPLEMENTED_QUALIFIED_FULL_PERIODS_CURRENT_POSTIMAGE_PENDING_CANONICAL",
+    "classification": null,
+    "implementation": "BOUNDED_CANONICALLY_ADMITTED_PR1764",
     "source": "17e41671c",
     "actual_selected_full_periods": 8,
     "actual_full_cold_windows": 48,
     "current_Windows": "O0/O2 actualsource/input/Fortran/native/physical exact35day pluspositiveCLI/transaction PASS",
-    "current_Ubuntu": "Pending selected35day preservation; old actual full artifacts all independently audited",
-    "remaining": "AGE dry-domain, implicit/hysteretic/weather/other bottom compositions",
+    "current_Ubuntu": "O0/O2 current35day postimages PASS; original sealed full periods inherited on exact numerical surface",
+    "remaining": "AGE dry-domain, broader weather/other bottom compositions; bounded hysteresis subsequently admittedPR1765; implicit batch now under qualification",
     "full_family_closed": "UNKNOWN",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
-    "RC3_changed": false
+    "RC3_changed": false,
+    "actual_canonical": "6a31bc718ed01480e573f5853bf3f5510ff40908"
   },
   "extended_drainage_AGE_dryout": {
     "classification": "NUMERICAL_FAILURE",
@@ -1858,5 +1859,32 @@
     "scope": "Selected actual original automatic primary/secondary geometry and100day initialsoilAGE; do not infer whole-family numerical counts.",
     "independent_of_water_CDE_qualification": true,
     "global_gap_counts": "UNKNOWN"
+  },
+  "extended_drainage_hydraulic_history": {
+    "classification": null,
+    "implementation": "BOUNDED_CANONICALLY_ADMITTED_PR1765",
+    "actual_canonical": "ff1db48993ab801dc38202540d68686baa4fd2a2",
+    "scope": "Original SWDRA2 water/CDE explicit output SWHYST1/2, all stated calendar/native/state evidence",
+    "actual_full_periods": 8,
+    "actual_primary_cold_windows": 48,
+    "full_family_closed": "UNKNOWN",
+    "whole_scientific_equivalence": "NOT_QUALIFIED"
+  },
+  "extended_drainage_implicit_composition": {
+    "classification": "MISSING_COMPOSITION",
+    "implementation": "IMPLEMENTED_SHORT_AND_WINDOWS_WATER_FULL_PASS_INTEGRATED_CAMPAIGN_RUNNING",
+    "source": "48f7b177040825e0f926d99370e32e89eb111f1e",
+    "scope": "Original SWDRA2 SWKIMPL1 bottom6 qbot0 water/CDE SWHYST0/1/2; supported Mualem KSATEXM=KSATFIT; new coupled conductivity/pond tangent",
+    "actual_short_extended_contexts": 12,
+    "actual_short_ordinary_zero_boundary_contexts": 4,
+    "actual_component_cases_per_optimization": 40,
+    "selected_full_periods": 8,
+    "actual_completed_full_periods": 2,
+    "actual_explicit_off_postimages": 8,
+    "remaining": "Complete selected CDE and Ubuntu full/native/transaction campaign and neutral source/raw admission; broader implicit mean/history/weather domains remain separate",
+    "AGE_admitted": false,
+    "examined_Ksat_admitted": false,
+    "full_family_closed": "UNKNOWN",
+    "whole_scientific_equivalence": "NOT_QUALIFIED"
   }
 }
