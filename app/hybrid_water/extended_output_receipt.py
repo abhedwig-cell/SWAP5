@@ -19,6 +19,10 @@ def validate_candidate(raw,receipt,project):
             if header[:4]==(1,n,r,expected_reals) and prefix[at:at+80]==prefix[at+80:at+160]:positions.append((at,header))
         at=prefix.find(marker,at+1)
     require(len(positions)==1,'calendar shape/witness differs');at,h=positions[0]
+    history=selection(project).get('swhyst',0)
+    if history:
+        expected=struct.pack('<5i',1,n,0,history,int(project.solute))
+        require(at>=40 and prefix[at-40:at]==expected+expected,'hydraulic history domain/witness differs')
     end=at+160+16*expected_reals
     extra=20+8*(3*n+41+r) if project.age else 24+16*(18+n) if project.solute else 0
     require(end+extra==len(prefix),'private section size differs')
