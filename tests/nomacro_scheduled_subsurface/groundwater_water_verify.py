@@ -193,8 +193,8 @@ def inheritance_verify(q,archives):
  return dict(compiled=3,prefixes=296)
 
 
-def verify():
- q=json.loads((ROOT/PROOF/'GROUNDWATER_WATER_QUALIFICATION.json').read_text(encoding='utf8'));source(q);archives={}
+def scientific(q):
+ archives={}
  for key,record in q['archives'].items():
   z=zipfile.ZipFile(io.BytesIO(old.raw_archive(record)));require(set(z.namelist())==set(record['members']),'Raw artifact member inventory changed')
   for name,value in record['members'].items():require(digest(z.read(name))==value,'Actual raw member changed: '+name)
@@ -223,6 +223,10 @@ def verify():
   dz=geometry(raw,build['project']['nodes']);data,colds=period(z,root,report,build,selected,dz,implicit,item['phase']);counts[item['phase']]+=1;counts['cold']+=colds;periods[(item['platform'],item['optimization'],item['name'],item['phase'])]=(z,root,report,build,selected,dz,data)
  controls=controls_verify(q,archives,caps,periods);inherit=inheritance_verify(q,archives)
  return dict(status='BOUNDED_GROUNDWATER_WATER_COMPLETE_STATE_CALENDAR_SOURCE_RAW_NATIVE_ADMISSION_PASS',runtime=RUNTIME,actual_full_periods=counts['full'],actual_short_periods=counts['short'],actual_two_day_1440_periods=counts['limit'],actual_complete_native_cold_windows=counts['cold']+controls['public'],actual_public_contexts=controls['public'],actual_native_refusals=controls['native'],actual_policy_refusals=controls['policy'],actual_prior_compiled_closures=inherit['compiled'],actual_prior_typed_prefixes=inherit['prefixes'],fresh_unaffected_model_periods=0,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',implicit_age_admission=False,weighted_history_full_admission=False)
+
+
+def verify():
+ q=json.loads((ROOT/PROOF/'GROUNDWATER_WATER_QUALIFICATION.json').read_text(encoding='utf8'));source(q);return scientific(q)
 
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
