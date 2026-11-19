@@ -155,6 +155,11 @@ def validate_bundle(bundle, reference, project):
     from implicit_conductivity_jacobian import metadata as implicit_jacobian_metadata
     if identity.get('implicit_conductivity_jacobian')!=implicit_jacobian_metadata(project):
         raise ValueError('Foreign exact original implicit-conductivity boundary Jacobian policy')
+    from implicit_pond_event import metadata as implicit_pond_metadata
+    if identity.get('implicit_pond_event')!=implicit_pond_metadata(project):
+        raise ValueError('Foreign original implicit pond event ownership policy')
+    if identity.get('implicit_pond_event') is not None and (bundle/'implicit_pond_event_state.f90').read_bytes()!=(h.APP/'implicit_pond_event_state.f90').read_bytes():
+        raise ValueError('Foreign actual original implicit pond event provider')
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source
