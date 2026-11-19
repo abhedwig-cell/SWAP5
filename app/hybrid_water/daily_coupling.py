@@ -152,6 +152,9 @@ def validate_bundle(bundle, reference, project):
     from implicit_conductivity_retry import metadata as implicit_retry_metadata
     if identity.get('implicit_conductivity_retry')!=implicit_retry_metadata(project):
         raise ValueError('Foreign explicit original implicit-conductivity retry policy')
+    from implicit_conductivity_jacobian import metadata as implicit_jacobian_metadata
+    if identity.get('implicit_conductivity_jacobian')!=implicit_jacobian_metadata(project):
+        raise ValueError('Foreign exact original implicit-conductivity boundary Jacobian policy')
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source
