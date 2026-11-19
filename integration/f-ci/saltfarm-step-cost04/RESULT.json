@@ -1,0 +1,396 @@
+{
+  "profile": [
+    {
+      "mode": "candidate",
+      "instrumented": true,
+      "days": 365,
+      "wall": 4.6941423998214304,
+      "cpu": {
+        "python": 0.734375,
+        "donor": {
+          "user": 2.34375,
+          "system": 0.46875
+        },
+        "kernel": {
+          "user": 0.0625,
+          "system": 0.09375
+        }
+      },
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 7.212113401280917e-09
+      },
+      "exact_physical_csv": true,
+      "exact_native109": true,
+      "folder": "C:\\SWAP5-testing\\saltfarm-step-cost04\\run0-candidate-clock",
+      "iterations": 28281,
+      "headcalc_calls": 9527,
+      "phases": {
+        "root": {
+          "calls": 9527,
+          "seconds": 0.2732226
+        },
+        "water_solve": {
+          "calls": 9527,
+          "seconds": 0.9559084
+        },
+        "water_update": {
+          "calls": 9527,
+          "seconds": 0.1285127
+        },
+        "heat": {
+          "calls": 9527,
+          "seconds": 0.0975969
+        },
+        "solute": {
+          "calls": 9527,
+          "seconds": 0.3503622
+        },
+        "integral_reset": {
+          "calls": 9527,
+          "seconds": 0.0057404
+        },
+        "meteo_step": {
+          "calls": 9527,
+          "seconds": 0.0052872
+        },
+        "time_prepare": {
+          "calls": 9527,
+          "seconds": 0.0006406
+        },
+        "bottom_boundary": {
+          "calls": 9527,
+          "seconds": 0.0106502
+        },
+        "drainage": {
+          "calls": 9527,
+          "seconds": 0.0901963
+        },
+        "integral_update": {
+          "calls": 9527,
+          "seconds": 0.0400215
+        },
+        "time_advance": {
+          "calls": 9527,
+          "seconds": 0.0055631
+        },
+        "output": {
+          "calls": 9527,
+          "seconds": 0.6740344
+        }
+      }
+    },
+    {
+      "mode": "candidate",
+      "instrumented": true,
+      "days": 365,
+      "wall": 4.6230537998490036,
+      "cpu": {
+        "python": 0.625,
+        "donor": {
+          "user": 2.6875,
+          "system": 0.515625
+        },
+        "kernel": {
+          "user": 0.125,
+          "system": 0.109375
+        }
+      },
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 7.212113401280917e-09
+      },
+      "exact_physical_csv": true,
+      "exact_native109": true,
+      "folder": "C:\\SWAP5-testing\\saltfarm-step-cost04\\run1-candidate-clock",
+      "iterations": 28281,
+      "headcalc_calls": 9527,
+      "phases": {
+        "root": {
+          "calls": 9527,
+          "seconds": 0.3081574
+        },
+        "water_solve": {
+          "calls": 9527,
+          "seconds": 1.018486
+        },
+        "water_update": {
+          "calls": 9527,
+          "seconds": 0.136409
+        },
+        "heat": {
+          "calls": 9527,
+          "seconds": 0.1038784
+        },
+        "solute": {
+          "calls": 9527,
+          "seconds": 0.3929314
+        },
+        "integral_reset": {
+          "calls": 9527,
+          "seconds": 0.0063545
+        },
+        "meteo_step": {
+          "calls": 9527,
+          "seconds": 0.0060589
+        },
+        "time_prepare": {
+          "calls": 9527,
+          "seconds": 0.0007388
+        },
+        "bottom_boundary": {
+          "calls": 9527,
+          "seconds": 0.0125326
+        },
+        "drainage": {
+          "calls": 9527,
+          "seconds": 0.1016143
+        },
+        "integral_update": {
+          "calls": 9527,
+          "seconds": 0.0479354
+        },
+        "time_advance": {
+          "calls": 9527,
+          "seconds": 0.0062409
+        },
+        "output": {
+          "calls": 9527,
+          "seconds": 0.7375665
+        }
+      }
+    }
+  ],
+  "csv": [
+    {
+      "mode": "candidate",
+      "instrumented": true,
+      "days": 365,
+      "wall": 5.24198850011453,
+      "cpu": {
+        "python": 0.703125,
+        "donor": {
+          "user": 2.5,
+          "system": 0.609375
+        },
+        "kernel": {
+          "user": 0.1875,
+          "system": 0.078125
+        }
+      },
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 7.212113401280917e-09
+      },
+      "exact_physical_csv": true,
+      "exact_native109": true,
+      "folder": "C:\\SWAP5-testing\\saltfarm-step-cost04-csv\\run0-candidate-clock",
+      "iterations": 28281,
+      "headcalc_calls": 9527,
+      "phases": {
+        "root": {
+          "calls": 9527,
+          "seconds": 0.3002464
+        },
+        "water_solve": {
+          "calls": 9527,
+          "seconds": 1.0207279
+        },
+        "water_update": {
+          "calls": 9527,
+          "seconds": 0.1370432
+        },
+        "heat": {
+          "calls": 9527,
+          "seconds": 0.102754
+        },
+        "solute": {
+          "calls": 9527,
+          "seconds": 0.400543
+        },
+        "integral_reset": {
+          "calls": 9527,
+          "seconds": 0.006927
+        },
+        "meteo_step": {
+          "calls": 9527,
+          "seconds": 0.0059967
+        },
+        "time_prepare": {
+          "calls": 9527,
+          "seconds": 0.0008211
+        },
+        "bottom_boundary": {
+          "calls": 9527,
+          "seconds": 0.0110959
+        },
+        "drainage": {
+          "calls": 9527,
+          "seconds": 0.098099
+        },
+        "integral_update": {
+          "calls": 9527,
+          "seconds": 0.0508121
+        },
+        "time_advance": {
+          "calls": 9527,
+          "seconds": 0.0054079
+        },
+        "output": {
+          "calls": 9527,
+          "seconds": 0.6568974
+        }
+      }
+    },
+    {
+      "mode": "candidate",
+      "instrumented": true,
+      "days": 365,
+      "wall": 4.680646099615842,
+      "cpu": {
+        "python": 0.765625,
+        "donor": {
+          "user": 2.6875,
+          "system": 0.46875
+        },
+        "kernel": {
+          "user": 0.09375,
+          "system": 0.09375
+        }
+      },
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 7.212113401280917e-09
+      },
+      "exact_physical_csv": true,
+      "exact_native109": true,
+      "folder": "C:\\SWAP5-testing\\saltfarm-step-cost04-csv\\run1-candidate-clock",
+      "iterations": 28281,
+      "headcalc_calls": 9527,
+      "phases": {
+        "root": {
+          "calls": 9527,
+          "seconds": 0.3018499
+        },
+        "water_solve": {
+          "calls": 9527,
+          "seconds": 1.0177757
+        },
+        "water_update": {
+          "calls": 9527,
+          "seconds": 0.143382
+        },
+        "heat": {
+          "calls": 9527,
+          "seconds": 0.101624
+        },
+        "solute": {
+          "calls": 9527,
+          "seconds": 0.3987599
+        },
+        "integral_reset": {
+          "calls": 9527,
+          "seconds": 0.0066353
+        },
+        "meteo_step": {
+          "calls": 9527,
+          "seconds": 0.0058457
+        },
+        "time_prepare": {
+          "calls": 9527,
+          "seconds": 0.0006897
+        },
+        "bottom_boundary": {
+          "calls": 9527,
+          "seconds": 0.0112781
+        },
+        "drainage": {
+          "calls": 9527,
+          "seconds": 0.0967349
+        },
+        "integral_update": {
+          "calls": 9527,
+          "seconds": 0.0513969
+        },
+        "time_advance": {
+          "calls": 9527,
+          "seconds": 0.005153
+        },
+        "output": {
+          "calls": 9527,
+          "seconds": 0.642993
+        }
+      }
+    }
+  ],
+  "full": [
+    {
+      "mode": "control",
+      "seconds": 15.336413799785078,
+      "days": 1461,
+      "exact_physical_csv_eight_native": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      },
+      "folder": "C:\\SWAP5-testing\\saltfarm-step-cost04-full\\run0-control"
+    },
+    {
+      "mode": "candidate",
+      "seconds": 15.595685800071806,
+      "days": 1461,
+      "exact_physical_csv_eight_native": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      },
+      "folder": "C:\\SWAP5-testing\\saltfarm-step-cost04-full\\run1-candidate"
+    },
+    {
+      "mode": "candidate",
+      "seconds": 15.592053500004113,
+      "days": 1461,
+      "exact_physical_csv_eight_native": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      },
+      "folder": "C:\\SWAP5-testing\\saltfarm-step-cost04-full\\run2-candidate"
+    },
+    {
+      "mode": "control",
+      "seconds": 16.737319400068372,
+      "days": 1461,
+      "exact_physical_csv_eight_native": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      },
+      "folder": "C:\\SWAP5-testing\\saltfarm-step-cost04-full\\run3-control"
+    }
+  ]
+}
