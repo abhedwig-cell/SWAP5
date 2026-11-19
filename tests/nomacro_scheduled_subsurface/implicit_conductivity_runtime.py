@@ -13,6 +13,15 @@ m=previous.m
 ROOT=previous.ROOT
 
 
+def root_precision(path):
+    """Explicit original reader inputs for the selected qualification rotation."""
+    values=dict(TOL_2='1.0d-10',MYTOLX='1.0d-10',TOLCONV='1.0d-9')
+    for name in ('maize.crp','potato.crp','grass.crp'):
+        crop=path/name;text=crop.read_text(encoding='cp1252')
+        for key,value in values.items():text=assignment(text,key,value)
+        crop.write_text(text,encoding='cp1252')
+
+
 def fixture(path, solute, hysteresis, bottom, step, kmean=1, mode='explicit', fmt=3, reset=1, npd=None):
     npd = npd if npd is not None else (3 if step else 1)
     actual_mode='periodic' if mode=='daily' else mode
@@ -36,6 +45,7 @@ def fixture(path, solute, hysteresis, bottom, step, kmean=1, mode='explicit', fm
     text,count=re.subn(r'(?mi)^([ \t]*ORES[ \t]+OSAT[^\r\n]*\n)(.*?)^\* End of table',supported,text,count=1,flags=re.S)
     assert count==1
     control.write_text(text,encoding='cp1252')
+    root_precision(path)
 
 
 def main():
@@ -65,6 +75,7 @@ def main():
         project=m.e.load(inputs,original_output=True);q['numerical_policy']=m.e.inspect(inputs)['implicit_conductivity']
         body=(inputs/'swap.swp').read_text(encoding='cp1252')
         q['actual_original_numerical_inputs']={key:int(m.e.one(body,key,r'[+-]?\d+')) for key in ('MAXIT','MAXBACKTR')}
+        q['actual_original_numerical_inputs']['scheduled_root_precisions']={name:{key:float(m.e.one((inputs/name).read_text(encoding='cp1252'),key,r'[+\-\d.eEdD]+').replace('d','e').replace('D','E')) for key in ('TOL_2','MYTOLX','TOLCONV')} for name in ('maize.crp','potato.crp','grass.crp')}
         build=a.reuse_build or out/'build';q.update(input_root=str(inputs),build_root=str(build))
         cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--original-output','--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
         if not a.reuse_build:
