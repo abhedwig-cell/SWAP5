@@ -80,10 +80,14 @@ def main():
     for name in ('reference-work','profile-root','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--original-output',action='store_true')
     p.add_argument('--continue-from',type=Path)
+    p.add_argument('--positive-only',action='store_true')
     a=p.parse_args();a.output.mkdir();cohort=json.loads((a.profile_root/'RESULT.json').read_text())
     project=m.e.load(Path(cohort['input_root']),original_output=a.original_output);build=Path(cohort['build_root']);meta,case=m.validate_bundle(build,a.reference_work,project)
     source=a.profile_root/'trajectory/accepted-column-1-day-4.zip';digest=m.sha(source)
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),build_sha256=m.sha(build/'BUILD.json'),public_refusals=[],native_refusals=[])
+    if a.positive_only:
+        assert a.original_output and not a.continue_from
+        q['negative_controls_selection']='NOT_SELECTED_IMPACT: unchanged actual native/parser bodies; prior full-cohort controls remain separately retained'
     if a.continue_from:
         previous=json.loads((a.continue_from/'RESULT.json').read_text())
         assert previous['build_sha256']==q['build_sha256'],'Cannot inherit controls from a different actual build'
@@ -110,6 +114,7 @@ def main():
         assert q['positive_native']['returncode']==100
         variants=attacks(members['macro.bin'])
         if a.original_output:variants.update(calendar_attacks(members['macro.bin'],project))
+        if a.positive_only:variants={}
         public_done={v['label'] for v in q['public_refusals']};native_done={v['label'] for v in q['native_refusals']}
         for label,(raw,compiled) in variants.items():
             if label in public_done:
@@ -154,7 +159,7 @@ def main():
             with zipfile.ZipFile(a.output/'transactions/external/accepted-column-1-day-5.zip') as warm:
                 assert all(cold.read(n)==warm.read(n) for n in ('result.end','macro.bin'))
         assert m.sha(source)==digest
-        q.update(status='ACTUAL_EXTENDED_NATIVE_PUBLIC_TRANSACTION_CONTROLS_PASS',origin_unchanged=True)
+        q.update(status='ACTUAL_EXTENDED_POSITIVE_NATIVE_CLI_TRANSACTION_PRESERVATION_PASS' if a.positive_only else 'ACTUAL_EXTENDED_NATIVE_PUBLIC_TRANSACTION_CONTROLS_PASS',origin_unchanged=True)
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
     print(q['status'],len(q['public_refusals']),len(q['native_refusals']))
