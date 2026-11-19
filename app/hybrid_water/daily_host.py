@@ -890,7 +890,7 @@ end module plant_interface""")
     from weather_root_state import apply_build as weather_root_build
     patched=weather_root_build(output,project,patched)
     from extended_drainage import apply_build as extended_drainage_build
-    patched=extended_drainage_build(output,project,patched)
+    patched=extended_drainage_build(output,donor_build,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -1437,6 +1437,12 @@ class DailyHost:
                 if start.receipt is not None and age_effluent!=start.receipt['age_effluent']:
                     raise ValueError('Restored original age effluent differs from accepted receipt')
             self.columns.append(DailyColumn(directory, start.variant, worker, transcript, start.day, stocks, pressure,solute_stock=solute_stock,aquifer_state=aquifer_state,age_state=age_state,age_effluent=age_effluent))
+            if extended_enabled(project):
+                from extended_drainage import state_witness as extended_witness
+                state=extended_witness(initial.get('HYBRID_EXTENDED_DRAIN_STATE',[]),project,start.day)
+                if start.receipt is not None and state!=start.receipt.get('extended_drainage_state'):
+                    raise ValueError('Restored original surfacewater state differs from receipt')
+                self.columns[-1].extended_drainage_state=state
         send(self.host, str(len(self.columns)))
         for column in self.columns:
             if not project.macro:send(self.host,f"{project.nodes} {project.start_clock}")
@@ -1527,6 +1533,8 @@ class DailyHost:
         from extended_drainage import enabled as extended_enabled,state_witness as extended_witness,validate_candidate as validate_extended
         if extended_enabled(self.project):
             budget['extended_drainage_state']=extended_witness(response.get('HYBRID_EXTENDED_DRAIN_STATE',[]),self.project,day)
+            from extended_drainage import flux_witness as extended_flux_witness
+            budget['surfacewater']=extended_flux_witness(response.get('HYBRID_EXTENDED_DRAIN_FLUX',[]),self.project,budget,current.extended_drainage_state)
             if committed and checkpoint:validate_extended((current.directory/'macro.bin').read_bytes(),budget,self.project)
         budget.update(solute_budget)
         if "HYBRID_BUDGET_RETRIES" in response:
@@ -1534,6 +1542,7 @@ class DailyHost:
             budget["budget_step_retries"] = int(count)
             budget["integrated_guard_residual_cm"] = float(residual)
         if committed:
+            if extended_enabled(self.project):current.extended_drainage_state=budget['extended_drainage_state']
             current.day = day
             current.revision = revision
             current.stocks = budget["stock_end_cm"].copy()

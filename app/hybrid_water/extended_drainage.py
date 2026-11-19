@@ -25,6 +25,25 @@ def corrected_surfacewater_source(original):
     return original.replace(old,'            if (swstmax <= 0.0d0) then',1)
 
 
+def surfacewater_source(original):
+    text=corrected_surfacewater_source(original)
+    edits=[
+        ('      use MOD_grid,      only: numnod, dz\n',
+         '      use '+MODULE+',only:extended_drain_surface_flux\n      use MOD_grid,      only: numnod, dz\n'),
+        ('            real(8)              :: swsttara,rday,wsmax,vtair\n',
+         '            real(8)              :: extended_supply\n            real(8)              :: swsttara,rday,wsmax,vtair\n'),
+        ('\n            overfl = .FALSE.\n', '\n            overfl = .FALSE.\n            extended_supply=0d0\n'),
+        ('\n              swst = 0.0d0\n','\n              extended_supply=wsmax\n              swst = 0.0d0\n'),
+        ('\n              swst = swstmax\n','\n              extended_supply=wsmax\n              swst = swstmax\n'),
+        ('\n                swst = swsttara\n','\n                extended_supply=(swsttara-swstmax)/dt\n                swst = swsttara\n'),
+        ('      !        ponding in case of extended drainage may limit timestep\n',
+         '            call extended_drain_surface_flux(extended_supply,wdis)\n\n      !        ponding in case of extended drainage may limit timestep\n')]
+    for old,new in edits:
+        assert text.count(old)==1,old
+        text=text.replace(old,new,1)
+    return text
+
+
 def describe(directory, selected, original_output):
     if selected.get('SWDRA') != 2:
         return None
@@ -84,7 +103,9 @@ def metadata(project):
     return dict(policy=POLICY,source_sha256=sha(Path(__file__)),template_sha256=sha(TEMPLATE),
                 codec=MAGIC.decode(),domain=domain(project),bytes=size(project),
                 ownership='Original MOD_drain dynamic values; exact rejected-trial restore, no new physical store',
-                physical_equations_changed=False)
+                physical_equations_changed=False,original_surfacewater_lf_sha256=SURFACE_SOURCE_LF_SHA256,
+                reference_defect_correction='Original positive storage is preserved; swstmax<=0 replaces lossy1e-7 dry cutoff',
+                surface_inventory='Actual original branch supply/discharge; signed accepted transfers; prescribed-stage volume reaction explicit')
 
 
 def state_witness(tokens, project, day):
@@ -116,9 +137,41 @@ def validate_candidate(raw, receipt, project):
         raise ValueError('Original extended drain native state differs from accepted receipt')
 
 
-def apply_build(output, project, patched):
+def flux_witness(tokens, project, receipt, origin):
+    s=selection(project);r=s['levels']
+    if len(tokens)!=13+2*r:raise ValueError('Incomplete actual original surfacewater ledger')
+    clock=float(tokens[0]);steps=int(tokens[1]);rejected=int(tokens[2]);v=list(map(float,tokens[3:]))
+    if clock!=project.start_clock+receipt['day'] or steps<1 or rejected<0 or not all(map(math.isfinite,[clock,*v])):
+        raise ValueError('Invalid actual original surfacewater clock or values')
+    start,end,secondary,primary,runoff,supply,discharge,reaction,iqdra,iruno=v[:10]
+    original,independent=v[10:10+r],v[10+r:]
+    if start!=origin['values'][2] or end!=receipt['extended_drainage_state']['values'][2] or min(start,end,supply,discharge)<0:
+        raise ValueError('Original surfacewater inventory origin differs')
+    if s['swsec']==2 and reaction!=0 or s['swsec']==1 and (supply!=0 or discharge!=0):
+        raise ValueError('Mixed prescribed/simulated original surfacewater authority')
+    flow=receipt['external_flux_cm']
+    if iqdra!=flow[13] or iruno!=flow[8]:raise ValueError('Original soil/surface transfer witness differs')
+    residual=math.fsum([start,-end,secondary,runoff,supply,-discharge,reaction])
+    checks=[residual,math.fsum([secondary,primary,-iqdra]),math.fsum([runoff,-iruno]),
+            math.fsum([*original,-iqdra]),math.fsum([*independent[s['nrpri']:],-secondary]),
+            math.fsum([*independent[:s['nrpri']],-primary]),*(a-b for a,b in zip(original,independent))]
+    combined=math.fsum([*receipt['stock_start_cm'],*(-x for x in receipt['stock_end_cm']),start,-end,
+                       *flow[:7],*(-flow[i] for i in range(7,16) if i not in (8,13)),
+                       -primary,supply,-discharge,reaction])
+    if max(map(abs,[*checks,combined]))>1e-10:
+        raise ValueError('Actual original secondary or combined water guard exceeded1e-10cm')
+    return dict(stock_start_cm=start,stock_end_cm=end,secondary_exchange_cm=secondary,primary_exchange_cm=primary,
+                runoff_from_soil_cm=runoff,supply_cm=supply,discharge_cm=discharge,prescribed_stage_reaction_cm=reaction,
+                original_level_exchange_cm=original,independent_level_exchange_cm=independent,
+                independent_surface_residual_cm=residual,independent_combined_residual_cm=combined,
+                accepted_steps=steps,rejected_steps=rejected,
+                authority='original simulated surfacewater' if s['swsec']==2 else 'original prescribed-stage volume constraint')
+
+
+def apply_build(output, donor_build, project, patched):
     if not enabled(project):return patched
     (output/(MODULE+'.f90')).write_bytes(TEMPLATE.read_bytes())
+    (output/'surfacewater.f90').write_text(surfacewater_source((donor_build/'swap-selected/surfacewater.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')
     first=text.index('    subroutine hybrid_macro_checkpoint(')
     last=text.index('    end subroutine hybrid_macro_checkpoint',first)
@@ -142,8 +195,10 @@ def apply_build(output, project, patched):
     path.write_text(text,encoding='cp1252')
     path=output/'swap_main.f90';text=path.read_text(encoding='cp1252')
     anchor='use MOD_grid, only: numnod';assert text.count(anchor)==1
-    text=text.replace(anchor,'use '+MODULE+',only:extended_drain_witness\n'+anchor,1)
+    text=text.replace(anchor,'use '+MODULE+',only:extended_drain_witness,extended_drain_window_begin\n'+anchor,1)
+    anchor='      call swap(iCaller, iTask, tstart_in, tend_in)';assert text.count(anchor)==1
+    text=text.replace(anchor,'      call extended_drain_window_begin()\n'+anchor,1)
     lines=text.splitlines(keepends=True);assert sum("'HYBRID_HYDRAULIC'" in line for line in lines)==2
     text=''.join(line+('   call extended_drain_witness()\n' if "'HYBRID_HYDRAULIC'" in line else '') for line in lines)
     path.write_text(text,encoding='cp1252')
-    return [MODULE,*patched]
+    return [MODULE,'surfacewater',*patched]
