@@ -1,4 +1,60 @@
 """Read the existing daily output frame across original subdaily resets."""
+import math
+import struct
+from datetime import date,timedelta
+
+
+def validate_candidate(raw,receipt,project):
+    """Validate the composed typed calendar before launching a physical worker."""
+    from extended_drainage import size,selection
+    from original_output import selection as output_selection
+    selected=output_selection(project);n=project.nodes;r=selection(project)['levels']
+    prefix=raw[:-size(project)];expected_reals=6068+10*n+(3*n+3)*r
+    def require(ok,message):
+        if not ok:raise ValueError('Original extended drain output '+message)
+    positions=[];marker=struct.pack('<2i',1,n);at=prefix.find(marker)
+    while at>=0:
+        if at+160<=len(prefix):
+            header=struct.unpack_from('<20i',prefix,at)
+            if header[:4]==(1,n,r,expected_reals) and prefix[at:at+80]==prefix[at+80:at+160]:positions.append((at,header))
+        at=prefix.find(marker,at+1)
+    require(len(positions)==1,'calendar shape/witness differs');at,h=positions[0]
+    end=at+160+16*expected_reals
+    extra=20+8*(3*n+41+r) if project.age else 24+16*(18+n) if project.solute else 0
+    require(end+extra==len(prefix),'private section size differs')
+    day=receipt['day'];period=selected['period'];step=selected['flprintdt'];npd=selected['nprintday']
+    completed=date.fromisoformat(project.start_date)+timedelta(days=day-1)
+    counter=min(day,completed.timetuple().tm_yday) if selected['swres'] and period else day
+    if period and not step:counter%=period
+    short=step or npd>1
+    require((h[4],h[5],h[6],h[7],h[8],h[11],h[18],h[19])==
+            (period,npd,day,counter,1 if step or not short else day*npd+1,selected['swres'],int(short),int(step)),
+            'calendar policy/day/counters differ')
+    require(all(value in (0,1) for value in h[12:20]) and all(1<=value<=3000 for value in h[9:11]),'calendar flags/pointers differ')
+    first=prefix[at+160:at+160+8*expected_reals]
+    require(first==prefix[at+160+8*expected_reals:end],'calendar value witness differs')
+    values=struct.unpack('<'+str(expected_reals)+'d',first)
+    require(all(map(math.isfinite,values)) and values[-1]>=0,'calendar values nonfinite/negative')
+    clock=project.start_clock;balance=values[-6008:-3008];interval=values[-3008:-8]
+    require(h[9]==1+sum(0<value<clock+day-1e-8 for value in balance),'balance date pointer differs')
+    past=0<interval[0]<clock-1e-8;expected=1 if past else 1+sum(0<value<clock+day-1e-8 for value in interval)
+    require(h[10]==1 if past else h[10]<=expected if step else h[10]==expected,'interval date pointer differs')
+    if project.solute:
+        header=struct.unpack_from('<3i',prefix,end)
+        require(header==(1,n,18+n) and header==struct.unpack_from('<3i',prefix,end+12),'CDE private shape differs')
+        first=prefix[end+24:end+24+8*(18+n)]
+        require(first==prefix[end+24+8*(18+n):],'CDE private value witness differs')
+        values=struct.unpack('<'+str(18+n)+'d',first)
+        require(all(map(math.isfinite,values)) and values[0]>=0,'CDE private values invalid')
+    if project.age:
+        body=struct.unpack_from('<'+str(3*n+41+r)+'d',prefix,end)
+        require(all(map(math.isfinite,body)) and min(body[:3*n+3])>=0,'AGE private values invalid')
+        require(body[3*n+3:3*n+6]==(0.,0.,0.) and list(body[3*n+6:3*n+14])==receipt['age_state_cm_day'][3:],'AGE forcing/cumulative state differs')
+        totals=struct.unpack_from('<3d',prefix,len(prefix)-44);exports=struct.unpack_from('<16d',prefix,len(prefix)-172)
+        require(list(totals)==receipt['age_state_cm_day'][:3] and list(exports)==receipt['age_effluent'][:16],'AGE stock/effluent receipt differs')
+        saved_day=struct.unpack_from('<i',prefix,len(prefix)-20)[0];saved_period=struct.unpack_from('<d',prefix,len(prefix)-16)[0]
+        flags=struct.unpack_from('<2i',prefix,len(prefix)-8)
+        require(saved_day==day and saved_period==values[-1] and flags==h[12:14],'AGE private clock/reset differs')
 
 
 def integral_terms(text,original,watstor):

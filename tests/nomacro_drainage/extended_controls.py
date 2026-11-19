@@ -40,11 +40,47 @@ def attacks(raw):
     result.update({'old-codec':(b'S5HUP012'+raw[8:],True),'truncated':(raw[:-1],True),'trailing':(raw+b'x',True)})
     return result
 
+def calendar_attacks(raw,project):
+    from extended_drainage import size,selection
+    n=project.nodes;r=selection(project)['levels'];nr=6068+10*n+(3*n+3)*r
+    prefix=raw[:-size(project)];marker=struct.pack('<4i',1,n,r,nr);positions=[];at=prefix.find(marker)
+    while at>=0:
+        if prefix[at:at+80]==prefix[at+80:at+160]:positions.append(at)
+        at=prefix.find(marker,at+1)
+    assert len(positions)==1;at=positions[0];h=struct.unpack_from('<20i',raw,at);result={}
+    def change(label,offset,fmt,value,mirror=None,compiled=True):
+        wire=bytearray(raw);struct.pack_into('<'+fmt,wire,offset,value)
+        if mirror is not None:struct.pack_into('<'+fmt,wire,mirror,value)
+        result['calendar-'+label]=(bytes(wire),compiled)
+    for index in (0,1,2,3,4,5,6):change('header-'+str(index),at+4*index,'i',h[index]+1,at+80+4*index)
+    change('negative-counter',at+28,'i',-1,at+108)
+    change('receipt-counter',at+28,'i',h[7]+1,at+108,False)
+    change('date-pointer',at+36,'i',0,at+116)
+    change('flag',at+48,'i',2,at+128)
+    change('header-copy',at+80,'i',99)
+    change('value-copy',at+160,'d',12345.)
+    change('nonfinite',at+160,'d',float('nan'),at+160+8*nr)
+    offset=at+160+8*(nr-1)
+    change('negative-period',offset,'d',-1.,offset+8*nr)
+    end=at+160+16*nr
+    if project.solute:
+        change('CDE-shape',end+8,'i',1,end+20)
+        change('CDE-value-copy',end+24,'d',12345.)
+        change('CDE-negative-initial',end+24,'d',-1.,end+24+8*(18+n))
+    if project.age:
+        change('AGE-forcing',end+8*(3*n+3),'d',10.)
+        change('AGE-total',len(prefix)-44,'d',-1.)
+        change('AGE-private-day',len(prefix)-20,'i',-1)
+    result['calendar-old-drain-codec']=(b'S5EDR001'+raw[8:],True)
+    return result
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work','profile-root','output'):p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument('--original-output',action='store_true')
     a=p.parse_args();a.output.mkdir();cohort=json.loads((a.profile_root/'RESULT.json').read_text())
-    project=m.e.load(Path(cohort['input_root']));build=Path(cohort['build_root']);meta,case=m.validate_bundle(build,a.reference_work,project)
+    project=m.e.load(Path(cohort['input_root']),original_output=a.original_output);build=Path(cohort['build_root']);meta,case=m.validate_bundle(build,a.reference_work,project)
     source=a.profile_root/'trajectory/accepted-column-1-day-4.zip';digest=m.sha(source)
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),build_sha256=m.sha(build/'BUILD.json'),public_refusals=[],native_refusals=[])
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
@@ -59,7 +95,9 @@ def main():
         with zipfile.ZipFile(source) as z:members={n:z.read(n) for n in z.namelist()}
         accepted=json.loads(members['checkpoint.json']);origin=a.output/'valid-origin';receipt=m.h.verify_checkpoint(source,4,meta['binding'],origin)
         q['positive_native']=native('positive',origin,receipt,a.output/'native-positive/column');assert q['positive_native']['returncode']==100
-        for label,(raw,compiled) in attacks(members['macro.bin']).items():
+        variants=attacks(members['macro.bin'])
+        if a.original_output:variants.update(calendar_attacks(members['macro.bin'],project))
+        for label,(raw,compiled) in variants.items():
             directory=a.output/label;directory.mkdir();forged=dict(members);forged['macro.bin']=raw;manifest=copy.deepcopy(accepted)
             manifest['files']['macro.bin']=hashlib.sha256(raw).hexdigest();forged['checkpoint.json']=json.dumps(manifest).encode();package=directory/'deliberately-forged.zip'
             with zipfile.ZipFile(package,'w') as z:
@@ -76,11 +114,12 @@ def main():
                 unpacked=directory/'origin';copied=m.h.verify_checkpoint(package,4,meta['binding'],unpacked)
                 actual=native(label,unpacked,copied,directory/'native/column')
                 assert actual['returncode']!=100 and actual['no_day_return'],actual
-                assert any(t in actual['stderr'].lower() for t in ('extended drain','nonmacro checkpoint','negative original surface storage or perimeter')),actual
+                assert any(t in actual['stderr'].lower() for t in ('extended drain','nonmacro checkpoint','negative original surface storage or perimeter','original output','original age','original cde')),actual
                 q['native_refusals'].append(actual)
             assert m.sha(source)==digest;save()
         q['transactions']=transactions(build,a.reference_work,project,a.profile_root/'trajectory',a.output/'transactions');save()
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',project.input_directory,'--reference-work',str(a.reference_work),'--build-bundle',str(build),'--days','5','--checkpoint-at','5','--restart',str(source),'--restart-day','4','--output',str(a.output/'public-cli')]
+        if a.original_output:command.append('--original-output')
         r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=90)
         (a.output/'public-cli.stdout').write_text(r.stdout,encoding='utf8');(a.output/'public-cli.stderr').write_text(r.stderr,encoding='utf8')
         q['public_cli']=dict(command=command,returncode=r.returncode);assert r.returncode==0,r.stderr

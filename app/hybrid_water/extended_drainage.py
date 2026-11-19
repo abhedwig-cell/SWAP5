@@ -227,6 +227,9 @@ def validate_candidate(raw, receipt, project):
             or not all(map(math.isfinite,values)) or min(values[2],values[4]) < 0 or values != witness
             or dict(adjustments=adjustments,values=list(values)) != receipt.get('extended_drainage_state')):
         raise ValueError('Original extended drain native state differs from accepted receipt')
+    if project.original_output:
+        from extended_output_receipt import validate_candidate as validate_output_candidate
+        validate_output_candidate(raw,receipt,project)
 
 
 def flux_witness(tokens, project, receipt, origin):
