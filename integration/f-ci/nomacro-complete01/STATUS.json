@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-extended-drainage01",
   "last_commit": "beff97988beeeed23bbf6367ed4efb0cac22c682",
-  "status": "EXTENDED_DRAINAGE_DRY_CORRECTION_REAL_O0_O2_PASS_COMPLETE_SURFACE_LEDGER_IMPLEMENTED_FIRST_BUILD_PENDING",
+  "status": "EXTENDED_PRESCRIBED_CDE_COMPLETE_LEDGER_AND_EXACT_NATIVE_PASS_MANAGED_BATCH_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -333,7 +333,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Build/run5day prescribed CDE O0 with complete surfaceledger and corrected originaldry threshold; verify sourceonlynewreadonlyphysical/nativeprojection versusbeff5days, then simulatedfixed/automatic managedwater probes and accepted/refusedinterval controls.",
+  "next_code_change": "Run grouped actual35day fixed/automatic CDE managedsurfacewater O0 with native2to4/14to17/30to35 and separate/combined inventories. Then representative water/primary-prescribed/QH-table/O2 contexts and independent raw owner; select fulls only after process/native gates pass.",
   "recovery_point": "Current branchcodex/nomacro-extended-drainage01 includes actual canonicalbc9271bcc. WEATHER_MERGE_RECEIPT.json owns exactparents/tree and actual clean detached root PASS112.224684s. Original drainage state component0f61c648 has O0/O2 realprocess/native/refusal proof sealed at1b67400b3. PublicSWDRA2 remains hard-refused until next source/native/exchange composition is implemented and independently admitted.",
   "external_blocker": null,
   "test_selection": {
@@ -30523,7 +30523,18 @@
       "retained_initial_receipt_mismatch": "Only new original_level_exchange_cm audit field differs3e-17..6e-17 because original cumulative counter origins differ. Actual perday transfer, all physical receipt fields, CSV and complete native exact.",
       "interface_decision": "Original CQDRAIN difference remains in immutable raw worker witness and is still checked perday against independent transfers under unchanged1e-10. Accepted receipt retains actual independently accumulated perday exchange. Do not serialize unrelated original cumulative output counters to force diagnostic rounding identity.",
       "old_failed_result_preserved": true
-    }
+    },
+    "complete_ledger_prototype": {
+      "source": "1fb3875dbd1ab7c109d98627ab296baccaf2a9e6",
+      "status": "ACTUAL_PRESCRIBED_CDE_SECONDARY_COMBINED_LEDGER_AND_EXACT_NATIVE_PASS",
+      "days": 5,
+      "optimization": "O0",
+      "maximum_surface_cm": 4.163336342344337e-17,
+      "maximum_combined_cm": 2.478572902475662e-14,
+      "own_cold": "2to4 physical/CSV/result.end/macro.bin exact; origin unchanged",
+      "full_public_qualification": false
+    },
+    "controller": "tests/nomacro_drainage/extended_runtime.py"
   },
   "coverage_batch_report": {
     "canonical": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
