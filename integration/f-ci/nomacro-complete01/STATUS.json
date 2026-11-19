@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-implicit-conductivity01",
-  "last_commit": "8e6c5d98bc5bd03e93b7a4ba083a2c6e1008e8eb",
-  "status": "IMPLICIT_GROUNDWATER_STRICT_FULL_PERIOD_FAILURE_DIAGNOSIS",
+  "last_commit": "30c0d275cdac7de2f9dba72dbfc0b613273e61c5",
+  "status": "IMPLICIT_NUMERICAL_CORRECTIONS_PERSISTED_TARGETED_ORIGINAL_BUDGET_QUALIFICATION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Use actual trial dt/residual and independent original Integral frame terms to locate postsolve surface/storage mismatch; original physical equations and strict1e-10 remain fixed. Do not re-run full F-CI or repeatedly timeout unchanged full candidates.",
-  "recovery_point": "codex/nomacro-implicit-conductivity01 8e6c5d98bc5bd03e93b7a4ba083a2c6e1008e8eb; q/campaigns are NOT_QUALIFIED, no raw archive sealed/no source PR admitted. Exact actual canonical predecessorcce2561eb admitted AGE groundwater remains unchanged; current work broad closure PARTIAL.",
+  "next_code_change": "Extend numerical-policy controls for new retry, original daily trial and boundary-mean metadata. Main CI carrier draft must select terminal current source/matrixv2 rather than failed v1, include positive-CDE/retry/mean components and compatibility refusals. No artifacts sealed/no carrier dispatched for implicit unit.",
+  "recovery_point": "codex/nomacro-implicit-conductivity01 30c0d275cdac7de2f9dba72dbfc0b613273e61c5; actual production remains829721. Branch last pushed570f767a3, push this recovery commit. Whole closurePARTIAL, scienceNOT_QUALIFIED, fixedRC3 unchanged. Do not rerun unchanged failed full candidates without a new discriminating question.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Finish actual diagnostic worktree checkout21651, inspect/persist its one-file read-only witness diff. Run bounded actual fresh day584 water/day622 CDE trial-term traces; diagnose convergence failure under unchanged guard. Check existing main exec54976 first; no duplicate model jobs. Then fix owning numerical/state integration, targeted short/failure-period proof before final source qualification.",
+  "next_action": "Check existing exec42908 water100/10 full and exec65453/O074403/O2 positive current-source campaigns, no duplicates. Head100/10 positive1096 and7native windows alreadyPASS under source829721 and can be reused only after current-source bundle validation plus exact input inventory; O0 positive controller does so explicitly. If groundwater target passes, freeze production and run remaining selected current-source O0/O2 cohorts/preservation/portable, independent seal/root and actual admissions.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -25728,7 +25728,7 @@
     "scientific_equivalence_claim": false
   },
   "implicit_conductivity": {
-    "status": "IMPLEMENTED_NOT_QUALIFIED_GROUNDWATER_FULL_PERIOD_DIAGNOSIS",
+    "status": "IMPLEMENTED_NOT_QUALIFIED_EXPLICIT_ORIGINAL_ITERATION_BUDGET_TARGETS",
     "baseline": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
     "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_SOURCE_AUDIT.json",
@@ -25736,11 +25736,13 @@
     "qualification": "NOT_RUN",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "invariants": "Immutable numerical policy/input/source identity; literal original conductivity and HeadCalc; unchanged strict water/chemical/AGE guards; complete native/rollback/restart.",
-    "implementation_head": "8e6c5d98bc5bd03e93b7a4ba083a2c6e1008e8eb",
+    "implementation_head": "30c0d275cdac7de2f9dba72dbfc0b613273e61c5",
     "production_files": [
       "app/hybrid_water/implicit_conductivity.py",
       "app/hybrid_water/implicit_groundwater_state.py",
       "app/hybrid_water/implicit_groundwater_trial.py",
+      "app/hybrid_water/implicit_conductivity_retry.py",
+      "app/hybrid_water/implicit_conductivity_jacobian.py",
       "app/hybrid_water/experimental_project.py",
       "app/hybrid_water/daily_host.py",
       "app/hybrid_water/daily_coupling.py",
@@ -26240,7 +26242,7 @@
       },
       "cold_error": "Restored donor state differs from the accepted checkpoint receipt"
     },
-    "current_source": "8e6c5d98bc5bd03e93b7a4ba083a2c6e1008e8eb",
+    "current_source": "829721797b684154f85b8b8d3388714d7c3d7dd7",
     "actual_derivative_component_production_arithmetic": {
       "O0": {
         "status": "REAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_DERIVATIVE_INTERFACE_PASS",
@@ -26641,224 +26643,296 @@
       "implicit-conductivity-age-groundwater-O0-v1": {
         "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
         "source_commit": "d3ce186149b0503371b60bf219c8abd2b439c0a4",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-age-groundwater-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-age-perstep-O2-v1": {
         "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
         "source_commit": "0dfb881c96c5de07f62cef7ff2c41d1c008205a7",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-age-perstep-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-baseline-v1": {
         "status": "THREE_ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_PUBLIC_REFUSAL_OBSERVATIONS",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v1\\RESULT.json"
       },
       "implicit-conductivity-baseline-v2": {
         "status": "THREE_ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_PUBLIC_REFUSAL_OBSERVATIONS",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v2\\RESULT.json"
       },
       "implicit-conductivity-cde-groundwater-O2-v1": {
         "status": "FAILED",
         "source_commit": "d3ce186149b0503371b60bf219c8abd2b439c0a4",
-        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-cde-groundwater-O2-v1\\\\input', '--original-output', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', 'O2', '--kernel-opt', 'O2', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-cde-groundwater-O2-v1\\\\build'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 407, in <module>\\n    raise SystemExit(main())\\n                     ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 352, in main\\n    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,\\n                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)\\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\daily_host.py\", line 191, in build\\n    if age_calendar_owner.selection(project) is None:\\n       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\original_output_hysteresis.py\", line 38, in selection\\n    if perstep and reset:raise ValueError(\\'Original hysteresis per-step cumulative reset needs separate qualification\\')\\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nValueError: Original hysteresis per-step cumulative reset needs separate qualification\\n')",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-cde-groundwater-O2-v1\\\\input', '--original-output', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', ",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-cde-groundwater-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-cde-groundwater-O2-v2": {
         "status": "FAILED",
         "source_commit": "794f5cd5259aaa8b265828f37f18349cd32327e1",
-        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-cde-groundwater-O2-v2\\\\input', '--original-output', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', 'O2', '--kernel-opt', 'O2', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-cde-groundwater-O2-v2\\\\build'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 407, in <module>\\n    raise SystemExit(main())\\n                     ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 352, in main\\n    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,\\n                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)\\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\daily_host.py\", line 191, in build\\n    if age_calendar_owner.selection(project) is None:\\n       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\original_output_hysteresis.py\", line 39, in selection\\n    if project.solute and (nprint!=1 or monthly or dates or requested!=1 or perstep):raise ValueError(\\'Original hysteresis CDE output requires daily interval reset cadence\\')\\n                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nValueError: Original hysteresis CDE output requires daily interval reset cadence\\n')",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-cde-groundwater-O2-v2\\\\input', '--original-output', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', ",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-cde-groundwater-O2-v2\\RESULT.json"
       },
       "implicit-conductivity-cde-history-O0-v1": {
         "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
         "source_commit": "0dfb881c96c5de07f62cef7ff2c41d1c008205a7",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-cde-history-O0-v1\\RESULT.json"
+      },
+      "implicit-conductivity-compatibility-refusals-windows-v1": {
+        "status": "THREE_ACTUAL_IMPLICIT_CONDUCTIVITY_UNQUALIFIED_COMPATIBILITY_REFUSALS_PASS",
+        "source_commit": "d625b442087640deaa50d3ae05e3a399fcb4c54f",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-compatibility-refusals-windows-v1\\RESULT.json"
       },
       "implicit-conductivity-compatibility-windows-O0-v1": {
         "status": "THREE_ACTUAL_IMPLICIT_CONDUCTIVITY_COMPATIBILITY_NATIVE_SEAMS_PASS",
         "source_commit": "6b89bac07b77825b8a5f52c88932219139cb1712",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-compatibility-windows-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-compatibility-windows-O2-v1": {
         "status": "THREE_ACTUAL_IMPLICIT_CONDUCTIVITY_COMPATIBILITY_NATIVE_SEAMS_PASS",
         "source_commit": "6b89bac07b77825b8a5f52c88932219139cb1712",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-compatibility-windows-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-component-O0-v1": {
         "status": "REAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_DERIVATIVE_INTERFACE_PASS",
         "source_commit": "41c7245e6d83e7db3a0e34366cef98a916cbec59",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-component-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-component-O0-v2": {
         "status": "REAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_DERIVATIVE_INTERFACE_PASS",
         "source_commit": "bac527b25155eb87b8ac146a7e9e6232578cc792",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-component-O0-v2\\RESULT.json"
       },
       "implicit-conductivity-component-O2-v1": {
         "status": "REAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_DERIVATIVE_INTERFACE_PASS",
         "source_commit": "41c7245e6d83e7db3a0e34366cef98a916cbec59",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-component-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-component-O2-v2": {
         "status": "REAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_DERIVATIVE_INTERFACE_PASS",
         "source_commit": "bac527b25155eb87b8ac146a7e9e6232578cc792",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-component-O2-v2\\RESULT.json"
       },
       "implicit-conductivity-controls-age-groundwater-O0-v1": {
         "status": "IMPLICIT_CONDUCTIVITY_NUMERICAL_NATIVE_TRANSACTION_DOMAIN_PASS",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-controls-age-groundwater-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-limit-age-groundwater-O0-v1": {
         "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_LIMIT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
         "source_commit": "5e340d1ca08dc0ddc3f202a52928bafcc437e953",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-limit-age-groundwater-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-limits-windows-O0-v1": {
         "status": "TWO_ACTUAL_IMPLICIT_CONDUCTIVITY_1440_TRANSPORT_NATIVE_LIMITS_PASS",
         "source_commit": "caa4403f23951a03651c101d6cca147a8ffc6019",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-limits-windows-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-limits-windows-O2-v1": {
         "status": "TWO_ACTUAL_IMPLICIT_CONDUCTIVITY_1440_TRANSPORT_NATIVE_LIMITS_PASS",
         "source_commit": "caa4403f23951a03651c101d6cca147a8ffc6019",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-limits-windows-O2-v1\\RESULT.json"
+      },
+      "implicit-conductivity-mean-component-O0-v1": {
+        "status": "REAL_ORIGINAL_HEADCALC_PRIVATE_MEAN_EIGHTEEN_DERIVATIVES_PASS",
+        "source_commit": "1669bf1faefe050c60a4ccfb464341bd325731ce",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-mean-component-O0-v1\\RESULT.json"
+      },
+      "implicit-conductivity-mean-component-O2-v1": {
+        "status": "REAL_ORIGINAL_HEADCALC_PRIVATE_MEAN_EIGHTEEN_DERIVATIVES_PASS",
+        "source_commit": "1669bf1faefe050c60a4ccfb464341bd325731ce",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-mean-component-O2-v1\\RESULT.json"
+      },
+      "implicit-conductivity-positive-cde-windows-O0-current-v1": {
+        "status": "FAILED",
+        "source_commit": "30c0d275cdac7de2f9dba72dbfc0b613273e61c5",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-current-v1\\\\full-groundwater-history', '--optimization', 'O0', '--",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v1\\RESULT.json"
       },
       "implicit-conductivity-positive-cde-windows-O0-v1": {
         "status": "FAILED",
         "source_commit": "a04c9b541e23ebafba59e6124000d4bf5ace2359",
-        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-v1\\\\full-groundwater-history', '--optimization', 'O0', '--solute', '1', '--hysteresis', '2', '--bottom', '1', '--kmean', '4', '--mode', 'daily', '--reset', '0', '--existing-input', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-v1\\\\input-groundwater-history', '--phase', 'full', '--reuse-build', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-v1\\\\short-groundwater-history\\\\build'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py\", line 88, in <module>\\n    if __name__==\\'__main__\\':main()\\n                            ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py\", line 77, in main\\n    full=out/\\'trajectory\\';q[\\'trajectory\\'],data=m.trajectory(build,a.reference_work,project,full,days,{days,*(v for pair in windows for v in pair)},180);save()\\n                                               ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_mixtures\\\\run.py\", line 72, in trajectory\\n    _, seconds = bounded(cap, warm)\\n                 ~~~~~~~^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\check_hupsel51_repair.py\", line 42, in bounded\\n    try:return callback(),time.perf_counter()-started\\n               ~~~~~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_mixtures\\\\run.py\", line 70, in warm\\n    if not row[\\'committed\\']: raise ValueError(\\'Rejected day \\'+str(day))\\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nValueError: Rejected day 622\\n')",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-v1\\\\full-groundwater-history', '--optimization', 'O0', '--solute',",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-positive-cde-windows-O0-v2": {
-        "status": "RUNNING",
+        "status": "FAILED",
         "source_commit": "8e6c5d98bc5bd03e93b7a4ba083a2c6e1008e8eb",
-        "error": null,
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-v2\\\\full-groundwater-history', '--optimization', 'O0', '--solute',",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-v2\\RESULT.json"
+      },
+      "implicit-conductivity-positive-cde-windows-O0-v3": {
+        "status": "FAILED",
+        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-v3\\\\short-head', '--optimization', 'O0', '--solute', '1', '--hyste",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-v3\\RESULT.json"
+      },
+      "implicit-conductivity-positive-cde-windows-O0-v4": {
+        "status": "FAILED",
+        "source_commit": "829721797b684154f85b8b8d3388714d7c3d7dd7",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O0-v4\\\\short-head', '--optimization', 'O0', '--solute', '1', '--hyste",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-v4\\RESULT.json"
+      },
+      "implicit-conductivity-positive-cde-windows-O2-current-v1": {
+        "status": "RUNNING",
+        "source_commit": "30c0d275cdac7de2f9dba72dbfc0b613273e61c5",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v1\\RESULT.json"
       },
       "implicit-conductivity-positive-cde-windows-O2-v1": {
         "status": "FAILED",
         "source_commit": "a04c9b541e23ebafba59e6124000d4bf5ace2359",
-        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O2-v1\\\\full-groundwater-history', '--optimization', 'O2', '--solute', '1', '--hysteresis', '2', '--bottom', '1', '--kmean', '4', '--mode', 'daily', '--reset', '0', '--existing-input', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O2-v1\\\\input-groundwater-history', '--phase', 'full', '--reuse-build', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O2-v1\\\\short-groundwater-history\\\\build'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py\", line 88, in <module>\\n    if __name__==\\'__main__\\':main()\\n                            ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py\", line 77, in main\\n    full=out/\\'trajectory\\';q[\\'trajectory\\'],data=m.trajectory(build,a.reference_work,project,full,days,{days,*(v for pair in windows for v in pair)},180);save()\\n                                               ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_mixtures\\\\run.py\", line 72, in trajectory\\n    _, seconds = bounded(cap, warm)\\n                 ~~~~~~~^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\check_hupsel51_repair.py\", line 42, in bounded\\n    try:return callback(),time.perf_counter()-started\\n               ~~~~~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_mixtures\\\\run.py\", line 70, in warm\\n    if not row[\\'committed\\']: raise ValueError(\\'Rejected day \\'+str(day))\\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nValueError: Rejected day 622\\n')",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O2-v1\\\\full-groundwater-history', '--optimization', 'O2', '--solute',",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-v1\\RESULT.json"
+      },
+      "implicit-conductivity-positive-cde-windows-O2-v3": {
+        "status": "FAILED",
+        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-positive-cde-windows-O2-v3\\\\short-head', '--optimization', 'O2', '--solute', '1', '--hyste",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-v3\\RESULT.json"
       },
       "implicit-conductivity-preserve-age-groundwater-O0-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_AGE-GROUNDWATER_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-age-groundwater-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-age-groundwater-O2-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_AGE-GROUNDWATER_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-age-groundwater-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-age-O0-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_AGE_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-age-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-age-O2-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_AGE_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-age-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-cde-O0-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_CDE_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-cde-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-cde-O2-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_CDE_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-cde-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-direct-O0-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_DIRECT_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-direct-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-direct-O2-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_DIRECT_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-direct-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-groundwater-history-O0-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_GROUNDWATER-HISTORY_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-groundwater-history-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-groundwater-history-O2-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_GROUNDWATER-HISTORY_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-groundwater-history-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-groundwater-O0-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_GROUNDWATER_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-groundwater-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-groundwater-O2-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_GROUNDWATER_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-groundwater-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-nonstep-O0-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_NONSTEP_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-nonstep-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-preserve-nonstep-O2-v1": {
         "status": "ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_NONSTEP_SEAMS_PRESERVED",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-preserve-nonstep-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-public-windows-O0-v1": {
         "status": "SEVEN_PUBLIC_IMPLICIT_CONDUCTIVITY_COMPLETE_NATIVE_RESTART_CONTEXTS_PASS",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-public-windows-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-public-windows-O2-v1": {
         "status": "SEVEN_PUBLIC_IMPLICIT_CONDUCTIVITY_COMPLETE_NATIVE_RESTART_CONTEXTS_PASS",
         "source_commit": null,
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-public-windows-O2-v1\\RESULT.json"
+      },
+      "implicit-conductivity-retry-component-O0-v1": {
+        "status": "REAL_ORIGINAL_IMPLICIT_RETRY_FIVE_CONTRACTS_THREE_REFUSALS_PASS",
+        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-retry-component-O0-v1\\RESULT.json"
+      },
+      "implicit-conductivity-retry-component-O2-v1": {
+        "status": "REAL_ORIGINAL_IMPLICIT_RETRY_FIVE_CONTRACTS_THREE_REFUSALS_PASS",
+        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-retry-component-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-water-groundwater-full-O0-v3": {
         "status": "FAILED",
         "source_commit": "8e6c5d98bc5bd03e93b7a4ba083a2c6e1008e8eb",
         "error": "TimeoutError('Model wall cap 180s')",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-full-O0-v3\\RESULT.json"
+      },
+      "implicit-conductivity-water-groundwater-full-O0-v4": {
+        "status": "FAILED",
+        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "error": "TimeoutError('Model wall cap 180s')",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-full-O0-v4\\RESULT.json"
+      },
+      "implicit-conductivity-water-groundwater-full-O0-v5": {
+        "status": "FAILED",
+        "source_commit": "829721797b684154f85b8b8d3388714d7c3d7dd7",
+        "error": "TimeoutError('Model wall cap 180s')",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-full-O0-v5\\RESULT.json"
       },
       "implicit-conductivity-water-groundwater-O0-v1": {
         "status": "FAILED",
@@ -26869,25 +26943,43 @@
       "implicit-conductivity-water-groundwater-O0-v2": {
         "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
         "source_commit": "9d8193e2c965f608a40a8f6d0359b84492bc7230",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-O0-v2\\RESULT.json"
       },
       "implicit-conductivity-water-groundwater-O0-v3": {
         "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
         "source_commit": "8e6c5d98bc5bd03e93b7a4ba083a2c6e1008e8eb",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-O0-v3\\RESULT.json"
+      },
+      "implicit-conductivity-water-groundwater-O0-v4": {
+        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "source_commit": "e2fc02b3572da0f3e513329aaf3a3a3ac0eb9ea7",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-O0-v4\\RESULT.json"
+      },
+      "implicit-conductivity-water-groundwater-O0-v5": {
+        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "source_commit": "829721797b684154f85b8b8d3388714d7c3d7dd7",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-O0-v5\\RESULT.json"
+      },
+      "implicit-conductivity-water-groundwater-O2-v4": {
+        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-groundwater-O2-v4\\RESULT.json"
       },
       "implicit-conductivity-water-history-groundwater-O2-v1": {
         "status": "FAILED",
         "source_commit": "9d8193e2c965f608a40a8f6d0359b84492bc7230",
-        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-water-history-groundwater-O2-v1\\\\input', '--original-output', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', 'O2', '--kernel-opt', 'O2', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-water-history-groundwater-O2-v1\\\\build'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 407, in <module>\\n    raise SystemExit(main())\\n                     ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 352, in main\\n    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,\\n                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)\\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\daily_host.py\", line 866, in build\\n    patched=age_calendar_owner.apply_build(output,donor_build,project,patched)\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\original_output_hysteresis.py\", line 145, in apply_build\\n    path=output/\\'headcalc.f90\\';text=path.read_text(encoding=\\'cp1252\\');anchor=\\'   use hybrid_step_budget, only: projected_water_residual\\';assert text.count(anchor)==1;text=text.replace(anchor,\\'   use MOD_integral,only:hybrid_output_trial_residual\\\\n\\'+anchor,1)\\n                                    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\Lib\\\\pathlib\\\\_local.py\", line 546, in read_text\\n    return PathBase.read_text(self, encoding, errors, newline)\\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\Lib\\\\pathlib\\\\_abc.py\", line 632, in read_text\\n    with self.open(mode=\\'r\\', encoding=encoding, errors=errors, newline=newline) as f:\\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\Lib\\\\pathlib\\\\_local.py\", line 537, in open\\n    return io.open(self, mode, buffering, encoding, errors, newline)\\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nFileNotFoundError: [Errno 2] No such file or directory: \\'C:\\\\\\\\Users\\\\\\\\Veldh012\\\\\\\\swap5-complete01-evidence\\\\\\\\implicit-conductivity-water-history-groundwater-O2-v1\\\\\\\\build\\\\\\\\headcalc.f90\\'\\n')",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-water-history-groundwater-O2-v1\\\\input', '--original-output', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--do",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-history-groundwater-O2-v1\\RESULT.json"
       },
       "implicit-conductivity-water-history-groundwater-O2-v2": {
         "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
         "source_commit": "24a7935c84b63577f3ac7eef0067549eeb604ce4",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-history-groundwater-O2-v2\\RESULT.json"
       },
       "implicit-conductivity-water-O0-v1": {
@@ -26899,26 +26991,80 @@
       "implicit-conductivity-water-O0-v2": {
         "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
         "source_commit": "0dfb881c96c5de07f62cef7ff2c41d1c008205a7",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-O0-v2\\RESULT.json"
       },
       "implicit-conductivity-water-O2-current-v1": {
         "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
         "source_commit": "d3ce186149b0503371b60bf219c8abd2b439c0a4",
-        "error": null,
+        "error": "",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-O2-current-v1\\RESULT.json"
       },
       "implicit-conductivity-windows-O0-v1": {
         "status": "FAILED",
         "source_commit": "074849f6762cfef0128d2aa4bfe69ceff7aefbca",
-        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-windows-O0-v1\\\\full-water-groundwater', '--solute', '0', '--hysteresis', '0', '--bottom', '1', '--kmean', '5', '--mode', 'explicit', '--format', '3', '--reset', '1', '--optimization', 'O0', '--phase', 'full', '--reuse-build', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-windows-O0-v1\\\\short-water-groundwater\\\\build', '--existing-input', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-windows-O0-v1\\\\short-water-groundwater\\\\input'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py\", line 88, in <module>\\n    if __name__==\\'__main__\\':main()\\n                            ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py\", line 77, in main\\n    full=out/\\'trajectory\\';q[\\'trajectory\\'],data=m.trajectory(build,a.reference_work,project,full,days,{days,*(v for pair in windows for v in pair)},180);save()\\n                                               ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_mixtures\\\\run.py\", line 72, in trajectory\\n    _, seconds = bounded(cap, warm)\\n                 ~~~~~~~^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\check_hupsel51_repair.py\", line 42, in bounded\\n    try:return callback(),time.perf_counter()-started\\n               ~~~~~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_mixtures\\\\run.py\", line 70, in warm\\n    if not row[\\'committed\\']: raise ValueError(\\'Rejected day \\'+str(day))\\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nValueError: Rejected day 584\\n')",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-windows-O0-v1\\\\full-water-groundwater', '--solute', '0', '--hysteresis', '0', '--bottom', ",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-windows-O0-v1\\RESULT.json"
       },
       "implicit-conductivity-windows-O2-v1": {
         "status": "FAILED",
         "source_commit": "074849f6762cfef0128d2aa4bfe69ceff7aefbca",
-        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-windows-O2-v1\\\\full-water-groundwater', '--solute', '0', '--hysteresis', '0', '--bottom', '1', '--kmean', '5', '--mode', 'explicit', '--format', '3', '--reset', '1', '--optimization', 'O2', '--phase', 'full', '--reuse-build', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-windows-O2-v1\\\\short-water-groundwater\\\\build', '--existing-input', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-windows-O2-v1\\\\short-water-groundwater\\\\input'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py\", line 88, in <module>\\n    if __name__==\\'__main__\\':main()\\n                            ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py\", line 77, in main\\n    full=out/\\'trajectory\\';q[\\'trajectory\\'],data=m.trajectory(build,a.reference_work,project,full,days,{days,*(v for pair in windows for v in pair)},180);save()\\n                                               ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_mixtures\\\\run.py\", line 72, in trajectory\\n    _, seconds = bounded(cap, warm)\\n                 ~~~~~~~^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\check_hupsel51_repair.py\", line 42, in bounded\\n    try:return callback(),time.perf_counter()-started\\n               ~~~~~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_mixtures\\\\run.py\", line 70, in warm\\n    if not row[\\'committed\\']: raise ValueError(\\'Rejected day \\'+str(day))\\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nValueError: Rejected day 584\\n')",
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tests\\\\nomacro_scheduled_subsurface\\\\implicit_conductivity_runtime.py', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\implicit-conductivity-windows-O2-v1\\\\full-water-groundwater', '--solute', '0', '--hysteresis', '0', '--bottom', ",
         "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-windows-O2-v1\\RESULT.json"
+      },
+      "implicit-groundwater-diagnostic-positive-cde-v1": {
+        "status": "ACTUAL_DIAGNOSTIC_FAILED_OR_CENSORED",
+        "source_commit": "b3aa970024560b198dfdc77312ec402aae44464c",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-positive-cde-v1\\RESULT.json"
+      },
+      "implicit-groundwater-diagnostic-positive-cde-v2": {
+        "status": "ACTUAL_DIAGNOSTIC_FAILED_OR_CENSORED",
+        "source_commit": "e38235b025e9d71721221d8a6289347804d6fff3",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-positive-cde-v2\\RESULT.json"
+      },
+      "implicit-groundwater-diagnostic-strict-head-v1": {
+        "status": "ACTUAL_DIAGNOSTIC_FAILED_OR_CENSORED",
+        "source_commit": "ab3c2f5908a4a36c8ef4b4045082258fe34340cc",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-strict-head-v1\\RESULT.json"
+      },
+      "implicit-groundwater-diagnostic-water-v1": {
+        "status": "ACTUAL_DIAGNOSTIC_FAILED_OR_CENSORED",
+        "source_commit": "b3aa970024560b198dfdc77312ec402aae44464c",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-water-v1\\RESULT.json"
+      },
+      "implicit-groundwater-diagnostic-water-v2": {
+        "status": "ACTUAL_DIAGNOSTIC_FAILED_OR_CENSORED",
+        "source_commit": "e38235b025e9d71721221d8a6289347804d6fff3",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-water-v2\\RESULT.json"
+      },
+      "implicit-head-iteration-audit-full-v1": {
+        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_FULL_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "source_commit": "829721797b684154f85b8b8d3388714d7c3d7dd7",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-head-iteration-audit-full-v1\\RESULT.json"
+      },
+      "implicit-head-iteration-audit-runtime-v1": {
+        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "source_commit": "829721797b684154f85b8b8d3388714d7c3d7dd7",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-head-iteration-audit-runtime-v1\\RESULT.json"
+      },
+      "implicit-water-iteration-audit-full-v1": {
+        "status": "FAILED",
+        "source_commit": "20f61d33ac90206e89d5ec1407882e55aea14735",
+        "error": "TimeoutError('Model wall cap 180s')",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-iteration-audit-full-v1\\RESULT.json"
+      },
+      "implicit-water-iteration-audit-runtime-v1": {
+        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "source_commit": "829721797b684154f85b8b8d3388714d7c3d7dd7",
+        "error": "",
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-iteration-audit-runtime-v1\\RESULT.json"
       }
     },
     "water_groundwater_failure": {
@@ -26948,16 +27094,18 @@
       "scientific_claim": "NOT_QUALIFIED"
     },
     "compatibility_output_scope": {
-      "current": "New implicit selection explicitly requires --original-output, because full physical day trial/receipt qualification owns that route.",
-      "prior_three_compatibility_short_native_each_optimization": "OBSERVATIONS_ONLY_NOT_FULL_QUALIFICATION",
-      "owner": "tests/nomacro_scheduled_subsurface/implicit_conductivity_compatibility.py needs update to actual explicit-scope refusals before portable dispatch."
+      "current": "New implicit execution explicitly requires --original-output before compilation; full daily trial frame belongs to that owner.",
+      "actual_three_public_refusals": "THREE_ACTUAL_IMPLICIT_CONDUCTIVITY_UNQUALIFIED_COMPATIBILITY_REFUSALS_PASS",
+      "prior_compatibility_short_native": "Retained observations only. Current helper now tests explicit refusals; do not select earlier native-prototype status as full qualification."
     },
     "diagnostic_worktree": {
       "path": "C:/Users/Veldh012/swap5-implicit-groundwater-diagnostic",
       "branch": "codex/nomacro-implicit-groundwater-diagnostic01",
-      "base": "8e6c5d98bc5bd03e93b7a4ba083a2c6e1008e8eb",
-      "state": "Checkout running in exec21651; do not touch its index until terminal. Diagnostic file was edited before checkout completed; prepare helper git-add correctly refused index.lock. Inspect exact diff after checkout; do not rerun generator blindly.",
-      "purpose": "Only read-only exported trial-term stdout witness, actual source commit/build identity, bounded fresh original-state execution. No formula/guard/time policy changed. Never merge carrier or use its state as qualified native origin."
+      "latest": "ab3c2f590",
+      "latest_original_mean_stage": "e38235b02",
+      "pushed_through": "e38235b02",
+      "state": "Checkout finished; no pending index.lock. The early prepare helper failed safely on active checkout lock; exact surviving one-file diff was inspected and committedb3aa970024. Latertrace source correctly contains actual copied production commitse2fc/829721 plus logging only.",
+      "role": "Actual read-only physical trial/failed-Newton probes; separate real build identities; never merge or adopt as qualified checkpoint origins."
     },
     "original_full_reference_observations": {
       "binary": {
@@ -27008,6 +27156,875 @@
         "error": "TimeoutExpired(['C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider\\\\build\\\\swap_b0_gfortran.exe', './swap.swp'], 60)"
       },
       "claim": "Original binary SIGSEGV before any data; original ASCII variant censored at60seconds. Neither proves original full-period success or scientific equivalence; no uncensored elapsed invented."
-    }
+    },
+    "actual_retry_components": {
+      "O0": {
+        "status": "REAL_ORIGINAL_IMPLICIT_RETRY_FIVE_CONTRACTS_THREE_REFUSALS_PASS",
+        "optimization": "O0",
+        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "numerical_owner_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
+        "original_timecontrol_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+        "actual_generated_source_sha256": "9eb183ca186641f2a9084ddcef58480313d058ededc8f20a1bc8071e220d28f0",
+        "driver_sha256": "6311694cb6d4fbbd8045130fb8accb48e60fc604153ee08abeae38e608626301",
+        "floating_point_profile": {
+          "id": "gnu-x86_64-separate-ops-v1",
+          "flags": [
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "actual_real_original_object_closure": [
+          {
+            "name": "calcgwl.o",
+            "sha256": "ae2070aadc4c4ef04ba594325531b271173bbfff6ef356b519c099f4c8d74587"
+          },
+          {
+            "name": "divdra.o",
+            "sha256": "cb51b1337c306eae4c94d2c545a37d54794faf4049f2f0f815bb9f59aa809d48"
+          },
+          {
+            "name": "drainage.o",
+            "sha256": "2265f621785070835219039b72d150250c23fb62d4b1ea293b488c3d9f0b2555"
+          },
+          {
+            "name": "fixed.o",
+            "sha256": "907b3bf649dca9fa8265acdcbd2d2fd003912401404da90f129c28a21b4b76b9"
+          },
+          {
+            "name": "frozencond.o",
+            "sha256": "25a269eb9a33d4d8084c720b1639030c970e85800c06db334e9214949d48010a"
+          },
+          {
+            "name": "functions.o",
+            "sha256": "ec4da77fe62cb5a4b0d7eeedc0d331c8aee3e7172da5d80f8106d501de8864f3"
+          },
+          {
+            "name": "integral.o",
+            "sha256": "afd10a03c60efc3e4537da2d33b2f57e340ef15748018d928078c6477d441718"
+          },
+          {
+            "name": "interface_atmosphere.o",
+            "sha256": "e5643ea08b45b32a145485fb4608cf6d26ec42ee7f25c753c2a464f90b5bf347"
+          },
+          {
+            "name": "interface_plant.o",
+            "sha256": "51ce7157703bacf88c879080f6dbc223bc65bc946206ce8ac84e602139e4c01f"
+          },
+          {
+            "name": "irrigation.o",
+            "sha256": "646ec3da3e88259f808162f294b328d3cc6ecd090324830f1504159b1dee925c"
+          },
+          {
+            "name": "macropore.o",
+            "sha256": "507f0edfa80404ef6033662367152f14ea0f9335f8b0d33cf8318d6457a6b596"
+          },
+          {
+            "name": "macrorate.o",
+            "sha256": "e00449cd15eb619358dcbbdc2d1480626c5934dacd1278ea0b29dce9cfe4d6bb"
+          },
+          {
+            "name": "MOD_cropdevelopment.o",
+            "sha256": "ac9c6e3da21c5db7f6cff55bb07eff953e16f4448e19bf310531c60b38a5b924"
+          },
+          {
+            "name": "MOD_drainage.o",
+            "sha256": "d95ae215b175a2cfd0b54825c5b87f378bb1e1a3a9dea85048a1336fcdd305e0"
+          },
+          {
+            "name": "MOD_Kavg_Szym.o",
+            "sha256": "d0fa9a9b84bef010d68fc7015086d97197c1921a42409c65ab234ad36c0e8472"
+          },
+          {
+            "name": "MOD_meteo.o",
+            "sha256": "aa4fc22633da01169503ba4d96d0eb39c19bee6dd7ad3c85f298015dfc46712a"
+          },
+          {
+            "name": "MOD_MvG_functions.o",
+            "sha256": "a44e6dab520c240820c34bb182e82db4fd6dd418801896ea3716cc351871d9f1"
+          },
+          {
+            "name": "MOD_out_PEARL_ANIMO.o",
+            "sha256": "18a9890f0a9f4121e2bba996eb1373692dfa93bab9adb3652880509fe6876099"
+          },
+          {
+            "name": "MOD_RIA.o",
+            "sha256": "19f13736a58b7773a89c98dd02f03781bbaf15b6c0332b7d39b0d7fc4fc9461c"
+          },
+          {
+            "name": "MOD_runon.o",
+            "sha256": "1804dc2c84e10826e26f1f76213267640466402eab5b9eba1ef8795a02f84ab9"
+          },
+          {
+            "name": "oxygenstress.o",
+            "sha256": "def142e4c2dfe1b69ea7a4fbf892d78ab86df87ab8e2812ea0083f95e30731e8"
+          },
+          {
+            "name": "readswap.o",
+            "sha256": "ab46c8eccf73085e7eaf5e81f5bb7b954d6eba2c8cc52850d2ed31a024f64c81"
+          },
+          {
+            "name": "rootextraction.o",
+            "sha256": "25de0dc4d43083119fd9cbbe96bfb834f14ac7810b1bc5211603c0785207e820"
+          },
+          {
+            "name": "RWU_micro.o",
+            "sha256": "21db38566a38c2a8ab3e9b35559c90217fb2cda2b3fa4c337689a9399dade7c3"
+          },
+          {
+            "name": "snow.o",
+            "sha256": "30cd382de46b1ebbd7c2250945ab2804f27a2dc97f166da4f3987686cd3f418e"
+          },
+          {
+            "name": "solute.o",
+            "sha256": "251c47970438bd9d4bdf2f20a425f980747a9c8fbd2708de82ba20e9c4b2e114"
+          },
+          {
+            "name": "sptabulated.o",
+            "sha256": "c2c69fdc38efd106c2ebc96597f0e0cb082a8c139ef3643452dff3f1f717898d"
+          },
+          {
+            "name": "surfacewater.o",
+            "sha256": "2d88def7210be8738463c5c87bfec78a2218c32e6dcd5d20d6bf71d128e1c0dc"
+          },
+          {
+            "name": "swap_base.o",
+            "sha256": "90266a510bc8f20f638cc2e4bf2ec85689a74cab3885d3fe7848e823b6e5d2bb"
+          },
+          {
+            "name": "swap_csv_output.o",
+            "sha256": "d0991312d4877dab943ba1e3b066af712ccc1cc86f43e29d3a7f15842940a2af"
+          },
+          {
+            "name": "swapoutput.o",
+            "sha256": "29b5c74e39d02652d7bdde454e99b0d9f7b9e3f009a4643dfd82d13da2a8c4da"
+          },
+          {
+            "name": "temperature.o",
+            "sha256": "5bc2828f3dc58e4f851c0c66c0c4b10afb4bdaca2378c4e247408157ea01d043"
+          },
+          {
+            "name": "timecontrol.o",
+            "sha256": "d4bb41108b9bb950241722228ad50c1b2d951f08332c66826c5ebeab33758e82"
+          },
+          {
+            "name": "tridag.o",
+            "sha256": "278e93358ff41854bc52b77faaeb9db1de2ecb6328a8f2ef4ee53a12b803fffb"
+          },
+          {
+            "name": "variables.o",
+            "sha256": "822758fff325d3323e304e3986327a8302e64812aecc4135e8130e71e182498d"
+          },
+          {
+            "name": "watstor.o",
+            "sha256": "e41cab1a706ac3a0a9e30abe6a0e5031a66d314302449be7d63b217411e90a27"
+          },
+          {
+            "name": "WC_K_models_04_11.o",
+            "sha256": "8bf0ef90963a9cef05573d99c80f04aa3c229e4cf83e04372f22465e9278160d"
+          },
+          {
+            "name": "wofost.o",
+            "sha256": "89b3ff5de96528ce6f2c52064ce59a67be06132cb692c3c0cc3123118f0df194"
+          },
+          {
+            "name": "wofost_soil_declarations.o",
+            "sha256": "ea867cb2543f0108e6736b2e518d4b6576488c47b014e37f2e707bfa2357453c"
+          },
+          {
+            "name": "wofost_soil_interface.o",
+            "sha256": "0dde038c09d92bb6cb37bbaadaaf9e23f41d38f9455982f4bca118814be2a181"
+          },
+          {
+            "name": "wofostnut.o",
+            "sha256": "92ad2f4cdae158334ed31b953bf134c6969d279aeb05715a90d0e4403a7b5573"
+          }
+        ],
+        "object_count": 41,
+        "closure_reason": "Original public TimeControl shares original timer, irrigation, meteo and diagnostic modules. Resolve and link actual original providers; no stand-ins or copied physical equations.",
+        "compile_original_seconds": 0.25277299992740154,
+        "compile_link_seconds": 0.48068050015717745,
+        "native_seconds": 0.3404258997179568,
+        "stdout": "REAL_ORIGINAL_IMPLICIT_RETRY_PASS 5\n",
+        "stderr": "",
+        "refusals": [
+          {
+            "mode": "clock-stop",
+            "returncode": 1,
+            "seconds": 0.05427120020613074,
+            "stdout": "",
+            "stderr": "ERROR STOP Implicit original retry reached clock resolution\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x955d449c\n#4  0x955d18b4\n#5  0x955d1fb2\n#6  0x955d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "nan-stop",
+            "returncode": 1,
+            "seconds": 0.04419889999553561,
+            "stdout": "",
+            "stderr": "Note: The following floating-point exceptions are signalling: IEEE_INVALID_FLAG\nERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x955d4357\n#4  0x955d19a9\n#5  0x955d1fb2\n#6  0x955d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "zero-stop",
+            "returncode": 1,
+            "seconds": 0.040074999909847975,
+            "stdout": "",
+            "stderr": "ERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0x955d4357\n#4  0x955d19e1\n#5  0x955d1fb2\n#6  0x955d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          }
+        ]
+      },
+      "O2": {
+        "status": "REAL_ORIGINAL_IMPLICIT_RETRY_FIVE_CONTRACTS_THREE_REFUSALS_PASS",
+        "optimization": "O2",
+        "source_commit": "e9ecbfb6cb6b1ef64c6ef880cf407b93610986c1",
+        "numerical_owner_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
+        "original_timecontrol_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+        "actual_generated_source_sha256": "9eb183ca186641f2a9084ddcef58480313d058ededc8f20a1bc8071e220d28f0",
+        "driver_sha256": "6311694cb6d4fbbd8045130fb8accb48e60fc604153ee08abeae38e608626301",
+        "floating_point_profile": {
+          "id": "gnu-x86_64-separate-ops-v1",
+          "flags": [
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "actual_real_original_object_closure": [
+          {
+            "name": "calcgwl.o",
+            "sha256": "ae2070aadc4c4ef04ba594325531b271173bbfff6ef356b519c099f4c8d74587"
+          },
+          {
+            "name": "divdra.o",
+            "sha256": "cb51b1337c306eae4c94d2c545a37d54794faf4049f2f0f815bb9f59aa809d48"
+          },
+          {
+            "name": "drainage.o",
+            "sha256": "2265f621785070835219039b72d150250c23fb62d4b1ea293b488c3d9f0b2555"
+          },
+          {
+            "name": "fixed.o",
+            "sha256": "907b3bf649dca9fa8265acdcbd2d2fd003912401404da90f129c28a21b4b76b9"
+          },
+          {
+            "name": "frozencond.o",
+            "sha256": "25a269eb9a33d4d8084c720b1639030c970e85800c06db334e9214949d48010a"
+          },
+          {
+            "name": "functions.o",
+            "sha256": "ec4da77fe62cb5a4b0d7eeedc0d331c8aee3e7172da5d80f8106d501de8864f3"
+          },
+          {
+            "name": "integral.o",
+            "sha256": "afd10a03c60efc3e4537da2d33b2f57e340ef15748018d928078c6477d441718"
+          },
+          {
+            "name": "interface_atmosphere.o",
+            "sha256": "e5643ea08b45b32a145485fb4608cf6d26ec42ee7f25c753c2a464f90b5bf347"
+          },
+          {
+            "name": "interface_plant.o",
+            "sha256": "51ce7157703bacf88c879080f6dbc223bc65bc946206ce8ac84e602139e4c01f"
+          },
+          {
+            "name": "irrigation.o",
+            "sha256": "646ec3da3e88259f808162f294b328d3cc6ecd090324830f1504159b1dee925c"
+          },
+          {
+            "name": "macropore.o",
+            "sha256": "507f0edfa80404ef6033662367152f14ea0f9335f8b0d33cf8318d6457a6b596"
+          },
+          {
+            "name": "macrorate.o",
+            "sha256": "e00449cd15eb619358dcbbdc2d1480626c5934dacd1278ea0b29dce9cfe4d6bb"
+          },
+          {
+            "name": "MOD_cropdevelopment.o",
+            "sha256": "ac9c6e3da21c5db7f6cff55bb07eff953e16f4448e19bf310531c60b38a5b924"
+          },
+          {
+            "name": "MOD_drainage.o",
+            "sha256": "d95ae215b175a2cfd0b54825c5b87f378bb1e1a3a9dea85048a1336fcdd305e0"
+          },
+          {
+            "name": "MOD_Kavg_Szym.o",
+            "sha256": "d0fa9a9b84bef010d68fc7015086d97197c1921a42409c65ab234ad36c0e8472"
+          },
+          {
+            "name": "MOD_meteo.o",
+            "sha256": "aa4fc22633da01169503ba4d96d0eb39c19bee6dd7ad3c85f298015dfc46712a"
+          },
+          {
+            "name": "MOD_MvG_functions.o",
+            "sha256": "a44e6dab520c240820c34bb182e82db4fd6dd418801896ea3716cc351871d9f1"
+          },
+          {
+            "name": "MOD_out_PEARL_ANIMO.o",
+            "sha256": "18a9890f0a9f4121e2bba996eb1373692dfa93bab9adb3652880509fe6876099"
+          },
+          {
+            "name": "MOD_RIA.o",
+            "sha256": "19f13736a58b7773a89c98dd02f03781bbaf15b6c0332b7d39b0d7fc4fc9461c"
+          },
+          {
+            "name": "MOD_runon.o",
+            "sha256": "1804dc2c84e10826e26f1f76213267640466402eab5b9eba1ef8795a02f84ab9"
+          },
+          {
+            "name": "oxygenstress.o",
+            "sha256": "def142e4c2dfe1b69ea7a4fbf892d78ab86df87ab8e2812ea0083f95e30731e8"
+          },
+          {
+            "name": "readswap.o",
+            "sha256": "ab46c8eccf73085e7eaf5e81f5bb7b954d6eba2c8cc52850d2ed31a024f64c81"
+          },
+          {
+            "name": "rootextraction.o",
+            "sha256": "25de0dc4d43083119fd9cbbe96bfb834f14ac7810b1bc5211603c0785207e820"
+          },
+          {
+            "name": "RWU_micro.o",
+            "sha256": "21db38566a38c2a8ab3e9b35559c90217fb2cda2b3fa4c337689a9399dade7c3"
+          },
+          {
+            "name": "snow.o",
+            "sha256": "30cd382de46b1ebbd7c2250945ab2804f27a2dc97f166da4f3987686cd3f418e"
+          },
+          {
+            "name": "solute.o",
+            "sha256": "251c47970438bd9d4bdf2f20a425f980747a9c8fbd2708de82ba20e9c4b2e114"
+          },
+          {
+            "name": "sptabulated.o",
+            "sha256": "c2c69fdc38efd106c2ebc96597f0e0cb082a8c139ef3643452dff3f1f717898d"
+          },
+          {
+            "name": "surfacewater.o",
+            "sha256": "2d88def7210be8738463c5c87bfec78a2218c32e6dcd5d20d6bf71d128e1c0dc"
+          },
+          {
+            "name": "swap_base.o",
+            "sha256": "90266a510bc8f20f638cc2e4bf2ec85689a74cab3885d3fe7848e823b6e5d2bb"
+          },
+          {
+            "name": "swap_csv_output.o",
+            "sha256": "d0991312d4877dab943ba1e3b066af712ccc1cc86f43e29d3a7f15842940a2af"
+          },
+          {
+            "name": "swapoutput.o",
+            "sha256": "29b5c74e39d02652d7bdde454e99b0d9f7b9e3f009a4643dfd82d13da2a8c4da"
+          },
+          {
+            "name": "temperature.o",
+            "sha256": "5bc2828f3dc58e4f851c0c66c0c4b10afb4bdaca2378c4e247408157ea01d043"
+          },
+          {
+            "name": "timecontrol.o",
+            "sha256": "d4bb41108b9bb950241722228ad50c1b2d951f08332c66826c5ebeab33758e82"
+          },
+          {
+            "name": "tridag.o",
+            "sha256": "278e93358ff41854bc52b77faaeb9db1de2ecb6328a8f2ef4ee53a12b803fffb"
+          },
+          {
+            "name": "variables.o",
+            "sha256": "822758fff325d3323e304e3986327a8302e64812aecc4135e8130e71e182498d"
+          },
+          {
+            "name": "watstor.o",
+            "sha256": "e41cab1a706ac3a0a9e30abe6a0e5031a66d314302449be7d63b217411e90a27"
+          },
+          {
+            "name": "WC_K_models_04_11.o",
+            "sha256": "8bf0ef90963a9cef05573d99c80f04aa3c229e4cf83e04372f22465e9278160d"
+          },
+          {
+            "name": "wofost.o",
+            "sha256": "89b3ff5de96528ce6f2c52064ce59a67be06132cb692c3c0cc3123118f0df194"
+          },
+          {
+            "name": "wofost_soil_declarations.o",
+            "sha256": "ea867cb2543f0108e6736b2e518d4b6576488c47b014e37f2e707bfa2357453c"
+          },
+          {
+            "name": "wofost_soil_interface.o",
+            "sha256": "0dde038c09d92bb6cb37bbaadaaf9e23f41d38f9455982f4bca118814be2a181"
+          },
+          {
+            "name": "wofostnut.o",
+            "sha256": "92ad2f4cdae158334ed31b953bf134c6969d279aeb05715a90d0e4403a7b5573"
+          }
+        ],
+        "object_count": 41,
+        "closure_reason": "Original public TimeControl shares original timer, irrigation, meteo and diagnostic modules. Resolve and link actual original providers; no stand-ins or copied physical equations.",
+        "compile_original_seconds": 0.4667118997313082,
+        "compile_link_seconds": 0.4861486000008881,
+        "native_seconds": 0.2854106002487242,
+        "stdout": "REAL_ORIGINAL_IMPLICIT_RETRY_PASS 5\n",
+        "stderr": "",
+        "refusals": [
+          {
+            "mode": "clock-stop",
+            "returncode": 1,
+            "seconds": 0.03886390011757612,
+            "stdout": "",
+            "stderr": "ERROR STOP Implicit original retry reached clock resolution\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xbbc364e\n#4  0xbbc19b6\n#5  0xbc8f5df\n#6  0xbbc1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "nan-stop",
+            "returncode": 1,
+            "seconds": 0.03820659965276718,
+            "stdout": "",
+            "stderr": "ERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xbbc3951\n#4  0xbbc1a07\n#5  0xbc8f5df\n#6  0xbbc1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "zero-stop",
+            "returncode": 1,
+            "seconds": 0.040432299952954054,
+            "stdout": "",
+            "stderr": "ERROR STOP Invalid implicit original trial clock\n\nError termination. Backtrace:\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\advapi32_hotpatch.dll: No such file or directory\n\nCould not print backtrace: \\Device\\HarddiskVolume3\\Windows\\WinSxS\\amd64_microsoft-windows-hotpatches_31bf3856ad364e35_10.0.26100.9911_none_e12678f3e1e7a275\\1\\rpcrt4_hotpatch.dll: No such file or directory\n#0  0x1dc29b94\n#1  0x1dba4471\n#2  0x1da528f4\n#3  0xbbc3951\n#4  0xbbc19dd\n#5  0xbc8f5df\n#6  0xbbc1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          }
+        ]
+      }
+    },
+    "actual_mean_components": {
+      "O0": {
+        "status": "REAL_ORIGINAL_HEADCALC_PRIVATE_MEAN_EIGHTEEN_DERIVATIVES_PASS",
+        "optimization": "O0",
+        "source_commit": "1669bf1faefe050c60a4ccfb464341bd325731ce",
+        "verification_entry_owner_sha256": "c85c22d05dce0792d136e12985cbe20882d9857e5ecb4b4b5683f43e4b7cc05b",
+        "original_headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+        "original_mean_provider_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+        "actual_generated_source_sha256": "c8175885981660cee87968ce3a91bb2973fc2cf82deef0566781b98cde71422d",
+        "driver_sha256": "fb7ce38605a06311ec77898460edc62d7d7b98edf42a23b6bb41d2a6eb6b604e",
+        "floating_point_profile": {
+          "id": "gnu-x86_64-separate-ops-v1",
+          "flags": [
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "actual_real_original_object_closure": [
+          {
+            "name": "boundtop.o",
+            "sha256": "60aeac9914818cc58ef5767c7c70b3b0551dd33651f4550b5cbf98c549aa028d"
+          },
+          {
+            "name": "calcgwl.o",
+            "sha256": "ae2070aadc4c4ef04ba594325531b271173bbfff6ef356b519c099f4c8d74587"
+          },
+          {
+            "name": "divdra.o",
+            "sha256": "cb51b1337c306eae4c94d2c545a37d54794faf4049f2f0f815bb9f59aa809d48"
+          },
+          {
+            "name": "drainage.o",
+            "sha256": "2265f621785070835219039b72d150250c23fb62d4b1ea293b488c3d9f0b2555"
+          },
+          {
+            "name": "fixed.o",
+            "sha256": "907b3bf649dca9fa8265acdcbd2d2fd003912401404da90f129c28a21b4b76b9"
+          },
+          {
+            "name": "frozencond.o",
+            "sha256": "25a269eb9a33d4d8084c720b1639030c970e85800c06db334e9214949d48010a"
+          },
+          {
+            "name": "functions.o",
+            "sha256": "ec4da77fe62cb5a4b0d7eeedc0d331c8aee3e7172da5d80f8106d501de8864f3"
+          },
+          {
+            "name": "headcalc.o",
+            "sha256": "119324a6fce869d337ce1a4b529ea02bb465354c226370efae575b3ea9968a72"
+          },
+          {
+            "name": "integral.o",
+            "sha256": "afd10a03c60efc3e4537da2d33b2f57e340ef15748018d928078c6477d441718"
+          },
+          {
+            "name": "interface_atmosphere.o",
+            "sha256": "e5643ea08b45b32a145485fb4608cf6d26ec42ee7f25c753c2a464f90b5bf347"
+          },
+          {
+            "name": "interface_plant.o",
+            "sha256": "51ce7157703bacf88c879080f6dbc223bc65bc946206ce8ac84e602139e4c01f"
+          },
+          {
+            "name": "irrigation.o",
+            "sha256": "646ec3da3e88259f808162f294b328d3cc6ecd090324830f1504159b1dee925c"
+          },
+          {
+            "name": "macropore.o",
+            "sha256": "507f0edfa80404ef6033662367152f14ea0f9335f8b0d33cf8318d6457a6b596"
+          },
+          {
+            "name": "macrorate.o",
+            "sha256": "e00449cd15eb619358dcbbdc2d1480626c5934dacd1278ea0b29dce9cfe4d6bb"
+          },
+          {
+            "name": "MOD_cropdevelopment.o",
+            "sha256": "ac9c6e3da21c5db7f6cff55bb07eff953e16f4448e19bf310531c60b38a5b924"
+          },
+          {
+            "name": "MOD_drainage.o",
+            "sha256": "d95ae215b175a2cfd0b54825c5b87f378bb1e1a3a9dea85048a1336fcdd305e0"
+          },
+          {
+            "name": "MOD_Kavg_Szym.o",
+            "sha256": "d0fa9a9b84bef010d68fc7015086d97197c1921a42409c65ab234ad36c0e8472"
+          },
+          {
+            "name": "MOD_meteo.o",
+            "sha256": "aa4fc22633da01169503ba4d96d0eb39c19bee6dd7ad3c85f298015dfc46712a"
+          },
+          {
+            "name": "MOD_MvG_functions.o",
+            "sha256": "a44e6dab520c240820c34bb182e82db4fd6dd418801896ea3716cc351871d9f1"
+          },
+          {
+            "name": "MOD_out_PEARL_ANIMO.o",
+            "sha256": "18a9890f0a9f4121e2bba996eb1373692dfa93bab9adb3652880509fe6876099"
+          },
+          {
+            "name": "MOD_RIA.o",
+            "sha256": "19f13736a58b7773a89c98dd02f03781bbaf15b6c0332b7d39b0d7fc4fc9461c"
+          },
+          {
+            "name": "MOD_runon.o",
+            "sha256": "1804dc2c84e10826e26f1f76213267640466402eab5b9eba1ef8795a02f84ab9"
+          },
+          {
+            "name": "oxygenstress.o",
+            "sha256": "def142e4c2dfe1b69ea7a4fbf892d78ab86df87ab8e2812ea0083f95e30731e8"
+          },
+          {
+            "name": "readswap.o",
+            "sha256": "ab46c8eccf73085e7eaf5e81f5bb7b954d6eba2c8cc52850d2ed31a024f64c81"
+          },
+          {
+            "name": "rootextraction.o",
+            "sha256": "25de0dc4d43083119fd9cbbe96bfb834f14ac7810b1bc5211603c0785207e820"
+          },
+          {
+            "name": "RWU_micro.o",
+            "sha256": "21db38566a38c2a8ab3e9b35559c90217fb2cda2b3fa4c337689a9399dade7c3"
+          },
+          {
+            "name": "snow.o",
+            "sha256": "30cd382de46b1ebbd7c2250945ab2804f27a2dc97f166da4f3987686cd3f418e"
+          },
+          {
+            "name": "solute.o",
+            "sha256": "251c47970438bd9d4bdf2f20a425f980747a9c8fbd2708de82ba20e9c4b2e114"
+          },
+          {
+            "name": "sptabulated.o",
+            "sha256": "c2c69fdc38efd106c2ebc96597f0e0cb082a8c139ef3643452dff3f1f717898d"
+          },
+          {
+            "name": "surfacewater.o",
+            "sha256": "2d88def7210be8738463c5c87bfec78a2218c32e6dcd5d20d6bf71d128e1c0dc"
+          },
+          {
+            "name": "swap_base.o",
+            "sha256": "90266a510bc8f20f638cc2e4bf2ec85689a74cab3885d3fe7848e823b6e5d2bb"
+          },
+          {
+            "name": "swap_csv_output.o",
+            "sha256": "d0991312d4877dab943ba1e3b066af712ccc1cc86f43e29d3a7f15842940a2af"
+          },
+          {
+            "name": "swapoutput.o",
+            "sha256": "29b5c74e39d02652d7bdde454e99b0d9f7b9e3f009a4643dfd82d13da2a8c4da"
+          },
+          {
+            "name": "temperature.o",
+            "sha256": "5bc2828f3dc58e4f851c0c66c0c4b10afb4bdaca2378c4e247408157ea01d043"
+          },
+          {
+            "name": "tridag.o",
+            "sha256": "278e93358ff41854bc52b77faaeb9db1de2ecb6328a8f2ef4ee53a12b803fffb"
+          },
+          {
+            "name": "variables.o",
+            "sha256": "822758fff325d3323e304e3986327a8302e64812aecc4135e8130e71e182498d"
+          },
+          {
+            "name": "watstor.o",
+            "sha256": "e41cab1a706ac3a0a9e30abe6a0e5031a66d314302449be7d63b217411e90a27"
+          },
+          {
+            "name": "WC_K_models_04_11.o",
+            "sha256": "8bf0ef90963a9cef05573d99c80f04aa3c229e4cf83e04372f22465e9278160d"
+          },
+          {
+            "name": "wofost.o",
+            "sha256": "89b3ff5de96528ce6f2c52064ce59a67be06132cb692c3c0cc3123118f0df194"
+          },
+          {
+            "name": "wofost_soil_declarations.o",
+            "sha256": "ea867cb2543f0108e6736b2e518d4b6576488c47b014e37f2e707bfa2357453c"
+          },
+          {
+            "name": "wofost_soil_interface.o",
+            "sha256": "0dde038c09d92bb6cb37bbaadaaf9e23f41d38f9455982f4bca118814be2a181"
+          },
+          {
+            "name": "wofostnut.o",
+            "sha256": "92ad2f4cdae158334ed31b953bf134c6969d279aeb05715a90d0e4403a7b5573"
+          }
+        ],
+        "object_count": 42,
+        "closure_reason": "Original private dkmean is called through a verification-only ENTRY added to the complete original HeadCalc. Resolve/link its actual original object dependencies; the numerical function body and every physical equation remain literal. This is an interface probe, not a stand-in full model.",
+        "compile_original_seconds": 0.41821529995650053,
+        "compile_link_seconds": 0.5365066002123058,
+        "native_seconds": 0.33623760007321835,
+        "stdout": "ACTUAL_ORIGINAL_DKMEAN 1 1  5.00000000000000000E-001  4.99999986713051958E-001  0.00000000000000000E+000\nACTUAL_ORIGINAL_DKMEAN 1 2  5.00000000000000000E-001  4.99999986713051958E-001  0.00000000000000000E+000\nACTUAL_ORIGINAL_DKMEAN 1 3  5.00000000000000000E-001  4.99999986713051958E-001  0.00000000000000000E+000\nACTUAL_ORIGINAL_DKMEAN 2 1  5.00000000000000000E-001  4.99999986713051958E-001  0.00000000000000000E+000\nACTUAL_ORIGINAL_DKMEAN 2 2  1.66666666666666657E-001  1.66666707785295271E-001 -3.33333333333333370E-001\nACTUAL_ORIGINAL_DKMEAN 2 3  8.33333333333333370E-001  8.33333340794367272E-001  3.33333333333333370E-001\nACTUAL_ORIGINAL_DKMEAN 3 1  4.00000000000000000E+001  4.00000000002962111E+001  3.95000000000000000E+001\nACTUAL_ORIGINAL_DKMEAN 3 2  4.00000000000000000E+001  4.00000000002962111E+001  3.95000000000000000E+001\nACTUAL_ORIGINAL_DKMEAN 3 3  4.00000000000000000E+001  4.00000000002962111E+001  3.95000000000000000E+001\nACTUAL_ORIGINAL_DKMEAN 4 1  4.00000000000000000E+001  4.00000000002962111E+001  3.95000000000000000E+001\nACTUAL_ORIGINAL_DKMEAN 4 2  2.47551404459348305E+002  2.47551404455656694E+002  2.47051404459348305E+002\nACTUAL_ORIGINAL_DKMEAN 4 3  3.59072448338647154E+000  3.59072448334714256E+000  3.09072448338647154E+000\nACTUAL_ORIGINAL_DKMEAN 5 1  1.99937514645386383E+000  1.99937514642713521E+000  1.49937514645386383E+000\nACTUAL_ORIGINAL_DKMEAN 5 2  1.99937514645386383E+000  1.99937514642713521E+000  1.49937514645386383E+000\nACTUAL_ORIGINAL_DKMEAN 5 3  1.99937514645386383E+000  1.99937514642713521E+000  1.49937514645386383E+000\nACTUAL_ORIGINAL_DKMEAN 6 1  1.99937514645386383E+000  1.99937514642713521E+000  1.49937514645386383E+000\nACTUAL_ORIGINAL_DKMEAN 6 2  5.99063597489519850E+000  5.99063597489086064E+000  5.49063597489519850E+000\nACTUAL_ORIGINAL_DKMEAN 6 3  1.19992500351547848E+000  1.19992500350949105E+000  6.99925003515478483E-001\nREAL_ORIGINAL_MEAN_DERIVATIVE_PASS 18 14  2.46711710811992702E-007\n",
+        "stderr": "",
+        "refusals": []
+      },
+      "O2": {
+        "status": "REAL_ORIGINAL_HEADCALC_PRIVATE_MEAN_EIGHTEEN_DERIVATIVES_PASS",
+        "optimization": "O2",
+        "source_commit": "1669bf1faefe050c60a4ccfb464341bd325731ce",
+        "verification_entry_owner_sha256": "c85c22d05dce0792d136e12985cbe20882d9857e5ecb4b4b5683f43e4b7cc05b",
+        "original_headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+        "original_mean_provider_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+        "actual_generated_source_sha256": "c8175885981660cee87968ce3a91bb2973fc2cf82deef0566781b98cde71422d",
+        "driver_sha256": "fb7ce38605a06311ec77898460edc62d7d7b98edf42a23b6bb41d2a6eb6b604e",
+        "floating_point_profile": {
+          "id": "gnu-x86_64-separate-ops-v1",
+          "flags": [
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "actual_real_original_object_closure": [
+          {
+            "name": "boundtop.o",
+            "sha256": "60aeac9914818cc58ef5767c7c70b3b0551dd33651f4550b5cbf98c549aa028d"
+          },
+          {
+            "name": "calcgwl.o",
+            "sha256": "ae2070aadc4c4ef04ba594325531b271173bbfff6ef356b519c099f4c8d74587"
+          },
+          {
+            "name": "divdra.o",
+            "sha256": "cb51b1337c306eae4c94d2c545a37d54794faf4049f2f0f815bb9f59aa809d48"
+          },
+          {
+            "name": "drainage.o",
+            "sha256": "2265f621785070835219039b72d150250c23fb62d4b1ea293b488c3d9f0b2555"
+          },
+          {
+            "name": "fixed.o",
+            "sha256": "907b3bf649dca9fa8265acdcbd2d2fd003912401404da90f129c28a21b4b76b9"
+          },
+          {
+            "name": "frozencond.o",
+            "sha256": "25a269eb9a33d4d8084c720b1639030c970e85800c06db334e9214949d48010a"
+          },
+          {
+            "name": "functions.o",
+            "sha256": "ec4da77fe62cb5a4b0d7eeedc0d331c8aee3e7172da5d80f8106d501de8864f3"
+          },
+          {
+            "name": "headcalc.o",
+            "sha256": "119324a6fce869d337ce1a4b529ea02bb465354c226370efae575b3ea9968a72"
+          },
+          {
+            "name": "integral.o",
+            "sha256": "afd10a03c60efc3e4537da2d33b2f57e340ef15748018d928078c6477d441718"
+          },
+          {
+            "name": "interface_atmosphere.o",
+            "sha256": "e5643ea08b45b32a145485fb4608cf6d26ec42ee7f25c753c2a464f90b5bf347"
+          },
+          {
+            "name": "interface_plant.o",
+            "sha256": "51ce7157703bacf88c879080f6dbc223bc65bc946206ce8ac84e602139e4c01f"
+          },
+          {
+            "name": "irrigation.o",
+            "sha256": "646ec3da3e88259f808162f294b328d3cc6ecd090324830f1504159b1dee925c"
+          },
+          {
+            "name": "macropore.o",
+            "sha256": "507f0edfa80404ef6033662367152f14ea0f9335f8b0d33cf8318d6457a6b596"
+          },
+          {
+            "name": "macrorate.o",
+            "sha256": "e00449cd15eb619358dcbbdc2d1480626c5934dacd1278ea0b29dce9cfe4d6bb"
+          },
+          {
+            "name": "MOD_cropdevelopment.o",
+            "sha256": "ac9c6e3da21c5db7f6cff55bb07eff953e16f4448e19bf310531c60b38a5b924"
+          },
+          {
+            "name": "MOD_drainage.o",
+            "sha256": "d95ae215b175a2cfd0b54825c5b87f378bb1e1a3a9dea85048a1336fcdd305e0"
+          },
+          {
+            "name": "MOD_Kavg_Szym.o",
+            "sha256": "d0fa9a9b84bef010d68fc7015086d97197c1921a42409c65ab234ad36c0e8472"
+          },
+          {
+            "name": "MOD_meteo.o",
+            "sha256": "aa4fc22633da01169503ba4d96d0eb39c19bee6dd7ad3c85f298015dfc46712a"
+          },
+          {
+            "name": "MOD_MvG_functions.o",
+            "sha256": "a44e6dab520c240820c34bb182e82db4fd6dd418801896ea3716cc351871d9f1"
+          },
+          {
+            "name": "MOD_out_PEARL_ANIMO.o",
+            "sha256": "18a9890f0a9f4121e2bba996eb1373692dfa93bab9adb3652880509fe6876099"
+          },
+          {
+            "name": "MOD_RIA.o",
+            "sha256": "19f13736a58b7773a89c98dd02f03781bbaf15b6c0332b7d39b0d7fc4fc9461c"
+          },
+          {
+            "name": "MOD_runon.o",
+            "sha256": "1804dc2c84e10826e26f1f76213267640466402eab5b9eba1ef8795a02f84ab9"
+          },
+          {
+            "name": "oxygenstress.o",
+            "sha256": "def142e4c2dfe1b69ea7a4fbf892d78ab86df87ab8e2812ea0083f95e30731e8"
+          },
+          {
+            "name": "readswap.o",
+            "sha256": "ab46c8eccf73085e7eaf5e81f5bb7b954d6eba2c8cc52850d2ed31a024f64c81"
+          },
+          {
+            "name": "rootextraction.o",
+            "sha256": "25de0dc4d43083119fd9cbbe96bfb834f14ac7810b1bc5211603c0785207e820"
+          },
+          {
+            "name": "RWU_micro.o",
+            "sha256": "21db38566a38c2a8ab3e9b35559c90217fb2cda2b3fa4c337689a9399dade7c3"
+          },
+          {
+            "name": "snow.o",
+            "sha256": "30cd382de46b1ebbd7c2250945ab2804f27a2dc97f166da4f3987686cd3f418e"
+          },
+          {
+            "name": "solute.o",
+            "sha256": "251c47970438bd9d4bdf2f20a425f980747a9c8fbd2708de82ba20e9c4b2e114"
+          },
+          {
+            "name": "sptabulated.o",
+            "sha256": "c2c69fdc38efd106c2ebc96597f0e0cb082a8c139ef3643452dff3f1f717898d"
+          },
+          {
+            "name": "surfacewater.o",
+            "sha256": "2d88def7210be8738463c5c87bfec78a2218c32e6dcd5d20d6bf71d128e1c0dc"
+          },
+          {
+            "name": "swap_base.o",
+            "sha256": "90266a510bc8f20f638cc2e4bf2ec85689a74cab3885d3fe7848e823b6e5d2bb"
+          },
+          {
+            "name": "swap_csv_output.o",
+            "sha256": "d0991312d4877dab943ba1e3b066af712ccc1cc86f43e29d3a7f15842940a2af"
+          },
+          {
+            "name": "swapoutput.o",
+            "sha256": "29b5c74e39d02652d7bdde454e99b0d9f7b9e3f009a4643dfd82d13da2a8c4da"
+          },
+          {
+            "name": "temperature.o",
+            "sha256": "5bc2828f3dc58e4f851c0c66c0c4b10afb4bdaca2378c4e247408157ea01d043"
+          },
+          {
+            "name": "tridag.o",
+            "sha256": "278e93358ff41854bc52b77faaeb9db1de2ecb6328a8f2ef4ee53a12b803fffb"
+          },
+          {
+            "name": "variables.o",
+            "sha256": "822758fff325d3323e304e3986327a8302e64812aecc4135e8130e71e182498d"
+          },
+          {
+            "name": "watstor.o",
+            "sha256": "e41cab1a706ac3a0a9e30abe6a0e5031a66d314302449be7d63b217411e90a27"
+          },
+          {
+            "name": "WC_K_models_04_11.o",
+            "sha256": "8bf0ef90963a9cef05573d99c80f04aa3c229e4cf83e04372f22465e9278160d"
+          },
+          {
+            "name": "wofost.o",
+            "sha256": "89b3ff5de96528ce6f2c52064ce59a67be06132cb692c3c0cc3123118f0df194"
+          },
+          {
+            "name": "wofost_soil_declarations.o",
+            "sha256": "ea867cb2543f0108e6736b2e518d4b6576488c47b014e37f2e707bfa2357453c"
+          },
+          {
+            "name": "wofost_soil_interface.o",
+            "sha256": "0dde038c09d92bb6cb37bbaadaaf9e23f41d38f9455982f4bca118814be2a181"
+          },
+          {
+            "name": "wofostnut.o",
+            "sha256": "92ad2f4cdae158334ed31b953bf134c6969d279aeb05715a90d0e4403a7b5573"
+          }
+        ],
+        "object_count": 42,
+        "closure_reason": "Original private dkmean is called through a verification-only ENTRY added to the complete original HeadCalc. Resolve/link its actual original object dependencies; the numerical function body and every physical equation remain literal. This is an interface probe, not a stand-in full model.",
+        "compile_original_seconds": 0.9511493002064526,
+        "compile_link_seconds": 0.4440788999199867,
+        "native_seconds": 0.30503909988328815,
+        "stdout": "ACTUAL_ORIGINAL_DKMEAN 1 1  5.00000000000000000E-001  4.99999986713051958E-001  0.00000000000000000E+000\nACTUAL_ORIGINAL_DKMEAN 1 2  5.00000000000000000E-001  4.99999986713051958E-001  0.00000000000000000E+000\nACTUAL_ORIGINAL_DKMEAN 1 3  5.00000000000000000E-001  4.99999986713051958E-001  0.00000000000000000E+000\nACTUAL_ORIGINAL_DKMEAN 2 1  5.00000000000000000E-001  4.99999986713051958E-001  0.00000000000000000E+000\nACTUAL_ORIGINAL_DKMEAN 2 2  1.66666666666666657E-001  1.66666707785295271E-001 -3.33333333333333370E-001\nACTUAL_ORIGINAL_DKMEAN 2 3  8.33333333333333370E-001  8.33333340794367272E-001  3.33333333333333370E-001\nACTUAL_ORIGINAL_DKMEAN 3 1  4.00000000000000000E+001  4.00000000002962111E+001  3.95000000000000000E+001\nACTUAL_ORIGINAL_DKMEAN 3 2  4.00000000000000000E+001  4.00000000002962111E+001  3.95000000000000000E+001\nACTUAL_ORIGINAL_DKMEAN 3 3  4.00000000000000000E+001  4.00000000002962111E+001  3.95000000000000000E+001\nACTUAL_ORIGINAL_DKMEAN 4 1  4.00000000000000000E+001  4.00000000002962111E+001  3.95000000000000000E+001\nACTUAL_ORIGINAL_DKMEAN 4 2  2.47551404459348305E+002  2.47551404455656694E+002  2.47051404459348305E+002\nACTUAL_ORIGINAL_DKMEAN 4 3  3.59072448338647154E+000  3.59072448334714256E+000  3.09072448338647154E+000\nACTUAL_ORIGINAL_DKMEAN 5 1  1.99937514645386383E+000  1.99937514642713521E+000  1.49937514645386383E+000\nACTUAL_ORIGINAL_DKMEAN 5 2  1.99937514645386383E+000  1.99937514642713521E+000  1.49937514645386383E+000\nACTUAL_ORIGINAL_DKMEAN 5 3  1.99937514645386383E+000  1.99937514642713521E+000  1.49937514645386383E+000\nACTUAL_ORIGINAL_DKMEAN 6 1  1.99937514645386383E+000  1.99937514642713521E+000  1.49937514645386383E+000\nACTUAL_ORIGINAL_DKMEAN 6 2  5.99063597489519850E+000  5.99063597489086064E+000  5.49063597489519850E+000\nACTUAL_ORIGINAL_DKMEAN 6 3  1.19992500351547848E+000  1.19992500350949105E+000  6.99925003515478483E-001\nREAL_ORIGINAL_MEAN_DERIVATIVE_PASS 18 14  2.46711710811992702E-007\n",
+        "stderr": "",
+        "refusals": []
+      }
+    },
+    "original_numerical_defects": {
+      "unconverged_DTMIN_continuation": "Actual original HeadCalc says continue without convergence; fixed only for explicit SWKIMPL1 through original full rollback and actual original-factor below-minimum retry, with hard clock-resolution refusal.",
+      "boundary_mean_derivative": "Original boundary Jacobian uses fixed0.5 even when actual selected mean derivative differs. Real original complete HeadCalc verification ENTRY calls literal private dkmean:18 O0/O2 finite differences pass,14 differ from0.5. New numerical adapter calls that literal function for the actual Boundtop/in-profile groundwater parameters; direct K(NN) boundary derivative factor1. No physical equation changed.",
+      "retry_only_candidate": "Sourcee2fc passes actual clock/rollback component but first positive head MAXIT30/MAXBACKTR5 reaches clock-resolution refusal; ordinary GW full capped after day593. Retained, never qualified.",
+      "corrected_jacobian_candidate": "Source829721 corrects actual original mean derivatives. Original30/5 head still fails genuine compartment Newton criteria; failed-source diagnosticsab3c show Fmax1.25788e-5 after30iterations before extra mass guards, not a reason to relax mass tolerance."
+    },
+    "explicit_iteration_budget_selection": {
+      "original_reader": {
+        "MAXIT": [
+          5,
+          100
+        ],
+        "MAXBACKTR": [
+          1,
+          10
+        ]
+      },
+      "selected": {
+        "MAXIT": 100,
+        "MAXBACKTR": 10
+      },
+      "production_override": false,
+      "tolerance_changed": false,
+      "head_short": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-head-iteration-audit-runtime-v1\\RESULT.json",
+      "head_full": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-head-iteration-audit-full-v1\\RESULT.json",
+      "head_actual_full_status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_FULL_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+      "head_period": 1096,
+      "head_complete_cold_windows": 7,
+      "water_short": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-iteration-audit-runtime-v1\\RESULT.json",
+      "water_full": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-iteration-audit-full-v1\\RESULT.json",
+      "water_full_actual_status": "FAILED",
+      "qualified_claim": "Positive head1096/native PASS at actual source829721. Water/CDE prescribed groundwater remain under targeted verification. All old failed30/5 cases remain raw observations."
+    },
+    "pending_actual_jobs": [
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-iteration-audit-full-v1",
+        "status": "FAILED"
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v1",
+        "status": "FAILED"
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v1",
+        "status": "RUNNING"
+      }
+    ]
   }
 }
