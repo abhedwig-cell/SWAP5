@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-perstep01",
-  "last_commit": "c05c69132cb48a741d7af7ca9a6e98d105c5e413",
-  "status": "AGE_PERSTEP_ACTUAL_PRIVATE_FLAG_GAP_FIXED_FRESH_QUALIFICATION_REQUIRED",
+  "last_commit": "3c47b7e4221fb8638cbfd3741276e813ea292fb7",
+  "status": "AGE_PERSTEP_RESET_GUARD_ALL_NARROW_GATES_PASS_SELECTED_QUALIFICATION_IN_PROGRESS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "New age_perstep_output.py using literal existing perstep Integral/Darcy and AGE/calendar providers plus four dispatch import sites.",
-  "recovery_point": "codex/nomacro-age-perstep01; four v3pilots pass; running e/age-perstep-limit-{ordinary,history}-{O0,O2}-v1 and controls-{ordinary,history}-O0-v1. Do not duplicate active runs.",
+  "recovery_point": "codex/nomacro-age-perstep01; app final reset guard6805b8beb; fresh pilotsv4/limitsv2/controlsv2 allPASS. Current mainv1 and epochv1 producer results are live. Original literal AGE providers inherited without fresh-pass claim.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Rebuild fresh ordinary/history O0/O2 short/native/limit pilots on persisted new reset-flag guard before full/portable qualification. Keep all oldsource v1/v2/v3 and limits/control artifacts unchanged.",
+  "next_action": "Poll existing Windows O0/O2 eight-short/six-full matrix and six nonJanuary epochs each; no duplicates. Add actual reader/public/native year-refusal and selected preservation contexts, persist runtime, then selected Ubuntu carriers. No full scope/science promotion.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -4779,7 +4779,7 @@
     }
   },
   "age_perstep": {
-    "status": "FOUR_LOCAL_35DAY_TWELVE_EXACT_COLD_PASS_NATIVE_LIMIT_CONTROLS_IN_PROGRESS",
+    "status": "RESET_GUARD_LOCAL_SHORT_NATIVE_LIMIT_PASS_BROADER_MATRIX_IN_PROGRESS",
     "baseline": "f83ec4b257f0bcda6a170924585082a208c54dc5",
     "contract": "docs/science/NOMACRO_AGE_PERSTEP_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/AGE_PERSTEP_SOURCE_AUDIT.json",
@@ -7038,6 +7038,3681 @@
         "error": "AssertionError('Corrupt original ordinary native accepted: age-cumulative-reset')"
       }
     },
-    "private_flag_correction": "Actual original new-family native worker accepted a toggled private cumulative-reset flag while the duplicated calendar retained its original flag. Fresh adapter validates the actual private logical representations exactly against pending calendar13/14 before restore. Old frozen providers/source bodies unchanged. No proven physical trajectory drift or broader legacy-defect claim; original accepted bad-loader worker evidence retained."
+    "private_flag_correction": "Actual original new-family native worker accepted a toggled private cumulative-reset flag while the duplicated calendar retained its original flag. Fresh adapter validates the actual private logical representations exactly against pending calendar13/14 before restore. Old frozen providers/source bodies unchanged. No proven physical trajectory drift or broader legacy-defect claim; original accepted bad-loader worker evidence retained.",
+    "current_source_pilots": {
+      "ordinary-O0": {
+        "status": "ACTUAL_AGE_PERSTEP_SHORT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "6805b8beb4fbdf65d783acff935b9b70e2de1b8e",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-ordinary-O0-v4",
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "nprintday": 1,
+          "source": "point",
+          "optimization": "O0",
+          "phase": "short",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-ordinary-O0-v4\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-ordinary-O0-v4\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APA001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 0,
+          "swcsv": 3,
+          "nprintday": 1,
+          "swmonth": 0,
+          "swodat": 1,
+          "swres": 1,
+          "requested_period": 0,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": null,
+          "native_domain_bytes": 0,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 18.528711500111967,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 5.902396627011086e-16,
+            "max_kernel_cm": 8.881784197001252e-16,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 1.0425095167557533e-15
+          },
+          "model_seconds": 1.164514500182122,
+          "build_sha256": "68ceb4f57b4ba2fed93a0edef91537a97f5548b412c15fb08fdf5688c8478ec5"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.42926529981195927
+          },
+          {
+            "start": 4,
+            "end": 8,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.39641299983486533
+          },
+          {
+            "start": 19,
+            "end": 23,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.40562310023233294
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.44286599988117814
+          }
+        ],
+        "actual_fixed_input_cm": 2.4,
+        "maximum_age_tolerance_fraction": 0.0003881793234449686
+      },
+      "ordinary-O2": {
+        "status": "ACTUAL_AGE_PERSTEP_SHORT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "6805b8beb4fbdf65d783acff935b9b70e2de1b8e",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-ordinary-O2-v4",
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "nprintday": 1,
+          "source": "point",
+          "optimization": "O2",
+          "phase": "short",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-ordinary-O2-v4\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-ordinary-O2-v4\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APA001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 0,
+          "swcsv": 3,
+          "nprintday": 1,
+          "swmonth": 0,
+          "swodat": 1,
+          "swres": 1,
+          "requested_period": 0,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": null,
+          "native_domain_bytes": 0,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 32.566255799960345,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 5.902396627011086e-16,
+            "max_kernel_cm": 8.881784197001252e-16,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 1.0425095167557533e-15
+          },
+          "model_seconds": 1.0261973002925515,
+          "build_sha256": "957bef3366f9b6b58854e2ce3e277a7acff8ff6b20a26645af752ddbfaf73aed"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.44807609962299466
+          },
+          {
+            "start": 4,
+            "end": 8,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.348575500305742
+          },
+          {
+            "start": 19,
+            "end": 23,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.32336119981482625
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.3258497999049723
+          }
+        ],
+        "actual_fixed_input_cm": 2.4,
+        "maximum_age_tolerance_fraction": 0.0003881793234449686
+      },
+      "history-O0": {
+        "status": "ACTUAL_AGE_PERSTEP_SHORT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "6805b8beb4fbdf65d783acff935b9b70e2de1b8e",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-history-O0-v4",
+          "mode": "monthly",
+          "hysteresis": 2,
+          "format": 2,
+          "reset": 0,
+          "nprintday": 3,
+          "source": "interval",
+          "optimization": "O0",
+          "phase": "short",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-history-O0-v4\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-history-O0-v4\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APH001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 2,
+          "swcsv": 2,
+          "nprintday": 3,
+          "swmonth": 1,
+          "swodat": 0,
+          "swres": 0,
+          "requested_period": 0,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+          "native_domain_bytes": 40,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": null
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 18.940737300086766,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 9.640725717741105e-16,
+            "max_kernel_cm": 8.881784197001252e-16,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 2.438319863943064e-16
+          },
+          "model_seconds": 1.345072299707681,
+          "build_sha256": "c6023da4a5615eeef3507fea3df308aaa34da3888fb046aa5d5a1c7f225703d9"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.37924939999356866
+          },
+          {
+            "start": 4,
+            "end": 8,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.39173660008236766
+          },
+          {
+            "start": 19,
+            "end": 23,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.4177338001318276
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 1,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.4064138997346163
+          }
+        ],
+        "actual_fixed_input_cm": 2.4,
+        "maximum_age_tolerance_fraction": 0.00038980400866053566
+      },
+      "history-O2": {
+        "status": "ACTUAL_AGE_PERSTEP_SHORT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "6805b8beb4fbdf65d783acff935b9b70e2de1b8e",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-history-O2-v4",
+          "mode": "monthly",
+          "hysteresis": 2,
+          "format": 2,
+          "reset": 0,
+          "nprintday": 3,
+          "source": "interval",
+          "optimization": "O2",
+          "phase": "short",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-history-O2-v4\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-history-O2-v4\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APH001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 2,
+          "swcsv": 2,
+          "nprintday": 3,
+          "swmonth": 1,
+          "swodat": 0,
+          "swres": 0,
+          "requested_period": 0,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+          "native_domain_bytes": 40,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": null
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 33.21143649984151,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 9.640725717741105e-16,
+            "max_kernel_cm": 8.881784197001252e-16,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 2.438319863943064e-16
+          },
+          "model_seconds": 1.100948200095445,
+          "build_sha256": "e70865f7dbfdcaa4785e313d944874995244fb089cda34b6fefd74fcd4d5c78c"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 2,
+            "end": 4,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.3301205998286605
+          },
+          {
+            "start": 4,
+            "end": 8,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.3687595003284514
+          },
+          {
+            "start": 19,
+            "end": 23,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.33762439992278814
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 1,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.3856315999291837
+          }
+        ],
+        "actual_fixed_input_cm": 2.4,
+        "maximum_age_tolerance_fraction": 0.00038980400866053566
+      }
+    },
+    "current_source_limits": {
+      "ordinary-O0": {
+        "status": "ACTUAL_AGE_PERSTEP_LIMIT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "6805b8beb4fbdf65d783acff935b9b70e2de1b8e",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O0-v2",
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "nprintday": 1440,
+          "source": "point",
+          "optimization": "O0",
+          "phase": "limit",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O0-v2\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O0-v2\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APA001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 0,
+          "swcsv": 3,
+          "nprintday": 1440,
+          "swmonth": 0,
+          "swodat": 1,
+          "swres": 1,
+          "requested_period": 0,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": null,
+          "native_domain_bytes": 0,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 27.319557399954647,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.28049914421835e-13,
+            "max_kernel_cm": 1.2789769243681803e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 1.3068795576089468e-13
+          },
+          "model_seconds": 1.4025735999457538,
+          "build_sha256": "9c9296989dfa6448530a9cbdab9f455f08b8f5901f0b1ba7613a33270bc082d5"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.6456610998138785
+          }
+        ],
+        "actual_fixed_input_cm": 2.400000000000013,
+        "maximum_age_tolerance_fraction": 0.00043439610207152536
+      },
+      "ordinary-O2": {
+        "status": "ACTUAL_AGE_PERSTEP_LIMIT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "6805b8beb4fbdf65d783acff935b9b70e2de1b8e",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O2-v2",
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "nprintday": 1440,
+          "source": "point",
+          "optimization": "O2",
+          "phase": "limit",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O2-v2\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-ordinary-O2-v2\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APA001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 0,
+          "swcsv": 3,
+          "nprintday": 1440,
+          "swmonth": 0,
+          "swodat": 1,
+          "swres": 1,
+          "requested_period": 0,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": null,
+          "native_domain_bytes": 0,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 41.79531289963052,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.28049914421835e-13,
+            "max_kernel_cm": 1.2789769243681803e-13,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 1.3068795576089468e-13
+          },
+          "model_seconds": 0.7114876001141965,
+          "build_sha256": "1a5e4c2d7f878b0df1aa8d8ac9a7a51ae7700b587764628c68a0d6122148193f"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.41277309972792864
+          }
+        ],
+        "actual_fixed_input_cm": 2.400000000000013,
+        "maximum_age_tolerance_fraction": 0.00043439610207152536
+      },
+      "history-O0": {
+        "status": "ACTUAL_AGE_PERSTEP_LIMIT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "6805b8beb4fbdf65d783acff935b9b70e2de1b8e",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O0-v2",
+          "mode": "periodic",
+          "hysteresis": 2,
+          "format": 2,
+          "reset": 0,
+          "nprintday": 1440,
+          "source": "interval",
+          "optimization": "O0",
+          "phase": "limit",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O0-v2\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O0-v2\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APH001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 2,
+          "swcsv": 2,
+          "nprintday": 1440,
+          "swmonth": 0,
+          "swodat": 0,
+          "swres": 0,
+          "requested_period": 5,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+          "native_domain_bytes": 40,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": null
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 28.436925099696964,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 6.587742504282623e-14,
+            "max_kernel_cm": 6.572520305780927e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 8.40585887266381e-14
+          },
+          "model_seconds": 1.2946402998641133,
+          "build_sha256": "62f031da37c3b827261c56b974aa640adaedfb09ab0f5b7a568dd9ca8cf89fcd"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.6250900002196431
+          }
+        ],
+        "actual_fixed_input_cm": 2.4000000000000328,
+        "maximum_age_tolerance_fraction": 0.000365685577265209
+      },
+      "history-O2": {
+        "status": "ACTUAL_AGE_PERSTEP_LIMIT_SOURCE_NATIVE_OUTPUT_PASS",
+        "source_commit": "6805b8beb4fbdf65d783acff935b9b70e2de1b8e",
+        "parameters": {
+          "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+          "output": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O2-v2",
+          "mode": "periodic",
+          "hysteresis": 2,
+          "format": 2,
+          "reset": 0,
+          "nprintday": 1440,
+          "source": "interval",
+          "optimization": "O2",
+          "phase": "limit",
+          "reuse_build": null,
+          "existing_input": null
+        },
+        "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O2-v2\\input",
+        "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\age-perstep-limit-history-O2-v2\\build",
+        "original_output": {
+          "policy": "original-age-perstep-calendar-and-native-state-v1",
+          "native_codec": "S5APH001",
+          "age_perstep_output": true,
+          "kind": "age",
+          "swsnow": 0,
+          "swhea": 1,
+          "swcalt": 2,
+          "swfrost": 0,
+          "swdra": 1,
+          "swhyst": 2,
+          "swcsv": 2,
+          "nprintday": 1440,
+          "swmonth": 0,
+          "swodat": 0,
+          "swres": 0,
+          "requested_period": 5,
+          "period": 1,
+          "flprintdt": true,
+          "groups": "WATBAL,GWL",
+          "num_decimals": 12,
+          "source_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+          "predecessor_owner_sha256": "76e5c3099ba8aaa631e1c53bef2b1d6e4b95abff9519cc6b6b2c5b4a2109fb10",
+          "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+          "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+          "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+          "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+          "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+          "native_domain_bytes": 40,
+          "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+          "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+          "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+          "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+          "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+          "age_providers": {
+            "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+            "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+            "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+            "providers": {
+              "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+              "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+              "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+              "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+            },
+            "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+            "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+            "effluent_missing": -9999.0,
+            "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+            "units": "cm day",
+            "native_codec": "S5AGE002",
+            "chemical_mass_guard_changed": false
+          },
+          "original_output_epoch": 37256,
+          "annual_counter_policy": "original-global-or-completed-year-count-v1",
+          "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+          "original_flprintdt_date_gated": true,
+          "original_pending_dates_not_normalized": true,
+          "trial_receipt_policy": "literal-original-independent-darcy-perstep-family-v1",
+          "trial_water_guard_cm": 1e-10,
+          "preserves_requested_groups_and_precision": true,
+          "undefined_allocation_tails_serialized": false,
+          "physical_equations_changed": false,
+          "young_water_source": true,
+          "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+          "binary_correction_sha256": null
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "build_returncode": 0,
+        "build_seconds": 42.47530610021204,
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 6.587742504282623e-14,
+            "max_kernel_cm": 6.572520305780927e-14,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 8.40585887266381e-14
+          },
+          "model_seconds": 0.7680045999586582,
+          "build_sha256": "3d71e591c1f74ddc9ffc5b436fef3efc2c1f69fe0549c974a7ad58ca497ff243"
+        },
+        "age_output": {
+          "actual_global_days": {
+            "result.ageProfile.csv": [],
+            "result.ageeffluent.csv": [],
+            "result.ageeffluentqdrain.csv": [],
+            "result.ageeffluentwater.csv": []
+          },
+          "original_floutput_tend_age_cadence_retained": true,
+          "actual_written_means_and_volumes_match_full_precision_probe": true
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result.ageProfile.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluent.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentqdrain.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result.ageeffluentwater.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              },
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.41794370021671057
+          }
+        ],
+        "actual_fixed_input_cm": 2.4000000000000328,
+        "maximum_age_tolerance_fraction": 0.000365685577265209
+      }
+    },
+    "current_source_controls": {
+      "ordinary-O0": {
+        "status": "AGE_PERSTEP_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS",
+        "build_sha256": "68ceb4f57b4ba2fed93a0edef91537a97f5548b412c15fb08fdf5688c8478ec5",
+        "native_refusals": [
+          {
+            "attack": "old002",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old003",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old004",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old005",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "truncated",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Incomplete original age native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f952ee\n#4  0xc3f31711\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "trailing",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Trailing nonmacro checkpoint bytes\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f317a2\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "header-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar header witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f16f31\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f17070\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f17070\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f170d0\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original per-step clock-domain day counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f17359\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f170d0\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "changed-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original per-step clock-domain day counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f17359\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "print-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original annual print counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f1715d\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "zero-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f173da\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "overflow-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f173da\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "future-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Future original per-step date pointer\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f16aaf\n#4  0xc3fd2b9b\n#5  0xc3fd3598\n#6  0xc3f01156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "flag-domain",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f17458\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "short-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output step flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f174dc\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "step-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output step flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f174dc\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original output calendar values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f1792f\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "value-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar value witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f17bdf\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original output period\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f17c22\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-water",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-cde",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-age",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-history",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "aquifer-codec",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-subdaily",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-step",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "reset-policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f170d0\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nprint-count",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f17070\n#4  0xc3f316fb\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old-ordinary-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old-ordinary-reset-history",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-perstep-family",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f3157f\n#4  0xc3fab28c\n#5  0xc3fd2b7f\n#6  0xc3fd3598\n#7  0xc3f01156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-output-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original age output day\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc4006f64\n#4  0xc3f95b7e\n#5  0xc3f31711\n#6  0xc3fab28c\n#7  0xc3fd2b7f\n#8  0xc3fd3598\n#9  0xc3f01156\n#10  0xab90dda6\n#11  0xad15ee4b\n#12  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-output-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original age output period\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc4006fdc\n#4  0xc3f95b7e\n#5  0xc3f31711\n#6  0xc3fab28c\n#7  0xc3fd2b7f\n#8  0xc3fd3598\n#9  0xc3f01156\n#10  0xab90dda6\n#11  0xad15ee4b\n#12  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-stock-negative",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f959f0\n#4  0xc3f31711\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-stock-nan",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original age native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f957a4\n#4  0xc3f31711\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-export-negative",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original age effluent native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f95dfc\n#4  0xc3f31711\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-export-nan",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original age effluent native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f95d56\n#4  0xc3f31711\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-total-receipt",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Unbalanced original age native stock\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f96099\n#4  0xc3f31711\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-cumulative-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original AGE private reset flags and calendar\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f95c46\n#4  0xc3f31711\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-interval-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original AGE private reset flags and calendar\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xc3f95c46\n#4  0xc3f31711\n#5  0xc3fab28c\n#6  0xc3fd2b7f\n#7  0xc3fd3598\n#8  0xc3f01156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          }
+        ],
+        "policy_refusals": [
+          {
+            "field": "policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "native_codec",
+            "status": "REFUSED"
+          },
+          {
+            "field": "age_perstep_output",
+            "status": "REFUSED"
+          },
+          {
+            "field": "kind",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swsnow",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swhea",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swcalt",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swfrost",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swdra",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swhyst",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swcsv",
+            "status": "REFUSED"
+          },
+          {
+            "field": "nprintday",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swmonth",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swodat",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swres",
+            "status": "REFUSED"
+          },
+          {
+            "field": "requested_period",
+            "status": "REFUSED"
+          },
+          {
+            "field": "period",
+            "status": "REFUSED"
+          },
+          {
+            "field": "flprintdt",
+            "status": "REFUSED"
+          },
+          {
+            "field": "groups",
+            "status": "REFUSED"
+          },
+          {
+            "field": "num_decimals",
+            "status": "REFUSED"
+          },
+          {
+            "field": "source_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "predecessor_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "perstep_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "ordinary_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "calendar_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "clock_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "domain_source_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "native_domain_bytes",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_integral_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_timecontrol_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_watstor_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_hysteresis_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "receipt_provider_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "age_providers",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_output_epoch",
+            "status": "REFUSED"
+          },
+          {
+            "field": "annual_counter_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "calendar_initial_past_date_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_flprintdt_date_gated",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_pending_dates_not_normalized",
+            "status": "REFUSED"
+          },
+          {
+            "field": "trial_receipt_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "trial_water_guard_cm",
+            "status": "REFUSED"
+          },
+          {
+            "field": "preserves_requested_groups_and_precision",
+            "status": "REFUSED"
+          },
+          {
+            "field": "undefined_allocation_tails_serialized",
+            "status": "REFUSED"
+          },
+          {
+            "field": "physical_equations_changed",
+            "status": "REFUSED"
+          },
+          {
+            "field": "young_water_source",
+            "status": "REFUSED"
+          },
+          {
+            "field": "vector_catalog_correction_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "binary_correction_sha256",
+            "status": "REFUSED"
+          }
+        ],
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        },
+        "actual_provider_refusal": {
+          "status": "REFUSED",
+          "provider": "mod_original_output_receipt.f90",
+          "error": "Generated donor differs: mod_original_output_receipt.f90",
+          "actual_original_metadata_unchanged": true
+        },
+        "trial_phase_witness": "SOURCE_BOUND_LITERAL_EXISTING_DARCY_PROVIDER_NOT_FRESH_COMPONENT_PASS"
+      },
+      "ordinary-O2": {
+        "status": "AGE_PERSTEP_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS",
+        "build_sha256": "957bef3366f9b6b58854e2ce3e277a7acff8ff6b20a26645af752ddbfaf73aed",
+        "native_refusals": [
+          {
+            "attack": "old002",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old003",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old004",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old005",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "truncated",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Incomplete original age native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb13d06\n#4  0xdab77c8\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "trailing",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Trailing nonmacro checkpoint bytes\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab783f\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "header-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar header witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa48a8\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4ff0\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4ff0\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa5004\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original per-step clock-domain day counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa5018\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa5004\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "changed-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original per-step clock-domain day counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa5018\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "print-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original annual print counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4f46\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "zero-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4fc8\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "overflow-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4fc8\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "future-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Future original per-step date pointer\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa32a8\n#4  0xdb44a43\n#5  0xdb8fabf\n#6  0xda91156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "flag-domain",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4fb4\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "short-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output step flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4fa0\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "step-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output step flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4fa0\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original output calendar values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4caf\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "value-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar value witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4d77\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original output period\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa5040\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-water",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-cde",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-age",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-history",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "aquifer-codec",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-subdaily",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-step",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "reset-policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa5004\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nprint-count",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdaa4ff0\n#4  0xdab77b9\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old-ordinary-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old-ordinary-reset-history",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-perstep-family",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdab7a7a\n#4  0xdb27851\n#5  0xdb44a29\n#6  0xdb8fabf\n#7  0xda91156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-output-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original age output day\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb6e2a7\n#4  0xdb137f9\n#5  0xdab77c8\n#6  0xdb27851\n#7  0xdb44a29\n#8  0xdb8fabf\n#9  0xda91156\n#10  0xab90dda6\n#11  0xad15ee4b\n#12  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-output-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original age output period\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb6e293\n#4  0xdb137f9\n#5  0xdab77c8\n#6  0xdb27851\n#7  0xdb44a29\n#8  0xdb8fabf\n#9  0xda91156\n#10  0xab90dda6\n#11  0xad15ee4b\n#12  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-stock-negative",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb13c7a\n#4  0xdab77c8\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-stock-nan",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original age native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb13c8e\n#4  0xdab77c8\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-export-negative",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original age effluent native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb13cb6\n#4  0xdab77c8\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-export-nan",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original age effluent native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb13ca2\n#4  0xdab77c8\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-total-receipt",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Unbalanced original age native stock\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb13ac0\n#4  0xdab77c8\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-cumulative-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original AGE private reset flags and calendar\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb13cca\n#4  0xdab77c8\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-interval-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original AGE private reset flags and calendar\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xdb13cca\n#4  0xdab77c8\n#5  0xdb27851\n#6  0xdb44a29\n#7  0xdb8fabf\n#8  0xda91156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          }
+        ],
+        "policy_refusals": [
+          {
+            "field": "policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "native_codec",
+            "status": "REFUSED"
+          },
+          {
+            "field": "age_perstep_output",
+            "status": "REFUSED"
+          },
+          {
+            "field": "kind",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swsnow",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swhea",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swcalt",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swfrost",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swdra",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swhyst",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swcsv",
+            "status": "REFUSED"
+          },
+          {
+            "field": "nprintday",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swmonth",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swodat",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swres",
+            "status": "REFUSED"
+          },
+          {
+            "field": "requested_period",
+            "status": "REFUSED"
+          },
+          {
+            "field": "period",
+            "status": "REFUSED"
+          },
+          {
+            "field": "flprintdt",
+            "status": "REFUSED"
+          },
+          {
+            "field": "groups",
+            "status": "REFUSED"
+          },
+          {
+            "field": "num_decimals",
+            "status": "REFUSED"
+          },
+          {
+            "field": "source_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "predecessor_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "perstep_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "ordinary_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "calendar_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "clock_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "domain_source_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "native_domain_bytes",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_integral_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_timecontrol_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_watstor_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_hysteresis_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "receipt_provider_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "age_providers",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_output_epoch",
+            "status": "REFUSED"
+          },
+          {
+            "field": "annual_counter_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "calendar_initial_past_date_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_flprintdt_date_gated",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_pending_dates_not_normalized",
+            "status": "REFUSED"
+          },
+          {
+            "field": "trial_receipt_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "trial_water_guard_cm",
+            "status": "REFUSED"
+          },
+          {
+            "field": "preserves_requested_groups_and_precision",
+            "status": "REFUSED"
+          },
+          {
+            "field": "undefined_allocation_tails_serialized",
+            "status": "REFUSED"
+          },
+          {
+            "field": "physical_equations_changed",
+            "status": "REFUSED"
+          },
+          {
+            "field": "young_water_source",
+            "status": "REFUSED"
+          },
+          {
+            "field": "vector_catalog_correction_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "binary_correction_sha256",
+            "status": "REFUSED"
+          }
+        ],
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        },
+        "actual_provider_refusal": {
+          "status": "REFUSED",
+          "provider": "mod_original_output_receipt.f90",
+          "error": "Generated donor differs: mod_original_output_receipt.f90",
+          "actual_original_metadata_unchanged": true
+        },
+        "trial_phase_witness": "SOURCE_BOUND_LITERAL_EXISTING_DARCY_PROVIDER_NOT_FRESH_COMPONENT_PASS"
+      },
+      "history-O0": {
+        "status": "AGE_PERSTEP_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS",
+        "build_sha256": "c6023da4a5615eeef3507fea3df308aaa34da3888fb046aa5d5a1c7f225703d9",
+        "native_refusals": [
+          {
+            "attack": "old002",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old003",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old004",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old005",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "truncated",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Incomplete original age native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1ca66e\n#4  0x5f162a8f\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "trailing",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Trailing nonmacro checkpoint bytes\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f162b20\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "header-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar header witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1478d1\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147a10\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147a10\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147a70\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original per-step clock-domain day counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147cf9\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147a70\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "changed-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original per-step clock-domain day counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147cf9\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "print-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original annual print counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147afd\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "zero-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147d7a\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "overflow-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147d7a\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "future-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Future original per-step date pointer\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f14744f\n#4  0x5f207d8b\n#5  0x5f208788\n#6  0x5f131156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "flag-domain",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147df8\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "short-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output step flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147e7c\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "step-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output step flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147e7c\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original output calendar values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1482cf\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "value-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar value witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f14857f\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original output period\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1485c2\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-water",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-cde",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-age",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-history",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "aquifer-codec",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-subdaily",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-step",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "reset-policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147a70\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-version",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f23cdd2\n#4  0x5f162a63\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f23cdd2\n#4  0x5f162a63\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-macro",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f23cdd2\n#4  0x5f162a63\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-mode",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f23cdd2\n#4  0x5f162a63\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f23cdd2\n#4  0x5f162a63\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f23cdd2\n#4  0x5f162a63\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nprint-count",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f147a10\n#4  0x5f162a79\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old-ordinary-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old-ordinary-reset-history",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-perstep-family",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f161f27\n#4  0x5f1e060c\n#5  0x5f207d6f\n#6  0x5f208788\n#7  0x5f131156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-output-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original age output day\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f23c124\n#4  0x5f1caefe\n#5  0x5f162a8f\n#6  0x5f1e060c\n#7  0x5f207d6f\n#8  0x5f208788\n#9  0x5f131156\n#10  0xab90dda6\n#11  0xad15ee4b\n#12  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-output-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original age output period\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f23c19c\n#4  0x5f1caefe\n#5  0x5f162a8f\n#6  0x5f1e060c\n#7  0x5f207d6f\n#8  0x5f208788\n#9  0x5f131156\n#10  0xab90dda6\n#11  0xad15ee4b\n#12  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-stock-negative",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1cad70\n#4  0x5f162a8f\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-stock-nan",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original age native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1cab24\n#4  0x5f162a8f\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-export-negative",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original age effluent native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1cb17c\n#4  0x5f162a8f\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-export-nan",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original age effluent native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1cb0d6\n#4  0x5f162a8f\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-total-receipt",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Unbalanced original age native stock\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1cb419\n#4  0x5f162a8f\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-cumulative-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original AGE private reset flags and calendar\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1cafc6\n#4  0x5f162a8f\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-interval-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original AGE private reset flags and calendar\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0x5f1cafc6\n#4  0x5f162a8f\n#5  0x5f1e060c\n#6  0x5f207d6f\n#7  0x5f208788\n#8  0x5f131156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          }
+        ],
+        "policy_refusals": [
+          {
+            "field": "policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "native_codec",
+            "status": "REFUSED"
+          },
+          {
+            "field": "age_perstep_output",
+            "status": "REFUSED"
+          },
+          {
+            "field": "kind",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swsnow",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swhea",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swcalt",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swfrost",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swdra",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swhyst",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swcsv",
+            "status": "REFUSED"
+          },
+          {
+            "field": "nprintday",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swmonth",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swodat",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swres",
+            "status": "REFUSED"
+          },
+          {
+            "field": "requested_period",
+            "status": "REFUSED"
+          },
+          {
+            "field": "period",
+            "status": "REFUSED"
+          },
+          {
+            "field": "flprintdt",
+            "status": "REFUSED"
+          },
+          {
+            "field": "groups",
+            "status": "REFUSED"
+          },
+          {
+            "field": "num_decimals",
+            "status": "REFUSED"
+          },
+          {
+            "field": "source_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "predecessor_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "perstep_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "ordinary_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "calendar_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "clock_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "domain_source_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "native_domain_bytes",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_integral_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_timecontrol_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_watstor_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_hysteresis_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "receipt_provider_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "age_providers",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_output_epoch",
+            "status": "REFUSED"
+          },
+          {
+            "field": "annual_counter_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "calendar_initial_past_date_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_flprintdt_date_gated",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_pending_dates_not_normalized",
+            "status": "REFUSED"
+          },
+          {
+            "field": "trial_receipt_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "trial_water_guard_cm",
+            "status": "REFUSED"
+          },
+          {
+            "field": "preserves_requested_groups_and_precision",
+            "status": "REFUSED"
+          },
+          {
+            "field": "undefined_allocation_tails_serialized",
+            "status": "REFUSED"
+          },
+          {
+            "field": "physical_equations_changed",
+            "status": "REFUSED"
+          },
+          {
+            "field": "young_water_source",
+            "status": "REFUSED"
+          },
+          {
+            "field": "vector_catalog_correction_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "binary_correction_sha256",
+            "status": "REFUSED"
+          }
+        ],
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        },
+        "actual_provider_refusal": {
+          "status": "REFUSED",
+          "provider": "original_output_hysteresis_domain.f90",
+          "error": "Generated donor differs: original_output_hysteresis_domain.f90",
+          "actual_original_metadata_unchanged": true
+        },
+        "trial_phase_witness": "SOURCE_BOUND_LITERAL_EXISTING_DARCY_PROVIDER_NOT_FRESH_COMPONENT_PASS"
+      },
+      "history-O2": {
+        "status": "AGE_PERSTEP_NATIVE_PRIVATE_ACTIVE_POLICY_PROVIDER_PASS",
+        "build_sha256": "e70865f7dbfdcaa4785e313d944874995244fb089cda34b6fefd74fcd4d5c78c",
+        "native_refusals": [
+          {
+            "attack": "old002",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old003",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old004",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old005",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "truncated",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Incomplete original age native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67b7886\n#4  0xa6758b16\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "trailing",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Trailing nonmacro checkpoint bytes\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758b93\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "header-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar header witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6744fe8\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745730\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745730\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745744\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original per-step clock-domain day counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745758\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745744\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "changed-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original per-step clock-domain day counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745758\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "print-counter",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original annual print counter\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745686\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "zero-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745708\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "overflow-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output date pointers\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745708\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "future-pointer",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Future original per-step date pointer\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67439e8\n#4  0xa67e84c3\n#5  0xa68338ff\n#6  0xa6731156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "flag-domain",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67456f4\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "short-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output step flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67456e0\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "step-flag",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output step flags\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67456e0\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nonfinite",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original output calendar values\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67453ef\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "value-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Original output calendar value witness mismatch\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67454b7\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "negative-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original output period\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745780\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-water",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-cde",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-age",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "ordinary-history",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "aquifer-codec",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-subdaily",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-step",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "preceding-snow-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "reset-policy",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original output calendar counters\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745744\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-version",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6812718\n#4  0xa6758af4\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-shape",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6812718\n#4  0xa6758af4\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-macro",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6812718\n#4  0xa6758af4\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-mode",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6812718\n#4  0xa6758af4\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-kind",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6812718\n#4  0xa6758af4\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "domain-witness",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output hysteresis domain/witness\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6812718\n#4  0xa6758af4\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "nprint-count",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign original output calendar shape/policy\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6745730\n#4  0xa6758b05\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old-ordinary-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "old-ordinary-reset-history",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "foreign-perstep-family",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Foreign nonmacro checkpoint\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6758be9\n#4  0xa67cb3d1\n#5  0xa67e84a9\n#6  0xa68338ff\n#7  0xa6731156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-output-day",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original age output day\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6811d27\n#4  0xa67b7379\n#5  0xa6758b16\n#6  0xa67cb3d1\n#7  0xa67e84a9\n#8  0xa68338ff\n#9  0xa6731156\n#10  0xab90dda6\n#11  0xad15ee4b\n#12  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-output-period",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original age output period\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa6811d13\n#4  0xa67b7379\n#5  0xa6758b16\n#6  0xa67cb3d1\n#7  0xa67e84a9\n#8  0xa68338ff\n#9  0xa6731156\n#10  0xab90dda6\n#11  0xad15ee4b\n#12  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-stock-negative",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Invalid original age native domain\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67b77fa\n#4  0xa6758b16\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-stock-nan",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original age native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67b780e\n#4  0xa6758b16\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-export-negative",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Negative original age effluent native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67b7836\n#4  0xa6758b16\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-export-nan",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Nonfinite original age effluent native state\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67b7822\n#4  0xa6758b16\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-total-receipt",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Unbalanced original age native stock\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67b7640\n#4  0xa6758b16\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-cumulative-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original AGE private reset flags and calendar\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67b784a\n#4  0xa6758b16\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          },
+          {
+            "attack": "age-interval-reset",
+            "status": "REFUSED",
+            "diagnostic": "ERROR STOP Inconsistent original AGE private reset flags and calendar\n\nError termination. Backtrace:\n#0  0x40299b94\n#1  0x40214471\n#2  0x400c28f4\n#3  0xa67b784a\n#4  0xa6758b16\n#5  0xa67cb3d1\n#6  0xa67e84a9\n#7  0xa68338ff\n#8  0xa6731156\n#9  0xab90dda6\n#10  0xad15ee4b\n#11  0xffffffff\n",
+            "error": "Missing {'HYBRID_READY'}, process exited with 1"
+          }
+        ],
+        "policy_refusals": [
+          {
+            "field": "policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "native_codec",
+            "status": "REFUSED"
+          },
+          {
+            "field": "age_perstep_output",
+            "status": "REFUSED"
+          },
+          {
+            "field": "kind",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swsnow",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swhea",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swcalt",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swfrost",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swdra",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swhyst",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swcsv",
+            "status": "REFUSED"
+          },
+          {
+            "field": "nprintday",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swmonth",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swodat",
+            "status": "REFUSED"
+          },
+          {
+            "field": "swres",
+            "status": "REFUSED"
+          },
+          {
+            "field": "requested_period",
+            "status": "REFUSED"
+          },
+          {
+            "field": "period",
+            "status": "REFUSED"
+          },
+          {
+            "field": "flprintdt",
+            "status": "REFUSED"
+          },
+          {
+            "field": "groups",
+            "status": "REFUSED"
+          },
+          {
+            "field": "num_decimals",
+            "status": "REFUSED"
+          },
+          {
+            "field": "source_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "predecessor_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "perstep_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "ordinary_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "calendar_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "clock_owner_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "domain_source_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "native_domain_bytes",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_integral_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_timecontrol_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_watstor_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_hysteresis_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "receipt_provider_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "age_providers",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_output_epoch",
+            "status": "REFUSED"
+          },
+          {
+            "field": "annual_counter_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "calendar_initial_past_date_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_flprintdt_date_gated",
+            "status": "REFUSED"
+          },
+          {
+            "field": "original_pending_dates_not_normalized",
+            "status": "REFUSED"
+          },
+          {
+            "field": "trial_receipt_policy",
+            "status": "REFUSED"
+          },
+          {
+            "field": "trial_water_guard_cm",
+            "status": "REFUSED"
+          },
+          {
+            "field": "preserves_requested_groups_and_precision",
+            "status": "REFUSED"
+          },
+          {
+            "field": "undefined_allocation_tails_serialized",
+            "status": "REFUSED"
+          },
+          {
+            "field": "physical_equations_changed",
+            "status": "REFUSED"
+          },
+          {
+            "field": "young_water_source",
+            "status": "REFUSED"
+          },
+          {
+            "field": "vector_catalog_correction_sha256",
+            "status": "REFUSED"
+          },
+          {
+            "field": "binary_correction_sha256",
+            "status": "REFUSED"
+          }
+        ],
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        },
+        "actual_provider_refusal": {
+          "status": "REFUSED",
+          "provider": "original_output_hysteresis_domain.f90",
+          "error": "Generated donor differs: original_output_hysteresis_domain.f90",
+          "actual_original_metadata_unchanged": true
+        },
+        "trial_phase_witness": "SOURCE_BOUND_LITERAL_EXISTING_DARCY_PROVIDER_NOT_FRESH_COMPONENT_PASS"
+      }
+    },
+    "current_source_local_counts": {
+      "short35day_periods": 4,
+      "exact_short_cold_windows": 16,
+      "limit1440two_day_periods": 4,
+      "exact_limit_cold_windows": 4,
+      "native_private_refusals": 196,
+      "policy_refusals": 188,
+      "actual_provider_refusals": 4,
+      "active_transaction_contexts": 4
+    },
+    "active_execution": {
+      "windows_O0": "age-perstep-windows-O0-v1",
+      "windows_O2": "age-perstep-windows-O2-v1",
+      "epoch_O0": "age-perstep-epoch-O0-v1",
+      "epoch_O2": "age-perstep-epoch-O2-v1"
+    },
+    "portable": "NOT_DISPATCHED"
   }
 }

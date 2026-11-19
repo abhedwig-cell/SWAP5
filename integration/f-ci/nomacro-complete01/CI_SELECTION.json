@@ -1438,7 +1438,7 @@
     }
   },
   "age_perstep": {
-    "status": "CONTRACT_ONLY",
+    "status": "ALL_NARROW_SOURCE_GATES_PASS_BROADER_QUALIFICATION_IN_PROGRESS",
     "baseline": "f83ec4b257f0bcda6a170924585082a208c54dc5",
     "selected": [
       "Source-bound unchanged small real AGE/effluent/calendar/hysteresis interface proofs inherited without fresh-pass claim",
@@ -1451,6 +1451,18 @@
       "Retired highest-low-air",
       "Automatic repeat of unaffected old full campaigns",
       "Original-reader-forbidden Snow+AGE"
-    ]
+    ],
+    "actual_local_counts": {
+      "short35day_periods": 4,
+      "exact_short_cold_windows": 16,
+      "limit1440two_day_periods": 4,
+      "exact_limit_cold_windows": 4,
+      "native_private_refusals": 196,
+      "policy_refusals": 188,
+      "actual_provider_refusals": 4,
+      "active_transaction_contexts": 4
+    },
+    "scope": "Eight short/six full/three native/two limits per platform+opt; six nonJanuary epochs peropt, publicCLI and affected seams; only expand failures or actual impact.",
+    "portable": "NOT_DISPATCHED"
   }
 }
