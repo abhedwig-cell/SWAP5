@@ -1383,10 +1383,12 @@
     }
   },
   "cde_clock": {
-    "status": "MISSING",
+    "status": "IMPLEMENTED_NOT_QUALIFIED",
     "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
     "contract": "docs/science/NOMACRO_CDE_CLOCK_20261119.md",
     "scope": "Actual CDE Snow0/1 heat1calc2 hys0/1/2 analytic/drain1/bottom5/8 dailyweather SWBR0/frost0 NPRINTDAY2..1440 false and NPRINTDAY1..1440 perstep, requested calendars/reset0/1/formats0..3.",
-    "qualification": "Four actual original ASCII 35day reader/cadence executions pass STOP100/swap.ok; current public builds refuse. Not a physics oracle."
+    "qualification": "Actual small event component O0/O2, four corrected-source35day pilots/16cold andeight1440two-day dose/native workers/eightcold PASS; fresh full/portable/epoch/preservation qualification in progress.",
+    "numerical_policy": "actual-local-irrigation-and-end-day-existing-dtcrit-v1",
+    "remaining": "Fresh full/Ubuntu source qualification, independent source/raw/data corruption owner and actual canonical admission. Other historical option/process families and whole science remain open."
   }
 }
