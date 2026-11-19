@@ -1,0 +1,32 @@
+--- SELECT50/macrorate_node.f90
++++ INACTIVE51/macrorate_node.f90
+@@ -1889,6 +1889,9 @@
+       integer,save::attempt48=-1,iteration48=-1,seq48=-1,vec48=-1
+       real(8)::get48(madm,macp),wet48
+       logical::getmask48(madm,macp)
++      real(8)::oldref51,oldsp51
++      integer,save::unit51
++      logical,save::open51=.false.
+       integer::task48
+       real(8)::info49(10)
+       integer,save::unit49
+@@ -1989,11 +1992,19 @@
+ !     Start a new sorptivity event; set ThtSrpRefDmCp(id,ic) and SorpDmCp
+ !     ThtSrpRefDmCp = Thet_sat + Delta_thet_theor. = Thet_sat + Thet_theor. - Thet_0
+ !     Delta_thet_theor. = theoretical increase of theta (calculated in MacroState) 
++                     oldref51=ThtSrpRefDmCp(id,ic);oldsp51=SorpDmCp(id,ic)
+                      ThtSrpRefDmCp(id,ic) = ThetaS(ic)  ! initial, delta_theta = 0
+                      SorpDmCp(id,ic)      = SorpMax(Lay) *                 &
+                                    (dmax1(0.0d0, (ThetaS(ic)-Theta(ic))) / &
+                                    (ThetaS(ic)-ThetaR(ic)))** SorpAlfa(Lay)
+                      SorpAct = SorpDmCp(id,ic)
++                     if(detail33.and.((id==3.and.ic==50).or.(id==4.and.ic==49))) then
++                        if(.not.open51) then
++                           open(newunit=unit51,file='inactive51_trace.txt',status='replace');open51=.true.
++                        end if
++                        write(unit51,*) attempts,iter_index,nvec,macro_seq,id,ic,t1900,dt,Time,oldref51,oldsp51, &
++                         ThtSrpRefDmCp(id,ic),SorpDmCp(id,ic),SorpAct,ThetaS(ic),Theta(ic),ThetaR(ic),SorpMax(Lay),SorpAlfa(Lay)
++                     end if
+                   else if ((ThtSrpRefDmCp(id,ic)-Theta(ic)) > CritSatDefMtx) then 
+ !     Continue existing sorptivity event; set SorpAct
+                      SorpAct = SorpMax(Lay) *                              &
