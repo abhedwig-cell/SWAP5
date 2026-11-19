@@ -68,7 +68,7 @@ def outward_pond_source(source):
     return source
 
 
-def strict_trial_build(output, donor_build, patched):
+def strict_trial_build(output, donor_build, patched, project):
     import implicit_conductivity_retry as retry
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252')
     old='   use hybrid_step_budget, only: projected_water_residual';assert text.count(old)==1
@@ -105,7 +105,11 @@ def strict_trial_build(output, donor_build, patched):
     path=output/'boundtop.f90'
     from extended_pond import render as converged_pond_source
     path.write_text(converged_pond_source(outward_pond_source(path.read_text(encoding='cp1252'))),encoding='cp1252')
-    (output/(TERMINAL_MODULE+'.f90')).write_text(terminal_source(),encoding='cp1252')
+    terminal=terminal_source()
+    if project.original_output:
+        from extended_output_receipt import terminal_source as output_terminal_source
+        terminal=output_terminal_source(TERMINAL_MODULE)
+    (output/(TERMINAL_MODULE+'.f90')).write_text(terminal,encoding='cp1252')
     if 'timecontrol' not in patched:patched.append('timecontrol')
     return patched
 
@@ -257,7 +261,13 @@ def apply_build(output, donor_build, project, patched):
             old="if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'"
             assert text.count(old)==1
             path.write_text(text.replace(old,old.replace('swdra/=1','swdra/=2'),1),encoding='cp1252')
-    patched=strict_trial_build(output,donor_build,patched)
+    if project.original_output:
+        from extended_output_receipt import integral_terms
+        path=output/'integral.f90'
+        path.write_text(integral_terms(path.read_text(encoding='cp1252'),
+            (donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252'),
+            (donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')),encoding='cp1252')
+    patched=strict_trial_build(output,donor_build,patched,project)
     from extended_interception import render as positive_interception_source
     (output/'MOD_meteo.f90').write_text(positive_interception_source((donor_build/'swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')),encoding='cp1252')
     (output/(MODULE+'.f90')).write_bytes(TEMPLATE.read_bytes())
@@ -293,4 +303,8 @@ def apply_build(output, donor_build, project, patched):
     path.write_text(text,encoding='cp1252')
     # HeadCalc imports the selected MOD_top derivative; compile its actual
     # defining module before compiling the caller.
+    if project.original_output:
+        index=patched.index('integral')+1
+        return ['MOD_meteo',*patched[:index],TERMINAL_MODULE,MODULE,'surfacewater','boundtop',
+                *(name for name in patched[index:] if name not in ('boundtop','MOD_meteo'))]
     return ['MOD_meteo',TERMINAL_MODULE,MODULE,'surfacewater','boundtop',*(name for name in patched if name not in ('boundtop','MOD_meteo'))]
