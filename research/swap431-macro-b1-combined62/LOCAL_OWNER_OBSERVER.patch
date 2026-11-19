@@ -1,0 +1,47 @@
+--- POTENTIAL61/macrorate_node.f90
++++ COMBINED62/macrorate_node.f90
+@@ -27,6 +27,9 @@
+ 
+       integer::snap23_unit,snap23_mode
+       integer::n24,j24,l24
++      integer::u62
++      logical::observe62
++      real(8)::before62(macp),uns62(macp),sat62(macp)
+       real(8),save::canonical37(24,madm)=0d0,head37(macp)=0d0,time37=0d0,dt37=0d0
+       integer,save::task37=-1,attempt37=-1,iteration37=-1
+       logical,save::ready37=.false.
+@@ -1500,16 +1503,34 @@
+ !- D. CALCULATE DERIVATIVES FOR USE IN SWAP (Headcalc)
+ !
+ !     Exchange with unsaturated matrix
++      observe62=detail33.and..not.probe_busy.and.attempts==2.and.(iter_index==53.or.iter_index==54)
+       do id = 1, NumDm
++         if(observe62.and.id==3) before62(1:numnod)=dFdhMp(1:numnod)
+          call ABSORPTION(2,id,FlwOutMtxUnsDmCpPot,FlwOutMtxUnsDmPot)
++         if(observe62.and.id==3) uns62(1:numnod)=dFdhMp(1:numnod)-before62(1:numnod)
+       end do
+ !
+ !     Exchange with saturated matrix
+       do id = 1, NumDm
++         if(observe62.and.id==3) before62(1:numnod)=dFdhMp(1:numnod)
+          call SATFLOW(4,id,NumNod,ICpTpSatZon,GwlFlCpZo,                             &
+                       ICpTpWaSrDm(id),FrMpWalWet(id,ICpTpWaSrDm(id)),ZWaLevDm(id), &
+                       FlwInMtxSatCpPot,FlwInMtxSatDmPot,FlwOutMtxSatDmCpPot,FlwOutMtxSatDmPot)
++         if(observe62.and.id==3) sat62(1:numnod)=dFdhMp(1:numnod)-before62(1:numnod)
+       end do
++      if(observe62) then
++       open(newunit=u62,file='combined62_local.txt',status='unknown',position='append',action='write')
++       write(u62,*) attempts,iter_index,t1900,dt,macro_seq,nvec,FrReduQ
++       write(u62,*) uns62(1:numnod)
++       write(u62,*) sat62(1:numnod)
++       write(u62,*) dFdhMp(1:numnod)
++       write(u62,*) h(1:numnod)
++       write(u62,*) QOutMtxSatDmCp(3,1:numnod)
++       write(u62,*) QOutMtxUnsDmCp(3,1:numnod)
++       write(u62,*) QInMtxSatDmCp(3,1:numnod)
++       write(u62,*) QInIntSatDmCp(3,1:numnod)
++       close(u62)
++      end if
+ 
+       return
+ 
