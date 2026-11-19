@@ -23,6 +23,10 @@
     "FAILED_INPUT.zip": {
       "bytes": 209440,
       "sha256": "a5981514af967359e6390e003f754f9f8639577b80f4073b0cce433b71b90948"
+    },
+    "COMPOSED_UBUNTU.zip": {
+      "bytes": 952245,
+      "sha256": "7432c9c17f4c00e9431248fe7068c087d0242b89f379bdfadfebc57677ad4cc9"
     }
   },
   "workflows": {
@@ -36,6 +40,12 @@
       "run": 44522728349,
       "artifact": 14527924730,
       "source": "c40482abfd680794321e801a7966dab9e6973d09",
+      "conclusion": "success"
+    },
+    "composed": {
+      "run": 44526786865,
+      "artifact": 14532850599,
+      "source": "b96cfdf778ca361fe71bf36564cb2160986b0226",
       "conclusion": "success"
     }
   },
@@ -72,5 +82,8 @@
     "conclusion": "failure",
     "reason": "Literal unsupported output request refused before model execution; no performance or scientific PASS",
     "archive": "FAILED_INPUT.zip"
-  }
+  },
+  "composed_runtime": "7b9b5dc961ffb7c7a16cc4a4f4f76157a0925259",
+  "incoming_canonical": "ef5010a83e83f879254af534bf0dd9cfcdbf3a85",
+  "incoming_canonical_audit_sha256": "e35d7603cb0010cd1c95d4c03cea416d88f7e409bc5afb8ce6ed430dd45b1289"
 }

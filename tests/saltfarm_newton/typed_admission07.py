@@ -21,7 +21,7 @@ SCOPE='Actual new Python SDK on unchanged byte-bound admitted Windows O0/O2 Fort
 sha=lambda b:hashlib.sha256(b).hexdigest()
 
 def validate(q):
-    expected=dict(status='TYPED_DAY_REPLY_BOUNDED_QUALIFICATION',baseline=BASE,runtime=RUNTIME,model='HYBRID_SALTFARM_WATER',water_guard_cm=1e-10,solute_guard_mg_cm2=1e-10,full_periods_ubuntu=2,cold_windows_ubuntu=10,windows_role=SCOPE,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL',RC3_changed=False)
+    expected=dict(status='TYPED_DAY_REPLY_BOUNDED_QUALIFICATION',baseline=BASE,runtime=RUNTIME,incoming_canonical=CANONICAL,composed_runtime=COMPOSED,model='HYBRID_SALTFARM_WATER',water_guard_cm=1e-10,solute_guard_mg_cm2=1e-10,full_periods_ubuntu=2,cold_windows_ubuntu=10,windows_role=SCOPE,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL',RC3_changed=False)
     require(all(q.get(k)==v for k,v in expected.items()),'typed reply source/scope/guards changed')
 
 def projection():
@@ -41,6 +41,7 @@ def projection():
 
 def source_guard():
     require(not git('diff','HEAD','--','app','src','reference','tools','tests','.github','integration'),'dirty typed admission surface')
+    require(all('__pycache__/' in p and p.endswith('.pyc') for p in git('ls-files','--others','--exclude-standard','--','app','src','reference','tools').decode().splitlines()),'untracked typed production source')
     for ref in (BASE,RUNTIME,CANONICAL,COMPOSED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',COMPOSED,'HEAD','--','app','src','reference','tools'),'unqualified production change')
     require(set(git('diff','--name-only',BASE,RUNTIME,'--','app','src','reference','tools').decode().splitlines())=={'app/hybrid_water/daily_host.py','app/hybrid_water/direct_day_kernel.py'},'typed production scope broadened')
@@ -95,6 +96,25 @@ def decoder():
     exec(compile(ast.Module(body=selected,type_ignores=[]),'<literal sealed payload decoders>','exec'),namespace)
     return namespace
 
+def composed_verify(q,d):
+    raw=(ROOT/PROOF/'CANONICAL_1760_AUDIT.json').read_bytes();require(sha(raw)==q['incoming_canonical_audit_sha256'],'actual incoming canonical owner receipt changed');audit=json.loads(raw);owner=audit['actual_detached_owner'];v=owner['result']
+    require(audit['head']==CANONICAL and audit['tree']==git('rev-parse',CANONICAL+'^{tree}').decode().strip() and audit['ordered_parents']==git('rev-list','--parents','-n','1',CANONICAL).decode().split()[1:] and owner['returncode']==0 and v['status']=='BOUNDED_GROUNDWATER_AND_CANONICAL_NAMED_TRANSPORT_COMPOSITION_ADMISSION_PASS','actual new canonical admission missing')
+    require(v['inherited_groundwater']['actual_full_periods']==12 and v['inherited_groundwater']['actual_complete_native_cold_windows']==188 and v['actual_two_day_shared_dispatch_native_contexts']==12 and v['whole_scientific_equivalence']=='NOT_QUALIFIED','inherited groundwater scope censored')
+    with zipfile.ZipFile(ROOT/PROOF/'COMPOSED_UBUNTU.zip') as z,zipfile.ZipFile(ROOT/PROOF/'TYPED_UBUNTU.zip') as old:
+        r=json.loads(z.read('RESULT.json'));require(r['source']==q['workflows']['composed']['source'] and set(r['optimizations'])=={'O0','O2'} and not git('diff',COMPOSED,r['source'],'--','app','src','reference','tools'),'composed producer source differs')
+        for opt in ('O0','O2'):
+            p=opt+'/';require(r['optimizations'][opt]['status']=='ACTUAL_COMPOSED_TWO_DAY_NATIVE_COLD_AND_GENERATED_FORTRAN_EXACT','composed producer failed')
+            require(all(call['returncode']==0 for call in r['optimizations'][opt]['calls']),'composed actual call failed')
+            build=json.loads(z.read(p+'build/BUILD.json'));previous=json.loads(old.read('qualified-'+opt+'/BUILD.json'))
+            current={Path(n).name:z.read(n) for n in z.namelist() if n.startswith(p+'build/') and n.endswith('.f90')};gold={Path(n).name:old.read(n) for n in old.namelist() if n.startswith('qualified-'+opt+'/') and n.endswith('.f90')}
+            require(current==gold and build['inputs']==previous['inputs'] and build['identity']['kernel_sources']==previous['identity']['kernel_sources'],'composed generated physics/input/kernel differs')
+            require(build['identity']['direct_day_kernel']['host_sha256']==sha(blob(COMPOSED,'app/hybrid_water/direct_day_kernel.py')),'composed actual native host differs')
+            warm=d['rows'](z,p+'warm');endpoint=d['rows'](z,p+'warm-endpoint');cold=d['rows'](z,p+'cold');original=d['rows'](old,'accept-'+opt+'/full')
+            for data in (warm,endpoint,cold):d['balance'](data)
+            require(len(warm)==2 and len(cold)==1 and d['physical'](warm)==d['physical'](endpoint)==d['physical'](original[:2]) and d['physical'](cold)==d['physical'](warm[1:]),'composed actual physical seam differs')
+            payload,meta=d['native'](z,p+'cold',2);require(payload==d['native'](z,p+'warm-endpoint',2)[0] and meta['binding']['build']==build['identity'],'composed complete native seam/binding differs')
+            require(d['csv'](z,p+'warm')==d['csv'](old,'accept-'+opt+'/full')[:4] and d['csv'](z,p+'cold')[-1:]==d['csv'](z,p+'warm')[-1:],'composed output seam differs')
+
 def raw_verify(q):
     audit_raw=(ROOT/PROOF/'BASELINE_AUDIT.json').read_bytes();require(sha(normalized(audit_raw))==q['baseline_audit_sha256'],'actual canonical baseline receipt changed')
     audit=json.loads(audit_raw);a=audit['actual_detached_owner'];v=json.loads(a['stdout'])
@@ -141,7 +161,7 @@ def raw_verify(q):
         require(a['wall_fraction_saved']==1-statistics.mean(a['typed_seconds'])/statistics.mean(a['control_seconds']) and a['parent_cpu_fraction_saved']==1-statistics.mean(a['typed_parent_cpu'])/statistics.mean(a['control_parent_cpu']) and max(a['typed_seconds'])<min(a['control_seconds']),'bounded timing conclusion differs')
 
 def verify():
-    q=json.loads((ROOT/PROOF/'QUALIFICATION.json').read_bytes());validate(q);source_guard();raw_verify(q)
-    return dict(status='BOUNDED_SALTFARM_TYPED_REPLY_SOURCE_RAW_ADMISSION_PASS',baseline=BASE,runtime=RUNTIME,fresh_ubuntu_full_periods=2,fresh_ubuntu_exact_cold_windows=10,windows_full_periods_inherited=2,windows_actual_complete_input_words_per_period=302427,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL',water_guard_cm=1e-10,solute_guard_mg_cm2=1e-10,RC3_changed=False)
+    q=json.loads((ROOT/PROOF/'QUALIFICATION.json').read_bytes());validate(q);source_guard();raw_verify(q);composed_verify(q,decoder())
+    return dict(status='BOUNDED_SALTFARM_TYPED_REPLY_SOURCE_RAW_ADMISSION_PASS',baseline=BASE,runtime=COMPOSED,full_producer_runtime=RUNTIME,incoming_canonical=CANONICAL,fresh_ubuntu_full_periods=2,fresh_ubuntu_exact_cold_windows=10,actual_composed_two_day_native_contexts=2,inherited_groundwater_full_periods=12,inherited_groundwater_cold_windows=188,windows_full_periods_inherited=2,windows_actual_complete_input_words_per_period=302427,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL',water_guard_cm=1e-10,solute_guard_mg_cm2=1e-10,RC3_changed=False)
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))

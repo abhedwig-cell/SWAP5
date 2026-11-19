@@ -89,6 +89,35 @@ python -B tests/saltfarm_newton/test_typed_admission07.py
 python -B tests/hupsel51/verify_successor.py
 ```
 
+## Concurrent canonical composition
+
+PR1760 merged as`ef5010a83e83f879254af534bf0dd9cfcdbf3a85` while this PR
+was being prepared. Its groundwater water state/calendar changes are retained
+literally. Composed production is`7b9b5dc96` (full SHA in QUALIFICATION.json).
+An actual clean detached ef5010a83 registered owner independently passes:
+12inherited full groundwater periods,188cold windows and12actual shared
+dispatch contexts remain qualified. CANONICAL_1760_AUDIT.json records the
+actual parsed terminal result, exact tree and ordered parents; it makes no
+new model execution or elapsed-time claim.
+
+The new source projection removes only the typed reply additions and recovers
+the entire actual ef5010a83 production source. Canonical groundwater still uses
+the unchanged pipe path. Its prior validator bodies are preserved with explicit
+bounded successor hooks; the unchanged canonical qualification record must
+remain exact, including in wrong-source/guard negative tests.
+
+Actual composed Ubuntu O0/O2 build and two-day native continuation seams pass
+in run44526786865 at`b96cfdf778ca361fe71bf36564cb2160986b0226`. All generated
+Fortran, original input and kernel bytes equal the full-period producer. Warm,
+cold and independent warm endpoints have exact physical records and complete
+native payloads, with unchanged balances. COMPOSED_UBUNTU.zip is the original
+952245byte artifact, SHA256
+`7432c9c17f4c00e9431248fe7068c087d0242b89f379bdfadfebc57677ad4cc9`.
+This deliberately selects the changed dispatch seam rather than repeating
+unchanged full trajectories. The new test recipe replaces the old full recipe
+at this later workflow version; the successful full producer and its exact
+historical workflow remain available at c40482abf and in Git history.
+
 Next concrete deliverable: terminal current PR controls and reviewable bounded
 admission to `integration/f-ci-canonical`. Further performance work must first
 identify a new short discriminator; do not remove necessary Newton work or
