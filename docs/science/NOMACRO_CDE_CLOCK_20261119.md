@@ -1,6 +1,6 @@
 # Original CDE subdaily and per-step calendar composition
 
-**Current bounded source admitted through PR1752; metadata receipt pending.**
+**Current bounded source admitted through PR1752; metadata PR1753 actualf83ec4b25 also passes its clean detached registered owner and exact complete tree.**
 
 Baseline: actual CDE interval metadata PR1751 mergec8b3029fe, exact source/metadata
 ordered parents and full qualified trees independently verified. Clean detached
@@ -110,4 +110,4 @@ Five proof tests refuse5111actual source/scope/raw/native/private/period/daily/e
 
 Retained observations include initial perstep template assertion, original1440dose shortfall, dry two-day rain postvalidator assertion, and the first independent proof using incorrect renamed audit labels. The latter is a validator-only defect: actual unchanged CDE_INTERVAL_DAILY_AUDIT/CDE_INTERVAL_INCREMENT_COUNTS labels are read literally. Original raw data and numerical tolerances remain unchanged. The bounded correction is an explicit numerical policy, not proof of an inherited defect or whole scientific equivalence.
 
-Fresh preservation selects21affected seams. Other named Grassgrowth/Hupsel/SaltFarm/AGE/groundwater/frost campaigns remain NOT_SELECTED_IMPACT through literal early dispatch, conditional linking and unchanged source. Their previous immutable qualification is inherited without a fresh-pass claim. Actual source PR1752 merges1ebd75daa with exact ordered parentsc8b3029fe/5a1f112e6 and complete treeea568539457efcec0c2949a8e4b586d4209ee78a. Its clean detached registered owner passes; metadata mergeresult remains required.
+Fresh preservation selects21affected seams. Other named Grassgrowth/Hupsel/SaltFarm/AGE/groundwater/frost campaigns remain NOT_SELECTED_IMPACT through literal early dispatch, conditional linking and unchanged source. Their previous immutable qualification is inherited without a fresh-pass claim. Actual source PR1752 merges1ebd75daa with exact ordered parentsc8b3029fe/5a1f112e6 and complete treeea568539457efcec0c2949a8e4b586d4209ee78a. Its clean detached registered owner passes; metadata PR1753 actualf83ec4b25 also passes exact ordered parents, complete tree8adc19a7eb9a5066286b7f6e490ef72f305465e9 and clean detached registered owner.

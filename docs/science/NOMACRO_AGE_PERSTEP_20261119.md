@@ -1,0 +1,25 @@
+# Original AGE per-step calendar and restart, 19 November 2026
+
+**Contract persisted before implementation; not qualified or admitted.**
+
+## Historical support and exact boundary
+
+Baseline is the actual CDE clock metadata mergef83ec4b257f0bcda6a170924585082a208c54dc5, subject to its clean detached registered-owner receipt. Source-based actual original reader observations are retained in NEXT_AGE_PERSTEP_SOURCE_AUDIT.json. Original SWSOLU2+SWSNOW1 is expressly forbidden by read_AgeTracer (Combination of snow and Ageing is not allowed), and is not missing historical functionality. Existing ordinary/hysteresis periodic/monthly-subdaily AGE paths already build; this is not permission to reimplement them.
+
+Implement one bounded original SWSOLU2 FLPRINTDTtrue owner with NPRINTDAY1..1440, requested monthly/explicit/PERIOD0..366, requested SWRES0/1, SWCSV0..3, ordinary/hysteresis0/1/2. Limit physics to analytic soil, drainage1, bottom5/8, heat1/calc2, daily weather, no Snow/frost/aquifer/macropores and admitted adaptive-day-seed policy. Original TimeControl makes effective period1 while preserving requested selectors. Preserve all nonselected existing routes literally. Explicit corrected nonzero incoming-age source flags remain under their existing owners and are outside this original young-water batch.
+
+Compose the frozen real AGE transport, stock, effluent, young-water fixed-source and calendar receipt providers with the existing actual Darcy trial guard and original hysteresis carry. No copied/reimplemented physical equations, module rebinding, altered checkpoint ROOTs or hash normalisation of artifacts. Water1e-10cm and existing8192epsilon actual-scale AGE guards remain unchanged. Keep actual candidate bottom flux and original local time policy; do not import the CDE-specific event policy without an actual demonstrated AGE need and explicit qualification.
+
+## State ownership
+
+New codecs S5APA001 ordinary and S5APH001 hysteresis separate this admitted family. Preserve the actual original AGE private state and all output quantities, complete paired calendar/header values, global day clock, immutable epoch, requested controls, actual output interval, annual/global period counter and original date-gated pending pointer. Hysteresis retains its literal40byte domain. Validate day/period against actual saved AGE state; no fabricated counters, reconstructed stocks or repaired payloads. Reset1 counter is completed-year count, reset0 global completed-day count. Initial dates before TSTART retain original pending pointer1. Per-step date output remains actual date-gated original behavior, not a synthetic write on every transport step.
+
+Transactional rejected trials/discard/replay/accept/recovery and independent cold process must retain exact physical trajectories and complete result.end/macro.bin and original user output. Binary result.end stays Fortran sequential data. Native loaders must atomically refuse malformed paired domains, clocks, history, AGE private values, sources, foreign providers and trailing/truncated records.
+
+## Dependency-selected qualification
+
+Persist implementation before compilation. Reuse actual source-bound unchanged small production provider proofs without fresh-pass claims; first exercise the real generated Integral/AGE/hysteresis composition O0/O2 with bounded 35day real trajectories, independent AGE/effluent output checks, native cold and active transaction controls before long runs. Cover both reset policies and nonJanuary/year/leap/TEND behavior. Bounded two-day NPRINTDAY1440 cases precede any full periods; exercise actual water inputs with nonzero preexisting AGE inventory using original young-water point/interval/surface/sprinkler semantics. Do not relabel unsupported corrected nonzero-age source combinations as qualified.
+
+Then select representative ordinary/history full1096day Windows/Ubuntu O0/O2 cases, mixed monthly/explicit/periodic requested calendars, formats, ET, source/rain and main/cross-year cold windows. Avoid full theoretical Cartesian expansion. Actual original execution is reader/cadence evidence unless independent physical equivalence is established; retained unresolved AGE profile differences remain unresolved.
+
+Freshly preserve genuinely affected current AGE nonstep and other dispatch seams through actual source/build/physical/native equality. Unaffected CDE, water, groundwater, frost and named old long campaigns remain NOT_SELECTED_IMPACT through literal early dispatch/conditional source evidence. Freeze old production providers/controllers/owners. Register a new independent source/raw owner only through a literal four-line hook at cde_clock_verify.verify, retaining the predecessor body otherwise exact. Require actual evidence corruptions, real committed wrong-source refusal, docs checks/strict and actual source+metadata ordered parents/full qualified tree/clean detached registered-owner admission. Keep whole closure PARTIAL, whole science NOT_QUALIFIED and fixed RC3 unchanged. Continue the next historical gap after admission.

@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-cde-clock01",
-  "last_commit": "1ebd75daad36f04a61035fbe841229df98f515a8",
-  "status": "CDE_CLOCK_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+  "branch": "codex/nomacro-age-perstep01",
+  "last_commit": "f83ec4b257f0bcda6a170924585082a208c54dc5",
+  "status": "AGE_PERSTEP_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Source-audited AGE ordinary/hysteresis calendar and perstep complete state/restart, limited to genuine historical reader support; no Snow+AGE (original explicitly forbidden).",
-  "recovery_point": "codex/nomacro-cde-clock01 at actual1ebd75daa; CDE_CLOCK_MERGE_RECEIPT.json; metadata admission next, then bounded AGE calendar/perstep native qualification and missing state implementation.",
+  "next_code_change": "New age_perstep_output.py using literal existing perstep Integral/Darcy and AGE/calendar providers plus four dispatch import sites.",
+  "recovery_point": "codex/nomacro-age-perstep01 at actual CDE metadataf83ec4b25; contract NOMACRO_AGE_PERSTEP_20261119.md and AGE_PERSTEP_SOURCE_AUDIT.json; implementation next.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Merge metadata and verify actual ordered parents/full tree/clean detached owner; then AGE source-audited calendar/per-step composition, preserving existing implemented paths. Original reader expressly forbids snow plus AGE; do not classify it as missing historical functionality.",
+  "next_action": "Implement bounded original young-water AGE FLPRINTDT owner from source-audited contract; persist before real O0/O2 small composition/source/native gates. Preserve all inactive paths literally.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -662,7 +662,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "1ebd75daad36f04a61035fbe841229df98f515a8",
+  "canonical_head": "f83ec4b257f0bcda6a170924585082a208c54dc5",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -3029,7 +3029,7 @@
     }
   },
   "cde_clock": {
-    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+    "status": "ACTUAL_SOURCE_AND_METADATA_ADMITTED",
     "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
     "contract": "docs/science/NOMACRO_CDE_CLOCK_20261119.md",
     "source_audit": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\NEXT_CDE_CLOCK_SOURCE_AUDIT.json",
@@ -4757,6 +4757,34 @@
         "('in_progress', None)": 20
       },
       "role": "Automatic legacy PR checks outside selected qualification. Queued/in-progress is not PASS; exact external cde-clock-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_CDE_CLOCK_METADATA_MERGE_VERIFIED",
+      "pr": 1753,
+      "merge": "f83ec4b257f0bcda6a170924585082a208c54dc5",
+      "parents": [
+        "1ebd75daad36f04a61035fbe841229df98f515a8",
+        "f695315fbc6fe3b8d04af2b52b1e6fe686d68e4b"
+      ],
+      "qualified_head": "f695315fbc6fe3b8d04af2b52b1e6fe686d68e4b",
+      "tree": "8adc19a7eb9a5066286b7f6e490ef72f305465e9",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 182.9550793999806,
+        "head": "f83ec4b257f0bcda6a170924585082a208c54dc5",
+        "stdout": "{\n  \"status\": \"ORIGINAL_CDE_CLOCK_LOCAL_EVENT_PRIVATE_STATE_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_CDE_INTERVAL_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1608,\n  \"actual_policy_refusals\": 1656,\n  \"actual_provider_refusals\": 52,\n  \"actual_preserved_contexts\": 21,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"actual_1440_two_day_periods\": 16,\n  \"actual_1440_cold_windows\": 16,\n  \"actual_postyear_counter_refusals\": 128,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
     }
+  },
+  "age_perstep": {
+    "status": "CONTRACT_PERSISTED_NOT_IMPLEMENTED",
+    "baseline": "f83ec4b257f0bcda6a170924585082a208c54dc5",
+    "contract": "docs/science/NOMACRO_AGE_PERSTEP_20261119.md",
+    "source_audit": "integration/f-ci/nomacro-complete01/AGE_PERSTEP_SOURCE_AUDIT.json",
+    "scope": "Original young-water AGE FLPRINTDTtrue NPD1..1440 calendars/reset0/1/fmt0..3 hys0/1/2 heat1calc2 analytic/drain1/bottom5/8 withoutSnow/frost/aquifer/macropores; explicit corrected nonzero incoming AGE flags delegated unchanged.",
+    "functional_completion": "PARTIAL",
+    "scientific_equivalence": "NOT_QUALIFIED"
   }
 }
