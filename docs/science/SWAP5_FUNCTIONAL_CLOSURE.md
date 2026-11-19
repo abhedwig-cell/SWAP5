@@ -1,6 +1,6 @@
 # Current functional closure of the original projects
 
-[Original CDE subdaily/perstep output](NOMACRO_CDE_CLOCK_20261119.md) passes24full1096day Windows/Ubuntu O0/O2 periods,352main cold windows,16two-day1440limit periods with16cold windows and32nonJanuary periods with128cold windows. Actual native/policy/provider refusals total1608/1656/52;48private-stock alias and128postyear counter forgeries refuse. All21 selected prior CDE interval/water-clock/dense seams remain exact. The independent registered owner and5111actual evidence corruptions pass. Source qualification is complete; canonical admission remains pending. Whole functional closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+[Original CDE subdaily/perstep output](NOMACRO_CDE_CLOCK_20261119.md) passes24full1096day Windows/Ubuntu O0/O2 periods,352main cold windows,16two-day1440limit periods with16cold windows and32nonJanuary periods with128cold windows. Actual native/policy/provider refusals total1608/1656/52;48private-stock alias and128postyear counter forgeries refuse. All21 selected prior CDE interval/water-clock/dense seams remain exact. The independent registered owner and5111actual evidence corruptions pass. Actual canonical1ebd75daa passes its clean detached registered owner, exact ordered parents and complete qualified tree; metadata receipt pending. Whole functional closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
 
 ## Original CDE interval state and daily receipt,18November2026
 
