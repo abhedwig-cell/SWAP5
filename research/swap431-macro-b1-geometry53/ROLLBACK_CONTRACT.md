@@ -1,4 +1,6 @@
-# GEOMETRY53 - voorgesteld afgebakend geometriecontract
+# GEOMETRY53 - afgebakend geometriecontract
+
+Status: afgebakend en met O0/O2 onderbouwd; de huidige implementatie faalt exact herstel. Geen reparatie in deze unit.
 
 Bij iedere D2-afwijzing moeten VlMpDyCp(1:NumNod) en SubsidCp(1:NumNod) exact terug naar de oorspronkelijke saved-statewaarden, samen met de reeds herstelde domeinvolumes/watervoorraad en RESTORE52-sorptiehistorie. Geen nulzetten, reconstructie door een nieuwe MPVOLUME-aanroep of numerieke afkapgrens.
 
