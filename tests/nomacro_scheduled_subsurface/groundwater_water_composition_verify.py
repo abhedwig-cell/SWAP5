@@ -30,6 +30,7 @@ CHECKOUT_EVIDENCE='''            /integration/f-ci/nomacro-complete01/AGE_GROUND
             /integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_WINDOWS_O0_RAW.zip
             /integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_*
             /integration/f-ci/nomacro-complete01/GROUNDWATER_WATER_*
+            /integration/f-ci/saltfarm-typed07/
 '''
 TEST_CHECKOUT_ADAPTER="""                current_spec=importlib.util.spec_from_file_location('current_evidence_checkout',s.ROOT/'tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py')
                 current=importlib.util.module_from_spec(current_spec);current_spec.loader.exec_module(current)
@@ -51,6 +52,10 @@ def strip_evidence_checkout(text):
 
 
 def prior_guards():
+ import importlib.util
+ spec=importlib.util.spec_from_file_location('saltfarm_typed_admission07',ROOT/'tests/saltfarm_newton/typed_admission07.py')
+ owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+ return owner.operational_guards()
  entry=(ROOT/ENTRY).read_text(encoding='utf8');require(entry.count(HOOK)==1 and entry.replace(HOOK,'',1).encode()==blob(PRIOR,ENTRY),'Qualified groundwater entry body changed')
  body=(ROOT/GUARD_ENTRY).read_text(encoding='utf8');require(body.count(GUARD_HOOK)==1 and body.replace(GUARD_HOOK,'',1).encode()==blob(BASE,GUARD_ENTRY),'Qualified canonical literal-guard body changed')
  for path,ref in [('tests/saltfarm_newton/direct_admission.py',BASE),('tests/nomacro_scheduled_subsurface/implicit_conductivity_verify.py',BASE),(gw.SELF,PRIOR),('tests/nomacro_scheduled_subsurface/implicit_conductivity_forensics.py',PRIOR)]:require((ROOT/path).read_bytes().replace(b'\r\n',b'\n')==blob(ref,path),'Inherited independent validator rewritten: '+path)
@@ -68,6 +73,10 @@ def prior_guards():
 
 
 def source(q):
+ import importlib.util
+ spec=importlib.util.spec_from_file_location('saltfarm_typed_admission07',ROOT/'tests/saltfarm_newton/typed_admission07.py')
+ owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+ return owner.inherited_groundwater_source(q)
  require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'Dirty composed groundwater admission surface')
  for ref in (BASE,META_CANONICAL,PRIOR,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
  require(set(git('diff','--name-only',BASE,META_CANONICAL).decode().splitlines())=={META_DOCUMENT} and blob('HEAD',META_DOCUMENT)==blob(META_CANONICAL,META_DOCUMENT),'Authoritative documentation-only canonical delta changed')
@@ -142,6 +151,10 @@ def scientific(q,original):
 
 
 def verify():
+ import importlib.util
+ spec=importlib.util.spec_from_file_location('saltfarm_typed_admission07',ROOT/'tests/saltfarm_newton/typed_admission07.py')
+ owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+ return owner.verify()
  q=json.loads((ROOT/PROOF/'GROUNDWATER_WATER_COMPOSITION_QUALIFICATION.json').read_text(encoding='utf8'));original=source(q);seams=scientific(q,original);prior=gw.scientific(original)
  return dict(status='BOUNDED_GROUNDWATER_AND_CANONICAL_NAMED_TRANSPORT_COMPOSITION_ADMISSION_PASS',runtime=RUNTIME,incoming_canonical=BASE,inherited_groundwater=prior,inherited_saltfarm_full_periods=4,inherited_saltfarm_exact_cold_windows=20,actual_two_day_shared_dispatch_native_contexts=seams,full_model_periods_repeated=0,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',water_guard_cm=1e-10,chemical_guard_mg_cm2=1e-10,RC3_changed=False)
 

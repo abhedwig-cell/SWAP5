@@ -8,6 +8,8 @@ git,blob,require,normalized=prior.git,prior.blob,prior.require,prior.normalized
 BASE='b28706d8b16661d8a9e85339d317256eaca51206'
 RUNTIME='9f640a440fde680c7dfed3618044ed83f6ad062f'
 CANONICAL_DOC='472aa69611d5168cdc8d2dd4322669851c442df6'
+CANONICAL='ef5010a83e83f879254af534bf0dd9cfcdbf3a85'
+COMPOSED='7b9b5dc961ffb7c7a16cc4a4f4f76157a0925259'
 PROOF='integration/f-ci/saltfarm-typed07/'
 ENTRY='tests/saltfarm_newton/composition_admission.py'
 HOOK="""    import importlib.util
@@ -27,29 +29,47 @@ def projection():
     path='app/hybrid_water/daily_host.py';s=normalized((ROOT/path).read_bytes()).decode()
     helper='def send_reply(process, values):\n    from direct_day_kernel import NativeDayKernel\n    if isinstance(process, NativeDayKernel):\n        return process.submit(values)\n    return send(process, " ".join(map(str, values)))\n\n\n'
     s=remove(s,helper);s=remove(s,'        send_reply(self.host, reply)','        send(self.host, " ".join(map(str, reply)))')
-    require(s.encode()==normalized(blob(BASE,path)),'nonselected pipe/host changed')
-    path='app/hybrid_water/direct_day_kernel.py';s=normalized((ROOT/path).read_bytes()).decode();old=blob(BASE,path).decode()
+    require(s.encode()==normalized(blob(CANONICAL,path)),'nonselected pipe/host changed')
+    path='app/hybrid_water/direct_day_kernel.py';s=normalized((ROOT/path).read_bytes()).decode();old=blob(CANONICAL,path).decode()
     start=s.index('    def submit(');end=s.index('    def receive(',start);submit=s[start:end]
     original=old[old.index('            reply = (c.c_double * len(values))'):old.index('        else:\n            raise ValueError(\'Invalid direct day kernel lifecycle\')')]
     # The C executor, disposition, revision, residual and receipt stay verbatim.
     require(textwrap.dedent(submit[submit.index('        result, status'):].rstrip())==textwrap.dedent(original[original.index('            result, status'):].rstrip()),'native guarded apply changed')
     s=remove(s,submit);s=remove(s,'            self.submit(tuple(map(float, values)))\n',original)
-    require(s.encode()==normalized(blob(BASE,path)),'native lifecycle/selection/build identity changed')
-    require(normalized((ROOT/ENTRY).read_bytes()).replace(HOOK.encode(),b'',1)==normalized(blob(BASE,ENTRY)),'literal predecessor rewritten')
+    require(s.encode()==normalized(blob(CANONICAL,path)),'native lifecycle/selection/build identity changed')
+    require(normalized((ROOT/ENTRY).read_bytes()).replace(HOOK.encode(),b'',1)==normalized(blob(CANONICAL,ENTRY)),'literal predecessor rewritten')
 
 def source_guard():
     require(not git('diff','HEAD','--','app','src','reference','tools','tests','.github','integration'),'dirty typed admission surface')
-    for ref in (BASE,RUNTIME):git('merge-base','--is-ancestor',ref,'HEAD')
-    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'unqualified production change')
+    for ref in (BASE,RUNTIME,CANONICAL,COMPOSED):git('merge-base','--is-ancestor',ref,'HEAD')
+    require(not git('diff',COMPOSED,'HEAD','--','app','src','reference','tools'),'unqualified production change')
     require(set(git('diff','--name-only',BASE,RUNTIME,'--','app','src','reference','tools').decode().splitlines())=={'app/hybrid_water/daily_host.py','app/hybrid_water/direct_day_kernel.py'},'typed production scope broadened')
     current=prior.direct.tree('HEAD','integration')
-    for p,v in prior.direct.tree(BASE,'integration').items():require(current.get(p)==v,'historical evidence rewritten: '+p)
-    allowed={ENTRY,'tests/saltfarm_newton/typed_admission07.py','tests/saltfarm_newton/test_typed_admission07.py','tests/saltfarm_newton/typed_api07.py','tests/saltfarm_newton/typed_words07.py','tests/saltfarm_newton/isolated07.py','.github/workflows/saltfarm-isolated07.yml','.github/workflows/saltfarm-typed07.yml','docs/science/SALTFARM_TYPED_REPLY07.md','docs/status-a/CURRENT_STATUS.md'}
+    for p,v in prior.direct.tree(CANONICAL,'integration').items():require(current.get(p)==v,'historical evidence rewritten: '+p)
+    allowed={ENTRY,'tests/saltfarm_newton/typed_admission07.py','tests/saltfarm_newton/test_typed_admission07.py','tests/saltfarm_newton/typed_api07.py','tests/saltfarm_newton/typed_words07.py','tests/saltfarm_newton/isolated07.py','.github/workflows/saltfarm-isolated07.yml','.github/workflows/saltfarm-typed07.yml','docs/science/SALTFARM_TYPED_REPLY07.md','docs/status-a/CURRENT_STATUS.md','tests/saltfarm_newton/composed07.py','tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py',prior.direct.COLUMN,prior.direct.WORKFLOW}
     canonical_delta=git('diff','--name-only',BASE,CANONICAL_DOC).decode().splitlines()
     require(len(canonical_delta)==1 and canonical_delta[0].startswith('docs/'),'canonical reconciliation has non-documentation changes')
     for p in canonical_delta:require(blob('HEAD',p)==blob(CANONICAL_DOC,p),'canonical documentation rewritten');allowed.add(p)
-    require(all(p in allowed or p.startswith(PROOF) for p in git('diff','--name-only',RUNTIME,'HEAD').decode().splitlines()),'foreign post-runtime change')
+    require(all(p in allowed or p.startswith(PROOF) for p in git('diff','--name-only',COMPOSED,'HEAD').decode().splitlines()),'foreign post-runtime change')
+    require(set(git('diff','--name-only',CANONICAL,COMPOSED,'--','app','src','reference','tools').decode().splitlines())=={'app/hybrid_water/daily_host.py','app/hybrid_water/direct_day_kernel.py'},'composed production scope changed')
+    operational_guards()
+
+def operational_guards():
     projection()
+    path='tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py';body=(ROOT/path).read_text()
+    prefix=" import importlib.util\n spec=importlib.util.spec_from_file_location('saltfarm_typed_admission07',ROOT/'tests/saltfarm_newton/typed_admission07.py')\n owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)\n"
+    for call in ('owner.operational_guards()','owner.inherited_groundwater_source(q)','owner.verify()'):
+        body=prior.direct.remove(body,prefix+' return '+call+'\n')
+    line='            /integration/f-ci/saltfarm-typed07/\n';body=prior.direct.remove(body,line)
+    require(body.encode()==blob(CANONICAL,path),'canonical groundwater owner body rewritten')
+    for path in (prior.direct.COLUMN,prior.direct.WORKFLOW):require(prior.direct.remove((ROOT/path).read_text(),line).encode()==blob(CANONICAL,path),'canonical workflow commands/limits changed')
+    return 'LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED'
+
+def inherited_groundwater_source(q):
+    proof='integration/f-ci/nomacro-complete01/'
+    require(q==json.loads(blob(CANONICAL,proof+'GROUNDWATER_WATER_COMPOSITION_QUALIFICATION.json')),'canonical groundwater authority mutated')
+    source_guard()
+    return json.loads(blob(CANONICAL,proof+'GROUNDWATER_WATER_QUALIFICATION.json'))
 
 def windows_words(z,opt,record):
     p='accept-'+opt+'/full';raw=z.read(p+'/daily.jsonl');stdout=z.read(p+'/original/donor.stdout')

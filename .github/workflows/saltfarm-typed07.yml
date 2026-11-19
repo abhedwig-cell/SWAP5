@@ -2,7 +2,7 @@ name: SaltFarm typed production O0 O2 qualification07
 on:
   push:
     branches: [codex/saltfarm-isolated07]
-    paths: ['.github/workflows/saltfarm-typed07.yml', 'tests/saltfarm_newton/typed_api07.py']
+    paths: ['.github/workflows/saltfarm-typed07.yml', 'tests/saltfarm_newton/composed07.py']
   workflow_dispatch:
     inputs:
       expected_sha:
@@ -28,6 +28,7 @@ jobs:
             tests/saltfarm_newton
             reference/swap-4.3.1/projects
             reference/swap-4.3.1/source-archives
+            integration/f-ci/saltfarm-typed07
       - name: Exact source and sequential O0 O2 full cold transaction qualification
         env:
           EXPECTED: ${{ inputs.expected_sha || github.sha }}
@@ -35,22 +36,14 @@ jobs:
           test "$(git rev-parse HEAD)" = "$EXPECTED"
           root="$RUNNER_TEMP/typed07"
           python3 -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work "$root/provider"
-          for opt in O0 O2; do
-            python3 -B tools/solute/run_water.py --model HYBRID_SALTFARM_WATER --reference-work "$root/provider" --no-macro-release --build-only --donor-opt "$opt" --kernel-opt "$opt" --output "$root/qualified-$opt"
-            python3 -B tools/solute/run_water.py --model HYBRID_SALTFARM_WATER --reference-work "$root/provider" --build-bundle "$root/qualified-$opt" --no-macro-release --days 4 --checkpoint-at 2 --timeout-seconds 15 --output "$root/short-$opt"
-            python3 -B tests/saltfarm_newton/qualify.py --bundle "$root/qualified-$opt" --reference "$root/provider" --output "$root/accept-$opt"
-          done
-          python3 -B tests/saltfarm_newton/transactions.py --work "$root" --reference "$root/provider"
-          python3 -B tests/saltfarm_newton/typed_api07.py --work "$root"
+          python3 -B tests/saltfarm_newton/composed07.py --work "$root"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: saltfarm-typed07-${{ github.sha }}
           path: |
-            ${{ runner.temp }}/typed07/accept-*
-            ${{ runner.temp }}/typed07/qualified-*/BUILD.json
-            ${{ runner.temp }}/typed07/qualified-*/*.f90
-            ${{ runner.temp }}/typed07/short-*
-            ${{ runner.temp }}/typed07/transactions
-            ${{ runner.temp }}/typed07/TYPED_API.json
-            ${{ runner.temp }}/typed07/provider/PREPARED.json
+            ${{ runner.temp }}/typed07/RESULT.json
+            ${{ runner.temp }}/typed07/O*/build/BUILD.json
+            ${{ runner.temp }}/typed07/O*/build/*.f90
+            ${{ runner.temp }}/typed07/O*/warm*
+            ${{ runner.temp }}/typed07/O*/cold
