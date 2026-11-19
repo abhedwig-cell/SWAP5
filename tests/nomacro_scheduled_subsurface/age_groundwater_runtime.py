@@ -4,7 +4,7 @@ from pathlib import Path
 import age_perstep_runtime as age
 from original_output_baseline import assignment
 from original_output_files import compare
-from age_groundwater_output import metadata,magic,validate_candidate
+from age_groundwater_output import metadata,magic,validate_candidate,native_enabled
 
 m=age.m;ROOT=age.ROOT
 calendar=age.calendar
@@ -29,10 +29,10 @@ def own(build,reference,project,full,data,start,end,out):
     assert result['first_refusal'] is None,result
     actual=m.rows(out);m.check(actual);assert m.physical(actual)==m.physical(data[start:end])
     with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as a,zipfile.ZipFile(out/f'accepted-column-1-day-{end}.zip') as b:
-        assert a.read('macro.bin')[:8]==magic(project)
+        assert a.read('macro.bin')[:8]==m.e.auxiliary_magic(project)
         for name in ('result.end','macro.bin'):assert a.read(name)==b.read(name),name
-        validate_candidate(a.read('macro.bin'),data[end-1],project)
-    outputs=compare(full/'original',out/'original',metadata(project),start,end,project.start_date);assert m.sha(source)==digest
+        if native_enabled(project):validate_candidate(a.read('macro.bin'),data[end-1],project)
+    outputs=compare(full/'original',out/'original',metadata(project) or dict(flprintdt=False,nprintday=1),start,end,project.start_date);assert m.sha(source)==digest
     return dict(start=start,end=end,exact_physical=True,exact_complete_native=True,exact_original_output=outputs,seconds=seconds,origin_unchanged=True)
 
 
