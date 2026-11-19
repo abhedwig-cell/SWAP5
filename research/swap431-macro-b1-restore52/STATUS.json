@@ -1,5 +1,257 @@
 {
-  "stage": "IMPLEMENTED_PREBUILD_UNTESTED",
+  "work_unit": "SWAP431-MACRO-B1-RESTORE52",
+  "decision": "PASS_INACTIVE51_EXACT_TWO_ARRAY_HISTORY_ROLLBACK_AND_DIRECT_SMALLER_RETRY_SAME_ORIGINAL_D2_O0_O2",
   "baseline": "7bc7ac98a86cfd3b87c0ae7641dd9b70dcb78049",
-  "promotion": false
+  "source_checkpoint": "bc2912fb9",
+  "initial_source_checkpoint": "33ba1d067",
+  "model_routes_total": 6,
+  "final_postimage_routes": 4,
+  "initial_budget_limited_route_retained": true,
+  "external_hard_seconds": 20,
+  "internal16_policy_unchanged": true,
+  "clock_physical_flux_laws_solver_limits_dt_reduction_budget_rules_unchanged": true,
+  "new_native_persistent_fields": false,
+  "O0_O2_non_timing_byte_exact": true,
+  "CONTACT47_empty_clear_optimization_equivalent_in_observed_D2": true,
+  "no_broad_campaign": true,
+  "full_native_geometry_rollback_or_new_restart_admission": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "original_D2_prefix_origin_exact": true,
+      "true_active_unscaled_MAXIT_refusals": 3,
+      "rollbacks": [
+        {
+          "attempt": 1,
+          "positive_CONTACT47_evaluations": 119,
+          "reference_entire_array_exact": true,
+          "initial_sorptivity_entire_array_exact": true,
+          "clock_entire_array_exact": true,
+          "AwlCorFac_exact": true,
+          "CONTACT47_cache_invalid_empty": true,
+          "ledger_unchanged": true,
+          "remaining_native_differences": [
+            "subsidcp",
+            "vlmpdycp"
+          ]
+        },
+        {
+          "attempt": 2,
+          "positive_CONTACT47_evaluations": 68,
+          "reference_entire_array_exact": true,
+          "initial_sorptivity_entire_array_exact": true,
+          "clock_entire_array_exact": true,
+          "AwlCorFac_exact": true,
+          "CONTACT47_cache_invalid_empty": true,
+          "ledger_unchanged": true,
+          "remaining_native_differences": [
+            "dt",
+            "subsidcp",
+            "vlmpdycp"
+          ]
+        },
+        {
+          "attempt": 3,
+          "positive_CONTACT47_evaluations": 52,
+          "reference_entire_array_exact": true,
+          "initial_sorptivity_entire_array_exact": true,
+          "clock_entire_array_exact": true,
+          "AwlCorFac_exact": true,
+          "CONTACT47_cache_invalid_empty": true,
+          "ledger_unchanged": true,
+          "remaining_native_differences": [
+            "dt",
+            "subsidcp",
+            "vlmpdycp"
+          ]
+        }
+      ],
+      "first_smaller_dt": 9.428090415820634e-05,
+      "direct_smaller_solver_and_provider_suffix_exact": true,
+      "accepted_committed_inventory_context_ledger_budget_exact": true,
+      "final_dt": 1.0475656017578482e-05,
+      "final_iterations": 3,
+      "final_max_residual": 1.5796352162943117e-07,
+      "final_time": 35797.29043112515,
+      "TRIAL_inventory": {
+        "inventory_error_cm": 1.154971428410961e-11,
+        "inventory_limit_cm": 1.0475656017578482e-10,
+        "ledger_increment_errors_cm": {
+          "cgrai": 9.910285482875314e-20,
+          "cgird": 0.0,
+          "crunon": 0.0,
+          "caintc": 1.2963988150237326e-21,
+          "cepd": 0.0,
+          "cevap": -4.486627642487622e-21,
+          "cqrot": 1.2961920198705944e-21,
+          "cqbot": 8.713851444878615e-19,
+          "cqdra": -1.7128594380258055e-19,
+          "cqssdi": 0.0,
+          "cqmpoutdrrap": 6.303788600055954e-17
+        },
+        "fresh_V1": true
+      },
+      "DIRECT_inventory": {
+        "inventory_error_cm": 1.154971428410961e-11,
+        "inventory_limit_cm": 1.0475656017578482e-10,
+        "ledger_increment_errors_cm": {
+          "cgrai": 9.910285482875314e-20,
+          "cgird": 0.0,
+          "crunon": 0.0,
+          "caintc": 1.2963988150237326e-21,
+          "cepd": 0.0,
+          "cevap": -4.486627642487622e-21,
+          "cqrot": 1.2961920198705944e-21,
+          "cqbot": 8.713851444878615e-19,
+          "cqdra": -1.7128594380258055e-19,
+          "cqssdi": 0.0,
+          "cqmpoutdrrap": 6.303788600055954e-17
+        },
+        "fresh_V1": true
+      },
+      "full_native_geometry_scratch_byte_restored": false
+    },
+    {
+      "optimization": "O2",
+      "original_D2_prefix_origin_exact": true,
+      "true_active_unscaled_MAXIT_refusals": 3,
+      "rollbacks": [
+        {
+          "attempt": 1,
+          "positive_CONTACT47_evaluations": 119,
+          "reference_entire_array_exact": true,
+          "initial_sorptivity_entire_array_exact": true,
+          "clock_entire_array_exact": true,
+          "AwlCorFac_exact": true,
+          "CONTACT47_cache_invalid_empty": true,
+          "ledger_unchanged": true,
+          "remaining_native_differences": [
+            "subsidcp",
+            "vlmpdycp"
+          ]
+        },
+        {
+          "attempt": 2,
+          "positive_CONTACT47_evaluations": 68,
+          "reference_entire_array_exact": true,
+          "initial_sorptivity_entire_array_exact": true,
+          "clock_entire_array_exact": true,
+          "AwlCorFac_exact": true,
+          "CONTACT47_cache_invalid_empty": true,
+          "ledger_unchanged": true,
+          "remaining_native_differences": [
+            "dt",
+            "subsidcp",
+            "vlmpdycp"
+          ]
+        },
+        {
+          "attempt": 3,
+          "positive_CONTACT47_evaluations": 52,
+          "reference_entire_array_exact": true,
+          "initial_sorptivity_entire_array_exact": true,
+          "clock_entire_array_exact": true,
+          "AwlCorFac_exact": true,
+          "CONTACT47_cache_invalid_empty": true,
+          "ledger_unchanged": true,
+          "remaining_native_differences": [
+            "dt",
+            "subsidcp",
+            "vlmpdycp"
+          ]
+        }
+      ],
+      "first_smaller_dt": 9.428090415820634e-05,
+      "direct_smaller_solver_and_provider_suffix_exact": true,
+      "accepted_committed_inventory_context_ledger_budget_exact": true,
+      "final_dt": 1.0475656017578482e-05,
+      "final_iterations": 3,
+      "final_max_residual": 1.5796352162943117e-07,
+      "final_time": 35797.29043112515,
+      "TRIAL_inventory": {
+        "inventory_error_cm": 1.154971428410961e-11,
+        "inventory_limit_cm": 1.0475656017578482e-10,
+        "ledger_increment_errors_cm": {
+          "cgrai": 9.910285482875314e-20,
+          "cgird": 0.0,
+          "crunon": 0.0,
+          "caintc": 1.2963988150237326e-21,
+          "cepd": 0.0,
+          "cevap": -4.486627642487622e-21,
+          "cqrot": 1.2961920198705944e-21,
+          "cqbot": 8.713851444878615e-19,
+          "cqdra": -1.7128594380258055e-19,
+          "cqssdi": 0.0,
+          "cqmpoutdrrap": 6.303788600055954e-17
+        },
+        "fresh_V1": true
+      },
+      "DIRECT_inventory": {
+        "inventory_error_cm": 1.154971428410961e-11,
+        "inventory_limit_cm": 1.0475656017578482e-10,
+        "ledger_increment_errors_cm": {
+          "cgrai": 9.910285482875314e-20,
+          "cgird": 0.0,
+          "crunon": 0.0,
+          "caintc": 1.2963988150237326e-21,
+          "cepd": 0.0,
+          "cevap": -4.486627642487622e-21,
+          "cqrot": 1.2961920198705944e-21,
+          "cqbot": 8.713851444878615e-19,
+          "cqdra": -1.7128594380258055e-19,
+          "cqssdi": 0.0,
+          "cqmpoutdrrap": 6.303788600055954e-17
+        },
+        "fresh_V1": true
+      },
+      "full_native_geometry_scratch_byte_restored": false
+    }
+  ],
+  "final_runs": [
+    {
+      "optimization": "O0",
+      "mode": "TRIAL",
+      "seconds": 12.690066900104284,
+      "terminal_internal_elapsed_seconds": 11.643191
+    },
+    {
+      "optimization": "O0",
+      "mode": "DIRECT",
+      "seconds": 13.80942409997806,
+      "terminal_internal_elapsed_seconds": 12.8891326
+    },
+    {
+      "optimization": "O2",
+      "mode": "TRIAL",
+      "seconds": 9.01516620023176,
+      "terminal_internal_elapsed_seconds": 8.1925248
+    },
+    {
+      "optimization": "O2",
+      "mode": "DIRECT",
+      "seconds": 8.335047100204974,
+      "terminal_internal_elapsed_seconds": 7.4222085
+    }
+  ],
+  "initial_runs": [
+    {
+      "optimization": "O0",
+      "seconds": 16.96248439978808,
+      "D2_completed": false,
+      "outcome": "INTERNAL16_ORIGINAL_PREFIX_LIMIT           0           0   35797.282231540456        6.2853936105470892E-005           0",
+      "retained": true
+    },
+    {
+      "optimization": "O2",
+      "seconds": 14.467013099696487,
+      "D2_completed": true,
+      "outcome": "TARGET_RETRY_HOST_COMMITTED           1           4   35797.290431125148        2.0951312035156963E-005           0",
+      "retained": true
+    }
+  ],
+  "stage": "QUALIFIED_EXACT_INACTIVE51_HISTORY_RESTORE_AND_DIRECT_RETRY_D2_O0_O2",
+  "recovery": "REPORT.md; RESULT.json; IMPLEMENTATION_CONTRACT.md; IMPLEMENTATION.patch; BUDGET_REVISION.md; CODEX_FOLLOWUP.md; EVIDENCE.json",
+  "next_safe_step": "No further D2 history rollback work needed for this bounded contract. Separately authorize own native restart or other remaining geometry rollback contract; no broad campaign."
 }
