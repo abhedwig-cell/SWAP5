@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-groundwater01",
   "last_commit": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
-  "status": "AGE_GROUNDWATER_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+  "status": "AGE_GROUNDWATER_INITIAL_COMPOSITION_PERSISTED_NOT_TESTED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Implement literal AGE/prescribed-groundwater reaction/hydraulic/calendar composition; persist before real O0/O2 short/native production gates.",
+  "next_action": "Compile and run real ordinary/history groundwater AGE35day O0/O2 strict physical/native/cold drivers; diagnose actual failures before broader qualification.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -24821,7 +24821,7 @@
     }
   },
   "age_groundwater": {
-    "status": "CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+    "status": "INITIAL_COMPOSITION_IMPLEMENTED_NOT_TESTED",
     "baseline": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
     "contract": "docs/science/NOMACRO_AGE_GROUNDWATER_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_SOURCE_AUDIT.json",

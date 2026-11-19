@@ -184,7 +184,10 @@ def inspect(directory, *, original_output=None):
         if boundary['SWBOTB']!=expected_bottom or selected['SWTOPBHEA']!=2:
             raise ValueError('Bounded frost qualification requires prescribed surface temperature and free bottom7 or drained bottom6')
     if selected['SWSOLU'] and boundary['SWBOTB']==1:
-        if (selected['SWSOLU']!=1 or selected['SWSOPHY']!=0
+        age_groundwater=(original_output is True and selected['SWSOLU']==2
+                         and selected['SWSNOW']==0 and selected['SWHEA']==1
+                         and selected['SWCALT']==2)
+        if ((selected['SWSOLU']!=1 and not age_groundwater) or selected['SWSOPHY']!=0
                 or selected['SWFROST']!=0 or selected['SWBR']!=0
                 or selected['SWMETDETAIL']!=0):
             raise ValueError('Prescribed groundwater CDE trial receipt requires analytical daily no-frost/no-aquifer process history')
@@ -314,9 +317,9 @@ def validate(project):
 
 
 def auxiliary_magic(project):
-    from groundwater_history_native import enabled as groundwater_native,magic as groundwater_magic
+    from age_groundwater_output import native_enabled as groundwater_native,native_magic as groundwater_magic
     if groundwater_native(project):return groundwater_magic(project)
-    from age_perstep_output import selection as thermal_output,magic as thermal_output_magic
+    from age_groundwater_output import selection as thermal_output,magic as thermal_output_magic
     if thermal_output(project) is not None:return thermal_output_magic(project)
     from original_output_aquifer import selection as aquifer_output,magic as aquifer_output_magic
     if aquifer_output(project) is not None:return aquifer_output_magic(project)

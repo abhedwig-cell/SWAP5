@@ -180,7 +180,7 @@ def validate_bundle(bundle, reference, project):
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     expected_cde_receipt=cde_receipt_metadata() if cde_receipt_enabled(project) else None
     if identity.get('cde_native_receipt')!=expected_cde_receipt:raise ValueError('Foreign CDE native receipt consistency policy; rebuild without rebinding')
-    from age_perstep_output import metadata as original_output_metadata
+    from age_groundwater_output import metadata as original_output_metadata
     expected_output=original_output_metadata(project)
     if identity.get('original_output')!=expected_output:raise ValueError('Foreign original output policy; rebuild without rebinding')
     if expected_output and expected_output.get('thermal_calendar',False):
@@ -190,7 +190,7 @@ def validate_bundle(bundle, reference, project):
     from conserved_original_age import metadata as age_metadata,correction as age_correction
     expected_age=age_metadata() if project.age else None
     if expected_age is not None:
-        from age_perstep_output import source_age_identity as age_identity
+        from age_groundwater_output import source_age_identity as age_identity
         expected_age=age_identity(expected_age,project)
     if identity.get('conserved_original_age')!=expected_age:raise ValueError('Foreign original age source/state policy')
     from age_direct_soil_source import fixed_metadata
@@ -207,18 +207,24 @@ def validate_bundle(bundle, reference, project):
     from surface_schedule import enabled as surface_schedule_enabled,POLICY as SURFACE_SCHEDULE_POLICY
     expected_schedule={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':h.sha(h.APP/'surface_schedule.py')} if surface_schedule_enabled(project) else None
     if identity.get('surface_schedule')!=expected_schedule:raise ValueError('Foreign original surface schedule')
-    from groundwater_boundary_receipt import selected_boundary,metadata as lower_metadata,render_budget
+    from age_groundwater_output import selected_boundary,boundary_metadata as lower_metadata,render_budget
     lower_boundary=selected_boundary(project)
     lower=lower_boundary is not None
     expected_lower=lower_metadata(project,h.sha,h.APP,h.ROOT)
     if identity.get('lower_boundary_receipt')!=expected_lower:raise ValueError('Foreign original lower-boundary receipt')
-    from groundwater_history_native import metadata as groundwater_native_metadata
+    from age_groundwater_output import native_metadata as groundwater_native_metadata
     if identity.get('groundwater_native_state')!=groundwater_native_metadata(project,h.sha,h.APP):
         raise ValueError('Foreign prescribed groundwater native carry policy')
     if lower_boundary==1:
-        state_name='groundwater_history_native_state.f90' if expected_lower and identity['groundwater_native_state']['domain_bytes']==104 else 'groundwater_native_state.f90'
-        if (bundle/state_name).read_bytes()!=(h.APP/state_name).read_bytes():
-            raise ValueError('Foreign actual prescribed groundwater native state provider')
+        state_policy=identity['groundwater_native_state']
+        if state_policy.get('provider_filename')=='age_groundwater_native_state.f90':
+            from age_groundwater_output import state_source
+            if (bundle/state_policy['provider_filename']).read_text(encoding='cp1252')!=state_source():
+                raise ValueError('Foreign actual original AGE groundwater state provider')
+        else:
+            state_name='groundwater_history_native_state.f90' if expected_lower and state_policy['domain_bytes']==104 else 'groundwater_native_state.f90'
+            if (bundle/state_name).read_bytes()!=(h.APP/state_name).read_bytes():
+                raise ValueError('Foreign actual prescribed groundwater native state provider')
         reaction=bundle/'mod_prescribed_groundwater_reaction.f90'
         if reaction.read_bytes()!=(h.ROOT/'src/process/mod_prescribed_groundwater_reaction.f90').read_bytes():
             raise ValueError('Foreign prescribed groundwater reaction component')
@@ -588,7 +594,7 @@ class CoupledDailyColumn:
                     raise ValueError('Unrestartable candidate conserved solute state')
                 from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
                 if cde_candidate(self.project):validate_cde_candidate(aux,raw,self.project)
-                from groundwater_history_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+                from age_groundwater_output import native_enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
                 if groundwater_candidate(self.project):validate_groundwater_candidate(aux,raw,self.project)
                 from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
                 if aquifer_candidate(self.project):validate_aquifer_candidate(aux,raw,self.project)
@@ -632,7 +638,7 @@ class CoupledDailyColumn:
                     raise ValueError('Prepared native state changed')
         from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
         if cde_candidate(self.project):validate_cde_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
-        from groundwater_history_native import enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+        from age_groundwater_output import native_enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
         if groundwater_candidate(self.project):validate_groundwater_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
 
         from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
