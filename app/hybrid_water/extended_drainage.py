@@ -174,7 +174,8 @@ def metadata(project):
                 pond_conservation_renderer_sha256=sha(Path(__file__).with_name('original_pond_budget.py')),
                 extended_pond_numerics_sha256=sha(Path(__file__).with_name('extended_pond.py')),
                 extended_trial_receipt_sha256=sha(Path(__file__).with_name('extended_trial_receipt.py')),
-                stable_trial_projection='Only original automatic management SWMAN2: actual original nodal theta difference in real128; original exported double daily totals and1e-10 guards unchanged',
+                stable_trial_projection='Selected extended drainage: actual original nodal theta difference in real128; original exported double daily totals and1e-10 guards unchanged',
+                positive_interception_renderer_sha256=sha(Path(__file__).with_name('extended_interception.py')),
                 exact_pond_scope='Original runoff() unchanged; exact linear outward solve or complete monotone original root bracket, with piecewise analytic tangent',
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
                 codec=MAGIC.decode(),domain=domain(project),bytes=size(project),
@@ -248,6 +249,8 @@ def flux_witness(tokens, project, receipt, origin):
 def apply_build(output, donor_build, project, patched):
     if not enabled(project):return patched
     patched=strict_trial_build(output,donor_build,patched)
+    from extended_interception import render as positive_interception_source
+    (output/'MOD_meteo.f90').write_text(positive_interception_source((donor_build/'swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')),encoding='cp1252')
     (output/(MODULE+'.f90')).write_bytes(TEMPLATE.read_bytes())
     (output/'surfacewater.f90').write_text(surfacewater_source((donor_build/'swap-selected/surfacewater.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')
@@ -281,4 +284,4 @@ def apply_build(output, donor_build, project, patched):
     path.write_text(text,encoding='cp1252')
     # HeadCalc imports the selected MOD_top derivative; compile its actual
     # defining module before compiling the caller.
-    return [TERMINAL_MODULE,MODULE,'surfacewater','boundtop',*(name for name in patched if name!='boundtop')]
+    return ['MOD_meteo',TERMINAL_MODULE,MODULE,'surfacewater','boundtop',*(name for name in patched if name not in ('boundtop','MOD_meteo'))]
