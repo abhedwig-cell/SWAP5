@@ -23,7 +23,7 @@ def corrected_surfacewater_source(original):
         raise ValueError('Changed original extended surfacewater provider')
     old='            if (swstmax < 1.0d-7) then'
     assert original.count(old)==1
-    return original.replace(old,'            if (swstmax <= 0.0d0) then',1)
+    return original.replace(old,'            if (swstmax <= 1.0d-8) then',1)
 
 
 def surfacewater_source(original):
