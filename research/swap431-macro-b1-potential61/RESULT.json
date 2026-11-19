@@ -1,0 +1,726 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-POTENTIAL61",
+  "decision": "CONDITIONAL_FULL_D3_POTENTIAL_GRADIENT_QUALIFIED_ACTIVE_SUPPORT_O0_O2",
+  "model_routes": 2,
+  "hard_seconds_per_route": 20,
+  "real_provider_perturbations_per_route": 48,
+  "analytic_gradient_shape": [
+    112,
+    112
+  ],
+  "active_columns_tested": [
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57
+  ],
+  "outside_control_head": 49,
+  "all112_independent_columns_not_probed": true,
+  "qualification_envelope": "current fixed material/geometry/macrolevel/history/active-support at original D2 providers53/54",
+  "local_moisture_and_GWL_contact_included": true,
+  "source_solver_physics_clock_budget_unchanged": true,
+  "no_Jacobian_update_installed": true,
+  "O0_O2_probe_outputs_exact": true,
+  "convergence_or_accepted_follow_not_qualified": true,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 6.5500889997929335,
+      "returncode": 0,
+      "censored": false,
+      "parent_physical_text_files_exact": 44,
+      "parent_inactive_history_is_exact_subsequence": true,
+      "additional_inactive_observer_rows": 72,
+      "trajectory_and_solver_unchanged": true,
+      "points": [
+        {
+          "iteration": 53,
+          "branch": "W",
+          "contact": "closed",
+          "sat_support": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "unsat_support": [],
+          "tested_heads": [
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "provider_perturbations": 24,
+          "restore_checks": 25,
+          "raw_sorptivity": 3.770608008147662e-08,
+          "peak_cap": 0.02,
+          "winning_component": "contact closed",
+          "Time": 0.0,
+          "moisture_capacity": 7.42571205368497e-07,
+          "deficit": 3.7765309740533937e-07,
+          "wet_span": 0.35747750442307336,
+          "overlap": 0,
+          "B": 1.054781898579319e-07,
+          "Bprime": -1.2291666577940133e-07,
+          "unsat50_local_moisture_term": 0.0,
+          "unsat50_GWL_term_head50": 0.0,
+          "unsat50_GWL_term_head51": 0.0,
+          "fullvector_max_error_amount_per_head": 5.410073549496101e-16,
+          "fullvector_max_error_rate_per_head": 5.4100735494961004e-11,
+          "O_derivative_max_error": 7.62793469241941e-16,
+          "moisture_checks": [],
+          "columns": [
+            {
+              "node": 49,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 0.0,
+              "O_derivative_analytic": 0.0,
+              "O_derivative_provider_FD": 0.0,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 50,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 0.0,
+              "O_derivative_analytic": 0.0,
+              "O_derivative_provider_FD": 0.0,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 50,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 0.0,
+              "O_derivative_analytic": 0.0,
+              "O_derivative_provider_FD": 0.0,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 51,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.2345889018035652e-16,
+              "O_derivative_analytic": -1.8368911869343297e-07,
+              "O_derivative_provider_FD": -1.836891187176302e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 51,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 2.4050057934297566e-16,
+              "O_derivative_analytic": -1.8368911869343297e-07,
+              "O_derivative_provider_FD": -1.836891181882346e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 52,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.5308603310129647e-16,
+              "O_derivative_analytic": -1.5340133928571287e-07,
+              "O_derivative_provider_FD": -1.5340133916497573e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 52,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 5.410073549496101e-16,
+              "O_derivative_analytic": -1.5340133928571287e-07,
+              "O_derivative_provider_FD": -1.5340133969437132e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 53,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.9658270188633843e-16,
+              "O_derivative_analytic": -7.57015788706699e-08,
+              "O_derivative_provider_FD": -7.570157860403145e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 54,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 8.407208312615817e-17,
+              "O_derivative_analytic": -5.525513232867903e-08,
+              "O_derivative_provider_FD": -5.525513234657666e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 55,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.6648510171012443e-16,
+              "O_derivative_analytic": -3.6219827860173245e-08,
+              "O_derivative_provider_FD": -3.6219827097379775e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 56,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 9.464978755807802e-17,
+              "O_derivative_analytic": -1.840066466734547e-08,
+              "O_derivative_provider_FD": -1.840066475467542e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 57,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.1602201948562196e-17,
+              "O_derivative_analytic": -1.6260281376510143e-09,
+              "O_derivative_provider_FD": -1.626028237718195e-09,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            }
+          ]
+        },
+        {
+          "iteration": 54,
+          "branch": "V",
+          "contact": "partial",
+          "sat_support": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "unsat_support": [
+            50
+          ],
+          "tested_heads": [
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "provider_perturbations": 24,
+          "restore_checks": 25,
+          "raw_sorptivity": 3.770714119484479e-08,
+          "peak_cap": 0.02,
+          "winning_component": "sorptivity",
+          "Time": 0.0,
+          "moisture_capacity": 7.425746240508696e-07,
+          "deficit": 3.776710300607e-07,
+          "wet_span": 0.35747750442307336,
+          "overlap": 2.407753072475316e-07,
+          "B": 1.0548115819399513e-07,
+          "Bprime": -1.229148542229283e-07,
+          "unsat50_local_moisture_term": -2.959486179081112e-14,
+          "unsat50_GWL_term_head50": -8.606181437016742e-08,
+          "unsat50_GWL_term_head51": -4.07348792833302e-08,
+          "fullvector_max_error_amount_per_head": 1.0217214819630055e-14,
+          "fullvector_max_error_rate_per_head": 1.0217214819630055e-09,
+          "O_derivative_max_error": 1.0610271141440993e-14,
+          "moisture_checks": [
+            {
+              "epsilon": 1e-07,
+              "Bprime_analytic": -1.229148542229283e-07,
+              "Bprime_head_FD": -1.2289615381932765e-07,
+              "C_analytic": 7.425746240508696e-07,
+              "C_head_FD": 7.424616477180734e-07,
+              "C_roundoff_bound": 2.220446049250313e-09,
+              "dB_dtheta_analytic": -0.1655252552967769,
+              "dB_dtheta_FD": -0.16552525534085719,
+              "dB_dtheta_relative_error": 2.66305554947998e-10
+            },
+            {
+              "epsilon": 5e-08,
+              "Bprime_analytic": -1.229148542229283e-07,
+              "Bprime_head_FD": -1.2294209649358182e-07,
+              "C_analytic": 7.425746240508696e-07,
+              "C_head_FD": 7.427392034742297e-07,
+              "C_roundoff_bound": 4.440892098500626e-09,
+              "dB_dtheta_analytic": -0.1655252552967769,
+              "dB_dtheta_FD": -0.16552525559241932,
+              "dB_dtheta_relative_error": 1.7860865200054455e-09
+            }
+          ],
+          "columns": [
+            {
+              "node": 49,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 0.0,
+              "O_derivative_analytic": 0.0,
+              "O_derivative_provider_FD": 0.0,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 50,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 4.78737076675632e-15,
+              "O_derivative_analytic": -8.606184396502921e-08,
+              "O_derivative_provider_FD": -8.606183895813039e-08,
+              "unsat50_derivative_analytic": -8.606184396502921e-08,
+              "unsat50_derivative_provider_FD": -8.606183917765844e-08
+            },
+            {
+              "node": 50,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 1.0217214819630055e-14,
+              "O_derivative_analytic": -8.606184396502921e-08,
+              "O_derivative_provider_FD": -8.606185457530035e-08,
+              "unsat50_derivative_analytic": -8.606184396502921e-08,
+              "unsat50_derivative_provider_FD": -8.606185418224403e-08
+            },
+            {
+              "node": 51,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 3.1625897387308427e-15,
+              "O_derivative_analytic": -2.2442399797676318e-07,
+              "O_derivative_provider_FD": -2.2442399485394932e-07,
+              "unsat50_derivative_analytic": -4.07348792833302e-08,
+              "unsat50_derivative_provider_FD": -4.0734876120740464e-08
+            },
+            {
+              "node": 51,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 3.1625897519657325e-15,
+              "O_derivative_analytic": -2.2442399797676318e-07,
+              "O_derivative_provider_FD": -2.2442399405985593e-07,
+              "unsat50_derivative_analytic": -4.07348792833302e-08,
+              "unsat50_derivative_provider_FD": -4.073487612074045e-08
+            },
+            {
+              "node": 52,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.5308603310129647e-16,
+              "O_derivative_analytic": -1.5340133928571287e-07,
+              "O_derivative_provider_FD": -1.5340133916497573e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 52,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 5.410073549496101e-16,
+              "O_derivative_analytic": -1.5340133928571287e-07,
+              "O_derivative_provider_FD": -1.5340133969437132e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 53,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.2966992638845954e-16,
+              "O_derivative_analytic": -7.57015788706699e-08,
+              "O_derivative_provider_FD": -7.570157913342705e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 54,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.5024653213040038e-16,
+              "O_derivative_analytic": -5.525513232867903e-08,
+              "O_derivative_provider_FD": -5.525513234657666e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 55,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.3339787720800333e-16,
+              "O_derivative_analytic": -3.6219827860173245e-08,
+              "O_derivative_provider_FD": -3.621982762677537e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 56,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.1119339980913857e-16,
+              "O_derivative_analytic": -1.840066466734547e-08,
+              "O_derivative_provider_FD": -1.840066475467542e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 57,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 9.534250417179626e-18,
+              "O_derivative_analytic": -1.6260281376510143e-09,
+              "O_derivative_provider_FD": -1.626027973020399e-09,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "optimization": "O2",
+      "seconds": 5.885975900106132,
+      "returncode": 0,
+      "censored": false,
+      "parent_physical_text_files_exact": 44,
+      "parent_inactive_history_is_exact_subsequence": true,
+      "additional_inactive_observer_rows": 72,
+      "trajectory_and_solver_unchanged": true,
+      "points": [
+        {
+          "iteration": 53,
+          "branch": "W",
+          "contact": "closed",
+          "sat_support": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "unsat_support": [],
+          "tested_heads": [
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "provider_perturbations": 24,
+          "restore_checks": 25,
+          "raw_sorptivity": 3.770608008147662e-08,
+          "peak_cap": 0.02,
+          "winning_component": "contact closed",
+          "Time": 0.0,
+          "moisture_capacity": 7.42571205368497e-07,
+          "deficit": 3.7765309740533937e-07,
+          "wet_span": 0.35747750442307336,
+          "overlap": 0,
+          "B": 1.054781898579319e-07,
+          "Bprime": -1.2291666577940133e-07,
+          "unsat50_local_moisture_term": 0.0,
+          "unsat50_GWL_term_head50": 0.0,
+          "unsat50_GWL_term_head51": 0.0,
+          "fullvector_max_error_amount_per_head": 5.410073549496101e-16,
+          "fullvector_max_error_rate_per_head": 5.4100735494961004e-11,
+          "O_derivative_max_error": 7.62793469241941e-16,
+          "moisture_checks": [],
+          "columns": [
+            {
+              "node": 49,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 0.0,
+              "O_derivative_analytic": 0.0,
+              "O_derivative_provider_FD": 0.0,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 50,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 0.0,
+              "O_derivative_analytic": 0.0,
+              "O_derivative_provider_FD": 0.0,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 50,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 0.0,
+              "O_derivative_analytic": 0.0,
+              "O_derivative_provider_FD": 0.0,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 51,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.2345889018035652e-16,
+              "O_derivative_analytic": -1.8368911869343297e-07,
+              "O_derivative_provider_FD": -1.836891187176302e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 51,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 2.4050057934297566e-16,
+              "O_derivative_analytic": -1.8368911869343297e-07,
+              "O_derivative_provider_FD": -1.836891181882346e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 52,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.5308603310129647e-16,
+              "O_derivative_analytic": -1.5340133928571287e-07,
+              "O_derivative_provider_FD": -1.5340133916497573e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 52,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 5.410073549496101e-16,
+              "O_derivative_analytic": -1.5340133928571287e-07,
+              "O_derivative_provider_FD": -1.5340133969437132e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 53,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.9658270188633843e-16,
+              "O_derivative_analytic": -7.57015788706699e-08,
+              "O_derivative_provider_FD": -7.570157860403145e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 54,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 8.407208312615817e-17,
+              "O_derivative_analytic": -5.525513232867903e-08,
+              "O_derivative_provider_FD": -5.525513234657666e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 55,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.6648510171012443e-16,
+              "O_derivative_analytic": -3.6219827860173245e-08,
+              "O_derivative_provider_FD": -3.6219827097379775e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 56,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 9.464978755807802e-17,
+              "O_derivative_analytic": -1.840066466734547e-08,
+              "O_derivative_provider_FD": -1.840066475467542e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 57,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.1602201948562196e-17,
+              "O_derivative_analytic": -1.6260281376510143e-09,
+              "O_derivative_provider_FD": -1.626028237718195e-09,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            }
+          ]
+        },
+        {
+          "iteration": 54,
+          "branch": "V",
+          "contact": "partial",
+          "sat_support": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "unsat_support": [
+            50
+          ],
+          "tested_heads": [
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57
+          ],
+          "provider_perturbations": 24,
+          "restore_checks": 25,
+          "raw_sorptivity": 3.770714119484479e-08,
+          "peak_cap": 0.02,
+          "winning_component": "sorptivity",
+          "Time": 0.0,
+          "moisture_capacity": 7.425746240508696e-07,
+          "deficit": 3.776710300607e-07,
+          "wet_span": 0.35747750442307336,
+          "overlap": 2.407753072475316e-07,
+          "B": 1.0548115819399513e-07,
+          "Bprime": -1.229148542229283e-07,
+          "unsat50_local_moisture_term": -2.959486179081112e-14,
+          "unsat50_GWL_term_head50": -8.606181437016742e-08,
+          "unsat50_GWL_term_head51": -4.07348792833302e-08,
+          "fullvector_max_error_amount_per_head": 1.0217214819630055e-14,
+          "fullvector_max_error_rate_per_head": 1.0217214819630055e-09,
+          "O_derivative_max_error": 1.0610271141440993e-14,
+          "moisture_checks": [
+            {
+              "epsilon": 1e-07,
+              "Bprime_analytic": -1.229148542229283e-07,
+              "Bprime_head_FD": -1.2289615381932765e-07,
+              "C_analytic": 7.425746240508696e-07,
+              "C_head_FD": 7.424616477180734e-07,
+              "C_roundoff_bound": 2.220446049250313e-09,
+              "dB_dtheta_analytic": -0.1655252552967769,
+              "dB_dtheta_FD": -0.16552525534085719,
+              "dB_dtheta_relative_error": 2.66305554947998e-10
+            },
+            {
+              "epsilon": 5e-08,
+              "Bprime_analytic": -1.229148542229283e-07,
+              "Bprime_head_FD": -1.2294209649358182e-07,
+              "C_analytic": 7.425746240508696e-07,
+              "C_head_FD": 7.427392034742297e-07,
+              "C_roundoff_bound": 4.440892098500626e-09,
+              "dB_dtheta_analytic": -0.1655252552967769,
+              "dB_dtheta_FD": -0.16552525559241932,
+              "dB_dtheta_relative_error": 1.7860865200054455e-09
+            }
+          ],
+          "columns": [
+            {
+              "node": 49,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 0.0,
+              "O_derivative_analytic": 0.0,
+              "O_derivative_provider_FD": 0.0,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 50,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 4.78737076675632e-15,
+              "O_derivative_analytic": -8.606184396502921e-08,
+              "O_derivative_provider_FD": -8.606183895813039e-08,
+              "unsat50_derivative_analytic": -8.606184396502921e-08,
+              "unsat50_derivative_provider_FD": -8.606183917765844e-08
+            },
+            {
+              "node": 50,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 1.0217214819630055e-14,
+              "O_derivative_analytic": -8.606184396502921e-08,
+              "O_derivative_provider_FD": -8.606185457530035e-08,
+              "unsat50_derivative_analytic": -8.606184396502921e-08,
+              "unsat50_derivative_provider_FD": -8.606185418224403e-08
+            },
+            {
+              "node": 51,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 3.1625897387308427e-15,
+              "O_derivative_analytic": -2.2442399797676318e-07,
+              "O_derivative_provider_FD": -2.2442399485394932e-07,
+              "unsat50_derivative_analytic": -4.07348792833302e-08,
+              "unsat50_derivative_provider_FD": -4.0734876120740464e-08
+            },
+            {
+              "node": 51,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 3.1625897519657325e-15,
+              "O_derivative_analytic": -2.2442399797676318e-07,
+              "O_derivative_provider_FD": -2.2442399405985593e-07,
+              "unsat50_derivative_analytic": -4.07348792833302e-08,
+              "unsat50_derivative_provider_FD": -4.073487612074045e-08
+            },
+            {
+              "node": 52,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.5308603310129647e-16,
+              "O_derivative_analytic": -1.5340133928571287e-07,
+              "O_derivative_provider_FD": -1.5340133916497573e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 52,
+              "epsilon": 5e-08,
+              "max_fullvector_error_amount_per_head": 5.410073549496101e-16,
+              "O_derivative_analytic": -1.5340133928571287e-07,
+              "O_derivative_provider_FD": -1.5340133969437132e-07,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 53,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.2966992638845954e-16,
+              "O_derivative_analytic": -7.57015788706699e-08,
+              "O_derivative_provider_FD": -7.570157913342705e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 54,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.5024653213040038e-16,
+              "O_derivative_analytic": -5.525513232867903e-08,
+              "O_derivative_provider_FD": -5.525513234657666e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 55,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 2.3339787720800333e-16,
+              "O_derivative_analytic": -3.6219827860173245e-08,
+              "O_derivative_provider_FD": -3.621982762677537e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 56,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 1.1119339980913857e-16,
+              "O_derivative_analytic": -1.840066466734547e-08,
+              "O_derivative_provider_FD": -1.840066475467542e-08,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            },
+            {
+              "node": 57,
+              "epsilon": 1e-07,
+              "max_fullvector_error_amount_per_head": 9.534250417179626e-18,
+              "O_derivative_analytic": -1.6260281376510143e-09,
+              "O_derivative_provider_FD": -1.626027973020399e-09,
+              "unsat50_derivative_analytic": 0.0,
+              "unsat50_derivative_provider_FD": 0.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
