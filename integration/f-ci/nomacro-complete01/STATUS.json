@@ -29583,6 +29583,34 @@
           "lf_normalized_sha256": "2ea1b70b6dc369e13d04a490c0e04d25b130bbb34e17a02f8f9d664f1290e94a"
         }
       }
+    },
+    "current_saturation_candidate_positive_chemistry": {
+      "O0": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v4\\RESULT.json",
+        "status": "FAILED",
+        "source_commit": "42c03931c0f95c16ea9ea8432472f9ecc1754226",
+        "last_actual_accepted_day": 584,
+        "model_wall_cap_seconds": 180,
+        "classification": "FAILED_OR_CENSORED_CURRENT_SOURCE_FULL_HEAD; NOT_QUALIFIED. Timeout is not a scientific pass or proven numerical failure cause. Three actual shorts passed; no full completion claimed.",
+        "last_daily_source": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v4\\full-head\\trajectory\\daily.jsonl"
+      },
+      "O2": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v4\\RESULT.json",
+        "status": "FAILED",
+        "source_commit": "42c03931c0f95c16ea9ea8432472f9ecc1754226",
+        "last_actual_accepted_day": 584,
+        "model_wall_cap_seconds": 180,
+        "classification": "FAILED_OR_CENSORED_CURRENT_SOURCE_FULL_HEAD; NOT_QUALIFIED. Timeout is not a scientific pass or proven numerical failure cause. Three actual shorts passed; no full completion claimed.",
+        "last_daily_source": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v4\\full-head\\trajectory\\daily.jsonl"
+      }
+    },
+    "current_day585_diagnostic": {
+      "worktree": "C:/Users/Veldh012/swap5-implicit-finite-diagnostic02",
+      "branch": "codex/nomacro-implicit-finite-diagnostic02",
+      "baseline": "a3d581da5b7d69b824ebfab03c13a715a39f6840",
+      "selection": "Read-only actual step/rejection clock logging in separate checkout at current chemical day585. Preserve physical input, process providers, strict balances and native ownership. No timeout-only rerun or admission until cause is known.",
+      "status": "CHECKOUT_IN_PROGRESS",
+      "not_qualification": true
     }
   }
 }
