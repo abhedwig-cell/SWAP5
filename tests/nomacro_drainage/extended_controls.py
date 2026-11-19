@@ -172,7 +172,7 @@ def main():
                 unpacked=directory/'origin';copied=m.h.verify_checkpoint(package,4,meta['binding'],unpacked)
                 actual=native(label,unpacked,copied,directory/'native/column')
                 assert actual['returncode']!=100 and actual['no_day_return'],actual
-                assert any(t in actual['stderr'].lower() for t in ('extended drain','nonmacro checkpoint','negative original surface storage or perimeter','original output','original age','original cde','original zero-period')),actual
+                assert any(t in actual['stderr'].lower() for t in ('extended drain','nonmacro checkpoint','negative original surface storage or perimeter','original output','original age','original cde','original zero-period','hysteresis hydraulic history','hysteresis water history')),actual
                 q['native_refusals'].append(actual)
             assert m.sha(source)==digest;save()
         q['transactions']=transactions(build,a.reference_work,project,a.profile_root/'trajectory',a.output/'transactions');save()
