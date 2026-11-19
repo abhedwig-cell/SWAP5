@@ -1413,7 +1413,7 @@
     "status": "IMPLEMENTED_NOT_QUALIFIED",
     "scope": "Original SWKIMPL1 default analytic MvG without examined-Ksat interpolation; actual original35day water/CDE/AGE runs pass, public gate currently refuses.",
     "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
-    "runtime_head": "bf352831e45dc0a1db4a9b50a16743a409fd7c80",
+    "runtime_head": "1b3405afa906aeb2f4a2da30227bca299a1605f6",
     "selected_gate": {
       "controller": "tests/nomacro_scheduled_subsurface/implicit_conductivity_ci.py",
       "eleven_short_per_platform_optimization": true,
@@ -1423,7 +1423,8 @@
       "justification": "Changed explicit original nonlinear conductivity selection needs actual strict whole-day conservation, derivative domain, hysteresis/three transported states/bottom1/5/8, numerical-origin refusal, complete native cold/year/leap/TEND. New typed water groundwater state needs both ordinary/history complete cold and attacks. Ten physical contexts plus numerical-only Kmean pair avoid Cartesian expansion. Full1096days are selected to expose annual/year/leap/output native state under this changed iteration; unrelated full F-CI/highest low-air remain NOT_SELECTED_IMPACT.",
       "excluded_unchanged_physical_campaigns": "NOT_SELECTED_IMPACT_NOT_FRESH_PASS"
     },
-    "limitation": "Original micro endpoint-state defect corrected: real public API discontinuity reproduced and corrected O0/O2, positive groundwater1096+7cold each PASS, numerical/native/active controls PASS. Distinct water surface drizzle/wet-dry chattering remains open; no implicit canonical admission."
+    "limitation": "Explicit original root finalization proven; surface availability passes small/native and advances water through1065. Original small-interception net-input loss then proven and corrected f7f23dbe5; original private partition ENTRY O0/O2 seven cases PASS, short/native PASS, full water O0/O2 pending. Whole scope not qualified/admitted.",
+    "inherited_explicit_route_observation": "Original SWKIMPL0 also retains aintcdt<small net-input omission while Integral books interception. This unit changes newSWKIMPL1 only, not oldqualifiedscope or fixedRC3."
   },
   "water_groundwater_complete_state_subdaily": {
     "status": "PARTIAL",
