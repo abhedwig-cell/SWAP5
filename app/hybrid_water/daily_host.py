@@ -875,6 +875,8 @@ end module plant_interface""")
     patched=groundwater_native_build(output,project,patched)
     from implicit_pond_event import apply_build as implicit_pond_build
     patched=implicit_pond_build(output,project,patched)
+    from implicit_root_finalization import apply_build as implicit_root_build
+    patched=implicit_root_build(output,donor_build,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -958,6 +960,9 @@ end module plant_interface""")
     from implicit_pond_event import metadata as implicit_pond_metadata
     implicit_pond=implicit_pond_metadata(project)
     if implicit_pond is not None:build_identity['implicit_pond_event']=implicit_pond
+    from implicit_root_finalization import metadata as implicit_root_metadata
+    implicit_root=implicit_root_metadata(project)
+    if implicit_root is not None:build_identity['implicit_root_finalization']=implicit_root
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from age_groundwater_output import metadata as original_output_metadata
