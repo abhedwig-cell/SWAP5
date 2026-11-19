@@ -141,8 +141,60 @@ def write_cauchy_case(case, target, forcing, project):
 
 def validate_bundle(bundle, reference, project):
     """Reuse a qualified binary only at its exact source/build/input boundary."""
+    from implicit_conductivity_admission import require_transport
+    require_transport(project)
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
+    from implicit_conductivity import metadata as implicit_metadata
+    if identity.get('implicit_conductivity')!=implicit_metadata(project):
+        raise ValueError('Foreign original implicit conductivity numerical policy; rebuild without rebinding')
+    from implicit_groundwater_trial import metadata as implicit_trial_metadata
+    if identity.get('implicit_groundwater_trial')!=implicit_trial_metadata(project):
+        raise ValueError('Foreign original implicit groundwater daily trial receipt policy')
+    from implicit_conductivity_retry import metadata as implicit_retry_metadata
+    if identity.get('implicit_conductivity_retry')!=implicit_retry_metadata(project):
+        raise ValueError('Foreign explicit original implicit-conductivity retry policy')
+    from implicit_conductivity_jacobian import metadata as implicit_jacobian_metadata
+    if identity.get('implicit_conductivity_jacobian')!=implicit_jacobian_metadata(project):
+        raise ValueError('Foreign exact original implicit-conductivity boundary Jacobian policy')
+    from implicit_pond_event import metadata as implicit_pond_metadata
+    if identity.get('implicit_pond_event')!=implicit_pond_metadata(project):
+        raise ValueError('Foreign original implicit pond event ownership policy')
+    if identity.get('implicit_pond_event') is not None and (bundle/'implicit_pond_event_state.f90').read_bytes()!=(h.APP/'implicit_pond_event_state.f90').read_bytes():
+        raise ValueError('Foreign actual original implicit pond event provider')
+    from implicit_root_finalization import metadata as implicit_root_metadata,expected as implicit_root_source
+    implicit_root=implicit_root_metadata(project)
+    if identity.get('implicit_root_finalization')!=implicit_root:
+        raise ValueError('Foreign original implicit microscopic root finalization policy')
+    if implicit_root is not None:
+        original=(reference/'build/swap-selected/RWU_micro.f90').read_text(encoding='cp1252')
+        if (bundle/'RWU_micro.f90').read_text(encoding='cp1252')!=implicit_root_source(original,project):
+            raise ValueError('Foreign actual original implicit microscopic root provider')
+    from implicit_pond_availability import metadata as implicit_availability_metadata
+    implicit_availability=implicit_availability_metadata(project)
+    if identity.get('implicit_pond_availability')!=implicit_availability:
+        raise ValueError('Foreign original implicit pond availability policy')
+    if implicit_availability is not None and (bundle/'implicit_pond_availability.f90').read_bytes()!=(h.APP/'implicit_pond_availability.f90').read_bytes():
+        raise ValueError('Foreign actual original implicit pond availability provider')
+    from implicit_interception_partition import metadata as implicit_interception_metadata,source as implicit_interception_source
+    implicit_interception=implicit_interception_metadata(project)
+    if identity.get('implicit_interception_partition')!=implicit_interception:
+        raise ValueError('Foreign original implicit exact interception partition policy')
+    if implicit_interception is not None:
+        original=(reference/'build/swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')
+        if (bundle/'MOD_meteo.f90').read_text(encoding='cp1252')!=implicit_interception_source(original):
+            raise ValueError('Foreign actual original implicit interception partition provider')
+    from implicit_saturation_derivative import metadata as implicit_saturation_metadata,source as implicit_saturation_source
+    implicit_saturation=implicit_saturation_metadata(project)
+    if identity.get('implicit_saturation_derivative')!=implicit_saturation:
+        raise ValueError('Foreign original implicit saturated conductivity derivative policy')
+    if implicit_saturation is not None:
+        original=(reference/'build/swap-selected/MOD_MvG_functions.f90').read_text(encoding='cp1252')
+        if (bundle/'MOD_MvG_functions.f90').read_text(encoding='cp1252')!=implicit_saturation_source(original):
+            raise ValueError('Foreign actual original implicit saturated derivative provider')
+    from implicit_finite_newton import metadata as implicit_finite_metadata
+    if identity.get('implicit_finite_newton')!=implicit_finite_metadata(project):
+        raise ValueError('Foreign original implicit finite Newton rollback policy')
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source
@@ -207,20 +259,26 @@ def validate_bundle(bundle, reference, project):
     from surface_schedule import enabled as surface_schedule_enabled,POLICY as SURFACE_SCHEDULE_POLICY
     expected_schedule={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':h.sha(h.APP/'surface_schedule.py')} if surface_schedule_enabled(project) else None
     if identity.get('surface_schedule')!=expected_schedule:raise ValueError('Foreign original surface schedule')
-    from age_groundwater_output import selected_boundary,boundary_metadata as lower_metadata,render_budget
+    from implicit_groundwater_state import selected_boundary,boundary_metadata as lower_metadata
+    from age_groundwater_output import render_budget
     lower_boundary=selected_boundary(project)
     lower=lower_boundary is not None
     expected_lower=lower_metadata(project,h.sha,h.APP,h.ROOT)
     if identity.get('lower_boundary_receipt')!=expected_lower:raise ValueError('Foreign original lower-boundary receipt')
-    from age_groundwater_output import native_metadata as groundwater_native_metadata
+    from implicit_groundwater_state import native_metadata as groundwater_native_metadata,enabled as implicit_groundwater,state_source as implicit_state_source
     if identity.get('groundwater_native_state')!=groundwater_native_metadata(project,h.sha,h.APP):
         raise ValueError('Foreign prescribed groundwater native carry policy')
+    if implicit_groundwater(project) and (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source():
+        raise ValueError('Foreign actual implicit groundwater native provider')
     if lower_boundary==1:
         state_policy=identity['groundwater_native_state']
         if state_policy.get('provider_filename')=='age_groundwater_native_state.f90':
             from age_groundwater_output import state_source
             if (bundle/state_policy['provider_filename']).read_text(encoding='cp1252')!=state_source():
                 raise ValueError('Foreign actual original AGE groundwater state provider')
+        elif state_policy.get('provider_filename')=='implicit_groundwater_native_state.f90':
+            if (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source():
+                raise ValueError('Foreign actual implicit groundwater native provider')
         else:
             state_name='groundwater_history_native_state.f90' if expected_lower and state_policy['domain_bytes']==104 else 'groundwater_native_state.f90'
             if (bundle/state_name).read_bytes()!=(h.APP/state_name).read_bytes():
@@ -610,6 +668,9 @@ class CoupledDailyColumn:
                 if age_groundwater(self.project) is not None:validate_age_groundwater(aux,raw,self.project)
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')
+            from implicit_groundwater_state import enabled as implicit_groundwater,validate_candidate as validate_implicit_groundwater
+            if implicit_groundwater(self.project):
+                with zipfile.ZipFile(candidate) as z:validate_implicit_groundwater(z.read('macro.bin'),raw,self.project)
             host.close()
         self._check_origin()
         self._candidate = (ready, raw, h.sha(candidate), candidate, forcing_record)
@@ -640,7 +701,7 @@ class CoupledDailyColumn:
                     raise ValueError('Prepared native state changed')
         from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
         if cde_candidate(self.project):validate_cde_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
-        from age_groundwater_output import native_enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+        from implicit_groundwater_state import native_enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
         if groundwater_candidate(self.project):validate_groundwater_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
 
         from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate
