@@ -1,0 +1,144 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-NATIVE55",
+  "decision": "PARTIAL_OWN_NATIVE_V6_SUBDAY_TRANSFER_AND_MATCHED_FOLLOW_REFUSAL_O0_O2_PASS_FULL_ACCEPTED_FOLLOW_BLOCKED_DTMIN_SCALE_REQUEST",
+  "baseline": "1b6e02b9fc8101ebcb06e2ed360dcd8e56ca446c",
+  "source_checkpoint": "9d05ab908",
+  "model_routes": 4,
+  "hard_seconds_per_route": 20,
+  "no_physics_solver_clock_dt_reduction_or_budget_rule_changes": true,
+  "bounded_native_V6_phase1_variant_added": true,
+  "old_V5_completed_day_and_coverage_guards_retained": true,
+  "new_persistent_physical_state_fields": false,
+  "own_file_fresh_process_install_origin_buffers_and_solver_attempts_exact": true,
+  "O0_O2_non_timing_byte_exact": true,
+  "full_simultaneous_accepted_followstep_qualified": false,
+  "reason": "Both continuous and fresh native restart request flux reduction on dtmin; same bounds exclude it. No follow hostcommit/timeadvance/ledgerintegration.",
+  "new_follow_waterbalance_or_fullperiod_daycrossing_general_restart_admission": false,
+  "no_broad_campaign": true,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "checkpoint_t1900": 35797.29043112515,
+      "checkpoint_next_dt": 2.0951312035156963e-05,
+      "own_native_packet": {
+        "sha256": "59988fe0728bc51006085bbc957afc16ddf50b23a5cbb644228716dff743748e",
+        "bytes": 139128,
+        "records": 254,
+        "version": 6,
+        "phase": 1,
+        "numnod": 112,
+        "NumDm": 5
+      },
+      "checkpoint_write_no_state_or_ledger_change": true,
+      "installed_native_context_and_ledger_byte_exact": true,
+      "both_first_follow_origin_buffers_rebuilt_exact": true,
+      "all_follow_solver_provider_geometry_suffix_exact_after_attempt_index": true,
+      "follow_first_unscaled_refusal": {
+        "dt": 2.0951312035156963e-05,
+        "max_residual": 0.0021218091917013238,
+        "sum_residual": 0.008637543343477884,
+        "node": 52,
+        "iterations": 30
+      },
+      "follow_dtmin_scale_request": {
+        "dt": 1e-05,
+        "max_residual": 0.000216137288712559,
+        "sum_residual": 0.0015179109854425075,
+        "node": 57,
+        "iterations": 60,
+        "requested_IDecMpRat": 1,
+        "FrReduQ": 1.0
+      },
+      "follow_accepted_commits": 0,
+      "no_time_advance_or_ledger_commit_for_failed_follow": true,
+      "checkpoint_inventory_error_cm": 1.1549714424717079e-11,
+      "checkpoint_inventory_limit_cm": 1.0475656017578482e-10,
+      "initial_nonpersistent_work_field_differences": [
+        "macro_in_vert",
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "matrix_vertical",
+        "boundary_rates_qtop_reva",
+        "event"
+      ],
+      "after_actual_solver_only_matrix_vertical_work_differs": true
+    },
+    {
+      "optimization": "O2",
+      "checkpoint_t1900": 35797.29043112515,
+      "checkpoint_next_dt": 2.0951312035156963e-05,
+      "own_native_packet": {
+        "sha256": "59988fe0728bc51006085bbc957afc16ddf50b23a5cbb644228716dff743748e",
+        "bytes": 139128,
+        "records": 254,
+        "version": 6,
+        "phase": 1,
+        "numnod": 112,
+        "NumDm": 5
+      },
+      "checkpoint_write_no_state_or_ledger_change": true,
+      "installed_native_context_and_ledger_byte_exact": true,
+      "both_first_follow_origin_buffers_rebuilt_exact": true,
+      "all_follow_solver_provider_geometry_suffix_exact_after_attempt_index": true,
+      "follow_first_unscaled_refusal": {
+        "dt": 2.0951312035156963e-05,
+        "max_residual": 0.0021218091917013238,
+        "sum_residual": 0.008637543343477884,
+        "node": 52,
+        "iterations": 30
+      },
+      "follow_dtmin_scale_request": {
+        "dt": 1e-05,
+        "max_residual": 0.000216137288712559,
+        "sum_residual": 0.0015179109854425075,
+        "node": 57,
+        "iterations": 60,
+        "requested_IDecMpRat": 1,
+        "FrReduQ": 1.0
+      },
+      "follow_accepted_commits": 0,
+      "no_time_advance_or_ledger_commit_for_failed_follow": true,
+      "checkpoint_inventory_error_cm": 1.1549714424717079e-11,
+      "checkpoint_inventory_limit_cm": 1.0475656017578482e-10,
+      "initial_nonpersistent_work_field_differences": [
+        "macro_in_vert",
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "matrix_vertical",
+        "boundary_rates_qtop_reva",
+        "event"
+      ],
+      "after_actual_solver_only_matrix_vertical_work_differs": true
+    }
+  ],
+  "runs": [
+    {
+      "optimization": "O0",
+      "mode": "CONT",
+      "seconds": 12.37856759969145,
+      "terminal": "SCALED_REQUEST_EXCLUDED_NO_FOLLOW_COMMIT"
+    },
+    {
+      "optimization": "O0",
+      "mode": "RESTART",
+      "seconds": 1.397336299996823,
+      "terminal": "SCALED_REQUEST_EXCLUDED_NO_FOLLOW_COMMIT"
+    },
+    {
+      "optimization": "O2",
+      "mode": "CONT",
+      "seconds": 8.13882609969005,
+      "terminal": "SCALED_REQUEST_EXCLUDED_NO_FOLLOW_COMMIT"
+    },
+    {
+      "optimization": "O2",
+      "mode": "RESTART",
+      "seconds": 1.1583421998657286,
+      "terminal": "SCALED_REQUEST_EXCLUDED_NO_FOLLOW_COMMIT"
+    }
+  ]
+}
