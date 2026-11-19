@@ -1,0 +1,46 @@
+{
+  "water": {
+    "cohort": "calendar-full-O0-v1-water",
+    "source": "2cc5c0edbda10cd601799fb5aca7d454896cdfa7",
+    "valid_actual_native": "PASS",
+    "refused": {
+      "calendar-semantic-count": "Actual original calendar numerical policy/day/counters differ",
+      "calendar-last-copy": "Actual original calendar value witness differs",
+      "calendar-nonfinite": "Nonfinite/negative actual original calendar values",
+      "canopy-receipt": "Foreign native clock/step/canopy",
+      "drain-value-copy": "Extended native duplicate/receipt differs",
+      "drain-domain-both": "Foreign extended native domain/trailer"
+    }
+  },
+  "cde": {
+    "cohort": "calendar-short-automatic-daily-O0-v1",
+    "source": "75659f32ca1be27a6e741bb29e5672915a507a9a",
+    "valid_actual_native": "PASS",
+    "refused": {
+      "calendar-semantic-count": "Actual original calendar numerical policy/day/counters differ",
+      "calendar-last-copy": "Actual original calendar value witness differs",
+      "calendar-nonfinite": "Nonfinite/negative actual original calendar values",
+      "canopy-receipt": "Foreign native clock/step/canopy",
+      "drain-value-copy": "Extended native duplicate/receipt differs",
+      "drain-domain-both": "Foreign extended native domain/trailer",
+      "CDE-total-receipt": "Actual native conserved chemical stock differs"
+    }
+  },
+  "age": {
+    "cohort": "extended-calendar-age-combined-O0-v2",
+    "source": "471d97b4d912b6a088b7881aae5d02209cd0466a",
+    "valid_actual_native": "PASS",
+    "refused": {
+      "calendar-semantic-count": "Actual original calendar numerical policy/day/counters differ",
+      "calendar-last-copy": "Actual original calendar value witness differs",
+      "calendar-nonfinite": "Nonfinite/negative actual original calendar values",
+      "canopy-receipt": "Foreign native clock/step/canopy",
+      "drain-value-copy": "Extended native duplicate/receipt differs",
+      "drain-domain-both": "Foreign extended native domain/trailer",
+      "AGE-total-receipt": "Original AGE native total/receipt differs",
+      "AGE-weighted-soil": "Original AGE weighted native soil inventory differs",
+      "AGE-effluent": "Original AGE private effluent differs",
+      "AGE-private-day": "Original AGE private calendar clock/flags differ"
+    }
+  }
+}
