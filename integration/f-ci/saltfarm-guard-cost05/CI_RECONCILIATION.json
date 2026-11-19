@@ -1,5 +1,5 @@
 {
-  "status": "CORRECTING_SHARED_SOURCE_ADMISSION_OWNER",
+  "status": "LOCAL_REGISTERED_OWNER_AND_CONTROLLER_REGRESSIONS_PASS",
   "original_head": "e7e24ab31f8a70b2bab68529ab085d2164d903d9",
   "failed_runs": [
     44496313342,
@@ -11,5 +11,25 @@
   "correction": "bounded successor through existing registered owner; historical validator body and all prior integration Git objects remain literal",
   "runtime_changed": false,
   "tolerances_changed": false,
-  "local_selection_correction": "Full historical source-tree materialization was stopped after exceeding its expected cost. The old validator now reads unchanged actual files and exactly four frozen BASE source/controller files; no model rerun and no bypass of its hash checks."
+  "local_selection_correction": "Full historical source-tree materialization completed successfully but exceeded its expected cost. The replacement validates the same hashes through exactly four frozen BASE files plus unchanged actual files. No model or old long raw campaign is repeated.",
+  "controller_source": "181c4947218d60850a8198b6bd1d0525234420cf",
+  "registered_entry": "tests/hupsel51/verify_successor.py",
+  "actual_owner": {
+    "status": "DIRECT_SALTFARM_KERNEL_WINDOWS_UBUNTU_O0_O2_ADMISSION_PASS",
+    "runtime": "e7e24ab31f8a70b2bab68529ab085d2164d903d9",
+    "native_producer": "8ba61729a79a365b41c00140dfb296f9bb821b24",
+    "predecessor": {
+      "status": "LITERAL_ADMITTED_AGE_SOURCE_SCHEMA_AND_IMMUTABLE_PRODUCER_AUDIT_INHERITED",
+      "merge": "e4322da80977c86861ab3aafe8f3035267c77582",
+      "actual_owner_seconds": 426.22577090002596,
+      "fresh_pass_claim": false
+    },
+    "nonselected_projection": "LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED",
+    "current_full_periods": 4,
+    "current_exact_cold_windows": 20,
+    "water_guard_cm": 1e-10,
+    "solute_guard_mg_cm2": 1e-10,
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "RC3_changed": false
+  }
 }
