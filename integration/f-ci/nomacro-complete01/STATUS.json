@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-implicit-conductivity01",
-  "last_commit": "21d6c67461681aad1073c641d08883a119a63070",
+  "last_commit": "42c03931c0f95c16ea9ea8432472f9ecc1754226",
   "status": "IMPLICIT_SATURATION_NUMERICAL_FIX_PERSISTED_FRESH_WATER_CDE_COHORT_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "If freshnewsource cohortpasses, complete qualification ratherthanmoreAppedits. Updatecarrier to scoped8short/6fullandcurrentv3 source; keepold failed11scopearchives and allsource-bound original reports. Use stable_candidate_v2 raw sourceguard, notoldf7manifest.",
-  "recovery_point": "codex/nomacro-implicit-conductivity01 21d6c67461681aad1073c641d08883a119a63070 plus this metadata commit. All oldjobs terminal; new fresh campaigns not yet started. WholePARTIAL/scienceNOT_QUALIFIED/fixedRC3 unchanged, canonicalCCE unchanged. Noimplicit carrier/seal/admission.",
+  "recovery_point": "codex/nomacro-implicit-conductivity01 42c03931c0f95c16ea9ea8432472f9ecc1754226 plus this job-recovery commit. Four actual bf9fresh campaigns listed with sessions; poll first, no duplicates. App production frozen. Sourcebf9 actual plateau and CDE/water1440 two-day native O0/O2 PASS. WholePARTIAL/scienceNOT_QUALIFIED/fixedRC3 unchanged.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -28020,7 +28020,51 @@
       "water_full_actual_status": "FAILED",
       "qualified_claim": "Positive head1096/native PASS at actual source829721. Water/CDE prescribed groundwater remain under targeted verification. All old failed30/5 cases remain raw observations."
     },
-    "pending_actual_jobs": [],
+    "pending_actual_jobs": [
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-cde-windows-O0-v3",
+        "session": 48625,
+        "status": "RUNNING",
+        "completed_short_contexts": [
+          "water-head",
+          "water-air-history",
+          "water-groundwater",
+          "water-groundwater-history"
+        ],
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-cde-windows-O2-v3",
+        "session": 32243,
+        "status": "RUNNING",
+        "completed_short_contexts": [
+          "water-head",
+          "water-air-history"
+        ],
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v4",
+        "session": 51994,
+        "status": "RUNNING",
+        "completed_short_contexts": [
+          "head",
+          "air-history",
+          "groundwater-history"
+        ],
+        "error": null
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v4",
+        "session": 31749,
+        "status": "RUNNING",
+        "completed_short_contexts": [
+          "head",
+          "air-history"
+        ],
+        "error": null
+      }
+    ],
     "actual_pond_event_components": {
       "O0": {
         "status": "REAL_POND_EVENT_TWO_ACTUAL_THREE_INACTIVE_FIVE_REFUSALS_PASS",
