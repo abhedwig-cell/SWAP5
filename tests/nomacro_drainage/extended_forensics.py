@@ -95,7 +95,7 @@ def checkpoint(path,build,row,dz=None):
         sequential_records(z.read('result.end'))
         require(wire[:8]==b'S5EDR001' and len(wire)>length+48 and struct.unpack_from('<i',wire,8)[0]==n,'Foreign extended native header')
         stored,step,canopy=struct.unpack_from('<3d',wire,12)
-        require(stored==clock and finite([step,canopy]) and 0<step<=1 and canopy>=0,'Foreign native clock/step/canopy')
+        require(stored==clock and finite([step,canopy]) and 0<step<=1 and canopy>=0 and canopy==row['stock_end_cm'][3],'Foreign native clock/step/canopy')
         seasonal,year=struct.unpack_from('<di',wire,36)
         require(math.isfinite(seasonal) and year==(date.fromisoformat(build['project']['start_date'])+timedelta(days=row['day']-1)).year,'Foreign actual seasonal clock/year')
         at=len(wire)-length;header=struct.pack('<8i',*domain)
@@ -119,6 +119,9 @@ def audit(root):
     require(len(dz)==build['project']['nodes'],'Actual original geometry/native node count differs')
     require(len(data)==result['requested_days'] and data[0]['day']==1,'Actual campaign day count differs')
     report=inventory(data);observed((warm/'original/donor.stdout').read_bytes(),data,build)
+    csv=lambda body:[line for line in body.decode('cp1252').splitlines() if line.strip() and not line.startswith('*')]
+    warm_csv=csv((warm/'original/result_output.csv').read_bytes())
+    require(len(warm_csv)==len(data)+2,'Censored actual compatibility CSV')
     checkpoints={}
     for path in warm.glob('accepted-column-1-day-*.zip'):
         day=int(path.stem.rsplit('-',1)[1]);checkpoints[day]=checkpoint(path,build,data[day-1],dz)
@@ -130,6 +133,8 @@ def audit(root):
         physical=lambda rr:[{k:v for k,v in row.items() if k!='revision'} for row in rr]
         require(physical(continuation)==physical(data[low:high]),'Actual cold physical receipts differ')
         inventory(continuation);observed((cold/'original/donor.stdout').read_bytes(),continuation,build)
+        cold_csv=csv((cold/'original/result_output.csv').read_bytes())
+        require(len(cold_csv)==high-low+2 and cold_csv[-(high-low):]==warm_csv[low+2:high+2],'Actual cold compatibility CSV differs')
         native=checkpoint(cold/('accepted-column-1-day-'+str(high)+'.zip'),build,continuation[-1],dz)
         require(native==checkpoints[high],'Actual cold complete original native bytes differ')
         report['cold_windows'].append([low,high])

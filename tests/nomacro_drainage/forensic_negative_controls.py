@@ -35,7 +35,7 @@ def main():
     path=next(root.glob('accepted-column-1-day-*.zip'));day=int(path.stem.rsplit('-',1)[1]);row=data[day-1]
     with zipfile.ZipFile(path) as z:members={name:z.read(name) for name in z.namelist()}
     original=members['macro.bin'];size=struct.unpack_from('<i',original,len(original)-4)[0];at=len(original)-size
-    for label,offset,fmt,value in [('domain',at+8,'i',25),('clock',at+64,'d',0.),('adjustments',at+80,'i',-1),('stock',at+104,'d',-1.),('duplicate',at+88+(size-92)//2,'d',1.),('trailer',len(original)-4,'i',size+4)]:
+    for label,offset,fmt,value in [('canopy',28,'d',row['stock_end_cm'][3]+1.),('domain',at+8,'i',25),('clock',at+64,'d',0.),('adjustments',at+80,'i',-1),('stock',at+104,'d',-1.),('duplicate',at+88+(size-92)//2,'d',1.),('trailer',len(original)-4,'i',size+4)]:
         bad=bytearray(original);struct.pack_into('<'+fmt,bad,offset,value)
         forged=dict(members);forged['macro.bin']=bytes(bad);meta=json.loads(forged['checkpoint.json']);meta['files']['macro.bin']=hashlib.sha256(bad).hexdigest();forged['checkpoint.json']=json.dumps(meta).encode()
         stream=io.BytesIO()

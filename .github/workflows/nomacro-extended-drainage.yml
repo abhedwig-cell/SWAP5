@@ -17,7 +17,7 @@ jobs:
       matrix:
         optimization: [O0, O2]
     runs-on: ubuntu-26.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       OMP_NUM_THREADS: '1'
       PYTHONDONTWRITEBYTECODE: '1'
@@ -61,6 +61,21 @@ jobs:
           python3 -B tests/nomacro_drainage/extended_runtime.py --case table --days 37 --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/table" --output "$RUNNER_TEMP/proof/table"
           python3 -B tests/nomacro_drainage/extended_forensics.py "$RUNNER_TEMP/proof/table" --output "$RUNNER_TEMP/proof/table/FORENSICS.json"
           python3 -B tests/nomacro_drainage/forensic_negative_controls.py "$RUNNER_TEMP/proof/fixed" --output "$RUNNER_TEMP/proof/FORENSIC_NEGATIVES.json"
+      - name: Retain exact emitted sources, executable bytes and original provider identity
+        if: always()
+        shell: python
+        run: |
+          import os,shutil
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)
+          provider=root/'provider/PREPARED.json'
+          if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
+          for build in sorted((root/'builds').glob('*/*')):
+              if not build.is_dir():continue
+              target=proof/(build.name+'-build');target.mkdir()
+              for path in sorted(build.iterdir()):
+                  if path.is_file() and (path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.exe','.dll','.so')):
+                      shutil.copyfile(path,target/path.name)
       - uses: actions/upload-artifact@v4
         if: always()
         with:
