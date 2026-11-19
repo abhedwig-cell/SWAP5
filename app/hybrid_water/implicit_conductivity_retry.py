@@ -72,6 +72,27 @@ def apply_build(output,donor_build,project,patched):
     path=output/'headcalc.f90';text=headcalc_source(path.read_text(encoding='cp1252'))
     clock='38237d0' if project.solute else '37851d0'
     text=text.replace('if(implicit_failed_trace_count<64)then','if(implicit_failed_trace_count<64.and.t1900>='+clock+')then',1)
+    if project.solute:
+        anchor='      flush(6)'
+        assert text.count(anchor)==1
+        probe='''      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_BASE_H',h(1:numnod)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_BASE_Q',qrot(1:numnod)
+      call Rootextraction(2)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_REPEAT1_Q',qrot(1:numnod)
+      call Rootextraction(2)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_REPEAT2_Q',qrot(1:numnod)
+      h(13)=h(13)+1d-6
+      theta(13)=watcon(13,h(13))
+      call Rootextraction(2)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_PLUS_Q',qrot(1:numnod)
+      h(13)=h(13)-2d-6
+      theta(13)=watcon(13,h(13))
+      call Rootextraction(2)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_MINUS_Q',qrot(1:numnod)
+      flush(6)
+      error stop 'Actual failed-state root probe finished; no state accepted'
+'''
+        text=text.replace(anchor,probe,1)
     path.write_text(text,encoding='cp1252')
     path=output/'timecontrol.f90'
     source=(path if path.exists() else donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
