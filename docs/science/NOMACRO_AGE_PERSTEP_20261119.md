@@ -1,6 +1,6 @@
 # Original AGE per-step calendar and restart, 19 November 2026
 
-**Contract persisted before implementation; not qualified or admitted.**
+**Qualified bounded Windows/Ubuntu source; canonical admission pending.**
 
 ## Historical support and exact boundary
 
@@ -33,3 +33,15 @@ Original FLPRINTDT uses SoilWaterOutput short records while AGE output follows f
 December2003 bottom5 inputs lacked a valid boundary date inside the new period and fail the original reader before initialization. Those epoch fixtures now use the admitted original bottom8 domain; valid bottom5 remains covered by the full main matrix and December2002 epoch. No input failure is relabelled a physical migration defect.
 
 Windows O0/O2 source qualification currently passes12full1096periods/160main cold windows,300native-private/282policy/6actual-provider refusals,4two-day1440periods/4cold,12nonJanuaryperiods/48cold,48paired postyear counter refusals,6public restart contexts and14fresh preserved seams. Old ordinary/history AGE perstep states preserve every byte after the separately named8byte new codec; old checkpoints are never adopted or rebound. Unselected earlier AGE/nonAGE full campaigns remain source-bound NOT_SELECTED_IMPACT. Ubuntu and independent raw/source qualification plus actual canonical admission remain required.
+
+## Actual source qualification
+
+[Original AGE perstep calendar and restart](NOMACRO_AGE_PERSTEP_20261119.md) passes24full1096day Windows/Ubuntu O0/O2 periods,320main cold windows,8two-day1440limit periods with8cold windows and24nonJanuary periods with96cold windows. Actual native/policy/provider refusals total600/564/12;96postyear counter forgeries refuse. All21 selected prior CDE/AGE seams remain exact, including complete payloads after the named8byte codec projection on overlapping original AGE paths. The independent registered owner and4535actual evidence corruptions pass. Source qualification is complete; canonical admission remains pending. Whole functional closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
+Immutable runtime `9d86ac77b987d4f523840b576d184fe7c5619c23` and seal `bc8876601` bind eight complete original ZIP archives/427535139bytes. Main portable44440052103 and corrected selected preservation44440435509 finish SUCCESS. PreservationV1 workflow44440065634 fails before models because its workflow omitted the app provider import path; it has zero artifacts and remains FAILED. The workflow-only correction preserves the same application runtime. All carrier branches remain separate and are not merged.
+
+Five proof tests refuse4535actual source/scope/raw/native/ledger/period/worker/epoch corruptions (192+4232+19+42+50), 91.71231510024518seconds. The clean registered root passes at `79400cebc649171cb2bfe08f8ed85f4c28ae8ecc` in 158.97333350032568seconds. The actual committed wrong-source branch `codex/nomacro-age-perstep-negative01` at `14fc33e330679485b0c2d846dc0af215c1bd403d` is retained and never merged. Dirty and committed guards refuse before models. An external helper initially expected a later sealed-hash error, while the actual earlier guards correctly refused; only helper assertions were corrected.
+
+Actual earlier native workers accepted an inconsistent saved cumulative reset flag; the exact same corrupt bytes now refuse through new-family validation. This is a bounded validation correction, not proof of physical drift or a broad inherited scientific defect. Independent validator preflights initially assumed a single cumulative observation per receipt frame; the corrected reader uses actual HYBRID_READY/AGE_DAILY_RECEIPT boundaries and permits only identical duplicate pending state. It passes all32short/24full original platform trajectories before registration. No raw evidence is rewritten.
+
+Fresh preservation covers21affected contexts,18public CLI contexts, and literal original reader/partition controls. Explicit corrected incoming-age source options remain under their existing owners. Other named full campaigns are NOT_SELECTED_IMPACT with source/selector evidence and no fresh-pass claim. Original Snow+AGE is expressly forbidden by the historical reader. Unresolved original AGE profile differences and whole-model scientific equivalence remain unresolved. Actual canonical source and metadata mergeresults remain required.
