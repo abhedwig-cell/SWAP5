@@ -1,0 +1,64 @@
+--- REJECT64/head_diag.f90
++++ CAUSE66/head_observer66.f90
+@@ -79,6 +79,7 @@
+ 
+ !---------------------------------------------------------------------
+ 
++   call cause66_boundary(0)
+    diag_active=.false.
+    if(abs(t1900-35796.9513533331d0)<1d-9) inquire(file='active.marker',exist=diag_active)
+    if(diag_active) then
+@@ -194,6 +195,14 @@
+    F = 0.0d0
+    nvec=nvec+1
+    call vector_F(1, hgrad)
++   call cause66_boundary(1)
++   block
++    integer::u66
++    open(newunit=u66,file='cause66_F0.txt',position='append',status='unknown')
++    write(u66,*) attempts,NN,t1900,dt
++    write(u66,*) F(1:NN)
++    close(u66)
++   end block
+ 
+ !  initial estimate of F inner product
+    sumold = 0.5d0 * dot_product(F(1:NN), F(1:NN))
+@@ -966,3 +975,38 @@
+ 
+ end subroutine headcalc
+ 
++
++subroutine cause66_boundary(stage)
++ use variables,only:t1900,dt,deepgw,qbot,hbot,gwlinp,rimlay,swbotb,swbotb3impl,swbotb3resvert,sw3,sw4,haqtab,h,kmean
++ use MOD_arrays,only:mabbc
++ use MOD_grid,only:numnod,z,disnod
++ use DIAG19,only:attempts
++ implicit none
++ integer,intent(in)::stage
++ integer::u,st
++ character(24)::mode
++ real(8)::afgen,before,endpoint
++ before=deepgw;endpoint=t1900+dt
++ call get_environment_variable('CAUSE66_ENDPOINT',mode,status=st)
++ if(st/=0) mode='NONE'
++ if(abs(t1900-35797.290431125148d0)>1d-10.or.swbotb/=3.or.swbotb3impl/=1.or.sw3/=2.or.sw4/=0) &
++    error stop 'CAUSE66 outside preregistered boundary context'
++ if(stage==0) then
++  select case(trim(mode))
++  case('NONE')
++  case('SMALL')
++   if(attempts>1) deepgw=afgen(haqtab,mabbc*2,t1900+dt)
++  case('LARGE')
++   if(attempts==1.and.dt==1d-5) then
++    endpoint=t1900+2.0951312035156963d-5
++    deepgw=afgen(haqtab,mabbc*2,endpoint)
++   end if
++  case default
++   error stop 'CAUSE66 unselected intervention'
++  end select
++ end if
++ open(newunit=u,file='cause66_boundary.txt',position='append',status='unknown')
++ write(u,*) attempts,stage,t1900,dt,endpoint,before,deepgw,qbot,hbot,gwlinp,rimlay, &
++   swbotb,swbotb3impl,swbotb3resvert,sw3,sw4,h(numnod),z(numnod),disnod(numnod+1),kmean(numnod+1)
++ close(u)
++end subroutine cause66_boundary
