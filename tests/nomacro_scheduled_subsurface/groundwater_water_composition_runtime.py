@@ -38,11 +38,12 @@ def main():
    generated={path.name:path.read_bytes() for path in build.glob('*.f90')};require(generated==original_sources,'Actual composed Fortran providers differ: '+name);require(current['inputs']==old['inputs'],'Actual original input bytes differ: '+name);require(current['identity']['kernel_sources']==old['identity']['kernel_sources'],'Actual original kernel bytes differ: '+name)
    actual['generated_fortran_sha256']={path:m.sha(build/path) for path in sorted(generated)};actual['build_sha256']=m.sha(build/'BUILD.json');actual['direct_selected']=current['identity'].get('direct_day_kernel') is not None;require(actual['direct_selected']==(name=='named-saltfarm'),'Direct selection crossed project authority')
    actual['warm']=call('warm',['--build-bundle',build,'--days',2,'--checkpoint-at',1,'--output',out/'warm']);save();origin=out/'warm/accepted-column-1-day-1.zip';origin_hash=m.sha(origin);actual['cold']=call('cold',['--build-bundle',build,'--days',2,'--checkpoint-at',2,'--restart',origin,'--restart-day',1,'--output',out/'cold']);save();warm=m.rows(out/'warm');cold=m.rows(out/'cold');m.check(warm);m.check(cold);require(m.physical(warm)==m.physical(gold[:2]) and m.physical(cold)==m.physical(warm[1:2]),'Actual composed physical projection differs: '+name)
-   # Public warm publishes day1 only. The current cold publishes day2;
-   # a second actual continuation proves its complete endpoint from day1.
-   actual['cold_replay']=call('cold-replay',['--build-bundle',build,'--days',2,'--checkpoint-at',2,'--restart',origin,'--restart-day',1,'--output',out/'cold-replay']);save()
-   with zipfile.ZipFile(out/'cold/accepted-column-1-day-2.zip') as x,zipfile.ZipFile(out/'cold-replay/accepted-column-1-day-2.zip') as y:
-    require(all(x.read(member)==y.read(member) for member in ('result.end','macro.bin')),'Complete composed native replay differs')
+   # Public warm publishes day1 only. An independent actual warm endpoint
+   # publishes day2 for complete warm/cold payload comparison.
+   actual['warm_endpoint']=call('warm-endpoint',['--build-bundle',build,'--days',2,'--checkpoint-at',2,'--output',out/'warm-endpoint']);save()
+   require(m.physical(m.rows(out/'warm-endpoint'))==m.physical(warm),'Independent current warm differs')
+   with zipfile.ZipFile(out/'cold/accepted-column-1-day-2.zip') as x,zipfile.ZipFile(out/'warm-endpoint/accepted-column-1-day-2.zip') as y:
+    require(all(x.read(member)==y.read(member) for member in ('result.end','macro.bin')),'Complete composed warm/cold native differs')
    if name!='named-saltfarm':
     with zipfile.ZipFile(out/'cold/accepted-column-1-day-2.zip') as x,zipfile.ZipFile(oldroot/'trajectory/accepted-column-1-day-2.zip') as y:require(all(x.read(member)==y.read(member) for member in ('result.end','macro.bin')),'Actual full-producer groundwater complete native differs')
     actual['original_output']=compare(out/'warm/original',out/'cold/original',metadata(project),1,2,project.start_date)
