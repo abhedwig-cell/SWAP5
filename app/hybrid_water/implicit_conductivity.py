@@ -63,7 +63,9 @@ def selection(text, selectors, boundary):
                 pond_event_policy='original-implicit-pond-depletion-event-v1',
                 root_finalization_policy='original-implicit-micro-final-root-evaluation-v1',
                 pond_availability_policy='original-implicit-pond-evaporation-availability-v1',
-                interception_partition_policy='original-implicit-exact-interception-partition-v1')
+                interception_partition_policy='original-implicit-exact-interception-partition-v1',
+                saturation_derivative_policy='original-implicit-saturated-conductivity-derivative-v1',
+                finite_newton_policy='original-implicit-finite-newton-rate-rollback-v1')
 
 
 def metadata(project):

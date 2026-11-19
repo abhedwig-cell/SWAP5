@@ -184,6 +184,17 @@ def validate_bundle(bundle, reference, project):
         original=(reference/'build/swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')
         if (bundle/'MOD_meteo.f90').read_text(encoding='cp1252')!=implicit_interception_source(original):
             raise ValueError('Foreign actual original implicit interception partition provider')
+    from implicit_saturation_derivative import metadata as implicit_saturation_metadata,source as implicit_saturation_source
+    implicit_saturation=implicit_saturation_metadata(project)
+    if identity.get('implicit_saturation_derivative')!=implicit_saturation:
+        raise ValueError('Foreign original implicit saturated conductivity derivative policy')
+    if implicit_saturation is not None:
+        original=(reference/'build/swap-selected/MOD_MvG_functions.f90').read_text(encoding='cp1252')
+        if (bundle/'MOD_MvG_functions.f90').read_text(encoding='cp1252')!=implicit_saturation_source(original):
+            raise ValueError('Foreign actual original implicit saturated derivative provider')
+    from implicit_finite_newton import metadata as implicit_finite_metadata
+    if identity.get('implicit_finite_newton')!=implicit_finite_metadata(project):
+        raise ValueError('Foreign original implicit finite Newton rollback policy')
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source

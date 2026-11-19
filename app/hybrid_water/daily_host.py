@@ -881,6 +881,10 @@ end module plant_interface""")
     patched=implicit_availability_build(output,project,patched)
     from implicit_interception_partition import apply_build as implicit_interception_build
     patched=implicit_interception_build(output,donor_build,project,patched)
+    from implicit_saturation_derivative import apply_build as implicit_saturation_build
+    patched=implicit_saturation_build(output,donor_build,project,patched)
+    from implicit_finite_newton import apply_build as implicit_finite_build
+    patched=implicit_finite_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -974,6 +978,12 @@ end module plant_interface""")
     from implicit_interception_partition import metadata as implicit_interception_metadata
     implicit_interception=implicit_interception_metadata(project)
     if implicit_interception is not None:build_identity['implicit_interception_partition']=implicit_interception
+    from implicit_saturation_derivative import metadata as implicit_saturation_metadata
+    implicit_saturation=implicit_saturation_metadata(project)
+    if implicit_saturation is not None:build_identity['implicit_saturation_derivative']=implicit_saturation
+    from implicit_finite_newton import metadata as implicit_finite_metadata
+    implicit_finite=implicit_finite_metadata(project)
+    if implicit_finite is not None:build_identity['implicit_finite_newton']=implicit_finite
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from age_groundwater_output import metadata as original_output_metadata
