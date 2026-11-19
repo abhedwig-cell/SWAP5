@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib
 
 POLICY='original-implicit-nonconverged-trial-retry-v1'
-CLOCK_ULPS=8
+CLOCK_ULPS=7
 
 
 def enabled(project):
