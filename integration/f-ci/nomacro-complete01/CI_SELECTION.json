@@ -1438,7 +1438,7 @@
     }
   },
   "age_perstep": {
-    "status": "BOUNDED_SOURCE_QUALIFICATION_PASS_CANONICAL_PENDING",
+    "status": "ACTUAL_CANONICAL_SOURCE_ADMISSION_PASS",
     "baseline": "f83ec4b257f0bcda6a170924585082a208c54dc5",
     "selected": [
       "Source-bound unchanged small real AGE/effluent/calendar/hysteresis interface proofs inherited without fresh-pass claim",
@@ -1561,6 +1561,34 @@
         "id": 44440435509,
         "conclusion": "success"
       }
+    },
+    "actual_source_owner": {
+      "status": "ACTUAL_AGE_PERSTEP_CANONICAL_MERGE_VERIFIED",
+      "pr": 1754,
+      "merge": "ef30cd72157d9a614ddacc10b7691040e28565fa",
+      "parents": [
+        "f83ec4b257f0bcda6a170924585082a208c54dc5",
+        "337f40e3cf729d80303b421f09d98c1d3aa178cb"
+      ],
+      "qualified_head": "337f40e3cf729d80303b421f09d98c1d3aa178cb",
+      "tree": "c0d8b7f8e5cca57ede9a1cca18a15881420ad1fe",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 129.68560460023582,
+        "head": "ef30cd72157d9a614ddacc10b7691040e28565fa",
+        "stdout": "{\n  \"status\": \"ORIGINAL_AGE_PERSTEP_PRIVATE_CALENDAR_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"9d86ac77b987d4f523840b576d184fe7c5619c23\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_CDE_CLOCK_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 320,\n  \"actual_native_private_refusals\": 600,\n  \"actual_policy_refusals\": 564,\n  \"actual_provider_refusals\": 12,\n  \"actual_1440_two_day_periods\": 8,\n  \"actual_1440_cold_windows\": 8,\n  \"actual_non_january_periods\": 24,\n  \"actual_epoch_cold_windows\": 96,\n  \"actual_postyear_counter_refusals\": 96,\n  \"actual_public_contexts\": 18,\n  \"actual_preserved_contexts\": 21,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    },
+    "automatic_pr_ci_snapshot": {
+      "head": "337f40e3cf729d80303b421f09d98c1d3aa178cb",
+      "total": 28,
+      "counts": {
+        "('queued', None)": 8,
+        "('in_progress', None)": 20
+      },
+      "role": "Automatic legacy PR checks outside selected qualification. Queued/in-progress is not PASS; exact external age-perstep-source-pr-ci-at-merge.json. No duplicate/cancel requested."
     }
   }
 }
