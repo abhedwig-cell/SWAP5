@@ -59,7 +59,7 @@ def own(build,reference,project,full,data,start,end,out):
     assert result['first_refusal'] is None,result
     actual=m.rows(out);m.check(actual);assert m.physical(actual)==m.physical(data[start:end])
     with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as a,zipfile.ZipFile(out/f'accepted-column-1-day-{end}.zip') as b:
-        assert a.read('macro.bin')[:8]==magic(project)
+        assert a.read('macro.bin')[:8]==m.e.auxiliary_magic(project)
         for name in ('result.end','macro.bin'):assert a.read(name)==b.read(name),name
     output=compare(full/'original',out/'original',metadata(project),start,end,project.start_date)
     assert m.sha(source)==digest
