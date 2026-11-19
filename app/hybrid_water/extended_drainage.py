@@ -71,14 +71,13 @@ def strict_trial_build(output, donor_build, patched):
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252')
     old='   use hybrid_step_budget, only: projected_water_residual';assert text.count(old)==1
     text=text.replace(old,'   use '+TERMINAL_MODULE+',only:terminal_water_residual\n'+old,1)
-    # The original extended rates are computed before HeadCalc and remain
-    # fixed during Newton, just like the admitted basic/tabulated domain.
-    # Reuse its literal existing linear PondRunoff tangent and original guard.
-    text=text.replace(old,old+', linear_pond_top_jacobian\n   use variables, only: rsro, rsroexp, pondmx, tcum\n   use MOD_drain,only:wls',1)
+    # Eliminate the actual original piecewise pond law with its independently
+    # checked derivative; conductivity remains fixed by explicit SWKIMPL0.
+    text=text.replace(old,old+'\n   use MOD_top,only:extended_pond_top_jacobian\n   use variables, only: tcum',1)
     old='   if (ftoph) dFdhM(1) = dFdhM(1) + kmean(1)/disnod(1)';assert text.count(old)==1
     text=text.replace(old,'''   if (ftoph) then
-      if (flrunoff .and. rsroexp==1d0 .and. rsro>=1d-3.and.wls<=pondmx) then
-         dFdhM(1)=dFdhM(1)+linear_pond_top_jacobian(kmean(1)/disnod(1),dt,pond,pondmx,rsro)
+      if (flrunoff) then
+         dFdhM(1)=dFdhM(1)+extended_pond_top_jacobian(kmean(1)/disnod(1),dt)
       else
          dFdhM(1)=dFdhM(1)+kmean(1)/disnod(1)
       end if
@@ -102,7 +101,8 @@ def strict_trial_build(output, donor_build, patched):
     text=text.replace('swmacro==0.and.swkimpl==1','swmacro==0.and.swkimpl==0').replace('implicit original','extended-drain original').replace('Implicit original','Extended-drain original').replace('Named implicit policy','Named extended-drain policy')
     path.write_text(text,encoding='cp1252')
     path=output/'boundtop.f90'
-    path.write_text(outward_pond_source(path.read_text(encoding='cp1252')),encoding='cp1252')
+    from extended_pond import render as converged_pond_source
+    path.write_text(converged_pond_source(outward_pond_source(path.read_text(encoding='cp1252'))),encoding='cp1252')
     (output/(TERMINAL_MODULE+'.f90')).write_text(terminal_source(),encoding='cp1252')
     if 'timecontrol' not in patched:patched.append('timecontrol')
     return patched
@@ -170,7 +170,8 @@ def metadata(project):
                 strict_retry_source_sha256=sha(Path(__file__).with_name('implicit_conductivity_retry.py')),
                 pond_tangent_provider_sha256=sha(Path(__file__).with_name('hybrid_step_budget.f90')),
                 pond_conservation_renderer_sha256=sha(Path(__file__).with_name('original_pond_budget.py')),
-                exact_pond_scope='Original linear outward law when WLS<=PONDMX; original inundation branch remains separate',
+                extended_pond_numerics_sha256=sha(Path(__file__).with_name('extended_pond.py')),
+                exact_pond_scope='Original runoff() unchanged; exact linear outward solve or complete monotone original root bracket, with piecewise analytic tangent',
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
                 codec=MAGIC.decode(),domain=domain(project),bytes=size(project),
                 ownership='Original MOD_drain dynamic values; exact rejected-trial restore, no new physical store',
