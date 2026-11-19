@@ -32,6 +32,14 @@ def fixture(case,output,mode,fmt,nprint,age=False):
         assert count==1,'Missing original explicit output date table'
     if age:
         text=assignment(text,'SWSOLU',2)
+        def young_water(match):
+            names=match[1].split();rows=[]
+            for line in match[2].splitlines():
+                fields=line.split();assert len(fields)==len(names)
+                fields[names.index('IRCONC')]='0.0';rows.append(' '.join(fields))
+            return match[1]+'\n'.join(rows)+'\n* End of table'
+        text,count=re.subn(r'(?mi)^([ \t]*IRDATE[ \t]+IRDEPTH[^\r\n]*\n)(.*?)^\* End of table',young_water,text,count=1,flags=re.S)
+        assert count==1,'Missing original fixed irrigation age boundary'
         text+='\nAGEMLTB =\n -10.0 100.0\n -95.0 100.0\n* End of table\n'
         for crop in output.glob('*.crp'):
             crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
