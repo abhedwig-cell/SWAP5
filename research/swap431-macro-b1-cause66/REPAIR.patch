@@ -1,0 +1,35 @@
+--- REJECT64/swap_native.f90
++++ CAUSE66/swap_repair66.f90
+@@ -433,6 +433,7 @@
+             call SoilWaterStateVar(2)
+             if (swmacro == 1) call MacroStateVar(2)
+             call TimeControl(5)
++            call cause66_refresh_boundary()
+             fldtreduce = .TRUE.
+          end if
+ 
+@@ -786,3 +787,24 @@
+ 
+    end subroutine swap
+ 
++
++subroutine cause66_refresh_boundary()
++ use variables,only:t1900,dt,deepgw,qbot,swbotb,swbotb3impl,swbotb3resvert,sw3,sw4
++ use MOD_swap_base,only:swmacro
++ implicit none
++ character(8)::enabled
++ character(24)::mode
++ integer::st,u
++ real(8)::before,qbefore
++ call get_environment_variable('CAUSE66_REPAIR',enabled,status=st)
++ if(st/=0.or.trim(enabled)/='1') return
++ call get_environment_variable('NATIVE55_MODE',mode)
++ if(abs(t1900-35797.290431125148d0)>1d-10.or.dt/=1d-5.or.swmacro/=1.or. &
++    swbotb/=3.or.swbotb3impl/=1.or.swbotb3resvert/=0.or.sw3/=2.or.sw4/=0.or.trim(mode)/='RESTART') &
++    error stop 'CAUSE66 repair outside qualified original D2 boundary'
++ before=deepgw;qbefore=qbot
++ call BoundBottom
++ open(newunit=u,file='cause66_refresh.txt',position='append',status='unknown')
++ write(u,*) t1900,dt,before,deepgw,qbefore,qbot
++ close(u)
++end subroutine cause66_refresh_boundary
