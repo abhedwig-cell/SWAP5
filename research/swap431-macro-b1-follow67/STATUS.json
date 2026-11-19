@@ -1,0 +1,300 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-FOLLOW67",
+  "baseline": "96f1a1f7b4325d4933f32235bbd724767dad808f",
+  "decision": "BOUNDED_UNRESOLVED",
+  "finding": "EXACT_OWN_CHECKPOINT_TRANSFER_AND_MATCHED_UNSCALED_REFUSALS_NO_ACCEPTED_FOLLOW",
+  "model_processes": 4,
+  "all_normal_uncensored": true,
+  "results": [
+    {
+      "opt": "O0",
+      "CONT_seconds": 4.107478500343859,
+      "RESTART_seconds": 2.662338000256568,
+      "cut_sha256": "d5ee169f99cebe1a8dd849b39bfe51d06bdbcf5f226e127d2d70246807a373d7",
+      "cut_writer_state_ledger_unchanged": true,
+      "CAUSE66_step_exact": true,
+      "native_install_context_and_ledger_byte_exact": true,
+      "matched_files": [
+        [
+          "context_follow_begin_3.txt",
+          "context_follow_begin_1.txt"
+        ],
+        [
+          "context_follow_returned_3.txt",
+          "context_follow_returned_1.txt"
+        ],
+        [
+          "ledger_follow_begin_3.txt",
+          "ledger_follow_begin_1.txt"
+        ],
+        [
+          "ledger_follow_returned_3.txt",
+          "ledger_follow_returned_1.txt"
+        ],
+        [
+          "origin_follow_begin_3.txt",
+          "origin_follow_begin_1.txt"
+        ],
+        [
+          "solver_3.txt",
+          "solver_1.txt"
+        ],
+        [
+          "context_follow_begin_4.txt",
+          "context_follow_begin_2.txt"
+        ],
+        [
+          "context_follow_returned_4.txt",
+          "context_follow_returned_2.txt"
+        ],
+        [
+          "ledger_follow_begin_4.txt",
+          "ledger_follow_begin_2.txt"
+        ],
+        [
+          "ledger_follow_returned_4.txt",
+          "ledger_follow_returned_2.txt"
+        ],
+        [
+          "origin_follow_begin_4.txt",
+          "origin_follow_begin_2.txt"
+        ],
+        [
+          "solver_4.txt",
+          "solver_2.txt"
+        ]
+      ],
+      "first_full_residuals_exact": true,
+      "follow_attempts": [
+        {
+          "dt": 2e-05,
+          "performed_iterations": 30,
+          "Fmax": 0.0025860524544712715,
+          "sumF": 0.010665405317951893,
+          "worst_node": 52,
+          "fresh_acceptance_checks": 0,
+          "kind": 4,
+          "IDecMpRat": 0,
+          "FrReduQ": 1.0
+        },
+        {
+          "dt": 1e-05,
+          "performed_iterations": 60,
+          "Fmax": 0.0025351081763289596,
+          "sumF": 0.010151382521751356,
+          "worst_node": 52,
+          "fresh_acceptance_checks": 0,
+          "kind": 4,
+          "IDecMpRat": 1,
+          "FrReduQ": 1.0
+        }
+      ],
+      "next_hostcommits": 0,
+      "new_ledger_integrations": 0,
+      "time_advance_after_cut": 0,
+      "numerical_reduction_requested": true,
+      "numerical_reduction_executed": false,
+      "next_jac63_active_uses": 0,
+      "jac63_time_gate_unchanged": true,
+      "rollback_context_differences": {
+        "dt": {
+          "count": 1,
+          "max_abs": 1e-05
+        },
+        "dtold": {
+          "count": 1,
+          "max_abs": 0.0001314213562373095
+        }
+      },
+      "initial_scratch_differences": {
+        "macro_in_vert": {
+          "count": 5,
+          "max_abs": 0.003997027984403238
+        },
+        "macro_exchange": {
+          "count": 67,
+          "max_abs": 0.13138954270925815
+        },
+        "macro_rapid": {
+          "count": 42,
+          "max_abs": 0.01614938487406214
+        },
+        "matrix_exchange": {
+          "count": 46,
+          "max_abs": 0.13608693861166224
+        },
+        "matrix_vertical": {
+          "count": 113,
+          "max_abs": 0.40963479371070916
+        },
+        "boundary_rates": {
+          "count": 2,
+          "max_abs": 0.1862145448020588
+        },
+        "event": {
+          "count": 2,
+          "max_abs": 1.0
+        }
+      },
+      "final_scratch_differences": {
+        "matrix_vertical": {
+          "count": 113,
+          "max_abs": 0.40963479371070916
+        }
+      },
+      "accepted_follow_packet_written": false,
+      "new_follow_waterinventory_qualification": "NOT_AVAILABLE_NO_ACCEPTED_STEP"
+    },
+    {
+      "opt": "O2",
+      "CONT_seconds": 3.1059765997342765,
+      "RESTART_seconds": 2.0462984000332654,
+      "cut_sha256": "d5ee169f99cebe1a8dd849b39bfe51d06bdbcf5f226e127d2d70246807a373d7",
+      "cut_writer_state_ledger_unchanged": true,
+      "CAUSE66_step_exact": true,
+      "native_install_context_and_ledger_byte_exact": true,
+      "matched_files": [
+        [
+          "context_follow_begin_3.txt",
+          "context_follow_begin_1.txt"
+        ],
+        [
+          "context_follow_returned_3.txt",
+          "context_follow_returned_1.txt"
+        ],
+        [
+          "ledger_follow_begin_3.txt",
+          "ledger_follow_begin_1.txt"
+        ],
+        [
+          "ledger_follow_returned_3.txt",
+          "ledger_follow_returned_1.txt"
+        ],
+        [
+          "origin_follow_begin_3.txt",
+          "origin_follow_begin_1.txt"
+        ],
+        [
+          "solver_3.txt",
+          "solver_1.txt"
+        ],
+        [
+          "context_follow_begin_4.txt",
+          "context_follow_begin_2.txt"
+        ],
+        [
+          "context_follow_returned_4.txt",
+          "context_follow_returned_2.txt"
+        ],
+        [
+          "ledger_follow_begin_4.txt",
+          "ledger_follow_begin_2.txt"
+        ],
+        [
+          "ledger_follow_returned_4.txt",
+          "ledger_follow_returned_2.txt"
+        ],
+        [
+          "origin_follow_begin_4.txt",
+          "origin_follow_begin_2.txt"
+        ],
+        [
+          "solver_4.txt",
+          "solver_2.txt"
+        ]
+      ],
+      "first_full_residuals_exact": true,
+      "follow_attempts": [
+        {
+          "dt": 2e-05,
+          "performed_iterations": 30,
+          "Fmax": 0.0025860524544712715,
+          "sumF": 0.010665405317951893,
+          "worst_node": 52,
+          "fresh_acceptance_checks": 0,
+          "kind": 4,
+          "IDecMpRat": 0,
+          "FrReduQ": 1.0
+        },
+        {
+          "dt": 1e-05,
+          "performed_iterations": 60,
+          "Fmax": 0.0025351081763289596,
+          "sumF": 0.010151382521751356,
+          "worst_node": 52,
+          "fresh_acceptance_checks": 0,
+          "kind": 4,
+          "IDecMpRat": 1,
+          "FrReduQ": 1.0
+        }
+      ],
+      "next_hostcommits": 0,
+      "new_ledger_integrations": 0,
+      "time_advance_after_cut": 0,
+      "numerical_reduction_requested": true,
+      "numerical_reduction_executed": false,
+      "next_jac63_active_uses": 0,
+      "jac63_time_gate_unchanged": true,
+      "rollback_context_differences": {
+        "dt": {
+          "count": 1,
+          "max_abs": 1e-05
+        },
+        "dtold": {
+          "count": 1,
+          "max_abs": 0.0001314213562373095
+        }
+      },
+      "initial_scratch_differences": {
+        "macro_in_vert": {
+          "count": 5,
+          "max_abs": 0.003997027984403238
+        },
+        "macro_exchange": {
+          "count": 67,
+          "max_abs": 0.13138954270925815
+        },
+        "macro_rapid": {
+          "count": 42,
+          "max_abs": 0.01614938487406214
+        },
+        "matrix_exchange": {
+          "count": 46,
+          "max_abs": 0.13608693861166224
+        },
+        "matrix_vertical": {
+          "count": 113,
+          "max_abs": 0.40963479371070916
+        },
+        "boundary_rates": {
+          "count": 2,
+          "max_abs": 0.1862145448020588
+        },
+        "event": {
+          "count": 2,
+          "max_abs": 1.0
+        }
+      },
+      "final_scratch_differences": {
+        "matrix_vertical": {
+          "count": 113,
+          "max_abs": 0.40963479371070916
+        }
+      },
+      "accepted_follow_packet_written": false,
+      "new_follow_waterinventory_qualification": "NOT_AVAILABLE_NO_ACCEPTED_STEP"
+    }
+  ],
+  "physics_criteria_Jac63_eligibility_unchanged": true,
+  "CAUSE66_BoundBottom_refresh_applied_at_named_successor": true,
+  "new_native_fields": 0,
+  "production_promotion": false,
+  "qualified_scope": "phase1 own accepted checkpoint transfer and exact same unscaled negative next-step trajectory, O0/O2",
+  "not_qualified": [
+    "accepted full next step",
+    "new follow host waterbalance",
+    "general restart",
+    "next-time Jac63 convergence/eligibility",
+    "full period or reference promotion"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "file": "FOLLOW67_RAW.zip",
+  "sha256": "e99b25f9ef777f4b4bdd3c06071f049169f3c1ce67977f3728702f07ea89a25d",
+  "bytes": 4732392,
+  "logical_files": 427,
+  "unique_blobs": 166,
+  "all_members_verified": true,
+  "layout": "manifest.json maps paths to unique blobs/sha256; exact source bytes, actual executables, build delta and all raw cases retained",
+  "parent_cause66": {
+    "ref": "96f1a1f7b4325d4933f32235bbd724767dad808f",
+    "evidence": {
+      "file": "CAUSE66_RAW.zip",
+      "sha256": "c11ab0fb06880d02db5cfd64950ded5037f602a3f5ef1c26c49ca98c7cf2296a",
+      "bytes": 4348279,
+      "logical_files": 720,
+      "unique_blobs": 227,
+      "all_members_verified": true,
+      "layout": "manifest.json maps full relative paths to blobs/sha256; lossless; raw input/output/counterfactual and actual binaries retained",
+      "inherited_closure": {
+        "ref": "95a61203d345ccbf2c8f5851c37a0bb138a00835",
+        "path": "research/swap431-macro-b1-reject64/REJECT64_EVIDENCE.zip",
+        "sha256": "f8931da9a481e3f29b0918282bb761ca9a4701c762f92a2c6cfd50243dccafb3"
+      },
+      "inherited_baseline": {
+        "ref": "3db3836f3ad887605a265be25acbf4ceebfd4dc9",
+        "path": "research/swap431-macro-b1-coupled65/EVIDENCE.json"
+      },
+      "models_launched_by_sealer": 0
+    }
+  },
+  "unchanged_closure_inherited": true,
+  "models_launched": 0
+}
