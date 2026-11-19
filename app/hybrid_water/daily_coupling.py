@@ -141,6 +141,8 @@ def write_cauchy_case(case, target, forcing, project):
 
 def validate_bundle(bundle, reference, project):
     """Reuse a qualified binary only at its exact source/build/input boundary."""
+    from implicit_conductivity_admission import require_transport
+    require_transport(project)
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
     from implicit_conductivity import metadata as implicit_metadata
