@@ -365,6 +365,7 @@ subroutine retry07_checkpoint()
  integer(8)::prefix_tick
  if(.not.reject26_pending) then
  write(prefix_unit,*) t1900,accepted_dt,graidt,gird,runon,crsflx_out,epd,reva,sum(qrot(1:numnod)),qbot,sum(qdra(1:nrlevs,1:numnod)),sum(qssdi(1:numnod)),sum(QOutDrRapCp(1:numnod)),runots,nraidt,nird,FrReduQ, &
+  QInTopLatDm(1:NumDm),QInTopVrtDm(1:NumDm),sum(QExcMtxDmCp(1:NumDm,1:numnod),dim=2)
   call system_clock(prefix_tick)
   if(dble(prefix_tick-origin)/dble(rate)>=16d0) call finish33('INTERNAL16_ORIGINAL_PREFIX_LIMIT')
   return
