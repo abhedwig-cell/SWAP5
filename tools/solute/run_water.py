@@ -375,7 +375,7 @@ def main():
     try:
         result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,
                      origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,
-                     checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)
+                     checkpoint_binding=binding if (args.checkpoint_at is not None or build_id.get('direct_day_kernel')) else None, model=args.model, project=project)
     except Exception:
         if not expired.is_set():raise
         (output/'RESULT.json').write_text(json.dumps({'status':'MODEL_WALL_CAP_REACHED','seconds':time.perf_counter()-started,
