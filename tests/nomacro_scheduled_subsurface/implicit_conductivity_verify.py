@@ -3,7 +3,7 @@
 No model execution, provider substitution or predecessor ROOT rebinding.
 """
 from pathlib import Path,PureWindowsPath,PurePosixPath
-import hashlib,io,json,re,subprocess,sys,tarfile,tempfile,zipfile
+import hashlib,io,json,re,struct,subprocess,sys,tarfile,tempfile,zipfile
 import implicit_conductivity_forensics as forensic
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -31,6 +31,8 @@ digest=lambda raw:hashlib.sha256(raw).hexdigest()
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT)
 def blob(ref,path):return git('show',ref+':'+path)
 def sha(path):return digest(path.read_bytes().replace(b'\r\n',b'\n'))
+def git_blob_id(raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+def tree(ref,path):return {line.split('\t',1)[1]:line.split('\t',1)[0] for line in git('ls-tree','-r',ref,'--',path).decode().splitlines()}
 def read(z,name):return json.loads(z.read(name))
 def rows(z,prefix):return [json.loads(line) for line in z.read(prefix+'daily.jsonl').splitlines()]
 def physical(data):return [{k:v for k,v in row.items() if k not in ('column','revision')} for row in data]
@@ -84,7 +86,8 @@ def source_capsule(z,prefix):
             require(tree.get(name)==item['git_blob'],'Actual source capsule Git body rebound')
             if item.get('checkout')=='ABSENT':continue
             data=capsule.read(name);require(len(data)==item['bytes'] and digest(data)==item['sha256'] and data[:8192].count(b'\0')==item['prefix_nul_8192'],'Changed actual producer source bytes')
-            if 'lf_normalized_sha256' in item:require(digest(data.replace(b'\r\n',b'\n'))==item['lf_normalized_sha256']==digest(blob(record['producer_head'],name).replace(b'\r\n',b'\n')),'Actual source body differs from its Git producer')
+            require(item['git_blob'] in {git_blob_id(data),git_blob_id(data.replace(b'\r\n',b'\n'))},'Actual source body differs from its Git producer')
+            if 'lf_normalized_sha256' in item:require(digest(data.replace(b'\r\n',b'\n'))==item['lf_normalized_sha256'],'Actual source LF body identity differs')
     require(not git('diff',record['producer_head'],RUNTIME,'--','app','src','reference','tools'),'Capsule model source differs from qualified model')
     return record['members']
 
@@ -144,6 +147,14 @@ def verify():
     for group in ('source_sha256','controller_sha256'):
         require(q[group] and all(sha(ROOT/path)==value for path,value in q[group].items()),'Changed sealed implicit source/controller: '+group)
     require(set(git('diff','--name-only',BASE,RUNTIME,'--','app','src','reference','tools').decode().splitlines())==set(q['source_sha256']),'Unregistered implicit production change')
+    mutable={PROOF+name for name in ('STATUS.json','GAP_MATRIX.json','CI_SELECTION.json')};current=tree('HEAD','integration')
+    for ref in (BASE,SEALED):
+        for path,value in tree(ref,'integration').items():
+            if path not in mutable:require(current.get(path)==value,'Immutable implicit/predecessor evidence changed: '+path)
+    allowed={SELF,ENTRY,'tests/nomacro_scheduled_subsurface/test_implicit_conductivity_verify.py',*mutable,PROOF+'IMPLICIT_CONDUCTIVITY_MERGE_RECEIPT.json','docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md','docs/science/SWAP5_FUNCTIONAL_CLOSURE.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
+    require(set(git('diff','--name-only',SEALED,'HEAD').decode().splitlines())<=allowed,'Unqualified implicit post-seal change')
+    for ref in q['source_producer_refs']:require(not git('diff',ref,RUNTIME,'--','app','src','reference','tools'),'Actual model producer differs from qualified source')
+    for value in q['workflows'].values():require(value['conclusion']=='success' and value['merge'] is False and set(git('diff','--name-only',value['runtime'],value['carrier']).decode().splitlines())=={'.github/workflows/nomacro-coverage-prescribed-head.yml'},'Portable carrier/source/conclusion differs')
     require((ROOT/ENTRY).read_text(encoding='utf8').count(HOOK)==1 and (ROOT/ENTRY).read_text(encoding='utf8').replace(HOOK,'',1).encode()==blob(BASE,ENTRY).replace(b'\r\n',b'\n'),'Literal predecessor body/hook differs')
     prior=predecessor();archives={}
     for key,record in q['archives'].items():
@@ -192,7 +203,7 @@ def scientific(q,archives,prior):
                     ap=cp+'native-'+attack['attack']+'/';require(attack['status']=='REFUSED' and not any(v.startswith(ap) and Path(v).name.startswith('accepted-') for v in z.namelist()),'Corrupted actual native state published')
                     bad=z.read(ap+'origin/macro.bin');row=rows(z,locate(item['short_root'],location)+'trajectory/')[3]
                     try:forensic.general_native(bad,build,row,selected,dz)
-                    except (ValueError,UnicodeError,IndexError):pass
+                    except (ValueError,UnicodeError,IndexError,struct.error):pass
                     else:raise ValueError('Actual forged native independently accepted: '+name+'/'+attack['attack'])
                     native_refusals+=1
                 require(all(v['status']=='REFUSED_BEFORE_WORKER' for v in control['policy_refusals']+control['numerical_owner_refusals']+control['descriptor_refusals']),'Actual policy/provider guard failure omitted');policy_refusals+=len(control['policy_refusals'])+len(control['numerical_owner_refusals'])
