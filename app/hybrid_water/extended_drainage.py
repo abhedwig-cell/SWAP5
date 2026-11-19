@@ -122,10 +122,10 @@ def describe(directory, selected, original_output):
                     SWHEA=1, SWCALT=2, SWKIMPL=0, SWMETDETAIL=0, SWBBCFILE=0)
     if any(selected.get(k) != v for k,v in required.items()) or selected.get('SWBR',0) != 0:
         raise ValueError('Unqualified extended drainage process composition')
-    if selected.get('SWSOLU') not in (0,1,2) or selected.get('SWBOTB') != 6:
-        raise ValueError('Extended drainage requires bounded water/CDE/AGE bottom6')
-    if selected.get('SWSOLU')==2 and original_output is False:
-        raise ValueError('Extended drainage AGE requires the explicit original-output state owner')
+    if selected.get('SWSOLU')==2:
+        raise ValueError('Extended drainage AGE retained-age dry-pond closure is not qualified')
+    if selected.get('SWSOLU') not in (0,1) or selected.get('SWBOTB') != 6:
+        raise ValueError('Extended drainage requires bounded water/CDE bottom6')
     directory = Path(directory)
     main = (directory/'swap.swp').read_text(encoding='cp1252')
     name = one(main,'DRFIL',r"'[^']+'").strip("'")

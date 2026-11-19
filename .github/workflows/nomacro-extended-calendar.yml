@@ -1,9 +1,12 @@
-name: Original extended drainage output and AGE calendar qualification
+name: Original extended drainage output calendar qualification
 on:
-  push:
-    branches: [codex/nomacro-extended-calendar01]
-    paths: ['.github/workflows/nomacro-extended-calendar.yml']
   workflow_dispatch:
+    inputs:
+      phase:
+        description: Explicit dependency selection; postimage preserves qualified full periods
+        type: choice
+        options: [postimage, full]
+        default: postimage
 permissions:
   contents: read
 concurrency:
@@ -50,12 +53,13 @@ jobs:
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Qualify selected original calendar and AGE compositions
         run: |
-          for label in water cde age; do
+          days=5
+          if [[ "${{ inputs.phase }}" == full ]]; then days=1096; fi
+          for label in water cde; do
             extra=()
             if [[ "$label" == water ]]; then case=water; mode=monthly; fmt=2; fi
             if [[ "$label" == cde ]]; then case=automatic; mode=daily; fmt=3; fi
-            if [[ "$label" == age ]]; then case=automatic; mode=combined; fmt=3; extra=(--age); fi
-            python3 -B tests/nomacro_drainage/calendar_runtime.py --case "$case" --mode "$mode" --format "$fmt" "${extra[@]}" --days 1096 --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label"
+            python3 -B tests/nomacro_drainage/calendar_runtime.py --case "$case" --mode "$mode" --format "$fmt" "${extra[@]}" --days "$days" --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label"
             python3 -B tests/nomacro_drainage/calendar_forensics.py "$RUNNER_TEMP/proof/$label" --complete --output "$RUNNER_TEMP/proof/$label/FORENSICS.json"
             python3 -B tests/nomacro_drainage/extended_controls.py --original-output --reference-work "$RUNNER_TEMP/provider" --profile-root "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label/controls"
           done
