@@ -46,7 +46,8 @@ def fixture(case, output):
         text+='SWSEC = 1\nDATESEC WLS\n2002-01-01 -40.0\n2002-01-05 -60.0\n2004-12-31 -40.0\n'
     else:
         automatic=case=='automatic';method=2 if case=='table' else 1
-        text+='SWSEC = 2\nWLACT = -45.0\nOSSWLM = 1.0\nNMPER = 2\n'
+        initial=-75.0 if automatic else -90.0 if case=='water' else -45.0
+        text+=f'SWSEC = 2\nWLACT = {initial}\nOSSWLM = 1.0\nNMPER = 2\n'
         text+='IMPER_4B IMPEND SWMAN WSCAP WLDIP INTWL\n'
         text+=f'1 2002-01-15 {2 if automatic else 1} {0.10 if automatic else 0.03} 5.0 3\n'
         text+=f'2 2005-01-01 {2 if automatic else 1} {0.15 if automatic else 0.08} 5.0 2\n'
