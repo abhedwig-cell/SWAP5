@@ -1,6 +1,6 @@
 """Actual public restart, native corruption and transactions on water GW carry."""
 from pathlib import Path
-import argparse,contextlib,copy,json,struct,subprocess,sys,time,zipfile
+import argparse,contextlib,copy,json,shutil,struct,subprocess,sys,time,zipfile
 import groundwater_water_runtime as runtime
 from groundwater_water_output import metadata
 from implicit_groundwater_state import domain
@@ -10,14 +10,34 @@ from original_output_files import compare
 m=runtime.m;ROOT=runtime.ROOT
 
 
+def policies(build,reference,project,output):
+    meta,_=m.validate_bundle(build,reference,project);checks=[]
+    for key in ('original_output','groundwater_native_state','implicit_groundwater_trial'):
+        bad=copy.deepcopy(meta);bad['identity'][key]={'policy':'foreign'};target=output/('policy-'+key);target.mkdir();(target/'BUILD.json').write_text(json.dumps(bad),encoding='utf8')
+        # Earlier real provider checks must pass before the selected forged
+        # metadata is reached. Preserve their actual bytes, never mock them.
+        for path in build.glob('*.f90'):shutil.copyfile(path,target/path.name)
+        try:m.validate_bundle(target,reference,project)
+        except ValueError as error:assert 'Foreign' in str(error);checks.append(dict(field=key,status='REFUSED_BEFORE_WORKER',error=str(error)))
+        else:raise AssertionError('Foreign groundwater water identity accepted')
+    return checks
+
+
 def main():
     p=argparse.ArgumentParser()
     for name in ('reference-work','profile-root','output'):p.add_argument('--'+name,type=Path,required=True)
-    p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args();a.output.mkdir()
+    p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--existing-controls',type=Path);a=p.parse_args();a.output.mkdir()
     previous=json.loads((a.profile_root/'RESULT.json').read_text(encoding='utf8'));inputs=Path(previous['input_root']);project=m.e.load(inputs,original_output=True);build=a.output/'build';q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),prior_profile=str(a.profile_root),native_refusals=[],policy_refusals=[])
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
     try:
+        if a.existing_controls:
+            old=json.loads((a.existing_controls/'RESULT.json').read_text(encoding='utf8'))
+            assert old['status']=='FAILED' and old['error'].startswith('FileNotFoundError(')
+            assert old['public_physical_complete_native_exact'] is True and all(old['transactions'].values())
+            assert len(old['native_refusals'])==42 and all(v['status']=='REFUSED' for v in old['native_refusals'])
+            build=a.existing_controls/'build';q['inherited_actual_controls']=dict(root=str(a.existing_controls),report_sha256=m.sha(a.existing_controls/'RESULT.json'),source_commit=old['source_commit'],fresh_model_periods=0,fresh_native_workers=0,reason='Actual public/native/transaction gates completed; only metadata-test setup lacked unchanged original provider files. Retain failed raw record; complete only that missing gate.')
+            q['policy_refusals']=policies(build,a.reference_work,project,a.output);q['status']='ACTUAL_GROUNDWATER_WATER_INHERITED_PUBLIC_NATIVE_COMPLETE_POLICY_PASS';print(q['status'],flush=True);return
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--original-output','--reference-work',str(a.reference_work)]
         def call(label,extra):
             cmd=[*command,*map(str,extra)];start=time.monotonic();r=subprocess.run(cmd,cwd=ROOT,capture_output=True,text=True,timeout=180);(a.output/(label+'.stdout')).write_text(r.stdout,encoding='utf8');(a.output/(label+'.stderr')).write_text(r.stderr,encoding='utf8');r.check_returncode();return dict(command=cmd,returncode=r.returncode,seconds=time.monotonic()-start)
@@ -68,11 +88,7 @@ def main():
                 diagnostic='\n'.join(v.read_text(encoding='utf8',errors='replace') for v in target.rglob('donor.stderr'));assert ('ERROR STOP' in diagnostic or 'native' in str(error).lower() or 'receipt' in str(error).lower()) and not list(target.glob('accepted-*.zip')),(attack,str(error),diagnostic);q['native_refusals'].append(dict(attack=attack,status='REFUSED',error=str(error),diagnostic=diagnostic));save()
             else:raise AssertionError('Corrupted groundwater water native accepted: '+attack)
             assert m.sha(source)==digest
-        for key in ('original_output','groundwater_native_state','implicit_groundwater_trial'):
-            bad=copy.deepcopy(meta);bad['identity'][key]={'policy':'foreign'};target=a.output/('policy-'+key);target.mkdir();(target/'BUILD.json').write_text(json.dumps(bad),encoding='utf8')
-            try:m.validate_bundle(target,a.reference_work,project)
-            except ValueError as error:assert 'Foreign' in str(error);q['policy_refusals'].append(dict(field=key,status='REFUSED_BEFORE_WORKER',error=str(error)))
-            else:raise AssertionError('Foreign groundwater water identity accepted')
+        q['policy_refusals']=policies(build,a.reference_work,project,a.output)
         q['status']='ACTUAL_GROUNDWATER_WATER_PUBLIC_NATIVE_TRANSACTION_POLICY_PASS';print(q['status'],len(q['native_refusals']),flush=True)
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
