@@ -82,3 +82,7 @@ Daily soil/secondary/combined water and daily/integrated CDE guards remain
 absolute1e-10. Integrated water is reported separately, not qualified1e-10.
 Physical process equations and every previous scientific body remain unchanged.
 No historical-family count or whole-science claim is promoted.
+
+## Actual canonical admission
+
+PR1765 admits this bounded route on actual canonicalff1db48993ab801dc38202540d68686baa4fd2a2. Ordered parents6a31bc718/546d5a83f and complete tree5bd2ee1f19ab78afd209fdd58e3d79c2d51483f5 are exact to the qualified candidate. All45PR checks complete without failure. The actual clean detached22-pattern public owner passes in505.5117799seconds, with empty stderr and clean Git status including ignored files. The actual receipts are carried with the next functional implicit batch. Earlier pending labels are chronology; whole closure PARTIAL, science NOT_QUALIFIED, family/gap counts UNKNOWN and fixed RC3 unchanged.
