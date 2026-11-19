@@ -239,6 +239,10 @@ def user_outputs(z,prefix,report,data,build,temporary):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('age_groundwater_admission',ROOT/'tests/nomacro_scheduled_subsurface/age_groundwater_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty AGE admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'AGE production differs from qualified source')
