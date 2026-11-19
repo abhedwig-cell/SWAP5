@@ -7,6 +7,7 @@ prior=importlib.util.module_from_spec(spec);spec.loader.exec_module(prior)
 git,blob,require,normalized=prior.git,prior.blob,prior.require,prior.normalized
 BASE='b28706d8b16661d8a9e85339d317256eaca51206'
 RUNTIME='9f640a440fde680c7dfed3618044ed83f6ad062f'
+CANONICAL_DOC='472aa69611d5168cdc8d2dd4322669851c442df6'
 PROOF='integration/f-ci/saltfarm-typed07/'
 ENTRY='tests/saltfarm_newton/composition_admission.py'
 HOOK="""    import importlib.util
@@ -44,6 +45,9 @@ def source_guard():
     current=prior.direct.tree('HEAD','integration')
     for p,v in prior.direct.tree(BASE,'integration').items():require(current.get(p)==v,'historical evidence rewritten: '+p)
     allowed={ENTRY,'tests/saltfarm_newton/typed_admission07.py','tests/saltfarm_newton/test_typed_admission07.py','tests/saltfarm_newton/typed_api07.py','tests/saltfarm_newton/typed_words07.py','tests/saltfarm_newton/isolated07.py','.github/workflows/saltfarm-isolated07.yml','.github/workflows/saltfarm-typed07.yml','docs/science/SALTFARM_TYPED_REPLY07.md','docs/status-a/CURRENT_STATUS.md'}
+    canonical_delta=git('diff','--name-only',BASE,CANONICAL_DOC).decode().splitlines()
+    require(len(canonical_delta)==1 and canonical_delta[0].startswith('docs/'),'canonical reconciliation has non-documentation changes')
+    for p in canonical_delta:require(blob('HEAD',p)==blob(CANONICAL_DOC,p),'canonical documentation rewritten');allowed.add(p)
     require(all(p in allowed or p.startswith(PROOF) for p in git('diff','--name-only',RUNTIME,'HEAD').decode().splitlines()),'foreign post-runtime change')
     projection()
 
