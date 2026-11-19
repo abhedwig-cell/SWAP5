@@ -1,9 +1,6 @@
 name: Original extended drainage implicit conductivity qualification
 on:
   workflow_dispatch:
-  push:
-    branches: [codex/nomacro-extended-implicit01]
-    paths: [.github/workflows/nomacro-extended-implicit.yml]
 permissions:
   contents: read
 concurrency:

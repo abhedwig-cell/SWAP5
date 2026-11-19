@@ -43,8 +43,8 @@ def checkpoint(path,build,row,selected,dz):
         return {name:z.read(name) for name in ('result.end','macro.bin')}
 
 
-def audit(root):
-    root=Path(root);q=json.loads((root/'RESULT.json').read_text());compiled=Path(q['build_root']);raw=(compiled/'BUILD.json').read_bytes();build=json.loads(raw)
+def audit(root,compiled_root=None):
+    root=Path(root);q=json.loads((root/'RESULT.json').read_text());compiled=Path(compiled_root or q['build_root']);raw=(compiled/'BUILD.json').read_bytes();build=json.loads(raw)
     require(q['status']=='ACTUAL_ORDINARY_DRAINAGE_IMPLICIT_ZERO_BOUNDARY_NATIVE_OUTPUT_PASS' and q['trajectory']['build_sha256']==hashlib.sha256(raw).hexdigest(),'Actual zero-boundary producer/build incomplete or rebound')
     require(json.loads((root/'trajectory/BUILD.json').read_text())==build and build['identity']['implicit_conductivity']['SWKIMPL']==1,'Actual zero-boundary numerical identity differs')
     for name,digest in build['inputs'].items():require(hashlib.sha256((root/'input'/name).read_bytes()).hexdigest()==digest,'Actual zero-boundary input/build identity changed')
