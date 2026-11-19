@@ -36,11 +36,13 @@ def integral_terms(text,original,watstor):
 
 COUNTERS='''subroutine hybrid_extended_counter_begin()
 use MOD_drain,only:nrlevs
+use variables,only:t1900
 if(allocated(extended_level_origin))deallocate(extended_level_origin,extended_level_sum)
 allocate(extended_level_origin(nrlevs),extended_level_sum(nrlevs))
 extended_counter_origin=[iqdra,iruno];extended_level_origin=cqdrain(1:nrlevs)
 extended_counter_sum=0;extended_level_sum=0
 extended_counter_active=.true.
+write(*,'(a,*(1x,es25.17e3))') 'HYBRID_EXTENDED_OUTPUT_COUNTER_BEGIN',t1900,iqdra,iruno,cqdrain(1:nrlevs)
 end subroutine
 subroutine hybrid_extended_counter_reset(kind)
 use MOD_drain,only:nrlevs
