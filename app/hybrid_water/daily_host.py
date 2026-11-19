@@ -921,6 +921,7 @@ end module plant_interface""")
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     *([str(output/'hybrid_weather_terminal_receipt.o')] if 'hybrid_weather_terminal_receipt' in patched else []),
                     *([str(output/'hybrid_weather_root_state.o')] if 'hybrid_weather_root_state' in patched else []),
+                    *([str(output/'hybrid_extended_drainage_state.o')] if 'hybrid_extended_drainage_state' in patched else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
     sources = [
