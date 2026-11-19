@@ -106,7 +106,9 @@ def build_files(z,bp,ip,build,cap,opt):
  require(build['project']['water_tolerance']==1e-10 and build['identity']['water_polish_policy']=='strict-water-always-polish-v1','Changed strict water boundary/polishing')
  for field,path in [('groundwater_native_state','implicit_groundwater_state.py'),('implicit_groundwater_trial','implicit_groundwater_trial.py'),('original_output','groundwater_water_output.py')]:
   require(build['identity'][field]['source_sha256']==cap['members']['app/hybrid_water/'+path]['sha256'],'Actual compiled composition helper differs from producer')
- native=build['identity']['groundwater_native_state'];require(native['domain_bytes']==104 and native['hydraulic_doubles']=='5*actual_nodes+4' and native['provider_sha256']==digest(z.read(bp+native['provider_filename'])),'Compiled typed carry differs')
+ # provider_sha256 names the rendered LF Fortran body. donor_generated
+ # above separately verifies the actual compiled CRLF/LF checkout bytes.
+ native=build['identity']['groundwater_native_state'];require(native['domain_bytes']==104 and native['hydraulic_doubles']=='5*actual_nodes+4' and native['provider_sha256']==digest(z.read(bp+native['provider_filename']).replace(b'\r\n',b'\n')),'Compiled typed carry differs')
 
 
 def checkpoint(raw,build,row,selected,dz,implicit):
