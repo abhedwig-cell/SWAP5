@@ -78,7 +78,9 @@ def capsule(path):
             for name in present:
                 body=source.read(name);value=cap['members'][name]
                 require(len(body)==value['bytes'] and digest(body)==value['sha256'],'Actual producer source bytes changed')
-        provider=json.loads(z.read('provider/PREPARED.json'))
+        candidates=[name for name in ('provider/PREPARED.json','provider-PREPARED.json') if name in z.namelist()]
+        require(len(candidates)==1,'Actual original provider identity missing/ambiguous')
+        provider=json.loads(z.read(candidates[0]))
         require(provider['status']=='SOURCE_PROVIDER_READY_NO_MODEL_EXECUTED' and provider['original_model_executions']==provider['active_macro_executions']==0,'Original provider role changed')
         return cap,provider
 
@@ -146,6 +148,8 @@ def component_sources(proof):
     with opened('EXTENDED_DRAINAGE_DRY_COMPONENT_RAW') as z:
         require(norm(z.read('original/surfacewater.f90'))==reference['surfacewater.f90'],'Original surfacewater reference body changed')
         sources['surfacewater.f90']=norm(z.read('corrected/surfacewater.f90'))
+        old=b'            if (swstmax < 1.0d-7) then';new=b'            if (swstmax <= 0.0d0) then'
+        require(sources['surfacewater.f90'].count(new)==1 and sources['surfacewater.f90'].replace(new,old,1)==reference['surfacewater.f90'],'Original surfacewater changed beyond its qualified positive-storage predicate')
         for opt in ('O0','O2'):
             for mode in ('ORIGINAL','CORRECTED'):
                 q=json.loads(z.read(mode+'/'+opt+'/result.json'));require(q['returncode']==0 and not q['stderr'],'Original positive-storage test did not execute')
@@ -223,8 +227,23 @@ def windows(path,optimization):
                 require({'-'+optimization,'-ffp-contract=off','-march=x86-64','-mtune=generic'}<=set(build['identity'][key]),'Actual separate-operation compiler arithmetic changed')
     return reports
 
+def ubuntu(path,optimization):
+    record=json.loads(path.with_suffix('.json').read_text(encoding='utf8'));reports={}
+    require(record['repacked'] is False and record['actual_artifact_bytes_preserved'] is True and record['origin_artifact']['digest']=='sha256:'+record['sha256'] and record['origin_artifact']['conclusion']=='success','Actual Ubuntu artifact was rebound/repacked or incomplete')
+    cap,provider=capsule(path);sources=component_sources(path.parent)
+    with archive(path,record) as z:
+        for case in DOMAINS:
+            reports[case],build,data=period(z,case+'/',case,optimization)
+            build_files(z,case+'-build/',build);require(json.loads(z.read(case+'-build/BUILD.json'))==build,'Actual Ubuntu executable BUILD identity differs')
+            source_binding(build,cap,provider);physical_providers(z,case+'-build/',sources)
+            require(build['binding']['budget_retry'] is True and build['binding']['shared_pond_transfer'] is build['binding']['refresh_macro_final'] is False,'Actual Ubuntu physical/transaction policy changed')
+            for key in ('donor_flags','kernel_flags'):require({'-'+optimization,'-ffp-contract=off','-march=x86-64','-mtune=generic'}<=set(build['identity'][key]),'Actual Ubuntu arithmetic profile changed')
+            if case!='table':reports[case]['controls']=controls(z,case+'/controls/',case+'/',build,data,cap['members']['app/hybrid_water/daily_coupling.py']['sha256'])
+    return reports
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('archive',type=Path);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--output',type=Path,required=True)
-    a=p.parse_args();report=windows(a.archive,a.optimization)
-    with a.output.open('x',encoding='utf8') as stream:json.dump(dict(status='INDEPENDENT_ACTUAL_WINDOWS_RAW_PERIOD_NATIVE_BUILD_AUDIT_PASS',reports=report,admission=False),stream,indent=2)
-    print('INDEPENDENT_ACTUAL_WINDOWS_RAW_PERIOD_NATIVE_BUILD_AUDIT_PASS',a.optimization)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('archive',type=Path);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--platform',choices=['Windows','Ubuntu'],default='Windows');p.add_argument('--output',type=Path,required=True)
+    a=p.parse_args();report=(windows if a.platform=='Windows' else ubuntu)(a.archive,a.optimization)
+    status='INDEPENDENT_ACTUAL_'+a.platform.upper()+'_RAW_PERIOD_NATIVE_BUILD_AUDIT_PASS'
+    with a.output.open('x',encoding='utf8') as stream:json.dump(dict(status=status,reports=report,admission=False),stream,indent=2)
+    print(status,a.optimization)
