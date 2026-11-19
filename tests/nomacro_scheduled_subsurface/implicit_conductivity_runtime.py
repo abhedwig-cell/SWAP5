@@ -13,11 +13,12 @@ m=previous.m
 ROOT=previous.ROOT
 
 
-def fixture(path, solute, hysteresis, bottom, step, kmean=1):
+def fixture(path, solute, hysteresis, bottom, step, kmean=1, mode='explicit', fmt=3, reset=1, npd=None):
+    npd = npd if npd is not None else (3 if step else 1)
     if bottom==1:
-        previous.fixture(path,hysteresis,step,'explicit',3,1,3 if step else 1,1)
+        previous.fixture(path,hysteresis,step,mode,fmt,reset,npd,1)
     else:
-        previous.age.fixture(path,'explicit',hysteresis,3,1,3 if step else 1,'point')
+        previous.age.fixture(path,mode,hysteresis,fmt,reset,npd,'point')
     control=path/'swap.swp'
     text=control.read_text(encoding='cp1252')
     for key,value in dict(SWKIMPL=1,SWKMEAN=kmean,SWSOLU=solute,SWBOTB=bottom,
@@ -44,6 +45,10 @@ def main():
     p.add_argument('--bottom',choices=(1,5,8),type=int,required=True)
     p.add_argument('--kmean',choices=range(1,7),type=int,default=1)
     p.add_argument('--perstep',action='store_true')
+    p.add_argument('--mode',choices=('explicit','periodic','monthly','terminal'),default='explicit')
+    p.add_argument('--format',choices=(0,1,2,3),type=int,default=3)
+    p.add_argument('--reset',choices=(0,1),type=int,default=1)
+    p.add_argument('--nprintday',type=int)
     p.add_argument('--phase',choices=('short','full'),default='short')
     p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
     a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=a.existing_input or out/'input'
@@ -51,7 +56,7 @@ def main():
     def save():(out/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
     try:
-        if not a.existing_input:fixture(inputs,a.solute,a.hysteresis,a.bottom,a.perstep,a.kmean)
+        if not a.existing_input:fixture(inputs,a.solute,a.hysteresis,a.bottom,a.perstep,a.kmean,a.mode,a.format,a.reset,a.nprintday)
         project=m.e.load(inputs,original_output=True);q['numerical_policy']=m.e.inspect(inputs)['implicit_conductivity']
         build=a.reuse_build or out/'build';q.update(input_root=str(inputs),build_root=str(build))
         cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--original-output','--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
