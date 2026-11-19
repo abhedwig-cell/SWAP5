@@ -190,7 +190,7 @@ def validate_bundle(bundle, reference, project):
     from conserved_original_age import metadata as age_metadata,correction as age_correction
     expected_age=age_metadata() if project.age else None
     if expected_age is not None:
-        from age_direct_soil_source import age_identity
+        from age_perstep_output import source_age_identity as age_identity
         expected_age=age_identity(expected_age,project)
     if identity.get('conserved_original_age')!=expected_age:raise ValueError('Foreign original age source/state policy')
     from age_direct_soil_source import fixed_metadata

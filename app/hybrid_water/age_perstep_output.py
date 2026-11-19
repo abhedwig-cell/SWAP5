@@ -73,6 +73,13 @@ def age_identity(original,project):
     result=dict(original);result.update(native_codec=magic(project).decode(),original_output=metadata(project));return result
 
 
+def source_age_identity(original,project):
+    if active_selection(project) is None:
+        from age_direct_soil_source import age_identity as previous
+        return previous(original,project)
+    return age_identity(original,project)
+
+
 def render_integral(original,watstor,selected):
     source=water.render_integral(original,watstor,selected)
     anchor="if(ioutdatint>1+count(outdatint>0d0.and.outdatint<t1900-1d-8))error stop 'Future original per-step date pointer'"
