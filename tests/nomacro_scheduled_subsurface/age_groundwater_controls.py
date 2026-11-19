@@ -4,7 +4,7 @@ from pathlib import Path
 import age_groundwater_runtime as matrix
 from daily_coupling import CoupledDailyColumn
 from age_calendar_controls import physical
-from age_groundwater_output import magic,metadata,selection,domain
+from age_groundwater_output import magic,metadata,selection,domain as groundwater_domain
 
 m=matrix.m
 
@@ -38,9 +38,9 @@ def native(build,reference,project,full,out):
         markers.update({'old-ordinary-reset':b'S5ORW001','old-ordinary-reset-history':b'S5ORH001',
             'foreign-perstep-family':b'S5OPW001' if selected['swsnow'] or selected['swhyst'] else b'S5SPN001'})
         if attack.startswith('ground-'):
-            header=struct.pack('<13i',*domain(project));assert raw.count(header+header)==1;start=raw.index(header+header);offset=start+104;n=project.nodes
+            header=struct.pack('<13i',*groundwater_domain(project));assert raw.count(header+header)==1;start=raw.index(header+header);offset=start+104;n=project.nodes
             if attack.startswith('ground-domain-'):
-                i=int(attack.rsplit('-',1)[1]);v=domain(project)[i]+1
+                i=int(attack.rsplit('-',1)[1]);v=groundwater_domain(project)[i]+1
                 for at in (start,start+52):struct.pack_into('<i',raw,at+4*i,v)
             elif attack=='ground-witness':struct.pack_into('<i',raw,start,99)
             elif attack.startswith(('ground-nan-','ground-negative-')):
