@@ -29605,12 +29605,95 @@
       }
     },
     "current_day585_diagnostic": {
-      "worktree": "C:/Users/Veldh012/swap5-implicit-finite-diagnostic02",
-      "branch": "codex/nomacro-implicit-finite-diagnostic02",
+      "worktree": "C:/Users/Veldh012/swap5-implicit-finite-diagnostic03",
+      "branch": "codex/nomacro-implicit-finite-diagnostic03",
       "baseline": "a3d581da5b7d69b824ebfab03c13a715a39f6840",
       "selection": "Read-only actual step/rejection clock logging in separate checkout at current chemical day585. Preserve physical input, process providers, strict balances and native ownership. No timeout-only rerun or admission until cause is known.",
-      "status": "CHECKOUT_IN_PROGRESS",
-      "not_qualification": true
+      "status": "ACTUAL_FINITE_ADVANCING_SMALL_STEPS_WITH_REPEATED_NEWTON_EXHAUSTION",
+      "not_qualification": true,
+      "source": "6936b650e8ce295db0cb38d6ab01c190346e9e36",
+      "record": "C:/Users/Veldh012/swap5-complete01-evidence/implicit-finite-diagnostic-chemical-head-v3/RESULT.json",
+      "brent_pause": "SOURCE_HAZARD_NOT_OBSERVED_IN_CAPTURE",
+      "original_extra_checkout_preserved": "C:/Users/Veldh012/swap5-implicit-finite-diagnostic02"
+    },
+    "selected_three_crop_precision_qualification": {
+      "production_source": "bf9dedcb38dbd1ec9607c4d321883c62b80166be",
+      "controller_source": "0ea5be65ee61b9c13383060da4d6ef324e271924",
+      "status": "SELECTED_BEFORE_EXECUTION",
+      "input_selection": {
+        "TOL_2": 1e-10,
+        "MYTOLX": 1e-10,
+        "TOLCONV": 1e-09,
+        "crops": [
+          "maize.crp",
+          "potato.crp",
+          "grass.crp"
+        ]
+      },
+      "focused_actual_positive_head": {
+        "O0": {
+          "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-root-precision-positive-head-O0-v2\\RESULT.json",
+          "status": "ACTUAL_ORIGINAL_TIGHT_ROOT_PRECISION_POSITIVE_HEAD_SHORT_FULL_NATIVE_PASS",
+          "source_commit": "9b543b3dd6e00ea8496f30fc6e2a69e0174db64c",
+          "actual_input_delta": {
+            "grass.crp": {
+              "before": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+              "after": "12016670fb7a5708d771994ea6dfd63cad9335f5a91af994b70b779deb17e513"
+            },
+            "maize.crp": {
+              "before": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+              "after": "a74d02832a6c3fd41ee3c2474bd1195051abf47a75867b5c4b7b38221ae58fb5"
+            },
+            "potato.crp": {
+              "before": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+              "after": "7b7520dbf347c37ee08c893c10ea7b6d4810195eb7f177a0643f2e36f777ff8a"
+            }
+          },
+          "short_days": 35,
+          "full_days": 1096,
+          "complete_native_cold": 10
+        },
+        "O2": {
+          "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-root-precision-positive-head-O2-v2\\RESULT.json",
+          "status": "ACTUAL_ORIGINAL_TIGHT_ROOT_PRECISION_POSITIVE_HEAD_SHORT_FULL_NATIVE_PASS",
+          "source_commit": "9b543b3dd6e00ea8496f30fc6e2a69e0174db64c",
+          "actual_input_delta": {
+            "grass.crp": {
+              "before": "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee",
+              "after": "12016670fb7a5708d771994ea6dfd63cad9335f5a91af994b70b779deb17e513"
+            },
+            "maize.crp": {
+              "before": "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7",
+              "after": "a74d02832a6c3fd41ee3c2474bd1195051abf47a75867b5c4b7b38221ae58fb5"
+            },
+            "potato.crp": {
+              "before": "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24",
+              "after": "7b7520dbf347c37ee08c893c10ea7b6d4810195eb7f177a0643f2e36f777ff8a"
+            }
+          },
+          "short_days": 35,
+          "full_days": 1096,
+          "complete_native_cold": 10
+        }
+      },
+      "next": [
+        "Fresh8short6full O0/O2 Windows v4",
+        "Positive CDE3short2full O0/O2 Windows current-v5, reuse actual exact-input focused head short/full only",
+        "Weighted harmonic water/history O0/O2 v2",
+        "Public6 warm/native/cold O0/O2 v2",
+        "17old SWKIMPL0 preservation O0/O2 v2",
+        "Portable/raw/source/root qualification after local gates"
+      ]
+    },
+    "actual_current_front_door_guard": {
+      "O0": {
+        "path": "C:/Users/Veldh012/swap5-complete01-evidence/implicit-water-cde-admission-controls-windows-O0-current-v2/RESULT.json",
+        "status": "THREE_ACTUAL_IMPLICIT_AGE_FRONT_DOOR_REFUSALS_EIGHT_LITERAL_WATER_CDE_BUNDLES_PASS"
+      },
+      "O2": {
+        "path": "C:/Users/Veldh012/swap5-complete01-evidence/implicit-water-cde-admission-controls-windows-O2-current-v2/RESULT.json",
+        "status": "THREE_ACTUAL_IMPLICIT_AGE_FRONT_DOOR_REFUSALS_EIGHT_LITERAL_WATER_CDE_BUNDLES_PASS"
+      }
     }
   }
 }
