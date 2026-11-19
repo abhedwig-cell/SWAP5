@@ -19,7 +19,7 @@ contains
     if(dt<=0d0.or.event_limit<=0d0)return
     status=CDE_CLOCK_EVENT_OK
     target=1d0
-    if(irrigation_end>tcum.and.irrigation_end<target)target=irrigation_end
+    if(irrigation_end>tcum.and.irrigation_end<target)target=1d0
     remaining=target-tcum
     if(remaining<=0d0)return
     new_dt=dt;new_limit=event_limit
