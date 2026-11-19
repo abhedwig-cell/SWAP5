@@ -22,7 +22,7 @@ def main():
     item=json.loads((a.profile_root/'RESULT.json').read_text(encoding='utf8'))
     inputs=Path(item['input_root']);build=Path(item['build_root']);full=a.profile_root/'trajectory'
     project=m.e.load(inputs,original_output=True);meta,case=m.validate_bundle(build,a.reference_work,project)
-    q=dict(status='RUNNING',build_sha256=m.sha(build/'BUILD.json'),policy_refusals=[],descriptor_refusals=[],native_refusals=[])
+    q=dict(status='RUNNING',build_sha256=m.sha(build/'BUILD.json'),policy_refusals=[],numerical_owner_refusals=[],descriptor_refusals=[],native_refusals=[])
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
     try:
@@ -37,6 +37,28 @@ def main():
             except ValueError as error:assert 'Foreign original implicit conductivity numerical policy' in str(error)
             else:raise AssertionError('Foreign immutable numerical policy accepted')
             q['policy_refusals'].append(dict(field=field,nested=nested,status='REFUSED_BEFORE_WORKER'));save()
+        for owner,expected in [
+            ('implicit_groundwater_trial','Foreign original implicit groundwater daily trial receipt policy'),
+            ('implicit_conductivity_retry','Foreign explicit original implicit-conductivity retry policy'),
+            ('implicit_conductivity_jacobian','Foreign exact original implicit-conductivity boundary Jacobian policy'),
+            ('implicit_pond_event','Foreign original implicit pond event ownership policy')]:
+            policy=meta['identity'].get(owner)
+            for field in [None,*(policy or {})]:
+                target=a.output/('owner-'+owner+'-'+str(field));target.mkdir();bad=copy.deepcopy(meta)
+                if field is None:bad['identity'][owner]='foreign'
+                else:bad['identity'][owner][field]='foreign'
+                (target/'BUILD.json').write_text(json.dumps(bad),encoding='utf8')
+                try:m.validate_bundle(target,a.reference_work,project)
+                except ValueError as error:assert expected in str(error),(owner,field,str(error))
+                else:raise AssertionError('Foreign numerical owner accepted: '+owner+' '+str(field))
+                q['numerical_owner_refusals'].append(dict(owner=owner,field=field,status='REFUSED_BEFORE_WORKER'));save()
+        target=a.output/'owner-actual-pond-provider';target.mkdir()
+        (target/'BUILD.json').write_bytes((build/'BUILD.json').read_bytes())
+        (target/'implicit_pond_event_state.f90').write_bytes((build/'implicit_pond_event_state.f90').read_bytes()+b'\n! foreign source\n')
+        try:m.validate_bundle(target,a.reference_work,project)
+        except ValueError as error:assert 'Foreign actual original implicit pond event provider' in str(error)
+        else:raise AssertionError('Foreign compiled pond event provider accepted')
+        q['numerical_owner_refusals'].append(dict(owner='implicit_pond_event',field='actual_provider_bytes',status='REFUSED_BEFORE_WORKER'));save()
         for label,changes,extra in [
             ('snow',{'SWSNOW':1},''),('frost',{'SWFROST':1},''),('aquifer',{'SWBR':1},''),
             ('tables',{'SWSOPHY':1},''),('heat',{'SWHEA':0},''),('analytic-heat',{'SWCALT':1},''),
