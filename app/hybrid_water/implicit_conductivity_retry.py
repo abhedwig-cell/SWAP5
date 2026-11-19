@@ -34,7 +34,24 @@ def time_source(source):
 
 def headcalc_source(source):
     anchor='   if (.NOT.fldtmin) then';assert source.count(anchor)==1
-    return source.replace(anchor,'   if (.NOT.fldtmin.or.(swmacro==0.and.swkimpl==1)) then',1)
+    source=source.replace(anchor,'   if (.NOT.fldtmin.or.(swmacro==0.and.swkimpl==1)) then',1)
+    decl='   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, mass_polish_at'
+    assert source.count(decl)==1
+    source=source.replace(decl,decl+'\n   integer,save::implicit_failed_trace_count=0',1)
+    anchor='!     test for waterbalance of ponding layer';assert source.count(anchor)==1
+    source=source.replace(anchor,anchor+'\n      deviat=0d0',1)
+    anchor='   if (.NOT.fldtmin.or.(swmacro==0.and.swkimpl==1)) then';assert source.count(anchor)==1
+    witness='''   if(implicit_failed_trace_count<64)then
+      implicit_failed_trace_count=implicit_failed_trace_count+1
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_FAILED_IMPLICIT_NEWTON',t1900,dt,sum1,Fmax,deviat, &
+         budget_step,budget_total,dble(numbit),dble(mass_polish_at), &
+         merge(1d0,0d0,any(flnonconv1)),merge(1d0,0d0,any(flnonconv2)), &
+         merge(1d0,0d0,flnonconv3),merge(1d0,0d0,ftoph),merge(1d0,0d0,fldtmin), &
+         h(1),h(NN),pond,pondm1,epd,reva,qtop,k(1),kmean(1),hgrad(1),hold(1),theta(1),thetm1(1)
+      flush(6)
+   end if
+'''
+    return source.replace(anchor,witness+anchor,1)
 
 
 def metadata(project):
