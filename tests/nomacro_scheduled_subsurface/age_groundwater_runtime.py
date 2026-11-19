@@ -10,12 +10,15 @@ m=age.m;ROOT=age.ROOT
 calendar=age.calendar
 
 
-def fixture(path,hysteresis,step,mode,fmt,reset,npd,drainage):
-    age.fixture(path,mode,hysteresis,fmt,reset,npd,'point')
+def fixture(path,hysteresis,step,mode,fmt,reset,npd,drainage,source='point',et=0,level_kind='crossing',boundary_file=False):
+    age.fixture(path,mode,hysteresis,fmt,reset,npd,source,et)
     p=path/'swap.swp';text=p.read_text(encoding='cp1252')
     for key,value in dict(SWBOTB=1,SWBBCFILE=0,SWDRA=drainage,FLPRINTDT='.TRUE.' if step else '.FALSE.').items():text=assignment(text,key,value)
-    table='2002-01-01 -95.0\n2002-01-04 -65.0\n2002-01-07 -115.0\n2002-01-10 -85.0\n2004-12-31 -85.0\n'
+    table={'crossing':'2002-01-01 -95.0\n2002-01-04 -65.0\n2002-01-07 -115.0\n2002-01-10 -85.0\n2004-12-31 -85.0\n','within':'2002-01-01 -95.0\n2004-12-31 -95.0\n','below':'2002-01-01 -1000.0\n2004-12-31 -1000.0\n'}[level_kind]
     text,count=re.subn(r'(?mi)^([ \t]*DATE1[ \t]+GWLEVEL[^\r\n]*\n).*?^\* End of table',lambda match:match[1]+table+'* End of table',text,count=1,flags=re.S);assert count==1
+    if boundary_file:
+        text=assignment(assignment(text,'SWBBCFILE',1),'BBCFIL',repr('groundwater'))
+        (path/'groundwater.bbc').write_text('SWBOTB = 1\nDATE1 GWLEVEL\n'+table+'* End of table\n',encoding='cp1252')
     p.write_text(text,encoding='cp1252')
 
 
@@ -40,16 +43,23 @@ def main():
     p.add_argument('--perstep',action='store_true');p.add_argument('--mode',choices=('monthly','explicit','periodic','terminal'),default='periodic')
     p.add_argument('--format',type=int,choices=(0,1,2,3),default=3);p.add_argument('--reset',type=int,choices=(0,1),default=0);p.add_argument('--nprintday',type=int,default=1)
     p.add_argument('--drainage',type=int,choices=(0,1),default=1);p.add_argument('--phase',choices=('short','full','limit'),default='short')
-    a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=out/'input';fixture(inputs,a.hysteresis,a.perstep,a.mode,a.format,a.reset,a.nprintday,a.drainage)
-    if a.phase=='limit':
+    p.add_argument('--source',choices=('point','interval','surface','sprinkler'),default='point');p.add_argument('--et',type=int,choices=(0,1),default=0)
+    p.add_argument('--level-kind',choices=('within','below','crossing'),default='crossing');p.add_argument('--boundary-file',action='store_true')
+    p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
+    a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=a.existing_input or out/'input'
+    if not a.existing_input:fixture(inputs,a.hysteresis,a.perstep,a.mode,a.format,a.reset,a.nprintday,a.drainage,a.source,a.et,a.level_kind,a.boundary_file)
+    if a.phase=='limit' and not a.existing_input:
         p=inputs/'fixed-irrigation.irg';text=p.read_text(encoding='cp1252');assert text.count('2002-01-05')==1;p.write_text(text.replace('2002-01-05','2002-01-01'),encoding='cp1252')
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),parameters={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
     def save():(out/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
     try:
-        project=m.e.load(inputs,original_output=True);q['original_output']=metadata(project);build=out/'build'
+        project=m.e.load(inputs,original_output=True);q['original_output']=metadata(project);build=a.reuse_build or out/'build'
+        q.update(input_root=str(inputs),build_root=str(build))
         cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--original-output','--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
-        t=time.perf_counter();result=subprocess.run(cmd,cwd=ROOT,capture_output=True,text=True,timeout=180);q['build']=dict(returncode=result.returncode,seconds=time.perf_counter()-t);(out/'build.stdout').write_text(result.stdout,encoding='utf8');(out/'build.stderr').write_text(result.stderr,encoding='utf8');save();result.check_returncode()
+        if not a.reuse_build:
+            t=time.perf_counter();result=subprocess.run(cmd,cwd=ROOT,capture_output=True,text=True,timeout=180);q['build']=dict(returncode=result.returncode,seconds=time.perf_counter()-t);(out/'build.stdout').write_text(result.stdout,encoding='utf8');(out/'build.stderr').write_text(result.stderr,encoding='utf8');save();result.check_returncode()
+        else:q['build']=dict(role='Actual existing current-source bundle independently validated; original BUILD unchanged',sha256=m.sha(build/'BUILD.json'))
         meta,_=m.validate_bundle(build,a.reference_work,project);assert meta['identity']['conserved_original_age']['native_codec']==magic(project).decode()
         last={'short':35,'full':1096,'limit':2}[a.phase];windows=[(1,2)] if a.phase=='limit' else [(2,4),(7,9),(30,34)]
         if a.phase=='full':windows.extend([(199,201),(364,367),(530,532),(1094,1096)])
