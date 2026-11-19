@@ -30495,7 +30495,15 @@
     "development_scope": "Explicit0, analytic soil/hys0/noSnow/frost/aquifer/daily meteo, bottom6, water/CDE compatibility daily output; SWSRF2/3 SWSEC1/2. Original-output/calendar remains refused pending composition.",
     "development_source": "Next persisted commit: extended_drainage.py with original reader descriptor, selected trial hooks, typed native and receipt/preworker binding",
     "first_probe": "Protected evidence extended-drainage-prototype-prescribed-v2/input; actual originalH CDE processes/crop salinity and two-level prescribed primary/secondary drainage.",
-    "retained_refusal": "v1 water variant retains original crop salinity1 and is correctly refused before build; not an executed/qualified model."
+    "retained_refusal": "v1 water variant retains original crop salinity1 and is correctly refused before build; not an executed/qualified model.",
+    "first_integrated_build_failure": {
+      "source": "a6c8dfcff",
+      "log": "Protected evidence/EXTENDED_DRAINAGE_PUBLIC_BUILD_O0_V1.log",
+      "phase": "Exact original source hook match before compilation/model",
+      "error": "MOD_drain USE anchor had ten spaces instead of eleven",
+      "retained_build": "registered extended-drainage-O0-v1/public-prototype-v1",
+      "next": "Correct only literal anchor and build a separatepublic-prototype-v2; no generated file or BUILD repair."
+    }
   },
   "coverage_batch_report": {
     "canonical": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",

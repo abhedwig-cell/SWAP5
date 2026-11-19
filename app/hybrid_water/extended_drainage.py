@@ -122,7 +122,7 @@ def apply_build(output, project, patched):
         body=body.replace(anchor,f'        call extended_drain_checkpoint(unit,{restoring})\n'+anchor,1)
     path.write_text(text[:first]+body+text[last:],encoding='cp1252')
     path=output/'swap.f90';text=path.read_text(encoding='cp1252')
-    anchor='use MOD_drain,          only: drain'
+    anchor='use MOD_drain,           only: drain'
     assert text.count(anchor)==1
     text=text.replace(anchor,'use '+MODULE+',only:extended_drain_trial_begin,extended_drain_trial_end\n'+anchor,1)
     anchor='         if (swdra > 0)    call drain(2)';assert text.count(anchor)==1
