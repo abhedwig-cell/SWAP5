@@ -1,6 +1,6 @@
 """Real original microscopic API with exported actual initialized input carry."""
 from pathlib import Path
-import argparse,hashlib,json,os,shutil,subprocess,sys,time
+import argparse,base64,hashlib,json,os,subprocess,sys,time
 
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -19,8 +19,9 @@ def main():
  save()
  try:
   user_prepare.validate(a.reference_work);ref=a.reference_work/'build';objects=ref/'swap-obj';files=sorted(f for f in objects.glob('*.o') if f.name!='swap_main.o')
-  fixture=Path(__file__).with_name('implicit_root_finalization_inputs.json');crop=Path(__file__).with_name('implicit_root_finalization_grass.crp');driver=Path(__file__).with_name('implicit_root_finalization_driver.f90');inputs=json.loads(fixture.read_text(encoding='utf8'));data=inputs['fields'];assert sha(crop)==inputs['actual_crop_sha256']
-  shutil.copyfile(crop,out/'grass.crp');numeric=out/'actual-input.dat';lines=[]
+  fixture=Path(__file__).with_name('implicit_root_finalization_inputs.json');driver=Path(__file__).with_name('implicit_root_finalization_driver.f90');inputs=json.loads(fixture.read_text(encoding='utf8'));data=inputs['fields']
+  crop=out/'grass.crp';crop.write_bytes(base64.b64decode(inputs['actual_crop_raw_base64'],validate=True));assert sha(crop)==inputs['actual_crop_sha256']
+  numeric=out/'actual-input.dat';lines=[]
   for tag in ('META','LAYER','FIRST','DZ','COFGEN','INDEX','FHYST','LRV','ALPTOT','H','M','K'):
    values=data[tag]
    if tag in ('LAYER','FIRST','INDEX'):line=' '.join(str(int(v)) for v in values)
