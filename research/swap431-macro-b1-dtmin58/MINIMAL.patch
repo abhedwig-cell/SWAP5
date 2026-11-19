@@ -1,0 +1,11 @@
+--- DTMIN57/head_diag.f90
++++ DTMIN58/head_diag.f90
+@@ -269,7 +269,7 @@
+             end do
+             factmax1 = min(1.0d0, 1.0d0 / factmax)
+             do i = 1, NN
+-               h(i) = hold(i) - difh(i) * factmax1
++               h(i) = hold(i) - (difh(i) * factmax1) * factor
+             end do
+          else
+             do i = 1, NN
