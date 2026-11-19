@@ -6,15 +6,16 @@ import daily_host as h
 from daily_coupling import validate_bundle
 from check_hupsel51_repair import bounded,physical,rows,check,csvlines
 p=argparse.ArgumentParser();p.add_argument('--work',type=Path,required=True);a=p.parse_args();W=a.work.resolve();REF=W/'provider';B=W/'qualified-O2';meta,case=validate_bundle(B,REF,h.SALTFARM)
-LABELS=['root','water','water_update','heat','solute','integral_reset','meteo','time_prepare','bottom','drain','integral_update','advance','output','conductivity','capacity','jacobian','tridiagonal','water_content','vector','convergence','newton_bodies','residual','strict_mass','dynamic']
+LABELS=['root','water','water_update','heat','solute','integral_reset','meteo','time_prepare','bottom','drain','integral_update','advance','output','conductivity','capacity','jacobian','tridiagonal','water_content','vector','convergence','newton_bodies','residual','strict_mass','dynamic','whole_capacity_same_head','whole_water_content_same_head']
 result=dict(status='RUNNING',head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),baseline='b28706d8b16661d8a9e85339d317256eaca51206',runs=[],profiles={},selection='One isolated Ubuntu26.04 runner; all builds and model calls sequential, unchanged GNU/x86_64 separate-ops flags, original input bytes.15s short/35s full caps. No laptop models launched.')
 assert not subprocess.check_output(['git','diff',result['baseline'],'HEAD','--','app','src','reference','tools'],cwd=ROOT)
 def save():(W/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
 def run(cmd,cwd,cap=45):
  r=subprocess.run(list(map(str,cmd)),cwd=cwd,capture_output=True,timeout=cap);assert r.returncode==0,r.stderr.decode(errors='replace');return r
 def original(exe,dest,cap=35):
- dest.mkdir()
- for name in meta['inputs']:shutil.copyfile(case/name,dest/name)
+ # Exactly the existing public output-only preparation, shared with the donor.
+ # Literal INLIST_CSV contains the already recorded unsupported S_CONC group.
+ h.prepare_column(case,dest,h.ColumnStart('original',0,None,None),True,True,h.SALTFARM)
  start=time.perf_counter();cpu=resource.getrusage(resource.RUSAGE_CHILDREN)
  with (dest/'stdout').open('w') as out,(dest/'stderr').open('w') as err:r=subprocess.run([str(exe),'./swap.swp'],cwd=dest,stdout=out,stderr=err,timeout=cap)
  elapsed=time.perf_counter()-start;after=resource.getrusage(resource.RUSAGE_CHILDREN);assert r.returncode==100,(r.returncode,(dest/'stderr').read_text())
@@ -35,10 +36,12 @@ for i,mode in enumerate(('original','canonical','canonical','original')):
  dest=W/f'full{i}-{mode}';item=original(REF/'build/swap_b0_gfortran',dest) if mode=='original' else modern(h.executable(B,'day_donor'),dest)
  if i==2:assert physical(rows(dest))==physical(rows(W/'full1-canonical')) and csvlines(dest/'original/result_output.csv')==csvlines(W/'full1-canonical/original/result_output.csv')
  if i==3:assert csvlines(dest/'result_output.csv')==csvlines(W/'full0-original/result_output.csv')
+ if i in (1,2):
+  for name in meta['inputs']:assert h.sha(dest/'original'/name)==h.sha(W/'full0-original'/name),name
  result['runs'].append(dict(mode=mode,**item));save();print(result['runs'][-1],flush=True)
 MODULE='''module perf07
 implicit none
-integer(8)::pc(24)=0,pt(24)=0,bt(24)=0,rate=0,now
+integer(8)::pc(26)=0,pt(26)=0,bt(26)=0,rate=0,now
 contains
 subroutine tick(i)
 integer::i
@@ -73,8 +76,10 @@ def build_profile(mode):
   assert s.count(start)==s.count(end)==1;(lo,hi)=(s.index(start),s.index(end));assert lo<hi;return s[:lo]+f'call tick({slot})\n'+s[lo:hi]+f'call tock({slot})\n'+s[hi:]
  s=segment(s,'!  reset conductivities (k, kmean) to time level t','!  lower and upper diagnal elements',14)
  s=segment(s,'!     store hold and get moiscap','!     special case: SwKimpl = 1',15)
+ s=s.replace('!     store hold and get moiscap','if(numbit>1)then\nif(all(h(1:NN)==hold(1:NN)))pc(25)=pc(25)+1\nend if\n!     store hold and get moiscap',1)
  s=wrap(s,'      call jacobian_F()',16);s=wrap(s,'      call tridag(NN, dFdhU, dFdhM, dFdhL, F, difh, ierror)',17)
  s=segment(s,'!        update theta','!        update gradient in h',18);s=wrap(s,'         call vector_F(2, hgrad)',19)
+ s=s.replace('!        update theta','if(all(h(1:NN)==hold(1:NN)))pc(26)=pc(26)+1\n!        update theta',1)
  s=s.replace('   do numbit = 1, MaxIt1','   do numbit = 1, MaxIt1\npc(21)=pc(21)+1',1)
  if mode=='canonical':
   for needle in ('         budget_step=projected_water_residual()','            budget_step = projected_water_residual()'):s=wrap(s,needle,23 if 'budget_step=' in needle else 22)
@@ -93,6 +98,6 @@ for mode in ('original','canonical'):
  exe=build_profile(mode);dest=W/('profile-'+mode);item=original(exe,dest,15) if mode=='original' else modern(exe,dest,365)
  if mode=='original':assert csvlines(dest/'result_output.csv')==csvlines(W/'full0-original/result_output.csv')[:367]
  else:assert physical(rows(dest))==physical(rows(W/'full1-canonical')[:365]) and csvlines(dest/'original/result_output.csv')==csvlines(W/'full1-canonical/original/result_output.csv')[:367]
- stdout=dest/('stdout' if mode=='original' else 'original/donor.stdout');v=list(map(int,next(x for x in stdout.read_text().splitlines() if x.startswith('PERF07')).split()[1:]));assert len(v)==49
- item['phases']={n:dict(calls=v[i],seconds=v[i+24]/v[48]) for i,n in enumerate(LABELS)};result['profiles'][mode]=item;save();print(mode,item,flush=True)
+ stdout=dest/('stdout' if mode=='original' else 'original/donor.stdout');v=list(map(int,next(x for x in stdout.read_text().splitlines() if x.startswith('PERF07')).split()[1:]));assert len(v)==53
+ item['phases']={n:dict(calls=v[i],seconds=v[i+26]/v[52]) for i,n in enumerate(LABELS)};result['profiles'][mode]=item;save();print(mode,item,flush=True)
 result.update(status='ISOLATED_ORIGINAL_CURRENT_FULL_AND_NATIVE_PHASES_EXACT',commands=commands);save()
