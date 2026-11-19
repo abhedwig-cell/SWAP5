@@ -29,6 +29,10 @@ CHECKOUT_EVIDENCE='''            /integration/f-ci/nomacro-complete01/AGE_GROUND
             /integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_*
             /integration/f-ci/nomacro-complete01/GROUNDWATER_WATER_*
 '''
+TEST_CHECKOUT_ADAPTER="""                current_spec=importlib.util.spec_from_file_location('current_evidence_checkout',s.ROOT/'tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py')
+                current=importlib.util.module_from_spec(current_spec);current_spec.loader.exec_module(current)
+                new=current.strip_evidence_checkout(new)
+"""
 require=gw.require;digest=gw.digest;git=gw.git;blob=gw.blob;tree=gw.tree
 spec=importlib.util.spec_from_file_location('literal_direct_projection',ROOT/'tests/saltfarm_newton/direct_admission.py');direct=importlib.util.module_from_spec(spec);spec.loader.exec_module(direct)
 
@@ -50,6 +54,7 @@ def prior_guards():
  require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Qualified nonselected production projection changed')
  workflows={direct.WORKFLOW,direct.COLUMN};require(set(git('diff','--name-only',BASE,'HEAD','--','.github').decode().splitlines())==workflows,'Unqualified workflow dependency changed')
  for path in workflows:require(strip_evidence_checkout((ROOT/path).read_text(encoding='utf8')).encode()==blob(BASE,path),'Original workflow commands, limits or checkout rewritten')
+ path='tests/hupsel51/test_successor.py';body=(ROOT/path).read_text(encoding='utf8');require(body.count(TEST_CHECKOUT_ADAPTER)==1 and body.replace(TEST_CHECKOUT_ADAPTER,'',1).encode()==blob(BASE,path),'Original successor tests rewritten beyond evidence checkout adapter')
  return record['status']
 
 
