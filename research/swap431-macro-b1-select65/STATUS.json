@@ -1,0 +1,14 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-SELECT65",
+  "baseline": "95a61203d345ccbf2c8f5851c37a0bb138a00835",
+  "stage": "PREREGISTERED",
+  "low": 1.9582398030762345e-05,
+  "high": 2.0951312035156963e-05,
+  "selection_max_O0_routes": 4,
+  "hard_seconds_per_route": 20,
+  "internal_seconds": 16,
+  "selection_policy": "arithmetic midpoint; accepted moveslow, failedwithoutactiveV moveshigh; stopatfirstgenuineVsteprejection; no alterationofsolveroracceptance",
+  "qualification_if_found": "reuse selectedO0chain, sameproposalO2, freshdirect actualsmallerretry O0/O2",
+  "negative_if_none": "O2confirm lastsample, no forcing/broadening",
+  "no_broad_campaign": true
+}
