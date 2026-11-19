@@ -50,7 +50,9 @@ def terminal_source():
     # selected drainage dispatch differs; no store or physical flux is changed.
     from weather_terminal_receipt import source, MODULE as previous
     text=source();assert text.count('swdra/=1')==1
-    return text.replace(previous,TERMINAL_MODULE).replace('swdra/=1','swdra/=2').replace('WEATHER_TERMINAL_WATER','EXTENDED_DRAIN_TERMINAL_WATER')
+    text=text.replace(previous,TERMINAL_MODULE).replace('swdra/=1','swdra/=2').replace('WEATHER_TERMINAL_WATER','EXTENDED_DRAIN_TERMINAL_WATER')
+    from extended_trial_receipt import render
+    return render(text)
 
 
 def outward_pond_source(source):
@@ -171,6 +173,8 @@ def metadata(project):
                 pond_tangent_provider_sha256=sha(Path(__file__).with_name('hybrid_step_budget.f90')),
                 pond_conservation_renderer_sha256=sha(Path(__file__).with_name('original_pond_budget.py')),
                 extended_pond_numerics_sha256=sha(Path(__file__).with_name('extended_pond.py')),
+                extended_trial_receipt_sha256=sha(Path(__file__).with_name('extended_trial_receipt.py')),
+                stable_trial_projection='Only original automatic management SWMAN2: actual original nodal theta difference in real128; original exported double daily totals and1e-10 guards unchanged',
                 exact_pond_scope='Original runoff() unchanged; exact linear outward solve or complete monotone original root bracket, with piecewise analytic tangent',
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
                 codec=MAGIC.decode(),domain=domain(project),bytes=size(project),

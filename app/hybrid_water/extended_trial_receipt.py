@@ -15,13 +15,15 @@ def render(text):
     old='    use variables,only:tcum,dt'
     assert text.count(old)==1
     text=text.replace(old,'''    use variables,only:tcum,dt,t1900,theta,thetm1
-    use MOD_grid,only:numnod,dz''',1)
+    use MOD_grid,only:numnod,dz
+    use MOD_drain,only:swman,nmper''',1)
     old='    real(8) :: terms(28)'
     assert text.count(old)==1
     text=text.replace(old,old+'\n    real(8)::day_clock\n    real(real128)::soil_change',1)
     old='    residual=real(sum(real(terms,real128)),8)'
     assert text.count(old)==1
-    text=text.replace(old,'''    day_clock=anint(t1900-tcum)
+    text=text.replace(old,'''    if(any(swman(1:nmper)==2))then
+    day_clock=anint(t1900-tcum)
     if(day_clock/=soil_origin_clock)then
       if(allocated(soil_origin_theta))deallocate(soil_origin_theta)
       allocate(soil_origin_theta(numnod))
@@ -30,7 +32,10 @@ def render(text):
     end if
     soil_change=sum((real(theta(1:numnod),real128)-real(soil_origin_theta,real128))*real(dz(1:numnod),real128))
     residual=real(sum(real(terms(1:16),real128))+sum(real(terms(18:22),real128)) &
-                 +sum(real(terms(24:28),real128))-soil_change,8)''',1)
+                 +sum(real(terms(24:28),real128))-soil_change,8)
+    else
+      residual=real(sum(real(terms,real128)),8)
+    end if''',1)
     # The original daily double witness remains literal, separately checked
     # against the unchanged public water criterion after every actual day.
     old="'EXTENDED_DRAIN_TERMINAL_WATER',residual,terms"
