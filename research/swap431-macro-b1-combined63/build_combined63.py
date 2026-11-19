@@ -1,6 +1,6 @@
 from pathlib import Path
 import json,hashlib,zipfile,subprocess,time,shutil
-R=Path(__file__).resolve().parent;P=R.parent/'swap431-macro-b1-combined62';W=Path('C:/Users/Veldh012/swap431-combined63-work')
+R=Path(__file__).resolve().parent;P=R.parent/'swap431-macro-b1-combined62';W=Path('C:/Users/Veldh012/swap431-combined63-final-work')
 def sha(p):
  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 def save(n,q):(R/n).write_text(json.dumps(q,indent=2)+'\n',encoding='utf-8')

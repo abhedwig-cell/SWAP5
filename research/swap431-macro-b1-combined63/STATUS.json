@@ -1,7 +1,7 @@
 {
   "work_unit": "SWAP431-MACRO-B1-COMBINED63",
   "baseline": "fa93695fcc509c99aa2ec3d34851e968d0138b7c",
-  "stage": "PREREGISTERED",
+  "stage": "PAYLOAD_LIFETIME_FIX_PREREGISTERED",
   "routes": [
     "O0 RESTART_D2",
     "O2 RESTART_D2"
@@ -9,5 +9,12 @@
   "hard_seconds_per_route": 20,
   "internal_seconds": 16,
   "implementation": "COMBINED62 current-stamped D3rank<=2, no qualificationproviderprobes, no source physics changes",
-  "no_broad_campaign": true
+  "no_broad_campaign": true,
+  "preserved_initial_routes": 2,
+  "additional_routes": [
+    "O0 RESTART_D2",
+    "O2 RESTART_D2"
+  ],
+  "reason": "initial getter read unsatwork arrays after destructive derivative task; guards correctly rejected V; save separate realprovider potential payload before task2 derivatives; do not loosen guards",
+  "all_routes_hard20": true
 }

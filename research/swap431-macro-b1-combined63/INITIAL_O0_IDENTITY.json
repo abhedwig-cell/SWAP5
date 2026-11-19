@@ -1,0 +1,36 @@
+{
+  "exe_sha256": "b90f043cb0da2bef3bc1297785b6a73c8c84c5eb0c9b41971a97457c9cfa670f",
+  "sources": {
+    "calcgwl_probe.f90": "ae78d7c5fcfe28ee39bd0173413bc3be5f8ad401b7d668486cca7707eec7affc",
+    "contract43_probe.f90": "7bc0706352268944dbd1b7ea5894a570e85b4dce14c3c6fb563539fbfd4ee9de",
+    "diag_state.f90": "b1f507f28b2d14063f710ae2458f101d8e14876f42f3fd7b8bfadaa41d9972f8",
+    "guard41_observer.f90": "10581788e84e333c0b313cf9b2f2a63e65aac34790cfdc86fe9e7fe0705d2ef4",
+    "head_diag.f90": "bcb9d9291342d1020842a3cddf7e76debcc4c08214085be5b1bd207561421000",
+    "integral_canopy.f90": "e22782adeb33f0a783876cb18f0942e31b5f79c970279915b480005f9ccccb78",
+    "jac37_update.f90": "22fdbae290b61be3818ebd4959b153979c91e0b5b9e3f8268841c96283c554e1",
+    "jac63_update.f90": "78316bfe5708f99ab9f38e8d01c23a2d88b4bd00455901229a6d840cba037fe6",
+    "jac_update.f90": "d6a8013d41f9da1ec5a73457831f3f6708fbad14e3f0ec6569c49e7e553a1930",
+    "ledger_state.f90": "f2ac69a139f925922130f7ab1c02d51a94fd0154211ae6b6c7874dc9301901d2",
+    "macropore_native.f90": "457d8bafcb361cb04cf647d10e9cf7e36f727b8a0765820841241bc79a88ea45",
+    "macrorate_node.f90": "8847665b3a994c71c940195d1f268bf127d22fb24540b42aa3312eaccefda8cd",
+    "meteo_native.f90": "01f79f33560798641258a527ee9fea70c302c19666a61d2da56ccbd75526ef73",
+    "native_state.f90": "263905469bc80a3eff8b758b571ced84eb45c2edc240c0911790234fb59436ad",
+    "potential61_probe.f90": "e4005a7db7b8f61e9d1d71b8c44a91f6d9c8450d9f62a77a7294875e09c9a2f7",
+    "probe_state.f90": "d8e6fb6767a2af3d3f9282c049b2ac609185dfbcfc3ffe4d571a67511f2bd13c",
+    "soilwater_native.f90": "2f779d6f1696f99200cdf255e564ce3261495a7b83f3439067fbe1b5ed642510",
+    "swapoutput_native.f90": "bd3e446ce3511917653cc12deff8faef53c5e66bada5b98ab3e4ebc4ec162d7f",
+    "swap_native.f90": "181c84e2231cd1e88452adaedab34baa9a561545afd5244b98ebbb354a77389c"
+  },
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "inherited_combined62_archive_sha256": "7386f93cde0f199adfb19c5c646c1c88b0ced765982431033c41baaa35eacf4d",
+  "inherited_native_members": 153,
+  "rebuilt_objects": [
+    "macrorate.o",
+    "jac63.o",
+    "jac24.o",
+    "headcalc.o"
+  ],
+  "new_observer_only": false,
+  "numerical_change": "COMBINED62 guardedrank2 D3only",
+  "qualification_probes": "none; actualoriginalD2convergencetest"
+}
