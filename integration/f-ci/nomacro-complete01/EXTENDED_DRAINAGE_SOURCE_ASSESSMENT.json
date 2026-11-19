@@ -1,0 +1,66 @@
+{
+  "status": "ORIGINAL_EXTENDED_DRAIN_SOURCE_AND_REAL_PROCESS_CONTRACT_INVENTORY",
+  "baseline": "7547aa05b7f01f4d234c6f314f9f76841f4d2c4f",
+  "classification": "MISSING_COMPOSITION",
+  "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "literal_original_members": {
+    "readswap.f90": {
+      "raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+      "original_zip_member": "SWAP/readswap.f90"
+    },
+    "MOD_drainage.f90": {
+      "raw_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+      "original_zip_member": "SWAP/MOD_drainage.f90"
+    },
+    "surfacewater.f90": {
+      "raw_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+      "original_zip_member": "SWAP/surfacewater.f90"
+    },
+    "drainage.f90": {
+      "raw_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+      "original_zip_member": "SWAP/drainage.f90"
+    },
+    "divdra.f90": {
+      "raw_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+      "original_zip_member": "SWAP/divdra.f90"
+    },
+    "swap.f90": {
+      "raw_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "original_zip_member": "SWAP/swap.f90"
+    },
+    "swapoutput.f90": {
+      "raw_sha256": "9fe6d939bd5213777a8a63a9b99ce154cd1aaa0e15b74895e41a33c2acac05ee",
+      "original_zip_member": "SWAP/swapoutput.f90"
+    },
+    "timecontrol.f90": {
+      "raw_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+      "original_zip_member": "SWAP/timecontrol.f90"
+    },
+    "headcalc.f90": {
+      "raw_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "original_zip_member": "SWAP/headcalc.f90"
+    }
+  },
+  "historical_reader": "readswap.f90:800 acceptsSWDRA0..2; MOD_drainage drain task1 originalreader/task2 signedrates/task3 surfacewater; fldecdt suppresses repeated surface step",
+  "current_public_refusal": "experimental_project mandatory/allowed SWDRA0/1 plus basic drainage signature/DRAMET gates; no SWDRA2 route",
+  "actual_small_contracts": [
+    "EXTENDED_DRAINAGE_ORIGINAL_DRIVER_O0.json",
+    "EXTENDED_DRAINAGE_ORIGINAL_DRIVER_O2.json"
+  ],
+  "original_native_gap": "swapoutput.f90 read_ini storesWLS only; read_drainage_extended reconstructsSWST frominitialWLS and resetsWLSTAR toWLS. No complete target/history carry for exactcold SWDRA2.",
+  "state_to_qualify": [
+    "MOD_drain.wls/wlp/swst/wlstar/wlsbak(4)/numadj",
+    "Original qdrain/qdra/qdrtot/qdrd and original groundwater/soil state required across timestep rollback",
+    "Original WLEVBAL local SAVE work values: read-before-write inventory required; do not serialize undefined local scratch blindly"
+  ],
+  "conservation": "Signed soil/drain exchange is external at soil boundary; simulated secondary surfacewater additionally ownsSWST/supply/discharge/runoff. Must independently audit same transfer once and combined inventory; no artificial corrections.",
+  "legacy_risks": [
+    "drainflux_extended localWL SAVE is set onlySWSRF>=2 but read unconditionally; SWSRF1 may depend on previouscall/undefinedinitialvalue. Reproduce separately before claiming validlegacyoption.",
+    "Surfacewater task3 updatesstore/target/history before askingfldecdt; inspect original retry owner and preserve/requalify atomic rollback.",
+    "Original WLEVBAL QH storage search tolerance0.001cm must remain explicit; strict combinedledger cannot assume arbitraryprecisionreferenceclosure."
+  ],
+  "next": "Compose one original extended drainage/native/exchange batch for prescribed SWSRF2/3 and simulated fixed/automatic secondary systems; keep uncoveredinvalids hard-refused. No externalMODFLOW, no newprocessformula.",
+  "public_swap5_admission": false,
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "functional_completion": "PARTIAL"
+}

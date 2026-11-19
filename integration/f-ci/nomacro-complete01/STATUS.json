@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-explicit-szym-weather01",
+  "branch": "codex/nomacro-extended-drainage01",
   "last_commit": "81addb5f07fb1fdc0647441c1ba97344b0c77292",
-  "status": "WEATHER_REGISTERED_SOURCE_RAW_QUALIFIED_CANONICAL_ADMISSION_PENDING",
+  "status": "WEATHER_PR1762_MC_GATES_PASS_REMAINING_AUTOMATIC_CI_PENDING_EXTENDED_DRAIN_COMPONENT_IN_PROGRESS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,8 +332,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Integrate this coherent bounded weather block at actual current canonical1fc; verify exact parents/full qualified tree and actual clean detached registered owner. Immediately continue original extended SWDRA2 drainage/surfacewater state composition. Mean7 remains blocked on a missing original physical table.",
-  "recovery_point": "codex/nomacro-explicit-szym-weather01; production2cf36f12, immutable rawcd0b6140, pure forensics5148797b, actual registered owner81addb5f0 PASS107.032564s. WEATHER_SOURCE_ADMISSION.json and WEATHER_TERMINAL_QUALIFICATION.json own the bounded source/raw proof. No full model reruns needed for documentation/admission.",
+  "next_code_change": "Monitor existing PR1762 exact7547aa05b F-CI modular feedback to terminal; both MC owner routes already PASS. Complete exact merge/tree/detached canonical owner, then persist receipt with this functional batch. Implement original extended drainage atomic trial/native component against actual original O0/O2 driver; publicSWDRA2 remains refused until integrated qualification.",
+  "recovery_point": "Weather PR1762 frozen7547aa05b, base1fc0b19e; source/raw qualified at81addb5f0. New branch codex/nomacro-extended-drainage01 starts at7547aa05b. Original drainage O0/O2 signed-flow/storage contracts PASS and actual rejected surface mutation4.0->4.2 reproduced; assessment+raw in protected evidence. No historical full-period reruns.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -30454,6 +30454,28 @@
     "raw_seal": "cd0b6140f8568fac9b1b1220a5d521e3d4e8d1c5",
     "raw_qualification": "WEATHER_TERMINAL_QUALIFICATION.json",
     "registered_source_admission": "WEATHER_SOURCE_ADMISSION.json",
-    "actual_wrong_source": "dc9c9f7eb6ddbd01531c4151fb02afdac08b171e"
+    "actual_wrong_source": "dc9c9f7eb6ddbd01531c4151fb02afdac08b171e",
+    "pr": {
+      "number": 1762,
+      "head": "7547aa05b7f01f4d234c6f314f9f76841f4d2c4f",
+      "base": "1fc0b19e23a32385e159ec653a42f2e60c009891",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/1762",
+      "MC_runs": [
+        44550305818,
+        44550305819
+      ],
+      "MC_conclusion": "success",
+      "existing_FCI_run": 44550305702,
+      "FCI_status": "modular-feedback in progress; selection-preflight success; no failed checks observed"
+    }
+  },
+  "extended_drainage_batch": {
+    "baseline": "7547aa05b7f01f4d234c6f314f9f76841f4d2c4f",
+    "classification": "B original-process composition plus separately proved original rollback defect",
+    "original_small_contract_O0_O2": "PASS_REAL_ORIGINAL_IMPLEMENTATION",
+    "actual_rejected_surfacewater_mutation": "4.0cm becomes4.2cm beforefldecdt rejection; originalmain restores soil only",
+    "public_admission": "NOT_IMPLEMENTED_HARD_REFUSAL_REMAINS",
+    "assessment": "EXTENDED_DRAINAGE_SOURCE_ASSESSMENT.json",
+    "next": "Implement atomic original MOD_drain dynamic snapshot and exact typed native; no physical equation or original input repair."
   }
 }
