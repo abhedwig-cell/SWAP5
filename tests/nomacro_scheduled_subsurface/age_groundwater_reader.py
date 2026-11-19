@@ -10,7 +10,7 @@ m=runtime.m
 def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','profile-root','output'):p.add_argument('--'+key,type=Path,required=True)
-    a=p.parse_args();a.output.mkdir();item=json.loads((a.profile_root/'RESULT.json').read_text(encoding='utf8'));inputs=Path(item['input_root']);build=Path(item['build_root'])
+    a=p.parse_args();a.output.mkdir();item=json.loads((a.profile_root/'RESULT.json').read_text(encoding='utf8'));inputs=Path(item.get('input_root',a.profile_root/'input'));build=Path(item.get('build_root',a.profile_root/'build'))
     project=m.e.load(inputs,original_output=True);meta,case=m.validate_bundle(build,a.reference_work,project)
     assert metadata(project)['swmonth']==0 and metadata(project)['swodat']==1
     q=dict(status='RUNNING',build_sha256=m.sha(build/'BUILD.json'),reader_refusals=[],descriptor_refusals=[])
