@@ -1,8 +1,12 @@
 # Original implicit hydraulic conductivity selection, 19 November 2026
 
-**Contract persisted before implementation; water/CDE candidate not yet admitted. AGE composition remains a separate open scientific/state blocker.**
+**Bounded water/CDE source qualified; actual canonical admission pending. AGE composition and full weighted-harmonic wet/dry history remain open.**
 
 Exact baseline is actual AGE groundwater metadata cce2561eb87e992f671d97a35baef84ddb8d91e0. Ordered parents, complete qualified tree and clean detached registered owner pass in 286.2100833002478seconds.
+
+The registered independent source/raw/native owner passes on source8948e4776 with unchanged production runtime5bdfcb347 and four original sealed archives. Actual clean committed CLOCK_ULPS8-to7 and dirty-source controls refuse before models. The corruption suite accepts the original chemical baseline and refuses318 actual byte/ledger/policy mutations. Ubuntu workflow44494289093 succeeds at both optimizations. Seventeen original selector0 contexts inherit literal source/raw evidence without fresh model periods. Current canonical remainscce2561eb pending actual merge-parent/tree and clean detached owner verification.
+
+The added capability is bounded original SWKIMPL1 water and active CDE with strict convergence/retry, complete dry-end root lookup, corrected original boundary derivatives and exact native restart. Original output is required. AGE dryout refuses, and the full mean6/hysteresis2 head case is censored after day163; its short PASS does not qualify its full period. Whole closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged. Historical family closure and global remaining gap counts are UNKNOWN. The next coherent implementation batch is ordinary/history groundwater-water complete state and subdaily/calendar composition using existing owners.
 
 ## Historical boundary and actual source observations
 
