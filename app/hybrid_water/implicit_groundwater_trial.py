@@ -27,7 +27,7 @@ def apply_build(output,donor_build,project,patched):
     stock=(donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')
     trial=original.trial_source(source,stock).replace('hybrid_groundwater_age_trial',FUNCTION).replace('Foreign original AGE groundwater trial domain','Foreign implicit groundwater trial domain')
     # Diagnostic-only counter limits logging; physical state stays read-only.
-    trace_clock='37877d0' if project.solute else '37839.974d0'
+    trace_clock='38237d0' if project.solute else '37849d0'
     trial=trial.replace('use variables,only:swbotb,thetm1','use variables,only:swbotb,thetm1,t1900,pondm1,qtop\nuse MOD_top,only:q0,ftoph,hsurf',1)
     trial=trial.replace('integer::node','integer::node\ninteger,save::trial_trace_count=0',1)
     anchor='residual=real(sum(real(terms,real128)),8)'

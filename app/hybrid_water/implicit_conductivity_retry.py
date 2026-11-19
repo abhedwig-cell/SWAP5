@@ -62,7 +62,10 @@ def metadata(project):
 
 def apply_build(output,donor_build,project,patched):
     if not enabled(project):return patched
-    path=output/'headcalc.f90';path.write_text(headcalc_source(path.read_text(encoding='cp1252')),encoding='cp1252')
+    path=output/'headcalc.f90';text=headcalc_source(path.read_text(encoding='cp1252'))
+    clock='38237d0' if project.solute else '37849d0'
+    text=text.replace('if(implicit_failed_trace_count<64)then','if(implicit_failed_trace_count<64.and.t1900>='+clock+')then',1)
+    path.write_text(text,encoding='cp1252')
     path=output/'timecontrol.f90'
     source=(path if path.exists() else donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
     path.write_text(time_source(source),encoding='cp1252')
