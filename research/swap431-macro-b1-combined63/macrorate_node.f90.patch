@@ -1,6 +1,6 @@
 --- COMBINED62/macrorate_node.f90
 +++ COMBINED63/macrorate_node.f90
-@@ -27,9 +27,8 @@
+@@ -27,9 +27,9 @@
  
        integer::snap23_unit,snap23_mode
        integer::n24,j24,l24
@@ -8,20 +8,22 @@
 -      logical::observe62
 -      real(8)::before62(macp),uns62(macp),sat62(macp)
 +      integer,save::seq63=-1
++      real(8),save::sat63(macp)=0d0,uns63(macp)=0d0
 +      real(8)::get63_sat(macp),get63_uns(macp),get63_valid
        real(8),save::canonical37(24,madm)=0d0,head37(macp)=0d0,time37=0d0,dt37=0d0
        integer,save::task37=-1,attempt37=-1,iteration37=-1
        logical,save::ready37=.false.
-@@ -1494,7 +1493,7 @@
+@@ -1494,7 +1494,8 @@
        if(apply37) then
         head37(1:numnod)=h(1:numnod)
         time37=t1900;dt37=dt;task37=ITask;attempt37=attempts;iteration37=iter_index
 -       ready37=.true.
 +       ready37=.true.;seq63=macro_seq
++       sat63=FlwOutMtxSatDmCpPot(3,:);uns63=FlwOutMtxUnsDmCpPot(3,:)
        end if
        call reference48_seal(ITask)
        if (ITask == 1) return
-@@ -1503,34 +1502,16 @@
+@@ -1503,34 +1504,16 @@
  !- D. CALCULATE DERIVATIVES FOR USE IN SWAP (Headcalc)
  !
  !     Exchange with unsaturated matrix
@@ -56,14 +58,14 @@
  
        return
  
-@@ -1544,12 +1525,21 @@
+@@ -1544,12 +1527,21 @@
         if(all(head37(1:numnod)==h(1:numnod))) get37_valid=1d0
        end if
        return
 +      entry jac63_get(get37_meta,get63_sat,get63_uns,get63_valid)
 +      get37_meta=canonical37
-+      get63_sat=FlwOutMtxSatDmCpPot(3,:)
-+      get63_uns=FlwOutMtxUnsDmCpPot(3,:)
++      get63_sat=sat63
++      get63_uns=uns63
 +      get63_valid=0d0
 +      if(ready37.and.task37==2.and.seq63==macro_seq.and.time37==t1900.and.dt37==dt.and.attempt37==attempts.and.iteration37==iter_index) then
 +       if(all(head37(1:numnod)==h(1:numnod))) get63_valid=1d0
@@ -72,29 +74,29 @@
        entry contract42_cache_io(snap23_unit,snap23_mode)
        if(snap23_mode==1) then
 -       write(snap23_unit) canonical37,head37,time37,dt37,task37,attempt37,iteration37,ready37
-+       write(snap23_unit) canonical37,head37,time37,dt37,task37,attempt37,iteration37,ready37,seq63
++       write(snap23_unit) canonical37,head37,time37,dt37,task37,attempt37,iteration37,ready37,seq63,sat63,uns63
         write(snap23_unit) obs36_meta,obs36_in,obs36_outsat,obs36_outuns,obs36_rapid
        else
 -       read(snap23_unit) canonical37,head37,time37,dt37,task37,attempt37,iteration37,ready37
-+       read(snap23_unit) canonical37,head37,time37,dt37,task37,attempt37,iteration37,ready37,seq63
++       read(snap23_unit) canonical37,head37,time37,dt37,task37,attempt37,iteration37,ready37,seq63,sat63,uns63
         read(snap23_unit) obs36_meta,obs36_in,obs36_outsat,obs36_outuns,obs36_rapid
        end if
        return
-@@ -1629,7 +1619,7 @@
+@@ -1629,7 +1621,7 @@
        write(snap23_unit) fdtheta,fdthetadrv,KSatMP,RapDraRes,dH_MPOld,dH_MP
        write(snap23_unit) zdenom,denommax,zdenommax,denom,numer,CorFac
        write(snap23_unit) cfdry,cfdry2,massbal,kwsat,notconv,MPempty
 -      write(snap23_unit) MPfull,KwSatCp
-+      write(snap23_unit) MPfull,KwSatCp,seq63
++      write(snap23_unit) MPfull,KwSatCp,seq63,sat63,uns63
        else
        read(snap23_unit) ic,id,jd,SqHlp,Sq,icc
        read(snap23_unit) icgwl,icuns,ichlp,iter,CritHtop,FrFlwIn
-@@ -1648,7 +1638,7 @@
+@@ -1648,7 +1640,7 @@
        read(snap23_unit) fdtheta,fdthetadrv,KSatMP,RapDraRes,dH_MPOld,dH_MP
        read(snap23_unit) zdenom,denommax,zdenommax,denom,numer,CorFac
        read(snap23_unit) cfdry,cfdry2,massbal,kwsat,notconv,MPempty
 -      read(snap23_unit) MPfull,KwSatCp
-+      read(snap23_unit) MPfull,KwSatCp,seq63
++      read(snap23_unit) MPfull,KwSatCp,seq63,sat63,uns63
        end if
        return
        contains

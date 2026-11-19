@@ -1,20 +1,151 @@
 {
   "work_unit": "SWAP431-MACRO-B1-COMBINED63",
-  "baseline": "fa93695fcc509c99aa2ec3d34851e968d0138b7c",
-  "stage": "PAYLOAD_LIFETIME_FIX_PREREGISTERED",
-  "routes": [
-    "O0 RESTART_D2",
-    "O2 RESTART_D2"
-  ],
+  "decision": "GUARDED_COMBINED_D3_UPDATE_ACCEPTED_UNSCALED_DTMIN_RETRY_O0_O2",
+  "initial_guarded_payload_runs_preserved": 2,
+  "final_qualification_routes": 2,
+  "total_model_routes": 4,
   "hard_seconds_per_route": 20,
-  "internal_seconds": 16,
-  "implementation": "COMBINED62 current-stamped D3rank<=2, no qualificationproviderprobes, no source physics changes",
-  "no_broad_campaign": true,
-  "preserved_initial_routes": 2,
-  "additional_routes": [
-    "O0 RESTART_D2",
-    "O2 RESTART_D2"
+  "all_routes_uncensored": true,
+  "COMBINED62_nondoublecount_rank2_implemented": true,
+  "current_before_derivative_potential_payload_saved_and_sequence_stamped": true,
+  "scratch_payload_serializers_extended": true,
+  "no_new_native_physical_fields": true,
+  "O0_O2_physical_traces_and_follow_packet_exact": true,
+  "larger_original_attempt_still_rejected": true,
+  "dtmin_retry_converges_with_fresh_check": true,
+  "hostcommit_and_independent_inventory_qualified": true,
+  "physics_clock_criteria_dt_reduction_budgets_unchanged": true,
+  "no_provider_perturbations": true,
+  "forced_reject_direct_retry_generalrestart_period_not_qualified": true,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 1.4179184003733099,
+      "returncode": 0,
+      "censored": false,
+      "attempts": 2,
+      "original_larger_refusal": {
+        "dt": 2.0951312035156963e-05,
+        "iterations": 30,
+        "Fmax": 0.0021198336748706748,
+        "sumF": 0.008414477305576075,
+        "node": 52
+      },
+      "accepted_retry": {
+        "dt": 1e-05,
+        "iterations": 3,
+        "Fmax": 3.044456621352498e-08,
+        "sumF": 2.0918085756152195e-07,
+        "fresh_checks": 1,
+        "IDecMpRat": 0,
+        "FrReduQ": 1,
+        "hostcommits": 1,
+        "t1900": 35797.29044112515
+      },
+      "correction_uses": 27,
+      "branch_counts": {
+        "1": 25,
+        "2": 2
+      },
+      "actual_retry_W_then_V_branches": [
+        1,
+        2,
+        2
+      ],
+      "guarded_fallbacks": 6,
+      "max_independent_linear_residual": 9.432558900623889e-18,
+      "max_D3_mass_derivative_error": 1.1368683772161603e-13,
+      "larger_rejection_rollback_exact_except": [
+        "dt",
+        "fldtmin"
+      ],
+      "ledger_before_retry_exact": true,
+      "independent_water_inventory": {
+        "matrix_delta": -2.2257545273197916e-06,
+        "macro_compartment_delta": -6.358490123801715e-07,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -2.8616056316129105e-06,
+        "error_cm": 2.0919129474248157e-12,
+        "original_limit_cm": 1.0000000000000002e-10,
+        "error_minus_residual_times_dt_cm": 1.0437180959595277e-16,
+        "domain_error_cm": [
+          1.0750161001725315e-16,
+          -2.386070941523544e-18,
+          -7.277858663656199e-19,
+          -3.4627434802694845e-20,
+          2.0595142891345283e-20
+        ]
+      },
+      "own_follow_packet_sha256": "7df2ffc6fd0ef85c129a9b91259bfa9baa0c234665a1b8e1d9cadb2f56d2e09e",
+      "follow_packet_bytes": 139128
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.2285293000750244,
+      "returncode": 0,
+      "censored": false,
+      "attempts": 2,
+      "original_larger_refusal": {
+        "dt": 2.0951312035156963e-05,
+        "iterations": 30,
+        "Fmax": 0.0021198336748706748,
+        "sumF": 0.008414477305576075,
+        "node": 52
+      },
+      "accepted_retry": {
+        "dt": 1e-05,
+        "iterations": 3,
+        "Fmax": 3.044456621352498e-08,
+        "sumF": 2.0918085756152195e-07,
+        "fresh_checks": 1,
+        "IDecMpRat": 0,
+        "FrReduQ": 1,
+        "hostcommits": 1,
+        "t1900": 35797.29044112515
+      },
+      "correction_uses": 27,
+      "branch_counts": {
+        "1": 25,
+        "2": 2
+      },
+      "actual_retry_W_then_V_branches": [
+        1,
+        2,
+        2
+      ],
+      "guarded_fallbacks": 6,
+      "max_independent_linear_residual": 9.432558900623889e-18,
+      "max_D3_mass_derivative_error": 1.1368683772161603e-13,
+      "larger_rejection_rollback_exact_except": [
+        "dt",
+        "fldtmin"
+      ],
+      "ledger_before_retry_exact": true,
+      "independent_water_inventory": {
+        "matrix_delta": -2.2257545273197916e-06,
+        "macro_compartment_delta": -6.358490123801715e-07,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -2.8616056316129105e-06,
+        "error_cm": 2.0919129474248157e-12,
+        "original_limit_cm": 1.0000000000000002e-10,
+        "error_minus_residual_times_dt_cm": 1.0437180959595277e-16,
+        "domain_error_cm": [
+          1.0750161001725315e-16,
+          -2.386070941523544e-18,
+          -7.277858663656199e-19,
+          -3.4627434802694845e-20,
+          2.0595142891345283e-20
+        ]
+      },
+      "own_follow_packet_sha256": "7df2ffc6fd0ef85c129a9b91259bfa9baa0c234665a1b8e1d9cadb2f56d2e09e",
+      "follow_packet_bytes": 139128
+    }
   ],
-  "reason": "initial getter read unsatwork arrays after destructive derivative task; guards correctly rejected V; save separate realprovider potential payload before task2 derivatives; do not loosen guards",
-  "all_routes_hard20": true
+  "stage": "MINIMAL_IMPLEMENTATION_TESTED_ACCEPTED_SINGLE_RETRY_HOSTCOMMIT",
+  "recovery": "REPORT.md; RESULT.json; IMPLEMENTATION_CONTRACT.md; CODEX_FOLLOWUP.md; EVIDENCE.json",
+  "no_broad_campaign": true,
+  "official_promotion": false
 }
