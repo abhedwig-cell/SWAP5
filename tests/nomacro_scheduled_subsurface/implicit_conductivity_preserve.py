@@ -1,5 +1,5 @@
 """Fresh original explicit numerical routes against immutable admitted raw members."""
-import argparse,hashlib,json,subprocess,sys,zipfile
+import argparse,hashlib,importlib,inspect,json,subprocess,sys,zipfile
 from pathlib import Path,PurePosixPath,PureWindowsPath
 import age_groundwater_runtime as current
 from age_groundwater_output import active_selection
@@ -17,11 +17,35 @@ FAMILIES={
 }
 
 
+def literal_delegation(project,output,reference):
+ assert m.e.inspect(project.input_directory)['selectors']['SWKIMPL']==0
+ names=['implicit_conductivity','implicit_conductivity_retry','implicit_conductivity_jacobian','implicit_pond_event','implicit_root_finalization','implicit_pond_availability','implicit_interception_partition','implicit_saturation_derivative','implicit_finite_newton','implicit_groundwater_trial']
+ result={};patched=[]
+ for name in names:
+  module=importlib.import_module(name);assert module.metadata(project) is None,name
+  if hasattr(module,'apply_build'):
+   function=module.apply_build;values=dict(project=project,output=output,donor_build=reference/'build',patched=patched)
+   assert function(**{key:values[key] for key in inspect.signature(function).parameters}) is patched,name
+  result[name]='INACTIVE_BEFORE_BUILD_MUTATION'
+ assert not output.exists()
+ import implicit_groundwater_state as water
+ import age_groundwater_output as prior
+ assert not water.enabled(project) and water.native_enabled(project)==prior.native_enabled(project)
+ assert water.native_metadata(project,m.sha,ROOT/'app/hybrid_water')==prior.native_metadata(project,m.sha,ROOT/'app/hybrid_water')
+ source=inspect.getsource(water.native_apply_build)
+ assert source.count('if not enabled(project):return prior.native_apply_build(output,project,patched)')==1
+ from implicit_conductivity_admission import require_transport
+ require_transport(project)
+ result.update(implicit_groundwater_state='LITERAL_PRIOR_NATIVE_OWNER_DELEGATION',public_age_guard='DELEGATES_OLD_SELECTOR_ZERO')
+ return result
+
+
 
 def main():
  p=argparse.ArgumentParser()
  for key in ('reference-work','prior-root','output'):p.add_argument('--'+key,type=Path,required=True)
  p.add_argument('--evidence-root',type=Path);p.add_argument('--family',choices=tuple(FAMILIES),required=True);p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);p.add_argument('--optimization',choices=('O0','O2'),required=True)
+ p.add_argument('--delegation-only',action='store_true')
  a=p.parse_args();a.output.mkdir();name,keys=FAMILIES[a.family];authority=ROOT/'integration/f-ci/nomacro-complete01'/name;qualification=json.loads(authority.read_text(encoding='utf8'))
  prefix={'age-groundwater':'AGE_GROUNDWATER','age':'AGE_PERSTEP','nonstep':'OUTPUT_HYSTERESIS','direct':'DIRECT_SOIL_AGE','groundwater':'GROUNDWATER_CHEMICAL','groundwater-history':'GROUNDWATER_HISTORY','cde':'CDE_CLOCK'}[a.family]
  recordname=f'{prefix}_{a.platform.upper()}_{a.optimization}_RAW_ARCHIVE.json'
@@ -45,7 +69,11 @@ def main():
    source_policy=oldbuild['identity'].get('conserved_original_age',{}).get('irrigation_source',{}).get('policy')
    args['age_irrigation_source']=source_policy=='original-fixed-current-irrigation-age-days-v1'
    args['age_direct_soil_source']=source_policy=='original-fixed-direct-soil-age-transport-then-input-v1'
-   project=m.e.load(inputs,**args);out=a.output/key;out.mkdir();build=out/'build';cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
+   project=m.e.load(inputs,**args);out=a.output/key
+   if a.delegation_only:
+    q['profiles'][key]=dict(status='UNCHANGED_SWKIMPL0_ROUTE_INHERITS_PRIOR_QUALIFICATION',literal_delegation=literal_delegation(project,out/'no-build-expected',a.reference_work),actual_immutable_prior_member_hashes=True,prior_build_sha256=bd,prior_report_sha256=m.sha(oldroot/'RESULT.json'),prior_daily_sha256=m.sha(oldtrajectory/'daily.jsonl'),prior_profile_prefix=oldroot.relative_to(a.evidence_root if a.platform=='Windows' else a.prior_root).as_posix(),fresh_physical_pass_claim=False,model_executions=0)
+    save();print(key,'ACTUAL_PRIOR_INPUT_LITERAL_SELECTOR_ZERO_DELEGATION',flush=True);continue
+   out.mkdir();build=out/'build';cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
    for flag in ('original_output','age_irrigation_source','age_direct_soil_source'):
     if getattr(project,flag):cmd.append('--'+flag.replace('_','-'))
    result=subprocess.run(cmd,cwd=ROOT,capture_output=True,text=True,timeout=180);(out/'build.stdout').write_text(result.stdout,encoding='utf8');(out/'build.stderr').write_text(result.stderr,encoding='utf8');result.check_returncode()
@@ -70,7 +98,7 @@ def main():
     checked(path);fresh=out/'trajectory/original'/path.name;assert records(path)==records(fresh),path.name;output[path.name]=dict(exact=True,records=len(records(path)))
    cold=current.own(build,a.reference_work,project,out/'trajectory',rows,*window,out/f'own-{window[0]}')
    q['profiles'][key]=dict(actual_build=actual,trajectory=trajectory,all_physical_exact=True,actual_immutable_prior_member_hashes=True,prior_build_sha256=bd,prior_report_sha256=m.sha(oldroot/'RESULT.json'),prior_daily_sha256=m.sha(oldtrajectory/'daily.jsonl'),prior_archive=recordname,prior_profile_prefix=oldroot.relative_to(a.evidence_root if a.platform=='Windows' else a.prior_root).as_posix(),overlap_new_codec=overlap,actual_generated_source_differences=changed,native=native,original_user_output=output,cold=cold);save();print(key,'ACTUAL_AFFECTED_SEAM_PRESERVED',flush=True)
-  q['status']='ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_'+a.family.upper()+'_SEAMS_PRESERVED';print(q['status'],flush=True)
+  q['status']='ACTUAL_IMPLICIT_CONDUCTIVITY_PRIOR_'+a.family.upper()+('_LITERAL_DELEGATION_INHERITANCE' if a.delegation_only else '_SEAMS_PRESERVED');print(q['status'],flush=True)
  except Exception as error:q.update(status='FAILED',error=repr(error));raise
  finally:save()
 
