@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-implicit-conductivity01",
-  "last_commit": "c3b992f9d39dfdea9d60512ccb5de7de932759ee",
-  "status": "IMPLICIT_WATER_CDE_INDEPENDENT_ADMISSION_NEXT_AGE_DRYOUT_BLOCKED",
+  "last_commit": "21d6c67461681aad1073c641d08883a119a63070",
+  "status": "IMPLICIT_SATURATION_NUMERICAL_FIX_PERSISTED_FRESH_WATER_CDE_COHORT_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Adapt portable carrier to eight W/Cshort/sixfull and new guards, include interception component/source capsule; preservation candidate source manifest must explicitly distinguish frozenf7model from literal620publicguardcomposition. Capture AGE dryout diagnostic separately without editing frozen AGE providers.",
-  "recovery_point": "codex/nomacro-implicit-conductivity01 c3b992f9d39dfdea9d60512ccb5de7de932759ee plus this scope recovery. All four prior model campaigns terminal: mainv2 bothFAILED AGE164, positivechemistrycurrent-v3 bothPASS. Only read-only reconcile sessions2915/30972 may remain. WholePARTIAL/scienceNOT_QUALIFIED/fixedRC3 unchanged; canonicalCCE unchanged; no implicit carrier/seal/admission.",
+  "next_code_change": "If freshnewsource cohortpasses, complete qualification ratherthanmoreAppedits. Updatecarrier to scoped8short/6fullandcurrentv3 source; keepold failed11scopearchives and allsource-bound original reports. Use stable_candidate_v2 raw sourceguard, notoldf7manifest.",
+  "recovery_point": "codex/nomacro-implicit-conductivity01 21d6c67461681aad1073c641d08883a119a63070 plus this metadata commit. All oldjobs terminal; new fresh campaigns not yet started. WholePARTIAL/scienceNOT_QUALIFIED/fixedRC3 unchanged, canonicalCCE unchanged. Noimplicit carrier/seal/admission.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Check read-only reconciler2915/O0,30972/O2. Then fresh six public W/C warm/native CLI contexts, W/C two-day1440limits, public compatibility refusals, three actual AGE early guards bothopts, impact-selected17 oldSWKIMPL0 seams, portable selectedW/C carrier, independent raw source/native owner and actual source+metadata admissions. Keep AGE prototype failure and complete failed matrices raw. No unchanged full model repeats.",
+  "next_action": "No current model job active. Start fresh W/Cmatrixv3 O0/O2 andpositivechemistrycurrent-v4 O0/O2 on frozenbf9source. Both1440two-day CDE/water native limits alreadyPASS onbf9; actual plateau six-input originaldefect/correction componentPASS O0/O2. Then fresh public/current guard/sourcecapsule, selected17old0 preservation, portableW/C carrier and independent owner/source+metadata admissions. AGEretainedevapdryout separateblockedsemanticstatework, neverloseage orweakenbounds.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -25728,7 +25728,7 @@
     "scientific_equivalence_claim": false
   },
   "implicit_conductivity": {
-    "status": "WATER_CDE_QUALIFICATION_WITH_SEPARATE_IMPLICIT_AGE_DRYOUT_BLOCKER",
+    "status": "PERSISTED_SATURATION_AND_FINITE_NEWTON_CANDIDATE_SMALL_LIMIT_GATES_PASS",
     "baseline": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
     "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_SOURCE_AUDIT.json",
@@ -25736,7 +25736,7 @@
     "qualification": "NOT_RUN",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "invariants": "Immutable numerical policy/input/source identity; literal original conductivity and HeadCalc; unchanged strict water/chemical/AGE guards; complete native/rollback/restart.",
-    "implementation_head": "c3b992f9d39dfdea9d60512ccb5de7de932759ee",
+    "implementation_head": "21d6c67461681aad1073c641d08883a119a63070",
     "production_files": [
       "app/hybrid_water/implicit_conductivity.py",
       "app/hybrid_water/implicit_groundwater_state.py",
@@ -26242,7 +26242,7 @@
       },
       "cold_error": "Restored donor state differs from the accepted checkpoint receipt"
     },
-    "current_source": "f7f23dbe531b579991d3a77fd2b67cb05a08f67a",
+    "current_source": "bf9dedcb38dbd1ec9607c4d321883c62b80166be",
     "actual_derivative_component_production_arithmetic": {
       "O0": {
         "status": "REAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_DERIVATIVE_INTERFACE_PASS",
@@ -28020,18 +28020,7 @@
       "water_full_actual_status": "FAILED",
       "qualified_claim": "Positive head1096/native PASS at actual source829721. Water/CDE prescribed groundwater remain under targeted verification. All old failed30/5 cases remain raw observations."
     },
-    "pending_actual_jobs": [
-      {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-cde-windows-O0-v2",
-        "session": 2915,
-        "status": "EIGHT_IMPLICIT_WATER_CDE_SHORT_SIX_FULL_ALL_NATIVE_ACTIVE_POLICY_PASS"
-      },
-      {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-cde-windows-O2-v2",
-        "session": 30972,
-        "status": "EIGHT_IMPLICIT_WATER_CDE_SHORT_SIX_FULL_ALL_NATIVE_ACTIVE_POLICY_PASS"
-      }
-    ],
+    "pending_actual_jobs": [],
     "actual_pond_event_components": {
       "O0": {
         "status": "REAL_POND_EVENT_TWO_ACTUAL_THREE_INACTIVE_FIVE_REFUSALS_PASS",
@@ -29267,27 +29256,27 @@
     },
     "selected_next_campaigns": [
       {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-windows-O0-v2",
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-cde-windows-O0-v3",
         "controller": "implicit_conductivity_ci.py",
-        "role": "Eleven short/full-native and eight active/domain controls before seven new full periods; exact current-source hard water pair reused only after original input inventory and current bundle validation.",
+        "role": "Fresh8short/6full/native/6active-policy contexts after allsmall/1440gates; no pilotreuse from older numerical source.",
         "expected_seconds": 600
       },
       {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-windows-O2-v2",
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-water-cde-windows-O2-v3",
         "controller": "implicit_conductivity_ci.py",
-        "role": "Eleven short/full-native and eight active/domain controls before seven new full periods; exact current-source hard water pair reused only after original input inventory and current bundle validation.",
+        "role": "Fresh8short/6full/native/6active-policy contexts after allsmall/1440gates; no pilotreuse from older numerical source.",
         "expected_seconds": 600
       },
       {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v3",
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v4",
         "controller": "implicit_conductivity_positive_cde.py",
-        "role": "Three actual positive sorbing/decaying chemical short/native compositions then two full1096/native; new current partition/availability source must be qualified in active chemistry.",
+        "role": "Fresh3positivechemicalshort/native then2full/native, new numerical saturation/rollback source.",
         "expected_seconds": 300
       },
       {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v3",
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v4",
         "controller": "implicit_conductivity_positive_cde.py",
-        "role": "Three actual positive sorbing/decaying chemical short/native compositions then two full1096/native; new current partition/availability source must be qualified in active chemistry.",
+        "role": "Fresh3positivechemicalshort/native then2full/native, new numerical saturation/rollback source.",
         "expected_seconds": 300
       }
     ],
@@ -29334,7 +29323,16 @@
       "authority": "src/process/mod_b111_surface_age_budget.f90 remains literal; zero depth_total with positive available age refuses. Original SWAP Agepond zeroing at dry endpoints is not a conserved oracle.",
       "next": "Capture complete actual failed surface-age request in isolated read-only diagnostic, quantify reproduction with the existing real component, then separate retained-age evaporation/dry-state semantic work. Do not relax8192epsilon/1e-10, invent a tiny water floor or silently dispose age.",
       "admission_guard": "New helper620ee6ef4 plus two calls in publicCLI/coupled validator; internal descriptors retained for diagnosis only.",
-      "actual_guard_controls": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-cde-admission-controls-windows-O0-v1\\RESULT.json"
+      "actual_guard_controls": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-cde-admission-controls-windows-O0-v1\\RESULT.json",
+      "complete_actual_request_observation": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-age-dryout-v2\\RESULT.json",
+        "raw": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-age-dryout-v2\\trajectory\\original\\donor.stdout",
+        "dt_day": 0.0004938271604938235,
+        "retained_pond_age_stock_cm_day": 7.639679873516872e-05,
+        "remaining_pond_infiltration_runoff_cm": 0,
+        "actual_status": 1,
+        "diagnostic_v1": "Retained diagnostic-generation assertion: indentation mismatch at actualAGErefusal instruction; fixedonlymatchinganchor, no process equation changed."
+      }
     },
     "guard_only_composition": {
       "status": "LITERAL_MODEL_RUNTIME_PLUS_ONLY_TWO_PUBLIC_ADMISSION_CALLS",
@@ -29365,6 +29363,182 @@
       "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-source-capsule-windows-v1",
       "status": "ACTUAL_SOURCE_BYTES_PRESERVED_WITH_SEPARATE_GIT_AND_LF_IDENTITY",
       "role": "Actual source bytes before later guard, original producer/model dependencies unchanged; retain raw capsule."
+    },
+    "saturation_derivative": {
+      "source": "e75bd77d1",
+      "exact_anchor_correction": "bf9dedcb38dbd1ec9607c4d321883c62b80166be",
+      "policy": "original-implicit-saturated-conductivity-derivative-v1",
+      "failure": "First-day CDE1440 positivepointapplication: original derivativeInfinity at actual node26 h=-6.644538969378976e-14cm; original conductivity plateau is exact KSATFIT. Whole candidate NaNs after26retained failedNewton traces. Hard guard refused, never accepted.",
+      "diagnostic": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-cde-limit-v3\\RESULT.json",
+      "components": {
+        "O0": {
+          "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-saturation-derivative-component-O0-v2\\RESULT.json",
+          "status": "REAL_ORIGINAL_SATURATION_PLATEAU_DEFECT_AND_CORRECTION_SIX_INPUTS_PASS",
+          "object_count": 40,
+          "executions": [
+            {
+              "mode": "original",
+              "actual_source_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+              "compile_seconds": 0.6355707999318838,
+              "link_seconds": 0.48044890025630593,
+              "native_seconds": 0.37630110001191497,
+              "returncode": 0,
+              "stdout": "ACTUAL_ORIGINAL_SATURATION_DERIVATIVE 1 -6.64453896937897623E-014  3.87064000000000075E-001  2.08081034125395803E-005                  Infinity  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 2 -9.99999999999999980E-013  3.87064000000000075E-001  2.08081034125395803E-005                  Infinity  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 3 -1.00000000000000006E-009  3.87063999999979258E-001  2.08081034125395803E-005  6.26779530948396306E+005  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 4 -9.99999999999999955E-007  3.87063999979191997E-001  2.08081034125395803E-005  6.74722670022297643E+003  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 5 -1.00000000000000002E-003  3.87063979191896668E-001  2.08081034125395803E-005  7.23346812203372593E+001  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 6  1.00000000000000000E+000  3.87064000000000075E-001  4.11522633744855837E-016  9.99999999999999980E-013  2.27617599999999989E+001  2.27617599999999989E+001\nREAL_ORIGINAL_SATURATION_DERIVATIVE_DEFECT_REPRODUCED 2 6\n",
+              "stderr": ""
+            },
+            {
+              "mode": "corrected",
+              "actual_source_sha256": "174058c84293d592d1fe31d27202cdf839fc66c2311c251296530bb6d8325d13",
+              "compile_seconds": 0.5501288999803364,
+              "link_seconds": 0.5535550001077354,
+              "native_seconds": 0.15624389983713627,
+              "returncode": 0,
+              "stdout": "ACTUAL_ORIGINAL_SATURATION_DERIVATIVE 1 -6.64453896937897623E-014  3.87064000000000075E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 2 -9.99999999999999980E-013  3.87064000000000075E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 3 -1.00000000000000006E-009  3.87063999999979258E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 4 -9.99999999999999955E-007  3.87063999979191997E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 5 -1.00000000000000002E-003  3.87063979191896668E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 6  1.00000000000000000E+000  3.87064000000000075E-001  4.11522633744855837E-016  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nREAL_ORIGINAL_SATURATION_DERIVATIVE_CORRECTION_PASS\n",
+              "stderr": ""
+            }
+          ]
+        },
+        "O2": {
+          "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-saturation-derivative-component-O2-v2\\RESULT.json",
+          "status": "REAL_ORIGINAL_SATURATION_PLATEAU_DEFECT_AND_CORRECTION_SIX_INPUTS_PASS",
+          "object_count": 40,
+          "executions": [
+            {
+              "mode": "original",
+              "actual_source_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+              "compile_seconds": 1.3611336001195014,
+              "link_seconds": 0.5275726998224854,
+              "native_seconds": 0.3256911002099514,
+              "returncode": 0,
+              "stdout": "ACTUAL_ORIGINAL_SATURATION_DERIVATIVE 1 -6.64453896937897623E-014  3.87064000000000075E-001  2.08081034125395803E-005                  Infinity  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 2 -9.99999999999999980E-013  3.87064000000000075E-001  2.08081034125395803E-005                  Infinity  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 3 -1.00000000000000006E-009  3.87063999999979258E-001  2.08081034125395803E-005  6.26779530948396306E+005  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 4 -9.99999999999999955E-007  3.87063999979191997E-001  2.08081034125395803E-005  6.74722670022297643E+003  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 5 -1.00000000000000002E-003  3.87063979191896668E-001  2.08081034125395803E-005  7.23346812203372593E+001  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 6  1.00000000000000000E+000  3.87064000000000075E-001  4.11522633744855837E-016  9.99999999999999980E-013  2.27617599999999989E+001  2.27617599999999989E+001\nREAL_ORIGINAL_SATURATION_DERIVATIVE_DEFECT_REPRODUCED 2 6\n",
+              "stderr": ""
+            },
+            {
+              "mode": "corrected",
+              "actual_source_sha256": "174058c84293d592d1fe31d27202cdf839fc66c2311c251296530bb6d8325d13",
+              "compile_seconds": 1.2561272997409105,
+              "link_seconds": 0.45877610007300973,
+              "native_seconds": 0.32230830006301403,
+              "returncode": 0,
+              "stdout": "ACTUAL_ORIGINAL_SATURATION_DERIVATIVE 1 -6.64453896937897623E-014  3.87064000000000075E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 2 -9.99999999999999980E-013  3.87064000000000075E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 3 -1.00000000000000006E-009  3.87063999999979258E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 4 -9.99999999999999955E-007  3.87063999979191997E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 5 -1.00000000000000002E-003  3.87063979191896668E-001  2.08081034125395803E-005  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nACTUAL_ORIGINAL_SATURATION_DERIVATIVE 6  1.00000000000000000E+000  3.87064000000000075E-001  4.11522633744855837E-016  0.00000000000000000E+000  2.27617599999999989E+001  2.27617599999999989E+001\nREAL_ORIGINAL_SATURATION_DERIVATIVE_CORRECTION_PASS\n",
+              "stderr": ""
+            }
+          ]
+        }
+      }
+    },
+    "finite_newton_policy": {
+      "policy": "original-implicit-finite-newton-rate-rollback-v1",
+      "source": "e75bd77d1",
+      "state": "No added accepted state; only numerical trial checks and real original dependent-root-rate recomputation after original rollback.",
+      "scope": "OnlySWKIMPL1nomacro; originalSWKIMPL0source literal. Original physical equations and strict tolerances unchanged."
+    },
+    "actual_limits_after_saturation_fix": {
+      "O0": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-cde-limits-windows-O0-v2\\RESULT.json",
+        "status": "TWO_ACTUAL_IMPLICIT_WATER_CDE_1440_NATIVE_LIMITS_PASS",
+        "source_commit": "bf9dedcb38dbd1ec9607c4d321883c62b80166be",
+        "cases": [
+          "cde-head",
+          "water-air-history"
+        ]
+      },
+      "O2": {
+        "path": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-cde-limits-windows-O2-v2\\RESULT.json",
+        "status": "TWO_ACTUAL_IMPLICIT_WATER_CDE_1440_NATIVE_LIMITS_PASS",
+        "source_commit": "bf9dedcb38dbd1ec9607c4d321883c62b80166be",
+        "cases": [
+          "cde-head",
+          "water-air-history"
+        ]
+      }
+    },
+    "earlier_source_observations": {
+      "model_source": "f7f23dbe531b579991d3a77fd2b67cb05a08f67a",
+      "water_cde_matrices": "Original failedeleven matrices plus read-onlyeight/sixreconciliation remainraw unchanged. They do not qualify the new saturation/finite numerical paths.",
+      "positive_chemistry": "Bothcurrent-v3actual3short+2fullPASS preserved, newcurrent-v4source qualification selected.",
+      "public": "Both six publicW/C warm/coldCLI v1PASS under literal620guard+f7model, preservednotrelabeled newsource.",
+      "limits_v1": "Both original2dayCDE1440v1model failures retained. Sourcee75+bf9limitsv2 bothPASS.",
+      "forensics": "Actual oldmodelwater1096/stdout/native O0/O2 andwaterhys35 each221rawcorruptionsrefused; failedfirstforensicv1end/startordering corrected4a82d70ed. Raw observations unchanged."
+    },
+    "stable_candidate_v2": {
+      "production_source": "bf9dedcb38dbd1ec9607c4d321883c62b80166be",
+      "public_guard_source": "620ee6ef4",
+      "frozen_until_selected_campaigns_terminal": true,
+      "source": {
+        "app/hybrid_water/daily_coupling.py": {
+          "actual_worktree_sha256": "baf44fdcebe8e6d8a439caf79e54864e17dccd606cbcb381f1ea7955d46b1047",
+          "lf_normalized_sha256": "ee6e43391aa97362be0f15690f8d02a25cb772722e3a64ae24774ba8fc904bc5"
+        },
+        "app/hybrid_water/daily_host.py": {
+          "actual_worktree_sha256": "b9451af2befee19aa4f0df5a047e9df027a515e459da86002398898ce3d47b01",
+          "lf_normalized_sha256": "b1abbcf407dbea85d056161d1605bc5aad4e350286b36d46f6c5605ca8a2ed8f"
+        },
+        "app/hybrid_water/experimental_project.py": {
+          "actual_worktree_sha256": "d9d00ca2f87135eee3d3ab9b54a02d56ccf24449044c73c438feed3a20f08f6f",
+          "lf_normalized_sha256": "2bf35a73719abb9c9c12ea5e0b8263f6bee81aaac9d6f4188922658178d860d1"
+        },
+        "app/hybrid_water/implicit_conductivity.py": {
+          "actual_worktree_sha256": "9c82874239c5e0ee08d62043d091081225031acd6148bd2fee8dd08951423ad6",
+          "lf_normalized_sha256": "9c82874239c5e0ee08d62043d091081225031acd6148bd2fee8dd08951423ad6"
+        },
+        "app/hybrid_water/implicit_conductivity_admission.py": {
+          "actual_worktree_sha256": "5d47023db6d5508ba4d221e6e3dbd5ddeeeb8008e6d63a0cf2292d61c72a4112",
+          "lf_normalized_sha256": "5d47023db6d5508ba4d221e6e3dbd5ddeeeb8008e6d63a0cf2292d61c72a4112"
+        },
+        "app/hybrid_water/implicit_conductivity_jacobian.py": {
+          "actual_worktree_sha256": "7453a9b6604e12f0de5e5ebe25185b0ea2dfa46f3460cd42b5fb8467bd9f615d",
+          "lf_normalized_sha256": "7453a9b6604e12f0de5e5ebe25185b0ea2dfa46f3460cd42b5fb8467bd9f615d"
+        },
+        "app/hybrid_water/implicit_conductivity_retry.py": {
+          "actual_worktree_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
+          "lf_normalized_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6"
+        },
+        "app/hybrid_water/implicit_finite_newton.py": {
+          "actual_worktree_sha256": "13307cc1a1369bc3cf9d7ca1a0563b8b68f66651afb28a41418cb74b5f0a9aae",
+          "lf_normalized_sha256": "13307cc1a1369bc3cf9d7ca1a0563b8b68f66651afb28a41418cb74b5f0a9aae"
+        },
+        "app/hybrid_water/implicit_groundwater_state.py": {
+          "actual_worktree_sha256": "bb3622922f640d9e376fb8c183211cf64c17455b776d9e3ae48076ef2ebff68e",
+          "lf_normalized_sha256": "bb3622922f640d9e376fb8c183211cf64c17455b776d9e3ae48076ef2ebff68e"
+        },
+        "app/hybrid_water/implicit_groundwater_trial.py": {
+          "actual_worktree_sha256": "e6240085db17786ba786ad6a6f9f8b50d7e3b50121df9ba64dbec0964db980f7",
+          "lf_normalized_sha256": "e6240085db17786ba786ad6a6f9f8b50d7e3b50121df9ba64dbec0964db980f7"
+        },
+        "app/hybrid_water/implicit_interception_partition.py": {
+          "actual_worktree_sha256": "db663eeeb0975f4a88684e4b0a0fe93f6864fa1214960a7ecd574ab2e20b0e47",
+          "lf_normalized_sha256": "db663eeeb0975f4a88684e4b0a0fe93f6864fa1214960a7ecd574ab2e20b0e47"
+        },
+        "app/hybrid_water/implicit_pond_availability.f90": {
+          "actual_worktree_sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04",
+          "lf_normalized_sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+        },
+        "app/hybrid_water/implicit_pond_availability.py": {
+          "actual_worktree_sha256": "223c590f4006b6c39bd904930ba18ca9e08e3dbc4dbb5c76ae4395d05d4408cd",
+          "lf_normalized_sha256": "223c590f4006b6c39bd904930ba18ca9e08e3dbc4dbb5c76ae4395d05d4408cd"
+        },
+        "app/hybrid_water/implicit_pond_event.py": {
+          "actual_worktree_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622",
+          "lf_normalized_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622"
+        },
+        "app/hybrid_water/implicit_pond_event_state.f90": {
+          "actual_worktree_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+          "lf_normalized_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+        },
+        "app/hybrid_water/implicit_root_finalization.py": {
+          "actual_worktree_sha256": "e5b1fc62baa0354f0e9f4744beece83db0ebd70542b75f7dbc4253e6c7a6d1e0",
+          "lf_normalized_sha256": "e5b1fc62baa0354f0e9f4744beece83db0ebd70542b75f7dbc4253e6c7a6d1e0"
+        },
+        "app/hybrid_water/implicit_saturation_derivative.py": {
+          "actual_worktree_sha256": "788ee154188c1fdbc0813260966e8be501b913d02567a9d0bb06eaabddde41a4",
+          "lf_normalized_sha256": "788ee154188c1fdbc0813260966e8be501b913d02567a9d0bb06eaabddde41a4"
+        },
+        "tools/solute/run_water.py": {
+          "actual_worktree_sha256": "2ea1b70b6dc369e13d04a490c0e04d25b130bbb34e17a02f8f9d664f1290e94a",
+          "lf_normalized_sha256": "2ea1b70b6dc369e13d04a490c0e04d25b130bbb34e17a02f8f9d664f1290e94a"
+        }
+      }
     }
   }
 }
