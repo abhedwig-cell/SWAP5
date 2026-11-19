@@ -65,7 +65,7 @@ def source_guard():
     current=tree('HEAD','integration')
     for p,v in tree(BASE,'integration').items():require(current.get(p)==v,'historical evidence rewritten: '+p)
     require((ROOT/ENTRY).read_text(encoding='utf8').replace(HOOK,'',1).encode()==normalized(blob(BASE,ENTRY)),'historical validator body rewritten')
-    allowed={ENTRY,SELF,'tests/saltfarm_newton/test_direct_admission.py',PROOF+'ADMISSION.json',PROOF+'MERGE_RECEIPT.json','docs/science/SALTFARM_DIRECT_KERNEL05.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
+    allowed={ENTRY,SELF,'tests/saltfarm_newton/test_direct_admission.py',PROOF+'ADMISSION.json',PROOF+'MERGE_RECEIPT.json',PROOF+'CI_RECONCILIATION.json','docs/science/SALTFARM_DIRECT_KERNEL05.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
     require(set(git('diff','--name-only',RUNTIME,'HEAD').decode().splitlines())<=allowed,'unqualified post-runtime controller/evidence change')
     # The full prior unit seal and all data remain literal; append only admission records.
     for name,digest in json.loads((ROOT/PROOF/'SEAL.json').read_text()).items():require(hashlib.sha256((ROOT/PROOF/name).read_bytes()).hexdigest()==digest,'sealed direct evidence changed: '+name)
@@ -79,20 +79,24 @@ def predecessor():
     require(not git('diff',previous,BASE,'--','app','src','reference','tools'),'prior canonical metadata changed production')
     require(blob(previous,ENTRY)==blob(BASE,ENTRY),'admitted prior owner changed')
     report=json.loads(receipt['actual_detached_owner']['stdout']);require(report['status']=='ORIGINAL_AGE_GROUNDWATER_REACTION_PRIVATE_CALENDAR_NATIVE_ADMISSION_PASS' and report['whole_scientific_equivalence']=='NOT_QUALIFIED','prior actual owner verdict changed')
-    paths={ENTRY,qp}
-    for group in ('source_sha256','controller_sha256','frozen_predecessor_sources','frozen_predecessor_controllers'):paths.update(q[group])
-    with tempfile.TemporaryDirectory(prefix='s5-literal-direct-predecessor-') as directory:
-        snapshot=Path(directory);batches=[];batch=[];length=0
-        for p in sorted(paths):
-            if length+len(p)>11000:batches.append(batch);batch=[];length=0
-            batch.append(p);length+=len(p)+3
-        if batch:batches.append(batch)
-        for batch in batches:
-            with tarfile.open(fileobj=io.BytesIO(git('archive',BASE,'--',*batch))) as archive:
-                for m in archive.getmembers():
-                    if m.isdir():continue
-                    target=snapshot/m.name;require(m.isfile() and m.name in paths and target.resolve().is_relative_to(snapshot.resolve()),'foreign frozen predecessor path');target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(archive.extractfile(m).read())
-        spec=importlib.util.spec_from_file_location('literal_age_groundwater_direct',snapshot/ENTRY);owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner);owner.validate(q)
+    # Do not materialize thousands of unchanged files. Their actual bytes are
+    # checked by the old validator and their Git objects are already unchanged.
+    # Only the four changed predecessor source/controller files need a frozen
+    # BASE copy. This is an explicitly historical source view, never a current
+    # AGE execution or a replacement validator.
+    bound=set()
+    for group in ('source_sha256','controller_sha256','frozen_predecessor_sources','frozen_predecessor_controllers'):bound.update(q[group])
+    changed=set(git('diff','--name-only',BASE,'HEAD').decode().splitlines())
+    frozen=bound & changed
+    require(frozen=={'app/hybrid_water/daily_host.py','app/hybrid_water/daily_coupling.py','tools/solute/run_water.py','tests/saltfarm_newton/qualify.py'},'foreign historical source-view projection')
+    with tempfile.TemporaryDirectory(prefix='s5-literal-direct-predecessor-bounded-') as directory:
+        snapshot=Path(directory);mapping={}
+        for path in sorted(frozen|{ENTRY}):
+            target=snapshot/path;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(blob(BASE,path));mapping[path]=target
+        class LiteralBaseView:
+            def __truediv__(self,path):return mapping.get(str(path),ROOT/path)
+        spec=importlib.util.spec_from_file_location('literal_age_groundwater_direct',mapping[ENTRY]);owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+        owner.ROOT=LiteralBaseView();owner.validate(q)
     return dict(status='LITERAL_ADMITTED_AGE_SOURCE_SCHEMA_AND_IMMUTABLE_PRODUCER_AUDIT_INHERITED',merge=previous,actual_owner_seconds=receipt['actual_detached_owner']['seconds'],fresh_pass_claim=False)
 
 

@@ -1,0 +1,15 @@
+{
+  "status": "CORRECTING_SHARED_SOURCE_ADMISSION_OWNER",
+  "original_head": "e7e24ab31f8a70b2bab68529ab085d2164d903d9",
+  "failed_runs": [
+    44496313342,
+    44496313495,
+    44496313546
+  ],
+  "shared_failure": "AGE production differs from qualified source",
+  "classification": "current-source admission registration missing; physical driver stages passed",
+  "correction": "bounded successor through existing registered owner; historical validator body and all prior integration Git objects remain literal",
+  "runtime_changed": false,
+  "tolerances_changed": false,
+  "local_selection_correction": "Full historical source-tree materialization was stopped after exceeding its expected cost. The old validator now reads unchanged actual files and exactly four frozen BASE source/controller files; no model rerun and no bypass of its hash checks."
+}
