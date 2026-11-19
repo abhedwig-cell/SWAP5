@@ -1832,5 +1832,31 @@
     "RC3_changed": false,
     "canonical": "66d6297b1ac0462c9be17f8df3db10c1773d1595",
     "receipt": "EXTENDED_DRAINAGE_MERGE_RECEIPT.json"
+  },
+  "extended_drainage_original_calendar": {
+    "classification": "MISSING_COMPOSITION",
+    "implementation": "BOUNDED_IMPLEMENTED_QUALIFIED_FULL_PERIODS_CURRENT_POSTIMAGE_PENDING_CANONICAL",
+    "source": "17e41671c",
+    "actual_selected_full_periods": 8,
+    "actual_full_cold_windows": 48,
+    "current_Windows": "O0/O2 actualsource/input/Fortran/native/physical exact35day pluspositiveCLI/transaction PASS",
+    "current_Ubuntu": "Pending selected35day preservation; old actual full artifacts all independently audited",
+    "remaining": "AGE dry-domain, implicit/hysteretic/weather/other bottom compositions",
+    "full_family_closed": "UNKNOWN",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "RC3_changed": false
+  },
+  "extended_drainage_AGE_dryout": {
+    "classification": "NUMERICAL_FAILURE",
+    "implementation": "CURRENT_PUBLIC_READER_HARD_REFUSES_BEFORE_BUILD_OR_WORKER",
+    "actual_source": "bb0c05f26",
+    "actual_O0_accepted_days": 364,
+    "actual_O2_accepted_days": 364,
+    "failed_day": 365,
+    "real_component": "src/process/mod_b111_surface_age_budget.f90",
+    "reason": "Existing retained-AGE evaporation leaves positive AGE with zero final pond/infiltration/runoff capacity; water budget closes exactly in small real component. A resolution would change the scientific evaporation/storage contract; none selected.",
+    "scope": "Selected actual original automatic primary/secondary geometry and100day initialsoilAGE; do not infer whole-family numerical counts.",
+    "independent_of_water_CDE_qualification": true,
+    "global_gap_counts": "UNKNOWN"
   }
 }
