@@ -1,0 +1,211 @@
+--- GEORESTORE54/macropore_native.f90
++++ NATIVE55/macropore_native.f90
+@@ -1759,6 +1759,8 @@
+       real(8),save::origin_time52=0d0
+       integer,save::origin_n52=0,origin_dm52=0
+       logical,save::origin_ready52=.false.
++      character(*)::label55
++      integer::unit55
+       
+       select case (task)
+           
+@@ -1793,6 +1795,15 @@
+          call swap_error ('MacroStateVar', 'Illegal value for TASK')
+       end select
+ 
++      return
++      entry origin55_dump(label55)
++      open(newunit=unit55,file=trim(label55)//'.txt',status='replace')
++      write(unit55,*) 'stamp',origin_time52,origin_n52,origin_dm52,merge(1,0,origin_ready52)
++      write(unit55,*) 'reference',reference_origin52(1:numdm,1:numnod)
++      write(unit55,*) 'sorptivity',sorptivity_origin52(1:numdm,1:numnod)
++      write(unit55,*) 'dynamic',dynamic_origin54(1:numnod)
++      write(unit55,*) 'subsidence',subsidence_origin54(1:numnod)
++      close(unit55)
+       return
+     end subroutine MacroStateVar
+     
+--- GEORESTORE54/native_state.f90
++++ NATIVE55/native_state.f90
+@@ -20,7 +20,7 @@
+ implicit none
+ logical,save :: pending=.false.,macro_done=.false.
+ integer,save :: saved_n,saved_nd
+-logical,save :: day_ready=.false.
++logical,save :: day_ready=.false.,subday55=.false.
+ logical,save :: prefix_complete=.false.
+ real(8),save :: prefix_origin=0d0,coverage_end=0d0
+ character(32),save :: coverage_policy="PATCH_FROM_BALANCE_ORIGIN"
+@@ -118,9 +118,15 @@
+ if(swmacro/=1) return
+ if(rw==2) then
+  if(swmbf/=1.or.swabs/=1.or.IDecMpRat/=0.or.FlDecMpRat.or.fldecdt) error stop 'NATIVE09 unsupported boundary'
+- if(.not.day_ready) error stop 'MID11 writer phase not complete'
+- tag='SWAP431_MACRO_RESTART_V5'
+- write(u) tag,5,numnod,NumDm,signature,2
++ if(subday55) then
++  if(fldaystart.or.fldayend) error stop 'NATIVE55 only accepted subday writer'
++  tag='SWAP431_MACRO_RESTART_V6'
++  write(u) tag,6,numnod,NumDm,signature,1
++ else
++  if(.not.day_ready) error stop 'MID11 writer phase not complete'
++  tag='SWAP431_MACRO_RESTART_V5'
++  write(u) tag,5,numnod,NumDm,signature,2
++ end if
+  write(u) WaSrMpDm(1:NumDm)
+  write(u) WaUnMpDm(1:NumDm)
+  write(u) WaUnMpDmCp(1:NumDm,1:numnod)
+@@ -204,8 +210,10 @@
+  write(u) fl_cropemergence
+  write(u) fl_cropharvest
+  write(u) cumdens_top(1:numnod+1)
+- if(.not.prefix_complete.or.prefix_origin/=tstart) error stop 'PREFIX14 incomplete history'
+- write(u) prefix_origin,t1900,prefix_complete,coverage_policy
++ if(.not.subday55) then
++  if(.not.prefix_complete.or.prefix_origin/=tstart) error stop 'PREFIX14 incomplete history'
++  write(u) prefix_origin,t1900,prefix_complete,coverage_policy
++ end if
+  call ledger12_io(u,2)
+  tag='NATIVE09_COMPLETE'
+  write(u) tag
+@@ -214,7 +222,11 @@
+ read(u,iostat=ios) tag,v,n,nd,sig
+ if(ios/=0) error stop 'NATIVE09 missing trailer'
+ phase=1
+-if(((v==2.and.tag=='SWAP431_MACRO_RESTART_V2').or.(v==3.and.tag=='SWAP431_MACRO_RESTART_V3').or.(v==4.and.tag=='SWAP431_MACRO_RESTART_V4').or.(v==5.and.tag=='SWAP431_MACRO_RESTART_V5'))) then
++if(v==6.and.tag=='SWAP431_MACRO_RESTART_V6') then
++ backspace(u)
++ read(u,iostat=ios) tag,v,n,nd,sig,phase
++ if(ios/=0.or.phase/=1) error stop 'NATIVE55 invalid accepted subday phase'
++else if(((v==2.and.tag=='SWAP431_MACRO_RESTART_V2').or.(v==3.and.tag=='SWAP431_MACRO_RESTART_V3').or.(v==4.and.tag=='SWAP431_MACRO_RESTART_V4').or.(v==5.and.tag=='SWAP431_MACRO_RESTART_V5'))) then
+  backspace(u)
+  read(u,iostat=ios) tag,v,n,nd,sig,phase
+  if(ios/=0.or.phase/=2) error stop 'MID11 invalid completed-day phase'
+@@ -455,9 +467,9 @@
+ if(ios/=0) error stop 'NATIVE09 incomplete cumdens_top'
+ if(.not.all(ieee_is_finite(b_cumdens_top(1:n+1)))) error stop 'NATIVE09 nonfinite cumdens_top'
+ call get_environment_variable('LEDGER12_REQUIRE',require_ledger)
+-if(trim(require_ledger)=='1'.and.v/=5) error stop 'LEDGER12 required history absent'
++if(trim(require_ledger)=='1'.and.v/=5.and.v/=6) error stop 'LEDGER12 required history absent'
+ if(v>=3.and.nd/=5) error stop 'LEDGER12 selected domain mismatch'
+-if(v>=4) then
++if(v==4.or.v==5) then
+  read(u,iostat=ios) prefix_origin,coverage_end,prefix_complete,coverage_policy
+  if(ios/=0.or..not.prefix_complete.or.prefix_origin/=tstart.or.coverage_end/=b_t1900.or.coverage_policy/='PATCH_FROM_BALANCE_ORIGIN') error stop 'PREFIX14 history coverage mismatch'
+ end if
+@@ -723,3 +735,9 @@
+ real(8)::origin
+ prefix_origin=origin;prefix_complete=.true.
+ end subroutine
++
++subroutine native55_subday_ready(flag)
++use MOD_native09,only:subday55
++logical,intent(in)::flag
++subday55=flag
++end subroutine
+--- GEORESTORE54/soilwater_native.f90
++++ NATIVE55/soilwater_native.f90
+@@ -4,6 +4,8 @@
+    private
+    public :: soilwater, soilwaterstatevar,retry07_checkpoint,day11_boundary,prefix14_start
+    logical,save :: checkpoint_pending=.false.,followup_pending=.false.,restart_pending=.false.
++   logical,save::follow55=.false.,resume55=.false.
++   integer,save::stage55=0,follow_count55=0
+    integer,save :: checkpoint_phase=0
+    character(64),save :: qualification_outcome=''
+    real(8),save :: accepted_dt=0d0
+@@ -233,10 +235,16 @@
+ 
+ 
+ subroutine prefix14_start()
+- use DIAG19,only:start,qualification_active
++ use DIAG19,only:start,qualification_active,apply37,repair43
+  use CONTRACT06_CONTROL,only:use_patch
+  implicit none
++ character(24)::mode55
+  use_patch=.true.;qualification_active=.false.
++ call get_environment_variable('NATIVE55_MODE',mode55)
++ if(trim(mode55)=='RESTART') then
++  follow55=.true.;resume55=.true.;stage55=1
++  apply37=.true.;repair43=.true.;qualification_active=.true.
++ end if
+  call start()
+  open(newunit=prefix_unit,file='prefix_budget.txt',status='replace')
+  open(newunit=budget_unit,file='step_budget.txt',status='replace')
+@@ -261,7 +269,7 @@
+  use DIAG19,only:head_start,head_end,attempts,detail33,active_in_attempt,apply37,repair43,start45,qualification_active
+  use variables,only:t1900,dt,fldecdt,gwl,h,theta
+  use MOD_swap_mp,only:IDecMpRat,FlDecMpRat,GwlFlCpZo
+- use MOD_macropore,only:MacroStateVar,ZWaLevDm,WaSrMpDm,FrMpWalWet,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp,QOutMtxUnsDmCp,FlEndSrpEvt
++ use MOD_macropore,only:origin55_dump,MacroStateVar,ZWaLevDm,WaSrMpDm,FrMpWalWet,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp,QOutMtxUnsDmCp,FlEndSrpEvt
+  use MOD_drain,only:drain
+  implicit none
+  character(24)::mode
+@@ -271,6 +279,26 @@
+  integer::i,target_attempt,u
+  real(8)::selected_time,selected_dt
+  handled=.true.
++ if(follow55) then
++  follow_count55=follow_count55+1
++  if(follow_count55>4) call finish33('NATIVE55_FOLLOW_RETRY_CAP')
++  detail33=.true.;apply37=.true.;repair43=.true.;qualification_active=.true.
++  write(label,'(a,i0)') 'follow_begin_',follow_count55
++  call inventory_dump(trim(label));call native09_dump('context_'//trim(label));call ledger12_dump('ledger_'//trim(label))
++  call origin55_dump('origin_'//trim(label))
++  call capture33();call head_start();call cache49_dump('cache_'//trim(label))
++  call headcalc;call head_end()
++  write(label,'(a,i0)') 'follow_returned_',follow_count55
++  call inventory_dump(trim(label));call native09_dump('context_'//trim(label));call ledger12_dump('ledger_'//trim(label))
++  if(.not.fldecdt.and..not.FlDecMpRat.and.IDecMpRat==0) then
++   reject26_pending=.true.
++  else if(FlDecMpRat.or.IDecMpRat/=0) then
++   call SoilWaterStateVar(2);call MacroStateVar(2)
++   call finish33('NATIVE55_FOLLOW_SCALED_REQUEST_EXCLUDED')
++  end if
++  return
++ end if
++
+  if(.not.period_begin_done) then
+   period_begin_done=.true.
+   call inventory_dump('begin')
+@@ -391,12 +419,39 @@
+   call inventory_dump('committed')
+   call native09_dump('context_committed')
+   call ledger12_dump('ledger_committed')
+-  call finish33('TARGET_RETRY_HOST_COMMITTED')
++  if(stage55==0) then
++   call write55('candidate')
++   call inventory_dump('checkpoint_after_io');call native09_dump('context_checkpoint_after_io');call ledger12_dump('ledger_checkpoint_after_io')
++   if(done35) call finish33('INTERNAL16_BEFORE_NATIVE55_CONTINUATION')
++   stage55=1;follow55=.true.;reject26_pending=.false.
++   return
++  else
++   call inventory_dump('follow_committed');call native09_dump('context_follow_committed');call ledger12_dump('ledger_follow_committed')
++   call write55('follow')
++   if(resume55) call finish33('NATIVE55_RESTART_ONE_FULL_STEP')
++   call finish33('NATIVE55_CONTINUOUS_ONE_FULL_STEP')
++  end if
+  end if
+  done35=commit()
+  if(t1900>=35797.490d0) call finish33('BOUNDED_CONTACT_REPAIRED_TRAJECTORY')
+  if(done35) call finish33('INTERNAL_BUDGET_BEFORE_SHORT_TARGET')
+  if(budget_count>=512) call finish33('COMMIT_CAP_BEFORE_SHORT_TARGET')
++end subroutine
++
++subroutine write55(name)
++ use variables,only:outfil
++ use MOD_swap_base,only:sw_end,sw_endtype,sw_endfilter,fl_initialize
++ implicit none
++ character(*),intent(in)::name
++ character(80)::saved_outfil
++ integer::saved_end,saved_type,saved_filter
++ logical::saved_initialize
++ saved_outfil=outfil;saved_end=sw_end;saved_type=sw_endtype;saved_filter=sw_endfilter;saved_initialize=fl_initialize
++ outfil=name;sw_end=1;sw_endtype=2;sw_endfilter=0;fl_initialize=.false.
++ call native55_subday_ready(.true.)
++ call inoutend(1)
++ call native55_subday_ready(.false.)
++ outfil=saved_outfil;sw_end=saved_end;sw_endtype=saved_type;sw_endfilter=saved_filter;fl_initialize=saved_initialize
+ end subroutine
+ 
+ subroutine finish33(reason)

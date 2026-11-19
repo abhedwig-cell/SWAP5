@@ -1,0 +1,16 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-NATIVE55",
+  "baseline": "1b6e02b9fc8101ebcb06e2ed360dcd8e56ca446c",
+  "scope": "Same originalD2 retry->actualhostcommit->ownnativeV6subdaycheckpoint->onefullsimultaneousfollowstep vsfreshprocessrestart; no newcontexts.",
+  "model_routes": 4,
+  "hard_seconds_per_route": 20,
+  "internal16_policy_unchanged": true,
+  "own_commit_cap": 512,
+  "retry_cap": 4,
+  "writer": "V6acceptedsubdayphase1, samephysicalfields+ledger asV5; no fullprefixcoverage claim; V5daywriter/readerkeptstrict",
+  "no_physics_clock_solver_dt_reduction_budget_changes": true,
+  "no_extra_provider": true,
+  "no_broad_campaign": true,
+  "no_fullperiod_daycrossing_or_general_restart_admission": true,
+  "promotion": false
+}
