@@ -220,6 +220,9 @@ def metadata(project):
                 stable_trial_projection='Selected extended drainage: actual original nodal theta difference in real128; original exported double daily totals and1e-10 guards unchanged',
                 positive_interception_renderer_sha256=sha(Path(__file__).with_name('implicit_interception_partition.py' if implicit else 'extended_interception.py')),
                 **({'implicit_pond_renderer_sha256':sha(Path(__file__).with_name('extended_implicit_pond.py')),
+                    'continuous_saturation_renderer_sha256':sha(Path(__file__).with_name('extended_implicit_saturation.py')),
+                    'near_saturation_reference_correction':'Original analytic Mualem continued toSe1; removes proved discontinuous near-saturation constant-K shortcut; consistent actual derivative, unchanged water equations/guards',
+                    'discontinuous_original_near_saturation_behavior_preserved':False,
                     'implicit_soil_pond_chain_rule':'J*(1+s)/(1+dt*G+s); original soil-mean derivative once, existing pond/supply slope, no accepted state'} if implicit else {}),
                 exact_pond_scope='Original runoff() unchanged; exact linear outward solve or complete monotone original root bracket, with piecewise analytic tangent',
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
@@ -312,6 +315,10 @@ def apply_build(output, donor_build, project, patched):
             (donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252'),
             (donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')),encoding='cp1252')
     patched=strict_trial_build(output,donor_build,patched,project)
+    if selection(project).get('swkimpl'):
+        from extended_implicit_saturation import source as continuous_saturation_source
+        path=output/'MOD_MvG_functions.f90'
+        path.write_text(continuous_saturation_source(path.read_text(encoding='cp1252')),encoding='cp1252')
     from extended_interception import render as positive_interception_source
     if selection(project).get('swkimpl'):
         # The existing implicit provider already preserves all modeled

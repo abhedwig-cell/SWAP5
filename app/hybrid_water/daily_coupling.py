@@ -198,7 +198,10 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Foreign original implicit saturated conductivity derivative policy')
     if implicit_saturation is not None:
         original=(reference/'build/swap-selected/MOD_MvG_functions.f90').read_text(encoding='cp1252')
-        if (bundle/'MOD_MvG_functions.f90').read_text(encoding='cp1252')!=implicit_saturation_source(original):
+        expected_saturation=implicit_saturation_source(original)
+        from extended_implicit_saturation import enabled as continuous_saturation_enabled,source as continuous_saturation_source
+        if continuous_saturation_enabled(project):expected_saturation=continuous_saturation_source(expected_saturation)
+        if (bundle/'MOD_MvG_functions.f90').read_text(encoding='cp1252')!=expected_saturation:
             raise ValueError('Foreign actual original implicit saturated derivative provider')
     from implicit_finite_newton import metadata as implicit_finite_metadata
     if identity.get('implicit_finite_newton')!=implicit_finite_metadata(project):

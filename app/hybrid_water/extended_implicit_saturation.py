@@ -15,3 +15,9 @@ def source(text):
  assert body.count(old)==1
  body=body.replace(old,'h_enpr(node)>h_crit.and.relsat>=1d0',1)
  return text[:begin]+body+text[end:]
+
+
+def enabled(project):
+    from extended_drainage import selection
+    selected=selection(project)
+    return bool(selected and selected.get('swkimpl'))
