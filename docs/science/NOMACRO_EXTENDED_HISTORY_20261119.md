@@ -9,7 +9,10 @@ The original explicit SWDRA2/SWHYST1 or2 processes are already present in the
 unmodified original hydraulic providers. The existing macro checkpoint renderer
 selects complete hydraulic history when the declared project requests it. The
 existing original-output hysteresis owner adds its paired40-byte domain before
-the complete calendar. S5EDH001 distinguishes this composition from history-off
+the complete calendar. The same unchanged domain validator also precedes the
+existing physical5*nodes+4 carry, allowing public receipt and weighted stock
+checks before any worker. These80 bytes are typed domains, not physical stores.
+S5EDH001 distinguishes this composition from history-off
 S5EDO001 and compatibility S5EDR001. The existing terminal drainage state remains
 last and retains its actual size/domain. The public calendar validator must
 check the exact paired history domain against the declared mode before a worker.
