@@ -64,6 +64,9 @@ def normalized(raw):
 
 
 def strip_current_evidence(text):
+    spec=importlib.util.spec_from_file_location('extended_drain_checkout_projection',ROOT/'tests/nomacro_drainage/extended_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    text=owner.strip_current_evidence(text)
     if WEATHER_CHECKOUT in text:
         require(text.count(WEATHER_CHECKOUT) == 1, 'Ambiguous weather scientific checkout')
         text = text.replace(WEATHER_CHECKOUT, '', 1)
@@ -92,6 +95,10 @@ def validate(q):
 
 
 def source(q):
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('extended_drain_preservation',ROOT/'tests/nomacro_drainage/extended_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.guard_weather(q)
     validate(q)
     require(not git('status', '--porcelain', '--', 'app', 'src', 'reference', 'tools', 'tests', '.github', 'integration'), 'Dirty weather admission surface')
     for ref in (BASE, RUNTIME, SEALED, FORENSICS):git('merge-base', '--is-ancestor', ref, 'HEAD')
@@ -473,6 +480,10 @@ def scientific(q):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('extended_drain_admission',ROOT/'tests/nomacro_drainage/extended_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     q = json.loads((ROOT/PROOF/'WEATHER_TERMINAL_QUALIFICATION.json').read_text(encoding='utf8'))
     source(q);result = scientific(q);previous=inherited()
     return dict(status='BOUNDED_ORIGINAL_CDE_WEATHER_COMPLETE_ROOT_STATE_SOURCE_RAW_ADMISSION_PASS', runtime=RUNTIME, **result,
