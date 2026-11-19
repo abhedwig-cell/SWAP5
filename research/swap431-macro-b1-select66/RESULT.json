@@ -1,0 +1,436 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-SELECT66",
+  "decision": "NO_TRUE_V_REJECTION_IN_EIGHT_BOUNDED_D2_PROPOSALS",
+  "model_routes": 9,
+  "hard_seconds_per_route": 20,
+  "all_normal_uncensored": true,
+  "source_and_binaries_unchanged_from_REJECT64": true,
+  "inherited_SELECT65_interval_only": true,
+  "O0_O2_comparisons": [
+    {
+      "profile": "SELECT8",
+      "physical_text_files_exact": 57,
+      "attempts_exact_except_elapsed": true,
+      "native_follow_packet_exact": true
+    }
+  ],
+  "actual_V_rejection_qualified": false,
+  "V_rollback_and_direct_smaller_retry_qualified": false,
+  "direct_smaller_retry_not_run_without_valid_V_rejected_origin": true,
+  "remaining_unsearched_interval": [
+    2.0906319347695626e-05,
+    2.0906340235665663e-05
+  ],
+  "interval_not_exhausted_and_no_monotonicity_claim": true,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "results": [
+    {
+      "opt": "O0",
+      "profile": "SELECT1",
+      "seconds": 0.9528606999665499,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.09058598123548e-05,
+          "rejected": false,
+          "iterations": 13,
+          "active_W": 9,
+          "active_V": 2,
+          "Fmax": 5.4047891565045525e-08,
+          "sumF": 3.708462599427365e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "independent_inventory": {
+        "matrix_delta": -4.598526895007531e-06,
+        "macro_delta": -1.3838979653203569e-06,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -5.9824326130036864e-06,
+        "error_cm": 7.752675798628947e-12,
+        "domain_errors_cm": [
+          -1.8772791209997058e-16,
+          3.43301941472917e-19,
+          3.328958596717608e-18,
+          -9.016930421318044e-20,
+          2.669477272831131e-20
+        ]
+      },
+      "inventory_error_cm": 7.75267579947598e-12,
+      "inventory_limit_cm": 2.09058598123548e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT2",
+      "seconds": 1.4540013996884227,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0907196642437215e-05,
+          "rejected": true,
+          "iterations": 30,
+          "active_W": 25,
+          "active_V": 0,
+          "Fmax": 0.006499569182079695,
+          "sumF": -0.02583298777800448,
+          "fresh": 0
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "rejected": false,
+          "iterations": 3,
+          "active_W": 1,
+          "active_V": 2,
+          "Fmax": 3.0444565790252454e-08,
+          "sumF": 2.091808557074075e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "independent_inventory": {
+        "matrix_delta": -2.2257545273197916e-06,
+        "macro_delta": -6.358490003897628e-07,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -2.861605619545732e-06,
+        "error_cm": 2.0918361774406743e-12,
+        "domain_errors_cm": [
+          3.078287136911578e-17,
+          -2.4173588478171307e-18,
+          -7.29589947281598e-19,
+          -3.4627434802694845e-20,
+          2.0595142891345283e-20
+        ]
+      },
+      "inventory_error_cm": 2.0918357437598053e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "rollback": {
+        "physical_context_exact_except_controller_dt_and_floor": true,
+        "ledger_exact": true,
+        "qualifies_V": false
+      }
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT3",
+      "seconds": 1.4191033001989126,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0906528227396007e-05,
+          "rejected": true,
+          "iterations": 30,
+          "active_W": 25,
+          "active_V": 0,
+          "Fmax": 0.006499583412812593,
+          "sumF": -0.025833067269954987,
+          "fresh": 0
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "rejected": false,
+          "iterations": 3,
+          "active_W": 1,
+          "active_V": 2,
+          "Fmax": 3.044456403297757e-08,
+          "sumF": 2.0918085424424957e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "independent_inventory": {
+        "matrix_delta": -2.2257545273197916e-06,
+        "macro_delta": -6.358490001677182e-07,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -2.8616056193626275e-06,
+        "error_cm": 2.091875117662842e-12,
+        "domain_errors_cm": [
+          6.973834012981468e-17,
+          -2.4177404869818454e-18,
+          -7.295508629976549e-19,
+          -3.4627434802694845e-20,
+          2.0595142891345283e-20
+        ]
+      },
+      "inventory_error_cm": 2.091874683981973e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "rollback": {
+        "physical_context_exact_except_controller_dt_and_floor": true,
+        "ledger_exact": true,
+        "qualifies_V": false
+      }
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT4",
+      "seconds": 0.8965896000154316,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.09061940198754e-05,
+          "rejected": false,
+          "iterations": 13,
+          "active_W": 9,
+          "active_V": 2,
+          "Fmax": 5.459728393344965e-08,
+          "sumF": 3.7464820470785647e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "independent_inventory": {
+        "matrix_delta": -4.59859924139167e-06,
+        "macro_delta": -1.3839211764036944e-06,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -5.982528250207865e-06,
+        "error_cm": 7.832412500421559e-12,
+        "domain_errors_cm": [
+          -5.810900128048677e-17,
+          5.093520821757869e-18,
+          -2.5500323923784737e-18,
+          -9.907307632670123e-20,
+          1.0718523659400877e-19
+        ]
+      },
+      "inventory_error_cm": 7.832412392848374e-12,
+      "inventory_limit_cm": 2.0906194019875404e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT5",
+      "seconds": 1.33912910008803,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0906361123635704e-05,
+          "rejected": true,
+          "iterations": 30,
+          "active_W": 25,
+          "active_V": 0,
+          "Fmax": 0.006499586971177224,
+          "sumF": -0.025833087118527897,
+          "fresh": 0
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "rejected": false,
+          "iterations": 3,
+          "active_W": 1,
+          "active_V": 2,
+          "Fmax": 3.044456403818174e-08,
+          "sumF": 2.0918085753296002e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "independent_inventory": {
+        "matrix_delta": -2.2257545273197916e-06,
+        "macro_delta": -6.358490001677182e-07,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -2.8616056193168335e-06,
+        "error_cm": 2.0918293236735816e-12,
+        "domain_errors_cm": [
+          2.3910469551568017e-17,
+          -2.4181936834899445e-18,
+          -7.29589947281598e-19,
+          -3.4627434802694845e-20,
+          2.0595142891345283e-20
+        ]
+      },
+      "inventory_error_cm": 2.0918288899927126e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "rollback": {
+        "physical_context_exact_except_controller_dt_and_floor": true,
+        "ledger_exact": true,
+        "qualifies_V": false
+      }
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT6",
+      "seconds": 0.9588583000004292,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.090627757175555e-05,
+          "rejected": false,
+          "iterations": 13,
+          "active_W": 9,
+          "active_V": 2,
+          "Fmax": 5.4736219660955765e-08,
+          "sumF": 3.7561238107437174e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "independent_inventory": {
+        "matrix_delta": -4.598617327987824e-06,
+        "macro_delta": -1.3839269787393029e-06,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -5.982552159510983e-06,
+        "error_cm": 7.852783855408294e-12,
+        "domain_errors_cm": [
+          1.270668005494066e-16,
+          -9.110761889772361e-19,
+          9.300421760852218e-19,
+          7.018131189144908e-20,
+          1.765203427188161e-21
+        ]
+      },
+      "inventory_error_cm": 7.852784070554663e-12,
+      "inventory_limit_cm": 2.0906277571755553e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT7",
+      "seconds": 0.9659945997409523,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0906319347695626e-05,
+          "rejected": false,
+          "iterations": 13,
+          "active_W": 9,
+          "active_V": 2,
+          "Fmax": 5.480595533478849e-08,
+          "sumF": 3.76045790238931e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "independent_inventory": {
+        "matrix_delta": -4.598626372353231e-06,
+        "macro_delta": -1.3839298801842292e-06,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -5.9825641141625865e-06,
+        "error_cm": 7.861625126019429e-12,
+        "domain_errors_cm": [
+          -1.1271975648881327e-16,
+          5.848442362236407e-18,
+          -1.3816166160901706e-18,
+          4.6454463200978034e-20,
+          -5.062262630763274e-20
+        ]
+      },
+      "inventory_error_cm": 7.861624910026027e-12,
+      "inventory_limit_cm": 2.0906319347695627e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT8",
+      "seconds": 1.3027399997226894,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0906340235665663e-05,
+          "rejected": true,
+          "iterations": 30,
+          "active_W": 25,
+          "active_V": 0,
+          "Fmax": 0.006499587415950969,
+          "sumF": -0.025833089618580666,
+          "fresh": 0
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "rejected": false,
+          "iterations": 3,
+          "active_W": 1,
+          "active_V": 2,
+          "Fmax": 3.044456403818174e-08,
+          "sumF": 2.0918085665687046e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "independent_inventory": {
+        "matrix_delta": -2.2257545273197916e-06,
+        "macro_delta": -6.358490001677182e-07,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -2.8616056193128546e-06,
+        "error_cm": 2.091825344736312e-12,
+        "domain_errors_cm": [
+          1.994084964426074e-17,
+          -2.4181936834899445e-18,
+          -7.29589947281598e-19,
+          -3.4627434802694845e-20,
+          2.0595142891345283e-20
+        ]
+      },
+      "inventory_error_cm": 2.091824911055443e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "rollback": {
+        "physical_context_exact_except_controller_dt_and_floor": true,
+        "ledger_exact": true,
+        "qualifies_V": false
+      }
+    },
+    {
+      "opt": "O2",
+      "profile": "SELECT8",
+      "seconds": 1.219757300335914,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0906340235665663e-05,
+          "rejected": true,
+          "iterations": 30,
+          "active_W": 25,
+          "active_V": 0,
+          "Fmax": 0.006499587415950969,
+          "sumF": -0.025833089618580666,
+          "fresh": 0
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "rejected": false,
+          "iterations": 3,
+          "active_W": 1,
+          "active_V": 2,
+          "Fmax": 3.044456403818174e-08,
+          "sumF": 2.0918085665687046e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "independent_inventory": {
+        "matrix_delta": -2.2257545273197916e-06,
+        "macro_delta": -6.358490001677182e-07,
+        "pond_delta": 0.0,
+        "canopy_delta": 0.0,
+        "external": -2.8616056193128546e-06,
+        "error_cm": 2.091825344736312e-12,
+        "domain_errors_cm": [
+          1.994084964426074e-17,
+          -2.4181936834899445e-18,
+          -7.29589947281598e-19,
+          -3.4627434802694845e-20,
+          2.0595142891345283e-20
+        ]
+      },
+      "inventory_error_cm": 2.091824911055443e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "rollback": {
+        "physical_context_exact_except_controller_dt_and_floor": true,
+        "ledger_exact": true,
+        "qualifies_V": false
+      }
+    }
+  ]
+}

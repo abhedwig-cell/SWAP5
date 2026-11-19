@@ -1,0 +1,3 @@
+# Herstel SELECT66
+
+Lees REPORT.md, RESULT.json, CONTRACT.md, SELECTION_PROGRESS.json en EVIDENCE.json. SELECT66 is afgerond als begrensde negatieve selectie; er is geen V-afwijzing of V-rollback/direct-retry-kwalificatie. Acht nieuwe middelpunten mogen niet automatisch worden verlengd. Het resterende interval is niet uitgeput en niet bewezen monotoon. Geen positieve claim ontlenen aan W-afwijzingen of V in de latere geaccepteerde dtmin-retries. Geen numerieke patch in deze eenheid. Volledige ruwe bewijzen en buildsluiting bevinden zich in het gecontroleerde archief. Vervolgwerk blijft beperkt tot een afzonderlijk geautoriseerde en afgebakende opdracht.
