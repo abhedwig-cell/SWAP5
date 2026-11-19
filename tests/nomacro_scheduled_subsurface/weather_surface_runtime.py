@@ -57,7 +57,7 @@ def main():
     parser.add_argument('--build-root', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--optimization', choices=('O0', 'O2'), required=True)
-    parser.add_argument('--days', type=int, choices=(5, 367, 1096), default=367)
+    parser.add_argument('--days', type=int, choices=(5, 367, 532, 1096), default=367)
     parser.add_argument('--reuse-build', action='store_true')
     a = parser.parse_args()
     out = a.output.resolve()
@@ -93,11 +93,13 @@ def main():
         windows = [(2, 4)]
         if a.days >= 367:
             windows += [(363, 364), (364, 367)]
+        if a.days >= 532:
+            windows += [(530, 532)]
         if a.days == 1096:
-            windows += [(530, 532), (1094, 1096)]
+            windows += [(1094, 1096)]
         trajectory = out / 'trajectory'
         q['trajectory'], data = m.trajectory(build, a.reference_work, project, trajectory,
-            a.days, {a.days, *(v for pair in windows for v in pair)}, 180)
+            a.days, {a.days, *({531} if a.days >= 532 else set()), *(v for pair in windows for v in pair)}, 180)
         save()
         q['cold'] = []
         for start, end in windows:
