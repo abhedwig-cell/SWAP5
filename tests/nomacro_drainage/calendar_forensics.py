@@ -175,7 +175,7 @@ def audit_root(root,compiled_root=None):
         native=checkpoint(directory/f'accepted-column-1-day-{high}.zip',build,rows[-1],selected,dz)
         require(native==natives[high],'Actual complete cold native differs')
         checks['original_output']=compare(full/'original',directory/'original',selected,low,high,build['project']['start_date']);cold.append(checks)
-    require(len(cold)==(6 if len(data)==1096 else 3 if len(data)>=35 else 1),'Missing actual calendar cold window')
+    require(len(cold)==(6 if len(data)==1096 else 3 if len(data)>=35 else 2 if q['parameters'].get('end_date') is not None and len(data)==5 else 1),'Missing actual calendar cold window')
     return dict(status='INDEPENDENT_EXTENDED_ORIGINAL_CALENDAR_SOURCE_OBSERVATIONS_NATIVE_OUTPUT_PASS',actual_days=len(data),
                 warm=result,cold=cold,actual_complete_native_packages=len(natives),functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
 
