@@ -24,15 +24,33 @@ GUARD_HOOK="""    import importlib.util
     owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
     return owner.prior_guards()
 """
+CHECKOUT_EVIDENCE='''            /integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_WINDOWS_O0_RAW_ARCHIVE.json
+            /integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_WINDOWS_O0_RAW.zip
+            /integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_*
+            /integration/f-ci/nomacro-complete01/GROUNDWATER_WATER_*
+'''
 require=gw.require;digest=gw.digest;git=gw.git;blob=gw.blob;tree=gw.tree
 spec=importlib.util.spec_from_file_location('literal_direct_projection',ROOT/'tests/saltfarm_newton/direct_admission.py');direct=importlib.util.module_from_spec(spec);spec.loader.exec_module(direct)
+
+
+def strip_evidence_checkout(text):
+ require(text.count(CHECKOUT_EVIDENCE)==1,'Missing/ambiguous current scientific evidence checkout')
+ return text.replace(CHECKOUT_EVIDENCE,'',1)
 
 
 def prior_guards():
  entry=(ROOT/ENTRY).read_text(encoding='utf8');require(entry.count(HOOK)==1 and entry.replace(HOOK,'',1).encode()==blob(PRIOR,ENTRY),'Qualified groundwater entry body changed')
  body=(ROOT/GUARD_ENTRY).read_text(encoding='utf8');require(body.count(GUARD_HOOK)==1 and body.replace(GUARD_HOOK,'',1).encode()==blob(BASE,GUARD_ENTRY),'Qualified canonical literal-guard body changed')
  for path,ref in [('tests/saltfarm_newton/direct_admission.py',BASE),('tests/nomacro_scheduled_subsurface/implicit_conductivity_verify.py',BASE),(gw.SELF,PRIOR),('tests/nomacro_scheduled_subsurface/implicit_conductivity_forensics.py',PRIOR)]:require((ROOT/path).read_bytes().replace(b'\r\n',b'\n')==blob(ref,path),'Inherited independent validator rewritten: '+path)
- return direct.nonselected_projection(baseline=gw.RUNTIME,runtime=RUNTIME)
+ # The actual literal app/coupler/CLI projection was already executed on
+ # RUNTIME before this operational-only checkout addition. Inherit that
+ # sealed result only while the actual producer source is still exact.
+ name=PROOF+'GROUNDWATER_WATER_COMPOSITION_QUALIFICATION.json';raw=(ROOT/name).read_bytes().replace(b'\r\n',b'\n');require(raw==blob(SEALED,name),'Actual sealed source projection record changed');record=json.loads(raw)['source_projection']
+ require(record['composed_source']==RUNTIME and record['groundwater_qualified_source']==gw.RUNTIME and record['incoming_canonical']==BASE and record['status']=='LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED','Actual literal source projection not qualified')
+ require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Qualified nonselected production projection changed')
+ workflows={direct.WORKFLOW,direct.COLUMN};require(set(git('diff','--name-only',BASE,'HEAD','--','.github').decode().splitlines())==workflows,'Unqualified workflow dependency changed')
+ for path in workflows:require(strip_evidence_checkout((ROOT/path).read_text(encoding='utf8')).encode()==blob(BASE,path),'Original workflow commands, limits or checkout rewritten')
+ return record['status']
 
 
 def source(q):
@@ -44,7 +62,7 @@ def source(q):
  for group in ('source_sha256','controller_sha256'):require(q[group] and all(gw.sha(ROOT/name)==value for name,value in q[group].items()),'Changed actual composed dependency')
  require(set(q['source_sha256'])==set(git('diff','--name-only',gw.BASE,RUNTIME,'--','app','src','reference','tools').decode().splitlines()) and set(q['controller_sha256'])=={'tests/nomacro_scheduled_subsurface/groundwater_water_composition_runtime.py'},'Composition dependency denominator changed')
  require(set(q['locations'])=={platform+'-'+opt for platform in ('Windows','Ubuntu') for opt in ('O0','O2')},'Composition platform/optimization missing')
- require(not git('diff',BASE,'HEAD','--','src','reference','tools','.github'),'Incoming physics/reference/CLI/workflow changed')
+ require(not git('diff',BASE,'HEAD','--','src','reference','tools'),'Incoming physics/reference/CLI changed')
  for path in ('app/hybrid_water/direct_day_kernel.py','app/hybrid_water/direct_day_kernel.f90'):require(blob(BASE,path)==blob(RUNTIME,path),'Incoming native bridge/lifecycle changed')
  require(prior_guards()=='LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED','Unselected groundwater source projection changed')
  original=json.loads((ROOT/PROOF/'GROUNDWATER_WATER_QUALIFICATION.json').read_text(encoding='utf8'));require(digest((ROOT/PROOF/'GROUNDWATER_WATER_QUALIFICATION.json').read_bytes().replace(b'\r\n',b'\n'))==q['groundwater_qualification_sha256'],'Original groundwater qualification rewritten')
@@ -54,7 +72,7 @@ def source(q):
  for ref in (gw.SEALED,BASE,SEALED):
   for name,value in tree(ref,'integration').items():
    if name not in mutable:require(current.get(name)==value,'Sealed/incoming integration evidence changed: '+name)
- allowed={SELF,ENTRY,GUARD_ENTRY,'tests/nomacro_scheduled_subsurface/test_groundwater_water_composition_verify.py',PROOF+'GROUNDWATER_WATER_MERGE_RECEIPT.json',*mutable,'docs/science/NOMACRO_GROUNDWATER_WATER_CALENDAR_20261119.md','docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md','docs/science/SWAP5_FUNCTIONAL_CLOSURE.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
+ allowed={SELF,ENTRY,GUARD_ENTRY,'tests/nomacro_scheduled_subsurface/test_groundwater_water_composition_verify.py','tests/hupsel51/test_successor.py',direct.WORKFLOW,direct.COLUMN,PROOF+'GROUNDWATER_WATER_MERGE_RECEIPT.json',*mutable,'docs/science/NOMACRO_GROUNDWATER_WATER_CALENDAR_20261119.md','docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md','docs/science/SWAP5_FUNCTIONAL_CLOSURE.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
  require(set(git('diff','--name-only',SEALED,'HEAD').decode().splitlines())<=allowed,'Unqualified post-composition-seal change')
  prior=q['actual_incoming_owner'];require(prior['head']==BASE and prior['returncode']==0 and json.loads(prior['stdout'])['status']=='CANONICAL_IMPLICIT_AND_DIRECT_SALTFARM_COMPOSITION_ADMISSION_PASS','Actual incoming clean canonical owner omitted')
  workflow=q['workflow'];require(workflow['conclusion']=='success' and workflow['merge'] is False and workflow['head_sha']==workflow['carrier'] and set(git('diff','--name-only',workflow['runtime'],workflow['carrier']).decode().splitlines())=={'.github/workflows/nomacro-coverage-prescribed-head.yml'},'Actual composition carrier not isolated/terminal')
