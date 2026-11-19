@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-age-groundwater01",
-  "last_commit": "e4322da80977c86861ab3aafe8f3035267c77582",
-  "status": "AGE_GROUNDWATER_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+  "branch": "codex/nomacro-implicit-conductivity01",
+  "last_commit": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
+  "status": "IMPLICIT_CONDUCTIVITY_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Bounded original implicit hydraulic conductivity SWKIMPL1 for default analytical MvG without examined-Ksat interpolation. Persist contract and numerical/build/input identity. Reuse old native layouts only after actual complete warm/cold state proof; source/native carrying changes only for a demonstrated missing state.",
-  "recovery_point": "codex/nomacro-age-groundwater01; actual sourcee4322da80/PR1756 and AGE_GROUNDWATER_MERGE_RECEIPT.json; metadata admission next.",
+  "next_code_change": "New implicit_conductivity.py numerical policy metadata plus bounded inspector/build/bundle identity dispatch; literal original HeadCalc/MvG/process providers and old0 routes. No copied derivative or speculative physical store.",
+  "recovery_point": "codex/nomacro-implicit-conductivity01; baselinecce2561eb; source audit and contract persisted before implementation and compilation.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Admit metadata with actual ordered parents/full tree/clean detached root. Then implement source-audited original SWKIMPL1 immutable numerical selection using literal original HeadCalc/MvG providers and existing complete state; no new physical equations or speculative state format.",
+  "next_action": "Persist explicit immutable SWKIMPL1 numerical selection and original unsupported-domain guards. Exercise small real original derivative interface, then actual O0/O2 short/build/native water/CDE/AGE composition. Existing native format stays only after complete actual cold proof.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -662,7 +662,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "e4322da80977c86861ab3aafe8f3035267c77582",
+  "canonical_head": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -24821,7 +24821,7 @@
     }
   },
   "age_groundwater": {
-    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+    "status": "ACTUAL_SOURCE_AND_METADATA_ADMITTED",
     "baseline": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
     "contract": "docs/science/NOMACRO_AGE_GROUNDWATER_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_SOURCE_AUDIT.json",
@@ -25484,6 +25484,25 @@
         "('in_progress', None)": 20
       },
       "role": "Automatic legacy PR checks outside selected qualification. Queued/in-progress is not PASS; exact external age-groundwater-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_AGE_GROUNDWATER_METADATA_MERGE_VERIFIED",
+      "pr": 1757,
+      "merge": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
+      "parents": [
+        "e4322da80977c86861ab3aafe8f3035267c77582",
+        "39bffb66214e21645af32c6e16cfe7ff8b8d94a2"
+      ],
+      "qualified_head": "39bffb66214e21645af32c6e16cfe7ff8b8d94a2",
+      "tree": "ca45c736bc3a251a7ce19a007a70fe916702e31d",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 286.2100833002478,
+        "head": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
+        "stdout": "{\n  \"status\": \"ORIGINAL_AGE_GROUNDWATER_REACTION_PRIVATE_CALENDAR_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"11ef02b1eb6d6a6e49655219229a01a8a60748de\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_AGE_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 264,\n  \"actual_native_private_refusals\": 948,\n  \"actual_policy_refusals\": 564,\n  \"actual_provider_refusals\": 24,\n  \"actual_1440_two_day_periods\": 8,\n  \"actual_1440_cold_windows\": 8,\n  \"actual_non_january_periods\": 24,\n  \"actual_epoch_cold_windows\": 96,\n  \"actual_postyear_counter_refusals\": 96,\n  \"actual_public_contexts\": 18,\n  \"actual_preserved_contexts\": 42,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
     }
   },
   "next_implicit_conductivity_audit": {
@@ -25707,5 +25726,15 @@
     },
     "original_constraint": "MOD_MvG_functions.dhconduc expressly rejects the examined-Ksat linear interpolation branch with SWKIMPL1. V1 is not a missing supported migration. V2 sets KSATEXM=KSATFIT; three actual original35day runs pass and public current code refuses SWKIMPL1.",
     "scientific_equivalence_claim": false
+  },
+  "implicit_conductivity": {
+    "status": "CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+    "baseline": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
+    "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
+    "source_audit": "integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_SOURCE_AUDIT.json",
+    "physical_equations_changed": false,
+    "qualification": "NOT_RUN",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "invariants": "Immutable numerical policy/input/source identity; literal original conductivity and HeadCalc; unchanged strict water/chemical/AGE guards; complete native/rollback/restart."
   }
 }
