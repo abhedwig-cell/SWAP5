@@ -68,6 +68,8 @@ end subroutine
 
 def state_source(text):
     """Retain raw interval counters and bind the day transfer to its real owner."""
+    anchor='  subroutine extended_drain_witness()';assert text.count(anchor)==1
+    prefix,text=text.split(anchor,1);prefix+=anchor
     old='    use MOD_integral, only: iqdra,iruno,cqdrain';assert text.count(old)==1
     text=text.replace(old,old+',hybrid_extended_counter_read\n    use hybrid_age_output_state,only:hybrid_output_frame',1)
     old='    real(8), allocatable :: values(:)';assert text.count(old)==1
@@ -84,7 +86,7 @@ def state_source(text):
 ''',1)
     old='        stock_origin,swst,real(flux,8),iqdra,iruno, &\n        cqdrain(1:nrlevs)-original_level_origin,real(level_flux,8)'
     assert text.count(old)==1
-    return text.replace(old,'''        stock_origin,swst,real(flux,8),hybrid_output_frame%flow_cm(14),hybrid_output_frame%flow_cm(9), &
+    return prefix+text.replace(old,'''        stock_origin,swst,real(flux,8),hybrid_output_frame%flow_cm(14),hybrid_output_frame%flow_cm(9), &
         original_levels,real(level_flux,8)''',1)
 
 
