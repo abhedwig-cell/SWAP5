@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-cde-interval01",
-  "last_commit": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
-  "status": "CDE_INTERVAL_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+  "branch": "codex/nomacro-cde-clock01",
+  "last_commit": "05b134dd6b3baadaef42a309589e757ad41a3c3f",
+  "status": "CDE_CLOCK_BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "CDE subdaily NPRINTDAY2..1440/FLPRINTDTtrue ordinary and Snow clock composition using actual saved interval state and independent daily receipt. Four original SWCSV1 35-day reader/cadence observations succeed, current public builds refuse; retain first original SWCSV3 crash as unqualified.",
-  "recovery_point": "codex/nomacro-cde-interval01 at actual366c52e91; CDE_INTERVAL_MERGE_RECEIPT.json; metadata admission next, then CDE subdaily/perstep clock implementation.",
+  "next_code_change": "After actual CDE clock source and metadata admission: source-audit and implement bounded missing AGE plus original heat/hysteresis/Snow state/calendar composition.",
+  "recovery_point": "codex/nomacro-cde-clock01; immutable runtime0038a20fc and seal8e0731453; registered owner PASS; source/metadata admission next.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Merge CDE metadata; verify actual ordered parents/full tree and clean detached registered owner. Then create CDE clock successor branch and persist bounded source/state contract before actual implementation.",
+  "next_action": "Persist source qualification documentation; run docs checks and clean exact qualified-head registered owner. Push and admit source then metadata through actual ordered parents/full tree/clean detached owner. Continue next source-audited historical AGE/process gap.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -446,8 +446,8 @@
   "qualified_age_fixed_runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
   "qualified_age_fixed_ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
   "age_fixed_sealed_proof": "56ae017e413503891d6c1a9709d1c882f2a14edb",
-  "active_branch": "codex/nomacro-cde-interval01",
-  "canonical_baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
+  "active_branch": "codex/nomacro-cde-clock01",
+  "canonical_baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
   "calendar_results": {
     "source": "7943551d0",
     "pilot": "O0/O2 ten-day and1096days/seven exact native windows PASS",
@@ -468,7 +468,14 @@
   "qualified_age_calendar_runtime": "75f4bf12f71286e0021877e9285df43beb6be01d",
   "qualified_age_calendar_ubuntu": "9321cc995ceaa327cab10b5ad0044fbb47fb0152",
   "age_calendar_sealed_proof": "accd67320a4a85db298f5aff55f1e0e87b2d782f",
-  "active_local_jobs": [],
+  "active_local_jobs": [
+    "cde-clock-windows-O0-v2",
+    "cde-clock-windows-O2-v2",
+    "cde-clock-epoch-O0-v2/year-controls",
+    "cde-clock-epoch-O2-v2/year-controls",
+    "cde-clock-preserve-interval/water/dense-O0-v1",
+    "cde-clock-preserve-interval/water/dense-O2-v1"
+  ],
   "schedule_known_next_dependencies": [
     "Original subdaily output-clock ownership after cold physical TSTART",
     "Monthly inactive-selector omission combinations: old generic preflight can still demand PERIOD when SWODAT0 remains present; current admitted-bound candidate uses full original decks",
@@ -655,7 +662,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+  "canonical_head": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -876,7 +883,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-cde-interval01",
+  "working_branch": "codex/nomacro-cde-clock01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -2409,7 +2416,7 @@
     ]
   },
   "cde_interval": {
-    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
+    "status": "ADMITTED",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scope": "ActualoriginalCDE Snow0/1 heat1calc2hys0/1/2 analyticsoil drain1 bottom5/8 dailyweather SWBR0/frost0 NPRINTDAY1 FLPRINTDTfalse monthly/explicit/PERIOD0/period2..366 SWRES0/1 formats0..3. Denseperiod1 andallother/nonCDE paths literal.",
     "original_reader_observations": [
@@ -3000,6 +3007,1708 @@
         "('in_progress', None)": 20
       },
       "role": "Automatic legacy PR checks outside selected scientific qualification. Queued/in-progress is not PASS; exact external cde-interval-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_CDE_INTERVAL_METADATA_MERGE_VERIFIED",
+      "pr": 1751,
+      "merge": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+      "parents": [
+        "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+        "819956fe73e79af06f22954d5c3151a52941a2f2"
+      ],
+      "qualified_head": "819956fe73e79af06f22954d5c3151a52941a2f2",
+      "tree": "d3356c61bdbdac6865c6433e1d3f15e70740c735",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 169.50239200005308,
+        "head": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+        "stdout": "{\n  \"status\": \"ORIGINAL_CDE_INTERVAL_PRIVATE_STATE_DAILY_MASS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"00658a9456b041a9b8c65517b4a9147ad941691e\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1536,\n  \"actual_policy_refusals\": 1296,\n  \"actual_provider_refusals\": 28,\n  \"actual_preserved_contexts\": 33,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    }
+  },
+  "cde_clock": {
+    "status": "BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
+    "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+    "contract": "docs/science/NOMACRO_CDE_CLOCK_20261119.md",
+    "source_audit": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\NEXT_CDE_CLOCK_SOURCE_AUDIT.json",
+    "original_reader_observations": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v2",
+    "retained_original_binary_reference_failure": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-baseline-v1",
+    "scientific_equivalence": "NOT_QUALIFIED",
+    "functional_completion": "PARTIAL",
+    "component_inheritance": {
+      "status": "SOURCE_BOUND_UNCHANGED_ACTUAL_CDE_PRODUCTION_INTERFACE_PROOF_INHERITED_NOT_REEXECUTED",
+      "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+      "source_commit": "41a9a13c47cb732180023b6f56706f6ee0725d8a",
+      "fresh_pass_claim": false,
+      "providers": {
+        "app/hybrid_water/cde_interval_receipt.f90": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+        "app/hybrid_water/cde_interval_output_state.f90": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+        "app/hybrid_water/cde_interval_snow_state.f90": "477374c748a3713001ee6c9e5c6f9ca9820a6f9599cd6c683e01315aba1150a2",
+        "app/hybrid_water/cde_interval_source.py": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7"
+      },
+      "actual_component": {
+        "status": "ACTUAL_CDE_INTERVAL_RECEIPT_COMPONENT_O0_O2_PASS",
+        "source_commit": "46d613ae0942efa25cffd887b76682c67ffe8bc9",
+        "cases": {
+          "O0": {
+            "command": [
+              "gfortran",
+              "-O0",
+              "-fcheck=all",
+              "-ffpe-trap=invalid,zero,overflow",
+              "-fno-fast-math",
+              "-ffp-contract=off",
+              "-ffree-line-length-none",
+              "-o",
+              "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-component-v3\\O0\\receipt.exe",
+              "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_interval_receipt.f90",
+              "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_interval_receipt.f90"
+            ],
+            "compile_returncode": 0,
+            "compile_seconds": 0.5592722999863327,
+            "run_returncode": 0,
+            "run_seconds": 0.123424899764359,
+            "executable_sha256": "3660c4dccc8303b61462b3d77688d32b382aed54f4c728de27e3c55e1ce28657"
+          },
+          "O2": {
+            "command": [
+              "gfortran",
+              "-O2",
+              "-fcheck=all",
+              "-ffpe-trap=invalid,zero,overflow",
+              "-fno-fast-math",
+              "-ffp-contract=off",
+              "-ffree-line-length-none",
+              "-o",
+              "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-interval-component-v3\\O2\\receipt.exe",
+              "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_interval_receipt.f90",
+              "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_interval_receipt.f90"
+            ],
+            "compile_returncode": 0,
+            "compile_seconds": 0.5234945002011955,
+            "run_returncode": 0,
+            "run_seconds": 0.1113502997905016,
+            "executable_sha256": "2346dccf79bbdd03db08ad2a29c61cc2738d63e81c562494f8274ceb4a5368aa"
+          }
+        }
+      },
+      "owning_contract": "docs/science/NOMACRO_CDE_CLOCK_20261119.md",
+      "fresh_composition": "New code generation/time/state composition has no isolated physical process formula. Actual original MOD_integral/MOD_solute/Snow closure in fresh persisted O0/O2 35day/own cold workers is the narrow real composition gate before broad/full execution."
+    },
+    "initial_pilots": {
+      "cde-clock-ordinary-O0-v1": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "41a9a13c47cb732180023b6f56706f6ee0725d8a",
+        "build": {
+          "returncode": 0,
+          "seconds": 25.590011999942362
+        },
+        "error": null
+      },
+      "cde-clock-snow-O0-v1": {
+        "status": "FAILED",
+        "source_commit": "41a9a13c47cb732180023b6f56706f6ee0725d8a",
+        "build": {
+          "returncode": 1,
+          "seconds": 1.454830199945718
+        },
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-snow-O0-v1\\\\input', '--original-output', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', 'O0', '--kernel-opt', 'O0', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-snow-O0-v1\\\\build'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 407, in <module>\\n    raise SystemExit(main())\\n                     ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 352, in main\\n    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,\\n                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)\\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\daily_host.py\", line 866, in build\\n    patched=age_calendar_owner.apply_build(output,donor_build,project,patched)\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\cde_clock_output.py\", line 191, in apply_build\\n    (output/\\'integral.f90\\').write_text(render_integral(original,watstor,selected),encoding=\\'cp1252\\')\\n                                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\cde_clock_output.py\", line 116, in render_integral\\n    assert source.count(anchor)==1\\n           ^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError\\n')"
+      },
+      "cde-clock-ordinary-O2-v1": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "41a9a13c47cb732180023b6f56706f6ee0725d8a",
+        "build": {
+          "returncode": 0,
+          "seconds": 21.46737559977919
+        },
+        "error": null
+      },
+      "cde-clock-snow-O2-v1": {
+        "status": "FAILED",
+        "source_commit": "41a9a13c47cb732180023b6f56706f6ee0725d8a",
+        "build": {
+          "returncode": 1,
+          "seconds": 1.3126445999369025
+        },
+        "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py', '--model', 'HYBRID_NOMACRO_WATER', '--experimental-project', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-snow-O2-v1\\\\input', '--original-output', '--reference-work', 'C:\\\\Users\\\\Veldh012\\\\swap5-coverage-evidence\\\\J_windows_provider', '--build-only', '--donor-opt', 'O2', '--kernel-opt', 'O2', '--output', 'C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-snow-O2-v1\\\\build'], '', 'Traceback (most recent call last):\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 407, in <module>\\n    raise SystemExit(main())\\n                     ~~~~^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\tools\\\\solute\\\\run_water.py\", line 352, in main\\n    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,\\n                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)\\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\daily_host.py\", line 866, in build\\n    patched=age_calendar_owner.apply_build(output,donor_build,project,patched)\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\cde_clock_output.py\", line 191, in apply_build\\n    (output/\\'integral.f90\\').write_text(render_integral(original,watstor,selected),encoding=\\'cp1252\\')\\n                                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"C:\\\\Users\\\\Veldh012\\\\swap5-nomacro-scheduled-chemical01\\\\app\\\\hybrid_water\\\\cde_clock_output.py\", line 116, in render_integral\\n    assert source.count(anchor)==1\\n           ^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError\\n')"
+      }
+    },
+    "retained_failure": "Both Snow per-step code generators refused before compilation/models because the adapter searched for the interval exact-count date guard. The literal admitted per-step template uses nonfuture-count semantics. Select that exact per-step anchor and preserve it outside the already-declared exact initial-past-date branch; explicit metadata distinguishes this policy. No physical/numerical/provider changes.",
+    "pilots": {
+      "cde-clock-ordinary-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "714a54191057db4f408b50af957e73254835c560",
+        "build": {
+          "returncode": 0,
+          "seconds": 26.185440099798143
+        },
+        "cold_windows": 4
+      },
+      "cde-clock-snow-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "714a54191057db4f408b50af957e73254835c560",
+        "build": {
+          "returncode": 0,
+          "seconds": 13.33295079972595
+        },
+        "cold_windows": 4
+      },
+      "cde-clock-ordinary-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "714a54191057db4f408b50af957e73254835c560",
+        "build": {
+          "returncode": 0,
+          "seconds": 30.03980669984594
+        },
+        "cold_windows": 4
+      },
+      "cde-clock-snow-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "714a54191057db4f408b50af957e73254835c560",
+        "build": {
+          "returncode": 0,
+          "seconds": 22.810452200006694
+        },
+        "cold_windows": 4
+      }
+    },
+    "controls": {
+      "cde-clock-controls-ordinary-O0-v1": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 50,
+        "policy_refusals": 63,
+        "actual_provider_refusals": 5,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "cde-clock-controls-snow-O0-v1": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 80,
+        "policy_refusals": 69,
+        "actual_provider_refusals": 6,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "cde-clock-controls-ordinary-O2-v1": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 50,
+        "policy_refusals": 63,
+        "actual_provider_refusals": 5,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "cde-clock-controls-snow-O2-v1": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 80,
+        "policy_refusals": 69,
+        "actual_provider_refusals": 6,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      }
+    },
+    "retained_1440_failure": {
+      "O0": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O0-v1",
+        "matrix_status": "FAILED",
+        "short_contexts": 10,
+        "native_contexts": 6,
+        "full_periods_started": false,
+        "actual_limit": {
+          "status": "FAILED",
+          "source_commit": "ff33b8f0867006cc5c87733d7eee5645b4544820",
+          "nprintday": 1440,
+          "perstep": false,
+          "snow": 0,
+          "source": "point",
+          "rain": null,
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "et": 0,
+          "optimization": "O0",
+          "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O0-v1\\limit-ordinary-subdaily\\input",
+          "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O0-v1\\limit-ordinary-subdaily\\build",
+          "original_output": {
+            "policy": "original-cde-clock-output-and-observed-daily-flux-v1",
+            "native_codec": "S5CCC001",
+            "cde_clock_output": true,
+            "cde_interval_output": true,
+            "thermal_output": false,
+            "thermal_calendar": false,
+            "thermal_clock": false,
+            "thermal_step": false,
+            "kind": "cde",
+            "swsnow": 0,
+            "swhea": 1,
+            "swcalt": 2,
+            "swfrost": 0,
+            "swdra": 1,
+            "swhyst": 0,
+            "swcsv": 3,
+            "nprintday": 1440,
+            "swmonth": 0,
+            "swodat": 1,
+            "swres": 1,
+            "requested_period": 0,
+            "period": 1,
+            "flprintdt": false,
+            "groups": "WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS",
+            "num_decimals": 12,
+            "source_sha256": "058ffcf4b9cadcb1ed97217e06cce9cc5642364baae62cec8aa6c75e28f567b7",
+            "predecessor_owner_sha256": "28ab49dd941cdc338d02584f1ff9a4e99962cba72495ca1e2df8115e20c66945",
+            "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+            "thermal_owner_sha256": "e209d581b3e73edc5676d19084e389dece7dde076c13756f4f7ebdfc03f37d2d",
+            "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+            "domain_source_sha256": null,
+            "native_domain_bytes": 0,
+            "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+            "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+            "original_output_epoch": 37256,
+            "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+            "snow_clock_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+            "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+            "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+            "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+            "original_flprintdt_date_gated": false,
+            "annual_counter_policy": "original-print-period-counter-v1",
+            "timecontrol_composition": "literal-original-bound-output-epoch-v1",
+            "trial_receipt_policy": "literal-original-independent-soil-candidate-bottom-cde-clock-v1",
+            "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+            "private_cde_interval_fields": [
+              "sampro0",
+              "rounderr"
+            ],
+            "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+            "cde_output_state_version": 2,
+            "cde_output_state_reals": 54,
+            "cde_output_state_private_reals": 2,
+            "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+            "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+            "cde_daily_mass_guard_mg_cm2": 1e-10,
+            "calendar_initial_past_date_policy": "original-initial-interval-pointer-remains-one-v1",
+            "original_pending_dates_not_normalized": true,
+            "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+            "conserved_cde_prefix_offset_bytes": 48,
+            "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+            "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+            "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+            "preserves_requested_groups_and_precision": true,
+            "undefined_allocation_tails_serialized": false,
+            "physical_equations_changed": false
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL",
+          "build": {
+            "returncode": 0,
+            "seconds": 13.368440099991858
+          },
+          "trajectory": {
+            "status": "SHORT_PASS",
+            "days": 2,
+            "budgets": {
+              "days": 2,
+              "max_water_cm": 7.903183316115836e-14,
+              "max_kernel_cm": 7.904787935331115e-14,
+              "max_solute_mg_cm2": 5.009326287108706e-12,
+              "sum_water_residual_cm": 7.767307161156748e-14
+            },
+            "model_seconds": 1.47318259999156,
+            "build_sha256": "cc2b47cfc844e5f7a72c8a243d79d8ab4db600b450ed667919aa017e3e668e38"
+          },
+          "requested_controls_preserved": true,
+          "daily_chemical_receipts": {
+            "actual_days": 2,
+            "actual_rows": [
+              [
+                0.0,
+                47.999999898570785,
+                0.0,
+                47.999999898575794,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -5.009326287108706e-12,
+                7.105427357601002e-15,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                7.105427357601002e-15
+              ],
+              [
+                47.999999898570785,
+                119.99999971076784,
+                0.0,
+                71.99999981224516,
+                -4.773243083091037e-11,
+                0.0,
+                0.0,
+                0.0,
+                -3.7841780740601365e-13,
+                -1.9895196601282805e-13,
+                0.0,
+                0.0,
+                -1.2492977804926234e-13,
+                0.0,
+                0.0,
+                0.0,
+                -7.402218796356571e-14
+              ]
+            ],
+            "actual_increment_counts": [
+              [
+                2146,
+                2857,
+                2146,
+                72964,
+                72964,
+                72964
+              ],
+              [
+                1440,
+                1500,
+                1440,
+                48960,
+                48960,
+                48960
+              ]
+            ],
+            "integrated_actual_chemical_residual_mg_cm2": -5.38774409451472e-12
+          },
+          "cold": [
+            {
+              "start": 1,
+              "end": 2,
+              "exact_physical": true,
+              "exact_complete_native": true,
+              "exact_user_output": {
+                "result_output.bin": {
+                  "exact": true,
+                  "continuation_records": 1440,
+                  "kind": "original_REAL4_binary"
+                }
+              },
+              "origin_unchanged": true,
+              "seconds": 0.7865899000316858
+            }
+          ],
+          "actual_fixed_incoming_mg_cm2": [
+            47.999999898575794,
+            71.99999981224516
+          ],
+          "error": "AssertionError()"
+        }
+      },
+      "O2": {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O2-v1",
+        "matrix_status": "FAILED",
+        "short_contexts": 10,
+        "native_contexts": 6,
+        "full_periods_started": false,
+        "actual_limit": {
+          "status": "FAILED",
+          "source_commit": "f76bbed12e728a3c0f3753d88f11013d32454633",
+          "nprintday": 1440,
+          "perstep": false,
+          "snow": 0,
+          "source": "point",
+          "rain": null,
+          "mode": "explicit",
+          "hysteresis": 0,
+          "format": 3,
+          "reset": 1,
+          "et": 0,
+          "optimization": "O2",
+          "input_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O2-v1\\limit-ordinary-subdaily\\input",
+          "build_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O2-v1\\limit-ordinary-subdaily\\build",
+          "original_output": {
+            "policy": "original-cde-clock-output-and-observed-daily-flux-v1",
+            "native_codec": "S5CCC001",
+            "cde_clock_output": true,
+            "cde_interval_output": true,
+            "thermal_output": false,
+            "thermal_calendar": false,
+            "thermal_clock": false,
+            "thermal_step": false,
+            "kind": "cde",
+            "swsnow": 0,
+            "swhea": 1,
+            "swcalt": 2,
+            "swfrost": 0,
+            "swdra": 1,
+            "swhyst": 0,
+            "swcsv": 3,
+            "nprintday": 1440,
+            "swmonth": 0,
+            "swodat": 1,
+            "swres": 1,
+            "requested_period": 0,
+            "period": 1,
+            "flprintdt": false,
+            "groups": "WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS",
+            "num_decimals": 12,
+            "source_sha256": "058ffcf4b9cadcb1ed97217e06cce9cc5642364baae62cec8aa6c75e28f567b7",
+            "predecessor_owner_sha256": "28ab49dd941cdc338d02584f1ff9a4e99962cba72495ca1e2df8115e20c66945",
+            "ordinary_owner_sha256": "bf1d870d5b366652989c1a719e43148593957a60d73171472648f58d94f7dfb3",
+            "thermal_owner_sha256": "e209d581b3e73edc5676d19084e389dece7dde076c13756f4f7ebdfc03f37d2d",
+            "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+            "domain_source_sha256": null,
+            "native_domain_bytes": 0,
+            "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+            "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+            "original_output_epoch": 37256,
+            "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+            "snow_clock_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+            "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+            "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+            "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+            "original_flprintdt_date_gated": false,
+            "annual_counter_policy": "original-print-period-counter-v1",
+            "timecontrol_composition": "literal-original-bound-output-epoch-v1",
+            "trial_receipt_policy": "literal-original-independent-soil-candidate-bottom-cde-clock-v1",
+            "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+            "private_cde_interval_fields": [
+              "sampro0",
+              "rounderr"
+            ],
+            "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+            "cde_output_state_version": 2,
+            "cde_output_state_reals": 54,
+            "cde_output_state_private_reals": 2,
+            "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+            "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+            "cde_daily_mass_guard_mg_cm2": 1e-10,
+            "calendar_initial_past_date_policy": "original-initial-interval-pointer-remains-one-v1",
+            "original_pending_dates_not_normalized": true,
+            "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+            "conserved_cde_prefix_offset_bytes": 48,
+            "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+            "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+            "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+            "preserves_requested_groups_and_precision": true,
+            "undefined_allocation_tails_serialized": false,
+            "physical_equations_changed": false
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL",
+          "build": {
+            "returncode": 0,
+            "seconds": 18.644829700235277
+          },
+          "trajectory": {
+            "status": "SHORT_PASS",
+            "days": 2,
+            "budgets": {
+              "days": 2,
+              "max_water_cm": 7.903183316115836e-14,
+              "max_kernel_cm": 7.904787935331115e-14,
+              "max_solute_mg_cm2": 5.009326287108706e-12,
+              "sum_water_residual_cm": 7.767307161156748e-14
+            },
+            "model_seconds": 1.153813499957323,
+            "build_sha256": "e2fed043824fd139c84edb196f3985737bfbb79a7efcdacbae8cb2ea3f4f337d"
+          },
+          "requested_controls_preserved": true,
+          "daily_chemical_receipts": {
+            "actual_days": 2,
+            "actual_rows": [
+              [
+                0.0,
+                47.999999898570785,
+                0.0,
+                47.999999898575794,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -5.009326287108706e-12,
+                7.105427357601002e-15,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                7.105427357601002e-15
+              ],
+              [
+                47.999999898570785,
+                119.99999971076784,
+                0.0,
+                71.99999981224516,
+                -4.773243083091037e-11,
+                0.0,
+                0.0,
+                0.0,
+                -3.7841780740601365e-13,
+                -1.9895196601282805e-13,
+                0.0,
+                0.0,
+                -1.2492977804926234e-13,
+                0.0,
+                0.0,
+                0.0,
+                -7.402218796356571e-14
+              ]
+            ],
+            "actual_increment_counts": [
+              [
+                2146,
+                2857,
+                2146,
+                72964,
+                72964,
+                72964
+              ],
+              [
+                1440,
+                1500,
+                1440,
+                48960,
+                48960,
+                48960
+              ]
+            ],
+            "integrated_actual_chemical_residual_mg_cm2": -5.38774409451472e-12
+          },
+          "cold": [
+            {
+              "start": 1,
+              "end": 2,
+              "exact_physical": true,
+              "exact_complete_native": true,
+              "exact_user_output": {
+                "result_output.bin": {
+                  "exact": true,
+                  "continuation_records": 1440,
+                  "kind": "original_REAL4_binary"
+                }
+              },
+              "origin_unchanged": true,
+              "seconds": 0.6494618002325296
+            }
+          ],
+          "actual_fixed_incoming_mg_cm2": [
+            47.999999898575794,
+            71.99999981224516
+          ],
+          "error": "AssertionError()"
+        }
+      }
+    },
+    "local_event_component": {
+      "status": "ACTUAL_CDE_CLOCK_LOCAL_EVENT_COMPONENT_O0_O2_PASS",
+      "source_commit": "9497aa99fc6c98feaa40bdb0cd74449e19fb6f4a",
+      "cases": {
+        "O0": {
+          "command": [
+            "gfortran",
+            "-O0",
+            "-fcheck=all",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-fno-fast-math",
+            "-ffp-contract=off",
+            "-ffree-line-length-none",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-events-component-v1\\O0\\receipt.exe",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_clock_events.f90",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_events.f90"
+          ],
+          "compile_returncode": 0,
+          "compile_seconds": 0.4980333000421524,
+          "run_returncode": 0,
+          "run_seconds": 0.11190420016646385,
+          "executable_sha256": "e68e6ecdeb4eef5310d10e4e69960d893b447d3dbda1ebfbc8a590dd4c8b1f81"
+        },
+        "O2": {
+          "command": [
+            "gfortran",
+            "-O2",
+            "-fcheck=all",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-fno-fast-math",
+            "-ffp-contract=off",
+            "-ffree-line-length-none",
+            "-o",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-events-component-v1\\O2\\receipt.exe",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\cde_clock_events.f90",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_events.f90"
+          ],
+          "compile_returncode": 0,
+          "compile_seconds": 0.4713449999690056,
+          "run_returncode": 0,
+          "run_seconds": 0.09857190027832985,
+          "executable_sha256": "3d4d28e513bbb5b177080b74b2af9ec77b16c8d00adb59af80eaa88c6c0339d8"
+        }
+      }
+    },
+    "fresh_pilots": {
+      "cde-clock-ordinary-O0-v3": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "e03c60075cf1905c26f63d9c1bfd5462bca1b630",
+        "build": {
+          "returncode": 0,
+          "seconds": 11.654862799681723
+        },
+        "cold_windows": 4
+      },
+      "cde-clock-snow-O0-v3": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "e03c60075cf1905c26f63d9c1bfd5462bca1b630",
+        "build": {
+          "returncode": 0,
+          "seconds": 12.469426299910992
+        },
+        "cold_windows": 4
+      },
+      "cde-clock-ordinary-O2-v3": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "e03c60075cf1905c26f63d9c1bfd5462bca1b630",
+        "build": {
+          "returncode": 0,
+          "seconds": 22.13363020028919
+        },
+        "cold_windows": 4
+      },
+      "cde-clock-snow-O2-v3": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "e03c60075cf1905c26f63d9c1bfd5462bca1b630",
+        "build": {
+          "returncode": 0,
+          "seconds": 20.49220889993012
+        },
+        "cold_windows": 4
+      }
+    },
+    "fresh_controls": {
+      "cde-clock-controls-ordinary-O0-v2": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 50,
+        "policy_refusals": 66,
+        "actual_provider_refusals": 6,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "cde-clock-controls-snow-O0-v2": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 80,
+        "policy_refusals": 72,
+        "actual_provider_refusals": 7,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "cde-clock-controls-ordinary-O2-v2": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 50,
+        "policy_refusals": 66,
+        "actual_provider_refusals": 6,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "cde-clock-controls-snow-O2-v2": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 80,
+        "policy_refusals": 72,
+        "actual_provider_refusals": 7,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      }
+    },
+    "corrected_limits": {
+      "cde-clock-limit-ordinary-subdaily-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "2c19497bda365cae8ed103b4fcd1ce8387945754",
+        "actual_fixed_incoming_mg_cm2": [
+          48.0,
+          72.00000000000006
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 7.85278959913871e-14,
+            "max_kernel_cm": 7.838174553853605e-14,
+            "max_solute_mg_cm2": 5.016431714466307e-12,
+            "sum_water_residual_cm": 7.628095602209609e-14
+          },
+          "model_seconds": 1.6181840999051929,
+          "build_sha256": "d3c48dfc9ac982c824c01d68dca6583cf430affc74687fdb7b3d10e70ec25307"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1440,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.7951201000250876
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": null
+      },
+      "cde-clock-limit-ordinary-perstep-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "208eb009cb09d3902d529bd557989a7d145cc765",
+        "actual_fixed_incoming_mg_cm2": [
+          48.000000000000334,
+          72.0
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.2405267785231544e-13,
+            "max_kernel_cm": 1.2390088954816747e-13,
+            "max_solute_mg_cm2": 5.300648808770347e-12,
+            "sum_water_residual_cm": 1.377929494376267e-13
+          },
+          "model_seconds": 0.806521600112319,
+          "build_sha256": "8300bfdde00cc293cbb304530511f5d3571b7bb5490b2f620f246db0f5cc0a20"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.5101255001500249
+          }
+        ],
+        "retained_post_validation_failure": {
+          "path": "RETAINED_FAILED_RESULT.json",
+          "sha256": "18b39adc3258966807aa85306b6067c1ad1e0841fb7c797873c96e55c9e2051b",
+          "error": "AssertionError()",
+          "no_model_or_build_reexecution": true
+        },
+        "bounded_rain_coverage": "NO_RAIN_IN_SELECTED_TWO_DAY_FORCING_POSITIVE_RAIN_SELECTED_IN_35DAY_COHORT"
+      },
+      "cde-clock-limit-snow-subdaily-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "a574d45feb1f2317566743e7b99c1fc09193834b",
+        "actual_fixed_incoming_mg_cm2": [
+          47.999999999999844,
+          72.0
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.9542574625406824e-13,
+            "max_kernel_cm": 1.9539925233402755e-13,
+            "max_solute_mg_cm2": 4.164432976957086e-12,
+            "sum_water_residual_cm": -1.9439098370064808e-13
+          },
+          "model_seconds": 1.5026968996971846,
+          "build_sha256": "68647f90f171eeaa95280b1d228b8e87ebf118a861b53c0152adcbceaad33e8f"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1440,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.6909230002202094
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": null
+      },
+      "cde-clock-limit-snow-perstep-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "a574d45feb1f2317566743e7b99c1fc09193834b",
+        "actual_fixed_incoming_mg_cm2": [
+          48.000000000000355,
+          72.00000000000004
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 8.02009969734182e-15,
+            "max_kernel_cm": 7.993605777301127e-15,
+            "max_solute_mg_cm2": 4.909850304102292e-12,
+            "sum_water_residual_cm": -6.313565477849637e-15
+          },
+          "model_seconds": 1.2006321996450424,
+          "build_sha256": "6b7346d06877f3e02852378e02167f969c1944d2b26ffdaada7bd51892646091"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.43114160001277924
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": "NO_RAIN_IN_SELECTED_TWO_DAY_FORCING_POSITIVE_RAIN_SELECTED_IN_35DAY_COHORT"
+      },
+      "cde-clock-limit-ordinary-subdaily-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "2c19497bda365cae8ed103b4fcd1ce8387945754",
+        "actual_fixed_incoming_mg_cm2": [
+          48.0,
+          72.00000000000006
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 7.85278959913871e-14,
+            "max_kernel_cm": 7.838174553853605e-14,
+            "max_solute_mg_cm2": 5.016431714466307e-12,
+            "sum_water_residual_cm": 7.628095602209609e-14
+          },
+          "model_seconds": 1.2788455998525023,
+          "build_sha256": "919100b2ca46d21a590d75cabb4bbf9ae1c4b0adb1ca4ba2bd3c2683f897af52"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1440,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.6855202000588179
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": null
+      },
+      "cde-clock-limit-ordinary-perstep-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "208eb009cb09d3902d529bd557989a7d145cc765",
+        "actual_fixed_incoming_mg_cm2": [
+          48.000000000000334,
+          72.0
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.2405267785231544e-13,
+            "max_kernel_cm": 1.2390088954816747e-13,
+            "max_solute_mg_cm2": 5.300648808770347e-12,
+            "sum_water_residual_cm": 1.377929494376267e-13
+          },
+          "model_seconds": 0.678177900146693,
+          "build_sha256": "f4c861cc30de802e1d0c28dca5249f6df2b26c82f4ccb02f806308c9818de749"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.4116181000135839
+          }
+        ],
+        "retained_post_validation_failure": {
+          "path": "RETAINED_FAILED_RESULT.json",
+          "sha256": "0953aa2b900977033c397780869039e418c1cbf9f7cea34d0471c499931fb8f8",
+          "error": "AssertionError()",
+          "no_model_or_build_reexecution": true
+        },
+        "bounded_rain_coverage": "NO_RAIN_IN_SELECTED_TWO_DAY_FORCING_POSITIVE_RAIN_SELECTED_IN_35DAY_COHORT"
+      },
+      "cde-clock-limit-snow-subdaily-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "a574d45feb1f2317566743e7b99c1fc09193834b",
+        "actual_fixed_incoming_mg_cm2": [
+          47.999999999999844,
+          72.0
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.9542574625406824e-13,
+            "max_kernel_cm": 1.9539925233402755e-13,
+            "max_solute_mg_cm2": 4.164432976957086e-12,
+            "sum_water_residual_cm": -1.9439098370064808e-13
+          },
+          "model_seconds": 1.7065215003676713,
+          "build_sha256": "9daa5ac65838f07c47450fbcd8c48d919da813083957cafee4e4f4527ce567d6"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1440,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.7042887001298368
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": null
+      },
+      "cde-clock-limit-snow-perstep-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "a574d45feb1f2317566743e7b99c1fc09193834b",
+        "actual_fixed_incoming_mg_cm2": [
+          48.000000000000355,
+          72.00000000000004
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 8.02009969734182e-15,
+            "max_kernel_cm": 7.993605777301127e-15,
+            "max_solute_mg_cm2": 4.909850304102292e-12,
+            "sum_water_residual_cm": -6.313565477849637e-15
+          },
+          "model_seconds": 0.8670721999369562,
+          "build_sha256": "d3eefb2fb611a6d6a27eaae3fd0a371297f3607e07c7e51fab4c35269c6664f8"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.5362685001455247
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": "NO_RAIN_IN_SELECTED_TWO_DAY_FORCING_POSITIVE_RAIN_SELECTED_IN_35DAY_COHORT"
+      }
+    },
+    "local_event_comparison": {
+      "status": "ACTUAL_LOCAL_EVENT_CLOSURE_FIRST_1440_SOURCE_NATIVE_O0_O2_PASS",
+      "scientific_claim": false,
+      "cases": {
+        "O0": {
+          "old_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O0-v1\\limit-ordinary-subdaily",
+          "new_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-limit-ordinary-subdaily-O0-v2",
+          "old_source": "ff33b8f0867006cc5c87733d7eee5645b4544820",
+          "new_source": "2c19497bda365cae8ed103b4fcd1ce8387945754",
+          "old_status": "FAILED",
+          "new_status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+          "original_planned_source_mg_cm2": [
+            48.0,
+            72.0
+          ],
+          "old_actual_source_mg_cm2": [
+            47.999999898575794,
+            71.99999981224516
+          ],
+          "new_actual_source_mg_cm2": [
+            48.0,
+            72.00000000000006
+          ],
+          "old_budgets": {
+            "days": 2,
+            "max_water_cm": 7.903183316115836e-14,
+            "max_kernel_cm": 7.904787935331115e-14,
+            "max_solute_mg_cm2": 5.009326287108706e-12,
+            "sum_water_residual_cm": 7.767307161156748e-14
+          },
+          "new_budgets": {
+            "days": 2,
+            "max_water_cm": 7.85278959913871e-14,
+            "max_kernel_cm": 7.838174553853605e-14,
+            "max_solute_mg_cm2": 5.016431714466307e-12,
+            "sum_water_residual_cm": 7.628095602209609e-14
+          },
+          "exact_input_project_kernel_flags": true,
+          "changed_original_generated": [
+            "timecontrol.f90"
+          ],
+          "added_generated": [
+            "cde_clock_events.f90"
+          ],
+          "actual_local_event_closure_rows": [
+            [
+              0.082638888716039,
+              3.53022404144393e-05,
+              0.0006944444442827519,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006944446172943292
+            ],
+            [
+              0.08267419095645344,
+              3.53022404144393e-05,
+              0.0006591422037066225,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006591423768798899
+            ],
+            [
+              0.08270949319686788,
+              3.53022404144393e-05,
+              0.0006238399631304931,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006238401364654506
+            ],
+            [
+              0.08274479543728232,
+              3.53022404144393e-05,
+              0.0005885377225543637,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0005885378960510113
+            ],
+            [
+              0.08278009767769676,
+              3.53022404144393e-05,
+              0.0005532354819782342,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.000553235655636572
+            ],
+            [
+              0.0828153999181112,
+              3.53022404144393e-05,
+              0.0005179332414021048,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0005179334152221327
+            ],
+            [
+              0.08285070215852564,
+              3.53022404144393e-05,
+              0.00048263100082597543,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.00048263117480769335
+            ],
+            [
+              0.08288600439894007,
+              7.06044808288786e-05,
+              0.000447328760249846,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00044732893439325405
+            ],
+            [
+              0.08295660887976895,
+              7.06044808288786e-05,
+              0.0003767242790975872,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00037672445356437545
+            ],
+            [
+              0.08302721336059783,
+              7.06044808288786e-05,
+              0.0003061197979453284,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00030611997273549685
+            ],
+            [
+              0.08309781784142671,
+              7.06044808288786e-05,
+              0.00023551531679306958,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00023551549190661825
+            ],
+            [
+              0.08316842232225559,
+              7.06044808288786e-05,
+              0.00016491083564081077,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00016491101107773964
+            ],
+            [
+              0.08323902680308447,
+              7.06044808288786e-05,
+              9.430635448855196e-05,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              9.430653024886104e-05
+            ],
+            [
+              0.08330963128391335,
+              7.06044808288786e-05,
+              2.3701873336293144e-05,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              2.370204941998244e-05
+            ],
+            [
+              0.9993055541805471,
+              0.0006944444444444445,
+              0.0006944444467080757,
+              1.0,
+              1e-08,
+              0.0006944458194528824,
+              0.0006944458194528824
+            ],
+            [
+              0.04097222211356777,
+              0.0006944444444444445,
+              0.0006944445530988955,
+              0.041666666666666664,
+              1e-08,
+              0.0006944445530988955,
+              0.0006944445530988955
+            ],
+            [
+              0.999305554344024,
+              0.0006944444444444445,
+              0.0006944444467080757,
+              1.0,
+              1e-08,
+              0.0006944456559759837,
+              0.0006944456559759837
+            ]
+          ],
+          "new_cold": [
+            {
+              "start": 1,
+              "end": 2,
+              "exact_physical": true,
+              "exact_complete_native": true,
+              "exact_user_output": {
+                "result_output.bin": {
+                  "exact": true,
+                  "continuation_records": 1440,
+                  "kind": "original_REAL4_binary"
+                }
+              },
+              "origin_unchanged": true,
+              "seconds": 0.7951201000250876
+            }
+          ],
+          "original_executable_hashes_retained": {
+            "old": {
+              "donor": "ac8a6cb1e151d05619335df33d1dc9c66d5bb21ad3ab536280412498d2696641",
+              "kernel": "d2c07d9a8f7ec893b5e44d06cbe49e4609fdad9ea0485bdae84a58a7b213679d"
+            },
+            "new": {
+              "donor": "5ea84c72ff030a8971b6af813870592a0a7836d314418656c1ae08948e593ff6",
+              "kernel": "293ba6375047eed52d70018ae81d59df9c063784df715a6f0ff905f0ddc0bd29"
+            }
+          }
+        },
+        "O2": {
+          "old_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O2-v1\\limit-ordinary-subdaily",
+          "new_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-limit-ordinary-subdaily-O2-v2",
+          "old_source": "f76bbed12e728a3c0f3753d88f11013d32454633",
+          "new_source": "2c19497bda365cae8ed103b4fcd1ce8387945754",
+          "old_status": "FAILED",
+          "new_status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+          "original_planned_source_mg_cm2": [
+            48.0,
+            72.0
+          ],
+          "old_actual_source_mg_cm2": [
+            47.999999898575794,
+            71.99999981224516
+          ],
+          "new_actual_source_mg_cm2": [
+            48.0,
+            72.00000000000006
+          ],
+          "old_budgets": {
+            "days": 2,
+            "max_water_cm": 7.903183316115836e-14,
+            "max_kernel_cm": 7.904787935331115e-14,
+            "max_solute_mg_cm2": 5.009326287108706e-12,
+            "sum_water_residual_cm": 7.767307161156748e-14
+          },
+          "new_budgets": {
+            "days": 2,
+            "max_water_cm": 7.85278959913871e-14,
+            "max_kernel_cm": 7.838174553853605e-14,
+            "max_solute_mg_cm2": 5.016431714466307e-12,
+            "sum_water_residual_cm": 7.628095602209609e-14
+          },
+          "exact_input_project_kernel_flags": true,
+          "changed_original_generated": [
+            "timecontrol.f90"
+          ],
+          "added_generated": [
+            "cde_clock_events.f90"
+          ],
+          "actual_local_event_closure_rows": [
+            [
+              0.082638888716039,
+              3.53022404144393e-05,
+              0.0006944444442827519,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006944446172943292
+            ],
+            [
+              0.08267419095645344,
+              3.53022404144393e-05,
+              0.0006591422037066225,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006591423768798899
+            ],
+            [
+              0.08270949319686788,
+              3.53022404144393e-05,
+              0.0006238399631304931,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006238401364654506
+            ],
+            [
+              0.08274479543728232,
+              3.53022404144393e-05,
+              0.0005885377225543637,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0005885378960510113
+            ],
+            [
+              0.08278009767769676,
+              3.53022404144393e-05,
+              0.0005532354819782342,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.000553235655636572
+            ],
+            [
+              0.0828153999181112,
+              3.53022404144393e-05,
+              0.0005179332414021048,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0005179334152221327
+            ],
+            [
+              0.08285070215852564,
+              3.53022404144393e-05,
+              0.00048263100082597543,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.00048263117480769335
+            ],
+            [
+              0.08288600439894007,
+              7.06044808288786e-05,
+              0.000447328760249846,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00044732893439325405
+            ],
+            [
+              0.08295660887976895,
+              7.06044808288786e-05,
+              0.0003767242790975872,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00037672445356437545
+            ],
+            [
+              0.08302721336059783,
+              7.06044808288786e-05,
+              0.0003061197979453284,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00030611997273549685
+            ],
+            [
+              0.08309781784142671,
+              7.06044808288786e-05,
+              0.00023551531679306958,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00023551549190661825
+            ],
+            [
+              0.08316842232225559,
+              7.06044808288786e-05,
+              0.00016491083564081077,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00016491101107773964
+            ],
+            [
+              0.08323902680308447,
+              7.06044808288786e-05,
+              9.430635448855196e-05,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              9.430653024886104e-05
+            ],
+            [
+              0.08330963128391335,
+              7.06044808288786e-05,
+              2.3701873336293144e-05,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              2.370204941998244e-05
+            ],
+            [
+              0.9993055541805471,
+              0.0006944444444444445,
+              0.0006944444467080757,
+              1.0,
+              1e-08,
+              0.0006944458194528824,
+              0.0006944458194528824
+            ],
+            [
+              0.04097222211356777,
+              0.0006944444444444445,
+              0.0006944445530988955,
+              0.041666666666666664,
+              1e-08,
+              0.0006944445530988955,
+              0.0006944445530988955
+            ],
+            [
+              0.999305554344024,
+              0.0006944444444444445,
+              0.0006944444467080757,
+              1.0,
+              1e-08,
+              0.0006944456559759837,
+              0.0006944456559759837
+            ]
+          ],
+          "new_cold": [
+            {
+              "start": 1,
+              "end": 2,
+              "exact_physical": true,
+              "exact_complete_native": true,
+              "exact_user_output": {
+                "result_output.bin": {
+                  "exact": true,
+                  "continuation_records": 1440,
+                  "kind": "original_REAL4_binary"
+                }
+              },
+              "origin_unchanged": true,
+              "seconds": 0.6855202000588179
+            }
+          ],
+          "original_executable_hashes_retained": {
+            "old": {
+              "donor": "3614d80cce450d9556e508d3cfd3af36b6128d915f48c7d2187768f7944de74e",
+              "kernel": "b92fcc038ab41be2f14d8b2aa5287f42a310cc16bbfc2b042fdecc23eb78d66d"
+            },
+            "new": {
+              "donor": "d7451e8fbde09282be60efb79cd89e30832e205b31e815b832f43efd75b621ab",
+              "kernel": "961329ebbbbec1fbec8d825f14e2cb9e031245b776025a9739edc707681e2cc0"
+            }
+          }
+        }
+      }
+    },
+    "preservation_selection": "Fresh four current CDE interval families, two old perstep water/Snow families andone dense Snow CDE v1 state per Windows opt and Ubuntu O2:21 actual contexts. SaltFarm/Grass/Hupsel/age/frost/GW and other old full campaigns NOT_SELECTED_IMPACT with literal early selector/dependency proof; no fresh PASS claim.",
+    "runtime": "0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af",
+    "qualification": "integration/f-ci/nomacro-complete01/CDE_CLOCK_QUALIFICATION.json",
+    "raw_archives": 8,
+    "raw_bytes": 911900534,
+    "registered_owner": {
+      "head": "05b134dd6b3baadaef42a309589e757ad41a3c3f",
+      "elapsed_seconds": 214.07006089994684,
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"ORIGINAL_CDE_CLOCK_LOCAL_EVENT_PRIVATE_STATE_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_CDE_INTERVAL_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1608,\n  \"actual_policy_refusals\": 1656,\n  \"actual_provider_refusals\": 52,\n  \"actual_preserved_contexts\": 21,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"actual_1440_two_day_periods\": 16,\n  \"actual_1440_cold_windows\": 16,\n  \"actual_postyear_counter_refusals\": 128,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    },
+    "actual_corruption_proof": {
+      "returncode": 0,
+      "elapsed_seconds": 64.20031470013782,
+      "stdout": "ACTUAL_CDE_CLOCK_RAW_RECEIPT_CORRUPTIONS_REFUSED 21\nACTUAL_CDE_CLOCK_LIMIT_EPOCH_EVENT_CORRUPTIONS_REFUSED 340\nACTUAL_CDE_CLOCK_NATIVE_PRIVATE_DAILY_PERIOD_CORRUPTIONS_REFUSED 4656\nACTUAL_CDE_CLOCK_PRIOR_PERIOD_CENSOR_CORRUPTIONS_REFUSED 42\nACTUAL_CDE_CLOCK_SCOPE_SOURCE_CORRUPTIONS_REFUSED 52\n",
+      "stderr": ".....\n----------------------------------------------------------------------\nRan 5 tests in 63.895s\n\nOK\n"
+    },
+    "actual_wrong_source_control": {
+      "base": "05b134dd6b3baadaef42a309589e757ad41a3c3f",
+      "branch": "codex/nomacro-cde-clock-negative01",
+      "sparse_checkout": [
+        "app",
+        "tests"
+      ],
+      "source": "app/hybrid_water/cde_clock_events.f90",
+      "checks": {
+        "dirty": {
+          "head": "05b134dd6b3baadaef42a309589e757ad41a3c3f",
+          "returncode": 1,
+          "seconds": 1.303089499939233,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 186, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\ordinary_reset_verify.py\", line 185, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\perstep_domain_verify.py\", line 195, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 235, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 252, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty CDE admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 29, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty CDE admission surface\n"
+        },
+        "committed": {
+          "head": "78b6274cc5db54416fe149f7422d6fada0a354d6",
+          "returncode": 1,
+          "seconds": 1.0281895999796689,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 186, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\ordinary_reset_verify.py\", line 185, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\perstep_domain_verify.py\", line 195, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 235, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 254, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'CDE production differs from qualified source')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 29, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: CDE production differs from qualified source\n"
+        },
+        "component_O0": {
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_component.py\", line 28, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_component.py\", line 21, in main\n    q['cases'][opt].update(run_returncode=r.returncode,run_seconds=time.perf_counter()-start,executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest());save();r.check_returncode()\n                                                                                                                                                                    ~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 508, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\n                             self.stderr)\nsubprocess.CalledProcessError: Command '['C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-wrong-source-component-O0\\\\O0\\\\receipt.exe']' returned non-zero exit status 1.\n",
+          "actual_report": {
+            "status": "FAILED",
+            "source_commit": "78b6274cc5db54416fe149f7422d6fada0a354d6",
+            "cases": {
+              "O0": {
+                "command": [
+                  "gfortran",
+                  "-O0",
+                  "-fcheck=all",
+                  "-ffpe-trap=invalid,zero,overflow",
+                  "-fno-fast-math",
+                  "-ffp-contract=off",
+                  "-ffree-line-length-none",
+                  "-o",
+                  "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-wrong-source-component-O0\\O0\\receipt.exe",
+                  "C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\app\\hybrid_water\\cde_clock_events.f90",
+                  "C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_events.f90"
+                ],
+                "compile_returncode": 0,
+                "compile_seconds": 2.514110800344497,
+                "run_returncode": 1,
+                "run_seconds": 0.6344016999937594,
+                "executable_sha256": "f29a94302dd4a6cf51a919b5beba1f0e32219d6033a1962f05b047ba08c68781"
+              }
+            },
+            "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-wrong-source-component-O0\\\\O0\\\\receipt.exe'], '', 'ERROR STOP Coincident event not closed\\n\\nError termination. Backtrace:\\n#0  0x40299b94\\n#1  0x40214471\\n#2  0x400c28f4\\n#3  0xe4971bc8\\n#4  0xe49724b2\\n#5  0xe4971156\\n#6  0xab90dda6\\n#7  0xad15ee4b\\n#8  0xffffffff\\n')"
+          }
+        },
+        "component_O2": {
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_component.py\", line 28, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_component.py\", line 21, in main\n    q['cases'][opt].update(run_returncode=r.returncode,run_seconds=time.perf_counter()-start,executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest());save();r.check_returncode()\n                                                                                                                                                                    ~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 508, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\n                             self.stderr)\nsubprocess.CalledProcessError: Command '['C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-wrong-source-component-O2\\\\O2\\\\receipt.exe']' returned non-zero exit status 1.\n",
+          "actual_report": {
+            "status": "FAILED",
+            "source_commit": "78b6274cc5db54416fe149f7422d6fada0a354d6",
+            "cases": {
+              "O2": {
+                "command": [
+                  "gfortran",
+                  "-O2",
+                  "-fcheck=all",
+                  "-ffpe-trap=invalid,zero,overflow",
+                  "-fno-fast-math",
+                  "-ffp-contract=off",
+                  "-ffree-line-length-none",
+                  "-o",
+                  "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-wrong-source-component-O2\\O2\\receipt.exe",
+                  "C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\app\\hybrid_water\\cde_clock_events.f90",
+                  "C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_events.f90"
+                ],
+                "compile_returncode": 0,
+                "compile_seconds": 0.4778976999223232,
+                "run_returncode": 1,
+                "run_seconds": 0.11806799983605742,
+                "executable_sha256": "05658eb84e232c2dfa229cde2620465a89603367090e15b859dd11aa290217bd"
+              }
+            },
+            "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-wrong-source-component-O2\\\\O2\\\\receipt.exe'], '', 'ERROR STOP Coincident event not closed\\n\\nError termination. Backtrace:\\n#0  0x40299b94\\n#1  0x40214471\\n#2  0x400c28f4\\n#3  0x9ee71cc2\\n#4  0x9ee728e9\\n#5  0x9ee71156\\n#6  0xab90dda6\\n#7  0xad15ee4b\\n#8  0xffffffff\\n')"
+          }
+        }
+      },
+      "control_head": "78b6274cc5db54416fe149f7422d6fada0a354d6",
+      "actual_source_diff": "diff --git a/app/hybrid_water/cde_clock_events.f90 b/app/hybrid_water/cde_clock_events.f90\nindex c26b038f8..b217cd7f7 100644\n--- a/app/hybrid_water/cde_clock_events.f90\n+++ b/app/hybrid_water/cde_clock_events.f90\n@@ -19,7 +19,7 @@ contains\n     if(dt<=0d0.or.event_limit<=0d0)return\n     status=CDE_CLOCK_EVENT_OK\n     target=1d0\n-    if(irrigation_end>tcum.and.irrigation_end<target)target=irrigation_end\n+    if(irrigation_end>tcum.and.irrigation_end<target)target=1d0\n     remaining=target-tcum\n     if(remaining<=0d0)return\n     new_dt=dt;new_limit=event_limit",
+      "status": "ACTUAL_DIRTY_COMMITTED_SOURCE_AND_O0_O2_INTERFACE_WRONG_ENDPOINT_REFUSED"
+    },
+    "actual_counts": {
+      "status": "ORIGINAL_CDE_CLOCK_LOCAL_EVENT_PRIVATE_STATE_NATIVE_ADMISSION_PASS",
+      "runtime": "0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af",
+      "predecessor": "LITERAL_ACTUAL_CANONICAL_CDE_INTERVAL_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS",
+      "actual_full_periods": 24,
+      "actual_main_cold_windows": 352,
+      "actual_native_refusals": 1608,
+      "actual_policy_refusals": 1656,
+      "actual_provider_refusals": 52,
+      "actual_preserved_contexts": 21,
+      "actual_non_january_periods": 32,
+      "actual_epoch_cold_windows": 128,
+      "actual_nonzero_private_alias_refusals": 48,
+      "actual_1440_two_day_periods": 16,
+      "actual_1440_cold_windows": 16,
+      "actual_postyear_counter_refusals": 128,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "selected_workflows": {
+      "main": {
+        "runtime": "0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af",
+        "carrier": "01ab5d95c879ce253ed4a667bf0d525ac38d3cb4",
+        "tree": "eff0248c0d0fa74438e55141f1763ce52a7943a2",
+        "branch": "codex/nomacro-cde-clock-portable01",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44426634761,
+        "conclusion": "success"
+      },
+      "preservation": {
+        "runtime": "0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af",
+        "carrier": "5f0eb55a0b991ab7217e550608240552fb609570",
+        "tree": "6cab36c51aecec9ea543f05357ade1055d0fd494",
+        "branch": "codex/nomacro-cde-clock-preservation01",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44426886393,
+        "conclusion": "success"
+      }
+    },
+    "retained_owner_observations": [
+      {
+        "head": "05b134dd6b3baadaef42a309589e757ad41a3c3f",
+        "elapsed_seconds": 214.07006089994684,
+        "returncode": 0,
+        "stdout": "{\n  \"status\": \"ORIGINAL_CDE_CLOCK_LOCAL_EVENT_PRIVATE_STATE_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_CDE_INTERVAL_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1608,\n  \"actual_policy_refusals\": 1656,\n  \"actual_provider_refusals\": 52,\n  \"actual_preserved_contexts\": 21,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"actual_1440_two_day_periods\": 16,\n  \"actual_1440_cold_windows\": 16,\n  \"actual_postyear_counter_refusals\": 128,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    ],
+    "retained_proof_failure": {
+      "returncode": 1,
+      "elapsed_seconds": 17.55025149974972,
+      "stdout": "ACTUAL_CDE_CLOCK_RAW_RECEIPT_CORRUPTIONS_REFUSED 21\nACTUAL_CDE_CLOCK_LIMIT_EPOCH_EVENT_CORRUPTIONS_REFUSED 340\nACTUAL_CDE_CLOCK_PRIOR_PERIOD_CENSOR_CORRUPTIONS_REFUSED 42\nACTUAL_CDE_CLOCK_SCOPE_SOURCE_CORRUPTIONS_REFUSED 52\n",
+      "stderr": "..E..\n======================================================================\nERROR: test_actual_native_ledger_and_period (__main__.Proof.test_actual_native_ledger_and_period)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_verify.py\", line 89, in test_actual_native_ledger_and_period\n    owner.daily(z,pp+'trajectory/',data,n,item['short']['daily_chemical_receipts'])\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 124, in daily\n    require(len(values)==len(counts)==len(data),'actual CDE daily observation omitted')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 29, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: actual CDE daily observation omitted\n\n----------------------------------------------------------------------\nRan 5 tests in 17.314s\n\nFAILED (errors=1)\n"
     }
   }
 }

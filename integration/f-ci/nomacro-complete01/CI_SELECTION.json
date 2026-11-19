@@ -1084,7 +1084,7 @@
     }
   },
   "cde_interval": {
-    "status": "ACTUAL_CANONICAL_SOURCE_ADMISSION_PASS",
+    "status": "ACTUAL_SOURCE_AND_METADATA_CANONICAL_ADMISSION_PASS",
     "baseline": "772850032abf4ef5caccfa1cab2ea253e7a21b18",
     "scientific_impact": "ActualCDE interval stock/roundoff state, originalnon-dailyglobal/private carry, independent observed dailychemicalflows andcompleteSnow calendar processcoupling.",
     "selected": [
@@ -1213,6 +1213,200 @@
         "('in_progress', None)": 20
       },
       "role": "Automatic legacy PR checks outside selected scientific qualification. Queued/in-progress is not PASS; exact external cde-interval-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    },
+    "actual_metadata_owner": {
+      "status": "ACTUAL_CDE_INTERVAL_METADATA_MERGE_VERIFIED",
+      "pr": 1751,
+      "merge": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+      "parents": [
+        "366c52e91c9f8a6ebbdbc34ae5a67d14ce167572",
+        "819956fe73e79af06f22954d5c3151a52941a2f2"
+      ],
+      "qualified_head": "819956fe73e79af06f22954d5c3151a52941a2f2",
+      "tree": "d3356c61bdbdac6865c6433e1d3f15e70740c735",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 169.50239200005308,
+        "head": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+        "stdout": "{\n  \"status\": \"ORIGINAL_CDE_INTERVAL_PRIVATE_STATE_DAILY_MASS_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"00658a9456b041a9b8c65517b4a9147ad941691e\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1536,\n  \"actual_policy_refusals\": 1296,\n  \"actual_provider_refusals\": 28,\n  \"actual_preserved_contexts\": 33,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    }
+  },
+  "cde_clock": {
+    "status": "BOUNDED_SOURCE_QUALIFICATION_PASS_CANONICAL_PENDING",
+    "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
+    "scientific_impact": "Original subdaily/perstep clock and complete CDE private interval/Snow/chemical daily receipt composition.",
+    "selected": [
+      "Unchanged real receipt/private provider source-bound small component proof inherited literally",
+      "Fresh ordinary NPD2 and Snow perstep NPD3 actual O0/O2 35day native cold before wider matrix",
+      "Actual reader/private/native/transaction/source controls and bounded1440limit2day; nonJanuary/year/leap/TEND",
+      "Representative selected full Windows/Ubuntu O0/O2 after all narrow gates",
+      "Fresh current CDE interval and genuinely affected clock seams; explicit source/selector impact selection for other old families"
+    ],
+    "not_selected": [
+      "Moving full F-CI",
+      "Retired highest-low-air",
+      "Automatic repeat of unaffected old full campaigns"
+    ],
+    "expected_cost": "Actual original source build previously20..40seconds; short models/cold typically seconds; record compile/link/model/validation and retain all failures/censors.",
+    "local_event_policy": "actual-local-irrigation-and-end-day-existing-dtcrit-v1",
+    "fresh_source_gates": {
+      "short35day_periods": 4,
+      "cold_windows": 16,
+      "limit1440_2day_periods": 8,
+      "limit_cold_windows": 8,
+      "native_refusals": 260,
+      "policy_refusals": 276,
+      "actual_provider_refusals": 26
+    },
+    "selected_prior_contexts": 21,
+    "actual_counts": {
+      "status": "ORIGINAL_CDE_CLOCK_LOCAL_EVENT_PRIVATE_STATE_NATIVE_ADMISSION_PASS",
+      "runtime": "0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af",
+      "predecessor": "LITERAL_ACTUAL_CANONICAL_CDE_INTERVAL_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS",
+      "actual_full_periods": 24,
+      "actual_main_cold_windows": 352,
+      "actual_native_refusals": 1608,
+      "actual_policy_refusals": 1656,
+      "actual_provider_refusals": 52,
+      "actual_preserved_contexts": 21,
+      "actual_non_january_periods": 32,
+      "actual_epoch_cold_windows": 128,
+      "actual_nonzero_private_alias_refusals": 48,
+      "actual_1440_two_day_periods": 16,
+      "actual_1440_cold_windows": 16,
+      "actual_postyear_counter_refusals": 128,
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED"
+    },
+    "actual_registered_owner": {
+      "head": "05b134dd6b3baadaef42a309589e757ad41a3c3f",
+      "elapsed_seconds": 214.07006089994684,
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"ORIGINAL_CDE_CLOCK_LOCAL_EVENT_PRIVATE_STATE_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_CDE_INTERVAL_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 352,\n  \"actual_native_refusals\": 1608,\n  \"actual_policy_refusals\": 1656,\n  \"actual_provider_refusals\": 52,\n  \"actual_preserved_contexts\": 21,\n  \"actual_non_january_periods\": 32,\n  \"actual_epoch_cold_windows\": 128,\n  \"actual_nonzero_private_alias_refusals\": 48,\n  \"actual_1440_two_day_periods\": 16,\n  \"actual_1440_cold_windows\": 16,\n  \"actual_postyear_counter_refusals\": 128,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    },
+    "actual_corruption_proof": {
+      "returncode": 0,
+      "elapsed_seconds": 64.20031470013782,
+      "stdout": "ACTUAL_CDE_CLOCK_RAW_RECEIPT_CORRUPTIONS_REFUSED 21\nACTUAL_CDE_CLOCK_LIMIT_EPOCH_EVENT_CORRUPTIONS_REFUSED 340\nACTUAL_CDE_CLOCK_NATIVE_PRIVATE_DAILY_PERIOD_CORRUPTIONS_REFUSED 4656\nACTUAL_CDE_CLOCK_PRIOR_PERIOD_CENSOR_CORRUPTIONS_REFUSED 42\nACTUAL_CDE_CLOCK_SCOPE_SOURCE_CORRUPTIONS_REFUSED 52\n",
+      "stderr": ".....\n----------------------------------------------------------------------\nRan 5 tests in 63.895s\n\nOK\n"
+    },
+    "actual_wrong_source_control": {
+      "base": "05b134dd6b3baadaef42a309589e757ad41a3c3f",
+      "branch": "codex/nomacro-cde-clock-negative01",
+      "sparse_checkout": [
+        "app",
+        "tests"
+      ],
+      "source": "app/hybrid_water/cde_clock_events.f90",
+      "checks": {
+        "dirty": {
+          "head": "05b134dd6b3baadaef42a309589e757ad41a3c3f",
+          "returncode": 1,
+          "seconds": 1.303089499939233,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 186, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\ordinary_reset_verify.py\", line 185, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\perstep_domain_verify.py\", line 195, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 235, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 252, in verify\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'dirty CDE admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 29, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: dirty CDE admission surface\n"
+        },
+        "committed": {
+          "head": "78b6274cc5db54416fe149f7422d6fada0a354d6",
+          "returncode": 1,
+          "seconds": 1.0281895999796689,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\hupsel51\\verify_successor.py\", line 687, in <module>\n    print(json.dumps(verify(), indent=2))\n                     ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\hupsel51\\verify_successor.py\", line 610, in verify\n    return pulse.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\irrigation_pulse\\verify.py\", line 54, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\verify.py\", line 79, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\chemical_verify.py\", line 105, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\scheduled_chemical_verify.py\", line 83, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\aquifer_verify.py\", line 88, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_verify.py\", line 121, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_composition_verify.py\", line 87, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_fixed_verify.py\", line 97, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_calendar_verify.py\", line 109, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_schedule_verify.py\", line 112, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_clock_verify.py\", line 183, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\original_output_verify.py\", line 218, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_hysteresis_verify.py\", line 138, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\age_irrigation_source_verify.py\", line 169, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\direct_soil_age_verify.py\", line 172, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_aquifer_verify.py\", line 106, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\output_thermal_verify.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_chemical_verify.py\", line 144, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\groundwater_history_verify.py\", line 143, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_calendar_verify.py\", line 139, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\saltfarm_newton\\verify_successor.py\", line 115, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_clock_verify.py\", line 219, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_step_verify.py\", line 182, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\thermal_reset_verify.py\", line 186, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\ordinary_reset_verify.py\", line 185, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\perstep_domain_verify.py\", line 195, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_interval_verify.py\", line 235, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 254, in verify\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'CDE production differs from qualified source')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_verify.py\", line 29, in require\n    if not condition:raise ValueError(message)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: CDE production differs from qualified source\n"
+        },
+        "component_O0": {
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_component.py\", line 28, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_component.py\", line 21, in main\n    q['cases'][opt].update(run_returncode=r.returncode,run_seconds=time.perf_counter()-start,executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest());save();r.check_returncode()\n                                                                                                                                                                    ~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 508, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\n                             self.stderr)\nsubprocess.CalledProcessError: Command '['C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-wrong-source-component-O0\\\\O0\\\\receipt.exe']' returned non-zero exit status 1.\n",
+          "actual_report": {
+            "status": "FAILED",
+            "source_commit": "78b6274cc5db54416fe149f7422d6fada0a354d6",
+            "cases": {
+              "O0": {
+                "command": [
+                  "gfortran",
+                  "-O0",
+                  "-fcheck=all",
+                  "-ffpe-trap=invalid,zero,overflow",
+                  "-fno-fast-math",
+                  "-ffp-contract=off",
+                  "-ffree-line-length-none",
+                  "-o",
+                  "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-wrong-source-component-O0\\O0\\receipt.exe",
+                  "C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\app\\hybrid_water\\cde_clock_events.f90",
+                  "C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_events.f90"
+                ],
+                "compile_returncode": 0,
+                "compile_seconds": 2.514110800344497,
+                "run_returncode": 1,
+                "run_seconds": 0.6344016999937594,
+                "executable_sha256": "f29a94302dd4a6cf51a919b5beba1f0e32219d6033a1962f05b047ba08c68781"
+              }
+            },
+            "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-wrong-source-component-O0\\\\O0\\\\receipt.exe'], '', 'ERROR STOP Coincident event not closed\\n\\nError termination. Backtrace:\\n#0  0x40299b94\\n#1  0x40214471\\n#2  0x400c28f4\\n#3  0xe4971bc8\\n#4  0xe49724b2\\n#5  0xe4971156\\n#6  0xab90dda6\\n#7  0xad15ee4b\\n#8  0xffffffff\\n')"
+          }
+        },
+        "component_O2": {
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_component.py\", line 28, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\cde_clock_component.py\", line 21, in main\n    q['cases'][opt].update(run_returncode=r.returncode,run_seconds=time.perf_counter()-start,executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest());save();r.check_returncode()\n                                                                                                                                                                    ~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\subprocess.py\", line 508, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\n                             self.stderr)\nsubprocess.CalledProcessError: Command '['C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-wrong-source-component-O2\\\\O2\\\\receipt.exe']' returned non-zero exit status 1.\n",
+          "actual_report": {
+            "status": "FAILED",
+            "source_commit": "78b6274cc5db54416fe149f7422d6fada0a354d6",
+            "cases": {
+              "O2": {
+                "command": [
+                  "gfortran",
+                  "-O2",
+                  "-fcheck=all",
+                  "-ffpe-trap=invalid,zero,overflow",
+                  "-fno-fast-math",
+                  "-ffp-contract=off",
+                  "-ffree-line-length-none",
+                  "-o",
+                  "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-wrong-source-component-O2\\O2\\receipt.exe",
+                  "C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\app\\hybrid_water\\cde_clock_events.f90",
+                  "C:\\Users\\Veldh012\\swap5-cde-clock-guard-control\\tests\\nomacro_scheduled_subsurface\\test_cde_clock_events.f90"
+                ],
+                "compile_returncode": 0,
+                "compile_seconds": 0.4778976999223232,
+                "run_returncode": 1,
+                "run_seconds": 0.11806799983605742,
+                "executable_sha256": "05658eb84e232c2dfa229cde2620465a89603367090e15b859dd11aa290217bd"
+              }
+            },
+            "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\swap5-complete01-evidence\\\\cde-clock-wrong-source-component-O2\\\\O2\\\\receipt.exe'], '', 'ERROR STOP Coincident event not closed\\n\\nError termination. Backtrace:\\n#0  0x40299b94\\n#1  0x40214471\\n#2  0x400c28f4\\n#3  0x9ee71cc2\\n#4  0x9ee728e9\\n#5  0x9ee71156\\n#6  0xab90dda6\\n#7  0xad15ee4b\\n#8  0xffffffff\\n')"
+          }
+        }
+      },
+      "control_head": "78b6274cc5db54416fe149f7422d6fada0a354d6",
+      "actual_source_diff": "diff --git a/app/hybrid_water/cde_clock_events.f90 b/app/hybrid_water/cde_clock_events.f90\nindex c26b038f8..b217cd7f7 100644\n--- a/app/hybrid_water/cde_clock_events.f90\n+++ b/app/hybrid_water/cde_clock_events.f90\n@@ -19,7 +19,7 @@ contains\n     if(dt<=0d0.or.event_limit<=0d0)return\n     status=CDE_CLOCK_EVENT_OK\n     target=1d0\n-    if(irrigation_end>tcum.and.irrigation_end<target)target=irrigation_end\n+    if(irrigation_end>tcum.and.irrigation_end<target)target=1d0\n     remaining=target-tcum\n     if(remaining<=0d0)return\n     new_dt=dt;new_limit=event_limit",
+      "status": "ACTUAL_DIRTY_COMMITTED_SOURCE_AND_O0_O2_INTERFACE_WRONG_ENDPOINT_REFUSED"
+    },
+    "workflows": {
+      "main": {
+        "runtime": "0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af",
+        "carrier": "01ab5d95c879ce253ed4a667bf0d525ac38d3cb4",
+        "tree": "eff0248c0d0fa74438e55141f1763ce52a7943a2",
+        "branch": "codex/nomacro-cde-clock-portable01",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44426634761,
+        "conclusion": "success"
+      },
+      "preservation": {
+        "runtime": "0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af",
+        "carrier": "5f0eb55a0b991ab7217e550608240552fb609570",
+        "tree": "6cab36c51aecec9ea543f05357ade1055d0fd494",
+        "branch": "codex/nomacro-cde-clock-preservation01",
+        "only_delta": ".github/workflows/nomacro-coverage-prescribed-head.yml",
+        "merge": false,
+        "id": 44426886393,
+        "conclusion": "success"
+      }
     }
   }
 }

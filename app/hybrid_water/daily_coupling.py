@@ -180,7 +180,7 @@ def validate_bundle(bundle, reference, project):
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     expected_cde_receipt=cde_receipt_metadata() if cde_receipt_enabled(project) else None
     if identity.get('cde_native_receipt')!=expected_cde_receipt:raise ValueError('Foreign CDE native receipt consistency policy; rebuild without rebinding')
-    from cde_interval_output import metadata as original_output_metadata
+    from cde_clock_output import metadata as original_output_metadata
     expected_output=original_output_metadata(project)
     if identity.get('original_output')!=expected_output:raise ValueError('Foreign original output policy; rebuild without rebinding')
     if expected_output and expected_output.get('thermal_calendar',False):
