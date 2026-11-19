@@ -1,5 +1,369 @@
 {
-  "stage": "PREREGISTERED_ROLLBACK_CONTRACT_DIAGNOSIS",
+  "work_unit": "SWAP431-MACRO-B1-INACTIVE51",
+  "decision": "ROLLBACK_CONTRACT_DELINEATED_EXACT_ORIGIN_REFERENCE_AND_INITIAL_SORPTIVITY_RESTORE_REQUIRED_CURRENT_IMPLEMENTATION_FAILS_STRICT_CONTRACT",
   "baseline": "f90b871d31a41f624d92abe1fb236c7395ed5015",
-  "promotion": false
+  "source_checkpoint": "3ec00a631",
+  "model_routes": 2,
+  "external_hard_seconds": 20,
+  "internal16_stop_policy_source_unchanged": true,
+  "internal16_is_not_strict_walltime_at_terminal_accepted_commit": true,
+  "physics_reference_clock_rollback_not_modified": true,
+  "O0_O2_non_timing_outputs_byte_exact": true,
+  "minimal_future_saved_arrays": [
+    "ThtSrpRefDmCp",
+    "SorpDmCp"
+  ],
+  "new_native_fields_required": false,
+  "rollback_repair_implemented": false,
+  "no_extra_provider_probe_or_context": true,
+  "full_native_restart_or_general_admission": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 17.998995299916714,
+      "complete_same_D2_chain": true,
+      "parent_all_nontiming_outputs_exact": true,
+      "event_start_receipts": 614,
+      "receipt_counts": [
+        {
+          "attempt": 1,
+          "domain": 3,
+          "node": 50,
+          "count": 119
+        },
+        {
+          "attempt": 1,
+          "domain": 4,
+          "node": 49,
+          "count": 123
+        },
+        {
+          "attempt": 2,
+          "domain": 3,
+          "node": 50,
+          "count": 68
+        },
+        {
+          "attempt": 2,
+          "domain": 4,
+          "node": 49,
+          "count": 136
+        },
+        {
+          "attempt": 3,
+          "domain": 3,
+          "node": 50,
+          "count": 54
+        },
+        {
+          "attempt": 3,
+          "domain": 4,
+          "node": 49,
+          "count": 106
+        },
+        {
+          "attempt": 4,
+          "domain": 4,
+          "node": 49,
+          "count": 8
+        }
+      ],
+      "all_logged_tau_exactly_zero": true,
+      "all_references_overwritten_with_theta_s_before_sorption": true,
+      "all_initial_sorptivities_recomputed_exactly_before_use": true,
+      "old_sorptivity_value_changed_in_receipts": 470,
+      "strict_inactive_history_rollback_contract_current_pass": false,
+      "history_contract_violations": [
+        {
+          "rollback": 1,
+          "field": "thtsrprefdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 1,
+          "field": "thtsrprefdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 1,
+          "field": "sorpdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.002953815260118678,
+          "tau": 0
+        },
+        {
+          "rollback": 1,
+          "field": "sorpdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.0011536825843924002,
+          "tau": 0
+        },
+        {
+          "rollback": 2,
+          "field": "thtsrprefdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 2,
+          "field": "thtsrprefdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 2,
+          "field": "sorpdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.002948448901352907,
+          "tau": 0
+        },
+        {
+          "rollback": 2,
+          "field": "sorpdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.0011513922473314554,
+          "tau": 0
+        },
+        {
+          "rollback": 3,
+          "field": "thtsrprefdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 3,
+          "field": "thtsrprefdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 3,
+          "field": "sorpdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.0029434983470536962,
+          "tau": 0
+        },
+        {
+          "rollback": 3,
+          "field": "sorpdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.001151998861838516,
+          "tau": 0
+        }
+      ],
+      "clock_AwlCorFac_and_active_history_unchanged": true,
+      "CONTACT47_cache_cleared_after_each_rollback": true,
+      "sealed_parent_direct_suffix_equivalence_inherited": true,
+      "internal_terminal_commit_elapsed_seconds": 17.0280577,
+      "internal16_exceeded_at_terminal_commit": true
+    },
+    {
+      "optimization": "O2",
+      "seconds": 11.518899799790233,
+      "complete_same_D2_chain": true,
+      "parent_all_nontiming_outputs_exact": true,
+      "event_start_receipts": 614,
+      "receipt_counts": [
+        {
+          "attempt": 1,
+          "domain": 3,
+          "node": 50,
+          "count": 119
+        },
+        {
+          "attempt": 1,
+          "domain": 4,
+          "node": 49,
+          "count": 123
+        },
+        {
+          "attempt": 2,
+          "domain": 3,
+          "node": 50,
+          "count": 68
+        },
+        {
+          "attempt": 2,
+          "domain": 4,
+          "node": 49,
+          "count": 136
+        },
+        {
+          "attempt": 3,
+          "domain": 3,
+          "node": 50,
+          "count": 54
+        },
+        {
+          "attempt": 3,
+          "domain": 4,
+          "node": 49,
+          "count": 106
+        },
+        {
+          "attempt": 4,
+          "domain": 4,
+          "node": 49,
+          "count": 8
+        }
+      ],
+      "all_logged_tau_exactly_zero": true,
+      "all_references_overwritten_with_theta_s_before_sorption": true,
+      "all_initial_sorptivities_recomputed_exactly_before_use": true,
+      "old_sorptivity_value_changed_in_receipts": 470,
+      "strict_inactive_history_rollback_contract_current_pass": false,
+      "history_contract_violations": [
+        {
+          "rollback": 1,
+          "field": "thtsrprefdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 1,
+          "field": "thtsrprefdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 1,
+          "field": "sorpdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.002953815260118678,
+          "tau": 0
+        },
+        {
+          "rollback": 1,
+          "field": "sorpdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.0011536825843924002,
+          "tau": 0
+        },
+        {
+          "rollback": 2,
+          "field": "thtsrprefdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 2,
+          "field": "thtsrprefdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 2,
+          "field": "sorpdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.002948448901352907,
+          "tau": 0
+        },
+        {
+          "rollback": 2,
+          "field": "sorpdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.0011513922473314554,
+          "tau": 0
+        },
+        {
+          "rollback": 3,
+          "field": "thtsrprefdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 3,
+          "field": "thtsrprefdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.444,
+          "tau": 0
+        },
+        {
+          "rollback": 3,
+          "field": "sorpdmcp",
+          "domain": 4,
+          "node": 49,
+          "before": 0.0,
+          "after": 0.0029434983470536962,
+          "tau": 0
+        },
+        {
+          "rollback": 3,
+          "field": "sorpdmcp",
+          "domain": 3,
+          "node": 50,
+          "before": 0.0,
+          "after": 0.001151998861838516,
+          "tau": 0
+        }
+      ],
+      "clock_AwlCorFac_and_active_history_unchanged": true,
+      "CONTACT47_cache_cleared_after_each_rollback": true,
+      "sealed_parent_direct_suffix_equivalence_inherited": true,
+      "internal_terminal_commit_elapsed_seconds": 10.853379,
+      "internal16_exceeded_at_terminal_commit": false
+    }
+  ],
+  "stage": "CONTRACT_DELINEATED_CURRENT_EXACT_INACTIVE_HISTORY_RESTORE_FAIL_NO_REPAIR",
+  "recovery": "ROLLBACK_CONTRACT.md; REPORT.md; RESULT.json; CODEX_FOLLOWUP.md; EVIDENCE.json",
+  "next_safe_step": "Separately authorized minimal two-array saved-origin restore and D2 qualification; no physics/clock/budget change, no broad campaign."
 }
