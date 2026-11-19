@@ -95,4 +95,19 @@ def apply_build(output, donor_build, project, patched):
     path.write_text(rendered, encoding='cp1252')
     if 'timecontrol' not in patched:
         patched.append('timecontrol')
+    # Preserve the actual root-extension inputs while diagnosing the observed
+    # hourly cold531 native divergence. This read-only witness changes no state.
+    path = output / 'MOD_cropdevelopment.f90'
+    text = path.read_text(encoding='cp1252')
+    begin = text.index('   subroutine update_rootextension ()')
+    end = text.index('   end subroutine update_rootextension', begin)
+    body = text[begin:end]
+    old = '      use MOD_params, only: nihil, tiny, small'
+    assert body.count(old) == 1
+    body = body.replace(old, '      use variables,only:t1900\n' + old, 1)
+    old = '      ! update actual root extension'
+    assert body.count(old) == 1
+    body = body.replace(old, "      write(*,'(a,11(1x,es25.17e3))') 'WEATHER_ROOT_EXTENSION', &\n"
+                        '         t1900,rd,rdpot,grrt,grrtpot,iptra_day,iqrot_day,ialpwet_day,ialpdry_day,rri,rdm\n' + old, 1)
+    path.write_text(text[:begin] + body + text[end:], encoding='cp1252')
     return [MODULE, *patched]
