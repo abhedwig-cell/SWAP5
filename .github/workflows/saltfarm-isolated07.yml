@@ -1,0 +1,50 @@
+name: SaltFarm isolated original current profile07
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  isolated:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 16
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            tests/saltfarm_newton
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Exact persisted source and sequential original/current builds
+        env:
+          EXPECTED: ${{ inputs.expected_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED"
+          python3 -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work "$RUNNER_TEMP/isolated07/provider"
+          python3 -B tools/solute/run_water.py --model HYBRID_SALTFARM_WATER --reference-work "$RUNNER_TEMP/isolated07/provider" --no-macro-release --build-only --donor-opt O2 --kernel-opt O2 --output "$RUNNER_TEMP/isolated07/qualified-O2"
+      - name: One sequential ABBA and original/current phase discriminator
+        run: python3 -B tests/saltfarm_newton/isolated07.py --work "$RUNNER_TEMP/isolated07"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: saltfarm-isolated07-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/isolated07/RESULT.json
+            ${{ runner.temp }}/isolated07/full*
+            ${{ runner.temp }}/isolated07/profile-*
+            ${{ runner.temp }}/isolated07/profile-build-*/*.f90
+            ${{ runner.temp }}/isolated07/qualified-O2/*.f90
+            ${{ runner.temp }}/isolated07/qualified-O2/BUILD.json
+            ${{ runner.temp }}/isolated07/provider/PREPARED.json

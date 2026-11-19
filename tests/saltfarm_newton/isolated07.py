@@ -1,0 +1,98 @@
+"""One sequential exact-input original/current timing and native phase discriminator."""
+from pathlib import Path
+import argparse,contextlib,json,re,resource,shutil,subprocess,sys,time,zipfile
+ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(ROOT/'app/hybrid_water'),str(ROOT/'tools/solute')]
+import daily_host as h
+from daily_coupling import validate_bundle
+from check_hupsel51_repair import bounded,physical,rows,check,csvlines
+p=argparse.ArgumentParser();p.add_argument('--work',type=Path,required=True);a=p.parse_args();W=a.work.resolve();REF=W/'provider';B=W/'qualified-O2';meta,case=validate_bundle(B,REF,h.SALTFARM)
+LABELS=['root','water','water_update','heat','solute','integral_reset','meteo','time_prepare','bottom','drain','integral_update','advance','output','conductivity','capacity','jacobian','tridiagonal','water_content','vector','convergence','newton_bodies','residual','strict_mass','dynamic']
+result=dict(status='RUNNING',head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),baseline='b28706d8b16661d8a9e85339d317256eaca51206',runs=[],profiles={},selection='One isolated Ubuntu26.04 runner; all builds and model calls sequential, unchanged GNU/x86_64 separate-ops flags, original input bytes.15s short/35s full caps. No laptop models launched.')
+assert not subprocess.check_output(['git','diff',result['baseline'],'HEAD','--','app','src','reference','tools'],cwd=ROOT)
+def save():(W/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
+def run(cmd,cwd,cap=45):
+ r=subprocess.run(list(map(str,cmd)),cwd=cwd,capture_output=True,timeout=cap);assert r.returncode==0,r.stderr.decode(errors='replace');return r
+def original(exe,dest,cap=35):
+ dest.mkdir()
+ for name in meta['inputs']:shutil.copyfile(case/name,dest/name)
+ start=time.perf_counter();cpu=resource.getrusage(resource.RUSAGE_CHILDREN)
+ with (dest/'stdout').open('w') as out,(dest/'stderr').open('w') as err:r=subprocess.run([str(exe),'./swap.swp'],cwd=dest,stdout=out,stderr=err,timeout=cap)
+ elapsed=time.perf_counter()-start;after=resource.getrusage(resource.RUSAGE_CHILDREN);assert r.returncode==100,(r.returncode,(dest/'stderr').read_text())
+ return dict(seconds=elapsed,child_user=after.ru_utime-cpu.ru_utime,child_system=after.ru_stime-cpu.ru_stime)
+def modern(exe,dest,days=1461):
+ dest.mkdir();data=[];binding={**meta['binding'],'private_isolated07':dict(donor_sha256=h.sha(exe))}
+ def trial():
+  with contextlib.ExitStack() as stack:
+   host=h.DailyHost(stack,exe,h.executable(B,'day_kernel'),case,dest,[h.ColumnStart('original',0,None,None)],runtime=True,checkpoint_enabled=True,binding=binding,model=h.SALTFARM.model,project=h.SALTFARM)
+   with (dest/'daily.jsonl').open('w') as journal:
+    for day in range(1,days+1):
+     row=host.step(1,checkpoint=day in (109,111,365,367,453,455,1460,1461));assert row['committed'];data.append(row);journal.write(json.dumps(row)+'\n')
+   host.close()
+ start_cpu=time.process_time();before=resource.getrusage(resource.RUSAGE_CHILDREN);_,seconds=bounded(35 if days==1461 else 15,trial);after=resource.getrusage(resource.RUSAGE_CHILDREN)
+ return dict(seconds=seconds,parent_cpu=time.process_time()-start_cpu,child_user=after.ru_utime-before.ru_utime,child_system=after.ru_stime-before.ru_stime,budgets=check(data))
+save()
+for i,mode in enumerate(('original','canonical','canonical','original')):
+ dest=W/f'full{i}-{mode}';item=original(REF/'build/swap_b0_gfortran',dest) if mode=='original' else modern(h.executable(B,'day_donor'),dest)
+ if i==2:assert physical(rows(dest))==physical(rows(W/'full1-canonical')) and csvlines(dest/'original/result_output.csv')==csvlines(W/'full1-canonical/original/result_output.csv')
+ if i==3:assert csvlines(dest/'result_output.csv')==csvlines(W/'full0-original/result_output.csv')
+ result['runs'].append(dict(mode=mode,**item));save();print(result['runs'][-1],flush=True)
+MODULE='''module perf07
+implicit none
+integer(8)::pc(24)=0,pt(24)=0,bt(24)=0,rate=0,now
+contains
+subroutine tick(i)
+integer::i
+call system_clock(bt(i),rate)
+end subroutine
+subroutine tock(i)
+integer::i
+call system_clock(now)
+pc(i)=pc(i)+1;pt(i)=pt(i)+now-bt(i)
+end subroutine
+end module
+'''
+commands=[]
+def wrap(s,needle,slot):
+ assert s.count(needle)==1,(slot,needle);return s.replace(needle,f'call tick({slot})\n'+needle+f'\ncall tock({slot})',1)
+def build_profile(mode):
+ b=W/('profile-build-'+mode);b.mkdir();selected=REF/'build/swap-selected';source=B if mode=='canonical' else selected
+ if mode=='canonical':
+  for f in B.iterdir():
+   if f.is_file():shutil.copyfile(f,b/f.name)
+ (b/'perf07.f90').write_text(MODULE)
+ s=(source/'swap.f90').read_text(encoding='cp1252');anchor='use hybrid_day_window, only: return_at_day_end, budget_step, budget_total, checkpoint_clock' if mode=='canonical' else 'use MOD_swap_base,       only: pathwork,';assert s.count(anchor)==1;s=s.replace(anchor,'use perf07\n'+anchor,1)
+ lines=['      if (swcrop == 1) call RootExtraction(2)','         if (.NOT.fldecdt) call SoilWater(2)','      call SoilWater(3)','      if (swhea > 0) call SoilTemperature(2)','      if (swsolu > 0) call Solute(2)','      call integral(2)','         call Meteo(3)','         call TimeControl(4)','      call BoundBottom','         if (swdra > 0)    call drain(2)','      call integral(3)','      call TimeControl(3)']
+ for i,line in enumerate(lines,1):s=wrap(s,line,i)
+ anchor='      if (flOutput) then';assert s.count(anchor)==1;s=s.replace(anchor,'call tick(13)\n'+anchor,1)
+ anchor='      if (flDayEnd) then\n         if (swcropsnm == 1) call Soilmanagement(6)';assert s.count(anchor)==1;s=s.replace(anchor,'call tock(13)\n'+anchor,1)
+ if mode=='original':
+  anchor='   end do\n\n!  Specific for exchange when called as DLL';assert s.count(anchor)==1;s=s.replace(anchor,f'      if(flDayEnd.and.t1900=={int(h.SALTFARM.start_clock+365)}d0)return\n'+anchor,1)
+ (b/'swap.f90').write_text(s,encoding='cp1252')
+ s=(source/'headcalc.f90').read_text(encoding='cp1252');s,n=re.subn(r'(?m)^subroutine headcalc[^\n]*$',lambda m:m[0]+'\nuse perf07',s,count=1);assert n==1
+ def segment(s,start,end,slot):
+  assert s.count(start)==s.count(end)==1;(lo,hi)=(s.index(start),s.index(end));assert lo<hi;return s[:lo]+f'call tick({slot})\n'+s[lo:hi]+f'call tock({slot})\n'+s[hi:]
+ s=segment(s,'!  reset conductivities (k, kmean) to time level t','!  lower and upper diagnal elements',14)
+ s=segment(s,'!     store hold and get moiscap','!     special case: SwKimpl = 1',15)
+ s=wrap(s,'      call jacobian_F()',16);s=wrap(s,'      call tridag(NN, dFdhU, dFdhM, dFdhL, F, difh, ierror)',17)
+ s=segment(s,'!        update theta','!        update gradient in h',18);s=wrap(s,'         call vector_F(2, hgrad)',19)
+ s=s.replace('   do numbit = 1, MaxIt1','   do numbit = 1, MaxIt1\npc(21)=pc(21)+1',1)
+ if mode=='canonical':
+  for needle in ('         budget_step=projected_water_residual()','            budget_step = projected_water_residual()'):s=wrap(s,needle,23 if 'budget_step=' in needle else 22)
+ (b/'headcalc.f90').write_text(s,encoding='cp1252')
+ s=(source/'swap_main.f90').read_text(encoding='cp1252');s=s.replace('program swap_main\n','program swap_main\nuse perf07\n',1)
+ anchor='      call swap(iCaller, iTask, tstart_in, tend_in)' if mode=='canonical' else '   if (iCaller == 0) call swap(iCaller, iTask, tstart_in, tend_in)'
+ if mode=='canonical':s=wrap(s,anchor,24)
+ else:
+  needle='   iTask = 2\n'+anchor;assert s.count(needle)==1;s=s.replace(needle,'   iTask = 2\ncall tick(24)\n'+anchor+'\ncall tock(24)',1)
+ anchor='   call IterTime(3)';assert s.count(anchor)==1;s=s.replace(anchor,anchor+"\nwrite(*,'(a,*(1x,i0))')'PERF07',pc,pt,rate",1);(b/'swap_main.f90').write_text(s,encoding='cp1252')
+ flags=meta['identity']['donor_flags'];common=['gfortran',*flags,'-I',str(b),'-I',str(REF/'build/swap-obj'),'-I',str(REF/'build/ttutil-obj')]
+ for name in ('perf07','swap','headcalc','swap_main'):
+  cmd=[*common,'-c',name+'.f90'];commands.append(cmd);run(cmd,b)
+ objects=[b/f.name if (b/f.name).exists() else f for f in sorted((REF/'build/swap-obj').glob('*.o'))];exe=b/'diagnostic';cmd=['gfortran','-o',exe,*objects,b/'perf07.o',*([b/'hybrid_step_budget.o'] if mode=='canonical' else []),REF/'build/ttutil-obj/libttutil.a'];commands.append(list(map(str,cmd)));run(cmd,b);return exe
+for mode in ('original','canonical'):
+ exe=build_profile(mode);dest=W/('profile-'+mode);item=original(exe,dest,15) if mode=='original' else modern(exe,dest,365)
+ if mode=='original':assert csvlines(dest/'result_output.csv')==csvlines(W/'full0-original/result_output.csv')[:367]
+ else:assert physical(rows(dest))==physical(rows(W/'full1-canonical')[:365]) and csvlines(dest/'original/result_output.csv')==csvlines(W/'full1-canonical/original/result_output.csv')[:367]
+ stdout=dest/('stdout' if mode=='original' else 'original/donor.stdout');v=list(map(int,next(x for x in stdout.read_text().splitlines() if x.startswith('PERF07')).split()[1:]));assert len(v)==49
+ item['phases']={n:dict(calls=v[i],seconds=v[i+24]/v[48]) for i,n in enumerate(LABELS)};result['profiles'][mode]=item;save();print(mode,item,flush=True)
+result.update(status='ISOLATED_ORIGINAL_CURRENT_FULL_AND_NATIVE_PHASES_EXACT',commands=commands);save()
