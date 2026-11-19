@@ -13,10 +13,12 @@ def main():
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
  sha=lambda b:hashlib.sha256(b).hexdigest()
  try:
-  crop=inputs/'grass.crp';raw=crop.read_bytes();text=raw.decode('cp1252')
-  for key,value in dict(TOL_2='1.0d-10',MYTOLX='1.0d-10',TOLCONV='1.0d-9').items():text=assignment(text,key,value)
-  crop.write_text(text,encoding='cp1252');q['crop']=dict(before_sha256=sha(raw),after_sha256=sha(crop.read_bytes()),explicit_original_reader_values=dict(TOL_2=1e-10,MYTOLX=1e-10,TOLCONV=1e-9))
-  before={str(f.relative_to(a.input_source)):sha(f.read_bytes()) for f in a.input_source.rglob('*') if f.is_file()};after={str(f.relative_to(inputs)):sha(f.read_bytes()) for f in inputs.rglob('*') if f.is_file()};assert before.keys()==after.keys();q['input_delta']={k:dict(before=before[k],after=after[k]) for k in before if before[k]!=after[k]};assert list(q['input_delta'])==['grass.crp'];save()
+  q['crops']={}
+  for name in ('maize.crp','potato.crp','grass.crp'):
+   crop=inputs/name;raw=crop.read_bytes();text=raw.decode('cp1252')
+   for key,value in dict(TOL_2='1.0d-10',MYTOLX='1.0d-10',TOLCONV='1.0d-9').items():text=assignment(text,key,value)
+   crop.write_text(text,encoding='cp1252');q['crops'][name]=dict(before_sha256=sha(raw),after_sha256=sha(crop.read_bytes()),explicit_original_reader_values=dict(TOL_2=1e-10,MYTOLX=1e-10,TOLCONV=1e-9))
+  before={str(f.relative_to(a.input_source)):sha(f.read_bytes()) for f in a.input_source.rglob('*') if f.is_file()};after={str(f.relative_to(inputs)):sha(f.read_bytes()) for f in inputs.rglob('*') if f.is_file()};assert before.keys()==after.keys();q['input_delta']={k:dict(before=before[k],after=after[k]) for k in before if before[k]!=after[k]};assert set(q['input_delta'])==set(q['crops']);save()
   for phase in ('short','full'):
    root=a.output/phase;cmd=[sys.executable,'-B',str(Path(__file__).with_name('implicit_conductivity_runtime.py')),'--reference-work',str(a.reference_work),'--output',str(root),'--optimization',a.optimization,'--solute','1','--hysteresis','0','--bottom','5','--kmean','3','--perstep','--mode','explicit','--format','3','--reset','1','--existing-input',str(inputs),'--phase',phase]
    if phase=='full':cmd+=['--reuse-build',q['short']['build_root']]
