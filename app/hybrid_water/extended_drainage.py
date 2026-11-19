@@ -58,6 +58,18 @@ def strict_trial_build(output, donor_build, patched):
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252')
     old='   use hybrid_step_budget, only: projected_water_residual';assert text.count(old)==1
     text=text.replace(old,'   use '+TERMINAL_MODULE+',only:terminal_water_residual\n'+old,1)
+    # The original extended rates are computed before HeadCalc and remain
+    # fixed during Newton, just like the admitted basic/tabulated domain.
+    # Reuse its literal existing linear PondRunoff tangent and original guard.
+    text=text.replace(old,old+', linear_pond_top_jacobian\n   use variables, only: rsro, rsroexp, pondmx',1)
+    old='   if (ftoph) dFdhM(1) = dFdhM(1) + kmean(1)/disnod(1)';assert text.count(old)==1
+    text=text.replace(old,'''   if (ftoph) then
+      if (flrunoff .and. rsroexp==1d0 .and. rsro>=1d-3) then
+         dFdhM(1)=dFdhM(1)+linear_pond_top_jacobian(kmean(1)/disnod(1),dt,pond,pondmx,rsro)
+      else
+         dFdhM(1)=dFdhM(1)+kmean(1)/disnod(1)
+      end if
+   end if''',1)
     old='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
     assert text.count(old)==1
     text=text.replace(old,old+'\n         if(abs(terminal_water_residual())>1d-10*(t1900-budget_start+dt))flnonconv=.true.',1)
@@ -132,6 +144,7 @@ def metadata(project):
                 terminal_renderer_sha256=sha(Path(__file__).with_name('weather_terminal_receipt.py')),
                 terminal_template_sha256=sha(Path(__file__).with_name('terminal_water_receipt.f90')),
                 strict_retry_source_sha256=sha(Path(__file__).with_name('implicit_conductivity_retry.py')),
+                pond_tangent_provider_sha256=sha(Path(__file__).with_name('hybrid_step_budget.f90')),
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
                 codec=MAGIC.decode(),domain=domain(project),bytes=size(project),
                 ownership='Original MOD_drain dynamic values; exact rejected-trial restore, no new physical store',
