@@ -168,6 +168,12 @@ def validate_bundle(bundle, reference, project):
         original=(reference/'build/swap-selected/RWU_micro.f90').read_text(encoding='cp1252')
         if (bundle/'RWU_micro.f90').read_text(encoding='cp1252')!=implicit_root_source(original,project):
             raise ValueError('Foreign actual original implicit microscopic root provider')
+    from implicit_pond_availability import metadata as implicit_availability_metadata
+    implicit_availability=implicit_availability_metadata(project)
+    if identity.get('implicit_pond_availability')!=implicit_availability:
+        raise ValueError('Foreign original implicit pond availability policy')
+    if implicit_availability is not None and (bundle/'implicit_pond_availability.f90').read_bytes()!=(h.APP/'implicit_pond_availability.f90').read_bytes():
+        raise ValueError('Foreign actual original implicit pond availability provider')
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source
