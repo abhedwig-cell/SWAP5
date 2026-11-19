@@ -1,0 +1,18 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-RESTORE52",
+  "baseline": "7bc7ac98a86cfd3b87c0ae7641dd9b70dcb78049",
+  "scope": "Minimal two-array INACTIVE51 history snapshot/restore in same original SELECT28D2 only. Candidate repair43 gates restore; origin snapshot always available at existing statevar1.",
+  "saved_arrays": [
+    "ThtSrpRefDmCp",
+    "SorpDmCp"
+  ],
+  "model_routes": 4,
+  "hard_seconds_per_route": 20,
+  "internal16_policy_unchanged": true,
+  "own_commit_cap": 512,
+  "retry_cap": 4,
+  "no_clock_physics_solver_budget_changes": true,
+  "no_broad_campaign": true,
+  "no_full_native_or_restart_admission": true,
+  "promotion": false
+}

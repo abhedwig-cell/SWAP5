@@ -42,3 +42,35 @@
  
        case default
           call swap_error ('MacroStateVar', 'Illegal value for TASK')
+--- INACTIVE51/macrorate_node.f90
++++ RESTORE52/macrorate_node.f90
+@@ -1885,7 +1885,7 @@
+       real(8)::get46(24),pre_contact46
+ ! CONTACT47 scratch; never persistent physical/native state.
+       real(8),save::delta48(madm,macp)=0d0,heads48(macp)=0d0,time48=0d0,dt48=0d0
+-      logical,save::mask48(madm,macp)=.false.,ready48=.false.
++      logical,save::mask48(madm,macp)=.false.,ready48=.false.,dirty48=.false.
+       integer,save::attempt48=-1,iteration48=-1,seq48=-1,vec48=-1
+       real(8)::get48(madm,macp),wet48
+       logical::getmask48(madm,macp)
+@@ -2121,7 +2121,7 @@
+                   if(ic==ICpTpWaSrDm(id)) wet48=FrMpWalWet(id,ic)
+                   delta48(id,ic)=AwlCorFac(ic)*PpDmCp(id,ic)*(4d0/DiPoCp(ic))*wet48*contact43 &
+                    *SorpDmCp(id,ic)*(sqrt(TimAbsCumDmCp(id,ic)+dt)-sqrt(TimAbsCumDmCp(id,ic)))
+-                  mask48(id,ic)=.true.
++                  mask48(id,ic)=.true.;dirty48=.true.
+                end if
+             end if
+          end if
+@@ -2166,7 +2166,10 @@
+       return
+       return
+       entry reference48_invalidate()
+-      ready48=.false.;mask48=.false.;delta48=0d0
++      ready48=.false.
++      if(dirty48) then
++         mask48=.false.;delta48=0d0;dirty48=.false.
++      end if
+       return
+       entry reference48_seal(task48)
+       ready48=repair43.and.swmbf==1.and.swabs==1.and.task48==1.and..not.probe_busy

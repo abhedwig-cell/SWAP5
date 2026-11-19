@@ -6,7 +6,7 @@
     "ThtSrpRefDmCp",
     "SorpDmCp"
   ],
-  "model_routes": 4,
+  "model_routes": 6,
   "hard_seconds_per_route": 20,
   "internal16_policy_unchanged": true,
   "own_commit_cap": 512,
@@ -14,5 +14,8 @@
   "no_clock_physics_solver_budget_changes": true,
   "no_broad_campaign": true,
   "no_full_native_or_restart_admission": true,
-  "promotion": false
+  "promotion": false,
+  "final_postimage_routes": 4,
+  "initial_routes_retained": 2,
+  "performance_change": "Skip clearing already empty CONTACT47 arrays via payload dirty flag; invalidate-ready unconditional; no budget weakening."
 }

@@ -1,0 +1,44 @@
+--- INACTIVE51/macropore_native.f90
++++ RESTORE52/macropore_native.f90
+@@ -1746,10 +1746,17 @@
+     
+ ! --- global variables
+       use MOD_grid, only: numnod
++      use variables, only:t1900
++      use DIAG19,only:repair43
+       
+       implicit none
+       integer, intent(in) :: task
+ ! --- local variables
++! INACTIVE51: transaction scratch, not native persistent state.
++      real(8),save::reference_origin52(madm,macp)=0d0,sorptivity_origin52(madm,macp)=0d0
++      real(8),save::origin_time52=0d0
++      integer,save::origin_n52=0,origin_dm52=0
++      logical,save::origin_ready52=.false.
+       
+       select case (task)
+           
+@@ -1758,6 +1765,10 @@
+          ICpBtDmM1(1:numdm)           = ICpBtDm(1:numdm)
+          VlMpDmCpM1(1:numdm,1:numnod) = VlMpDmCp(1:numdm,1:numnod)
+          WaUnMpDmCpM1(1:numdm,1:numnod) = WaUnMpDmCp(1:numdm,1:numnod)
++         reference_origin52(1:numdm,1:numnod)=ThtSrpRefDmCp(1:numdm,1:numnod)
++         sorptivity_origin52(1:numdm,1:numnod)=SorpDmCp(1:numdm,1:numnod)
++         origin_time52=t1900;origin_n52=numnod;origin_dm52=numdm
++         origin_ready52=numnod>0.and.numdm>0
+ 
+       case (2)
+          call reference48_invalidate()
+@@ -1765,6 +1776,12 @@
+          ICpBtDm(1:numdm)           = ICpBtDmM1(1:numdm)
+          VlMpDmCp(1:numdm,1:numnod) = VlMpDmCpM1(1:numdm,1:numnod)
+          WaUnMpDmCp(1:numdm,1:numnod) = WaUnMpDmCpM1(1:numdm,1:numnod)
++         if(repair43.and.swmbf==1.and.swabs==1) then
++            if(.not.origin_ready52.or.origin_time52/=t1900.or.origin_n52/=numnod.or.origin_dm52/=numdm) &
++               error stop 'RESTORE52 missing or mismatched history origin'
++            ThtSrpRefDmCp(1:numdm,1:numnod)=reference_origin52(1:numdm,1:numnod)
++            SorpDmCp(1:numdm,1:numnod)=sorptivity_origin52(1:numdm,1:numnod)
++         end if
+ 
+       case default
+          call swap_error ('MacroStateVar', 'Illegal value for TASK')
