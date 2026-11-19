@@ -36,3 +36,5 @@ bottom domain excludes6, and both retry/Jacobian providers overlap the extended
 pond/retry edits. Audit the original bottom6 derivative and compose each retry
 and boundary derivative exactly once before opening SWKIMPL1. Keep it refused
 while those dependencies and integrated conservation remain unqualified.
+
+Initial current-source35-day water/history1 O0 and CDE/history2 O2 complete with three exact native/output cold windows each. Independent history Fortran-free decoding checks both paired domains, physical5*nodes+4 carry, actual pressure/groundwater receipt, weighted theta inventory, complete calendar/CDE state and original counter segments. The first consumer attempt compared an enriched history selection against the producer ordinary-output selection; it was corrected to check ordinary selection and explicit declared hysteresis separately, without changing raw data or rerunning the models. Other modes/platforms and full periods remain pending.
