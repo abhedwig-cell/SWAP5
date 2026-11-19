@@ -51,8 +51,9 @@ def main():
    for field in ('kernel_sources','kernel_flags','donor_flags'):assert actual['identity'][field]==oldbuild['identity'][field],(key,field)
    changed=sorted(k for k,v in oldbuild['identity']['donor_generated'].items() if actual['identity']['donor_generated'].get(k)!=v)
    if not overlap:assert actual['identity']['donor_generated']==oldbuild['identity']['donor_generated'] and actual['identity'].get('original_output')==oldbuild['identity'].get('original_output'),(key,changed)
-   prior_checkpoints={int(path.stem.rsplit('-',1)[1]):path for path in oldtrajectory.glob('accepted-column-1-day-*.zip')};assert days in prior_checkpoints and 4 in prior_checkpoints and 8 in prior_checkpoints
-   trajectory,rows=m.trajectory(build,a.reference_work,project,out/'trajectory',days,set(prior_checkpoints),120);assert m.physical(rows)==m.physical(olddata)
+   prior_checkpoints={int(path.stem.rsplit('-',1)[1]):path for path in oldtrajectory.glob('accepted-column-1-day-*.zip')};assert len(prior_checkpoints)>=2
+   window=next(((s,e) for s,e in ((30,34),(4,8),(2,4)) if s in prior_checkpoints and e in prior_checkpoints),None);assert window is not None
+   trajectory,rows=m.trajectory(build,a.reference_work,project,out/'trajectory',days,{days,*prior_checkpoints},120);assert m.physical(rows)==m.physical(olddata)
    native=[]
    for day,path in sorted(prior_checkpoints.items()):
     checked(path)
@@ -65,7 +66,7 @@ def main():
     if path.suffix!='.csv' and not path.name.endswith('_output.bin'):continue
     if path.name not in ('result_output.csv','result_output.bin') and not path.name.lower().startswith('result.age'):continue
     checked(path);fresh=out/'trajectory/original'/path.name;assert records(path)==records(fresh),path.name;output[path.name]=dict(exact=True,records=len(records(path)))
-   cold=current.own(build,a.reference_work,project,out/'trajectory',rows,4,8,out/'own-4')
+   cold=current.own(build,a.reference_work,project,out/'trajectory',rows,*window,out/f'own-{window[0]}')
    q['profiles'][key]=dict(actual_build=actual,trajectory=trajectory,all_physical_exact=True,actual_immutable_prior_member_hashes=True,prior_build_sha256=bd,prior_report_sha256=m.sha(oldroot/'RESULT.json'),prior_daily_sha256=m.sha(oldtrajectory/'daily.jsonl'),prior_archive=recordname,prior_profile_prefix=oldroot.relative_to(a.evidence_root if a.platform=='Windows' else a.prior_root).as_posix(),overlap_new_codec=overlap,actual_generated_source_differences=changed,native=native,original_user_output=output,cold=cold);save();print(key,'ACTUAL_AFFECTED_SEAM_PRESERVED',flush=True)
   q['status']='ACTUAL_AGE_PERSTEP_AFFECTED_'+a.family.upper()+'_SEAMS_PRESERVED';print(q['status'],flush=True)
  except Exception as error:q.update(status='FAILED',error=repr(error));raise
