@@ -915,6 +915,9 @@ end module plant_interface""")
     subprocess.run(["gfortran", *kernel_flags, *(str(ROOT / s) for s in sources),
                     str(adapter), str(driver), "-o", str(kernel)], cwd=output, check=True)
 
+    from direct_day_kernel import build as build_direct_kernel
+    direct_kernel=build_direct_kernel(output,[ROOT/s for s in sources],adapter,kernel_flags,project)
+
     # Use stable inputs because linking the same sources in another directory
     # need not reproduce executable bytes (for example PE timestamps).
     build_identity = {
@@ -933,6 +936,7 @@ end module plant_interface""")
         "driver": sha(driver),
         "host": sha(Path(__file__)),
     }
+    if direct_kernel is not None:build_identity['direct_day_kernel']=direct_kernel
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from age_groundwater_output import metadata as original_output_metadata
@@ -1018,8 +1022,14 @@ end module plant_interface""")
     return donor, kernel, case, inputs, build_identity
 
 
-def start_process(stack, command, directory, name):
+def start_process(stack, command, directory, name, *, direct_identity=None):
     stderr = stack.enter_context((directory / (name + ".stderr")).open("w"))
+    if direct_identity is not None:
+        from direct_day_kernel import NativeDayKernel, library_path
+        transcript=stack.enter_context((directory/(name+'.stdout')).open('w',encoding='utf8'))
+        process=NativeDayKernel(library_path(Path(command[0]).parent),command[1],transcript)
+        stack.callback(process.terminate)
+        return process,transcript
     process = stack.enter_context(subprocess.Popen(
         command, cwd=directory, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
         stderr=stderr, text=True, encoding="cp1252", errors="replace",
@@ -1036,11 +1046,15 @@ def stop_process(process):
 
 
 def send(process, text):
+    from direct_day_kernel import NativeDayKernel
+    if isinstance(process,NativeDayKernel):return process.write(text)
     process.stdin.write(text + "\n")
     process.stdin.flush()
 
 
 def receive(process, transcript, prefixes):
+    from direct_day_kernel import NativeDayKernel
+    if isinstance(process,NativeDayKernel):return process.receive(prefixes)
     rows = {}
     for line in process.stdout:
         transcript.write(line)
@@ -1276,7 +1290,11 @@ class DailyHost:
         self.output = output
         self.binding = binding
         self.usable = False
-        self.host, self.host_log = start_process(stack, [kernel, model]+(["explicit-project"] if not project.macro else []), output, "kernel")
+        direct_identity=binding['build'].get('direct_day_kernel') if binding is not None else None
+        if direct_identity is not None:
+            from direct_day_kernel import validate as validate_direct
+            validate_direct(Path(kernel).parent,direct_identity,project)
+        self.host, self.host_log = start_process(stack, [kernel, model]+(["explicit-project"] if not project.macro else []), output, "kernel", **({'direct_identity':direct_identity} if direct_identity is not None else {}))
         _, selected = receive(self.host, self.host_log, {"DAILY_MODEL"})
         if selected["DAILY_MODEL"] != [model]:
             raise ValueError("Kernel selected a different soil water model")
