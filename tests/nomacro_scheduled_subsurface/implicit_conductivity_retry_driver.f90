@@ -2,11 +2,13 @@ program real_original_implicit_retry_contract
   use, intrinsic :: ieee_arithmetic,only:ieee_value,ieee_quiet_nan
   use MOD_swap_base,only:swmacro
   use MOD_grid,only:numnod
+  use hybrid_implicit_pond_event_state,only:request_implicit_pond_event,assert_no_implicit_pond_event
   use variables,only:swkimpl,dt,dtmin,t1900,fldecdt,fldtmin,fact_dt_fldect,h,theta,pond
   implicit none
   character(32)::mode
   real(8)::old_dt,stock(5)
   integer::count
+  logical::requested
   call get_command_argument(1,mode)
   swmacro=0;swkimpl=1;fact_dt_fldect=2d0;dtmin=1d-6;t1900=37256d0
   numnod=2;h(1:2)=[-10d0,-20d0];theta(1:2)=[.2d0,.3d0];pond=.1d0
@@ -44,6 +46,14 @@ program real_original_implicit_retry_contract
   count=count+1
   old_dt=dt;call TimeControl(5)
   if(dt/=old_dt)error stop 'Retry without nonconvergence requested'
+  count=count+1
+  dt=1d0;fldecdt=.true.
+  call request_implicit_pond_event(t1900,dt,pond,0d0,-.3d0,0d0,.2d0,requested)
+  if(.not.requested)error stop 'Actual pond retry route not requested'
+  call TimeControl(5)
+  if(fldecdt.or.dt<=0d0.or.dt>=1d0.or.abs(pond-.3d0*dt)>1d-10) &
+    error stop 'Original TimeControl did not consume the numerical pond event'
+  call assert_no_implicit_pond_event()
   count=count+1
   if(t1900/=37256d0.or.any(stock/=[h(1:2),theta(1:2),pond]))error stop 'Numerical retry changed physical state or clock'
   write(*,'(a,1x,i0)')'REAL_ORIGINAL_IMPLICIT_RETRY_PASS',count
