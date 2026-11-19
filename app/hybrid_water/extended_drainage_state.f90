@@ -47,7 +47,8 @@ contains
     if (.not.all(ieee_is_finite(values)).or.adjustments < 0) then
       write(*,'(a,*(1x,es25.17e3))') 'EXTENDED_DRAIN_INVALID_STATE',values
       write(*,'(a,*(1x,es25.17e3))') 'EXTENDED_DRAIN_ACTUAL_KSAT',ksatcp(1:numnod)
-      write(*,'(a,*(1x,es25.17e3))') 'EXTENDED_DRAIN_ACTUAL_ANISOTROPY',cofani(layer(1:numnod))
+      write(*,'(a,*(1x,es25.17e3))') 'EXTENDED_DRAIN_ACTUAL_ANISOTROPY',cofani
+      write(*,'(a,*(1x,i0))') 'EXTENDED_DRAIN_ACTUAL_LAYERS',layer(1:numnod)
       error stop 'Invalid extended drain state'
     end if
     if (values(3) < 0d0.or.values(5) < 0d0) error stop 'Negative original surface storage or perimeter'
