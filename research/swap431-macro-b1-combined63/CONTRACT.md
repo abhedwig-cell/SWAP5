@@ -1,0 +1,7 @@
+# COMBINED63 minimal implementation preregistration
+
+Baseline COMBINED62 fa93695fcc509c99aa2ec3d34851e968d0138b7c; owning combined/factor/potential derivative contracts inherited. IsolatedB1, no canonical/Status-A admission.
+Exactly2fresh originalD2RESTART O0/O2, hard20s each, unchanged internal16s/512commit/4retry. Same NATIVE55 owncheckpoint. No providerperturbations or broadcampaign. Remove qualification-onlyP61probehook and62ownerobserver; no numericalpolicy change from removing observations.
+Implement currentstamped getter ofD3sat/uns potentials+canonicalmetadata, including MacroRate sequence in scratch/cache serializers; no nativephysicalfield addition. Derive guardedrank<=2 correction without consuming sample46/ownerlogs. ExistingD3satdiag retained, missingfactor+cell50row only. Neweligibility is narrow tooriginalfollowtime/cell50/support/constantpositiveI/unlimitedincoming/partialoutfactor/excessactive/fixedgeometrynearSAT/capfree/startT0/sorpwinner conditions; no existingguards relaxed.
+Use existingrank2Woodbury procedure/tridag and existing determinant floor1e-12; guardfailure returnsoldsolver, activealgebraicfailure retainedfail-closed. No physics,clock,nonlinearcriteria,iteration/backtracklimits,dt/reduction/budget changes.
+Qualify actualeligibility/stamps/correction/linearresidual, O0O2, nonlinearconvergence orretainedrefusal and existinghostcommit/inventory ifaccepted. Do not fakeacceptedstep; no forcedrejection/directretry/generalrestart/fullperiodclaim. Preserve failures/censoring and bounds.

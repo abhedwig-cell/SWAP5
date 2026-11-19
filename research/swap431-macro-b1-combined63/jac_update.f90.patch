@@ -1,0 +1,15 @@
+--- COMBINED62/jac_update.f90
++++ COMBINED63/jac_update.f90
+@@ -32,9 +32,11 @@
+ integer,intent(out)::ierror
+ real(8)::uu(macp),vv(macp),d(macp),meta(12),z(macp),denom,alpha,res(n)
+ integer::u,i,e
+-logical::handled37
++logical::handled37,handled63
+ logical,save::opened=.false.
+ integer,save::trace_u
++call jac63_solve(n,a,b,c,r,x,ierror,handled63)
++if(handled63) return
+ if(apply37) then
+  call jac37_solve(n,a,b,c,r,x,ierror,handled37)
+  if(handled37) return
