@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-cde-clock01",
-  "last_commit": "9497aa99fc6c98feaa40bdb0cd74449e19fb6f4a",
-  "status": "CDE_CLOCK_LOCAL_EVENT_COMPONENT_O0_O2_PASS_NEW_PRODUCTION_COUPLED_LIMIT_NEXT",
+  "last_commit": "a574d45feb1f2317566743e7b99c1fc09193834b",
+  "status": "CDE_CLOCK_EVENT_CLOSURE_EIGHT_1440_LIMIT_FOUR_FRESH_SHORT_NATIVE_GATES_PASS_FULL_MATRIX_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Fresh ordinary subdaily1440 two-day actual O0/O2 builds/native own1to2 first. Verify planned48/72dose and exact unchanged mass guards; retain event-closure old/new dt/limit observations. Then all four limit clock/Snow variants before fresh 35day and full cohorts.",
+  "next_action": "Run fresh Windows O0/O2 ten-short/six-native/four1440limit before six full periods. Finish fresh epochs/year counter controls and21 selected prior seam contexts; persist portable runtime and dispatch selected Ubuntu workers after local gates.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -468,7 +468,12 @@
   "qualified_age_calendar_runtime": "75f4bf12f71286e0021877e9285df43beb6be01d",
   "qualified_age_calendar_ubuntu": "9321cc995ceaa327cab10b5ad0044fbb47fb0152",
   "age_calendar_sealed_proof": "accd67320a4a85db298f5aff55f1e0e87b2d782f",
-  "active_local_jobs": [],
+  "active_local_jobs": [
+    "cde-clock-epoch-O0-v2/year-controls",
+    "cde-clock-epoch-O2-v2/year-controls",
+    "cde-clock-preserve-interval/water/dense-O0-v1",
+    "cde-clock-preserve-interval/water/dense-O2-v1"
+  ],
   "schedule_known_next_dependencies": [
     "Original subdaily output-clock ownership after cold physical TSTART",
     "Monthly inactive-selector omission combinations: old generic preflight can still demand PERIOD when SWODAT0 remains present; current admitted-bound candidate uses full original decks",
@@ -3022,7 +3027,7 @@
     }
   },
   "cde_clock": {
-    "status": "CDE_CLOCK_LOCAL_EVENT_COMPONENT_O0_O2_PASS_NEW_PRODUCTION_COUPLED_LIMIT_NEXT",
+    "status": "CDE_CLOCK_EVENT_CLOSURE_EIGHT_1440_LIMIT_FOUR_FRESH_SHORT_NATIVE_GATES_PASS_FULL_MATRIX_NEXT",
     "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
     "contract": "docs/science/NOMACRO_CDE_CLOCK_20261119.md",
     "source_audit": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\NEXT_CDE_CLOCK_SOURCE_AUDIT.json",
@@ -3660,6 +3665,883 @@
           "executable_sha256": "3d4d28e513bbb5b177080b74b2af9ec77b16c8d00adb59af80eaa88c6c0339d8"
         }
       }
-    }
+    },
+    "fresh_pilots": {
+      "cde-clock-ordinary-O0-v3": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "e03c60075cf1905c26f63d9c1bfd5462bca1b630",
+        "build": {
+          "returncode": 0,
+          "seconds": 11.654862799681723
+        },
+        "cold_windows": 4
+      },
+      "cde-clock-snow-O0-v3": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "e03c60075cf1905c26f63d9c1bfd5462bca1b630",
+        "build": {
+          "returncode": 0,
+          "seconds": 12.469426299910992
+        },
+        "cold_windows": 4
+      },
+      "cde-clock-ordinary-O2-v3": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "e03c60075cf1905c26f63d9c1bfd5462bca1b630",
+        "build": {
+          "returncode": 0,
+          "seconds": 22.13363020028919
+        },
+        "cold_windows": 4
+      },
+      "cde-clock-snow-O2-v3": {
+        "status": "ACTUAL_CDE_CLOCK_SHORT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "e03c60075cf1905c26f63d9c1bfd5462bca1b630",
+        "build": {
+          "returncode": 0,
+          "seconds": 20.49220889993012
+        },
+        "cold_windows": 4
+      }
+    },
+    "fresh_controls": {
+      "cde-clock-controls-ordinary-O0-v2": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 50,
+        "policy_refusals": 66,
+        "actual_provider_refusals": 6,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "cde-clock-controls-snow-O0-v2": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 80,
+        "policy_refusals": 72,
+        "actual_provider_refusals": 7,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "cde-clock-controls-ordinary-O2-v2": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 50,
+        "policy_refusals": 66,
+        "actual_provider_refusals": 6,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      },
+      "cde-clock-controls-snow-O2-v2": {
+        "status": "CDE_CLOCK_NATIVE_ACTIVE_POLICY_PROVIDER_PASS",
+        "native_refusals": 80,
+        "policy_refusals": 72,
+        "actual_provider_refusals": 7,
+        "transactions": {
+          "discard_no_day_advance": true,
+          "replay_exact": true,
+          "accept_exact": true,
+          "recovered_next_day_exact": true,
+          "origin_unchanged": true
+        }
+      }
+    },
+    "corrected_limits": {
+      "cde-clock-limit-ordinary-subdaily-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "2c19497bda365cae8ed103b4fcd1ce8387945754",
+        "actual_fixed_incoming_mg_cm2": [
+          48.0,
+          72.00000000000006
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 7.85278959913871e-14,
+            "max_kernel_cm": 7.838174553853605e-14,
+            "max_solute_mg_cm2": 5.016431714466307e-12,
+            "sum_water_residual_cm": 7.628095602209609e-14
+          },
+          "model_seconds": 1.6181840999051929,
+          "build_sha256": "d3c48dfc9ac982c824c01d68dca6583cf430affc74687fdb7b3d10e70ec25307"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1440,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.7951201000250876
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": null
+      },
+      "cde-clock-limit-ordinary-perstep-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "208eb009cb09d3902d529bd557989a7d145cc765",
+        "actual_fixed_incoming_mg_cm2": [
+          48.000000000000334,
+          72.0
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.2405267785231544e-13,
+            "max_kernel_cm": 1.2390088954816747e-13,
+            "max_solute_mg_cm2": 5.300648808770347e-12,
+            "sum_water_residual_cm": 1.377929494376267e-13
+          },
+          "model_seconds": 0.806521600112319,
+          "build_sha256": "8300bfdde00cc293cbb304530511f5d3571b7bb5490b2f620f246db0f5cc0a20"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.5101255001500249
+          }
+        ],
+        "retained_post_validation_failure": {
+          "path": "RETAINED_FAILED_RESULT.json",
+          "sha256": "18b39adc3258966807aa85306b6067c1ad1e0841fb7c797873c96e55c9e2051b",
+          "error": "AssertionError()",
+          "no_model_or_build_reexecution": true
+        },
+        "bounded_rain_coverage": "NO_RAIN_IN_SELECTED_TWO_DAY_FORCING_POSITIVE_RAIN_SELECTED_IN_35DAY_COHORT"
+      },
+      "cde-clock-limit-snow-subdaily-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "a574d45feb1f2317566743e7b99c1fc09193834b",
+        "actual_fixed_incoming_mg_cm2": [
+          47.999999999999844,
+          72.0
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.9542574625406824e-13,
+            "max_kernel_cm": 1.9539925233402755e-13,
+            "max_solute_mg_cm2": 4.164432976957086e-12,
+            "sum_water_residual_cm": -1.9439098370064808e-13
+          },
+          "model_seconds": 1.5026968996971846,
+          "build_sha256": "68647f90f171eeaa95280b1d228b8e87ebf118a861b53c0152adcbceaad33e8f"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1440,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.6909230002202094
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": null
+      },
+      "cde-clock-limit-snow-perstep-O0-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "a574d45feb1f2317566743e7b99c1fc09193834b",
+        "actual_fixed_incoming_mg_cm2": [
+          48.000000000000355,
+          72.00000000000004
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 8.02009969734182e-15,
+            "max_kernel_cm": 7.993605777301127e-15,
+            "max_solute_mg_cm2": 4.909850304102292e-12,
+            "sum_water_residual_cm": -6.313565477849637e-15
+          },
+          "model_seconds": 1.2006321996450424,
+          "build_sha256": "6b7346d06877f3e02852378e02167f969c1944d2b26ffdaada7bd51892646091"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.43114160001277924
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": "NO_RAIN_IN_SELECTED_TWO_DAY_FORCING_POSITIVE_RAIN_SELECTED_IN_35DAY_COHORT"
+      },
+      "cde-clock-limit-ordinary-subdaily-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "2c19497bda365cae8ed103b4fcd1ce8387945754",
+        "actual_fixed_incoming_mg_cm2": [
+          48.0,
+          72.00000000000006
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 7.85278959913871e-14,
+            "max_kernel_cm": 7.838174553853605e-14,
+            "max_solute_mg_cm2": 5.016431714466307e-12,
+            "sum_water_residual_cm": 7.628095602209609e-14
+          },
+          "model_seconds": 1.2788455998525023,
+          "build_sha256": "919100b2ca46d21a590d75cabb4bbf9ae1c4b0adb1ca4ba2bd3c2683f897af52"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1440,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.6855202000588179
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": null
+      },
+      "cde-clock-limit-ordinary-perstep-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "208eb009cb09d3902d529bd557989a7d145cc765",
+        "actual_fixed_incoming_mg_cm2": [
+          48.000000000000334,
+          72.0
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.2405267785231544e-13,
+            "max_kernel_cm": 1.2390088954816747e-13,
+            "max_solute_mg_cm2": 5.300648808770347e-12,
+            "sum_water_residual_cm": 1.377929494376267e-13
+          },
+          "model_seconds": 0.678177900146693,
+          "build_sha256": "f4c861cc30de802e1d0c28dca5249f6df2b26c82f4ccb02f806308c9818de749"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.4116181000135839
+          }
+        ],
+        "retained_post_validation_failure": {
+          "path": "RETAINED_FAILED_RESULT.json",
+          "sha256": "0953aa2b900977033c397780869039e418c1cbf9f7cea34d0471c499931fb8f8",
+          "error": "AssertionError()",
+          "no_model_or_build_reexecution": true
+        },
+        "bounded_rain_coverage": "NO_RAIN_IN_SELECTED_TWO_DAY_FORCING_POSITIVE_RAIN_SELECTED_IN_35DAY_COHORT"
+      },
+      "cde-clock-limit-snow-subdaily-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "a574d45feb1f2317566743e7b99c1fc09193834b",
+        "actual_fixed_incoming_mg_cm2": [
+          47.999999999999844,
+          72.0
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 1.9542574625406824e-13,
+            "max_kernel_cm": 1.9539925233402755e-13,
+            "max_solute_mg_cm2": 4.164432976957086e-12,
+            "sum_water_residual_cm": -1.9439098370064808e-13
+          },
+          "model_seconds": 1.7065215003676713,
+          "build_sha256": "9daa5ac65838f07c47450fbcd8c48d919da813083957cafee4e4f4527ce567d6"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 1440,
+                "kind": "original_REAL4_binary"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.7042887001298368
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": null
+      },
+      "cde-clock-limit-snow-perstep-O2-v2": {
+        "status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+        "source_commit": "a574d45feb1f2317566743e7b99c1fc09193834b",
+        "actual_fixed_incoming_mg_cm2": [
+          48.000000000000355,
+          72.00000000000004
+        ],
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 2,
+          "budgets": {
+            "days": 2,
+            "max_water_cm": 8.02009969734182e-15,
+            "max_kernel_cm": 7.993605777301127e-15,
+            "max_solute_mg_cm2": 4.909850304102292e-12,
+            "sum_water_residual_cm": -6.313565477849637e-15
+          },
+          "model_seconds": 0.8670721999369562,
+          "build_sha256": "d3eefb2fb611a6d6a27eaae3fd0a371297f3607e07c7e51fab4c35269c6664f8"
+        },
+        "cold": [
+          {
+            "start": 1,
+            "end": 2,
+            "exact_physical": true,
+            "exact_complete_native": true,
+            "exact_user_output": {
+              "result_output.csv": {
+                "exact": true,
+                "continuation_records": 0,
+                "kind": "original_ASCII"
+              }
+            },
+            "origin_unchanged": true,
+            "seconds": 0.5362685001455247
+          }
+        ],
+        "retained_post_validation_failure": null,
+        "bounded_rain_coverage": "NO_RAIN_IN_SELECTED_TWO_DAY_FORCING_POSITIVE_RAIN_SELECTED_IN_35DAY_COHORT"
+      }
+    },
+    "local_event_comparison": {
+      "status": "ACTUAL_LOCAL_EVENT_CLOSURE_FIRST_1440_SOURCE_NATIVE_O0_O2_PASS",
+      "scientific_claim": false,
+      "cases": {
+        "O0": {
+          "old_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O0-v1\\limit-ordinary-subdaily",
+          "new_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-limit-ordinary-subdaily-O0-v2",
+          "old_source": "ff33b8f0867006cc5c87733d7eee5645b4544820",
+          "new_source": "2c19497bda365cae8ed103b4fcd1ce8387945754",
+          "old_status": "FAILED",
+          "new_status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+          "original_planned_source_mg_cm2": [
+            48.0,
+            72.0
+          ],
+          "old_actual_source_mg_cm2": [
+            47.999999898575794,
+            71.99999981224516
+          ],
+          "new_actual_source_mg_cm2": [
+            48.0,
+            72.00000000000006
+          ],
+          "old_budgets": {
+            "days": 2,
+            "max_water_cm": 7.903183316115836e-14,
+            "max_kernel_cm": 7.904787935331115e-14,
+            "max_solute_mg_cm2": 5.009326287108706e-12,
+            "sum_water_residual_cm": 7.767307161156748e-14
+          },
+          "new_budgets": {
+            "days": 2,
+            "max_water_cm": 7.85278959913871e-14,
+            "max_kernel_cm": 7.838174553853605e-14,
+            "max_solute_mg_cm2": 5.016431714466307e-12,
+            "sum_water_residual_cm": 7.628095602209609e-14
+          },
+          "exact_input_project_kernel_flags": true,
+          "changed_original_generated": [
+            "timecontrol.f90"
+          ],
+          "added_generated": [
+            "cde_clock_events.f90"
+          ],
+          "actual_local_event_closure_rows": [
+            [
+              0.082638888716039,
+              3.53022404144393e-05,
+              0.0006944444442827519,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006944446172943292
+            ],
+            [
+              0.08267419095645344,
+              3.53022404144393e-05,
+              0.0006591422037066225,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006591423768798899
+            ],
+            [
+              0.08270949319686788,
+              3.53022404144393e-05,
+              0.0006238399631304931,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006238401364654506
+            ],
+            [
+              0.08274479543728232,
+              3.53022404144393e-05,
+              0.0005885377225543637,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0005885378960510113
+            ],
+            [
+              0.08278009767769676,
+              3.53022404144393e-05,
+              0.0005532354819782342,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.000553235655636572
+            ],
+            [
+              0.0828153999181112,
+              3.53022404144393e-05,
+              0.0005179332414021048,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0005179334152221327
+            ],
+            [
+              0.08285070215852564,
+              3.53022404144393e-05,
+              0.00048263100082597543,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.00048263117480769335
+            ],
+            [
+              0.08288600439894007,
+              7.06044808288786e-05,
+              0.000447328760249846,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00044732893439325405
+            ],
+            [
+              0.08295660887976895,
+              7.06044808288786e-05,
+              0.0003767242790975872,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00037672445356437545
+            ],
+            [
+              0.08302721336059783,
+              7.06044808288786e-05,
+              0.0003061197979453284,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00030611997273549685
+            ],
+            [
+              0.08309781784142671,
+              7.06044808288786e-05,
+              0.00023551531679306958,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00023551549190661825
+            ],
+            [
+              0.08316842232225559,
+              7.06044808288786e-05,
+              0.00016491083564081077,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00016491101107773964
+            ],
+            [
+              0.08323902680308447,
+              7.06044808288786e-05,
+              9.430635448855196e-05,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              9.430653024886104e-05
+            ],
+            [
+              0.08330963128391335,
+              7.06044808288786e-05,
+              2.3701873336293144e-05,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              2.370204941998244e-05
+            ],
+            [
+              0.9993055541805471,
+              0.0006944444444444445,
+              0.0006944444467080757,
+              1.0,
+              1e-08,
+              0.0006944458194528824,
+              0.0006944458194528824
+            ],
+            [
+              0.04097222211356777,
+              0.0006944444444444445,
+              0.0006944445530988955,
+              0.041666666666666664,
+              1e-08,
+              0.0006944445530988955,
+              0.0006944445530988955
+            ],
+            [
+              0.999305554344024,
+              0.0006944444444444445,
+              0.0006944444467080757,
+              1.0,
+              1e-08,
+              0.0006944456559759837,
+              0.0006944456559759837
+            ]
+          ],
+          "new_cold": [
+            {
+              "start": 1,
+              "end": 2,
+              "exact_physical": true,
+              "exact_complete_native": true,
+              "exact_user_output": {
+                "result_output.bin": {
+                  "exact": true,
+                  "continuation_records": 1440,
+                  "kind": "original_REAL4_binary"
+                }
+              },
+              "origin_unchanged": true,
+              "seconds": 0.7951201000250876
+            }
+          ],
+          "original_executable_hashes_retained": {
+            "old": {
+              "donor": "ac8a6cb1e151d05619335df33d1dc9c66d5bb21ad3ab536280412498d2696641",
+              "kernel": "d2c07d9a8f7ec893b5e44d06cbe49e4609fdad9ea0485bdae84a58a7b213679d"
+            },
+            "new": {
+              "donor": "5ea84c72ff030a8971b6af813870592a0a7836d314418656c1ae08948e593ff6",
+              "kernel": "293ba6375047eed52d70018ae81d59df9c063784df715a6f0ff905f0ddc0bd29"
+            }
+          }
+        },
+        "O2": {
+          "old_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-windows-O2-v1\\limit-ordinary-subdaily",
+          "new_root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\cde-clock-limit-ordinary-subdaily-O2-v2",
+          "old_source": "f76bbed12e728a3c0f3753d88f11013d32454633",
+          "new_source": "2c19497bda365cae8ed103b4fcd1ce8387945754",
+          "old_status": "FAILED",
+          "new_status": "ACTUAL_CDE_CLOCK_LIMIT_NATIVE_USER_OUTPUT_PASS",
+          "original_planned_source_mg_cm2": [
+            48.0,
+            72.0
+          ],
+          "old_actual_source_mg_cm2": [
+            47.999999898575794,
+            71.99999981224516
+          ],
+          "new_actual_source_mg_cm2": [
+            48.0,
+            72.00000000000006
+          ],
+          "old_budgets": {
+            "days": 2,
+            "max_water_cm": 7.903183316115836e-14,
+            "max_kernel_cm": 7.904787935331115e-14,
+            "max_solute_mg_cm2": 5.009326287108706e-12,
+            "sum_water_residual_cm": 7.767307161156748e-14
+          },
+          "new_budgets": {
+            "days": 2,
+            "max_water_cm": 7.85278959913871e-14,
+            "max_kernel_cm": 7.838174553853605e-14,
+            "max_solute_mg_cm2": 5.016431714466307e-12,
+            "sum_water_residual_cm": 7.628095602209609e-14
+          },
+          "exact_input_project_kernel_flags": true,
+          "changed_original_generated": [
+            "timecontrol.f90"
+          ],
+          "added_generated": [
+            "cde_clock_events.f90"
+          ],
+          "actual_local_event_closure_rows": [
+            [
+              0.082638888716039,
+              3.53022404144393e-05,
+              0.0006944444442827519,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006944446172943292
+            ],
+            [
+              0.08267419095645344,
+              3.53022404144393e-05,
+              0.0006591422037066225,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006591423768798899
+            ],
+            [
+              0.08270949319686788,
+              3.53022404144393e-05,
+              0.0006238399631304931,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0006238401364654506
+            ],
+            [
+              0.08274479543728232,
+              3.53022404144393e-05,
+              0.0005885377225543637,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0005885378960510113
+            ],
+            [
+              0.08278009767769676,
+              3.53022404144393e-05,
+              0.0005532354819782342,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.000553235655636572
+            ],
+            [
+              0.0828153999181112,
+              3.53022404144393e-05,
+              0.0005179332414021048,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.0005179334152221327
+            ],
+            [
+              0.08285070215852564,
+              3.53022404144393e-05,
+              0.00048263100082597543,
+              0.08333333333333333,
+              1e-08,
+              3.53022404144393e-05,
+              0.00048263117480769335
+            ],
+            [
+              0.08288600439894007,
+              7.06044808288786e-05,
+              0.000447328760249846,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00044732893439325405
+            ],
+            [
+              0.08295660887976895,
+              7.06044808288786e-05,
+              0.0003767242790975872,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00037672445356437545
+            ],
+            [
+              0.08302721336059783,
+              7.06044808288786e-05,
+              0.0003061197979453284,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00030611997273549685
+            ],
+            [
+              0.08309781784142671,
+              7.06044808288786e-05,
+              0.00023551531679306958,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00023551549190661825
+            ],
+            [
+              0.08316842232225559,
+              7.06044808288786e-05,
+              0.00016491083564081077,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              0.00016491101107773964
+            ],
+            [
+              0.08323902680308447,
+              7.06044808288786e-05,
+              9.430635448855196e-05,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              9.430653024886104e-05
+            ],
+            [
+              0.08330963128391335,
+              7.06044808288786e-05,
+              2.3701873336293144e-05,
+              0.08333333333333333,
+              1e-08,
+              7.06044808288786e-05,
+              2.370204941998244e-05
+            ],
+            [
+              0.9993055541805471,
+              0.0006944444444444445,
+              0.0006944444467080757,
+              1.0,
+              1e-08,
+              0.0006944458194528824,
+              0.0006944458194528824
+            ],
+            [
+              0.04097222211356777,
+              0.0006944444444444445,
+              0.0006944445530988955,
+              0.041666666666666664,
+              1e-08,
+              0.0006944445530988955,
+              0.0006944445530988955
+            ],
+            [
+              0.999305554344024,
+              0.0006944444444444445,
+              0.0006944444467080757,
+              1.0,
+              1e-08,
+              0.0006944456559759837,
+              0.0006944456559759837
+            ]
+          ],
+          "new_cold": [
+            {
+              "start": 1,
+              "end": 2,
+              "exact_physical": true,
+              "exact_complete_native": true,
+              "exact_user_output": {
+                "result_output.bin": {
+                  "exact": true,
+                  "continuation_records": 1440,
+                  "kind": "original_REAL4_binary"
+                }
+              },
+              "origin_unchanged": true,
+              "seconds": 0.6855202000588179
+            }
+          ],
+          "original_executable_hashes_retained": {
+            "old": {
+              "donor": "3614d80cce450d9556e508d3cfd3af36b6128d915f48c7d2187768f7944de74e",
+              "kernel": "b92fcc038ab41be2f14d8b2aa5287f42a310cc16bbfc2b042fdecc23eb78d66d"
+            },
+            "new": {
+              "donor": "d7451e8fbde09282be60efb79cd89e30832e205b31e815b832f43efd75b621ab",
+              "kernel": "961329ebbbbec1fbec8d825f14e2cb9e031245b776025a9739edc707681e2cc0"
+            }
+          }
+        }
+      }
+    },
+    "preservation_selection": "Fresh four current CDE interval families, two old perstep water/Snow families andone dense Snow CDE v1 state per Windows opt and Ubuntu O2:21 actual contexts. SaltFarm/Grass/Hupsel/age/frost/GW and other old full campaigns NOT_SELECTED_IMPACT with literal early selector/dependency proof; no fresh PASS claim."
   }
 }

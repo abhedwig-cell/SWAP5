@@ -1235,7 +1235,7 @@
     }
   },
   "cde_clock": {
-    "status": "CONTRACT_SELECTION_IMPLEMENTATION_NEXT",
+    "status": "LOCAL_COMPONENT_SHORT_NATIVE_EVENT_LIMIT_GATES_PASS_FULL_PORTABLE_SELECTED_NEXT",
     "baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
     "scientific_impact": "Original subdaily/perstep clock and complete CDE private interval/Snow/chemical daily receipt composition.",
     "selected": [
@@ -1250,6 +1250,17 @@
       "Retired highest-low-air",
       "Automatic repeat of unaffected old full campaigns"
     ],
-    "expected_cost": "Actual original source build previously20..40seconds; short models/cold typically seconds; record compile/link/model/validation and retain all failures/censors."
+    "expected_cost": "Actual original source build previously20..40seconds; short models/cold typically seconds; record compile/link/model/validation and retain all failures/censors.",
+    "local_event_policy": "actual-local-irrigation-and-end-day-existing-dtcrit-v1",
+    "fresh_source_gates": {
+      "short35day_periods": 4,
+      "cold_windows": 16,
+      "limit1440_2day_periods": 8,
+      "limit_cold_windows": 8,
+      "native_refusals": 260,
+      "policy_refusals": 276,
+      "actual_provider_refusals": 26
+    },
+    "selected_prior_contexts": 21
   }
 }
