@@ -39,6 +39,9 @@ def source():
          'sum(theta(1:numnod)*dz(1:numnod)),pond,0d0,canopy'),
         ('  end subroutine',
          "    if(.not.all(ieee_is_finite(terms)))error stop 'Nonfinite weather terminal water receipt'\n  end subroutine"),
+        ('    residual=real(sum(real(terms,real128)),8)',
+         "    residual=real(sum(real(terms,real128)),8)\n"
+         "    write(*,'(a,29(1x,es25.17e3))') 'WEATHER_TERMINAL_WATER',residual,terms"),
     )
     for old, new in edits:
         assert text.count(old) == 1, old
