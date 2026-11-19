@@ -270,7 +270,11 @@ def apply_build(output, donor_build, project, patched):
     patched=strict_trial_build(output,donor_build,patched,project)
     from extended_interception import render as positive_interception_source
     (output/'MOD_meteo.f90').write_text(positive_interception_source((donor_build/'swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')),encoding='cp1252')
-    (output/(MODULE+'.f90')).write_bytes(TEMPLATE.read_bytes())
+    state_text=TEMPLATE.read_text(encoding='cp1252')
+    if project.original_output:
+        from extended_output_receipt import state_source
+        state_text=state_source(state_text)
+    (output/(MODULE+'.f90')).write_text(state_text,encoding='cp1252')
     (output/'surfacewater.f90').write_text(surfacewater_source((donor_build/'swap-selected/surfacewater.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')
     first=text.index('    subroutine hybrid_macro_checkpoint(')
