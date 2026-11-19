@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-perstep01",
-  "last_commit": "f83ec4b257f0bcda6a170924585082a208c54dc5",
-  "status": "AGE_PERSTEP_CONTRACT_PERSISTED_IMPLEMENTATION_NEXT",
+  "last_commit": "26a33c75eff24151f1ecf5fed7aa8b1b4cd18b6b",
+  "status": "AGE_PERSTEP_IMPLEMENTED_PERSIST_BEFORE_O0_O2",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Implement bounded original young-water AGE FLPRINTDT owner from source-audited contract; persist before real O0/O2 small composition/source/native gates. Preserve all inactive paths literally.",
+  "next_action": "Persist bounded AGE perstep adapter and run real generated ordinary/hysteresis O0/O2 35day source/native composition. Diagnose failures before broader qualification.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -4779,7 +4779,7 @@
     }
   },
   "age_perstep": {
-    "status": "CONTRACT_PERSISTED_NOT_IMPLEMENTED",
+    "status": "IMPLEMENTED_NOT_TESTED",
     "baseline": "f83ec4b257f0bcda6a170924585082a208c54dc5",
     "contract": "docs/science/NOMACRO_AGE_PERSTEP_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/AGE_PERSTEP_SOURCE_AUDIT.json",
