@@ -1,0 +1,53 @@
+{
+  "status": "ORIGINAL_SELECTED_EXTENDED_DYNAMIC_AND_SAVED_SCRATCH_OWNERSHIP_REVIEW",
+  "original_surfacewater_raw_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+  "original_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "scope": "SWMACRO0,SWDRA2,SWSRF2/3,SWSEC1/2; all active numeric values remain original-owned",
+  "physical_carry": [
+    "wlp",
+    "wls",
+    "swst",
+    "wlstar",
+    "wetper",
+    "qdrd",
+    "qdrtot",
+    "wlsbak(4)",
+    "numadj",
+    "qdrain(1:r)",
+    "drainl(1:r)",
+    "diffl(1:r)",
+    "qdra(1:r,1:n)"
+  ],
+  "scratch_review": {
+    "WLEVBAL": "overfl,wlstarb,imper assigned on every call; automatic phase/airvolume/wlstx assigned on their read paths; target/storage/capacity/flow branches assign before use. QH bisection bounds/intermediate stock/rate assigned each iteration. History products/oscil assigned before corresponding reads. No local temporal carry replaces global WLSTAR/WLSBAK/NUMADJ.",
+    "fun_qhtab/WLEVST": "Lookup indices reset2/0 and interpolation deltas assigned each call; no cross-call saved physical history.",
+    "drainflux_extended": "QDRD reset; WL assigned for every actual level in selectedSWSRF2/3; RD/RE or interflow branch assignments precede use. Managed-period index resets before input lookup; empty-store limiter assigns qdrdm/qdratio before use. Dynamic WETPER is original module carry and is explicitly snapshotted, never treated as constant.",
+    "geometry_parameters": "Original immutable reader-owned geometry/management tables stay bound to exact input/build identity. Existing soil/clock/chemical owners retain their native responsibilities.",
+    "read_only_observers": "Day flux sums/counters and stable trial soil-origin theta are reconstructed at each original day/window; they do not own physical carry and do not enter native."
+  },
+  "unqualified_original_risk": {
+    "SWSRF1": "WL is read without selected assignment. Still hard-refused; no empirical reference-defect or family-completion claim."
+  },
+  "raw_source_anchor_witnesses": [
+    "            overfl = .FALSE.",
+    "            wlstarb = wlstar",
+    "            imper = 0",
+    "                iphase = nphase(imper)",
+    "                VTAIR = 0.0d0",
+    "                wlstx = wlsman(imper,iphase)",
+    "                wlstx = wlstarb",
+    "                  wlsl = hbweir(imper)",
+    "                  wlsu = sttab(1,1)",
+    "       700        wlsi = (wlsl + wlsu) * 0.5d0",
+    "            itab = 2",
+    "      qdrd = 0.0d0",
+    "               wl = wls",
+    "               wl = wlp",
+    "         imper = 0",
+    "            qdrdm = - (swst + wscap(imper) * dt) / dt",
+    "            qdratio = qdrdm / qdrd"
+  ],
+  "actual_component_confirmation": "O0/O2 real original surface mutation before rejection plus exact rollback/native and14compiled refusals peropt sealed inEXTENDED_DRAINAGE_COMPONENT_RAW.json",
+  "actual_full_native_confirmation": "Windows fourprimary water/CDE cases x O0/O2,1096days plus7complete native windows each; raw independent audit. TableQH37 plus4windows. Newhost lifecycle controls independently retained.",
+  "public_admission": false
+}
