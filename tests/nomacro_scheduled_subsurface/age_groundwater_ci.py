@@ -28,6 +28,8 @@ def main():
  p=argparse.ArgumentParser()
  for key in ('reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
  p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--pilot-root',type=Path);a=p.parse_args();a.output=a.output.resolve();a.output.mkdir()
+ if not (a.reference_work/'PREPARED.json').exists():c.m.user_prepare.prepare(a.reference_work)
+ c.m.user_prepare.validate(a.reference_work)
  q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),optimization=a.optimization,cases={},controls={},limits={})
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
  def run(script,target,args):
