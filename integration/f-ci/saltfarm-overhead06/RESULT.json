@@ -1,0 +1,327 @@
+{
+  "status": "NO_PRODUCTION_OPTIMIZATION_QUALIFIED",
+  "baseline": "b28706d8b16661d8a9e85339d317256eaca51206",
+  "recipe_source": "5e6eadf619924bc0217608b87e09e57c8b46a711",
+  "production_changed": false,
+  "tolerances_changed": false,
+  "scope": "Private Windows O2 typed reply candidate only; current production retains its separate admitted Windows/Ubuntu O0/O2 qualification.",
+  "hash_cost": {
+    "seconds": 2.206291700247675,
+    "calls": 524,
+    "unique_paths": 396,
+    "hash_seconds": 0.20698970695957541,
+    "duplicate_paths": [
+      {
+        "path": "C:\\SWAP5-testing\\saltfarm-guard-cost05\\composition01\\qualified-O2\\day_donor.exe",
+        "calls": 3,
+        "seconds": 0.010636600200086832
+      },
+      {
+        "path": "C:\\SWAP5-testing\\saltfarm-guard-cost05\\composition01\\qualified-O2\\day_kernel.exe",
+        "calls": 3,
+        "seconds": 0.0027852002531290054
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\arrays.o",
+        "calls": 2,
+        "seconds": 0.0005967002362012863
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\atmosphere_interface.mod",
+        "calls": 2,
+        "seconds": 0.0005947998724877834
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\bisparameters.mod",
+        "calls": 2,
+        "seconds": 0.0007425001822412014
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\boundbottom.o",
+        "calls": 2,
+        "seconds": 0.0006092996336519718
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\calcgwl.o",
+        "calls": 2,
+        "seconds": 0.0006118998862802982
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\description.o",
+        "calls": 2,
+        "seconds": 0.0005504004657268524
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\divdra.o",
+        "calls": 2,
+        "seconds": 0.0005696997977793217
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\doln.mod",
+        "calls": 2,
+        "seconds": 0.0006238003261387348
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\dotspack.mod",
+        "calls": 2,
+        "seconds": 0.0005367002449929714
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\doubleprec.mod",
+        "calls": 2,
+        "seconds": 0.0005493001081049442
+      }
+    ],
+    "slowest": [
+      {
+        "path": "C:\\SWAP5-testing\\saltfarm-guard-cost05\\composition01\\qualified-O2\\day_donor.exe",
+        "calls": 3,
+        "seconds": 0.010636600200086832
+      },
+      {
+        "path": "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+        "calls": 1,
+        "seconds": 0.005304200109094381
+      },
+      {
+        "path": "C:\\msys64\\ucrt64\\bin\\gcc.EXE",
+        "calls": 1,
+        "seconds": 0.005081099923700094
+      },
+      {
+        "path": "C:\\SWAP5-testing\\saltfarm-guard-cost05\\composition01\\qualified-O2\\day_kernel.exe",
+        "calls": 3,
+        "seconds": 0.0027852002531290054
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\ttutil-obj\\libttutil.a",
+        "calls": 2,
+        "seconds": 0.002704700455069542
+      },
+      {
+        "path": "C:\\msys64\\ucrt64\\bin\\ar.EXE",
+        "calls": 1,
+        "seconds": 0.0023207999765872955
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\ttutil-obj\\rdarea.o",
+        "calls": 1,
+        "seconds": 0.0015979004092514515
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\interface_atmosphere.o",
+        "calls": 2,
+        "seconds": 0.0015525002963840961
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\distribution\\SWAP_4.3.1\\tools\\SWAP\\source\\SWAP.ZIP",
+        "calls": 1,
+        "seconds": 0.0015174001455307007
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\management_soil.o",
+        "calls": 2,
+        "seconds": 0.0014839000068604946
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\ttutilprefs.mod",
+        "calls": 2,
+        "seconds": 0.0011989003978669643
+      },
+      {
+        "path": "C:\\SWAP5-testing\\rc3-local01\\provider\\build\\swap-obj\\macropore.o",
+        "calls": 1,
+        "seconds": 0.0011418000794947147
+      }
+    ]
+  },
+  "short": [
+    {
+      "mode": "original",
+      "seconds": 2.668519400060177,
+      "days": 365,
+      "physical_csv_native_exact": true,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 7.212113401280917e-09
+      }
+    },
+    {
+      "mode": "typed",
+      "seconds": 2.6200299998745322,
+      "days": 365,
+      "physical_csv_native_exact": true,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 7.212113401280917e-09
+      }
+    },
+    {
+      "mode": "typed",
+      "seconds": 2.876781000290066,
+      "days": 365,
+      "physical_csv_native_exact": true,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 7.212113401280917e-09
+      }
+    },
+    {
+      "mode": "original",
+      "seconds": 3.4914849000051618,
+      "days": 365,
+      "physical_csv_native_exact": true,
+      "budgets": {
+        "days": 365,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 7.212113401280917e-09
+      }
+    }
+  ],
+  "full": [
+    {
+      "mode": "original",
+      "seconds": 15.346816400066018,
+      "days": 1461,
+      "physical_csv_native_exact": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      }
+    },
+    {
+      "mode": "typed",
+      "seconds": 14.801443700212985,
+      "days": 1461,
+      "physical_csv_native_exact": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      }
+    },
+    {
+      "mode": "typed",
+      "seconds": 12.77402239991352,
+      "days": 1461,
+      "physical_csv_native_exact": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      }
+    },
+    {
+      "mode": "original",
+      "seconds": 12.853395900223404,
+      "days": 1461,
+      "physical_csv_native_exact": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      }
+    }
+  ],
+  "cold": [
+    {
+      "start": 109,
+      "end": 111,
+      "seconds": 0.3357534999959171,
+      "physical_csv_native_exact": true,
+      "origin_unchanged": true
+    },
+    {
+      "start": 365,
+      "end": 367,
+      "seconds": 0.28722230019047856,
+      "physical_csv_native_exact": true,
+      "origin_unchanged": true
+    },
+    {
+      "start": 453,
+      "end": 455,
+      "seconds": 0.3617449998855591,
+      "physical_csv_native_exact": true,
+      "origin_unchanged": true
+    },
+    {
+      "start": 1460,
+      "end": 1461,
+      "seconds": 0.2617544997483492,
+      "physical_csv_native_exact": true,
+      "origin_unchanged": true
+    },
+    {
+      "start": 109,
+      "end": 1461,
+      "seconds": 10.766850099898875,
+      "physical_csv_native_exact": true,
+      "origin_unchanged": true
+    }
+  ],
+  "control_mean": 14.100106150144711,
+  "typed_mean": 13.787733050063252,
+  "apparent_fraction_saved": 0.022153953789791347,
+  "unchanged_control_drift": 0.1624715142765302,
+  "counters": {
+    "canonical": {
+      "solves": 38065,
+      "iterations": 110477
+    },
+    "original431": {
+      "solves": 38772,
+      "iterations": 77664
+    }
+  },
+  "original_reference": {
+    "executable_sha256": "d033b50a580fc847049cda141a0af9d1d65d54ced7228983dbbf3ac798bc53de",
+    "command": [
+      "C:\\SWAP5-RC2\\comparison431\\swap431-common.exe",
+      "./swap.swp"
+    ],
+    "actual_input_sha256": {
+      "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+      "fontane.crp": "000eeca30866de5bb015ebd0fe7f931b8675908d0bb908683e36bf8eebe73754",
+      "PREPARATION.json": "65147ab4cde9975dc67ff1f1e704a01ead0c1f9eb6e33b7bff6ed9efb86931bd",
+      "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+      "swap.ini": "3f6539a9c6bfd1e9dfdbccc74418c9ed97e130445f7cd781e4d1e44353915b87",
+      "swap.swp": "769d6663649ff8fc2f3802598e3c8563dd274406206fd51536a0ebebfe23d87c"
+    },
+    "all_numeric_csv_exact": true,
+    "raw_csv_sha256": "037582a5c1606554694d204027710055e37e33ab7b2e4f97d259a784338d103b",
+    "old_csv_sha256": "c58c09c9e0364fd7bac79b77d7b57e89dd1f16d250a1202f87ed66027e90d116",
+    "only_generated_timestamp_changed": true,
+    "first_elapsed_not_recorded": true,
+    "second_attempt_status": "TIMEOUT_15_SECONDS_NOT_A_PASS",
+    "historical_original_seconds": 7.646981399971992,
+    "historical_time_not_current_benchmark": true
+  },
+  "decision": "Do not promote a 2.2% apparent full saving against 16.2% control drift; do not weaken source validation for 0.207s warm hashes. Current concurrent groundwater O0/O2 campaign and CPU saturation block another defensible laptop timing comparison. No further numerical/clock campaign selected.",
+  "next_deliverable": "After the independent laptop campaign ends, one isolated phase/CPU comparison of literal original and current native donor is needed to localize unavoidable strict Newton work versus removable work. Do not repeat rejected CSV/head-cache/compiler/relay or these two hypotheses without a changed causal discriminator.",
+  "limitations": [
+    "Initial short prototype origins lack the private marker and are excluded from restart qualification; all full/cold origins have explicit private recipe/mode bindings.",
+    "Cold first-profile file-open cost is not steady-state validation overhead.",
+    "No fresh portable or O0 prototype qualification; no new whole-science claim."
+  ]
+}
