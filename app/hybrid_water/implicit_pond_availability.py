@@ -14,8 +14,25 @@ def metadata(project):
 
 
 def top_source(text):
+    anchor='public :: boundtop';assert text.count(anchor)==1
+    text=text.replace(anchor,'public :: boundtop, boundtop_available',1)
     anchor='      subroutine boundtop(iTask)';assert text.count(anchor)==1
-    text=text.replace(anchor,'      subroutine boundtop(iTask,implicit_pond_evaporation_cap)',1)
+    text=text.replace(anchor,'''      subroutine boundtop(iTask)
+      integer,intent(in)::iTask
+      call boundtop_original_implementation(iTask)
+      end subroutine boundtop
+
+      subroutine boundtop_available(iTask,cap)
+      integer,intent(in)::iTask
+      real(8),intent(in)::cap
+      call boundtop_original_implementation(iTask,cap)
+      end subroutine boundtop_available
+
+      subroutine boundtop_original_implementation(iTask,implicit_pond_evaporation_cap)''',1)
+    anchor='      end subroutine boundtop\n';assert text.count(anchor)==2
+    first=text.index(anchor)
+    second=text.index(anchor,first+len(anchor))
+    text=text[:second]+text[second:].replace(anchor,'      end subroutine boundtop_original_implementation\n',1)
     anchor='      integer, intent(in)  :: iTask';assert text.count(anchor)==1
     text=text.replace(anchor,anchor+'\n      real(8),intent(in),optional::implicit_pond_evaporation_cap',1)
     anchor='         epd = epond';assert text.count(anchor)==1
@@ -23,6 +40,8 @@ def top_source(text):
 
 
 def head_source(text):
+    anchor='   use MOD_top,            only: boundtop, pondrunoff, hsurf';assert text.count(anchor)==1
+    text=text.replace(anchor,'   use MOD_top,            only: boundtop_available, pondrunoff, hsurf',1)
     anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
     text=text.replace(anchor,'   use hybrid_implicit_pond_availability,only:close_implicit_pond_evaporation\n'+anchor,1)
     anchor='   logical::implicit_pond_event_requested';assert text.count(anchor)==1
@@ -40,7 +59,7 @@ def head_source(text):
             end if
 '''+anchor,1)
     anchor='   call boundtop(2)';assert text.count(anchor)==1
-    return text.replace(anchor,'   call boundtop(2,implicit_pond_evaporation_cap)',1)
+    return text.replace(anchor,'   call boundtop_available(2,implicit_pond_evaporation_cap)',1)
 
 
 def apply_build(output,project,patched):
@@ -48,4 +67,6 @@ def apply_build(output,project,patched):
     (output/(PROVIDER+'.f90')).write_bytes(Path(__file__).with_suffix('.f90').read_bytes())
     path=output/'boundtop.f90';path.write_text(top_source(path.read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'headcalc.f90';path.write_text(head_source(path.read_text(encoding='cp1252')),encoding='cp1252')
-    return [PROVIDER,*patched]
+    # Compile the changed module interface before its new HeadCalc consumer.
+    assert patched.count('boundtop')==1
+    return [PROVIDER,'boundtop',*(name for name in patched if name!='boundtop')]
