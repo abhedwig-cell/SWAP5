@@ -47,6 +47,8 @@ spec=importlib.util.spec_from_file_location('literal_direct_projection',ROOT/'te
 
 
 def strip_evidence_checkout(text):
+ from weather_surface_verify import strip_current_evidence
+ text=strip_current_evidence(text)
  require(text.count(CHECKOUT_EVIDENCE)==1,'Missing/ambiguous current scientific evidence checkout')
  return text.replace(CHECKOUT_EVIDENCE,'',1)
 

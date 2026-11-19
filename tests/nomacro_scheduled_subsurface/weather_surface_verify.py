@@ -4,9 +4,11 @@ from functools import lru_cache
 import importlib.util
 import io
 import json
+import math
 import re
 import struct
 import subprocess
+import tarfile
 import zipfile
 
 import weather_surface_forensics as f
@@ -179,6 +181,9 @@ def build(z, prefix, record, cap, source_ref, opt):
     terminal = b['identity']['weather_terminal_receipt']
     require(terminal['source_sha256'] == cap['members']['app/hybrid_water/weather_terminal_receipt.py']['sha256']
             and terminal['water_guard_cm'] == 1e-10 and terminal['physical_equations_changed'] is False, 'Actual weather terminal provider/policy changed')
+    for field, path in [('template_sha256','terminal_water_receipt.f90'),('retry_template_sha256','implicit_conductivity_retry.py')]:
+        require(terminal[field] == cap['members']['app/hybrid_water/'+path]['sha256']
+                and blob(source_ref,'app/hybrid_water/'+path) == blob(BASE,'app/hybrid_water/'+path), 'Literal inherited terminal/retry provider changed')
     if record['hourly_root_carry']:
         native = b['identity']['weather_root_state']
         require(native['codec'] == 'S5WRH001' and native['bytes'] == 108
@@ -209,20 +214,266 @@ def primary(q, data, caps):
     return results
 
 
+def package(raw):
+    with zipfile.ZipFile(io.BytesIO(raw)) as z:
+        require(len(z.namelist()) == 3 and set(z.namelist()) == {'result.end','macro.bin','checkpoint.json'}, 'Actual weather package inventory changed')
+        meta = json.loads(z.read('checkpoint.json'));files = {n:z.read(n) for n in ('result.end','macro.bin')}
+        require(meta['files'] == {n:digest(v) for n,v in files.items()}, 'Actual weather package content hashes differ')
+        return meta, files
+
+
+def original_inputs(q, data, results, caps):
+    path = ROOT/q['historical_h_input_archive']
+    require(digest(path.read_bytes()) == q['historical_h_input_sha256'] == '6e39750da47c069dc35983dbe8f8b1d8f47253a3b4ddd00575d279e75b783b29', 'Original H input authority changed')
+    with tarfile.open(path) as original:
+        members = original.getmembers();expected = {}
+        for case, directory, label in [('pulsed','rain-detailed','PULSED_RAIN'),('hourly','weather-hourly','HOURLY'),('uniform','rain-detailed-uniform',None)]:
+            if label:
+                old = json.loads(blob(BASE,'integration/nomacro-coverage01/BLOCK_H_'+label+'364_FAILURE.json'))
+                expected[case] = old['input_sha256']
+                require(old['committed_days'] == 363 and old['first_refusal']['day'] == 364 and old['first_refusal']['committed'] is False, 'Original H failure censored')
+            else:
+                builds = [m for m in members if m.name.endswith('/rain-detailed-uniform-O0-build/BUILD.json')]
+                require(len(builds) == 1,'Ambiguous original uniform input authority')
+                expected[case] = json.loads(original.extractfile(builds[0]).read())['inputs']
+            for file, value in expected[case].items():
+                require(Path(file).name == file,'Unsafe original H input member')
+                found = [m for m in members if m.name.endswith('/input-'+directory+'/'+file)]
+                require(len(found) <= 1,'Ambiguous original H input')
+                raw = original.extractfile(found[0]).read() if found else blob(BASE,'reference/swap-4.3.1/projects/1.hupselbrook/'+file)
+                require(digest(raw) == value,'Original H input bytes differ from historical authority')
+        for name, loc in q['locations'].items():
+            require(results[name]['build']['inputs'] == expected[loc['case']], 'Current weather case substituted for original H physical inputs')
+    controller = 'tests/nomacro_scheduled_subsurface/weather_surface_runtime.py'
+    override = data['WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE'].read('uniform-controller/weather_surface_runtime.py')
+    require(normalized(override) == blob('758378f2f318bfe70603fde949f377d87102534a',controller), 'Actual uniform controller override differs from producer Git')
+    for loc in q['locations'].values():
+        cap = caps[loc['source_capsule']]
+        if loc['uniform_windows_controller_override']:
+            require(loc['platform'] == 'Windows' and loc['case'] == 'uniform','Unexpected weather controller override')
+            require(not git('diff',cap['producer_head'],loc['producer'],'--','app','src','reference','tools'), 'Uniform compiler source differs from actual captured provider')
+        else:
+            require(cap['members'][controller]['git_blob'] == tree(loc['producer'],controller)[controller].split()[2], 'Actual weather controller not bound to producer')
+    return True
+
+
+def retained(q, data, results):
+    z = data[q['retained_failures']]
+    # Read the actual failed trajectories, rather than promoting their warm
+    # prefixes or trusting a later summary of the reproduced defects.
+    for case in ('pulsed','hourly'):
+        for attempt in ('weather-current-'+case+'-O0-v2/','weather-terminal-'+case+'-O0-v1/'):
+            r = json.loads(z.read(attempt+'RESULT.json'));rows = f.rows(z,attempt+'trajectory/')
+            require(r['status'] == 'FAILED' and r['error'] == "ValueError('Rejected day 364')"
+                    and len(rows) == 364 and all(x['committed'] for x in rows[:363])
+                    and rows[-1]['day'] == 364 and rows[-1]['committed'] is False, 'Original day364 failure erased or promoted')
+            require(json.loads(z.read(attempt+'trajectory/BUILD.json'))['inputs'] == results['Windows-O0-'+case]['build']['inputs'], 'Actual failure uses different physical input')
+            f.ledger(rows[:363]);row=rows[-1]
+            terms=[*row['external_flux_cm'][:7], *(-v for v in row['external_flux_cm'][7:]), *row['stock_start_cm'], *(-v for v in row['stock_end_cm'])]
+            require(math.fsum(terms) == row['independent_residual_cm'] and abs(math.fsum(terms)) > 1e-10
+                    and abs(row['integrated_guard_residual_cm']) <= 1e-10, 'Actual daily-versus-soil failure no longer demonstrated')
+            if attempt.startswith('weather-terminal-'):
+                diagnostics=[list(map(float,line.split()[1:])) for line in z.read(attempt+'trajectory/original/donor.stdout').decode().splitlines() if line.startswith('WEATHER_TERMINAL_WATER ')]
+                # The first terminal-only source predates this diagnostic;
+                # the next retained diagnostic producer supplies it below.
+                if diagnostics:require(diagnostics[-1][1:] == terms and diagnostics[-1][0] == math.fsum(terms), 'Actual original terminal projection differs')
+            else:
+                require(not git('diff','ef5010a83e83f879254af534bf0dd9cfcdbf3a85',r['source_commit'],'--','app','src','reference','tools'), 'Actual baseline reproduction changed production source')
+        if case=='pulsed':
+            prefix='weather-terminal-pulsed-O0-v2/trajectory/'
+            row=f.rows(z,prefix)[-1]
+            terms=[*row['external_flux_cm'][:7], *(-v for v in row['external_flux_cm'][7:]), *row['stock_start_cm'], *(-v for v in row['stock_end_cm'])]
+            witness=[list(map(float,s.split()[1:])) for s in z.read(prefix+'original/donor.stdout').decode().splitlines() if s.startswith('WEATHER_TERMINAL_WATER ')][-1]
+            require(witness[1:]==terms and witness[0]==math.fsum(terms),'Actual original28-term diagnostic projection differs from refused day')
+        prefix='weather-terminal-'+case+'-O0-v3/'
+        r=json.loads(z.read(prefix+'RESULT.json'));rows=f.rows(z,prefix+'trajectory/')
+        require(r['status']=='FAILED' and len(rows)==363 and all(v['committed'] for v in rows), 'Strict terminal-only floor failure promoted')
+        stderr=z.read(prefix+'trajectory/original/donor.stderr').decode()
+        require('ERROR STOP Detailed-weather original retry reached clock resolution' in stderr, 'Original strict numerical floor refusal missing')
+    # Read-only root-extension witness: same day531 inputs/rates, but four
+    # zero-demand hours lose exactly one sixth of each integrated stress.
+    prefix='weather-root-native-hourly-O0-v5/'
+    def root(p):
+        return [list(map(float,s.split()[1:])) for s in z.read(p+'original/donor.stdout').decode().splitlines() if s.startswith('WEATHER_ROOT_EXTENSION ')]
+    warm=root(prefix+'trajectory/');cold=root(prefix+'cold-530/')
+    b=cold[0];matches=[row for row in warm if row[0]==b[0]]
+    require(len(matches)==1,'Ambiguous original root-extension date');a=matches[0]
+    memory=results['Windows-O0-hourly']['rows'][529]['weather_root_memory']
+    require(a[:7] == b[:7] and a[9:] == b[9:] and all(abs(a[7+i]-b[7+i]-memory[i]/6) <= 2e-15 for i in range(2)), 'Actual hourly root-carry defect no longer independently demonstrated')
+    before=f.rows(z,'weather-terminal-hourly-O0-full-v4/trajectory/')
+    new=f.rows(z,'weather-root-native-hourly-O0-v7/trajectory/')
+    require(len(before)==1096 and len(new)==532
+            and [{k:v for k,v in row.items() if k!='weather_root_memory'} for row in new] == before[:532], 'Root state carry changed previous warm physics')
+    require([{k:v for k,v in row.items() if k!='weather_root_memory'} for row in results['Windows-O0-hourly']['rows']] == before, 'Final debug-free complete warm physics differs')
+    return dict(retained_day364_refusals=4,retained_terminal_only_floor_refusals=2,actual_missing_hourly_root_stress='1/6 of each original previous-day factor',previous_complete_warm_physics_preserved=True)
+
+
+def controls(q, data, results, caps):
+    public_count = native_count = cli_count = tx_count = 0
+    expected = {'domain-'+str(i) for i in range(8)} | {'domain-copy','trailer','clock','old-codec','truncated','trailing'}
+    expected |= {k+'-'+str(i) for k in ('nan','negative','above-one','receipt') for i in range(2)}
+    for platform in ('Windows','Ubuntu'):
+        for opt in ('O0','O2'):
+            name = platform+'-'+opt+'-hourly';loc=q['locations'][name];z=data[loc['archive']]
+            b=results[name]['build'];warm=results[name]['rows'];r=json.loads(z.read('controls/RESULT.json'))
+            require(r['source_commit']==loc['producer'] and r['status']=='ACTUAL_WEATHER_ROOT_NATIVE_PUBLIC_TRANSACTION_CONTROLS_PASS'
+                    and r['origin_unchanged'] is True, 'Actual weather control producer failed/rebound')
+            require(set(v['label'] for v in r['public_refusals'])==expected and len(r['public_refusals'])==22, 'Weather public refusal denominator changed')
+            require(set(v['label'] for v in r['native_refusals'])==expected-{'receipt-0','receipt-1'} and len(r['native_refusals'])==20, 'Weather compiled refusal denominator changed')
+            original=z.read('hourly/trajectory/accepted-column-1-day-531.zip');mf,files=package(original)
+            require(mf['receipt']==warm[530], 'Actual weather control original receipt differs')
+            positive=r['positive_native'];stdout=z.read('controls/native-positive/column/actual.stdout').decode('utf8')
+            require(positive['returncode']==100 and 'HYBRID_READY' in stdout and 'HYBRID_DAY_RETURN' not in stdout, 'Actual compiled positive native control missing')
+            for item in r['public_refusals']:
+                label=item['label'];prefix='controls/'+label+'/'
+                forged,parts=package(z.read(prefix+'deliberately-forged.zip'))
+                require(forged['binding']==mf['binding'] and forged['receipt']==mf['receipt'] and parts['result.end']==files['result.end']
+                        and parts['macro.bin']!=files['macro.bin'], 'Weather negative control not actual original-bound forged native')
+                try:f.root_native(parts['macro.bin'],forged['receipt'],b['project']['nodes'],b['project']['start_date'])
+                except ValueError:pass
+                else:raise ValueError('Independent reader accepted actual public native forgery: '+label)
+                require(item['before_physical_worker'] is item['no_publication'] is True and 'root stress' in item['error'].lower()
+                        and not any(n.startswith(prefix+'public/') and (n.endswith('donor.stdout') or '/accepted-' in n) for n in z.namelist()), 'Weather forgery reached physical worker/publication')
+                public_count+=1
+            for item in r['native_refusals']:
+                prefix='controls/'+item['label']+'/';diagnostic=z.read(prefix+'native/column/actual.stderr').decode('utf8')
+                stdout=z.read(prefix+'native/column/actual.stdout').decode('utf8')
+                forged,_parts=package(z.read(prefix+'deliberately-forged.zip'))
+                require(item['returncode']!=100 and item['no_day_return'] is True and 'HYBRID_DAY_RETURN' not in stdout
+                        and 'ERROR STOP' in diagnostic and any(v in diagnostic.lower() for v in ('root stress','nonmacro checkpoint')),
+                        'Actual compiled native loader did not refuse forged context')
+                require(z.read(prefix+'native/column/macro-origin.bin')==_parts['macro.bin'], 'Compiled native refusal used another payload')
+                native_count+=1
+            # Actual public CLI continues the active day531 origin to532.
+            require(r['public_cli']['returncode']==0 and r['public_cli']['exact_physical'] is r['public_cli']['exact_complete_native'] is True, 'Actual weather public CLI failed')
+            _metrics,cold=f.trajectory(z,'controls/public-cli/',b,1,True)
+            require(f.physical(cold)==f.physical(warm[531:532]), 'Actual public weather continuation differs')
+            a=z.read('controls/public-cli/accepted-column-1-day-532.zip');f.checkpoint(a,b,cold[-1],True)
+            _ma,pa=package(a);_mb,pb=package(z.read('hourly/trajectory/accepted-column-1-day-532.zip'))
+            require(pa==pb, 'Actual public weather complete native differs');cli_count+=1
+            # Actual discard/replay/accept/recovery, independently reading the
+            # private native frames and the published external binding.
+            require(r['transactions']==dict(discard_no_day_advance=True,replay_exact=True,accept_exact=True,recovered_next_day_exact=True,origin_unchanged=True), 'Actual weather transaction assertions incomplete')
+            trials=[]
+            for prefix,day in [('controls/transactions/external/trial-1/',5),('controls/transactions/external/trial-2/',5),('controls/transactions/recovered/trial-1/',6)]:
+                raw=z.read(prefix+f'accepted-column-1-day-{day}.zip');meta,parts=package(raw);row=meta['receipt']
+                require(f.physical([row])==f.physical([warm[day-1]]), 'Actual weather transactional day differs')
+                f.ledger([row]);f.original_observations(z.read(prefix+'original/donor.stdout'),[row],b['project']['start_date'])
+                f.root_observations(z.read(prefix+'original/donor.stdout'),[row],b['project']['start_date']);f.checkpoint(raw,b,row,True)
+                trials.append((meta,parts))
+            require(trials[0]==trials[1], 'Actual discarded weather proposal did not replay exactly')
+            published,parts=package(z.read('controls/transactions/external/accepted-column-1-day-5.zip'))
+            cap=caps[loc['source_capsule']]
+            external={'version':1,'source_sha256':cap['members']['app/hybrid_water/daily_coupling.py']['sha256'],'coupling_id':'original-output','forcing':'original-project'}
+            require(published['binding']=={**b['binding'],'external_daily':external} and parts==trials[1][1], 'Published weather coupling/native context differs')
+            base=(__import__('datetime').date.fromisoformat(b['project']['start_date'])-__import__('datetime').date(1900,1,1)).days+1
+            coupling=dict(id='original-output',revision=1,origin_revision=0,origin_sha256=digest(z.read('hourly/trajectory/accepted-column-1-day-4.zip')),origin_day=4,window_day1900=[base+4,base+5],forcing='original-project')
+            require(published['receipt']=={**trials[1][0]['receipt'],'coupling':coupling}
+                    and 'controls/transactions/recovered/accepted-column-1-day-6.zip' not in z.namelist(), 'Weather external ownership or discard publication changed')
+            tx_count+=1
+    require((public_count,native_count,cli_count,tx_count)==(88,80,4,4), 'Actual weather public/native/transaction denominator changed')
+    return dict(actual_public_native_refusals=public_count,actual_compiled_native_refusals=native_count,actual_public_cli_contexts=cli_count,actual_transaction_contexts=tx_count)
+
+
+def projections(q,data,caps,results):
+    z=data['WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE'];record=json.loads(z.read(q['source_preservation']))
+    require(record['status']=='LITERAL_PRIOR_SOURCE_PRESERVED_WITH_ONLY_SELECTED_WEATHER_INSERTIONS'
+            and record['baseline']==BASE and record['runtime']==RUNTIME, 'Weather literal source projection rebound')
+    for path,part in record['files'].items():
+        old=blob(BASE,path).decode();new=blob(RUNTIME,path).decode();lines=new.splitlines(keepends=True)
+        require(digest(old.encode())==part['baseline_lf_sha256'] and digest(new.encode())==part['runtime_lf_sha256'], 'Weather source insertion proof changed')
+        for item in reversed(part['insertions']):
+            at=item['new_line'];require(lines[at:at+len(item['lines'])]==item['lines'], 'Weather source inserted body changed')
+            del lines[at:at+len(item['lines'])]
+        require(''.join(lines)==old and part['original_lines_preserved'] is True, 'Original canonical physical/transaction body changed')
+    transport=record['windows_transport_composition'];new=blob(RUNTIME,'app/hybrid_water/daily_host.py').decode()
+    require(new.count(transport['typed_reply_helper'])==1, 'Canonical typed transport helper changed')
+    folded=new.replace(transport['typed_reply_helper'],'',1).replace('        send_reply(self.host, reply)','        send(self.host, " ".join(map(str, reply)))')
+    require(folded.encode()==blob('30cfaf4f5f9f693bc26d96b81ceeda0e1fb3884a','app/hybrid_water/daily_host.py')
+            and blob(RUNTIME,'app/hybrid_water/direct_day_kernel.py')==blob(BASE,'app/hybrid_water/direct_day_kernel.py'), 'Explicit/nonselected canonical transport projection changed')
+    authority=json.loads(z.read(q['acceptance_authority']))
+    require(authority['historical_source']=='bc1adba5cfc123f69eb98010026e15ca9bee70ac'
+            and authority['historical_assertion'] in blob(authority['historical_source'],authority['historical_path']).decode()
+            and authority['daily_water_guard_cm']==authority['additional_integrated_cde_guard_mg_cm2']==1e-10, 'Owning historical weather acceptance changed')
+    incoming=json.loads(z.read(q['incoming_actual_owner']))
+    require(incoming['head']==BASE and incoming['returncode']==0 and json.loads(incoming['stdout'])['status']=='BOUNDED_SALTFARM_TYPED_REPLY_SOURCE_RAW_ADMISSION_PASS', 'Actual incoming canonical current owner missing')
+    count=0
+    for opt in ('O0','O2'):
+        zz=data['WEATHER_TERMINAL_WINDOWS_'+opt+'_RAW_ARCHIVE']
+        for case,prefix,bp,capname,producer in [
+            ('pulsed','pulsed-preservation/','pulsed-preservation-build/','windows-primary','30cfaf4f5f9f693bc26d96b81ceeda0e1fb3884a'),
+            ('hourly','composed-hourly/','composed-hourly-build/','windows-composed','e4161c6a76b4601d68e25313e3f37c2544357121')]:
+            loc=q['locations']['Windows-'+opt+'-'+case];old=results['Windows-'+opt+'-'+case];report=json.loads(zz.read(prefix+'RESULT.json'))
+            require(report['source_commit']==producer and report['status']=='ACTUAL_EXACT_H_INPUT_CURRENT_WARM_COLD_PASS', 'Actual current weather projection failed')
+            b=build(zz,bp,loc,caps[capname],producer,opt);_,rows=f.trajectory(zz,prefix+'trajectory/',b,5,case=='hourly')
+            require(rows==old['rows'][:5] and b['inputs']==old['build']['inputs']
+                    and b['identity']['donor_generated']==old['build']['identity']['donor_generated']
+                    and b['identity']['kernel_sources']==old['build']['identity']['kernel_sources'], 'Current actual weather provider/input/physical projection differs')
+            f.cold(zz,prefix+'trajectory/',prefix+'cold-2/',b,rows,2,4,case=='hourly')
+            _,a=package(zz.read(prefix+'trajectory/accepted-column-1-day-4.zip'))
+            _,bodies=package(zz.read(case+'/trajectory/accepted-column-1-day-4.zip'));require(a==bodies, 'Current weather full-producer native differs')
+            count+=1
+    require(count==4,'Actual current weather projection denominator changed')
+    return count
+
+
+def named(q,data,caps):
+    count=0
+    oldq=json.loads(blob(BASE,'integration/f-ci/saltfarm-guard-cost05/COMPOSITION_QUALIFICATION.json'))
+    for platform in ('Windows','Ubuntu'):
+        old=oldq['archives'][platform];raw=(ROOT/'integration/f-ci/saltfarm-guard-cost05'/old['archive']).read_bytes()
+        require(digest(raw)==old['sha256'], 'Inherited named physical baseline changed')
+        with zipfile.ZipFile(io.BytesIO(raw)) as gold:
+            for opt in ('O0','O2'):
+                z=data['WEATHER_TERMINAL_'+platform.upper()+'_'+opt+'_RAW_ARCHIVE'];r=json.loads(z.read('named-seam/RESULT.json'))
+                producer='e4161c6a76b4601d68e25313e3f37c2544357121' if platform=='Windows' else 'eb8492ed818ca6779c64239f904df4de6bad6af6'
+                require(r['source_commit']==producer and r['status']=='ACTUAL_NAMED_SHARED_TRANSPORT_PHYSICAL_COMPLETE_NATIVE_SEAM_PASS'
+                        and all(v['returncode']==0 for v in r['calls'].values()), 'Current named transport seam failed/rebound')
+                bp='named-build/';b=json.loads(z.read(bp+'BUILD.json'));build_files(z,bp,b)
+                oldbuild=json.loads(gold.read('qualified-'+opt+'/BUILD.json'))
+                require(b['inputs']==oldbuild['inputs'] and b['identity']['kernel_sources']==oldbuild['identity']['kernel_sources']
+                        and b['identity']['direct_day_kernel']['protocol']=='swap5-direct-day-kernel-1', 'Current named input/kernel/transport authority changed')
+                for file in b['identity']['donor_generated']:require(z.read(bp+file)==gold.read('qualified-'+opt+'/'+file), 'Current named original Fortran changed')
+                _,warm=f.trajectory(z,'named-seam/warm/',b,2,False);_,endpoint=f.trajectory(z,'named-seam/warm-endpoint/',b,2,False)
+                _,cold=f.trajectory(z,'named-seam/cold/',b,1,False)
+                priorrows=[json.loads(v) for v in gold.read('accept-'+opt+'/full/daily.jsonl').splitlines()]
+                require(f.physical(warm)==f.physical(endpoint)==f.physical(priorrows[:2]) and f.physical(cold)==f.physical(warm[1:]), 'Actual named shared transport physical replay differs')
+                _,a=package(z.read('named-seam/cold/accepted-column-1-day-2.zip'));_,bodies=package(z.read('named-seam/warm-endpoint/accepted-column-1-day-2.zip'))
+                require(a==bodies,'Actual named shared transport complete native replay differs');count+=1
+    require(count==4,'Current named seam denominator changed');return count
+
+
+def inherited():
+    # Only literal scientific readers and raw authorities are reused. Their
+    # obsolete current-source barriers are not called or rebound to this ROOT.
+    path=ROOT/TYPED;spec=importlib.util.spec_from_file_location('literal_typed_weather_predecessor',path)
+    typed=importlib.util.module_from_spec(spec);spec.loader.exec_module(typed)
+    q=json.loads((ROOT/typed.PROOF/'QUALIFICATION.json').read_bytes());typed.validate(q);typed.raw_verify(q);typed.composed_verify(q,typed.decoder())
+    old=json.loads(blob(BASE,PROOF+'GROUNDWATER_WATER_COMPOSITION_QUALIFICATION.json'))
+    original=json.loads(blob(BASE,PROOF+'GROUNDWATER_WATER_QUALIFICATION.json'))
+    composition.scientific(old,original);result=gw.scientific(original)
+    return result
+
+
 def scientific(q):
     data = archives(q);caps = capsules(q, data)
     try:
-        result = primary(q, data, caps)
+        result = primary(q, data, caps);original_inputs(q,data,result,caps)
+        failures=retained(q,data,result);control=controls(q,data,result,caps)
+        projection_count=projections(q,data,caps,result);named_count=named(q,data,caps)
         return dict(actual_full_periods=len(result), actual_primary_complete_native_cold_windows=60,
-                    metrics={k:v['metrics'] for k,v in result.items()})
+                    actual_windows_source_physical_native_projection_contexts=projection_count,
+                    actual_current_named_two_day_contexts=named_count,
+                    **control,retained_failure_findings=failures,metrics={k:v['metrics'] for k,v in result.items()})
     finally:
         for z in data.values():z.close()
 
 
 def verify():
     q = json.loads((ROOT/PROOF/'WEATHER_TERMINAL_QUALIFICATION.json').read_text(encoding='utf8'))
-    source(q);result = scientific(q)
-    return dict(status='DRAFT_WEATHER_RAW_GATE_NOT_YET_COMPLETE', runtime=RUNTIME, **result,
+    source(q);result = scientific(q);previous=inherited()
+    return dict(status='BOUNDED_ORIGINAL_CDE_WEATHER_COMPLETE_ROOT_STATE_SOURCE_RAW_ADMISSION_PASS', runtime=RUNTIME, **result,
+                inherited_groundwater=previous, inherited_canonical_typed_transport_raw='PASS_WITHOUT_NEW_PERFORMANCE_OR_MODEL_RUNS',
                 functional_completion='PARTIAL', whole_scientific_equivalence='NOT_QUALIFIED', RC3_changed=False)
 
 

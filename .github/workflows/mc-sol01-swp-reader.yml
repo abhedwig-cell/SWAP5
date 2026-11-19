@@ -52,6 +52,7 @@ jobs:
             /integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_*
             /integration/f-ci/nomacro-complete01/GROUNDWATER_WATER_*
             /integration/f-ci/saltfarm-typed07/
+            /integration/f-ci/nomacro-complete01/WEATHER_*
       - name: Original native input and real application
         run: |
           set -euo pipefail
