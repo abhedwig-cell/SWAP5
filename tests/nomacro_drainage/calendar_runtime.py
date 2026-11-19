@@ -1,6 +1,7 @@
 """Actual original output/calendar composed with extended drainage state."""
 import argparse
 import json
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -23,7 +24,8 @@ def fixture(case,output,mode,fmt,nprint):
     values=dict(SWCSV=fmt,NPRINTDAY=nprint,SWMONTH=int(mode=='monthly'),
                 SWODAT=0,SWRES=0 if mode in ('terminal','perstep') else 1,
                 PERIOD=0 if mode=='terminal' else 1,INLIST_CSV="'WATBAL,GWL'",NUM_DECIMALS=12)
-    for key,value in values.items():text=assignment(text,key,value)
+    for key,value in values.items():
+        text=assignment(text,key,value) if re.search(r'(?mi)^[ \t]*'+key+r'[ \t]*=',text) else text+'\n'+key+' = '+str(value)+'\n'
     text+='\nFLPRINTDT = '+('.TRUE.' if mode=='perstep' else '.FALSE.')+'\n'
     path.write_text(text,encoding='cp1252')
     return info
