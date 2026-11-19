@@ -877,6 +877,8 @@ end module plant_interface""")
     patched=implicit_pond_build(output,project,patched)
     from implicit_root_finalization import apply_build as implicit_root_build
     patched=implicit_root_build(output,donor_build,project,patched)
+    from implicit_pond_availability import apply_build as implicit_availability_build
+    patched=implicit_availability_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -903,6 +905,7 @@ end module plant_interface""")
                     *([str(output/(name+'.o')) for name in ('groundwater_native_state','groundwater_history_native_state','age_groundwater_native_state') if name in patched] if lower_boundary==1 else []),
                     *([str(output/'implicit_groundwater_native_state.o')] if 'implicit_groundwater_native_state' in patched else []),
                     *([str(output/'implicit_pond_event_state.o')] if 'implicit_pond_event_state' in patched else []),
+                    *([str(output/'implicit_pond_availability.o')] if 'implicit_pond_availability' in patched else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
@@ -963,6 +966,9 @@ end module plant_interface""")
     from implicit_root_finalization import metadata as implicit_root_metadata
     implicit_root=implicit_root_metadata(project)
     if implicit_root is not None:build_identity['implicit_root_finalization']=implicit_root
+    from implicit_pond_availability import metadata as implicit_availability_metadata
+    implicit_availability=implicit_availability_metadata(project)
+    if implicit_availability is not None:build_identity['implicit_pond_availability']=implicit_availability
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from age_groundwater_output import metadata as original_output_metadata
