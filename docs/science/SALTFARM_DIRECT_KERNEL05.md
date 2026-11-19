@@ -143,3 +143,16 @@ relabelled as fresh current AGE runs. Historical qualification records and raw
 archives are untouched. The registered F-CI entry remains the existing
 `tests/hupsel51/verify_successor.py` chain. The merge receipt records actual
 parents, complete tree and a detached run of that registered entry.
+
+
+## Canonical PR1759 overlap and fresh composition
+
+Canonical advanced to `b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1` while PR1758 CI was running. The shared host, coupling, public CLI and admission dispatch were composed without dropping either route. Runtime `78e02a97517be08ae9fdaa5b885b1fe584e4dec2` preserves the exact canonical production after deleting only the SaltFarm transport hooks. The native Fortran bridge and Python lifecycle remain byte-identical to producer8ba61729a.
+
+The actual clean detached b24 canonical owner passes its original independent raw/source audit: 32 implicit water/CDE full periods,376 exact cold windows,352 native refusals and2796 policy/provider refusals remain inherited, never relabelled as new model runs. Its literal validator body is retained behind the four-line composition successor hook. Canonical integration Git objects and the original SaltFarm sealed unit stay unchanged.
+
+Four fresh complete SaltFarm1461day Windows/Ubuntu O0/O2 periods and20 exact own cold windows pass on the composed source. Windows generated Fortran sources are byte-identical to the original admitted native candidate; the new independent raw owner additionally compares all compiled Fortran, physical rows, CSV and eight complete native endpoints per optimization against the corresponding original sealed platform data. Actual external discard/replay and independent columns pass on both platforms; direct ABI refusals and isolation also pass on Windows. Water/solute maxima remain5.1060856931517407e-11cm and7.65545959957592e-12mg/cm2 under the unchanged1e-10guards. This is composition qualification, not a new portable performance measurement.
+
+New evidence only: `COMPOSITION_QUALIFICATION.json`, `COMPOSITION_BASELINE_AUDIT.json`, `COMPOSITION_WINDOWS.json`, `COMPOSITION_WINDOWS.zip`, and the unmodified Ubuntu artifact `COMPOSITION_UBUNTU.zip` from successful workflow44507488338/artifact14521340432. Exact runtime/build identities and start commands are recorded in each actual BUILD/RESULT. The original archives, manifests, hashes, failed historical science and fixed RC3 remain untouched. Whole functional closure remains PARTIAL and scientific equivalence NOT_QUALIFIED.
+
+The chemistry job twice exhausted its original10minute whole-job cap while fetching/materializing more than20GiB of unrelated history. Only its checkout is narrowed to actual sources, examples, audits and selected raw evidence. Full Git history, every test command and the10minute cap remain literal; the composition owner verifies that exact projection. No scientific or numerical guard changes. Next result: terminal current CI, PR1758 admission and the actual detached merge postimage.

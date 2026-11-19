@@ -15,5 +15,7 @@ class Admission(unittest.TestCase):
   for data,name in ((b'{"x":2}\n','meta.json'),(raw.replace(b'\r\n',b'\n'),'raw.zip')):
    with self.assertRaises(ValueError):owner.sealed_representation(data,digest,name)
  def test_historical_body_not_replaced(self):
+  if (owner.ROOT/'tests/saltfarm_newton/composition_admission.py').exists():
+   spec=importlib.util.spec_from_file_location('composition',owner.ROOT/'tests/saltfarm_newton/composition_admission.py');composition=importlib.util.module_from_spec(spec);spec.loader.exec_module(composition);composition.literal_guards();return
   current=(owner.ROOT/owner.ENTRY).read_text(encoding='utf8');self.assertEqual(current.replace(owner.HOOK,'',1).encode(),owner.normalized(owner.blob(owner.BASE,owner.ENTRY)))
 if __name__=='__main__':unittest.main()

@@ -147,6 +147,10 @@ def actual_period(z,prefix,report,build,opt,selected,dz,phase):
 
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('saltfarm_composition_admission',ROOT/'tests/saltfarm_newton/composition_admission.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     require(SEALED!='PENDING_RAW_SEAL','Implicit raw qualification seal is not complete')
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'Dirty implicit admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')

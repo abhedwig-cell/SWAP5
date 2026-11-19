@@ -67,9 +67,9 @@ def audit_current_seal():
     return seal
 
 
-def nonselected_projection():
+def nonselected_projection(*,baseline=BASE,runtime=RUNTIME):
     """Delete only the qualified inactive hooks; literal old code must remain."""
-    path='app/hybrid_water/daily_host.py';s=blob(RUNTIME,path).decode()
+    path='app/hybrid_water/daily_host.py';s=blob(runtime,path).decode()
     s=remove(s,"    from direct_day_kernel import build as build_direct_kernel\n    direct_kernel=build_direct_kernel(output,[ROOT/s for s in sources],adapter,kernel_flags,project)\n\n")
     s=remove(s,"    if direct_kernel is not None:build_identity['direct_day_kernel']=direct_kernel\n")
     s=remove(s,'def start_process(stack, command, directory, name, *, direct_identity=None):','def start_process(stack, command, directory, name):')
@@ -78,13 +78,13 @@ def nonselected_projection():
     s=remove(s,"    from direct_day_kernel import NativeDayKernel\n    if isinstance(process,NativeDayKernel):return process.receive(prefixes)\n")
     s=remove(s,"        direct_identity=binding['build'].get('direct_day_kernel') if binding is not None else None\n        if direct_identity is not None:\n            from direct_day_kernel import validate as validate_direct\n            validate_direct(Path(kernel).parent,direct_identity,project)\n")
     s=remove(s,", **({'direct_identity':direct_identity} if direct_identity is not None else {}))",')')
-    require(s.encode()==normalized(blob(BASE,path)),'nonselected host body changed')
-    path='app/hybrid_water/daily_coupling.py';s=blob(RUNTIME,path).decode();s=remove(s,"    from direct_day_kernel import validate as validate_direct\n    validate_direct(bundle,identity.get('direct_day_kernel'),project)\n");require(s.encode()==normalized(blob(BASE,path)),'nonselected coupling body changed')
-    path='tools/solute/run_water.py';s=blob(RUNTIME,path).decode();s=remove(s,"checkpoint_binding=binding if (args.checkpoint_at is not None or build_id.get('direct_day_kernel')) else None","checkpoint_binding=binding if args.checkpoint_at is not None else None");s=remove(s,"    if build_id.get('direct_day_kernel'):\n        report['kernel_transport']=build_id['direct_day_kernel']['protocol']\n        report['kernel_library_sha256']=build_id['direct_day_kernel']['library_sha256']\n");require(s.encode()==normalized(blob(BASE,path)),'nonselected CLI body changed')
-    path='tests/saltfarm_newton/qualify.py';s=blob(RUNTIME,path).decode();s=remove(s,";p.add_argument('--model-cap',type=float,default=25)");s=s.replace('bounded(a.model_cap,','bounded(25,');require(s.encode()==normalized(blob(BASE,path)),'qualification scientific checks changed')
-    body=blob(RUNTIME,'app/hybrid_water/direct_day_kernel.py').decode()
+    require(s.encode()==normalized(blob(baseline,path)),'nonselected host body changed')
+    path='app/hybrid_water/daily_coupling.py';s=blob(runtime,path).decode();s=remove(s,"    from direct_day_kernel import validate as validate_direct\n    validate_direct(bundle,identity.get('direct_day_kernel'),project)\n");require(s.encode()==normalized(blob(baseline,path)),'nonselected coupling body changed')
+    path='tools/solute/run_water.py';s=blob(runtime,path).decode();s=remove(s,"checkpoint_binding=binding if (args.checkpoint_at is not None or build_id.get('direct_day_kernel')) else None","checkpoint_binding=binding if args.checkpoint_at is not None else None");s=remove(s,"    if build_id.get('direct_day_kernel'):\n        report['kernel_transport']=build_id['direct_day_kernel']['protocol']\n        report['kernel_library_sha256']=build_id['direct_day_kernel']['library_sha256']\n");require(s.encode()==normalized(blob(baseline,path)),'nonselected CLI body changed')
+    path='tests/saltfarm_newton/qualify.py';s=blob(runtime,path).decode();s=remove(s,";p.add_argument('--model-cap',type=float,default=25)");s=s.replace('bounded(a.model_cap,','bounded(25,');require(s.encode()==normalized(blob(baseline,path)),'qualification scientific checks changed')
+    body=blob(runtime,'app/hybrid_water/direct_day_kernel.py').decode()
     require("MODEL = 'HYBRID_SALTFARM_WATER'" in body and 'return project.model == MODEL and not project.macro and not project.input_directory' in body,'transport selection broadened')
-    require(remove((ROOT/WORKFLOW).read_text(encoding='utf8'),CHECKOUT).encode()==normalized(blob(BASE,WORKFLOW)),'chemistry workflow commands or time limits changed')
+    require(remove((ROOT/WORKFLOW).read_text(encoding='utf8'),CHECKOUT).encode()==normalized(blob(baseline,WORKFLOW)),'chemistry workflow commands or time limits changed')
     return 'LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED'
 
 

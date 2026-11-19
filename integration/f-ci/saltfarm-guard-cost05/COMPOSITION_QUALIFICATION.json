@@ -1,0 +1,30 @@
+{
+  "status": "CANONICAL_IMPLICIT_AND_DIRECT_SALTFARM_COMPOSITION_QUALIFIED",
+  "baseline": "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
+  "runtime": "78e02a97517be08ae9fdaa5b885b1fe584e4dec2",
+  "pr": 1758,
+  "full_periods": 4,
+  "cold_windows": 20,
+  "water_guard_cm": 1e-10,
+  "solute_guard_mg_cm2": 1e-10,
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "RC3_changed": false,
+  "canonical_audit_sha256": "f1d089e30c6aa8932e07b5a1562c74395f8066fe40d03ee6b1b67434b4d89fda",
+  "archives": {
+    "Windows": {
+      "archive": "COMPOSITION_WINDOWS.zip",
+      "bytes": 27996606,
+      "sha256": "ff5944300e2c8fd2d8da60d3d6f34e7ef2381864135776071ba31e178b2b0e4f"
+    },
+    "Ubuntu": {
+      "archive": "COMPOSITION_UBUNTU.zip",
+      "bytes": 28538936,
+      "sha256": "57c80925bae6af8ab0ce5ae21e56ca2497fb71eb8fc8ebb3bf3dc28dac612aa2",
+      "origin_run": 44507488338,
+      "origin_artifact": 14521340432,
+      "exact_artifact_bytes": true
+    }
+  },
+  "qualification_scope": "Fresh SaltFarm composition only. Existing implicit raw/source admission inherited after actual detached canonical b24 registered-owner PASS and literal nonselected production equality. Original implicit source/raw records and original SaltFarm seals remain unchanged.",
+  "next_deliverable": "Terminal current chemistry and central F-CI, then PR1758 merge with actual complete-tree and detached-owner verification"
+}
