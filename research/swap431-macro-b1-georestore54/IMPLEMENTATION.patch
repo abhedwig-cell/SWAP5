@@ -1,0 +1,29 @@
+--- GEOMETRY53/macropore_native.f90
++++ GEORESTORE54/macropore_native.f90
+@@ -1754,6 +1754,8 @@
+ ! --- local variables
+ ! INACTIVE51: transaction scratch, not native persistent state.
+       real(8),save::reference_origin52(madm,macp)=0d0,sorptivity_origin52(madm,macp)=0d0
++! GEOMETRY53: exact native geometry origin, including small positive history values.
++      real(8),save::dynamic_origin54(macp)=0d0,subsidence_origin54(macp)=0d0
+       real(8),save::origin_time52=0d0
+       integer,save::origin_n52=0,origin_dm52=0
+       logical,save::origin_ready52=.false.
+@@ -1767,6 +1769,8 @@
+          WaUnMpDmCpM1(1:numdm,1:numnod) = WaUnMpDmCp(1:numdm,1:numnod)
+          reference_origin52(1:numdm,1:numnod)=ThtSrpRefDmCp(1:numdm,1:numnod)
+          sorptivity_origin52(1:numdm,1:numnod)=SorpDmCp(1:numdm,1:numnod)
++         dynamic_origin54(1:numnod)=VlMpDyCp(1:numnod)
++         subsidence_origin54(1:numnod)=SubsidCp(1:numnod)
+          origin_time52=t1900;origin_n52=numnod;origin_dm52=numdm
+          origin_ready52=numnod>0.and.numdm>0
+ 
+@@ -1781,6 +1785,8 @@
+                error stop 'RESTORE52 missing or mismatched history origin'
+             ThtSrpRefDmCp(1:numdm,1:numnod)=reference_origin52(1:numdm,1:numnod)
+             SorpDmCp(1:numdm,1:numnod)=sorptivity_origin52(1:numdm,1:numnod)
++            VlMpDyCp(1:numnod)=dynamic_origin54(1:numnod)
++            SubsidCp(1:numnod)=subsidence_origin54(1:numnod)
+          end if
+ 
+       case default
