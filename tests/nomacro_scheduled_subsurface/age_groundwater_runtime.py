@@ -7,6 +7,7 @@ from original_output_files import compare
 from age_groundwater_output import metadata,magic,validate_candidate
 
 m=age.m;ROOT=age.ROOT
+calendar=age.calendar
 
 
 def fixture(path,hysteresis,step,mode,fmt,reset,npd,drainage):
