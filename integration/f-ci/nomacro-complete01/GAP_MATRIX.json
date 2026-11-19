@@ -1579,37 +1579,38 @@
       {
         "id": "groundwater-water-native",
         "function": "Complete original water SWBOTB1 state and subdaily calendar",
-        "gap_classification": "EVIDENCE_ONLY",
+        "gap_classification": null,
         "historical_availability": {
           "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90",
           "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/headcalc.f90",
           "supported": "Original prescribed groundwater and water output calendars"
         },
-        "current_availability": "Complete ordinary/history water SWBOTB1 selector0/1 state/calendar source qualified on Windows/Ubuntu. Actual canonical merge pending.",
-        "implementation_completeness": "BOUNDED_STATE_CALENDAR_SOURCE_QUALIFIED_CANONICAL_PENDING",
-        "missing_composition_or_guard": "Two bounded state/calendar composition gaps implemented; canonical actual postimage next. Other physical families/valid combinations remain UNKNOWN.",
-        "evidence_status": "REGISTERED_SOURCE_RAW_NATIVE_OWNER_PASS_ACTUAL_CANONICAL_PENDING",
+        "current_availability": "Actual PR1760 canonicalef5010a83 exact parents/qualified tree and clean detached registered owner PASS98.282563s. Complete bounded selector0/1 hydraulic carry and calendar composition admitted.",
+        "implementation_completeness": "BOUNDED_CANONICALLY_ADMITTED",
+        "missing_composition_or_guard": "Two bounded composition gaps closed. Whole family outside these domains remains UNKNOWN.",
+        "evidence_status": "ACTUAL_CANONICAL_SOURCE_RAW_NATIVE_OWNER_PASS",
         "user_interest": "High: common groundwater projects and restart",
-        "remaining_effort": "Actual merge tree/parents and clean detached owner; then hydraulic-options batch.",
+        "remaining_effort": "Outside admitted bounded domain UNKNOWN; no duplicate old model campaign.",
         "batch": "groundwater",
         "original_gap_classification": "MISSING_COMPOSITION"
       },
       {
         "id": "explicit-szym-mean7",
         "function": "Original explicit Szymkiewicz SWKMEAN7",
-        "gap_classification": "OVERRESTRICTIVE_GUARD",
+        "gap_classification": "MISSING_COMPOSITION",
         "historical_availability": {
           "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:789",
           "initialization": "sub_Kavg_Szym(1) at line790",
           "supported": "SWKIMPL0 only; original initializer/process domain must be composed"
         },
-        "current_availability": "experimental_project mandatory and allowed sets restrict every route to means1..6. Read real initializer/provider and bound history/table interactions before opening guard.",
+        "current_availability": "Original compiled table interpolation exists, but requires external Kavg_Szymkiewicz_0001_NNNN.unf matching profile/grid. Prepared original distribution has no table or generator; guard-only opening is insufficient.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
-        "missing_composition_or_guard": "experimental_project mandatory and allowed sets restrict every route to means1..6. Read real initializer/provider and bound history/table interactions before opening guard.",
-        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "missing_composition_or_guard": "Original user-supplied scientific table identity and immutable worker lifecycle need composition and actual physical qualification. No synthetic physical table invented.",
+        "evidence_status": "EXPLICIT_SZYMKIEWICZ_SOURCE_ASSESSMENT.json; SOURCE_CONTRACT_ONLY_NO_ADMISSION",
         "user_interest": "Medium/high for original numerical input compatibility",
         "remaining_effort": "Medium; no new averaging equation",
-        "batch": "hydraulic-options"
+        "batch": "hydraulic-options",
+        "original_gap_classification": "OVERRESTRICTIVE_GUARD"
       },
       {
         "id": "detailed-weather-events",
@@ -1620,10 +1621,10 @@
           "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/swap.f90",
           "constraints": "SWETR1 forces detailed0; detailed weather uses rain0. Do not count impossible reader combinations."
         },
-        "current_availability": "Daily bounded family admitted; actual temporal364 strict failures and uncomposed combinations remain. Reuse existing weather/interception/event owners, investigate actual failure only.",
+        "current_availability": "Actual ef501 exact-input controls reproduce both day364 refusals. Current fcfc74dab complete trial receipt plus strict rollback passes four Windows O0/O2 full1096 water/CDE balances. Pulsed cold5/opt exact; hourly cold532 diverges after exact531, missing carry under investigation.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
-        "missing_composition_or_guard": "Daily bounded family admitted; actual temporal364 strict failures and uncomposed combinations remain. Reuse existing weather/interception/event owners, investigate actual failure only.",
-        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "missing_composition_or_guard": "Resolve actual hourly native carry at cold530\u2192532 and portable qualification; retain all unchanged1e-10 guards.",
+        "evidence_status": "WEATHER_TERMINAL_WINDOWS_PRELIMINARY.json; NOT_QUALIFIED; NO_CANONICAL_ADMISSION",
         "user_interest": "High: hourly rainfall and irrigation projects",
         "remaining_effort": "Medium; focused real event/native windows then affected representative period",
         "batch": "weather"

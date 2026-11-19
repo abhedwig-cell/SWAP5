@@ -1,0 +1,258 @@
+{
+  "status": "WINDOWS_FOUR_FULL_BALANCES_PASS_HOURLY_DAY532_EXACT_RESTART_UNRESOLVED",
+  "runtime": "fcfc74dabc55ad25612eea7dde139c2ac3eb13ce",
+  "canonical": "ef5010a83e83f879254af534bf0dd9cfcdbf3a85",
+  "actual_full_periods": 4,
+  "days_per_period": 1096,
+  "guard_cm": 1e-10,
+  "chemical_guard_mg_cm2": 1e-10,
+  "full_scientific_equivalence": "NOT_QUALIFIED",
+  "canonical_admission": false,
+  "cases": {
+    "pulsed-O0": {
+      "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\weather-terminal-pulsed-O0-full-v4",
+      "result_sha256": "bb037b03996b1f8587a7fe0ab86872ed8bd9c42616e37b5aae65325be6855447",
+      "status": "ACTUAL_EXACT_H_INPUT_CURRENT_WARM_COLD_PASS",
+      "trajectory": {
+        "status": "FULL_PASS",
+        "days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 9.988325444520996e-11,
+          "max_kernel_cm": 9.988965210538936e-11,
+          "max_solute_mg_cm2": 3.2040768828270685e-13,
+          "sum_water_residual_cm": -2.6017713212240655e-10
+        },
+        "model_seconds": 13.571310700383037,
+        "build_sha256": "03eac8f7fa0888ed9a61cd0858e55a372818be7d170a4c298c9e17ad173ab74b"
+      },
+      "actual_completed_cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.7860344001092017
+        },
+        {
+          "start": 363,
+          "end": 364,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 1.3052277001552284
+        },
+        {
+          "start": 364,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 1.3210244998335838
+        },
+        {
+          "start": 530,
+          "end": 532,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.7437529996968806
+        },
+        {
+          "start": 1094,
+          "end": 1096,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 1.0087728998623788
+        }
+      ],
+      "error": null
+    },
+    "hourly-O0": {
+      "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\weather-terminal-hourly-O0-full-v4",
+      "result_sha256": "bc3b8d32a80ddd584f162d1bc14792d111fc1467ea64f69ab14f97ab72594c3c",
+      "status": "FAILED",
+      "trajectory": {
+        "status": "FULL_PASS",
+        "days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 9.991410953799629e-11,
+          "max_kernel_cm": 9.991252269969664e-11,
+          "max_solute_mg_cm2": 5.088551622829083e-13,
+          "sum_water_residual_cm": 2.6560583997491984e-10
+        },
+        "model_seconds": 31.621557699982077,
+        "build_sha256": "a7c7ffdde289426b501bbf7f6938277bee0cfc119e14a97d355d7122453c7e7a"
+      },
+      "actual_completed_cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 1.48781010042876
+        },
+        {
+          "start": 363,
+          "end": 364,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 4.116651100106537
+        },
+        {
+          "start": 364,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 6.030749499797821
+        }
+      ],
+      "error": "AssertionError()"
+    },
+    "pulsed-O2": {
+      "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\weather-terminal-pulsed-O2-full-v4",
+      "result_sha256": "96f9fb833a039975f1214be0beda00fa80e1d44bad53b2b68efcfbea7decfcdc",
+      "status": "ACTUAL_EXACT_H_INPUT_CURRENT_WARM_COLD_PASS",
+      "trajectory": {
+        "status": "FULL_PASS",
+        "days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 9.988325444520996e-11,
+          "max_kernel_cm": 9.988965210538936e-11,
+          "max_solute_mg_cm2": 3.2040768828270685e-13,
+          "sum_water_residual_cm": -2.6017713212240655e-10
+        },
+        "model_seconds": 12.729741000104696,
+        "build_sha256": "a778e00b45bf552ed561e5c65bb72264ab34fafca3f808fa30142df75161c79d"
+      },
+      "actual_completed_cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.708937400020659
+        },
+        {
+          "start": 363,
+          "end": 364,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 1.0234083998948336
+        },
+        {
+          "start": 364,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 1.214721200056374
+        },
+        {
+          "start": 530,
+          "end": 532,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.871220899745822
+        },
+        {
+          "start": 1094,
+          "end": 1096,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 0.8963520997203887
+        }
+      ],
+      "error": null
+    },
+    "hourly-O2": {
+      "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\weather-terminal-hourly-O2-full-v4",
+      "result_sha256": "a27969ad533cc549d021c7bafe2b121e9255f2f1be63c9d663884fea92006c58",
+      "status": "FAILED",
+      "trajectory": {
+        "status": "FULL_PASS",
+        "days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 9.991410953799629e-11,
+          "max_kernel_cm": 9.991252269969664e-11,
+          "max_solute_mg_cm2": 5.088551622829083e-13,
+          "sum_water_residual_cm": 2.6560583997491984e-10
+        },
+        "model_seconds": 23.814034800045192,
+        "build_sha256": "cc855fce62cc4d8e60fa82162f64839834e652cbbef3a4867b8088c155352d5b"
+      },
+      "actual_completed_cold": [
+        {
+          "start": 2,
+          "end": 4,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 1.3056088001467288
+        },
+        {
+          "start": 363,
+          "end": 364,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 3.4361546002328396
+        },
+        {
+          "start": 364,
+          "end": 367,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true,
+          "seconds": 4.861476799938828
+        }
+      ],
+      "error": "AssertionError()"
+    }
+  },
+  "failed_controls": {
+    "exact_canonical": [
+      "weather-current-pulsed-O0-v2",
+      "weather-current-hourly-O0-v2"
+    ],
+    "terminal_only": [
+      "weather-terminal-pulsed-O0-v1",
+      "weather-terminal-hourly-O0-v1"
+    ],
+    "exact28term_witness": "weather-terminal-pulsed-O0-v2",
+    "terminal_strict_retry_clock_floor": [
+      "weather-terminal-pulsed-O0-v3",
+      "weather-terminal-hourly-O0-v3"
+    ],
+    "source_build_capsules": "WEATHER_PRELIMINARY_BUILD_CAPSULES.json",
+    "protected_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence"
+  }
+}

@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-explicit-szym-weather01",
-  "last_commit": "ef5010a83e83f879254af534bf0dd9cfcdbf3a85",
-  "status": "WEATHER_TERMINAL_RECEIPT_IMPLEMENTED_NOT_TESTED",
+  "last_commit": "fcfc74dabc55ad25612eea7dde139c2ac3eb13ce",
+  "status": "WINDOWS_FOUR_FULL_BALANCES_PASS_HOURLY_DAY532_EXACT_RESTART_UNRESOLVED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run current persisted bounded weather terminal receipt O0 exact H pulsed/hourly367 and own363/364 cold. First actual canonical ef501 controls both reproduce day364 refusal; retained in protected evidence/weather-current-*-O0-v2. Do not alter these raw controls.",
+  "next_action": "Finish actual warm/cold531 native probe (protected evidence/weather-hourly-day531-native-probe-v4). Four current O0/O2 full1096 water/CDE periods pass, but hourly cold530\u2192532 diverges only on day532; do not admit hourly or alter origin/checkpoint. Identify missing original carry; compose existing state owner, then qualify affected native surface and portable source. Pulsed route cold5/platformopt passes; no broad repeat for metadata.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -30388,8 +30388,10 @@
       23
     ],
     "production_changes": true,
-    "test_status": "PERSISTED_NOT_YET_EXECUTED",
-    "qualification_status": "NOT_QUALIFIED",
-    "implementation": "Bounded read-only complete terminal receipt composed with original weather CDE; no physical or accepted state assignment"
+    "test_status": "WINDOWS_FOUR_FULL_BALANCES_PASS_HOURLY_DAY532_EXACT_RESTART_UNRESOLVED",
+    "qualification_status": "NOT_QUALIFIED_HOURLY_EXACT_RESTART_BLOCKER",
+    "implementation": "Bounded read-only complete terminal receipt composed with original weather CDE; no physical or accepted state assignment",
+    "runtime": "fcfc74dabc55ad25612eea7dde139c2ac3eb13ce",
+    "preliminary": "WEATHER_TERMINAL_WINDOWS_PRELIMINARY.json"
   }
 }
