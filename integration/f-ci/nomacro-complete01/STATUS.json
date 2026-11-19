@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-groundwater-water-calendar01",
   "last_commit": "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
-  "status": "GROUNDWATER_WATER_STATE_CALENDAR_CONTRACT_PERSISTED_PREDECESSOR_ROOT_PENDING",
+  "status": "GROUNDWATER_WATER_STATE_CALENDAR_IMPLEMENTING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Finish actual canonical PR1759 registered root; implement and persist groundwater water state/calendar composition before targeted model runs.",
+  "next_action": "Implement/persist groundwater water complete state/calendar; then targeted O0/O2 native and conservation tests.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -25721,7 +25721,7 @@
     "scientific_equivalence_claim": false
   },
   "implicit_conductivity": {
-    "status": "BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
+    "status": "BOUNDED_CANONICALLY_ADMITTED",
     "baseline": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
     "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_SOURCE_AUDIT.json",
@@ -29966,6 +29966,12 @@
         "actual_corruptions_refused": 318,
         "unaltered_chemical_baseline_pass": true
       }
+    },
+    "actual_canonical_admission": {
+      "pr": 1759,
+      "head": "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
+      "receipt": "IMPLICIT_CONDUCTIVITY_MERGE_RECEIPT.json",
+      "actual_clean_owner_pass": true
     }
   },
   "accelerate02": {
@@ -30216,6 +30222,6 @@
     "next": "Implement typed explicit0 carry and groundwater water calendar wrapper; preserve implicit1 daily and old chemical/AGE generated dependencies.",
     "predecessor_pr": 1759,
     "predecessor_tree_verified": true,
-    "predecessor_clean_owner": "RUNNING_IN_SEPARATE_ACTUAL_CANONICAL_CHECKOUT"
+    "predecessor_clean_owner": "PASS_ACTUAL_DETACHED_CANONICAL_173.8807335_SECONDS"
   }
 }

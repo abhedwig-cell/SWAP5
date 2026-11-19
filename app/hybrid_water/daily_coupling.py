@@ -232,7 +232,7 @@ def validate_bundle(bundle, reference, project):
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     expected_cde_receipt=cde_receipt_metadata() if cde_receipt_enabled(project) else None
     if identity.get('cde_native_receipt')!=expected_cde_receipt:raise ValueError('Foreign CDE native receipt consistency policy; rebuild without rebinding')
-    from age_groundwater_output import metadata as original_output_metadata
+    from groundwater_water_output import metadata as original_output_metadata
     expected_output=original_output_metadata(project)
     if identity.get('original_output')!=expected_output:raise ValueError('Foreign original output policy; rebuild without rebinding')
     if expected_output and expected_output.get('thermal_calendar',False):
@@ -268,7 +268,7 @@ def validate_bundle(bundle, reference, project):
     from implicit_groundwater_state import native_metadata as groundwater_native_metadata,enabled as implicit_groundwater,state_source as implicit_state_source
     if identity.get('groundwater_native_state')!=groundwater_native_metadata(project,h.sha,h.APP):
         raise ValueError('Foreign prescribed groundwater native carry policy')
-    if implicit_groundwater(project) and (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source():
+    if implicit_groundwater(project) and (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project):
         raise ValueError('Foreign actual implicit groundwater native provider')
     if lower_boundary==1:
         state_policy=identity['groundwater_native_state']
@@ -277,7 +277,7 @@ def validate_bundle(bundle, reference, project):
             if (bundle/state_policy['provider_filename']).read_text(encoding='cp1252')!=state_source():
                 raise ValueError('Foreign actual original AGE groundwater state provider')
         elif state_policy.get('provider_filename')=='implicit_groundwater_native_state.f90':
-            if (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source():
+            if (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project):
                 raise ValueError('Foreign actual implicit groundwater native provider')
         else:
             state_name='groundwater_history_native_state.f90' if expected_lower and state_policy['domain_bytes']==104 else 'groundwater_native_state.f90'

@@ -183,7 +183,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     chemical_source=chemical_fixed or chemical_scheduled
     from conserved_aquifer_solute import enabled as aquifer_enabled, correction as aquifer_correction
     aquifer_source=aquifer_enabled(project)
-    import age_groundwater_output as age_calendar_owner
+    import groundwater_water_output as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
         import original_output_aquifer as age_calendar_owner
     if age_calendar_owner.selection(project) is None:
@@ -986,7 +986,7 @@ end module plant_interface""")
     if implicit_finite is not None:build_identity['implicit_finite_newton']=implicit_finite
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
-    from age_groundwater_output import metadata as original_output_metadata
+    from groundwater_water_output import metadata as original_output_metadata
     selected_output=original_output_metadata(project)
     if selected_output is not None:build_identity['original_output']=selected_output
     if project.input_directory:
