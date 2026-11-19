@@ -103,3 +103,50 @@ def checkpoint(raw,build,row,selected,dz):
         for name,digest in meta['files'].items():require(hashlib.sha256(z.read(name)).hexdigest()==digest,'Actual implicit native member hash differs')
         result=sequential_records(z.read('result.end'));native=implicit_water_native(z.read('macro.bin'),row,build['project']['nodes'],selected,dz,build['project']['start_date'])
         return dict(sequential_record_lengths=result,water=native)
+
+
+def output_calendar(raw,n,row,selected,epoch,chemical):
+    """Read actual paired original calendar independently of transport codec."""
+    marker=struct.pack('<2i',1,n);positions=[];at=raw.find(marker)
+    while at>=0:
+        if at+160<=len(raw):
+            h=struct.unpack_from('<20i',raw,at)
+            if raw[at:at+80]==raw[at+80:at+160] and 0<=h[2]<=5 and h[3]==6068+10*n+(3*n+3)*h[2]:positions.append((at,h))
+        at=raw.find(marker,at+1)
+    require(len(positions)==1,'Actual original paired calendar missing or ambiguous');at,h=positions[0];nr=h[3];end=at+160+16*nr
+    require(end<=len(raw),'Truncated actual original calendar values')
+    day=row['day'];period=selected['period'];step=selected['flprintdt'];npd=selected['nprintday'];short=step or npd>1
+    completed=date.fromisoformat(epoch)+timedelta(days=day-1);counter=min(day,completed.timetuple().tm_yday) if selected['swres'] and period else day
+    if period and not step:counter%=period
+    require((h[4],h[5],h[6],h[7],h[8],h[11],h[18],h[19])==(period,npd,day,counter,1 if step or not short else day*npd+1,selected['swres'],int(short),int(step)),'Actual original calendar numerical policy/day/counters differ')
+    require(all(v in (0,1) for v in h[12:20]) and all(1<=v<=3000 for v in h[9:11]),'Actual original calendar flags/pointers differ')
+    first=raw[at+160:at+160+8*nr];require(first==raw[at+160+8*nr:end],'Actual original calendar value witness differs');values=struct.unpack('<'+str(nr)+'d',first)
+    require(finite(values) and values[-1]>=0,'Nonfinite/negative actual original calendar values');clock=(date.fromisoformat(epoch)-date(1900,1,1)).days+1
+    balance=values[-6008:-3008];interval=values[-3008:-8];require(h[9]==1+sum(0<v<clock+day-1e-8 for v in balance),'Actual original balance date pointer differs')
+    past=0<interval[0]<clock-1e-8;expected=1 if past else 1+sum(0<v<clock+day-1e-8 for v in interval)
+    require(h[10]==1 if past else h[10]<=expected if step else h[10]==expected,'Actual original interval date pointer differs')
+    if chemical:
+        require(end+24<=len(raw),'Missing actual original chemical private state');head=struct.unpack_from('<3i',raw,end);version,nn,size=head
+        require(nn==n and version in (1,2) and size==n+(18 if version==1 else 20) and head==struct.unpack_from('<3i',raw,end+12) and end+24+16*size==len(raw),'Actual original chemical private domain/witness/EOF differs')
+        private=raw[end+24:end+24+8*size];require(private==raw[end+24+8*size:],'Actual original chemical private value witness differs');state=struct.unpack('<'+str(size)+'d',private);require(finite(state),'Nonfinite actual original chemical private state')
+        stock=struct.unpack_from('<'+str(n+2)+'d',raw,48);require(finite(stock) and min(stock)>=0 and stock[-1]==row['solute_end_mg_cm2'],'Actual native conserved chemical stock differs')
+        if version==2:require(state[0]>=0 and state[-2]>=0 and stock[-1]-state[-2]==state[14],'Actual original chemical private anchor differs')
+    else:require(end==len(raw),'Trailing actual original water native bytes')
+    return dict(calendar_offset=at,calendar_header=list(h),calendar_end=end)
+
+
+def general_checkpoint(raw,build,row,selected,dz):
+    with zipfile.ZipFile(io.BytesIO(raw)) as z:
+        require(set(z.namelist())=={'checkpoint.json','result.end','macro.bin'},'Foreign actual original checkpoint members');meta=json.loads(z.read('checkpoint.json'))
+        require(meta['schema']=='swap5-hybrid-water-checkpoint-3' and meta['binding']==build['binding'] and meta['receipt']==row and set(meta['files'])=={'result.end','macro.bin'},'Actual original checkpoint origin/receipt/inventory differs')
+        for name,digest in meta['files'].items():require(hashlib.sha256(z.read(name)).hexdigest()==digest,'Actual original checkpoint member hash differs')
+        wire=z.read('macro.bin');magic=wire[:8].decode('ascii');allowed={'S5IOW001','S5IGW001','S5OPH001','S5CCC001','S5CIH001','S5GHC003'}
+        require(magic in allowed,'Unqualified actual implicit water/CDE native codec');require(struct.unpack_from('<i',wire,8)[0]==build['project']['nodes'],'Actual original checkpoint node domain differs')
+        n=build['project']['nodes'];chemical=magic in {'S5CCC001','S5CIH001','S5GHC003'};result=dict(magic=magic,sequential_record_lengths=sequential_records(z.read('result.end')),calendar=output_calendar(wire,n,row,selected,build['project']['start_date'],chemical))
+        if magic=='S5IGW001':result['water']=implicit_water_native(wire,row,n,selected,dz,build['project']['start_date'])
+        if magic=='S5GHC003':
+            from groundwater_history_verify import native
+            native(wire,row,build['identity']['groundwater_native_state'])
+        if selected['swhyst']:
+            header=struct.pack('<5i',1,n,0,selected['swhyst'],int(chemical));require(wire.count(header+header)==1,'Actual original implicit hysteresis domain differs')
+        return result
