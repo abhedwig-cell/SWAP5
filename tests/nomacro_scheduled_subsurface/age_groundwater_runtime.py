@@ -41,6 +41,8 @@ def main():
     p.add_argument('--format',type=int,choices=(0,1,2,3),default=3);p.add_argument('--reset',type=int,choices=(0,1),default=0);p.add_argument('--nprintday',type=int,default=1)
     p.add_argument('--drainage',type=int,choices=(0,1),default=1);p.add_argument('--phase',choices=('short','full','limit'),default='short')
     a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=out/'input';fixture(inputs,a.hysteresis,a.perstep,a.mode,a.format,a.reset,a.nprintday,a.drainage)
+    if a.phase=='limit':
+        p=inputs/'fixed-irrigation.irg';text=p.read_text(encoding='cp1252');assert text.count('2002-01-05')==1;p.write_text(text.replace('2002-01-05','2002-01-01'),encoding='cp1252')
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),parameters={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
     def save():(out/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
@@ -55,6 +57,7 @@ def main():
         for day in {last,*(v for pair in windows for v in pair)}:
             with zipfile.ZipFile(full/f'accepted-column-1-day-{day}.zip') as z:validate_candidate(z.read('macro.bin'),data[day-1],project)
         q['cold']=[own(build,a.reference_work,project,full,data,s,t,out/f'own-{s}') for s,t in windows]
+        q['actual_fixed_input_cm']=sum(row['external_flux_cm'][3]+row['external_flux_cm'][5] for row in data);assert abs(q['actual_fixed_input_cm']-2.4)<=1e-10
         q['actual_bottom_outward_range_cm']=[min(row['bottom_outward_cm'] for row in data),max(row['bottom_outward_cm'] for row in data)]
         q['maximum_age_tolerance_fraction']=max(abs(row[k])/row['age_tolerance_cm_day'] for row in data for k in ('age_soil_residual_cm_day','age_pond_residual_cm_day','age_combined_residual_cm_day'));assert q['maximum_age_tolerance_fraction']<=1
         q['status']='ACTUAL_ORIGINAL_AGE_GROUNDWATER_'+a.phase.upper()+'_PHYSICAL_NATIVE_OUTPUT_PASS';print(q['status'],flush=True)
