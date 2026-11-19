@@ -48,3 +48,36 @@ actual invalid-native and transactional controls. Reuse earlier history and
 explicit periods only after proving their affected source/input/numerical
 surface is preserved. Whole closure remains PARTIAL, science NOT_QUALIFIED,
 global family/gap counts UNKNOWN and fixed named RC3 unchanged.
+
+## Separately qualified original conductivity-cutoff defect (development)
+
+Actual O0/O2 Windows and Ubuntu automatic CDE/history2 accepts571days then
+strict original Newton rollback reaches its unchanged8ULP clock floor.
+History0 fails after566days on Windows bothopts; this is not a history-only
+failure. Exact native530 reproduces the original history2 failure after41days.
+Actual read-only nodal/source probes locate the default Mualem hconduc shortcut
+relsat>1-1e-6: node22 jumps from22.1980235224733349 at
+Se0.999998998927270955 to22.76176 atSe0.999999001028285650.
+FTOPH/FLRUNOFF are false; the new pond chain rule is inactive. Keeping normal
+backtracking belowDTMIN does not remove the failure; that research hypothesis
+is retained as a failed control and is not selected into production.
+
+The proposed correction extends the literal original analytic Mualem formula
+through this narrow near-saturation interval. Only the artificial constant-K
+shortcut moves fromSe>1-1e-6 toSe>=1. Its existing consistency correction must
+return zero derivative only on the actual new constant region. Other original
+constitutive branches, soil parameters, watcon, moiscap, examined-Ksat refusal,
+soil equations, convergence tests, timestep/rollback policy and all mass guards
+remain unchanged. This changes original near-saturation reference behaviour;
+it must be independently qualified as a reference-defect correction, never
+presented as exact preservation of the discontinuous original function.
+
+Apply only inside the selected implicit extended-drainage renderer. Require a
+small executable using the real complete original MOD_MvG and its actual object
+closure, original/corrected O0/O2 comparison, independent high-precision Mualem
+values, finite-difference derivatives away from mathematical branch boundaries,
+monotonicity, exact unchanged dry/other constitutive regions and A/B/A state.
+Then rerun affected full numerical compositions on the actual corrected source,
+with independently checked conservation/native/counters and unchanged explicit0
+postimages. Earlier failed and water-success source epochs remain separately
+retained. No admission is established by this development contract.
