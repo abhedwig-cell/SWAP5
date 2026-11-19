@@ -1,0 +1,9 @@
+# RESTORE52 - minimale INACTIVE51-implementatie
+
+De bestaande MacroStateVar(1) bewaart nu twee tijdelijke oorsprongsarrays voor ThtSrpRefDmCp en SorpDmCp, voor alle NumDm/NumNod. Zij worden opgeslagen naast bestaande watergeometrie en gekoppeld aan tijd/dimensies/ready. MacroStateVar(2) herstelt beide exact indien dezelfde bestaande repair43/swmbf1/swabs1-kandidaat actief is. Geen cel/domein/tau0/attemptgate. De save geldt ook vóór activatie, zodat de eerste geselecteerde D2-refusal al een geldige bestaande oorsprong heeft. De originele reconstructieprefix met repair43false houdt het oorspronkelijke rollbackgedrag en moet bytegelijk blijven.
+
+Ongeldige/onpassende snapshot mag niet tot herstel leiden; origin-time/dimensies worden gecontroleerd. Snapshots blijven tijdelijk/idempotent en maken geen deel uit van het native formaat. De bestaande native input wordt gevolgd door de oorspronkelijke saved-stategrens; de D2-route moet de juiste volgorde bewijzen. Geen nieuwe nativeherstartkwalificatie.
+
+Klok, AwlCorFac, CONTACT47-cache-invalidering, eventstart/einde en fysieke rates/derivatieven blijven ongewijzigd. VlMpDyCp/SubsidCp en flux-/boundarywerk vallen buiten deze sorptiehistoriecorrectie. Geen volledige nativebyte-restauratieclaim.
+
+Vier gerichte routes O0/O2TRIALD2+DIRECTD2, na elkaar wegens runtime, elkhard20s. Bestaande intern16-stopbeleid en terminale-acceptatieprioriteit ongewijzigd (INACTIVE51 bewees dat16s geen strikte terminale wandklokgrens is); bestaande512owncommit/4retrygrenzen. Controleer origineleprefix/origin tegenSELECT28/SELECT50, echteactieveCONTACT47afwijzing, exactetweearrayrestauratiebijalle3rollbacks, onveranderdeklok/Awl, geenledgercommitbijrefusal, directdt/3 enexactsolver/providervervolgtotverseacceptatie. Bestaandeinventaris/residugrenzen. Geen extra provider of context/campagne. B0/B1.12/canonical/no-macroprotected; B1kandidaatmetuitsluitingen.
