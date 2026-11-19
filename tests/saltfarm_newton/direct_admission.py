@@ -8,6 +8,22 @@ NATIVE='8ba61729a79a365b41c00140dfb296f9bb821b24'
 PROOF='integration/f-ci/saltfarm-guard-cost05/'
 ENTRY='tests/nomacro_scheduled_subsurface/age_groundwater_verify.py'
 SELF='tests/saltfarm_newton/direct_admission.py'
+WORKFLOW='.github/workflows/mc-sol01-swp-reader.yml'
+CHECKOUT="""          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /app/
+            /src/
+            /tools/
+            /tests/
+            /reference/
+            /examples/
+            /.github/
+            /integration/audits/
+            /integration/f-ci/saltfarm-guard-cost05/
+            /integration/f-ci/saltfarm-newton-work01/WINDOWS_CURRENT.zip
+            /integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_QUALIFICATION.json
+            /integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_MERGE_RECEIPT.json
+"""
 HOOK="""    import importlib.util
     spec=importlib.util.spec_from_file_location('saltfarm_direct_admission',ROOT/'tests/saltfarm_newton/direct_admission.py')
     owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
@@ -68,6 +84,7 @@ def nonselected_projection():
     path='tests/saltfarm_newton/qualify.py';s=blob(RUNTIME,path).decode();s=remove(s,";p.add_argument('--model-cap',type=float,default=25)");s=s.replace('bounded(a.model_cap,','bounded(25,');require(s.encode()==normalized(blob(BASE,path)),'qualification scientific checks changed')
     body=blob(RUNTIME,'app/hybrid_water/direct_day_kernel.py').decode()
     require("MODEL = 'HYBRID_SALTFARM_WATER'" in body and 'return project.model == MODEL and not project.macro and not project.input_directory' in body,'transport selection broadened')
+    require(remove((ROOT/WORKFLOW).read_text(encoding='utf8'),CHECKOUT).encode()==normalized(blob(BASE,WORKFLOW)),'chemistry workflow commands or time limits changed')
     return 'LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED'
 
 
@@ -83,7 +100,7 @@ def source_guard():
     current=tree('HEAD','integration')
     for p,v in tree(BASE,'integration').items():require(current.get(p)==v,'historical evidence rewritten: '+p)
     require((ROOT/ENTRY).read_text(encoding='utf8').replace(HOOK,'',1).encode()==normalized(blob(BASE,ENTRY)),'historical validator body rewritten')
-    allowed={ENTRY,SELF,'tests/saltfarm_newton/test_direct_admission.py',PROOF+'ADMISSION.json',PROOF+'MERGE_RECEIPT.json',PROOF+'CI_RECONCILIATION.json','docs/science/SALTFARM_DIRECT_KERNEL05.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
+    allowed={ENTRY,SELF,WORKFLOW,'tests/saltfarm_newton/test_direct_admission.py',PROOF+'ADMISSION.json',PROOF+'MERGE_RECEIPT.json',PROOF+'CI_RECONCILIATION.json','docs/science/SALTFARM_DIRECT_KERNEL05.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
     require(set(git('diff','--name-only',RUNTIME,'HEAD').decode().splitlines())<=allowed,'unqualified post-runtime controller/evidence change')
     # The full prior unit seal and all data remain literal; append only admission records.
     audit_current_seal()

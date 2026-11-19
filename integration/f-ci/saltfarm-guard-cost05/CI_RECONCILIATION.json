@@ -38,5 +38,14 @@
     "message": "sealed direct evidence changed: ANALYSIS.json",
     "cause": "Git LF checkout versus recorded Windows CRLF bytes; original hashes remain literal",
     "correction": "Read-only exact recorded text representation in a bounded temporary decoder view; binary archives never normalized; numeric or binary corruption negative controls retained"
+  },
+  "chemistry_checkout_limit": {
+    "run": 44502336264,
+    "attempts": 2,
+    "head": "fd38da22d5afba8250a0f7211d1438a95bb11641",
+    "cause": "10-minute whole-job limit includes downloading and materializing over 20 GiB of unrelated historical integration payloads; second attempt cancelled during checkout",
+    "correction": "Original job retains full Git history, identical test commands and the 10-minute cap; sparse checkout requests only actual source/example/audit/current raw proof dependencies. Prior integration Git objects remain audited without materializing unrelated archives.",
+    "current_predecessor_other_workflows": "16 of 17 succeeded, including central F-CI; no current numerical failure",
+    "numerical_or_model_changes": false
   }
 }
