@@ -36,11 +36,14 @@ jobs:
             tests/saltfarm_newton
             reference/swap-4.3.1/projects
             reference/swap-4.3.1/source-archives
+            reference/swap-4.3.1/patches
       - name: Preserve actual source and prepare original provider without model execution
         env:
           PYTHONPATH: app/hybrid_water
         run: |
           mkdir -p "$RUNNER_TEMP/proof"
+          python3 -B tests/nomacro_drainage/extended_runtime.py --help > /dev/null
+          python3 -B tests/nomacro_drainage/extended_controls.py --help > /dev/null
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"
           git archive HEAD tests/nomacro_drainage .github/workflows/nomacro-extended-drainage.yml > "$RUNNER_TEMP/proof/controller-source.tar"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
