@@ -1,54 +1,16 @@
-name: Original head and surface-file boundary controls
+name: Actual original implicit conductivity and complete native qualification
 on:
-  push:
-    branches: [codex/nomacro-coverage12]
-    paths: ['.github/workflows/nomacro-coverage-prescribed-head.yml']
   workflow_dispatch:
-    inputs:
-      table_drainage:
-        type: boolean
-        default: false
-        description: Complete original DRAMET1 positive and signed table drainage
-      time_event_closure:
-        type: boolean
-        default: false
-        description: Corrected original TimeControl with frost snow drainage full and native gates
-      frost_history:
-        type: boolean
-        default: false
-        description: Bounded original corrected frost with complete snow history
-      pond_history:
-        type: boolean
-        default: false
-        description: Complete original scheduled-pond history O0/O2 full and native checks
-      fixed_irrigation_inputs:
-        type: boolean
-        default: false
-        description: Select original external fixed irrigation file cohort
-      surface_inputs:
-        type: boolean
-        default: false
-        description: Select scheduled pond and runon file cohort instead of prescribed head
-      surface_runon_only:
-        type: boolean
-        default: false
-        description: Resume only the four affected runon configurations
-      finish_surface_runon:
-        type: boolean
-        default: false
-        description: Finish only remaining verification on fixed run43864567262 artifacts
 permissions:
   contents: read
-  actions: read
 jobs:
   qualify:
     runs-on: ubuntu-26.04
-    timeout-minutes: 25
+    timeout-minutes: 40
     strategy:
       fail-fast: false
-      max-parallel: 2
       matrix:
-        configuration: ${{ fromJSON(inputs.table_drainage && '["water-drain-table","chemical-drain-table","water-drain-signed","chemical-drain-signed"]' || inputs.time_event_closure && '["water-frost-drained"]' || inputs.frost_history && '["water-frost-free","chemical-frost-free"]' || inputs.pond_history && '["water-surface-history","chemical-surface-history"]' || inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
+        optimization: [O0, O2]
     env:
       OMP_NUM_THREADS: '1'
     steps:
@@ -56,70 +18,57 @@ jobs:
         with:
           sparse-checkout: |
             app
-            tests/nomacro_mixtures
-            tests/nomacro_pond_history
-            tests/nomacro_frost
-            tests/nomacro_time_event
-            tests/nomacro_drainage
-            reference/swap-4.3.1/patches/TIME-EVENT-CLOSURE-01
             src
             tools/solute
             tools/vq
-            reference/swap-4.3.1/projects
-            reference/swap-4.3.1/source-archives
-            reference/swap-4.3.1/frost-corrections/FROST-DRAIN-01
-            reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01
-      - name: Download immutable executed runon evidence
-        if: inputs.finish_surface_runon
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ github.token }}
-          run-id: 43864567262
-          name: nomacro-surface-input-${{ matrix.configuration }}-166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad
-          path: ${{ runner.temp }}/proof
-      - name: Fetch exact executed source for dependency comparison
-        if: inputs.finish_surface_runon
-        run: git -c protocol.version=2 fetch --filter=blob:none --no-tags --depth=1 origin 166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad
-      - name: Execute selected original boundary and native own restarts O0/O2
-        env:
-          TABLE_DRAINAGE: ${{ inputs.table_drainage }}
-          TIME_EVENT_CLOSURE: ${{ inputs.time_event_closure }}
-          FROST_HISTORY: ${{ inputs.frost_history }}
-          POND_HISTORY: ${{ inputs.pond_history }}
-          SURFACE_INPUTS: ${{ inputs.surface_inputs }}
-          FINISH_SURFACE_RUNON: ${{ inputs.finish_surface_runon }}
-          FIXED_IRRIGATION_INPUTS: ${{ inputs.fixed_irrigation_inputs }}
+            tests/nomacro_scheduled_subsurface
+            tests/nomacro_mixtures
+            tests/saltfarm_newton
+            reference/swap-4.3.1
+      - name: Prepare compiler
         run: |
-          if [ "$TABLE_DRAINAGE" = true ]; then
-            python3 -B tests/nomacro_drainage/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            if [ "${{ matrix.configuration }}" = water-drain-table ]; then
-              python3 -B tools/solute/check_tabulated_drainage.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/drain-component"
-            fi
-            python3 -B tests/nomacro_drainage/preflight.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
-          elif [ "$TIME_EVENT_CLOSURE" = true ]; then
-            python3 -B tests/nomacro_time_event/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B reference/swap-4.3.1/patches/TIME-EVENT-CLOSURE-01/run.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/time-component"
-            python3 -B tools/solute/check_terminal_water_receipt.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/terminal-component"
-            python3 -B tests/nomacro_time_event/preflight.py --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
-          elif [ "$FROST_HISTORY" = true ]; then
-            python3 -B tests/nomacro_frost/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B tools/solute/check_bounded_frost.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/frost-component"
-            python3 -B tests/nomacro_frost/preflight.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
-          elif [ "$POND_HISTORY" = true ]; then
-            python3 -B tests/nomacro_pond_history/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
-            python3 -B tools/solute/check_top_history_codec.py --scheduled-pond --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/pond-component"
-          elif [ "$FIXED_IRRIGATION_INPUTS" = true ]; then
-            python3 -B tools/solute/check_nomacro_coverage.py --fixed-irrigation-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          elif [ "$FINISH_SURFACE_RUNON" = true ]; then
-            python3 -B tools/solute/check_nomacro_coverage.py --surface-input-options --finish-surface-runon-evidence --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          elif [ "$SURFACE_INPUTS" = true ]; then
-            python3 -B tools/solute/check_nomacro_coverage.py --surface-input-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          else
-            python3 -B tools/solute/check_nomacro_coverage.py --head-boundary-options --configuration ${{ matrix.configuration }} --output "$RUNNER_TEMP/proof"
-          fi
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+      - name: All actual short native active and numerical-origin gates before selected full periods
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_ci.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}" --optimization ${{ matrix.optimization }}
+      - name: Actual public refusals of unqualified compatibility output before compilation
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_compatibility.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/compatibility" --optimization ${{ matrix.optimization }}
+      - name: Two actual maximum print cadence transport native limits
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_limits.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/limits" --optimization ${{ matrix.optimization }}
+      - name: Real original derivative interface with measured closure and production arithmetic
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_component.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/component" --optimization ${{ matrix.optimization }}
+      - name: Actual positive chemical stock source sorption decay and groundwater full native composition
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_positive_cde.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/positive-chemical" --optimization ${{ matrix.optimization }}
+      - name: Actual original private mean derivative through complete original HeadCalc
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_mean_component.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/mean-component" --optimization ${{ matrix.optimization }}
+      - name: Actual original TimeControl strict retry and consumed pond event
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_retry_component.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/retry-component" --optimization ${{ matrix.optimization }}
+      - name: Actual original exported pond event and rejected-only ownership
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_pond_event_component.py --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/pond-event-component" --optimization ${{ matrix.optimization }}
+      - name: Actual original microscopic root discontinuity and corrected finalization
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_root_finalization_component.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/root-component" --optimization ${{ matrix.optimization }}
+      - name: Actual original exported pond evaporation availability and private cap
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_pond_availability_component.py --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/availability-component" --optimization ${{ matrix.optimization }}
+      - name: Actual public original numerical configuration run and complete cold restart
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_public.py --reference-work /tmp/implicit-conductivity-provider --matrix-root "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}" --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/public"
+      - name: Actual original small interception loss and exact partition composition
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_interception_partition_component.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/interception-component" --optimization ${{ matrix.optimization }}
+      - name: Real original nonhistory dry lookup initialized at the existing qualified endpoints
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_dry_lookup_component.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/dry-lookup-component" --optimization ${{ matrix.optimization }}
+      - name: Real original saturation plateau derivative and actual captured constitutive input
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_saturation_derivative_component.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/saturation-component" --optimization ${{ matrix.optimization }}
+      - name: Real weighted harmonic water history short native configuration; retained full numerical blocker not rerun
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_weighted_harmonic_runtime.py --reference-work /tmp/implicit-conductivity-provider --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/weighted-harmonic" --optimization ${{ matrix.optimization }} --short-only
+      - name: Unqualified implicit AGE refuses at actual public and coupled front doors
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_admission_controls.py --reference-work /tmp/implicit-conductivity-provider --matrix-root "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}" --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/age-refusals"
+      - name: Reproduce separate real unchanged retained AGE dryout state blocker without qualifying it
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_age_dryout_component.py --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/age-blocker" --optimization ${{ matrix.optimization }}
+      - name: Preserve actual producer source bytes and distinct Git and LF identities
+        if: always()
+        run: python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/implicit-conductivity-${{ matrix.optimization }}/source-capsule"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: nomacro-${{ inputs.table_drainage && 'drain-table' || inputs.time_event_closure && 'time-event' || inputs.frost_history && 'frost-history' || inputs.pond_history && 'pond-history' || inputs.fixed_irrigation_inputs && 'irrigation-file' || inputs.surface_inputs && 'surface-input' || 'head' }}-${{ matrix.configuration }}-${{ github.sha }}
-          path: ${{ runner.temp }}/proof
-          retention-days: 30
+          name: implicit-conductivity-${{ matrix.optimization }}
+          path: ${{ runner.temp }}/implicit-conductivity-${{ matrix.optimization }}
+          retention-days: 14
