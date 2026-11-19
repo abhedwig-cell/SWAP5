@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-age-groundwater01",
-  "last_commit": "509d8028c28acf0a8f402173c213a280e9152953",
-  "status": "AGE_GROUNDWATER_BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
+  "last_commit": "e4322da80977c86861ab3aafe8f3035267c77582",
+  "status": "AGE_GROUNDWATER_ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,8 +331,8 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "After AGE groundwater actual admission: original implicit conductivity SWKIMPL1. Three actual original35day water/CDE/AGE runs pass when KSATEXM=KSATFIT; public code refuses SWKIMPL1. Original implicit plus examined-Ksat linear interpolation is explicitly unimplemented and excluded from that batch, not missing historical functionality.",
-  "recovery_point": "codex/nomacro-age-groundwater01; runtime11ef02b1e, sealed9a95176a9, registered root509d8028c PASS216.14s and17254proof corruptions PASS. Actual source/metadata admission next.",
+  "next_code_change": "Bounded original implicit hydraulic conductivity SWKIMPL1 for default analytical MvG without examined-Ksat interpolation. Persist contract and numerical/build/input identity. Reuse old native layouts only after actual complete warm/cold state proof; source/native carrying changes only for a demonstrated missing state.",
+  "recovery_point": "codex/nomacro-age-groundwater01; actual sourcee4322da80/PR1756 and AGE_GROUNDWATER_MERGE_RECEIPT.json; metadata admission next.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run documentation checks and exact clean qualified-head registered owner. Push source and retained negative branch; admit actual source then metadata with ordered parents/full tree/clean detached owner. Continue source-proven SWKIMPL1 historical gap.",
+  "next_action": "Admit metadata with actual ordered parents/full tree/clean detached root. Then implement source-audited original SWKIMPL1 immutable numerical selection using literal original HeadCalc/MvG providers and existing complete state; no new physical equations or speculative state format.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -662,7 +662,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
+  "canonical_head": "e4322da80977c86861ab3aafe8f3035267c77582",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -24821,7 +24821,7 @@
     }
   },
   "age_groundwater": {
-    "status": "BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
+    "status": "ACTUAL_SOURCE_ADMITTED_METADATA_PENDING",
     "baseline": "ae88b7a53eb4ea66168b5728cb21c674989be95c",
     "contract": "docs/science/NOMACRO_AGE_GROUNDWATER_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_SOURCE_AUDIT.json",
@@ -25436,6 +25436,276 @@
         "error": null
       }
     ],
-    "current_qualification_limit": "Bounded source qualified. Whole historical closure PARTIAL; science NOT_QUALIFIED. Actual canonical source/metadata admission remains required."
+    "current_qualification_limit": "Bounded source qualified. Whole historical closure PARTIAL; science NOT_QUALIFIED. Actual canonical source/metadata admission remains required.",
+    "actual_source_owner": {
+      "status": "ACTUAL_AGE_GROUNDWATER_CANONICAL_MERGE_VERIFIED",
+      "pr": 1756,
+      "merge": "e4322da80977c86861ab3aafe8f3035267c77582",
+      "parents": [
+        "ae88b7a53eb4ea66168b5728cb21c674989be95c",
+        "02762eda57e8e6ce91f20bb2f9e4062c21620303"
+      ],
+      "qualified_head": "02762eda57e8e6ce91f20bb2f9e4062c21620303",
+      "tree": "25abf36a3f0d237b86659ef8c1ee67a348085f08",
+      "exact_complete_tree": true,
+      "actual_detached_owner": {
+        "returncode": 0,
+        "seconds": 426.22577090002596,
+        "head": "e4322da80977c86861ab3aafe8f3035267c77582",
+        "stdout": "{\n  \"status\": \"ORIGINAL_AGE_GROUNDWATER_REACTION_PRIVATE_CALENDAR_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"11ef02b1eb6d6a6e49655219229a01a8a60748de\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_AGE_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 264,\n  \"actual_native_private_refusals\": 948,\n  \"actual_policy_refusals\": 564,\n  \"actual_provider_refusals\": 24,\n  \"actual_1440_two_day_periods\": 8,\n  \"actual_1440_cold_windows\": 8,\n  \"actual_non_january_periods\": 24,\n  \"actual_epoch_cold_windows\": 96,\n  \"actual_postyear_counter_refusals\": 96,\n  \"actual_public_contexts\": 18,\n  \"actual_preserved_contexts\": 42,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+        "stderr": ""
+      }
+    },
+    "source_candidate_owner": {
+      "head": "02762eda57e8e6ce91f20bb2f9e4062c21620303",
+      "elapsed_seconds": 273.3497768002562,
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"ORIGINAL_AGE_GROUNDWATER_REACTION_PRIVATE_CALENDAR_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"11ef02b1eb6d6a6e49655219229a01a8a60748de\",\n  \"predecessor\": \"LITERAL_ACTUAL_CANONICAL_AGE_PERSTEP_IMAGE_AND_UNCHANGED_RAW_PRODUCERS_PASS\",\n  \"actual_full_periods\": 24,\n  \"actual_main_cold_windows\": 264,\n  \"actual_native_private_refusals\": 948,\n  \"actual_policy_refusals\": 564,\n  \"actual_provider_refusals\": 24,\n  \"actual_1440_two_day_periods\": 8,\n  \"actual_1440_cold_windows\": 8,\n  \"actual_non_january_periods\": 24,\n  \"actual_epoch_cold_windows\": 96,\n  \"actual_postyear_counter_refusals\": 96,\n  \"actual_public_contexts\": 18,\n  \"actual_preserved_contexts\": 42,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\"\n}\n",
+      "stderr": ""
+    },
+    "source_docs": {
+      "head": "02762eda57e8e6ce91f20bb2f9e4062c21620303",
+      "cases": {
+        "check": {
+          "returncode": 0,
+          "seconds": 22.90896819997579
+        },
+        "strict": {
+          "returncode": 0,
+          "seconds": 44.171137399971485
+        }
+      }
+    },
+    "automatic_pr_ci_snapshot": {
+      "head": "02762eda57e8e6ce91f20bb2f9e4062c21620303",
+      "total": 30,
+      "counts": {
+        "('queued', None)": 10,
+        "('in_progress', None)": 20
+      },
+      "role": "Automatic legacy PR checks outside selected qualification. Queued/in-progress is not PASS; exact external age-groundwater-source-pr-ci-at-merge.json. No duplicate/cancel requested."
+    }
+  },
+  "next_implicit_conductivity_audit": {
+    "original_unsupported_v1": {
+      "status": "THREE_ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_PUBLIC_REFUSAL_OBSERVATIONS",
+      "baseline": "509d8028c28acf0a8f402173c213a280e9152953",
+      "scientific_claim": false,
+      "profiles": {
+        "water-daily": {
+          "swkimpl": 1,
+          "solute": 0,
+          "hysteresis": 0,
+          "perstep": false,
+          "original_returncode": 0,
+          "original_swap_ok": false,
+          "original_seconds": 0.302428400143981,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "ACTUAL_ORIGINAL_READER_AND_EXECUTION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v1\\water-daily\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v1\\water-daily\\public-build"
+          ],
+          "public_returncode": 2,
+          "public_seconds": 0.42399819986894727,
+          "public_stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--age-direct-soil-source] [--age-irrigation-source]\n                    [--original-output]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWKIMPL\n",
+          "historical_availability": "ORIGINAL_EXECUTION_FAILED_REQUIRES_DIAGNOSIS"
+        },
+        "cde-history": {
+          "swkimpl": 1,
+          "solute": 1,
+          "hysteresis": 1,
+          "perstep": false,
+          "original_returncode": 0,
+          "original_swap_ok": false,
+          "original_seconds": 0.1670941999182105,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "ACTUAL_ORIGINAL_READER_AND_EXECUTION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v1\\cde-history\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v1\\cde-history\\public-build"
+          ],
+          "public_returncode": 2,
+          "public_seconds": 0.40131850028410554,
+          "public_stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--age-direct-soil-source] [--age-irrigation-source]\n                    [--original-output]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWKIMPL\n",
+          "historical_availability": "ORIGINAL_EXECUTION_FAILED_REQUIRES_DIAGNOSIS"
+        },
+        "age-perstep": {
+          "swkimpl": 1,
+          "solute": 2,
+          "hysteresis": 1,
+          "perstep": true,
+          "original_returncode": 0,
+          "original_swap_ok": false,
+          "original_seconds": 0.15600370010361075,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "ACTUAL_ORIGINAL_READER_AND_EXECUTION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v1\\age-perstep\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v1\\age-perstep\\public-build"
+          ],
+          "public_returncode": 2,
+          "public_seconds": 0.3799936999566853,
+          "public_stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--age-direct-soil-source] [--age-irrigation-source]\n                    [--original-output]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWKIMPL\n",
+          "historical_availability": "ORIGINAL_EXECUTION_FAILED_REQUIRES_DIAGNOSIS"
+        }
+      }
+    },
+    "actual_supported_v2": {
+      "status": "THREE_ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_PUBLIC_REFUSAL_OBSERVATIONS",
+      "baseline": "509d8028c28acf0a8f402173c213a280e9152953",
+      "scientific_claim": false,
+      "profiles": {
+        "water-daily": {
+          "swkimpl": 1,
+          "solute": 0,
+          "hysteresis": 0,
+          "perstep": false,
+          "original_returncode": 100,
+          "original_swap_ok": true,
+          "original_seconds": 0.21334500005468726,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "ACTUAL_ORIGINAL_READER_AND_EXECUTION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v2\\water-daily\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v2\\water-daily\\public-build"
+          ],
+          "public_returncode": 2,
+          "public_seconds": 0.4358839001506567,
+          "public_stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--age-direct-soil-source] [--age-irrigation-source]\n                    [--original-output]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWKIMPL\n",
+          "historical_availability": "ACTUAL_ORIGINAL_35DAY_PASS"
+        },
+        "cde-history": {
+          "swkimpl": 1,
+          "solute": 1,
+          "hysteresis": 1,
+          "perstep": false,
+          "original_returncode": 100,
+          "original_swap_ok": true,
+          "original_seconds": 0.30091420002281666,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "ACTUAL_ORIGINAL_READER_AND_EXECUTION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v2\\cde-history\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v2\\cde-history\\public-build"
+          ],
+          "public_returncode": 2,
+          "public_seconds": 0.406676999758929,
+          "public_stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--age-direct-soil-source] [--age-irrigation-source]\n                    [--original-output]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWKIMPL\n",
+          "historical_availability": "ACTUAL_ORIGINAL_35DAY_PASS"
+        },
+        "age-perstep": {
+          "swkimpl": 1,
+          "solute": 2,
+          "hysteresis": 1,
+          "perstep": true,
+          "original_returncode": 100,
+          "original_swap_ok": true,
+          "original_seconds": 0.23106539994478226,
+          "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+          "original_claim": "ACTUAL_ORIGINAL_READER_AND_EXECUTION_ONLY_NOT_PHYSICAL_ORACLE",
+          "public_command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tools\\solute\\run_water.py",
+            "--model",
+            "HYBRID_NOMACRO_WATER",
+            "--experimental-project",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v2\\age-perstep\\input",
+            "--original-output",
+            "--reference-work",
+            "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "--build-only",
+            "--donor-opt",
+            "O0",
+            "--kernel-opt",
+            "O0",
+            "--output",
+            "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-baseline-v2\\age-perstep\\public-build"
+          ],
+          "public_returncode": 2,
+          "public_seconds": 0.4306490998715162,
+          "public_stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--age-direct-soil-source] [--age-irrigation-source]\n                    [--original-output]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2,original-adaptive-event-closure-v1,original-adaptive-irrigation-pulse-v1,original-adaptive-local-wetting-v1}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Unsupported experimental process/state: SWKIMPL\n",
+          "historical_availability": "ACTUAL_ORIGINAL_35DAY_PASS"
+        }
+      }
+    },
+    "original_constraint": "MOD_MvG_functions.dhconduc expressly rejects the examined-Ksat linear interpolation branch with SWKIMPL1. V1 is not a missing supported migration. V2 sets KSATEXM=KSATFIT; three actual original35day runs pass and public current code refuses SWKIMPL1.",
+    "scientific_equivalence_claim": false
   }
 }
