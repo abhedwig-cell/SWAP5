@@ -61,7 +61,7 @@ def strict_trial_build(output, donor_build, patched):
     # The original extended rates are computed before HeadCalc and remain
     # fixed during Newton, just like the admitted basic/tabulated domain.
     # Reuse its literal existing linear PondRunoff tangent and original guard.
-    text=text.replace(old,old+', linear_pond_top_jacobian\n   use variables, only: rsro, rsroexp, pondmx',1)
+    text=text.replace(old,old+', linear_pond_top_jacobian\n   use variables, only: rsro, rsroexp, pondmx, tcum',1)
     old='   if (ftoph) dFdhM(1) = dFdhM(1) + kmean(1)/disnod(1)';assert text.count(old)==1
     text=text.replace(old,'''   if (ftoph) then
       if (flrunoff .and. rsroexp==1d0 .and. rsro>=1d-3) then
