@@ -1,0 +1,6 @@
+# NODE59 targeted diagnosis
+
+Baseline DTMIN58 823f4779187bdd0196a8062510967e7c2b0a5f0c. Isolated SWAP431 B1 research, no canonical interface or Status-A change. Exactly two fresh RESTART_D2 replays from same own NATIVE55 candidate.end; exact verified sealed DTMIN58 executables and F90 sources. No compilation or provider probes.
+Hard20s per model route; original internal16s/512commit/4retry, physics, clocks, solver, Jacobian guards, criteria, dt, backtracking, reduction/budget rules unchanged. Preserve failures/censored results; no broad campaign.
+Postprocess residual decomposition, node52 progression, domain stock/inflow/outflow factors and minimum branches, current-provider guard reasons. Use actual saved Newton directions and actual line-search states for bounded directional/linearization comparisons only; no alternative operator evaluations or counterfactual trajectories. Finite-step mismatch does not prove a unique missing derivative or a successful repair.
+Qualify replay identity O0/O2 and parent, actual refusal/rollback, operator and stock identities, specific branch/factor changes and limits of causality. No implementation, extra accepted step, general restart/fullperiod or promotion claim.
