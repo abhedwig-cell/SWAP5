@@ -89,3 +89,7 @@ explicitly bounded. The next coherent composition batch examines extended
 water/CDE hysteresis and implicit routes against their existing original
 process providers; the AGE evaporation policy requires a scientific contract
 decision before any conservation-changing implementation.
+
+## Actual canonical admission
+
+PR1764 admits this bounded route on actual canonical6a31bc718ed01480e573f5853bf3f5510ff40908. Ordered parents66d6297b1/8d029e984 and complete tree4a965f9db9076163eba91341483fb3f65e6b2856 are exact to the qualified candidate. All46PR checks finish without failure. The actual clean detached22-pattern public owner passes in352.2011469seconds, with empty stderr and clean Git status including ignored files. Original pending labels above retain their qualification chronology. The merge/public-owner receipts are carried with the next functional hydraulic-history batch. Whole closure PARTIAL, science NOT_QUALIFIED, global family/gap counts UNKNOWN and fixed RC3 remain unchanged.
