@@ -1,0 +1,65 @@
+{
+  "status": "NEUTRAL_ACTUAL_WINDOWS_RAW_ARCHIVE_NO_ADMISSION_CLAIM",
+  "archive": "EXTENDED_DRAINAGE_DRY_COMPONENT_RAW.zip",
+  "bytes": 2401888,
+  "sha256": "50951c89618e4549e536280d35adb7b8d46e8cd64981cc0735039833ce4bb4b3",
+  "members": {
+    "ORIGINAL/O0/result.json": {
+      "bytes": 8737,
+      "sha256": "d4d34abf472253a23f3b249e43b852007db4aefd7f91e4bc99047edfa82875c7"
+    },
+    "ORIGINAL/O0/actual.exe": {
+      "bytes": 1959639,
+      "sha256": "a3f97e83f8fe3e51a9c6fd3df92ac6eed949c91d63f02457049c6e597516bb94"
+    },
+    "ORIGINAL/O0/actual-driver.f90": {
+      "bytes": 3499,
+      "sha256": "017faef44f25caf59e1ea70c6b5352e39cb7f09e7ae2e84f6c05c86c946cb60e"
+    },
+    "ORIGINAL/O2/result.json": {
+      "bytes": 8825,
+      "sha256": "6742ac1dff3aa2eae42d5675fd3124b10d85b95ff9515ee288290b46ebe90ca9"
+    },
+    "ORIGINAL/O2/actual.exe": {
+      "bytes": 1958193,
+      "sha256": "24565bdbfa7f34c67debe2a35b2508a381b5f6f4f77a713390d55bbb08dafc7d"
+    },
+    "ORIGINAL/O2/actual-driver.f90": {
+      "bytes": 3499,
+      "sha256": "017faef44f25caf59e1ea70c6b5352e39cb7f09e7ae2e84f6c05c86c946cb60e"
+    },
+    "CORRECTED/O0/result.json": {
+      "bytes": 9194,
+      "sha256": "0ef7e75e9804bacc2a53080d79329528b0528b6048681d9283d23b118baa4ba5"
+    },
+    "CORRECTED/O0/actual.exe": {
+      "bytes": 1964598,
+      "sha256": "dfb2e376859bed9ec37426972f9837fab149c97351dbc6b0dba8e6f92818df3f"
+    },
+    "CORRECTED/O0/actual-driver.f90": {
+      "bytes": 3531,
+      "sha256": "2ea16e7eb0d9ff9bffb1468dbb9fd8a5a962029825b37024a515229afdf6d33d"
+    },
+    "CORRECTED/O2/result.json": {
+      "bytes": 9260,
+      "sha256": "e6b96c4d405143a78b3656e063cb987ca52c890760cfb5bf24616e73cf3b4fb4"
+    },
+    "CORRECTED/O2/actual.exe": {
+      "bytes": 1958194,
+      "sha256": "e5e2c127089d8ce40d899ef20aa786ce8a44d9fc28d29b4a527c19dbf9147dec"
+    },
+    "CORRECTED/O2/actual-driver.f90": {
+      "bytes": 3531,
+      "sha256": "2ea16e7eb0d9ff9bffb1468dbb9fd8a5a962029825b37024a515229afdf6d33d"
+    },
+    "original/surfacewater.f90": {
+      "bytes": 51312,
+      "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e"
+    },
+    "corrected/surfacewater.f90": {
+      "bytes": 50098,
+      "sha256": "ab1cdcf94c0606b81411d2631b169d1c4edb99cecb9cc2dcbf32aee7f54e9327"
+    }
+  },
+  "compiled_objects_excluded": "Reproducible original provider; actual emitted source, executable/library and BUILD bytes retained"
+}
