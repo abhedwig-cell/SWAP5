@@ -70,14 +70,19 @@ def outward_pond_source(source):
 
 def strict_trial_build(output, donor_build, patched, project):
     import implicit_conductivity_retry as retry
+    implicit=bool(selection(project).get('swkimpl'))
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252')
     old='   use hybrid_step_budget, only: projected_water_residual';assert text.count(old)==1
     text=text.replace(old,'   use '+TERMINAL_MODULE+',only:terminal_water_residual\n'+old,1)
     # Eliminate the actual original piecewise pond law with its independently
     # checked derivative; conductivity remains fixed by explicit SWKIMPL0.
-    text=text.replace(old,old+'\n   use MOD_top,only:extended_pond_top_jacobian\n   use variables, only: tcum',1)
+    tangent='extended_implicit_top_jacobian' if implicit else 'extended_pond_top_jacobian'
+    text=text.replace(old,old+'\n   use MOD_top,only:'+tangent+'\n   use variables, only: tcum',1)
     old='   if (ftoph) dFdhM(1) = dFdhM(1) + kmean(1)/disnod(1)';assert text.count(old)==1
-    text=text.replace(old,'''   if (ftoph) then
+    if implicit:
+        from extended_implicit_pond import headcalc
+        text=headcalc(text)
+    else:text=text.replace(old,'''   if (ftoph) then
       if (flrunoff) then
          dFdhM(1)=dFdhM(1)+extended_pond_top_jacobian(kmean(1)/disnod(1),dt)
       else
@@ -87,7 +92,10 @@ def strict_trial_build(output, donor_build, patched, project):
     old='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
     assert text.count(old)==1
     text=text.replace(old,old+'\n         if(abs(terminal_water_residual())>1d-10*(t1900-budget_start+dt))flnonconv=.true.',1)
-    text=retry.headcalc_source(text);assert text.count('swmacro==0.and.swkimpl==1')==1
+    if implicit:
+        assert text.count('   if (.NOT.fldtmin.or.(swmacro==0.and.swkimpl==1)) then')==1
+    else:
+        text=retry.headcalc_source(text);assert text.count('swmacro==0.and.swkimpl==1')==1
     old='      fldecdt = .TRUE.';assert text.count(old)==1
     text=text.replace(old,"""      if(dt<=dtmin)then
          write(*,'(a,14(1x,es25.17e3))') 'EXTENDED_DRAIN_NONCONVERGED', &
@@ -97,14 +105,21 @@ def strict_trial_build(output, donor_build, patched, project):
            ftoph,flrunoff,flnonconv,any(flnonconv1(1:NN)),any(flnonconv2(1:NN)),flnonconv3
       end if
 """+old,1)
-    path.write_text(text.replace('swmacro==0.and.swkimpl==1','swmacro==0.and.swkimpl==0'),encoding='cp1252')
+    path.write_text(text if implicit else text.replace('swmacro==0.and.swkimpl==1','swmacro==0.and.swkimpl==0'),encoding='cp1252')
     path=output/'timecontrol.f90';text=(path if path.exists() else donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
-    text=retry.time_source(text);assert text.count('swmacro==0.and.swkimpl==1')==1
-    text=text.replace('swmacro==0.and.swkimpl==1','swmacro==0.and.swkimpl==0').replace('implicit original','extended-drain original').replace('Implicit original','Extended-drain original').replace('Named implicit policy','Named extended-drain policy')
+    if implicit:
+        assert text.count('if(swmacro==0.and.swkimpl==1)then')==1
+    else:
+        text=retry.time_source(text);assert text.count('swmacro==0.and.swkimpl==1')==1
+        text=text.replace('swmacro==0.and.swkimpl==1','swmacro==0.and.swkimpl==0').replace('implicit original','extended-drain original').replace('Implicit original','Extended-drain original').replace('Named implicit policy','Named extended-drain policy')
     path.write_text(text,encoding='cp1252')
     path=output/'boundtop.f90'
     from extended_pond import render as converged_pond_source
-    path.write_text(converged_pond_source(outward_pond_source(path.read_text(encoding='cp1252'))),encoding='cp1252')
+    body=converged_pond_source(outward_pond_source(path.read_text(encoding='cp1252')))
+    if implicit:
+        from extended_implicit_pond import render as implicit_pond_source
+        body=implicit_pond_source(body)
+    path.write_text(body,encoding='cp1252')
     terminal=terminal_source()
     if project.original_output:
         from extended_output_receipt import terminal_source as output_terminal_source
@@ -119,9 +134,11 @@ def describe(directory, selected, original_output):
         return None
     from experimental_project import one
     required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=0, SWFROST=0,
-                    SWHEA=1, SWCALT=2, SWKIMPL=0, SWMETDETAIL=0, SWBBCFILE=0)
+                    SWHEA=1, SWCALT=2, SWMETDETAIL=0, SWBBCFILE=0)
     if any(selected.get(k) != v for k,v in required.items()) or selected.get('SWBR',0) != 0:
         raise ValueError('Unqualified extended drainage process composition')
+    if selected.get('SWKIMPL') not in (0,1):
+        raise ValueError('Unqualified extended drainage conductivity policy')
     if selected.get('SWHYST') not in (0,1,2):
         raise ValueError('Unqualified extended drainage hydraulic history')
     if selected.get('SWHYST') and selected.get('SWDISCRVERT')!=0:
@@ -146,7 +163,8 @@ def describe(directory, selected, original_output):
         raise ValueError('Original extended drain partition is invalid')
     return dict(file=path.relative_to(directory.resolve()).as_posix(), levels=levels,
                 swsrf=swsrf, swsec=swsec, nrpri=swsrf-2, nrsec=levels-(swsrf-2), swdivd=division,
-                **({'swhyst':selected['SWHYST']} if selected['SWHYST'] else {}))
+                **({'swhyst':selected['SWHYST']} if selected['SWHYST'] else {}),
+                **({'swkimpl':1} if selected['SWKIMPL'] else {}))
 
 
 def selection(project):
@@ -166,6 +184,7 @@ def enabled(project):return selection(project) is not None
 
 def magic(project):
     selected=selection(project)
+    if selected and selected.get('swkimpl'):return b'S5EHK001' if selected.get('swhyst') else b'S5EDK001'
     if selected and selected.get('swhyst'):return b'S5EDH001'
     return b'S5EDO001' if project.original_output else MAGIC
 
@@ -189,6 +208,7 @@ def state_source_bytes(project):
 def metadata(project):
     if not enabled(project):return None
     sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+    implicit=bool(selection(project).get('swkimpl'))
     return dict(policy=POLICY,source_sha256=sha(Path(__file__)),template_sha256=sha(TEMPLATE),
                 terminal_renderer_sha256=sha(Path(__file__).with_name('weather_terminal_receipt.py')),
                 terminal_template_sha256=sha(Path(__file__).with_name('terminal_water_receipt.f90')),
@@ -198,7 +218,9 @@ def metadata(project):
                 extended_pond_numerics_sha256=sha(Path(__file__).with_name('extended_pond.py')),
                 extended_trial_receipt_sha256=sha(Path(__file__).with_name('extended_trial_receipt.py')),
                 stable_trial_projection='Selected extended drainage: actual original nodal theta difference in real128; original exported double daily totals and1e-10 guards unchanged',
-                positive_interception_renderer_sha256=sha(Path(__file__).with_name('extended_interception.py')),
+                positive_interception_renderer_sha256=sha(Path(__file__).with_name('implicit_interception_partition.py' if implicit else 'extended_interception.py')),
+                **({'implicit_pond_renderer_sha256':sha(Path(__file__).with_name('extended_implicit_pond.py')),
+                    'implicit_soil_pond_chain_rule':'J*(1+s)/(1+dt*G+s); original soil-mean derivative once, existing pond/supply slope, no accepted state'} if implicit else {}),
                 exact_pond_scope='Original runoff() unchanged; exact linear outward solve or complete monotone original root bracket, with piecewise analytic tangent',
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
                 **({'output_receipt_renderer_sha256':sha(Path(__file__).with_name('extended_output_receipt.py'))} if project.original_output else {}),
@@ -291,7 +313,14 @@ def apply_build(output, donor_build, project, patched):
             (donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')),encoding='cp1252')
     patched=strict_trial_build(output,donor_build,patched,project)
     from extended_interception import render as positive_interception_source
-    (output/'MOD_meteo.f90').write_text(positive_interception_source((donor_build/'swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')),encoding='cp1252')
+    if selection(project).get('swkimpl'):
+        # The existing implicit provider already preserves all modeled
+        # interception and its positive-input partition. Do not overwrite it.
+        path=output/'MOD_meteo.f90';assert path.is_file()
+        from implicit_interception_partition import source as implicit_interception_source
+        assert path.read_text(encoding='cp1252')==implicit_interception_source((donor_build/'swap-selected/MOD_meteo.f90').read_text(encoding='cp1252'))
+    else:
+        (output/'MOD_meteo.f90').write_text(positive_interception_source((donor_build/'swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')),encoding='cp1252')
     (output/(MODULE+'.f90')).write_bytes(state_source_bytes(project))
     (output/'surfacewater.f90').write_text(surfacewater_source((donor_build/'swap-selected/surfacewater.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')

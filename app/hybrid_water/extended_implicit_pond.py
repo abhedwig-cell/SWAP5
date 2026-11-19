@@ -26,3 +26,28 @@ def render(source):
     anchor='public :: pondrunoff, q0, FlRunoff, ftoph, hsurf'
     assert source.count(anchor)==1
     return source.replace(anchor,anchor+', '+FUNCTION,1)
+
+
+def headcalc(source):
+    """Differentiate the actual coupled mean once, leaving other rows literal."""
+    old='   if (ftoph) dFdhM(1) = dFdhM(1) + kmean(1)/disnod(1)'
+    assert source.count(old)==1
+    source=source.replace(old,'''   if (ftoph) then
+      if (flrunoff) then
+         if(hsurf<0d0)then
+            dFdhM(1)=dFdhM(1)+extended_implicit_top_jacobian(kmean(1)/disnod(1), &
+               kmean(1)/disnod(1)-dkdh(1)*hgrad(1)*dkmean(swkmean,k(1),katm,dz(1),dz(1)),dt)
+         else
+            dFdhM(1)=dFdhM(1)+extended_implicit_top_jacobian(kmean(1)/disnod(1), &
+               kmean(1)/disnod(1)-dkdh(1)*hgrad(1)*dkmean(swkmean,k(1),ksatfit(1),dz(1),dz(1)),dt)
+         end if
+      else
+         dFdhM(1)=dFdhM(1)+kmean(1)/disnod(1)
+      end if
+   end if''',1)
+    old='''      if (ftoph) then
+         ! Original Boundtop: atmospheric katm or saturated KSATFIT, frost0.'''
+    assert source.count(old)==1
+    # The remaining original implicit term applies only outside the coupled
+    # pond branch. The complete term is already in the coupled numerator.
+    return source.replace(old,old.replace('if (ftoph)','if (ftoph.and..not.flrunoff)'),1)
