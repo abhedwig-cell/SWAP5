@@ -18,7 +18,7 @@ m=previous.m
 ROOT=previous.ROOT
 
 
-def fixture(case,output,mode,fmt,nprint):
+def fixture(case,output,mode,fmt,nprint,age=False):
     info=previous.fixture(case,output)
     path=output/'swap.swp';text=path.read_text(encoding='cp1252')
     values=dict(SWCSV=fmt,NPRINTDAY=nprint,SWMONTH=int(mode=='monthly'),
@@ -30,6 +30,11 @@ def fixture(case,output,mode,fmt,nprint):
         text,count=re.subn(r'(?mi)^([ \t]*OUTDATINT[ \t]*=[ \t]*\n).*?^\* End of table',
             lambda match:match[1]+'2002-01-04\n2002-01-08\n2002-01-31\n2003-01-01\n2003-06-15\n2004-12-31\n* End of table',text,count=1,flags=re.S)
         assert count==1,'Missing original explicit output date table'
+    if age:
+        text=assignment(text,'SWSOLU',2)
+        text+='\nAGEMLTB =\n -10.0 100.0\n -95.0 100.0\n* End of table\n'
+        for crop in output.glob('*.crp'):
+            crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
     text+='\nFLPRINTDT = '+('.TRUE.' if mode=='perstep' else '.FALSE.')+'\n'
     path.write_text(text,encoding='cp1252')
     return info
@@ -59,6 +64,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--case',choices=previous.CASES,required=True)
     p.add_argument('--mode',choices=('daily','subdaily','monthly','terminal','perstep','explicit','combined'),required=True)
+    p.add_argument('--age',action='store_true')
     p.add_argument('--format',type=int,choices=(1,2,3),default=3)
     p.add_argument('--days',type=int,choices=(5,35,1096),default=5)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
@@ -70,7 +76,7 @@ def main():
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,3 if a.mode=='subdaily' else 1)
+        q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,3 if a.mode=='subdaily' else 1,a.age)
         project=m.e.load(a.output/'input',original_output=True);build=a.build_root/a.case
         q.update(input_root=str(a.output/'input'),build_root=str(build),output_selection=original_output.selection(project));save()
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,
