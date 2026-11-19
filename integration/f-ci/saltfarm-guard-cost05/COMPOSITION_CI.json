@@ -13,5 +13,12 @@
   },
   "runtime_changed": false,
   "tolerances_changed": false,
-  "historical_evidence_rewritten": false
+  "historical_evidence_rewritten": false,
+  "column_checkout_limit": {
+    "run": 44509700078,
+    "job": 135510558782,
+    "head": "936b3d717138aa6194b81bb74dc6228527f29eef",
+    "cause": "Full checkout completed only11:01:19; total job cap expired11:03:36 during O2 compilation. No numerical failure.",
+    "correction": "Apply the same exact bounded source/example/audit/proof checkout already successful in the chemistry job. All commands, tests and the10minute limit remain literal."
+  }
 }

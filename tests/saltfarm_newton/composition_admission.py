@@ -37,7 +37,7 @@ def source_guard():
     current=direct.tree('HEAD','integration')
     for p,v in direct.tree(BASE,'integration').items():require(current.get(p)==v,'canonical integration evidence rewritten: '+p)
     for p,v in direct.tree(direct.RUNTIME,PROOF).items():require(current.get(p)==v,'sealed SaltFarm evidence rewritten: '+p)
-    allowed={ENTRY,SELF,direct.WORKFLOW,'tests/hupsel51/test_successor.py','tests/saltfarm_newton/direct_admission.py','tests/saltfarm_newton/test_direct_admission.py','tests/saltfarm_newton/test_composition_admission.py','docs/science/SALTFARM_DIRECT_KERNEL05.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
+    allowed={ENTRY,SELF,direct.WORKFLOW,direct.COLUMN,'tests/hupsel51/test_successor.py','tests/saltfarm_newton/direct_admission.py','tests/saltfarm_newton/test_direct_admission.py','tests/saltfarm_newton/test_composition_admission.py','docs/science/SALTFARM_DIRECT_KERNEL05.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
     changed=set(git('diff','--name-only',RUNTIME,'HEAD').decode().splitlines())
     require(all(p in allowed or p.startswith(PROOF+'COMPOSITION_') or p==PROOF+'MERGE_RECEIPT.json' for p in changed),'foreign post-composition change')
     literal_guards();direct.audit_current_seal()

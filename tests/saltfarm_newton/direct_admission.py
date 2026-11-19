@@ -9,6 +9,7 @@ PROOF='integration/f-ci/saltfarm-guard-cost05/'
 ENTRY='tests/nomacro_scheduled_subsurface/age_groundwater_verify.py'
 SELF='tests/saltfarm_newton/direct_admission.py'
 WORKFLOW='.github/workflows/mc-sol01-swp-reader.yml'
+COLUMN='.github/workflows/mc-sol01-column-input.yml'
 CHECKOUT="""          sparse-checkout-cone-mode: false
           sparse-checkout: |
             /app/
@@ -86,7 +87,7 @@ def nonselected_projection(*,baseline=BASE,runtime=RUNTIME):
     path='tests/saltfarm_newton/qualify.py';s=blob(runtime,path).decode();s=remove(s,";p.add_argument('--model-cap',type=float,default=25)");s=s.replace('bounded(a.model_cap,','bounded(25,');require(s.encode()==normalized(blob(baseline,path)),'qualification scientific checks changed')
     body=blob(runtime,'app/hybrid_water/direct_day_kernel.py').decode()
     require("MODEL = 'HYBRID_SALTFARM_WATER'" in body and 'return project.model == MODEL and not project.macro and not project.input_directory' in body,'transport selection broadened')
-    require(remove((ROOT/WORKFLOW).read_text(encoding='utf8'),CHECKOUT).encode()==normalized(blob(baseline,WORKFLOW)),'chemistry workflow commands or time limits changed')
+    for workflow in (WORKFLOW,COLUMN):require(remove((ROOT/workflow).read_text(encoding='utf8'),CHECKOUT).encode()==normalized(blob(baseline,workflow)),'column/chemistry workflow commands or time limits changed')
     return 'LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED'
 
 

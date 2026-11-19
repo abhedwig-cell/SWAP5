@@ -20,7 +20,7 @@ class Boundaries(unittest.TestCase):
         for path in (s.FCI, s.MC, s.CHEM, s.QUALIFY):
             old = s.blob(s.RUNTIME if path == s.QUALIFY else s.SEALED, path).decode().replace('\r\n', '\n')
             new = (s.ROOT/path).read_text()
-            if path == s.CHEM and '          sparse-checkout: |\n' in new:
+            if path in (s.CHEM,s.MC) and '          sparse-checkout: |\n' in new:
                 # Current operational checkout has a separately exact projection;
                 # the original workflow/test commands are still compared below.
                 spec=importlib.util.spec_from_file_location('direct_checkout',s.ROOT/'tests/saltfarm_newton/direct_admission.py')
