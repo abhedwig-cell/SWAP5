@@ -2,7 +2,7 @@ name: SaltFarm isolated original current profile07
 on:
   push:
     branches: [codex/saltfarm-isolated07]
-    paths: ['.github/workflows/saltfarm-isolated07.yml']
+    paths: ['.github/workflows/saltfarm-isolated07.yml', 'tests/saltfarm_newton/isolated07.py']
   workflow_dispatch:
     inputs:
       expected_sha:
