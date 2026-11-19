@@ -22,10 +22,14 @@ def fixture(case,output,mode,fmt,nprint):
     info=previous.fixture(case,output)
     path=output/'swap.swp';text=path.read_text(encoding='cp1252')
     values=dict(SWCSV=fmt,NPRINTDAY=nprint,SWMONTH=int(mode=='monthly'),
-                SWODAT=0,SWRES=0 if mode in ('terminal','perstep') else 1,
-                PERIOD=0 if mode=='terminal' else 1,INLIST_CSV="'WATBAL,GWL'",NUM_DECIMALS=12)
+                SWODAT=int(mode in ('explicit','combined')),SWRES=0 if mode in ('terminal','perstep') else 1,
+                PERIOD=0 if mode in ('terminal','explicit') else 7 if mode=='combined' else 1,INLIST_CSV="'WATBAL,GWL'",NUM_DECIMALS=12)
     for key,value in values.items():
         text=assignment(text,key,value) if re.search(r'(?mi)^[ \t]*'+key+r'[ \t]*=',text) else text+'\n'+key+' = '+str(value)+'\n'
+    if mode in ('explicit','combined'):
+        text,count=re.subn(r'(?mi)^([ \t]*OUTDATINT[ \t]*=[ \t]*\n).*?^\* End of table',
+            lambda match:match[1]+'2002-01-04\n2002-01-08\n2002-01-31\n2003-01-01\n2003-06-15\n2004-12-31\n* End of table',text,count=1,flags=re.S)
+        assert count==1,'Missing original explicit output date table'
     text+='\nFLPRINTDT = '+('.TRUE.' if mode=='perstep' else '.FALSE.')+'\n'
     path.write_text(text,encoding='cp1252')
     return info
@@ -54,7 +58,7 @@ def own(build,reference,project,full,data,start,end,out):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--case',choices=previous.CASES,required=True)
-    p.add_argument('--mode',choices=('daily','subdaily','monthly','terminal','perstep'),required=True)
+    p.add_argument('--mode',choices=('daily','subdaily','monthly','terminal','perstep','explicit','combined'),required=True)
     p.add_argument('--format',type=int,choices=(1,2,3),default=3)
     p.add_argument('--days',type=int,choices=(5,35,1096),default=5)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
