@@ -79,7 +79,9 @@ def implicit_water_native(raw,row,n,selected,dz,epoch):
     # The unchanged original calendar follows the new typed carry and owns EOF.
     require(end+160<=len(raw),'Truncated actual implicit output calendar')
     h=struct.unpack_from('<20i',raw,end);nr=h[3]
-    require(h==struct.unpack_from('<20i',raw,end+80) and h[:2]==(1,n) and 0<=h[2]<=5 and nr>=6008 and end+160+16*nr==len(raw),'Actual implicit calendar shape/witness/EOF differs')
+    # Count unchanged original fields: 2*3000 dates, 10*n nodal values,
+    # three nodal drainage profiles plus three level totals, 68 scalar slots.
+    require(h==struct.unpack_from('<20i',raw,end+80) and h[:2]==(1,n) and 0<=h[2]<=5 and nr==6068+10*n+(3*n+3)*h[2] and end+160+16*nr==len(raw),'Actual implicit calendar shape/witness/EOF differs')
     effective=selected['period'];completed=date.fromisoformat(epoch)+timedelta(days=day-1)
     counter=min(day,completed.timetuple().tm_yday) if selected['swres'] and effective else day
     if effective:counter%=effective
