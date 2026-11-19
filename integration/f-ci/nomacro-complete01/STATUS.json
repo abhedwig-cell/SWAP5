@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-extended-history01",
-  "last_commit": "b893959ae9b1c5a7a974d48396c91365fd0c6baa",
-  "status": "CALENDAR_CLEAN_PUBLIC_OWNER_PASS_PR1764_REQUIRED_CHECKS_RUNNING_EXTENDED_HISTORY_SHORT_COMPOSITION_STARTED",
+  "last_commit": "8f1766270ed8a940b60fcf6a6fa07689a6baa632",
+  "status": "EIGHT_HISTORY_SHORT_O0_O2_INDEPENDENT_PASS_NATIVE_CONTROLS_RUNNING_FULL_COMPOSITION_SELECTED_PR1764_CHECKS_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -339,7 +339,7 @@
   "recovery_point": "EXTENDED_DRAINAGE_SOURCE_ADMISSION.json",
   "external_blocker": null,
   "test_selection": {
-    "candidate": "e19c9880243c46b6f0c171b7b0991d7cf841e973",
+    "candidate": "8f1766270ed8a940b60fcf6a6fa07689a6baa632",
     "groups": {
       "calendar_public_owner": {
         "changed_dependency": "SWDRA2 original output/calendar composed native state and read-only daily counter witnesses; exact current compiler source and all inherited owners",
@@ -349,8 +349,31 @@
         "expected_seconds": 480,
         "existing_evidence": "All eight full periods retained. Windows/Ubuntu O0/O2 actual independent raw archive PASS; final source/native-negative and clean detached public owner execute without new model periods.",
         "prior_execution": "NONE"
+      },
+      "extended_history_full": {
+        "changed_dependency": "Existing hydraulic history carrier and paired process domains composed with SWDRA2 original calendar and daily accepted-trial water/CDE frame",
+        "scientific_claim": "Representative full water/CDE history interaction, actual year-end/seasonal native cold windows and strict soil/secondary/combined1e-10 water plus daily/integrated1e-10 CDE",
+        "owner": "tests/nomacro_drainage/history_forensics.py; new bounded source admission owner pending full proof",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 1500,
+        "existing_evidence": "Eight actual Windows O0/O2 short35day water/CDE/history1,2 independent PASS and24 exact native/output windows. Earlier history-off and drainage-off full periods cannot qualify this changed hydraulic interaction; retain them and select only affected representative periods. No new physical equations.",
+        "prior_execution": "NONE",
+        "selected_full_periods": 8,
+        "selected_configuration": "Windows+Ubuntu/O0+O2: water h1 monthly text2; CDE h2 daily binary3; all1096days",
+        "cross_configuration_evidence": "Other water/CDE hys1/2 pairings use their actual35day integrated/native tests with unchanged original providers; no global historical-family closure claim."
+      },
+      "extended_history_native_controls": {
+        "changed_dependency": "New physical/history typed domain before the worker",
+        "scientific_claim": "Actual public and original compiled loader refuse forged typed domains, nonfinite/negative/receipt-inconsistent hydraulic stocks",
+        "owner": "tests/nomacro_drainage/extended_controls.py",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 600,
+        "existing_evidence": "Actual original source-bound new format; two short retained campaigns running. No physical-day run is used for invalid worker loads; positive lifecycle separately executes.",
+        "prior_execution": "NONE",
+        "diagnosis": "Per-mutant public prepare repeats exact source/build/input verification; observed progress is steady and no execution is repeated or restarted."
       }
-    }
+    },
+    "previous_candidate": "e19c9880243c46b6f0c171b7b0991d7cf841e973"
   },
   "pr": 1763,
   "qualified_source": "120d329b0b65ebbb0daa5d5a9ad5088400f8ddae",
@@ -30815,14 +30838,23 @@
     "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
   },
   "extended_history_batch": {
-    "status": "PERSISTED_SHORT_REAL_ORIGINAL_O0_O2_IN_PROGRESS",
-    "runtime": "b893959ae9b1c5a7a974d48396c91365fd0c6baa",
+    "status": "EIGHT_ACTUAL35DAY_NATIVE_OUTPUT_AND_INDEPENDENT_HISTORY_PASS",
+    "runtime": "8fc2f88f0",
     "predecessor_candidate": "8d029e984edbe94b785b18fa3ba7f81dd2239271",
     "selected": "SWDRA2/SWHYST1,2 explicit original output water/CDE, implicit0; existing complete physical hysteresis plus paired40-byte domain",
     "model_equations_changed": false,
     "tolerances_changed": false,
     "AGE_admitted": false,
     "implicit_admitted": false,
-    "recovery_next_action": "Inspect actual5day water-h1-O0 and cde-h2-O2 results, independently decode complete physical/history/calendar/native/output; diagnose any refused composition before selecting further35day/full periods. Poll existing PR1764 checks and admit exact candidate tree only after all required checks; then actual canonical public owner. Keep earlier phases immutable."
+    "recovery_next_action": "Finish retained actual short history native refusal controls. If these pass, push this branch to start one explicit Ubuntu O0/O2 full composition campaign and run Windows O0/O2 water-h1 and CDE-h2 full periods. Capture actual producer source before further app changes. Audit all raw full/native/counter/history/output independently. Preserve history-off postimage and narrow subdaily/perstep interaction. Keep existing PR1764 through terminal required checks and exact-tree canonical merge, then actual canonical public owner; persist receipt in this functional branch.",
+    "short_contexts": 8,
+    "short_exact_cold_windows": 24,
+    "initial_prototype_5day_contexts": 2,
+    "full_periods_selected": 8,
+    "full_period_days": 1096,
+    "selected_full_cases": [
+      "water/monthly/text2/history1",
+      "automatic-CDE/daily/binary3/history2"
+    ]
   }
 }
