@@ -1,0 +1,49 @@
+name: SaltFarm typed production O0 O2 qualification07
+on:
+  push:
+    branches: [codex/saltfarm-isolated07]
+    paths: ['.github/workflows/saltfarm-typed07.yml', 'tests/saltfarm_newton/composed07.py']
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  typed:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 12
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            tests/saltfarm_newton
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+            integration/f-ci/saltfarm-typed07
+      - name: Exact source and sequential O0 O2 full cold transaction qualification
+        env:
+          EXPECTED: ${{ inputs.expected_sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED"
+          root="$RUNNER_TEMP/typed07"
+          python3 -B tools/solute/run_water.py --prepare-sources --no-macro-release --reference-work "$root/provider"
+          python3 -B tests/saltfarm_newton/composed07.py --work "$root"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: saltfarm-typed07-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/typed07/RESULT.json
+            ${{ runner.temp }}/typed07/O*/build/BUILD.json
+            ${{ runner.temp }}/typed07/O*/build/*.f90
+            ${{ runner.temp }}/typed07/O*/warm*
+            ${{ runner.temp }}/typed07/O*/cold

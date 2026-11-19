@@ -60,6 +60,10 @@ def legacy_decoder():
     return decoder
 
 def verify():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('saltfarm_typed_admission07',ROOT/'tests/saltfarm_newton/typed_admission07.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
     q=json.loads((ROOT/PROOF/'COMPOSITION_QUALIFICATION.json').read_text());validate(q);source_guard()
     for test in ('test_direct_admission.py','test_composition_admission.py'):
         result=subprocess.run([sys.executable,'-B',str(ROOT/'tests/saltfarm_newton'/test)],capture_output=True,text=True,timeout=30)
