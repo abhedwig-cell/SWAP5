@@ -6,3 +6,5 @@ External20s perroute, originalinternal16s/512commits/4retry andallbudgets unchan
 Storage: sharedstart/protect/preview/checkspace, reuseprotectedREJECT64O0/O2builds(no newcheckout), allocatefreshcasecopyresource. UniqueRdata/source/archive neverdisposable. Archivefullcaseinputs/rawoutputs beforeownrelease.
 
 Afterfouracceptedmidpoints, add ONE named O0REFERENCE_UPPER control at ORIGINAL2.0951312035156963e-5 toverifytheunchangedproposalwrapperpreservesknownrefusal. No furthernewmidpointselection, no tuning. O2lastproposalconfirmationunchanged. PreservecontrolandcompareagainstCOMBINED63firstattemptbeforeinterpretingabsenceofVrejection.
+
+Phase2 preregistration afterreferencecontrol: initial4midpointcap iscomplete, upperreference reproducesCOMBINED63. Usergoal V-rejectionstillopen. Continueatmost4additionalmidpoints ONLYnew16xsmallergap(2.0865754909882301e-5,2.0951312035156963e-5), totalmidpointcap8. No newcontext/physics/numerics, hard20/internal16unchanged; sameaccept/failendpointselection andstopfirsttrueVrejection. Thisexplicitphaseextensionisnotnewton/criteriontuning. Ifnonecap8honored andO2confirmlast; iffoundO2chain+freshdirectO0/O2 asoriginalplan.
