@@ -11,14 +11,19 @@ def enabled(project):
     if not project.input_directory or project.macro or project.age or not project.original_output:return False
     from experimental_project import inspect
     report=inspect(project.input_directory)
-    return report['selectors']['SWKIMPL']==1 and report['boundary']['SWBOTB']==1
+    if report['boundary']['SWBOTB']!=1:return False
+    if report['selectors']['SWKIMPL']==1:return True
+    from implicit_groundwater_state import enabled as water_state
+    return water_state(project)
 
 
 def metadata(project):
     if not enabled(project):return None
     sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
     root=Path(__file__).resolve().parents[2]
-    return dict(policy=POLICY,source_sha256=sha(Path(__file__)),original_projection_owner_sha256=sha(Path(original.__file__)),receipt_provider_sha256=sha(root/'src/process/mod_original_output_receipt.f90'),reaction_provider_sha256=sha(root/'src/process/mod_prescribed_groundwater_reaction.f90'),original_integral_sha256=original.regular.INTEGRAL_SHA,original_watstor_sha256=original.clock.WATSTOR_SHA,guard_cm=1e-10,ownership='read-only original daily receipt clone before Integral/Fluxes; no accepted state assignment')
+    from experimental_project import inspect
+    policy=POLICY if inspect(project.input_directory)['selectors']['SWKIMPL'] else 'original-explicit-groundwater-independent-daily-trial-receipt-v1'
+    return dict(policy=policy,source_sha256=sha(Path(__file__)),original_projection_owner_sha256=sha(Path(original.__file__)),receipt_provider_sha256=sha(root/'src/process/mod_original_output_receipt.f90'),reaction_provider_sha256=sha(root/'src/process/mod_prescribed_groundwater_reaction.f90'),original_integral_sha256=original.regular.INTEGRAL_SHA,original_watstor_sha256=original.clock.WATSTOR_SHA,guard_cm=1e-10,ownership='read-only original daily receipt clone before Integral/Fluxes; no accepted state assignment')
 
 
 def apply_build(output,donor_build,project,patched):
