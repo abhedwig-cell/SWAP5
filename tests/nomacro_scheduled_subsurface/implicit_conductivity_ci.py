@@ -16,9 +16,6 @@ CASES={
  'cde-head':(1,0,5,3,True,'explicit',3,1,True,True),
  'cde-air-history':(1,1,8,2,False,'explicit',2,1,False,False),
  'cde-groundwater-history':(1,2,1,4,False,'daily',3,0,True,True),
- 'age-head-history':(2,2,5,6,True,'explicit',3,1,True,True),
- 'age-air-history':(2,1,8,2,False,'monthly',1,0,False,False),
- 'age-groundwater-history':(2,1,1,3,True,'explicit',3,1,True,True),
  'water-head-numerical-pair':(0,0,5,2,False,'explicit',3,1,False,False),
 }
 
@@ -36,7 +33,7 @@ def main():
  a=p.parse_args();assert bool(a.reuse_water_short)==bool(a.reuse_water_full);a.output=a.output.resolve();a.output.mkdir()
  if not (a.reference_work/'PREPARED.json').exists():c.m.user_prepare.prepare(a.reference_work)
  c.m.user_prepare.validate(a.reference_work)
- q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=c.ROOT,text=True).strip(),optimization=a.optimization,cases={},controls={},selection='Eleven actual numerical/physical boundary contexts; eight full1096day periods only after all current-source short/native/domain/active gates. Original unchanged numerical formula providers are not requalified as fresh independent science.',expected_seconds=600,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
+ q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=c.ROOT,text=True).strip(),optimization=a.optimization,cases={},controls={},selection='Eight actual water/CDE numerical/physical boundary contexts; six full1096day periods only after all current-source short/native/domain/active gates. Implicit AGE is explicitly unqualified and refused by public admission. Original unchanged numerical formula providers are not requalified as fresh independent science.',expected_seconds=600,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
  def run(script,target,args):
   cmd=[sys.executable,'-B',str(Path(__file__).with_name(script)),'--reference-work',str(a.reference_work),'--output',str(target),*args]
@@ -86,7 +83,7 @@ def main():
    else:item=run('implicit_conductivity_runtime.py',root,arguments(case)+['--optimization',a.optimization,'--phase','full','--reuse-build',old['build_root'],'--existing-input',old['input_root']])
    assert item['status']=='ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_FULL_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'
    old.update(full_root=str(root),full=item);save();print(name,'FULL_PASS',flush=True)
-  q['status']='ELEVEN_IMPLICIT_CONDUCTIVITY_SHORT_EIGHT_FULL_ALL_NATIVE_ACTIVE_POLICY_PASS';save()
+  q['status']='EIGHT_IMPLICIT_WATER_CDE_SHORT_SIX_FULL_ALL_NATIVE_ACTIVE_POLICY_PASS';save()
  except Exception as error:q.update(status='FAILED',error=repr(error));raise
  finally:save()
 

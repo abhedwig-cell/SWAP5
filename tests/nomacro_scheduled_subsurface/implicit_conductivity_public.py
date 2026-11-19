@@ -14,7 +14,7 @@ def main():
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
     try:
-        for name in ('water-head','water-groundwater','water-groundwater-history','cde-head','cde-groundwater-history','age-head-history','age-groundwater-history'):
+        for name in ('water-head','water-air-history','water-groundwater','water-groundwater-history','cde-head','cde-groundwater-history'):
             item=matrix['cases'][name];inputs=Path(item['input_root']);build=Path(item['build_root']);project=m.e.load(inputs,original_output=True)
             m.validate_bundle(build,a.reference_work,project);out=a.output/name;out.mkdir()
             command=[sys.executable,'-B',str(runtime.ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',inputs,
@@ -32,7 +32,7 @@ def main():
             files=compare(out/'warm/original',out/'cold/original',selection(project),30,34,project.start_date);assert m.sha(source)==digest
             q['profiles'][name]=dict(warm=warm,cold=cold,physical_exact=True,complete_native_exact=True,user_output_exact=files,origin_unchanged=True)
             save();print(name,'PUBLIC_IMPLICIT_CONDUCTIVITY_NATIVE_OUTPUT_PASS',flush=True)
-        q['status']='SEVEN_PUBLIC_IMPLICIT_CONDUCTIVITY_COMPLETE_NATIVE_RESTART_CONTEXTS_PASS'
+        q['status']='SIX_PUBLIC_IMPLICIT_WATER_CDE_COMPLETE_NATIVE_RESTART_CONTEXTS_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
 
