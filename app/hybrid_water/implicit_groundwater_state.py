@@ -11,7 +11,7 @@ POLICY='original-implicit-water-groundwater-complete-hydraulic-carry-v1'
 
 
 def enabled(project):
-    if not project.input_directory or project.macro or project.solute or project.age:return False
+    if not project.input_directory or project.macro or project.solute or project.age or not project.original_output:return False
     from experimental_project import inspect
     report=inspect(project.input_directory)
     return report['selectors']['SWKIMPL']==1 and report['boundary']['SWBOTB']==1
@@ -25,7 +25,15 @@ def domain(project):
 
 def magic(project):
     if not enabled(project):return prior.native_magic(project)
-    return b'S5IGW001' if project.original_output else b'S5IGW002'
+    return b'S5IGW001'
+
+
+def selected_boundary(project):return 1 if enabled(project) else prior.selected_boundary(project)
+
+
+def boundary_metadata(project,sha,app,root):
+    if not enabled(project):return prior.boundary_metadata(project,sha,app,root)
+    return dict(policy=prior.boundary.POLICY,source_sha256=sha(app/'groundwater_boundary_receipt.py'),composition_sha256=sha(Path(__file__)),predecessor_sha256=sha(app/'lower_boundary_receipt.py'),template_sha256=sha(app/'hybrid_step_budget.f90'),effective_SWBOTB=1,production_sha256=sha(root/'src/process/mod_prescribed_groundwater_reaction.f90'),state='read-only original Darcy and prescribed saturated-tail reaction; no new physical store')
 
 
 def state_source():

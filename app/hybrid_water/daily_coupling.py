@@ -146,6 +146,9 @@ def validate_bundle(bundle, reference, project):
     from implicit_conductivity import metadata as implicit_metadata
     if identity.get('implicit_conductivity')!=implicit_metadata(project):
         raise ValueError('Foreign original implicit conductivity numerical policy; rebuild without rebinding')
+    from implicit_groundwater_trial import metadata as implicit_trial_metadata
+    if identity.get('implicit_groundwater_trial')!=implicit_trial_metadata(project):
+        raise ValueError('Foreign original implicit groundwater daily trial receipt policy')
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source
@@ -210,7 +213,8 @@ def validate_bundle(bundle, reference, project):
     from surface_schedule import enabled as surface_schedule_enabled,POLICY as SURFACE_SCHEDULE_POLICY
     expected_schedule={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':h.sha(h.APP/'surface_schedule.py')} if surface_schedule_enabled(project) else None
     if identity.get('surface_schedule')!=expected_schedule:raise ValueError('Foreign original surface schedule')
-    from age_groundwater_output import selected_boundary,boundary_metadata as lower_metadata,render_budget
+    from implicit_groundwater_state import selected_boundary,boundary_metadata as lower_metadata
+    from age_groundwater_output import render_budget
     lower_boundary=selected_boundary(project)
     lower=lower_boundary is not None
     expected_lower=lower_metadata(project,h.sha,h.APP,h.ROOT)
@@ -226,6 +230,9 @@ def validate_bundle(bundle, reference, project):
             from age_groundwater_output import state_source
             if (bundle/state_policy['provider_filename']).read_text(encoding='cp1252')!=state_source():
                 raise ValueError('Foreign actual original AGE groundwater state provider')
+        elif state_policy.get('provider_filename')=='implicit_groundwater_native_state.f90':
+            if (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source():
+                raise ValueError('Foreign actual implicit groundwater native provider')
         else:
             state_name='groundwater_history_native_state.f90' if expected_lower and state_policy['domain_bytes']==104 else 'groundwater_native_state.f90'
             if (bundle/state_name).read_bytes()!=(h.APP/state_name).read_bytes():

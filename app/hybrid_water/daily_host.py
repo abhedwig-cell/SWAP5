@@ -169,7 +169,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         if len(values)!=1:raise ValueError('Missing/ambiguous physical selector: '+name)
         return int(values[0])
     micro_state=bool(project.input_directory and not project.macro and (selector('SWHYST') or selector('SWSNOW')))
-    from age_groundwater_output import selected_boundary
+    from implicit_groundwater_state import selected_boundary
     lower_boundary=selected_boundary(project)
     lower_receipt=lower_boundary is not None
     from fixed_irrigation_file import enabled as fixed_irrigation_file_enabled
@@ -865,6 +865,8 @@ end module plant_interface""")
     if age_calendar is not None:
         patched=age_calendar_owner.apply_build(output,donor_build,project,patched)
     if age_source:patched=current_age_source.apply_build(output,project,patched)
+    from implicit_groundwater_trial import apply_build as implicit_groundwater_trial_build
+    patched=implicit_groundwater_trial_build(output,donor_build,project,patched)
     from implicit_groundwater_state import native_apply_build as groundwater_native_build
     patched=groundwater_native_build(output,project,patched)
     for name in patched:
@@ -937,6 +939,9 @@ end module plant_interface""")
     from implicit_conductivity import metadata as implicit_metadata
     implicit_policy=implicit_metadata(project)
     if implicit_policy is not None:build_identity['implicit_conductivity']=implicit_policy
+    from implicit_groundwater_trial import metadata as implicit_trial_metadata
+    implicit_trial=implicit_trial_metadata(project)
+    if implicit_trial is not None:build_identity['implicit_groundwater_trial']=implicit_trial
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from age_groundwater_output import metadata as original_output_metadata
@@ -984,7 +989,7 @@ end module plant_interface""")
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
     if lower_receipt:
-        from age_groundwater_output import boundary_metadata as lower_metadata
+        from implicit_groundwater_state import boundary_metadata as lower_metadata
         build_identity['lower_boundary_receipt']=lower_metadata(project,sha,APP,ROOT)
     from implicit_groundwater_state import native_metadata as groundwater_native_metadata
     groundwater_state=groundwater_native_metadata(project,sha,APP)

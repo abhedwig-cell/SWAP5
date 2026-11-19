@@ -321,7 +321,8 @@ def main():
         # Prescribed-head5 now has its own independent strict trial receipt.
         # Existing water-only prescribed-groundwater1 retains the daily guard;
         # CDE1 additionally uses its independent Darcy/prescribed-tail receipt.
-        profile['budget_retry']=project.solute or project.age or inspect(project.input_directory)['boundary']['SWBOTB'] != 1
+        from implicit_groundwater_state import enabled as implicit_groundwater
+        profile['budget_retry']=project.solute or project.age or implicit_groundwater(project) or inspect(project.input_directory)['boundary']['SWBOTB'] != 1
     project_meta=dict(case=project.case,model=project.model,start_date=project.start_date,nodes=project.nodes,water_tolerance=project.water_tolerance)
     if args.build_bundle is not None:
         from daily_coupling import validate_bundle

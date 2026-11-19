@@ -276,6 +276,8 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     if not isinstance(age_direct_soil_source,bool):raise ValueError('Direct soil age source mode must be boolean')
     if age_direct_soil_source and age_irrigation_source:raise ValueError('Select one explicit incoming-age source policy')
     report = inspect(directory,original_output=original_output)
+    if report.get('implicit_conductivity') and not original_output:
+        raise ValueError('Original implicit conductivity requires explicit --original-output daily trial and state qualification')
     if report.get('implicit_conductivity') and policy!=ORIGINAL_TIME_POLICY:
         raise ValueError('Original implicit conductivity requires the original time-step policy')
     if report.get('age') and report['boundary']['SWBOTB']==1 and (age_irrigation_source or age_direct_soil_source):
