@@ -110,7 +110,7 @@ def render_solute(original):
     source=source.replace(anchor,anchor+',pending_header',1)
     anchor='      call output_assert_age_clock(saved_output_day,saved_output_period)';assert source.count(anchor)==1
     check="""
-      if(transfer(age_saved_cumulative_reset,0)/=pending_header(13).or. &
+      if(transfer(age_saved_cumulative_reset,0)/=pending_header(14).or. &
          transfer(age_saved_interval_reset,0)/=pending_header(14)) &
          error stop 'Inconsistent original AGE private reset flags and calendar'
 """
