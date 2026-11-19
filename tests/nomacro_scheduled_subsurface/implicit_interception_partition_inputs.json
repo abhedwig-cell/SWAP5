@@ -1,0 +1,33 @@
+{
+  "role": "Actual original water1066 gross/net/interception rate witness, not a physical oracle.",
+  "source_commit": "fff0c2f298a8fee484e055e56a83de2926358897",
+  "raw_original_stdout": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-groundwater-diagnostic-water-100-v8\\trajectory\\original\\donor.stdout",
+  "raw_original_stdout_sha256": "bf0cb82b7fcde376a889cfcd067ad8e917f11c2de3ca2e6a4310f219c09bb43f",
+  "actual_rates": [
+    38321.05746944061,
+    0.03493888121511877,
+    2.7653073390934727e-07,
+    2.7653073390934727e-07,
+    0.0,
+    0.0,
+    0.47000000000000003,
+    0.47000000000000003,
+    0.0,
+    0.0,
+    3.474185958525159e-07,
+    3.474185958525159e-07,
+    3.474185958525159e-07,
+    2.6724737222689322e-05,
+    2.6724737222689322e-05,
+    0.0,
+    2.6724737222689322e-05,
+    69.10480200566221,
+    0.19320970158943204,
+    0.0,
+    1.5309325931443634e-05,
+    0.0,
+    0.0
+  ],
+  "selector_control": "Rain-only witness has zero gross irrigation; driver separately exercises both valid original ISUA partitions.",
+  "expected_defect": "Original treats this nonzero modeled/Integral-booked interception as zero for net inputs."
+}
