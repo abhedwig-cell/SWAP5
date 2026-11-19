@@ -168,6 +168,12 @@ def size(project):
     return 92+16*(11+3*s['levels']+s['levels']*project.nodes)
 
 
+def state_source_bytes(project):
+    if not project.original_output:return TEMPLATE.read_bytes()
+    from extended_output_receipt import state_source
+    return state_source(TEMPLATE.read_text(encoding='cp1252')).encode('cp1252')
+
+
 def metadata(project):
     if not enabled(project):return None
     sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
@@ -271,11 +277,7 @@ def apply_build(output, donor_build, project, patched):
     patched=strict_trial_build(output,donor_build,patched,project)
     from extended_interception import render as positive_interception_source
     (output/'MOD_meteo.f90').write_text(positive_interception_source((donor_build/'swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')),encoding='cp1252')
-    state_text=TEMPLATE.read_text(encoding='cp1252')
-    if project.original_output:
-        from extended_output_receipt import state_source
-        state_text=state_source(state_text)
-    (output/(MODULE+'.f90')).write_text(state_text,encoding='cp1252')
+    (output/(MODULE+'.f90')).write_bytes(state_source_bytes(project))
     (output/'surfacewater.f90').write_text(surfacewater_source((donor_build/'swap-selected/surfacewater.f90').read_text(encoding='cp1252')),encoding='cp1252')
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')
     first=text.index('    subroutine hybrid_macro_checkpoint(')

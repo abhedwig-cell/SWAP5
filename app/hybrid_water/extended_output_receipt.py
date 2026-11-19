@@ -44,12 +44,15 @@ extended_counter_active=.true.
 end subroutine
 subroutine hybrid_extended_counter_reset(kind)
 use MOD_drain,only:nrlevs
+use variables,only:t1900
 integer,intent(in)::kind
 if(.not.extended_counter_active)return
 if(kind==1)then
+ write(*,'(a,1x,i0,*(1x,es25.17e3))') 'HYBRID_EXTENDED_OUTPUT_COUNTER_RESET',kind,t1900,cqdrain(1:nrlevs),extended_level_origin
  extended_level_sum=extended_level_sum+real(cqdrain(1:nrlevs),extended_output_real)-real(extended_level_origin,extended_output_real)
  extended_level_origin=0d0
 else if(kind==2)then
+ write(*,'(a,1x,i0,*(1x,es25.17e3))') 'HYBRID_EXTENDED_OUTPUT_COUNTER_RESET',kind,t1900,iqdra,iruno,extended_counter_origin
  extended_counter_sum=extended_counter_sum+real([iqdra,iruno],extended_output_real)-real(extended_counter_origin,extended_output_real)
  extended_counter_origin=0d0
 else

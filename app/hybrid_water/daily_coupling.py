@@ -261,9 +261,9 @@ def validate_bundle(bundle, reference, project):
         for name in (*age_source.PROVIDERS,*age_source.OUTPUT_PROVIDERS):
             if (bundle/(name+'.f90')).read_bytes().replace(b'\r\n',b'\n')!=(h.ROOT/'src/process'/(name+'.f90')).read_bytes().replace(b'\r\n',b'\n'):
                 raise ValueError('Foreign actual original age provider')
-    from extended_drainage import metadata as extended_metadata,TEMPLATE as extended_template,MODULE as extended_module
+    from extended_drainage import metadata as extended_metadata,state_source_bytes as extended_source_bytes,MODULE as extended_module
     if identity.get('extended_drainage')!=extended_metadata(project):raise ValueError('Foreign extended drain state policy; rebuild without rebinding')
-    if identity.get('extended_drainage') and (bundle/(extended_module+'.f90')).read_bytes()!=extended_template.read_bytes():
+    if identity.get('extended_drainage') and (bundle/(extended_module+'.f90')).read_bytes()!=extended_source_bytes(project):
         raise ValueError('Foreign actual extended drain native state provider')
     from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled, POLICY as SCHEDULED_SUBSURFACE_POLICY
     expected_subsurface={'policy':SCHEDULED_SUBSURFACE_POLICY,'source_sha256':h.sha(h.APP/'scheduled_subsurface_irrigation.py')} if scheduled_subsurface_enabled(project) else None
