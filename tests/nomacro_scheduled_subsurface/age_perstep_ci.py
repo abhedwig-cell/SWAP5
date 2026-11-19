@@ -33,6 +33,8 @@ def main():
   first=json.loads((a.output/'full-ordinary-explicit-h0-binary/RESULT.json').read_text(encoding='utf8'));assert first['status']=='ACTUAL_AGE_PERSTEP_FULL_SOURCE_NATIVE_OUTPUT_PASS' and first['post_validation_role'].startswith('Actual complete existing source-bound trajectory')
   original=json.loads((a.output/'full-ordinary-explicit-h0-binary/RETAINED_FAILED_RESULT.json').read_bytes());assert original['error'].startswith("AssertionError({'result.ageProfile.csv':") and original['trajectory']['days']==1096
   backup=a.output/'RETAINED_FAILED_MATRIX_RESULT.json';assert not backup.exists();backup.write_bytes(raw);q['retained_cadence_failure']=dict(path=backup.name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+ if not (a.reference_work/'PREPARED.json').exists():c.m.user_prepare.prepare(a.reference_work)
+ c.m.user_prepare.validate(a.reference_work)
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
  def run(script,target,arguments):
   command=[sys.executable,'-B',str(Path(__file__).with_name(script)),'--reference-work',str(a.reference_work),'--output',str(target),*map(str,arguments)]
