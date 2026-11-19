@@ -17,6 +17,12 @@ def selection(text, selectors, boundary):
         raise ValueError('Original implicit conductivity requires bounded analytical daily no-snow/no-frost/no-aquifer inputs')
     active = '\n'.join(line.split('!', 1)[0].strip() for line in text.splitlines()
                        if line.strip() and not line.lstrip().startswith('*'))
+    if selectors['SWSOLU']==0 and boundary['SWBOTB']==1:
+        steps=re.findall(r'(?mi)^FLPRINTDT[ \t]*=[ \t]*([^\r\n]+)',active)
+        prints=re.findall(r'(?mi)^NPRINTDAY[ \t]*=[ \t]*([+-]?\d+)[ \t]*$',active)
+        if (len(steps)>1 or steps and steps[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')
+                or prints!=['1']):
+            raise ValueError('Implicit water groundwater subdaily output requires separate original trial-calendar composition')
     if re.search(r'(?i)\bSWAP_SOILS_DB\b', active):
         raise ValueError('Implicit conductivity soil database requires separate parameter-domain qualification')
     models = re.findall(r'(?mi)^IHWCKMODEL\s*=\s*(.*)$', active)
