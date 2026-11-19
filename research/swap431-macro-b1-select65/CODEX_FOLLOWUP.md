@@ -1,0 +1,3 @@
+# Herstel SELECT65
+
+Lees REPORT.md, RESULT.json, CONTRACT.md en SELECTION_PROGRESS.json. Deze eenheid is klaar als begrensde negatieve selectie; de wetenschappelijke V-afwijzingsgate is open. Geen automatische verlenging van de acht middelpunten. Geen V-rollbackclaim ontlenen aan SELECT5 of REFERENCE_UPPER: hun afgewezen pogingen waren W-only. Een volgende gerichte opdracht vereist een expliciet afgebakend nieuw selectiebesluit; behoud oorspronkelijke checkpoint, fysica, solverbewaking en twintigsecondenlimiet. Gebruik de gecontroleerde zip voor ontbrekende disposable cases/builds. Geen numerieke patch in SELECT65.

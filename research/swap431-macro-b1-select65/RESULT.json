@@ -1,0 +1,306 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-SELECT65",
+  "decision": "NO_TRUE_V_REJECTION_IN_EIGHT_BOUNDED_D2_PROPOSALS",
+  "model_routes": 11,
+  "hard_seconds_per_route": 20,
+  "all_normal_uncensored": true,
+  "source_and_binaries_unchanged_from_REJECT64": true,
+  "original_upper_reference_reproduces_COMBINED63": true,
+  "O0_O2_comparisons": [
+    {
+      "profile": "SELECT4",
+      "physical_text_files_exact": 49,
+      "attempts_exact_except_elapsed": true,
+      "native_follow_packet_exact": true
+    },
+    {
+      "profile": "SELECT8",
+      "physical_text_files_exact": 49,
+      "attempts_exact_except_elapsed": true,
+      "native_follow_packet_exact": true
+    }
+  ],
+  "actual_V_rejection_qualified": false,
+  "V_rollback_and_direct_smaller_retry_qualified": false,
+  "direct_smaller_retry_not_run_without_valid_V_rejected_origin": true,
+  "remaining_unsearched_interval": [
+    2.0903186152189966e-05,
+    2.0908533472519632e-05
+  ],
+  "interval_not_exhausted_and_no_monotonicity_claim": true,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "results": [
+    {
+      "opt": "O0",
+      "profile": "REFERENCE_UPPER",
+      "seconds": 1.4507679999805987,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0951312035156963e-05,
+          "rejected": true,
+          "iterations": 30,
+          "active_W": 24,
+          "active_V": 0,
+          "Fmax": 0.0021198336748706748,
+          "sumF": 0.008414477305576075,
+          "fresh": 0
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "rejected": false,
+          "iterations": 3,
+          "active_W": 1,
+          "active_V": 2,
+          "Fmax": 3.044456621352498e-08,
+          "sumF": 2.0918085756152195e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 2.0919125137439467e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "rollback": {
+        "physical_context_exact_except_controller_dt_and_floor": true,
+        "ledger_exact": true,
+        "qualifies_V": false
+      }
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT1",
+      "seconds": 1.4680865998379886,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0266855032959656e-05,
+          "rejected": false,
+          "iterations": 12,
+          "active_W": 9,
+          "active_V": 2,
+          "Fmax": 5.89115697509357e-08,
+          "sumF": 4.042849276139831e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 8.193561732313369e-12,
+      "inventory_limit_cm": 2.0266855032959656e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT2",
+      "seconds": 1.0798414000310004,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.060908353405831e-05,
+          "rejected": false,
+          "iterations": 17,
+          "active_W": 13,
+          "active_V": 2,
+          "Fmax": 4.75968124861309e-08,
+          "sumF": 3.266103495526387e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 6.731267942737822e-12,
+      "inventory_limit_cm": 2.0609083534058312e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT3",
+      "seconds": 1.7547120000235736,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.078019778460764e-05,
+          "rejected": false,
+          "iterations": 11,
+          "active_W": 8,
+          "active_V": 2,
+          "Fmax": 6.315067565751398e-08,
+          "sumF": 4.3333342880046146e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 9.00471634767314e-12,
+      "inventory_limit_cm": 2.078019778460764e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT4",
+      "seconds": 0.9470940004102886,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.08657549098823e-05,
+          "rejected": false,
+          "iterations": 11,
+          "active_W": 8,
+          "active_V": 2,
+          "Fmax": 5.779295576824328e-08,
+          "sumF": 3.9659838270193e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 8.275292380157003e-12,
+      "inventory_limit_cm": 2.0865754909882302e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT5",
+      "seconds": 1.0842995001003146,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0908533472519632e-05,
+          "rejected": true,
+          "iterations": 30,
+          "active_W": 25,
+          "active_V": 0,
+          "Fmax": 0.0064995407343471645,
+          "sumF": -0.02583282889632997,
+          "fresh": 0
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "rejected": false,
+          "iterations": 3,
+          "active_W": 1,
+          "active_V": 2,
+          "Fmax": 3.0444566584755806e-08,
+          "sumF": 2.0918085788749583e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 2.0919799235905045e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "rollback": {
+        "physical_context_exact_except_controller_dt_and_floor": true,
+        "ledger_exact": true,
+        "qualifies_V": false
+      }
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT6",
+      "seconds": 0.8726494000293314,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0887144191200966e-05,
+          "rejected": false,
+          "iterations": 18,
+          "active_W": 13,
+          "active_V": 2,
+          "Fmax": 3.292879732601228e-08,
+          "sumF": 2.2597333954214915e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 4.720021259014022e-12,
+      "inventory_limit_cm": 2.0887144191200969e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT7",
+      "seconds": 1.0089787002652884,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.08978388318603e-05,
+          "rejected": false,
+          "iterations": 15,
+          "active_W": 11,
+          "active_V": 2,
+          "Fmax": 4.761629550202595e-08,
+          "sumF": 3.267732170050703e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 6.828851060369974e-12,
+      "inventory_limit_cm": 2.08978388318603e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O0",
+      "profile": "SELECT8",
+      "seconds": 1.0198832000605762,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0903186152189966e-05,
+          "rejected": false,
+          "iterations": 13,
+          "active_W": 9,
+          "active_V": 2,
+          "Fmax": 5.001362671230858e-08,
+          "sumF": 3.431902514809883e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 7.173699055947481e-12,
+      "inventory_limit_cm": 2.0903186152189966e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O2",
+      "profile": "SELECT4",
+      "seconds": 1.5523672001436353,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.08657549098823e-05,
+          "rejected": false,
+          "iterations": 11,
+          "active_W": 8,
+          "active_V": 2,
+          "Fmax": 5.779295576824328e-08,
+          "sumF": 3.9659838270193e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 8.275292380157003e-12,
+      "inventory_limit_cm": 2.0865754909882302e-10,
+      "rollback": null
+    },
+    {
+      "opt": "O2",
+      "profile": "SELECT8",
+      "seconds": 0.9104987001046538,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0903186152189966e-05,
+          "rejected": false,
+          "iterations": 13,
+          "active_W": 9,
+          "active_V": 2,
+          "Fmax": 5.001362671230858e-08,
+          "sumF": 3.431902514809883e-07,
+          "fresh": 1
+        }
+      ],
+      "hostcommits": 1,
+      "inventory_error_cm": 7.173699055947481e-12,
+      "inventory_limit_cm": 2.0903186152189966e-10,
+      "rollback": null
+    }
+  ]
+}
