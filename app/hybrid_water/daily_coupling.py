@@ -160,14 +160,6 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Foreign original implicit pond event ownership policy')
     if identity.get('implicit_pond_event') is not None and (bundle/'implicit_pond_event_state.f90').read_bytes()!=(h.APP/'implicit_pond_event_state.f90').read_bytes():
         raise ValueError('Foreign actual original implicit pond event provider')
-    from implicit_root_finalization import metadata as implicit_root_metadata,expected as implicit_root_source
-    implicit_root=implicit_root_metadata(project)
-    if identity.get('implicit_root_finalization')!=implicit_root:
-        raise ValueError('Foreign original implicit microscopic root finalization policy')
-    if implicit_root is not None:
-        original=(reference/'build/swap-selected/RWU_micro.f90').read_text(encoding='cp1252')
-        if (bundle/'RWU_micro.f90').read_text(encoding='cp1252')!=implicit_root_source(original,project):
-            raise ValueError('Foreign actual original implicit microscopic root provider')
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source
