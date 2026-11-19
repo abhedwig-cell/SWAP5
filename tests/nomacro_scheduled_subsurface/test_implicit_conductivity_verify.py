@@ -63,6 +63,7 @@ class ActualEvidence(unittest.TestCase):
 
     def test_actual_receipts_stdout_and_policy_corruptions(self):
         a=self.chemical
+        p.water(a['data']);p.original_observations(self.z.read(a['prefix']+'trajectory/original/donor.stdout'),a['data'],a['build']['project']['start_date'])
         for field,index in [('stock_end_cm',0),('external_flux_cm',0),('pressure_head_cm',0)]:
             data=copy.deepcopy(a['data']);data[0][field][index]+=1
             if field=='pressure_head_cm':self.refuse(lambda:p.original_observations(self.z.read(a['prefix']+'trajectory/original/donor.stdout'),data,a['build']['project']['start_date']))
