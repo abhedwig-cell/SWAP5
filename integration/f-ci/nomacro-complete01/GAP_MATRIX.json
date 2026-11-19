@@ -1642,13 +1642,14 @@
       },
       {
         "id": "alternative-hydraulic",
-        "function": "Alternative constitutive models2..11",
+        "function": "Alternative constitutive models2..12",
         "gap_classification": "NUMERICAL_FAILURE",
         "historical_availability": {
-          "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90",
-          "reader": "Original constitutive selector domain, exact valid parameter branches still require per-model reconciliation"
+          "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:369",
+          "scalar_and_per_layer_range": "1..12, original exponential2/testing, bimodal3, PDI4..11, RIA12",
+          "dispatch": "MOD_MvG_functions.f90 branches12 at325/455/614/818; RIA_Reader readswap556, original reader rejects RIA with hysteresis."
         },
-        "current_availability": "Bounded model2 PASS; existing models3/5/6/7/9/11 FAIL and4/8/10 CENSOR. Reuse BLOCK_I evidence; not mere guards.",
+        "current_availability": "Bounded model2 PASS; existing models3/5/6/7/9/11 FAIL and4/8/10 CENSOR. Reuse BLOCK_I evidence; not mere guards. The earlier BLOCK_I inventory omitted reader-supported RIA12; exact RIA public/state admission remains UNKNOWN and requires source audit, not automatic failure classification.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
         "missing_composition_or_guard": "Bounded model2 PASS; existing models3/5/6/7/9/11 FAIL and4/8/10 CENSOR. Reuse BLOCK_I evidence; not mere guards.",
         "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",

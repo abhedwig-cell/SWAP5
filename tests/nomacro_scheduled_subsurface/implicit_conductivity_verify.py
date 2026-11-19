@@ -4,9 +4,10 @@ No model execution, provider substitution or predecessor ROOT rebinding.
 """
 from pathlib import Path,PureWindowsPath,PurePosixPath
 import hashlib,io,json,re,struct,subprocess,sys,tarfile,tempfile,zipfile
-import implicit_conductivity_forensics as forensic
 
 ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(ROOT/'tests/nomacro_scheduled_subsurface'))
+import implicit_conductivity_forensics as forensic
 PROOF='integration/f-ci/nomacro-complete01/'
 BASE='cce2561eb87e992f671d97a35baef84ddb8d91e0'
 RUNTIME='5bdfcb3472a3b349d7de397573cb23be351346d6'
@@ -150,6 +151,7 @@ def verify():
     require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'Dirty implicit admission surface')
     for ref in (BASE,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
     require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Unqualified implicit production source change')
+    require(Path(forensic.__file__).resolve()==ROOT/'tests/nomacro_scheduled_subsurface/implicit_conductivity_forensics.py','Foreign implicit raw-evidence reader module')
     q=json.loads((ROOT/PROOF/'IMPLICIT_CONDUCTIVITY_QUALIFICATION.json').read_text(encoding='utf8'))
     require((q['baseline'],q['runtime'],q['status'])==(BASE,RUNTIME,'BOUNDED_IMPLICIT_WATER_CDE_QUALIFICATION_RECORD'),'Foreign implicit qualification scope')
     require(q['functional_completion']=='PARTIAL' and q['whole_scientific_equivalence']=='NOT_QUALIFIED' and q['water_guard_cm']==q['chemical_mass_guard_mg_cm2']==1e-10 and q['age_admission'] is False and q['weighted_history_full_admission'] is False,'Implicit scientific/guard/blocked scope promoted')
