@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-implicit-conductivity01",
-  "last_commit": "1b3405afa906aeb2f4a2da30227bca299a1605f6",
-  "status": "IMPLICIT_EXACT_INTERCEPTION_CORRECTION_SMALL_GATES_PASS_FULL_WATER_PENDING",
+  "last_commit": "914a575e306fe24eac9f65f701c937e6e39bd8c4",
+  "status": "IMPLICIT_STABLE_CANDIDATE_O0_O2_HARD_WATER_FULL_NATIVE_PASS_COHORT_NEXT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -332,7 +332,7 @@
   ],
   "running_ci": [],
   "next_code_change": "If hard water still refuses, inspect exact last state before another numerical correction. Otherwise production freeze: complete selected qualification and add interception component to portable draft; do not rerun unchanged original derivative/mean/root/event components merely for branch advances.",
-  "recovery_point": "codex/nomacro-implicit-conductivity01 1b3405afa906aeb2f4a2da30227bca299a1605f6 plus this recovery commit. Whole PARTIAL/science NOT_QUALIFIED/fixedRC3 unchanged. Canonical cce2561e, no implicit admission or archive seal.",
+  "recovery_point": "codex/nomacro-implicit-conductivity01 914a575e306fe24eac9f65f701c937e6e39bd8c4 plus this stable-candidate persistence. Whole PARTIAL/science NOT_QUALIFIED/fixedRC3 unchanged; exact canonical cce2561e. No implicit carrier/seal/admission.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Check existing exec96618/O0 and72268/O2 full water,60943/64174 controls. No duplicates. If current water1096+7cold passes, freeze production and run main Windowsv2 with --reuse-water-short/full pointing to those exact current-source pilot pairs; controller proves original generated input inventory and current bundle, never rewrites reports. All new full after cohort shorts/controls; reused prior full chronology explicit. Then positive-CDE current source O0/O2, public/limits/compat refusals, impact-selected old0 preservation, portable, independent sealed root/negative controls and real source+metadata merge admissions.",
+  "next_action": "Start selected Windowsv2 O0/O2 matrix using exact validated --reuse-water-short/full pilot paths implicit-exact-interception-water-groundwater[-full]-OPT-v1, and positive-CDE current-v3 O0/O2. No active previous job. Freeze App while campaigns read it. Continue public/limits/refusals, impact-selected old0 preservation, portability and independent owner/actual admissions after terminal results.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -25728,7 +25728,7 @@
     "scientific_equivalence_claim": false
   },
   "implicit_conductivity": {
-    "status": "IMPLEMENTED_NOT_QUALIFIED_EXACT_INTERCEPTION_HARD_WATER_TARGETS",
+    "status": "PERSISTED_STABLE_SELECTED_COMPOSITION_CANDIDATE_NOT_QUALIFIED",
     "baseline": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
     "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
     "source_audit": "integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_SOURCE_AUDIT.json",
@@ -25736,7 +25736,7 @@
     "qualification": "NOT_RUN",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "invariants": "Immutable numerical policy/input/source identity; literal original conductivity and HeadCalc; unchanged strict water/chemical/AGE guards; complete native/rollback/restart.",
-    "implementation_head": "1b3405afa906aeb2f4a2da30227bca299a1605f6",
+    "implementation_head": "914a575e306fe24eac9f65f701c937e6e39bd8c4",
     "production_files": [
       "app/hybrid_water/implicit_conductivity.py",
       "app/hybrid_water/implicit_groundwater_state.py",
@@ -26242,7 +26242,7 @@
       },
       "cold_error": "Restored donor state differs from the accepted checkpoint receipt"
     },
-    "current_source": "f7f23dbe5",
+    "current_source": "f7f23dbe531b579991d3a77fd2b67cb05a08f67a",
     "actual_derivative_component_production_arithmetic": {
       "O0": {
         "status": "REAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_DERIVATIVE_INTERFACE_PASS",
@@ -28020,28 +28020,7 @@
       "water_full_actual_status": "FAILED",
       "qualified_claim": "Positive head1096/native PASS at actual source829721. Water/CDE prescribed groundwater remain under targeted verification. All old failed30/5 cases remain raw observations."
     },
-    "pending_actual_jobs": [
-      {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-exact-interception-water-groundwater-full-O0-v1",
-        "session": 96618,
-        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_FULL_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS"
-      },
-      {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-exact-interception-water-groundwater-full-O2-v1",
-        "session": 72268,
-        "status": "ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_FULL_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS"
-      },
-      {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-exact-interception-controls-O0-v1",
-        "session": 60943,
-        "status": "IMPLICIT_CONDUCTIVITY_NUMERICAL_NATIVE_TRANSACTION_DOMAIN_PASS"
-      },
-      {
-        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-exact-interception-controls-O2-v1",
-        "session": 64174,
-        "status": "IMPLICIT_CONDUCTIVITY_NUMERICAL_NATIVE_TRANSACTION_DOMAIN_PASS"
-      }
-    ],
+    "pending_actual_jobs": [],
     "actual_pond_event_components": {
       "O0": {
         "status": "REAL_POND_EVENT_TWO_ACTUAL_THREE_INACTIVE_FIVE_REFUSALS_PASS",
@@ -29185,6 +29164,108 @@
         }
       }
     },
-    "carrier_draft": "External prepare-implicit-conductivity-carriers.py now requires terminal Windowsv2 rather than failed v1 and selects positive chemical/retry/mean/event/root/availability components and compatibility refusals. Add interception component before use; no carrier created/dispatched."
+    "carrier_draft": "External prepare-implicit-conductivity-carriers.py now requires terminal Windowsv2 rather than failed v1 and selects positive chemical/retry/mean/event/root/availability components and compatibility refusals. Add interception component before use; no carrier created/dispatched.",
+    "stable_candidate": {
+      "production_source": "f7f23dbe531b579991d3a77fd2b67cb05a08f67a",
+      "frozen_until_selected_campaigns_terminal": true,
+      "hard_water": {
+        "days_per_opt": 1096,
+        "cold_windows_per_opt": 7,
+        "optimizations": [
+          "O0",
+          "O2"
+        ],
+        "status": "ACTUAL_FULL_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "mass_guards_unchanged": true
+      },
+      "source": {
+        "app/hybrid_water/daily_coupling.py": {
+          "actual_worktree_sha256": "5133412d485ceb5229ff3627bd0badbdbd0b52b7874e340be353dc45ef19f73d",
+          "lf_normalized_utf8_sha256": "1779f94b4dcc8ef57b86eb0370f6400b40d5c072ad95956dc9fc734181e9ca79"
+        },
+        "app/hybrid_water/daily_host.py": {
+          "actual_worktree_sha256": "cd14e431998bf4198fbc67a628a31425f72d21d4f41af34a2f3b8bcc0ccef343",
+          "lf_normalized_utf8_sha256": "089e5404023b6ff5b00010ef1d75fd9195d95b4b24212fb2806bc25b6d17b3dd"
+        },
+        "app/hybrid_water/experimental_project.py": {
+          "actual_worktree_sha256": "d9d00ca2f87135eee3d3ab9b54a02d56ccf24449044c73c438feed3a20f08f6f",
+          "lf_normalized_utf8_sha256": "2bf35a73719abb9c9c12ea5e0b8263f6bee81aaac9d6f4188922658178d860d1"
+        },
+        "app/hybrid_water/implicit_conductivity.py": {
+          "actual_worktree_sha256": "ebab89f1191d778f081b426c05869f420da8bfb011c0433777fea9d0945cbfb0",
+          "lf_normalized_utf8_sha256": "ebab89f1191d778f081b426c05869f420da8bfb011c0433777fea9d0945cbfb0"
+        },
+        "app/hybrid_water/implicit_conductivity_jacobian.py": {
+          "actual_worktree_sha256": "7453a9b6604e12f0de5e5ebe25185b0ea2dfa46f3460cd42b5fb8467bd9f615d",
+          "lf_normalized_utf8_sha256": "7453a9b6604e12f0de5e5ebe25185b0ea2dfa46f3460cd42b5fb8467bd9f615d"
+        },
+        "app/hybrid_water/implicit_conductivity_retry.py": {
+          "actual_worktree_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
+          "lf_normalized_utf8_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6"
+        },
+        "app/hybrid_water/implicit_groundwater_state.py": {
+          "actual_worktree_sha256": "bb3622922f640d9e376fb8c183211cf64c17455b776d9e3ae48076ef2ebff68e",
+          "lf_normalized_utf8_sha256": "bb3622922f640d9e376fb8c183211cf64c17455b776d9e3ae48076ef2ebff68e"
+        },
+        "app/hybrid_water/implicit_groundwater_trial.py": {
+          "actual_worktree_sha256": "e6240085db17786ba786ad6a6f9f8b50d7e3b50121df9ba64dbec0964db980f7",
+          "lf_normalized_utf8_sha256": "e6240085db17786ba786ad6a6f9f8b50d7e3b50121df9ba64dbec0964db980f7"
+        },
+        "app/hybrid_water/implicit_interception_partition.py": {
+          "actual_worktree_sha256": "db663eeeb0975f4a88684e4b0a0fe93f6864fa1214960a7ecd574ab2e20b0e47",
+          "lf_normalized_utf8_sha256": "db663eeeb0975f4a88684e4b0a0fe93f6864fa1214960a7ecd574ab2e20b0e47"
+        },
+        "app/hybrid_water/implicit_pond_availability.f90": {
+          "actual_worktree_sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04",
+          "lf_normalized_utf8_sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+        },
+        "app/hybrid_water/implicit_pond_availability.py": {
+          "actual_worktree_sha256": "223c590f4006b6c39bd904930ba18ca9e08e3dbc4dbb5c76ae4395d05d4408cd",
+          "lf_normalized_utf8_sha256": "223c590f4006b6c39bd904930ba18ca9e08e3dbc4dbb5c76ae4395d05d4408cd"
+        },
+        "app/hybrid_water/implicit_pond_event.py": {
+          "actual_worktree_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622",
+          "lf_normalized_utf8_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622"
+        },
+        "app/hybrid_water/implicit_pond_event_state.f90": {
+          "actual_worktree_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+          "lf_normalized_utf8_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+        },
+        "app/hybrid_water/implicit_root_finalization.py": {
+          "actual_worktree_sha256": "e5b1fc62baa0354f0e9f4744beece83db0ebd70542b75f7dbc4253e6c7a6d1e0",
+          "lf_normalized_utf8_sha256": "e5b1fc62baa0354f0e9f4744beece83db0ebd70542b75f7dbc4253e6c7a6d1e0"
+        },
+        "tools/solute/run_water.py": {
+          "actual_worktree_sha256": "ac04e8ce18b1c9dec7dcb064b55d8655dda39384e224de7bba4bb47207b8dde8",
+          "lf_normalized_utf8_sha256": "ac04e8ce18b1c9dec7dcb064b55d8655dda39384e224de7bba4bb47207b8dde8"
+        }
+      }
+    },
+    "selected_next_campaigns": [
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-windows-O0-v2",
+        "controller": "implicit_conductivity_ci.py",
+        "role": "Eleven short/full-native and eight active/domain controls before seven new full periods; exact current-source hard water pair reused only after original input inventory and current bundle validation.",
+        "expected_seconds": 600
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-windows-O2-v2",
+        "controller": "implicit_conductivity_ci.py",
+        "role": "Eleven short/full-native and eight active/domain controls before seven new full periods; exact current-source hard water pair reused only after original input inventory and current bundle validation.",
+        "expected_seconds": 600
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O0-current-v3",
+        "controller": "implicit_conductivity_positive_cde.py",
+        "role": "Three actual positive sorbing/decaying chemical short/native compositions then two full1096/native; new current partition/availability source must be qualified in active chemistry.",
+        "expected_seconds": 300
+      },
+      {
+        "root": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-conductivity-positive-cde-windows-O2-current-v3",
+        "controller": "implicit_conductivity_positive_cde.py",
+        "role": "Three actual positive sorbing/decaying chemical short/native compositions then two full1096/native; new current partition/availability source must be qualified in active chemistry.",
+        "expected_seconds": 300
+      }
+    ]
   }
 }
