@@ -38,6 +38,17 @@ def rows(z,prefix):return [json.loads(line) for line in z.read(prefix+'daily.jso
 def physical(data):return [{k:v for k,v in row.items() if k not in ('column','revision')} for row in data]
 
 
+def numerical_policy(raw,mean):
+    lines=raw.decode('cp1252').splitlines();heads=[i for i,line in enumerate(lines) if re.match(r'^\s*ORES\s+OSAT\b',line,re.I)];require(len(heads)==1,'Ambiguous actual original Mualem table');i=heads[0];names=lines[i].split('!',1)[0].upper().split();values=[]
+    for line in lines[i+1:]:
+        if re.match(r'^\s*\*\s*END OF TABLE',line,re.I):break
+        text=line.split('!',1)[0].strip()
+        if not text or text.startswith('*'):continue
+        fields=[float(v.replace('d','e').replace('D','E')) for v in text.split()];require(len(fields)==len(names) and forensic.finite(fields),'Invalid actual original Mualem parameter row');row=dict(zip(names,fields));fit='KSATFIT' if 'KSATFIT' in row else 'KSAT';require(fit in row and row.get('KSATEXM',row[fit])<=row[fit],'Original unsupported examined-Ksat branch activated');values.append(row)
+    require(values,'Empty actual original parameter table')
+    return dict(policy='original-headcalc-implicit-mualem-exact-boundary-strict-retry-v1',SWKIMPL=1,SWKMEAN=mean,hydraulic_model=1,original_parameter_rows=values,examined_ksat_interpolation=False,physical_state_owner='existing-selected-owner',newton_failure_policy='original-implicit-nonconverged-trial-retry-v1',dtmin_retry_policy='below-input-minimum-only-after-actual-nonconvergence',clock_ulp_floor=8,boundary_jacobian_policy='original-implicit-exact-boundary-jacobian-v1',pond_event_policy='original-implicit-pond-depletion-event-v1',root_finalization_policy='original-implicit-complete-dry-end-final-root-evaluation-v2',pond_availability_policy='original-implicit-pond-evaporation-availability-v1',interception_partition_policy='original-implicit-exact-interception-partition-v1',saturation_derivative_policy='original-implicit-saturated-conductivity-derivative-v1',finite_newton_policy='original-implicit-finite-newton-rate-rollback-v1')
+
+
 def raw_archive(record):
     pieces=[];offset=0
     for item in record.get('byte_parts',[dict(path=record.get('archive'),offset=0,bytes=record['bytes'],sha256=record['sha256'])]):
@@ -121,12 +132,14 @@ def actual_period(z,prefix,report,build,opt,selected,dz,phase):
                 day=int(name.rsplit('-',1)[1][:-4]);row=next(v for v in actual if v['day']==day);forensic.general_checkpoint(z.read(name),build,row,selected,dz)
     checkpoints(prefix+'trajectory/',data)
     def outputs(pp):return {Path(name).name:forensic.output_records(z.read(name),name) for name in z.namelist() if name.startswith(pp) and '/' not in name[len(pp):] and Path(name).name in ('result_output.csv','result_output.bin')}
+    def inventory(pp):return {Path(name).name for name in z.namelist() if name.startswith(pp) and '/' not in name[len(pp):] and (name.endswith('.csv') or name.endswith('_output.bin'))}
     warm_outputs=outputs(prefix+'trajectory/original/')
     for item in report['cold']:
         low,high=item['start'],item['end'];cp=prefix+f'own-{low}/';cold=rows(z,cp);require(physical(cold)==physical(data[low:high]),'Actual cold physical trajectory differs');forensic.water(cold);forensic.original_observations(z.read(cp+'original/donor.stdout'),cold,build['project']['start_date']);checkpoints(cp,cold)
         names=[prefix+f'trajectory/accepted-column-1-day-{high}.zip',cp+f'accepted-column-1-day-{high}.zip']
         with zipfile.ZipFile(io.BytesIO(z.read(names[0]))) as a,zipfile.ZipFile(io.BytesIO(z.read(names[1]))) as b:require(all(a.read(name)==b.read(name) for name in ('result.end','macro.bin')),'Complete actual cold native differs')
         require(item['exact_physical'] is item['exact_complete_native'] is item['origin_unchanged'] is True,'Actual native/physical/origin assertion differs')
+        require(inventory(prefix+'trajectory/original/')==inventory(cp+'original/'),'Actual original user output file inventory differs')
         require(forensic.output_continuation(warm_outputs,outputs(cp+'original/'),selected,low,high,build['project']['start_date'])==item['exact_original_output'],'Actual original user output continuation differs')
     return len(report['cold'])
 
@@ -177,6 +190,7 @@ def scientific(q,archives,prior):
         for name in ('maize.crp','potato.crp','grass.crp'):
             body=z.read(ip+name)
             for field,value in [('TOL_2',1e-10),('MYTOLX',1e-10),('TOLCONV',1e-9)]:require(scalar(body,field)==value,'Actual original scheduled crop precision differs')
+        expected=numerical_policy(raw,report['parameters']['kmean']);require(report['numerical_policy']==expected and build['identity']['implicit_conductivity']==dict(expected,source_sha256=capsules[key]['app/hybrid_water/implicit_conductivity.py']['sha256']),'Actual numerical contract differs from original input and named corrections')
         for name,field in [('SWHYST','swhyst'),('SWDRA','swdra'),('SWCFBS','et')]:
             matches=re.findall(rb'(?mi)^\s*'+name.encode()+rb'\s*=\s*(\d+)',raw);require(len(matches)==1,'Ambiguous actual original selector');selected[field]=int(matches[0])
         actual=report['actual_original_numerical_inputs'];require((actual['MAXIT'],actual['MAXBACKTR'])==(100,10) and actual['scheduled_root_precisions']=={name:dict(TOL_2=1e-10,MYTOLX=1e-10,TOLCONV=1e-9) for name in ('maize.crp','potato.crp','grass.crp')},'Selected actual original numerical inputs differ')
@@ -231,6 +245,8 @@ def scientific(q,archives,prior):
             actual=z.read(pp+'cold/accepted-column-1-day-34.zip');forensic.general_checkpoint(actual,build,cold[-1],selected,dz)
             with zipfile.ZipFile(io.BytesIO(actual)) as a,zipfile.ZipFile(io.BytesIO(old.read(locate(item_source['short_root'],source_location)+'trajectory/accepted-column-1-day-34.zip'))) as b:require(all(a.read(v)==b.read(v) for v in ('result.end','macro.bin')),'Actual public complete native differs')
             output=lambda source:{Path(v).name:forensic.output_records(z.read(v),v) for v in z.namelist() if v.startswith(source) and '/' not in v[len(source):] and Path(v).name in ('result_output.csv','result_output.bin')}
+            inventory=lambda source:{Path(v).name for v in z.namelist() if v.startswith(source) and '/' not in v[len(source):] and (v.endswith('.csv') or v.endswith('_output.bin'))}
+            require(inventory(pp+'warm/original/')==inventory(pp+'cold/original/'),'Actual public output inventory differs')
             require(forensic.output_continuation(output(pp+'warm/original/'),output(pp+'cold/original/'),selected,30,34,build['project']['start_date'])==item['user_output_exact'],'Actual public user output differs');publics+=1
     require((fulls,shorts,colds,limits,publics,native_refusals)==(32,48,376,8,24,352),'Actual bounded implicit period/native/public denominator differs')
     return dict(status='BOUNDED_ORIGINAL_IMPLICIT_WATER_CDE_SOURCE_RAW_NATIVE_ADMISSION_PASS',runtime=RUNTIME,predecessor=prior,actual_full_periods=fulls,actual_short_periods=shorts,actual_complete_native_cold_windows=colds,actual_limits=limits,actual_public_contexts=publics,actual_native_refusals=native_refusals,actual_policy_provider_refusals=policy_refusals,functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',implicit_age_admission=False,weighted_history_full_admission=False)
