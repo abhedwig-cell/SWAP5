@@ -2,7 +2,7 @@ name: SaltFarm typed production O0 O2 qualification07
 on:
   push:
     branches: [codex/saltfarm-isolated07]
-    paths: ['.github/workflows/saltfarm-typed07.yml']
+    paths: ['.github/workflows/saltfarm-typed07.yml', 'tests/saltfarm_newton/typed_api07.py']
   workflow_dispatch:
     inputs:
       expected_sha:
