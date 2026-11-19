@@ -32,7 +32,19 @@ def fixture(case,output,mode,fmt,nprint):
 
 
 def own(build,reference,project,full,data,start,end,out):
-    result=m.own(build,reference,project,full,data,start,end,out)
+    meta,case=m.validate_bundle(build,reference,project)
+    source=full/f'accepted-column-1-day-{start}.zip';digest=m.sha(source)
+    origin=out.with_name(out.name+'-origin');receipt=m.h.verify_checkpoint(source,start,meta['binding'],origin)
+    out.mkdir()
+    result,seconds=m.bounded(60,lambda:m.h.run(m.h.executable(build,'day_donor'),m.h.executable(build,'day_kernel'),case,out,end,
+        checkpoint_day=start,origin=origin,origin_receipt=receipt,runtime=True,publish_day=end,
+        checkpoint_binding=meta['binding'],model=project.model,project=project))
+    assert result['first_refusal'] is None,result
+    actual=m.rows(out);m.check(actual);assert m.physical(actual)==m.physical(data[start:end])
+    with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as a,zipfile.ZipFile(out/f'accepted-column-1-day-{end}.zip') as b:
+        for name in ('result.end','macro.bin'):assert a.read(name)==b.read(name),name
+    assert m.sha(source)==digest
+    result=dict(start=start,end=end,exact_physical=True,exact_complete_native=True,origin_unchanged=True,seconds=seconds)
     result['exact_original_output']=compare(full/'original',out/'original',original_output.selection(project),start,end,project.start_date)
     with zipfile.ZipFile(out/f'accepted-column-1-day-{end}.zip') as z:
         validate_candidate(z.read('macro.bin'),data[end-1],project)

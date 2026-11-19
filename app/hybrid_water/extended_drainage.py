@@ -249,6 +249,14 @@ def flux_witness(tokens, project, receipt, origin):
 
 def apply_build(output, donor_build, project, patched):
     if not enabled(project):return patched
+    if project.original_output:
+        from original_output import selection as output_selection
+        selected_output=output_selection(project)
+        if selected_output['nprintday']>1 or selected_output['flprintdt']:
+            path=output/'integral.f90';text=path.read_text(encoding='cp1252')
+            old="if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'"
+            assert text.count(old)==1
+            path.write_text(text.replace(old,old.replace('swdra/=1','swdra/=2'),1),encoding='cp1252')
     patched=strict_trial_build(output,donor_build,patched)
     from extended_interception import render as positive_interception_source
     (output/'MOD_meteo.f90').write_text(positive_interception_source((donor_build/'swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')),encoding='cp1252')
