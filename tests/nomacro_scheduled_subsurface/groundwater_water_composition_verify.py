@@ -7,6 +7,8 @@ import groundwater_water_verify as gw
 from cde_clock_verify import ledger as chemical_ledger
 
 BASE='b28706d8b16661d8a9e85339d317256eaca51206'
+META_CANONICAL='472aa69611d5168cdc8d2dd4322669851c442df6'
+META_DOCUMENT='docs/publication/SWAP431_MACRO_AUDIT_STATUS_RECONCILIATION_2026-11-19.md'
 PRIOR='5e655fc9fe5afef80c525f63900c809814e44449'
 RUNTIME='e598948d6324a06e9d3974750471918f8be6ff2b'
 SEALED='ee744246789a1ac9858b1b934000f2f207d24763'
@@ -67,7 +69,8 @@ def prior_guards():
 
 def source(q):
  require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'Dirty composed groundwater admission surface')
- for ref in (BASE,PRIOR,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
+ for ref in (BASE,META_CANONICAL,PRIOR,RUNTIME,SEALED):git('merge-base','--is-ancestor',ref,'HEAD')
+ require(set(git('diff','--name-only',BASE,META_CANONICAL).decode().splitlines())=={META_DOCUMENT} and blob('HEAD',META_DOCUMENT)==blob(META_CANONICAL,META_DOCUMENT),'Authoritative documentation-only canonical delta changed')
  require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Unqualified composed groundwater production source change')
  require((q['status'],q['runtime'],q['incoming_canonical'],q['groundwater_qualified_head'])==('BOUNDED_GROUNDWATER_AND_INCOMING_CANONICAL_COMPOSITION_RECORD',RUNTIME,BASE,PRIOR),'Foreign current composition scope')
  require(q['functional_completion']=='PARTIAL' and q['whole_scientific_equivalence']=='NOT_QUALIFIED' and q['water_guard_cm']==q['chemical_guard_mg_cm2']==1e-10 and q['RC3_changed'] is False and q['full_model_periods_repeated']==0,'Composition source/science/guard promoted')
@@ -85,6 +88,7 @@ def source(q):
   for name,value in tree(ref,'integration').items():
    if name not in mutable:require(current.get(name)==value,'Sealed/incoming integration evidence changed: '+name)
  allowed={SELF,ENTRY,GUARD_ENTRY,'tests/nomacro_scheduled_subsurface/test_groundwater_water_composition_verify.py','tests/hupsel51/test_successor.py','tests/saltfarm_newton/test_direct_admission.py',direct.WORKFLOW,direct.COLUMN,PROOF+'GROUNDWATER_WATER_MERGE_RECEIPT.json',*mutable,'docs/science/NOMACRO_GROUNDWATER_WATER_CALENDAR_20261119.md','docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md','docs/science/SWAP5_FUNCTIONAL_CLOSURE.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
+ allowed.add(META_DOCUMENT)
  require(set(git('diff','--name-only',SEALED,'HEAD').decode().splitlines())<=allowed,'Unqualified post-composition-seal change')
  prior=q['actual_incoming_owner'];require(prior['head']==BASE and prior['returncode']==0 and json.loads(prior['stdout'])['status']=='CANONICAL_IMPLICIT_AND_DIRECT_SALTFARM_COMPOSITION_ADMISSION_PASS','Actual incoming clean canonical owner omitted')
  workflow=q['workflow'];require(workflow['conclusion']=='success' and workflow['merge'] is False and workflow['head_sha']==workflow['carrier'] and set(git('diff','--name-only',workflow['runtime'],workflow['carrier']).decode().splitlines())=={'.github/workflows/nomacro-coverage-prescribed-head.yml'},'Actual composition carrier not isolated/terminal')
