@@ -41,7 +41,8 @@ def source():
          "    if(.not.all(ieee_is_finite(terms)))error stop 'Nonfinite weather terminal water receipt'\n  end subroutine"),
         ('    residual=real(sum(real(terms,real128)),8)',
          "    residual=real(sum(real(terms,real128)),8)\n"
-         "    write(*,'(a,29(1x,es25.17e3))') 'WEATHER_TERMINAL_WATER',residual,terms"),
+         "    if(tcum+dt>=1d0-1d-8)write(*,'(a,29(1x,es25.17e3))') 'WEATHER_TERMINAL_WATER',residual,terms"),
+        ('    real(8) :: terms(28)', '    use variables,only:tcum,dt\n    real(8) :: terms(28)'),
     )
     for old, new in edits:
         assert text.count(old) == 1, old
@@ -68,8 +69,7 @@ def apply_build(output, donor_build, project, patched):
     text = path.read_text(encoding='cp1252')
     old = '   use hybrid_step_budget, only: projected_water_residual'
     assert text.count(old) == 1
-    text = text.replace(old, '   use ' + MODULE + ',only:terminal_water_residual\n'
-                        '   use variables,only:tcum\n' + old, 1)
+    text = text.replace(old, '   use ' + MODULE + ',only:terminal_water_residual\n' + old, 1)
     old = '         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
     assert text.count(old) == 1
     # A terminal-only check can discover an already accumulated discrepancy
