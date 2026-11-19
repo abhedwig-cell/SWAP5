@@ -1,0 +1,22 @@
+Original audited source: C:\Users\Veldh012\swap431-state02-work\audit\build\swap-selected\headcalc.f90
+SHA256: db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5
+
+if (fldtmin .AND. numbit > MaxIt) then              
+            factmax = 0.0d0
+            do i = 1, NN
+               if (dabs(hold(i) ) < 1.0d0 ) then
+                  factmax = max(factmax, dabs(difh(i))) 
+               else
+                  factmax = max(factmax, dabs(difh(i) / hold(i)))
+               end if
+            end do
+            factmax1 = min(1.0d0, 1.0d0 / factmax)
+            do i = 1, NN
+               h(i) = hold(i) - difh(i) * factmax1
+            end do
+         else
+            do i = 1, NN
+               h(i) = hold(i) - factor * difh(i)
+            end do
+         end if
+

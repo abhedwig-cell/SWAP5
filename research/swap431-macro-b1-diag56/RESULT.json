@@ -1,0 +1,1126 @@
+{
+  "original_floor_branch_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+  "ineffective_backtracking_proven": true,
+  "work_unit": "SWAP431-MACRO-B1-DIAG56",
+  "decision": "TARGETED_DIAGNOSIS_REPRODUCED_O0_O2_NO_SOLVER_REPAIR",
+  "model_routes": 2,
+  "hard_seconds_per_route": 20,
+  "source_and_binary_unchanged": true,
+  "parent_and_O0_O2_physical_diagnostics_exact": true,
+  "continuous_equivalence_inherited_from_native55": true,
+  "corrective_causality_not_proven": true,
+  "accepted_follow_qualified": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 3.1443607001565397,
+      "returncode": 0,
+      "censored": false,
+      "exact_parent_replay_files": 25,
+      "attempts_exact_except_elapsed": true,
+      "operator_decomposition_max_error": 2.7755575615628914e-17,
+      "no_follow_commit_or_ledger_timeadvance": true,
+      "final_context_differences": [
+        "dt",
+        "dtold"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0951312035156963e-05,
+          "iterations": 30,
+          "actual_provider_evaluations": 87,
+          "actual_line_trials": 86,
+          "additional_line_trials": 56,
+          "exhaustions": 6,
+          "objective_worsenings": 6,
+          "repeated_identical_trial_iterations": [],
+          "initial_Fmax": 0.033584184626578806,
+          "best_end_Fmax": 0.0011252294679932884,
+          "best_iteration": 9,
+          "final_Fmax": 0.0021218091917013238,
+          "final_sum": 0.008637543343477884,
+          "final_worst_node": 52,
+          "worst_node_counts": {
+            "52": 30
+          },
+          "jac37_guard_minus3": 30,
+          "valid_current_provider": 30,
+          "jac24_active": 0,
+          "actual_provider_GWL_cm": [
+            -65.64749145531471,
+            -65.61830775269611
+          ],
+          "actual_provider_native_zone": 50,
+          "Jac_zone_tuple": [
+            50,
+            50,
+            -1
+          ],
+          "PeGWL_cm": [
+            999.0,
+            999.0
+          ],
+          "h51_cm": [
+            1.1257134132487197,
+            1.1553471126656953
+          ],
+          "domains": [
+            {
+              "factor_identity_max_error": 0,
+              "domain": 1,
+              "stock_cm": [
+                1.8478385067223846,
+                1.8478385067223846
+              ],
+              "minimum_cm": [
+                1.5,
+                1.5
+              ],
+              "incoming_cm": [
+                8.585317618251954e-06,
+                8.942794397911283e-06
+              ],
+              "outgoing_potential_cm": [
+                9.948182866849684e-06,
+                9.948962017005815e-06
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.34784709204000275,
+                0.3478474495167825
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 30,
+              "L_equals_W": 0,
+              "L_equals_volume": 0,
+              "top_only_incoming": 0,
+              "matrix_incoming_cm": [
+                8.501574637737468e-06,
+                8.859051417396797e-06
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "factor_identity_max_error": 4.584721491340815e-12,
+              "domain": 2,
+              "stock_cm": [
+                0.12198513270212707,
+                0.12198513270212707
+              ],
+              "minimum_cm": [
+                0.12198513270212707,
+                0.12198513270212707
+              ],
+              "incoming_cm": [
+                3.7191448007984567e-07,
+                4.035816852958613e-07
+              ],
+              "outgoing_potential_cm": [
+                1.445220148021477e-06,
+                1.504825573715614e-06
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                3.719144800740093e-07,
+                4.0358168529319727e-07
+              ],
+              "out_factor": [
+                0.2471478997738088,
+                0.27925273934194605
+              ],
+              "partial": 30,
+              "unlimited": 0,
+              "L_equals_W": 30,
+              "L_equals_volume": 0,
+              "top_only_incoming": 0,
+              "matrix_incoming_cm": [
+                3.50978734951224e-07,
+                3.826459401672396e-07
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "factor_identity_max_error": 5.165368133219772e-12,
+              "domain": 3,
+              "stock_cm": [
+                0.03392523751972457,
+                0.03392523751972457
+              ],
+              "minimum_cm": [
+                0.03390311400546855,
+                0.03392523751972457
+              ],
+              "incoming_cm": [
+                2.0935745128621683e-08,
+                2.0935745128621683e-08
+              ],
+              "outgoing_potential_cm": [
+                6.341719268369809e-07,
+                6.742872239065969e-07
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                2.0935745130568062e-08,
+                2.2144450001156113e-05
+              ],
+              "out_factor": [
+                0.03139565471771044,
+                1.0
+              ],
+              "partial": 27,
+              "unlimited": 3,
+              "L_equals_W": 23,
+              "L_equals_volume": 7,
+              "top_only_incoming": 30,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                7.613236209047678e-10
+              ]
+            },
+            {
+              "factor_identity_max_error": 0,
+              "domain": 4,
+              "stock_cm": [
+                0.001080862314232541,
+                0.001080862314232541
+              ],
+              "minimum_cm": [
+                0.0,
+                0.0
+              ],
+              "incoming_cm": [
+                2.0935745128621683e-08,
+                2.0935745128621683e-08
+              ],
+              "outgoing_potential_cm": [
+                5.720960372950192e-09,
+                5.73512635584171e-09
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.0010808832499776696,
+                0.0010808832499776696
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 30,
+              "L_equals_W": 0,
+              "L_equals_volume": 30,
+              "top_only_incoming": 30,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                5.720960372950192e-09,
+                5.73512635584171e-09
+              ]
+            },
+            {
+              "factor_identity_max_error": 0,
+              "domain": 5,
+              "stock_cm": [
+                0.0005507657473460255,
+                0.0005507657473460255
+              ],
+              "minimum_cm": [
+                0.0,
+                0.0
+              ],
+              "incoming_cm": [
+                2.0935745128621683e-08,
+                2.0935745128621683e-08
+              ],
+              "outgoing_potential_cm": [
+                1.6262181290404887e-08,
+                1.6262294277976346e-08
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.0005507866830911541,
+                0.0005507866830911541
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 30,
+              "L_equals_W": 0,
+              "L_equals_volume": 30,
+              "top_only_incoming": 30,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                1.6262181290404887e-08,
+                1.6262294277976346e-08
+              ]
+            }
+          ],
+          "iteration_halves": [
+            {
+              "iterations": [
+                1,
+                30
+              ],
+              "best_Fmax": 0.0011252294679932884,
+              "actual_trials": 86,
+              "exhaustions": 6
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "iterations": 60,
+          "actual_provider_evaluations": 142,
+          "actual_line_trials": 141,
+          "additional_line_trials": 81,
+          "exhaustions": 15,
+          "objective_worsenings": 15,
+          "repeated_identical_trial_iterations": [
+            31,
+            34,
+            37,
+            40,
+            43,
+            46,
+            49,
+            52,
+            55,
+            58
+          ],
+          "initial_Fmax": 0.033584184626578806,
+          "best_end_Fmax": 1.6603248028879136e-05,
+          "best_iteration": 8,
+          "final_Fmax": 0.000216137288712559,
+          "final_sum": 0.0015179109854425075,
+          "final_worst_node": 57,
+          "worst_node_counts": {
+            "52": 49,
+            "57": 11
+          },
+          "jac37_guard_minus3": 60,
+          "valid_current_provider": 60,
+          "jac24_active": 0,
+          "actual_provider_GWL_cm": [
+            -65.64259070308289,
+            -65.61873176915732
+          ],
+          "actual_provider_native_zone": 50,
+          "Jac_zone_tuple": [
+            50,
+            50,
+            -1
+          ],
+          "PeGWL_cm": [
+            999.0,
+            999.0
+          ],
+          "h51_cm": [
+            1.1292016403171499,
+            1.1549184812976137
+          ],
+          "domains": [
+            {
+              "factor_identity_max_error": 0,
+              "domain": 1,
+              "stock_cm": [
+                1.8478385067223846,
+                1.8478385067223846
+              ],
+              "minimum_cm": [
+                1.5,
+                1.5
+              ],
+              "incoming_cm": [
+                4.103645001839396e-06,
+                4.266597017403282e-06
+              ],
+              "outgoing_potential_cm": [
+                4.7482311228315404e-06,
+                4.7486277494269736e-06
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.3478426103673864,
+                0.34784277331940205
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 60,
+              "L_equals_W": 0,
+              "L_equals_volume": 0,
+              "top_only_incoming": 0,
+              "matrix_incoming_cm": [
+                4.0636747219953635e-06,
+                4.2266267375592495e-06
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "factor_identity_max_error": 9.342249196464536e-12,
+              "domain": 2,
+              "stock_cm": [
+                0.12198513270212707,
+                0.12198513270212707
+              ],
+              "minimum_cm": [
+                0.12198513270212707,
+                0.12198513270212707
+              ],
+              "incoming_cm": [
+                1.7896857097869503e-07,
+                1.9240310036876913e-07
+              ],
+              "outgoing_potential_cm": [
+                6.901164877381738e-07,
+                7.176428081518862e-07
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                1.7896857097687846e-07,
+                1.9240310036860997e-07
+              ],
+              "out_factor": [
+                0.2493839120863255,
+                0.2787980055419568
+              ],
+              "partial": 60,
+              "unlimited": 0,
+              "L_equals_W": 60,
+              "L_equals_volume": 0,
+              "top_only_incoming": 0,
+              "matrix_incoming_cm": [
+                1.6897600101768694e-07,
+                1.8241053040776105e-07
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "factor_identity_max_error": 1.0109246773026825e-11,
+              "domain": 3,
+              "stock_cm": [
+                0.03392523751972457,
+                0.03392523751972457
+              ],
+              "minimum_cm": [
+                0.033924933435088046,
+                0.03392523751972457
+              ],
+              "incoming_cm": [
+                9.992569961008096e-09,
+                9.992569961008096e-09
+              ],
+              "outgoing_potential_cm": [
+                3.02966015039745e-07,
+                3.201264021982427e-07
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                9.992569958983122e-09,
+                3.1407720648551907e-07
+              ],
+              "out_factor": [
+                0.03121995398288535,
+                0.9811037275518424
+              ],
+              "partial": 60,
+              "unlimited": 0,
+              "L_equals_W": 45,
+              "L_equals_volume": 15,
+              "top_only_incoming": 60,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                7.1930294356308685e-12
+              ]
+            },
+            {
+              "factor_identity_max_error": 0,
+              "domain": 4,
+              "stock_cm": [
+                0.001080862314232541,
+                0.001080862314232541
+              ],
+              "minimum_cm": [
+                0.0,
+                0.0
+              ],
+              "incoming_cm": [
+                9.992569961008096e-09,
+                9.992569961008096e-09
+              ],
+              "outgoing_potential_cm": [
+                2.73208056587505e-09,
+                2.736153930270733e-09
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.0010808723068025019,
+                0.0010808723068025019
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 60,
+              "L_equals_W": 0,
+              "L_equals_volume": 60,
+              "top_only_incoming": 60,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                2.73208056587505e-09,
+                2.736153930270733e-09
+              ]
+            },
+            {
+              "factor_identity_max_error": 0,
+              "domain": 5,
+              "stock_cm": [
+                0.0005507657473460255,
+                0.0005507657473460255
+              ],
+              "minimum_cm": [
+                0.0,
+                0.0
+              ],
+              "incoming_cm": [
+                9.992569961008096e-09,
+                9.992569961008096e-09
+              ],
+              "outgoing_potential_cm": [
+                7.761990775486258e-09,
+                7.762016500451362e-09
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.0005507757399159865,
+                0.0005507757399159865
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 60,
+              "L_equals_W": 0,
+              "L_equals_volume": 60,
+              "top_only_incoming": 60,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                7.761990775486258e-09,
+                7.762016500451362e-09
+              ]
+            }
+          ],
+          "iteration_halves": [
+            {
+              "iterations": [
+                1,
+                30
+              ],
+              "best_Fmax": 1.6603248028879136e-05,
+              "actual_trials": 81,
+              "exhaustions": 5
+            },
+            {
+              "iterations": [
+                31,
+                60
+              ],
+              "best_Fmax": 0.0001872332196836534,
+              "actual_trials": 60,
+              "exhaustions": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "optimization": "O2",
+      "seconds": 2.944318300113082,
+      "returncode": 0,
+      "censored": false,
+      "exact_parent_replay_files": 25,
+      "attempts_exact_except_elapsed": true,
+      "operator_decomposition_max_error": 2.7755575615628914e-17,
+      "no_follow_commit_or_ledger_timeadvance": true,
+      "final_context_differences": [
+        "dt",
+        "dtold"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 2.0951312035156963e-05,
+          "iterations": 30,
+          "actual_provider_evaluations": 87,
+          "actual_line_trials": 86,
+          "additional_line_trials": 56,
+          "exhaustions": 6,
+          "objective_worsenings": 6,
+          "repeated_identical_trial_iterations": [],
+          "initial_Fmax": 0.033584184626578806,
+          "best_end_Fmax": 0.0011252294679932884,
+          "best_iteration": 9,
+          "final_Fmax": 0.0021218091917013238,
+          "final_sum": 0.008637543343477884,
+          "final_worst_node": 52,
+          "worst_node_counts": {
+            "52": 30
+          },
+          "jac37_guard_minus3": 30,
+          "valid_current_provider": 30,
+          "jac24_active": 0,
+          "actual_provider_GWL_cm": [
+            -65.64749145531471,
+            -65.61830775269611
+          ],
+          "actual_provider_native_zone": 50,
+          "Jac_zone_tuple": [
+            50,
+            50,
+            -1
+          ],
+          "PeGWL_cm": [
+            999.0,
+            999.0
+          ],
+          "h51_cm": [
+            1.1257134132487197,
+            1.1553471126656953
+          ],
+          "domains": [
+            {
+              "factor_identity_max_error": 0,
+              "domain": 1,
+              "stock_cm": [
+                1.8478385067223846,
+                1.8478385067223846
+              ],
+              "minimum_cm": [
+                1.5,
+                1.5
+              ],
+              "incoming_cm": [
+                8.585317618251954e-06,
+                8.942794397911283e-06
+              ],
+              "outgoing_potential_cm": [
+                9.948182866849684e-06,
+                9.948962017005815e-06
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.34784709204000275,
+                0.3478474495167825
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 30,
+              "L_equals_W": 0,
+              "L_equals_volume": 0,
+              "top_only_incoming": 0,
+              "matrix_incoming_cm": [
+                8.501574637737468e-06,
+                8.859051417396797e-06
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "factor_identity_max_error": 4.584721491340815e-12,
+              "domain": 2,
+              "stock_cm": [
+                0.12198513270212707,
+                0.12198513270212707
+              ],
+              "minimum_cm": [
+                0.12198513270212707,
+                0.12198513270212707
+              ],
+              "incoming_cm": [
+                3.7191448007984567e-07,
+                4.035816852958613e-07
+              ],
+              "outgoing_potential_cm": [
+                1.445220148021477e-06,
+                1.504825573715614e-06
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                3.719144800740093e-07,
+                4.0358168529319727e-07
+              ],
+              "out_factor": [
+                0.2471478997738088,
+                0.27925273934194605
+              ],
+              "partial": 30,
+              "unlimited": 0,
+              "L_equals_W": 30,
+              "L_equals_volume": 0,
+              "top_only_incoming": 0,
+              "matrix_incoming_cm": [
+                3.50978734951224e-07,
+                3.826459401672396e-07
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "factor_identity_max_error": 5.165368133219772e-12,
+              "domain": 3,
+              "stock_cm": [
+                0.03392523751972457,
+                0.03392523751972457
+              ],
+              "minimum_cm": [
+                0.03390311400546855,
+                0.03392523751972457
+              ],
+              "incoming_cm": [
+                2.0935745128621683e-08,
+                2.0935745128621683e-08
+              ],
+              "outgoing_potential_cm": [
+                6.341719268369809e-07,
+                6.742872239065969e-07
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                2.0935745130568062e-08,
+                2.2144450001156113e-05
+              ],
+              "out_factor": [
+                0.03139565471771044,
+                1.0
+              ],
+              "partial": 27,
+              "unlimited": 3,
+              "L_equals_W": 23,
+              "L_equals_volume": 7,
+              "top_only_incoming": 30,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                7.613236209047678e-10
+              ]
+            },
+            {
+              "factor_identity_max_error": 0,
+              "domain": 4,
+              "stock_cm": [
+                0.001080862314232541,
+                0.001080862314232541
+              ],
+              "minimum_cm": [
+                0.0,
+                0.0
+              ],
+              "incoming_cm": [
+                2.0935745128621683e-08,
+                2.0935745128621683e-08
+              ],
+              "outgoing_potential_cm": [
+                5.720960372950192e-09,
+                5.73512635584171e-09
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.0010808832499776696,
+                0.0010808832499776696
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 30,
+              "L_equals_W": 0,
+              "L_equals_volume": 30,
+              "top_only_incoming": 30,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                5.720960372950192e-09,
+                5.73512635584171e-09
+              ]
+            },
+            {
+              "factor_identity_max_error": 0,
+              "domain": 5,
+              "stock_cm": [
+                0.0005507657473460255,
+                0.0005507657473460255
+              ],
+              "minimum_cm": [
+                0.0,
+                0.0
+              ],
+              "incoming_cm": [
+                2.0935745128621683e-08,
+                2.0935745128621683e-08
+              ],
+              "outgoing_potential_cm": [
+                1.6262181290404887e-08,
+                1.6262294277976346e-08
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.0005507866830911541,
+                0.0005507866830911541
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 30,
+              "L_equals_W": 0,
+              "L_equals_volume": 30,
+              "top_only_incoming": 30,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                1.6262181290404887e-08,
+                1.6262294277976346e-08
+              ]
+            }
+          ],
+          "iteration_halves": [
+            {
+              "iterations": [
+                1,
+                30
+              ],
+              "best_Fmax": 0.0011252294679932884,
+              "actual_trials": 86,
+              "exhaustions": 6
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "dt": 1e-05,
+          "iterations": 60,
+          "actual_provider_evaluations": 142,
+          "actual_line_trials": 141,
+          "additional_line_trials": 81,
+          "exhaustions": 15,
+          "objective_worsenings": 15,
+          "repeated_identical_trial_iterations": [
+            31,
+            34,
+            37,
+            40,
+            43,
+            46,
+            49,
+            52,
+            55,
+            58
+          ],
+          "initial_Fmax": 0.033584184626578806,
+          "best_end_Fmax": 1.6603248028879136e-05,
+          "best_iteration": 8,
+          "final_Fmax": 0.000216137288712559,
+          "final_sum": 0.0015179109854425075,
+          "final_worst_node": 57,
+          "worst_node_counts": {
+            "52": 49,
+            "57": 11
+          },
+          "jac37_guard_minus3": 60,
+          "valid_current_provider": 60,
+          "jac24_active": 0,
+          "actual_provider_GWL_cm": [
+            -65.64259070308289,
+            -65.61873176915732
+          ],
+          "actual_provider_native_zone": 50,
+          "Jac_zone_tuple": [
+            50,
+            50,
+            -1
+          ],
+          "PeGWL_cm": [
+            999.0,
+            999.0
+          ],
+          "h51_cm": [
+            1.1292016403171499,
+            1.1549184812976137
+          ],
+          "domains": [
+            {
+              "factor_identity_max_error": 0,
+              "domain": 1,
+              "stock_cm": [
+                1.8478385067223846,
+                1.8478385067223846
+              ],
+              "minimum_cm": [
+                1.5,
+                1.5
+              ],
+              "incoming_cm": [
+                4.103645001839396e-06,
+                4.266597017403282e-06
+              ],
+              "outgoing_potential_cm": [
+                4.7482311228315404e-06,
+                4.7486277494269736e-06
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.3478426103673864,
+                0.34784277331940205
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 60,
+              "L_equals_W": 0,
+              "L_equals_volume": 0,
+              "top_only_incoming": 0,
+              "matrix_incoming_cm": [
+                4.0636747219953635e-06,
+                4.2266267375592495e-06
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "factor_identity_max_error": 9.342249196464536e-12,
+              "domain": 2,
+              "stock_cm": [
+                0.12198513270212707,
+                0.12198513270212707
+              ],
+              "minimum_cm": [
+                0.12198513270212707,
+                0.12198513270212707
+              ],
+              "incoming_cm": [
+                1.7896857097869503e-07,
+                1.9240310036876913e-07
+              ],
+              "outgoing_potential_cm": [
+                6.901164877381738e-07,
+                7.176428081518862e-07
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                1.7896857097687846e-07,
+                1.9240310036860997e-07
+              ],
+              "out_factor": [
+                0.2493839120863255,
+                0.2787980055419568
+              ],
+              "partial": 60,
+              "unlimited": 0,
+              "L_equals_W": 60,
+              "L_equals_volume": 0,
+              "top_only_incoming": 0,
+              "matrix_incoming_cm": [
+                1.6897600101768694e-07,
+                1.8241053040776105e-07
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "factor_identity_max_error": 1.0109246773026825e-11,
+              "domain": 3,
+              "stock_cm": [
+                0.03392523751972457,
+                0.03392523751972457
+              ],
+              "minimum_cm": [
+                0.033924933435088046,
+                0.03392523751972457
+              ],
+              "incoming_cm": [
+                9.992569961008096e-09,
+                9.992569961008096e-09
+              ],
+              "outgoing_potential_cm": [
+                3.02966015039745e-07,
+                3.201264021982427e-07
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                9.992569958983122e-09,
+                3.1407720648551907e-07
+              ],
+              "out_factor": [
+                0.03121995398288535,
+                0.9811037275518424
+              ],
+              "partial": 60,
+              "unlimited": 0,
+              "L_equals_W": 45,
+              "L_equals_volume": 15,
+              "top_only_incoming": 60,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                0.0,
+                7.1930294356308685e-12
+              ]
+            },
+            {
+              "factor_identity_max_error": 0,
+              "domain": 4,
+              "stock_cm": [
+                0.001080862314232541,
+                0.001080862314232541
+              ],
+              "minimum_cm": [
+                0.0,
+                0.0
+              ],
+              "incoming_cm": [
+                9.992569961008096e-09,
+                9.992569961008096e-09
+              ],
+              "outgoing_potential_cm": [
+                2.73208056587505e-09,
+                2.736153930270733e-09
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.0010808723068025019,
+                0.0010808723068025019
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 60,
+              "L_equals_W": 0,
+              "L_equals_volume": 60,
+              "top_only_incoming": 60,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                2.73208056587505e-09,
+                2.736153930270733e-09
+              ]
+            },
+            {
+              "factor_identity_max_error": 0,
+              "domain": 5,
+              "stock_cm": [
+                0.0005507657473460255,
+                0.0005507657473460255
+              ],
+              "minimum_cm": [
+                0.0,
+                0.0
+              ],
+              "incoming_cm": [
+                9.992569961008096e-09,
+                9.992569961008096e-09
+              ],
+              "outgoing_potential_cm": [
+                7.761990775486258e-09,
+                7.762016500451362e-09
+              ],
+              "available_W_plus_I_minus_L_cm": [
+                0.0005507757399159865,
+                0.0005507757399159865
+              ],
+              "out_factor": [
+                1.0,
+                1.0
+              ],
+              "partial": 0,
+              "unlimited": 60,
+              "L_equals_W": 0,
+              "L_equals_volume": 60,
+              "top_only_incoming": 60,
+              "matrix_incoming_cm": [
+                0.0,
+                0.0
+              ],
+              "unsat_out_potential_cm": [
+                7.761990775486258e-09,
+                7.762016500451362e-09
+              ]
+            }
+          ],
+          "iteration_halves": [
+            {
+              "iterations": [
+                1,
+                30
+              ],
+              "best_Fmax": 1.6603248028879136e-05,
+              "actual_trials": 81,
+              "exhaustions": 5
+            },
+            {
+              "iterations": [
+                31,
+                60
+              ],
+              "best_Fmax": 0.0001872332196836534,
+              "actual_trials": 60,
+              "exhaustions": 10
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
