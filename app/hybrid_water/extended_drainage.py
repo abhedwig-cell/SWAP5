@@ -183,6 +183,7 @@ def metadata(project):
                 positive_interception_renderer_sha256=sha(Path(__file__).with_name('extended_interception.py')),
                 exact_pond_scope='Original runoff() unchanged; exact linear outward solve or complete monotone original root bracket, with piecewise analytic tangent',
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
+                **({'output_receipt_renderer_sha256':sha(Path(__file__).with_name('extended_output_receipt.py'))} if project.original_output else {}),
                 codec=magic(project).decode(),domain=domain(project),bytes=size(project),
                 ownership='Original MOD_drain dynamic values; exact rejected-trial restore, no new physical store',
                 physical_equations_changed=False,original_surfacewater_lf_sha256=SURFACE_SOURCE_LF_SHA256,
