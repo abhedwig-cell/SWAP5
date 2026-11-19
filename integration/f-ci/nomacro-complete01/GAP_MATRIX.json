@@ -1775,7 +1775,7 @@
         "class": "B/A only for actual defects",
         "goal": "Close coherent detailed/pulsed forcing and event/interception interactions using existing physical owners.",
         "gates": "Reproduce retained364 strict failure, actual event clocks and conservation; requalify affected dependency only.",
-        "status": "BOUNDED_REGISTERED_SOURCE_RAW_PASS_CANONICAL_PENDING"
+        "status": "BOUNDED_CANONICALLY_ADMITTED_PR1762_BC9271BCC"
       },
       {
         "order": 4,
@@ -1783,7 +1783,7 @@
         "class": "B",
         "goal": "Compose original extended drainage and surfacewater state/flux family behind existing exchange ownership.",
         "gates": "Original reader/state audit, independent signed water exchange, transaction and complete native; no external MODFLOW.",
-        "status": "NEXT_FUNCTIONAL_BATCH"
+        "status": "BOUNDED_QUALIFIED_CURRENT_OWNER_PASS_CANONICAL_PENDING"
       },
       {
         "order": 5,
@@ -1810,5 +1810,25 @@
     "next_batch": "extended-drainage",
     "canonical": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
     "receipt": "WEATHER_MERGE_RECEIPT.json"
+  },
+  "extended_drainage_state_and_surfacewater": {
+    "status": "BOUNDED_QUALIFIED_CANONICAL_PENDING",
+    "runtime": "ec4cb79a974f86bc248aa10eb037a588a1b2f249",
+    "qualification": "EXTENDED_DRAINAGE_QUALIFICATION.json",
+    "source_admission": "EXTENDED_DRAINAGE_SOURCE_ADMISSION.json",
+    "closed_bounded_gaps": [
+      "MISSING_COMPOSITION original primary/secondary drainage and surfacewater",
+      "MISSING_IMPLEMENTATION exact original rejected-trial and native state ownership",
+      "REFERENCE_DEFECT positive dry storage, runoff root and positive interception",
+      "NUMERICAL_FAILURE strict accepted-trial receipt arithmetic"
+    ],
+    "remaining": [
+      "MISSING_COMPOSITION original-output/calendar",
+      "MISSING_COMPOSITION AGE/implicit/hysteretic/weather/other bottom compositions",
+      "MISSING_COMPOSITION SWSRF1 original saved-WL risk requires audit"
+    ],
+    "full_family_closed": "UNKNOWN",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "RC3_changed": false
   }
 }

@@ -142,3 +142,46 @@ WLEVBAL swstmax<1e-7 dry branch. The resulting5e-8cm loss exceeds the existing
 preserved separately. A correction must preserve positive water and be
 qualified as a reference-defect correction before new combined inventory
 claims; no artificial mass correction or tolerance change is permitted.
+
+
+## Qualified bounded composition, canonical admission pending
+
+The earlier component/prototype observations above are historical. Frozen runtime
+ec4cb79a974f86bc248aa10eb037a588a1b2f249 now passes sixteen complete
+1,096-day periods across Windows/Ubuntu O0/O2, 112 primary complete-native cold
+windows and sixteen table-variant cold windows over four short periods. The
+independent current public admission entry passes against the actual source and
+retained raw bytes. A committed wrong-source branch ecbca2abce1055167ed244c706aea90baa15b2d6
+is refused because its compiler source differs from the qualified runtime.
+EXTENDED_DRAINAGE_QUALIFICATION.json owns the immutable scope and archive identity;
+EXTENDED_DRAINAGE_SOURCE_ADMISSION.json records source admission and recovery.
+
+The bounded route covers original SWMACRO0/SWDRA2, water and ordinary CDE,
+SWSRF2/3 and SWSEC1/2 with actual prescribed, fixed and automatic management.
+Original dynamic drainage/surfacewater values now have typed atomic trial and
+complete private-native ownership. Independent soil, secondary and combined
+daily water checks retain 1e-10 cm; daily/integrated CDE retain 1e-10 mg/cm2.
+Integrated soil-water drift is reported separately without an integrated
+1e-10 claim. Prescribed-stage reaction is an explicit external volume constraint.
+
+Separately retained real-original O0/O2 component evidence proves the dry-stock
+cutoff defect, excluded runoff root/tiny outflow defects and positive interception
+loss. Corrections preserve original process equations and use no artificial
+stock adjustment. The strict original retry and a read-only accepted-trial nodal
+delta projection avoid accepting exhausted nonlinear trials or rounded-total
+cancellation. Every original failure and corrected raw result retains its own
+source/build identity. No scientific tolerance is relaxed.
+
+Actual controls comprise 312 public and 288 compiled invalid-native refusals,
+with twelve positive CLI and transaction contexts. Sixteen independent retained
+raw-evidence mutants are refused. Existing scientific bodies remain literal;
+nonselected five-day weather and two-day named transport seams preserve actual
+Fortran/input/physical/native evidence without repeating unaffected full periods.
+
+Original-output/calendar, AGE, implicit, hysteretic, other weather and lower-boundary
+compositions remain unqualified for this extended route; SWSRF1 retains its explicit
+original saved-WL risk refusal. Whole historical closure remains PARTIAL, whole
+scientific equivalence NOT_QUALIFIED, global family/gap counts UNKNOWN and fixed
+RC3 unchanged. Complete clean detached source admission and required PR checks
+precede canonical integration. The next functional batch composes existing
+original-output/calendar processes with this state owner.

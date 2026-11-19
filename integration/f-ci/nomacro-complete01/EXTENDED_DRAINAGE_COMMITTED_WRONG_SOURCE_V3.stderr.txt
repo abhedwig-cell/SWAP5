@@ -1,0 +1,110 @@
+Traceback (most recent call last):
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\hupsel51\verify_successor.py", line 687, in <module>
+    print(json.dumps(verify(), indent=2))
+                     ~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\hupsel51\verify_successor.py", line 610, in verify
+    return pulse.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\irrigation_pulse\verify.py", line 54, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\verify.py", line 79, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\chemical_verify.py", line 105, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\scheduled_chemical_verify.py", line 83, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\aquifer_verify.py", line 88, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\age_verify.py", line 121, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\age_composition_verify.py", line 87, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\age_fixed_verify.py", line 97, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\age_calendar_verify.py", line 109, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\age_schedule_verify.py", line 112, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\age_clock_verify.py", line 183, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\original_output_verify.py", line 218, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\output_hysteresis_verify.py", line 138, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\age_irrigation_source_verify.py", line 169, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\direct_soil_age_verify.py", line 172, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\output_aquifer_verify.py", line 106, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\output_thermal_verify.py", line 115, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\groundwater_chemical_verify.py", line 144, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\groundwater_history_verify.py", line 143, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\thermal_calendar_verify.py", line 139, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\saltfarm_newton\verify_successor.py", line 115, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\thermal_clock_verify.py", line 219, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\thermal_step_verify.py", line 182, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\thermal_reset_verify.py", line 186, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\ordinary_reset_verify.py", line 185, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\perstep_domain_verify.py", line 195, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\cde_interval_verify.py", line 235, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\cde_clock_verify.py", line 255, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\age_perstep_verify.py", line 245, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\age_groundwater_verify.py", line 292, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\weather_surface_verify.py", line 486, in verify
+    return owner.verify()
+           ~~~~~~~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_drainage\extended_verify.py", line 133, in verify
+    source();current=scientific()
+    ~~~~~~^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_drainage\extended_verify.py", line 68, in source
+    require(not git('diff',RUNTIME,'--',*SURFACES),'Actual drainage compiler source differs from qualified runtime')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\swap5-groundwater-composition-negative01\tests\nomacro_scheduled_subsurface\implicit_conductivity_forensics.py", line 7, in require
+    if not ok:raise ValueError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Actual drainage compiler source differs from qualified runtime
