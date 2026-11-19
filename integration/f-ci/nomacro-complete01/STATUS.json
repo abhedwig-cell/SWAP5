@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-implicit-conductivity01",
-  "last_commit": "2b5356ad21e57bccece34b63319497b61acdbab9",
-  "status": "BOUNDED_IMPLICIT_SOURCE_QUALIFIED_CANONICAL_PENDING",
+  "branch": "codex/nomacro-groundwater-water-calendar01",
+  "last_commit": "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
+  "status": "GROUNDWATER_WATER_STATE_CALENDAR_CONTRACT_PERSISTED_PREDECESSOR_ROOT_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -331,7 +331,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "After actual bounded admission, compose existing hydraulic native/calendar owners for ordinary/history prescribed-groundwater water, original numerical selectors0/1, representative subdaily/perstep/reset contexts. Preserve unchanged chemical/AGE/implicit owners by dependency proof.",
+  "next_code_change": "Implement typed explicit0 carry and groundwater water calendar wrapper; preserve implicit1 daily and old chemical/AGE generated dependencies.",
   "recovery_point": "codex/nomacro-implicit-conductivity01; model5bdfcb347, test3094a9e0d. Four current sessions main67311/O0 and21750/O2, chemistry66393/O0 and83216/O2. App frozen until controllers terminal. Existing GAP_MATRIX owns remaining functional coverage; ACCELERATE02 governs proportional A-D qualification.",
   "external_blocker": null,
   "test_selection": {
@@ -434,7 +434,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Push one coherent source/qualification PR; verify actual ordered merge parents and full qualified tree, then run clean detached registered owner. Immediately implement groundwater water complete state/calendar batch.",
+  "next_action": "Finish actual canonical PR1759 registered root; implement and persist groundwater water state/calendar composition before targeted model runs.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -446,7 +446,7 @@
   "qualified_age_fixed_runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
   "qualified_age_fixed_ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
   "age_fixed_sealed_proof": "56ae017e413503891d6c1a9709d1c882f2a14edb",
-  "active_branch": "codex/nomacro-cde-clock01",
+  "active_branch": "codex/nomacro-groundwater-water-calendar01",
   "canonical_baseline": "c8b3029fee7a88af6c74ac93e58ce69b8de9f96e",
   "calendar_results": {
     "source": "7943551d0",
@@ -655,7 +655,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
+  "canonical_head": "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -876,7 +876,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-cde-clock01",
+  "working_branch": "codex/nomacro-groundwater-water-calendar01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -30207,5 +30207,15 @@
       "evidence_only_functions": "UNKNOWN",
       "reason": "Original reader inventory and bounded26family evidence do not yet define an exhaustive valid combination denominator. GAP_MATRIX lists concrete confirmed gaps and five next batches; no artificial percent or bounded-PASS count as family closure."
     }
+  },
+  "groundwater_water_calendar": {
+    "status": "CONTRACT_BEFORE_IMPLEMENTATION",
+    "baseline": "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
+    "contract": "docs/science/NOMACRO_GROUNDWATER_WATER_CALENDAR_20261119.md",
+    "qualification_class": "B composition of unchanged state/physical/calendar providers",
+    "next": "Implement typed explicit0 carry and groundwater water calendar wrapper; preserve implicit1 daily and old chemical/AGE generated dependencies.",
+    "predecessor_pr": 1759,
+    "predecessor_tree_verified": true,
+    "predecessor_clean_owner": "RUNNING_IN_SEPARATE_ACTUAL_CANONICAL_CHECKOUT"
   }
 }
