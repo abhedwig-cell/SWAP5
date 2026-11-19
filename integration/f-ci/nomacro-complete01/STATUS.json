@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-groundwater-water-calendar01",
-  "last_commit": "b172924a350d936efea01ec98618c1c5314204c8",
-  "status": "GROUNDWATER_WATER_WINDOWS_GATES_PASS_PORTABLE_NEXT",
+  "last_commit": "662dd80b8590b22ae411178080033df537950027",
+  "status": "GROUNDWATER_WATER_SOURCE_QUALIFIED_CANONICAL_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -427,14 +427,14 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "Recovery source before final documentation; actual admission head is the commit containing this record.",
+  "last_commit_role": "Actual registered source qualification parent; final review head is the commit containing these metadata/docs changes.",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "One O0/O2 Ubuntu composition carrier; seal actual original raw, independent source/raw owner and actual canonical admission. Unchanged numerical components inherited.",
+  "next_action": "One coherent source/raw qualification PR; actual ordered merge parents, complete qualified tree and clean detached registered owner. Then immediately implement explicit original SWKMEAN7 batch.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -30215,11 +30215,11 @@
     }
   },
   "groundwater_water_calendar": {
-    "status": "BOUNDED_WINDOWS_QUALIFIED_PORTABLE_PENDING",
+    "status": "BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
     "baseline": "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
     "contract": "docs/science/NOMACRO_GROUNDWATER_WATER_CALENDAR_20261119.md",
     "qualification_class": "B composition of unchanged state/physical/calendar providers",
-    "next": "One O0/O2 Ubuntu composition carrier; seal actual original raw, independent source/raw owner and actual canonical admission. Unchanged numerical components inherited.",
+    "next": "One coherent source/raw qualification PR; actual ordered merge parents, complete qualified tree and clean detached registered owner. Then immediately implement explicit original SWKMEAN7 batch.",
     "predecessor_pr": 1759,
     "predecessor_tree_verified": true,
     "predecessor_clean_owner": "PASS_ACTUAL_DETACHED_CANONICAL_173.8807335_SECONDS",
@@ -30246,6 +30246,51 @@
       "Actual negative canopy prefix accepted in v1 opener: fixed by hard preworker guard; failed raw retained.",
       "V2 metadata-test setup omitted unchanged implicit providers after public/native/transactions passed. V3 completes only missing policy gate and inherits actual completed gates without repeat models.",
       "Exact old failed-cold input now passes native with changed strict polishing trajectory. No exact old-warm/reference equivalence claim."
-    ]
+    ],
+    "portable_actual": {
+      "id": 44510817921,
+      "head_sha": "1d7c2c800acb3af6968ca1e76a8e9fe8e4b18ea3",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44510817921",
+      "created_at": "2026-11-19T11:00:18Z",
+      "updated_at": "2026-11-19T11:06:46Z",
+      "run_attempt": 1
+    },
+    "raw_seal": "03ddd8b8cbccfe716779c2aaf1ddfb4ed53a4b2e",
+    "raw_bytes": 270216609,
+    "registered_owner": {
+      "role": "Actual registered source/raw/native owner",
+      "head": "662dd80b8590b22ae411178080033df537950027",
+      "returncode": 0,
+      "seconds": 63.805207499768585,
+      "stdout": "{\n  \"status\": \"BOUNDED_GROUNDWATER_WATER_COMPLETE_STATE_CALENDAR_SOURCE_RAW_NATIVE_ADMISSION_PASS\",\n  \"runtime\": \"3424a6c156b79b3d84395913dcc94424a586fd15\",\n  \"actual_full_periods\": 12,\n  \"actual_short_periods\": 24,\n  \"actual_two_day_1440_periods\": 8,\n  \"actual_complete_native_cold_windows\": 188,\n  \"actual_public_contexts\": 24,\n  \"actual_native_refusals\": 1008,\n  \"actual_policy_refusals\": 72,\n  \"actual_prior_compiled_closures\": 3,\n  \"actual_prior_typed_prefixes\": 296,\n  \"fresh_unaffected_model_periods\": 0,\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"implicit_age_admission\": false,\n  \"weighted_history_full_admission\": false\n}\n",
+      "stderr": ""
+    },
+    "actual_wrong_source": {
+      "status": "ACTUAL_DIRTY_AND_COMMITTED_NATIVE_GUARD_SOURCE_REFUSED_BEFORE_MODELS",
+      "qualified_source": "662dd80b8590b22ae411178080033df537950027",
+      "control_head": "ed2f28a90a65e324f7a7928e6bb0bdb06fbaec4d",
+      "branch": "codex/nomacro-groundwater-water-negative01",
+      "worktree": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01",
+      "meaningful_change": "Actual native canopy<0 guard relaxed to canopy<-1, never merged",
+      "dirty": {
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\age_groundwater_verify.py\", line 465, in <module>\n    if __name__=='__main__':print(json.dumps(verify(),indent=2))\n                                             ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\age_groundwater_verify.py\", line 292, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\groundwater_water_verify.py\", line 231, in verify\n    q=json.loads((ROOT/PROOF/'GROUNDWATER_WATER_QUALIFICATION.json').read_text(encoding='utf8'));source(q);return scientific(q)\n                                                                                                 ~~~~~~^^^\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\groundwater_water_verify.py\", line 59, in source\n    require(not git('status','--porcelain','--','app','src','reference','tools','tests','.github','integration'),'Dirty groundwater water admission surface')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\implicit_conductivity_forensics.py\", line 7, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Dirty groundwater water admission surface\n"
+      },
+      "committed": {
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\age_groundwater_verify.py\", line 465, in <module>\n    if __name__=='__main__':print(json.dumps(verify(),indent=2))\n                                             ~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\age_groundwater_verify.py\", line 292, in verify\n    return owner.verify()\n           ~~~~~~~~~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\groundwater_water_verify.py\", line 231, in verify\n    q=json.loads((ROOT/PROOF/'GROUNDWATER_WATER_QUALIFICATION.json').read_text(encoding='utf8'));source(q);return scientific(q)\n                                                                                                 ~~~~~~^^^\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\groundwater_water_verify.py\", line 61, in source\n    require(not git('diff',RUNTIME,'HEAD','--','app','src','reference','tools'),'Unqualified groundwater water production source change')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-implicit-conductivity-negative01\\tests\\nomacro_scheduled_subsurface\\implicit_conductivity_forensics.py\", line 7, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Unqualified groundwater water production source change\n"
+      },
+      "model_periods": 0
+    },
+    "independent_corruption_tests": {
+      "log": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\GROUNDWATER_WATER_CORRUPTION_V1.log",
+      "actual_corruptions_refused": 677,
+      "real_unchanged_baselines_accepted": 3,
+      "models_executed": 0
+    }
   }
 }
