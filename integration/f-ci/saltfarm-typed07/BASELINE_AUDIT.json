@@ -1,0 +1,159 @@
+{
+  "status": "ACTUAL_DIRECT_KERNEL_CANONICAL_MERGE_VERIFIED",
+  "pr": 1758,
+  "merge": "b28706d8b16661d8a9e85339d317256eaca51206",
+  "base": "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
+  "qualified_head": "f88c8abcd5f6ef7f47cba2034f99fd19a30b8e54",
+  "ordered_parents": [
+    "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
+    "f88c8abcd5f6ef7f47cba2034f99fd19a30b8e54"
+  ],
+  "complete_tree": "d05e543dd618fa43a699f58816d5fba5bb8f3a46",
+  "exact_complete_tree": true,
+  "runtime": "78e02a97517be08ae9fdaa5b885b1fe584e4dec2",
+  "actual_detached_owner": {
+    "head": "b28706d8b16661d8a9e85339d317256eaca51206",
+    "returncode": 0,
+    "seconds": 24.360003700014204,
+    "stdout": "{\n  \"status\": \"CANONICAL_IMPLICIT_AND_DIRECT_SALTFARM_COMPOSITION_ADMISSION_PASS\",\n  \"baseline\": \"b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1\",\n  \"runtime\": \"78e02a97517be08ae9fdaa5b885b1fe584e4dec2\",\n  \"inherited_implicit_actual_full_periods\": 32,\n  \"inherited_implicit_exact_cold_windows\": 376,\n  \"fresh_saltfarm_full_periods\": 4,\n  \"fresh_saltfarm_exact_cold_windows\": 20,\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"functional_completion\": \"PARTIAL\",\n  \"water_guard_cm\": 1e-10,\n  \"solute_guard_mg_cm2\": 1e-10,\n  \"RC3_changed\": false\n}\n",
+    "stderr": ""
+  },
+  "production_blobs": [
+    "100644 blob fc6f56f0699bdb09dc335594852abc71f25969eb\tapp/hybrid_water/daily_coupling.py",
+    "100644 blob 35b4bd5463a4b0ecac458e55533092da1efadde8\tapp/hybrid_water/daily_host.py",
+    "100644 blob aa02b1f980b54d844468de4ba6880237b27343e2\tapp/hybrid_water/direct_day_kernel.f90",
+    "100644 blob 686dad86af232c7eae3f2c341c2505809ac54a79\tapp/hybrid_water/direct_day_kernel.py",
+    "100644 blob 123befb0480bf7e2f0f322956448c3d838576a16\ttools/solute/run_water.py"
+  ],
+  "tolerances_changed": false,
+  "historical_evidence_rewritten": false,
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "RC3_changed": false,
+  "terminal_pr_ci": {
+    "head": "f88c8abcd5f6ef7f47cba2034f99fd19a30b8e54",
+    "baseline": "b24dd2b7ac353300eaa5a18d11fdcbeaba8b23f1",
+    "pr": 1758,
+    "all_terminal_success": true,
+    "workflow_runs": [
+      {
+        "id": 44511681765,
+        "name": "MC-SOL01 original SWP chemistry",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681765"
+      },
+      {
+        "id": 44511681821,
+        "name": "F-MIG431-INT12-P0 qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681821"
+      },
+      {
+        "id": 44511681735,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681735"
+      },
+      {
+        "id": 44511681771,
+        "name": "Documentation",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681771"
+      },
+      {
+        "id": 44511681634,
+        "name": "MC-SOL01 file-driven Reference column",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681634"
+      },
+      {
+        "id": 44511681453,
+        "name": "SWAP431 crop CO2 response qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681453"
+      },
+      {
+        "id": 44511681708,
+        "name": "F-MIG431-INT12-E detailed interception qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681708"
+      },
+      {
+        "id": 44511681468,
+        "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681468"
+      },
+      {
+        "id": 44511681589,
+        "name": "F-GC42 live whole-window service",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681589"
+      },
+      {
+        "id": 44511681584,
+        "name": "SWAP431 empirical root oxygen qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681584"
+      },
+      {
+        "id": 44511681556,
+        "name": "SWAP431 crop rootgrow DVS qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681556"
+      },
+      {
+        "id": 44511681645,
+        "name": "Closed Hupsel pond balance repair",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681645"
+      },
+      {
+        "id": 44511681441,
+        "name": "SWAP431 root constant LRV qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681441"
+      },
+      {
+        "id": 44511681491,
+        "name": "F-MIG431-INT12-D Gash qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681491"
+      },
+      {
+        "id": 44511681458,
+        "name": "F-MIG431 LOW08-A qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681458"
+      },
+      {
+        "id": 44511681702,
+        "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681702"
+      },
+      {
+        "id": 44511681712,
+        "name": "F-CI110 reconstructed performance admission",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44511681712"
+      }
+    ]
+  }
+}

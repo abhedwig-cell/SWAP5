@@ -1115,6 +1115,13 @@ def send(process, text):
     process.stdin.flush()
 
 
+def send_reply(process, values):
+    from direct_day_kernel import NativeDayKernel
+    if isinstance(process, NativeDayKernel):
+        return process.submit(values)
+    return send(process, " ".join(map(str, values)))
+
+
 def receive(process, transcript, prefixes):
     from direct_day_kernel import NativeDayKernel
     if isinstance(process,NativeDayKernel):return process.receive(prefixes)
@@ -1481,7 +1488,7 @@ class DailyHost:
             solute_budget['age_effluent']=validate_effluent(list(map(float,response['HYBRID_AGE_EFFLUENT'])))
         reply = [day, math.fsum(stocks[:6]), math.fsum(flow[:7]), math.fsum(flow[7:]),
                  bottom_out, -hydraulic[1], *hydraulic[2:], *stocks[:6]]
-        send(self.host, " ".join(map(str, reply)))
+        send_reply(self.host, reply)
         disposition, result = receive(self.host, self.host_log, {"DAILY_ACCEPTED", "DAILY_REFUSED"})
         reported_column, reported_day, revision = map(int, result[disposition][:3])
         committed = disposition == "DAILY_ACCEPTED"
