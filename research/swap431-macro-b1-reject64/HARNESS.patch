@@ -1,0 +1,30 @@
+--- COMBINED63/soilwater_native.f90
++++ REJECT64/soilwater_native.f90
+@@ -237,14 +237,27 @@
+ subroutine prefix14_start()
+  use DIAG19,only:start,qualification_active,apply37,repair43
+  use CONTRACT06_CONTROL,only:use_patch
++ use variables,only:dt,dtmin,fldtmin
+  implicit none
+  character(24)::mode55
++ character(80)::control64
++ integer::stat64,u64
++ real(8)::proposal64,original_dt64
+  use_patch=.true.;qualification_active=.false.
+  call get_environment_variable('NATIVE55_MODE',mode55)
+  if(trim(mode55)=='RESTART') then
+   follow55=.true.;resume55=.true.;stage55=1
+   apply37=.true.;repair43=.true.;qualification_active=.true.
+  end if
++ original_dt64=dt
++ call get_environment_variable('REJECT64_DT',control64,status=stat64)
++ if(stat64/=0.or.len_trim(control64)==0) error stop 'REJECT64 requires preregistered proposal'
++ read(control64,*) proposal64
++ if(proposal64<dtmin.or.proposal64>2.0951312035156963d-5) error stop 'REJECT64 proposal outside original bounds'
++ dt=proposal64;fldtmin=(dt<=dtmin)
++ open(newunit=u64,file='input_control64.txt',status='replace')
++ write(u64,*) original_dt64,dt,dtmin,merge(1,0,fldtmin)
++ close(u64)
+  call start()
+  open(newunit=prefix_unit,file='prefix_budget.txt',status='replace')
+  open(newunit=budget_unit,file='step_budget.txt',status='replace')

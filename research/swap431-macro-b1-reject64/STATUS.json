@@ -1,0 +1,15 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-REJECT64",
+  "baseline": "caabd53a52a6e919fbcaf213d6af1c0a2ac4a3a5",
+  "stage": "PREREGISTERED",
+  "scope": "same originalD2 acceptedinitialstate; only initialproposed dt varied inside originalfloor/proposal bounds",
+  "selection_max_O0_routes": 3,
+  "selection_policy": "success lowerendpoint=proposal; failurewithoutactiveV upperendpoint=proposal; nextarithmeticmidpoint. Stopselection on actualfirst-attempt failure with eligibleV use. No tolerance/MAXIT/guard change",
+  "model_timeout_each": 20,
+  "internal_seconds": 16,
+  "low": 1e-05,
+  "high": 2.0951312035156963e-05,
+  "qualification_if_found": "same selected O2chain plus fresh DIRECTactualsmallerretry O0/O2; selected O0route reused aschain",
+  "negative_if_not_found": "O2confirm lastselectedproposal; no forcedcase or broadersearch",
+  "no_broad_campaign": true
+}
