@@ -56,6 +56,17 @@ def main():
         (a.output/(mode+'.json')).write_text(json.dumps(report,indent=2)+'\n',encoding='utf8')
         assert all(r['returncode']==0 for r in observations)
         reports.append(report)
+        if mode=='corrected':
+            tangent_driver=ROOT/'tests/nomacro_drainage/test_extended_pond_tangent.f90'
+            tangent_exe=out/'tangent.exe'
+            command=flags+[str(tangent_driver),*map(str,objects),str(a.provider/'build/ttutil-obj/libttutil.a'),'-o',str(tangent_exe)]
+            r=subprocess.run(command,cwd=out,capture_output=True,text=True)
+            assert r.returncode==0,r.stderr
+            r=subprocess.run([str(tangent_exe)],cwd=out,capture_output=True,text=True)
+            (a.output/'tangent.exe').write_bytes(tangent_exe.read_bytes())
+            (a.output/'tangent.json').write_text(json.dumps(dict(command=command,driver_sha256=sha(tangent_driver),executable_sha256=sha(tangent_exe),returncode=r.returncode,stdout=r.stdout,stderr=r.stderr),indent=2)+'\n',encoding='utf8')
+            print('tangent',r.returncode,r.stdout,flush=True)
+            assert r.returncode==0,r.stderr
     (a.output/'PASS.json').write_text(json.dumps(dict(status='ACTUAL_ORIGINAL_DEFECT_AND_BOUNDED_CORRECTION_PASS',optimization=a.optimization,reports=[r['mode'] for r in reports]),indent=2)+'\n',encoding='utf8')
 
 if __name__=='__main__':main()
