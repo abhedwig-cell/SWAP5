@@ -22,7 +22,7 @@ def fixture(path, solute, hysteresis, bottom, step, kmean=1, mode='explicit', fm
         previous.age.fixture(path,actual_mode,hysteresis,fmt,reset,npd,'point')
     control=path/'swap.swp'
     text=control.read_text(encoding='cp1252')
-    for key,value in dict(SWKIMPL=1,SWKMEAN=kmean,SWSOLU=solute,SWBOTB=bottom,
+    for key,value in dict(SWKIMPL=1,SWKMEAN=kmean,SWSOLU=solute,SWBOTB=bottom,MAXIT=100,MAXBACKTR=10,
                           FLPRINTDT='.TRUE.' if step else '.FALSE.').items():
         text=assignment(text,key,value)
     if mode=='daily':text=assignment(text,'PERIOD',1)
@@ -63,6 +63,8 @@ def main():
             path=inputs/'fixed-irrigation.irg';text=path.read_text(encoding='cp1252');assert text.count('2002-01-05')==1
             path.write_text(text.replace('2002-01-05','2002-01-01'),encoding='cp1252')
         project=m.e.load(inputs,original_output=True);q['numerical_policy']=m.e.inspect(inputs)['implicit_conductivity']
+        body=(inputs/'swap.swp').read_text(encoding='cp1252')
+        q['actual_original_numerical_inputs']={key:int(m.e.one(body,key,r'[+-]?\d+')) for key in ('MAXIT','MAXBACKTR')}
         build=a.reuse_build or out/'build';q.update(input_root=str(inputs),build_root=str(build))
         cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--original-output','--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
         if not a.reuse_build:
