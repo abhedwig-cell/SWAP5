@@ -1,0 +1,186 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-CAUSE66",
+  "decision": "QUALIFIED_BOUNDED_COUPLED_ACCEPTANCE",
+  "scope": "single fixed D2 native origin; actual W-active larger refusal, refreshed smaller-endpoint implicit Cauchy forcing, fresh unscaled W/V/V retry and exact independent DIRECT on O0/O2",
+  "baseline": "3db3836f3ad887605a265be25acbf4ceebfd4dc9",
+  "cause_result": "CAUSAL_RESULT.json",
+  "results": [
+    {
+      "opt": "O0",
+      "mode": "CHAIN",
+      "seconds": 1.62816570000723,
+      "attempts": 2,
+      "iterations": 3,
+      "fresh_checks": 1,
+      "Fmax": 3.0444564034712296e-08,
+      "sumF": 2.0918046662162138e-07,
+      "IDecMpRat": 0,
+      "FrReduQ": 1,
+      "hostcommits": 1,
+      "matrix_delta_cm": -2.2257545273197916e-06,
+      "macro_delta_cm": -6.358460167625287e-07,
+      "pond_delta_cm": 0.0,
+      "canopy_delta_cm": 0.0,
+      "external_cm": -2.8616026359441764e-06,
+      "inventory_error_cm": 2.0918618560915032e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "domain_errors_cm": [
+        5.3796756546015123e-17,
+        4.308528360474906e-18,
+        -9.01223513736604e-19,
+        -3.4627434802694845e-20,
+        2.0595142891345283e-20
+      ],
+      "t1900_after": 35797.29044112515,
+      "follow_packet_sha256": "d5ee169f99cebe1a8dd849b39bfe51d06bdbcf5f226e127d2d70246807a373d7"
+    },
+    {
+      "opt": "O0",
+      "mode": "DIRECT",
+      "seconds": 0.7996054999530315,
+      "attempts": 1,
+      "iterations": 3,
+      "fresh_checks": 1,
+      "Fmax": 3.0444564034712296e-08,
+      "sumF": 2.0918046662162138e-07,
+      "IDecMpRat": 0,
+      "FrReduQ": 1,
+      "hostcommits": 1,
+      "matrix_delta_cm": -2.2257545273197916e-06,
+      "macro_delta_cm": -6.358460167625287e-07,
+      "pond_delta_cm": 0.0,
+      "canopy_delta_cm": 0.0,
+      "external_cm": -2.8616026359441764e-06,
+      "inventory_error_cm": 2.0918618560915032e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "domain_errors_cm": [
+        5.3796756546015123e-17,
+        4.308528360474906e-18,
+        -9.01223513736604e-19,
+        -3.4627434802694845e-20,
+        2.0595142891345283e-20
+      ],
+      "t1900_after": 35797.29044112515,
+      "follow_packet_sha256": "d5ee169f99cebe1a8dd849b39bfe51d06bdbcf5f226e127d2d70246807a373d7"
+    },
+    {
+      "opt": "O2",
+      "mode": "CHAIN",
+      "seconds": 1.3300231001339853,
+      "attempts": 2,
+      "iterations": 3,
+      "fresh_checks": 1,
+      "Fmax": 3.0444564034712296e-08,
+      "sumF": 2.0918046662162138e-07,
+      "IDecMpRat": 0,
+      "FrReduQ": 1,
+      "hostcommits": 1,
+      "matrix_delta_cm": -2.2257545273197916e-06,
+      "macro_delta_cm": -6.358460167625287e-07,
+      "pond_delta_cm": 0.0,
+      "canopy_delta_cm": 0.0,
+      "external_cm": -2.8616026359441764e-06,
+      "inventory_error_cm": 2.0918618560915032e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "domain_errors_cm": [
+        5.3796756546015123e-17,
+        4.308528360474906e-18,
+        -9.01223513736604e-19,
+        -3.4627434802694845e-20,
+        2.0595142891345283e-20
+      ],
+      "t1900_after": 35797.29044112515,
+      "follow_packet_sha256": "d5ee169f99cebe1a8dd849b39bfe51d06bdbcf5f226e127d2d70246807a373d7"
+    },
+    {
+      "opt": "O2",
+      "mode": "DIRECT",
+      "seconds": 0.6458208002150059,
+      "attempts": 1,
+      "iterations": 3,
+      "fresh_checks": 1,
+      "Fmax": 3.0444564034712296e-08,
+      "sumF": 2.0918046662162138e-07,
+      "IDecMpRat": 0,
+      "FrReduQ": 1,
+      "hostcommits": 1,
+      "matrix_delta_cm": -2.2257545273197916e-06,
+      "macro_delta_cm": -6.358460167625287e-07,
+      "pond_delta_cm": 0.0,
+      "canopy_delta_cm": 0.0,
+      "external_cm": -2.8616026359441764e-06,
+      "inventory_error_cm": 2.0918618560915032e-12,
+      "inventory_limit_cm": 1.0000000000000002e-10,
+      "domain_errors_cm": [
+        5.3796756546015123e-17,
+        4.308528360474906e-18,
+        -9.01223513736604e-19,
+        -3.4627434802694845e-20,
+        2.0595142891345283e-20
+      ],
+      "t1900_after": 35797.29044112515,
+      "follow_packet_sha256": "d5ee169f99cebe1a8dd849b39bfe51d06bdbcf5f226e127d2d70246807a373d7"
+    }
+  ],
+  "rollback_direct_equivalence": [
+    {
+      "opt": "O0",
+      "native_origin_exact": true,
+      "ledger_before_retry_exact": true,
+      "rollback_context_exact_except": [
+        "dt",
+        "fldtmin"
+      ],
+      "stored_macro_origin_exact": true,
+      "first112_residual_exact": true,
+      "three_full_retry_linear_systems_exact": true,
+      "accepted_exact_files": [
+        "solver_2.txt",
+        "follow_committed.txt",
+        "context_follow_committed.txt",
+        "ledger_final.txt",
+        "step_budget.txt",
+        "follow.end"
+      ],
+      "repaired_direct_unchanged_from_COUPLED65": true,
+      "larger_refusal_unchanged": true,
+      "provider_refreshes": 1,
+      "pre_evaluation_all_scratch_bytes_equal": false
+    },
+    {
+      "opt": "O2",
+      "native_origin_exact": true,
+      "ledger_before_retry_exact": true,
+      "rollback_context_exact_except": [
+        "dt",
+        "fldtmin"
+      ],
+      "stored_macro_origin_exact": true,
+      "first112_residual_exact": true,
+      "three_full_retry_linear_systems_exact": true,
+      "accepted_exact_files": [
+        "solver_2.txt",
+        "follow_committed.txt",
+        "context_follow_committed.txt",
+        "ledger_final.txt",
+        "step_budget.txt",
+        "follow.end"
+      ],
+      "repaired_direct_unchanged_from_COUPLED65": true,
+      "larger_refusal_unchanged": true,
+      "provider_refreshes": 1,
+      "pre_evaluation_all_scratch_bytes_equal": false
+    }
+  ],
+  "model_route_count": 8,
+  "new_model_routes_after_selection": 0,
+  "physics_criteria_dt_retry_solver_unchanged": true,
+  "production_promotion": false,
+  "exclusions": [
+    "active V refusal not selected or qualified",
+    "all pre-evaluation scratch bytes equal not required/proven",
+    "general restart or own accepted packet fresh-read not tested",
+    "full period and generic boundary modes not qualified",
+    "B1 reference or canonical admission not granted"
+  ]
+}

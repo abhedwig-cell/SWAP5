@@ -1,15 +1,16 @@
 """Causal discriminator; zero model calls and no acceptance weakening."""
 from pathlib import Path
-import json,math,hashlib
+import json,math,hashlib,sys
 R=Path(__file__).resolve().parent
 W=Path('C:/Users/Veldh012/SWAP5-work/01a1f3ce-667e-7091-82ae-a62485d14eca-8c08570e/cause66-data')
-D=W/'evidence/data'
+D=Path(sys.argv[1]) if len(sys.argv)>1 else W/'evidence/data'
+B=Path(sys.argv[2]) if len(sys.argv)>2 else W/'coupled65'
 def rows(p):return [list(map(float,s.split())) for s in p.read_text().splitlines() if s.strip()]
 def sha(p):
     with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 reproduction={};crossover=[]
 for mode in ['CHAIN','DIRECT']:
-    a=W/'coupled65'/('O0_'+mode);b=D/('O0_OBS_'+mode+'_NONE')
+    a=B/('O0_'+mode);b=D/('O0_OBS_'+mode+'_NONE')
     names=[p.name for p in a.glob('*.txt') if p.name not in ['attempt_trace.txt','cost_trace.txt']]
     for n in names:assert (a/n).read_bytes()==(b/n).read_bytes(),n
     assert sha(a/'follow.end')==sha(b/'follow.end')

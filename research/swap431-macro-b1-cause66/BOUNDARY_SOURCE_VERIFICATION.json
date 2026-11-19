@@ -1,0 +1,62 @@
+{
+  "ref": "3db3836f3ad887605a265be25acbf4ceebfd4dc9",
+  "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/boundbottom.f90",
+  "source_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+  "bytes": 6054,
+  "initial_relocated_source_object_comparison": {
+    "object_sha256": "84738bc5da966d78505605c4a9c9a799fc1878184b54a2addcd48563eebee980",
+    "inherited_object_sha256": "244b18460a221baf52a583de2e9f6f96496e202995f2f5a22e5de7e4e6f6aa9f",
+    "byte_equal": false,
+    "observation": "relocated source filename is embedded in Fortran runtime I/O metadata; original source bytes equal Git; retain failure, recompile at exact original filename without changing source"
+  },
+  "O0_O2": [
+    {
+      "opt": "O0",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-finit-local-zero",
+        "-fallow-argument-mismatch",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-I",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1f3ce-667e-7091-82ae-a62485d14eca-8c08570e\\cause66-O0\\obj",
+        "-c",
+        "C:\\Users\\Veldh012\\swap431-state02-work\\audit\\build\\swap-selected\\boundbottom.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1f3ce-667e-7091-82ae-a62485d14eca-8c08570e\\cause66-O0\\source_check\\original_path.o"
+      ],
+      "seconds": 0.6834407998248935,
+      "returncode": 0,
+      "output": "",
+      "inherited_object_sha256": "244b18460a221baf52a583de2e9f6f96496e202995f2f5a22e5de7e4e6f6aa9f",
+      "recompiled_object_sha256": "244b18460a221baf52a583de2e9f6f96496e202995f2f5a22e5de7e4e6f6aa9f",
+      "byte_equal": true
+    },
+    {
+      "opt": "O2",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-finit-local-zero",
+        "-fallow-argument-mismatch",
+        "-cpp",
+        "-Dlinux",
+        "-ffree-line-length-none",
+        "-I",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1f3ce-667e-7091-82ae-a62485d14eca-8c08570e\\cause66-O2\\obj",
+        "-c",
+        "C:\\Users\\Veldh012\\swap431-state02-work\\audit\\build\\swap-selected\\boundbottom.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1f3ce-667e-7091-82ae-a62485d14eca-8c08570e\\cause66-O2\\source_check\\original_path.o"
+      ],
+      "seconds": 0.7093615001067519,
+      "returncode": 0,
+      "output": "",
+      "inherited_object_sha256": "01136fb2cc61358a7d1008e402d355f2aec8d02d0f737907723704d9809494cd",
+      "recompiled_object_sha256": "01136fb2cc61358a7d1008e402d355f2aec8d02d0f737907723704d9809494cd",
+      "byte_equal": true
+    }
+  ]
+}
