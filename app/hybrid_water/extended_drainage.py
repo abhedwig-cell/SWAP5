@@ -13,6 +13,16 @@ POLICY = 'original-extended-drainage-atomic-state-v1'
 MODULE = 'hybrid_extended_drainage_state'
 MAGIC = b'S5EDR001'
 TEMPLATE = Path(__file__).with_name('extended_drainage_state.f90')
+SURFACE_SOURCE_LF_SHA256 = '734aac3c4f186775be36b169cf4d6e63332f07d6f69ee5ebfc6be3d7f958b0df'
+
+
+def corrected_surfacewater_source(original):
+    """Preserve actual positive water instead of the proved legacy dry loss."""
+    if hashlib.sha256(original.encode('cp1252')).hexdigest() != SURFACE_SOURCE_LF_SHA256:
+        raise ValueError('Changed original extended surfacewater provider')
+    old='            if (swstmax < 1.0d-7) then'
+    assert original.count(old)==1
+    return original.replace(old,'            if (swstmax <= 0.0d0) then',1)
 
 
 def describe(directory, selected, original_output):
