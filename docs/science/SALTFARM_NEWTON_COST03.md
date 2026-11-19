@@ -110,3 +110,7 @@ cost. Attribute that residual before selecting one bounded optimization.
 Repeated-head caching, transport rewrites and compiler changes already failed
 earlier discriminators and are not selected again. No further Newton stopping
 change is justified by this result.
+
+The subsequent [timestep administration and CSV investigation](SALTFARM_STEP_COST04.md)
+closes that question with four full controls, seven cold workers and a rejected
+CSV-only candidate; no reliable additional whole-runtime gain is admitted.
