@@ -17,7 +17,7 @@ def fixture(path, solute, hysteresis, bottom, step, kmean=1):
     if bottom==1:
         previous.fixture(path,hysteresis,step,'explicit',3,1,3 if step else 1,1)
     else:
-        previous.age.fixture(path,'explicit',hysteresis,3,1,3 if step else 1)
+        previous.age.fixture(path,'explicit',hysteresis,3,1,3 if step else 1,'point')
     control=path/'swap.swp'
     text=control.read_text(encoding='cp1252')
     for key,value in dict(SWKIMPL=1,SWKMEAN=kmean,SWSOLU=solute,SWBOTB=bottom,
