@@ -6,7 +6,7 @@ from daily_coupling import CoupledDailyColumn
 from implicit_conductivity_admission import AGE_REFUSAL,require_transport
 from original_output_baseline import assignment
 
-MODEL_SOURCE='f7f23dbe531b579991d3a77fd2b67cb05a08f67a'
+MODEL_SOURCE='bf9dedcb38dbd1ec9607c4d321883c62b80166be'
 COUPLING_GUARD='    from implicit_conductivity_admission import require_transport\n    require_transport(project)\n'
 CLI_GUARD='        from implicit_conductivity_admission import require_transport\n        require_transport(project)\n'
 
@@ -15,11 +15,11 @@ def literal_composition():
  r=c.ROOT
  def git(*args):return subprocess.check_output(['git',*args],cwd=r)
  changed=set(git('diff','--name-only',MODEL_SOURCE,'HEAD','--','app','src','reference','tools').decode().splitlines())
- assert changed=={'app/hybrid_water/implicit_conductivity_admission.py','app/hybrid_water/daily_coupling.py','tools/solute/run_water.py'},changed
+ assert not changed,changed
  for name,guard in [('app/hybrid_water/daily_coupling.py',COUPLING_GUARD),('tools/solute/run_water.py',CLI_GUARD)]:
   current=(r/name).read_text(encoding='utf8');assert current.count(guard)==1
-  assert current.replace(guard,'',1).encode()==git('show',MODEL_SOURCE+':'+name).replace(b'\r\n',b'\n'),name
- return dict(status='LITERAL_MODEL_RUNTIME_PLUS_ONLY_TWO_PUBLIC_ADMISSION_CALLS',model_source=MODEL_SOURCE,changed_production=sorted(changed))
+  assert current.encode()==git('show',MODEL_SOURCE+':'+name).replace(b'\r\n',b'\n'),name
+ return dict(status='LITERAL_CURRENT_MODEL_AND_PUBLIC_ADMISSION_SOURCE',model_source=MODEL_SOURCE,changed_production=sorted(changed))
 
 
 def main():

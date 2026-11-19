@@ -44,6 +44,8 @@ def main():
             ('implicit_root_finalization','Foreign original implicit microscopic root finalization policy'),
             ('implicit_pond_availability','Foreign original implicit pond availability policy'),
             ('implicit_interception_partition','Foreign original implicit exact interception partition policy'),
+            ('implicit_saturation_derivative','Foreign original implicit saturated conductivity derivative policy'),
+            ('implicit_finite_newton','Foreign original implicit finite Newton rollback policy'),
             ('implicit_pond_event','Foreign original implicit pond event ownership policy')]:
             policy=meta['identity'].get(owner)
             for field in [None,*(policy or {})]:
@@ -51,12 +53,16 @@ def main():
                 if field is None:bad['identity'][owner]='foreign'
                 else:bad['identity'][owner][field]='foreign'
                 (target/'BUILD.json').write_text(json.dumps(bad),encoding='utf8')
-                if owner in ('implicit_root_finalization','implicit_pond_availability','implicit_interception_partition'):
+                if owner in ('implicit_root_finalization','implicit_pond_availability','implicit_interception_partition','implicit_saturation_derivative','implicit_finite_newton'):
                     shutil.copyfile(build/'implicit_pond_event_state.f90',target/'implicit_pond_event_state.f90')
-                if owner in ('implicit_pond_availability','implicit_interception_partition'):
+                if owner in ('implicit_pond_availability','implicit_interception_partition','implicit_saturation_derivative','implicit_finite_newton'):
                     shutil.copyfile(build/'RWU_micro.f90',target/'RWU_micro.f90')
-                if owner=='implicit_interception_partition':
+                if owner in ('implicit_interception_partition','implicit_saturation_derivative','implicit_finite_newton'):
                     shutil.copyfile(build/'implicit_pond_availability.f90',target/'implicit_pond_availability.f90')
+                if owner in ('implicit_saturation_derivative','implicit_finite_newton'):
+                    shutil.copyfile(build/'MOD_meteo.f90',target/'MOD_meteo.f90')
+                if owner=='implicit_finite_newton':
+                    shutil.copyfile(build/'MOD_MvG_functions.f90',target/'MOD_MvG_functions.f90')
                 try:m.validate_bundle(target,a.reference_work,project)
                 except ValueError as error:assert expected in str(error),(owner,field,str(error))
                 else:raise AssertionError('Foreign numerical owner accepted: '+owner+' '+str(field))
@@ -92,6 +98,14 @@ def main():
         except ValueError as error:assert 'Foreign actual original implicit interception partition provider' in str(error)
         else:raise AssertionError('Foreign compiled original interception provider accepted')
         q['numerical_owner_refusals'].append(dict(owner='implicit_interception_partition',field='actual_provider_bytes',status='REFUSED_BEFORE_WORKER'));save()
+        target=a.output/'owner-actual-saturated-derivative-provider';target.mkdir()
+        (target/'BUILD.json').write_bytes((build/'BUILD.json').read_bytes())
+        for name in ('implicit_pond_event_state.f90','RWU_micro.f90','implicit_pond_availability.f90','MOD_meteo.f90'):shutil.copyfile(build/name,target/name)
+        (target/'MOD_MvG_functions.f90').write_bytes((build/'MOD_MvG_functions.f90').read_bytes()+b'\n! foreign saturated derivative source\n')
+        try:m.validate_bundle(target,a.reference_work,project)
+        except ValueError as error:assert 'Foreign actual original implicit saturated derivative provider' in str(error)
+        else:raise AssertionError('Foreign actual saturated derivative provider accepted')
+        q['numerical_owner_refusals'].append(dict(owner='implicit_saturation_derivative',field='actual_provider_bytes',status='REFUSED_BEFORE_WORKER'));save()
         for label,changes,extra in [
             ('snow',{'SWSNOW':1},''),('frost',{'SWFROST':1},''),('aquifer',{'SWBR':1},''),
             ('tables',{'SWSOPHY':1},''),('heat',{'SWHEA':0},''),('analytic-heat',{'SWCALT':1},''),
