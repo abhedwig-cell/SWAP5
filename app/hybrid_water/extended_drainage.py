@@ -105,7 +105,8 @@ def metadata(project):
                 ownership='Original MOD_drain dynamic values; exact rejected-trial restore, no new physical store',
                 physical_equations_changed=False,original_surfacewater_lf_sha256=SURFACE_SOURCE_LF_SHA256,
                 reference_defect_correction='Original positive storage is preserved; swstmax<=0 replaces lossy1e-7 dry cutoff',
-                surface_inventory='Actual original branch supply/discharge; signed accepted transfers; prescribed-stage volume reaction explicit')
+                surface_inventory='Actual original branch supply/discharge; signed accepted transfers; prescribed-stage volume reaction explicit',
+                original_cumulative_level_differences='Raw worker audit checked against actual daily transfers; cumulative origin is not physical restart state')
 
 
 def state_witness(tokens, project, day):
@@ -162,7 +163,7 @@ def flux_witness(tokens, project, receipt, origin):
         raise ValueError('Actual original secondary or combined water guard exceeded1e-10cm')
     return dict(stock_start_cm=start,stock_end_cm=end,secondary_exchange_cm=secondary,primary_exchange_cm=primary,
                 runoff_from_soil_cm=runoff,supply_cm=supply,discharge_cm=discharge,prescribed_stage_reaction_cm=reaction,
-                original_level_exchange_cm=original,independent_level_exchange_cm=independent,
+                independent_level_exchange_cm=independent,
                 independent_surface_residual_cm=residual,independent_combined_residual_cm=combined,
                 accepted_steps=steps,rejected_steps=rejected,
                 authority='original simulated surfacewater' if s['swsec']==2 else 'original prescribed-stage volume constraint')
