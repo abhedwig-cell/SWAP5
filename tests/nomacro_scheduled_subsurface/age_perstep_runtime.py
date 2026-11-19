@@ -1,15 +1,31 @@
 """Actual original AGE per-step composition and independent cold processes."""
-import argparse,json,re,subprocess,sys,time,zipfile
+import argparse,csv,json,re,subprocess,sys,time,zipfile
 from pathlib import Path
 from datetime import date,datetime,timedelta
 import age_fixed as fixed
-from age_runtime import output_values as age_outputs
 from age_clock import original_timestamp
 from original_output_baseline import assignment
-from original_output_files import records
+from original_output_files import records,compare
 from age_perstep_output import metadata,magic
 
 m=fixed.m;ROOT=fixed.ROOT
+
+
+def age_outputs(full,data,project):
+    # Original FLPRINTDT selects SoilWaterOutput short events; Solute(3) is
+    # reached only through flOutput, including the actual final TEND event.
+    names=('result.ageProfile.csv','result.ageeffluent.csv','result.ageeffluentqdrain.csv','result.ageeffluentwater.csv')
+    lines={name:records(full/'original'/name) for name in names}
+    days={name:[int(next(csv.reader([v]))[2]) for v in values] for name,values in lines.items()}
+    expected=[len(data)] if date.fromisoformat(project.start_date)+timedelta(days=len(data)-1)==date.fromisoformat(project.end_date) else []
+    assert all(values==expected for values in days.values()),days
+    rounded=lambda v:float(format(v,'.3E'))
+    for index,day in enumerate(expected):
+        a,w,d=[next(csv.reader([lines[name][index]])) for name in names[1:]];values=data[day-1]['age_effluent']
+        assert list(map(float,a[4:]))==list(map(rounded,values[16:]))
+        assert list(map(float,w[3:]))==list(map(rounded,values[:8]))
+        assert list(map(float,d[3:]))==list(map(rounded,values[3:8]))
+    return dict(actual_global_days=days,original_floutput_tend_age_cadence_retained=True,actual_written_means_and_volumes_match_full_precision_probe=True)
 
 
 def fixture(path,mode,hysteresis,fmt,reset,npd,source):
@@ -31,19 +47,7 @@ def own(build,reference,project,full,data,start,end,out):
     with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as a,zipfile.ZipFile(out/f'accepted-column-1-day-{end}.zip') as b:
         assert a.read('macro.bin')[:8]==magic(project)
         for name in ('result.end','macro.bin'):assert a.read(name)==b.read(name),name
-    low=datetime.fromisoformat(project.start_date)+timedelta(days=start);high=datetime.fromisoformat(project.start_date)+timedelta(days=end)
-    selected=metadata(project);output={}
-    if selected['swcsv']:
-        name={1:'result_output.csv',2:'result_output.csv',3:'result_output.bin'}[selected['swcsv']]
-        warm=records(full/'original'/name);cold=records(out/'original'/name)
-        def stamp(v):return original_timestamp(v[:19].decode('ascii').strip() if isinstance(v,bytes) else v.split(',')[0].strip())
-        expected=[v for v in warm[1:] if low<stamp(v)<=high];assert cold[1:]==expected,name
-        output[name]=dict(exact=True,continuation_records=len(expected))
-    lo=low.date().isoformat();hi=high.date().isoformat()
-    for name in ('result.ageProfile.csv','result.ageeffluent.csv','result.ageeffluentqdrain.csv','result.ageeffluentwater.csv'):
-        def selected_lines(path):return [v for v in m.csvlines(path) if lo<=v.split(',')[0].strip()[:10]<hi]
-        assert selected_lines(out/'original'/name)==selected_lines(full/'original'/name),name
-        output[name]=dict(exact=True,continuation_records=len(selected_lines(out/'original'/name)))
+    output=compare(full/'original',out/'original',metadata(project),start,end,project.start_date)
     assert m.sha(source)==digest
     return dict(start=start,end=end,exact_physical=True,exact_complete_native=True,exact_user_output=output,origin_unchanged=True,seconds=seconds)
 
@@ -63,7 +67,7 @@ def main():
         t=time.perf_counter();r=subprocess.run(cmd,capture_output=True,text=True,timeout=180);q.update(build_returncode=r.returncode,build_seconds=time.perf_counter()-t);(out/'build.stdout').write_text(r.stdout,encoding='utf8');(out/'build.stderr').write_text(r.stderr,encoding='utf8');save();r.check_returncode()
         meta,_=m.validate_bundle(build,a.reference_work,project);assert meta['identity']['conserved_original_age']['native_codec']==magic(project).decode()
         full=out/'trajectory';q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,35,{2,4,8,30,34,35},90);save()
-        q['age_output']=age_outputs(full,data);q['cold']=[own(build,a.reference_work,project,full,data,s,e,out/f'own-{s}') for s,e in ((2,4),(4,8),(30,34))]
+        q['age_output']=age_outputs(full,data,project);q['cold']=[own(build,a.reference_work,project,full,data,s,e,out/f'own-{s}') for s,e in ((2,4),(4,8),(30,34))]
         q['maximum_age_tolerance_fraction']=max(abs(row[k])/row['age_tolerance_cm_day'] for row in data for k in ('age_soil_residual_cm_day','age_pond_residual_cm_day','age_combined_residual_cm_day'));assert q['maximum_age_tolerance_fraction']<=1
         assert all(row['age_state_cm_day'][5]==0 for row in data)
         q['status']='ACTUAL_AGE_PERSTEP_SHORT_SOURCE_NATIVE_OUTPUT_PASS';print(q['status'],flush=True)
