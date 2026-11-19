@@ -62,7 +62,8 @@ def selection(text, selectors, boundary):
                 boundary_jacobian_policy='original-implicit-exact-boundary-jacobian-v1',
                 pond_event_policy='original-implicit-pond-depletion-event-v1',
                 root_finalization_policy='original-implicit-micro-final-root-evaluation-v1',
-                pond_availability_policy='original-implicit-pond-evaporation-availability-v1')
+                pond_availability_policy='original-implicit-pond-evaporation-availability-v1',
+                interception_partition_policy='original-implicit-exact-interception-partition-v1')
 
 
 def metadata(project):

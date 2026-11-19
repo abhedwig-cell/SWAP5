@@ -879,6 +879,8 @@ end module plant_interface""")
     patched=implicit_root_build(output,donor_build,project,patched)
     from implicit_pond_availability import apply_build as implicit_availability_build
     patched=implicit_availability_build(output,project,patched)
+    from implicit_interception_partition import apply_build as implicit_interception_build
+    patched=implicit_interception_build(output,donor_build,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -969,6 +971,9 @@ end module plant_interface""")
     from implicit_pond_availability import metadata as implicit_availability_metadata
     implicit_availability=implicit_availability_metadata(project)
     if implicit_availability is not None:build_identity['implicit_pond_availability']=implicit_availability
+    from implicit_interception_partition import metadata as implicit_interception_metadata
+    implicit_interception=implicit_interception_metadata(project)
+    if implicit_interception is not None:build_identity['implicit_interception_partition']=implicit_interception
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from age_groundwater_output import metadata as original_output_metadata

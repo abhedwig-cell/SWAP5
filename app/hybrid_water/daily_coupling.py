@@ -174,6 +174,14 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Foreign original implicit pond availability policy')
     if implicit_availability is not None and (bundle/'implicit_pond_availability.f90').read_bytes()!=(h.APP/'implicit_pond_availability.f90').read_bytes():
         raise ValueError('Foreign actual original implicit pond availability provider')
+    from implicit_interception_partition import metadata as implicit_interception_metadata,source as implicit_interception_source
+    implicit_interception=implicit_interception_metadata(project)
+    if identity.get('implicit_interception_partition')!=implicit_interception:
+        raise ValueError('Foreign original implicit exact interception partition policy')
+    if implicit_interception is not None:
+        original=(reference/'build/swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')
+        if (bundle/'MOD_meteo.f90').read_text(encoding='cp1252')!=implicit_interception_source(original):
+            raise ValueError('Foreign actual original implicit interception partition provider')
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source
