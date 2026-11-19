@@ -33,7 +33,7 @@ program real_original_micro_finalization
   initial_h=h
   swsophy=0;iHWCKmodel=1;sw_use_elas=0;fl_use_tables=.false.;fl_use_kh_power=.false.
   call set_cofgen_pointers
-  ksatfit(1:numnod)=cofgen(3,1:numnod)
+  ksatfit(1:numlay)=cofgen(3,nod1lay(1:numlay))
   unit_log=6;unit_err=6;unit_crp=77;crpfilnam='grass.crp';sw_oxygen=2
   fl_do_not_read_crpfile=.false.;date='2004-09-08'
   micro=1
