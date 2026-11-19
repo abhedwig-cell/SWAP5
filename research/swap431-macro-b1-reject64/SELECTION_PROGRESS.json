@@ -19,11 +19,23 @@
       "iterations": 12,
       "active_V": 2,
       "result": "accepted; lower endpoint moves upward"
+    },
+    {
+      "profile": "SELECT3",
+      "dt": 1.9582398030762345e-05,
+      "optimization": "O0",
+      "normal": true,
+      "first_kind": 0,
+      "iterations": 17,
+      "active_V": 2,
+      "result": "accepted; selection cap reached, no V-step rejection"
     }
   ],
-  "low": 1.8213484026367723e-05,
+  "low": 1.9582398030762345e-05,
   "high": 2.0951312035156963e-05,
-  "next_dt": 1.9582398030762345e-05,
-  "remaining_O0_selections": 1,
-  "found_active_V_rejection": false
+  "next_dt": null,
+  "remaining_O0_selections": 0,
+  "found_active_V_rejection": false,
+  "O2_confirmation": "SELECT3",
+  "rollback_direct_retry_not_qualified": true
 }
