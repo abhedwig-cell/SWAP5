@@ -33,7 +33,7 @@ def age_outputs(full,data,project):
     assert all(values==expected for values in days.values()),days
     rounded=lambda v:float(format(v,'.3E'))
     for index,day in enumerate(expected):
-        a,w,d=[next(csv.reader([lines[name][index]])) for name in names[1:]];values=data[day-1]['age_effluent']
+        a,w,d=[next(csv.reader([lines[name][index]])) for name in (names[1],names[3],names[2])];values=data[day-1]['age_effluent']
         assert list(map(float,a[4:]))==list(map(rounded,values[16:]))
         assert list(map(float,w[3:]))==list(map(rounded,values[:8]))
         assert list(map(float,d[3:]))==list(map(rounded,values[3:8]))
