@@ -70,6 +70,7 @@ jobs:
             /integration/f-ci/saltfarm-typed07/
             /integration/f-ci/nomacro-complete01/WEATHER_*
             /integration/nomacro-coverage01/BLOCK_H_LAST_TEMPORAL_RAW.tar.xz
+            /integration/f-ci/nomacro-complete01/EXTENDED_DRAINAGE_*
       - name: Build both optimizations and run actual file/restart qualification
         run: |
           set -euo pipefail

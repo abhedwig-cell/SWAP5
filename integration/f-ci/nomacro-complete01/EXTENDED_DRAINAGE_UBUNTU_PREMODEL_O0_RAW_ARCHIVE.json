@@ -1,0 +1,100 @@
+{
+  "status": "RETAINED_ACTUAL_ORIGINAL_COMPONENT_PASS_BUT_CHECKOUT_REFUSAL_BEFORE_INTEGRATED_MODELS",
+  "archive": "EXTENDED_DRAINAGE_UBUNTU_PREMODEL_O0_RAW_ARCHIVE.zip",
+  "bytes": 6633819,
+  "sha256": "2393a0b8913ccaf0d447fbb782757c8a7e77b09a091a2ac8c41f8b7eac89b954",
+  "repacked": false,
+  "artifact_id": 14555852254,
+  "run_id": 44573403270,
+  "job_id": 135734292666,
+  "producer": "d057fcc08d64631a57de05908968d691caf07bae",
+  "actual_integrated_model_executions": 0,
+  "actual_component_outcome": "original pond defects/corrections/tangent and small-interception defect/correction pass",
+  "refusal": "Missing existing reference/swap-4.3.1/patches/NOMACRO-AQUIFER-SOLUTE-01/run.py during actual controller import",
+  "job_log": "EXTENDED_DRAINAGE_UBUNTU_PREMODEL_O0_JOB.log",
+  "job_log_sha256": "f505de69d7ac0c60f236e699936a0cd011fb2036527fac6f1185aa975628e630",
+  "repair": "Only sparse-checkout source dependency plus early controller imports added at7c07b05b9; no app/numerical/input/evidence changes",
+  "replacement_run_id": 44575599974,
+  "members": {
+    "component-interception/corrected-MOD_meteo.f90": {
+      "bytes": 83345,
+      "sha256": "65a84dbd634d6a8603e24784d0a530c556edfa31aac8d43681f7dcf1abf9bed3"
+    },
+    "component-interception/corrected-probe.exe": {
+      "bytes": 1657080,
+      "sha256": "29f9a0258777369c58b5c1f398a3238f5f55f1428847fc5dd476b2fcd177fa23"
+    },
+    "component-interception/corrected-compile.json": {
+      "bytes": 5870,
+      "sha256": "dbd9d8dd570b6c49ab74ea84dc2f00f284070d75db31e5716294e7264588338a"
+    },
+    "component-interception/corrected.json": {
+      "bytes": 15914,
+      "sha256": "573db25345b04ebe41596b36ee702f54711a7ecb85199d4318c77909b1448359"
+    },
+    "component-interception/original-MOD_meteo.f90": {
+      "bytes": 83251,
+      "sha256": "772428c8ac7f22dcd3d24a81f284c053975ae814deb5182f9aab26f97bc1f1bc"
+    },
+    "component-interception/original-compile.json": {
+      "bytes": 5862,
+      "sha256": "167f5c711c3eb037f7c8c5502f32ae8c594ec69ffad19341d714294a6bed034e"
+    },
+    "component-interception/original-probe.exe": {
+      "bytes": 1657080,
+      "sha256": "a3fd192ccdd85005852ee936667e2070f61a172ff33d35243e8b0ce1dd8582cb"
+    },
+    "component-interception/original.json": {
+      "bytes": 15904,
+      "sha256": "8dfe2d9246bcda411304a3f9119c6a478c365542774a76b9d28eac62525129f2"
+    },
+    "component-pond/PASS.json": {
+      "bytes": 145,
+      "sha256": "38ec961031c949b74565361e371ba9d16c0270cd9288b2a0af5922bdc03bc586"
+    },
+    "component-pond/corrected-boundtop.f90": {
+      "bytes": 14298,
+      "sha256": "63ad99fcfb5abac52a786ad8b6319fd05f511a9e72b6b3edfeb4cb113869b760"
+    },
+    "component-pond/corrected-probe.exe": {
+      "bytes": 1624120,
+      "sha256": "9afcd47b233aa0c8d561ef58ae228d6f3a7078446908527bd867a983de12edc3"
+    },
+    "component-pond/corrected.json": {
+      "bytes": 16236,
+      "sha256": "2938f37e3ce49da29d20cba6e0f06757cf98dad0ff050d333cf5809f65f98a49"
+    },
+    "component-pond/original-boundtop.f90": {
+      "bytes": 11771,
+      "sha256": "cdc21786ea06265a23cb01a086ca29aef780e3528501eb770bdaea9f30290123"
+    },
+    "component-pond/original-probe.exe": {
+      "bytes": 1624008,
+      "sha256": "84a23d8f6de1fd034235956a852a2020d4d09441e7833727316930f03a76752a"
+    },
+    "component-pond/original.json": {
+      "bytes": 16226,
+      "sha256": "8b2ae4fc5e802b886f337e309c9f851a4bfc1906fd9d8a9ed92b958cf9e6a763"
+    },
+    "component-pond/tangent.exe": {
+      "bytes": 1624112,
+      "sha256": "ef72174461c213a4513d8a3db7ef7c853ff71ce28804943dbc9ec74114180514"
+    },
+    "component-pond/tangent.json": {
+      "bytes": 5646,
+      "sha256": "6f6472e2163404b858c86585c9b6f5861723a6085cb3d99a55f4780877d27bdb"
+    },
+    "controller-source.tar": {
+      "bytes": 102400,
+      "sha256": "6727f649664ad23d49bcef0bbb880918e5f0fcbb80d9f674b1de3eb460fa93aa"
+    },
+    "source/RESULT.json": {
+      "bytes": 485339,
+      "sha256": "e8b6f6d29f1d88839e0736de168b836b997e01a920e5429b3ccafcc061217045"
+    },
+    "source/actual-producer-source.zip": {
+      "bytes": 3903030,
+      "sha256": "fa29ccae3e170e43cfab82d1af3b35e66166060dfe55676281b72f7a40835ab0"
+    }
+  }
+}

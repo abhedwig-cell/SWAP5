@@ -1,0 +1,99 @@
+{
+  "status": "ACTUAL_ORIGINAL_POSITIVE_INTERCEPTION_DEFECT_AND_SELECTED_CORRECTION_PASS",
+  "source": "ebde165a5",
+  "archive": "EXTENDED_DRAINAGE_INTERCEPTION_COMPONENT_RAW.zip",
+  "bytes": 2461476,
+  "sha256": "7102c1ef438d627d52d2251e2e3c726f19a2684348a073e13236420e0efc2393",
+  "actual_original_O0_O2_loss_cm": -6.249706826708112e-09,
+  "corrected_O0_O2_residual_cm": 0.0,
+  "unchanged_water_guard_cm": 1e-10,
+  "scenarios": [
+    "actual Rutter rain-only",
+    "actual Rutter rain plus sprinkling",
+    "SWDRA1 nonselected original response exact"
+  ],
+  "scope": "Only SWMACRO0/SWDRA2 positive aintcdt<small uses existing original rain/irrigation partition instead of dropping interception. Rutter fluxes/storage and remaining physical equations unchanged.",
+  "public_admission": false,
+  "members": {
+    "O0/corrected-MOD_meteo.f90": {
+      "bytes": 85652,
+      "sha256": "8a6bc34c877aa5b467719724ec46acc9011f609570bd8035973f7e4ce589fb84"
+    },
+    "O0/corrected-compile.json": {
+      "bytes": 8854,
+      "sha256": "007dc1418efe668515263ee304e96e67e1ad9d3810aa176d5166f97b7a4974d0"
+    },
+    "O0/corrected-probe.exe": {
+      "bytes": 1996695,
+      "sha256": "a9f09a6ceb67b98e9c08301066828c2159c998e951648bbccbecfff41aa2b9b3"
+    },
+    "O0/corrected.json": {
+      "bytes": 21186,
+      "sha256": "99030270c2de2fec4d89b975156d6ee698c582565b4f82753d2bfdb62b1ded67"
+    },
+    "O0/original-MOD_meteo.f90": {
+      "bytes": 85557,
+      "sha256": "c892a62bbc026388fcda11301eeb65c75adf87feebe442bb95966feca7642e1a"
+    },
+    "O0/original-compile.json": {
+      "bytes": 8846,
+      "sha256": "0c00021054e354c7d0f7be578bda0335d9211bfcdd5c26ca637adccc5fc93c28"
+    },
+    "O0/original-probe.exe": {
+      "bytes": 1996183,
+      "sha256": "773e3c5563c22a8e44546103aff2a2ea717ba4fc42168e529e22da39f6a66766"
+    },
+    "O0/original.json": {
+      "bytes": 21176,
+      "sha256": "a42cfb224aeaf222a1c3a9c4fc0cecbf2dac405c407da04302812e3994a62510"
+    },
+    "O2/corrected-MOD_meteo.f90": {
+      "bytes": 85652,
+      "sha256": "8a6bc34c877aa5b467719724ec46acc9011f609570bd8035973f7e4ce589fb84"
+    },
+    "O2/corrected-compile.json": {
+      "bytes": 8854,
+      "sha256": "514313b744e2e5e396986859fd3da62a63be35fbd6c4b250a8824bcb4098f8ec"
+    },
+    "O2/corrected-probe.exe": {
+      "bytes": 1957379,
+      "sha256": "dcb909b834f1a0f222ffc4b67f51c55889ce2c8930b23df322a80e28cfd38759"
+    },
+    "O2/corrected.json": {
+      "bytes": 21186,
+      "sha256": "6e2baaa038cf23d1d5732eb4f44db9cf2dd3fecccdb11c6ca70845219e1dac12"
+    },
+    "O2/original-MOD_meteo.f90": {
+      "bytes": 85557,
+      "sha256": "c892a62bbc026388fcda11301eeb65c75adf87feebe442bb95966feca7642e1a"
+    },
+    "O2/original-compile.json": {
+      "bytes": 8846,
+      "sha256": "aa73ba72955ff937c96100a4ec60ea05062aa4c8ec81a1ea865fca4541cdd710"
+    },
+    "O2/original-probe.exe": {
+      "bytes": 1956867,
+      "sha256": "ef8e6be5825f35009d0403b08012fe011d3274b6f29ee48ca5f3bbaf5de45230"
+    },
+    "O2/original.json": {
+      "bytes": 21176,
+      "sha256": "538f02bf79a7d48d9b0d839013d95c81eb5d37a8219ee0193539e80fe98b4868"
+    },
+    "original/MOD_meteo.f90": {
+      "bytes": 85550,
+      "sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822"
+    },
+    "producer/app/hybrid_water/extended_interception.py": {
+      "bytes": 504,
+      "sha256": "ed48e5d0df976f281be967f530e2f0b545b26a1831caf362f46b1f95cb31dddd"
+    },
+    "producer/tests/nomacro_drainage/interception_probe.py": {
+      "bytes": 2719,
+      "sha256": "45b59abb14d087c31527a274987bb8da8587e2eebeff5a1e4cc6fb6ae5765165"
+    },
+    "producer/tests/nomacro_drainage/test_original_positive_interception.f90": {
+      "bytes": 1272,
+      "sha256": "79dc364be67cfa1232d7b7b76f6ad801f8456847dbde33ddcf7e4bc219c05618"
+    }
+  }
+}

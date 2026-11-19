@@ -1,0 +1,84 @@
+name: Original extended drainage composition qualification
+on:
+  push:
+    branches: [codex/nomacro-extended-drainage01]
+    paths: ['.github/workflows/nomacro-extended-drainage.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nomacro-extended-drainage-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        optimization: [O0, O2]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            tests/nomacro_mixtures
+            tests/nomacro_scheduled_subsurface
+            tests/nomacro_drainage
+            tests/saltfarm_newton
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+            reference/swap-4.3.1/patches
+      - name: Preserve actual source and prepare original provider without model execution
+        env:
+          PYTHONPATH: app/hybrid_water
+        run: |
+          mkdir -p "$RUNNER_TEMP/proof"
+          python3 -B tests/nomacro_drainage/extended_runtime.py --help > /dev/null
+          python3 -B tests/nomacro_drainage/extended_controls.py --help > /dev/null
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"
+          git archive HEAD tests/nomacro_drainage .github/workflows/nomacro-extended-drainage.yml > "$RUNNER_TEMP/proof/controller-source.tar"
+          python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Qualify literal original reference defects and bounded numerical corrections
+        run: |
+          python3 -B tests/nomacro_drainage/pond_outward_probe.py --provider "$RUNNER_TEMP/provider" --optimization ${{ matrix.optimization }} --build-root "$RUNNER_TEMP/component-pond" --output "$RUNNER_TEMP/proof/component-pond"
+          python3 -B tests/nomacro_drainage/interception_probe.py --provider "$RUNNER_TEMP/provider" --optimization ${{ matrix.optimization }} --build-root "$RUNNER_TEMP/component-interception" --output "$RUNNER_TEMP/proof/component-interception"
+      - name: Qualify affected integrated original water and CDE compositions
+        run: |
+          for case in prescribed fixed automatic water; do
+            python3 -B tests/nomacro_drainage/extended_runtime.py --case "$case" --days 1096 --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$case" --output "$RUNNER_TEMP/proof/$case"
+            python3 -B tests/nomacro_drainage/extended_forensics.py "$RUNNER_TEMP/proof/$case" --output "$RUNNER_TEMP/proof/$case/FORENSICS.json"
+            python3 -B tests/nomacro_drainage/extended_controls.py --reference-work "$RUNNER_TEMP/provider" --profile-root "$RUNNER_TEMP/proof/$case" --output "$RUNNER_TEMP/proof/$case/controls"
+          done
+          python3 -B tests/nomacro_drainage/extended_runtime.py --case table --days 37 --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/table" --output "$RUNNER_TEMP/proof/table"
+          python3 -B tests/nomacro_drainage/extended_forensics.py "$RUNNER_TEMP/proof/table" --output "$RUNNER_TEMP/proof/table/FORENSICS.json"
+          python3 -B tests/nomacro_drainage/forensic_negative_controls.py "$RUNNER_TEMP/proof/fixed" --output "$RUNNER_TEMP/proof/FORENSIC_NEGATIVES.json"
+      - name: Retain exact emitted sources, executable bytes and original provider identity
+        if: always()
+        shell: python
+        run: |
+          import os,shutil
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)
+          provider=root/'provider/PREPARED.json'
+          if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
+          for build in sorted((root/'builds').glob('*/*')):
+              if not build.is_dir():continue
+              target=proof/(build.name+'-build');target.mkdir()
+              for path in sorted(build.iterdir()):
+                  if path.is_file() and (path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.exe','.dll','.so')):
+                      shutil.copyfile(path,target/path.name)
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: extended-drainage-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

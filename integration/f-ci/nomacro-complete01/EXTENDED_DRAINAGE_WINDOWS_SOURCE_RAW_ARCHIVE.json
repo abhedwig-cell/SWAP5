@@ -1,0 +1,29 @@
+{
+  "status": "NEUTRAL_ACTUAL_WINDOWS_RAW_ARCHIVE_NO_ADMISSION_CLAIM",
+  "archive": "EXTENDED_DRAINAGE_WINDOWS_SOURCE_RAW_ARCHIVE.zip",
+  "bytes": 4320815,
+  "sha256": "a95d1f5e75377c166ee940afd8856fd96be190ade347963e2b9f0606cee7c5f0",
+  "members": {
+    "source/actual-producer-source.zip": {
+      "bytes": 4300379,
+      "sha256": "6b10cdff1061acb28a0072266bcf87ed67267375b973852e2aac3742c9163a42"
+    },
+    "source/controller-source.tar": {
+      "bytes": 102400,
+      "sha256": "0e909563df579580c5e4f4e4d8fdf302be2457a9dd8dd24f979f08bcc4ffb46f"
+    },
+    "source/CONTROLLER.json": {
+      "bytes": 202,
+      "sha256": "3caf66668a35c0385668355b1dafe94a8834fccba32f20df2b3fd42f88a5e602"
+    },
+    "source/RESULT.json": {
+      "bytes": 531628,
+      "sha256": "510128e63f0fc999017106ba4d63f042b211516d52096948dd09c06f5316a3a0"
+    },
+    "provider/PREPARED.json": {
+      "bytes": 41046,
+      "sha256": "a2f529bc5d69c9e15bdda4c7aeb643a48685b50e10c2c1fce9eb639faf8a2da5"
+    }
+  },
+  "compiled_objects_excluded": "Reproducible original provider; actual emitted source, executable/library and BUILD bytes retained"
+}

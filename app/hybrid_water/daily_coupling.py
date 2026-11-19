@@ -261,6 +261,10 @@ def validate_bundle(bundle, reference, project):
         for name in (*age_source.PROVIDERS,*age_source.OUTPUT_PROVIDERS):
             if (bundle/(name+'.f90')).read_bytes().replace(b'\r\n',b'\n')!=(h.ROOT/'src/process'/(name+'.f90')).read_bytes().replace(b'\r\n',b'\n'):
                 raise ValueError('Foreign actual original age provider')
+    from extended_drainage import metadata as extended_metadata,TEMPLATE as extended_template,MODULE as extended_module
+    if identity.get('extended_drainage')!=extended_metadata(project):raise ValueError('Foreign extended drain state policy; rebuild without rebinding')
+    if identity.get('extended_drainage') and (bundle/(extended_module+'.f90')).read_bytes()!=extended_template.read_bytes():
+        raise ValueError('Foreign actual extended drain native state provider')
     from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled, POLICY as SCHEDULED_SUBSURFACE_POLICY
     expected_subsurface={'policy':SCHEDULED_SUBSURFACE_POLICY,'source_sha256':h.sha(h.APP/'scheduled_subsurface_irrigation.py')} if scheduled_subsurface_enabled(project) else None
     if identity.get('scheduled_subsurface_irrigation')!=expected_subsurface:raise ValueError('Foreign original scheduled subsurface irrigation policy')
@@ -674,6 +678,9 @@ class CoupledDailyColumn:
                 validate_effluent(raw['age_effluent'])
                 from age_groundwater_output import active_selection as age_groundwater,validate_candidate as validate_age_groundwater
                 if age_groundwater(self.project) is not None:validate_age_groundwater(aux,raw,self.project)
+            from extended_drainage import enabled as extended_enabled,validate_candidate as validate_extended
+            if extended_enabled(self.project):
+                with zipfile.ZipFile(candidate) as z:validate_extended(z.read('macro.bin'),raw,self.project)
             from weather_root_state import enabled as weather_root_enabled,validate_candidate as validate_weather_root
             if weather_root_enabled(self.project):
                 with zipfile.ZipFile(candidate) as z:validate_weather_root(z.read('macro.bin'),raw,self.project)
@@ -706,6 +713,9 @@ class CoupledDailyColumn:
         if h.sha(candidate) != digest:
             raise ValueError('Private proposal changed')
         # Verify the bytes actually being published, not only the retained ZIP.
+        from extended_drainage import enabled as extended_enabled,validate_candidate as validate_extended
+        if extended_enabled(self.project):validate_extended((ready/'macro.bin').read_bytes(),raw,self.project)
+
         from weather_root_state import enabled as weather_root_enabled,validate_candidate as validate_weather_root
         if weather_root_enabled(self.project):validate_weather_root((ready/'macro.bin').read_bytes(),raw,self.project)
         with zipfile.ZipFile(candidate) as z:

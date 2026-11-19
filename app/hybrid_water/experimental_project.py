@@ -96,6 +96,9 @@ def inspect(directory, *, original_output=None):
     mandatory.update(SWSOPHY={0, 1}, SWDRA={0, 1}, SWETR={0, 1},
                      SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWREDU={0, 1, 2},
                      SWKMEAN=set(range(1,7)), SWINCO={1, 2, 3}, SWBBCFILE={0, 1})
+    from extended_drainage import describe as describe_extended_drainage
+    extended=describe_extended_drainage(directory,selected,original_output)
+    if extended is not None:mandatory['SWDRA']={2}
     for name, allowed in mandatory.items():
         if selected.get(name) not in allowed:
             raise ValueError('Unsupported experimental process/state: '+name)
@@ -127,6 +130,7 @@ def inspect(directory, *, original_output=None):
                    SWKIMPL={0,1}, SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},
                    SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1})
+    if extended is not None:allowed['SWDRA']={2}
     if (selected['SWSOLU']==2 and selected.get('SWMONTH')==0 and selected.get('SWODAT')==0
             and int(one(text,'PERIOD',r'[+-]?\d+'))>1
             and int(one(text,'NPRINTDAY',r'[+-]?\d+'))==1):
@@ -230,6 +234,7 @@ def inspect(directory, *, original_output=None):
                 raise ValueError('Original salinity stress requires active solute transport')
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):
                 raise ValueError('Original physical oxygen stress requires numerical soil heat for every future crop')
+        if extended is not None and path.resolve()==(directory/extended['file']).resolve():continue
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
             original_structure=lambda s:{k:v for k,v in s.items() if k!='SWDIVD'}
             if (path.resolve()!=frost_drain_file or sig.get('SWDIVD')!=0
@@ -257,6 +262,7 @@ def inspect(directory, *, original_output=None):
         raise ValueError('Unsupported original grid size')
     report=dict(inputs=inputs, start_date=start, end_date=end, nodes=nodes,
                 solute=selected['SWSOLU']==1, selectors=selected, boundary=boundary)
+    if extended is not None:report['extended_drainage']=extended
     if selected['SWSOLU']==2:report['age']=True
     from implicit_conductivity import selection as implicit_selection
     implicit = implicit_selection(text, selected, boundary)
@@ -326,6 +332,8 @@ def validate(project):
 
 
 def auxiliary_magic(project):
+    from extended_drainage import enabled as extended_drainage_enabled,MAGIC as EXTENDED_DRAINAGE_MAGIC
+    if extended_drainage_enabled(project):return EXTENDED_DRAINAGE_MAGIC
     from weather_root_state import enabled as weather_root_enabled,MAGIC as WEATHER_ROOT_MAGIC
     if weather_root_enabled(project):return WEATHER_ROOT_MAGIC
     from implicit_groundwater_state import enabled as implicit_groundwater,magic as implicit_magic

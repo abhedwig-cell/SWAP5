@@ -1,0 +1,35 @@
+{
+  "status": "ACTUAL_CURRENT_FULL_OWNER_PASS_CLEAN_DETACHED_PENDING",
+  "source": "7b2b36e88e690c5f6f3f7bbf8e30e8a76b2c7778",
+  "runtime": "ec4cb79a974f86bc248aa10eb037a588a1b2f249",
+  "canonical_predecessor": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
+  "entry": "python -B tests/hupsel51/verify_successor.py",
+  "positive": {
+    "stdout": {
+      "file": "EXTENDED_DRAINAGE_CURRENT_FULL_OWNER_V1.stdout.txt",
+      "sha256": "b09503b1e39a89acda911624d0a6f0f33ba0863b4e2ab85be75370790e6a86b9"
+    },
+    "stderr": {
+      "file": "EXTENDED_DRAINAGE_CURRENT_FULL_OWNER_V1.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "committed_wrong_source": {
+    "head": "ecbca2abce1055167ed244c706aea90baa15b2d6",
+    "branch": "codex/nomacro-extended-drainage-source-negative01",
+    "refusal": "Actual drainage compiler source differs from qualified runtime",
+    "valid_attempt": "V3",
+    "earlier_attempts": "V1/V2 missing sparse fixtures, not counted as wrong-source controls",
+    "stdout": {
+      "file": "EXTENDED_DRAINAGE_COMMITTED_WRONG_SOURCE_V3.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "file": "EXTENDED_DRAINAGE_COMMITTED_WRONG_SOURCE_V3.stderr.txt",
+      "sha256": "46eda4fa334e5aad3fff660f8bd21ab1091eb30ec8305e5d5d16548222b5c50d"
+    }
+  },
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "RC3_changed": false
+}

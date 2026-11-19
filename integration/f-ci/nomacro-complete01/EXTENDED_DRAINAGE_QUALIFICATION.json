@@ -1,0 +1,175 @@
+{
+  "status": "NEUTRAL_ORIGINAL_EXTENDED_DRAINAGE_SOURCE_RAW_QUALIFICATION_PENDING_ADMISSION",
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "predecessor": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
+  "runtime": "ec4cb79a974f86bc248aa10eb037a588a1b2f249",
+  "forensics_ref": "0a43c447ca22cd1f119ebd11a92cd413ce78d89e",
+  "actual_compiler_source_changes": [
+    "app/hybrid_water/daily_coupling.py",
+    "app/hybrid_water/daily_host.py",
+    "app/hybrid_water/experimental_project.py",
+    "app/hybrid_water/extended_drainage.py",
+    "app/hybrid_water/extended_drainage_state.f90",
+    "app/hybrid_water/extended_interception.py",
+    "app/hybrid_water/extended_pond.py",
+    "app/hybrid_water/extended_trial_receipt.py"
+  ],
+  "classification": "Original-process composition/state ownership plus separately proved reference-defect/numerical corrections; representative configurations reuse unchanged original implementations",
+  "scope": {
+    "SWMACRO": 0,
+    "SWDRA": 2,
+    "SWSOLU": [
+      0,
+      1
+    ],
+    "SWSRF": [
+      2,
+      3
+    ],
+    "SWSEC": [
+      1,
+      2
+    ],
+    "SWMAN": [
+      1,
+      2
+    ],
+    "SWQHR": [
+      1,
+      2
+    ],
+    "primary_secondary_levels": "actual2levelCDE and3levelwater; typed generic original active dimensions",
+    "soil": "explicitSWKIMPL0,analyticSWSOPHY0,hys0,noSnow/frost/aquifer,daily meteo,bottom6",
+    "output": "existing compatibility daily; original-output/calendar remains refused",
+    "not_qualified": [
+      "SWSRF1 undefined savedWL originalrisk",
+      "extended AGE/implicit/hysteretic/other weather/lower-boundary/output combinations"
+    ]
+  },
+  "daily_soil_water_guard_cm": 1e-10,
+  "daily_secondary_water_guard_cm": 1e-10,
+  "daily_combined_water_guard_cm": 1e-10,
+  "daily_cde_guard_mg_cm2": 1e-10,
+  "integrated_cde_guard_mg_cm2": 1e-10,
+  "integrated_water_1e10_claim": false,
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "functional_completion": "PARTIAL",
+  "RC3_changed": false,
+  "global_family_and_remaining_gap_counts": "UNKNOWN",
+  "archives": {
+    "EXTENDED_DRAINAGE_WINDOWS_O0_RAW_ARCHIVE": {
+      "record": "EXTENDED_DRAINAGE_WINDOWS_O0_RAW_ARCHIVE.json",
+      "archive": "EXTENDED_DRAINAGE_WINDOWS_O0_RAW_ARCHIVE.zip",
+      "bytes": 31907622,
+      "sha256": "a772efed7eb6b67ab052b29f3e27100d7ba938de878d4ced386f53b8c077206c",
+      "record_lf_sha256": "10f0e5b94b9e5c2e2e8d5d07bc6c97e93ec6544ea4840e7743c9759f38628b37"
+    },
+    "EXTENDED_DRAINAGE_WINDOWS_O2_RAW_ARCHIVE": {
+      "record": "EXTENDED_DRAINAGE_WINDOWS_O2_RAW_ARCHIVE.json",
+      "archive": "EXTENDED_DRAINAGE_WINDOWS_O2_RAW_ARCHIVE.zip",
+      "bytes": 31875563,
+      "sha256": "f27fd09be18c492e4e42d68d1ac6a36c551f94861b6f02a911ddaa4e57309b81",
+      "record_lf_sha256": "bd811cd5e955f124402da56a6d9b8b6b4ae3217872930357f0b9b3049571b92d"
+    },
+    "EXTENDED_DRAINAGE_WINDOWS_SOURCE_RAW_ARCHIVE": {
+      "record": "EXTENDED_DRAINAGE_WINDOWS_SOURCE_RAW_ARCHIVE.json",
+      "archive": "EXTENDED_DRAINAGE_WINDOWS_SOURCE_RAW_ARCHIVE.zip",
+      "bytes": 4320815,
+      "sha256": "a95d1f5e75377c166ee940afd8856fd96be190ade347963e2b9f0606cee7c5f0",
+      "record_lf_sha256": "bc2fc3794a7cb568211d744b0248fb5699ab24b8372355dae1addc2e2fadbdf0"
+    },
+    "EXTENDED_DRAINAGE_UBUNTU_O0_RAW_ARCHIVE": {
+      "record": "EXTENDED_DRAINAGE_UBUNTU_O0_RAW_ARCHIVE.json",
+      "archive": "EXTENDED_DRAINAGE_UBUNTU_O0_RAW_ARCHIVE.zip",
+      "bytes": 43583801,
+      "sha256": "c6a8f1f4817671f8fcdfe7e39543680c565eb785a59906da7e2d65ce27dcdae6",
+      "record_lf_sha256": "bad957d7d6f7c8e1ce455620070359c1b814e186b6ea611a40d071ec7f94e492"
+    },
+    "EXTENDED_DRAINAGE_UBUNTU_O2_RAW_ARCHIVE": {
+      "record": "EXTENDED_DRAINAGE_UBUNTU_O2_RAW_ARCHIVE.json",
+      "archive": "EXTENDED_DRAINAGE_UBUNTU_O2_RAW_ARCHIVE.zip",
+      "bytes": 43472348,
+      "sha256": "a82eac44f7c7335c49dd01849c99b611789ee617594a879163afb86b8e0408dd",
+      "record_lf_sha256": "a942fd16fae4e738620dfe88cb73dc48267a558b911ee8696b242335af9314d9"
+    },
+    "EXTENDED_DRAINAGE_COMPONENT_RAW": {
+      "record": "EXTENDED_DRAINAGE_COMPONENT_RAW.json",
+      "archive": "EXTENDED_DRAINAGE_COMPONENT_RAW.zip",
+      "bytes": 3594744,
+      "sha256": "edf213bbf029e1acf00feb8143c587b88e5cd77daa7a7f0f9b5f1ab342a8fe34",
+      "record_lf_sha256": "bd0b3efb986aafb5c2897362ac2af624bf06774a197ee3be72700ce3c2489512"
+    },
+    "EXTENDED_DRAINAGE_DRY_COMPONENT_RAW": {
+      "record": "EXTENDED_DRAINAGE_DRY_COMPONENT_RAW.json",
+      "archive": "EXTENDED_DRAINAGE_DRY_COMPONENT_RAW.zip",
+      "bytes": 2401888,
+      "sha256": "50951c89618e4549e536280d35adb7b8d46e8cd64981cc0735039833ce4bb4b3",
+      "record_lf_sha256": "1a7694b51466424a43c4ed6372158b0166bf60c0444ddf0fb462ff7b90841495"
+    },
+    "EXTENDED_DRAINAGE_POND_COMPONENT_RAW": {
+      "record": "EXTENDED_DRAINAGE_POND_COMPONENT_RAW.json",
+      "archive": "EXTENDED_DRAINAGE_POND_COMPONENT_RAW.zip",
+      "bytes": 5964360,
+      "sha256": "6a56d7a8f469497b4823724cb7e5fb83f85b5e5b2636cb9707dbf942a58430b3",
+      "record_lf_sha256": "c8b11a1e5818c2bc715234591316e983cf88c6a9654b2d7db6facac842df6b34"
+    },
+    "EXTENDED_DRAINAGE_INTERCEPTION_COMPONENT_RAW": {
+      "record": "EXTENDED_DRAINAGE_INTERCEPTION_COMPONENT_RAW.json",
+      "archive": "EXTENDED_DRAINAGE_INTERCEPTION_COMPONENT_RAW.zip",
+      "bytes": 2461476,
+      "sha256": "7102c1ef438d627d52d2251e2e3c726f19a2684348a073e13236420e0efc2393",
+      "record_lf_sha256": "39e2217609c79c3ceda81d773b89ab7856ae2e295b67f782bc5e871af929f1e0"
+    }
+  },
+  "actual_full_periods": 16,
+  "actual_days_per_full_period": 1096,
+  "actual_primary_complete_native_cold_windows": 112,
+  "actual_short_table_periods": 4,
+  "actual_short_table_days": 37,
+  "actual_short_table_complete_native_cold_windows": 16,
+  "actual_public_native_refusals": 312,
+  "actual_compiled_native_refusals": 288,
+  "actual_positive_compiled_native_contexts": 12,
+  "actual_cli_contexts": 12,
+  "actual_transaction_contexts": 12,
+  "actual_windows_nonselected_weather_five_day_contexts": 4,
+  "actual_windows_named_two_day_contexts": 2,
+  "fresh_unaffected_full_periods": 0,
+  "new_performance_runs": 0,
+  "workflow": {
+    "run_id": 44577404691,
+    "head_sha": "28af5b07491d4cc5c2449347f88574f85708bd61",
+    "conclusion": "success",
+    "jobs": {
+      "O0": 135748636785,
+      "O2": 135748636182
+    }
+  },
+  "source_capsules": {
+    "Windows": {
+      "archive": "EXTENDED_DRAINAGE_WINDOWS_SOURCE_RAW_ARCHIVE",
+      "prefix": "source/",
+      "producer": "d057fcc08d64631a57de05908968d691caf07bae"
+    },
+    "UbuntuO0": {
+      "archive": "EXTENDED_DRAINAGE_UBUNTU_O0_RAW_ARCHIVE",
+      "prefix": "source/",
+      "producer": "28af5b07491d4cc5c2449347f88574f85708bd61"
+    },
+    "UbuntuO2": {
+      "archive": "EXTENDED_DRAINAGE_UBUNTU_O2_RAW_ARCHIVE",
+      "prefix": "source/",
+      "producer": "28af5b07491d4cc5c2449347f88574f85708bd61"
+    }
+  },
+  "state_ownership": "EXTENDED_DRAINAGE_STATE_OWNERSHIP.json",
+  "original_defects": [
+    "actualoriginalrejected surfacewater update4to4.2before soilonlyrollback",
+    "actualoriginalpositive5e-8cm zero-fluxwater discarded",
+    "actualoriginalsmallrunoff/nonlinearroot/inundation bracket mass failures",
+    "actualoriginalpositive6.2497e-7cm/d interception dropped from netrain partition"
+  ],
+  "numerical_projection": "Cancellation-safe actual original nodal theta difference in read-only real128; exported original double daily28terms andall1e-10guards retained. No original physical stock/flux adjustment.",
+  "source_preservation": "All original lines in3existing app files remain literal;5newselected modules. Actual current nonselected source/input/kernel/physical/native seams and oldscientificreaders remain literal.",
+  "next_batch": "Original extended drainage output/calendar and remaining process compositions, selected after actual canonical receipt; no global functional completion claim"
+}
