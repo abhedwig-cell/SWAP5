@@ -37,7 +37,7 @@ def original_observations(raw,data,epoch):
         elif line.startswith('HYBRID_HYDRAULIC '):hydraulic=list(map(float,line.split()[1:]))
         elif line.startswith('HYBRID_DAY_RETURN '):
             require(len(observed)<len(data),'Extra actual original day return');row=data[len(observed)];parts=line.split()
-            require(stocks==row['stock_start_cm']+row['stock_end_cm'] and flows==row['external_flux_cm'],'Actual original stock/flux witness differs from report')
+            require(stocks==row['stock_end_cm']+row['stock_start_cm'] and flows==row['external_flux_cm'],'Actual original stock/flux witness differs from report')
             require(hydraulic is not None and hydraulic[0]==row['groundwater_cm'] and hydraulic[2:]==row['pressure_head_cm'],'Actual original hydraulic witness differs from report')
             require(int(parts[1])==row['day'] and float(parts[2])==initial+len(observed)+1,'Actual original accepted day/clock differs')
             observed.append(row['day']);stocks=flows=hydraulic=None
