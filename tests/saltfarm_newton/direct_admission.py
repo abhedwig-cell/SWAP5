@@ -33,6 +33,24 @@ def remove(text,needle,replacement=''):
     return text.replace(needle,replacement,1)
 
 
+def sealed_representation(raw,expected,name):
+    """Recover only the recorded newline presentation, never alter a payload."""
+    forms=[raw]
+    if Path(name).suffix in ('.json','.py'):
+        lf=normalized(raw);forms.extend([lf,lf.replace(b'\n',b'\r\n')])
+        # PowerShell wrote the sealed Python helper with only its final CRLF.
+        if lf.endswith(b'\n'):forms.append(lf[:-1]+b'\r\n')
+    for form in forms:
+        if hashlib.sha256(form).hexdigest()==expected:return form
+    raise ValueError('sealed direct evidence changed: '+name)
+
+
+def audit_current_seal():
+    seal=json.loads((ROOT/PROOF/'SEAL.json').read_text())
+    for name,digest in seal.items():sealed_representation((ROOT/PROOF/name).read_bytes(),digest,name)
+    return seal
+
+
 def nonselected_projection():
     """Delete only the qualified inactive hooks; literal old code must remain."""
     path='app/hybrid_water/daily_host.py';s=blob(RUNTIME,path).decode()
@@ -68,7 +86,7 @@ def source_guard():
     allowed={ENTRY,SELF,'tests/saltfarm_newton/test_direct_admission.py',PROOF+'ADMISSION.json',PROOF+'MERGE_RECEIPT.json',PROOF+'CI_RECONCILIATION.json','docs/science/SALTFARM_DIRECT_KERNEL05.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
     require(set(git('diff','--name-only',RUNTIME,'HEAD').decode().splitlines())<=allowed,'unqualified post-runtime controller/evidence change')
     # The full prior unit seal and all data remain literal; append only admission records.
-    for name,digest in json.loads((ROOT/PROOF/'SEAL.json').read_text()).items():require(hashlib.sha256((ROOT/PROOF/name).read_bytes()).hexdigest()==digest,'sealed direct evidence changed: '+name)
+    audit_current_seal()
 
 
 def predecessor():
@@ -104,8 +122,19 @@ def verify():
     q=json.loads((ROOT/PROOF/'ADMISSION.json').read_text());validate(q);source_guard();projection=nonselected_projection();prior=predecessor()
     checks=subprocess.run([sys.executable,'-B',str(ROOT/'tests/saltfarm_newton/test_direct_admission.py')],cwd=ROOT,capture_output=True,text=True,timeout=30)
     require(checks.returncode==0,'direct admission negative controls failed: '+checks.stderr)
-    log=io.StringIO()
-    with contextlib.redirect_stdout(log):runpy.run_path(str(ROOT/PROOF/'verify.py'),run_name='__main__')
+    # Execute the literal sealed decoder on its recorded Windows presentation.
+    # Git may check text out as LF. Archives are hardlinked read-only and remain
+    # byte-exact; no historical file, manifest or hash is rewritten.
+    log=io.StringIO();seal=audit_current_seal()
+    with tempfile.TemporaryDirectory(prefix='s5-direct-sealed-presentation-') as directory:
+        snapshot=Path(directory);target=snapshot/PROOF;target.mkdir(parents=True)
+        for name,digest in seal.items():
+            source=ROOT/PROOF/name;dest=target/name
+            if source.suffix=='.zip':dest.hardlink_to(source)
+            else:dest.write_bytes(sealed_representation(source.read_bytes(),digest,name))
+        (target/'SEAL.json').write_bytes((ROOT/PROOF/'SEAL.json').read_bytes())
+        prior_zip=snapshot/'integration/f-ci/saltfarm-newton-work01/WINDOWS_CURRENT.zip';prior_zip.parent.mkdir(parents=True);prior_zip.hardlink_to(ROOT/'integration/f-ci/saltfarm-newton-work01/WINDOWS_CURRENT.zip')
+        with contextlib.redirect_stdout(log):runpy.run_path(str(target/'verify.py'),run_name='__main__')
     require('TWENTY_COLD_WINDOWS' in log.getvalue(),'current raw qualification incomplete')
     return dict(status='DIRECT_SALTFARM_KERNEL_WINDOWS_UBUNTU_O0_O2_ADMISSION_PASS',runtime=RUNTIME,native_producer=NATIVE,predecessor=prior,nonselected_projection=projection,current_full_periods=4,current_exact_cold_windows=20,water_guard_cm=1e-10,solute_guard_mg_cm2=1e-10,whole_scientific_equivalence='NOT_QUALIFIED',RC3_changed=False)
 
