@@ -869,6 +869,8 @@ end module plant_interface""")
     patched=implicit_groundwater_trial_build(output,donor_build,project,patched)
     from implicit_conductivity_retry import apply_build as implicit_retry_build
     patched=implicit_retry_build(output,donor_build,project,patched)
+    from implicit_conductivity_jacobian import apply_build as implicit_jacobian_build
+    patched=implicit_jacobian_build(output,project,patched)
     from implicit_groundwater_state import native_apply_build as groundwater_native_build
     patched=groundwater_native_build(output,project,patched)
     for name in patched:
@@ -947,6 +949,9 @@ end module plant_interface""")
     from implicit_conductivity_retry import metadata as implicit_retry_metadata
     implicit_retry=implicit_retry_metadata(project)
     if implicit_retry is not None:build_identity['implicit_conductivity_retry']=implicit_retry
+    from implicit_conductivity_jacobian import metadata as implicit_jacobian_metadata
+    implicit_jacobian=implicit_jacobian_metadata(project)
+    if implicit_jacobian is not None:build_identity['implicit_conductivity_jacobian']=implicit_jacobian
     from cde_native_receipt import enabled as cde_receipt_enabled,metadata as cde_receipt_metadata
     if cde_receipt_enabled(project):build_identity['cde_native_receipt']=cde_receipt_metadata()
     from age_groundwater_output import metadata as original_output_metadata

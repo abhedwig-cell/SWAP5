@@ -4,7 +4,7 @@ import math
 from pathlib import Path
 import re
 
-POLICY = 'original-headcalc-implicit-mualem-strict-retry-v1'
+POLICY = 'original-headcalc-implicit-mualem-exact-boundary-strict-retry-v1'
 
 
 def selection(text, selectors, boundary):
@@ -58,7 +58,8 @@ def selection(text, selectors, boundary):
                 hydraulic_model=1, original_parameter_rows=rows,
                 examined_ksat_interpolation=False, physical_state_owner='existing-selected-owner',
                 newton_failure_policy='original-implicit-nonconverged-trial-retry-v1',
-                dtmin_retry_policy='below-input-minimum-only-after-actual-nonconvergence',clock_ulp_floor=8)
+                dtmin_retry_policy='below-input-minimum-only-after-actual-nonconvergence',clock_ulp_floor=8,
+                boundary_jacobian_policy='original-implicit-exact-boundary-jacobian-v1')
 
 
 def metadata(project):
