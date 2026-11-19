@@ -73,6 +73,7 @@ def main():
     p.add_argument('--case',choices=previous.CASES,required=True)
     p.add_argument('--mode',choices=('daily','subdaily','monthly','terminal','perstep','explicit','combined'),required=True)
     p.add_argument('--age',action='store_true')
+    p.add_argument('--reuse-build',type=Path)
     p.add_argument('--format',type=int,choices=(1,2,3),default=3)
     p.add_argument('--days',type=int,choices=(5,35,1096),default=5)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
@@ -85,14 +86,18 @@ def main():
     save()
     try:
         q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,3 if a.mode=='subdaily' else 1,a.age)
-        project=m.e.load(a.output/'input',original_output=True);build=a.build_root/a.case
+        project=m.e.load(a.output/'input',original_output=True);build=a.reuse_build or a.build_root/a.case
         q.update(input_root=str(a.output/'input'),build_root=str(build),output_selection=original_output.selection(project));save()
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,
                  '--experimental-project',project.input_directory,'--original-output','--reference-work',str(a.reference_work),
                  '--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
-        start=time.monotonic();r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
-        (a.output/'build.stdout').write_text(r.stdout);(a.output/'build.stderr').write_text(r.stderr)
-        q['build']=dict(command=command,returncode=r.returncode,seconds=time.monotonic()-start);save();r.check_returncode()
+        if a.reuse_build:
+            m.validate_bundle(build,a.reference_work,project)
+            q['build']=dict(mode='REUSED_UNCHANGED_ACTUAL_SOURCE_INPUT_BOUND_BUILD',original_build_sha256=m.sha(build/'BUILD.json'),original_build_root=str(build));save()
+        else:
+            start=time.monotonic();r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
+            (a.output/'build.stdout').write_text(r.stdout);(a.output/'build.stderr').write_text(r.stderr)
+            q['build']=dict(command=command,returncode=r.returncode,seconds=time.monotonic()-start);save();r.check_returncode()
         windows=[(2,4)]
         if a.days>=35:windows += [(14,17),(30,35)]
         if a.days==1096:windows += [(363,367),(530,532),(1094,1096)]
