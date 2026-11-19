@@ -1,6 +1,6 @@
 # Original detailed-weather water receipt and hourly root restart
 
-Source/raw qualified; canonical admission pending. This bounded numerical and
+Canonically admitted through PR1762 on actualbc9271bcc. This bounded numerical and
 state composition closes the reproduced original H day364 refusal and the
 hourly cold531/532 root-memory gap. It does not close the whole historical
 weather family. Global functional closure remains PARTIAL, whole scientific
@@ -94,9 +94,11 @@ model runs. That negative branch must never be merged.
 ## Admission and next functional batch
 
 The batch preserves canonical1fc0b19e typed named transport and all old source/
-scientific bodies through exact insertion projections. Actual canonical merge
-parents, complete qualified tree and clean detached registered owner still
-require verification before claiming admission. The same workstream then
+scientific bodies through exact insertion projections. Actual canonicalbc9271bcc has exact1fc0b19e/7547aa05b ordered parents and
+complete qualified tree049f79614338a6d43dcca08ba32e5401beabf7d9. Its clean
+detached registered owner independently passes in112.224684seconds; all48PR
+checks complete without failure. WEATHER_MERGE_RECEIPT.json persists that proof
+with the next functional drainage batch. The same workstream then
 continues original extended SWDRA2 drainage/surfacewater state composition.
 Original explicit SWKMEAN7 remains blocked on a missing physical table; the
 historical implicit7 prohibition stays binding. No fabricated table is used.

@@ -1,0 +1,179 @@
+{
+  "status": "ACTUAL_CANONICAL_WEATHER_SOURCE_RAW_ADMITTED",
+  "pr": 1762,
+  "head": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
+  "qualified_head": "7547aa05b7f01f4d234c6f314f9f76841f4d2c4f",
+  "ordered_parents": [
+    "1fc0b19e23a32385e159ec653a42f2e60c009891",
+    "7547aa05b7f01f4d234c6f314f9f76841f4d2c4f"
+  ],
+  "tree": "049f79614338a6d43dcca08ba32e5401beabf7d9",
+  "complete_qualified_tree_exact": true,
+  "sparse_patterns": [
+    "/app/",
+    "/src/",
+    "/tools/",
+    "/tests/",
+    "/reference/",
+    "/examples/",
+    "/.github/",
+    "/integration/audits/",
+    "/integration/nomacro-coverage01/*.json",
+    "/integration/f-ci/hupsel51-water-balance/WINDOWS.json",
+    "/integration/f-ci/saltfarm-guard-cost05/",
+    "/integration/f-ci/saltfarm-newton-work01/WINDOWS_CURRENT.zip",
+    "/integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_QUALIFICATION.json",
+    "/integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_MERGE_RECEIPT.json",
+    "/integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_WINDOWS_O0_RAW_ARCHIVE.json",
+    "/integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_WINDOWS_O0_RAW.zip",
+    "/integration/f-ci/nomacro-complete01/IMPLICIT_CONDUCTIVITY_*",
+    "/integration/f-ci/nomacro-complete01/GROUNDWATER_WATER_*",
+    "/integration/f-ci/saltfarm-typed07/",
+    "/integration/f-ci/nomacro-complete01/WEATHER_*",
+    "/integration/nomacro-coverage01/BLOCK_H_LAST_TEMPORAL_RAW.tar.xz"
+  ],
+  "actual_clean_detached_registered_owner": {
+    "head": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
+    "clean_detached": true,
+    "returncode": 0,
+    "seconds": 112.22468360001221,
+    "stdout": "{\n  \"status\": \"BOUNDED_ORIGINAL_CDE_WEATHER_COMPLETE_ROOT_STATE_SOURCE_RAW_ADMISSION_PASS\",\n  \"runtime\": \"2cf36f12d0608f681d69716c01644a2307401c76\",\n  \"actual_full_periods\": 12,\n  \"actual_primary_complete_native_cold_windows\": 60,\n  \"actual_windows_source_physical_native_projection_contexts\": 4,\n  \"actual_current_named_two_day_contexts\": 4,\n  \"actual_public_native_refusals\": 88,\n  \"actual_compiled_native_refusals\": 80,\n  \"actual_public_cli_contexts\": 4,\n  \"actual_transaction_contexts\": 4,\n  \"retained_failure_findings\": {\n    \"retained_day364_refusals\": 4,\n    \"retained_terminal_only_floor_refusals\": 2,\n    \"actual_missing_hourly_root_stress\": \"1/6 of each original previous-day factor\",\n    \"previous_complete_warm_physics_preserved\": true\n  },\n  \"metrics\": {\n    \"Windows-O0-pulsed\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.988325444520996e-11,\n      \"measured_integrated_water_residual_cm\": -2.6017713212240655e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Windows-O0-hourly\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.991410953799629e-11,\n      \"measured_integrated_water_residual_cm\": 2.6560583997491984e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Windows-O0-uniform\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.986663752903358e-11,\n      \"measured_integrated_water_residual_cm\": 1.6846093141940498e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Windows-O2-pulsed\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.988325444520996e-11,\n      \"measured_integrated_water_residual_cm\": -2.6017713212240655e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Windows-O2-hourly\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.991410953799629e-11,\n      \"measured_integrated_water_residual_cm\": 2.6560583997491984e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Windows-O2-uniform\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.986663752903358e-11,\n      \"measured_integrated_water_residual_cm\": 1.6846093141940498e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Ubuntu-O0-pulsed\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.988181115527794e-11,\n      \"measured_integrated_water_residual_cm\": -2.599626462023336e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Ubuntu-O0-hourly\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.992842317507744e-11,\n      \"measured_integrated_water_residual_cm\": 2.6508801761766093e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Ubuntu-O0-uniform\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.986241868154e-11,\n      \"measured_integrated_water_residual_cm\": 1.6829255182013322e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Ubuntu-O2-pulsed\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.988181115527794e-11,\n      \"measured_integrated_water_residual_cm\": -2.599626462023336e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Ubuntu-O2-hourly\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.992842317507744e-11,\n      \"measured_integrated_water_residual_cm\": 2.6508801761766093e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    },\n    \"Ubuntu-O2-uniform\": {\n      \"days\": 1096,\n      \"maximum_daily_water_cm\": 9.986241868154e-11,\n      \"measured_integrated_water_residual_cm\": 1.6829255182013322e-10,\n      \"water_acceptance\": \"UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM\",\n      \"integrated_cde_guard_mg_cm2\": 1e-10\n    }\n  },\n  \"inherited_groundwater\": {\n    \"status\": \"BOUNDED_GROUNDWATER_WATER_COMPLETE_STATE_CALENDAR_SOURCE_RAW_NATIVE_ADMISSION_PASS\",\n    \"runtime\": \"3424a6c156b79b3d84395913dcc94424a586fd15\",\n    \"actual_full_periods\": 12,\n    \"actual_short_periods\": 24,\n    \"actual_two_day_1440_periods\": 8,\n    \"actual_complete_native_cold_windows\": 188,\n    \"actual_public_contexts\": 24,\n    \"actual_native_refusals\": 1008,\n    \"actual_policy_refusals\": 72,\n    \"actual_prior_compiled_closures\": 3,\n    \"actual_prior_typed_prefixes\": 296,\n    \"fresh_unaffected_model_periods\": 0,\n    \"functional_completion\": \"PARTIAL\",\n    \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n    \"implicit_age_admission\": false,\n    \"weighted_history_full_admission\": false\n  },\n  \"inherited_canonical_typed_transport_raw\": \"PASS_WITHOUT_NEW_PERFORMANCE_OR_MODEL_RUNS\",\n  \"functional_completion\": \"PARTIAL\",\n  \"whole_scientific_equivalence\": \"NOT_QUALIFIED\",\n  \"RC3_changed\": false\n}\n",
+    "stderr": "",
+    "result": {
+      "status": "BOUNDED_ORIGINAL_CDE_WEATHER_COMPLETE_ROOT_STATE_SOURCE_RAW_ADMISSION_PASS",
+      "runtime": "2cf36f12d0608f681d69716c01644a2307401c76",
+      "actual_full_periods": 12,
+      "actual_primary_complete_native_cold_windows": 60,
+      "actual_windows_source_physical_native_projection_contexts": 4,
+      "actual_current_named_two_day_contexts": 4,
+      "actual_public_native_refusals": 88,
+      "actual_compiled_native_refusals": 80,
+      "actual_public_cli_contexts": 4,
+      "actual_transaction_contexts": 4,
+      "retained_failure_findings": {
+        "retained_day364_refusals": 4,
+        "retained_terminal_only_floor_refusals": 2,
+        "actual_missing_hourly_root_stress": "1/6 of each original previous-day factor",
+        "previous_complete_warm_physics_preserved": true
+      },
+      "metrics": {
+        "Windows-O0-pulsed": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.988325444520996e-11,
+          "measured_integrated_water_residual_cm": -2.6017713212240655e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Windows-O0-hourly": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.991410953799629e-11,
+          "measured_integrated_water_residual_cm": 2.6560583997491984e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Windows-O0-uniform": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.986663752903358e-11,
+          "measured_integrated_water_residual_cm": 1.6846093141940498e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Windows-O2-pulsed": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.988325444520996e-11,
+          "measured_integrated_water_residual_cm": -2.6017713212240655e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Windows-O2-hourly": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.991410953799629e-11,
+          "measured_integrated_water_residual_cm": 2.6560583997491984e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Windows-O2-uniform": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.986663752903358e-11,
+          "measured_integrated_water_residual_cm": 1.6846093141940498e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Ubuntu-O0-pulsed": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.988181115527794e-11,
+          "measured_integrated_water_residual_cm": -2.599626462023336e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Ubuntu-O0-hourly": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.992842317507744e-11,
+          "measured_integrated_water_residual_cm": 2.6508801761766093e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Ubuntu-O0-uniform": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.986241868154e-11,
+          "measured_integrated_water_residual_cm": 1.6829255182013322e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Ubuntu-O2-pulsed": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.988181115527794e-11,
+          "measured_integrated_water_residual_cm": -2.599626462023336e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Ubuntu-O2-hourly": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.992842317507744e-11,
+          "measured_integrated_water_residual_cm": 2.6508801761766093e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        },
+        "Ubuntu-O2-uniform": {
+          "days": 1096,
+          "maximum_daily_water_cm": 9.986241868154e-11,
+          "measured_integrated_water_residual_cm": 1.6829255182013322e-10,
+          "water_acceptance": "UNCHANGED_H_DAILY_1E-10_CM; INTEGRATED_DRIFT_REPORTED_WITHOUT_EQUIVALENCE_CLAIM",
+          "integrated_cde_guard_mg_cm2": 1e-10
+        }
+      },
+      "inherited_groundwater": {
+        "status": "BOUNDED_GROUNDWATER_WATER_COMPLETE_STATE_CALENDAR_SOURCE_RAW_NATIVE_ADMISSION_PASS",
+        "runtime": "3424a6c156b79b3d84395913dcc94424a586fd15",
+        "actual_full_periods": 12,
+        "actual_short_periods": 24,
+        "actual_two_day_1440_periods": 8,
+        "actual_complete_native_cold_windows": 188,
+        "actual_public_contexts": 24,
+        "actual_native_refusals": 1008,
+        "actual_policy_refusals": 72,
+        "actual_prior_compiled_closures": 3,
+        "actual_prior_typed_prefixes": 296,
+        "fresh_unaffected_model_periods": 0,
+        "functional_completion": "PARTIAL",
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "implicit_age_admission": false,
+        "weighted_history_full_admission": false
+      },
+      "inherited_canonical_typed_transport_raw": "PASS_WITHOUT_NEW_PERFORMANCE_OR_MODEL_RUNS",
+      "functional_completion": "PARTIAL",
+      "whole_scientific_equivalence": "NOT_QUALIFIED",
+      "RC3_changed": false
+    }
+  },
+  "all_PR_checks_completed": 48,
+  "all_PR_checks_failed": 0,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "full_historical_families_closed": "UNKNOWN",
+  "global_remaining_gap_counts": "UNKNOWN",
+  "bounded_reproduced_gaps_closed": 2,
+  "fixed_RC3_changed": false,
+  "next_functional_batch": "Original SWDRA2 extended drainage/surfacewater atomic original state and complete native/exchange composition",
+  "metadata_integration": "Persisted with next functional drainage component batch, no receipt-only PR."
+}

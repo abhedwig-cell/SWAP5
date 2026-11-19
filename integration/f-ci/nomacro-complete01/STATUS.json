@@ -4,7 +4,7 @@
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-extended-drainage01",
   "last_commit": "0f61c648f502a786d79da616f0645f4015cdd30f",
-  "status": "WEATHER_PR1762_MC_GATES_PASS_REMAINING_AUTOMATIC_CI_PENDING_EXTENDED_DRAIN_COMPONENT_IN_PROGRESS",
+  "status": "WEATHER_CANONICALLY_ADMITTED_NEXT_EXTENDED_DRAIN_ATOMIC_COMPONENT_PASS_PUBLIC_COMPOSITION_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -55,7 +55,8 @@
     "PR1736 actualcanonicalf5f0cda95 exactorderedc406/932parents/full2db3ff0a5tree; actualdetachedregisteredownerPASS. Groundwater originalCDE/hys0..2/Snow0..1 histories admitted:56fullperiods/704cold/50priorcontexts/2071proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
     "PR1738 actualcanonicalf2fc11124 exactordered8c/de0parents/full8551bfb82tree; actualdetachedregisteredownerPASS. OriginalwaterSnow non dailycalendars+7actualoriginalSnowtotalnativecarry admitted:16fullperiods/256cold/40priorcontexts/1329proofcorruptionsrefused. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
     "PR1740 actualcanonical7dfe0ed8f exactorderedb439/5fffparents/full855e83489tree; cleanactualdetachedregisteredownerPASS138.090seconds. OriginalwaterSnowNPRINTDAY2/3/S5STW001admitted:16full/256cold/55prior/currentcontexts,1870proofcorruptions. CanonicalSaltFarm source/policy and bothliteralownerspreserved;4fullSaltFarm/20coldexact. WholeclosurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged.",
-    "Bounded original CDE detailed-weather correction: registered81addb5f0 owner PASS107.032564s;12complete1096day periods/60exact native cold windows,88public and80compiled native refusals,4CLI/4transaction/4named shared contexts; unchanged owning daily water/CDE1e-10, independent integrated CDE1e-10, integrated water drift measured without equivalence claim. Actual dirty+committeddc9c9f7eb night-carry source refused before models. Canonical pending."
+    "Bounded original CDE detailed-weather correction: registered81addb5f0 owner PASS107.032564s;12complete1096day periods/60exact native cold windows,88public and80compiled native refusals,4CLI/4transaction/4named shared contexts; unchanged owning daily water/CDE1e-10, independent integrated CDE1e-10, integrated water drift measured without equivalence claim. Actual dirty+committeddc9c9f7eb night-carry source refused before models. Canonical pending.",
+    "PR1762 actualcanonicalbc9271bcc exact1fc/7547orderedparents and complete049f79614338a6d43dcca08ba32e5401beabf7d9 tree; actual clean detached21pattern registered owner PASS112.224684s. All48PR checks completed without failures. Bounded original CDE detailed-weather water and hourly root-restart correction admitted. Next functional extended drainage component already implemented/tested; public composition remains pending. Whole closurePARTIAL/scienceNOT_QUALIFIED/fixedRC3unchanged."
   ],
   "open": [
     "Complete historical selector inventory",
@@ -333,7 +334,7 @@
   ],
   "running_ci": [],
   "next_code_change": "Finish existing PR1762 F-CI and safe canonical admission/postimage. Connect new bounded original SWDRA2 state component with strict original reader, explicit transaction hooks, separate surfacewater inventory/flux witness and native receipt binding; qualify affected physical/state surface only.",
-  "recovery_point": "Weather PR1762 frozen7547aa05b, base1fc0b19e; source/raw qualified at81addb5f0. New branch codex/nomacro-extended-drainage01 starts at7547aa05b. Original drainage O0/O2 signed-flow/storage contracts PASS and actual rejected surface mutation4.0->4.2 reproduced; assessment+raw in protected evidence. No historical full-period reruns.",
+  "recovery_point": "Current branchcodex/nomacro-extended-drainage01 includes actual canonicalbc9271bcc. WEATHER_MERGE_RECEIPT.json owns exactparents/tree and actual clean detached root PASS112.224684s. Original drainage state component0f61c648 has O0/O2 realprocess/native/refusal proof sealed at1b67400b3. PublicSWDRA2 remains hard-refused until next source/native/exchange composition is implemented and independently admitted.",
   "external_blocker": null,
   "test_selection": {
     "groups": {
@@ -30390,7 +30391,7 @@
     ],
     "production_changes": true,
     "test_status": "WINDOWS_UBUNTU_O0_O2_12_FULL_60_EXACT_NATIVE_COLD_PASS",
-    "qualification_status": "REGISTERED_INDEPENDENT_SOURCE_RAW_PASS_CANONICAL_PENDING",
+    "qualification_status": "ACTUAL_CANONICAL_BC9271BCC_ADMITTED_CLEAN_DETACHED_OWNER_PASS",
     "implementation": "Bounded read-only complete terminal receipt composed with original weather CDE; no physical or accepted state assignment",
     "runtime": "2cf36f12d0608f681d69716c01644a2307401c76",
     "preliminary": "WEATHER_TERMINAL_WINDOWS_PRELIMINARY.json",
@@ -30466,8 +30467,17 @@
       ],
       "MC_conclusion": "success",
       "existing_FCI_run": 44550305702,
-      "FCI_status": "modular-feedback in progress; selection-preflight success; no failed checks observed"
-    }
+      "FCI_status": "SUCCESS",
+      "merged": true,
+      "actual_canonical": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
+      "actual_tree": "049f79614338a6d43dcca08ba32e5401beabf7d9",
+      "exact_ordered_parents_and_full_tree": true,
+      "all_PR_checks_completed": 48,
+      "all_PR_checks_failed": 0,
+      "canonical_detached_owner": "PASS112.224684_SECONDS"
+    },
+    "canonical_receipt": "WEATHER_MERGE_RECEIPT.json",
+    "actual_canonical": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df"
   },
   "extended_drainage_batch": {
     "baseline": "7547aa05b7f01f4d234c6f314f9f76841f4d2c4f",
@@ -30482,5 +30492,17 @@
     "component_raw": "EXTENDED_DRAINAGE_COMPONENT_RAW.zip",
     "component_record": "EXTENDED_DRAINAGE_COMPONENT_RAW.json",
     "component_scope": "No public host hooks, no SWDRA2 reader opening, no new whole-model or family admission"
+  },
+  "coverage_batch_report": {
+    "canonical": "bc9271bcc60478e02c7a7d8a11e21dd8c791c9df",
+    "full_historical_functional_families_closed": "UNKNOWN",
+    "remaining_implementation_gaps": "UNKNOWN",
+    "remaining_composition_gaps": "UNKNOWN",
+    "remaining_unnecessary_guards": "UNKNOWN",
+    "remaining_numerical_blockers": "UNKNOWN",
+    "remaining_evidence_only_functions": "UNKNOWN",
+    "bounded_gaps_closed_this_weather_batch": 2,
+    "new_model_capabilities": "Exact original H detailed rain/hourly CDE1096day acceptance and hourly cold native across crop/year boundaries; no prior tolerance changes",
+    "next_batch": "Original extended drainage/surfacewater state/flux/rollback/native"
   }
 }
