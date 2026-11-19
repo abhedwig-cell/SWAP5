@@ -51,7 +51,7 @@ def main():
     p.add_argument('--format',choices=(0,1,2,3),type=int,default=3)
     p.add_argument('--reset',choices=(0,1),type=int,default=1)
     p.add_argument('--nprintday',type=int)
-    p.add_argument('--phase',choices=('short','full'),default='short')
+    p.add_argument('--phase',choices=('short','full','limit'),default='short')
     p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
     a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=a.existing_input or out/'input'
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),parameters={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
@@ -59,6 +59,9 @@ def main():
     save()
     try:
         if not a.existing_input:fixture(inputs,a.solute,a.hysteresis,a.bottom,a.perstep,a.kmean,a.mode,a.format,a.reset,a.nprintday)
+        if a.phase=='limit' and not a.existing_input:
+            path=inputs/'fixed-irrigation.irg';text=path.read_text(encoding='cp1252');assert text.count('2002-01-05')==1
+            path.write_text(text.replace('2002-01-05','2002-01-01'),encoding='cp1252')
         project=m.e.load(inputs,original_output=True);q['numerical_policy']=m.e.inspect(inputs)['implicit_conductivity']
         build=a.reuse_build or out/'build';q.update(input_root=str(inputs),build_root=str(build))
         cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--original-output','--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
@@ -68,8 +71,8 @@ def main():
             (out/'build.stdout').write_text(r.stdout,encoding='utf8');(out/'build.stderr').write_text(r.stderr,encoding='utf8');save();r.check_returncode()
         meta,_=m.validate_bundle(build,a.reference_work,project)
         assert meta['identity']['implicit_conductivity']['policy']==q['numerical_policy']['policy']
-        days=1096 if a.phase=='full' else 35
-        windows=[(2,4),(7,9),(30,34)]
+        days={'full':1096,'short':35,'limit':2}[a.phase]
+        windows=[(1,2)] if a.phase=='limit' else [(2,4),(7,9),(30,34)]
         if a.phase=='full':windows += [(199,201),(364,367),(530,532),(1094,1096)]
         full=out/'trajectory';q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,days,{days,*(v for pair in windows for v in pair)},180);save()
         q['cold']=[]
