@@ -1,0 +1,70 @@
+{
+  "status": "ACTUAL_EVIDENCE_MUTANTS_REFUSED",
+  "count": 16,
+  "refusals": [
+    {
+      "name": "receipt-secondary_exchange_cm",
+      "refusal": "Independent secondary or combined water guard exceeded"
+    },
+    {
+      "name": "receipt-primary_exchange_cm",
+      "refusal": "Independent secondary or combined water guard exceeded"
+    },
+    {
+      "name": "receipt-stock_end_cm",
+      "refusal": "Secondary native/receipt stock differs"
+    },
+    {
+      "name": "receipt-prescribed_stage_reaction_cm",
+      "refusal": "Independent secondary or combined water guard exceeded"
+    },
+    {
+      "name": "receipt-supply_cm",
+      "refusal": "Independent secondary or combined water guard exceeded"
+    },
+    {
+      "name": "soil-stock-continuity",
+      "refusal": "Discontinuous actual soil stocks"
+    },
+    {
+      "name": "raw-original-level-counter",
+      "refusal": "Actual original level/soil/surface transfer differs"
+    },
+    {
+      "name": "raw-accepted-step-count",
+      "refusal": "Malformed actual extended flux witness"
+    },
+    {
+      "name": "raw-original-secondary-flux",
+      "refusal": "Actual original extended flux/report differs"
+    },
+    {
+      "name": "native-rehashed-canopy",
+      "refusal": "Foreign native clock/step/canopy"
+    },
+    {
+      "name": "native-rehashed-domain",
+      "refusal": "Foreign extended native domain/trailer"
+    },
+    {
+      "name": "native-rehashed-clock",
+      "refusal": "Invalid extended native values/clock/counter"
+    },
+    {
+      "name": "native-rehashed-adjustments",
+      "refusal": "Invalid extended native values/clock/counter"
+    },
+    {
+      "name": "native-rehashed-stock",
+      "refusal": "Invalid extended native values/clock/counter"
+    },
+    {
+      "name": "native-rehashed-duplicate",
+      "refusal": "Extended native duplicate/receipt differs"
+    },
+    {
+      "name": "native-rehashed-trailer",
+      "refusal": "Foreign extended native domain/trailer"
+    }
+  ]
+}
