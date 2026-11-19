@@ -8,15 +8,17 @@ import math
 import re
 import struct
 import subprocess
+import sys
 import tarfile
 import zipfile
 
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(ROOT/'tests/nomacro_scheduled_subsurface'))
 import weather_surface_forensics as f
 import groundwater_water_verify as gw
 import groundwater_water_composition_verify as composition
 from perstep_domain_verify import build_files
 
-ROOT = Path(__file__).resolve().parents[2]
 PROOF = 'integration/f-ci/nomacro-complete01/'
 BASE = '1fc0b19e23a32385e159ec653a42f2e60c009891'
 RUNTIME = '2cf36f12d0608f681d69716c01644a2307401c76'
