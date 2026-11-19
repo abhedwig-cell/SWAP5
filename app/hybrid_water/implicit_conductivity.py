@@ -4,7 +4,7 @@ import math
 from pathlib import Path
 import re
 
-POLICY = 'original-headcalc-implicit-mualem-conductivity-v1'
+POLICY = 'original-headcalc-implicit-mualem-strict-retry-v1'
 
 
 def selection(text, selectors, boundary):
@@ -56,7 +56,9 @@ def selection(text, selectors, boundary):
         raise ValueError('Missing implicit conductivity parameter rows')
     return dict(policy=POLICY, SWKIMPL=1, SWKMEAN=selectors['SWKMEAN'],
                 hydraulic_model=1, original_parameter_rows=rows,
-                examined_ksat_interpolation=False, physical_state_owner='existing-selected-owner')
+                examined_ksat_interpolation=False, physical_state_owner='existing-selected-owner',
+                newton_failure_policy='original-implicit-nonconverged-trial-retry-v1',
+                dtmin_retry_policy='below-input-minimum-only-after-actual-nonconvergence',clock_ulp_floor=8)
 
 
 def metadata(project):
