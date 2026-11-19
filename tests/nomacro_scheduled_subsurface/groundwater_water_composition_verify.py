@@ -42,6 +42,8 @@ def source(q):
  require((q['status'],q['runtime'],q['incoming_canonical'],q['groundwater_qualified_head'])==('BOUNDED_GROUNDWATER_AND_INCOMING_CANONICAL_COMPOSITION_RECORD',RUNTIME,BASE,PRIOR),'Foreign current composition scope')
  require(q['functional_completion']=='PARTIAL' and q['whole_scientific_equivalence']=='NOT_QUALIFIED' and q['water_guard_cm']==q['chemical_guard_mg_cm2']==1e-10 and q['RC3_changed'] is False and q['full_model_periods_repeated']==0,'Composition source/science/guard promoted')
  for group in ('source_sha256','controller_sha256'):require(q[group] and all(gw.sha(ROOT/name)==value for name,value in q[group].items()),'Changed actual composed dependency')
+ require(set(q['source_sha256'])==set(git('diff','--name-only',gw.BASE,RUNTIME,'--','app','src','reference','tools').decode().splitlines()) and set(q['controller_sha256'])=={'tests/nomacro_scheduled_subsurface/groundwater_water_composition_runtime.py'},'Composition dependency denominator changed')
+ require(set(q['locations'])=={platform+'-'+opt for platform in ('Windows','Ubuntu') for opt in ('O0','O2')},'Composition platform/optimization missing')
  require(not git('diff',BASE,'HEAD','--','src','reference','tools','.github'),'Incoming physics/reference/CLI/workflow changed')
  for path in ('app/hybrid_water/direct_day_kernel.py','app/hybrid_water/direct_day_kernel.f90'):require(blob(BASE,path)==blob(RUNTIME,path),'Incoming native bridge/lifecycle changed')
  require(prior_guards()=='LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED','Unselected groundwater source projection changed')
