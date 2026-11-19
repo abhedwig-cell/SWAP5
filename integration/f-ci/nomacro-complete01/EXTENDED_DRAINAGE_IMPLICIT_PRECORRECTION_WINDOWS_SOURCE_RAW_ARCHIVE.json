@@ -1,0 +1,41 @@
+{
+  "status": "NEUTRAL_ACTUAL_WINDOWS_RAW_ARCHIVE_NO_ADMISSION_CLAIM",
+  "archive": "EXTENDED_DRAINAGE_IMPLICIT_PRECORRECTION_WINDOWS_SOURCE_RAW_ARCHIVE.zip",
+  "bytes": 10095319,
+  "sha256": "5b76ee18bd9354dae132f87b31189093186098c04c274f41c81a3264bd1843fa",
+  "members": {
+    "short-source/actual-producer-source.zip": {
+      "bytes": 4307202,
+      "sha256": "2c5b4912f1e38ba25f357495273a5ec3af4595a4a2b5404278abbad87b34b735"
+    },
+    "short-source/controller-source.tar": {
+      "bytes": 3420160,
+      "sha256": "d5c9f51a78c7214428b3d6e81331b6b01f7fe9a980b36d61af24b90ced9a473d"
+    },
+    "short-source/RESULT.json": {
+      "bytes": 532345,
+      "sha256": "a1c124d6ddbfec011425662bb5835d551946d83ba686c21ab9f28ba2055446f4"
+    },
+    "source/actual-producer-source.zip": {
+      "bytes": 4307202,
+      "sha256": "732e0ce2d83e6175fccf593ab4c32f8f2c0b10240e16a4bdd510b7557abb5cb3"
+    },
+    "source/controller-source.tar": {
+      "bytes": 3430400,
+      "sha256": "b12a3d6da44bf8741a5e2e462cfe4a82d407c6374f4c097906e8876431d07882"
+    },
+    "source/RESULT.json": {
+      "bytes": 532345,
+      "sha256": "d7e8662f5354812a23ee9c61878f0b2992c55cbe56e0d89036da695a79fe73ea"
+    },
+    "provider-PREPARED.json": {
+      "bytes": 41046,
+      "sha256": "a2f529bc5d69c9e15bdda4c7aeb643a48685b50e10c2c1fce9eb639faf8a2da5"
+    },
+    "saturation-component-controller.tar": {
+      "bytes": 20480,
+      "sha256": "8195254eb36c90282aadfbf62aa35785e67507d54ae4cf6c38c477b61819c910"
+    }
+  },
+  "compiled_objects_excluded": "Reproducible original provider; actual emitted source, executable/library and BUILD bytes retained"
+}
