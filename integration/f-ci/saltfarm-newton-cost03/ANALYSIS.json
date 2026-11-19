@@ -1,0 +1,126 @@
+{
+  "plain_ABBA": {
+    "control": {
+      "wall_mean": 3.479584899963811,
+      "walls": [
+        4.284848200157285,
+        2.6743215997703373
+      ],
+      "donor_cpu_mean": 2.421875,
+      "python_cpu_mean": 0.609375,
+      "kernel_cpu_mean": 0.21875
+    },
+    "candidate": {
+      "wall_mean": 2.94601504993625,
+      "walls": [
+        3.1565344999544322,
+        2.7354955999180675
+      ],
+      "donor_cpu_mean": 2.1640625,
+      "python_cpu_mean": 0.4765625,
+      "kernel_cpu_mean": 0.1171875
+    },
+    "wall_fraction_saved": 0.15334296054483698
+  },
+  "clock_ABBA": {
+    "control": {
+      "wall_mean": 2.962271000025794,
+      "walls": [
+        3.2692321999929845,
+        2.6553098000586033
+      ],
+      "donor_cpu_mean": 1.9921875,
+      "python_cpu_mean": 0.5625,
+      "kernel_cpu_mean": 0.1328125,
+      "phases": {
+        "root": 0.1929748,
+        "water_solve": 0.74345995,
+        "water_update": 0.09135715,
+        "heat": 0.06192905,
+        "solute": 0.21817799999999998,
+        "head_setup": 0.1119044,
+        "ordinary_iteration": 0.37098180000000003,
+        "padding_iteration": 0.13613115
+      }
+    },
+    "candidate": {
+      "wall_mean": 2.9570349499117583,
+      "walls": [
+        3.044741699937731,
+        2.8693281998857856
+      ],
+      "donor_cpu_mean": 2.078125,
+      "python_cpu_mean": 0.5078125,
+      "kernel_cpu_mean": 0.1640625,
+      "phases": {
+        "root": 0.19757025,
+        "water_solve": 0.67434985,
+        "water_update": 0.09443605,
+        "heat": 0.0642901,
+        "solute": 0.23188655,
+        "head_setup": 0.11586455000000001,
+        "ordinary_iteration": 0.3875552,
+        "padding_iteration": 0.040047200000000005
+      }
+    },
+    "wall_fraction_saved": 0.0017675797096180501
+  },
+  "clock_BAAB": {
+    "control": {
+      "wall_mean": 2.957416499964893,
+      "walls": [
+        3.0125008998438716,
+        2.902332100085914
+      ],
+      "donor_cpu_mean": 1.984375,
+      "python_cpu_mean": 0.625,
+      "kernel_cpu_mean": 0.2109375,
+      "phases": {
+        "root": 0.1987847,
+        "water_solve": 0.78140435,
+        "water_update": 0.0915099,
+        "heat": 0.061506450000000004,
+        "solute": 0.22081220000000001,
+        "head_setup": 0.12003225000000001,
+        "ordinary_iteration": 0.36810135,
+        "padding_iteration": 0.13456485
+      }
+    },
+    "candidate": {
+      "wall_mean": 2.8871585002634674,
+      "walls": [
+        2.5722321001812816,
+        3.2020849003456533
+      ],
+      "donor_cpu_mean": 2.0859375,
+      "python_cpu_mean": 0.4296875,
+      "kernel_cpu_mean": 0.2109375,
+      "phases": {
+        "root": 0.21536460000000002,
+        "water_solve": 0.6930275,
+        "water_update": 0.09447285,
+        "heat": 0.06589125,
+        "solute": 0.239471,
+        "head_setup": 0.11693595,
+        "ordinary_iteration": 0.3895674,
+        "padding_iteration": 0.04177985
+      }
+    },
+    "wall_fraction_saved": 0.02375654551946249
+  },
+  "attribution": {
+    "control_clock_wall_mean": 2.9598437499953434,
+    "control_newton_body_seconds": 0.504889575,
+    "newton_body_fraction_of_wall": 0.17057980678905577,
+    "control_water_seconds": 0.76243215,
+    "control_head_setup_seconds": 0.11596832500000001,
+    "control_padding_microseconds_per_iteration": 14.206780728455968,
+    "control_ordinary_microseconds_per_iteration": 14.479901845538967,
+    "estimated_removed_net_newton_seconds": 0.09611516237897781,
+    "estimated_fraction_whole_wall_saved": 0.0324730528019018,
+    "headcalc_calls_each": 9527,
+    "iterations_before": 35048,
+    "iterations_after": 28281,
+    "all_other_phase_calls_each": 9527
+  }
+}

@@ -1,7 +1,7 @@
 """Private bounded same-source clocks; never modifies a supported bundle."""
 from pathlib import Path
 import argparse,contextlib,ctypes,json,re,shutil,subprocess,sys,time,zipfile
-p=argparse.ArgumentParser();p.add_argument('--work',type=Path,required=True);a=p.parse_args();w=a.work.resolve();source=w/'source';sys.path[:0]=[str(source/'app/hybrid_water'),str(source/'tools/solute')]
+p=argparse.ArgumentParser();p.add_argument('--work',type=Path,required=True);p.add_argument('--reverse-only',action='store_true');a=p.parse_args();w=a.work.resolve();source=w/'source';sys.path[:0]=[str(source/'app/hybrid_water'),str(source/'tools/solute')]
 import daily_host as h
 from daily_coupling import validate_bundle
 from check_hupsel51_repair import bounded,physical,rows,check,csvlines
@@ -13,7 +13,7 @@ integer::pidx
 end module
 '''
 labels=['root','water_solve','water_update','heat','solute','head_setup','ordinary_iteration','padding_iteration'];builds={};commands=[]
-for mode,instrumented in [('control',False),('control',True),('candidate',True)]:
+for mode,instrumented in ([] if a.reverse_only else [('control',False),('control',True),('candidate',True)]):
  tag=mode+('-clock' if instrumented else '-plain');b=w/tag;shutil.copytree(old,b);src=(old/'headcalc.f90').read_text(encoding='cp1252')
  if mode=='control':
   needle='if (.not.flnonconv .and. mass_polish_at==0 .and. &\n             abs(budget_total+budget_step)>0.5d0*1d-10*(t1900-budget_start+dt)) then';assert src.count(needle)==1;src=src.replace(needle,'if (.not.flnonconv .and. mass_polish_at==0) then')
@@ -33,13 +33,16 @@ for mode,instrumented in [('control',False),('control',True),('candidate',True)]
  for name in names:
   cmd=['gfortran',*meta['identity']['donor_flags'],'-I',str(b),'-I',str(ref/'build/swap-obj'),'-I',str(ref/'build/ttutil-obj'),'-c',name+'.f90'];commands.append(cmd);r=subprocess.run(cmd,cwd=b,capture_output=True,text=True,timeout=45);assert r.returncode==0,r.stderr
  objects=[b/f.name if (b/f.name).exists() else f for f in sorted((ref/'build/swap-obj').glob('*.o'))];exe=b/'diagnostic.exe';cmd=['gfortran','-o',str(exe),*map(str,objects),*([str(b/'perf_clock.o')] if instrumented else []),str(b/'hybrid_step_budget.o'),str(ref/'build/ttutil-obj/libttutil.a')];commands.append(cmd);r=subprocess.run(cmd,capture_output=True,text=True,timeout=45);assert r.returncode==0,r.stderr;builds[tag]=exe
-builds['candidate-plain']=h.executable(old,'day_donor');(w/'COMMANDS.json').write_text(json.dumps(commands,indent=2))
+builds['candidate-plain']=h.executable(old,'day_donor')
+if a.reverse_only:
+ for tag in ('control-plain','control-clock','candidate-clock'):builds[tag]=w/tag/'diagnostic.exe'
+else:(w/'COMMANDS.json').write_text(json.dumps(commands,indent=2))
 def cpu(process):
  from ctypes import wintypes
  c,e,k,u=(wintypes.FILETIME() for _ in range(4));get=ctypes.windll.kernel32.GetProcessTimes;get.argtypes=[wintypes.HANDLE,*([ctypes.POINTER(wintypes.FILETIME)]*4)];get.restype=wintypes.BOOL;assert get(int(process._handle),ctypes.byref(c),ctypes.byref(e),ctypes.byref(k),ctypes.byref(u));sec=lambda x:((x.dwHighDateTime<<32)+x.dwLowDateTime)/1e7;return dict(user=sec(u),system=sec(k))
-results=[]
-for inst in (False,True):
- for mode in ('control','candidate','candidate','control'):
+results=json.loads((w/'RESULT.json').read_text()) if a.reverse_only else []
+for inst in ((True,) if a.reverse_only else (False,True)):
+ for mode in (('candidate','control','control','candidate') if a.reverse_only else ('control','candidate','candidate','control')):
   tag=mode+('-clock' if inst else '-plain');folder=w/('run'+str(len(results))+'-'+tag);folder.mkdir();data=[];binding={**meta['binding'],'private_cost03':dict(mode=mode,instrumented=inst,source=h.sha(builds[tag].parent/'headcalc.f90'))}
   def trial():
    started=time.process_time()
@@ -60,10 +63,10 @@ for inst in (False,True):
   results.append(result);(w/'RESULT.json').write_text(json.dumps(results,indent=2));print(json.dumps({k:v for k,v in result.items() if k not in ('budgets','folder')}),flush=True)
 # One actual short cold worker per instrumented policy; counters never enter native state.
 restarts=[]
-for mode in ('control','candidate'):
+for mode in (() if a.reverse_only else ('control','candidate')):
  run=next(r for r in results if r['mode']==mode and r['instrumented']);folder=Path(run['folder']);b=builds[mode+'-clock'];binding={**meta['binding'],'private_cost03':dict(mode=mode,instrumented=True,source=h.sha(b.parent/'headcalc.f90'))};origin=w/('origin-'+mode);receipt=h.verify_checkpoint(folder/'accepted-column-1-day-109.zip',109,binding,origin);dest=w/('restart-'+mode);dest.mkdir()
  def resume():return h.run(b,h.executable(old,'day_kernel'),case,dest,111,checkpoint_day=109,origin=origin,origin_receipt=receipt,runtime=True,publish_day=111,checkpoint_binding=binding,model=h.SALTFARM.model,project=h.SALTFARM)
  r,elapsed=bounded(15,resume);assert r['first_refusal'] is None;actual=rows(dest);check(actual);assert physical(actual)==physical(rows(folder)[109:111]);assert csvlines(dest/'original/result_output.csv')[-2:]==csvlines(folder/'original/result_output.csv')[111:113]
  with zipfile.ZipFile(dest/'accepted-column-1-day-111.zip') as x,zipfile.ZipFile(folder/'accepted-column-1-day-111.zip') as y:assert all(x.read(n)==y.read(n) for n in ('result.end','macro.bin'))
  restarts.append(dict(mode=mode,exact_physical_csv_native=True,seconds=elapsed))
-(w/'RESTART.json').write_text(json.dumps(restarts,indent=2));print('BOTH_SHORT_NATIVE_RESTARTS_EXACT')
+if not a.reverse_only:(w/'RESTART.json').write_text(json.dumps(restarts,indent=2));print('BOTH_SHORT_NATIVE_RESTARTS_EXACT')
