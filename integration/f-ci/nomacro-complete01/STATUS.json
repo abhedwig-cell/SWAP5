@@ -29704,7 +29704,111 @@
       "actual_records": 20,
       "source_cause": "Original get_MFLP_K writes K_table1..429 but reads430 and431. Nonhistory SWKIMPL1 currently omits the existing literal qualified micro_lookup_state.render dry-end completion. Observed K430=1 K431=1.1 at real t37840 and root potential about-19756cm. Tight root input selection alone does not repair this undefined constitutive lookup.",
       "selected_correction": "Apply existing literal micro_lookup_state.render also to new SWKIMPL1 without history, then existing root finalization. Preserve all SWKIMPL0 paths and original providers. New nohistory tables depend only on fixed constitutive inputs and need no new native codec/state. Metadata/raw source guards explicit.",
-      "campaign_action": "Stop four owned current main-v4 / positive-current-v6 controllers and their subprocess trees; keep all raw partial files unchanged, add separate censor record. Do not archive until terminal. Fresh source tests after correction."
+      "campaign_action": "Stop four owned current main-v4 / positive-current-v6 controllers and their subprocess trees; keep all raw partial files unchanged, add separate censor record. Do not archive until terminal. Fresh source tests after correction.",
+      "correction_source": "5bdfcb3472a3b349d7de397573cb23be351346d6",
+      "component_results": {
+        "O0": {
+          "path": "C:/Users/Veldh012/swap5-complete01-evidence/implicit-dry-lookup-component-O0-v1/RESULT.json",
+          "status": "REAL_ORIGINAL_NONHISTORY_COMPLETE_DRY_ENDPOINT_FIVE_INPUTS_PASS"
+        },
+        "O2": {
+          "path": "C:/Users/Veldh012/swap5-complete01-evidence/implicit-dry-lookup-component-O2-v1/RESULT.json",
+          "status": "REAL_ORIGINAL_NONHISTORY_COMPLETE_DRY_ENDPOINT_FIVE_INPUTS_PASS"
+        }
+      },
+      "censored_owned_controllers": "C:/Users/Veldh012/swap5-complete01-evidence/IMPLICIT_UNDEFINED_ROOT_CENSORED_OWNED_CONTROLLERS.json",
+      "all_four_controllers_terminal": true
+    },
+    "stable_candidate_v3": {
+      "production_source": "5bdfcb3472a3b349d7de397573cb23be351346d6",
+      "source": {
+        "app/hybrid_water/daily_coupling.py": {
+          "actual_worktree_sha256": "baf44fdcebe8e6d8a439caf79e54864e17dccd606cbcb381f1ea7955d46b1047",
+          "lf_normalized_sha256": "ee6e43391aa97362be0f15690f8d02a25cb772722e3a64ae24774ba8fc904bc5"
+        },
+        "app/hybrid_water/daily_host.py": {
+          "actual_worktree_sha256": "b9451af2befee19aa4f0df5a047e9df027a515e459da86002398898ce3d47b01",
+          "lf_normalized_sha256": "b1abbcf407dbea85d056161d1605bc5aad4e350286b36d46f6c5605ca8a2ed8f"
+        },
+        "app/hybrid_water/experimental_project.py": {
+          "actual_worktree_sha256": "d9d00ca2f87135eee3d3ab9b54a02d56ccf24449044c73c438feed3a20f08f6f",
+          "lf_normalized_sha256": "2bf35a73719abb9c9c12ea5e0b8263f6bee81aaac9d6f4188922658178d860d1"
+        },
+        "app/hybrid_water/implicit_conductivity.py": {
+          "actual_worktree_sha256": "ae337c7243cbce9f411c856f01f347a662d30bb7f5ef9074e393c8de0091aee3",
+          "lf_normalized_sha256": "ae337c7243cbce9f411c856f01f347a662d30bb7f5ef9074e393c8de0091aee3"
+        },
+        "app/hybrid_water/implicit_conductivity_admission.py": {
+          "actual_worktree_sha256": "5d47023db6d5508ba4d221e6e3dbd5ddeeeb8008e6d63a0cf2292d61c72a4112",
+          "lf_normalized_sha256": "5d47023db6d5508ba4d221e6e3dbd5ddeeeb8008e6d63a0cf2292d61c72a4112"
+        },
+        "app/hybrid_water/implicit_conductivity_jacobian.py": {
+          "actual_worktree_sha256": "7453a9b6604e12f0de5e5ebe25185b0ea2dfa46f3460cd42b5fb8467bd9f615d",
+          "lf_normalized_sha256": "7453a9b6604e12f0de5e5ebe25185b0ea2dfa46f3460cd42b5fb8467bd9f615d"
+        },
+        "app/hybrid_water/implicit_conductivity_retry.py": {
+          "actual_worktree_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
+          "lf_normalized_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6"
+        },
+        "app/hybrid_water/implicit_finite_newton.py": {
+          "actual_worktree_sha256": "13307cc1a1369bc3cf9d7ca1a0563b8b68f66651afb28a41418cb74b5f0a9aae",
+          "lf_normalized_sha256": "13307cc1a1369bc3cf9d7ca1a0563b8b68f66651afb28a41418cb74b5f0a9aae"
+        },
+        "app/hybrid_water/implicit_groundwater_state.py": {
+          "actual_worktree_sha256": "bb3622922f640d9e376fb8c183211cf64c17455b776d9e3ae48076ef2ebff68e",
+          "lf_normalized_sha256": "bb3622922f640d9e376fb8c183211cf64c17455b776d9e3ae48076ef2ebff68e"
+        },
+        "app/hybrid_water/implicit_groundwater_trial.py": {
+          "actual_worktree_sha256": "e6240085db17786ba786ad6a6f9f8b50d7e3b50121df9ba64dbec0964db980f7",
+          "lf_normalized_sha256": "e6240085db17786ba786ad6a6f9f8b50d7e3b50121df9ba64dbec0964db980f7"
+        },
+        "app/hybrid_water/implicit_interception_partition.py": {
+          "actual_worktree_sha256": "db663eeeb0975f4a88684e4b0a0fe93f6864fa1214960a7ecd574ab2e20b0e47",
+          "lf_normalized_sha256": "db663eeeb0975f4a88684e4b0a0fe93f6864fa1214960a7ecd574ab2e20b0e47"
+        },
+        "app/hybrid_water/implicit_pond_availability.f90": {
+          "actual_worktree_sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04",
+          "lf_normalized_sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+        },
+        "app/hybrid_water/implicit_pond_availability.py": {
+          "actual_worktree_sha256": "223c590f4006b6c39bd904930ba18ca9e08e3dbc4dbb5c76ae4395d05d4408cd",
+          "lf_normalized_sha256": "223c590f4006b6c39bd904930ba18ca9e08e3dbc4dbb5c76ae4395d05d4408cd"
+        },
+        "app/hybrid_water/implicit_pond_event.py": {
+          "actual_worktree_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622",
+          "lf_normalized_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622"
+        },
+        "app/hybrid_water/implicit_pond_event_state.f90": {
+          "actual_worktree_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+          "lf_normalized_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+        },
+        "app/hybrid_water/implicit_root_finalization.py": {
+          "actual_worktree_sha256": "15fa0188812fbd0f3d466d0740aa599a20e9653b25b7d7a52201d019506d9b2a",
+          "lf_normalized_sha256": "15fa0188812fbd0f3d466d0740aa599a20e9653b25b7d7a52201d019506d9b2a"
+        },
+        "app/hybrid_water/implicit_saturation_derivative.py": {
+          "actual_worktree_sha256": "788ee154188c1fdbc0813260966e8be501b913d02567a9d0bb06eaabddde41a4",
+          "lf_normalized_sha256": "788ee154188c1fdbc0813260966e8be501b913d02567a9d0bb06eaabddde41a4"
+        },
+        "tools/solute/run_water.py": {
+          "actual_worktree_sha256": "2ea1b70b6dc369e13d04a490c0e04d25b130bbb34e17a02f8f9d664f1290e94a",
+          "lf_normalized_sha256": "2ea1b70b6dc369e13d04a490c0e04d25b130bbb34e17a02f8f9d664f1290e94a"
+        }
+      },
+      "frozen_until_selected_campaigns_terminal": true
+    },
+    "selected_after_complete_dry_lookup": {
+      "production_source": "5bdfcb3472a3b349d7de397573cb23be351346d6",
+      "status": "SELECTED_BEFORE_EXECUTION",
+      "next": [
+        "Fresh main8short6full O0/O2 Windows v5",
+        "Fresh positive3short2full O0/O2 Windows current-v7; no older-source adoption",
+        "Fresh weighted-harmonic water/history O0/O2 v2",
+        "Current public/guards/limits and17 prior preservation",
+        "Portable carriers, raw seal and independent owner only after actual gates"
+      ],
+      "model_delta": "Only implicit conductivity policy and implicit root composition helper; frozen physical provider sources and all SWKIMPL0 routes unchanged",
+      "input_selection": "Explicit three scheduled crops TOL_2=MYTOLX=1e-10 TOLCONV=1e-9; MAXIT100/MAXBACKTR10; water/CDE guards1e-10"
     }
   }
 }
