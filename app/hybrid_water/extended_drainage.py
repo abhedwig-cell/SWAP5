@@ -157,6 +157,8 @@ def describe(directory, selected, original_output):
     text = path.read_text(encoding='cp1252')
     def integer(key):return int(one(text,key,r'[+-]?\d+'))
     swsrf, swsec, levels, division = map(integer,('SWSRF','SWSEC','NRSRF','SWDIVD'))
+    if selected.get('SWKIMPL')==1 and swsrf!=3:
+        raise ValueError('Implicit secondary-only extended drainage is not qualified: original Newton clock-resolution failure')
     if swsrf not in (2,3) or swsec not in (1,2) or not 1 <= levels <= 25:
         raise ValueError('Unqualified extended surfacewater domain')
     if levels <= swsrf-2 or division not in (0,1) or selected['SWSOLU'] and division == 0:

@@ -45,7 +45,7 @@ def fixture(case,output,mode,fmt,nprint,age=False,end_date=None,hysteresis=0,imp
         for crop in output.glob('*.crp'):
             crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
     if water_only:
-        assert case=='automatic' and not age,'Declared primary water-only fixture requires automatic drainage without AGE'
+        assert case in ('automatic','prescribed') and not age,'Declared primary water-only fixture requires original primary drainage without AGE'
         text=assignment(text,'SWSOLU',0)
         for crop in output.glob('*.crp'):
             crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
