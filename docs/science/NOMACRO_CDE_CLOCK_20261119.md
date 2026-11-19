@@ -1,6 +1,6 @@
 # Original CDE subdaily and per-step calendar composition
 
-**Contract persisted; implementation next; not qualified or admitted.**
+**Qualified bounded Windows/Ubuntu source; canonical admission pending.**
 
 Baseline: actual CDE interval metadata PR1751 mergec8b3029fe, exact source/metadata
 ordered parents and full qualified trees independently verified. Clean detached
@@ -99,3 +99,15 @@ dtCrit unchanged. Explicitly name the new numerical policy and source; selected
 CDEclock paths only. Test finite/domain/idempotence/atomic refusal on the real
 O0/O2 interface first, then rerun actual2day source/native workers before fresh
 O0/O2 short/native/full qualification. No old BUILD/checkpoint is rebound.
+
+## Actual source qualification
+
+[Original CDE subdaily/perstep output](NOMACRO_CDE_CLOCK_20261119.md) passes24full1096day Windows/Ubuntu O0/O2 periods,352main cold windows,16two-day1440limit periods with16cold windows and32nonJanuary periods with128cold windows. Actual native/policy/provider refusals total1608/1656/52;48private-stock alias and128postyear counter forgeries refuse. All21 selected prior CDE interval/water-clock/dense seams remain exact. The independent registered owner and5111actual evidence corruptions pass. Source qualification is complete; canonical admission remains pending. Whole functional closure stays PARTIAL, science NOT_QUALIFIED and fixed RC3 unchanged.
+
+Immutable runtime `0038a20fc2fb254bcd5f6079dcd24ae4dfe5d0af` and seal `8e0731453` bind eight original raw archives/911900534bytes. Main portable44426634761 and selected preservation44426886393 both finish SUCCESS. Raw ZIP bytes, ordered64MiB parts, members, compiler-input hashes, generated sources and complete native payloads are independently checked. No old build or checkpoint is rebound.
+
+Five proof tests refuse5111actual source/scope/raw/native/private/period/daily/event/epoch corruptions (21+340+4656+42+52), 64.20031470013782seconds. The registered root owner passes at `05b134dd6b3baadaef42a309589e757ad41a3c3f` in 214.07006089994684seconds. Wrong-source branch `codex/nomacro-cde-clock-negative01` at `78b6274cc5db54416fe149f7422d6fada0a354d6` is retained and never merged: dirty and committed source guards refuse before models, and the real O0/O2 production-interface drivers compile then fail Coincident event not closed.
+
+Retained observations include initial perstep template assertion, original1440dose shortfall, dry two-day rain postvalidator assertion, and the first independent proof using incorrect renamed audit labels. The latter is a validator-only defect: actual unchanged CDE_INTERVAL_DAILY_AUDIT/CDE_INTERVAL_INCREMENT_COUNTS labels are read literally. Original raw data and numerical tolerances remain unchanged. The bounded correction is an explicit numerical policy, not proof of an inherited defect or whole scientific equivalence.
+
+Fresh preservation selects21affected seams. Other named Grassgrowth/Hupsel/SaltFarm/AGE/groundwater/frost campaigns remain NOT_SELECTED_IMPACT through literal early dispatch, conditional linking and unchanged source. Their previous immutable qualification is inherited without a fresh-pass claim. Actual canonical source and metadata mergeresults remain required.
