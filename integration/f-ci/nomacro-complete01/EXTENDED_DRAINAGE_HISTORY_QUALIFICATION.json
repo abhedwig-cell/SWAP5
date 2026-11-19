@@ -1,0 +1,88 @@
+{
+  "status": "NEUTRAL_EXTENDED_HYDRAULIC_HISTORY_SOURCE_RAW_QUALIFICATION_PENDING_ADMISSION",
+  "runtime": "60ebf4adca43725d9a59e6420c5c31247da29c17",
+  "full_period_runtime": "8fc2f88f0d0477e4f7fb36e70ff8fd59ddb0bee2",
+  "predecessor": "6a31bc718ed01480e573f5853bf3f5510ff40908",
+  "independent_readers": "1e23b1b9f745faacb52752b813772998cc4c12a2",
+  "archives": {
+    "EXTENDED_DRAINAGE_HISTORY_SCOPE_AND_PROTOTYPE_RAW": {
+      "archive": "EXTENDED_DRAINAGE_HISTORY_SCOPE_AND_PROTOTYPE_RAW.zip",
+      "record": "EXTENDED_DRAINAGE_HISTORY_SCOPE_AND_PROTOTYPE_RAW.json",
+      "bytes": 2997571,
+      "sha256": "e668c83931213d10f22c8966bfc86c2ec4e48d8bbd1f004c8718a4b5945949ae",
+      "record_lf_sha256": "b10256042db11d50a0d2445e9101c2ca87bf318ddff4959fdc8815fb87f9adc9"
+    },
+    "EXTENDED_DRAINAGE_HISTORY_UBUNTU_O0_RAW_ARCHIVE": {
+      "archive": "EXTENDED_DRAINAGE_HISTORY_UBUNTU_O0_RAW_ARCHIVE.zip",
+      "record": "EXTENDED_DRAINAGE_HISTORY_UBUNTU_O0_RAW_ARCHIVE.json",
+      "bytes": 42612931,
+      "sha256": "fb7acf13fd23e44e6561177fe3e0eeb4b15feb33924a3d4c705634dea5a1e8bd",
+      "record_lf_sha256": "f184cd8898eb6cc46f2f5d72f637959dc947026e790ab570d519f8fb6db5279a"
+    },
+    "EXTENDED_DRAINAGE_HISTORY_UBUNTU_O2_RAW_ARCHIVE": {
+      "archive": "EXTENDED_DRAINAGE_HISTORY_UBUNTU_O2_RAW_ARCHIVE.zip",
+      "record": "EXTENDED_DRAINAGE_HISTORY_UBUNTU_O2_RAW_ARCHIVE.json",
+      "bytes": 42569573,
+      "sha256": "bd11db1e5501a57d21e04f01fca77d2836227b23e2a1a8579465fd3b2a95c50e",
+      "record_lf_sha256": "e96d9d81c04bf48f859933636a2088f14fbcd9a30325b9d9ff4a77006f5e51f6"
+    },
+    "EXTENDED_DRAINAGE_HISTORY_WINDOWS_O0_RAW_ARCHIVE": {
+      "archive": "EXTENDED_DRAINAGE_HISTORY_WINDOWS_O0_RAW_ARCHIVE.zip",
+      "record": "EXTENDED_DRAINAGE_HISTORY_WINDOWS_O0_RAW_ARCHIVE.json",
+      "bytes": 37614007,
+      "sha256": "82bf6c9b170f908ac6f3c1ae0d5c911b6faf18b023f37c9c2b35c917326db656",
+      "record_lf_sha256": "ababddcd7f2537f2757f319f985698c050f00a0b434f0b7cb38ccd5ffc145f7c"
+    },
+    "EXTENDED_DRAINAGE_HISTORY_WINDOWS_O2_RAW_ARCHIVE": {
+      "archive": "EXTENDED_DRAINAGE_HISTORY_WINDOWS_O2_RAW_ARCHIVE.zip",
+      "record": "EXTENDED_DRAINAGE_HISTORY_WINDOWS_O2_RAW_ARCHIVE.json",
+      "bytes": 38179064,
+      "sha256": "21d1726563b007b02fed6deb751d6683fb724bf8c7814fde1087ee40def25b7d",
+      "record_lf_sha256": "dacbfdf68563c35ca197b893cf1d6fb834bede3ea92b7ec04f20665637164457"
+    },
+    "EXTENDED_DRAINAGE_HISTORY_WINDOWS_SOURCE_RAW_ARCHIVE": {
+      "archive": "EXTENDED_DRAINAGE_HISTORY_WINDOWS_SOURCE_RAW_ARCHIVE.zip",
+      "record": "EXTENDED_DRAINAGE_HISTORY_WINDOWS_SOURCE_RAW_ARCHIVE.json",
+      "bytes": 10062355,
+      "sha256": "7aceb79e5c64e936c0256da10d3ba2d69e9e0f7cc56a02843ae85be4f3379f75",
+      "record_lf_sha256": "76b9b879ea9fa10ffb1bb94dae64380b0d6b2890787b0023f5fb77adb48af795"
+    }
+  },
+  "actual_full_periods": 8,
+  "actual_days_per_full_period": 1096,
+  "actual_primary_complete_native_cold_windows": 48,
+  "actual_short_contexts": 8,
+  "actual_short_cold_windows": 24,
+  "actual_output_interaction_contexts": 4,
+  "actual_output_interaction_cold_windows": 8,
+  "actual_history_off_contexts": 4,
+  "actual_history_off_days": 5,
+  "actual_current_Windows_contexts": 4,
+  "actual_current_days": 6,
+  "actual_current_cold_windows": 4,
+  "actual_public_native_refusals": 435,
+  "actual_compiled_native_refusals": 405,
+  "actual_cli_contexts": 14,
+  "actual_transaction_contexts": 14,
+  "actual_public_scope_refusals": 4,
+  "daily_soil_water_guard_cm": 1e-10,
+  "daily_secondary_water_guard_cm": 1e-10,
+  "daily_combined_water_guard_cm": 1e-10,
+  "daily_cde_guard_mg_cm2": 1e-10,
+  "integrated_cde_guard_mg_cm2": 1e-10,
+  "integrated_water_1e10_claim": false,
+  "AGE_extended_admitted": false,
+  "implicit_extended_admitted": false,
+  "current_Linux_numerical_evidence": "INHERITED from actual original full8fc source. Only the exact two-line current60 input guard differs; false for every selected explicit original-output case. No current60 Linux compiler BUILD or model execution is claimed.",
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_remaining_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "full_period_ci": {
+    "run": 44616221474,
+    "source": "b6fa245ab866758c8377104c1c80a2f77179ef9f",
+    "O0": "success",
+    "O2": "success"
+  },
+  "fresh_unaffected_full_periods": 0
+}
