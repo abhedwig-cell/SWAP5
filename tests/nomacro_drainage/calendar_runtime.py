@@ -85,7 +85,7 @@ def main():
     p.add_argument('--nprintday',type=int)
     p.add_argument('--end-date')
     p.add_argument('--format',type=int,choices=(0,1,2,3),default=3)
-    p.add_argument('--days',type=int,choices=(2,5,35,1096),default=5)
+    p.add_argument('--days',type=int,choices=(2,5,6,35,1096),default=5)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
     a=p.parse_args();a.output.mkdir()
