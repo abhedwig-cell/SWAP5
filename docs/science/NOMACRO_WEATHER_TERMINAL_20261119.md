@@ -59,6 +59,21 @@ candidate/publication checks bind it to the native bytes. This introduces no
 new physical store, root law, normalization, repaired checkpoint or input.
 Actual exact native and affected dependency qualification are still required.
 
+## Acceptance authority and measured scope
+
+The owning historical H gate is `check_hupsel51_repair.check`: the actual daily
+kernel and independently recomputed daily water receipt retain their existing
+`1e-10 cm` limits. The existing CDE ledger also independently retains its
+`1e-10 mg/cm2` daily and integrated inventory limits. The new independent
+reader uses these owning criteria, not another family's different full-period
+water qualification contract. It additionally reports integrated water drift:
+the main1096-day observations are approximately-2.60e-10cm for pulsed rain and
++2.65e-10cm for hourly weather; uniform rainfall is about+1.68e-10cm on Windows.
+These are measurements, not a claim of1e-10cm integrated water closure or
+whole-model scientific equivalence. No tolerance or prior gate is changed.
+Functional historical closure remains PARTIAL, science NOT_QUALIFIED and the
+fixed named RC3 profiles remain unchanged.
+
 Qualification must use the exact sealed H physical inputs, local O0/O2,
 the affected complete periods, independent daily ledgers and own native cold
 windows across day364 and crop/year boundaries. Prior unrelated periods are
