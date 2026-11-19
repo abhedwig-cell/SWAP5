@@ -126,7 +126,7 @@ def verify():
     # Git may check text out as LF. Archives are hardlinked read-only and remain
     # byte-exact; no historical file, manifest or hash is rewritten.
     log=io.StringIO();seal=audit_current_seal()
-    with tempfile.TemporaryDirectory(prefix='s5-direct-sealed-presentation-') as directory:
+    with tempfile.TemporaryDirectory(prefix='s5-direct-sealed-presentation-',dir=ROOT.parent) as directory:
         snapshot=Path(directory);target=snapshot/PROOF;target.mkdir(parents=True)
         for name,digest in seal.items():
             source=ROOT/PROOF/name;dest=target/name
