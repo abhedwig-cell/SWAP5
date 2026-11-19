@@ -3,7 +3,10 @@ import copy,hashlib,importlib.util,json,unittest
 from pathlib import Path
 spec=importlib.util.spec_from_file_location('owner',Path(__file__).with_name('direct_admission.py'));owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
 class Admission(unittest.TestCase):
- def test_literal_nonselected_projection(self):owner.nonselected_projection()
+ def test_literal_nonselected_projection(self):
+  spec=importlib.util.spec_from_file_location('current_nonselected_projection',owner.ROOT/'tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py')
+  current=importlib.util.module_from_spec(spec);spec.loader.exec_module(current)
+  self.assertEqual(current.prior_guards(),'LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED')
  def test_scope_source_guards_and_denominator_refuse_corruption(self):
   q=json.loads((owner.ROOT/owner.PROOF/'ADMISSION.json').read_text());owner.validate(q)
   for field in ('status','base','runtime','native_producer','model','protocol','water_guard_cm','solute_guard_mg_cm2','full_periods','cold_windows','whole_scientific_equivalence','RC3_changed','predecessor','owner'):

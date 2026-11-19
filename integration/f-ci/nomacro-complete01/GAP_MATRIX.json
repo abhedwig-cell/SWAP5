@@ -1462,7 +1462,7 @@
     "canonical": "e4322da80977c86861ab3aafe8f3035267c77582"
   },
   "implicit_conductivity": {
-    "status": "BOUNDED_SOURCE_QUALIFIED_CANONICAL_PENDING",
+    "status": "BOUNDED_CANONICALLY_ADMITTED",
     "scope": "Bounded actual original SWKIMPL1 analytic default Mualem, means1..6 and original output; water/CDE current implementation, AGE dryout explicitly blocked.",
     "contract": "docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md",
     "runtime_head": "5bdfcb347",
@@ -1474,13 +1474,16 @@
       "qualification_class": "A numerical correction plus B existing state composition",
       "unchanged_predecessor": "C inheritance with explicit literal SWKIMPL0 delegation; no fresh full legacy campaigns"
     },
-    "limitation": "Windows/Ubuntu O0/O2 independent bounded water/CDE qualification passes. Actual canonical admission pending. AGE dryout and full weighted-harmonic history remain unqualified; groundwater old0 carry/subdaily remains next composition gap. No full-family closure inferred.",
+    "limitation": "Actual canonical b24dd2b7a exact parents/full tree and clean detached owner PASS. AGE dryout and full weighted-harmonic history remain unqualified. Old0 water groundwater carry/subdaily is next composition gap.",
     "inherited_explicit_route_observation": "Original SWKIMPL0 also retains aintcdt<small net-input omission while Integral books interception. This unit changes newSWKIMPL1 only, not oldqualifiedscope or fixedRC3."
   },
   "water_groundwater_complete_state_subdaily": {
-    "status": "PARTIAL",
+    "status": "COMPOSED_GROUNDWATER_WATER_SOURCE_QUALIFIED_CANONICAL_PENDING",
     "evidence": "C:\\Users\\Veldh012\\swap5-complete01-evidence\\implicit-water-groundwater-swkimpl0-observation-v1\\RESULT.json",
-    "scope": "New implicit daily water carry repairs observed ordinary/history short cold only. Original explicit numerical water groundwater native carry and all water groundwater subdaily trial/calendar composition remain open."
+    "scope": "Original water SWBOTB1 ordinary/history complete hydraulic carry and subdaily/perstep/month/date/reset calendars, numerical selectors0/1, bounded analytical daily heat1/calculation2 no-snow/no-frost/no-aquifer. Source qualified Windows/Ubuntu; actual canonical admission pending.",
+    "current": "Ordinary/history water groundwater complete state and subdaily/perstep/reset source-qualified and reconciled with authoritative b287 named transport. Actual final canonical merge/root pending. Two bounded composition gaps implemented; global full-family/gap counts UNKNOWN.",
+    "contract": "docs/science/NOMACRO_GROUNDWATER_WATER_CALENDAR_20261119.md",
+    "remaining": "Actual merge and clean detached owner. Other process families/configurations remain separately inventoried; full family/global counts UNKNOWN."
   },
   "implicit_age_surface_dryout": {
     "status": "IMPLEMENTED_NOT_QUALIFIED",
@@ -1492,7 +1495,7 @@
     "next": "Separate explicit evaporation-age/dry-state semantics and qualified state owner; retain actual failure and original equations."
   },
   "coverage": {
-    "canonical_reconciled": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
+    "canonical_reconciled": "b28706d8b16661d8a9e85339d317256eaca51206",
     "authority": "This object extends existing GAP_MATRIX; STATUS.json remains sole recovery record. Existing26boundedfamily rows and original_integer_reader_calls are inherited, not recounted as full closure.",
     "denominator_status": "INCOMPLETE_VALID_CONFIGURATION_CONSTRAINT_RECONCILIATION",
     "full_historical_families_closed": "UNKNOWN",
@@ -1509,19 +1512,20 @@
       {
         "id": "implicit-water-cde",
         "function": "Original SWKIMPL1 analytic Mualem, means1..6, water/CDE",
-        "gap_classification": "NUMERICAL_FAILURE",
+        "gap_classification": null,
         "historical_availability": {
           "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:789",
           "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/headcalc.f90:208",
           "supported": "SWKIMPL0/1 and means1..6, original explicit limits retained"
         },
-        "current_availability": "Implemented current5bdfcb347, fresh integrated O0/O2 cohorts in progress; not canonically admitted. Original Newton, endpoint derivative/root/pond/interception defects explicitly corrected.",
+        "current_availability": "Bounded water/CDE admitted on actual canonical b24dd2b7a via PR1759; exact parents/tree and clean detached owner PASS. No all-combinations closure claim.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
-        "missing_composition_or_guard": "Implemented current5bdfcb347, fresh integrated O0/O2 cohorts in progress; not canonically admitted. Original Newton, endpoint derivative/root/pond/interception defects explicitly corrected.",
-        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "missing_composition_or_guard": "Separate implicit AGE dryout and full mean6/history wetdry blockers retain their own rows.",
+        "evidence_status": "BOUNDED_CANONICALLY_ADMITTED_WHOLE_NOT_QUALIFIED",
         "user_interest": "High: historical implicit projects blocked",
-        "remaining_effort": "Current block; complete qualification/admission",
-        "batch": "implicit"
+        "remaining_effort": "None for admitted bounded block; separate remaining interaction rows unchanged.",
+        "batch": "implicit",
+        "original_gap_classification": "NUMERICAL_FAILURE"
       },
       {
         "id": "implicit-examined-ksat",
@@ -1575,19 +1579,20 @@
       {
         "id": "groundwater-water-native",
         "function": "Complete original water SWBOTB1 state and subdaily calendar",
-        "gap_classification": "MISSING_COMPOSITION",
+        "gap_classification": "EVIDENCE_ONLY",
         "historical_availability": {
           "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90",
           "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/headcalc.f90",
           "supported": "Original prescribed groundwater and water output calendars"
         },
-        "current_availability": "New implicit daily typed hydro state exists; oldSWKIMPL0 ordinary/history native state gap and water subdaily composition remain. Existing hydraulic/calendar owners provide components.",
-        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
-        "missing_composition_or_guard": "New implicit daily typed hydro state exists; oldSWKIMPL0 ordinary/history native state gap and water subdaily composition remain. Existing hydraulic/calendar owners provide components.",
-        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "current_availability": "Complete ordinary/history water SWBOTB1 selector0/1 state/calendar source qualified on Windows/Ubuntu. Actual canonical merge pending.",
+        "implementation_completeness": "BOUNDED_STATE_CALENDAR_SOURCE_QUALIFIED_CANONICAL_PENDING",
+        "missing_composition_or_guard": "Two bounded state/calendar composition gaps implemented; canonical actual postimage next. Other physical families/valid combinations remain UNKNOWN.",
+        "evidence_status": "REGISTERED_SOURCE_RAW_NATIVE_OWNER_PASS_ACTUAL_CANONICAL_PENDING",
         "user_interest": "High: common groundwater projects and restart",
-        "remaining_effort": "Medium: one existing state-owner composition",
-        "batch": "groundwater"
+        "remaining_effort": "Actual merge tree/parents and clean detached owner; then hydraulic-options batch.",
+        "batch": "groundwater",
+        "original_gap_classification": "MISSING_COMPOSITION"
       },
       {
         "id": "explicit-szym-mean7",

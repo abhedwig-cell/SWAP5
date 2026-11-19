@@ -25,6 +25,9 @@ class Boundaries(unittest.TestCase):
                 # the original workflow/test commands are still compared below.
                 spec=importlib.util.spec_from_file_location('direct_checkout',s.ROOT/'tests/saltfarm_newton/direct_admission.py')
                 checkout=importlib.util.module_from_spec(spec);spec.loader.exec_module(checkout)
+                current_spec=importlib.util.spec_from_file_location('current_evidence_checkout',s.ROOT/'tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py')
+                current=importlib.util.module_from_spec(current_spec);current_spec.loader.exec_module(current)
+                new=current.strip_evidence_checkout(new)
                 new=checkout.remove(new,checkout.CHECKOUT)
             s.validate_workflow(path, new, old)
             with self.assertRaises(ValueError):
