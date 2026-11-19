@@ -1,0 +1,69 @@
+--- RESTORE52/macropore_native.f90
++++ GEOMETRY53/macropore_native.f90
+@@ -1801,6 +1801,7 @@
+       use MOD_arrays,    only: macp
+       use MOD_grid,      only: numnod, layer, dz, z
+       use variables,     only: theta, thetas, thetm1
++      use DIAG19,only:detail33,attempts,iter_index,nvec,macro_seq
+       
+       implicit NONE
+       
+@@ -1812,6 +1813,12 @@
+       real(8) ArMpTpDy, ArMpTpMin, ArMpTpSt, CritThet, DifVlMpDm
+       real(8) DifVlMpDmCp(MaCp), VlMpCp(MaCp), VlMpMin, VlShriCp, VlShriRel
+ 
++! Read-only first-provider observation of the existing in-place history branch.
++      real(8)::entry_dyn53(macp),entry_sub53(macp),prev53,self53,next53
++      integer::branch53
++      logical::observe53
++      integer,save::unit53
++      logical,save::open53=.false.
+       real(8), parameter :: WthMpMin = 10.0d-4
+ 
+ ! ----------------------------------------------------------------------
+@@ -1822,10 +1829,21 @@
+       case (1) 
+ 
+ ! --- A. VlMpDyCp: TOTAL VOLUME DYNAMIC MACROPORES (CRACKS) BASED ON MATRIX THETA     
++      observe53=detail33.and.macro_seq==1
++      if(observe53) then
++         entry_dyn53(1:numnod)=VlMpDyCp(1:numnod);entry_sub53(1:numnod)=SubsidCp(1:numnod)
++         if(.not.open53) then
++            open(newunit=unit53,file='geometry53_trace.txt',status='replace');open53=.true.
++         end if
++      end if
+       NodGwlHlp = NodGwlFlCpZo
+       if (NodGwlFlCpZo > NumNod) NodGwlHlp = NumNod
+       
+       do ic = IcTopMp, NodGwlHlp
++         if(observe53) then
++            branch53=-1
++            prev53=VlMpDyCp(max0(1,ic-1));self53=VlMpDyCp(ic);next53=VlMpDyCp(min0(ic+1,NumNod))
++         end if
+          il = Layer(ic)
+          if ((SwSoilShr(il) /= 0) .AND. Theta(ic) < ThetaS(ic)-1.d-4) then
+             VlShriRel = SHRINK(il,Theta(ic))
+@@ -1835,9 +1853,11 @@
+                (VlMpDyCp(max0(1,ic-1))+VlMpDyCp(min0(ic+1,NumNod)) > 0.d0))) then
+ !              Increasing moisture content in case of cracked soil compartment:
+                CritThet = ThetaS(ic)
++               if(observe53) branch53=1
+             else
+ !           Decreasing moist. cont., or increasing  moist. cont. in not cracked soil:
+                CritThet = ThetCrMp(il)
++               if(observe53) branch53=2
+             end if
+ 
+ !           SUBSIDence (SubsidCp) and VoLume of DYnamic MacroPores (VlMpDyCp) 
+@@ -1860,6 +1880,11 @@
+             VlShriCp     = 0.d0
+             SubsidCp(ic) = 0.d0
+             VlMpDyCp(ic) = 0.d0 
++         end if
++         if(observe53) then
++            write(unit53,*) attempts,iter_index,nvec,macro_seq,ic,il,SwSoilShr(il),Theta(ic),ThetM1(ic), &
++             ThetaS(ic),ThetCrMp(il),GeomFac(il),prev53,self53,next53,branch53,entry_dyn53(ic),entry_sub53(ic), &
++             VlMpDyCp(ic),SubsidCp(ic)
+          end if
+ !        VlMaSh: VOLume of soil MAtrix after SHrinkage; for solute models 
+ !         VlMaSh(ic)= FrArMtrx(ic) * (Dz(ic) - VlShriCp)

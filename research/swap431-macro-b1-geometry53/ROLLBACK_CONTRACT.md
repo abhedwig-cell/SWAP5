@@ -1,0 +1,11 @@
+# GEOMETRY53 - voorgesteld afgebakend geometriecontract
+
+Bij iedere D2-afwijzing moeten VlMpDyCp(1:NumNod) en SubsidCp(1:NumNod) exact terug naar de oorspronkelijke saved-statewaarden, samen met de reeds herstelde domeinvolumes/watervoorraad en RESTORE52-sorptiehistorie. Geen nulzetten, reconstructie door een nieuwe MPVOLUME-aanroep of numerieke afkapgrens.
+
+MPVOLUME(1) leest het bestaande VlMpDyCp van de huidige en naburige cellen voordat die waarden worden overschreven. Bij toenemend vocht en een positieve scheurselectie wordt CritThet=theta_s, anders ThetCrMp. De ascending in-place volgorde is onderdeel van de bestaande operator. VlMpDyCp is daarom een geschiedenisdragende geometrie-invoer, ook als een volgende rate toevallig dezelfde uitkomst geeft. SubsidCp wordt in deze D2-case opnieuw berekend voordat het in de oppervlakteformule wordt gebruikt, maar hoort bij de native geometrie en moet op een teruggegeven geaccepteerde oorsprong bij het scheurvolume passen.
+
+Minimale toekomstige aanvulling: twee tijdelijke eendimensionale originsnapshots bij dezelfde MacroStateVar(1)-grens als RESTORE52 en exact herstel in MacroStateVar(2), met dezelfde tijd/dimensie/readycontrole en kandidaatgate. Bewaar alle NumNod, zonder specifieke nodes of nul/positiefmasker; beide arrays worden al native geserialiseerd, dus geen nieuw native formaat of fysisch model. De bestaande RESTORE52-buffers en klok blijven behouden. Geen implementatie in deze unit.
+
+O0/O2TRIALD2 plusDIRECTD2, vier routes na elkaar, hard20 per route en dezelfdeintern16/caps. Alleen eerste bestaande provider per geselecteerde head loggen, geen extra provider/rekenprobe/context. Vergelijk alle oudere uitvoer met RESTORE52; observeer echte in-place branchinputs en uitvoer. DIRECT bewijst functiecontinuiteit, niet exact voorafgaand geometrieherstel. Exactecontractschending mag alsFAIL blijvenstaan. Geen correctie van eventuele roundoff-gevoelige positieve-waardegrens: dat zou een aparte fysische afbakening vereisen.
+
+Dit betreft beide geometriearrays. Alle overige globale geometrie/flux-/boundary-/eventwerkvelden zijn hiermee niet automatisch geclassificeerd of bytehersteld. Geen volledige nativeherstart/rollback/fullperiode/BAL/promotie. Geen brede campagne, B0/B1.12/canonical/no-macrorelease beschermd; B1 kandidaat met expliciete uitsluitingen.
