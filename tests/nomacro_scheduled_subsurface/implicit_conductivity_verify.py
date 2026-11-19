@@ -174,6 +174,14 @@ def scientific(q,archives,prior):
         key=(location['archive'],location['capsule_prefix'])
         if key not in capsules:capsules[key]=source_capsule(z,location['capsule_prefix'])
         build_files(z,bp,ip,build,capsules[key],opt);raw=z.read(ip+'swap.swp');selected=dict(build['identity']['original_output'])
+        def scalar(body,name):
+            found=re.findall(rb'(?mi)^[ \t]*'+name.encode()+rb'[ \t]*=[ \t]*([^!\r\n]+)',body);require(len(found)==1,'Missing/ambiguous actual original numerical input: '+name)
+            return float(found[0].strip().replace(b'd',b'e').replace(b'D',b'E'))
+        for name,value in [('SWKIMPL',1),('SWSOPHY',0),('SWSNOW',0),('SWFROST',0),('SWHEA',1),('SWCALT',2),('SWBR',0),('SWMETDETAIL',0)]:require(scalar(raw,name)==value,'Unqualified actual original process input: '+name)
+        for name,value in [('SWKMEAN',report['parameters']['kmean']),('SWSOLU',report['parameters']['solute']),('SWHYST',report['parameters']['hysteresis']),('SWBOTB',report['parameters']['bottom'])]:require(scalar(raw,name)==value,'Actual original reader selection differs: '+name)
+        for name in ('maize.crp','potato.crp','grass.crp'):
+            body=z.read(ip+name)
+            for field,value in [('TOL_2',1e-10),('MYTOLX',1e-10),('TOLCONV',1e-9)]:require(scalar(body,field)==value,'Actual original scheduled crop precision differs')
         for name,field in [('SWHYST','swhyst'),('SWDRA','swdra'),('SWCFBS','et')]:
             matches=re.findall(rb'(?mi)^\s*'+name.encode()+rb'\s*=\s*(\d+)',raw);require(len(matches)==1,'Ambiguous actual original selector');selected[field]=int(matches[0])
         actual=report['actual_original_numerical_inputs'];require((actual['MAXIT'],actual['MAXBACKTR'])==(100,10) and actual['scheduled_root_precisions']=={name:dict(TOL_2=1e-10,MYTOLX=1e-10,TOLCONV=1e-9) for name in ('maize.crp','potato.crp','grass.crp')},'Selected actual original numerical inputs differ')
