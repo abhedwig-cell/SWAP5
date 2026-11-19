@@ -142,7 +142,9 @@ def general_checkpoint(raw,build,row,selected,dz):
         for name,digest in meta['files'].items():require(hashlib.sha256(z.read(name)).hexdigest()==digest,'Actual original checkpoint member hash differs')
         wire=z.read('macro.bin');magic=wire[:8].decode('ascii');allowed={'S5IOW001','S5IGW001','S5OPH001','S5CCC001','S5CIH001','S5GHC003'}
         require(magic in allowed,'Unqualified actual implicit water/CDE native codec');require(struct.unpack_from('<i',wire,8)[0]==build['project']['nodes'],'Actual original checkpoint node domain differs')
-        n=build['project']['nodes'];chemical=magic in {'S5CCC001','S5CIH001','S5GHC003'};result=dict(magic=magic,sequential_record_lengths=sequential_records(z.read('result.end')),calendar=output_calendar(wire,n,row,selected,build['project']['start_date'],chemical))
+        n=build['project']['nodes'];stored,step,canopy=struct.unpack_from('<3d',wire,12);clock=(date.fromisoformat(build['project']['start_date'])-date(1900,1,1)).days+1
+        require(stored==clock+row['day'] and finite([stored,step,canopy]) and 0<step<=1 and canopy>=0,'Actual original native clock/step/canopy differs')
+        chemical=magic in {'S5CCC001','S5CIH001','S5GHC003'};result=dict(magic=magic,sequential_record_lengths=sequential_records(z.read('result.end')),calendar=output_calendar(wire,n,row,selected,build['project']['start_date'],chemical))
         if magic=='S5IGW001':result['water']=implicit_water_native(wire,row,n,selected,dz,build['project']['start_date'])
         if magic=='S5GHC003':
             from groundwater_history_verify import native
