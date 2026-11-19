@@ -49,6 +49,8 @@ def main():
                 if field is None:bad['identity'][owner]='foreign'
                 else:bad['identity'][owner][field]='foreign'
                 (target/'BUILD.json').write_text(json.dumps(bad),encoding='utf8')
+                if owner=='implicit_root_finalization':
+                    shutil.copyfile(build/'implicit_pond_event_state.f90',target/'implicit_pond_event_state.f90')
                 try:m.validate_bundle(target,a.reference_work,project)
                 except ValueError as error:assert expected in str(error),(owner,field,str(error))
                 else:raise AssertionError('Foreign numerical owner accepted: '+owner+' '+str(field))
@@ -60,6 +62,14 @@ def main():
         except ValueError as error:assert 'Foreign actual original implicit pond event provider' in str(error)
         else:raise AssertionError('Foreign compiled pond event provider accepted')
         q['numerical_owner_refusals'].append(dict(owner='implicit_pond_event',field='actual_provider_bytes',status='REFUSED_BEFORE_WORKER'));save()
+        target=a.output/'owner-actual-root-provider';target.mkdir()
+        (target/'BUILD.json').write_bytes((build/'BUILD.json').read_bytes())
+        shutil.copyfile(build/'implicit_pond_event_state.f90',target/'implicit_pond_event_state.f90')
+        (target/'RWU_micro.f90').write_bytes((build/'RWU_micro.f90').read_bytes()+b'\n! foreign root source\n')
+        try:m.validate_bundle(target,a.reference_work,project)
+        except ValueError as error:assert 'Foreign actual original implicit microscopic root provider' in str(error)
+        else:raise AssertionError('Foreign compiled microscopic root provider accepted')
+        q['numerical_owner_refusals'].append(dict(owner='implicit_root_finalization',field='actual_provider_bytes',status='REFUSED_BEFORE_WORKER'));save()
         for label,changes,extra in [
             ('snow',{'SWSNOW':1},''),('frost',{'SWFROST':1},''),('aquifer',{'SWBR':1},''),
             ('tables',{'SWSOPHY':1},''),('heat',{'SWHEA':0},''),('analytic-heat',{'SWCALT':1},''),
