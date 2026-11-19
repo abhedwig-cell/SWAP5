@@ -2,6 +2,7 @@ module hybrid_implicit_pond_event_state
   use, intrinsic::ieee_arithmetic,only:ieee_is_finite
   implicit none
   private
+  integer,save::trace_count=0
   logical,save::pending=.false.
   real(8),save::event_clock=0d0,event_step=0d0
   public::request_implicit_pond_event,take_implicit_pond_event,assert_no_implicit_pond_event
@@ -24,6 +25,11 @@ contains
       error stop 'Original implicit pond event reached clock resolution'
     if(pending.and.event_clock/=clock)error stop 'Foreign pending original implicit pond clock'
     event_clock=clock;event_step=target;pending=.true.;requested=.true.
+    if(clock>=37851d0.and.clock<37852d0.and.trace_count<64)then
+      trace_count=trace_count+1
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_POND_REQUEST',clock,step,target,old_pond,new_pond,net_rate,soil_rate,deficit
+      flush(6)
+    end if
   end subroutine
 
   subroutine take_implicit_pond_event(clock,step,taken)
@@ -33,6 +39,10 @@ contains
     taken=pending
     if(.not.pending)return
     if(clock/=event_clock)error stop 'Foreign original implicit pond retry clock'
+    if(clock>=37851d0.and.clock<37852d0.and.trace_count<=64)then
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_POND_TAKE',clock,step,event_step
+      flush(6)
+    end if
     step=event_step
     pending=.false.;event_clock=0d0;event_step=0d0
   end subroutine
