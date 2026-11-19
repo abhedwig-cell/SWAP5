@@ -1750,6 +1750,22 @@
         "user_interest": "Specialized full weighted harmonic/hysteresis interaction; independent default water/CDE routes not blocked by its incomplete period.",
         "remaining_effort": "UNKNOWN pending original nonlinear wet/dry transition investigation",
         "batch": "implicit-numerical-followup"
+      },
+      {
+        "id": "original-near-saturation-K-discontinuity",
+        "function": "Original default analytic Mualem near-saturation conductivity continuity under implicit Newton",
+        "gap_classification": "REFERENCE_DEFECT",
+        "historical_availability": {
+          "source": "Original MOD_MvG_functions.f90 hconduc shortcut relsat>1-1e-6",
+          "actual_reference_behavior": "Discontinuous K22.1980235224733349 to22.76176 across actualSe0.999999; original implicit may continue without convergence"
+        },
+        "current_availability": "Development correction extends literal original Mualem formula toSe1 and consistent derivative only for implicit extended composition; small real original O0/O2 and70digit independent oracle PASS; fresh Windows CDE full1096/6cold PASS, complete campaign/admission pending.",
+        "implementation_completeness": "IMPLEMENTED_BOUNDED_CORRECTION_NOT_CANONICALLY_ADMITTED",
+        "missing_composition_or_guard": "Complete corrected full/source/raw/native/transaction qualification; all explicit0 and ordinary implicit routes retain admitted providers.",
+        "evidence_status": "ACTUAL_ORIGINAL_FAILURES_AND_SEPARATE_COMPONENT_CORRECTION_RETAINED",
+        "user_interest": "High: normal extended drainage implicit configurations fail strict conservation/convergence domain",
+        "remaining_effort": "Complete selected integrated campaign and source/raw admission",
+        "batch": "extended-implicit"
       }
     ],
     "next_batches": [
@@ -1872,7 +1888,7 @@
   },
   "extended_drainage_implicit_composition": {
     "classification": "MISSING_COMPOSITION",
-    "implementation": "IMPLEMENTED_SHORT_AND_WINDOWS_WATER_FULL_PASS_INTEGRATED_CAMPAIGN_RUNNING",
+    "implementation": "CORRECTED_ORIGINAL_CONSTITUTIVE_CUTOFF; ACTUAL_WINDOWS_CDE1096_O0_O2_AND6COLD_PASS_PENDING_COMPLETE_CAMPAIGN",
     "source": "48f7b177040825e0f926d99370e32e89eb111f1e",
     "scope": "Original SWDRA2 SWKIMPL1 bottom6 qbot0 water/CDE SWHYST0/1/2; supported Mualem KSATEXM=KSATFIT; new coupled conductivity/pond tangent",
     "actual_short_extended_contexts": 12,
@@ -1885,6 +1901,12 @@
     "AGE_admitted": false,
     "examined_Ksat_admitted": false,
     "full_family_closed": "UNKNOWN",
-    "whole_scientific_equivalence": "NOT_QUALIFIED"
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "actual_completed_full_periods_before_constitutive_correction": 4,
+    "actual_failed_full_attempts_before_correction": 6,
+    "actual_corrected_completed_full_periods": 2,
+    "actual_corrected_source": "5c78ec11c",
+    "actual_independent_constitutive_component_cases_per_opt": 32,
+    "actual_corrected_explicit_off_postimages": 8
   }
 }

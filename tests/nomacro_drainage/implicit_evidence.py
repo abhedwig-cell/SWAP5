@@ -196,9 +196,73 @@ def ubuntu(path,opt):
    report,build,rows=period(root,z,label,opt,1096);source_binding(build,cap,provider);report['controls']=controls(root,label,build,rows,cap);reports[label]=report
  return reports
 
+def ordinary_controls(root,profile,build,rows):
+ directory=root/profile/'controls-v1';q=json.loads((directory/'RESULT.json').read_text())
+ require(q['status']=='IMPLICIT_CONDUCTIVITY_NUMERICAL_NATIVE_TRANSACTION_DOMAIN_PASS' and q['build_sha256']==json.loads((root/profile/'RESULT.json').read_text())['trajectory']['build_sha256'],'Actual ordinary policy controls incomplete or rebound')
+ require([len(q[k]) for k in ('policy_refusals','numerical_owner_refusals','descriptor_refusals','native_refusals')]==[38,74,13,7],'Actual ordinary guard denominator changed')
+ require(all(v['status']=='REFUSED_BEFORE_WORKER' for k in ('policy_refusals','numerical_owner_refusals','descriptor_refusals') for v in q[k]),'Actual ordinary policy/provider guard failure')
+ for path in directory.iterdir():
+  if path.is_dir() and path.name.startswith(('policy-','owner-','descriptor-')):require(not list(path.rglob('donor.stdout')) and not list(path.rglob('accepted-*.zip')),'Actual invalid ordinary policy entered worker/publication')
+ require({v['attack'] for v in q['native_refusals']}=={'magic','truncated','trailing','negative-day','changed-counter','witness','nonfinite'},'Actual ordinary native attacks differ')
+ import struct
+ from implicit_conductivity_forensics import output_calendar
+ selected=build['identity']['original_output'];chemical=selected['kind']=='cde';n=build['project']['nodes'];cookie=b'S5IHC001' if chemical else b'S5IOW001'
+ for item in q['native_refusals']:
+  target=directory/('native-'+item['attack']);wire=(target/'origin/macro.bin').read_bytes();require(item['status']=='REFUSED' and not list(target.glob('accepted-*.zip')),'Actual invalid ordinary native state published')
+  try:
+   require(wire[:8]==cookie,'Foreign ordinary native cookie');output_calendar(wire,n,rows[3],selected,build['project']['start_date'],chemical)
+  except (ValueError,UnicodeError,IndexError,struct.error):pass
+  else:raise ValueError('Independent calendar reader accepted actual ordinary mutant '+item['attack'])
+ require(q['transactions']==dict(discard_no_day_advance=True,replay_exact=True,accept_exact=True,recovered_next_day_exact=True,origin_unchanged=True),'Actual ordinary transaction assertions omitted')
+ proposals=[]
+ for folder,day in [('external/trial-1',5),('external/trial-2',5),('recovered/trial-1',6)]:
+  path=directory/'active'/folder/f'accepted-column-1-day-{day}.zip';meta,payload=prior.package(path.read_bytes());receipt={k:v for k,v in meta['receipt'].items() if k!='coupling'}
+  require(prior.physical([receipt])==prior.physical(rows[day-1:day]),'Actual ordinary proposal changed physical day');proposals.append((meta,payload))
+ require(proposals[0]==proposals[1],'Actual discarded ordinary proposal failed exact replay')
+ meta,payload=prior.package((directory/'active/external/accepted-column-1-day-5.zip').read_bytes());require(payload==proposals[1][1] and not (directory/'active/recovered/accepted-column-1-day-6.zip').exists(),'Actual ordinary accept/discard publication differs')
+ require(q['foreign_numerical_adoption']['status']=='REFUSED' and q['foreign_numerical_adoption']['origin_unchanged'] is True,'Actual foreign numerical state adopted')
+ return dict(actual_policy_provider_refusals=112,actual_descriptor_refusals=13,actual_native_refusals=7,actual_transaction_contexts=1)
+
+
+def precorrection_windows(path,opt):
+ with extracted(path.with_name('EXTENDED_DRAINAGE_IMPLICIT_PRECORRECTION_WINDOWS_SOURCE_RAW_ARCHIVE.zip')) as (sources,_):
+  cap=capsule(sources);shortcap=capsule(sources,'short-source');provider=json.loads((sources/'provider-PREPARED.json').read_text())
+ reports={}
+ with extracted(path) as (root,z):
+  aliases=json.loads(z.read('ACTUAL_COMPILED_ALIASES.json'))['profiles'];require(len(aliases)==15,'Actual pre-correction profile denominator differs')
+  for prefix,item in aliases.items():
+   q=json.loads(z.read(prefix+'/RESULT.json'));raw=z.read(item['actual_build_prefix']+'/BUILD.json');require(prior.digest(raw)==item['actual_build_sha256'] and item['producer_source']==q['source'] and item['producer_status']==q['status'],'Actual pre-correction source/build phase rebound')
+  bp=aliases['full-water']['actual_build_prefix'];report,build,rows=period(root,z,'full-water',opt,1096,bp);source_binding(build,cap,provider);report['controls']=controls(root,'full-water',build,rows,cap,compiled_prefix=bp,control_name='controls-v1');report['short_full_postimage']=phase_postimage(root,'full-water','short-water-h0',aliases);reports['full-water']=report
+  import implicit_failure_forensics as failed
+  for h in (0,2):
+   prefix=f'failed-cde-h{h}';bp=aliases[prefix]['actual_build_prefix'];build=json.loads(z.read(bp+'/BUILD.json'));prior.build_files(z,bp+'/',build);source_binding(build,cap,provider);reports[prefix]=failed.audit(root/prefix,root/bp)
+  for case in ('water','automatic'):
+   for h in (0,1,2):
+    prefix=f'short-{case}-h{h}';report,build,_=period(root,z,prefix,opt,35,aliases[prefix]['actual_build_prefix']);source_binding(build,shortcap,provider);reports[prefix]=report
+  import implicit_zero_boundary_forensics as ordinary
+  for solu,h in [(0,0),(1,2)]:
+   prefix=f'ordinary-s{solu}-h{h}';bp=aliases[prefix]['actual_build_prefix'];build=json.loads(z.read(bp+'/BUILD.json'));prior.build_files(z,bp+'/',build);reports[prefix]=ordinary.audit(root/prefix,root/bp)
+   if (root/prefix/'controls-v1').is_dir():reports[prefix]['controls']=ordinary_controls(root,prefix,build,prior.lines(z.read(prefix+'/trajectory/daily.jsonl')))
+  reports['explicit-off']=nonselected(root,z,opt,path.parent,aliases);reports['pond-component']=component(root/'pond-component',opt,provider)
+  import implicit_saturation_forensics as saturation
+  reports['saturation-component']=saturation.audit(root/'saturation-component')
+  component_q=json.loads(z.read('saturation-component/RESULT.json'));require(component_q['actual_baseline_build_sha256']==aliases['failed-cde-h0']['actual_build_sha256'] and component_q['actual_baseline_source_sha256']==prior.digest(z.read(aliases['failed-cde-h0']['actual_build_prefix']+'/MOD_MvG_functions.f90')),'Actual original/corrected constitutive probe baseline differs')
+ return reports
+
+
+def precorrection_ubuntu(path,opt):
+ record=json.loads(path.with_suffix('.json').read_text());require(record['repacked'] is False and record['origin_job_conclusion']=='failure','Original failed Ubuntu artifact repacked or relabelled')
+ with extracted(path) as (root,z):
+  cap=capsule(root);provider=json.loads((root/'provider-PREPARED.json').read_text());reports={}
+  report,build,rows=period(root,z,'water',opt,1096);source_binding(build,cap,provider);report['controls']=controls(root,'water',build,rows,cap);reports['water']=report
+  build=json.loads(z.read('cde-build/BUILD.json'));prior.build_files(z,'cde-build/',build);source_binding(build,cap,provider)
+  import implicit_failure_forensics as failed
+  reports['failed-cde-h2']=failed.audit(root/'cde',root/'cde-build')
+ return reports
+
 if __name__=='__main__':
  import argparse
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('archive',type=Path);p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);p.add_argument('--output',type=Path,required=True)
- a=p.parse_args();reports=(windows if a.platform=='Windows' else ubuntu)(a.archive,a.optimization)
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('archive',type=Path);p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--precorrection',action='store_true')
+ a=p.parse_args();call=(precorrection_windows if a.platform=='Windows' else precorrection_ubuntu) if a.precorrection else (windows if a.platform=='Windows' else ubuntu);reports=call(a.archive,a.optimization)
  with a.output.open('x') as stream:json.dump(dict(status='INDEPENDENT_ACTUAL_IMPLICIT_ARCHIVE_SOURCE_COMPILER_NATIVE_OBSERVATION_CONTROLS_PASS',reports=reports,model_executions=0,public_admission=False),stream,indent=2)
  print('INDEPENDENT_IMPLICIT_ARCHIVE_PASS',a.platform,a.optimization)

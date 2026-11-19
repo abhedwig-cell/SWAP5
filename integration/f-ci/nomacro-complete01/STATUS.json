@@ -31034,6 +31034,15 @@
     ],
     "actual_constitutive_oracle_digits": 70,
     "selected_corrected_full_periods": 8,
-    "corrected_full_selection_reason": "Constitutive provider changed on the actual selected dependency surface. Fresh water+hys0 and automatic CDE+hys2 full periods Windows/Ubuntu O0/O2 are scientifically required; earlier full water source phase is retained and not rebound."
+    "corrected_full_selection_reason": "Constitutive provider changed on the actual selected dependency surface. Fresh water+hys0 and automatic CDE+hys2 full periods Windows/Ubuntu O0/O2 are scientifically required; earlier full water source phase is retained and not rebound.",
+    "corrected_ubuntu_workflow": 44637377144,
+    "corrected_ubuntu_source": "a78bd5c5eb353f7c8dd8c2eb05cfcb07d5f6fe4e",
+    "corrected_Windows_CDE_full_periods": 2,
+    "corrected_Windows_CDE_full_days": 1096,
+    "corrected_Windows_CDE_cold_windows": 12,
+    "corrected_Windows_explicit_off_postimages": 8,
+    "precorrection_Windows_raw_archive_audits": "PASS O0/O2 actual independent source/build/input/native/controls/failure/constitutive component audits",
+    "additional_same_context_regression_selection": "Windows O0/O2 CDE history0 full1096 after primary corrected full water model periods finish; directly retest the actual566day failure. No extra Ubuntu history0 campaign automatically selected.",
+    "expected_same_context_regression_seconds_per_optimization": 250
   }
 }
