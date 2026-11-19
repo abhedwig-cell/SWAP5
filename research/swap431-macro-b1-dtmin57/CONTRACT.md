@@ -1,0 +1,7 @@
+# DTMIN57 preregistered scope
+
+Isolated SWAP431 B1 research; DIAG56 e225494ed9977f4815612f82077cfa33fb4bf5dd. Preserve canonical Status-A and production.
+Exactly2 fresh-process original D2 follow routes O0/O2 from own NATIVE55 candidate.end. No new trajectories/probes. Hard20s per model route, original internal16s/512commit/4retry bounds; failed/censored routes retained. Build costs separate.
+Only observer change: append header/full hold, difh, evaluated h at each real stage3, guarded by existing detail33. No solver-variable assignment, physics/clock/dt/criterion/Jacobian/guard/budget/reduction changes. Reuse verified NATIVE55 native closure and compile only changed headcalc object then link.
+Question: define the mixed absolute/relative step cap, its activation boundary, and composition with factor-of-three backtracking. Compare original implementation with full-array receipts and a model-free algebraic contract audit. Proposed product alpha0*factor is not implemented in solver and cannot establish convergence. Historical author intent remains unknown absent specific documentation; distinguish observed legacy policy, general documented backtracking, and proposed consistent contract.
+Gates: O0/O2 normal under20, physical traces parent-identical, complete Newton-direction reconstruction and original actual step match, cap invariants, duplicate trials, boundary cases for proposed formula, unchanged refusal/rollback/no commit. No solver repair, canonical admission or general/native/fullperiod claims.

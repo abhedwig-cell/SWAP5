@@ -1,0 +1,7 @@
+{
+  "original_headcalc_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+  "reference_document": "docs\\numerics\\richards-solver.md",
+  "reference_document_sha256": "c924cc30f7cf239897843c1ffd37f1cf3db6eb8552b3fcf1812b8434d17020dd",
+  "scope": "Document describes frozen no-macro owner, not authoritative intent of macro legacy exception; used as bounded general numerical contract only",
+  "backtracking_excerpt": "## Backtracking\n\nThe frozen route does not blindly accept every full Newton step. After applying a proposed update it recomputes the residual and evaluates\n\n```text\nsump = 0.5 * dot(F, F)\nFmax = max(abs(F_i))\n```\n\nIf the residual objective has not decreased and the maximum compartment residual is not already below the configured compartment-balance criterion, the update factor is reduced by\n\n```text\nfactor <- factor / 3\n```\n\nand another bounded backtracking attempt is made, up to the configured maximum.\n\nThere is additional historical logic at the minimum-step boundary that limits excessively large head updates. That behaviour belongs to the frozen owner; it is not generalized here into a new universal step-control rule.\n\n"
+}

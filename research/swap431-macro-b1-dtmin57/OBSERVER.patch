@@ -1,0 +1,21 @@
+--- NATIVE55/head_diag.f90
++++ DTMIN57/head_diag.f90
+@@ -599,6 +599,18 @@
+ integer::tr,ff(5)
+ real(8)::fac,hh,dh,jl,jm,ju,mpd
+ if(.not.detail33) return
++! DTMIN57 observer only: log existing arrays after the actual vector evaluation.
++if(stage==3) then
++ block
++  integer :: u57
++  open(newunit=u57,file='dtmin57_trials.txt',status='unknown',position='append',action='write')
++  write(u57,*) attempts,iter_index,itry,NN,merge(1,0,fldtmin),MaxIt,factor,sumold,sump,Fmax,dt
++  write(u57,*) hold(1:NN)
++  write(u57,*) difh(1:NN)
++  write(u57,*) h(1:NN)
++  close(u57)
++ end block
++end if
+ tr=0;fac=0;hh=h(47);dh=0;ff=0;jl=0;jm=0;ju=0;mpd=0
+ if(stage/=0) then
+  hh=hold(47)
