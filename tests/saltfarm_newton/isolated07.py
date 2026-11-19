@@ -1,6 +1,6 @@
 """One sequential exact-input original/current timing and native phase discriminator."""
 from pathlib import Path
-import argparse,contextlib,json,re,resource,shutil,subprocess,sys,time,zipfile
+import argparse,contextlib,ctypes as c,inspect,json,re,resource,shutil,subprocess,sys,textwrap,time,zipfile
 ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(ROOT/'app/hybrid_water'),str(ROOT/'tools/solute')]
 import daily_host as h
 from daily_coupling import validate_bundle
@@ -101,3 +101,32 @@ for mode in ('original','canonical'):
  stdout=dest/('stdout' if mode=='original' else 'original/donor.stdout');v=list(map(int,next(x for x in stdout.read_text().splitlines() if x.startswith('PERF07')).split()[1:]));assert len(v)==53
  item['phases']={n:dict(calls=v[i],seconds=v[i+26]/v[52]) for i,n in enumerate(LABELS)};result['profiles'][mode]=item;save();print(mode,item,flush=True)
 result.update(status='ISOLATED_ORIGINAL_CURRENT_FULL_AND_NATIVE_PHASES_EXACT',commands=commands);save()
+# Revisit the previously inconclusive typed-reply candidate only after the
+# changed discriminator: one isolated runner, paired actual process CPU.
+from direct_day_kernel import NativeDayKernel
+original_step=h.DailyHost.step
+def typed_reply(process,values):
+ if not isinstance(process,NativeDayKernel):return h.send(process,' '.join(map(str,values)))
+ if process.cancelled:raise TimeoutError('Direct day kernel cancelled')
+ if process.done or process.stage!=4:raise ValueError('Invalid typed reply lifecycle')
+ if len(values)!=process.nodes+12:raise ValueError('Incomplete typed reply')
+ reply=(c.c_double*len(values))(*values);out,status=(c.c_double*4)(),c.c_int()
+ process.lib.dk_apply(process.handle,process.column,process.day,len(values),reply,out,c.byref(status));process.checked(status,(0,1));key='DAILY_ACCEPTED' if status.value==1 else 'DAILY_REFUSED'
+ process.queue.append((key,list(map(str,[process.column,process.day,int(out[0]),out[1],out[2]]))));process.stage=3
+namespace=dict(h.__dict__,typed_reply=typed_reply);source=textwrap.dedent(inspect.getsource(original_step));needle='send(self.host, " ".join(map(str, reply)))';assert source.count(needle)==1;exec(source.replace(needle,'typed_reply(self.host,reply)'),namespace);candidate_step=namespace['step']
+result['candidate']=[];save()
+for i,mode in enumerate(('canonical','typed','typed','canonical')):
+ h.DailyHost.step=candidate_step if mode=='typed' else original_step
+ short=W/f'candidate-short{i}-{mode}';item=modern(h.executable(B,'day_donor'),short,35);assert physical(rows(short))==physical(rows(W/'full1-canonical')[:35]);assert csvlines(short/'original/result_output.csv')==csvlines(W/'full1-canonical/original/result_output.csv')[:37]
+ dest=W/f'candidate-full{i}-{mode}';item=modern(h.executable(B,'day_donor'),dest);assert physical(rows(dest))==physical(rows(W/'full1-canonical'));assert csvlines(dest/'original/result_output.csv')==csvlines(W/'full1-canonical/original/result_output.csv')
+ for day in (109,111,365,367,453,455,1460,1461):
+  with zipfile.ZipFile(dest/f'accepted-column-1-day-{day}.zip') as x,zipfile.ZipFile(W/f'full1-canonical/accepted-column-1-day-{day}.zip') as y:assert all(x.read(n)==y.read(n) for n in ('result.end','macro.bin'))
+ result['candidate'].append(dict(mode=mode,**item));save();print('CANDIDATE',result['candidate'][-1],flush=True)
+h.DailyHost.step=candidate_step;result['candidate_cold']=[]
+for low,high in ((109,111),(365,367),(453,455),(1460,1461),(109,1461)):
+ warm=W/'candidate-full1-typed';checkpoint=warm/f'accepted-column-1-day-{low}.zip';digest=h.sha(checkpoint);binding={**meta['binding'],'private_isolated07':dict(donor_sha256=h.sha(h.executable(B,'day_donor')))};origin=W/f'candidate-origin{low}-{high}';receipt=h.verify_checkpoint(checkpoint,low,binding,origin);dest=W/f'candidate-cold{low}-{high}';dest.mkdir()
+ def resume():return h.run(h.executable(B,'day_donor'),h.executable(B,'day_kernel'),case,dest,high,checkpoint_day=low,origin=origin,origin_receipt=receipt,runtime=True,publish_day=high,checkpoint_binding=binding,model=h.SALTFARM.model,project=h.SALTFARM)
+ item,seconds=bounded(35,resume);assert item['first_refusal'] is None;assert physical(rows(dest))==physical(rows(warm)[low:high]);check(rows(dest));assert csvlines(dest/'original/result_output.csv')[-(high-low):]==csvlines(warm/'original/result_output.csv')[low+2:high+2];assert h.sha(checkpoint)==digest
+ with zipfile.ZipFile(dest/f'accepted-column-1-day-{high}.zip') as x,zipfile.ZipFile(warm/f'accepted-column-1-day-{high}.zip') as y:assert all(x.read(n)==y.read(n) for n in ('result.end','macro.bin'))
+ result['candidate_cold'].append(dict(start=low,end=high,seconds=seconds,exact_native_physical_csv=True,origin_unchanged=True));save()
+h.DailyHost.step=original_step;result['status']='ISOLATED_COMPARISON_AND_TYPED_FULL_COLD_EXACT';save()

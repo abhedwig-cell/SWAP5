@@ -47,6 +47,7 @@ jobs:
             ${{ runner.temp }}/isolated07/RESULT.json
             ${{ runner.temp }}/isolated07/full*
             ${{ runner.temp }}/isolated07/profile-*
+            ${{ runner.temp }}/isolated07/candidate-*
             ${{ runner.temp }}/isolated07/profile-build-*/*.f90
             ${{ runner.temp }}/isolated07/qualified-O2/*.f90
             ${{ runner.temp }}/isolated07/qualified-O2/BUILD.json
