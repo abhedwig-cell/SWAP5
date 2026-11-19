@@ -32,7 +32,7 @@ def apply_build(output,donor_build,project,patched):
     trial=trial.replace('integer::node','integer::node\ninteger,save::trial_trace_count=0',1)
     anchor='residual=real(sum(real(terms,real128)),8)'
     assert trial.count(anchor)==1
-    trial=trial.replace(anchor,anchor+"\nif(abs(residual)>1d-10.and.t1900>="+trace_clock+".and.trial_trace_count<128)then\n trial_trace_count=trial_trace_count+1\n write(*,'(a,*(1x,es25.17e3))')'ACTUAL_IMPLICIT_GROUNDWATER_TRIAL',t1900,dt,residual,candidate_bottom_cm_d,candidate_matrix_delta_cm,projected_soil,pond,trial%start_stock_cm,trial%flow_cm,epd,reva,q0,qtop,pondm1,hsurf,merge(1d0,0d0,ftoph)\n flush(6)\nend if",1)
+    trial=trial.replace(anchor,anchor+"\nif(abs(residual)>1d-10.and.t1900>="+trace_clock+".and.trial_trace_count<128)then\n trial_trace_count=trial_trace_count+1\n write(*,'(a,*(1x,es25.17e3))')'ACTUAL_IMPLICIT_GROUNDWATER_TRIAL',t1900,dt,residual,candidate_bottom_cm_d,candidate_matrix_delta_cm,projected_soil,pond,trial%start_stock_cm,trial%flow_cm,epd,reva,q0,qtop,pondm1,hsurf,merge(1d0,0d0,ftoph)\n write(*,'(a,*(1x,es25.17e3))')'ACTUAL_IMPLICIT_RECEIPT_RATES',t1900,dt,qrosum,sum(qrot(1:numnod)),qdrtot,sum(qdra(1:nrlevs,1:numnod)),graidt,nraidt,gird,nird,aintcdt,crsflx_in,crsflx_out,sicact,siccap,siccaploss,projected_canopy,trial%start_stock_cm\n flush(6)\nend if",1)
     path=output/'integral.f90';text=path.read_text(encoding='cp1252');anchor='end module MOD_integral';assert text.count(anchor)==1
     path.write_text(text.replace(anchor,trial+'\n'+anchor,1),encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
