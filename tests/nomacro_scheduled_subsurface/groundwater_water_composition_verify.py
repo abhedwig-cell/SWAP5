@@ -33,6 +33,12 @@ TEST_CHECKOUT_ADAPTER="""                current_spec=importlib.util.spec_from_f
                 current=importlib.util.module_from_spec(current_spec);current_spec.loader.exec_module(current)
                 new=current.strip_evidence_checkout(new)
 """
+DIRECT_TEST_OLD=' def test_literal_nonselected_projection(self):owner.nonselected_projection()\n'
+DIRECT_TEST_CURRENT=""" def test_literal_nonselected_projection(self):
+  spec=importlib.util.spec_from_file_location('current_nonselected_projection',owner.ROOT/'tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py')
+  current=importlib.util.module_from_spec(spec);spec.loader.exec_module(current)
+  self.assertEqual(current.prior_guards(),'LITERAL_NONSELECTED_HOST_COUPLER_CLI_AND_OLD_SCIENTIFIC_CHECKS_PRESERVED')
+"""
 require=gw.require;digest=gw.digest;git=gw.git;blob=gw.blob;tree=gw.tree
 spec=importlib.util.spec_from_file_location('literal_direct_projection',ROOT/'tests/saltfarm_newton/direct_admission.py');direct=importlib.util.module_from_spec(spec);spec.loader.exec_module(direct)
 
@@ -55,6 +61,7 @@ def prior_guards():
  workflows={direct.WORKFLOW,direct.COLUMN};require(set(git('diff','--name-only',BASE,'HEAD','--','.github').decode().splitlines())==workflows,'Unqualified workflow dependency changed')
  for path in workflows:require(strip_evidence_checkout((ROOT/path).read_text(encoding='utf8')).encode()==blob(BASE,path),'Original workflow commands, limits or checkout rewritten')
  path='tests/hupsel51/test_successor.py';body=(ROOT/path).read_text(encoding='utf8');require(body.count(TEST_CHECKOUT_ADAPTER)==1 and body.replace(TEST_CHECKOUT_ADAPTER,'',1).encode()==blob(BASE,path),'Original successor tests rewritten beyond evidence checkout adapter')
+ path='tests/saltfarm_newton/test_direct_admission.py';body=(ROOT/path).read_text(encoding='utf8');require(body.count(DIRECT_TEST_CURRENT)==1 and body.replace(DIRECT_TEST_CURRENT,DIRECT_TEST_OLD,1).encode()==blob(BASE,path),'Original direct tests rewritten beyond current operational projection adapter')
  return record['status']
 
 
@@ -77,7 +84,7 @@ def source(q):
  for ref in (gw.SEALED,BASE,SEALED):
   for name,value in tree(ref,'integration').items():
    if name not in mutable:require(current.get(name)==value,'Sealed/incoming integration evidence changed: '+name)
- allowed={SELF,ENTRY,GUARD_ENTRY,'tests/nomacro_scheduled_subsurface/test_groundwater_water_composition_verify.py','tests/hupsel51/test_successor.py',direct.WORKFLOW,direct.COLUMN,PROOF+'GROUNDWATER_WATER_MERGE_RECEIPT.json',*mutable,'docs/science/NOMACRO_GROUNDWATER_WATER_CALENDAR_20261119.md','docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md','docs/science/SWAP5_FUNCTIONAL_CLOSURE.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
+ allowed={SELF,ENTRY,GUARD_ENTRY,'tests/nomacro_scheduled_subsurface/test_groundwater_water_composition_verify.py','tests/hupsel51/test_successor.py','tests/saltfarm_newton/test_direct_admission.py',direct.WORKFLOW,direct.COLUMN,PROOF+'GROUNDWATER_WATER_MERGE_RECEIPT.json',*mutable,'docs/science/NOMACRO_GROUNDWATER_WATER_CALENDAR_20261119.md','docs/science/NOMACRO_IMPLICIT_CONDUCTIVITY_20261119.md','docs/science/SWAP5_FUNCTIONAL_CLOSURE.md','docs/status-a/CURRENT_STATUS.md','docs/status-a/CURRENT_ARCHITECTURE.md','docs/status-a/TRACEABILITY.md'}
  require(set(git('diff','--name-only',SEALED,'HEAD').decode().splitlines())<=allowed,'Unqualified post-composition-seal change')
  prior=q['actual_incoming_owner'];require(prior['head']==BASE and prior['returncode']==0 and json.loads(prior['stdout'])['status']=='CANONICAL_IMPLICIT_AND_DIRECT_SALTFARM_COMPOSITION_ADMISSION_PASS','Actual incoming clean canonical owner omitted')
  workflow=q['workflow'];require(workflow['conclusion']=='success' and workflow['merge'] is False and workflow['head_sha']==workflow['carrier'] and set(git('diff','--name-only',workflow['runtime'],workflow['carrier']).decode().splitlines())=={'.github/workflows/nomacro-coverage-prescribed-head.yml'},'Actual composition carrier not isolated/terminal')
