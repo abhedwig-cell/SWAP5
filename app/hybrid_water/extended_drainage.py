@@ -74,6 +74,15 @@ def strict_trial_build(output, donor_build, patched):
     assert text.count(old)==1
     text=text.replace(old,old+'\n         if(abs(terminal_water_residual())>1d-10*(t1900-budget_start+dt))flnonconv=.true.',1)
     text=retry.headcalc_source(text);assert text.count('swmacro==0.and.swkimpl==1')==1
+    old='      fldecdt = .TRUE.';assert text.count(old)==1
+    text=text.replace(old,"""      if(dt<=dtmin)then
+         write(*,'(a,14(1x,es25.17e3))') 'EXTENDED_DRAIN_NONCONVERGED', &
+           t1900,dt,tcum,real(numbit,8),budget_start,budget_total,budget_step,terminal_water_residual(), &
+           sum1,deviat,pond,pondm1,maxval(abs(F(1:NN))),maxval(abs(h(1:NN)-hold(1:NN)))
+         write(*,'(a,6(1x,l1))') 'EXTENDED_DRAIN_NONCONVERGED_FLAGS', &
+           ftoph,flrunoff,flnonconv,any(flnonconv1(1:NN)),any(flnonconv2(1:NN)),flnonconv3
+      end if
+"""+old,1)
     path.write_text(text.replace('swmacro==0.and.swkimpl==1','swmacro==0.and.swkimpl==0'),encoding='cp1252')
     path=output/'timecontrol.f90';text=(path if path.exists() else donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
     text=retry.time_source(text);assert text.count('swmacro==0.and.swkimpl==1')==1
