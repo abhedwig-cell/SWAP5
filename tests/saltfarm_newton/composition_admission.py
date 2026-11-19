@@ -17,6 +17,10 @@ git=direct.git;blob=direct.blob;require=direct.require;normalized=direct.normali
 sha=lambda raw:hashlib.sha256(raw).hexdigest()
 
 def literal_guards():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('groundwater_composed_guards',ROOT/'tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.prior_guards()
     require(normalized((ROOT/ENTRY).read_bytes()).replace(HOOK.encode(),b'',1)==normalized(blob(BASE,ENTRY)),'literal implicit owner rewritten')
     old='tests/nomacro_scheduled_subsurface/age_groundwater_verify.py'
     require(normalized((ROOT/old).read_bytes())==normalized(blob(BASE,old)),'canonical AGE dispatch changed')

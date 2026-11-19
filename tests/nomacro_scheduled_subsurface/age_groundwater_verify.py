@@ -287,6 +287,10 @@ def user_outputs(z,prefix,report,data,build,temporary):
 
 def verify():
     import importlib.util
+    spec=importlib.util.spec_from_file_location('groundwater_composed_admission',ROOT/'tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.verify()
+    import importlib.util
     spec=importlib.util.spec_from_file_location('groundwater_water_admission',ROOT/'tests/nomacro_scheduled_subsurface/groundwater_water_verify.py')
     owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
     return owner.verify()
