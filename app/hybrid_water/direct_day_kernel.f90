@@ -2,6 +2,8 @@
 module direct_day_kernel
  use iso_c_binding
  use probe_kernel_donor
+ use mod_fmr_soil_water_application_host,only:fmr_resolve_soil_water_application_model, &
+  fmr_soil_water_application_selection_t,FMR_APPLICATION_HOST_OK,FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE
  implicit none
  type,extends(model_t)::direct_model_t
   real(real64),allocatable::reply(:)
@@ -56,13 +58,18 @@ contains
   integer(c_int),intent(out)::status
   type(context_t),pointer::c
   class(transaction_state_t),allocatable::initial
-  integer::i
+  integer::i,resolver_status
+  type(fmr_soil_water_application_selection_t)::selection
+  character(len=32),parameter::keys(1)=[character(len=32)::"HYBRID_SALTFARM_WATER"]
   logical::ok
   handle=c_null_ptr;status=-1
   if(ncol<1.or.nodes<1.or.nodes>10000)return
   if(.not.ieee_is_finite(epoch).or.any(first<0))return
   if(.not.all(ieee_is_finite(totals)))return
   if(.not.all(ieee_is_finite(stocks)).or..not.all(ieee_is_finite(heads)))return
+  call fmr_resolve_soil_water_application_model(keys(1),keys,selection,resolver_status)
+  if(resolver_status/=FMR_APPLICATION_HOST_OK.or..not.selection%explicit_selection.or. &
+    selection%route/=FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE.or.selection%registered_index<1)return
   allocate(c);allocate(c%model);c%nodes=nodes;c%epoch=epoch
   allocate(c%committed(ncol),c%refused(ncol));c%refused=.false.
   call c%executor%bind_model(c%model)
