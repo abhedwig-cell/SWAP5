@@ -39,11 +39,13 @@ def age_outputs(full,data,project):
     return dict(actual_global_days=days,original_floutput_tend_age_cadence_retained=True,actual_written_means_and_volumes_match_full_precision_probe=True)
 
 
-def fixture(path,mode,hysteresis,fmt,reset,npd,source):
+def fixture(path,mode,hysteresis,fmt,reset,npd,source,et=0):
     fixed.fixture(path,{'point':'subsurface','interval':'subsurface-interval'}.get(source,source),initial=100.)
     p=path/'swap.swp';text=p.read_text(encoding='cp1252')
     if not re.search(r'(?mi)^\s*FLPRINTDT\s*=',text):text+='\nFLPRINTDT = .FALSE.\n'
     for key,value in dict(SWHYST=hysteresis,SWHEA=1,SWCALT=2,SWBOTB=8 if hysteresis==2 else 5,SWBBCFILE=0,SWMONTH=int(mode=='monthly'),SWODAT=int(mode=='explicit'),PERIOD=0 if mode in ('monthly','explicit','terminal') else 5,SWRES=reset,NPRINTDAY=npd,SWCSV=fmt,FLPRINTDT='.TRUE.').items():text=assignment(text,key,value)
+    text=assignment(text,'SWCFBS',et)
+    if et:text=assignment(text,'CFBS',0.8)
     if mode=='explicit':
         text,count=re.subn(r'(?mi)^([ \t]*OUTDATINT[ \t]*=[ \t]*\n).*?^\* End of table',lambda match:match[1]+'2002-01-04\n2002-01-08\n2002-01-31\n2003-01-01\n2003-06-15\n2004-12-31\n* End of table',text,count=1,flags=re.S);assert count==1
     p.write_text(text,encoding='cp1252')
@@ -69,10 +71,11 @@ def main():
     p.add_argument('--mode',choices=('monthly','explicit','periodic','terminal'),default='explicit');p.add_argument('--hysteresis',type=int,choices=(0,1,2),default=0)
     p.add_argument('--format',type=int,choices=(0,1,2,3),default=3);p.add_argument('--reset',type=int,choices=(0,1),default=1);p.add_argument('--nprintday',type=int,default=1)
     p.add_argument('--source',choices=('point','interval','surface','sprinkler'),default='point');p.add_argument('--optimization',choices=('O0','O2'),required=True)
+    p.add_argument('--et',type=int,choices=(0,1),default=0)
     p.add_argument('--phase',choices=('short','full','limit'),default='short');p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
     a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=a.existing_input or out/'input'
     if not a.existing_input:
-        fixture(inputs,a.mode,a.hysteresis,a.format,a.reset,a.nprintday,a.source)
+        fixture(inputs,a.mode,a.hysteresis,a.format,a.reset,a.nprintday,a.source,a.et)
         if a.phase=='limit':
             path=inputs/'fixed-irrigation.irg';s=path.read_text(encoding='cp1252');assert s.count('2002-01-05')==1;path.write_text(s.replace('2002-01-05','2002-01-01'),encoding='cp1252')
     project=m.e.load(inputs,original_output=True);build=a.reuse_build or out/'build';q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),parameters={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},input_root=str(inputs),build_root=str(build),original_output=metadata(project),whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
