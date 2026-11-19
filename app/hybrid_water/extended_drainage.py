@@ -275,4 +275,6 @@ def apply_build(output, donor_build, project, patched):
     lines=text.splitlines(keepends=True);assert sum("'HYBRID_HYDRAULIC'" in line for line in lines)==2
     text=''.join(line+('   call extended_drain_witness()\n' if "'HYBRID_HYDRAULIC'" in line else '') for line in lines)
     path.write_text(text,encoding='cp1252')
-    return [TERMINAL_MODULE,MODULE,'surfacewater',*patched]
+    # HeadCalc imports the selected MOD_top derivative; compile its actual
+    # defining module before compiling the caller.
+    return [TERMINAL_MODULE,MODULE,'surfacewater','boundtop',*(name for name in patched if name!='boundtop')]

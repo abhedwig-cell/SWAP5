@@ -6,6 +6,7 @@ daily water1e-10, integrated CDE1e-10; integrated water is reported separately.
 import argparse
 from datetime import date,timedelta
 import hashlib
+import io
 import json
 import math
 from pathlib import Path
@@ -70,7 +71,7 @@ def observed(raw,data,build):
 def checkpoint(path,build,row):
     domain=build['identity']['extended_drainage']['domain'];n,r=domain[1:3];nv=11+3*r+r*n;length=92+16*nv
     clock=(date.fromisoformat(build['project']['start_date'])-date(1900,1,1)).days+1+row['day']
-    with zipfile.ZipFile(path) as z:
+    with zipfile.ZipFile(io.BytesIO(path) if isinstance(path,bytes) else path) as z:
         require(set(z.namelist())=={'checkpoint.json','result.end','macro.bin'},'Foreign checkpoint members')
         meta=json.loads(z.read('checkpoint.json'));wire=z.read('macro.bin')
         require(meta['schema']=='swap5-hybrid-water-checkpoint-3' and meta['binding']==build['binding'] and meta['receipt']==row and set(meta['files'])=={'result.end','macro.bin'},'Checkpoint receipt/source/inventory differs')
