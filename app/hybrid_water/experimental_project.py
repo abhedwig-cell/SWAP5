@@ -184,7 +184,7 @@ def inspect(directory, *, original_output=None):
         if boundary['SWBOTB']!=expected_bottom or selected['SWTOPBHEA']!=2:
             raise ValueError('Bounded frost qualification requires prescribed surface temperature and free bottom7 or drained bottom6')
     if selected['SWSOLU'] and boundary['SWBOTB']==1:
-        age_groundwater=(original_output is True and selected['SWSOLU']==2
+        age_groundwater=(original_output is not False and selected['SWSOLU']==2
                          and selected['SWSNOW']==0 and selected['SWHEA']==1
                          and selected['SWCALT']==2)
         if ((selected['SWSOLU']!=1 and not age_groundwater) or selected['SWSOPHY']!=0
@@ -273,6 +273,8 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     if not isinstance(age_direct_soil_source,bool):raise ValueError('Direct soil age source mode must be boolean')
     if age_direct_soil_source and age_irrigation_source:raise ValueError('Select one explicit incoming-age source policy')
     report = inspect(directory,original_output=original_output)
+    if report.get('age') and report['boundary']['SWBOTB']==1 and (age_irrigation_source or age_direct_soil_source):
+        raise ValueError('Original AGE groundwater currently requires historical young-water source policy')
     if original_output:report={**report,'original_output_policy':'original-user-output-controls-v1'}
     else:
         text=(Path(directory)/'swap.swp').read_text(encoding='cp1252')
