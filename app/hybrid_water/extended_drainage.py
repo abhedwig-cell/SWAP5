@@ -118,10 +118,14 @@ def describe(directory, selected, original_output):
     if selected.get('SWDRA') != 2:
         return None
     from experimental_project import one
-    required = dict(SWMACRO=0, SWSOPHY=0, SWHYST=0, SWSNOW=0, SWFROST=0,
+    required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=0, SWFROST=0,
                     SWHEA=1, SWCALT=2, SWKIMPL=0, SWMETDETAIL=0, SWBBCFILE=0)
     if any(selected.get(k) != v for k,v in required.items()) or selected.get('SWBR',0) != 0:
         raise ValueError('Unqualified extended drainage process composition')
+    if selected.get('SWHYST') not in (0,1,2):
+        raise ValueError('Unqualified extended drainage hydraulic history')
+    if selected.get('SWHYST') and selected.get('SWDISCRVERT')!=0:
+        raise ValueError('Extended drainage hydraulic history requires explicit original sublayers')
     if selected.get('SWSOLU')==2:
         raise ValueError('Extended drainage AGE retained-age dry-pond closure is not qualified')
     if selected.get('SWSOLU') not in (0,1) or selected.get('SWBOTB') != 6:
@@ -141,7 +145,8 @@ def describe(directory, selected, original_output):
     if levels <= swsrf-2 or division not in (0,1) or selected['SWSOLU'] and division == 0:
         raise ValueError('Original extended drain partition is invalid')
     return dict(file=path.relative_to(directory.resolve()).as_posix(), levels=levels,
-                swsrf=swsrf, swsec=swsec, nrpri=swsrf-2, nrsec=levels-(swsrf-2), swdivd=division)
+                swsrf=swsrf, swsec=swsec, nrpri=swsrf-2, nrsec=levels-(swsrf-2), swdivd=division,
+                **({'swhyst':selected['SWHYST']} if selected['SWHYST'] else {}))
 
 
 def selection(project):
@@ -151,13 +156,18 @@ def selection(project):
     record = inspect(project.input_directory,original_output=project.original_output).get('extended_drainage')
     if record is not None and project.time_step_policy != 'original-adaptive-day-seed-v1':
         raise ValueError('Extended drainage requires original time stepping')
+    if record is not None and record.get('swhyst') and not project.original_output:
+        raise ValueError('Extended drainage hydraulic history requires explicit original-output state')
     return record
 
 
 def enabled(project):return selection(project) is not None
 
 
-def magic(project):return b'S5EDO001' if project.original_output else MAGIC
+def magic(project):
+    selected=selection(project)
+    if selected and selected.get('swhyst'):return b'S5EDH001'
+    return b'S5EDO001' if project.original_output else MAGIC
 
 
 def domain(project):
@@ -290,6 +300,14 @@ def apply_build(output, donor_build, project, patched):
     body=text[first:last];codecs=re.findall(r"'(S5[A-Z0-9]{6})'",body)
     assert len(codecs)==2 and len(set(codecs))==1
     body=body.replace(codecs[0],magic(project).decode())
+    if selection(project).get('swhyst'):
+        # Type the existing physical carry with the existing history domain.
+        # Its second occurrence still precedes the complete calendar. Neither
+        # call reads/writes a physical value or introduces a replacement store.
+        for operation,restoring in [('read(unit,iostat=ios)', '.true.'),('write(unit)', '.false.')]:
+            anchor='        '+operation+' h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact'
+            assert body.count(anchor)==1
+            body=body.replace(anchor,'        call hybrid_output_hysteresis_checkpoint(unit,'+restoring+')\n'+anchor,1)
     old='      use MOD_grid, only: numnod';assert body.count(old)==1
     body=body.replace(old,'      use '+MODULE+',only:extended_drain_checkpoint\n'+old,1)
     for restoring,anchor in [('.true.','        read(unit,iostat=ios) trailing'),('.false.','      end if\n      close(unit)')]:

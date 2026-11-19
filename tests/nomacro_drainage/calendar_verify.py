@@ -47,7 +47,8 @@ def qualification():
 @lru_cache(maxsize=1)
 def guard_previous_source():
     qualification()
-    require(not git('diff',RUNTIME,'--',*SURFACES),'Actual calendar compiler source differs from qualified runtime')
+    import history_verify as history
+    history.guard_previous_source()
     changed=git('diff','--name-only',BASE,RUNTIME,'--',*SURFACES).decode().splitlines()
     expected=['app/hybrid_water/'+name for name in ('daily_coupling.py','daily_host.py','experimental_project.py','extended_drainage.py','extended_output_receipt.py','original_output.py')]
     require(changed==expected,'Unexpected calendar compiler dependency changed')
@@ -113,6 +114,8 @@ def scientific():
 
 
 def verify():
+    import history_verify as history
+    return history.verify()
     source();current=scientific();old=preceding.scientific()
     import weather_surface_verify as weather
     q=json.loads((PROOF/'WEATHER_TERMINAL_QUALIFICATION.json').read_bytes());weather.validate(q)

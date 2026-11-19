@@ -19,7 +19,7 @@ m=previous.m
 ROOT=previous.ROOT
 
 
-def fixture(case,output,mode,fmt,nprint,age=False,end_date=None):
+def fixture(case,output,mode,fmt,nprint,age=False,end_date=None,hysteresis=0):
     info=previous.fixture(case,output)
     path=output/'swap.swp';text=path.read_text(encoding='cp1252')
     values=dict(SWCSV=fmt,NPRINTDAY=nprint,SWMONTH=int(mode=='monthly'),
@@ -45,6 +45,9 @@ def fixture(case,output,mode,fmt,nprint,age=False,end_date=None):
         for crop in output.glob('*.crp'):
             crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
     if end_date is not None:text=assignment(text,'TEND',end_date)
+    if hysteresis:
+        text=assignment(text,'SWHYST',hysteresis)
+        info['declared_hydraulic_history']=hysteresis
     text+='\nFLPRINTDT = '+('.TRUE.' if mode=='perstep' else '.FALSE.')+'\n'
     path.write_text(text,encoding='cp1252')
     info['pre_output_input_inventory']=info['inputs']
@@ -77,11 +80,12 @@ def main():
     p.add_argument('--case',choices=previous.CASES,required=True)
     p.add_argument('--mode',choices=('daily','subdaily','monthly','terminal','perstep','explicit','combined'),required=True)
     p.add_argument('--age',action='store_true')
+    p.add_argument('--hysteresis',type=int,choices=(0,1,2),default=0)
     p.add_argument('--reuse-build',type=Path)
     p.add_argument('--nprintday',type=int)
     p.add_argument('--end-date')
     p.add_argument('--format',type=int,choices=(0,1,2,3),default=3)
-    p.add_argument('--days',type=int,choices=(2,5,35,1096),default=5)
+    p.add_argument('--days',type=int,choices=(2,5,6,35,1096),default=5)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
     a=p.parse_args();a.output.mkdir()
@@ -91,7 +95,7 @@ def main():
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,a.nprintday if a.nprintday is not None else (3 if a.mode=='subdaily' else 1),a.age,a.end_date)
+        q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,a.nprintday if a.nprintday is not None else (3 if a.mode=='subdaily' else 1),a.age,a.end_date,a.hysteresis)
         project=m.e.load(a.output/'input',original_output=True);build=a.reuse_build or a.build_root/a.case
         q.update(input_root=str(a.output/'input'),build_root=str(build),output_selection=original_output.selection(project));save()
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,

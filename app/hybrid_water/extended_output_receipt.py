@@ -1,6 +1,8 @@
 """Read the existing daily output frame across original subdaily resets."""
 import math
 import struct
+import re
+from pathlib import Path
 from datetime import date,timedelta
 
 
@@ -19,6 +21,26 @@ def validate_candidate(raw,receipt,project):
             if header[:4]==(1,n,r,expected_reals) and prefix[at:at+80]==prefix[at+80:at+160]:positions.append((at,header))
         at=prefix.find(marker,at+1)
     require(len(positions)==1,'calendar shape/witness differs');at,h=positions[0]
+    history=selection(project).get('swhyst',0)
+    if history:
+        expected=struct.pack('<5i',1,n,0,history,int(project.solute))
+        require(at>=40 and prefix[at-40:at]==expected+expected,'hydraulic history domain/witness differs')
+        paired=expected+expected
+        require(prefix.count(paired)==2,'hydraulic history physical/calendar domains differ')
+        offset=prefix.index(paired)+40
+        require(offset+8*(5*n+4)<=at-40,'hydraulic history physical shape differs')
+        state=struct.unpack_from('<'+str(5*n+4)+'d',prefix,offset)
+        require(all(map(math.isfinite,state)) and min(state[n:5*n+2])>=0 and state[-1]>=0,'hydraulic history physical values invalid')
+        require(list(state[:n])==receipt.get('pressure_head_cm') and state[-2]==receipt.get('groundwater_cm') and state[-1]==receipt.get('stock_end_cm',[None])[0],'hydraulic history physical receipt differs')
+        text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')
+        tables=re.findall(r'(?mi)^[ \t]*ISUBLAY[ \t]+ISOILLAY[ \t]+HSUBLAY[ \t]+NCOMP[^\n]*\n((?:[ \t]*\d+[^\n]*\n)+)',text)
+        require(len(tables)==1,'hydraulic history original geometry missing/ambiguous')
+        dz=[]
+        for line in tables[0].splitlines():
+            fields=line.split();require(len(fields)==4 and int(fields[3])>0,'hydraulic history original geometry invalid')
+            count=int(fields[3]);height=float(fields[2]);require(math.isfinite(height) and height>0,'hydraulic history original thickness invalid')
+            dz.extend([height/count]*count)
+        require(len(dz)==n and abs(math.fsum(value*thickness for value,thickness in zip(state[n:2*n],dz))-state[-1])<=1e-10,'hydraulic history physical inventory differs')
     end=at+160+16*expected_reals
     extra=20+8*(3*n+41+r) if project.age else 24+16*(18+n) if project.solute else 0
     require(end+extra==len(prefix),'private section size differs')

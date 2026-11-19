@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-extended-calendar01",
-  "last_commit": "e19c9880243c46b6f0c171b7b0991d7cf841e973",
-  "status": "CALENDAR_BOUNDED_OWNER_PERSISTED_CLEAN_DETACHED_PUBLIC_OWNER_SELECTED",
+  "branch": "codex/nomacro-extended-history01",
+  "last_commit": "42e807127827925a2e76a3cab6eca3ef96336307",
+  "status": "HISTORY_SOURCE_ADMISSION_OWNER_PERSISTED_CLEAN_DETACHED_PUBLIC_OWNER_SELECTED",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -339,7 +339,7 @@
   "recovery_point": "EXTENDED_DRAINAGE_SOURCE_ADMISSION.json",
   "external_blocker": null,
   "test_selection": {
-    "candidate": "e19c9880243c46b6f0c171b7b0991d7cf841e973",
+    "candidate": "42e807127827925a2e76a3cab6eca3ef96336307",
     "groups": {
       "calendar_public_owner": {
         "changed_dependency": "SWDRA2 original output/calendar composed native state and read-only daily counter witnesses; exact current compiler source and all inherited owners",
@@ -349,8 +349,40 @@
         "expected_seconds": 480,
         "existing_evidence": "All eight full periods retained. Windows/Ubuntu O0/O2 actual independent raw archive PASS; final source/native-negative and clean detached public owner execute without new model periods.",
         "prior_execution": "NONE"
+      },
+      "extended_history_full": {
+        "changed_dependency": "Existing hydraulic history carrier and paired process domains composed with SWDRA2 original calendar and daily accepted-trial water/CDE frame",
+        "scientific_claim": "Representative full water/CDE history interaction, actual year-end/seasonal native cold windows and strict soil/secondary/combined1e-10 water plus daily/integrated1e-10 CDE",
+        "owner": "tests/nomacro_drainage/history_forensics.py; new bounded source admission owner pending full proof",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 1500,
+        "existing_evidence": "Eight actual Windows O0/O2 short35day water/CDE/history1,2 independent PASS and24 exact native/output windows. Earlier history-off and drainage-off full periods cannot qualify this changed hydraulic interaction; retain them and select only affected representative periods. No new physical equations.",
+        "prior_execution": "NONE",
+        "selected_full_periods": 8,
+        "selected_configuration": "Windows+Ubuntu/O0+O2: water h1 monthly text2; CDE h2 daily binary3; all1096days",
+        "cross_configuration_evidence": "Other water/CDE hys1/2 pairings use their actual35day integrated/native tests with unchanged original providers; no global historical-family closure claim."
+      },
+      "extended_history_native_controls": {
+        "changed_dependency": "New physical/history typed domain before the worker",
+        "scientific_claim": "Actual public and original compiled loader refuse forged typed domains, nonfinite/negative/receipt-inconsistent hydraulic stocks",
+        "owner": "tests/nomacro_drainage/extended_controls.py",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 600,
+        "existing_evidence": "Actual original source-bound new format; two short retained campaigns running. No physical-day run is used for invalid worker loads; positive lifecycle separately executes.",
+        "prior_execution": "NONE",
+        "diagnosis": "Per-mutant public prepare repeats exact source/build/input verification; observed progress is steady and no execution is repeated or restarted."
+      },
+      "history_public_owner": {
+        "changed_dependency": "Typed existing hydraulic history composed with extended drainage/calendar, current input-only early scope guard and explicit inherited physical phases",
+        "scientific_claim": "Actual bounded current source/raw admission with all preceding scientific bodies executed",
+        "owner": "tests/nomacro_drainage/history_verify.py through tests/hupsel51/verify_successor.py",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 600,
+        "existing_evidence": "All four independent Windows/Ubuntu O0/O2 source/archive/control audits PASS. Eight full periods are retained, no new model periods selected. Clean detached22-pattern public owner and actual committed wrong-source refusal are required admission checks.",
+        "prior_execution": "NONE"
       }
-    }
+    },
+    "previous_candidate": "e19c9880243c46b6f0c171b7b0991d7cf841e973"
   },
   "pr": 1763,
   "qualified_source": "120d329b0b65ebbb0daa5d5a9ad5088400f8ddae",
@@ -585,7 +617,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "66d6297b1ac0462c9be17f8df3db10c1773d1595",
+  "canonical_head": "6a31bc718ed01480e573f5853bf3f5510ff40908",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -30613,9 +30645,9 @@
     "unnecessary_admission_guards": "UNKNOWN",
     "numerical_blockers": "UNKNOWN",
     "evidence_only_functions": "UNKNOWN",
-    "added": "Bounded original extended primary/secondary drainage, prescribed/fixed/automatic surfacewater water/CDE and exact native transaction ownership",
-    "canonical_head": "66d6297b1ac0462c9be17f8df3db10c1773d1595",
-    "next_batch": "Original output/calendar and existing extended-drainage process compositions"
+    "added": "Bounded original SWDRA2 water/CDE original output/calendar and exact native transaction ownership",
+    "canonical_head": "6a31bc718ed01480e573f5853bf3f5510ff40908",
+    "next_batch": "Extended drainage water/CDE hydraulic history1/2; implicit retry/Jacobian composition remains explicitly refused"
   },
   "extended_calendar_batch": {
     "status": "DEVELOPMENT_NOT_QUALIFIED",
@@ -30705,7 +30737,31 @@
       "positive_native_cli_transactions": 8,
       "note": "Windows water resumes only unfinished controls from retained failed message-matcher phase; exact old build/raw hashes checked, duplicate observations not counted twice."
     },
-    "recovery_next_action": "Finish final independent source/raw archive checks; freeze neutral evidence/reader identity, install bounded source owner retaining all preceding scientific bodies, actual changed-source refusal, clean detached sparse22 public owner, then required PR checks and exact-tree canonical admission. Continue immediately with extended water/CDE hysteresis/implicit composition. AGE2 remains refused with actual day365 dry-domain component blocker."
+    "recovery_next_action": "Finish final independent source/raw archive checks; freeze neutral evidence/reader identity, install bounded source owner retaining all preceding scientific bodies, actual changed-source refusal, clean detached sparse22 public owner, then required PR checks and exact-tree canonical admission. Continue immediately with extended water/CDE hysteresis/implicit composition. AGE2 remains refused with actual day365 dry-domain component blocker.",
+    "public_owner": {
+      "candidate": "8d029e984edbe94b785b18fa3ba7f81dd2239271",
+      "status": "PASS",
+      "seconds": 359.1921442002058,
+      "clean_detached": true,
+      "sparse_patterns": 22,
+      "stderr_bytes": 0,
+      "source_negative": "ab2c0db41e073e8517b29efd8273fa21f4b621c1",
+      "expected_refusal": true,
+      "pr": 1764
+    },
+    "canonical_admission": {
+      "pr": 1764,
+      "actual_canonical": "6a31bc718ed01480e573f5853bf3f5510ff40908",
+      "parents": [
+        "66d6297b1ac0462c9be17f8df3db10c1773d1595",
+        "8d029e984edbe94b785b18fa3ba7f81dd2239271"
+      ],
+      "complete_tree": "4a965f9db9076163eba91341483fb3f65e6b2856",
+      "required_checks": 46,
+      "actual_clean_detached_public_owner": "PASS",
+      "seconds": 352.2011469001882,
+      "receipt": "EXTENDED_DRAINAGE_CALENDAR_MERGE_RECEIPT_V1.json"
+    }
   },
   "latest_calendar_workflow": {
     "run": 44606294413,
@@ -30714,5 +30770,158 @@
     "O0": "success",
     "O2": "success",
     "original_archives_preserved": true
+  },
+  "previous_test_selection": {
+    "groups": {
+      "scheduled_subsurface": {
+        "changed_dependency": "Previously refused original SCHEDULE1 ISUAS2 water input; guarded actual original reader; source-bound reuse identity",
+        "scientific_claim": "Original point/interval subsurface scheduling integrates conserved daily water and complete own restart without changed physical equations",
+        "owner": "SWAP5-NOMACRO-COMPLETE01 / original MOD_irrigation",
+        "authority": "AGENTS.md#independent-local-testability; docs/verification/principles.md#transaction-tests",
+        "expected_seconds": 260,
+        "existing_evidence": "Prior complete management codec and fixed subsurface integration; scheduled ISUAS2 not qualified. Run focused original production route.",
+        "prior_execution": "NONE"
+      },
+      "linux_scheduled_subsurface": {
+        "changed_dependency": "Original water scheduled subsurface input and actual depth guard, active native adoption, refused native domains",
+        "scientific_claim": "Portable actual original O0/O2 full point/interval water/native/transaction qualification",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "docs/verification/principles.md#qualification-dimensions; AGENTS.md#independent-local-testability",
+        "expected_seconds": 500,
+        "existing_evidence": "Windows4 full periods pass; GNU/Linux original reader and native execution not yet measured for this new route",
+        "prior_execution": "PASS",
+        "diagnosis": "Canonical R changed shared input/builder source since isolated qualification. Fresh actual-composition builds/native continuations establish the composed identity; retain all earlier PASS on its own source, no checkpoint rebinding."
+      },
+      "chemical_source_reference": {
+        "changed_dependency": "Original fixed subsurface concentration producer and conserved nodal source/CDE ledgers",
+        "scientific_claim": "Exact original paired source-present/source-absent controls and chemical input closure",
+        "owner": "NOMACRO-SUBSURFACE-SOLUTE-01",
+        "authority": "docs/verification/principles.md#reference-chain",
+        "expected_seconds": 180,
+        "prior_execution": "PASS",
+        "diagnosis": "CDE-only source did not receive concentration. Rebuild both touched original modules for same-optimization controls; new producer branch is necessary.",
+        "existing_evidence": "Pure source O0/O2 PASS; first CDE-only24periods retained with zero source."
+      },
+      "chemical_fixed_composition": {
+        "changed_dependency": "Original fixed concentration producer plus conserved nodal CDE source and transaction/native coupling",
+        "scientific_claim": "Active source48mg/cm2, unchanged water/solute guards, Windows/Ubuntu O0/O2 exact native own and external discard/recovery; active salinity composition selected",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md; docs/verification/principles.md",
+        "expected_seconds": 300,
+        "prior_execution": "PASS",
+        "existing_evidence": "Four full periods per platform and original24paired per platform; admitted anchors/pulse/S exact"
+      },
+      "scheduled_chemical": {
+        "changed_dependency": "Previously refused SCHEDULE1/ISUAS2 chemistry now selects existing conserved CDE source and separate physical policy identity",
+        "scientific_claim": "Original actual qssdi*cirrs source and conserved daily ledger/native/event transactions with no new physical formula or codec",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md; docs/verification/principles.md#transaction-tests",
+        "expected_seconds": 200,
+        "prior_execution": "PASS",
+        "existing_evidence": "Shared real nodal evaluator, original16paired scheduled reference O0/O2, fixed canonical strict state/source qualification"
+      },
+      "scheduled_chemical_preservation": {
+        "changed_dependency": "Shared original-input selection and source-bound metadata; numerical/CDE helper/fixed source and host step/native owner bodies unchanged",
+        "scientific_claim": "Fresh fixed, scheduled-water, named3 and pulse contexts retain exact emitted production/provider/flag/input closure and physical/CSV/native prefixes without repeating unchanged full periods",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "docs/development/workstream-execution-protocol.md#change-impact-qualification",
+        "expected_seconds": 240,
+        "prior_execution": "PASS",
+        "existing_evidence": "Exact fixed canonical full/native/platform/source proof; new scheduled full source/state gates. Nine representative fresh builds/native prefixes discriminate accidental selection into previously qualified contexts."
+      },
+      "aquifer_component": {
+        "changed_dependency": "Missing original aquifer source/ledger/native owner; new small stateless real64 evaluator of original forward-Euler concentration equation",
+        "scientific_claim": "Explicit capacity/stock/signed soil exchange/positive-net surface outflow/decay units and independent conservation, A/B/A, invalid/negative/overflow result preservation",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md#independent-local-testability; docs/verification/principles.md",
+        "expected_seconds": 10,
+        "prior_execution": "PASS",
+        "existing_evidence": "Original SWBR array defect proven; canonical source/state baseline immutable. No existing qualified aquifer evaluator found in current process-source closure."
+      },
+      "aquifer_reference": {
+        "changed_dependency": "Original aquifer n+1 index, cumulative amount used as rate, post-update outflow ledger, explicit loss-limited Euler microstep",
+        "scientific_claim": "Actual corrected-original soil+box conservation with exact production evaluator, meaningful original index-only counterexample and bounded nonnegative/stiff/sorbing dynamics",
+        "owner": "NOMACRO-AQUIFER-SOLUTE-01",
+        "authority": "docs/verification/principles.md#reference-chain",
+        "expected_seconds": 180,
+        "prior_execution": "PASS",
+        "existing_evidence": "Actual original O0/O2 bounds failure plus uncheckedNaN; actual one-provider evaluator+loss-limit O0/O2 PASS."
+      },
+      "aquifer_runtime": {
+        "changed_dependency": "Original SWBR1 source, complete privateCDF/native cumulative state, coupled soil/box mass transfer, explicit loss-limited Euler policy",
+        "scientific_claim": "Actual full/native/rejected coupled state closes soil/box/exchange/compound budgets without tolerance changes or concentration clipping",
+        "owner": "SWAP5-NOMACRO-COMPLETE01",
+        "authority": "AGENTS.md; docs/verification/principles.md#transaction-tests",
+        "expected_seconds": 240,
+        "prior_execution": "NOT_RUN",
+        "existing_evidence": "Actual original and corrected reference, real one-provider component O0/O2; unchanged-context preservation still required."
+      }
+    },
+    "candidate": "81c2d4ff7a1a41209a7527d912119e9b766d21c4"
+  },
+  "extended_history_batch": {
+    "status": "ALL_SELECTED_SOURCE_RAW_ARCHIVE_AUDITS_PASS_PENDING_NEUTRAL_ADMISSION_OWNER",
+    "runtime": "8fc2f88f0",
+    "predecessor_candidate": "8d029e984edbe94b785b18fa3ba7f81dd2239271",
+    "selected": "SWDRA2/SWHYST1,2 explicit original output water/CDE, implicit0; existing complete physical hysteresis plus paired40-byte domain",
+    "model_equations_changed": false,
+    "tolerances_changed": false,
+    "AGE_admitted": false,
+    "implicit_admitted": false,
+    "recovery_next_action": "Freeze neutral history archives and independent readers; install bounded history source admission delegation retaining and executing all preceding scientific bodies. Use same clean22-pattern fixture for committed changed-source refusal and clean detached actual public owner. Then required PR checks, exact-head/base/complete-tree canonical merge and actual canonical owner. Proceed immediately to original implicit bottom6/pond/retry composition; retain AGE dry-pond hard refusal.",
+    "short_contexts": 8,
+    "short_exact_cold_windows": 24,
+    "initial_prototype_5day_contexts": 2,
+    "full_periods_selected": 8,
+    "full_period_days": 1096,
+    "selected_full_cases": [
+      "water/monthly/text2/history1",
+      "automatic-CDE/daily/binary3/history2"
+    ],
+    "actual_short_public_refusals": 145,
+    "actual_short_compiled_refusals": 135,
+    "actual_short_CLI_contexts": 2,
+    "actual_short_transaction_contexts": 2,
+    "source_runtime_full": "8fc2f88f0",
+    "running_ci": [],
+    "actual_Windows_full_periods": 4,
+    "actual_Windows_full_days": 1096,
+    "actual_Windows_full_exact_cold_windows": 24,
+    "actual_Windows_full_independent": "PASS",
+    "actual_Windows_history_off_postimages": 4,
+    "actual_Windows_history_off_days": 5,
+    "actual_Windows_subdaily_perstep_interactions": 4,
+    "current_source_early_guard": "60ebf4adca43725d9a59e6420c5c31247da29c17",
+    "full_source": "8fc2f88f0d0477e4f7fb36e70ff8fd59ddb0bee2",
+    "actual_current_public_excluded_scope_refusals": 4,
+    "scope_failed_attempts_retained": [
+      "history-public-scope-v1",
+      "history-public-scope-v2"
+    ],
+    "actual_current_postimage": "RUNNING_SIXDAY_WINDOWS_4_CONTEXTS",
+    "actual_full_periods": 8,
+    "actual_days_per_full": 1096,
+    "actual_primary_exact_cold_windows": 48,
+    "actual_short_contexts": 8,
+    "actual_short_cold_windows": 24,
+    "actual_output_interaction_contexts": 4,
+    "actual_output_interaction_cold_windows": 8,
+    "actual_history_off_contexts": 4,
+    "actual_current_sixday_contexts": 4,
+    "actual_current_cold_windows": 4,
+    "actual_public_native_refusals": 435,
+    "actual_compiled_native_refusals": 405,
+    "actual_CLI_contexts": 14,
+    "actual_transaction_contexts": 14,
+    "actual_scope_refusals": 4,
+    "actual_unaffected_full_repeats": 0,
+    "terminal_ci": {
+      "run": 44616221474,
+      "source": "b6fa245ab866758c8377104c1c80a2f77179ef9f",
+      "O0": "success",
+      "O2": "success",
+      "original_unrepacked_artifacts": true
+    },
+    "current_guard_platform_scope": "Actual Windows O0/O2 six-day compiled/physical/native/CLI/transaction postimage. Original Ubuntu full numerical evidence is inherited across an exact two-line input-only guard which is false for every explicit original-output case; compiler/BUILD/source phases are never rebound."
   }
 }
