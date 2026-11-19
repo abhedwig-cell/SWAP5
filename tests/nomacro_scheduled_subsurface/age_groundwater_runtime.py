@@ -46,10 +46,18 @@ def main():
     p.add_argument('--source',choices=('point','interval','surface','sprinkler'),default='point');p.add_argument('--et',type=int,choices=(0,1),default=0)
     p.add_argument('--level-kind',choices=('within','below','crossing'),default='crossing');p.add_argument('--boundary-file',action='store_true')
     p.add_argument('--reuse-build',type=Path);p.add_argument('--existing-input',type=Path)
+    p.add_argument('--epoch')
     a=p.parse_args();out=a.output.resolve();out.mkdir();inputs=a.existing_input or out/'input'
     if not a.existing_input:fixture(inputs,a.hysteresis,a.perstep,a.mode,a.format,a.reset,a.nprintday,a.drainage,a.source,a.et,a.level_kind,a.boundary_file)
     if a.phase=='limit' and not a.existing_input:
         p=inputs/'fixed-irrigation.irg';text=p.read_text(encoding='cp1252');assert text.count('2002-01-05')==1;p.write_text(text.replace('2002-01-05','2002-01-01'),encoding='cp1252')
+    if a.epoch and not a.existing_input:
+        from datetime import date,timedelta
+        epoch=date.fromisoformat(a.epoch);assert a.phase=='short'
+        p=inputs/'swap.swp';text=assignment(p.read_text(encoding='cp1252'),'TSTART',a.epoch)
+        table=''.join(f'{epoch+timedelta(days=i)} {level}\n' for i,level in ((0,-95.),(3,-65.),(6,-115.),(9,-85.)))+'2004-12-31 -85.0\n'
+        text,count=re.subn(r'(?mi)^([ \t]*DATE1[ \t]+GWLEVEL[^\r\n]*\n).*?^\* End of table',lambda match:match[1]+table+'* End of table',text,count=1,flags=re.S);assert count==1;p.write_text(text,encoding='cp1252')
+        p=inputs/'fixed-irrigation.irg';text=p.read_text(encoding='cp1252');assert text.count('2002-01-05')==1;p.write_text(text.replace('2002-01-05',str(epoch+timedelta(days=4))),encoding='cp1252')
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),parameters={k:str(v) if isinstance(v,Path) else v for k,v in vars(a).items()},whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
     def save():(out/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf8')
     save()
@@ -62,6 +70,7 @@ def main():
         else:q['build']=dict(role='Actual existing current-source bundle independently validated; original BUILD unchanged',sha256=m.sha(build/'BUILD.json'))
         meta,_=m.validate_bundle(build,a.reference_work,project);assert meta['identity']['conserved_original_age']['native_codec']==magic(project).decode()
         last={'short':35,'full':1096,'limit':2}[a.phase];windows=[(1,2)] if a.phase=='limit' else [(2,4),(7,9),(30,34)]
+        if a.epoch:windows.append((15,19))
         if a.phase=='full':windows.extend([(199,201),(364,367),(530,532),(1094,1096)])
         full=out/'trajectory';q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,last,{last,*(v for pair in windows for v in pair)},180);save()
         for day in {last,*(v for pair in windows for v in pair)}:
