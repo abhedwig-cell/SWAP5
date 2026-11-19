@@ -1,0 +1,31 @@
+{
+  "full_O2": {
+    "pipe_seconds": [
+      16.566908200271428,
+      17.065644099842757
+    ],
+    "direct_seconds": [
+      15.57929960032925,
+      16.071204300038517
+    ],
+    "pipe_mean": 16.816276150057092,
+    "direct_mean": 15.825251950183883,
+    "fraction_saved": 0.0589324408703793,
+    "all_direct_below_all_pipe": true
+  },
+  "kernel_only_actual1461": {
+    "pipe_seconds": [
+      1.0650357999838889,
+      1.1047177999280393
+    ],
+    "direct_seconds": [
+      0.418582699727267,
+      0.5115279001183808
+    ],
+    "pipe_mean": 1.084876799955964,
+    "direct_mean": 0.4650552999228239,
+    "fraction_saved": 0.5713289288316417,
+    "all_direct_below_all_pipe": true
+  },
+  "interpretation": "Same-laptop bounded ordered observations, not a portable performance guarantee; all numerical tolerances and generated physical sources unchanged. Kernel-only replay isolates an actual removed overhead absent from original431."
+}

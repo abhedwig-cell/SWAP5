@@ -399,6 +399,9 @@ def main():
         "donor_executable_sha256": sha(donor), "kernel_executable_sha256": sha(kernel),
         "origin_day": args.restart_day, "requested_days": args.days, **result,
     }
+    if build_id.get('direct_day_kernel'):
+        report['kernel_transport']=build_id['direct_day_kernel']['protocol']
+        report['kernel_library_sha256']=build_id['direct_day_kernel']['library_sha256']
     (output / "RESULT.json").write_text(json.dumps(report, indent=2) + "\n")
     return int(result["first_refusal"] is not None)
 

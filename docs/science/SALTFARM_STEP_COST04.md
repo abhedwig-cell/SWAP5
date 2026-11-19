@@ -119,3 +119,6 @@ No further step/CSV micro-optimization is selected. Any next performance work
 must first identify a different dominant cost and retain the complete mass,
 rollback, external and restart contracts; repeated failed cache/relay/compiler
 or looser convergence approaches are not a next step.
+
+The subsequent [direct day-kernel block](SALTFARM_DIRECT_KERNEL05.md) isolates
+and removes an actual process/pipe overhead while retaining the physical donor.

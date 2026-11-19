@@ -1,13 +1,17 @@
 """Actual direct-executor refusal and independent-context checks from preserved days."""
 from pathlib import Path
-import ctypes as c,json,math,sys
-sys.path.insert(0,str(Path(__file__).resolve().parent));from direct_kernel_probe import Native
-w=Path(r'C:\SWAP5-testing\saltfarm-guard-cost05\full');gold=Path(r'C:\SWAP5-testing\saltfarm-newton-close01\accept-O2\full');data=[json.loads(s) for s in (gold/'daily.jsonl').read_text().splitlines()];origin=data[108];day=data[109];nodes=len(origin['pressure_head_cm']);epoch=40908.;results=[]
+import ctypes as c,json,math,sys,argparse,os
+p=argparse.ArgumentParser();p.add_argument('--production',type=Path);a=p.parse_args()
+if a.production:
+ sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'app/hybrid_water'));from direct_day_kernel import NativeDayKernel as Native
+else:
+ sys.path.insert(0,str(Path(__file__).resolve().parent));from direct_kernel_probe import Native
+w=a.production or Path(r'C:\SWAP5-testing\saltfarm-guard-cost05\full');gold=(w/'accept-O2/full') if a.production else Path(r'C:\SWAP5-testing\saltfarm-newton-close01\accept-O2\full');data=[json.loads(s) for s in (gold/'daily.jsonl').read_text().splitlines()];origin=data[108];day=data[109];nodes=len(origin['pressure_head_cm']);epoch=40908.;results=[]
 for opt in ('O0','O2'):
  contexts=[]
  try:
   for idx in range(2):
-   log=(w/f'api-{opt}-{idx}-framingfix.log').open('w');n=Native(w/f'build-{opt}/direct.dll','HYBRID_SALTFARM_WATER',log);n.receive({'DAILY_MODEL'});n.write('2');state=[109,math.fsum(origin['stock_end_cm']),*origin['stock_end_cm'],*origin['pressure_head_cm']]
+   log=(w/f'api-{opt}-{idx}-framingfix.log').open('w');n=Native((w/f'qualified-{opt}'/('direct_day_kernel.dll' if os.name=='nt' else 'direct_day_kernel.so')) if a.production else w/f'build-{opt}/direct.dll','HYBRID_SALTFARM_WATER',log);n.receive({'DAILY_MODEL'});n.write('2');state=[109,math.fsum(origin['stock_end_cm']),*origin['stock_end_cm'],*origin['pressure_head_cm']]
    for col in (1,2):n.write(f'{nodes} {epoch}');n.write(' '.join(map(str,state)))
    contexts.append((n,log))
   flow=day['external_flux_cm'];reply=[110,math.fsum(day['stock_end_cm']),math.fsum(flow[:7]),math.fsum(flow[7:]),flow[15]-flow[6],flow[15]-flow[6],*day['pressure_head_cm'],*day['stock_end_cm']]
@@ -24,4 +28,4 @@ for opt in ('O0','O2'):
   result=dict(opt=opt,refusal_preserves_origin_and_revision=True,independent_columns_and_contexts=True,free_does_not_change_other_context=True,stale_day_refused=True);results.append(result);print(result)
  finally:
   for n,log in contexts:n.terminate();log.close()
-(w/'API.json').write_text(json.dumps(results,indent=2))
+(w/('API_CURRENT.json' if a.production else 'API.json')).write_text(json.dumps(results,indent=2))
