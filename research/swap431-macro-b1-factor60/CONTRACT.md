@@ -1,0 +1,7 @@
+# FACTOR60 preregistration
+
+Baseline NODE59 4f9fee4229a8c7e4fd9b928e787c159af5a7517d. Isolated B1 research, no canonical change.
+Exactly2 fresh original D2 RESTART processes O0/O2 with hard20s, original internal16s/512commit/4retry. DTMIN58 solver, physics, clock, Jacobian, guards, thresholds, backtracking, reduction/budget policy unchanged. No corrected Jacobian implementation.
+Bounded derivative contract: W-stock and volume-minimum branches of D3outfactor. Select ONLY original follow attempt2/iteration53 and54 providers after actual Jacobian eval. At each point exactly12 real MacroRate1 perturbations:3heads(50,51,52) x2 central step sizes(1e-7,5e-8cm) x2signs. No trajectory selection, tie forcing or parameter campaign.
+Use existing snapshot physical and contract42cache serializers, byte-check restore and IEEE flags on each evaluation; retain receipts/base/final payloads. Restore probe bookkeeping and current-provider stamps. Record full D3sat/unsat potentials/volumes/heads; derive Vunder chain and O derivative without dropping unsat contributions. Fail or bound contracts when branch/support/threshold changes.
+Check numerical FD of f,L,V,GWL,O and product dq using actual provider, original trajectory equivalence and O0/O2, rank-one sign/units, explicit invalid/tie cases. Finite probes do not qualify all112Jacobian columns, exact ties, convergence or repair. Preserve censored/failed evidence, no broad campaign.

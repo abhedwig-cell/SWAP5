@@ -1,0 +1,10 @@
+--- NODE59/head_diag.f90
++++ FACTOR60/head_diag.f90
+@@ -231,6 +231,7 @@
+       njac=njac+1
+       call jacobian_F()
+       call diag_log(2)
++      if(detail33.and.attempts==2.and.(iter_index==53.or.iter_index==54)) call factor60_probe()
+       if(detail33.and.attempts==293.and.iter_index==30) call probe35_maybe()
+ ! REJECT26 retains the qualified analytic update; no repeated calibration replay.
+ 
