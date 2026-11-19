@@ -1,0 +1,263 @@
+{
+  "source_runtime": "8ba61729a79a365b41c00140dfb296f9bb821b24",
+  "windows": {
+    "O0": {
+      "source_commit": "8ba61729a79a365b41c00140dfb296f9bb821b24",
+      "build_sha256": "73e0c0ad985cdde2019e271eb53710a52551006613ea0ac14cb95be357e4d8ec",
+      "policy": "strict-water-half-interior-polish-v1",
+      "argv": [
+        "tests/saltfarm_newton/qualify.py",
+        "--bundle",
+        "C:\\SWAP5-testing\\saltfarm-guard-cost05\\current-O0",
+        "--reference",
+        "C:\\SWAP5-testing\\rc3-local01\\provider",
+        "--output",
+        "C:\\SWAP5-testing\\saltfarm-guard-cost05\\current-accept-O0",
+        "--model-cap",
+        "35"
+      ],
+      "restarts": [
+        {
+          "start": 109,
+          "end": 111,
+          "seconds": 0.49550790013745427,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "seconds": 0.45020730001851916,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 453,
+          "end": 455,
+          "seconds": 0.5901574003510177,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 1460,
+          "end": 1461,
+          "seconds": 0.46484810020774603,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 109,
+          "end": 1461,
+          "seconds": 13.48138719983399,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        }
+      ],
+      "status": "FULL_PASS",
+      "days": 1461,
+      "seconds": 16.018061799928546,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      }
+    },
+    "O2": {
+      "source_commit": "8ba61729a79a365b41c00140dfb296f9bb821b24",
+      "build_sha256": "ebc5017c396d029d44a14aac576473a24734d83e53c7d4b09780f9b8ee8c39e7",
+      "policy": "strict-water-half-interior-polish-v1",
+      "argv": [
+        "tests/saltfarm_newton/qualify.py",
+        "--bundle",
+        "C:\\SWAP5-testing\\saltfarm-guard-cost05\\current-O2",
+        "--reference",
+        "C:\\SWAP5-testing\\rc3-local01\\provider",
+        "--output",
+        "C:\\SWAP5-testing\\saltfarm-guard-cost05\\current-accept-O2",
+        "--model-cap",
+        "35"
+      ],
+      "restarts": [
+        {
+          "start": 109,
+          "end": 111,
+          "seconds": 0.5896046999841928,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "seconds": 0.4905342999845743,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 453,
+          "end": 455,
+          "seconds": 0.3801985001191497,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 1460,
+          "end": 1461,
+          "seconds": 0.4245472000911832,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 109,
+          "end": 1461,
+          "seconds": 15.645534300245345,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        }
+      ],
+      "status": "FULL_PASS",
+      "days": 1461,
+      "seconds": 16.471001300029457,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      }
+    }
+  },
+  "transactions": {
+    "O0": {
+      "discard_replay_exact": true,
+      "independent_columns_exact": true,
+      "continuous_day454_exact": true,
+      "origin_unchanged": true,
+      "foreign_policy_refused": true,
+      "seconds": 5.654013700317591
+    },
+    "O2": {
+      "discard_replay_exact": true,
+      "independent_columns_exact": true,
+      "continuous_day454_exact": true,
+      "origin_unchanged": true,
+      "foreign_policy_refused": true,
+      "seconds": 4.442906899843365
+    }
+  },
+  "api": [
+    {
+      "opt": "O0",
+      "refusal_preserves_origin_and_revision": true,
+      "independent_columns_and_contexts": true,
+      "free_does_not_change_other_context": true,
+      "stale_day_refused": true
+    },
+    {
+      "opt": "O2",
+      "refusal_preserves_origin_and_revision": true,
+      "independent_columns_and_contexts": true,
+      "free_does_not_change_other_context": true,
+      "stale_day_refused": true
+    }
+  ],
+  "comparison": {
+    "O0": {
+      "exact_all1461_physical_csv": true,
+      "exact_eight_native": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      },
+      "refusals": [
+        {
+          "field": "protocol",
+          "refusal": "Missing or foreign direct day kernel; rebuild without rebinding"
+        },
+        {
+          "field": "model",
+          "refusal": "Missing or foreign direct day kernel; rebuild without rebinding"
+        },
+        {
+          "field": "bridge_sha256",
+          "refusal": "Direct day kernel source/build differs: bridge_sha256"
+        },
+        {
+          "field": "host_sha256",
+          "refusal": "Direct day kernel source/build differs: host_sha256"
+        },
+        {
+          "field": "library_sha256",
+          "refusal": "Direct day kernel source/build differs: library_sha256"
+        },
+        {
+          "actual_corrupted_library": "82260d40eb280c5c2005a4b428ed0551488c71753bcbd7f9bdb7e8530a73ce06",
+          "refusal": "Direct day kernel source/build differs: library_sha256"
+        }
+      ]
+    },
+    "O2": {
+      "exact_all1461_physical_csv": true,
+      "exact_eight_native": true,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      },
+      "refusals": [
+        {
+          "field": "protocol",
+          "refusal": "Missing or foreign direct day kernel; rebuild without rebinding"
+        },
+        {
+          "field": "model",
+          "refusal": "Missing or foreign direct day kernel; rebuild without rebinding"
+        },
+        {
+          "field": "bridge_sha256",
+          "refusal": "Direct day kernel source/build differs: bridge_sha256"
+        },
+        {
+          "field": "host_sha256",
+          "refusal": "Direct day kernel source/build differs: host_sha256"
+        },
+        {
+          "field": "library_sha256",
+          "refusal": "Direct day kernel source/build differs: library_sha256"
+        },
+        {
+          "actual_corrupted_library": "f1c136f204f5979468b3fa48960b4896c95d4623035242c282ffcced2c6a643b",
+          "refusal": "Direct day kernel source/build differs: library_sha256"
+        }
+      ]
+    },
+    "foreign_old_bundle_refusal": "Missing or foreign direct day kernel; rebuild without rebinding",
+    "public_without_checkpoint_exact": true
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "owner": "SWAP5-NOMACRO-CLOSURE01",
+  "baseline": "cce2561eb87e992f671d97a35baef84ddb8d91e0",
+  "measured_production": "b4398e00ae978c82f0cdee3d72ff79708a869762",
+  "question": "Why does20percent fewer Newton iterations yield only small wall savings? Separate fixed HeadCalc setup, ordinary/padding iteration work, other native processes and host/kernel CPU; quantify ordered timing drift.",
+  "reuse": [
+    "saltfarm-rc3-cost02 phase/cost negatives",
+    "saltfarm-newton-work01 full ABBA and O0/O2 balance/native qualification",
+    "saltfarm-newton-close01 exact compiled O2 and full own1461 records"
+  ],
+  "selected": "Private same-source365day paired control/interior, high-resolution clocks without per-call CPU timers, balanced ABBA and uninstrumented overhead controls. Each trajectory<=15seconds. Compare every physical row, CSV/native109 against its preserved same-policy control. Short own109->111 if diagnostics are retained.",
+  "not_selected": "No production algorithm, tolerance, input or policy change. No new full historical/reference/Ubuntu/CI campaign; existing full/restart/rollback/isolation proofs inherited only for untouched production. No repeat of rejected compiler, caching or transport optimizations.",
+  "scope": "Frozen actual Windows source bytes from admitted PR1735 copied before canonical switch; original compiled provider and executables keep original identities. New canonical output/age dispatch is not benchmarked or relabelled.",
+  "next": "Produce quantified attribution and a reviewable durable report; admit no optimization from a noisy or instrumented apparent speedup."
+}

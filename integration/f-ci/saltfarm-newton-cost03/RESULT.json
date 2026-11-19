@@ -1,0 +1,622 @@
+[
+  {
+    "mode": "control",
+    "instrumented": false,
+    "days": 365,
+    "wall": 4.284848200157285,
+    "cpu": {
+      "python": 0.765625,
+      "donor": {
+        "user": 2.390625,
+        "system": 0.5
+      },
+      "kernel": {
+        "user": 0.171875,
+        "system": 0.109375
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 2.959653355727454e-12,
+      "max_kernel_cm": 2.9596325390457423e-12,
+      "max_solute_mg_cm2": 1.3835196877032274e-11,
+      "sum_water_residual_cm": 8.129235262374634e-11
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run0-control-plain",
+    "iterations": 35048,
+    "headcalc_calls": 9527
+  },
+  {
+    "mode": "candidate",
+    "instrumented": false,
+    "days": 365,
+    "wall": 3.1565344999544322,
+    "cpu": {
+      "python": 0.515625,
+      "donor": {
+        "user": 1.984375,
+        "system": 0.265625
+      },
+      "kernel": {
+        "user": 0.046875,
+        "system": 0.078125
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 5.1060856931517407e-11,
+      "max_kernel_cm": 5.1060856931517407e-11,
+      "max_solute_mg_cm2": 7.65545959957592e-12,
+      "sum_water_residual_cm": 7.212113401280917e-09
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run1-candidate-plain",
+    "iterations": 28281,
+    "headcalc_calls": 9527
+  },
+  {
+    "mode": "candidate",
+    "instrumented": false,
+    "days": 365,
+    "wall": 2.7354955999180675,
+    "cpu": {
+      "python": 0.4375,
+      "donor": {
+        "user": 1.734375,
+        "system": 0.34375
+      },
+      "kernel": {
+        "user": 0.0625,
+        "system": 0.046875
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 5.1060856931517407e-11,
+      "max_kernel_cm": 5.1060856931517407e-11,
+      "max_solute_mg_cm2": 7.65545959957592e-12,
+      "sum_water_residual_cm": 7.212113401280917e-09
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run2-candidate-plain",
+    "iterations": 28281,
+    "headcalc_calls": 9527
+  },
+  {
+    "mode": "control",
+    "instrumented": false,
+    "days": 365,
+    "wall": 2.6743215997703373,
+    "cpu": {
+      "python": 0.453125,
+      "donor": {
+        "user": 1.640625,
+        "system": 0.3125
+      },
+      "kernel": {
+        "user": 0.046875,
+        "system": 0.109375
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 2.959653355727454e-12,
+      "max_kernel_cm": 2.9596325390457423e-12,
+      "max_solute_mg_cm2": 1.3835196877032274e-11,
+      "sum_water_residual_cm": 8.129235262374634e-11
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run3-control-plain",
+    "iterations": 35048,
+    "headcalc_calls": 9527
+  },
+  {
+    "mode": "control",
+    "instrumented": true,
+    "days": 365,
+    "wall": 3.2692321999929845,
+    "cpu": {
+      "python": 0.5625,
+      "donor": {
+        "user": 1.8125,
+        "system": 0.375
+      },
+      "kernel": {
+        "user": 0.09375,
+        "system": 0.015625
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 2.959653355727454e-12,
+      "max_kernel_cm": 2.9596325390457423e-12,
+      "max_solute_mg_cm2": 1.3835196877032274e-11,
+      "sum_water_residual_cm": 8.129235262374634e-11
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run4-control-clock",
+    "iterations": 35048,
+    "headcalc_calls": 9527,
+    "phases": {
+      "root": {
+        "calls": 9527,
+        "seconds": 0.2020034
+      },
+      "water_solve": {
+        "calls": 9527,
+        "seconds": 0.7899995
+      },
+      "water_update": {
+        "calls": 9527,
+        "seconds": 0.0961685
+      },
+      "heat": {
+        "calls": 9527,
+        "seconds": 0.068549
+      },
+      "solute": {
+        "calls": 9527,
+        "seconds": 0.2285402
+      },
+      "head_setup": {
+        "calls": 9527,
+        "seconds": 0.1202502
+      },
+      "ordinary_iteration": {
+        "calls": 25521,
+        "seconds": 0.3884705
+      },
+      "padding_iteration": {
+        "calls": 9527,
+        "seconds": 0.1427719
+      }
+    }
+  },
+  {
+    "mode": "candidate",
+    "instrumented": true,
+    "days": 365,
+    "wall": 3.044741699937731,
+    "cpu": {
+      "python": 0.484375,
+      "donor": {
+        "user": 1.75,
+        "system": 0.34375
+      },
+      "kernel": {
+        "user": 0.09375,
+        "system": 0.0625
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 5.1060856931517407e-11,
+      "max_kernel_cm": 5.1060856931517407e-11,
+      "max_solute_mg_cm2": 7.65545959957592e-12,
+      "sum_water_residual_cm": 7.212113401280917e-09
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run5-candidate-clock",
+    "iterations": 28281,
+    "headcalc_calls": 9527,
+    "phases": {
+      "root": {
+        "calls": 9527,
+        "seconds": 0.1979311
+      },
+      "water_solve": {
+        "calls": 9527,
+        "seconds": 0.6658099
+      },
+      "water_update": {
+        "calls": 9527,
+        "seconds": 0.0932674
+      },
+      "heat": {
+        "calls": 9527,
+        "seconds": 0.0643325
+      },
+      "solute": {
+        "calls": 9527,
+        "seconds": 0.2290605
+      },
+      "head_setup": {
+        "calls": 9527,
+        "seconds": 0.1151186
+      },
+      "ordinary_iteration": {
+        "calls": 25602,
+        "seconds": 0.3816754
+      },
+      "padding_iteration": {
+        "calls": 2679,
+        "seconds": 0.0403571
+      }
+    }
+  },
+  {
+    "mode": "candidate",
+    "instrumented": true,
+    "days": 365,
+    "wall": 2.8693281998857856,
+    "cpu": {
+      "python": 0.53125,
+      "donor": {
+        "user": 1.71875,
+        "system": 0.34375
+      },
+      "kernel": {
+        "user": 0.046875,
+        "system": 0.125
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 5.1060856931517407e-11,
+      "max_kernel_cm": 5.1060856931517407e-11,
+      "max_solute_mg_cm2": 7.65545959957592e-12,
+      "sum_water_residual_cm": 7.212113401280917e-09
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run6-candidate-clock",
+    "iterations": 28281,
+    "headcalc_calls": 9527,
+    "phases": {
+      "root": {
+        "calls": 9527,
+        "seconds": 0.1972094
+      },
+      "water_solve": {
+        "calls": 9527,
+        "seconds": 0.6828898
+      },
+      "water_update": {
+        "calls": 9527,
+        "seconds": 0.0956047
+      },
+      "heat": {
+        "calls": 9527,
+        "seconds": 0.0642477
+      },
+      "solute": {
+        "calls": 9527,
+        "seconds": 0.2347126
+      },
+      "head_setup": {
+        "calls": 9527,
+        "seconds": 0.1166105
+      },
+      "ordinary_iteration": {
+        "calls": 25602,
+        "seconds": 0.393435
+      },
+      "padding_iteration": {
+        "calls": 2679,
+        "seconds": 0.0397373
+      }
+    }
+  },
+  {
+    "mode": "control",
+    "instrumented": true,
+    "days": 365,
+    "wall": 2.6553098000586033,
+    "cpu": {
+      "python": 0.5625,
+      "donor": {
+        "user": 1.609375,
+        "system": 0.1875
+      },
+      "kernel": {
+        "user": 0.078125,
+        "system": 0.078125
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 2.959653355727454e-12,
+      "max_kernel_cm": 2.9596325390457423e-12,
+      "max_solute_mg_cm2": 1.3835196877032274e-11,
+      "sum_water_residual_cm": 8.129235262374634e-11
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run7-control-clock",
+    "iterations": 35048,
+    "headcalc_calls": 9527,
+    "phases": {
+      "root": {
+        "calls": 9527,
+        "seconds": 0.1839462
+      },
+      "water_solve": {
+        "calls": 9527,
+        "seconds": 0.6969204
+      },
+      "water_update": {
+        "calls": 9527,
+        "seconds": 0.0865458
+      },
+      "heat": {
+        "calls": 9527,
+        "seconds": 0.0553091
+      },
+      "solute": {
+        "calls": 9527,
+        "seconds": 0.2078158
+      },
+      "head_setup": {
+        "calls": 9527,
+        "seconds": 0.1035586
+      },
+      "ordinary_iteration": {
+        "calls": 25521,
+        "seconds": 0.3534931
+      },
+      "padding_iteration": {
+        "calls": 9527,
+        "seconds": 0.1294904
+      }
+    }
+  },
+  {
+    "mode": "candidate",
+    "instrumented": true,
+    "days": 365,
+    "wall": 2.5722321001812816,
+    "cpu": {
+      "python": 0.296875,
+      "donor": {
+        "user": 1.484375,
+        "system": 0.421875
+      },
+      "kernel": {
+        "user": 0.125,
+        "system": 0.0625
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 5.1060856931517407e-11,
+      "max_kernel_cm": 5.1060856931517407e-11,
+      "max_solute_mg_cm2": 7.65545959957592e-12,
+      "sum_water_residual_cm": 7.212113401280917e-09
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run8-candidate-clock",
+    "iterations": 28281,
+    "headcalc_calls": 9527,
+    "phases": {
+      "root": {
+        "calls": 9527,
+        "seconds": 0.1853678
+      },
+      "water_solve": {
+        "calls": 9527,
+        "seconds": 0.635572
+      },
+      "water_update": {
+        "calls": 9527,
+        "seconds": 0.0862381
+      },
+      "heat": {
+        "calls": 9527,
+        "seconds": 0.0578291
+      },
+      "solute": {
+        "calls": 9527,
+        "seconds": 0.2092059
+      },
+      "head_setup": {
+        "calls": 9527,
+        "seconds": 0.103767
+      },
+      "ordinary_iteration": {
+        "calls": 25602,
+        "seconds": 0.3553987
+      },
+      "padding_iteration": {
+        "calls": 2679,
+        "seconds": 0.0363652
+      }
+    }
+  },
+  {
+    "mode": "control",
+    "instrumented": true,
+    "days": 365,
+    "wall": 3.0125008998438716,
+    "cpu": {
+      "python": 0.671875,
+      "donor": {
+        "user": 1.703125,
+        "system": 0.234375
+      },
+      "kernel": {
+        "user": 0.15625,
+        "system": 0.140625
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 2.959653355727454e-12,
+      "max_kernel_cm": 2.9596325390457423e-12,
+      "max_solute_mg_cm2": 1.3835196877032274e-11,
+      "sum_water_residual_cm": 8.129235262374634e-11
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run9-control-clock",
+    "iterations": 35048,
+    "headcalc_calls": 9527,
+    "phases": {
+      "root": {
+        "calls": 9527,
+        "seconds": 0.1982955
+      },
+      "water_solve": {
+        "calls": 9527,
+        "seconds": 0.7659058
+      },
+      "water_update": {
+        "calls": 9527,
+        "seconds": 0.0928191
+      },
+      "heat": {
+        "calls": 9527,
+        "seconds": 0.0639553
+      },
+      "solute": {
+        "calls": 9527,
+        "seconds": 0.2277597
+      },
+      "head_setup": {
+        "calls": 9527,
+        "seconds": 0.1147215
+      },
+      "ordinary_iteration": {
+        "calls": 25521,
+        "seconds": 0.3789785
+      },
+      "padding_iteration": {
+        "calls": 9527,
+        "seconds": 0.138441
+      }
+    }
+  },
+  {
+    "mode": "control",
+    "instrumented": true,
+    "days": 365,
+    "wall": 2.902332100085914,
+    "cpu": {
+      "python": 0.578125,
+      "donor": {
+        "user": 1.84375,
+        "system": 0.1875
+      },
+      "kernel": {
+        "user": 0.078125,
+        "system": 0.046875
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 2.959653355727454e-12,
+      "max_kernel_cm": 2.9596325390457423e-12,
+      "max_solute_mg_cm2": 1.3835196877032274e-11,
+      "sum_water_residual_cm": 8.129235262374634e-11
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run10-control-clock",
+    "iterations": 35048,
+    "headcalc_calls": 9527,
+    "phases": {
+      "root": {
+        "calls": 9527,
+        "seconds": 0.1992739
+      },
+      "water_solve": {
+        "calls": 9527,
+        "seconds": 0.7969029
+      },
+      "water_update": {
+        "calls": 9527,
+        "seconds": 0.0902007
+      },
+      "heat": {
+        "calls": 9527,
+        "seconds": 0.0590576
+      },
+      "solute": {
+        "calls": 9527,
+        "seconds": 0.2138647
+      },
+      "head_setup": {
+        "calls": 9527,
+        "seconds": 0.125343
+      },
+      "ordinary_iteration": {
+        "calls": 25521,
+        "seconds": 0.3572242
+      },
+      "padding_iteration": {
+        "calls": 9527,
+        "seconds": 0.1306887
+      }
+    }
+  },
+  {
+    "mode": "candidate",
+    "instrumented": true,
+    "days": 365,
+    "wall": 3.2020849003456533,
+    "cpu": {
+      "python": 0.5625,
+      "donor": {
+        "user": 1.875,
+        "system": 0.390625
+      },
+      "kernel": {
+        "user": 0.09375,
+        "system": 0.140625
+      }
+    },
+    "budgets": {
+      "days": 365,
+      "max_water_cm": 5.1060856931517407e-11,
+      "max_kernel_cm": 5.1060856931517407e-11,
+      "max_solute_mg_cm2": 7.65545959957592e-12,
+      "sum_water_residual_cm": 7.212113401280917e-09
+    },
+    "exact_physical_csv": true,
+    "exact_native109": true,
+    "folder": "C:\\SWAP5-testing\\saltfarm-newton-cost03\\run11-candidate-clock",
+    "iterations": 28281,
+    "headcalc_calls": 9527,
+    "phases": {
+      "root": {
+        "calls": 9527,
+        "seconds": 0.2453614
+      },
+      "water_solve": {
+        "calls": 9527,
+        "seconds": 0.750483
+      },
+      "water_update": {
+        "calls": 9527,
+        "seconds": 0.1027076
+      },
+      "heat": {
+        "calls": 9527,
+        "seconds": 0.0739534
+      },
+      "solute": {
+        "calls": 9527,
+        "seconds": 0.2697361
+      },
+      "head_setup": {
+        "calls": 9527,
+        "seconds": 0.1301049
+      },
+      "ordinary_iteration": {
+        "calls": 25602,
+        "seconds": 0.4237361
+      },
+      "padding_iteration": {
+        "calls": 2679,
+        "seconds": 0.0471945
+      }
+    }
+  }
+]

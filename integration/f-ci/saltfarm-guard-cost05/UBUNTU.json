@@ -1,0 +1,174 @@
+{
+  "run": 44493114064,
+  "source": "8ba61729a79a365b41c00140dfb296f9bb821b24",
+  "conclusion": "success",
+  "artifact": 14514231160,
+  "sha256": "bbe386ba683d9ac2231c41a99cd4bb11a9c45a59a3857a92b676fc38eaeb4760",
+  "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44493114064",
+  "results": {
+    "accept-O0/RESULT.json": {
+      "source_commit": "8ba61729a79a365b41c00140dfb296f9bb821b24",
+      "build_sha256": "e76c73101eaf6c4db9cf00f17bc16672008cf8f2ff9c48cace5d4e9ca83f2942",
+      "policy": "strict-water-half-interior-polish-v1",
+      "argv": [
+        "tests/saltfarm_newton/qualify.py",
+        "--bundle",
+        "/home/runner/work/_temp/newton/qualified-O0",
+        "--reference",
+        "/home/runner/work/_temp/newton/provider",
+        "--output",
+        "/home/runner/work/_temp/newton/accept-O0"
+      ],
+      "restarts": [
+        {
+          "start": 109,
+          "end": 111,
+          "seconds": 0.04183009400000515,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "seconds": 0.03692650000002118,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 453,
+          "end": 455,
+          "seconds": 0.0396363289999897,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 1460,
+          "end": 1461,
+          "seconds": 0.03327743699998109,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 109,
+          "end": 1461,
+          "seconds": 6.983095238000004,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        }
+      ],
+      "status": "FULL_PASS",
+      "days": 1461,
+      "seconds": 7.448862771000023,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060836114835695e-11,
+        "max_kernel_cm": 5.1060836114835695e-11,
+        "max_solute_mg_cm2": 7.657818823503248e-12,
+        "sum_water_residual_cm": 2.0294675281452845e-08
+      }
+    },
+    "accept-O2/RESULT.json": {
+      "source_commit": "8ba61729a79a365b41c00140dfb296f9bb821b24",
+      "build_sha256": "92e43b2082bc2259c067db65ae79a5a727d1b9dbef5de58c222b950d058d8b96",
+      "policy": "strict-water-half-interior-polish-v1",
+      "argv": [
+        "tests/saltfarm_newton/qualify.py",
+        "--bundle",
+        "/home/runner/work/_temp/newton/qualified-O2",
+        "--reference",
+        "/home/runner/work/_temp/newton/provider",
+        "--output",
+        "/home/runner/work/_temp/newton/accept-O2"
+      ],
+      "restarts": [
+        {
+          "start": 109,
+          "end": 111,
+          "seconds": 0.03691696100000286,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "seconds": 0.03310464699998761,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 453,
+          "end": 455,
+          "seconds": 0.03226828200001819,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 1460,
+          "end": 1461,
+          "seconds": 0.029256618999994544,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 109,
+          "end": 1461,
+          "seconds": 5.518058841999988,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        }
+      ],
+      "status": "FULL_PASS",
+      "days": 1461,
+      "seconds": 5.925623118999994,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060836114835695e-11,
+        "max_kernel_cm": 5.1060836114835695e-11,
+        "max_solute_mg_cm2": 7.657818823503248e-12,
+        "sum_water_residual_cm": 2.0294675281452845e-08
+      }
+    },
+    "transactions/RESULT.json": {
+      "O0": {
+        "discard_replay_exact": true,
+        "independent_columns_exact": true,
+        "continuous_day454_exact": true,
+        "origin_unchanged": true,
+        "foreign_policy_refused": true,
+        "seconds": 0.5585606949999828
+      },
+      "O2": {
+        "discard_replay_exact": true,
+        "independent_columns_exact": true,
+        "continuous_day454_exact": true,
+        "origin_unchanged": true,
+        "foreign_policy_refused": true,
+        "seconds": 0.47395215399998847
+      }
+    },
+    "PROFILE_EQUALITY.json": {
+      "exact_all1461_physical": true,
+      "source": "8ba61729a79a365b41c00140dfb296f9bb821b24"
+    }
+  }
+}

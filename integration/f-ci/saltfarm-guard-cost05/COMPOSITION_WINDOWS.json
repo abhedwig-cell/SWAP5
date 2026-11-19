@@ -1,0 +1,182 @@
+{
+  "runtime": "78e02a97517be08ae9fdaa5b885b1fe584e4dec2",
+  "archive": "COMPOSITION_WINDOWS.zip",
+  "bytes": 27996606,
+  "sha256": "ff5944300e2c8fd2d8da60d3d6f34e7ef2381864135776071ba31e178b2b0e4f",
+  "profiles": {
+    "O0": {
+      "source_commit": "78e02a97517be08ae9fdaa5b885b1fe584e4dec2",
+      "build_sha256": "cfad6347a159d0553eb03a67e89f9953f9703be2be8a942c34d25f6b3a2c9781",
+      "policy": "strict-water-half-interior-polish-v1",
+      "argv": [
+        "tests/saltfarm_newton/qualify.py",
+        "--bundle",
+        "C:\\SWAP5-testing\\saltfarm-guard-cost05\\composition01\\qualified-O0",
+        "--reference",
+        "C:\\SWAP5-testing\\rc3-local01\\provider",
+        "--output",
+        "C:\\SWAP5-testing\\saltfarm-guard-cost05\\composition01\\accept-O0",
+        "--model-cap",
+        "35"
+      ],
+      "restarts": [
+        {
+          "start": 109,
+          "end": 111,
+          "seconds": 0.34161899983882904,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "seconds": 0.28175280010327697,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 453,
+          "end": 455,
+          "seconds": 0.2833586996421218,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 1460,
+          "end": 1461,
+          "seconds": 0.29125470016151667,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 109,
+          "end": 1461,
+          "seconds": 11.883027900010347,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        }
+      ],
+      "status": "FULL_PASS",
+      "days": 1461,
+      "seconds": 13.029126800131053,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      },
+      "actual_generated_fortran_equals_admitted": {
+        "boundtop.f90": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+        "headcalc.f90": "7428be6bbb5f71fbf6ad59e6e6ffe91c0edd56dc10c61b37b4556c482058c9da",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+        "swap.f90": "eca77cdc3997061060e2a9b1ed2d646d4fb9abfb2cc5501429f851d855b21a7f",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "656becdbb62f8d4d6cfaf64bca2e11444fa1fc76baff8d25388e9930a74b9df1",
+        "timecontrol.f90": "3a48b918afc9ea568f814a58c601f255ef1e647db0a6647d777a9f657880a851",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      }
+    },
+    "O2": {
+      "source_commit": "78e02a97517be08ae9fdaa5b885b1fe584e4dec2",
+      "build_sha256": "c86c064ecacdce72a1ebf49f21f0dad4e9bd092934d320551671b50d494e8d3d",
+      "policy": "strict-water-half-interior-polish-v1",
+      "argv": [
+        "tests/saltfarm_newton/qualify.py",
+        "--bundle",
+        "C:\\SWAP5-testing\\saltfarm-guard-cost05\\composition01\\qualified-O2",
+        "--reference",
+        "C:\\SWAP5-testing\\rc3-local01\\provider",
+        "--output",
+        "C:\\SWAP5-testing\\saltfarm-guard-cost05\\composition01\\accept-O2",
+        "--model-cap",
+        "35"
+      ],
+      "restarts": [
+        {
+          "start": 109,
+          "end": 111,
+          "seconds": 0.3401039997115731,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 365,
+          "end": 367,
+          "seconds": 0.257477100007236,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 453,
+          "end": 455,
+          "seconds": 0.2850269000045955,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 1460,
+          "end": 1461,
+          "seconds": 0.264956200029701,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        },
+        {
+          "start": 109,
+          "end": 1461,
+          "seconds": 10.011364500038326,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native": true,
+          "origin_unchanged": true
+        }
+      ],
+      "status": "FULL_PASS",
+      "days": 1461,
+      "seconds": 12.770504100248218,
+      "budgets": {
+        "days": 1461,
+        "max_water_cm": 5.1060856931517407e-11,
+        "max_kernel_cm": 5.1060856931517407e-11,
+        "max_solute_mg_cm2": 7.65545959957592e-12,
+        "sum_water_residual_cm": 2.0294954525962305e-08
+      },
+      "actual_generated_fortran_equals_admitted": {
+        "boundtop.f90": "e8ea2890edd6bdcf0446ce6e7c60562da23ecd6dc0019584b9ea6a2de9c24010",
+        "headcalc.f90": "7428be6bbb5f71fbf6ad59e6e6ffe91c0edd56dc10c61b37b4556c482058c9da",
+        "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+        "macropore.f90": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+        "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+        "solute.f90": "a8d9e3825a425242a086f2ec5c9ce5fb1788c99e6e2e9befc63aeaf7dabd708f",
+        "swap.f90": "eca77cdc3997061060e2a9b1ed2d646d4fb9abfb2cc5501429f851d855b21a7f",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+        "swap_csv_output.f90": "80ec8fd2df2fdbd3c7af634aeec2f8f6e525afae84e1aee46566420a76a4fa1d",
+        "swap_main.f90": "656becdbb62f8d4d6cfaf64bca2e11444fa1fc76baff8d25388e9930a74b9df1",
+        "timecontrol.f90": "3a48b918afc9ea568f814a58c601f255ef1e647db0a6647d777a9f657880a851",
+        "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+      }
+    }
+  }
+}

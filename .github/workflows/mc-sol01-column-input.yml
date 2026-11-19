@@ -47,6 +47,22 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /app/
+            /src/
+            /tools/
+            /tests/
+            /reference/
+            /examples/
+            /.github/
+            /integration/audits/
+            /integration/nomacro-coverage01/*.json
+            /integration/f-ci/hupsel51-water-balance/WINDOWS.json
+            /integration/f-ci/saltfarm-guard-cost05/
+            /integration/f-ci/saltfarm-newton-work01/WINDOWS_CURRENT.zip
+            /integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_QUALIFICATION.json
+            /integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_MERGE_RECEIPT.json
       - name: Build both optimizations and run actual file/restart qualification
         run: |
           set -euo pipefail

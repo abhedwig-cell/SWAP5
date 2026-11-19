@@ -145,6 +145,8 @@ def validate_bundle(bundle, reference, project):
     require_transport(project)
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
+    from direct_day_kernel import validate as validate_direct
+    validate_direct(bundle,identity.get('direct_day_kernel'),project)
     from implicit_conductivity import metadata as implicit_metadata
     if identity.get('implicit_conductivity')!=implicit_metadata(project):
         raise ValueError('Foreign original implicit conductivity numerical policy; rebuild without rebinding')
