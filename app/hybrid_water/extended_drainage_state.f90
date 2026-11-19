@@ -38,11 +38,18 @@ contains
   end subroutine
 
   subroutine validate(values, adjustments, header)
+    use MOD_grid, only: numnod, layer
+    use MOD_drain, only: cofani, ksatcp
     real(8), intent(in) :: values(:)
     integer, intent(in) :: adjustments, header(8)
     if (size(values) /= 11+3*header(3)+header(3)*header(2)) &
       error stop 'Incomplete extended drain state'
-    if (.not.all(ieee_is_finite(values)).or.adjustments < 0) error stop 'Invalid extended drain state'
+    if (.not.all(ieee_is_finite(values)).or.adjustments < 0) then
+      write(*,'(a,*(1x,es25.17e3))') 'EXTENDED_DRAIN_INVALID_STATE',values
+      write(*,'(a,*(1x,es25.17e3))') 'EXTENDED_DRAIN_ACTUAL_KSAT',ksatcp(1:numnod)
+      write(*,'(a,*(1x,es25.17e3))') 'EXTENDED_DRAIN_ACTUAL_ANISOTROPY',cofani(layer(1:numnod))
+      error stop 'Invalid extended drain state'
+    end if
     if (values(3) < 0d0.or.values(5) < 0d0) error stop 'Negative original surface storage or perimeter'
   end subroutine
 
