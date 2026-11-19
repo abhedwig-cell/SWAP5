@@ -75,6 +75,34 @@ def calendar_attacks(raw,project):
     return result
 
 
+def history_attacks(raw,project):
+    from extended_drainage import selection,size
+    selected=selection(project);mode=selected.get('swhyst',0)
+    if not mode:return {}
+    n=project.nodes;domain=struct.pack('<5i',1,n,0,mode,int(project.solute));pair=domain+domain
+    prefix=raw[:-size(project)];assert prefix.count(pair)==2
+    first=prefix.index(pair);second=prefix.index(pair,first+40);offset=first+40
+    result={}
+    def change(label,at,fmt,value,mirror=None,compiled=True):
+        wire=bytearray(raw);struct.pack_into('<'+fmt,wire,at,value)
+        if mirror is not None:struct.pack_into('<'+fmt,wire,mirror,value)
+        result['history-'+label]=(bytes(wire),compiled)
+    for location,at in [('physical',first),('calendar',second)]:
+        for index,value in enumerate(struct.unpack('<5i',domain)):
+            change(location+'-domain-'+str(index),at+4*index,'i',value+1,at+20+4*index)
+        change(location+'-copy',at+20,'i',99)
+    for index in (0,n,2*n,3*n+1,4*n+2,5*n+2,5*n+3):
+        change('nonfinite-'+str(index),offset+8*index,'d',float('nan'))
+    for index in (n,2*n,3*n+1,4*n+2,5*n+3):
+        change('negative-'+str(index),offset+8*index,'d',-1.)
+    for label,index in [('head-receipt',0),('groundwater-receipt',5*n+2)]:
+        change(label,offset+8*index,'d',struct.unpack_from('<d',raw,offset+8*index)[0]+1.,compiled=False)
+    change('stock-receipt',offset+8*(5*n+3),'d',struct.unpack_from('<d',raw,offset+8*(5*n+3))[0]+1.)
+    change('weighted-theta',offset+8*n,'d',struct.unpack_from('<d',raw,offset+8*n)[0]+1e-4)
+    result['history-old-calendar-codec']=(b'S5EDO001'+raw[8:],True)
+    return result
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work','profile-root','output'):p.add_argument('--'+name,type=Path,required=True)
@@ -114,6 +142,7 @@ def main():
         assert q['positive_native']['returncode']==100
         variants=attacks(members['macro.bin'])
         if a.original_output:variants.update(calendar_attacks(members['macro.bin'],project))
+        if a.original_output:variants.update(history_attacks(members['macro.bin'],project))
         if a.positive_only:variants={}
         public_done={v['label'] for v in q['public_refusals']};native_done={v['label'] for v in q['native_refusals']}
         for label,(raw,compiled) in variants.items():
