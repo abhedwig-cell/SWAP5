@@ -1,5 +1,5 @@
 {
-  "status": "GROUNDWATER_WATER_SOURCE_QUALIFIED_CANONICAL_PENDING",
+  "status": "COMPOSED_GROUNDWATER_WATER_SOURCE_QUALIFIED_CANONICAL_PENDING",
   "runtime": "98b5b0337a87cadbc4861e67056ec87c51237d47",
   "canonical_parent": "b9400bff64a5b21596995aca9eb045f974a52b21",
   "current_owner": "tests/nomacro_scheduled_subsurface/original_output_verify.py",
@@ -128,7 +128,7 @@
     "current_root_seconds": 175.65230609988794,
     "actual_canonical": "3bf7765ff78040e579252d749000ea051d2416a0"
   },
-  "current_registered_root": "tests/nomacro_scheduled_subsurface/age_groundwater_verify.py",
+  "current_registered_root": "tests/hupsel51/verify_successor.py",
   "actual_clock_canonical_merge": {
     "status": "ACTUAL_CANONICAL_COMPLETE_TREE_AND_DETACHED_OWNER_PASS",
     "pr": 1719,
@@ -2154,5 +2154,18 @@
     "prior_compiled_closures_exact": 3,
     "prior_typed_native_prefixes_checked": 296,
     "next": "One coherent source/raw qualification PR; actual ordered merge parents, complete qualified tree and clean detached registered owner. Then immediately implement explicit original SWKMEAN7 batch."
+  },
+  "groundwater_water_canonical_composition": {
+    "source": "e598948d6324a06e9d3974750471918f8be6ff2b",
+    "incoming": "b28706d8b16661d8a9e85339d317256eaca51206",
+    "raw_seal": "ee744246789a1ac9858b1b934000f2f207d24763",
+    "portable_run": 44518860261,
+    "conclusion": "success",
+    "current_owner_module": "tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py",
+    "actual_registered_owner_pass": "329fd6347cf09d8e814941f9569afed427498603",
+    "strict_current_source_guards_pass": "3a9155fcd1e5b32b3e23ad9b08a49ef2f1960790",
+    "actual_wrong_source_refused": "b196e1c331321d291c39d05e49d746b8298efa5f",
+    "new_full_model_periods": 0,
+    "next": "Push reconciled source to existing PR1760, merge against actual b287 with expected qualified head, verify ordered parents and full qualified tree, run actual clean detached registered primary owner. Then immediately implement original explicit SWKMEAN7."
   }
 }
