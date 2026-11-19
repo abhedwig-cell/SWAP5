@@ -1,0 +1,61 @@
+{
+  "status": "NEUTRAL_ACTUAL_WINDOWS_RAW_ARCHIVE_NO_ADMISSION_CLAIM",
+  "archive": "EXTENDED_DRAINAGE_CALENDAR_AGE_DRY_COMPONENT_RAW.zip",
+  "bytes": 31862,
+  "sha256": "e77625e5ba9c1b0f29108c9a64757c38c1d95aa00f10ea2d52d0b18c9eb99f1e",
+  "members": {
+    "actual/O0-compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/O0-compile.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/O0-run.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/O0-run.stdout": {
+      "bytes": 261,
+      "sha256": "753857fc1d81702e25192abf3cb5686978cd2f9bbbd75dcd52de503aded4de26"
+    },
+    "actual/O2-compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/O2-compile.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/O2-run.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actual/O2-run.stdout": {
+      "bytes": 261,
+      "sha256": "753857fc1d81702e25192abf3cb5686978cd2f9bbbd75dcd52de503aded4de26"
+    },
+    "actual/RESULT.json": {
+      "bytes": 3048,
+      "sha256": "81b08d064b4ad1d21f495004b04cb7c9d8a9dd6b9713d7cee6d724162505bdab"
+    },
+    "source/mod_b111_surface_age_budget.f90": {
+      "bytes": 5412,
+      "sha256": "b6773e7233d3c02edea0d8e8f3b2ad67195957a28ae703d41b6a49efba35666d"
+    },
+    "source/age_dryout_probe.f90": {
+      "bytes": 1916,
+      "sha256": "79ebbb62e298c9df1a51bda4456dbf8dd5c1271a7b57542479bc838c604d04fe"
+    },
+    "compiled/O0/age_dryout_probe.exe": {
+      "bytes": 48786,
+      "sha256": "a10301a37711d578ced8291d64eb38034352f6930f47335825e13c8e967e1947"
+    },
+    "compiled/O2/age_dryout_probe.exe": {
+      "bytes": 46846,
+      "sha256": "4c58a668ffeee564c4cd2ebbd5b0c8aa4213a3b366891f7590f2dda36b9644f1"
+    }
+  },
+  "compiled_objects_excluded": "Reproducible original provider; actual emitted source, executable/library and BUILD bytes retained"
+}

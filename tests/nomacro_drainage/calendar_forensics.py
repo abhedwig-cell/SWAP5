@@ -106,6 +106,11 @@ def calendar_native(prefix,build,row,selected,dz):
     # Decode the actual calendar substream, without changing any input byte.
     cal=output_calendar(section,n,row,selected,build['project']['start_date'],'solute_end_mg_cm2' in row)
     h=cal['calendar_header'];require(h[2]==r,'Calendar/drainage level domain differs')
+    if 'solute_end_mg_cm2' in row:
+        end=cal['calendar_end'];header=struct.unpack_from('<3i',section,end)
+        require(header==(1,n,18+n),'Foreign extended calendar CDE private domain')
+        initial=struct.unpack_from('<d',section,end+24)[0]
+        require(math.isfinite(initial) and initial>=0,'Negative/nonfinite original CDE initial inventory')
     if age:
         start=len(section);body=struct.unpack_from('<'+str(3*n+25+r+16)+'d',prefix,start)
         require(finite(body),'Nonfinite original AGE native section')
@@ -144,10 +149,38 @@ class ActualFiles:
     def read(self,name):return (self.root/name).read_bytes()
 
 
+def legacy_terminal(full,cold,require_data=False,*,start=None,end=None):
+    result={}
+    for name in ('result.bal','result.blc'):
+        before=(Path(full)/name).read_bytes();after=(Path(cold)/name).read_bytes()
+        def records(raw):return [line for line in raw.decode('cp1252').splitlines() if not line.startswith('* Generated at:')]
+        def periods(lines):
+            positions=[];intervals=[]
+            for index,line in enumerate(lines):
+                match=re.fullmatch(r'Period\s*:\s*(\d{4}-\d{2}-\d{2})\s+until\s+(\d{4}-\d{2}-\d{2})\s*',line)
+                if match:positions.append(index);intervals.append((match[1],match[2]))
+            require(len(set(intervals))==len(intervals),'Duplicate original legacy period')
+            return lines[:positions[0]] if positions else lines,[(interval,lines[pos:(positions[i+1] if i+1<len(positions) else len(lines))]) for i,(interval,pos) in enumerate(zip(intervals,positions))]
+        ah,a=periods(records(before));bh,b=periods(records(after))
+        expected=[frame for frame in a if (start is None or frame[0][1]>=start) and (end is None or frame[0][1]<=end)]
+        require(ah==bh and expected==b,'Actual original legacy continuation period differs: '+name)
+        count=sum(bool(re.search(r'\d',line)) for _,frame in expected for line in frame if line.strip() and not line.startswith('*'))
+        require(not require_data or count>0,'Original legacy text contains only initialization headers: '+name)
+        result[name]=dict(exact_original_records=True,actual_numeric_lines=count,actual_periods=[list(interval) for interval,_ in expected],only_excluded_field='Run-generation timestamp; already-emitted periods before the restart are not repeated',
+                          warm_sha256=hashlib.sha256(before).hexdigest(),cold_sha256=hashlib.sha256(after).hexdigest())
+    return result
+
+
 def audit_root(root,compiled_root=None):
     root=Path(root);q=json.loads((root/'RESULT.json').read_text());full=root/'trajectory'
     require(q['status']=='ACTUAL_EXTENDED_DRAINAGE_ORIGINAL_OUTPUT_NATIVE_PASS','Incomplete actual calendar campaign')
     data=[json.loads(line) for line in (full/'daily.jsonl').read_text().splitlines()]
+    days=q['parameters']['days']
+    expected=[(1,2)] if days==2 else [(2,4)]
+    if q['parameters'].get('end_date') and days==5:expected.append((4,5))
+    if days>=35:expected += [(14,17),(30,35)]
+    if days==1096:expected += [(363,367),(530,532),(1094,1096)]
+    require([(window['start'],window['end']) for window in q['cold']]==expected,'Actual required calendar cold windows changed')
     build=json.loads((full/'BUILD.json').read_text());selected=selected_input(root/'input/swap.swp')
     require(q['output_selection']==selected and all(build['identity']['original_output'][key]==value for key,value in selected.items()),'Actual input/output policy differs')
     compiled=Path(compiled_root or q['build_root'])
@@ -165,6 +198,7 @@ def audit_root(root,compiled_root=None):
     result=check_directory(full,data);natives={}
     for path in full.glob('accepted-column-1-day-*.zip'):
         day=int(path.stem.rsplit('-',1)[1]);natives[day]=checkpoint(path,build,data[day-1],selected,dz)
+    require(set(natives)=={days,*(day for pair in expected for day in pair)},'Actual complete calendar checkpoint inventory differs')
     cold=[]
     for window in q['cold']:
         low,high=window['start'],window['end'];directory=root/f'cold-{low}'
@@ -175,6 +209,10 @@ def audit_root(root,compiled_root=None):
         native=checkpoint(directory/f'accepted-column-1-day-{high}.zip',build,rows[-1],selected,dz)
         require(native==natives[high],'Actual complete cold native differs')
         checks['original_output']=compare(full/'original',directory/'original',selected,low,high,build['project']['start_date']);cold.append(checks)
+        if high==len(data) and (len(data)==1096 or q['parameters'].get('end_date')):
+            epoch=date.fromisoformat(build['project']['start_date'])
+            checks['original_legacy_terminal']=legacy_terminal(full/'original',directory/'original',selected['swcsv']==0,
+                start=str(epoch+timedelta(days=low)),end=str(epoch+timedelta(days=high-1)))
     require(len(cold)==(6 if len(data)==1096 else 3 if len(data)>=35 else 2 if q['parameters'].get('end_date') is not None and len(data)==5 else 1),'Missing actual calendar cold window')
     return dict(status='INDEPENDENT_EXTENDED_ORIGINAL_CALENDAR_SOURCE_OBSERVATIONS_NATIVE_OUTPUT_PASS',actual_days=len(data),
                 warm=result,cold=cold,actual_complete_native_packages=len(natives),functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')

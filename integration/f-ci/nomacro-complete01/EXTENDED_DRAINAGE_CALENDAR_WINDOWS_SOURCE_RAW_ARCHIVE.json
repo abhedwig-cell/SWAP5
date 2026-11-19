@@ -1,0 +1,33 @@
+{
+  "status": "NEUTRAL_ACTUAL_WINDOWS_RAW_ARCHIVE_NO_ADMISSION_CLAIM",
+  "archive": "EXTENDED_DRAINAGE_CALENDAR_WINDOWS_SOURCE_RAW_ARCHIVE.zip",
+  "bytes": 9305973,
+  "sha256": "3ea5eb82de1e56ef413e422589400a9a45d74d993c2e8379db6902b11990b5dd",
+  "members": {
+    "full-source/actual-producer-source.zip": {
+      "bytes": 4304387,
+      "sha256": "ce4c3966cb91f781f6095105d1b4b1ae588edfb0ca9b32b27e92ddd8e793997c"
+    },
+    "full-source/controller-source.tar": {
+      "bytes": 3287040,
+      "sha256": "40d4026021cf1fd3ed7e716e4549464123ee71fac88f08dbb2c16016755e41af"
+    },
+    "full-source/RESULT.json": {
+      "bytes": 531988,
+      "sha256": "728324496c52f64a98f0afa29c489e437ee62c16e221a349d0fd4717bb73af58"
+    },
+    "source/actual-producer-source.zip": {
+      "bytes": 4304467,
+      "sha256": "1dae7aec80e273177ccf0ae70ae1657ce4af7263d33f8b655e9ab250da5316b9"
+    },
+    "source/RESULT.json": {
+      "bytes": 531988,
+      "sha256": "d373ff7649553d3a18f7c36be4aac6f6cfdf9ecd4e3a67eb39e3d3575aed4e75"
+    },
+    "provider-PREPARED.json": {
+      "bytes": 41046,
+      "sha256": "a2f529bc5d69c9e15bdda4c7aeb643a48685b50e10c2c1fce9eb639faf8a2da5"
+    }
+  },
+  "compiled_objects_excluded": "Reproducible original provider; actual emitted source, executable/library and BUILD bytes retained"
+}
