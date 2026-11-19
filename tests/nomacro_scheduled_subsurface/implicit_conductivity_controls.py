@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import shutil
 import struct
+import re
 import implicit_conductivity_runtime as runtime
 from age_groundwater_controls import transactions
 from daily_coupling import CoupledDailyColumn
@@ -49,11 +50,42 @@ def main():
             try:m.e.load(target,original_output=True)
             except ValueError as error:q['descriptor_refusals'].append(dict(label=label,error=str(error),status='REFUSED_BEFORE_WORKER'));save()
             else:raise AssertionError('Unqualified implicit domain accepted: '+label)
+        target=a.output/'descriptor-examined-ksat';shutil.copytree(inputs,target);path=target/'swap.swp'
+        text=path.read_text(encoding='cp1252')
+        def unsupported(match):
+            names=match[1].split();rows=[]
+            for line in match[2].splitlines():
+                fields=line.split();fields[names.index('KSATEXM')]=str(1.1*float(fields[names.index('KSATFIT')]))
+                rows.append(' '.join(fields))
+            return match[1]+'\n'.join(rows)+'\n* End of table'
+        text,count=re.subn(r'(?mi)^([ \t]*ORES[ \t]+OSAT[^\r\n]*\n)(.*?)^\* End of table',unsupported,text,count=1,flags=re.S);assert count==1
+        path.write_text(text,encoding='cp1252')
+        try:m.e.load(target,original_output=True)
+        except ValueError as error:
+            assert 'does not implement examined-Ksat interpolation' in str(error)
+            q['descriptor_refusals'].append(dict(label='examined-ksat',error=str(error),status='REFUSED_BEFORE_WORKER'));save()
+        else:raise AssertionError('Original unsupported examined-Ksat derivative accepted')
         source=full/'accepted-column-1-day-4.zip';digest=m.sha(source)
-        for attack in ('magic','truncated','trailing','negative-day','changed-counter','witness','nonfinite'):
+        from implicit_groundwater_state import enabled as implicit_groundwater,domain
+        attacks=['magic','truncated','trailing','negative-day','changed-counter','witness','nonfinite']
+        if implicit_groundwater(project):
+            attacks += ['hydraulic-domain-'+str(i) for i in range(13)]
+            attacks += ['hydraulic-nan-'+str(i) for i in (0,project.nodes,2*project.nodes,3*project.nodes+1,4*project.nodes+2,5*project.nodes+2,5*project.nodes+3)]
+            attacks += ['hydraulic-head','hydraulic-level','hydraulic-volume']
+        for attack in attacks:
             target=a.output/('native-'+attack);target.mkdir();origin=target/'origin'
             receipt=m.h.verify_checkpoint(source,4,meta['binding'],origin);path=origin/'macro.bin';raw=bytearray(path.read_bytes())
-            if attack=='magic':raw[:8]=b'FOREIGN1'
+            if attack.startswith('hydraulic-'):
+                header=struct.pack('<13i',*domain(project));assert raw.count(header+header)==1
+                pos=raw.index(header+header);offset=pos+104
+                if attack.startswith('hydraulic-domain-'):
+                    i=int(attack.rsplit('-',1)[1])
+                    for at in (pos,pos+52):struct.pack_into('<i',raw,at+4*i,domain(project)[i]+1)
+                else:
+                    i=int(attack.rsplit('-',1)[1]) if attack.startswith('hydraulic-nan-') else {'hydraulic-head':0,'hydraulic-level':5*project.nodes+2,'hydraulic-volume':5*project.nodes+3}[attack]
+                    value=float('nan') if attack.startswith('hydraulic-nan-') else struct.unpack_from('<d',raw,offset+8*i)[0]+1
+                    struct.pack_into('<d',raw,offset+8*i,value)
+            elif attack=='magic':raw[:8]=b'FOREIGN1'
             elif attack=='truncated':raw=raw[:-1]
             elif attack=='trailing':raw+=b'x'
             else:

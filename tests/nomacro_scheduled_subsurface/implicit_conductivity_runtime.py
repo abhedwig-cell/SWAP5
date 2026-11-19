@@ -15,15 +15,17 @@ ROOT=previous.ROOT
 
 def fixture(path, solute, hysteresis, bottom, step, kmean=1, mode='explicit', fmt=3, reset=1, npd=None):
     npd = npd if npd is not None else (3 if step else 1)
+    actual_mode='periodic' if mode=='daily' else mode
     if bottom==1:
-        previous.fixture(path,hysteresis,step,mode,fmt,reset,npd,1)
+        previous.fixture(path,hysteresis,step,actual_mode,fmt,reset,npd,1)
     else:
-        previous.age.fixture(path,mode,hysteresis,fmt,reset,npd,'point')
+        previous.age.fixture(path,actual_mode,hysteresis,fmt,reset,npd,'point')
     control=path/'swap.swp'
     text=control.read_text(encoding='cp1252')
     for key,value in dict(SWKIMPL=1,SWKMEAN=kmean,SWSOLU=solute,SWBOTB=bottom,
                           FLPRINTDT='.TRUE.' if step else '.FALSE.').items():
         text=assignment(text,key,value)
+    if mode=='daily':text=assignment(text,'PERIOD',1)
     def supported(match):
         names=match[1].split();rows=[]
         for line in match[2].splitlines():
@@ -45,7 +47,7 @@ def main():
     p.add_argument('--bottom',choices=(1,5,8),type=int,required=True)
     p.add_argument('--kmean',choices=range(1,7),type=int,default=1)
     p.add_argument('--perstep',action='store_true')
-    p.add_argument('--mode',choices=('explicit','periodic','monthly','terminal'),default='explicit')
+    p.add_argument('--mode',choices=('explicit','periodic','monthly','terminal','daily'),default='explicit')
     p.add_argument('--format',choices=(0,1,2,3),type=int,default=3)
     p.add_argument('--reset',choices=(0,1),type=int,default=1)
     p.add_argument('--nprintday',type=int)
