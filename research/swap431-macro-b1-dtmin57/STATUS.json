@@ -1,13 +1,173 @@
 {
   "work_unit": "SWAP431-MACRO-B1-DTMIN57",
-  "baseline": "e225494ed9977f4815612f82077cfa33fb4bf5dd",
-  "stage": "PREREGISTERED",
-  "routes": [
-    "O0 RESTART_D2",
-    "O2 RESTART_D2"
-  ],
+  "decision": "DTMIN_CAP_AND_BACKTRACKING_PRODUCT_CONTRACT_BOUNDED_O0_O2",
+  "model_routes": 2,
   "hard_seconds_per_route": 20,
-  "internal_seconds": 16,
-  "source_change": "observer IO only, existing arrays; no numerical update",
-  "no_broad_campaign": true
+  "observer_only": true,
+  "solver_policy_unchanged": true,
+  "source_insertion_only_verified": true,
+  "O0_O2_full_arrays_byte_exact": true,
+  "contract_algebra_cases": [
+    {
+      "name": "mixed_switch_and_sign",
+      "M": 2.0,
+      "alpha0": 0.5,
+      "mixed_step_norms": [
+        1.0,
+        0.33333333333333337,
+        0.11111111111111116,
+        0.03703703703703709
+      ],
+      "passed": true
+    },
+    {
+      "name": "cap_inactive",
+      "M": 0.1,
+      "alpha0": 1,
+      "mixed_step_norms": [
+        0.1,
+        0.03333333333333333,
+        0.011111111111111112,
+        0.003703703703703704
+      ],
+      "passed": true
+    },
+    {
+      "name": "cap_exact_one",
+      "M": 1.0,
+      "alpha0": 1,
+      "mixed_step_norms": [
+        1.0,
+        0.3333333333333333,
+        0.11111111111111116,
+        0.037037037037037035
+      ],
+      "passed": true
+    },
+    {
+      "name": "cap_active",
+      "M": 6.0,
+      "alpha0": 0.16666666666666666,
+      "mixed_step_norms": [
+        1.0,
+        0.3333333333333332,
+        0.11111111111111108,
+        0.03703703703703702
+      ],
+      "passed": true
+    },
+    {
+      "name": "zero_direction",
+      "M": 0.0,
+      "alpha0": 1,
+      "mixed_step_norms": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "name": "near_zero",
+      "M": 1e-18,
+      "alpha0": 1,
+      "mixed_step_norms": [
+        1e-18,
+        3.3333333333333334e-19,
+        1.111111111111111e-19,
+        3.703703703703704e-20
+      ],
+      "passed": true
+    }
+  ],
+  "historical_author_intent": "UNKNOWN; legacy source proves behavior, general owner document does not specifically define macro dtmin exception",
+  "contract_status": "BOUNDED_PROPOSED_NUMERICAL_CORRECTION_CONTRACT_NOT_IMPLEMENTED",
+  "corrected_solver_convergence_qualified": false,
+  "accepted_follow_qualified": false,
+  "B1_status": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "results": [
+    {
+      "optimization": "O0",
+      "seconds": 1.8466332997195423,
+      "returncode": 0,
+      "censored": false,
+      "parent_physical_text_files_exact": 44,
+      "attempts_exact_except_elapsed": true,
+      "full_array_trials": 227,
+      "full_array_nodes": 112,
+      "original_update_max_abs_error_cm": 0,
+      "post_MaxIt_dtmin_trials": 60,
+      "post_MaxIt_dtmin_iterations": 30,
+      "post_MaxIt_M_range": [
+        6.61108586281943e-05,
+        0.022774356733347288
+      ],
+      "post_MaxIt_alpha0_range": [
+        1,
+        1
+      ],
+      "relative_cap_active_trials": 0,
+      "duplicate_four_trial_iterations": [
+        31,
+        34,
+        37,
+        40,
+        43,
+        46,
+        49,
+        52,
+        55,
+        58
+      ],
+      "redundant_evaluations": 30,
+      "model_free_product_would_change_logged_trials": 30,
+      "product_first_trial_unchanged": true,
+      "zero_follow_commits": true,
+      "unchanged_refusal_and_scaling_request": true
+    },
+    {
+      "optimization": "O2",
+      "seconds": 1.7162619000300765,
+      "returncode": 0,
+      "censored": false,
+      "parent_physical_text_files_exact": 44,
+      "attempts_exact_except_elapsed": true,
+      "full_array_trials": 227,
+      "full_array_nodes": 112,
+      "original_update_max_abs_error_cm": 0,
+      "post_MaxIt_dtmin_trials": 60,
+      "post_MaxIt_dtmin_iterations": 30,
+      "post_MaxIt_M_range": [
+        6.61108586281943e-05,
+        0.022774356733347288
+      ],
+      "post_MaxIt_alpha0_range": [
+        1,
+        1
+      ],
+      "relative_cap_active_trials": 0,
+      "duplicate_four_trial_iterations": [
+        31,
+        34,
+        37,
+        40,
+        43,
+        46,
+        49,
+        52,
+        55,
+        58
+      ],
+      "redundant_evaluations": 30,
+      "model_free_product_would_change_logged_trials": 30,
+      "product_first_trial_unchanged": true,
+      "zero_follow_commits": true,
+      "unchanged_refusal_and_scaling_request": true
+    }
+  ],
+  "stage": "QUALIFIED_OBSERVED_BEHAVIOR_AND_ALGEBRA_ONLY",
+  "recovery": "INTENT_CONTRACT.md; REPORT.md; RESULT.json; CODEX_FOLLOWUP.md; EVIDENCE.json",
+  "no_broad_campaign": true,
+  "official_promotion": false
 }
