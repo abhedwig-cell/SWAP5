@@ -324,6 +324,8 @@ def validate(project):
 
 
 def auxiliary_magic(project):
+    from implicit_groundwater_state import enabled as implicit_groundwater,magic as implicit_magic
+    if implicit_groundwater(project):return implicit_magic(project)
     from age_groundwater_output import native_enabled as groundwater_native,native_magic as groundwater_magic
     if groundwater_native(project):return groundwater_magic(project)
     from age_groundwater_output import selection as thermal_output,magic as thermal_output_magic

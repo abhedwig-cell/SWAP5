@@ -215,9 +215,11 @@ def validate_bundle(bundle, reference, project):
     lower=lower_boundary is not None
     expected_lower=lower_metadata(project,h.sha,h.APP,h.ROOT)
     if identity.get('lower_boundary_receipt')!=expected_lower:raise ValueError('Foreign original lower-boundary receipt')
-    from age_groundwater_output import native_metadata as groundwater_native_metadata
+    from implicit_groundwater_state import native_metadata as groundwater_native_metadata,enabled as implicit_groundwater,state_source as implicit_state_source
     if identity.get('groundwater_native_state')!=groundwater_native_metadata(project,h.sha,h.APP):
         raise ValueError('Foreign prescribed groundwater native carry policy')
+    if implicit_groundwater(project) and (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source():
+        raise ValueError('Foreign actual implicit groundwater native provider')
     if lower_boundary==1:
         state_policy=identity['groundwater_native_state']
         if state_policy.get('provider_filename')=='age_groundwater_native_state.f90':
@@ -613,6 +615,9 @@ class CoupledDailyColumn:
                 if age_groundwater(self.project) is not None:validate_age_groundwater(aux,raw,self.project)
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')
+            from implicit_groundwater_state import enabled as implicit_groundwater,validate_candidate as validate_implicit_groundwater
+            if implicit_groundwater(self.project):
+                with zipfile.ZipFile(candidate) as z:validate_implicit_groundwater(z.read('macro.bin'),raw,self.project)
             host.close()
         self._check_origin()
         self._candidate = (ready, raw, h.sha(candidate), candidate, forcing_record)
@@ -643,7 +648,7 @@ class CoupledDailyColumn:
                     raise ValueError('Prepared native state changed')
         from cde_native_receipt import enabled as cde_candidate,validate_candidate as validate_cde_candidate
         if cde_candidate(self.project):validate_cde_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
-        from age_groundwater_output import native_enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
+        from implicit_groundwater_state import native_enabled as groundwater_candidate,validate_candidate as validate_groundwater_candidate
         if groundwater_candidate(self.project):validate_groundwater_candidate((ready/'macro.bin').read_bytes(),raw,self.project)
 
         from aquifer_native_receipt import enabled as aquifer_candidate,validate_candidate as validate_aquifer_candidate

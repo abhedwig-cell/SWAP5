@@ -865,7 +865,7 @@ end module plant_interface""")
     if age_calendar is not None:
         patched=age_calendar_owner.apply_build(output,donor_build,project,patched)
     if age_source:patched=current_age_source.apply_build(output,project,patched)
-    from age_groundwater_output import native_apply_build as groundwater_native_build
+    from implicit_groundwater_state import native_apply_build as groundwater_native_build
     patched=groundwater_native_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
@@ -891,6 +891,7 @@ end module plant_interface""")
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     *([str(output/'mod_prescribed_groundwater_reaction.o')] if lower_boundary==1 else []),
                     *([str(output/(name+'.o')) for name in ('groundwater_native_state','groundwater_history_native_state','age_groundwater_native_state') if name in patched] if lower_boundary==1 else []),
+                    *([str(output/'implicit_groundwater_native_state.o')] if 'implicit_groundwater_native_state' in patched else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
@@ -985,7 +986,7 @@ end module plant_interface""")
     if lower_receipt:
         from age_groundwater_output import boundary_metadata as lower_metadata
         build_identity['lower_boundary_receipt']=lower_metadata(project,sha,APP,ROOT)
-    from age_groundwater_output import native_metadata as groundwater_native_metadata
+    from implicit_groundwater_state import native_metadata as groundwater_native_metadata
     groundwater_state=groundwater_native_metadata(project,sha,APP)
     if groundwater_state is not None:build_identity['groundwater_native_state']=groundwater_state
     if fixed_file:
@@ -1294,6 +1295,10 @@ class DailyHost:
                 raise ValueError("Column start day must match its origin")
             directory = output / name
             prepare_column(case, directory, start, checkpoint_enabled, runtime, project)
+            from implicit_groundwater_state import enabled as implicit_groundwater,validate_candidate as validate_implicit_groundwater
+            if start.origin is not None and implicit_groundwater(project):
+                if start.receipt is None:raise ValueError('Implicit groundwater restore requires accepted receipt')
+                validate_implicit_groundwater((directory/'macro-origin.bin').read_bytes(),start.receipt,project)
             if project.age and start.origin is not None:
                 from age_groundwater_output import active_selection as age_groundwater,validate_candidate as validate_age_groundwater
                 if age_groundwater(project) is not None:
