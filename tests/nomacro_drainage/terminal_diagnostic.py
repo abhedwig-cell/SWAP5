@@ -22,8 +22,21 @@ def main():
     for k in ('profile-root','reference-work','build-root','output'):p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--origin-day',type=int,default=532);p.add_argument('--end-day',type=int,default=1054)
     p.add_argument('--stable',action='store_true')
+    p.add_argument('--archived-production',action='store_true')
+    p.add_argument('--target-day',type=int,default=1054)
     a=p.parse_args();a.output.mkdir();a.build_root.mkdir(parents=True,exist_ok=False)
-    q=json.loads((a.profile_root/'RESULT.json').read_text());build=Path(q['build_root']);project=m.e.load(Path(q['input_root']));meta,case=m.validate_bundle(build,a.reference_work,project)
+    q=json.loads((a.profile_root/'RESULT.json').read_text());build=Path(q['build_root']);project=m.e.load(Path(q['input_root']))
+    if a.archived_production:
+        # A diagnostic may inspect a genuine earlier producing bundle. Verify
+        # its own immutable bytes and producing Git authority, without making
+        # it a current public bundle or changing any binding/BUILD field.
+        meta=json.loads((build/'BUILD.json').read_text());case=m.h.project_case(a.reference_work,project)
+        for name,digest in meta['identity']['donor_generated'].items():assert sha(build/name)==digest
+        for key,name in [('donor','day_donor'),('kernel','day_kernel')]:assert sha(m.h.executable(build,name))==meta['executable_sha256'][key]
+        blob=subprocess.check_output(['git','show',q['source']+':app/hybrid_water/extended_drainage.py'],cwd=Path(__file__).resolve().parents[2])
+        assert meta['identity']['extended_drainage']['source_sha256'] in {hashlib.sha256(blob).hexdigest(),hashlib.sha256(blob.replace(b'\n',b'\r\n')).hexdigest()}
+    else:meta,case=m.validate_bundle(build,a.reference_work,project)
+    target=project.start_clock+a.target_day-1
     name='hybrid_extended_drain_terminal';original=build/(name+'.f90');source=original.read_text(encoding='cp1252')
     if a.stable:
         from extended_trial_receipt import render
@@ -40,15 +53,15 @@ def main():
     old='    call terminal_water_terms(terms)';assert source.count(old)==1
     # Use the separate error unit: HeadCalc also evaluates this function
     # inside its stdout WRITE diagnostics, where recursive stdout I/O refuses.
-    source=source.replace(old,old+"\n    if(t1900>=38309d0)write(0,'(a,30(1x,es25.17e3))')'EXTENDED_COMPLETE_FLOOR_TERMS',tcum,dt,terms",1)
-    source=source.replace(old,old+"\n    if(t1900>=38309d0)write(0,'(a,16(1x,es25.17e3))')'EXTENDED_GROSS_NET_DIAGNOSTIC',dt,graidt,nraidt,aintcdt,gird,nird,sicact,siccap,crsflx_in,crsflx_out,isicbeg,ivolbeg,sum(thetm1(1:numnod)*dz(1:numnod)),sum(theta(1:numnod)*dz(1:numnod)),sum((theta(1:numnod)-thetm1(1:numnod))*dz(1:numnod)),real(sw_inter,8)",1)
+    source=source.replace(old,old+f"\n    if(t1900>={target}d0)write(0,'(a,30(1x,es25.17e3))')'EXTENDED_COMPLETE_FLOOR_TERMS',tcum,dt,terms",1)
+    source=source.replace(old,old+f"\n    if(t1900>={target}d0)write(0,'(a,16(1x,es25.17e3))')'EXTENDED_GROSS_NET_DIAGNOSTIC',dt,graidt,nraidt,aintcdt,gird,nird,sicact,siccap,crsflx_in,crsflx_out,isicbeg,ivolbeg,sum(thetm1(1:numnod)*dz(1:numnod)),sum(theta(1:numnod)*dz(1:numnod)),sum((theta(1:numnod)-thetm1(1:numnod))*dz(1:numnod)),real(sw_inter,8)",1)
     path=a.build_root/(name+'.f90');path.write_text(source,encoding='cp1252')
     provider=a.reference_work/'build/swap-obj';ttutil=a.reference_work/'build/ttutil-obj/libttutil.a'
     flags=['gfortran',*meta['identity']['donor_flags'],'-I',str(build),'-I',str(provider),'-J',str(a.build_root)]
     commands=[flags+['-c',str(path),'-o',str(a.build_root/(name+'.o'))]]
     head=a.build_root/'headcalc.f90';body=(build/'headcalc.f90').read_text(encoding='cp1252')
     assert body.count('      if(dt<=dtmin)then')==1
-    head.write_text(body.replace('      if(dt<=dtmin)then','      if(t1900>=38309d0)then',1),encoding='cp1252')
+    head.write_text(body.replace('      if(dt<=dtmin)then',f'      if(t1900>={target}d0)then',1),encoding='cp1252')
     commands.append(flags+['-c',str(head),'-o',str(a.build_root/'headcalc.o')])
     objects={f.name:f for f in provider.glob('*.o')};objects.update({f.name:f for f in build.glob('*.o')});objects[name+'.o']=a.build_root/(name+'.o')
     objects['headcalc.o']=a.build_root/'headcalc.o'
