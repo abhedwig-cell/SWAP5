@@ -16,7 +16,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('profile','reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
     a=p.parse_args();a.output.mkdir();records=[];original=inventory(a.profile/'input')
-    cases=[('compatibility',{'SWCSV':1},False,'Extended drainage hydraulic history requires explicit original-output state'),
+    cases=[('compatibility',{'SWCSV':1,'SWRES':0,'SWMONTH':0,'SWODAT':0},False,'Extended drainage hydraulic history requires explicit original-output state'),
            ('AGE',{'SWSOLU':2,'SWHYST':0},True,'Extended drainage AGE retained-age dry-pond closure is not qualified'),
            ('history3',{'SWHYST':3},True,'Unqualified extended drainage hydraulic history'),
            ('implicit',{'SWKIMPL':1},True,'Unqualified extended drainage process composition')]
