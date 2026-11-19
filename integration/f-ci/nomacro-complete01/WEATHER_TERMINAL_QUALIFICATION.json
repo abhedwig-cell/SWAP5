@@ -1,0 +1,376 @@
+{
+  "status": "NEUTRAL_WEATHER_SOURCE_RAW_QUALIFICATION_RECORD_ADMISSION_PENDING",
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "predecessor": "1fc0b19e23a32385e159ec653a42f2e60c009891",
+  "runtime": "2cf36f12d0608f681d69716c01644a2307401c76",
+  "forensics_ref": "5148797bc7b2f496b359182105ef21de67ebfabd",
+  "historical_h_source": "bc1adba5cfc123f69eb98010026e15ca9bee70ac",
+  "historical_h_input_archive": "integration/nomacro-coverage01/BLOCK_H_LAST_TEMPORAL_RAW.tar.xz",
+  "historical_h_input_sha256": "6e39750da47c069dc35983dbe8f8b1d8f47253a3b4ddd00575d279e75b783b29",
+  "daily_water_guard_cm": 1e-10,
+  "daily_cde_guard_mg_cm2": 1e-10,
+  "integrated_cde_guard_mg_cm2": 1e-10,
+  "integrated_water_1e10_claim": false,
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "functional_completion": "PARTIAL",
+  "RC3_changed": false,
+  "global_family_and_remaining_gap_counts": "UNKNOWN",
+  "archives": {
+    "WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE": {
+      "archive": "WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE.zip",
+      "bytes": 61903214,
+      "sha256": "0dee6f4d698f37fc411e0585691f9acaba77a8c570c98333902d26bfe7e4ed9f",
+      "record": "WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "7b1603f8ac90068b584dd69c88b2d48e7eb319ee7e3bedfbc6df7a841c88fcf4",
+      "members": 1922
+    },
+    "WEATHER_TERMINAL_WINDOWS_O2_RAW_ARCHIVE": {
+      "archive": "WEATHER_TERMINAL_WINDOWS_O2_RAW_ARCHIVE.zip",
+      "bytes": 49162135,
+      "sha256": "1c79792eacf3825abb9a5ef8ec89ba843042c57f3b62ffa251f19025502c630b",
+      "record": "WEATHER_TERMINAL_WINDOWS_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "74f9f8c8f24e92588386972060d8fb445d3dfeae2f1292d9ffecfc5afe527e0b",
+      "members": 1907
+    },
+    "WEATHER_TERMINAL_UBUNTU_O0_RAW_ARCHIVE": {
+      "archive": "WEATHER_TERMINAL_UBUNTU_O0_RAW_ARCHIVE.zip",
+      "bytes": 47256561,
+      "sha256": "0ba61e8c91acf9ea9370ff8847d6b3a18adad6ec9f685cb3eb8694c881893fa5",
+      "record": "WEATHER_TERMINAL_UBUNTU_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "c570d40070d9e775f8f57ef08f3e9f5660f3f299e9f144c62b31598ab3f2a7af",
+      "members": 1665,
+      "origin_artifact": {
+        "id": 14537165591,
+        "name": "weather-terminal-O0",
+        "size_in_bytes": 47256561,
+        "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14537165591",
+        "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14537165591/zip",
+        "expired": false,
+        "created_at": "2026-11-19T13:48:28Z",
+        "expires_at": "2026-12-03T13:48:19Z",
+        "updated_at": "2026-11-19T13:48:28Z",
+        "digest": "sha256:0ba61e8c91acf9ea9370ff8847d6b3a18adad6ec9f685cb3eb8694c881893fa5",
+        "workflow_run": {
+          "id": 44536610211,
+          "repository_id": 1357193305,
+          "head_repository_id": 1357193305,
+          "head_branch": "codex/nomacro-weather-terminal-portable01",
+          "head_sha": "eb8492ed818ca6779c64239f904df4de6bad6af6"
+        }
+      },
+      "actual_artifact_bytes_preserved": true
+    },
+    "WEATHER_TERMINAL_UBUNTU_O2_RAW_ARCHIVE": {
+      "archive": "WEATHER_TERMINAL_UBUNTU_O2_RAW_ARCHIVE.zip",
+      "bytes": 47290463,
+      "sha256": "7334282a001f026f862b31dd26c0a292762ef2eb8da962b68842a7fdf3e5df93",
+      "record": "WEATHER_TERMINAL_UBUNTU_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "831071697a753280e4eab84c6ea4de1d7082d43a37e4f13d617da47e86ae0473",
+      "members": 1665,
+      "origin_artifact": {
+        "id": 14536222151,
+        "name": "weather-terminal-O2",
+        "size_in_bytes": 47290463,
+        "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14536222151",
+        "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14536222151/zip",
+        "expired": false,
+        "created_at": "2026-11-19T13:47:42Z",
+        "expires_at": "2026-12-03T13:47:35Z",
+        "updated_at": "2026-11-19T13:47:42Z",
+        "digest": "sha256:7334282a001f026f862b31dd26c0a292762ef2eb8da962b68842a7fdf3e5df93",
+        "workflow_run": {
+          "id": 44536610211,
+          "repository_id": 1357193305,
+          "head_repository_id": 1357193305,
+          "head_branch": "codex/nomacro-weather-terminal-portable01",
+          "head_sha": "eb8492ed818ca6779c64239f904df4de6bad6af6"
+        }
+      },
+      "actual_artifact_bytes_preserved": true
+    },
+    "WEATHER_UNIFORM_UBUNTU_O0_RAW_ARCHIVE": {
+      "archive": "WEATHER_UNIFORM_UBUNTU_O0_RAW_ARCHIVE.zip",
+      "bytes": 7492197,
+      "sha256": "979a508f46bb56b74a053af3a1e75431cc94dac60294500d4a8f136818c346ee",
+      "record": "WEATHER_UNIFORM_UBUNTU_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "7a1badfb6712fdff7be711f4fecd217dc1d37035b30cf0fb3dd326863a5ca666",
+      "members": 253,
+      "origin_artifact": {
+        "id": 14535814629,
+        "name": "weather-uniform-O0",
+        "size_in_bytes": 7492197,
+        "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14535814629",
+        "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14535814629/zip",
+        "expired": false,
+        "created_at": "2026-11-19T13:59:23Z",
+        "expires_at": "2026-12-03T13:59:21Z",
+        "updated_at": "2026-11-19T13:59:23Z",
+        "digest": "sha256:979a508f46bb56b74a053af3a1e75431cc94dac60294500d4a8f136818c346ee",
+        "workflow_run": {
+          "id": 44538768368,
+          "repository_id": 1357193305,
+          "head_repository_id": 1357193305,
+          "head_branch": "codex/nomacro-weather-uniform-portable01",
+          "head_sha": "05d9a40eb8c3ca4db064cfc7c452c42399eedcec"
+        }
+      },
+      "actual_artifact_bytes_preserved": true
+    },
+    "WEATHER_UNIFORM_UBUNTU_O2_RAW_ARCHIVE": {
+      "archive": "WEATHER_UNIFORM_UBUNTU_O2_RAW_ARCHIVE.zip",
+      "bytes": 7509268,
+      "sha256": "6e5c182d83c8796b209a7288ca3da790afa7e03572c587dfa9b8d93d85f82a31",
+      "record": "WEATHER_UNIFORM_UBUNTU_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "3d48445255030940c7847f8546552c92550fb865951662fd4b178381b2873869",
+      "members": 253,
+      "origin_artifact": {
+        "id": 14537029396,
+        "name": "weather-uniform-O2",
+        "size_in_bytes": 7509268,
+        "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14537029396",
+        "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/14537029396/zip",
+        "expired": false,
+        "created_at": "2026-11-19T13:59:21Z",
+        "expires_at": "2026-12-03T13:59:20Z",
+        "updated_at": "2026-11-19T13:59:21Z",
+        "digest": "sha256:6e5c182d83c8796b209a7288ca3da790afa7e03572c587dfa9b8d93d85f82a31",
+        "workflow_run": {
+          "id": 44538768368,
+          "repository_id": 1357193305,
+          "head_repository_id": 1357193305,
+          "head_branch": "codex/nomacro-weather-uniform-portable01",
+          "head_sha": "05d9a40eb8c3ca4db064cfc7c452c42399eedcec"
+        }
+      },
+      "actual_artifact_bytes_preserved": true
+    },
+    "WEATHER_TERMINAL_RETAINED_FAILURES_RAW_ARCHIVE": {
+      "archive": "WEATHER_TERMINAL_RETAINED_FAILURES_RAW_ARCHIVE.zip",
+      "bytes": 35817098,
+      "sha256": "80b64dc94641e91a244e7072c60df7251fccefac022b6b68811210e3cdaec3ab",
+      "record": "WEATHER_TERMINAL_RETAINED_FAILURES_RAW_ARCHIVE.json",
+      "record_lf_sha256": "bbe303a3b17dc0eb1c085e13db343673e947c5d2006b35c97a5e77245450e851",
+      "members": 1182
+    }
+  },
+  "archive_bytes": 256430936,
+  "locations": {
+    "Windows-O0-pulsed": {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": "pulsed",
+      "archive": "WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE",
+      "prefix": "pulsed/",
+      "build_prefix": "pulsed-build/",
+      "producer": "fcfc74dabc55ad25612eea7dde139c2ac3eb13ce",
+      "source_capsule": "windows-prior",
+      "hourly_root_carry": false,
+      "uniform_windows_controller_override": false
+    },
+    "Windows-O0-hourly": {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": "hourly",
+      "archive": "WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE",
+      "prefix": "hourly/",
+      "build_prefix": "hourly-build/",
+      "producer": "30cfaf4f5f9f693bc26d96b81ceeda0e1fb3884a",
+      "source_capsule": "windows-primary",
+      "hourly_root_carry": true,
+      "uniform_windows_controller_override": false
+    },
+    "Windows-O0-uniform": {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": "uniform",
+      "archive": "WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE",
+      "prefix": "uniform/",
+      "build_prefix": "uniform-build/",
+      "producer": "758378f2f318bfe70603fde949f377d87102534a",
+      "source_capsule": "windows-composed",
+      "hourly_root_carry": false,
+      "uniform_windows_controller_override": true
+    },
+    "Windows-O2-pulsed": {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": "pulsed",
+      "archive": "WEATHER_TERMINAL_WINDOWS_O2_RAW_ARCHIVE",
+      "prefix": "pulsed/",
+      "build_prefix": "pulsed-build/",
+      "producer": "fcfc74dabc55ad25612eea7dde139c2ac3eb13ce",
+      "source_capsule": "windows-prior",
+      "hourly_root_carry": false,
+      "uniform_windows_controller_override": false
+    },
+    "Windows-O2-hourly": {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": "hourly",
+      "archive": "WEATHER_TERMINAL_WINDOWS_O2_RAW_ARCHIVE",
+      "prefix": "hourly/",
+      "build_prefix": "hourly-build/",
+      "producer": "30cfaf4f5f9f693bc26d96b81ceeda0e1fb3884a",
+      "source_capsule": "windows-primary",
+      "hourly_root_carry": true,
+      "uniform_windows_controller_override": false
+    },
+    "Windows-O2-uniform": {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": "uniform",
+      "archive": "WEATHER_TERMINAL_WINDOWS_O2_RAW_ARCHIVE",
+      "prefix": "uniform/",
+      "build_prefix": "uniform-build/",
+      "producer": "758378f2f318bfe70603fde949f377d87102534a",
+      "source_capsule": "windows-composed",
+      "hourly_root_carry": false,
+      "uniform_windows_controller_override": true
+    },
+    "Ubuntu-O0-pulsed": {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": "pulsed",
+      "archive": "WEATHER_TERMINAL_UBUNTU_O0_RAW_ARCHIVE",
+      "prefix": "pulsed/",
+      "build_prefix": "build/pulsed/",
+      "producer": "eb8492ed818ca6779c64239f904df4de6bad6af6",
+      "source_capsule": "ubuntu-O0",
+      "hourly_root_carry": false,
+      "uniform_windows_controller_override": false
+    },
+    "Ubuntu-O0-hourly": {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": "hourly",
+      "archive": "WEATHER_TERMINAL_UBUNTU_O0_RAW_ARCHIVE",
+      "prefix": "hourly/",
+      "build_prefix": "build/hourly/",
+      "producer": "eb8492ed818ca6779c64239f904df4de6bad6af6",
+      "source_capsule": "ubuntu-O0",
+      "hourly_root_carry": true,
+      "uniform_windows_controller_override": false
+    },
+    "Ubuntu-O0-uniform": {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": "uniform",
+      "archive": "WEATHER_UNIFORM_UBUNTU_O0_RAW_ARCHIVE",
+      "prefix": "uniform/",
+      "build_prefix": "build/uniform/",
+      "producer": "05d9a40eb8c3ca4db064cfc7c452c42399eedcec",
+      "source_capsule": "uniform-ubuntu-O0",
+      "hourly_root_carry": false,
+      "uniform_windows_controller_override": false
+    },
+    "Ubuntu-O2-pulsed": {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": "pulsed",
+      "archive": "WEATHER_TERMINAL_UBUNTU_O2_RAW_ARCHIVE",
+      "prefix": "pulsed/",
+      "build_prefix": "build/pulsed/",
+      "producer": "eb8492ed818ca6779c64239f904df4de6bad6af6",
+      "source_capsule": "ubuntu-O2",
+      "hourly_root_carry": false,
+      "uniform_windows_controller_override": false
+    },
+    "Ubuntu-O2-hourly": {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": "hourly",
+      "archive": "WEATHER_TERMINAL_UBUNTU_O2_RAW_ARCHIVE",
+      "prefix": "hourly/",
+      "build_prefix": "build/hourly/",
+      "producer": "eb8492ed818ca6779c64239f904df4de6bad6af6",
+      "source_capsule": "ubuntu-O2",
+      "hourly_root_carry": true,
+      "uniform_windows_controller_override": false
+    },
+    "Ubuntu-O2-uniform": {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": "uniform",
+      "archive": "WEATHER_UNIFORM_UBUNTU_O2_RAW_ARCHIVE",
+      "prefix": "uniform/",
+      "build_prefix": "build/uniform/",
+      "producer": "05d9a40eb8c3ca4db064cfc7c452c42399eedcec",
+      "source_capsule": "uniform-ubuntu-O2",
+      "hourly_root_carry": false,
+      "uniform_windows_controller_override": false
+    }
+  },
+  "source_capsules": {
+    "windows-prior": {
+      "archive": "WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE",
+      "prefix": "source-prior/",
+      "head": "fcfc74dabc55ad25612eea7dde139c2ac3eb13ce"
+    },
+    "windows-primary": {
+      "archive": "WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE",
+      "prefix": "source-primary/",
+      "head": "30cfaf4f5f9f693bc26d96b81ceeda0e1fb3884a"
+    },
+    "windows-composed": {
+      "archive": "WEATHER_TERMINAL_WINDOWS_O0_RAW_ARCHIVE",
+      "prefix": "source-composed/",
+      "head": "e4161c6a76b4601d68e25313e3f37c2544357121"
+    },
+    "ubuntu-O0": {
+      "archive": "WEATHER_TERMINAL_UBUNTU_O0_RAW_ARCHIVE",
+      "prefix": "source-capsule/",
+      "head": "eb8492ed818ca6779c64239f904df4de6bad6af6"
+    },
+    "uniform-ubuntu-O0": {
+      "archive": "WEATHER_UNIFORM_UBUNTU_O0_RAW_ARCHIVE",
+      "prefix": "source-capsule/",
+      "head": "05d9a40eb8c3ca4db064cfc7c452c42399eedcec"
+    },
+    "ubuntu-O2": {
+      "archive": "WEATHER_TERMINAL_UBUNTU_O2_RAW_ARCHIVE",
+      "prefix": "source-capsule/",
+      "head": "eb8492ed818ca6779c64239f904df4de6bad6af6"
+    },
+    "uniform-ubuntu-O2": {
+      "archive": "WEATHER_UNIFORM_UBUNTU_O2_RAW_ARCHIVE",
+      "prefix": "source-capsule/",
+      "head": "05d9a40eb8c3ca4db064cfc7c452c42399eedcec"
+    }
+  },
+  "actual_full_periods": 12,
+  "actual_days_per_full_period": 1096,
+  "actual_primary_complete_native_cold_windows": 60,
+  "actual_public_native_refusals": 88,
+  "actual_compiled_native_refusals": 80,
+  "actual_public_cli_contexts": 4,
+  "actual_transaction_contexts": 4,
+  "actual_current_named_two_day_contexts": 4,
+  "actual_windows_hourly_five_day_composition_contexts": 2,
+  "actual_windows_pulsed_five_day_preservation_contexts": 2,
+  "fresh_unaffected_full_periods": 0,
+  "portable_main": {
+    "run": 44536610211,
+    "carrier": "eb8492ed818ca6779c64239f904df4de6bad6af6",
+    "parent": "e4161c6a76b4601d68e25313e3f37c2544357121",
+    "conclusion": "success",
+    "artifact_ids": [
+      14537165591,
+      14536222151
+    ]
+  },
+  "portable_uniform": {
+    "run": 44538768368,
+    "carrier": "05d9a40eb8c3ca4db064cfc7c452c42399eedcec",
+    "parent": "758378f2f318bfe70603fde949f377d87102534a",
+    "conclusion": "success",
+    "artifact_ids": [
+      14535814629,
+      14537029396
+    ]
+  },
+  "retained_failures": "WEATHER_TERMINAL_RETAINED_FAILURES_RAW_ARCHIVE",
+  "acceptance_authority": "common/WEATHER_H_ACCEPTANCE_AUTHORITY.json",
+  "source_preservation": "common/WEATHER_LITERAL_SOURCE_PROJECTION.json",
+  "actual_generated_native_preservation": "common/WEATHER_CURRENT_SOURCE_NATIVE_PROJECTIONS.json",
+  "incoming_actual_owner": "common/WEATHER_INCOMING_CANONICAL_1FC_ACTUAL_OWNER.json"
+}

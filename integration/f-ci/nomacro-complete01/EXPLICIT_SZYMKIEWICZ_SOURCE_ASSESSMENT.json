@@ -1,0 +1,27 @@
+{
+  "status": "ORIGINAL_TABLE_DEPENDENCY_UNRESOLVED_NO_ADMISSION_CHANGE",
+  "canonical": "ef5010a83e83f879254af534bf0dd9cfcdbf3a85",
+  "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "original_module_sha256": "8fbde60630f9af3c49daaf0c07d1ff3c763c730e107e515d3c00ae5f70980a91",
+  "source_archive_candidates": [
+    "SWAP/MOD_Kavg_Szym.f90"
+  ],
+  "distribution_unformatted_table_files": [],
+  "original_contract": {
+    "initializer": "readswap.f90:790 task1",
+    "consumer": "functions.f90 hcomean case7 task2",
+    "table": "Kavg_Szymkiewicz_0001_NNNN.unf in worker cwd",
+    "profile": 1,
+    "grid_checks": [
+      "numnod",
+      "layer(numnod)",
+      "dz tolerance1e-6",
+      "each layer"
+    ],
+    "reader": "Original sequential unformatted table: header, layer, dz, heads, complete interface conductivity matrix",
+    "implicit7": "Original reader explicitly prohibits SWKIMPL1 plus SWKMEAN7"
+  },
+  "finding": "Compiled original interpolation exists, but the reference package has no profile table or table generator. Broad guard removal alone would reach a missing file. Synthetic interpolation data cannot qualify a physical soil profile.",
+  "next_action": "Qualify original reader/interpolation with controlled component input; compose original user-supplied scientific table identity and immutable worker lifecycle before any bounded admission. No replacement physical table is invented.",
+  "whole_scientific_equivalence": "NOT_QUALIFIED"
+}

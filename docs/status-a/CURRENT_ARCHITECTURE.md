@@ -820,3 +820,6 @@ build/output. Original readers retain numeric and physical validation. The
 original exponential model2 has full functional evidence; six alternative
 strict refusals and three censors remain underqualified. Vapor transport and
 RIA12 require their separate original state/ledger/reference contracts.
+
+
+The [bounded original detailed-weather correction and hourly root carry](../science/NOMACRO_WEATHER_TERMINAL_20261119.md) is source/raw qualified at production2cf36f12, composed with canonical1fc0b19e; canonical admission remains pending. The unchanged original physical providers own fluxes and root growth. The read-only candidate complete receipt owns no physical store; S5WRH001 appends two existing saved root-stress factors after existing native state. Restoration follows original crop initialization, and public/candidate receipts bind native values before publication. WEATHER_TERMINAL_QUALIFICATION.json seals actual raw/source identity; WEATHER_SOURCE_ADMISSION.json records the independent registered owner and actual changed-source refusal. All prior scientific bodies and source authority remain literal. Whole historical closure PARTIAL, science NOT_QUALIFIED and fixed RC3 are unchanged.

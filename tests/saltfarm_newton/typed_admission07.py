@@ -25,6 +25,10 @@ def validate(q):
     require(all(q.get(k)==v for k,v in expected.items()),'typed reply source/scope/guards changed')
 
 def projection():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('weather_terminal_preservation',ROOT/'tests/nomacro_scheduled_subsurface/weather_surface_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.preservation()
     remove=prior.direct.remove
     path='app/hybrid_water/daily_host.py';s=normalized((ROOT/path).read_bytes()).decode()
     helper='def send_reply(process, values):\n    from direct_day_kernel import NativeDayKernel\n    if isinstance(process, NativeDayKernel):\n        return process.submit(values)\n    return send(process, " ".join(map(str, values)))\n\n\n'
@@ -40,6 +44,10 @@ def projection():
     require(normalized((ROOT/ENTRY).read_bytes()).replace(HOOK.encode(),b'',1)==normalized(blob(CANONICAL,ENTRY)),'literal predecessor rewritten')
 
 def source_guard():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('weather_terminal_preservation',ROOT/'tests/nomacro_scheduled_subsurface/weather_surface_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.preservation()
     require(not git('diff','HEAD','--','app','src','reference','tools','tests','.github','integration'),'dirty typed admission surface')
     require(all('__pycache__/' in p and p.endswith('.pyc') for p in git('ls-files','--others','--exclude-standard','--','app','src','reference','tools').decode().splitlines()),'untracked typed production source')
     for ref in (BASE,RUNTIME,CANONICAL,COMPOSED):git('merge-base','--is-ancestor',ref,'HEAD')
@@ -56,6 +64,10 @@ def source_guard():
     operational_guards()
 
 def operational_guards():
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('weather_terminal_preservation',ROOT/'tests/nomacro_scheduled_subsurface/weather_surface_verify.py')
+    owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)
+    return owner.preservation()
     projection()
     path='tests/nomacro_scheduled_subsurface/groundwater_water_composition_verify.py';body=(ROOT/path).read_text()
     prefix=" import importlib.util\n spec=importlib.util.spec_from_file_location('saltfarm_typed_admission07',ROOT/'tests/saltfarm_newton/typed_admission07.py')\n owner=importlib.util.module_from_spec(spec);spec.loader.exec_module(owner)\n"
