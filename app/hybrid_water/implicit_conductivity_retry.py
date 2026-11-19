@@ -75,7 +75,8 @@ def apply_build(output,donor_build,project,patched):
     if project.solute:
         anchor='      flush(6)'
         assert text.count(anchor)==1
-        probe='''      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_BASE_H',h(1:numnod)
+        probe='''      if(dt<1d-7)then
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_BASE_H',h(1:numnod)
       write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_BASE_Q',qrot(1:numnod)
       call Rootextraction(2)
       write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_REPEAT1_Q',qrot(1:numnod)
@@ -100,7 +101,24 @@ def apply_build(output,donor_build,project,patched):
       call Rootextraction(2)
       write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_MINUS14_Q',qrot(1:numnod)
       flush(6)
+      h(14)=h(14)+1d-6
+      theta(14)=watcon(14,h(14))
+      do j=1,numnod
+         hold(j)=h(j)
+         h(j)=hold(j)+1d-6
+         theta(j)=watcon(j,h(j))
+         call Rootextraction(2)
+         write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_COLUMN_PLUS',dble(j),qrot(1:numnod)
+         h(j)=hold(j)-1d-6
+         theta(j)=watcon(j,h(j))
+         call Rootextraction(2)
+         write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_COLUMN_MINUS',dble(j),qrot(1:numnod)
+         h(j)=hold(j)
+         theta(j)=watcon(j,h(j))
+      end do
+      flush(6)
       error stop 'Actual failed-state root probe finished; no state accepted'
+      end if
 '''
         text=text.replace(anchor,probe,1)
     path.write_text(text,encoding='cp1252')
