@@ -73,9 +73,34 @@ def apply_build(output,donor_build,project,patched):
     clock='38237d0' if project.solute else '37851d0'
     text=text.replace('if(implicit_failed_trace_count<64)then','if(implicit_failed_trace_count<64.and.t1900>='+clock+')then',1)
     if project.solute:
+        text=text.replace('   use MOD_timer'+'__absent__','') if False else text
+        anchor_use='   use MOD_rootextraction, only: RootExtraction'
+        imports='''   use MOD_grid,only:numlay,nod1lay,layer
+   use plant_interface,only:noddrz,crpfilnam,sw_drought
+   use MOD_cropdevelopment,only:Lrv_node
+   use MOD_re_global,only:alptot
+   use MOD_meteo,only:ptra
+   use MOD_swap_base,only:swhyst,swfrost
+   use variables,only:indeks,fhyst
+   use MOD_RWU_micro,only:M_table,K_table
+'''
+        assert text.count(anchor_use)==1
+        text=text.replace(anchor_use,imports+anchor_use,1)
         anchor='      flush(6)'
         assert text.count(anchor)==1
         probe='''      if(dt<1d-7)then
+      write(*,'(a,1x,a)')'ACTUAL_ROOT_FIXTURE_CROP',trim(crpfilnam)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_META',dble(numnod),dble(numlay),dble(noddrz),ptra,dble(sw_drought),dble(swhyst),dble(swfrost),dble(size(cofgen,1)),t1900
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_LAYER',dble(layer(1:numnod))
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_FIRST',dble(nod1lay(1:numlay))
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_DZ',dz(1:numnod)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_COFGEN',cofgen(:,1:numnod)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_INDEX',dble(indeks(1:numnod))
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_FHYST',fhyst(1:numnod)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_LRV',Lrv_node(1:noddrz)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_ALPTOT',alptot(1:noddrz)
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_M',M_table
+      write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_FIXTURE_K',K_table
       write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_BASE_H',h(1:numnod)
       write(*,'(a,*(1x,es25.17e3))')'ACTUAL_ROOT_BASE_Q',qrot(1:numnod)
       call Rootextraction(2)
