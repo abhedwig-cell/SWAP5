@@ -20,6 +20,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','build-root','output'):parser.add_argument('--'+key,type=Path,required=True)
     parser.add_argument('--optimization',choices=('O0','O2'),required=True)
+    parser.add_argument('--only-labels',nargs='+',choices=[case[0] for case in CASES])
     args=parser.parse_args();args.output.mkdir()
     q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=original.ROOT,text=True).strip(),
            model_executions=0,cases={},scientific_qualification=False)
@@ -27,6 +28,7 @@ def main():
     save()
     try:
         for label,solute,hys,bottom,step,mode,npd,reset,mean in CASES:
+            if args.only_labels and label not in args.only_labels:continue
             out=args.output/label;out.mkdir();inputs=out/'input';build=args.build_root/label/'bundle'
             original.fixture(inputs,solute,hys,bottom,step,mean,mode,3,reset,npd)
             path=inputs/'swap.swp';path.write_text(assignment(path.read_text(encoding='cp1252'),'SWSNOW',1),encoding='cp1252')
@@ -45,7 +47,7 @@ def main():
                               for p in sorted(build.glob('*.f90'))})
             assert not list(out.rglob('donor.stdout')) and not list(out.rglob('accepted-*.zip'))
             save()
-        q['status']='ACTUAL_TWO_IMPLICIT_SNOW_SOURCE_FORMS_OBSERVED_NOT_QUALIFIED'
+        q['status']='ACTUAL_SELECTED_IMPLICIT_SNOW_SOURCE_FORMS_OBSERVED_NOT_QUALIFIED'
     except Exception as error:q.update(status='SOURCE_PROBE_FAILED_NOT_QUALIFIED',error=repr(error));raise
     finally:save()
     print(q['status'],[(name,item['returncode']) for name,item in q['cases'].items()])

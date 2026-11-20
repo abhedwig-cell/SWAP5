@@ -12,6 +12,14 @@ def enabled(project):
     from experimental_project import inspect
     report=inspect(project.input_directory)
     if report['boundary']['SWBOTB']!=1:return False
+    if report['selectors']['SWSNOW']==1:
+        from cde_clock_output import active_selection
+        selected=active_selection(project)
+        # The existing Snow clock installs the actual soil/pond projection,
+        # including net rain, melt and the actual groundwater candidate once.
+        # The no-Snow whole-frame clone is a different control volume.
+        if selected is not None and selected.get('groundwater_snow_cde_output'):
+            return False
     if report['selectors']['SWKIMPL']==1:return True
     from implicit_groundwater_state import enabled as water_state
     return water_state(project)
