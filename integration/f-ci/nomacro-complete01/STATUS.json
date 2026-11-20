@@ -402,7 +402,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run actual-original Divdra overlap standalone O0/O2 component on12 geometric cases each: waterdepth45/50/55, channel5/35, spacing40/400, actualmoduleprocedure and unchanged originalobjectclosure. Compare private KDtot/KDsat/KDuns against80digit independent intersection integrals, preserve originalzero/negative/trapped results and exactunaffectedcases. New correctedreference target81f415... onlyremovesdoublewithin-celloverwrite. Keeporiginalfailedprototype and diagnosticimmutable; no eps/tolerance/ledgerfix. AfterstandalonePASS, recompile onlyaffected FrozenBounds/Divdra84ratecomponent atO0/O2 withactualDivdra source, thenoriginalCDEnodalsink seam. PublicFrost guardsremaincloseduntil coherentcoupled qualification. SnowPR1774 actualcanonical383526...admittedreceipt/d892f... remainscarriedunchanged.",
+  "next_action": "Run new real FrozenCond/FrozenBounds/corrected Divdra -> literal Solute_CDE(2) component at O0/O2. Verification-only task97 initializes explicit private fixture; production task2 stays literal. Independently integrate emitted pre-step concentrations and actual lateral/bottom nodal fluxes for 252 cases (84 Frost rate cases x 3 adsorption exponents). Preserve original failures; no public guards open and no full model qualification claimed. Continue affected coupled implementation/qualification after component evidence.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -31043,7 +31043,7 @@
     "actual_corrected_nonselected_postimages": 8,
     "actual_final_input_guard_nonselected_postimages": 2,
     "actual_current_ordinary_zero_boundary_public_contexts": 4,
-    "actual_complete_archive_audits": "12 PASS: precorrection/corrected/final Ãƒâ€”Windows/Ubuntu Ãƒâ€”O0/O2",
+    "actual_complete_archive_audits": "12 PASS: precorrection/corrected/final \u00c3\u0192\u00e2\u20ac\u201dWindows/Ubuntu \u00c3\u0192\u00e2\u20ac\u201dO0/O2",
     "final_terminal_ci": {
       "run": 44640817201,
       "source": "9f472848850af09ecfd8221bb59e66357f7b7f7c",
@@ -32136,7 +32136,7 @@
     "admission_archive_sha256": "d892f426579447b9fc5608e9d19ece61da3e00995c9905914854e37130c724e2"
   },
   "frost_cde_drainage_active_component": {
-    "status": "ORIGINAL_RATE_COMPONENT_FPE_REPRODUCED_CAUSAL_DIVDRA_OVERLAP_DIAGNOSTIC",
+    "status": "OVERLAP_12_GEOMETRIC_AND_FROST_84_RATE_CASES_PASS_O0_O2_NOT_MODEL_QUALIFIED",
     "baseline_canonical": "383526abddeb06ea61fe31fa7e342ebbd8a5c43d",
     "original_rate_producer": "34c00c123cbd02c910cc703b171435d9f36df38b",
     "diagnostic_producer": "200e0adbc63b5a216c003c1e71e2009a72c73e55",
@@ -32147,6 +32147,32 @@
     "proposed_Divdra_LF_sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e",
     "models_executed": 0,
     "public_guards_opened": false,
-    "qualification": "NOT_QUALIFIED"
+    "qualification": "NOT_QUALIFIED",
+    "component_observations": [
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-cde-drainage-overlap-O0-v1\\RESULT.json",
+        "sha256": "4f445c239a71e58e5e717bc4395e55fa20fa3291fd391c78712fb393b1fc8c4c",
+        "source": "ddac911484ec5773df6e0b8f6d8cfda98008b0ac",
+        "status": "ACTUAL_ORIGINAL_DIVDRA_OVERLAP_DEFECT_AND_12_CORRECTED_GEOMETRIC_RATE_CASES_PASS"
+      },
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-cde-drainage-overlap-O2-v1\\RESULT.json",
+        "sha256": "38ec3c5ac7de779ed63830aa754aafaed005eea151082c2d23afa3eb4dad39fc",
+        "source": "ddac911484ec5773df6e0b8f6d8cfda98008b0ac",
+        "status": "ACTUAL_ORIGINAL_DIVDRA_OVERLAP_DEFECT_AND_12_CORRECTED_GEOMETRIC_RATE_CASES_PASS"
+      },
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-cde-drainage-rates-corrected-O0-v1\\RESULT.json",
+        "sha256": "4f39e9c800c8beefe7a2e004932a68a5fb3c909bfe6e41a87748adc368972ec7",
+        "source": "824ebfa14a8ed45f76fa9ab8e107c9208ef820aa",
+        "status": "ACTUAL_ORIGINAL_AND_GUARDED_FROST_WITH_CORRECTED_DIVDRA_84_RATE_CASES_PASS_NOT_CDE_QUALIFIED"
+      },
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-cde-drainage-rates-corrected-O2-v1\\RESULT.json",
+        "sha256": "ec693569b908ba260123f5eb7f71a9a47700b0bf0036c76714445c92bd4d2f50",
+        "source": "824ebfa14a8ed45f76fa9ab8e107c9208ef820aa",
+        "status": "ACTUAL_ORIGINAL_AND_GUARDED_FROST_WITH_CORRECTED_DIVDRA_84_RATE_CASES_PASS_NOT_CDE_QUALIFIED"
+      }
+    ]
   }
 }
