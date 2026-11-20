@@ -10,6 +10,8 @@ from groundwater_clock_archive import unpack
 from groundwater_clock_forensics import audit
 from groundwater_clock_custody import audit as custody
 from groundwater_clock_control_forensics import native_controls,source_controls,postimages
+from calendar_evidence import differences
+from calendar_publisher import publisher_equivalence
 
 PREFIX='GROUNDWATER_CDE_CLOCK_'
 
@@ -35,6 +37,16 @@ def windows(proof):
             normalized=str(path).replace('\\','/');require('/evidence/' in normalized,'Foreign actual Windows location')
             return profiles/normalized.split('/evidence/',1)[1]
         selected=set()
+        def original_publisher(expected,opt):
+            target=root/('original-publisher-'+expected+'.dll')
+            if not target.exists():
+                archive=Path(proof)/f'ORDINARY_IMPLICIT_POND_WINDOWS_{opt}_RAW_ARCHIVE.zip'
+                record=read(archive.with_suffix('.json'))
+                names=[name for name,item in record['members'].items() if name.endswith('/restart_publish.dll') and item['sha256']==expected]
+                require(names,'Original qualified publisher bytes missing')
+                with zipfile.ZipFile(archive) as z:raw=z.read(names[0])
+                require(hashlib.sha256(raw).hexdigest()==expected,'Original qualified publisher changed');target.write_bytes(raw)
+            return target
         def bundle(q):
             item=projection[q['build_root']];path=root/item['prefix']
             require(digest(path/'BUILD.json')==item['actual_BUILD_sha256'],'Actual Windows compiled projection differs')
@@ -60,6 +72,12 @@ def windows(proof):
             for name,item in preservation['cases'].items():
                 old=baseline['cases'][opt+'/'+name];case=mapped(item['current_case']);report=read(case/'short/RESULT.json');build=bundle(report);meta=read(build/'BUILD.json')
                 require({p.name:digest(p) for p in build.glob('*.f90')}==old['Fortran'] and meta['inputs']==old['BUILD']['inputs'] and meta['project']==old['BUILD']['project'],'Actual unselected Fortran/input differs')
+                delta=differences(old['BUILD']['identity'],meta['identity'])
+                require(set(delta)<={'original_output.source_sha256','groundwater_native_state.source_sha256','groundwater_native_state.predecessor_sha256','restart_publisher.library_sha256'},'Actual unselected compiler/kernel/physical identity changed')
+                if 'restart_publisher.library_sha256' in delta:
+                    publisher=build/'restart_publish.dll'
+                    require(digest(publisher)==meta['identity']['restart_publisher']['library_sha256'],'Actual current publisher differs')
+                    publisher_equivalence(original_publisher(old['BUILD']['identity']['restart_publisher']['library_sha256'],opt),publisher)
                 require(physical(rows(case/'short/trajectory'))==old['physical'],'Actual unselected physical postimage differs')
                 for day,files in old['native'].items():
                     with zipfile.ZipFile(case/f'short/trajectory/accepted-column-1-day-{day}.zip') as z:
