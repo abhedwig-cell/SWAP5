@@ -37,6 +37,8 @@ def timecontrol(original,selected,start_clock):
     result=owner(selected).render_timecontrol(original) if kind!='interval' else original
     if hashlib.sha256(result.encode('cp1252')).hexdigest()!=WATER_TIME[kind]:
         raise ValueError('Changed complete qualified water Snow TimeControl parent')
+    if kind=='interval':
+        result=complete_day(result)
     result=native.replace(result,epoch.OLD,epoch.NEW)
     return native.replace(result,epoch.ANCHOR,epoch.declaration(start_clock)+epoch.ANCHOR)
 
@@ -106,3 +108,14 @@ def native_build(output,project,patched,selected):
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')
     path.write_text('\n'.join(sources)+'\n'+text,encoding='cp1252')
     return patched
+
+
+def complete_day(source):
+    # The original daily Snow update covers one full day. Use the existing
+    # qualified dtCrit coincidence rule for dense/interval output as well.
+    patch="""      if(tcum<1d0.and.dt>0d0)then
+         if(abs(dt-(1d0-tcum))<=dtCrit)dt=1d0-tcum
+      end if
+
+"""
+    return native.replace(source,'! 2.11 set flags and variables',patch+'! 2.11 set flags and variables')

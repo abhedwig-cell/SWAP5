@@ -13,6 +13,29 @@ import snow_water_groundwater_state as native
 # its original Windows CRLF byte hash is241d188e6c71b7a55bc02768cfc76bb554617b1c7ffc953d73d299a07c911e1f.
 EXPLICIT_HEAD='adce2758bbc73472579278696924b93188c2d6d6ec02c54f7ec297b23a35896a'
 IMPLICIT_HEAD='a13d2e813001ff1d366cca902c8384a4347e00627a4996fb5ed5f7a612fde4f9'
+LEGACY_BUILD_SHA='43d7c069e8564f37f790b409aed1797d3fd8df6e43c0bfac005a3ff8e20dee0b'
+
+
+def unchanged_clock_metadata(old,expected,project):
+    """Keep original producer metadata only after exact unchanged-context proof."""
+    if not isinstance(old,dict) or not isinstance(expected,dict) or not expected.get('groundwater_snow_water_output'):return False
+    selected=selection(project)
+    if selected is None or not (selected['flprintdt'] or selected['nprintday']>1):return False
+    if old.get('composition_build_sha256')!=LEGACY_BUILD_SHA:return False
+    source=Path(build.__file__).read_text(encoding='utf-8');tree=ast.parse(source);last=tree.body[-1]
+    if not isinstance(last,ast.FunctionDef) or last.name!='complete_day' or last.decorator_list or last.returns or last.args.defaults:return False
+    if len(last.args.args)!=1 or last.args.args[0].arg!='source' or last.args.args[0].annotation:return False
+    lines=source.splitlines(keepends=True)
+    if lines[last.lineno-1]!='def complete_day(source):\n':return False
+    prefix=''.join(lines[:last.lineno-1])
+    call="    if kind=='interval':\n        result=complete_day(result)\n"
+    if not prefix.endswith('\n\n') or prefix.count(call)!=1:return False
+    parent=prefix[:-2].replace(call,'',1)
+    if hashlib.sha256(parent.encode('utf-8')).hexdigest()!=LEGACY_BUILD_SHA:return False
+    require_current=hashlib.sha256(source.encode('utf-8')).hexdigest()
+    if expected.get('composition_build_sha256')!=require_current:return False
+    projected={**old,'composition_build_sha256':require_current}
+    return projected==expected
 
 
 def checkpoint_parent(reference,selected,project):
@@ -53,6 +76,13 @@ def validate_source(bundle,project,identity,reference):
         from implicit_pond_event import time_source as event
         source=inverse(source,lambda text:event(time_source(text)),TIME_TEMPLATE)
     else:source=inverse(source,time,TIME_TEMPLATE)
+    if not selected['flprintdt'] and selected['nprintday']==1:
+        patch="""      if(tcum<1d0.and.dt>0d0)then
+         if(abs(dt-(1d0-tcum))<=dtCrit)dt=1d0-tcum
+      end if
+
+"""
+        source=native.replace(source,patch,'')
     epoch=build.epoch;addition=epoch.declaration(project.start_clock)
     source=native.replace(source,addition,'');source=native.replace(source,epoch.NEW,epoch.OLD)
     kind='step' if selected['flprintdt'] else 'clock' if selected['nprintday']>1 else 'interval'

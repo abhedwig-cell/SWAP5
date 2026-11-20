@@ -270,7 +270,10 @@ def validate_bundle(bundle, reference, project):
     if identity.get('cde_native_receipt')!=expected_cde_receipt:raise ValueError('Foreign CDE native receipt consistency policy; rebuild without rebinding')
     from groundwater_water_output import metadata as original_output_metadata
     expected_output=original_output_metadata(project)
-    if identity.get('original_output')!=expected_output:raise ValueError('Foreign original output policy; rebuild without rebinding')
+    if identity.get('original_output')!=expected_output:
+        from snow_water_groundwater_source_guard import unchanged_clock_metadata
+        if not unchanged_clock_metadata(identity.get('original_output'),expected_output,project):
+            raise ValueError('Foreign original output policy; rebuild without rebinding')
     if expected_output and expected_output.get('thermal_calendar',False):
         snow_provider='cde_interval_snow_state.f90' if expected_output.get('cde_interval_output',False) else 'thermal_output_snow_calendar_state.f90'
         if (bundle/'thermal_output_snow_calendar_state.f90').read_bytes()!=(h.APP/snow_provider).read_bytes():
