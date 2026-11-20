@@ -1,0 +1,21 @@
+{
+  "status": "ORIGINAL_COMPLETE_MODULE_DERIVATIVE_MISMATCHES_OBSERVED_NOT_ADMITTED",
+  "producer": "04bdb290d",
+  "source_sha256": {
+    "MOD_MvG_functions.f90": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "WC_K_models_04_11.f90": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd"
+  },
+  "original_O0_O2_actual_module_rebuilt": true,
+  "measured_original_object_closure": 40,
+  "model_points_per_opt": 154,
+  "model7_original_capacity_mismatches_per_opt": 14,
+  "model7_max_scaled_capacity_mismatch": "0.0031565411270402711748787475274666",
+  "model7_source": "WC_MvG_2_s divides both weighted retention lobes by one shared1-Omega1*Gamma1(h0)-Omega2*Gamma2(h0); original C_MvG_2_s instead sums individually normalized derivatives. Those expressions do not have the same derivative.",
+  "proposed_correction": "Use the derivative of the literal existing retention body: (WCs-WCr)*(Omega1*C1+Omega2*C2)/(1-Omega1*Gam01-Omega2*Gam02). Retain original water and conductivity functions unchanged.",
+  "other_findings": "Original dhconduc2 has saturation/floor branch derivative mismatches. Original dhconduc3..11 falls through defaultMvG, not their actual conductivity functions; keep implicit analytical guard1. RIA12 original initialization column suspicion remains unproven.",
+  "retained_365day_failures": "No claim that this capacity mismatch explains other model3/5/6/9/11 refusals or4/8/10 censors; original failures retained.",
+  "classification": "REFERENCE_DEFECT_NUMERICAL_DERIVATIVE_CANDIDATE",
+  "production_or_admission_changed": false,
+  "new_model_periods": 0,
+  "next": "Apply exact reversible one-expression component correction to full original WC module; independent raw FD recomputation O0/O2; extend relevant bimodal/dry-limit parameter controls before production integration."
+}

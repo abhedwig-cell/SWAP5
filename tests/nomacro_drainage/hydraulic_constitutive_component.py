@@ -15,6 +15,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
+    p.add_argument('--correct-model7-capacity',action='store_true')
     a=p.parse_args();a.output.mkdir();a.build_root.mkdir(exist_ok=True)
     sys.path.insert(0,str(ROOT/'app/hybrid_water'))
     import user_prepare
@@ -23,6 +24,7 @@ def main():
     sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
     q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         optimization=a.optimization,compiler=[],original_models=[],model_periods=0,public_admitted=False,
+        model7_capacity_correction=a.correct_model7_capacity,
         purpose='Actual original watcon/moiscap and hconduc/dhconduc. Source assessment only; mismatches are not repaired or admitted.',
         fixture='Existing original4..11 two-soil coefficients1..7/13..21; explicit full-module initialization with hysteresis0/Frost0/NoVap, alphaWet2alpha and entry-.01; no claim of original reader execution')
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf-8')
@@ -45,7 +47,15 @@ def main():
             for value in values:lookup.setdefault(value,path)
         affected={}
         for name in ('WC_K_models_04_11','MOD_MvG_functions'):
-            source=ref/'swap-selected'/(name+'.f90');target=a.build_root/(name+'.f90');target.write_bytes(source.read_bytes())
+            source=ref/'swap-selected'/(name+'.f90');target=a.build_root/(name+'.f90');raw=source.read_bytes()
+            if a.correct_model7_capacity and name=='WC_K_models_04_11':
+                text=raw.decode('cp1252').replace('\r\n','\n')
+                before='   C_MvG_2_s = (WCs-WCr)*(Omega1*C1(h)/(1.0d0-Gam01) + Omega2*C2(h)/(1.0d0-Gam02))'
+                after='   C_MvG_2_s = (WCs-WCr)*(Omega1*C1(h) + Omega2*C2(h))/(1.0d0-Omega1*Gam01-Omega2*Gam02)'
+                assert text.count(before)==1
+                corrected=text.replace(before,after,1);assert corrected.replace(after,before,1)==text
+                raw=corrected.encode('cp1252')
+            target.write_bytes(raw)
             obj=a.build_root/(name+'.o');compile([*flags,'-c',str(target),'-o',str(obj)])
             assert objects/(name+'.o') in files;affected[objects/(name+'.o')]=obj
             (a.output/target.name).write_bytes(target.read_bytes())
