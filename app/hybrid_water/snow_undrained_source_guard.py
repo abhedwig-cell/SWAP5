@@ -119,15 +119,11 @@ def validate_source(bundle,project,identity,reference):
     raw=(originals/'integral.f90').read_text(encoding='cp1252');stock=(originals/'watstor.f90').read_text(encoding='cp1252')
     equal('integral.f90',build.integral(raw,stock,selected))
     equal('hybrid_age_output_state.f90',build.clock.state_source(project))
+    equal('age_output_calendar_probe.f90',build.probe(project,selected))
     if project.solute:
-        import cde_interval_output as interval
-        import cde_clock_output as clock
-        observer=clock if selected['flprintdt'] or selected['nprintday']>1 else interval
-        equal('age_output_calendar_probe.f90',observer.probe_source(project,selected))
         equal('original_cde_output_state.f90',(folder/'cde_interval_output_state.f90').read_text(encoding='cp1252'))
         equal('cde_interval_receipt.f90',(folder/'cde_interval_receipt.f90').read_text(encoding='cp1252'))
         if selected['flprintdt'] or selected['nprintday']>1:equal('cde_clock_events.f90',(folder/'cde_clock_events.f90').read_text(encoding='cp1252'))
-    else:equal('age_output_calendar_probe.f90',build.clock.probe_source(project))
 
 
 LEGACY_COMPOSITION_SHA='49bf3e229919b6782781cb899092ef845f462bad90118f0ba61ef18246e18087'
@@ -168,3 +164,30 @@ def unchanged_explicit_root_metadata(old,expected,project):
     current=hashlib.sha256(source.encode()).hexdigest()
     if expected.get('providers',{}).get(name)!=current:return False
     return {**old,'providers':{**old['providers'],name:current}}==expected
+
+
+LEGACY_BUILD_SHA='53fca12f508800d5c57b9727b05d7fbeab71b229d4b5cb0d6b1fc082abedb0d1'
+LEGACY_PROBE_CALLSITE="    if project.solute:\n        import cde_clock_output as cclock\n        import cde_interval_output as interval\n        probe=(cclock if selected['flprintdt'] or selected['nprintday']>1 else interval).probe_source(project,selected)\n    else:probe=clock.probe_source(project)\n    (output/'age_output_calendar_probe.f90').write_text(probe,encoding='cp1252')\n"
+CURRENT_PROBE_CALLSITE="    (output/'age_output_calendar_probe.f90').write_text(probe(project,selected),encoding='cp1252')\n"
+
+
+def unchanged_output_metadata(old,expected,project):
+    selected=selection(project)
+    if selected is None or not isinstance(old,dict) or not isinstance(expected,dict):return False
+    projected={**old,'providers':dict(old.get('providers',{}))}
+    name='snow_undrained_build.py'
+    if projected['providers'].get(name)!=expected.get('providers',{}).get(name):
+        if selected['kind']=='cde' and not selected['flprintdt'] and selected['nprintday']==1:return False
+        if projected['providers'].get(name)!=LEGACY_BUILD_SHA:return False
+        source=Path(build.__file__).read_text(encoding='utf-8');tree=ast.parse(source);last=tree.body[-1]
+        if not isinstance(last,ast.FunctionDef) or last.name!='probe' or last.decorator_list:return False
+        lines=source.splitlines(keepends=True)
+        if lines[last.lineno-1]!='def probe(project,selected):\n':return False
+        prefix=''.join(lines[:last.lineno-1])
+        if not prefix.endswith('\n\n') or prefix.count(CURRENT_PROBE_CALLSITE)!=1:return False
+        parent=prefix[:-2].replace(CURRENT_PROBE_CALLSITE,LEGACY_PROBE_CALLSITE,1)
+        if hashlib.sha256(parent.encode()).hexdigest()!=LEGACY_BUILD_SHA:return False
+        current=hashlib.sha256(source.encode()).hexdigest()
+        if expected.get('providers',{}).get(name)!=current:return False
+        projected['providers'][name]=current
+    return projected==expected or unchanged_explicit_root_metadata(projected,expected,project)

@@ -72,12 +72,7 @@ def apply_build(output,donor_build,project,patched,selected):
         (output/(name+'.f90')).write_bytes((folder/(provider+'.f90')).read_bytes())
     original=(originals/'integral.f90').read_text(encoding='cp1252');watstor=(originals/'watstor.f90').read_text(encoding='cp1252')
     (output/'integral.f90').write_text(integral(original,watstor,selected),encoding='cp1252')
-    if project.solute:
-        import cde_clock_output as cclock
-        import cde_interval_output as interval
-        probe=(cclock if selected['flprintdt'] or selected['nprintday']>1 else interval).probe_source(project,selected)
-    else:probe=clock.probe_source(project)
-    (output/'age_output_calendar_probe.f90').write_text(probe,encoding='cp1252')
+    (output/'age_output_calendar_probe.f90').write_text(probe(project,selected),encoding='cp1252')
     path=output/'swap.f90';text=regular.render_swap(path.read_text(encoding='cp1252'))
     anchor='use hybrid_day_window, only:';text=native.replace(text,anchor,'use MOD_integral,only:hybrid_output_crop_apply\n'+anchor)
     anchor='         call hybrid_apply_wofost(fl_cropemergence)'
@@ -148,3 +143,12 @@ def head_trial(text):
          end if
          if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true."""
     return native.replace(text,anchor,anchor+guard)
+
+
+def probe(project,selected):
+    if selected['kind']!='cde':return clock.probe_source(project)
+    import cde_clock_output as cclock
+    import cde_interval_output as interval
+    if selected['flprintdt'] or selected['nprintday']>1:return cclock.probe_source(project,selected)
+    from implicit_snow_interval import compose
+    return compose(interval.probe_source(project,selected),clock.thermal.probe_source(project),clock.probe_source(project))

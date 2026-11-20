@@ -31857,13 +31857,13 @@
     "full_tree": "8f518c1ccbfa783fa712adac569a984d8a440329"
   },
   "water_snow_groundwater_batch": {
-    "status": "SEALED_WINDOWS_UBUNTU_SCIENCE_AND_CONTROLS_PASS_PUBLIC_ADMISSION_PENDING",
+    "status": "ACTUAL_CANONICAL_MERGED_CLEAN_PUBLIC_RUNNING",
     "working_branch": "codex/nomacro-water-snow-groundwater01",
     "provisional_parent_candidate": null,
     "last_admitted_canonical": "9c447f419d11743efe7464d3c8542ac1bc8fea4a",
     "classification": "B_EXISTING_PROCESS_COMPOSITION",
     "scope": "Water-only SWSNOW1 SWBOTB1 explicit/implicit original analytical daily heat1/method2, hysteresis0/1/2, existing output calendars and drainage0/1.",
-    "next_code_action": "Keep polling existing PR1773 checks to terminal; actual merge/tree/public/separate admission still required. New ordinarySnow drainage-off batch is developing on dependency branch; its source does not replace candidate54afcc09c.",
+    "next_code_action": "Finish actual clean28 canonical public b546 observation already running; seal separate admission and update GAP before new-batch PR.",
     "new_physical_state": false,
     "source_files": [
       "app/hybrid_water/snow_water_groundwater.py",
@@ -31935,10 +31935,16 @@
     "clean_candidate_public_seconds": 307.18073999974877,
     "source_negative_seconds": 2.904302400071174,
     "inherited_raw_negative_seconds": 56.62194429989904,
-    "ci_status": "RUNNING_TERMINAL_SET_NOT_YET_COMPLETE"
+    "ci_status": "47_TERMINAL_30_SUCCESS_17_SKIPPED_0_FAILURE",
+    "actual_canonical": "b546801eaf24a01ee4dc457eb857ef46e6b61c30",
+    "ordered_parents": [
+      "9c447f419d11743efe7464d3c8542ac1bc8fea4a",
+      "54afcc09cb80226fb46a77e169d38e7d0ca2390b"
+    ],
+    "full_tree": "79f3c2d7f962a91d934f5a0a2e95fd649f501ea9"
   },
   "snow_undrained_batch": {
-    "status": "BOUNDED_SOURCE_COMPOSITION_IMPLEMENTED_PURE_EIGHT_FORMS_PASS_COMPILE_PENDING",
+    "status": "CURRENT_SIXTEEN_COMPILED_FORMS_EIGHT_WATER_SHORT_PASS_CDE_INTERVAL_PROBE_REPAIR_PENDING",
     "working_branch": "codex/nomacro-snow-undrained-composition01",
     "incoming_dependency_pr": 1773,
     "incoming_candidate": "54afcc09cb80226fb46a77e169d38e7d0ca2390b",
@@ -31949,12 +31955,18 @@
     "actual_baseline_contexts": 8,
     "actual_refused_contexts": 6,
     "actual_available_contexts": 2,
-    "model_executions": 0,
-    "compilations": 0,
-    "next_code_action": "Persist corrected selection and compile actual source forms v2; keep v1 original failed source/logs. PR1773 remaining checks still running; both terminal public CI logs retained.",
+    "next_code_action": "Rebuild only two affected CDE interval/dense contexts peropt; resume remaining original CDE clock/step binaries; independent all-current35/cold then representativefulls, actualnative/source/transaction controls and unchanged SDK postimages. Do not rerun completed water periods.",
     "new_physical_state": false,
     "pure_source_forms": 8,
     "source_surface": "Five exact old dispatch/domain hooks; four new bounded source/state/guard files. Actual original lower boundaries retained.",
-    "first_build": "O0 v1 failed at link: existing host selection used old dense selection, omitting Snow calendar object; zero model days. Corrected only new-domain selection delegation; host link recipe unchanged."
+    "first_build": "O0 v1 failed at link: existing host selection used old dense selection, omitting Snow calendar object; zero model days. Corrected only new-domain selection delegation; host link recipe unchanged.",
+    "actual_current_source_forms": 12,
+    "affected_old_source_forms_refused": 4,
+    "actual_windows_short35_contexts": 8,
+    "actual_windows_short_cold_windows": 24,
+    "independent_science": "All four selected water configurations O0/O2 independentlyPASS35/3cold each. Existing first explicit binaries retained after exact whole-module unchanged-context proof.",
+    "composition_failure": "CDE interval/day1 passes original water/solute observation then day2 rejects Original Snow soil frame begin: missing existing soil-frame close in interval probe composition. Both original failed O0/O2 trajectories and producers retained; no balance relaxation.",
+    "targeted_repair": "Compose the existing thermal soil-close observer into the existing CDE interval probe, matching the already-qualified original implicit_snow_interval owner. Only two interval/dense CDE forms peropt affected. Six other forms peropt validate their original binaries with exact whole-module inverse; no completed water periods or original producers rewritten.",
+    "source_refusal_and_dependency_proof": "SNOW_UNDRAINED_PROBE_DEPENDENCY_PROJECTION_V1.json: all16context checks;12currentPASS and4affected hardrefused."
   }
 }

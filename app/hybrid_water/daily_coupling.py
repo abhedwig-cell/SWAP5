@@ -277,9 +277,9 @@ def validate_bundle(bundle, reference, project):
     expected_output=original_output_metadata(project)
     if identity.get('original_output')!=expected_output:
         from snow_water_groundwater_source_guard import unchanged_clock_metadata
-        from snow_undrained_source_guard import unchanged_explicit_root_metadata
+        from snow_undrained_source_guard import unchanged_output_metadata
         if not (unchanged_clock_metadata(identity.get('original_output'),expected_output,project) or
-                unchanged_explicit_root_metadata(identity.get('original_output'),expected_output,project)):
+                unchanged_output_metadata(identity.get('original_output'),expected_output,project)):
             raise ValueError('Foreign original output policy; rebuild without rebinding')
     if expected_output and expected_output.get('thermal_calendar',False):
         snow_provider='cde_interval_snow_state.f90' if expected_output.get('cde_interval_output',False) else 'thermal_output_snow_calendar_state.f90'
