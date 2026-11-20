@@ -14,7 +14,8 @@ ROOT=Path(__file__).resolve().parents[2]
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work','build-root','output'):p.add_argument('--'+name,type=Path,required=True)
-    p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args();a.output.mkdir();a.build_root.mkdir(exist_ok=True)
+    p.add_argument('--optimization',choices=('O0','O2'),required=True)
+    p.add_argument('--diagnose-divdra',action='store_true');a=p.parse_args();a.output.mkdir();a.build_root.mkdir(exist_ok=True)
     sys.path.insert(0,str(ROOT/'app/hybrid_water'))
     import user_prepare
     import frost_reference
@@ -50,28 +51,47 @@ def main():
             driver_sha256=sha(driver.read_bytes()),actual_original_object_closure=[dict(name=p.name,sha256=sha(p.read_bytes())) for p in sorted(selected)],
             ttutil_sha256=sha((ref/'ttutil-obj/libttutil.a').read_bytes()),physical_equations_changed=False)
         (a.output/'actual-driver.f90').write_bytes(driver.read_bytes());observations={}
-        for mode,source in [('original',original),('guarded',guarded)]:
+        modes=[('original',original)] if a.diagnose_divdra else [('original',original),('guarded',guarded)]
+        for mode,source in modes:
             build=a.build_root/mode;build.mkdir();path=build/'frozencond.f90';path.write_bytes(source)
             obj=build/'frozencond.o';exe=build/('actual-frost-divdra'+('.exe' if os.name=='nt' else ''))
             flags=['gfortran','-'+a.optimization,'-cpp','-ffree-line-length-none','-fcheck=all','-fimplicit-none',
                 '-finit-local-zero','-ffpe-trap=invalid,zero,overflow',*NO_MACRO_FP_FLAGS,
                 '-I'+str(build),'-I'+str(objects),'-I'+str(ref/'ttutil-obj'),'-J'+str(build)]
             if mode=='guarded':flags.append('-DGUARDED')
-            commands=[[*flags,'-c',str(path),'-o',str(obj)],
-                [*flags,str(driver),str(obj),*map(str,sorted(selected-{objects/'frozencond.o'})),
-                    str(ref/'ttutil-obj/libttutil.a'),'-o',str(exe)]]
+            extra=[];replaced={objects/'frozencond.o'}
+            commands=[[*flags,'-c',str(path),'-o',str(obj)]]
+            if a.diagnose_divdra:
+                import frost_cde_drainage_divdra_probe as observer
+                raw=(ref/'swap-selected/divdra.f90').read_text(encoding='cp1252')
+                actual=observer.source(raw);observed=build/'divdra.f90';observed.write_text(actual,encoding='cp1252')
+                q['actual_output_only_Divdra_sha256']=sha(observed.read_bytes());q['diagnostic_observer_sha256']=sha(Path(observer.__file__).read_bytes())
+                extra=[build/'divdra.o'];replaced.add(objects/'divdra.o')
+                commands.append([*flags,'-g','-c',str(observed),'-o',str(extra[0])])
+                (a.output/'actual-output-only-divdra.f90').write_bytes(observed.read_bytes())
+            q['actual_linked_original_objects']=[p.name for p in sorted(selected-replaced)]
+            commands.append([*flags,str(driver),str(obj),*map(str,extra),*map(str,sorted(selected-replaced)),
+                    str(ref/'ttutil-obj/libttutil.a'),'-o',str(exe)])
             logs=[]
             for command in commands:
                 start=time.perf_counter();r=run(command,build);logs.append(dict(command=command,returncode=r.returncode,
                     seconds=time.perf_counter()-start,stdout=r.stdout,stderr=r.stderr))
                 (a.output/(mode+'-compile.json')).write_text(json.dumps(logs,indent=2)+'\n',encoding='utf-8');r.check_returncode()
+            (a.output/(mode+'-frozencond.f90')).write_bytes(source);(a.output/(mode+'-'+exe.name)).write_bytes(exe.read_bytes())
             start=time.perf_counter();r=run([str(exe)],build)
             record=dict(mode=mode,actual_source_sha256=sha(source),executable_sha256=sha(exe.read_bytes()),
                 native_seconds=time.perf_counter()-start,returncode=r.returncode,stdout=r.stdout,stderr=r.stderr)
-            q['executions'].append(record);save();r.check_returncode()
+            q['executions'].append(record);save()
+            if a.diagnose_divdra:
+                rows=[line.split() for line in r.stdout.splitlines() if line.startswith('ACTUAL_DIVDRA_INFILTRATION_BOOKKEEPING ')]
+                broken=[v for v in rows if float(v[14])==0 and float(v[13])>0 and float(v[12])>0 and float(v[16])<0]
+                assert r.returncode!=0 and 'Floating-point exception' in r.stderr and broken,'Original Divdra causal zero-KDsat diagnostic absent'
+                q['actual_zero_KDsat_observations']=broken
+                q['status']='ACTUAL_ORIGINAL_DIVDRA_ZERO_SATURATED_TRANSMISSIVITY_DIAGNOSTIC_REPRODUCED_NOT_QUALIFIED'
+                print(q['status'],flush=True);return
+            r.check_returncode()
             observations[mode]=[line for line in r.stdout.splitlines() if line.startswith('ACTUAL_FROZENBOUNDS_DIVDRA_RATES ')]
             assert len(observations[mode])==84 and not r.stderr
-            (a.output/(mode+'-frozencond.f90')).write_bytes(source);(a.output/(mode+'-'+exe.name)).write_bytes(exe.read_bytes())
         assert observations['original']==observations['guarded'],'Actual valid SWDIVD1 Frost physics differs from the original procedure'
         q['status']='ACTUAL_ORIGINAL_AND_GUARDED_FROZENBOUNDS_DIVDRA_84_RATE_INTERFACE_CASES_PASS_NOT_CDE_QUALIFIED'
         print(q['status'],len(selected),flush=True)
