@@ -128,12 +128,12 @@ def main():
             with localcontext() as context:
                 context.prec = 80
                 for row in matrix_rows:
-                    analytic, reported = map(Decimal, row[4:6])
-                    left, right, delta = map(Decimal, row[9:12])
+                    analytic, reported = (Decimal.from_float(float(value)) for value in row[4:6])
+                    left, right, delta = (Decimal.from_float(float(value)) for value in row[9:12])
                     assert delta > 0
                     derivative = (right-left)/(2*delta)
                     scale = max(abs(analytic), abs(derivative), Decimal('1e-8'))
-                    assert abs(derivative-reported)/scale < Decimal('1e-10')
+                    assert abs(derivative-reported) <= 64*Decimal.from_float(sys.float_info.epsilon)*scale
             observation['raw_residual_difference_recomputed_independently'] = True
             observation.update(matrix_entries=len(matrix_rows),
                 matrix_failures=sum(row[-1] > 2e-6 for row in matrix_values),
