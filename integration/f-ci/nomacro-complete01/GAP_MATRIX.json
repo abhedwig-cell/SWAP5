@@ -1980,5 +1980,20 @@
     "scope": "SWSNOW0 analytic defaults, SWHYST0/1/2, explicit/implicit existing conductivity guards; daily SWDRA0 output and snow not expanded",
     "next_action": "Same coherent interval/state-owner qualification as npd1 interval; no separatemetadataPR or duplicated fullcampaign.",
     "portable_status": "BOTH_JOBS_SUCCESS_INDEPENDENT_ARCHIVE_AUDITS_RUNNING"
+  },
+  "snow_groundwater_cde_calendars": {
+    "classification": "NUMERICAL_FAILURE",
+    "implementation": "ROUTE_IMPLEMENTED_FOURTEEN_SHORT_PASS_FULL_CLOCK634_BLOCKED",
+    "historical_function": "Explicit Snow1 CDE groundwater calendars and complete thermal/hydraulic/CDE restart",
+    "runtime": "87af9af9e86fb27772e91c170c4525f10ffbdd1e",
+    "observed": "Both180sfullcensors633accepted; actualnative633 printcounter1899 vs1900, newcold634 compiledreaderrefuses. Availableyear/latercoldseams matchphysicalandnativeexact. No tolerancerelaxation orcounterrenormalization.",
+    "next_action": "Investigate originalTimeControl(3) clockupdate/printflags onactual532->633nativeprefix; newclocksource hypothesis must preserveoriginaloutputevent logic, numericalguards andrawfailedruns. Candidateanchor immutableepoch+integerday+localacceptedtcum mayfixsubstepabsoluteclockassociation, butrequireevidence andfreshcurrentqual beforeadmission. Currentapp87unchanged. FinishPR1770actualcanonicalpublic/admissionseal independently. ThencompleteSnowcoherentblock actualfull/native/source/portable/postimages; do notpromote14shortPASSasfullclosure."
+  },
+  "snow_implicit_conductivity_composition": {
+    "classification": "MISSING_COMPOSITION",
+    "implementation": "HARD_REFUSED_EXISTING_ANALYTICAL_NO_SNOW_GUARD",
+    "historical_function": "Original SWKIMPL1 Snow1 hydraulic/thermal composition",
+    "observed": "groundwater-snow-original-refusal-v1 beforecompiler: Original implicit conductivity requires bounded analytical daily no-snow/no-frost/no-aquifer inputs",
+    "next_action": "Separate hydraulic/thermal numerical dependencyqualification; noimplicitSnow expansion in currentexplicitSnowcalendar batch."
   }
 }
