@@ -108,8 +108,9 @@ def audit(root):
                 native(z.read('macro.bin'),byday[day],build,selected);original.sequential_records(z.read('result.end'))
             found.add(day)
         return found
-    require(checkpoints(warm,data)=={2,4,7,9,30,34,35},'Actual composed warm native inventory differs')
-    require([(r['start'],r['end']) for r in q['cold']]==[(2,4),(7,9),(30,34)],'Actual composed cold denominator differs')
+    windows=[(2,4),(7,9),(30,34)]+([(17,20)] if q['parameters'].get('epoch') else [])
+    require(checkpoints(warm,data)=={35,*(d for pair in windows for d in pair)},'Actual composed warm native inventory differs')
+    require([(r['start'],r['end']) for r in q['cold']]==windows,'Actual composed cold denominator differs')
     def outputs(path):return {n:original.output_records((path/n).read_bytes(),n) for n in ('result_output.csv','result_output.bin') if (path/n).exists()}
     for r in q['cold']:
         low,high=r['start'],r['end'];cold=root/f'own-{low}';actual=rows(cold)
@@ -119,7 +120,7 @@ def audit(root):
             require(all(a.read(n)==b.read(n) for n in ('macro.bin','result.end')),'Actual complete composed cold bytes differ')
         require(original.output_continuation(outputs(warm/'original'),outputs(cold/'original'),selected,low,high,build['project']['start_date'])==r['exact_original_output'],'Actual original composed user output differs')
     return dict(status='INDEPENDENT_GROUNDWATER_CDE_CLOCK35_PHYSICAL_NATIVE_OUTPUT_PASS',actual_days=35,
-                actual_cold_windows=3,codec=build['identity']['groundwater_native_state']['magic'],parameters=q['parameters'],
+                actual_cold_windows=len(windows),codec=build['identity']['groundwater_native_state']['magic'],parameters=q['parameters'],
                 new_physical_state=False,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
 
 
