@@ -40,6 +40,7 @@ jobs:
             tests/nomacro_scheduled_subsurface
             tests/nomacro_drainage
             tests/saltfarm_newton
+            .github/workflows
             reference/swap-4.3.1/projects
             reference/swap-4.3.1/source-archives
             reference/swap-4.3.1/patches
@@ -49,7 +50,7 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/proof"
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"
-          git archive HEAD tests/nomacro_drainage tests/nomacro_scheduled_subsurface tests/nomacro_mixtures .github/workflows/nomacro-extended-implicit.yml > "$RUNNER_TEMP/proof/controller-source.tar"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$RUNNER_TEMP/proof/controller-source.tar"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Qualify secondary water and CDE with original failure-crossing native windows
         if: ${{ !inputs.ordinary_pond }}
