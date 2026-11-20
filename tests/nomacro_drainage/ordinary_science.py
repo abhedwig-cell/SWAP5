@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import stat
+import subprocess
 import tempfile
 import zipfile
 
@@ -43,6 +44,24 @@ def windows(proof):
     with extracted(proof,['WINDOWS_O0','WINDOWS_O2','WINDOWS_SUPPORT']) as root:
         projection=read(root/'COMPILED_PROJECTION_V1.json')
         profiles=root/'profiles'
+        cap=read(profiles/'ordinary-pond-source-v1/RESULT.json')
+        capsule_path=profiles/'ordinary-pond-source-v1'/cap['archive']
+        require(digest(capsule_path)==cap['sha256'],'Actual Windows source capsule changed')
+        repo=Path(__file__).resolve().parents[2]
+        tree={s.split('\t',1)[1]:s.split('\t',1)[0].split()[2] for s in subprocess.check_output(
+            ['git','ls-tree','-r',cap['producer_head']],cwd=repo,text=True).splitlines()}
+        with zipfile.ZipFile(capsule_path) as z:
+            present={n for n,v in cap['members'].items() if v.get('checkout')!='ABSENT'}
+            require(set(z.namelist())==present,'Actual Windows source inventory differs')
+            for name,item in cap['members'].items():
+                require(tree.get(name)==item['git_blob'],'Actual Windows source Git context differs')
+                if name not in present:continue
+                raw=z.read(name)
+                blob=lambda b:hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
+                require(hashlib.sha256(raw).hexdigest()==item['sha256'] and
+                        item['git_blob'] in (blob(raw),blob(raw.replace(b'\r\n',b'\n'))),'Actual Windows source bytes differ')
+        provider=read(root/'provider-PREPARED.json')
+        baseline=read(Path(proof)/'ORDINARY_NONSELECTED_ACTUAL_BASELINE_BINDINGS_V1.json')['cases']
         def mapped_input(q):
             normalized=q['input_root'].replace('\\','/')
             require('/evidence/' in normalized,'Foreign actual Windows input location')
@@ -50,6 +69,13 @@ def windows(proof):
         def bundle(q):
             item=projection[q['build_root']];path=root/item['prefix']
             require(digest(path/'BUILD.json')==item['BUILD_sha256'],'Actual compiled projection differs')
+            identity=read(path/'BUILD.json')['identity']
+            for key,name in [('host','daily_host.py'),('adapter','donor_adapter.f90'),('driver','main.f90'),('experimental_input_adapter','experimental_project.py')]:
+                require(identity[key]==cap['members']['app/hybrid_water/'+name]['sha256'],'Actual Windows compiler source differs: '+key)
+            for name,sha in identity['kernel_sources']:require(sha==cap['members'][name]['sha256'],'Actual Windows kernel source differs')
+            for name,sha in identity['donor_objects'].items():require(sha==provider['provider_files']['build/swap-obj/'+name],'Actual Windows provider object differs')
+            for key,name in [('source_sha256','ordinary_implicit_pond_switch.py'),('renderer_sha256','extended_implicit_pond_switch.py'),('pond_tangent_renderer_sha256','ordinary_implicit_pond_tangent.py'),('inherited_chain_rule_renderer_sha256','extended_implicit_pond.py')]:
+                require(identity['ordinary_implicit_pond_switch'][key]==cap['members']['app/hybrid_water/'+name]['sha256'],'Actual Windows ordinary renderer differs')
             return path
         result={};full_data={}
         for opt in ('O0','O2'):
@@ -94,6 +120,18 @@ def windows(proof):
             preservation=read(profiles/f'ordinary-nonselected-{opt}-v1/RESULT.json')
             require(preservation['status']=='ACTUAL_THREE_NONSELECTED_OWNERS_POSTIMAGE_PASS' and
                     len(preservation['cases'])==3 and preservation['fresh_full_periods']==0,'Nonselected preservation incomplete')
+            for name,item in preservation['cases'].items():
+                old=baseline[name]
+                path=profiles/item['current_profile'].replace('\\','/').split('/evidence/',1)[1]
+                report=read(path/'RESULT.json');entry=projection[report['build_root']];build=root/entry['prefix']
+                now=read(build/'BUILD.json')
+                require(old['BUILD_sha256']==item['original_BUILD_sha256'] and digest(build/'BUILD.json')==item['current_BUILD_sha256'], 'Nonselected BUILD binding differs')
+                require({p.name:digest(p) for p in build.glob('*.f90')}==old['generated'] and
+                        now['inputs']==old['BUILD']['inputs'] and now['project']==old['BUILD']['project'], 'Nonselected actual input/Fortran differs')
+                require(physical(rows(path/'trajectory'))==old['physical'],'Nonselected actual physical postimage differs')
+                for day in (2,4):
+                    with zipfile.ZipFile(path/f'trajectory/accepted-column-1-day-{day}.zip') as z:
+                        require(all(hashlib.sha256(z.read(n)).hexdigest()==sha for n,sha in old['native'][str(day)].items()), 'Nonselected actual complete native differs')
             out.update(current_native_postimages=count,transactions=tx['cases'],nonselected=preservation['cases'])
         require(full_data['O0','water']==full_data['O2','water'] and
                 full_data['O0','cde']==full_data['O2','cde'],'Actual cross optimization physical rows differ')
