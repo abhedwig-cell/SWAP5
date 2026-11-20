@@ -16,6 +16,7 @@ m=original.m
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work','profile','output'):parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--only-labels',nargs='+')
     args=parser.parse_args();args.output.mkdir(parents=True)
     report=json.loads((args.profile/'RESULT.json').read_text());bundle=Path(report['build_root'])
     project=m.e.load(report['input_root'],original_output=True);meta,_=m.validate_bundle(bundle,args.reference_work,project)
@@ -36,12 +37,16 @@ def main():
              'groundwater-native-source':'groundwater_history_native_state.f90','timecontrol-source':'timecontrol.f90',
              'pond-event-source':'implicit_pond_event_state.f90','pond-availability-source':'implicit_pond_availability.f90',
              'top-boundary-source':'boundtop.f90'}
+    inventory=[*('policy-'+key for key in fields),*sources]
+    labels=inventory if args.only_labels is None else args.only_labels
+    assert len(set(labels))==len(labels) and set(labels)<=set(inventory),'Foreign source-control subset'
     result=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=original.ROOT,text=True).strip(),
-                actual_BUILD_sha256=before,policy_fields=fields,refusals=[],model_executions=0,compilations=0)
+                actual_BUILD_sha256=before,policy_fields=fields,refusals=[],model_executions=0,compilations=0,
+                complete_inventory=inventory,selected_labels=labels)
     def save():(args.output/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     save()
     try:
-        for label in [*('policy-'+key for key in fields),*sources]:
+        for label in labels:
             target=args.output/label;target.mkdir();bad=copy.deepcopy(meta)
             for path in bundle.iterdir():
                 if path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.dll','.so','.exe'):
@@ -66,15 +71,16 @@ def main():
                 expected=('Foreign original output policy','Foreign explicit Snow groundwater',
                           'Foreign actual Snow groundwater','Foreign actual explicit Snow groundwater',
                           'Foreign actual Snow pond-event/availability provider','Foreign actual Snow top-boundary parent',
-                          'Foreign actual Snow rollback/pond event source','Foreign Snow pending-event native boundary')
+                          'Foreign actual Snow rollback/pond event source','Foreign Snow pending-event native boundary',
+                          'Foreign complete parent Snow groundwater TimeControl provider')
                 assert any(str(error).startswith(value) for value in expected),(label,str(error))
                 assert not list(target.rglob('donor.stdout')) and not list(target.rglob('accepted-*.zip'))
                 result['refusals'].append(dict(field=label,error=str(error),before_worker=True,no_publication=True,
                                                forged_source_inventory=not label.startswith('policy-')))
             else:raise AssertionError('Forged Snow groundwater policy/source accepted: '+label)
             save()
-        assert len(result['refusals'])==len(fields)+len(sources) and m.sha(bundle/'BUILD.json')==before
-        result['status']='ACTUAL_EXPLICIT_SNOW_GROUNDWATER_SOURCE_POLICY_REFUSALS_PASS'
+        assert len(result['refusals'])==len(labels) and m.sha(bundle/'BUILD.json')==before
+        result['status']='ACTUAL_EXPLICIT_SNOW_GROUNDWATER_SOURCE_POLICY_REFUSALS_PASS' if args.only_labels is None else 'ACTUAL_SELECTED_SNOW_GROUNDWATER_SOURCE_POLICY_REFUSALS_PASS'
     except Exception as error:
         result.update(status='FAILED',error=repr(error));raise
     finally:save()
