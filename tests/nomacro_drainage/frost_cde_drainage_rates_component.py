@@ -15,7 +15,9 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work','build-root','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
-    p.add_argument('--diagnose-divdra',action='store_true');a=p.parse_args();a.output.mkdir();a.build_root.mkdir(exist_ok=True)
+    modegroup=p.add_mutually_exclusive_group()
+    modegroup.add_argument('--diagnose-divdra',action='store_true')
+    modegroup.add_argument('--correct-divdra-overlap',action='store_true');a=p.parse_args();a.output.mkdir();a.build_root.mkdir(exist_ok=True)
     sys.path.insert(0,str(ROOT/'app/hybrid_water'))
     import user_prepare
     import frost_reference
@@ -61,14 +63,22 @@ def main():
             if mode=='guarded':flags.append('-DGUARDED')
             extra=[];replaced={objects/'frozencond.o'}
             commands=[[*flags,'-c',str(path),'-o',str(obj)]]
-            if a.diagnose_divdra:
-                import frost_cde_drainage_divdra_probe as observer
+            if a.diagnose_divdra or a.correct_divdra_overlap:
                 raw=(ref/'swap-selected/divdra.f90').read_text(encoding='cp1252')
-                actual=observer.source(raw);observed=build/'divdra.f90';observed.write_text(actual,encoding='cp1252')
-                q['actual_output_only_Divdra_sha256']=sha(observed.read_bytes());q['diagnostic_observer_sha256']=sha(Path(observer.__file__).read_bytes())
+                actual=raw
+                if a.correct_divdra_overlap:
+                    import frost_divdra_overlap as correction
+                    actual=correction.source(actual)
+                    q['explicit_Divdra_reference_correction']='FROST-DIVDRA-OVERLAP-01'
+                    q['scope']='Actual original/guarded FrozenCond and FrozenBounds with separately corrected Divdra geometric overlap; CDE/whole-model/public scope not qualified'
+                if a.diagnose_divdra:
+                    import frost_cde_drainage_divdra_probe as observer
+                    actual=observer.source(actual);q['diagnostic_observer_sha256']=sha(Path(observer.__file__).read_bytes())
+                observed=build/'divdra.f90';observed.write_text(actual,encoding='cp1252')
+                q['actual_compiled_Divdra_sha256']=sha(observed.read_bytes())
                 extra=[build/'divdra.o'];replaced.add(objects/'divdra.o')
                 commands.append([*flags,'-g','-c',str(observed),'-o',str(extra[0])])
-                (a.output/'actual-output-only-divdra.f90').write_bytes(observed.read_bytes())
+                (a.output/(mode+'-actual-divdra.f90')).write_bytes(observed.read_bytes())
             q['actual_linked_original_objects']=[p.name for p in sorted(selected-replaced)]
             commands.append([*flags,str(driver),str(obj),*map(str,extra),*map(str,sorted(selected-replaced)),
                     str(ref/'ttutil-obj/libttutil.a'),'-o',str(exe)])
@@ -93,7 +103,8 @@ def main():
             observations[mode]=[line for line in r.stdout.splitlines() if line.startswith('ACTUAL_FROZENBOUNDS_DIVDRA_RATES ')]
             assert len(observations[mode])==84 and not r.stderr
         assert observations['original']==observations['guarded'],'Actual valid SWDIVD1 Frost physics differs from the original procedure'
-        q['status']='ACTUAL_ORIGINAL_AND_GUARDED_FROZENBOUNDS_DIVDRA_84_RATE_INTERFACE_CASES_PASS_NOT_CDE_QUALIFIED'
+        q['status']=('ACTUAL_ORIGINAL_AND_GUARDED_FROST_WITH_CORRECTED_DIVDRA_84_RATE_CASES_PASS_NOT_CDE_QUALIFIED'
+            if a.correct_divdra_overlap else 'ACTUAL_ORIGINAL_AND_GUARDED_FROZENBOUNDS_DIVDRA_84_RATE_INTERFACE_CASES_PASS_NOT_CDE_QUALIFIED')
         print(q['status'],len(selected),flush=True)
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
