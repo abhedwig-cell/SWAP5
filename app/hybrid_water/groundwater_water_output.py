@@ -43,6 +43,9 @@ def active_selection(project):
 
 
 def selection(project):
+    from snow_undrained import selection as undrained_selection
+    undrained=undrained_selection(project)
+    if undrained is not None:return undrained
     selected=active_selection(project)
     return prior.selection(project) if selected is None else selected
 
