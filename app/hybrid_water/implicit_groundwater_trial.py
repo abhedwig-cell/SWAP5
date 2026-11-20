@@ -43,6 +43,8 @@ def metadata(project):
 
 def apply_build(output,donor_build,project,patched):
     if not enabled(project):return patched
+    from implicit_snow_interval import apply_build as snow_interval_build
+    patched=snow_interval_build(output,donor_build,project,patched)
     source=(donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252')
     stock=(donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')
     trial=original.trial_source(source,stock).replace('hybrid_groundwater_age_trial',FUNCTION).replace('Foreign original AGE groundwater trial domain','Foreign implicit groundwater trial domain')
