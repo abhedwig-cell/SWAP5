@@ -31602,6 +31602,26 @@
     "actual_source_policy_refusals": 112,
     "source_and_archive_bindings": "PASS",
     "historical_successor_tests": "11_PASS",
-    "source_capsule": "groundwater-interval-current-source-v1: originalproducer526592214 appsource744 unchanged"
+    "source_capsule": "groundwater-interval-current-source-v1: originalproducer526592214 appsource744 unchanged",
+    "pr": 1770,
+    "candidate": "c04f5ddd1fc253d27596014e406bbd849765d5c9",
+    "clean_candidate_public": "PASS",
+    "clean_candidate_public_seconds": 230.51986570004374,
+    "source_negative": "1fab9d9ce0f0d4d83a47811955c5915f420bbea5",
+    "inherited_raw_negative": "d4f15a441d97ec1c72ddbd41635f192fd7973fa5",
+    "negative_controls": "BOTH_COMMITTED_CLEAN25_REFUSED_BEFORE_MODELS",
+    "ci_status": "IN_PROGRESS",
+    "actual_canonical_admitted": false
+  },
+  "groundwater_snow_cde_batch": {
+    "status": "DEPENDENCY_ANALYSIS",
+    "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
+    "candidate_predecessor": "c04f5ddd1fc253d27596014e406bbd849765d5c9",
+    "gap": "CDE groundwater Snow1 non-daily interval and subdaily/per-step output currently refused by shared bottom1/snow guard; dense daily thermal CDE and complete thermal/groundwater providers already exist",
+    "next_action": "Create source-bound actualSnow/groundwater fixture from existingqualifiedSnowforcing and prescribedgroundwater input; retain original beforecompiler refusal. Compose literalSnow soil trial with actualexistinggroundwater reaction/storage only forselectedSnow clock, preserve1e-10 and complete typed thermal/native/calendar/CDE carries. Qualify coherentSnow interval+clock batch withhys0/1/2 andtargeted restart, source/native/transaction controls; noSnowAGE original-reader-forbidden expansion. FinishPR1770canonicalgates inparallel withoutchangingcandidate.",
+    "functional_completion": "PARTIAL",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "global_counts": "UNKNOWN",
+    "RC3_changed": false
   }
 }
