@@ -2,6 +2,10 @@ name: Original secondary implicit zero-pond qualification
 on:
   workflow_dispatch:
     inputs:
+      groundwater_controls_only:
+        description: Recover only missing h0 controls from original unchanged portable run 44682712004
+        type: boolean
+        default: false
       groundwater_clock:
         description: Compose existing CDE output clocks with complete groundwater and history state
         type: boolean
@@ -16,6 +20,7 @@ on:
         default: false
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: nomacro-secondary-pond-${{ github.ref }}
   cancel-in-progress: false
@@ -52,9 +57,11 @@ jobs:
         env:
           PYTHONPATH: app/hybrid_water
         run: |
-          mkdir -p "$RUNNER_TEMP/proof"
-          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"
-          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$RUNNER_TEMP/proof/controller-source.tar"
+          proof="$RUNNER_TEMP/proof"
+          if [[ '${{ inputs.groundwater_controls_only }}' == true ]]; then proof="$RUNNER_TEMP/proof-current"; fi
+          mkdir -p "$proof"
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Qualify secondary water and CDE with original failure-crossing native windows
         if: ${{ !inputs.ordinary_pond && !inputs.groundwater_clock }}
@@ -109,7 +116,7 @@ jobs:
             python3 -B tests/nomacro_drainage/ordinary_pond_controls.py --profile "$RUNNER_TEMP/proof/ordinary-matrix/$name/short" --reference-work "$RUNNER_TEMP/provider" --other-head "$RUNNER_TEMP/builds/ordinary-matrix/$other/bundle/headcalc.f90" --output "$RUNNER_TEMP/proof/ordinary-matrix/$name/source-controls"
           done
       - name: Qualify existing groundwater CDE clock composition
-        if: ${{ inputs.groundwater_clock }}
+        if: ${{ inputs.groundwater_clock && !inputs.groundwater_controls_only }}
         run: |
           python3 -B tests/nomacro_drainage/groundwater_clock_runtime.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/groundwater-clock" --output "$RUNNER_TEMP/proof/groundwater-clock"
           PYTHONPATH=tests/nomacro_drainage python3 -B - <<'PY'
@@ -127,13 +134,27 @@ jobs:
           for name in h2-periodic h1-step-explicit h0-step-periodic; do
             python3 -B tests/nomacro_drainage/groundwater_clock_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/groundwater-clock/$name" --output "$RUNNER_TEMP/proof/groundwater-clock-controls/$name"
           done
+      - name: Download original unchanged groundwater clock dependency
+        if: ${{ inputs.groundwater_controls_only }}
+        uses: actions/download-artifact@v4
+        with:
+          name: groundwater-cde-clock-${{ matrix.optimization }}-5c0e2b34358940e02ae6f486f04e0f262df1c040
+          path: ${{ runner.temp }}/groundwater-origin
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 44682712004
+      - name: Recover only missing actual h0 groundwater controls and transactions
+        if: ${{ inputs.groundwater_controls_only }}
+        run: |
+          python3 -B tests/nomacro_drainage/groundwater_clock_origin.py --origin "$RUNNER_TEMP/groundwater-origin" --runner-root "$RUNNER_TEMP" --output "$RUNNER_TEMP/proof-current"
+          python3 -B tests/nomacro_drainage/groundwater_clock_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/groundwater-clock/h0-step-periodic" --reuse-clock-controls "$RUNNER_TEMP/proof/groundwater-clock-controls/h0-step-periodic" --output "$RUNNER_TEMP/proof-current/h0-controls"
       - name: Retain actual compiled bytes and provider identity
         if: always()
         shell: python
         run: |
           import os,shutil
           from pathlib import Path
-          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/('proof-current' if '${{ inputs.groundwater_controls_only }}' == 'true' else 'proof');proof.mkdir(exist_ok=True)
           provider=root/'provider/PREPARED.json'
           if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
           if '${{ inputs.ordinary_pond }}' == 'true' or '${{ inputs.groundwater_clock }}' == 'true':
@@ -157,6 +178,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ${{ inputs.groundwater_clock && 'groundwater-cde-clock' || inputs.ordinary_pond && 'ordinary-implicit-pond' || 'secondary-implicit-pond' }}-${{ matrix.optimization }}-${{ github.sha }}
-          path: ${{ runner.temp }}/proof
+          name: ${{ inputs.groundwater_controls_only && 'groundwater-cde-clock-controls' || inputs.groundwater_clock && 'groundwater-cde-clock' || inputs.ordinary_pond && 'ordinary-implicit-pond' || 'secondary-implicit-pond' }}-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ inputs.groundwater_controls_only && format('{0}/proof-current', runner.temp) || format('{0}/proof', runner.temp) }}
           retention-days: 30
