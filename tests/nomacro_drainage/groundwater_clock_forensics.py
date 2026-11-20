@@ -79,8 +79,8 @@ def native(raw,row,build,selected):
                 private_CDE_offset=cp,original_complete_hydraulic_and_CDE_native=True)
 
 
-def audit(root):
-    root=Path(root);q=read(root/'RESULT.json');buildpath=Path(q['build_root']);inputs=Path(q['input_root']);build=read(buildpath/'BUILD.json')
+def audit(root,build_root=None,input_root=None):
+    root=Path(root);q=read(root/'RESULT.json');buildpath=Path(build_root or q['build_root']);inputs=Path(input_root or q['input_root']);build=read(buildpath/'BUILD.json')
     full=q['parameters'].get('phase')=='full'
     require(q['status']==('ACTUAL_GROUNDWATER_CDE_CLOCK_FULL_PHYSICAL_NATIVE_OUTPUT_PASS' if full else
             'ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'), 'Actual composed period incomplete')
