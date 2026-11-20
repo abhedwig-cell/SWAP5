@@ -55,7 +55,8 @@ def groundwater(build,reference,project,full,out):
             public_head=(hys==0 and label=='hydraulic-head' and type(error) is ValueError and
                          str(error)=='Restored donor state differs from the accepted checkpoint receipt')
             assert ('ERROR STOP' in diagnostic or public_head) and not list(target.glob('accepted-*.zip')),(label,str(error),diagnostic)
-            results.append(dict(attack=label,status='REFUSED',error=str(error),diagnostic=diagnostic))
+            results.append(dict(attack=label,status='REFUSED',error=str(error),diagnostic=diagnostic,
+                                refusal_authority='accepted_receipt' if public_head else 'compiled_native'))
         else:raise AssertionError('Corrupt groundwater CDE clock native accepted: '+label)
         assert m.sha(source)==before
     return results
@@ -64,13 +65,26 @@ def groundwater(build,reference,project,full,out):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','profile','output'):p.add_argument('--'+key,type=Path,required=True)
+    p.add_argument('--reuse-clock-controls',type=Path)
     a=p.parse_args();a.output.mkdir();record=json.loads((a.profile/'RESULT.json').read_text())
     build=Path(record['build_root']);project=m.e.load(record['input_root'],original_output=True);before=m.sha(build/'BUILD.json')
     q=dict(status='RUNNING',actual_BUILD_sha256=before)
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        q['clock_refusals']=clock.native(build,a.reference_work,project,a.profile/'trajectory',a.output/'clock-native');save()
+        if a.reuse_clock_controls:
+            prior_path=a.reuse_clock_controls/'RESULT.json';previous=json.loads(prior_path.read_text())
+            assert previous['status']=='FAILED' and previous['actual_BUILD_sha256']==before
+            assert 'Restored donor state differs from the accepted checkpoint receipt' in previous['error']
+            assert len(previous['clock_refusals'])==50 and all(v['status']=='REFUSED' and 'ERROR STOP' in v['diagnostic'] for v in previous['clock_refusals'])
+            assert m.e.inspect(project.input_directory)['selectors']['SWHYST']==0
+            m.validate_bundle(build,a.reference_work,project)
+            q['clock_refusals']=previous['clock_refusals']
+            q['actual_clock_observation_reused']=dict(original_root=str(a.reuse_clock_controls),
+                original_receipt_sha256=m.sha(prior_path),role='Actual completed clock refusals before later observer failure; no wholejobPASS',fresh_clock_workers=0)
+        else:
+            q['clock_refusals']=clock.native(build,a.reference_work,project,a.profile/'trajectory',a.output/'clock-native')
+        save()
         q['groundwater_refusals']=groundwater(build,a.reference_work,project,a.profile/'trajectory',a.output/'groundwater-native');save()
         q['transactions']=clock.transactions(build,a.reference_work,project,a.profile/'trajectory',a.output/'transactions');save()
         assert m.sha(build/'BUILD.json')==before and all(v is True for v in q['transactions'].values())
