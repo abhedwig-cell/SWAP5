@@ -27,7 +27,24 @@ def source(selected):
 
 def native_build(output,project,patched,selected):
     provider=source(selected);(output/(STATE+'.f90')).write_text(provider,encoding='cp1252')
-    path=output/'macropore.f90';path.write_text(macro(path.read_text(encoding='cp1252'),selected),encoding='cp1252')
+    path=output/'macropore.f90';text=path.read_text(encoding='cp1252')
+    if selected['swkimpl'] and not project.solute:
+        # The earlier unchanged dispatcher installs the old implicit water
+        # carry. Replace that exact provider for this new domain, rather than
+        # serializing the same two diagnostic rates twice.
+        import implicit_snow_root_carry as old
+        from snow_undrained_build import owner
+        parent=owner(selected).MAGIC.decode();child=old.CODECS[parent]
+        prior=Path(old.__file__).with_name(old.STATE+'.f90').read_text(encoding='cp1252')+'\n'
+        if not text.startswith(prior) or text.count(prior)!=1:
+            raise ValueError('Foreign original implicit root carry before undrained composition')
+        text=text[len(prior):]
+        for token in ('      use hybrid_implicit_snow_root_state,only:implicit_snow_root_checkpoint\n',
+            '        call implicit_snow_root_checkpoint(unit,.true.,clock)\n',
+            '        call implicit_snow_root_checkpoint(unit,.false.,clock)\n'):
+            text=replace(text,token,'')
+        text=replace(text,"'"+child+"'","'"+parent+"'",2)
+    path.write_text(macro(text,selected),encoding='cp1252')
     return patched
 
 

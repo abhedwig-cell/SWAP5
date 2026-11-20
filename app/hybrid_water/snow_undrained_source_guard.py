@@ -144,3 +144,27 @@ def unchanged_implicit_metadata(old,expected,project):
     if hashlib.sha256(parent.encode()).hexdigest()!=LEGACY_COMPOSITION_SHA:return False
     actual=hashlib.sha256(source.encode()).hexdigest()
     return expected.get(key)==actual and {**old,key:actual}==expected
+
+
+LEGACY_EXPLICIT_ROOT_WRAPPER_SHA='a57890f73cce435f4ed8257051b32219dfd5d85516ddfbb6f0e685cb6e934da2'
+
+
+def unchanged_explicit_root_metadata(old,expected,project):
+    selected=selection(project)
+    if selected is None or selected['swkimpl'] or not isinstance(old,dict) or not isinstance(expected,dict):return False
+    name='snow_undrained_state.py'
+    if old.get('providers',{}).get(name)!=LEGACY_EXPLICIT_ROOT_WRAPPER_SHA:return False
+    source=Path(state.__file__).read_text(encoding='utf-8')
+    actual=inspect.getsource(state.native_build)
+    prefix="    path=output/'macropore.f90';text=path.read_text(encoding='cp1252')\n"
+    tail="    path.write_text(macro(text,selected),encoding='cp1252')\n"
+    start=actual.find(prefix);end=actual.find(tail)
+    if start<0 or end<start:return False
+    replacement="    path=output/'macropore.f90';path.write_text(macro(path.read_text(encoding='cp1252'),selected),encoding='cp1252')\n"
+    original=actual[:start]+replacement+actual[end+len(tail):]
+    if source.count(actual)!=1:return False
+    parent=source.replace(actual,original,1)
+    if hashlib.sha256(parent.encode()).hexdigest()!=LEGACY_EXPLICIT_ROOT_WRAPPER_SHA:return False
+    current=hashlib.sha256(source.encode()).hexdigest()
+    if expected.get('providers',{}).get(name)!=current:return False
+    return {**old,'providers':{**old['providers'],name:current}}==expected
