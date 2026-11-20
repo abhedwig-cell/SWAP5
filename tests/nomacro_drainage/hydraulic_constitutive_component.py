@@ -16,6 +16,7 @@ def main():
     for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     p.add_argument('--correct-model7-capacity',action='store_true')
+    p.add_argument('--model7-grid',action='store_true')
     a=p.parse_args();a.output.mkdir();a.build_root.mkdir(exist_ok=True)
     sys.path.insert(0,str(ROOT/'app/hybrid_water'))
     import user_prepare
@@ -24,7 +25,7 @@ def main():
     sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
     q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         optimization=a.optimization,compiler=[],original_models=[],model_periods=0,public_admitted=False,
-        model7_capacity_correction=a.correct_model7_capacity,
+        model7_capacity_correction=a.correct_model7_capacity,model7_parameter_grid=a.model7_grid,
         purpose='Actual original watcon/moiscap and hconduc/dhconduc. Source assessment only; mismatches are not repaired or admitted.',
         fixture='Existing original4..11 two-soil coefficients1..7/13..21; explicit full-module initialization with hysteresis0/Frost0/NoVap, alphaWet2alpha and entry-.01; no claim of original reader execution')
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf-8')
@@ -59,7 +60,7 @@ def main():
             obj=a.build_root/(name+'.o');compile([*flags,'-c',str(target),'-o',str(obj)])
             assert objects/(name+'.o') in files;affected[objects/(name+'.o')]=obj
             (a.output/target.name).write_bytes(target.read_bytes())
-        driver=Path(__file__).with_name('hydraulic_constitutive_probe.f90');obj=a.build_root/'driver.o';compile([*flags,'-c',str(driver),'-o',str(obj)])
+        driver=Path(__file__).with_name('hydraulic_model7_capacity_grid.f90' if a.model7_grid else 'hydraulic_constitutive_probe.f90');obj=a.build_root/'driver.o';compile([*flags,'-c',str(driver),'-o',str(obj)])
         selected={lookup[symbol] for values in symbols([obj,*affected.values()],'--undefined-only').values() for symbol in values if symbol in lookup}
         while True:
             before=set(selected)
@@ -75,10 +76,10 @@ def main():
         compile([*flags,str(obj),*map(str,linked),str(ref/'ttutil-obj/libttutil.a'),'-o',str(exe)])
         q['executable_sha256']=sha(exe)
         for path in (exe,driver):(a.output/path.name).write_bytes(path.read_bytes())
-        for model in range(1,12):
+        for model in ((7,) if a.model7_grid else range(1,12)):
             r=run([str(exe),str(model)]);(a.output/('model'+str(model)+'.stdout')).write_text(r.stdout,encoding='utf-8');(a.output/('model'+str(model)+'.stderr')).write_text(r.stderr,encoding='utf-8')
             rows=[line.split() for line in r.stdout.splitlines() if line.startswith('ACTUAL_ORIGINAL_HYDRAULIC ')]
-            if r.returncode==0:assert len(rows)==14 and not r.stderr
+            if r.returncode==0:assert len(rows)==(360 if a.model7_grid else 14) and not r.stderr
             q['original_models'].append(dict(model=model,returncode=r.returncode,raw_rows=len(rows),status='COMPONENT_OBSERVED' if r.returncode==0 else 'ORIGINAL_COMPONENT_REFUSED',stderr=r.stderr));save()
         q['status']='ACTUAL_ORIGINAL_HYDRAULIC_INTERFACES_OBSERVED_NO_ADMISSION'
         print(q['status'],len(selected),[(row['model'],row['returncode']) for row in q['original_models']],flush=True)
