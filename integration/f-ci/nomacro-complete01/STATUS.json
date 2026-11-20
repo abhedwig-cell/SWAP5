@@ -2,8 +2,8 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-weighted-history-isolation01",
-  "last_commit": "e84d420bd",
+  "branch": "codex/nomacro-cde-groundwater-clock01",
+  "last_commit": "a46b16a988a7a023bede1247e239f0f7608dc020",
   "status": "SECONDARY_ACTUAL_CANONICAL_ADMITTED_ORDINARY_POND_V2_QUALIFICATION_RUNNING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -334,7 +334,13 @@
       "cause": "Unchecked native returns normal completion despite5480NaN output values. Bounds instrumentation identifiesaccess35 above34 atoriginalsolute.f90:464 forO0/O2. Initial diagnostic assertion wrongly assumed SaltFarm-like195nodes; generalized to actualn+1 and consumed retained O0 without rerun; actualO0 returncodeUNKNOWN retained, O2 recorded."
     }
   ],
-  "running_ci": [],
+  "running_ci": [
+    {
+      "pr": 1768,
+      "head": "a46b16a988a7a023bede1247e239f0f7608dc020",
+      "status": "RUNNING"
+    }
+  ],
   "next_code_change": "Complete current source/raw owner for original extended water/CDE calendar; preserve proved AGE dry-domain refusal and proceed next existing-process/hysteresis composition after integration.",
   "recovery_point": "STATUS.json:ordinary_weighted_history_isolation",
   "external_blocker": null,
@@ -402,7 +408,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Freeze independent ordinary readers after actual current native/transaction and unchanged-owner postimages PASS; retain Windows raw/source/diagnostics and original Ubuntu archives with source-custody records. Install bounded registered source/raw owner with exact predecessor bridge; run actual committed source and inherited-raw negatives, clean public candidate and canonical admission. Then immediately compose CDE groundwater/history subdaily without relaxing its guard.",
+  "next_action": "PR1768 candidatea46 clean23 registered publicPASS158.5155247s; actual committed source1e32545a3 and inheritedraw e6c370d75 correctly refused. Wait pinned PR checks, verify synthetic merge ordered parents/fulltree, merge and actualcanonical public. In parallel prepare next existing CDEclock+groundwater/history composition; preserve ordinary source/raw neutral4027 and readers69 unchanged.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -414,7 +420,7 @@
   "qualified_age_fixed_runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
   "qualified_age_fixed_ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
   "age_fixed_sealed_proof": "56ae017e413503891d6c1a9709d1c882f2a14edb",
-  "active_branch": "codex/nomacro-extended-calendar01",
+  "active_branch": "codex/nomacro-cde-groundwater-clock01",
   "canonical_baseline": "66d6297b1ac0462c9be17f8df3db10c1773d1595",
   "calendar_results": {
     "source": "7943551d0",
@@ -844,7 +850,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-extended-calendar01",
+  "working_branch": "codex/nomacro-cde-groundwater-clock01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -31043,7 +31049,7 @@
     "actual_corrected_nonselected_postimages": 8,
     "actual_final_input_guard_nonselected_postimages": 2,
     "actual_current_ordinary_zero_boundary_public_contexts": 4,
-    "actual_complete_archive_audits": "12 PASS: precorrection/corrected/final ×Windows/Ubuntu ×O0/O2",
+    "actual_complete_archive_audits": "12 PASS: precorrection/corrected/final Ã—Windows/Ubuntu Ã—O0/O2",
     "final_terminal_ci": {
       "run": 44640817201,
       "source": "9f472848850af09ecfd8221bb59e66357f7b7f7c",
@@ -31449,6 +31455,17 @@
       "contexts": 4,
       "status": "PASS",
       "discard_replay_accept_recover_exact": true
+    },
+    "admission": {
+      "pr": 1768,
+      "candidate": "a46b16a988a7a023bede1247e239f0f7608dc020",
+      "candidate_tree": "a1d8e4098f1f634c0424238c6e0167d7f549eeae",
+      "public_seconds": 158.515524700284,
+      "clean_sparse_patterns": 23,
+      "prior_22_pattern_failure": "V1 missing new ordinary proof files,0models; retained raw",
+      "actual_source_negative": "1e32545a3af8bd994f3f94295e1a402472f17495",
+      "actual_inherited_raw_negative": "e6c370d75c50a27f53f9ff76726df09338a2d580",
+      "status": "ACTUAL_CANDIDATE_PUBLIC_AND_COMMITTED_NEGATIVES_PASS_CI_PENDING"
     }
   },
   "current_canonical_sha": "d785e2c3c415122b8e391d3979f1fbceb81ce5b5",
