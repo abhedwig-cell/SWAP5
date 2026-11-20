@@ -260,9 +260,78 @@ def precorrection_ubuntu(path,opt):
   reports['failed-cde-h2']=failed.audit(root/'cde',root/'cde-build')
  return reports
 
+def input_domain(directory,build,primary=False):
+ import re
+ text=(directory/'input/swap.dra').read_text(encoding='cp1252')
+ def one(key):
+  values=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([+-]?\d+)[ \t]*(?:!.*)?$',text);require(len(values)==1,'Missing/ambiguous actual original drainage '+key);return int(values[0])
+ levels,mode,secondary,division=map(one,('NRSRF','SWSRF','SWSEC','SWDIVD'));n=build['project']['nodes']
+ require(build['identity']['extended_drainage']['domain']==[1,n,levels,mode,secondary,mode-2,levels-(mode-2),division],'Actual original drainage input/native domain differs')
+ if primary:require(mode==3,'Unqualified secondary-only implicit profile promoted')
+
+
+from functools import lru_cache
+@lru_cache(maxsize=None)
+def corrected_module(proof,opt):
+ path=Path(proof)/f'EXTENDED_DRAINAGE_IMPLICIT_PRECORRECTION_WINDOWS_{opt}_RAW_ARCHIVE.zip'
+ with prior.archive(path,json.loads(path.with_suffix('.json').read_text())) as z:
+  return z.read('saturation-component/corrected-MOD_MvG_functions.f90').replace(b'\r\n',b'\n')
+
+
+def corrected_source(proof,opt,compiled_root):
+ require((compiled_root/'MOD_MvG_functions.f90').read_bytes().replace(b'\r\n',b'\n')==corrected_module(str(proof),opt),'Actual full-model constitutive source differs from independently qualified real component')
+
+
+def ordinary_current(root,prefix,old,oldprefix,aliases):
+ directory=root/prefix;q=json.loads((directory/'RESULT.json').read_text());bp=aliases[oldprefix]['actual_build_prefix'];build=json.loads(old.read(bp+'/BUILD.json'))
+ require(q['status']=='ACTUAL_CURRENT_PUBLIC_ORDINARY_ZERO_BOUNDARY_UNCHANGED_COMPILED_NATIVE_POSTIMAGE_PASS' and q['actual_old_build_sha256']==prior.digest(old.read(bp+'/BUILD.json')) and q['returncode']==0 and q['new_compilations']==q['new_full_periods']==0,'Actual ordinary current receiver used foreign/changed compiled bundle')
+ require(json.loads((directory/'public/BUILD.json').read_text())==build,'Actual ordinary current public bundle differs')
+ rows=prior.lines((directory/'public/daily.jsonl').read_bytes());before=prior.lines(old.read(oldprefix+'/trajectory/daily.jsonl'));require(len(rows)==4 and prior.physical(rows)==prior.physical(before[30:34]),'Actual ordinary current public physical receipt changed')
+ require(prior.package((directory/'public/accepted-column-1-day-34.zip').read_bytes())[1]==prior.package(old.read(oldprefix+'/trajectory/accepted-column-1-day-34.zip'))[1],'Actual ordinary current complete native changed')
+ from implicit_conductivity_forensics import water,original_observations
+ report=water(rows);original_observations((directory/'public/original/donor.stdout').read_bytes(),rows,build['project']['start_date'])
+ return dict(actual_days=4,exact_complete_native_day=34,unchanged_actual_compiled_sha256=q['actual_old_build_sha256'],independent_water=report)
+
+
+def corrected_windows(path,opt):
+ with extracted(path.with_name('EXTENDED_DRAINAGE_IMPLICIT_CORRECTED_WINDOWS_SOURCE_RAW_ARCHIVE.zip')) as (sources,_):
+  cap=capsule(sources);provider=json.loads((sources/'provider-PREPARED.json').read_text())
+ reports={}
+ with extracted(path) as (root,z):
+  aliases=json.loads(z.read('ACTUAL_COMPILED_ALIASES.json'))['profiles'];require(len(aliases)==8,'Actual corrected numeric phase profile count changed')
+  for prefix,item in aliases.items():
+   q=json.loads(z.read(prefix+'/RESULT.json'));raw=z.read(item['actual_build_prefix']+'/BUILD.json');require(prior.digest(raw)==item['actual_build_sha256'] and (item['producer_source'],item['producer_status'])==(q['source'],q['status']),'Actual corrected numeric source/build phase rebound')
+  with zipfile.ZipFile(path.with_name(f'EXTENDED_DRAINAGE_IMPLICIT_PRECORRECTION_WINDOWS_{opt}_RAW_ARCHIVE.zip')) as old:
+   before_aliases=json.loads(old.read('ACTUAL_COMPILED_ALIASES.json'))['profiles']
+   for h in (0,2):
+    prefix=f'full-cde-h{h}';bp=aliases[prefix]['actual_build_prefix'];report,build,rows=period(root,z,prefix,opt,1096,bp);source_binding(build,cap,provider);input_domain(root/prefix,build,True);corrected_source(path.parent,opt,root/bp)
+    report['controls']=controls(root,prefix,build,rows,cap,compiled_prefix=bp,control_name='controls-v1')
+    prior_prefix=before_aliases[f'failed-cde-h{h}']['actual_build_prefix'];before=json.loads(old.read(prior_prefix+'/BUILD.json'));require(build['inputs']==before['inputs'] and build['project']==before['project'],'Corrected same-context regression changed original inputs')
+    expected={name[len(prior_prefix+'/'):]:old.read(name) for name in old.namelist() if name.startswith(prior_prefix+'/') and '/' not in name[len(prior_prefix+'/'):] and name.endswith('.f90') and not name.endswith('/MOD_MvG_functions.f90')}
+    require(expected=={p.name:p.read_bytes() for p in (root/bp).glob('*.f90') if p.name!='MOD_MvG_functions.f90'},'Corrected integrated nonconstitutive physical source changed')
+    reports[prefix]=report
+   for solu,h in [(0,0),(1,2)]:reports[f'ordinary-current-s{solu}-h{h}']=ordinary_current(root,f'ordinary-current-s{solu}-h{h}',old,f'ordinary-s{solu}-h{h}',before_aliases)
+  prefix='failed-water-secondary';bp=aliases[prefix]['actual_build_prefix'];build=json.loads(z.read(bp+'/BUILD.json'));prior.build_files(z,bp+'/',build);source_binding(build,cap,provider);input_domain(root/prefix,build);corrected_source(path.parent,opt,root/bp)
+  import implicit_failure_forensics as failed
+  reports[prefix]=failed.audit(root/prefix,root/bp)
+  prefix='primary-water-short';bp=aliases[prefix]['actual_build_prefix'];reports[prefix],build,_=period(root,z,prefix,opt,35,bp);source_binding(build,cap,provider);input_domain(root/prefix,build,True);corrected_source(path.parent,opt,root/bp)
+  reports['explicit-off']=nonselected(root,z,opt,path.parent,aliases)
+ return reports
+
+
+def corrected_ubuntu(path,opt):
+ record=json.loads(path.with_suffix('.json').read_text());require(record['repacked'] is False and record['origin_job_conclusion']=='failure','Original corrected Ubuntu artifact repacked or relabelled')
+ with extracted(path) as (root,z):
+  cap=capsule(root);provider=json.loads((root/'provider-PREPARED.json').read_text());reports={}
+  report,build,rows=period(root,z,'cde',opt,1096);source_binding(build,cap,provider);input_domain(root/'cde',build,True);corrected_source(path.parent,opt,root/'cde-build');report['controls']=controls(root,'cde',build,rows,cap);reports['cde']=report
+  build=json.loads(z.read('water-build/BUILD.json'));prior.build_files(z,'water-build/',build);source_binding(build,cap,provider);input_domain(root/'water',build);corrected_source(path.parent,opt,root/'water-build')
+  import implicit_failure_forensics as failed
+  reports['failed-water-secondary']=failed.audit(root/'water',root/'water-build')
+ return reports
+
 if __name__=='__main__':
  import argparse
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('archive',type=Path);p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--precorrection',action='store_true')
- a=p.parse_args();call=(precorrection_windows if a.platform=='Windows' else precorrection_ubuntu) if a.precorrection else (windows if a.platform=='Windows' else ubuntu);reports=call(a.archive,a.optimization)
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('archive',type=Path);p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--precorrection',action='store_true');p.add_argument('--corrected',action='store_true')
+ a=p.parse_args();call=(precorrection_windows if a.platform=='Windows' else precorrection_ubuntu) if a.precorrection else (corrected_windows if a.platform=='Windows' else corrected_ubuntu) if a.corrected else (windows if a.platform=='Windows' else ubuntu);reports=call(a.archive,a.optimization)
  with a.output.open('x') as stream:json.dump(dict(status='INDEPENDENT_ACTUAL_IMPLICIT_ARCHIVE_SOURCE_COMPILER_NATIVE_OBSERVATION_CONTROLS_PASS',reports=reports,model_executions=0,public_admission=False),stream,indent=2)
  print('INDEPENDENT_IMPLICIT_ARCHIVE_PASS',a.platform,a.optimization)
