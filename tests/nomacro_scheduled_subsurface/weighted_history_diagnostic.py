@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--build-root', type=Path)
     parser.add_argument('--variant', choices=('original', 'zero-pond'), default='original')
     parser.add_argument('--end', type=int, default=164)
+    parser.add_argument('--start', type=int, default=160)
     args = parser.parse_args()
     sys.path[:0] = [str(args.source_root/'tests/nomacro_scheduled_subsurface'),
                    str(args.source_root/'tests/nomacro_mixtures')]
@@ -39,7 +40,7 @@ def main():
         start, end, cap, parent = 34, 160, 60, args.short_profile/'trajectory'
     else:
         assert args.prefix and args.build_root
-        start, end, cap, parent = 160, args.end, 45, args.prefix/'trajectory'
+        start, end, cap, parent = args.start, args.end, 45, args.prefix/'trajectory'
         args.build_root.mkdir()
         for path in build.iterdir():
             if path.suffix.lower() in ('.o', '.mod', '.smod', '.f90', '.dll', '.so'):
@@ -49,9 +50,21 @@ def main():
         declaration = '   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, mass_polish_at'
         anchor = '!     reset soil state variables'
         assert source.count(anchor) == source.count(declaration) == 1
-        source = source.replace(declaration, declaration+'\n   integer,save::observed_failures=0', 1)
+        source = source.replace(declaration, declaration+'\n   integer,save::observed_failures=0,observed_entries=0', 1)
+        entry = '!  reset some variables at the start of a new day'
+        assert source.count(entry) == 1
+        source = source.replace(entry, '''
+   if(t1900>=37458d0)then
+      observed_entries=observed_entries+1
+      if(mod(observed_entries,1000)==1)then
+         write(*,'(a,1x,i0,6(1x,es25.17e3))') 'WEIGHTED_ENTRY', &
+            observed_entries,t1900,dt,pond,minval(h(1:numnod)),maxval(h(1:numnod)),minval(k(1:numnod))
+         flush(6)
+      end if
+   end if
+'''+entry, 1)
         observation = '''
-      if(dt<1d-5.and.observed_failures<24)then
+      if(t1900>=37458d0.and.observed_failures<24)then
          observed_failures=observed_failures+1
          write(*,'(a,3(1x,i0),4(1x,es25.17e3))') 'WEIGHTED_FAILED_TRIAL', &
             observed_failures,numbit,iBackTr,t1900,dt,pond,sum1
@@ -117,8 +130,10 @@ def main():
         actual = m.rows(trajectory)
         prior = m.rows(args.failed_profile/'trajectory')
         m.check(actual)
-        overlap = min(len(actual), len(prior)-start)
-        assert m.physical(actual[:overlap]) == m.physical(prior[start:start+overlap])
+        prior_by_day = {row['day']: row for row in prior}
+        shared = [row for row in actual if row['day'] in prior_by_day]
+        overlap = len(shared)
+        assert m.physical(shared) == m.physical([prior_by_day[row['day']] for row in shared])
         assert m.sha(build/'BUILD.json') == build_sha and m.sha(checkpoint) == checkpoint_sha
         status.update(actual_days=len(actual), exact_previously_accepted_days=overlap, seconds=time.monotonic()-clock)
         save()
