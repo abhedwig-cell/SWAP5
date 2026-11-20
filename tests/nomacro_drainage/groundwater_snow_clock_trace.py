@@ -16,7 +16,7 @@ m=original.m
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work','profile','warm','build-root','output'):p.add_argument('--'+name,type=Path,required=True)
-    p.add_argument('--trace-kind',choices=('clock','head'),default='clock')
+    p.add_argument('--trace-kind',choices=('clock','head','top'),default='clock')
     p.add_argument('--target-day',type=int,default=633)
     p.add_argument('--resume-compiled',action='store_true')
     args=p.parse_args();args.output.mkdir(exist_ok=args.resume_compiled);report=json.loads((args.profile/'RESULT.json').read_text())
@@ -25,7 +25,7 @@ def main():
     original_build=m.sha(source/'BUILD.json');private=args.build_root/'bundle'
     if args.resume_compiled:assert private.is_dir()
     else:shutil.copytree(source,private)
-    provider='timecontrol.f90' if args.trace_kind=='clock' else 'headcalc.f90'
+    provider={'clock':'timecontrol.f90','head':'headcalc.f90','top':'boundtop.f90'}[args.trace_kind]
     path=private/provider;raw=(source/provider).read_text(encoding='cp1252')
     anchor='            if (t1900 - hybrid_age_print_epoch + dtCrit > dble(nprintcount)/dble(nprintday)) then'
     addition="""            if(daycum==633.and.fldayend)write(*,'(a,2i10,6(1x,es25.17e3),2l2)') &
@@ -51,6 +51,22 @@ def main():
         assert raw.count('\nsubroutine headcalc\n')==raw.count('\n   implicit none\n')==raw.count(anchor)==1
         changed=raw.replace('\nsubroutine headcalc\n','\nsubroutine headcalc\n'+imports,1)
         changed=changed.replace('\n   implicit none\n','\n   implicit none\n'+declaration,1).replace(anchor,anchor+addition,1)
+        assert changed.replace(imports,'',1).replace(declaration,'',1).replace(addition,'',1)==raw
+    elif args.trace_kind=='top':
+        anchor='      if (h0 <= 1.0d-6) then'
+        addition="""      if(daycum==TRACE_DAY.and.h0>0d0.and.h0<=1d-6.and.private_snow_top_count<32)then
+       private_snow_top_count=private_snow_top_count+1
+       write(*,'(a,i8,8(1x,es25.17e3))')'PRIVATE_SNOW_GW_TOP_TRACE', &
+        daycum,tcum,dt,h0,h(1),pondm1,q1,k1max,disnod(1)
+       flush(6)
+      end if
+""".replace('TRACE_DAY',str(args.target_day))
+        imports='      use variables,only:daycum,tcum\n'
+        declaration='      integer,save::private_snow_top_count=0\n'
+        import_anchor='      use variables,     only: k, swkmean, h, swredu, pondm1, dt, fluseksatexm, ksatexm, ksatfit'
+        decl_anchor='      integer, intent(in)  :: iTask'
+        assert raw.count(anchor)==raw.count(import_anchor)==raw.count(decl_anchor)==1
+        changed=raw.replace(import_anchor,imports+import_anchor,1).replace(decl_anchor,declaration+decl_anchor,1).replace(anchor,addition+anchor,1)
         assert changed.replace(imports,'',1).replace(declaration,'',1).replace(addition,'',1)==raw
     else:
         assert raw.count(anchor)==1 and addition not in raw
@@ -82,25 +98,25 @@ def main():
         origin=args.output/'origin';receipt=m.h.verify_checkpoint(args.warm/'accepted-column-1-day-532.zip',532,meta['binding'],origin)
         target=args.output/'trace';target.mkdir()
         try:
-            run,seconds=m.bounded(45 if args.trace_kind=='head' else 60,lambda:m.h.run(donor,m.h.executable(private,'day_kernel'),case,target,args.target_day,
+            run,seconds=m.bounded(45 if args.trace_kind!='clock' else 60,lambda:m.h.run(donor,m.h.executable(private,'day_kernel'),case,target,args.target_day,
                 checkpoint_day=532,origin=origin,origin_receipt=receipt,runtime=True,publish_day=None,
                 checkpoint_binding=meta['binding'],model=project.model,project=project))
             assert run['first_refusal'] is None
         except Exception as error:
-            if args.trace_kind!='head':raise
+            if args.trace_kind=='clock':raise
             seconds=None;result['actual_censor_or_refusal']=repr(error)
         assert not list(target.glob('accepted-*.zip'))
         actual=m.rows(target);warm=m.rows(args.warm)
         assert m.physical(actual)==m.physical(warm[532:532+len(actual)])
-        prefix='PRIVATE_SNOW_GW_HEAD_TRACE' if args.trace_kind=='head' else 'PRIVATE_SNOW_GW_CLOCK_TRACE'
+        prefix={'head':'PRIVATE_SNOW_GW_HEAD_TRACE','clock':'PRIVATE_SNOW_GW_CLOCK_TRACE','top':'PRIVATE_SNOW_GW_TOP_TRACE'}[args.trace_kind]
         lines=[s for s in (target/'original/donor.stdout').read_text(encoding='utf-8').splitlines() if s.startswith(prefix)]
-        assert lines and (args.trace_kind=='head' or len(lines)==1),lines
+        assert lines and (args.trace_kind!='clock' or len(lines)==1),lines
         result.update(status='PRIVATE_IO_ONLY_TRACE_PHYSICAL_PREFIX_MATCH_NOT_ADMITTED',seconds=seconds,actual_trace=lines,
                       trace_kind=args.trace_kind,actual_prefix_days=len(actual))
     except Exception as error:
         result.update(status='PRIVATE_TRACE_FAILED_NOT_ADMITTED',error=repr(error));raise
     finally:save()
-    print(result['status'],result['actual_trace'])
+    print(result['status'],'trace_rows=',len(result['actual_trace']))
 
 
 if __name__=='__main__':main()
