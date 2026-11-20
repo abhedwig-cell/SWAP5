@@ -28,7 +28,7 @@ def main():
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        windows=[(2,4),(7,9),(30,34),(163,165),(199,201),(364,367),(530,532),(1094,1096)]
+        windows=[(2,4),(7,9),(30,34),(163,165),(199,201),(364,367),(530,532),(633,635),(1094,1096)]
         q['trajectory'],data=m.trajectory(build,a.reference_work,project,a.output/'trajectory',1096,
             {1096,*(day for pair in windows for day in pair)},180)
         q['cold']=[];save()

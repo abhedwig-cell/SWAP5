@@ -132,7 +132,7 @@ def audit(root,build_root=None,input_root=None):
             found.add(day)
         return found
     windows=[(2,4),(7,9),(30,34)]+([(17,20)] if q['parameters'].get('epoch') else [])
-    if full:windows += [(163,165),(199,201),(364,367),(530,532),(1094,1096)]
+    if full:windows += [(163,165),(199,201),(364,367),(530,532),(633,635),(1094,1096)]
     require(checkpoints(warm,data)=={days,*(d for pair in windows for d in pair)},'Actual composed warm native inventory differs')
     require([(r['start'],r['end']) for r in q['cold']]==windows,'Actual composed cold denominator differs')
     def outputs(path):return {n:original.output_records((path/n).read_bytes(),n) for n in ('result_output.csv','result_output.bin') if (path/n).exists()}
