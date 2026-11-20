@@ -4,11 +4,14 @@ No model imports or model executions. Earlier scientific/native readers remain
 literal dependencies; producer summaries supply locations, never expected fluxes.
 """
 import argparse
+from datetime import date
 import hashlib
+import io
 import json
 from pathlib import Path
 import re
 import sys
+import struct
 import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]/'tests/nomacro_scheduled_subsurface'))
@@ -34,6 +37,74 @@ def physical(data):
     return [{k: v for k, v in row.items() if k not in ('column', 'revision')} for row in data]
 
 
+def clock_checkpoint(raw, build, row, selected):
+    """Use the already qualified CDE clock owner for its unchanged S5CCH ABI."""
+    from cde_clock_verify import native
+    with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+        require(set(archive.namelist()) == {'checkpoint.json', 'result.end', 'macro.bin'}, 'Foreign CDE clock checkpoint')
+        meta = json.loads(archive.read('checkpoint.json'))
+        require(meta['schema'] == 'swap5-hybrid-water-checkpoint-3' and meta['binding'] == build['binding'] and
+                meta['receipt'] == row and set(meta['files']) == {'result.end', 'macro.bin'}, 'CDE clock receipt/binding differs')
+        for name, sha in meta['files'].items():
+            require(hashlib.sha256(archive.read(name)).hexdigest() == sha, 'Actual CDE clock native bytes changed')
+        wire = archive.read('macro.bin')
+        n, stored, step, canopy = struct.unpack_from('<i3d', wire, 8)
+        epoch = build['project']['start_date']
+        clock = (date.fromisoformat(epoch)-date(1900, 1, 1)).days+1
+        require(wire[:8] == b'S5CCH001' and n == build['project']['nodes'] and stored == clock+row['day'] and
+                prior.finite([stored, step, canopy]) and 0 < step <= 1 and canopy >= 0,
+                'Actual CDE clock prefix differs')
+        prior.sequential_records(archive.read('result.end'))
+        return native(wire, row, n, selected, epoch)
+
+
+def clock_short(case, report, build, selected):
+    """The new composition uses the existing clock codec, not the older whitelist."""
+    from cde_clock_verify import ledger
+    path = case/'short'
+    full = path/'trajectory'
+    data = rows(full)
+    require(report['status'] == 'ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS' and
+            len(data) == report['trajectory']['days'] == 35 and data[0]['day'] == 1 and data[-1]['day'] == 35,
+            'Incomplete actual composed CDE clock short period')
+    require(report['numerical_policy'] == {k: v for k, v in build['identity']['implicit_conductivity'].items()
+                                         if k != 'source_sha256'}, 'Actual composed numerical contract differs')
+    prior.water(data)
+    ledger(data, 35)
+    epoch = build['project']['start_date']
+    prior.original_observations((full/'original/donor.stdout').read_bytes(), data, epoch)
+    def native_at(directory, actual):
+        by_day = {r['day']: r for r in actual}
+        found = set()
+        for p in directory.glob('accepted-column-1-day-*.zip'):
+            day = int(p.stem.rsplit('-', 1)[1])
+            require(day in by_day, 'Native clock day outside actual period')
+            clock_checkpoint(p.read_bytes(), build, by_day[day], selected)
+            found.add(day)
+        return found
+    def outputs(directory):
+        return {name: prior.output_records((directory/name).read_bytes(), name)
+                for name in ('result_output.csv', 'result_output.bin') if (directory/name).is_file()}
+    windows = [(2, 4), (7, 9), (30, 34)]
+    require([(v['start'], v['end']) for v in report['cold']] == windows and
+            native_at(full, data) == {2, 4, 7, 9, 30, 34, 35}, 'Actual CDE clock native windows differ')
+    for item in report['cold']:
+        start, end = item['start'], item['end']
+        cold_path = path/f'own-{start}'
+        cold = rows(cold_path)
+        require(physical(cold) == physical(data[start:end]), 'Actual composed CDE clock cold rows differ')
+        prior.water(cold)
+        ledger(cold, len(cold))
+        prior.original_observations((cold_path/'original/donor.stdout').read_bytes(), cold, epoch)
+        require(native_at(cold_path, cold) == {end}, 'Actual composed CDE cold native missing')
+        with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as a, \
+                zipfile.ZipFile(cold_path/f'accepted-column-1-day-{end}.zip') as b:
+            require(all(a.read(n) == b.read(n) for n in ('result.end', 'macro.bin')), 'Actual complete CDE native differs')
+        require(prior.output_continuation(outputs(full/'original'), outputs(cold_path/'original'),
+                selected, start, end, epoch) == item['exact_original_output'], 'Actual CDE original output differs')
+    return 3
+
+
 def audit_short(case, build_root=None, input_root=None):
     """Reuse the literal prior 35-day physical/native/output observation body."""
     from implicit_conductivity_verify import actual_period
@@ -50,7 +121,7 @@ def audit_short(case, build_root=None, input_root=None):
         require(Path(name).name == name and digest(build_root/name) == sha, 'Actual ordinary short Fortran changed')
     raw = (input_root/'swap.swp').read_bytes()
     selected = dict(build['identity']['original_output'])
-    for field, name in [('swdra', 'SWDRA'), ('et', 'SWCFBS')]:
+    for field, name in [('swdra', 'SWDRA'), ('et', 'SWCFBS'), ('swhyst', 'SWHYST')]:
         values = re.findall(rb'(?mi)^\s*'+name.encode()+rb'\s*=\s*(\d+)', raw)
         require(len(values) == 1, 'Ambiguous actual ordinary short selector')
         selected[field] = int(values[0])
@@ -63,9 +134,12 @@ def audit_short(case, build_root=None, input_root=None):
         def read(self, name):
             return files[name].read_bytes()
     projected_report = dict(report, _build_prefix='build/')
-    count = actual_period(ActualFiles(), 'profile/', projected_report, build,
-                          report['parameters']['optimization'], selected,
-                          geometry(raw, build['project']['nodes']), 'short')
+    if build['identity']['original_output'].get('native_codec') == 'S5CCH001':
+        count = clock_short(case, report, build, selected)
+    else:
+        count = actual_period(ActualFiles(), 'profile/', projected_report, build,
+                              report['parameters']['optimization'], selected,
+                              geometry(raw, build['project']['nodes']), 'short')
     require(count == 3, 'Actual ordinary short native denominator differs')
     return dict(status='INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS', actual_days=35,
                 actual_cold_windows=count, parameters=report['parameters'])
