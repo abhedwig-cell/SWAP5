@@ -36,18 +36,22 @@ def active_selection(project):
     monthly=one('SWMONTH');dates=0 if monthly else one('SWODAT');requested=0 if monthly else one('PERIOD')
     if monthly==0 and dates==0 and requested==1:return None
     if project.time_step_policy!='original-adaptive-day-seed-v1':return None
-    for key,value in dict(SWMACRO=0,SWSOLU=1,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWDRA=1,SWMETDETAIL=0,SWSOPHY=0).items():
+    for key,value in dict(SWMACRO=0,SWSOLU=1,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWMETDETAIL=0,SWSOPHY=0).items():
         if one(key)!=value:return None
     from experimental_project import inspect
-    if inspect(project.input_directory,original_output=True)['boundary']['SWBOTB'] not in (5,8):return None
+    bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
+    if bottom not in (1,5,8) or bottom==1 and swsnow:return None
+    drainage=one('SWDRA')
+    if drainage not in (0,1) or bottom!=1 and drainage!=1:return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
     if hys not in (0,1,2):return None
     if monthly not in (0,1) or dates not in (0,1) or reset not in (0,1) or fmt not in (0,1,2,3) or not 0<=requested<=366:raise ValueError('Invalid original CDE interval selectors')
     precision=one('NUM_DECIMALS',5) if fmt else None
     if precision is not None and not 5<=precision<=12:raise ValueError('Invalid original CDE interval precision')
-    return dict(cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=1,
+    return dict(cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=drainage,
         swhyst=hys,swcsv=fmt,nprintday=1,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=requested,flprintdt=False,
-        groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision)
+        groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
+        **({'groundwater_cde_interval':True} if bottom==1 else {}))
 
 
 def selection(project):
@@ -57,6 +61,9 @@ def selection(project):
 
 def magic(project):
     selected=active_selection(project)
+    if selected is not None and selected.get('groundwater_cde_interval'):
+        from groundwater_cde_interval import magic as groundwater_magic
+        return groundwater_magic(project)
     return prior.magic(project) if selected is None else MAGICS['snow' if selected['swsnow'] else 'history' if selected['swhyst'] else 'ordinary']
 
 
@@ -80,6 +87,10 @@ def metadata(project):
         preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False,physical_equations_changed=False)
     if is_snow:result.update(snow_output_source_sha256=sha(folder/'cde_interval_snow_state.f90'),snow_output_fields=list(SNOW_FIELDS),snow_output_domain_bytes=32,snow_output_value_bytes=56,
         snow_stock='actual MOD_snow ssnow',snow_increment_slots=[2,3,13])
+    if selected.get('groundwater_cde_interval'):
+        result.update(groundwater_interval_composition_sha256=sha(folder/'groundwater_cde_interval.py'),
+                      groundwater_interval_policy='existing-cde-interval-complete-groundwater-native-v1',
+                      groundwater_new_physical_state=False)
     return result
 
 

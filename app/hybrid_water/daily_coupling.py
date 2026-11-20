@@ -213,6 +213,9 @@ def validate_bundle(bundle, reference, project):
     if identity.get('ordinary_implicit_pond_switch'):
         from ordinary_pond_source_guard import validate as validate_ordinary_pond_source
         validate_ordinary_pond_source(bundle,project,identity)
+    if (identity.get('original_output') or {}).get('groundwater_cde_interval'):
+        from groundwater_cde_interval import validate_source as validate_groundwater_interval_source
+        validate_groundwater_interval_source(bundle,identity)
     if ((identity.get('original_output') or {}).get('groundwater_cde_clock') and
             not identity.get('ordinary_implicit_pond_switch')):
         from groundwater_cde_clock_source_guard import validate as validate_groundwater_clock_source
