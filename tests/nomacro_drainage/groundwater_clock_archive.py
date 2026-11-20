@@ -10,7 +10,7 @@ from ordinary_pond_evidence import digest,require
 def unpack(archive,record,root):
     archive,root=Path(archive),Path(root)
     require(archive.stat().st_size==record['size_in_bytes'] and 'sha256:'+digest(archive)==record['digest'],'Original GitHub artifact differs')
-    if os.name=='nt':root=Path('\\\\?\\'+str(root.resolve()))
+    if os.name=='nt' and not str(root).startswith('\\\\?\\'):root=Path('\\\\?\\'+str(root.resolve()))
     root.mkdir(exist_ok=True);members={}
     with zipfile.ZipFile(archive) as z:
         require(z.testzip() is None,'Actual original artifact CRC failure')
