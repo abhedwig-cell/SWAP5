@@ -1495,7 +1495,7 @@
     "next": "Separate explicit evaporation-age/dry-state semantics and qualified state owner; retain actual failure and original equations."
   },
   "coverage": {
-    "canonical_reconciled": "ff1db48993ab801dc38202540d68686baa4fd2a2",
+    "canonical_reconciled": "21fce9bc6275d998d3936e035c39ed4204efa70b",
     "authority": "This object extends existing GAP_MATRIX; STATUS.json remains sole recovery record. Existing26boundedfamily rows and original_integer_reader_calls are inherited, not recounted as full closure.",
     "denominator_status": "INCOMPLETE_VALID_CONFIGURATION_CONSTRAINT_RECONCILIATION",
     "full_historical_families_closed": "UNKNOWN",
@@ -1887,15 +1887,15 @@
     "whole_scientific_equivalence": "NOT_QUALIFIED"
   },
   "extended_drainage_implicit_composition": {
-    "classification": "EVIDENCE_ONLY",
-    "implementation": "BOUNDED_PRIMARY_SOURCE_QUALIFIED_PENDING_CANONICAL",
+    "classification": null,
+    "implementation": "BOUNDED_CANONICALLY_ADMITTED_PR1766",
     "source": "9f472848850af09ecfd8221bb59e66357f7b7f7c",
     "scope": "Primary+secondary SWSRF3/SWSEC1,2, bottom6 qbot0, water/CDE SWHYST0/1/2; original continuous Mualem reference correction; all old fixed exclusions retained",
-    "actual_short_extended_contexts": 12,
+    "actual_short_extended_contexts": 18,
     "actual_short_ordinary_zero_boundary_contexts": 4,
     "actual_component_cases_per_optimization": 40,
     "selected_full_periods": 8,
-    "actual_completed_full_periods": 2,
+    "actual_completed_full_periods": 8,
     "actual_explicit_off_postimages": 8,
     "remaining": "Secondary-only SWSRF2 implicit Newton day289 hard refused; AGE dry-domain, broader weather/other lower-boundary compositions remain separate; whole family closure UNKNOWN",
     "AGE_admitted": false,
@@ -1913,16 +1913,22 @@
     "actual_CDE_h0_regression_full_periods": 2,
     "actual_current_short_contexts": 18,
     "actual_current_short_cold_windows": 54,
-    "actual_current_source_archive_audits": 12
+    "actual_current_source_archive_audits": 12,
+    "actual_canonical": "21fce9bc6275d998d3936e035c39ed4204efa70b",
+    "receipt": "EXTENDED_DRAINAGE_IMPLICIT_MERGE_RECEIPT_V1.json"
   },
   "extended_drainage_implicit_secondary_only": {
-    "classification": "NUMERICAL_FAILURE",
-    "implementation": "HARD_REFUSED_BEFORE_BUILD",
+    "classification": "REFERENCE_DEFECT",
+    "implementation": "ORIGINAL_POND_SWITCH_GAP_REPRODUCED_CORRECTION_UNDER_QUALIFICATION",
     "actual_source": "5c78ec11c",
     "actual_scope": "Original secondary-only water after continuous-Mualem correction, SWSRF2/SWSEC2, Windows/Ubuntu O0/O2",
     "accepted_days_each": 288,
     "failure": "Strict original Newton rollback reaches unchanged8ULP clock floor on day289; real nodal and pond/head flags retained. No accepted day289.",
     "qualified": false,
-    "next_action": "Original source/native read-only isolation of coupled soil/pond switch; no clipping, invented stock, tolerances or unchecked fallback."
+    "next_action": "Finish targeted hys0/1/2+SWSEC1/2 matrix; unchangedprimary/explicit/ordinary postimages; originalfailedsourceguard attempts retained. Audit originalUbuntu full raw with corrected independent history-aware reader; targeted currentpostimages/controls only, no full repeats. Freeze evidence/readers then boundedsourceadmission.",
+    "original_failure": "Original1e-6cm positive-pond deadband; continuousMualem retained, allsoil saturated. Original completeMOD_top closedformflux jump1.6648327577e-4cm/day; onlyzero switch changes. Separate original HeadCalc backtracking probe alone still fails.",
+    "candidate_numeric_source": "56b97768c",
+    "candidate_Windows_full_periods": 4,
+    "candidate_native_windows": 28
   }
 }
