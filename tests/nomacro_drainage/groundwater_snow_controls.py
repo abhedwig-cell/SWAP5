@@ -66,6 +66,7 @@ def groundwater(build,reference,project,full,out):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','profile','output'):p.add_argument('--'+key,type=Path,required=True)
+    p.add_argument('--reuse-native-from',type=Path)
     a=p.parse_args();a.output.mkdir(parents=True);record=json.loads((a.profile/'RESULT.json').read_text())
     build=Path(record['build_root']);project=m.e.load(record['input_root'],original_output=True);before=m.sha(build/'BUILD.json')
     q=dict(status='RUNNING',actual_BUILD_sha256=before,profile_root=str(a.profile),
@@ -75,7 +76,17 @@ def main():
     try:
         selected=m.validate_bundle(build,a.reference_work,project)[0]['identity']['original_output']
         owner=interval if selected.get('groundwater_cde_interval') else clock
-        q['clock_refusals']=owner.native(build,a.reference_work,project,a.profile/'trajectory',a.output/'clock-native')
+        if selected.get('groundwater_cde_interval') and selected['swdra']==0:
+            from groundwater_snow_interval_native import native
+            if a.reuse_native_from:
+                previous=json.loads((a.reuse_native_from/'RESULT.json').read_text())
+                assert previous['status']=='FAILED' and previous['error']=='AssertionError()' and previous['actual_BUILD_sha256']==before
+                q['original_failed_control_root']=str(a.reuse_native_from)
+            q['clock_refusals']=native(build,a.reference_work,project,a.profile/'trajectory',a.output/'clock-native',
+                None if a.reuse_native_from is None else a.reuse_native_from/'clock-native')
+        else:
+            assert a.reuse_native_from is None
+            q['clock_refusals']=owner.native(build,a.reference_work,project,a.profile/'trajectory',a.output/'clock-native')
         save()
         q['groundwater_refusals']=groundwater(build,a.reference_work,project,a.profile/'trajectory',a.output/'groundwater-native');save()
         q['transactions']=clock.transactions(build,a.reference_work,project,a.profile/'trajectory',a.output/'transactions');save()

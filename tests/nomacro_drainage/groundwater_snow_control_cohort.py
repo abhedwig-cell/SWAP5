@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--version',default='v2',choices=('v2','v3'))
     parser.add_argument('--recover-failed-source',action='store_true')
     parser.add_argument('--source-recovery-map',type=Path)
+    parser.add_argument('--native-recovery-map',type=Path)
     args=parser.parse_args();args.output.mkdir()
     result=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                 native={},source_controls={},repeated_model_periods=0,fresh_compilations=0)
@@ -27,6 +28,7 @@ def main():
     try:
         profiles=json.loads((args.cohort/'RESULT.json').read_text())['cases']
         recovery={} if args.source_recovery_map is None else json.loads(args.source_recovery_map.read_text())
+        native_recovery={} if args.native_recovery_map is None else json.loads(args.native_recovery_map.read_text())
         for group,labels in (('native',NATIVE),('source_controls',SOURCE)):
             for label in labels:
                 profile_root=Path(profiles[label]['actual_case_root'])
@@ -53,6 +55,10 @@ def main():
                     save();continue
                 kind='controls' if group=='native' else 'source-controls'
                 target=args.evidence/f'groundwater-snow-{kind}-{label}-{args.optimization}-{args.version}'
+                prior_native=None
+                if group=='native' and label in native_recovery:
+                    prior_native=Path(native_recovery[label]['from']);target=Path(native_recovery[label]['to'])
+                    assert target.parent.resolve()==args.evidence.resolve() and target!=prior_native
                 expected=('ACTUAL_EXPLICIT_SNOW_GROUNDWATER_CDE_COMPILED_NATIVE_TRANSACTION_PASS' if group=='native'
                           else 'ACTUAL_EXPLICIT_SNOW_GROUNDWATER_SOURCE_POLICY_REFUSALS_PASS')
                 if group=='source_controls' and args.recover_failed_source and target.exists():
@@ -65,6 +71,7 @@ def main():
                     controller='groundwater_snow_'+('controls' if group=='native' else 'source_controls')+'.py'
                     command=[sys.executable,'-B',str(Path(__file__).with_name(controller)),
                              '--reference-work',str(args.reference_work),'--profile',str(profile_root),'--output',str(target)]
+                    if prior_native is not None:command+=['--reuse-native-from',str(prior_native)]
                     with (args.output/f'{kind}-{label}.stdout').open('x') as out,(args.output/f'{kind}-{label}.stderr').open('x') as err:
                         subprocess.run(command,cwd=ROOT,stdout=out,stderr=err,timeout=300,check=True)
                     reused=False
