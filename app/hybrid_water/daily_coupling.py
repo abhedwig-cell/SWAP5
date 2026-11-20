@@ -213,7 +213,11 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Foreign ordinary implicit positive-pond reference policy')
     validate_ordinary_pond(bundle,project)
     implicit_snow=(identity.get('implicit_conductivity') or {}).get('implicit_snow_composition') is True
-    if (identity.get('original_output') or {}).get('ordinary_snow_undrained_output'):
+    implicit_frost=(identity.get('implicit_conductivity') or {}).get('implicit_frost_composition') is True
+    if implicit_frost:
+        from implicit_frost_source_guard import validate_source as validate_implicit_frost
+        validate_implicit_frost(bundle,project,identity,reference)
+    elif (identity.get('original_output') or {}).get('ordinary_snow_undrained_output'):
         from snow_undrained_source_guard import validate_source as validate_undrained_snow
         validate_undrained_snow(bundle,project,identity,reference)
     elif (identity.get('original_output') or {}).get('groundwater_snow_water_output'):

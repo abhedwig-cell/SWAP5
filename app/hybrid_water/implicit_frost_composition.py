@@ -37,6 +37,7 @@ def metadata(project):
     if not enabled(project): return None
     folder = Path(__file__).parent
     providers = ['implicit_frost_composition.py', 'implicit_frost_surface_conductivity.py',
+                 'implicit_frost_source_guard.py',
                  'frost_drainage_composition.py', 'frost_divdra_overlap.py',
                  'ordinary_implicit_pond_switch.py', 'ordinary_implicit_pond_tangent.py',
                  'extended_implicit_pond.py']
