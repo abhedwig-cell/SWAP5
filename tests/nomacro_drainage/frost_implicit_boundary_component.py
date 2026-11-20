@@ -30,7 +30,7 @@ def main():
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
     q = dict(status='RUNNING', source=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
              optimization=a.optimization, floating_point_profile=no_macro_fp_profile(), compiler=[], model_periods=0,
-             implicit_frost_public_admitted=False, scope='ponded no-runoff boundary; bottom6; three cells')
+             implicit_frost_public_admitted=False, scope='dry flux, no-runoff pond, linear/nonlinear/instantaneous runoff; fitted/examined Ksat; bottom6; three cells')
     def save(): (a.output / 'RESULT.json').write_text(json.dumps(q, indent=2) + '\n', encoding='utf-8')
     def run(cmd): return subprocess.run(cmd, cwd=a.build_root, capture_output=True, text=True, timeout=90)
     save()
@@ -68,12 +68,13 @@ def main():
         fixed = old
         for conductivity in ('katm', 'ksatfit(1)'):
             before = 'k(1),' + conductivity + ',dz(1)'
-            after = 'k(1),' + conductivity + '*rfcp(1)+hconode_vsmall*(1d0-rfcp(1)),dz(1)'
+            selected = 'merge(ksatexm(1),ksatfit(1),fluseksatexm(1))' if conductivity == 'ksatfit(1)' else conductivity
+            after = 'k(1),' + selected + '*rfcp(1)+hconode_vsmall*(1d0-rfcp(1)),dz(1)'
             assert fixed.count(before) == 2
             fixed = fixed.replace(before, after)
         import_anchor = '   use MOD_top,only:katm'
         assert fixed.count(import_anchor) == 1
-        fixed = fixed.replace(import_anchor, '   use MOD_MvG,only:hconode_vsmall\n' + import_anchor, 1)
+        fixed = fixed.replace(import_anchor, '   use MOD_MvG,only:hconode_vsmall\n   use variables,only:ksatexm,fluseksatexm\n' + import_anchor, 1)
         assert fixed != old
         assert original[start:end] in fixed
         # Reuse the exact accepted history/availability/pond providers, including
@@ -117,13 +118,13 @@ def main():
             q['variants'][name] = observation; save(); result.check_returncode()
             assert not result.stderr
             rows = [line.split() for line in result.stdout.splitlines() if line.startswith('ACTUAL_FROST_BOUNDARY ')]
-            assert len(rows) == 144 and all(len(row) == 12 for row in rows)
-            values = [[float(v) for v in row[5:]] for row in rows]
+            assert len(rows) == 1440 and all(len(row) == 14 for row in rows)
+            values = [[float(v) for v in row[7:]] for row in rows]
             assert all(math.isfinite(v) for row in values for v in row)
             observation.update(cases=len(rows), failures=sum(row[-1] > 2e-6 for row in values),
                                max_relative_error=max(row[-1] for row in values))
             matrix_rows = [line.split() for line in result.stdout.splitlines() if line.startswith('ACTUAL_FROST_MATRIX ')]
-            assert len(matrix_rows) == 1296 and all(len(row) == 9 for row in matrix_rows)
+            assert len(matrix_rows) == 12960 and all(len(row) == 9 for row in matrix_rows)
             matrix_values = [[float(v) for v in row[4:]] for row in matrix_rows]
             assert all(math.isfinite(v) for row in matrix_values for v in row)
             observation.update(matrix_entries=len(matrix_rows),
@@ -134,7 +135,7 @@ def main():
         assert q['variants']['diagnostic_frost_surface_conductivity']['failures'] == 0
         assert q['variants']['diagnostic_frost_surface_conductivity']['matrix_failures'] == 0
         assert q['variants']['actual_qualified_ordinary_implicit_composition']['failures'] > 0
-        q['status'] = 'ACTUAL_QUALIFIED_POND_COMPOSITION_FROST_SURFACE_144_STATES_1296_ENTRIES_PASS_NO_PUBLIC_ADMISSION'
+        q['status'] = 'ACTUAL_QUALIFIED_POND_COMPOSITION_FROST_SURFACE_1440_STATES_12960_ENTRIES_PASS_NO_PUBLIC_ADMISSION'
         print(q['status'], len(selected), flush=True)
     except Exception as error:
         q.update(status='FAILED', error=repr(error)); raise

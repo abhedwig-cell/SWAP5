@@ -12,7 +12,7 @@ subroutine frost_boundary_probe()
   real(8),parameter::heads(3)=[-10d0,-30d0,-100d0]
   real(8)::baseline(3),delta,minus,plus,analytic,approximation,error,scale
   real(8)::matrix(3,3),left_vector(3),right_vector(3),difference(3)
-  integer::curve,mean,reduction,headindex,cases,node,column,row
+  integer::curve,mean,reduction,headindex,cases,node,column,row,mode,examined
   NN=3;numnod=3;numlay=1;layer(1:4)=1;swfrost=1;swmacro=0;swrunon=0
   swsophy=0;iHWCKmodel=1;sw_use_elas=0;fl_use_tables=.false.;fl_use_kh_power=.false.
   swkimpl=1;swbotb=6;swredu=0;dt=0.01d0;pondmx=1000d0
@@ -25,7 +25,7 @@ subroutine frost_boundary_probe()
     cofgen(1:12,node)=[0.02d0,0.43d0,83.2d0,0.02d0,0.5d0,1.5d0, &
         0.33333333333333337d0,0.04d0,0d0,-999d0,0d0,0d0]
   end do
-  ksatfit(1:4)=83.2d0;ksatexm(1:4)=83.2d0;fluseksatexm=.false.
+  ksatfit(1:4)=83.2d0;ksatexm(1:4)=124.8d0;fluseksatexm=.false.
   call set_cofgen_pointers
   cases=0
   do curve=-1,1,2
@@ -39,13 +39,19 @@ subroutine frost_boundary_probe()
       do reduction=1,size(reductions)
         rfcp(1:4)=reductions(reduction)
         do headindex=1,3
+        do mode=1,5
+        do examined=0,1
+          fluseksatexm=examined==1
           baseline=[heads(headindex),-40d0,-60d0]
           h(1:3)=baseline
           do node=1,3
             thetm1(node)=watcon(node,h(node))
           end do
-          call frost_probe_evaluate()
-          if(.not.ftoph.or.hsurf<=0d0.or.runots/=0d0)error stop 'Actual ponded no-runoff boundary absent'
+          call frost_probe_evaluate(mode)
+          if(mode==1.and.ftoph)error stop 'Actual dry flux boundary absent'
+          if(mode>1.and.(.not.ftoph.or.hsurf<=0d0))error stop 'Actual ponded boundary absent'
+          if(mode==2.and.runots/=0d0)error stop 'Actual no-runoff boundary absent'
+          if(mode>2.and.runots<=0d0)error stop 'Actual runoff boundary absent'
           call jacobian_F()
           analytic=dFdhM(1)
           matrix=0d0
@@ -56,21 +62,21 @@ subroutine frost_boundary_probe()
           end do
           delta=abs(h(1))*1d-5
           h(1:3)=baseline;h(1)=h(1)-delta
-          call frost_probe_evaluate();minus=F(1)
+          call frost_probe_evaluate(mode);minus=F(1)
           h(1:3)=baseline;h(1)=h(1)+delta
-          call frost_probe_evaluate();plus=F(1)
+          call frost_probe_evaluate(mode);plus=F(1)
           approximation=(plus-minus)/(2d0*delta)
           error=abs(analytic-approximation)
           scale=max(abs(analytic),abs(approximation),1d-8)
           cases=cases+1
-          write(*,'(a,4(1x,i0),7(1x,es25.17e3))')'ACTUAL_FROST_BOUNDARY', &
-              cases,curve,mean,headindex,reductions(reduction),baseline(1),analytic,approximation,error,scale,error/scale
+          write(*,'(a,6(1x,i0),7(1x,es25.17e3))')'ACTUAL_FROST_BOUNDARY', &
+              cases,curve,mean,headindex,mode,examined,reductions(reduction),baseline(1),analytic,approximation,error,scale,error/scale
           do column=1,3
             delta=abs(baseline(column))*1d-5
             h(1:3)=baseline;h(column)=h(column)-delta
-            call frost_probe_evaluate();left_vector=F(1:3)
+            call frost_probe_evaluate(mode);left_vector=F(1:3)
             h(1:3)=baseline;h(column)=h(column)+delta
-            call frost_probe_evaluate();right_vector=F(1:3)
+            call frost_probe_evaluate(mode);right_vector=F(1:3)
             difference=(right_vector-left_vector)/(2d0*delta)
             do row=1,3
               error=abs(matrix(row,column)-difference(row))
@@ -80,16 +86,30 @@ subroutine frost_boundary_probe()
             end do
           end do
         end do
+        end do
+        end do
       end do
     end do
   end do
-  if(cases/=144)error stop 'Actual boundary probe denominator changed'
+  if(cases/=1440)error stop 'Actual boundary probe denominator changed'
 end subroutine
 
-subroutine frost_probe_evaluate()
+subroutine frost_probe_evaluate(mode)
+  use variables,only:pondmx,rsro,rsroexp
   implicit none
+  integer,intent(in)::mode
   integer::node
-  pondm1=10d0;pond=0d0;runots=0d0;flunsatok=.true.;flboth=.false.
+  pondm1=30d0;pondmx=0.1d0;rsro=0.5d0;rsroexp=1d0
+  if(mode==1)then
+    pondm1=0d0;pondmx=1000d0
+  else if(mode==2)then
+    pondmx=1000d0
+  else if(mode==4)then
+    rsroexp=2d0
+  else if(mode==5)then
+    rsro=1d-4;rsroexp=2d0
+  end if
+  pond=0d0;runots=0d0;flunsatok=.true.;flboth=.false.
   do node=1,NN
     theta(node)=watcon(node,h(node))
     dimoca(node)=moiscap(node,h(node))
