@@ -891,6 +891,8 @@ end module plant_interface""")
     patched=weather_root_build(output,project,patched)
     from extended_drainage import apply_build as extended_drainage_build
     patched=extended_drainage_build(output,donor_build,project,patched)
+    from ordinary_implicit_pond_switch import apply_build as ordinary_pond_build
+    patched=ordinary_pond_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -1004,6 +1006,9 @@ end module plant_interface""")
     from implicit_finite_newton import metadata as implicit_finite_metadata
     implicit_finite=implicit_finite_metadata(project)
     if implicit_finite is not None:build_identity['implicit_finite_newton']=implicit_finite
+    from ordinary_implicit_pond_switch import metadata as ordinary_pond_metadata
+    ordinary_pond=ordinary_pond_metadata(project)
+    if ordinary_pond is not None:build_identity['ordinary_implicit_pond_switch']=ordinary_pond
     from extended_drainage import metadata as extended_drainage_metadata
     extended=extended_drainage_metadata(project)
     if extended is not None:build_identity['extended_drainage']=extended
