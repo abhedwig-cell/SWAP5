@@ -16,7 +16,7 @@ m=original.m
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work','profile','warm','build-root','output'):p.add_argument('--'+name,type=Path,required=True)
-    p.add_argument('--trace-kind',choices=('clock','head','top'),default='clock')
+    p.add_argument('--trace-kind',choices=('clock','head','top','floor'),default='clock')
     p.add_argument('--target-day',type=int,default=633)
     p.add_argument('--resume-compiled',action='store_true')
     args=p.parse_args();args.output.mkdir(exist_ok=args.resume_compiled);report=json.loads((args.profile/'RESULT.json').read_text())
@@ -25,14 +25,14 @@ def main():
     original_build=m.sha(source/'BUILD.json');private=args.build_root/'bundle'
     if args.resume_compiled:assert private.is_dir()
     else:shutil.copytree(source,private)
-    provider={'clock':'timecontrol.f90','head':'headcalc.f90','top':'boundtop.f90'}[args.trace_kind]
+    provider={'clock':'timecontrol.f90','head':'headcalc.f90','floor':'headcalc.f90','top':'boundtop.f90'}[args.trace_kind]
     path=private/provider;raw=(source/provider).read_text(encoding='cp1252')
     anchor='            if (t1900 - hybrid_age_print_epoch + dtCrit > dble(nprintcount)/dble(nprintday)) then'
     addition="""            if(daycum==633.and.fldayend)write(*,'(a,2i10,6(1x,es25.17e3),2l2)') &
              'PRIVATE_SNOW_GW_CLOCK_TRACE',daycum,nprintcount,t1900, &
              hybrid_age_print_epoch+dble(daycum-1)+tcum,tcum,dt,dtCrit,dble(nprintcount)/dble(nprintday),fldayend,flprintdt
 """
-    if args.trace_kind=='head':
+    if args.trace_kind in ('head','floor'):
         anchor='         if(abs(hybrid_groundwater_cde_clock_trial(groundwater_bottom,groundwater_delta))>1d-10)flnonconv=.true.'
         addition="""
          if(daycum==TRACE_DAY.and.flnonconv)then
@@ -45,6 +45,18 @@ def main():
           flush(6)
           end if
          end if
+""".replace('TRACE_DAY',str(args.target_day))
+        if args.trace_kind=='floor':
+            anchor='!  Convergence could not been reached'
+            addition="""
+   if(daycum==TRACE_DAY.and.fldtmin.and.private_snow_trace_count<8)then
+    private_snow_trace_count=private_snow_trace_count+1
+    write(*,'(a,i8,10(1x,es25.17e3),3i8,l2)')'PRIVATE_SNOW_GW_FLOOR_TRACE', &
+     daycum,tcum,dt,h(1),pond,maxval(abs(F(1:NN))),sum1,budget_total,budget_step, &
+     hybrid_groundwater_cde_clock_trial(groundwater_bottom,groundwater_delta),hsurf, &
+     count(flnonconv1(1:NN)),count(flnonconv2(1:NN)),mass_polish_at,flnonconv3
+    flush(6)
+   end if
 """.replace('TRACE_DAY',str(args.target_day))
         imports='   use variables,only:daycum,tcum\n'
         declaration='   integer,save::private_snow_trace_count=0\n'
@@ -108,7 +120,7 @@ def main():
         assert not list(target.glob('accepted-*.zip'))
         actual=m.rows(target);warm=m.rows(args.warm)
         assert m.physical(actual)==m.physical(warm[532:532+len(actual)])
-        prefix={'head':'PRIVATE_SNOW_GW_HEAD_TRACE','clock':'PRIVATE_SNOW_GW_CLOCK_TRACE','top':'PRIVATE_SNOW_GW_TOP_TRACE'}[args.trace_kind]
+        prefix={'head':'PRIVATE_SNOW_GW_HEAD_TRACE','floor':'PRIVATE_SNOW_GW_FLOOR_TRACE','clock':'PRIVATE_SNOW_GW_CLOCK_TRACE','top':'PRIVATE_SNOW_GW_TOP_TRACE'}[args.trace_kind]
         lines=[s for s in (target/'original/donor.stdout').read_text(encoding='utf-8').splitlines() if s.startswith(prefix)]
         assert lines and (args.trace_kind!='clock' or len(lines)==1),lines
         result.update(status='PRIVATE_IO_ONLY_TRACE_PHYSICAL_PREFIX_MATCH_NOT_ADMITTED',seconds=seconds,actual_trace=lines,

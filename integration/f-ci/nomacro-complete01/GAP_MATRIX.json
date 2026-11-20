@@ -1991,11 +1991,11 @@
   },
   "snow_groundwater_cde_calendars": {
     "classification": "NUMERICAL_FAILURE",
-    "implementation": "ROUTE_IMPLEMENTED_FOURTEEN_SHORT_PASS_FULL_CLOCK634_BLOCKED",
+    "implementation": "CORRECTED_CLOCK_FOURTEEN_SHORT_PASS_DAY622_NUMERICAL_FAILURE_NOT_QUALIFIED",
     "historical_function": "Explicit Snow1 CDE groundwater calendars and complete thermal/hydraulic/CDE restart",
-    "runtime": "87af9af9e86fb27772e91c170c4525f10ffbdd1e",
-    "observed": "Both180sfullcensors633accepted; actualnative633 printcounter1899 vs1900, newcold634 compiledreaderrefuses. Availableyear/latercoldseams matchphysicalandnativeexact. No tolerancerelaxation orcounterrenormalization.",
-    "next_action": "Investigate originalTimeControl(3) clockupdate/printflags onactual532->633nativeprefix; newclocksource hypothesis must preserveoriginaloutputevent logic, numericalguards andrawfailedruns. Candidateanchor immutableepoch+integerday+localacceptedtcum mayfixsubstepabsoluteclockassociation, butrequireevidence andfreshcurrentqual beforeadmission. Currentapp87unchanged. FinishPR1770actualcanonicalpublic/admissionseal independently. ThencompleteSnowcoherentblock actualfull/native/source/portable/postimages; do notpromote14shortPASSasfullclosure."
+    "runtime": "d894dbb904a2a4924b23869d8bb5c023b798a04c",
+    "observed": "Original87 fullO0/O2 censored633 with actual absoluteclock lag7.631e-8 and printcounter1899vs1900. Currentd894 14short/44cold independentlyPASS, O0full censored621; private trace shows day622 progresses slowly with dt1e-6 and global/Snowsoil residuals above unchanged guards. No acceptedday622 orfullPASS.",
+    "next_action": "Inspect actual original positive-head boundary switch in day622 privateIO trace; qualify any proven reference correction separately. Snowimplicit remains separate hardrefused scope."
   },
   "snow_implicit_conductivity_composition": {
     "classification": "MISSING_COMPOSITION",

@@ -31043,7 +31043,7 @@
     "actual_corrected_nonselected_postimages": 8,
     "actual_final_input_guard_nonselected_postimages": 2,
     "actual_current_ordinary_zero_boundary_public_contexts": 4,
-    "actual_complete_archive_audits": "12 PASS: precorrection/corrected/final \u00c3\u0192\u00e2\u20ac\u201dWindows/Ubuntu \u00c3\u0192\u00e2\u20ac\u201dO0/O2",
+    "actual_complete_archive_audits": "12 PASS: precorrection/corrected/final Ãƒâ€”Windows/Ubuntu Ãƒâ€”O0/O2",
     "final_terminal_ci": {
       "run": 44640817201,
       "source": "9f472848850af09ecfd8221bb59e66357f7b7f7c",
@@ -31618,22 +31618,22 @@
     "admission_receipt": "GROUNDWATER_CDE_INTERVAL_MERGE_RECEIPT_V1.json"
   },
   "groundwater_snow_cde_batch": {
-    "status": "FOURTEEN_SHORT_CONTEXTS_INDEPENDENT_PASS_FULL_CLOCK_DAY634_BLOCKED",
+    "status": "CORRECTED_CLOCK_FOURTEEN_SHORT_INDEPENDENT_PASS_DAY622_NUMERICAL_INVESTIGATION",
     "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
     "candidate_predecessor": "c04f5ddd1fc253d27596014e406bbd849765d5c9",
     "gap": "CDE groundwater Snow1 non-daily interval and subdaily/per-step output currently refused by shared bottom1/snow guard; dense daily thermal CDE and complete thermal/groundwater providers already exist",
-    "next_action": "Investigate originalTimeControl(3) clockupdate/printflags onactual532->633nativeprefix; newclocksource hypothesis must preserveoriginaloutputevent logic, numericalguards andrawfailedruns. Candidateanchor immutableepoch+integerday+localacceptedtcum mayfixsubstepabsoluteclockassociation, butrequireevidence andfreshcurrentqual beforeadmission. Currentapp87unchanged. FinishPR1770actualcanonicalpublic/admissionseal independently. ThencompleteSnowcoherentblock actualfull/native/source/portable/postimages; do notpromote14shortPASSasfullclosure.",
+    "next_action": "Read actual IO-only top-boundary day622 trace; test whether originalpositivehead1e-6deadband causes drytransition imbalance. Reuse qualified zero-switch correction only if observed cause supports it; preserve all failed runs. Currentclock short PASS does not establish full/native/source/portable/postimage qualification. Canonical3b interval admitted; no unaffected oldfull repeats.",
     "functional_completion": "PARTIAL",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "global_counts": "UNKNOWN",
     "RC3_changed": false,
-    "runtime": "87af9af9e86fb27772e91c170c4525f10ffbdd1e",
+    "runtime": "d894dbb904a2a4924b23869d8bb5c023b798a04c",
     "prototype_source": "73b0f990ffac88ee521b7270529927a740fbfd6f",
     "scope": "Existing explicit SWKIMPL0 Snow1 CDE groundwater interval and per-step/subdaily calendars, hys0/1/2, drainage0/1. Existing Snow+implicit guard retained; SnowAGE originalreaderforbidden.",
     "actual_local_short_contexts": 14,
     "actual_local_short_cold_windows": 44,
-    "independent": "AllsevenO0profiles individuallyPASS andO2 GROUNDWATER_SNOW_O2_SEVEN_SHORT_INDEPENDENT_V1.json PASS",
-    "actual_full_status": "BOTH_CENSORED180_AFTER633_ACCEPTED_DAYS_NOT_QUALIFIED",
+    "independent": "GROUNDWATER_SNOW_CORRECTED_CLOCK_FOURTEEN_SHORT_INDEPENDENT_V1.json:14short/44cold PASS currentd894; prior87 evidence remains historical",
+    "actual_full_status": "CURRENT_O0_CENSORED180_AFTER621_ACCEPTED_NOT_QUALIFIED",
     "full_model_cap_seconds": 180,
     "full_cap_increased": false,
     "actual_first_native_refusals": 109,
@@ -31644,15 +31644,26 @@
       "groundwater-snow-explicit-original-refusal-v1: explicit0originalthermaloutputrequiresdensedailycadence beforecompile"
     ],
     "cohorts": {
-      "O0": "groundwater-snow-cohort-O0-v2",
-      "O2": "groundwater-snow-cohort-O2-v1"
+      "O0": "groundwater-snow-cohort-O0-v3",
+      "O2": "groundwater-snow-cohort-O2-v2"
     },
     "fulls": {
-      "O0": "groundwater-snow-full-O0-v1",
-      "O2": "groundwater-snow-full-O2-v1"
+      "O0": "groundwater-snow-full-O0-v2",
+      "O2": "NOT_SELECTED_PENDING_O0_DIAGNOSIS"
     },
     "localization": "groundwater-snow-full-localize-O0-v2: originalnativecold364->367 and530->532 byteexact;532->633 accepted101days exactlysamephysicalprefix in17.7748426s; newactualcheckpoint633 restartrefused ERRORSTOP Inconsistent original global print counter (actual1899 expected1900 forNPRINTDAY3). No modelsource modified forlocalization.",
     "observer_failure": "localizev1 oldfull-outputparser rejects censoredpartialREAL4file afterrealphysical/nativecold364PASS. Originalfailedobserverretained; v2 usesonlyphysical/nativeavailableprefix andexplicitlymakesno useroutput/fullqualificationclaim. No partialoutput repaired.",
-    "clock_evidence": "Nativecalendar633: [1,34,1,6513,1,3,633,0,1899,2,1,1,0,1,1,0,0,0,1,0]; expectedglobalprint1900. ORIGINAL_DAILY_RECEIPT at633 reports exact37256+633, so preprint substepclock/flag discrepancy stillrequiresforensic localization; do not assert cumulativeclockdriftproven fromdailystamp."
+    "clock_evidence": "Actual private IO-only day633 trace: internal37888.99999992369 vs immutableepoch+integerday+tcum37889, lag7.631024345755577e-8 exceeds unchanged dtCrit1e-8; print1899 vs1900. Exact inverse restores original TimeControl; no private checkpoint publication or admission.",
+    "historical_uncorrected_runtime": "87af9af9e86fb27772e91c170c4525f10ffbdd1e",
+    "historical_uncorrected_cohorts": {
+      "O0": "groundwater-snow-cohort-O0-v2",
+      "O2": "groundwater-snow-cohort-O2-v1"
+    },
+    "historical_uncorrected_fulls": {
+      "O0": "groundwater-snow-full-O0-v1",
+      "O2": "groundwater-snow-full-O2-v1"
+    },
+    "clock_correction": "d894 uses immutableepoch+integerday+acceptedlocaltcum instead of repeated large absolute additions; original dtCrit, output predicates, physical equations and mass guards unchanged; reference-defect correction still NOT_QUALIFIED",
+    "current_numerical_observation": "Private IO-only HeadCalc v5 matches89 accepted days532..621 exactly; day622 advances to tcum0.79296854 at dt1e-6, global budget_total5.4601171e-8 and Snow soil trial -6.0962936e-7; both exceed unchanged guards. Early ponded trials instead pass Snow soil and reject tighter global guard. No acceptedday622 or fullPASS."
   }
 }
