@@ -8,7 +8,9 @@ import argparse
 import json
 from pathlib import Path
 import subprocess
+import sys
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'nomacro_scheduled_subsurface'))
 import implicit_conductivity_runtime as original
 
 m = original.m
