@@ -19,7 +19,7 @@ def main():
     parser.add_argument('--phase', choices=('prefix', 'nodes'), required=True)
     parser.add_argument('--prefix', type=Path)
     parser.add_argument('--build-root', type=Path)
-    parser.add_argument('--variant', choices=('original', 'zero-pond'), default='original')
+    parser.add_argument('--variant', choices=('original', 'zero-pond', 'exact-saturated-jacobian'), default='original')
     parser.add_argument('--end', type=int, default=164)
     parser.add_argument('--start', type=int, default=160)
     parser.add_argument('--original-build', type=Path)
@@ -76,7 +76,14 @@ def main():
          flush(6)
       end if
 '''
-        path.write_text(source.replace(anchor, observation+anchor, 1), encoding='cp1252')
+        source = source.replace(anchor, observation+anchor, 1)
+        if args.variant == 'exact-saturated-jacobian':
+            capacity = '         dimoca(i) = moiscap(i, h(i))'
+            imported = '   use MOD_MvG,            only: watcon, hconduc, moiscap, dhconduc, cofgen'
+            assert source.count(capacity) == source.count(imported) == 1
+            source = source.replace(imported, imported+'\n   use MOD_MvG,only:sw_use_elas', 1)
+            source = source.replace(capacity, capacity+'\n         if(sw_use_elas==0.and.h(i)>=0d0)dimoca(i)=0d0', 1)
+        path.write_text(source, encoding='cp1252')
         if args.variant == 'zero-pond':
             top = args.build_root/'boundtop.f90'
             body = top.read_text(encoding='cp1252')
@@ -134,9 +141,13 @@ def main():
         prior_by_day = {row['day']: row for row in prior}
         shared = [row for row in actual if row['day'] in prior_by_day]
         overlap = len(shared)
-        assert m.physical(shared) == m.physical([prior_by_day[row['day']] for row in shared])
+        exact = m.physical(shared) == m.physical([prior_by_day[row['day']] for row in shared])
+        if args.variant != 'exact-saturated-jacobian':
+            assert exact
         assert m.sha(build/'BUILD.json') == build_sha and m.sha(checkpoint) == checkpoint_sha
-        status.update(actual_days=len(actual), exact_previously_accepted_days=overlap, seconds=time.monotonic()-clock)
+        status.update(actual_days=len(actual), compared_previously_accepted_days=overlap,
+                      compared_physical_rows_exact=exact, exact_previously_accepted_days=overlap if exact else 0,
+                      seconds=time.monotonic()-clock)
         save()
     if args.phase == 'prefix':
         assert len(actual) == end-start and (trajectory/f'accepted-column-1-day-{end}.zip').is_file()

@@ -31155,7 +31155,7 @@
     "actual_original_bundle_validation": "PASS on original extracted source and unchanged historical BUILD;1.9258s",
     "old_profile": "C:/Users/Veldh012/swap5-complete01-evidence/implicit-weighted-harmonic-water-history-O0-v2",
     "controller": "tests/nomacro_scheduled_subsurface/weighted_history_diagnostic.py",
-    "next_action": "Allocate new phase-specific O0/O2 builds bound to current numericV2 source; literal35short/cold then1096full original180s cap and8coldwindows. No replay of zero-only full. Preserve original366day180s censor. Qualify lowRSRO/nonlinear components, current affected ordinary water/CDE/history/bottom seams and explicit/extended preservation before admission. PR1767 finaljob still in checkout; source1075 remains independent.",
+    "next_action": "Private read-only-bundle experiment only: at SW_USE_ELAS0/h>=0 use exact zero derivative of original constant watcon in Newton Jacobian instead of artificial dt*1e-7 capacity; actual equations/states/tolerances unchanged. Resume actual current native530 to582 cap45, record physical differences rather than claim exact legacy for changed numerical experiment. Do not install without real original watcon derivative/component and integrated qualification. PR1767 still one checkout job pending.",
     "qualification": false,
     "physical_numerical_guards_changed": false,
     "prefix_replay": {
@@ -31222,6 +31222,25 @@
       "physical_equation": "Literal original runoff() preserved. Exactlinear original closed form retained; nonlinear/lowRSRO original equation bracketed to adjacentfloating endpoints,128bound; strict1e-8 fd guard unchanged",
       "profile": "ordinary-pond-tangent-component-O0-v2"
     },
-    "current_readonly_observation": "Current V2 original bundle/native530 to532, separately hashed read-only node/entry executable, report prior accepted Newton iteration count versus actual NUMBIT_CRIT3. Source-bound current bundle and all earlier accepted physical rows exact; no new source/native bindings."
+    "current_readonly_observation": "Current V2 original bundle/native530 to532, separately hashed read-only node/entry executable, report prior accepted Newton iteration count versus actual NUMBIT_CRIT3. Source-bound current bundle and all earlier accepted physical rows exact; no new source/native bindings.",
+    "current_V2_full": {
+      "status": "FAILED_OR_CENSORED_NOT_QUALIFIED",
+      "accepted_days": 586,
+      "wall_cap_seconds": 180
+    },
+    "current_readonly_probe": {
+      "status": "CENSORED45s",
+      "start": 530,
+      "accepted_days": 28,
+      "exact_physical_prefix": true,
+      "actual_accepted_Newton_iterations": [
+        6,
+        7
+      ],
+      "actual_step_days": 0.0002,
+      "actual_NUMBIT_CRIT": 3,
+      "actual_FACT_DT_INCREASE": 2,
+      "pond": 0
+    }
   }
 }
