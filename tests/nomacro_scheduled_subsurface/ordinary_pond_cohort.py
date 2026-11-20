@@ -41,6 +41,7 @@ def main():
         parameters={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
         functional_completion='PARTIAL', whole_scientific_equivalence='NOT_QUALIFIED',
         canonical_admission=False, cases={})
+    record['invocation_parameters'] = dict(record['parameters'])
     def save():
         (args.output/'RESULT.json').write_text(json.dumps(record, indent=2)+'\n', encoding='utf-8')
     def execute(parent, label, command):
