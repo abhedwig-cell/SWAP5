@@ -58,3 +58,17 @@ Root `integration/f-ci/nomacro-complete01/STATUS.json` remains the recovery
 authority. `GAP_MATRIX.json` owns coverage classification. Whole historical
 scope remains `PARTIAL / NOT_QUALIFIED`; global family/gap counts remain
 `UNKNOWN` and production/RC3 authority remains unchanged.
+
+The first integrated implementation candidate is deliberately the existing
+dense daily thermal output/state route: explicit conductivity, hysteresis2,
+prescribed surface temperature, original bottom6, ordinary Snow, no aquifer,
+and the original primary drainage deck with effective SWDIVD1. Water and CDE
+use the existing corrected event/terminal water receipt. The independently
+tested overlap correction is selected explicitly for this new domain; the
+old SWDIVD0 water route retains its existing source and evidence. CDE reuses
+the qualified positive-cell-mass predicate. New native codec identifiers bind
+the fixed SWDIVD1 domain while retaining the complete existing thermal,
+chemical and output state payload. No new physical state is introduced.
+Implicit Frost, other histories/boundaries and broader calendars remain outside
+this initial candidate until their affected procedure/state seams are proved.
+Candidate implementation is not canonical admission or a qualification claim.

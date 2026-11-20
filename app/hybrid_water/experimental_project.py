@@ -154,9 +154,14 @@ def inspect(directory, *, original_output=None):
             prefix=one(text,'PATHDRAIN',r"'[^']*'").strip("'").strip()
             frost_drain_file=(directory/(prefix+name+'.dra')).resolve()
             if not frost_drain_file.is_file():raise ValueError('Missing original frost drainage input')
-            if switches(frost_drain_file.read_text(encoding='cp1252')).get('SWDIVD')!=0:
-                raise ValueError('Bounded original frost reference excludes effective SWDIVD1')
-            if selected['SWSOLU']:
+            frost_divd=switches(frost_drain_file.read_text(encoding='cp1252')).get('SWDIVD')
+            if frost_divd==1:
+                if (original_output is False or selected['SWKIMPL']!=0 or selected['SWSOLU'] not in (0,1)
+                        or selected.get('SWBR')!=0 or selected['SWMETDETAIL']!=0 or selected['SWSOPHY']!=0):
+                    raise ValueError('Candidate Frost SWDIVD1 requires explicit original daily analytical water/CDE without aquifer')
+            elif frost_divd!=0:
+                raise ValueError('Invalid original Frost vertical drainage selector')
+            if selected['SWSOLU'] and frost_divd==0:
                 raise ValueError('Original drainage reader refuses SWDIVD0 with solute transport')
         limits=[]
         for name in ('TFROSTSTA','TFROSTEND'):
@@ -237,7 +242,7 @@ def inspect(directory, *, original_output=None):
         if extended is not None and path.resolve()==(directory/extended['file']).resolve():continue
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
             original_structure=lambda s:{k:v for k,v in s.items() if k!='SWDIVD'}
-            if (path.resolve()!=frost_drain_file or sig.get('SWDIVD')!=0
+            if (path.resolve()!=frost_drain_file or sig.get('SWDIVD') not in (0,1)
                     or original_structure(sig) not in list(map(original_structure,drain_signatures))):
                 raise ValueError('Drainage process/state combination is not implemented: '+path.name)
         if path.suffix.lower() == '.dra':

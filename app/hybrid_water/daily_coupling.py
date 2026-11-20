@@ -252,6 +252,8 @@ def validate_bundle(bundle, reference, project):
                         'generated_source_sha256':hashlib.sha256(guarded).hexdigest()}
     if identity.get('frost_reference')!=expected_frost:raise ValueError('Foreign bounded original frost reference policy')
     if expected_frost and (bundle/'frozencond.f90').read_bytes()!=guarded:raise ValueError('Foreign actual original frost source')
+    from frost_drainage_composition import validate as validate_frost_drainage
+    validate_frost_drainage(bundle,reference,project,identity)
     expected_file={'policy':FIXED_FILE_POLICY,'source_sha256':h.sha(h.APP/'fixed_irrigation_file.py')} if fixed_file_enabled(project) else None
     if identity.get('fixed_irrigation_file')!=expected_file:raise ValueError('Foreign original fixed irrigation file policy')
     from conserved_subsurface_solute import enabled as chemical_enabled, metadata as chemical_metadata, correction as chemical_correction

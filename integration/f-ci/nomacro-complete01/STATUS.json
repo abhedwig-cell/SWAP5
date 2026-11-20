@@ -402,7 +402,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run new real FrozenCond/FrozenBounds/corrected Divdra -> literal Solute_CDE(2) component at O0/O2. Verification-only task97 initializes explicit private fixture; production task2 stays literal. Independently integrate emitted pre-step concentrations and actual lateral/bottom nodal fluxes for 252 cases (84 Frost rate cases x 3 adsorption exponents). Preserve original failures; no public guards open and no full model qualification claimed. Continue affected coupled implementation/qualification after component evidence.",
+  "next_action": "Run new candidate dense-daily explicit Frost/SWDIVD1 water and CDE short35 O0 first, retaining existing geometry/thermal/native/event owners and explicitly selected overlap correction. New native codecs S5FDW001/S5FDC001 bind fixedSWDIVD1; no physical-state addition. CDE positive cutoff reused exact. Then affected O2/full/cold/reference and controls, portable qualification, whole compiler/source custody and bounded admission. Implicit Frost remains refused pending actual derivative seam proof. Original SWDIVD0+solute and fullyfrozen refusals retained. No canonical admission of new Frost domain.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -32136,7 +32136,7 @@
     "admission_archive_sha256": "d892f426579447b9fc5608e9d19ece61da3e00995c9905914854e37130c724e2"
   },
   "frost_cde_drainage_active_component": {
-    "status": "OVERLAP_12_GEOMETRIC_AND_FROST_84_RATE_CASES_PASS_O0_O2_NOT_MODEL_QUALIFIED",
+    "status": "252_REAL_CDE_TASK2_CASES_AND_COMPLETE_SOURCE_INDEPENDENT_PASS_O0_O2_CANDIDATE_DAILY_INTEGRATION",
     "baseline_canonical": "383526abddeb06ea61fe31fa7e342ebbd8a5c43d",
     "original_rate_producer": "34c00c123cbd02c910cc703b171435d9f36df38b",
     "diagnostic_producer": "200e0adbc63b5a216c003c1e71e2009a72c73e55",
@@ -32172,7 +32172,24 @@
         "sha256": "ec693569b908ba260123f5eb7f71a9a47700b0bf0036c76714445c92bd4d2f50",
         "source": "824ebfa14a8ed45f76fa9ab8e107c9208ef820aa",
         "status": "ACTUAL_ORIGINAL_AND_GUARDED_FROST_WITH_CORRECTED_DIVDRA_84_RATE_CASES_PASS_NOT_CDE_QUALIFIED"
+      },
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-cde-drainage-cde-O0-v2\\RESULT.json",
+        "sha256": "2d1dfa3113c28e77b832ecf786d27cec8b5837455e454c4be1d8848a8a4d76d1",
+        "status": "ACTUAL_FROST_CORRECTED_DIVDRA_CDE_TASK2_252_CASES_PASS_NOT_MODEL_QUALIFIED"
+      },
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-cde-drainage-cde-O2-v2\\RESULT.json",
+        "sha256": "5f443a0b1137f20fbcc0d755f1d6bce67a5b0d37f9207670de2f76fae25c3632",
+        "status": "ACTUAL_FROST_CORRECTED_DIVDRA_CDE_TASK2_252_CASES_PASS_NOT_MODEL_QUALIFIED"
+      },
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\FROST_CDE_DRAINAGE_COMPONENT_INDEPENDENT_V1.json",
+        "sha256": "cdf121e455212f8e14fc2b422164cf58ef56368e5c77dbf31e27d8ea3afc77ba",
+        "status": "INDEPENDENT_COMPLETE_SOURCE_COMPILER_CDE_RECEIPT_PASS_NOT_MODEL_QUALIFIED"
       }
-    ]
+    ],
+    "candidate_guards_implemented": true,
+    "public_canonical_guards_opened": false
   }
 }
