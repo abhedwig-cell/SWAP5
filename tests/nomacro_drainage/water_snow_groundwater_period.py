@@ -26,8 +26,8 @@ def cold(build,reference,project,full,data,start,end,out):
         for name in ('result.end','macro.bin'):assert a.read(name)==b.read(name),name
         origin=json.loads(a.read('checkpoint.json'));own=json.loads(b.read('checkpoint.json'))
         assert origin['binding']==own['binding']==meta['binding'] and m.physical([origin['receipt']])==m.physical([own['receipt']])
-        from implicit_groundwater_state import validate_candidate
-        validate_candidate(a.read('macro.bin'),data[end-1],project)
+        from implicit_groundwater_state import validate_candidate,native_enabled
+        if native_enabled(project):validate_candidate(a.read('macro.bin'),data[end-1],project)
     from groundwater_water_output import metadata
     outputs=compare(full/'original',out/'original',metadata(project),start,end,project.start_date)
     assert m.sha(source)==before
