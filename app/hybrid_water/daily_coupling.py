@@ -155,7 +155,9 @@ def validate_bundle(bundle, reference, project):
     validate_direct(bundle,identity.get('direct_day_kernel'),project)
     from implicit_conductivity import metadata as implicit_metadata
     if identity.get('implicit_conductivity')!=implicit_metadata(project):
-        raise ValueError('Foreign original implicit conductivity numerical policy; rebuild without rebinding')
+        from snow_undrained_source_guard import unchanged_implicit_metadata
+        if not unchanged_implicit_metadata(identity.get('implicit_conductivity'),implicit_metadata(project),project):
+            raise ValueError('Foreign original implicit conductivity numerical policy; rebuild without rebinding')
     from implicit_groundwater_trial import metadata as implicit_trial_metadata
     if identity.get('implicit_groundwater_trial')!=implicit_trial_metadata(project):
         raise ValueError('Foreign original implicit groundwater daily trial receipt policy')
@@ -211,7 +213,10 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Foreign ordinary implicit positive-pond reference policy')
     validate_ordinary_pond(bundle,project)
     implicit_snow=(identity.get('implicit_conductivity') or {}).get('implicit_snow_composition') is True
-    if (identity.get('original_output') or {}).get('groundwater_snow_water_output'):
+    if (identity.get('original_output') or {}).get('ordinary_snow_undrained_output'):
+        from snow_undrained_source_guard import validate_source as validate_undrained_snow
+        validate_undrained_snow(bundle,project,identity,reference)
+    elif (identity.get('original_output') or {}).get('groundwater_snow_water_output'):
         from snow_water_groundwater_source_guard import validate_source as validate_water_snow
         validate_water_snow(bundle,project,identity,reference)
     elif implicit_snow:

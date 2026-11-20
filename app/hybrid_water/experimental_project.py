@@ -334,6 +334,9 @@ def validate(project):
 
 
 def auxiliary_magic(project):
+    from snow_undrained import selection as undrained_selection,codec as undrained_codec
+    undrained=undrained_selection(project)
+    if undrained is not None:return undrained_codec(undrained)
     from extended_drainage import enabled as extended_drainage_enabled,magic as extended_drainage_magic
     if extended_drainage_enabled(project):return extended_drainage_magic(project)
     from weather_root_state import enabled as weather_root_enabled,MAGIC as WEATHER_ROOT_MAGIC

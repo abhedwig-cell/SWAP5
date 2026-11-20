@@ -54,6 +54,9 @@ def magic(project):
 
 
 def metadata(project):
+    from snow_undrained import selection as undrained_selection,metadata as undrained_metadata
+    undrained=undrained_selection(project)
+    if undrained is not None:return undrained_metadata(project,undrained)
     from snow_water_groundwater import selection as snow_selection,metadata as snow_metadata
     snow=snow_selection(project)
     if snow is not None:return snow_metadata(project,snow)
@@ -104,6 +107,11 @@ def render_macro(original,project,selected):
 
 
 def apply_build(output,donor_build,project,patched):
+    from snow_undrained import selection as undrained_selection
+    undrained=undrained_selection(project)
+    if undrained is not None:
+        from snow_undrained_build import apply_build as undrained_build
+        return undrained_build(output,donor_build,project,patched,undrained)
     from snow_water_groundwater import selection as snow_selection
     snow=snow_selection(project)
     if snow is not None:
