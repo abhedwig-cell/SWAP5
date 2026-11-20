@@ -10,7 +10,7 @@ def source(text):
     old = '      if (h0 <= 1.0d-6) then'
     if text.count(old) != 1:
         raise ValueError('Changed original zero-pond boundary switch')
-    return text.replace(old, '      if (h0 <= 0.0d0) then', 1)
+    return text.replace(old, '      if (h0 <= 1.0d-6) then', 1)
 
 
 def enabled(project):
