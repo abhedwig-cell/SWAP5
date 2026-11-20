@@ -37,10 +37,10 @@ def main():
         addition="""
          if(daycum==TRACE_DAY.and.flnonconv.and.private_snow_trace_count<32)then
           private_snow_trace_count=private_snow_trace_count+1
-          write(*,'(a,i8,14(1x,es25.17e3),2l2)')'PRIVATE_SNOW_GW_HEAD_TRACE', &
+          write(*,'(a,i8,13(1x,es25.17e3),3l2)')'PRIVATE_SNOW_GW_HEAD_TRACE', &
            daycum,t1900,tcum,dt,h(1),pond,q0,groundwater_bottom,groundwater_delta, &
            budget_step,budget_total,1d-10*(t1900-budget_start+dt), &
-           hybrid_groundwater_cde_clock_trial(groundwater_bottom,groundwater_delta),ftoph,hsurf,flnonconv,flrunoff
+           hybrid_groundwater_cde_clock_trial(groundwater_bottom,groundwater_delta),hsurf,ftoph,flnonconv,flrunoff
           flush(6)
          end if
 """.replace('TRACE_DAY',str(args.target_day))
