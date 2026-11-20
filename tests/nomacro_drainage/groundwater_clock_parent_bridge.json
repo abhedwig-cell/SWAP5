@@ -1,0 +1,82 @@
+{
+  "parent": "c22d6ec1c5ede56b93d7f38635e38e4c277b3f51",
+  "runtime": "63edf690ef7b48ffef420f9ac7bf1f098c007bef",
+  "changes": {
+    "app/hybrid_water/cde_clock_output.py": [
+      {
+        "parent_line": 45,
+        "runtime_line": 45,
+        "before": "    if inspect(project.input_directory,original_output=True)['boundary']['SWBOTB'] not in (5,8):return None\n",
+        "after": "    bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']\n    if bottom not in (1,5,8) or bottom==1 and swsnow:return None\n"
+      },
+      {
+        "parent_line": 53,
+        "runtime_line": 54,
+        "before": "        groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision)\n",
+        "after": "        groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,\n        **({'groundwater_cde_clock':True} if bottom==1 else {}))\n"
+      },
+      {
+        "parent_line": 63,
+        "runtime_line": 65,
+        "before": "",
+        "after": "    if selected is not None and selected.get('groundwater_cde_clock'):\n        from groundwater_cde_clock import magic as groundwater_magic\n        return groundwater_magic(project)\n"
+      },
+      {
+        "parent_line": 92,
+        "runtime_line": 97,
+        "before": "",
+        "after": "    if selected.get('groundwater_cde_clock'):\n        result.update(groundwater_clock_composition_sha256=sha(folder/'groundwater_cde_clock.py'),\n                      groundwater_trial_provider_sha256=sha(folder/'age_groundwater_output.py'),\n                      groundwater_clock_policy='existing-cde-clock-complete-groundwater-native-v1',\n                      groundwater_new_physical_state=False)\n"
+      },
+      {
+        "parent_line": 124,
+        "runtime_line": 134,
+        "before": "    return source.replace(anchor,guard,1)\n",
+        "after": "    source=source.replace(anchor,guard,1)\n    if selected.get('groundwater_cde_clock'):\n        from groundwater_cde_clock import integral as groundwater_integral\n        source=groundwater_integral(source,original,watstor)\n    return source\n"
+      },
+      {
+        "parent_line": 224,
+        "runtime_line": 238,
+        "before": "    function='hybrid_snow_soil_trial_residual' if is_snow else 'hybrid_ordinary_trial_residual'\n",
+        "after": "    groundwater=selected.get('groundwater_cde_clock',False)\n    function='hybrid_groundwater_cde_clock_trial' if groundwater else 'hybrid_snow_soil_trial_residual' if is_snow else 'hybrid_ordinary_trial_residual'\n"
+      },
+      {
+        "parent_line": 237,
+        "runtime_line": 252,
+        "before": "",
+        "after": "    if groundwater:\n        guard=\"\\n         if(abs(hybrid_groundwater_cde_clock_trial(groundwater_bottom,groundwater_delta))>1d-10)flnonconv=.true.\"\n"
+      }
+    ],
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "parent_line": 216,
+        "runtime_line": 216,
+        "before": "",
+        "after": "    if ((identity.get('original_output') or {}).get('groundwater_cde_clock') and\n            not identity.get('ordinary_implicit_pond_switch')):\n        from groundwater_cde_clock_source_guard import validate as validate_groundwater_clock_source\n        validate_groundwater_clock_source(bundle,identity)\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_history_native.py": [
+      {
+        "parent_line": 28,
+        "runtime_line": 28,
+        "before": "",
+        "after": "    from groundwater_cde_clock import magic as clock_magic\n    composed=clock_magic(project)\n    if composed is not None:return composed\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_native.py": [
+      {
+        "parent_line": 16,
+        "runtime_line": 16,
+        "before": "",
+        "after": "    from groundwater_cde_clock import magic as clock_magic\n    composed=clock_magic(project)\n    if composed is not None:return composed\n"
+      }
+    ],
+    "app/hybrid_water/ordinary_pond_source_guard.py": [
+      {
+        "parent_line": 25,
+        "runtime_line": 25,
+        "before": "",
+        "after": "        if identity['original_output'].get('groundwater_cde_clock'):\n            from groundwater_cde_clock_source_guard import validate as validate_groundwater_clock\n            return validate_groundwater_clock(bundle,identity)\n"
+      }
+    ]
+  }
+}

@@ -37,6 +37,28 @@ def windows(proof):
             normalized=str(path).replace('\\','/');require('/evidence/' in normalized,'Foreign actual Windows location')
             return profiles/normalized.split('/evidence/',1)[1]
         selected=set()
+        verified_original=set()
+        def inputs(record):
+            path=mapped(record['input_root'])
+            missing=[name for name in read(bundle(record)/'BUILD.json')['inputs'] if not (path/name).exists()]
+            if missing:
+                relative=path.relative_to(root).as_posix()
+                require(relative=='profiles/ordinary-pond-matrix-O0-v1/cde-groundwater-history/input',
+                        'Unexpected missing current input; only original reused first input is inherited')
+                archive=Path(proof)/'ORDINARY_IMPLICIT_POND_WINDOWS_O0_RAW_ARCHIVE.zip'
+                manifest=read(archive.with_suffix('.json'))
+                if archive not in verified_original:
+                    require(archive.stat().st_size==manifest['bytes'] and digest(archive)==manifest['sha256'],
+                            'Original inherited input archive differs')
+                    verified_original.add(archive)
+                with zipfile.ZipFile(archive) as z:
+                    for name in missing:
+                        member=relative+'/'+name;raw=z.read(member);item=manifest['members'][member]
+                        require(len(raw)==item['bytes'] and hashlib.sha256(raw).hexdigest()==item['sha256'],
+                                'Original inherited input bytes differ')
+                        path.mkdir(parents=True,exist_ok=True)
+                        with (path/name).open('xb') as f:f.write(raw)
+            return path
         def original_publisher(expected,opt):
             target=root/('original-publisher-'+expected+'.dll')
             if not target.exists():
@@ -58,8 +80,8 @@ def windows(proof):
             cases={name:mapped(item['actual_case_root']) for name,item in q['cases'].items()};builds={name:bundle(read(case/'RESULT.json')) for name,case in cases.items()}
             out=metrics[opt]=dict(short={},controls={},source_controls={})
             for name,case in cases.items():
-                record=read(case/'RESULT.json');out['short'][name]=audit(case,builds[name],mapped(record['input_root']));selected.add(builds[name])
-            full=profiles/f'groundwater-clock-full-{opt}-v1';record=read(full/'RESULT.json');out['full']=audit(full,bundle(record),mapped(record['input_root']))
+                record=read(case/'RESULT.json');out['short'][name]=audit(case,builds[name],inputs(record));selected.add(builds[name])
+            full=profiles/f'groundwater-clock-full-{opt}-v1';record=read(full/'RESULT.json');out['full']=audit(full,bundle(record),inputs(record))
             for name in ('h2-periodic','h1-step-explicit','h0-step-periodic'):
                 version=2 if name=='h0-step-periodic' else 1
                 out['controls'][name]=native_controls(profiles/f'groundwater-clock-controls-{name}-{opt}-v{version}',cases[name],builds[name])
@@ -92,3 +114,20 @@ def windows(proof):
                     actual_full_periods=2,actual_full_cold_windows=16,actual_short_contexts=12,actual_short_cold_windows=38,
                     actual_native_refusals=490,actual_transactions=6,actual_source_policy_refusals=54,
                     actual_current_native_postimages=12,actual_unselected_CDE_contexts=6,actual_water_cached_cold_contexts=2)
+
+
+def ubuntu(proof,opt):
+    from groundwater_clock_portable_archive import audit_root as initial
+    from groundwater_clock_controls_archive import audit_root as controls
+    require(opt in ('O0','O2'),'Foreign portable optimization')
+    with extracted(proof,['INITIAL_UBUNTU_'+opt]) as original:
+        science=initial(original)
+        with extracted(proof,['CONTROLS_UBUNTU_'+opt]) as current:
+            recovery=controls(current,original)
+    return dict(status='INDEPENDENT_SEALED_PORTABLE_GROUNDWATER_CLOCK_PASS',
+                initial_science=science,controls_only_recovery=recovery,
+                initial_whole_job_conclusion='FAILURE',controls_only_whole_job_conclusion='SUCCESS',
+                actual_full_periods=1,actual_full_cold_windows=8,actual_short_contexts=6,
+                actual_short_cold_windows=19,actual_native_refusals=245,actual_transactions=3,
+                actual_source_policy_refusals=27,actual_current_native_postimages=4,
+                fresh_model_executions=0)

@@ -12,6 +12,23 @@ from ordinary_pond_evidence import read,digest,require
 from groundwater_clock_custody import audit as source_custody
 
 
+def audit_root(root):
+    root=Path(root);projection=read(root/'COMPILED_PROJECTION_V1.json')
+    def bundle(q):
+        entry=projection[q['build_root']];path=root/entry['archive_prefix']
+        require(digest(path/'BUILD.json')==entry['actual_BUILD_sha256'],'Actual compiled projection differs')
+        return path
+    cohort=root/'groundwater-clock';q=read(cohort/'RESULT.json')
+    require(q['status']=='ACTUAL_GROUNDWATER_CDE_CLOCK_COMPOSITION_COHORT_PASS' and len(q['cases'])==6,'Actual original portable cohort incomplete')
+    result={}
+    for name in q['cases']:
+        case=cohort/name;report=read(case/'RESULT.json');result[name]=audit(case,bundle(report),case/'input')
+    full=root/'groundwater-clock-full';report=read(full/'RESULT.json')
+    result['full']=audit(full,bundle(report),cohort/'h2-periodic/input')
+    sources=source_custody(root)
+    return dict(science=result,source_custody=sources)
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('archive','artifacts','extract','output'):p.add_argument('--'+key,type=Path,required=True)
@@ -33,23 +50,11 @@ def main():
             elif target.exists():require(digest(target)==sha,'Existing artifact extraction differs')
             else:
                 with target.open('xb') as f:f.write(raw)
-    root=a.extract;projection=read(root/'COMPILED_PROJECTION_V1.json')
-    def bundle(q):
-        entry=projection[q['build_root']];path=root/entry['archive_prefix']
-        require(digest(path/'BUILD.json')==entry['actual_BUILD_sha256'],'Actual compiled projection differs')
-        return path
-    cohort=root/'groundwater-clock';q=read(cohort/'RESULT.json')
-    require(q['status']=='ACTUAL_GROUNDWATER_CDE_CLOCK_COMPOSITION_COHORT_PASS' and len(q['cases'])==6,'Actual original portable cohort incomplete')
-    result={}
-    for name in q['cases']:
-        case=cohort/name;report=read(case/'RESULT.json');result[name]=audit(case,bundle(report),case/'input')
-    full=root/'groundwater-clock-full';report=read(full/'RESULT.json')
-    result['full']=audit(full,bundle(report),cohort/'h2-periodic/input')
-    sources=source_custody(root)
+    observed=audit_root(a.extract)
     out=dict(status='ORIGINAL_UBUNTU_GROUNDWATER_CLOCK_SIX_SHORT_FULL1096_INDEPENDENT_PASS',
         origin_run=44682712004,origin_source='5c0e2b34358940e02ae6f486f04e0f262df1c040',
         original_archive=a.archive.name,sha256=digest(a.archive),artifact=record,members=members,
-        science=result,source_custody=sources,whole_job_conclusion='FAILURE',
+        **observed,whole_job_conclusion='FAILURE',
         failure_role='Missing parent output directory at first controls launch after completed and independently audited6short/full science; no control workers started',
         fresh_models=0,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
     a.output.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8');print(out['status'])
