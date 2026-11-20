@@ -22,13 +22,14 @@ def main():
     parser.add_argument('--variant', choices=('original', 'zero-pond'), default='original')
     parser.add_argument('--end', type=int, default=164)
     parser.add_argument('--start', type=int, default=160)
+    parser.add_argument('--original-build', type=Path)
     args = parser.parse_args()
     sys.path[:0] = [str(args.source_root/'tests/nomacro_scheduled_subsurface'),
                    str(args.source_root/'tests/nomacro_mixtures')]
     import implicit_conductivity_runtime as original
     m = original.m
     assert m.h.APP.resolve() == (args.source_root/'app/hybrid_water').resolve()
-    build = args.short_profile/'build'
+    build = args.original_build or args.short_profile/'build'
     build_sha = m.sha(build/'BUILD.json')
     project = m.e.load(args.short_profile/'input', original_output=True)
     meta, case = m.validate_bundle(build, args.reference_work, project)
@@ -57,8 +58,8 @@ def main():
    if(t1900>=37458d0)then
       observed_entries=observed_entries+1
       if(mod(observed_entries,1000)==1)then
-         write(*,'(a,1x,i0,6(1x,es25.17e3))') 'WEIGHTED_ENTRY', &
-            observed_entries,t1900,dt,pond,minval(h(1:numnod)),maxval(h(1:numnod)),minval(k(1:numnod))
+         write(*,'(a,2(1x,i0),6(1x,es25.17e3))') 'WEIGHTED_ENTRY', &
+            observed_entries,numbit,t1900,dt,pond,minval(h(1:numnod)),maxval(h(1:numnod)),minval(k(1:numnod))
          flush(6)
       end if
    end if
