@@ -18,7 +18,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work', 'profile', 'scratch', 'output'):
         p.add_argument('--' + key, type=Path, required=True)
-    args = p.parse_args(); args.output.mkdir(); args.scratch.mkdir(exist_ok=True)
+    args = p.parse_args(); args.output.mkdir(); args.scratch.mkdir(parents=True, exist_ok=True)
     original = args.profile / 'RESULT.json'; m = inherited.m
     digest = m.sha(original); profile = json.loads(original.read_text(encoding='utf-8'))
     inputs = Path(profile['input_root']); build = Path(profile['build_root'])

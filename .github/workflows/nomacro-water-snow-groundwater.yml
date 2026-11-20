@@ -49,9 +49,11 @@ jobs:
           cp .github/workflows/nomacro-water-snow-groundwater.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Qualify actual Frost drainage CDE components and bounded daily model seam
+      - name: Qualify only missing controls and CDE with original completed water bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python3 -B tests/nomacro_drainage/frost_cde_drainage_portable.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof/frost-cde-drainage" --optimization '${{ matrix.optimization }}'
+          python3 -B tests/nomacro_drainage/frost_cde_drainage_followup.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof/frost-cde-drainage-followup" --optimization '${{ matrix.optimization }}'
       - name: Preserve actual compiled bytes and original provider identity
         if: always()
         run: |
