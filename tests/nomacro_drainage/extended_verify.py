@@ -47,6 +47,8 @@ def blob(ref,path):return git('show',ref+':'+path)
 def normalized(raw):return raw.replace(b'\r\n',b'\n')
 
 def strip_current_evidence(text):
+    import ordinary_pond_verify as ordinary
+    text=ordinary.strip_current_evidence(text)
     if CHECKOUT in text:
         require(text.count(CHECKOUT)==1,'Ambiguous drainage scientific checkout')
         text=text.replace(CHECKOUT,'',1)
