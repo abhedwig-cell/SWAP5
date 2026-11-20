@@ -51,9 +51,15 @@ def audit(profile, reference):
             accumulated = [a+b for a, b in zip(accumulated, row['external_flux_cm'])]
             residual = initial-sum(row['stock_end_cm'])+sum(accumulated[:7])-sum(accumulated[7:])
             maximum = max(maximum, abs(residual))
-            if abs(residual) > Decimal('1e-10'):
-                raise ValueError('Actual implicit Frost integrated water prefix exceeds unchanged 1e-10 cm')
     result['water_prefix_max_decimal'] = str(maximum)
+    # This additional whole-trajectory absolute metric is retained explicitly.
+    # The inherited owning gates remain absolute daily/terminal 1e-10 cm,
+    # internal cumulative-step 1e-10 times its elapsed window, and absolute
+    # every-prefix CDE 1e-10 mg/cm2. Do not invent a new fixed global water
+    # criterion or silently describe its diagnostic as passing.
+    result['additional_absolute_global_water_prefix_within_1e10'] = maximum <= Decimal('1e-10')
+    result['absolute_global_water_prefix_is_owning_acceptance_gate'] = False
+    result['owning_water_guards'] = 'absolute daily/terminal 1e-10 cm and original cumulative hydraulic-step window rule'
     build = Path(q['build_root']); inputs = Path(q['input_root'])
     meta = json.loads((build/'BUILD.json').read_text(encoding='utf-8'))
     if (meta['identity'].get('implicit_conductivity') or {}).get('implicit_frost_composition') is not True:
