@@ -29,7 +29,7 @@ def validate_source(bundle,project,identity):
         # Restore the no-Snow parent guard only for complete source comparison.
         # At runtime its same 1e-10 bound is owned by the existing Snow soil
         # clone above, with the actual Snow net forcing and groundwater delta.
-        anchor=b'   use hybrid_step_budget, only: projected_water_residual'
+        anchor=b'   use hybrid_implicit_pond_event_state,only:request_implicit_pond_event,assert_no_implicit_pond_event'
         guard=b'         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
         if source.count(anchor)!=1 or source.count(guard)!=1:
             raise ValueError('Foreign implicit Snow parent trial guard anchors')
