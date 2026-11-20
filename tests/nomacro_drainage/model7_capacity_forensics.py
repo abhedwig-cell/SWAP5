@@ -39,6 +39,17 @@ def audit(profile,reference,allow_refusal=False):
         if terminal.get('trial_projection_period'):
             guard='\n         if(abs(model7_terminal_water_residual())>1d-10)flnonconv=.true.'
         for part in (imported,guard):assert head.count(part)==1;head=head.replace(part,'',1)
+        if terminal.get('search_operator'):
+            search="""   ! Numerical search diagonal already present in original default MvG.
+   ! Only the fully saturated flux/closed-bottom null mode is affected.
+   if(SwKimpl==0.and.swmacro==0.and.swbotb==6.and..not.ftoph.and.NN>1)then
+      if(all(h(1:NN)>=0d0).and.all(dimoca(1:NN)==0d0))then
+         dFdhM(1:NN)=dFdhM(1:NN)+1d-7*FrArMtrx(1:NN)*dz(1:NN)
+      end if
+   end if
+"""
+            assert head.count(search)==1 and SHA(search.encode())==terminal['search_operator_sha256']
+            head=head.replace(search,'',1)
         private=(build/'model7_terminal_water_receipt.f90').read_text(encoding='cp1252')
         assert SHA(private.encode('cp1252'))==terminal['provider_sha256'] and terminal['water_limit_cm']==1e-10
         line="    write(*,'(a,28(1x,es25.17e3))') 'MODEL7_TERMINAL_WATER_TERMS',terms\n"

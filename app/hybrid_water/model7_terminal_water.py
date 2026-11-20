@@ -8,6 +8,14 @@ HEAD_PARENT_SHA='e8693175f3c0497d83fa9a59868250d4c0b76ca4e8a88de8d825ae5c25f6255
 IMPORT='   use hybrid_model7_terminal_water_receipt, only: model7_terminal_water_residual\n   use variables, only: tcum\n'
 ANCHOR='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
 GUARD='\n         if(abs(model7_terminal_water_residual())>1d-10)flnonconv=.true.'
+SEARCH="""   ! Numerical search diagonal already present in original default MvG.
+   ! Only the fully saturated flux/closed-bottom null mode is affected.
+   if(SwKimpl==0.and.swmacro==0.and.swbotb==6.and..not.ftoph.and.NN>1)then
+      if(all(h(1:NN)>=0d0).and.all(dimoca(1:NN)==0d0))then
+         dFdhM(1:NN)=dFdhM(1:NN)+1d-7*FrArMtrx(1:NN)*dz(1:NN)
+      end if
+   end if
+"""
 
 
 def enabled(project):
@@ -51,6 +59,8 @@ def metadata(project):
       source_sha256=hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
       parent_receipt_sha256=PARENT_SHA,complete_before_guard_HeadCalc_sha256=HEAD_PARENT_SHA,provider_sha256=hashlib.sha256(source().encode('cp1252')).hexdigest(),
       water_limit_cm=1e-10,trial_projection_period='every original hydraulic trial; same fixed absolute day bound',accepted_state_or_flux_modified=False,new_physical_state=False,native_interface_changed=False,
+      search_operator='original default-MvG numerical diagonal, only fully saturated flux/closed-bottom null mode; physical capacity and residual unchanged',
+      search_operator_sha256=hashlib.sha256(SEARCH.encode()).hexdigest(),
       inactive_snow_terms='exact zero for the explicitly absent Snow process, matching public export',
       action='Only original Newton nonconvergence/rollback when the independent terminal receipt exceeds the unchanged public bound')
 
@@ -65,6 +75,8 @@ def apply_build(output,project,patched):
     anchor='   use hybrid_step_budget, only: projected_water_residual'
     if text.count(anchor)!=1 or text.count(ANCHOR)!=1:raise ValueError('Changed model7 complete HeadCalc terminal seam')
     text=text.replace(anchor,IMPORT+anchor,1).replace(ANCHOR,ANCHOR+GUARD,1)
+    if text.count('end subroutine jacobian_F')!=1:raise ValueError('Changed model7 search operator seam')
+    text=text.replace('end subroutine jacobian_F',SEARCH+'end subroutine jacobian_F',1)
     path.write_text(text,encoding='cp1252');return patched
 
 
@@ -76,7 +88,7 @@ def validate(bundle,project,identity):
         return
     if (bundle/(STATE+'.f90')).read_text(encoding='cp1252')!=source():raise ValueError('Foreign complete model7 terminal receipt')
     text=(bundle/'headcalc.f90').read_text(encoding='cp1252')
-    for part in (IMPORT,GUARD):
+    for part in (IMPORT,GUARD,SEARCH):
         if text.count(part)!=1:raise ValueError('Foreign model7 actual terminal guard')
         text=text.replace(part,'',1)
     # The complete pre-guard HeadCalc is separately pinned in the qualification
