@@ -9,7 +9,7 @@ def magic(project):
     if selected is None or not selected.get('groundwater_cde_interval'):
         return None
     history=selected['swhyst']
-    return b'S5GIC001' if history==0 else ('S5GIH'+f'{2*history-1:03d}').encode()
+    return b'S5GIC002' if history==0 else ('S5GIH'+f'{2*history-1:03d}').encode()
 
 
 def validate_source(bundle,identity):
