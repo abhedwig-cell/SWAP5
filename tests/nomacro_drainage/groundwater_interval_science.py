@@ -1,6 +1,7 @@
 """Read sealed interval/drainage science and unchanged integrated postimages."""
 from contextlib import contextmanager
 import hashlib
+import json
 import os
 from pathlib import Path
 import tempfile
@@ -8,7 +9,7 @@ import zipfile
 
 from ordinary_pond_evidence import read,digest,require,rows,physical
 from groundwater_clock_archive import unpack
-from groundwater_interval_forensics import audit
+from groundwater_interval_forensics import audit,original
 from groundwater_interval_custody import audit as custody
 from groundwater_interval_control_forensics import native_controls,source_controls
 from calendar_evidence import differences
@@ -94,6 +95,13 @@ def windows(proof):
                 if 'restart_publisher.library_sha256' in delta:
                     current=path/'restart_publish.dll';require(digest(current)==meta['identity']['restart_publisher']['library_sha256'],'Current publisher differs')
                     publisher_equivalence(publisher(old['BUILD']['identity']['restart_publisher']['library_sha256'],opt),current)
+                def outputs(folder):
+                    return {n:original.output_records((folder/n).read_bytes(),n) for n in ('result_output.csv','result_output.bin') if (folder/n).exists()}
+                warm_outputs=outputs(case/'trajectory/original');cold_outputs=outputs(case/'own-30/original')
+                signatures={n:dict(records=len(v),sha256=hashlib.sha256(json.dumps([r.hex() if isinstance(r,bytes) else r for r in v],separators=(',',':')).encode()).hexdigest()) for n,v in warm_outputs.items()}
+                require(signatures==old['original_output_records'],'Actual unchanged original user output differs')
+                require(original.output_continuation(warm_outputs,cold_outputs,meta['identity']['original_output'],30,34,meta['project']['start_date'])==item['cold']['exact_original_output'],
+                        'Actual unchanged original user output cold continuation differs')
                 warm=rows(case/'trajectory');cold=rows(case/'own-30')
                 require(physical(warm)==old['physical'] and physical(cold)==physical(warm[30:34]),'Actual unchanged physical postimage differs')
                 for day,inventory in old['native'].items():
