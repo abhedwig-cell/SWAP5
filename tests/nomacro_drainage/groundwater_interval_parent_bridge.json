@@ -1,0 +1,88 @@
+{
+  "parent": "21e3fcba2604c7546013f961e0bebaea63e5717f",
+  "runtime": "744ad83d1c537a2206870d8940a3cf0fc9519b44",
+  "changes": {
+    "app/hybrid_water/cde_clock_output.py": [
+      {
+        "parent_line": 42,
+        "runtime_line": 42,
+        "before": "    for key,value in dict(SWMACRO=0,SWSOLU=1,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWDRA=1,SWMETDETAIL=0,SWSOPHY=0).items():\n",
+        "after": "    for key,value in dict(SWMACRO=0,SWSOLU=1,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWMETDETAIL=0,SWSOPHY=0).items():\n"
+      },
+      {
+        "parent_line": 47,
+        "runtime_line": 47,
+        "before": "",
+        "after": "    drainage=one('SWDRA')\n    if drainage not in (0,1) or bottom!=1 and drainage!=1:return None\n"
+      },
+      {
+        "parent_line": 52,
+        "runtime_line": 54,
+        "before": "    return dict(cde_clock_output=True,cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),thermal_clock=bool(swsnow),thermal_step=bool(swsnow and perstep),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=1,\n",
+        "after": "    return dict(cde_clock_output=True,cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),thermal_clock=bool(swsnow),thermal_step=bool(swsnow and perstep),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=drainage,\n"
+      }
+    ],
+    "app/hybrid_water/cde_interval_output.py": [
+      {
+        "parent_line": 39,
+        "runtime_line": 39,
+        "before": "    for key,value in dict(SWMACRO=0,SWSOLU=1,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWDRA=1,SWMETDETAIL=0,SWSOPHY=0).items():\n",
+        "after": "    for key,value in dict(SWMACRO=0,SWSOLU=1,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWMETDETAIL=0,SWSOPHY=0).items():\n"
+      },
+      {
+        "parent_line": 42,
+        "runtime_line": 42,
+        "before": "    if inspect(project.input_directory,original_output=True)['boundary']['SWBOTB'] not in (5,8):return None\n",
+        "after": "    bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']\n    if bottom not in (1,5,8) or bottom==1 and swsnow:return None\n    drainage=one('SWDRA')\n    if drainage not in (0,1) or bottom!=1 and drainage!=1:return None\n"
+      },
+      {
+        "parent_line": 48,
+        "runtime_line": 51,
+        "before": "    return dict(cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=1,\n",
+        "after": "    return dict(cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=drainage,\n"
+      },
+      {
+        "parent_line": 50,
+        "runtime_line": 53,
+        "before": "        groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision)\n",
+        "after": "        groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,\n        **({'groundwater_cde_interval':True} if bottom==1 else {}))\n"
+      },
+      {
+        "parent_line": 60,
+        "runtime_line": 64,
+        "before": "",
+        "after": "    if selected is not None and selected.get('groundwater_cde_interval'):\n        from groundwater_cde_interval import magic as groundwater_magic\n        return groundwater_magic(project)\n"
+      },
+      {
+        "parent_line": 83,
+        "runtime_line": 90,
+        "before": "",
+        "after": "    if selected.get('groundwater_cde_interval'):\n        result.update(groundwater_interval_composition_sha256=sha(folder/'groundwater_cde_interval.py'),\n                      groundwater_interval_policy='existing-cde-interval-complete-groundwater-native-v1',\n                      groundwater_new_physical_state=False)\n"
+      }
+    ],
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "parent_line": 216,
+        "runtime_line": 216,
+        "before": "",
+        "after": "    if (identity.get('original_output') or {}).get('groundwater_cde_interval'):\n        from groundwater_cde_interval import validate_source as validate_groundwater_interval_source\n        validate_groundwater_interval_source(bundle,identity)\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_history_native.py": [
+      {
+        "parent_line": 28,
+        "runtime_line": 28,
+        "before": "",
+        "after": "    from groundwater_cde_interval import magic as interval_magic\n    interval=interval_magic(project)\n    if interval is not None:return interval\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_native.py": [
+      {
+        "parent_line": 16,
+        "runtime_line": 16,
+        "before": "",
+        "after": "    from groundwater_cde_interval import magic as interval_magic\n    interval=interval_magic(project)\n    if interval is not None:return interval\n"
+      }
+    ]
+  }
+}

@@ -39,17 +39,19 @@ def active_selection(project):
     if not perstep and nprint==1:return None
     monthly=one('SWMONTH');dates=0 if monthly else one('SWODAT');requested=0 if monthly else one('PERIOD')
     if project.time_step_policy!='original-adaptive-day-seed-v1':return None
-    for key,value in dict(SWMACRO=0,SWSOLU=1,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWDRA=1,SWMETDETAIL=0,SWSOPHY=0).items():
+    for key,value in dict(SWMACRO=0,SWSOLU=1,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWMETDETAIL=0,SWSOPHY=0).items():
         if one(key)!=value:return None
     from experimental_project import inspect
     bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
     if bottom not in (1,5,8) or bottom==1 and swsnow:return None
+    drainage=one('SWDRA')
+    if drainage not in (0,1) or bottom!=1 and drainage!=1:return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
     if hys not in (0,1,2):return None
     if monthly not in (0,1) or dates not in (0,1) or reset not in (0,1) or fmt not in (0,1,2,3) or not 0<=requested<=366:raise ValueError('Invalid original CDE interval selectors')
     precision=one('NUM_DECIMALS',5) if fmt else None
     if precision is not None and not 5<=precision<=12:raise ValueError('Invalid original CDE interval precision')
-    return dict(cde_clock_output=True,cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),thermal_clock=bool(swsnow),thermal_step=bool(swsnow and perstep),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=1,
+    return dict(cde_clock_output=True,cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),thermal_clock=bool(swsnow),thermal_step=bool(swsnow and perstep),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=drainage,
         swhyst=hys,swcsv=fmt,nprintday=nprint,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=1,flprintdt=perstep,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
         **({'groundwater_cde_clock':True} if bottom==1 else {}))

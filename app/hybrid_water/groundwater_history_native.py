@@ -25,6 +25,9 @@ def enabled(project):return selection(project) is not None or prior.enabled(proj
 def magic(project):
     s=selection(project)
     if s is None:return prior.magic(project)
+    from groundwater_cde_interval import magic as interval_magic
+    interval=interval_magic(project)
+    if interval is not None:return interval
     from groundwater_cde_clock import magic as clock_magic
     composed=clock_magic(project)
     if composed is not None:return composed
