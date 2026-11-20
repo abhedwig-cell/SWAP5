@@ -58,6 +58,7 @@ def metadata(project,selected):
         'implicit_snow_root_state.f90','original_output_thermal_domain.f90','thermal_output_snow_calendar_state.f90']
     if project.solute:providers+=['cde_clock_output.py','cde_interval_output.py','cde_interval_source.py',
         'cde_interval_output_state.f90','cde_interval_snow_state.f90','cde_interval_receipt.f90','cde_clock_events.f90']
+    if not selected['swkimpl']:providers.append('implicit_interception_partition.py')
     return dict(policy=POLICY,native_codec=codec(selected).decode(),**selected,
         providers={name:sha(folder/name) for name in providers},
         original_output_epoch=project.start_clock,physical_equations_changed=False,new_physical_state=False,

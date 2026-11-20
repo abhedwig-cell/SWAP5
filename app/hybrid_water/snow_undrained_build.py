@@ -109,6 +109,11 @@ def apply_build(output,donor_build,project,patched,selected):
     patched=[regular.PROVIDER,*extra,'hybrid_age_output_state',clock.DOMAIN,'integral',clock.SNOW_PROVIDER,'timecontrol',*patched]
     patched.insert(patched.index('swap'),'age_output_calendar_probe')
     if not selected['swkimpl']:
+        from implicit_interception_partition import source as exact_partition
+        meteo=output/'MOD_meteo.f90'
+        parent=(meteo if meteo.exists() else originals/'MOD_meteo.f90').read_text(encoding='cp1252')
+        meteo.write_text(exact_partition(parent),encoding='cp1252')
+        patched=['MOD_meteo',*(name for name in patched if name!='MOD_meteo')]
         from groundwater_snow_retry import apply_build as retry
         patched=retry(output,patched)
     return patched

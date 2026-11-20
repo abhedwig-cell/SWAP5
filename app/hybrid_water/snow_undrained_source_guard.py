@@ -76,10 +76,15 @@ def validate_source(bundle,project,identity,reference):
     selected=selection(project);bundle=Path(bundle);folder=Path(__file__).parent
     if selected is None or identity['original_output'].get('native_codec')!=codec(selected).decode():
         raise ValueError('Foreign actual undrained Snow domain')
-    def actual(name):return (bundle/name).read_text(encoding='cp1252')
+    def actual(name):
+        if not (bundle/name).is_file():raise ValueError('Missing actual undrained Snow source: '+name)
+        return (bundle/name).read_text(encoding='cp1252')
     def equal(name,expected):
         if actual(name)!=expected:raise ValueError('Foreign complete undrained Snow source: '+name)
     from groundwater_snow_retry import inverse,head,time,HEAD_TEMPLATE,TIME_TEMPLATE
+    from implicit_interception_partition import source as exact_partition
+    original_meteo=(Path(reference)/'build/swap-selected/MOD_meteo.f90').read_text(encoding='cp1252')
+    equal('MOD_meteo.f90',exact_partition(original_meteo))
     source=actual('headcalc.f90')
     if not selected['swkimpl']:source=inverse(source,head,HEAD_TEMPLATE)
     template=('   use hybrid_step_budget, only: projected_water_residual\n\n   implicit none\n'
@@ -197,13 +202,16 @@ CURRENT_PROBE_CALLSITE="    (output/'age_output_calendar_probe.f90').write_text(
 
 def unchanged_output_metadata(old,expected,project):
     selected=selection(project)
-    if selected is None or not isinstance(old,dict) or not isinstance(expected,dict):return False
+    if selected is None or not selected['swkimpl'] or not isinstance(old,dict) or not isinstance(expected,dict):return False
     projected={**old,'providers':dict(old.get('providers',{}))}
     name='snow_undrained_build.py'
     if projected['providers'].get(name)!=expected.get('providers',{}).get(name):
         if selected['kind']=='cde' and not selected['flprintdt'] and selected['nprintday']==1:return False
         if projected['providers'].get(name)!=LEGACY_BUILD_SHA:return False
-        source=Path(build.__file__).read_text(encoding='utf-8');tree=ast.parse(source);last=tree.body[-1]
+        source=Path(build.__file__).read_text(encoding='utf-8')
+        if source.count(EXPLICIT_PARTITION_BLOCK)!=1:return False
+        source=source.replace(EXPLICIT_PARTITION_BLOCK,'',1)
+        tree=ast.parse(source);last=tree.body[-1]
         if not isinstance(last,ast.FunctionDef) or last.name!='probe' or last.decorator_list:return False
         lines=source.splitlines(keepends=True)
         if lines[last.lineno-1]!='def probe(project,selected):\n':return False
@@ -211,7 +219,22 @@ def unchanged_output_metadata(old,expected,project):
         if not prefix.endswith('\n\n') or prefix.count(CURRENT_PROBE_CALLSITE)!=1:return False
         parent=prefix[:-2].replace(CURRENT_PROBE_CALLSITE,LEGACY_PROBE_CALLSITE,1)
         if hashlib.sha256(parent.encode()).hexdigest()!=LEGACY_BUILD_SHA:return False
-        current=hashlib.sha256(source.encode()).hexdigest()
+        current=hashlib.sha256(Path(build.__file__).read_text(encoding='utf-8').encode()).hexdigest()
         if expected.get('providers',{}).get(name)!=current:return False
         projected['providers'][name]=current
-    return projected==expected or unchanged_explicit_root_metadata(projected,expected,project)
+    domain='snow_undrained.py'
+    if projected['providers'].get(domain)!=expected.get('providers',{}).get(domain):
+        if projected['providers'].get(domain)!=LEGACY_DOMAIN_SHA:return False
+        current_source=Path(__file__).with_name(domain).read_text(encoding='utf-8')
+        if current_source.count(EXPLICIT_PARTITION_METADATA)!=1:return False
+        parent=current_source.replace(EXPLICIT_PARTITION_METADATA,'',1)
+        if hashlib.sha256(parent.encode()).hexdigest()!=LEGACY_DOMAIN_SHA:return False
+        current=hashlib.sha256(current_source.encode()).hexdigest()
+        if expected.get('providers',{}).get(domain)!=current:return False
+        projected['providers'][domain]=current
+    return projected==expected
+
+
+EXPLICIT_PARTITION_BLOCK="        from implicit_interception_partition import source as exact_partition\n        meteo=output/'MOD_meteo.f90'\n        parent=(meteo if meteo.exists() else originals/'MOD_meteo.f90').read_text(encoding='cp1252')\n        meteo.write_text(exact_partition(parent),encoding='cp1252')\n        patched=['MOD_meteo',*(name for name in patched if name!='MOD_meteo')]\n"
+EXPLICIT_PARTITION_METADATA="    if not selected['swkimpl']:providers.append('implicit_interception_partition.py')\n"
+LEGACY_DOMAIN_SHA='73525f3852d99a383bfa12c8cd3f50e2ee9e54a1a863de353757fbbd76480a9e'
