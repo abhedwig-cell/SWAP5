@@ -17,6 +17,8 @@ def metadata(selected):
                 groundwater_snow_new_physical_state=False,
                 groundwater_snow_clock_provider_sha256=sha(Path(__file__).with_name('groundwater_snow_clock.py')),
                 groundwater_snow_clock_policy='immutable-epoch-integer-day-accepted-local-elapsed-clock-v1')
+    from groundwater_snow_retry import metadata as retry_metadata
+    result.update(retry_metadata())
     if selected.get('cde_clock_output'):
         result['groundwater_trial_provider_sha256']=sha(Path(__file__).with_name(
             'thermal_output_step.py' if selected['flprintdt'] else 'thermal_output_clock.py'))

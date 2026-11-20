@@ -69,3 +69,26 @@ Whole historical closure remains PARTIAL; whole scientific equivalence remains
 NOT_QUALIFIED; global family/gap counts are UNKNOWN. Fixed RC3 authority, AGE
 dry-moment restrictions, snow-groundwater clock exclusions and other unresolved
 historical families remain open. No functional completion percentage is inferred.
+
+The unadmitted explicit Snow successor at `d894dbb904a2a4924b23869d8bb5c023b798a04c`
+corrects the separately observed absolute-clock association defect. Fourteen
+current Windows short contexts and44 exact cold windows independently pass.
+Both current full attempts censor after621 accepted days. IO-only probes restore
+the exact original numeric source when their writes are removed; their accepted
+532..621 physical prefixes match. On day622, the original atmospheric-demand
+branch occurs with remaining pond water and unbounded wet-pond evaporation;
+the first exhausted DTMIN trial has a5.46e-8cm residual. The positive-head
+deadband is not observed in that probe. None of these probes admits Snow.
+
+The next proposed correction composes the existing qualified original rollback,
+pond-depletion event and pond-evaporation availability providers with this
+explicit Snow route. Their Fortran providers stay literal. The existing
+availability procedure bounds physical evaporation by available water and
+reevaluates the original residual; it does not add water or alter receipts.
+Pending event state remains rejected-trial state, must be consumed after the
+original rollback and must be absent at every native read/write boundary.
+Only the selected explicit Snow route activates this policy. Complete parent
+HeadCalc, TimeControl and top-boundary inverse checks retain their original
+source identities. This reference correction requires fresh affected-surface
+qualification; prior short successes are historical after it is activated.
+No tolerance, mass limit, original equation or implicit-Snow admission changes.

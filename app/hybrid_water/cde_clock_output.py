@@ -269,4 +269,8 @@ def apply_build(output,donor_build,project,patched):
         for old,new in ordinary.output_patch('vector').edits(original):assert text.count(old)==1,old;text=text.replace(old,new,1)
         path.write_text(text,encoding='cp1252')
     extra=[regular.PROVIDER,'cde_interval_receipt','cde_clock_events','hybrid_age_output_state']+([domain] if domain else [])+['integral']+([SNOW_PROVIDER] if is_snow else [])+['timecontrol']
-    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched
+    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe')
+    if selected.get('groundwater_snow_cde_output'):
+        from groundwater_snow_retry import apply_build as snow_retry_build
+        patched=snow_retry_build(output,patched)
+    return patched

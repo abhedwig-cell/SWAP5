@@ -207,4 +207,8 @@ def apply_build(output,donor_build,project,patched):
         original_time=(donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
         (output/'timecontrol.f90').write_text(groundwater_snow_timecontrol(original_time,selected,project.start_clock),encoding='cp1252')
         extra.append('timecontrol')
-    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched
+    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe')
+    if selected.get('groundwater_snow_cde_output'):
+        from groundwater_snow_retry import apply_build as snow_retry_build
+        patched=snow_retry_build(output,patched)
+    return patched

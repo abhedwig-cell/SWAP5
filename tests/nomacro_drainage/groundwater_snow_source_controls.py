@@ -24,12 +24,18 @@ def main():
             'groundwater_snow_policy','groundwater_snow_new_physical_state','groundwater_new_physical_state',
             'groundwater_trial_provider_sha256','groundwater_snow_soil_trial_provider_sha256',
             'groundwater_snow_print_domain_provider_sha256','groundwater_snow_clock_provider_sha256',
-            'groundwater_snow_clock_policy','native_codec','swdra') if key in selected]
+            'groundwater_snow_clock_policy','groundwater_snow_retry_policy',
+            'groundwater_snow_retry_provider_sha256','groundwater_snow_retry_parent_sha256',
+            'groundwater_snow_pond_parent_sha256','groundwater_snow_pond_state_sha256',
+            'groundwater_snow_availability_parent_sha256','groundwater_snow_availability_state_sha256',
+            'native_codec','swdra') if key in selected]
     sources={'head-relaxed-guard':'headcalc.f90','head-missing-guard':'headcalc.f90',
              'head-foreign-parent':'headcalc.f90','cde-private-source':'original_cde_output_state.f90',
              'snow-private-source':'thermal_output_snow_calendar_state.f90',
              'thermal-domain-source':'original_output_thermal_domain.f90',
-             'groundwater-native-source':'groundwater_history_native_state.f90','timecontrol-source':'timecontrol.f90'}
+             'groundwater-native-source':'groundwater_history_native_state.f90','timecontrol-source':'timecontrol.f90',
+             'pond-event-source':'implicit_pond_event_state.f90','pond-availability-source':'implicit_pond_availability.f90',
+             'top-boundary-source':'boundtop.f90'}
     result=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=original.ROOT,text=True).strip(),
                 actual_BUILD_sha256=before,policy_fields=fields,refusals=[],model_executions=0,compilations=0)
     def save():(args.output/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
@@ -58,7 +64,9 @@ def main():
             try:m.validate_bundle(target,args.reference_work,project)
             except ValueError as error:
                 expected=('Foreign original output policy','Foreign explicit Snow groundwater',
-                          'Foreign actual Snow groundwater','Foreign actual explicit Snow groundwater')
+                          'Foreign actual Snow groundwater','Foreign actual explicit Snow groundwater',
+                          'Foreign actual Snow pond-event/availability provider','Foreign actual Snow top-boundary parent',
+                          'Foreign actual Snow rollback/pond event source','Foreign Snow pending-event native boundary')
                 assert any(str(error).startswith(value) for value in expected),(label,str(error))
                 assert not list(target.rglob('donor.stdout')) and not list(target.rglob('accepted-*.zip'))
                 result['refusals'].append(dict(field=label,error=str(error),before_worker=True,no_publication=True,
