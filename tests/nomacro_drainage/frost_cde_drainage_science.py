@@ -5,6 +5,7 @@ import hashlib
 import io
 import json
 from pathlib import Path, PurePosixPath
+import subprocess
 import zipfile
 
 from frost_cde_drainage_model_forensics import audit as model
@@ -12,6 +13,7 @@ from frost_cde_drainage_portable_forensics import binary, audit as portable
 from frost_cde_drainage_sealed_components import audit as components
 
 SHA = lambda raw: hashlib.sha256(raw).hexdigest()
+ROOT = Path(__file__).resolve().parents[2]
 
 
 class View:
@@ -73,7 +75,20 @@ def windows(proof):
         current = Archives(proof, 'FROST_DRAINAGE_', labels, stack)
         projection = json.loads(current.get('COMPILED_PROJECTION_V1.json'))
         prepared = json.loads(current.get('provider-PREPARED.json'))
-        cap = stack.enter_context(zipfile.ZipFile(io.BytesIO(current.get('profiles/frost-drainage-source-v1/actual-producer-source.zip'))))
+        captured = json.loads(current.get('profiles/frost-drainage-source-v1/RESULT.json'))
+        capsule = current.get('profiles/frost-drainage-source-v1/actual-producer-source.zip')
+        assert len(capsule) == captured['bytes'] and SHA(capsule) == captured['sha256']
+        production = ('app', 'src', 'tools/solute', 'tools/vq', 'reference/swap-4.3.1')
+        assert not subprocess.check_output(['git', 'diff', '6e40385c9b871992641f7a601bbf0ec30f5f68d3',
+            captured['producer_head'], '--', *production], cwd=ROOT)
+        tree = subprocess.check_output(['git', 'ls-tree', '-r', captured['producer_head']], cwd=ROOT, text=True)
+        expected = {line.split('\t', 1)[1]: line.split('\t', 1)[0].split()[2] for line in tree.splitlines()}
+        cap = stack.enter_context(zipfile.ZipFile(io.BytesIO(capsule)))
+        for name in cap.namelist():
+            raw = cap.read(name); item = captured['members'][name]
+            assert SHA(raw) == item['sha256'] and item['git_blob'] == expected[name]
+            blob = lambda value: hashlib.sha1(b'blob ' + str(len(value)).encode() + b'\0' + value).hexdigest()
+            assert expected[name] in (blob(raw), blob(raw.replace(b'\r\n', b'\n')))
         original = stack.enter_context(zipfile.ZipFile(io.BytesIO(cap.read('reference/swap-4.3.1/source-archives/SWAP.ZIP'))))
         assert SHA(cap.read('reference/swap-4.3.1/source-archives/SWAP.ZIP')) == prepared['source_archives']['SWAP.ZIP'] == '1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151'
         ref = View(Bytes({'original/build/swap-selected/divdra.f90': original.read('SWAP/divdra.f90')}), 'original')
