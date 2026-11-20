@@ -43,9 +43,9 @@ def main():
 """.replace('TRACE_DAY',str(args.target_day))
         imports='   use variables,only:daycum,tcum\n'
         declaration='   integer,save::private_snow_trace_count=0\n'
-        assert raw.count('\nsubroutine headcalc\n')==raw.count('   implicit none\n')==raw.count(anchor)==1
+        assert raw.count('\nsubroutine headcalc\n')==raw.count('\n   implicit none\n')==raw.count(anchor)==1
         changed=raw.replace('\nsubroutine headcalc\n','\nsubroutine headcalc\n'+imports,1)
-        changed=changed.replace('   implicit none\n','   implicit none\n'+declaration,1).replace(anchor,anchor+addition,1)
+        changed=changed.replace('\n   implicit none\n','\n   implicit none\n'+declaration,1).replace(anchor,anchor+addition,1)
         assert changed.replace(imports,'',1).replace(declaration,'',1).replace(addition,'',1)==raw
     else:
         assert raw.count(anchor)==1 and addition not in raw
