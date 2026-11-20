@@ -19,6 +19,7 @@ def metadata(selected):
         result['groundwater_trial_provider_sha256']=sha(Path(__file__).with_name(
             'thermal_output_step.py' if selected['flprintdt'] else 'thermal_output_clock.py'))
         result['groundwater_snow_soil_trial_provider_sha256']=sha(Path(__file__).with_name('thermal_output_clock.py'))
+        if selected['flprintdt']:result['groundwater_snow_print_domain_provider_sha256']=sha(Path(__file__).with_name('perstep_output_domain.py'))
     return result
 
 
@@ -26,6 +27,10 @@ def trial_source(original,watstor,selected):
     from thermal_output_step import soil_trial_source as step_trial
     from thermal_output_clock import soil_trial_source as clock_trial
     source=(step_trial if selected['flprintdt'] else clock_trial)(original,watstor)
+    if selected['flprintdt'] and selected['nprintday']>1:
+        # Literal domain expansion used by the existing qualified per-step owner.
+        if source.count('nprintday/=1')!=1:raise ValueError('Changed original Snow per-step print domain')
+        source=source.replace('nprintday/=1','(nprintday<1.or.nprintday>1440)',1)
     changes={
         'hybrid_snow_soil_trial_residual(candidate_bottom_cm_d)':
             'hybrid_groundwater_cde_clock_trial(candidate_bottom_cm_d,candidate_matrix_delta_cm)',
