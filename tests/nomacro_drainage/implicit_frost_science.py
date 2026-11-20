@@ -146,3 +146,49 @@ def ubuntu(proof,opt):
     path=Path(proof)/record['archive'];assert path.stat().st_size==record['bytes'] and SHA(path.read_bytes())==record['sha256']
     with zipfile.ZipFile(path) as archive:result=audit(archive,opt)
     return dict(status='SEALED_ACTUAL_IMPLICIT_FROST_UBUNTU_RAW_SCIENCE_SOURCE_CONTROLS_PASS',observations=result,actual_full_periods=2,actual_full_cold_windows=14,actual_short_contexts=2,actual_short_cold_windows=6,actual_compiled_refusals=135,actual_descriptor_refusals=14,actual_source_refusals=14,actual_transaction_contexts=2,compiler_executions=0,model_executions=0)
+
+
+def unselected(proof):
+    from ordinary_pond_evidence import physical
+    with ExitStack() as stack:
+        labels=['WINDOWS_'+opt+'_'+kind for opt in ('O0','O2') for kind in ('SCIENCE','CONTROLS')]+['WINDOWS_SUPPORT']
+        previous=Archives(proof,'FROST_DRAINAGE_',labels,stack)
+        previous_projection=json.loads(previous.get('COMPILED_PROJECTION_V1.json'))
+        observations=[]
+        for opt in ('O0','O2'):
+            current=Archives(proof,'FROST_IMPLICIT_',['WINDOWS_UNSELECTED_'+opt],stack)
+            projection=json.loads(current.get('UNSELECTED_COMPILED_PROJECTION_V1.json'))
+            profile='profiles/implicit-frost-unselected-postimages-'+opt+'-v1'
+            q=json.loads(current.get(profile+'/RESULT.json'))
+            assert q['status']=='ACTUAL_EIGHT_UNSELECTED_IMPLICIT_FROST_DEPENDENCY_POSTIMAGES_PASS' and len(q['profiles'])==8 and q['fresh_unaffected_full_periods']==0
+            for name,item in q['profiles'].items():
+                assert item['status']=='EXACT_UNSELECTED_FORTRAN_PHYSICAL_NATIVE_USER_OUTPUT_POSTIMAGE_PASS'
+                base=item['baseline']
+                old_entry=previous_projection[base['build_root']];new_entry=projection[item['build_root']]
+                before=previous.view(old_entry['prefix']);after=current.view(new_entry['prefix'])
+                assert SHA((before/'BUILD.json').read_bytes())==old_entry['actual_BUILD_sha256']
+                assert SHA((after/'BUILD.json').read_bytes())==new_entry['actual_BUILD_sha256']
+                old_sources={path.name:SHA(path.read_bytes()) for path in before.glob('*.f90')}
+                new_sources={path.name:SHA(path.read_bytes()) for path in after.glob('*.f90')}
+                assert old_sources==new_sources==item['unchanged_complete_Fortran']
+                oldmeta=json.loads((before/'BUILD.json').read_text());newmeta=json.loads((after/'BUILD.json').read_text())
+                assert oldmeta['inputs']==newmeta['inputs']
+                warm=mapped(current,item['trajectory_root']);oldwarm=mapped(previous,base['trajectory_root']);cold=mapped(current,item['cold_actual_root'])
+                rows=lambda path:[json.loads(line) for line in (path/'daily.jsonl').read_text().splitlines()]
+                data,parent=rows(warm),rows(oldwarm)
+                assert len(data)==35 and physical(data)==physical(parent[:35]) and physical(rows(cold))==physical(data[30:34])
+                for day in (2,4,30,34,35):
+                    with zipfile.ZipFile(io.BytesIO((oldwarm/f'accepted-column-1-day-{day}.zip').read_bytes())) as a,zipfile.ZipFile(io.BytesIO((warm/f'accepted-column-1-day-{day}.zip').read_bytes())) as b:
+                        assert all(a.read(member)==b.read(member) for member in ('macro.bin','result.end'))
+                with zipfile.ZipFile(io.BytesIO((warm/'accepted-column-1-day-34.zip').read_bytes())) as a,zipfile.ZipFile(io.BytesIO((cold/'accepted-column-1-day-34.zip').read_bytes())) as b:
+                    assert all(a.read(member)==b.read(member) for member in ('macro.bin','result.end'))
+                for filename in ('result_output.bin','result_output.csv'):
+                    a,b=oldwarm/('original/'+filename),warm/('original/'+filename)
+                    assert a.is_file()==b.is_file()
+                    if a.is_file():
+                        from implicit_conductivity_forensics import output_records
+                        oldrows=output_records(a.read_bytes(),filename);newrows=output_records(b.read_bytes(),filename)
+                        assert newrows==oldrows[:len(newrows)]
+                observations.append(dict(name=name,optimization=opt,whole_generated_Fortran_input_physical_native_original_output_exact=True,cold_window=(30,34)))
+        assert len(observations)==16
+        return dict(status='SEALED_ACTUAL_SIXTEEN_UNSELECTED_IMPLICIT_FROST_POSTIMAGES_PASS',observations=observations,actual_unselected_contexts=16,actual_unselected_cold_windows=16,fresh_unaffected_full_periods=0,model_executions=0,compiler_executions=0)
