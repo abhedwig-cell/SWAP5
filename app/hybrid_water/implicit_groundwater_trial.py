@@ -40,7 +40,13 @@ def apply_build(output,donor_build,project,patched):
     stock=(donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')
     trial=original.trial_source(source,stock).replace('hybrid_groundwater_age_trial',FUNCTION).replace('Foreign original AGE groundwater trial domain','Foreign implicit groundwater trial domain')
     path=output/'integral.f90';text=path.read_text(encoding='cp1252');anchor='end module MOD_integral';assert text.count(anchor)==1
-    path.write_text(text.replace(anchor,trial+'\n'+anchor,1),encoding='cp1252')
+    from implicit_snow_interval import selected as snow_interval
+    selected=snow_interval(project)
+    if selected is not None:
+        from implicit_snow_interval import trial_source as snow_trial
+        expected=snow_trial(source,stock,selected)
+        if text.count(expected)!=1:raise ValueError('Changed actual implicit Snow interval groundwater trial')
+    else:path.write_text(text.replace(anchor,trial+'\n'+anchor,1),encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
     text=text.replace(anchor,'   use MOD_integral,only:'+FUNCTION+'\n'+anchor,1)
     anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.';assert text.count(anchor)==1

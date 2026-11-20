@@ -865,6 +865,8 @@ end module plant_interface""")
     if age_calendar is not None:
         patched=age_calendar_owner.apply_build(output,donor_build,project,patched)
     if age_source:patched=current_age_source.apply_build(output,project,patched)
+    from implicit_snow_interval import apply_build as implicit_snow_interval_build
+    patched=implicit_snow_interval_build(output,donor_build,project,patched)
     from implicit_groundwater_trial import apply_build as implicit_groundwater_trial_build
     patched=implicit_groundwater_trial_build(output,donor_build,project,patched)
     from implicit_conductivity_retry import apply_build as implicit_retry_build
