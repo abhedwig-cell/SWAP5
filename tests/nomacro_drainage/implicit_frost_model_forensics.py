@@ -1,6 +1,7 @@
 """Reuse frozen independent Frost science with only the new native codec constants."""
 import argparse
 import ast
+from decimal import Decimal, localcontext
 import hashlib
 import json
 from pathlib import Path
@@ -39,6 +40,20 @@ def audit(profile, reference):
     result = namespace['audit'](profile, reference)
 
     q = json.loads((profile/'RESULT.json').read_text(encoding='utf-8'))
+    rows = [json.loads(line, parse_float=Decimal)
+            for line in (profile/'trajectory/daily.jsonl').read_text(encoding='utf-8').splitlines()]
+    with localcontext() as context:
+        context.prec = 80
+        initial = sum(rows[0]['stock_start_cm'])
+        accumulated = [Decimal(0)] * len(rows[0]['external_flux_cm'])
+        maximum = Decimal(0)
+        for row in rows:
+            accumulated = [a+b for a, b in zip(accumulated, row['external_flux_cm'])]
+            residual = initial-sum(row['stock_end_cm'])+sum(accumulated[:7])-sum(accumulated[7:])
+            maximum = max(maximum, abs(residual))
+            if abs(residual) > Decimal('1e-10'):
+                raise ValueError('Actual implicit Frost integrated water prefix exceeds unchanged 1e-10 cm')
+    result['water_prefix_max_decimal'] = str(maximum)
     build = Path(q['build_root']); inputs = Path(q['input_root'])
     meta = json.loads((build/'BUILD.json').read_text(encoding='utf-8'))
     if (meta['identity'].get('implicit_conductivity') or {}).get('implicit_frost_composition') is not True:
