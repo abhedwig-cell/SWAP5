@@ -423,6 +423,8 @@ def validate_bundle(bundle, reference, project):
     for name, digest in identity['kernel_sources']:
         if h.sha(h.ROOT / name) != digest:
             raise ValueError('Kernel source differs: ' + name)
+    from model7_capacity import validate as validate_model7_capacity
+    validate_model7_capacity(bundle,reference,project,identity)
     for name, digest in identity['donor_generated'].items():
         if h.sha(bundle / name) != digest:
             raise ValueError('Generated donor differs: ' + name)

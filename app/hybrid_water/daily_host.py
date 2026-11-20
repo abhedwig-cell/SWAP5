@@ -897,6 +897,8 @@ end module plant_interface""")
     patched=ordinary_pond_build(output,project,patched)
     from implicit_frost_composition import apply_build as implicit_frost_build
     patched=implicit_frost_build(output,project,patched)
+    from model7_capacity import apply_build as model7_capacity_build
+    patched=model7_capacity_build(output,donor_build,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -974,6 +976,9 @@ end module plant_interface""")
         "host": sha(Path(__file__)),
     }
     if direct_kernel is not None:build_identity['direct_day_kernel']=direct_kernel
+    from model7_capacity import metadata as model7_capacity_metadata
+    model7_policy=model7_capacity_metadata(project)
+    if model7_policy is not None:build_identity['model7_capacity']=model7_policy
     from weather_terminal_receipt import metadata as weather_terminal_metadata
     weather_terminal=weather_terminal_metadata(project)
     if weather_terminal is not None:build_identity['weather_terminal_receipt']=weather_terminal
