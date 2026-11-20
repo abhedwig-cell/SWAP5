@@ -11,7 +11,7 @@ def magic(project):
     if selected is None or not selected.get('groundwater_cde_clock'):
         return None
     history=selected['swhyst']
-    return b'S5GCC001' if history==0 else ('S5GCH'+f'{2*history-1:03d}').encode()
+    return b'S5GCC002' if history==0 else ('S5GCH'+f'{2*history-1:03d}').encode()
 
 
 def trial_source(original,watstor):
