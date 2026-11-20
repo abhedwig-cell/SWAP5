@@ -65,12 +65,12 @@ jobs:
           if meteo.is_file():shutil.copyfile(meteo,proof/'provider-MOD_meteo.f90')
           projection={}
           for stem in ('builds','builds-current'):
-              for manifest in sorted((root/stem).rglob('BUILD.json')):
-                  build=manifest.parent;target=proof/'compiled'/stem/build.relative_to(root/stem);target.mkdir(parents=True)
-                  for path in sorted(build.iterdir()):
-                      if path.is_file() and (path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.exe','.dll','.so')):
-                          shutil.copyfile(path,target/path.name)
-                  projection[str(build)]=dict(archive_prefix=target.relative_to(proof).as_posix(),actual_BUILD_sha256=hashlib.sha256(manifest.read_bytes()).hexdigest())
+              for path in sorted((root/stem).rglob('*')):
+                  if path.is_file() and (path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.exe','.dll','.so')):
+                      target=proof/'compiled'/stem/path.relative_to(root/stem);target.parent.mkdir(parents=True,exist_ok=True)
+                      shutil.copyfile(path,target)
+                      if path.name=='BUILD.json':
+                          projection[str(path.parent)]=dict(archive_prefix=target.parent.relative_to(proof).as_posix(),actual_BUILD_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
           (proof/'COMPILED_PROJECTION_V1.json').write_text(json.dumps(projection,indent=2)+'\n')
           PY
       - uses: actions/upload-artifact@v4
