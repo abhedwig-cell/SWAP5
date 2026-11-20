@@ -69,7 +69,9 @@ def main():
                     expected=struct.pack('<16i4d',*([4,3,kind,1,2,6,1,0]*2),0.25,0.875,0.25,0.875)
                     assert r.returncode==0 and not r.stderr and raw==expected
                     assert 'ACTUAL_FROST_ROOT_NATIVE_ROUNDTRIP_PASS' in r.stdout
-                else:assert r.returncode!=0 and 'ACTUAL_FROST_ROOT_NATIVE_ROUNDTRIP_PASS' not in r.stdout
+                else:
+                    assert r.returncode!=0 and 'ACTUAL_FROST_ROOT_NATIVE_ROUNDTRIP_PASS' not in r.stdout
+                    assert 'Invalid native input accepted by actual provider' not in r.stderr
                 q['native'].append(dict(kind=kind,attack=attack,returncode=r.returncode,stdout=r.stdout,stderr=r.stderr,
                     input_sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw),status='ROUNDTRIP_PASS' if attack=='roundtrip' else 'REFUSED'))
                 save()
