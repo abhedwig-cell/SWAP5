@@ -899,6 +899,8 @@ end module plant_interface""")
     patched=implicit_frost_build(output,project,patched)
     from model7_capacity import apply_build as model7_capacity_build
     patched=model7_capacity_build(output,donor_build,project,patched)
+    from model7_terminal_water import apply_build as model7_terminal_build
+    patched=model7_terminal_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -924,6 +926,7 @@ end module plant_interface""")
                     *([str(output/'mod_prescribed_groundwater_reaction.o')] if lower_boundary==1 else []),
                     *([str(output/(name+'.o')) for name in ('groundwater_native_state','groundwater_history_native_state','age_groundwater_native_state') if name in patched] if lower_boundary==1 else []),
                     *([str(output/'implicit_groundwater_native_state.o')] if 'implicit_groundwater_native_state' in patched else []),
+                    *([str(output/'model7_terminal_water_receipt.o')] if 'model7_terminal_water_receipt' in patched else []),
                     *([str(output/'implicit_pond_event_state.o')] if 'implicit_pond_event_state' in patched else []),
                     *([str(output/'implicit_pond_availability.o')] if 'implicit_pond_availability' in patched else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
@@ -979,6 +982,9 @@ end module plant_interface""")
     from model7_capacity import metadata as model7_capacity_metadata
     model7_policy=model7_capacity_metadata(project)
     if model7_policy is not None:build_identity['model7_capacity']=model7_policy
+    from model7_terminal_water import metadata as model7_terminal_metadata
+    model7_terminal=model7_terminal_metadata(project)
+    if model7_terminal is not None:build_identity['model7_terminal_water']=model7_terminal
     from weather_terminal_receipt import metadata as weather_terminal_metadata
     weather_terminal=weather_terminal_metadata(project)
     if weather_terminal is not None:build_identity['weather_terminal_receipt']=weather_terminal
