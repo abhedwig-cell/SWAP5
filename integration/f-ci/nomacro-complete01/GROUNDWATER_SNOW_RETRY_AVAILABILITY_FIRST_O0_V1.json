@@ -1,0 +1,222 @@
+{
+  "status": "ACTUAL_FIRST_CORRECTED_O0_FULL_INDEPENDENT_PASS_NOT_ADMITTED",
+  "runtime": "8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0",
+  "full": {
+    "status": "ACTUAL_EXPLICIT_SNOW_GROUNDWATER_CDE_FULL_PHYSICAL_NATIVE_OUTPUT_PASS",
+    "source_commit": "81448470dd4b1c7b71c96a5384635e9ee7b5530e",
+    "parameters": {
+      "optimization": "O0",
+      "solute": 1,
+      "hysteresis": 2,
+      "bottom": 1,
+      "kmean": 4,
+      "perstep": false,
+      "mode": "periodic",
+      "format": 3,
+      "reset": 1,
+      "nprintday": 3,
+      "implicit": 0,
+      "epoch": null,
+      "drainage": 1,
+      "snow": 1,
+      "phase": "full"
+    },
+    "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\groundwater-snow-cohort-O0-v4\\h2-snow-clock-periodic\\bundle",
+    "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\groundwater-snow-cohort-O0-v4\\h2-snow-clock-periodic\\input",
+    "actual_short_receipt": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\groundwater-snow-cohort-O0-v4\\h2-snow-clock-periodic\\RESULT.json",
+    "actual_short_receipt_sha256": "82317e6373eb13acbdd5103f70c49b91d692fb83f4ace1b0e761e6379428853d",
+    "fresh_compilations": 0,
+    "fresh_short_models": 0,
+    "full_resource_cap_seconds": 180,
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "functional_completion": "PARTIAL",
+    "trajectory": {
+      "status": "FULL_PASS",
+      "days": 1096,
+      "budgets": {
+        "days": 1096,
+        "max_water_cm": 1.0377601555866534e-12,
+        "max_kernel_cm": 1.0369760605755118e-12,
+        "max_solute_mg_cm2": 6.31485597320236e-12,
+        "sum_water_residual_cm": 1.1959190137645272e-12
+      },
+      "model_seconds": 111.27877099998295,
+      "build_sha256": "6c2b26f4911190f6b58bfa7ab43df4a7a42181ebdfe1324cffadeca127b947da"
+    },
+    "cold": [
+      {
+        "start": 2,
+        "end": 4,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 6,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "seconds": 0.6444616001099348,
+        "origin_unchanged": true
+      },
+      {
+        "start": 7,
+        "end": 9,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 6,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "seconds": 0.6035572998225689,
+        "origin_unchanged": true
+      },
+      {
+        "start": 30,
+        "end": 34,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 12,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "seconds": 0.7461250997148454,
+        "origin_unchanged": true
+      },
+      {
+        "start": 163,
+        "end": 165,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 6,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "seconds": 0.6602129000239074,
+        "origin_unchanged": true
+      },
+      {
+        "start": 199,
+        "end": 201,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 6,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "seconds": 0.592707899864763,
+        "origin_unchanged": true
+      },
+      {
+        "start": 364,
+        "end": 367,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 9,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "seconds": 0.6951244999654591,
+        "origin_unchanged": true
+      },
+      {
+        "start": 530,
+        "end": 532,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 6,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "seconds": 0.6014121002517641,
+        "origin_unchanged": true
+      },
+      {
+        "start": 633,
+        "end": 635,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 6,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "seconds": 0.6537611000239849,
+        "origin_unchanged": true
+      },
+      {
+        "start": 1094,
+        "end": 1096,
+        "exact_physical": true,
+        "exact_complete_native": true,
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 6,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "seconds": 0.6072637001052499,
+        "origin_unchanged": true
+      }
+    ]
+  },
+  "independent": {
+    "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+    "actual_days": 1096,
+    "actual_cold_windows": 9,
+    "codec": "S5GSC003",
+    "parameters": {
+      "optimization": "O0",
+      "solute": 1,
+      "hysteresis": 2,
+      "bottom": 1,
+      "kmean": 4,
+      "perstep": false,
+      "mode": "periodic",
+      "format": 3,
+      "reset": 1,
+      "nprintday": 3,
+      "implicit": 0,
+      "epoch": null,
+      "drainage": 1,
+      "snow": 1,
+      "phase": "full"
+    },
+    "new_physical_state": false,
+    "snow_observation": {
+      "maximum_stock_cm": 22.01003780794349,
+      "snow_rain_cm": 5.6528749999999865,
+      "gross_snow_cm": 2.731250000000001
+    },
+    "snow_soil_receipts": {
+      "actual_days": 1096,
+      "maximum_absolute_residual_cm": 1.0377601555866534e-12
+    },
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "functional_completion": "PARTIAL"
+  },
+  "raw_evidence_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence",
+  "whole_functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED"
+}

@@ -31618,11 +31618,11 @@
     "admission_receipt": "GROUNDWATER_CDE_INTERVAL_MERGE_RECEIPT_V1.json"
   },
   "groundwater_snow_cde_batch": {
-    "status": "ROLLBACK_EVENT_AVAILABILITY_REFERENCE_CORRECTION_FIRST_TARGET_RUNNING",
+    "status": "CORRECTED_O0_FULL1096_NINE_COLD_INDEPENDENT_PASS_O2_AND_COHORTS_RUNNING",
     "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
     "candidate_predecessor": "c04f5ddd1fc253d27596014e406bbd849765d5c9",
     "gap": "CDE groundwater Snow1 non-daily interval and subdaily/per-step output currently refused by shared bottom1/snow guard; dense daily thermal CDE and complete thermal/groundwater providers already exist",
-    "next_action": "Complete source8b first h2clock O0 short/cold. If PASS, reuse exact bundle for full1096/9cold; do not repeat all7shorts until actual day622 correction passes. Then fresh O2/current affected contexts, strict source/native/transaction/portable and unchanged NoSnow postimages. Preserve d894 and87 failures; no tolerance change.",
+    "next_action": "Finish current O0remaining6 and O2seven contexts; O2fullv3 and firstcurrentO0nativecontrols running. Pure audit fresh14short/44cold and twofull/18cold. Complete native/source/transaction contexts, unchangedNoSnow postimages, portable and source/raw admission. Reuse25completed source refusals fromfailedh2O0v3 plusonly4recoveredv4; do not rewrite oldproducer or repeatcomplete models.",
     "functional_completion": "PARTIAL",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "global_counts": "UNKNOWN",
@@ -31667,6 +31667,27 @@
     "current_numerical_observation": "d894 O0/O2 full180 both censored after621accepted. IO-only first minimum-step exhaustion tcum0.7740405396077777 dt1e-6 residual5.46185038e-8. Atmospheric branch before it retains pond3.803234388e-6 with epd0.09159492134, q1=0.06307066324>Emax0.001743200815. Positive h0 deadband not observed. Full current scientific equivalence not established.",
     "clock_only_runtime": "d894dbb904a2a4924b23869d8bb5c023b798a04c",
     "current_first_cohort": "groundwater-snow-cohort-O0-v4 only h2-snow-clock-periodic; source8b",
-    "current_short_authority": "PENDING; d894 14short/44cold are historical after new retry/availability source changed"
+    "current_short_authority": "PENDING; d894 14short/44cold are historical after new retry/availability source changed",
+    "current_first_full": "groundwater-snow-full-O0-v3: actual1096 days/9exact cold physical/native/useroutput PASS, independent GROUNDWATER_SNOW_RETRY_AVAILABILITY_FULL_O0_INDEPENDENT_V1.json PASS",
+    "current_first_full_model_seconds": 111.27877099998295,
+    "current_first_full_max_water_cm": 1.0377601555866534e-12,
+    "current_first_full_max_solute_mg_cm2": 6.31485597320236e-12,
+    "current_source_recovery": "h2O0sourcev3 actual timecontrol-source correctlyrefuses; observerprefixassertion fails after25 completed controls. v4 onlymissing4 controlsPASS. OriginalFAILED retained; actual_BUILD_sha identical.",
+    "current_cohort_roots": {
+      "O0": [
+        "groundwater-snow-cohort-O0-v4",
+        "groundwater-snow-cohort-O0-v5"
+      ],
+      "O2": [
+        "groundwater-snow-cohort-O2-v3"
+      ]
+    },
+    "current_full_roots": {
+      "O0": "groundwater-snow-full-O0-v3",
+      "O2": "groundwater-snow-full-O2-v3"
+    },
+    "historical_clock_only_short_contexts": 14,
+    "actual_current_short_contexts": "IN_PROGRESS",
+    "actual_current_short_cold_windows": "IN_PROGRESS"
   }
 }
