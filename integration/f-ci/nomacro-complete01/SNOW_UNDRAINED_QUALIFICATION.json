@@ -1,0 +1,79 @@
+{
+  "status": "NEUTRAL_SNOW_UNDRAINED_RAW_SCIENCE_PASS_PENDING_ADMISSION",
+  "runtime": "b0d4acf8c02ba479c81535d7187675fd88878ee7",
+  "predecessor": "b546801eaf24a01ee4dc457eb857ef46e6b61c30",
+  "independent_readers": "626c1df96392755de05b3b0caa5bbf7b341efea4",
+  "classification": [
+    "B_EXISTING_PROCESS_COMPOSITION",
+    "C_ADDITIONAL_POSITIVE_CDE_CONFIGURATION",
+    "A_BOUNDED_ORIGINAL_POSITIVE_TAIL_REFERENCE_DEFECT_CORRECTION"
+  ],
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "AGE_admitted": false,
+  "snow_undrained_admitted": false,
+  "new_physical_state": false,
+  "daily_water_guard_cm": 1e-10,
+  "integrated_water_guard_cm": 1e-10,
+  "daily_CDE_guard_mg_cm2": 1e-10,
+  "integrated_CDE_guard_mg_cm2": 1e-10,
+  "actual_full_periods": 16,
+  "actual_days_per_full_period": 1096,
+  "actual_full_cold_windows": 144,
+  "actual_short_contexts": 36,
+  "actual_short_cold_windows": 108,
+  "actual_compiled_refusals": 200,
+  "actual_source_refusals": 144,
+  "actual_transaction_contexts": 8,
+  "actual_unselected_contexts": 12,
+  "actual_unselected_cold_windows": 12,
+  "archives": {
+    "PORTABLE_OBSERVATIONS": {
+      "record": "SNOW_UNDRAINED_PORTABLE_OBSERVATIONS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "d969134e17556b10f9309419dc1cf058171019085e94eaffbb3e46beeebff171"
+    },
+    "UBUNTU_O0": {
+      "record": "SNOW_UNDRAINED_UBUNTU_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "a43fd612fbb9024e34495c686219ea1f71bb1a0393c3c1ce7005cee16f789e84"
+    },
+    "UBUNTU_O2": {
+      "record": "SNOW_UNDRAINED_UBUNTU_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "20d63b99f5d35ee5ad0b27dda6e8b26af93f308035de5449fcf92fd0702aee63"
+    },
+    "WINDOWS_O0_CONTROLS": {
+      "record": "SNOW_UNDRAINED_WINDOWS_O0_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "c0fb121b9936a991acbf651ca5d9dd0bff561f6d80ead0e719e34817ba7dda24"
+    },
+    "WINDOWS_O0_SCIENCE": {
+      "record": "SNOW_UNDRAINED_WINDOWS_O0_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "d81d7f8f9734c50648e324b7913da578fb8d13a665e0eb252d16f2ad991575dd"
+    },
+    "WINDOWS_O2_CONTROLS": {
+      "record": "SNOW_UNDRAINED_WINDOWS_O2_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "8fd1fc50ab1756ee50c42a55cfedac5e98dfe85d04ffcb1bef1e9006f6efa297"
+    },
+    "WINDOWS_O2_SCIENCE": {
+      "record": "SNOW_UNDRAINED_WINDOWS_O2_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "ca16b668cb9ac604f8c726705de889482df8e3466abfe01805a24ee0e864d5fc"
+    },
+    "WINDOWS_SUPPORT": {
+      "record": "SNOW_UNDRAINED_WINDOWS_SUPPORT_RAW_ARCHIVE.json",
+      "record_lf_sha256": "bbb2c1f23394931a035cbfbf83523de8dd75cbe84cd2de1c255194d52b05200a"
+    }
+  },
+  "original_runs": {
+    "Ubuntu": 44779472684,
+    "source": "2934c78b9e5ae5893cf8cdd42e040a5496cb538e",
+    "original_whole_jobs": "BOTH_SUCCESS",
+    "original_artifact_bytes_unchanged": true
+  },
+  "scope": "Nine retained original water/CDE ordinary Snow1 drainage0 configurations with actual bottom5/8, explicit/implicit, hysteresis0/1/2 and existing original daily/monthly/clock/per-step calendars; analytical daily heat1/method2. Additional positive CPRE0.01 case. No active macropores, Frost, aquifer or AGE.",
+  "reference_defects": [
+    "Original explicit day1066 positive interception partition loss: reuse existing qualified exact component unchanged.",
+    "Original positive CDE CMSY below1e-15 deleted: preserve positive cell state through one bounded cutoff predicate; actual-original component and independent full balances qualified; no mass compensation."
+  ],
+  "remaining": "Other historical families and configurations remain open; no whole-family completion percentage. Continue immediately after actual canonical admission.",
+  "inherited_observations_counted_fresh": false
+}
