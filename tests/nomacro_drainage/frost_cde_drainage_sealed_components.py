@@ -7,6 +7,12 @@ import re
 SHA = lambda raw: hashlib.sha256(raw).hexdigest()
 OLD = '               if (icpbotdislay(idr) == icpwlev) dzcpbotdislay(idr) = dzcpwlevsat'
 NEW = '               ! FROST-DIVDRA-OVERLAP-01: retain the actual Lev2Comp above-bottom extent.'
+OBSERVATION = """               write(*,'(a,5(1x,i0),*(1x,es25.17e3))')'ACTUAL_DIVDRA_INFILTRATION_BOOKKEEPING', &
+                idr,icpbotdislay(idr),icpwlev,icpslev,numnod,gwlev,wlev,dmaxdislay(idr), &
+                dzcpwlevsat,dzcpbotdislay(idr),dz(icpwlev),Khor(icpwlev),KDtot,KDsat,KDuns, &
+                qdrain(idr),dzcpslevsat,drainl(idr)
+               flush(6)
+"""
 
 
 def audit(get, names, roots, originals, prepared, opt):
@@ -33,6 +39,8 @@ def audit(get, names, roots, originals, prepared, opt):
             assert corrected.count(NEW) == 1 and corrected.replace(NEW, OLD, 1) == divdra
             wrong = traps = unchanged = 0
             for mode in ('original', 'corrected'):
+                probe = text(read(mode + '-probe.f90'))
+                assert probe.count(OBSERVATION) == 1 and probe.replace(OBSERVATION, '', 1) == text(read(mode + '-reference.f90'))
                 logs = json.loads(read(mode + '-compile.json'))
                 assert all(v['returncode'] == 0 and '-' + opt in v['command'] for v in logs)
                 exe = executable(mode, 'actual-divdra-overlap')
@@ -72,7 +80,14 @@ def audit(get, names, roots, originals, prepared, opt):
             assert SHA(exe) == execution['executable_sha256']
             corrected = text(read(mode + ('-divdra.f90' if label == 'cde' else '-actual-divdra.f90')))
             assert corrected.count(NEW) == 1 and corrected.replace(NEW, OLD, 1) == divdra
-            if mode == 'original': assert read(mode + '-frozencond.f90') == originals['frozencond']
+            frost = read(mode + '-frozencond.f90')
+            if mode == 'original': assert frost == originals['frozencond']
+            else: assert SHA(frost) == 'd5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2'
+            if label == 'cde':
+                for name, digest in execution['actual_source_sha256'].items():
+                    assert SHA(read(mode + '-' + name + '.f90')) == digest
+            else:
+                assert SHA(frost) == execution['actual_source_sha256']
         assert q['executions'][0]['stdout'] == q['executions'][1]['stdout']
         if label == 'rates':
             rows = [s.split() for s in q['executions'][0]['stdout'].splitlines() if s.startswith('ACTUAL_FROZENBOUNDS_DIVDRA_RATES ')]
