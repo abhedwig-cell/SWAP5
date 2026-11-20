@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 import subprocess
 
@@ -35,7 +36,7 @@ def main():
             actual = actual.replace(declaration, '', 1)
             start = actual.index('      case (97)'); end = actual.index('      case (1)', start)
             fixture = actual[start:end]
-            assert 'qdra' not in fixture and 'cdrtot' not in fixture and 'case (2)' not in fixture
+            assert not re.search(r'\b(?:qdra|cdrtot)\b', fixture) and 'case (2)' not in fixture
             actual = actual[:start] + actual[end:]
             if mode == 'guarded':
                 old, new = '               if (cmsy(i) < vsmall) then', '               if (cmsy(i) <= 0d0) then'
