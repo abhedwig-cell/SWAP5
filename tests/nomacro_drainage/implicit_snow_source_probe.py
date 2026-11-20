@@ -13,7 +13,13 @@ from original_output_baseline import assignment
 
 m=original.m
 CASES=(('water-head',0,0,8,False,'daily',1,0,4),
-       ('cde-groundwater-clock',1,2,1,False,'periodic',3,1,4))
+       ('cde-groundwater-clock',1,2,1,False,'periodic',3,1,4),
+       ('water-flux-interval',0,2,5,False,'monthly',1,0,3),
+       ('water-head-clock',0,1,8,False,'periodic',3,1,6),
+       ('water-flux-step',0,2,5,True,'explicit',1,1,5),
+       ('cde-groundwater-interval',1,0,1,False,'monthly',1,0,3),
+       ('cde-head-step',1,1,8,True,'explicit',3,1,6),
+       ('cde-flux-interval',1,2,5,False,'explicit',1,1,5))
 
 
 def main():
