@@ -10,7 +10,7 @@
     "Existing Snow/CDE calendars and root/private state owners are separately qualified; Frost composition is explicitly excluded and must be owned as a bounded coupled domain.",
     "Implicit Frost Jacobian and output-history combinations require actual original dispatch verification; no assumption of guard-only eligibility."
   ],
-  "next_code_action": "After actual PR1774 canonical admission, pin canonical and start a bounded Frost/CDE/SWDIVD1 process and state composition contract. Preserve original invalid SWDIVD0+solute and fully frozen-front refusals. Reuse existing unmodified geometry only within proven dependency/input validity; qualify the actual FrozenCond_FLOW -> Divdra -> original CDE nodal sink/receipt seam with a small real production driver and measured original object closure, then coherent explicit/implicit/free/drained/calendar contexts as original source permits. No blanket Frost guard removal and no new Jacobian or mass compensation.",
+  "next_code_action": "After actual PR1774 canonical admission, pin canonical and start a bounded Frost/CDE/SWDIVD1 process and state composition contract. Preserve original invalid SWDIVD0+solute and fully frozen-front refusals. Reuse existing unmodified geometry only within proven dependency/input validity; qualify the actual FrozenBounds -> Divdra -> original CDE nodal sink/receipt seam with a small real production driver and measured original object closure, then coherent explicit/implicit/free/drained/calendar contexts as original source permits. No blanket Frost guard removal and no new Jacobian or mass compensation.",
   "classifications": [
     "MISSING_COMPOSITION",
     "OVERRESTRICTIVE_GUARD_REQUIRES_ORIGINAL_SOURCE_PROOF",
@@ -40,6 +40,14 @@
     "readswap.f90:752..756": "Detailed weather+Snow is an original warning about incorrect sublimation, not a hard reader prohibition; scientific reference defect must be separated from valid forcing/domain constraints.",
     "drainage.f90:245..246": "Actual original drainage reader forbids SWDIVD0 with SWSOLU>0 because lateral solute fluxes would be wrong. Retain this refusal.",
     "FROST-GEOMETRY-01/manifest.json": "Existing corrected geometry authority explicitly excludes SWDIVD1 and new fully frozen front interpretation. It cannot be silently promoted.",
-    "FROST-GEOMETRY-01/frozencond.f90:238..240": "Actual existing production FrozenCond_FLOW contains SWDIVD1 calling divdra(ksatcp,min(gwl,zfrostbot)). Its process/state and reporting seam is present but outside current qualification."
-  }
+    "FROST-GEOMETRY-01/frozencond.f90:238..240": "Actual existing production FrozenBounds contains SWDIVD1 calling divdra(ksatcp,min(gwl,zfrostbot)). Its process/state and reporting seam is present but outside current qualification."
+  },
+  "planning_revision": 3,
+  "actual_production_interfaces": [
+    "MOD_frost::FrozenCond(tsoil,tetop)",
+    "MOD_frost::FrozenBounds()",
+    "MOD_drain::divdra(ksatcp,ztop)",
+    "MOD_solute::solute_CDE(task)"
+  ],
+  "planning_correction": "Earlier source-only planning used the descriptive name FrozenCond_FLOW; direct inspection confirms the actual public procedure is FrozenBounds. No execution or qualification was claimed for that planning record."
 }
