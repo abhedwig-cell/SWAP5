@@ -1,0 +1,92 @@
+{
+  "status": "NEUTRAL_IMPLICIT_FROST_NATIVE2_RAW_SCIENCE_PASS_PENDING_ADMISSION",
+  "runtime": "664596939f699ddbf0ebbdfdcfedcd37c5cc60e7",
+  "predecessor": "ffa7ef153a79aafb4cf098a4c0031845c795e83f",
+  "independent_readers": "2c1daa04e32ab37240ab376e763bb52a780aeb34",
+  "archives": {
+    "FROST_IMPLICIT_QUALIFICATION_OBSERVATIONS_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_QUALIFICATION_OBSERVATIONS_RAW_ARCHIVE.zip",
+      "bytes": 181776,
+      "sha256": "fe26873668e6d73a8fb3bcb20c93b68391a78f47b854ececa4d85e9ab2280ae8"
+    },
+    "FROST_IMPLICIT_UBUNTU_O0_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_UBUNTU_O0_RAW_ARCHIVE.zip",
+      "bytes": 34740277,
+      "sha256": "a230622fed8d666aa815fac59253a8fea27a970e94a6b63741912a2a7cc294ff"
+    },
+    "FROST_IMPLICIT_UBUNTU_O2_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_UBUNTU_O2_RAW_ARCHIVE.zip",
+      "bytes": 34677426,
+      "sha256": "1fa9675311b7c2a74363692ac33917717894321c645ab533a85de0b16b5398b9"
+    },
+    "FROST_IMPLICIT_WINDOWS_O0_CONTROLS_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_WINDOWS_O0_CONTROLS_RAW_ARCHIVE.zip",
+      "bytes": 33883230,
+      "sha256": "e611ea70f2845d6a58a91be72a073196a1775e8779899385f5d4a572ef5a1f66"
+    },
+    "FROST_IMPLICIT_WINDOWS_O0_SCIENCE_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_WINDOWS_O0_SCIENCE_RAW_ARCHIVE.zip",
+      "bytes": 31929183,
+      "sha256": "c714d4acbfb0cf80d778dd7c2102fc9f10040e8f71558b601ca6e1959baa655f"
+    },
+    "FROST_IMPLICIT_WINDOWS_O2_CONTROLS_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_WINDOWS_O2_CONTROLS_RAW_ARCHIVE.zip",
+      "bytes": 33883355,
+      "sha256": "729376a6c46b70b7e8f164a02ced856bb0848a8647ae5a16741dc9bf22d54528"
+    },
+    "FROST_IMPLICIT_WINDOWS_O2_SCIENCE_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_WINDOWS_O2_SCIENCE_RAW_ARCHIVE.zip",
+      "bytes": 28072485,
+      "sha256": "e75b0f12d12e1898056b92fa73780b1ac1df8b34137831707f731059db2ece00"
+    },
+    "FROST_IMPLICIT_WINDOWS_SUPPORT_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_WINDOWS_SUPPORT_RAW_ARCHIVE.zip",
+      "bytes": 12621421,
+      "sha256": "51679800974f933d0653cc8a47cb681e6fd501f9fc380d83d743ad7751276525"
+    },
+    "FROST_IMPLICIT_WINDOWS_UNSELECTED_O0_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_WINDOWS_UNSELECTED_O0_RAW_ARCHIVE.zip",
+      "bytes": 10072181,
+      "sha256": "ee41acba9dd4974f998d9d51120241475cb974ece2357ebdc45554f0b43e647e"
+    },
+    "FROST_IMPLICIT_WINDOWS_UNSELECTED_O2_RAW_ARCHIVE.json": {
+      "archive": "FROST_IMPLICIT_WINDOWS_UNSELECTED_O2_RAW_ARCHIVE.zip",
+      "bytes": 10037332,
+      "sha256": "9c398a022915b17348ae3f47ec0509fb0fafc3f8578664b722515cbe6697b2f1"
+    }
+  },
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "implicit_Frost_admitted": false,
+  "AGE_admitted": false,
+  "broader_calendars_admitted": false,
+  "fully_frozen_front_admitted": false,
+  "new_physical_state": false,
+  "actual_full_periods": 8,
+  "actual_days_per_full_period": 1096,
+  "actual_full_cold_windows": 56,
+  "actual_short_contexts": 8,
+  "actual_short_cold_windows": 24,
+  "actual_compiled_refusals": 540,
+  "actual_descriptor_refusals": 56,
+  "actual_source_refusals": 56,
+  "actual_transaction_contexts": 8,
+  "actual_unselected_contexts": 16,
+  "actual_unselected_cold_windows": 16,
+  "actual_boundary_states_per_variant": 2880,
+  "actual_Jacobian_entries_per_variant": 25920,
+  "actual_native_provider_roundtrips": 8,
+  "actual_native_provider_refusals": 56,
+  "daily_water_guard_cm": 1e-10,
+  "hydraulic_window_water_guard": "1e-10 times elapsed owning hydraulic window; original source unchanged",
+  "daily_CDE_guard_mg_cm2": 1e-10,
+  "every_prefix_CDE_guard_mg_cm2": 1e-10,
+  "extra_fixed_absolute_global_water_prefix_is_owning_gate": false,
+  "observed_extra_fixed_absolute_global_water_prefix_cm": "1.4812746038016E-10",
+  "scientific_FD_scaled_derivative_limit": 2e-06,
+  "unaffected_full_periods_replayed": 0,
+  "prior_FI001_contexts_not_counted_as_native2": true,
+  "scope": "Original fitted Mualem implicit water/CDE; Snow1 Frost1 hysteresis2 numericalheat1/method2 primaryDrainage1 effectiveSWDIVD1 bottom6; prescribed surface temperature; dense daily original output; no aquifer/macropores/AGE; examinedKsat hard refused"
+}
