@@ -126,8 +126,13 @@ the prescribed 2e-6 derivative criterion. Water/solute conservation guards remai
 1e-10. These are component inputs, not full-model or portable qualification.
 Failed fixture/controller roles and all original observations remain preserved.
 
-No production source, public guard, codec or accepted state changes in this
-investigation. Before public implicit Frost admission, install the bounded
-numerical correction and qualify the touched water/CDE, rollback, restart,
-native and unchanged-postimage composition. Other bottom boundaries and broader
-thermal calendars acquire no authority here.
+The follow-up branch now implements a bounded candidate reader/build route,
+using distinct S5FIW001/S5FIC001 codecs with the existing complete payload.
+The actual implicit HeadCalc source closes by exact inverse to the qualified
+ordinary water parent; its complete implicit clock closes to the qualified
+explicit Frost clock. The first Windows O0 35-day water context passes the
+unchanged 1e-10 guards and all three physical/native/REAL4 cold windows.
+This is implemented and partly tested, with canonical admission still pending.
+Before admission, qualify the touched water/CDE, rollback, restart, native and
+unchanged-postimage composition. Other bottom boundaries, examined-Ksat
+interpolation and broader thermal calendars acquire no authority here.
