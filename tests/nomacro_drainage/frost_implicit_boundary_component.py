@@ -26,6 +26,7 @@ def main():
     import implicit_pond_availability
     import ordinary_implicit_pond_switch
     import ordinary_implicit_pond_tangent
+    import implicit_frost_surface_conductivity
     from daily_host import NO_MACRO_FP_FLAGS, no_macro_fp_profile
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
     q = dict(status='RUNNING', source=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
@@ -65,15 +66,10 @@ def main():
         old = ordinary_implicit_pond_tangent.headcalc(implicit_conductivity_jacobian.source(original))
         start = original.index('subroutine vector_F('); end = original.index('end subroutine vector_F')
         assert original[start:end] in old
-        fixed = old
-        for conductivity in ('katm', 'ksatfit(1)'):
-            before = 'k(1),' + conductivity + ',dz(1)'
-            after = 'k(1),' + conductivity + '*rfcp(1)+hconode_vsmall*(1d0-rfcp(1)),dz(1)'
-            assert fixed.count(before) == 2
-            fixed = fixed.replace(before, after)
-        import_anchor = '   use MOD_top,only:katm'
-        assert fixed.count(import_anchor) == 1
-        fixed = fixed.replace(import_anchor, '   use MOD_MvG,only:hconode_vsmall\n' + import_anchor, 1)
+        fixed = implicit_frost_surface_conductivity.source(old)
+        implicit_frost_surface_conductivity.validate(fixed, old)
+        q.update(proposed_numerical_renderer_sha256=sha(Path(implicit_frost_surface_conductivity.__file__)),
+                 complete_qualified_headcalc_inverse_verified=True)
         assert fixed != old
         assert original[start:end] in fixed
         # Reuse the exact accepted history/availability/pond providers, including
