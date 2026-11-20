@@ -22,8 +22,11 @@ def compose(actual,before,after):
         a=''.join(old[i:j]);b=''.join(new[k:l])
         if not a:
             if i==0:raise ValueError('Unanchored Snow soil composition')
-            a=old[i-1];b=a+b
-        if actual.count(a)!=1:raise ValueError('Overlapping existing Snow soil/interval source owners')
+            start=i-1
+            a=''.join(old[start:i]);b=a+b
+            while actual.count(a)>1 and start>0:
+                start-=1;a=''.join(old[start:i]);b=old[start]+b
+        if actual.count(a)!=1:raise ValueError('Overlapping existing Snow soil/interval source owners: '+repr(a[:120]))
         edits.append((a,b))
     for a,b in reversed(edits):actual=actual.replace(a,b,1)
     return actual
@@ -35,6 +38,18 @@ def trial_source(original,watstor,output):
     old='nprintday<2'
     if text.count(old)!=1:raise ValueError('Changed original daily Snow soil trial domain')
     return text.replace(old,'nprintday/=1',1).replace('hybrid_groundwater_cde_clock_trial','hybrid_implicit_groundwater_trial')
+
+
+def integral(original,watstor,selected_output):
+    import cde_interval_output as interval
+    import original_output_thermal as thermal
+    import thermal_output_clock as clock
+    result=compose(interval.render_integral(original,selected_output),
+                   thermal.render_integral(original,None,selected_output),
+                   clock.render_integral(original,watstor,selected_output))
+    old=clock.soil_trial_source(original,watstor)
+    if result.count(old)!=1:raise ValueError('Changed actual composed Snow soil trial')
+    return result.replace(old,trial_source(original,watstor,selected_output),1)
 
 
 def apply_build(output,donor_build,project,patched):
@@ -52,11 +67,7 @@ def apply_build(output,donor_build,project,patched):
     path=output/'integral.f90';actual=path.read_text(encoding='cp1252')
     if actual!=interval.render_integral(source,selected_output):
         raise ValueError('Changed complete original CDE interval integral owner')
-    result=compose(actual,thermal.render_integral(source,None,selected_output),
-                   clock.render_integral(source,stock,selected_output))
-    old=clock.soil_trial_source(source,stock)
-    if result.count(old)!=1:raise ValueError('Changed actual composed Snow soil trial')
-    path.write_text(result.replace(old,trial_source(source,stock,selected_output),1),encoding='cp1252')
+    path.write_text(integral(source,stock,selected_output),encoding='cp1252')
     path=output/'age_output_calendar_probe.f90';actual=path.read_text(encoding='cp1252')
     if actual!=interval.probe_source(project,selected_output):
         raise ValueError('Changed complete original CDE interval probe owner')

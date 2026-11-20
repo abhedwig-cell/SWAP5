@@ -31,7 +31,14 @@ def metadata(project):
     root=Path(__file__).resolve().parents[2]
     from experimental_project import inspect
     policy=POLICY if inspect(project.input_directory)['selectors']['SWKIMPL'] else 'original-explicit-groundwater-independent-daily-trial-receipt-v1'
-    return dict(policy=policy,source_sha256=sha(Path(__file__)),original_projection_owner_sha256=sha(Path(original.__file__)),receipt_provider_sha256=sha(root/'src/process/mod_original_output_receipt.f90'),reaction_provider_sha256=sha(root/'src/process/mod_prescribed_groundwater_reaction.f90'),original_integral_sha256=original.regular.INTEGRAL_SHA,original_watstor_sha256=original.clock.WATSTOR_SHA,guard_cm=1e-10,ownership='read-only original daily receipt clone before Integral/Fluxes; no accepted state assignment')
+    result=dict(policy=policy,source_sha256=sha(Path(__file__)),original_projection_owner_sha256=sha(Path(original.__file__)),receipt_provider_sha256=sha(root/'src/process/mod_original_output_receipt.f90'),reaction_provider_sha256=sha(root/'src/process/mod_prescribed_groundwater_reaction.f90'),original_integral_sha256=original.regular.INTEGRAL_SHA,original_watstor_sha256=original.clock.WATSTOR_SHA,guard_cm=1e-10,ownership='read-only original daily receipt clone before Integral/Fluxes; no accepted state assignment')
+    from implicit_snow_interval import selected as snow_interval
+    if snow_interval(project):
+        result.update(snow_interval_composition_sha256=sha(Path(__file__).with_name('implicit_snow_interval.py')),
+            snow_soil_owner_sha256=sha(Path(__file__).with_name('thermal_output_clock.py')),
+            snow_groundwater_owner_sha256=sha(Path(__file__).with_name('groundwater_snow_cde.py')),
+            control_volume='existing actual soil/pond with net rain/melt and actual groundwater delta')
+    return result
 
 
 def apply_build(output,donor_build,project,patched):
