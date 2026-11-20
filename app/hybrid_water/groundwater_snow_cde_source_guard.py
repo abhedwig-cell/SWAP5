@@ -15,6 +15,8 @@ def validate_source(bundle,identity):
                             ('groundwater_history_native_state.f90','groundwater_history_native_state.f90')):
         if (bundle/actual).read_bytes().replace(b'\r\n',b'\n')!=(folder/template).read_bytes().replace(b'\r\n',b'\n'):
             raise ValueError('Foreign actual Snow groundwater CDE native/private-state provider: '+actual)
+    from groundwater_snow_clock import validate as validate_clock
+    validate_clock((bundle/'timecontrol.f90').read_text(encoding='cp1252'),output,output['original_output_epoch'])
     source=(bundle/'headcalc.f90').read_bytes().replace(b'\r\n',b'\n')
     if output.get('cde_clock_output'):
         from groundwater_cde_clock_source_guard import ADDITIONS

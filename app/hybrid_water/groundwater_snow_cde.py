@@ -14,7 +14,9 @@ def metadata(selected):
     sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
     result=dict(groundwater_snow_composition_sha256=sha(Path(__file__)),
                 groundwater_snow_policy='existing-explicit-snow-groundwater-cde-composition-v1',
-                groundwater_snow_new_physical_state=False)
+                groundwater_snow_new_physical_state=False,
+                groundwater_snow_clock_provider_sha256=sha(Path(__file__).with_name('groundwater_snow_clock.py')),
+                groundwater_snow_clock_policy='immutable-epoch-integer-day-accepted-local-elapsed-clock-v1')
     if selected.get('cde_clock_output'):
         result['groundwater_trial_provider_sha256']=sha(Path(__file__).with_name(
             'thermal_output_step.py' if selected['flprintdt'] else 'thermal_output_clock.py'))

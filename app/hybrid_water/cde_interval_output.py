@@ -201,4 +201,10 @@ def apply_build(output,donor_build,project,patched):
         for old,new in ordinary.output_patch('vector').edits(original):assert text.count(old)==1,old;text=text.replace(old,new,1)
         path.write_text(text,encoding='cp1252')
     extra=[regular.PROVIDER,'cde_interval_receipt','hybrid_age_output_state']+([domain] if domain else [])+['integral']+([SNOW_PROVIDER] if is_snow else [])
+    if selected.get('groundwater_snow_cde_output'):
+        from groundwater_snow_clock import render as groundwater_snow_timecontrol
+        if 'timecontrol' in patched or (output/'timecontrol.f90').exists():raise ValueError('Multiple Snow groundwater clock owners')
+        original_time=(donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
+        (output/'timecontrol.f90').write_text(groundwater_snow_timecontrol(original_time,selected,project.start_clock),encoding='cp1252')
+        extra.append('timecontrol')
     patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched

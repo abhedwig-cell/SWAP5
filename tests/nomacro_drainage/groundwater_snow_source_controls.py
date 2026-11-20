@@ -23,12 +23,13 @@ def main():
     fields=[key for key in ('groundwater_snow_cde_output','groundwater_snow_composition_sha256',
             'groundwater_snow_policy','groundwater_snow_new_physical_state','groundwater_new_physical_state',
             'groundwater_trial_provider_sha256','groundwater_snow_soil_trial_provider_sha256',
-            'groundwater_snow_print_domain_provider_sha256','native_codec','swdra') if key in selected]
+            'groundwater_snow_print_domain_provider_sha256','groundwater_snow_clock_provider_sha256',
+            'groundwater_snow_clock_policy','native_codec','swdra') if key in selected]
     sources={'head-relaxed-guard':'headcalc.f90','head-missing-guard':'headcalc.f90',
              'head-foreign-parent':'headcalc.f90','cde-private-source':'original_cde_output_state.f90',
              'snow-private-source':'thermal_output_snow_calendar_state.f90',
              'thermal-domain-source':'original_output_thermal_domain.f90',
-             'groundwater-native-source':'groundwater_history_native_state.f90'}
+             'groundwater-native-source':'groundwater_history_native_state.f90','timecontrol-source':'timecontrol.f90'}
     result=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=original.ROOT,text=True).strip(),
                 actual_BUILD_sha256=before,policy_fields=fields,refusals=[],model_executions=0,compilations=0)
     def save():(args.output/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')

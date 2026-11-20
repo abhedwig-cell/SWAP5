@@ -239,6 +239,9 @@ def apply_build(output,donor_build,project,patched):
        tcum,hybrid_cde_old_dt,hybrid_cde_old_limit,dt_irr_event,dtCrit,dt,get_dtEvent
 """
     time_source=time_source.replace(anchor,closure+anchor,1)
+    if selected.get('groundwater_snow_cde_output'):
+        from groundwater_snow_clock import render as groundwater_snow_timecontrol
+        time_source=groundwater_snow_timecontrol(time_source,selected,project.start_clock)
     (output/'timecontrol.f90').write_text(time_source,encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
     groundwater=selected.get('groundwater_cde_clock',False)
