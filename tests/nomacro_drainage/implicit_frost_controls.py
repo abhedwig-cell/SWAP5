@@ -60,6 +60,28 @@ def main():
     adaptation = Scope(); function = adaptation.visit(functions[0])
     if (adaptation.tuples, adaptation.sources, adaptation.constants, adaptation.divd0) != (1, 1, 3, 1):
         raise ValueError('Ambiguous bounded implicit control adaptation')
+    # Preserve every inherited compiled attack. Its CDE-tail shape assertion
+    # owns the old prefix; the distinct revision2 root tail follows it.
+    native_path = 'tests/nomacro_scheduled_subsurface/output_thermal_controls.py'
+    native_raw = subprocess.check_output(['git','show','b285147254b208643423adea88a4fb5f1158b464:'+native_path],cwd=ROOT)
+    if (ROOT/native_path).read_bytes().replace(b'\r\n',b'\n') != native_raw:
+        raise ValueError('Inherited compiled thermal controls changed')
+    native_functions = [node for node in ast.parse(native_raw.decode()).body
+                        if isinstance(node,ast.FunctionDef) and node.name=='native']
+    if len(native_functions)!=1: raise ValueError('Missing literal native controls')
+    class RootTail(ast.NodeTransformer):
+        changes = 0
+        def visit_Compare(self,node):
+            self.generic_visit(node)
+            if ast.unparse(node)=='c + 24 + 16 * n == len(raw)':
+                self.changes += 1
+                node.comparators[0] = ast.BinOp(left=node.comparators[0],op=ast.Sub(),right=ast.Constant(96))
+            return node
+    tail = RootTail(); native_function = tail.visit(native_functions[0])
+    if tail.changes!=1: raise ValueError('Ambiguous separate root-tail shape adaptation')
+    native_namespace = dict(vars(previous.inherited))
+    exec(compile(ast.fix_missing_locations(ast.Module(body=[native_function],type_ignores=[])),native_path,'exec'),native_namespace)
+    previous.inherited.native = native_namespace['native']
     namespace = dict(vars(previous))
     module = ast.fix_missing_locations(ast.Module(body=[function], type_ignores=[]))
     exec(compile(module, path, 'exec'), namespace)
