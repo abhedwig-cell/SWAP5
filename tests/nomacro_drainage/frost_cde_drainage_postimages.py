@@ -65,7 +65,10 @@ def main():
             before = {p.name: p.read_bytes() for p in parent.glob('*.f90')}
             after = {p.name: p.read_bytes() for p in build.glob('*.f90')}
             assert before == after, 'Unselected complete compiled Fortran changed: ' + name
-            assert old['inputs'] == meta['inputs'] and old['project'] == meta['project']
+            assert old['inputs'] == meta['inputs']
+            project_changes = differences(old['project'], meta['project'])
+            assert set(project_changes) <= {'case'} and meta['project']['case'] == project.case
+            item['project_metadata_changes'] = project_changes
             left, right = dict(old['identity']), dict(meta['identity'])
             metadata_addition = {}
             if 'water_polish_policy' not in left:
