@@ -10,16 +10,17 @@ from extended_evidence import lines, physical
 
 require = prior.require
 ORIGINAL_TOP = '24b28637fc841a8094902b84fc081f90939d3c0c7fd1b2869a2c20ee913a11ca'
+ORIGINAL_HISTORY_TOP = '77e72bb23b300e2f880b72bb0b1b0d4955c928b3b9188a2a3f6d075c35206da5'
 OLD = '      if (h0 <= 1.0d-6) then'
 NEW = '      if (h0 <= 0.0d0) then'
 
 
-def boundtop(raw):
+def boundtop(raw, history=False):
     text = raw.decode('cp1252').replace('\r\n', '\n')
     require(text.count(NEW) == 1 and OLD not in text,
             'Actual secondary implicit positive-pond switch differs')
     original = text.replace(NEW, OLD, 1).encode('cp1252')
-    require(hashlib.sha256(original).hexdigest() == ORIGINAL_TOP,
+    require(hashlib.sha256(original).hexdigest() == (ORIGINAL_HISTORY_TOP if history else ORIGINAL_TOP),
             'Actual complete original top provider changed beyond zero switch')
     return hashlib.sha256(text.encode('cp1252')).hexdigest()
 
@@ -108,8 +109,8 @@ def audit_root(root, compiled_root=None):
             extended['strict_trial_water_guard_cm'] == 1e-10 and
             extended['strict_retry_clock_floor_ulps'] == 8,
             'Secondary source authority or scientific limits changed')
-    top_sha = boundtop((build_root/'boundtop.f90').read_bytes())
     selected = prior.selected_input(root/'input/swap.swp')
+    top_sha = boundtop((build_root/'boundtop.f90').read_bytes(), bool(selected['swhyst']))
     require(q['parameters']['hysteresis'] == selected['swhyst'] and
             q['output_selection'] == {k: v for k, v in selected.items() if k != 'swhyst'},
             'Actual selected original secondary output/history differs')
