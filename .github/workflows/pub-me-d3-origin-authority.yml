@@ -10,6 +10,10 @@ on:
       - '.github/workflows/pub-me-d3-origin-authority.yml'
       - 'src/**'
       - 'reference/**'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/README.md'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/divdra.f90'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/manifest.json'
+      - 'tests/nomacro_drainage/frost_publication_scope.py'
   workflow_dispatch:
 
 permissions:
@@ -24,9 +28,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Select actual publication dependency changes
+        id: publication_scope
+        run: python3 tests/nomacro_drainage/frost_publication_scope.py
       - name: Install GNU Fortran
+        if: steps.publication_scope.outputs.replay == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y gfortran
       - name: Run preregistered D3 gate
+        if: steps.publication_scope.outputs.replay == 'true'
         run: bash tests/publication/run_pub_me_d3_origin_authority.sh

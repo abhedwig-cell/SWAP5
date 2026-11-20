@@ -24,6 +24,16 @@ VERIFY_HOOK = '    import frost_drainage_verify as frost\n    return frost.verif
 PROJECTION_HOOK = '    import frost_drainage_verify as frost\n    text=frost.strip_current_evidence(text)\n'
 PATTERN = '            /integration/f-ci/nomacro-complete01/FROST_DRAINAGE_*\n'
 LEGACY_PATTERN = '            /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*\n'
+PUBLICATION_WORKFLOWS = ('pub-me-d1-transition-authority.yml', 'pub-me-d3-origin-authority.yml',
+    'pub-p2e06-reference-local-balance-scaling.yml', 'pub-p2e07-reference-cancellation-floor.yml',
+    'pub-p2e08-reference-valid-calibration-domain.yml', 'pub-p2e09-reference-threshold-freeze.yml',
+    'pub-p2e10-e0-broad-paired-matrix.yml')
+PUBLICATION_EXCLUSIONS = ''.join("      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/" +
+    name + "'\n" for name in ('README.md', 'divdra.f90', 'manifest.json'))
+PUBLICATION_HELPER = "      - 'tests/nomacro_drainage/frost_publication_scope.py'\n"
+PUBLICATION_SELECTION = ('      - name: Select actual publication dependency changes\n'
+    '        id: publication_scope\n        run: python3 tests/nomacro_drainage/frost_publication_scope.py\n')
+PUBLICATION_CONDITION = "        if: steps.publication_scope.outputs.replay == 'true'\n"
 PARSERS = ('frost_cde_drainage_science.py', 'frost_cde_drainage_model_forensics.py',
     'frost_cde_drainage_component_forensics.py', 'frost_cde_drainage_sealed_components.py',
     'frost_cde_drainage_portable_forensics.py', 'frost_drainage_parent_bridge.json')
@@ -79,6 +89,14 @@ def guard_previous_source():
         require(actual.count(PATTERN) == actual.count(LEGACY_PATTERN) == 1 and
             actual.replace(PATTERN, '', 1).replace(LEGACY_PATTERN, '', 1).encode() == blob(PARENT, path),
             'Registered CI changed beyond Frost proof checkout')
+    for name in PUBLICATION_WORKFLOWS:
+        path = '.github/workflows/' + name; actual = norm((ROOT/path).read_bytes()).decode()
+        for inserted, count in ((PUBLICATION_EXCLUSIONS, 1), (PUBLICATION_HELPER, 1),
+                                (PUBLICATION_SELECTION, 1), (PUBLICATION_CONDITION, 2)):
+            require(actual.count(inserted) == count, 'Ambiguous publication dependency selection')
+            actual = actual.replace(inserted, '')
+        require(actual.encode() == blob(PARENT, path),
+            'Publication CI changed beyond explicit unchanged dependency selection')
     return True
 
 
