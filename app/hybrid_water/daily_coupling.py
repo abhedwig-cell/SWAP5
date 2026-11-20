@@ -212,7 +212,7 @@ def validate_bundle(bundle, reference, project):
     validate_ordinary_pond(bundle,project)
     implicit_snow=(identity.get('implicit_conductivity') or {}).get('implicit_snow_composition') is True
     if implicit_snow:
-        from implicit_snow_composition import validate_source as validate_implicit_snow
+        from implicit_snow_source_guard import validate_source as validate_implicit_snow
         validate_implicit_snow(bundle,project,identity)
     elif identity.get('ordinary_implicit_pond_switch'):
         from ordinary_pond_source_guard import validate as validate_ordinary_pond_source

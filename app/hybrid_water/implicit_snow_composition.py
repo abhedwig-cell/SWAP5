@@ -16,9 +16,3 @@ def source_identity():
     return dict(implicit_snow_composition=True,implicit_snow_policy=POLICY,
                 implicit_snow_composition_source_sha256=hashlib.sha256(
                     Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest())
-
-
-def validate_source(bundle,project,identity):
-    # Keep this new development route closed until its complete original
-    # HeadCalc/TimeControl/top forms have been reconciled to qualified parents.
-    raise ValueError('Implicit Snow numerical source closure is not yet qualified')
