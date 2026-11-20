@@ -34,7 +34,7 @@ ROOT_BODY = '''      subroutine ordinary_pond_root()
         pond=lower;runots=runoff();left_value=coefficient*pond+runots-constant
         pond=upper;runots=runoff();right_value=coefficient*pond+runots-constant
         if(left_value>0d0.or.right_value<0d0)error stop 'Original ordinary pond root not bracketed'
-        do iteration=1,128
+        do iteration=1,127
            middle=lower+(upper-lower)*.5d0
            if(middle==lower.or.middle==upper)exit
            pond=middle;runots=runoff();value=coefficient*pond+runots-constant
