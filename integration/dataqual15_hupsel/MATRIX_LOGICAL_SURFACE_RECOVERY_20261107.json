@@ -1,0 +1,1107 @@
+{
+  "phase": "PRIVATE_SURFACE_AND_BOESTEN_HEADER_CONTROLS_QUALIFIED",
+  "base": "07e67e56c1cd80c4bb8d9582d27ab46b2aa0971c",
+  "tested_code": "8ebba972e9ba8b512eebf3141e08e9c68f8aca3d",
+  "pull_request": 1612,
+  "native_scope": "S5MJ0002 mode 0 and S5MJ0003 mode 2. Zero surface solute store. Boesten spev 2 and saev 0.5.",
+  "baseline_probe_correction": "The first O2 probe observed a malformed read admission followed by writer refusal. Separate observation from the canonical round-trip writer to retain the original reader verdict.",
+  "windows": {
+    "O0": {
+      "native_archive_sha256": "b7c3fdf05a853bfcaf96f0776bf6d4825216282d6be0d5a99a5e53a22dc74c1c",
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "admitted_malformed": {
+        "incumbent": {
+          "2": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "3": [
+            [
+              144,
+              -1
+            ]
+          ]
+        },
+        "candidate": {
+          "2": [],
+          "3": []
+        }
+      },
+      "production_admission": false,
+      "events": [
+        {
+          "label": "incumbent-link",
+          "command": [
+            "C:/msys64/ucrt64/bin/gfortran.exe",
+            "@C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.args"
+          ],
+          "returncode": 0,
+          "seconds": 5.390554900048301,
+          "stdout": "0000-incumbent-link.stdout",
+          "stderr": "0000-incumbent-link.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "incumbent-write",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-write",
+            "unused",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\original-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 3.0462644998915493,
+          "stdout": "0001-incumbent-write.stdout",
+          "stderr": "0001-incumbent-write.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "incumbent-read",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-read",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\original-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03544780006632209,
+          "stdout": "0002-incumbent-read.stdout",
+          "stderr": "0002-incumbent-read.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-2-144-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03692149999551475,
+          "stdout": "0003-incumbent-malformed.stdout",
+          "stderr": "0003-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-2-144--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03688060003332794,
+          "stdout": "0004-incumbent-malformed.stdout",
+          "stderr": "0004-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-2-144-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03734789998270571,
+          "stdout": "0005-incumbent-malformed.stdout",
+          "stderr": "0005-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-2-156-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03617489989846945,
+          "stdout": "0006-incumbent-malformed.stdout",
+          "stderr": "0006-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-2-156--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03649490000680089,
+          "stdout": "0007-incumbent-malformed.stdout",
+          "stderr": "0007-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-2-156-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03490280010737479,
+          "stdout": "0008-incumbent-malformed.stdout",
+          "stderr": "0008-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-write",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-write",
+            "unused",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\original-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03897199989296496,
+          "stdout": "0009-incumbent-write.stdout",
+          "stderr": "0009-incumbent-write.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "incumbent-read",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-read",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\original-3",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03661990002728999,
+          "stdout": "0010-incumbent-read.stdout",
+          "stderr": "0010-incumbent-read.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-3-144-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.033316400134935975,
+          "stdout": "0011-incumbent-malformed.stdout",
+          "stderr": "0011-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-3-144--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03664910001680255,
+          "stdout": "0012-incumbent-malformed.stdout",
+          "stderr": "0012-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-3-144-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.032883600099012256,
+          "stdout": "0013-incumbent-malformed.stdout",
+          "stderr": "0013-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-3-156-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03295859997160733,
+          "stdout": "0014-incumbent-malformed.stdout",
+          "stderr": "0014-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-3-156--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.0337527000810951,
+          "stdout": "0015-incumbent-malformed.stdout",
+          "stderr": "0015-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\malformed-3-156-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03506839997135103,
+          "stdout": "0016-incumbent-malformed.stdout",
+          "stderr": "0016-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-link",
+          "command": [
+            "C:/msys64/ucrt64/bin/gfortran.exe",
+            "@C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.args"
+          ],
+          "returncode": 0,
+          "seconds": 1.7284802000503987,
+          "stdout": "0017-candidate-link.stdout",
+          "stderr": "0017-candidate-link.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "candidate-write",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-write",
+            "unused",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\original-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 3.4552081001456827,
+          "stdout": "0018-candidate-write.stdout",
+          "stderr": "0018-candidate-write.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "candidate-read",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-read",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\original-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.044215000001713634,
+          "stdout": "0019-candidate-read.stdout",
+          "stderr": "0019-candidate-read.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-2-144-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.04574880003929138,
+          "stdout": "0020-candidate-malformed.stdout",
+          "stderr": "0020-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-2-144--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.047361900098621845,
+          "stdout": "0021-candidate-malformed.stdout",
+          "stderr": "0021-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-2-144-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.053233199985697865,
+          "stdout": "0022-candidate-malformed.stdout",
+          "stderr": "0022-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-2-156-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.05534430011175573,
+          "stdout": "0023-candidate-malformed.stdout",
+          "stderr": "0023-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-2-156--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.04838940012268722,
+          "stdout": "0024-candidate-malformed.stdout",
+          "stderr": "0024-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-2-156-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.09269640012644231,
+          "stdout": "0025-candidate-malformed.stdout",
+          "stderr": "0025-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-write",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-write",
+            "unused",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\original-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.05032590008340776,
+          "stdout": "0026-candidate-write.stdout",
+          "stderr": "0026-candidate-write.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "candidate-read",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-read",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\original-3",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.04045929992571473,
+          "stdout": "0027-candidate-read.stdout",
+          "stderr": "0027-candidate-read.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-3-144-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.048493599984794855,
+          "stdout": "0028-candidate-malformed.stdout",
+          "stderr": "0028-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-3-144--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.04963089991360903,
+          "stdout": "0029-candidate-malformed.stdout",
+          "stderr": "0029-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-3-144-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.045520100044086576,
+          "stdout": "0030-candidate-malformed.stdout",
+          "stderr": "0030-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-3-156-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.05608729994855821,
+          "stdout": "0031-candidate-malformed.stdout",
+          "stderr": "0031-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-3-156--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.045538100181147456,
+          "stdout": "0032-candidate-malformed.stdout",
+          "stderr": "0032-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\malformed-3-156-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O0-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.04485170007683337,
+          "stdout": "0033-candidate-malformed.stdout",
+          "stderr": "0033-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        }
+      ]
+    },
+    "O2": {
+      "native_archive_sha256": "c10ad236e209fec1d2a1ffc359ff4e09c4d4d70d094874cbad4fe0cec1f5b839",
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "admitted_malformed": {
+        "incumbent": {
+          "2": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "3": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ]
+        },
+        "candidate": {
+          "2": [],
+          "3": []
+        }
+      },
+      "production_admission": false,
+      "events": [
+        {
+          "label": "incumbent-link",
+          "command": [
+            "C:/msys64/ucrt64/bin/gfortran.exe",
+            "@C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.args"
+          ],
+          "returncode": 0,
+          "seconds": 10.095703599974513,
+          "stdout": "0000-incumbent-link.stdout",
+          "stderr": "0000-incumbent-link.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "incumbent-write",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-write",
+            "unused",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\original-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 1.2412922999355942,
+          "stdout": "0001-incumbent-write.stdout",
+          "stderr": "0001-incumbent-write.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "incumbent-read",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-read",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\original-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.040583099937066436,
+          "stdout": "0002-incumbent-read.stdout",
+          "stderr": "0002-incumbent-read.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-2-144-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.038134200032800436,
+          "stdout": "0003-incumbent-malformed.stdout",
+          "stderr": "0003-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-2-144--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.037837899988517165,
+          "stdout": "0004-incumbent-malformed.stdout",
+          "stderr": "0004-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-2-144-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03806750010699034,
+          "stdout": "0005-incumbent-malformed.stdout",
+          "stderr": "0005-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-2-156-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03848290001042187,
+          "stdout": "0006-incumbent-malformed.stdout",
+          "stderr": "0006-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-2-156--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03276859992183745,
+          "stdout": "0007-incumbent-malformed.stdout",
+          "stderr": "0007-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-2-156-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03545349999330938,
+          "stdout": "0008-incumbent-malformed.stdout",
+          "stderr": "0008-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-write",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-write",
+            "unused",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\original-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.037610899889841676,
+          "stdout": "0009-incumbent-write.stdout",
+          "stderr": "0009-incumbent-write.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "incumbent-read",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-read",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\original-3",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03963030013255775,
+          "stdout": "0010-incumbent-read.stdout",
+          "stderr": "0010-incumbent-read.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-3-144-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03840640000998974,
+          "stdout": "0011-incumbent-malformed.stdout",
+          "stderr": "0011-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-3-144--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.0344924998935312,
+          "stdout": "0012-incumbent-malformed.stdout",
+          "stderr": "0012-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-3-144-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03784590004943311,
+          "stdout": "0013-incumbent-malformed.stdout",
+          "stderr": "0013-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-3-156-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03759990003891289,
+          "stdout": "0014-incumbent-malformed.stdout",
+          "stderr": "0014-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-3-156--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.036498700035735965,
+          "stdout": "0015-incumbent-malformed.stdout",
+          "stderr": "0015-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\malformed-3-156-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\incumbent\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03561230003833771,
+          "stdout": "0016-incumbent-malformed.stdout",
+          "stderr": "0016-incumbent-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-link",
+          "command": [
+            "C:/msys64/ucrt64/bin/gfortran.exe",
+            "@C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.args"
+          ],
+          "returncode": 0,
+          "seconds": 11.644710900029168,
+          "stdout": "0017-candidate-link.stdout",
+          "stderr": "0017-candidate-link.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "candidate-write",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-write",
+            "unused",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\original-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 1.152976900106296,
+          "stdout": "0018-candidate-write.stdout",
+          "stderr": "0018-candidate-write.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "candidate-read",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-read",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\original-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.035619999980553985,
+          "stdout": "0019-candidate-read.stdout",
+          "stderr": "0019-candidate-read.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-2-144-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03236640011891723,
+          "stdout": "0020-candidate-malformed.stdout",
+          "stderr": "0020-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-2-144--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03262869990430772,
+          "stdout": "0021-candidate-malformed.stdout",
+          "stderr": "0021-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-2-144-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.03443839983083308,
+          "stdout": "0022-candidate-malformed.stdout",
+          "stderr": "0022-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-2-156-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.034277900122106075,
+          "stdout": "0023-candidate-malformed.stdout",
+          "stderr": "0023-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-2-156--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.035130699863657355,
+          "stdout": "0024-candidate-malformed.stdout",
+          "stderr": "0024-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-2-156-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-2",
+            "2"
+          ],
+          "returncode": 0,
+          "seconds": 0.0340568998362869,
+          "stdout": "0025-candidate-malformed.stdout",
+          "stderr": "0025-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-write",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-write",
+            "unused",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\original-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.032324399799108505,
+          "stdout": "0026-candidate-write.stdout",
+          "stderr": "0026-candidate-write.stderr",
+          "observed_stdout": ""
+        },
+        {
+          "label": "candidate-read",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-read",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\original-3",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03358719986863434,
+          "stdout": "0027-candidate-read.stdout",
+          "stderr": "0027-candidate-read.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-3-144-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03188579995185137,
+          "stdout": "0028-candidate-malformed.stdout",
+          "stderr": "0028-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-3-144--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03193060006015003,
+          "stdout": "0029-candidate-malformed.stdout",
+          "stderr": "0029-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-3-144-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03521879995241761,
+          "stdout": "0030-candidate-malformed.stdout",
+          "stderr": "0030-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-3-156-2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.0347725001629442,
+          "stdout": "0031-candidate-malformed.stdout",
+          "stderr": "0031-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-3-156--1",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.03375130007043481,
+          "stdout": "0032-candidate-malformed.stdout",
+          "stderr": "0032-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-malformed",
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\surface.exe",
+            "surface-probe",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\malformed-3-156-256",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-surface-O2-probe\\candidate\\restored-3",
+            "3"
+          ],
+          "returncode": 0,
+          "seconds": 0.032680199947208166,
+          "stdout": "0033-candidate-malformed.stdout",
+          "stderr": "0033-candidate-malformed.stderr",
+          "observed_stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        }
+      ]
+    }
+  },
+  "posix_run": 42337190578,
+  "production_admission": false,
+  "posix": {
+    "O0": {
+      "job": 128296672171,
+      "artifact": 13560326482,
+      "incumbent_admissions": 2,
+      "candidate_refusals": 12
+    },
+    "O2": {
+      "job": 128296672629,
+      "artifact": 13559613577,
+      "incumbent_admissions": 6,
+      "candidate_refusals": 12
+    }
+  },
+  "adjudication": "On Windows and POSIX, both canonical fixtures round-trip byte for byte at O0 and O2. Incumbent readers admit 16 of 48 CRC-correct malformed files. The private reader refuses all 48 with both owners empty. Qualification covers the specific owner fixtures, not positive surface solute storage, physical continuation, writer publication or deployed admission."
+}

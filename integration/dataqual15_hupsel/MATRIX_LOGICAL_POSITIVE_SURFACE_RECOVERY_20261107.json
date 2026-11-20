@@ -1,0 +1,293 @@
+{
+  "phase": "PRIVATE_POSITIVE_SURFACE_AND_OWNER_CONTROLS_QUALIFIED",
+  "canonical_base": "d05478e8c",
+  "tested_code": "f1c25ea9a545ce9964efde0f06d9709bcd3ab32e",
+  "prior_zero_store_authority": "MATRIX_LOGICAL_SURFACE_RECOVERY_20261107.json",
+  "scope": "S5MJ0002 mode 0 and S5MJ0003 mode 2, positive 0.25 surface solute store, Boesten pair 2 and 0.5. Checkpoint-only owners.",
+  "production_admission": false,
+  "windows": {
+    "O0": {
+      "native_archive_sha256": "b7c3fdf05a853bfcaf96f0776bf6d4825216282d6be0d5a99a5e53a22dc74c1c",
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "admitted_malformed": {
+        "incumbent": {
+          "2": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "3": [
+            [
+              144,
+              -1
+            ]
+          ]
+        },
+        "candidate": {
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "production_admission": false,
+      "event_count": 42,
+      "canonical_bytes_sha256": {
+        "2": "68fd74d2fcbb72716e4e4b92c5f22340d6d49107dd426a866213335f26115a62",
+        "3": "1552d7a8e10424c5bf2d37d617709d04c0c46fbd1017e4dfd95ee3efe2f53096"
+      },
+      "owner_events": [
+        {
+          "label": "incumbent-read",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+        },
+        {
+          "label": "incumbent-surface-disabled",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-surface-wrong-owner",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-read",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+        },
+        {
+          "label": "incumbent-surface-disabled",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-surface-wrong-owner",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-read",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+        },
+        {
+          "label": "candidate-surface-disabled",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-surface-wrong-owner",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-read",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+        },
+        {
+          "label": "candidate-surface-disabled",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-surface-wrong-owner",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        }
+      ]
+    },
+    "O2": {
+      "native_archive_sha256": "c10ad236e209fec1d2a1ffc359ff4e09c4d4d70d094874cbad4fe0cec1f5b839",
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "admitted_malformed": {
+        "incumbent": {
+          "2": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "3": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ]
+        },
+        "candidate": {
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "production_admission": false,
+      "event_count": 42,
+      "canonical_bytes_sha256": {
+        "2": "68fd74d2fcbb72716e4e4b92c5f22340d6d49107dd426a866213335f26115a62",
+        "3": "1552d7a8e10424c5bf2d37d617709d04c0c46fbd1017e4dfd95ee3efe2f53096"
+      },
+      "owner_events": [
+        {
+          "label": "incumbent-read",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+        },
+        {
+          "label": "incumbent-surface-disabled",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-surface-wrong-owner",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-read",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+        },
+        {
+          "label": "incumbent-surface-disabled",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "incumbent-surface-wrong-owner",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-read",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+        },
+        {
+          "label": "candidate-surface-disabled",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-surface-wrong-owner",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-read",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+        },
+        {
+          "label": "candidate-surface-disabled",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        },
+        {
+          "label": "candidate-surface-wrong-owner",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_REFUSED_EMPTY\n"
+        }
+      ]
+    }
+  },
+  "pull_request": 1612,
+  "posix": {
+    "O0": {
+      "job": 128309470145,
+      "artifact": 13560794725,
+      "incumbent_admissions": 2,
+      "candidate_refusals": 12
+    },
+    "O2": {
+      "job": 128309470374,
+      "artifact": 13561109842,
+      "incumbent_admissions": 6,
+      "candidate_refusals": 12
+    }
+  },
+  "adjudication": "Both tags restore exactly 0.25 surface solute and retain byte-identical canonical round trips. Disabled surface access and wrong chemical owner leave both destinations empty. Occupied destinations retain their serialized state. Windows and POSIX O0/O2 private readers reject all 48 valid-CRC malformed files. Incumbents admit 16.",
+  "next": "Qualify actual physical continuation separately from checkpoint I/O. Writer publication and deployed admission remain open.",
+  "workflows": [
+    {
+      "id": 42341339701,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339784,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339774,
+      "name": "Private matrix native logical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339755,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339861,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339811,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339787,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339783,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339772,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339745,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339727,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339822,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339916,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42341339853,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}

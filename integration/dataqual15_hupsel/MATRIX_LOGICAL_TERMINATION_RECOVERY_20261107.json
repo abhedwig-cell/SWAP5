@@ -1,0 +1,735 @@
+{
+  "phase": "PRIVATE_PUBLICATION_TERMINATION_FOCUSED_GATES_PASS",
+  "canonical_base": "158515440d6071273c7c10e8b7aa3f84a271bc76",
+  "tested_head": "ec4320f4c821cae9b6c08a2a8d34c5e64cc42eac",
+  "pull_request": 1612,
+  "scope": "Actual process termination before and after publication for S5MJ0001 base and temporal, S5MJ0002 surface and S5MJ0003 Boesten checkpoints. Surviving checkpoint read by uninstrumented reader.",
+  "predecessor": "MATRIX_LOGICAL_STAGE_PUBLICATION_RECOVERY_20261107.json",
+  "production_admission": false,
+  "windows": {
+    "O0": {
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 114,
+      "terminations": [
+        {
+          "fixture": "1",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\termination-1-before\\published",
+              "1"
+            ],
+            "phase": "before",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "56353adc6a5bd7cd94e28d3cbfc58a83fcd45e5f61b184c2c4e05c0468c514e7",
+          "pending_retained": true
+        },
+        {
+          "fixture": "1",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\termination-1-after\\published",
+              "1"
+            ],
+            "phase": "after",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "f5937dcc969dc1ba7808cb306f0cf12fb0a3e2323f39d2ef3211a9f2a73c9b8e",
+          "pending_retained": false
+        },
+        {
+          "fixture": "1t",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\termination-1t-before\\published",
+              "1t"
+            ],
+            "phase": "before",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "39e4abff4bc53359e4f403e08bea8c2295cf6dc38ac24ae83c61da8df82f16d7",
+          "pending_retained": true
+        },
+        {
+          "fixture": "1t",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\termination-1t-after\\published",
+              "1t"
+            ],
+            "phase": "after",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "7c0fc62ec0b39f2173e017a0f48d441849283b3662d497784c4481e006e7c844",
+          "pending_retained": false
+        },
+        {
+          "fixture": "2",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\termination-2-before\\published",
+              "2"
+            ],
+            "phase": "before",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "e3d640eec97d425fc37143979796e4ac19bfcd08f38a229a1763ad069eaa0ad0",
+          "pending_retained": true
+        },
+        {
+          "fixture": "2",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\termination-2-after\\published",
+              "2"
+            ],
+            "phase": "after",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "68fd74d2fcbb72716e4e4b92c5f22340d6d49107dd426a866213335f26115a62",
+          "pending_retained": false
+        },
+        {
+          "fixture": "3",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\termination-3-before\\published",
+              "3"
+            ],
+            "phase": "before",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "4cc24c59201041a13b6cabaa532b1fcc31298e48b6b67aa0600acc51c5e7e768",
+          "pending_retained": true
+        },
+        {
+          "fixture": "3",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O0-20261107\\candidate\\termination-3-after\\published",
+              "3"
+            ],
+            "phase": "after",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "1552d7a8e10424c5bf2d37d617709d04c0c46fbd1017e4dfd95ee3efe2f53096",
+          "pending_retained": false
+        }
+      ]
+    },
+    "O2": {
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 114,
+      "terminations": [
+        {
+          "fixture": "1",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\termination-1-before\\published",
+              "1"
+            ],
+            "phase": "before",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "56353adc6a5bd7cd94e28d3cbfc58a83fcd45e5f61b184c2c4e05c0468c514e7",
+          "pending_retained": true
+        },
+        {
+          "fixture": "1",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\termination-1-after\\published",
+              "1"
+            ],
+            "phase": "after",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "f5937dcc969dc1ba7808cb306f0cf12fb0a3e2323f39d2ef3211a9f2a73c9b8e",
+          "pending_retained": false
+        },
+        {
+          "fixture": "1t",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\termination-1t-before\\published",
+              "1t"
+            ],
+            "phase": "before",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "39e4abff4bc53359e4f403e08bea8c2295cf6dc38ac24ae83c61da8df82f16d7",
+          "pending_retained": true
+        },
+        {
+          "fixture": "1t",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\termination-1t-after\\published",
+              "1t"
+            ],
+            "phase": "after",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "7c0fc62ec0b39f2173e017a0f48d441849283b3662d497784c4481e006e7c844",
+          "pending_retained": false
+        },
+        {
+          "fixture": "2",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\termination-2-before\\published",
+              "2"
+            ],
+            "phase": "before",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "e3d640eec97d425fc37143979796e4ac19bfcd08f38a229a1763ad069eaa0ad0",
+          "pending_retained": true
+        },
+        {
+          "fixture": "2",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\termination-2-after\\published",
+              "2"
+            ],
+            "phase": "after",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "68fd74d2fcbb72716e4e4b92c5f22340d6d49107dd426a866213335f26115a62",
+          "pending_retained": false
+        },
+        {
+          "fixture": "3",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\termination-3-before\\published",
+              "3"
+            ],
+            "phase": "before",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "4cc24c59201041a13b6cabaa532b1fcc31298e48b6b67aa0600acc51c5e7e768",
+          "pending_retained": true
+        },
+        {
+          "fixture": "3",
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-kill-O2-20261107\\candidate\\termination-3-after\\published",
+              "3"
+            ],
+            "phase": "after",
+            "termination_returncode": 1,
+            "actual_process_terminated": true,
+            "stop_observed": "Windows named event",
+            "termination_method": "TerminateProcess"
+          },
+          "survivor_sha256": "1552d7a8e10424c5bf2d37d617709d04c0c46fbd1017e4dfd95ee3efe2f53096",
+          "pending_retained": false
+        }
+      ]
+    }
+  },
+  "posix": {
+    "O0": {
+      "job": 128377177550,
+      "artifact": 13571235872,
+      "artifact_sha256": "35fe2db6fe9623b15c43dfe5dde0ae4feaa9893a0f8314c93c71208b2aaba126",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 114,
+      "terminations": [
+        {
+          "fixture": "1",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/termination-1-before/published",
+              "1"
+            ],
+            "phase": "before",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "1",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/termination-1-after/published",
+              "1"
+            ],
+            "phase": "after",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "1t",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/termination-1t-before/published",
+              "1t"
+            ],
+            "phase": "before",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "1t",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/termination-1t-after/published",
+              "1t"
+            ],
+            "phase": "after",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "2",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/termination-2-before/published",
+              "2"
+            ],
+            "phase": "before",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "2",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/termination-2-after/published",
+              "2"
+            ],
+            "phase": "after",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "3",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/termination-3-before/published",
+              "3"
+            ],
+            "phase": "before",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "3",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/termination-3-after/published",
+              "3"
+            ],
+            "phase": "after",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        }
+      ],
+      "restore_stdout": [
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+      ]
+    },
+    "O2": {
+      "job": 128377177661,
+      "artifact": 13570513443,
+      "artifact_sha256": "6440e46a4bdbe6623ffaf057ef9c320dfe0561d415dbe8a7f433cba87d3f829e",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 114,
+      "terminations": [
+        {
+          "fixture": "1",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/termination-1-before/published",
+              "1"
+            ],
+            "phase": "before",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "1",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/termination-1-after/published",
+              "1"
+            ],
+            "phase": "after",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "1t",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/termination-1t-before/published",
+              "1t"
+            ],
+            "phase": "before",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "1t",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/termination-1t-after/published",
+              "1t"
+            ],
+            "phase": "after",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "2",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/termination-2-before/published",
+              "2"
+            ],
+            "phase": "before",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "2",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/termination-2-after/published",
+              "2"
+            ],
+            "phase": "after",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "3",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/termination-3-before/published",
+              "3"
+            ],
+            "phase": "before",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        },
+        {
+          "fixture": "3",
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/termination-3-after/published",
+              "3"
+            ],
+            "phase": "after",
+            "termination_returncode": -9,
+            "actual_process_terminated": true,
+            "stop_observed": "SIGSTOP",
+            "termination_method": "SIGKILL"
+          }
+        }
+      ],
+      "restore_stdout": [
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n",
+        "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n"
+      ]
+    }
+  },
+  "workflows": [
+    {
+      "id": 42363700513,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700613,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700493,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700518,
+      "name": "Private matrix native logical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700476,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700603,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700544,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700461,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700440,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700532,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700591,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700487,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42363700608,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 42363700589,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "workflow_failure": {
+    "job": 128377178076,
+    "observed": [
+      "2026-11-07T10:25:46.3557676Z OSError: /home/runner/work/_temp/swap5-fgc49d-context-42363700608-2236/o0/libfgc49d_application.so: cannot enable executable stack as shared object requires: Invalid argument",
+      "2026-11-07T10:25:46.3558109Z FGC49D_CONTEXT_FAIL runtime O0",
+      "2026-11-07T10:25:46.3689980Z ##[error]Process completed with exit code 1."
+    ]
+  },
+  "adjudication": "All 32 actual terminations synchronize at the intended replacement boundary. Before replacement the previous valid generation remains published and the complete pending stream remains. After replacement the new generation remains published and pending is gone. All 32 survivors restore byte for byte in a fresh uninstrumented process. F-CI110 retains its FGC49D executable-stack loader failure.",
+  "next": "Qualify remaining physical continuation envelopes before deployed admission."
+}
