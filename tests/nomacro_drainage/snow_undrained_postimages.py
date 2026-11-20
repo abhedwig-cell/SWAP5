@@ -20,7 +20,8 @@ def main():
     p.add_argument('--recover-existing',type=Path)
     p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args();a.output.mkdir()
     m=original.m;baseline=json.loads(a.baseline.read_text());assert len(baseline['cases'])==6
-    q=dict(status='RUNNING',baseline=str(a.baseline),baseline_sha256=m.sha(a.baseline),cases={},fresh_unaffected_full_periods=0)
+    q=dict(status='RUNNING',baseline=str(a.baseline),baseline_sha256=m.sha(a.baseline),cases={},fresh_unaffected_full_periods=0,
+        controller_sha256=m.sha(Path(__file__)),source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=original.ROOT,text=True).strip())
     recovered={}
     if a.recover_existing:
         previous=a.recover_existing/'RESULT.json';prior=json.loads(previous.read_text(encoding='utf-8'))
@@ -61,13 +62,14 @@ def main():
             assert set(delta)<={'experimental_input_adapter','implicit_conductivity.implicit_snow_composition_source_sha256',
                 'original_output.implicit_snow_composition_source_sha256',
                 'implicit_groundwater_trial.source_sha256','implicit_groundwater_trial.original_projection_owner_sha256',
+                'lower_boundary_receipt.composition_sha256',
                 'restart_publisher.library_sha256'},delta
             if 'restart_publisher.library_sha256' in delta:
                 item['publisher_equivalence']=publisher_equivalence(parent/'restart_publish.dll',build/'restart_publish.dll')
             item.update(build_root=str(build),actual_BUILD_sha256=m.sha(build/'BUILD.json'),
                 unchanged_Fortran=source(build),identity_changes=delta,project_metadata_changes=project_changes)
-            warm=a.recover_existing/label/'trajectory' if label in recovered else out/'trajectory'
-            restart=a.recover_existing/label/'own-30' if label in recovered else out/'own-30'
+            warm=Path(recovered[label].get('trajectory_root',a.recover_existing/label/'trajectory')) if label in recovered else out/'trajectory'
+            restart=Path(recovered[label].get('cold_actual_root',a.recover_existing/label/'own-30')) if label in recovered else out/'own-30'
             if label in recovered:
                 data=m.rows(warm);assert len(data)==35
                 item['trajectory']=dict(status='REUSED_COMPLETED_ORIGINAL_RAW35',days=35,build_sha256=m.sha(build/'BUILD.json'))
