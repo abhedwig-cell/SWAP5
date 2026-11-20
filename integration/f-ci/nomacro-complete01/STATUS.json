@@ -3,8 +3,8 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-groundwater-snow-cde01",
-  "last_commit": "8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0",
-  "status": "INTERVAL_ADMITTED_SNOW_REFERENCE_CORRECTION_TARGETED_QUALIFICATION_RUNNING",
+  "last_commit": "10fbd5a09cee64a4b9c7c2551685e785e6d57d37",
+  "status": "GROUNDWATER_INTERVAL_ADMITTED_SNOW_SOURCE_RAW_QUALIFIED_CANONICAL_PR_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -31618,11 +31618,11 @@
     "admission_receipt": "GROUNDWATER_CDE_INTERVAL_MERGE_RECEIPT_V1.json"
   },
   "groundwater_snow_cde_batch": {
-    "status": "NEUTRAL_RAW_SOURCE_QUALIFIED_REGISTERED_CLEAN_PUBLIC_RUNNING_COMMITTED_NEGATIVES_PASS",
+    "status": "FOUR_PLATFORM_SCIENCE_AND_REGISTERED_CLEAN_PUBLIC_PASS_READY_FOR_CANONICAL_PR",
     "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
     "candidate_predecessor": "c04f5ddd1fc253d27596014e406bbd849765d5c9",
     "gap": "CDE groundwater Snow1 non-daily interval and subdaily/per-step output currently refused by shared bottom1/snow guard; dense daily thermal CDE and complete thermal/groundwater providers already exist",
-    "next_action": "Wait current actual public observation C session82849 on e898; stdout/stderr/receipt EV GROUNDWATER_SNOW_CLEAN_CANDIDATE_PUBLIC_OWNER_V1. If PASS, persistactualreceipt andcreatefunctionalPRwithartifact; pin47checks,qualifiedmergeparents/tree,mergeonlyexpectedhead; observeactualcanonicalclean26 public; sealactualadmission separately. Continue nextcoherenthistoricalbatch. Oldarchives/readers/neutralflags never rewritten.",
+    "next_action": "Push final metadata-only postimage, createfunctionalPR tointegration/f-ci-canonical, storeAPI snapshotEV/GROUNDWATER_SNOW_PR_V1.json andattachartifact. Ifsnapshotexistsresumeit, neverduplicatePR. Pinallchecks toexacthead, verifyactualsyntheticparents/tree andexpectedheadmerge. Thenactualcanonicalclean26 public andseparateADMISSION_RAW seal withnextfunctionalbatch. Continue implicitSnow composition; hardAGE/Snow/KSATexclusionspreserved.",
     "functional_completion": "PARTIAL",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "global_counts": "UNKNOWN",
@@ -31748,11 +31748,15 @@
     "neutral_qualification": "eeb8720b3f3e821e57e5842deb6f3a52d8e24a21",
     "registered_owner_candidate": "e8988c0b9",
     "actual_historical_successor_tests": "11PASS",
-    "clean_candidate_public": "RUNNING_IN_C_CLEAN26_DETACHED_e8988c0b9",
+    "clean_candidate_public": "ACTUAL_CLEAN26_DETACHED_e8988c0b9_PASS_NO_MODELS",
     "source_negative": "fd704fa09a51a7df87616952b06ea136fd18a1d5",
     "source_negative_seconds": 3.2202992998063564,
     "inherited_raw_negative": "e8d9f110aced4bdc4863d752dbf3d29843d2a990",
     "inherited_raw_negative_seconds": 42.72571890009567,
-    "committed_negatives": "BOTH_ACTUAL_CLEAN26_REGISTERED_PUBLIC_REFUSED_BEFORE_MODELS; NEGATIVE_BRANCHES_NEVER_MERGE"
+    "committed_negatives": "BOTH_ACTUAL_CLEAN26_REGISTERED_PUBLIC_REFUSED_BEFORE_MODELS; NEGATIVE_BRANCHES_NEVER_MERGE",
+    "clean_candidate_public_seconds": 549.6713702003472,
+    "clean_candidate_public_stdout_bytes": 52399,
+    "clean_candidate_public_receipt": "GROUNDWATER_SNOW_CLEAN_CANDIDATE_PUBLIC_OWNER_V1.json",
+    "actual_canonical_admitted": false
   }
 }
