@@ -1,6 +1,10 @@
 # Extended drainage implicit numerical composition contract
 
-Development only; SWKIMPL1/SWDRA2 remains refused until integrated qualification.
+The bounded primary SWKIMPL1/SWDRA2 route was admitted by PR1766 on actual
+canonical `21fce9bc6275d998d3936e035c39ed4204efa70b`; its clean registered public
+owner passed in 1023.3876902 seconds. The separately qualified
+[secondary-only pond-switch correction](NOMACRO_SECONDARY_IMPLICIT_POND_20261120.md)
+retains its own source/raw evidence and admission owner.
 Historical bottom6 assigns literal qbot=0 in BoundBottom and adds no bottom
 Jacobian term. Its current implicit-reader exclusion is a composition guard,
 not a missing original bottom-flux equation. The examined-Ksat derivative,
