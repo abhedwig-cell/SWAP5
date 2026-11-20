@@ -34,15 +34,9 @@ def main():
     extra=b"EXPLICIT_PARENT_HEAD='becdfa41163769b4009f5ad596e85af5c4235edf1adde7ba8385e6e09f2c4beb'\n"
     after=b"    expected=PARENT_HEAD if identity.get('implicit_conductivity') else EXPLICIT_PARENT_HEAD\n    if hashlib.sha256(source).hexdigest()!=expected:\n"
     before=b'    if hashlib.sha256(source).hexdigest()!=PARENT_HEAD:\n'
-    assert now.count(extra)==now.count(after)==1 and now.replace(extra,b'',1).replace(after,before,1)==git('show',ORIGIN+':'+path)
-    profile=a.origin/'groundwater-clock/h0-step-periodic';short=read(profile/'RESULT.json')
-    assert short['status']=='ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'
-    assert tuple(short['parameters'][k] for k in ('solute','hysteresis','bottom','kmean','perstep','mode','format','reset','nprintday'))==(1,0,1,3,True,'periodic',2,0,1)
-    compiled=read(a.origin/'COMPILED_PROJECTION_V1.json')[short['build_root']]
-    bundle=a.origin/compiled['archive_prefix'];assert sha(bundle/'BUILD.json')==compiled['actual_BUILD_sha256']
-    policy=read(bundle/'BUILD.json')
-    for name,expected in policy['identity']['donor_generated'].items():assert sha(bundle/name)==expected
-    for name,expected in policy['inputs'].items():assert sha(profile/'input'/name)==expected
+    private=b"    actual=(Path(bundle)/'original_cde_output_state.f90').read_bytes().replace(b'\\r\\n',b'\\n')\n    expected=Path(__file__).with_name('cde_interval_output_state.f90').read_bytes().replace(b'\\r\\n',b'\\n')\n    if actual!=expected:\n        raise ValueError('Foreign actual groundwater CDE clock private-state provider')\n"
+    assert now.count(extra)==now.count(after)==now.count(private)==1
+    assert now.replace(extra,b'',1).replace(after,before,1).replace(private,b'',1)==git('show',ORIGIN+':'+path)
     controls=a.origin/'groundwater-clock-controls/h0-step-periodic'
     refused=read(controls/'RESULT.json')
     assert refused['status']=='FAILED' and len(refused['clock_refusals'])==50
@@ -51,19 +45,29 @@ def main():
     def restore(source,target):
         target=target.resolve();assert target.is_relative_to(runner) and target!=runner and not target.exists()
         shutil.copytree(source,target);targets.append(str(target))
-    actual_profile=Path(short['input_root']).parent
-    assert actual_profile==runner/'proof/groundwater-clock/h0-step-periodic'
-    actual_bundle=Path(short['build_root']);assert actual_bundle.is_relative_to(runner/'builds')
-    restore(profile,actual_profile);restore(bundle,actual_bundle)
+    projection=read(a.origin/'COMPILED_PROJECTION_V1.json');restored={}
+    for label in ('h2-periodic','h1-step-explicit','h0-step-periodic','h1-explicit-monthly'):
+        profile=a.origin/'groundwater-clock'/label;short=read(profile/'RESULT.json')
+        assert short['status']=='ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'
+        compiled=projection[short['build_root']];bundle=a.origin/compiled['archive_prefix']
+        assert sha(bundle/'BUILD.json')==compiled['actual_BUILD_sha256'];policy=read(bundle/'BUILD.json')
+        for name,expected in policy['identity']['donor_generated'].items():assert sha(bundle/name)==expected
+        for name,expected in policy['inputs'].items():assert sha(profile/'input'/name)==expected
+        actual_profile=Path(short['input_root']).parent
+        assert actual_profile==runner/'proof/groundwater-clock'/label
+        actual_bundle=Path(short['build_root']);assert actual_bundle.is_relative_to(runner/'builds')
+        restore(profile,actual_profile);restore(bundle,actual_bundle)
+        for stem in ('day_donor','day_kernel'):
+            executable=actual_bundle/stem;assert executable.is_file();executable.chmod(executable.stat().st_mode|0o100)
+        assert sha(actual_bundle/'BUILD.json')==compiled['actual_BUILD_sha256']
+        restored[label]=dict(actual_BUILD_sha256=sha(actual_bundle/'BUILD.json'),
+                             actual_profile_receipt_sha256=sha(actual_profile/'RESULT.json'),
+                             origin_compiled_prefix=compiled['archive_prefix'])
     restore(controls,runner/'proof/groundwater-clock-controls/h0-step-periodic')
-    for stem in ('day_donor','day_kernel'):
-        executable=actual_bundle/stem
-        assert executable.is_file();executable.chmod(executable.stat().st_mode|0o100)
-    assert sha(actual_bundle/'BUILD.json')==compiled['actual_BUILD_sha256']
     out=a.output/'ORIGINAL_DEPENDENCY_V1.json';assert not out.exists()
     out.write_text(json.dumps(dict(status='ACTUAL_ORIGINAL_H0_CONTROL_DEPENDENCY_RESTORED',
-        original_run=44682712004,original_source=ORIGIN,actual_BUILD_sha256=sha(actual_bundle/'BUILD.json'),
-        actual_profile_receipt_sha256=sha(actual_profile/'RESULT.json'),actual_original_control_receipt_sha256=sha(controls/'RESULT.json'),
+        original_run=44682712004,original_source=ORIGIN,restored=restored,
+        actual_original_control_receipt_sha256=sha(controls/'RESULT.json'),
         restored_paths=targets,numerical_model_sources_unchanged=True,exact_readonly_source_guard_bridge=changed,
         original_receipts_rebound=False,fresh_model_periods=0),indent=2)+'\n')
     print('ACTUAL_ORIGINAL_H0_CONTROL_DEPENDENCY_RESTORED')
