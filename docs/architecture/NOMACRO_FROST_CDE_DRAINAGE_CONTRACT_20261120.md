@@ -1,9 +1,10 @@
 # Proposed bounded Frost/CDE/drainage composition
 
-Status: bounded candidate implementation and neutral raw qualification, pending
-actual canonical admission. No process or corrected-reference authority is
-admitted by this document. PR1774 is admitted on actual canonical
-383526abddeb06ea61fe31fa7e342ebbd8a5c43d.
+Status: bounded explicit composition admitted by PR1775 on actual canonical
+ffa7ef153a79aafb4cf098a4c0031845c795e83f. Its separate actual merge receipt owns
+admission; the original neutral qualification and twelve archives remain
+unchanged. The implicit follow-up below remains a candidate. PR1774 is its
+unchanged predecessor at383526abddeb06ea61fe31fa7e342ebbd8a5c43d.
 
 The existing `FROST-GEOMETRY-01` manifest explicitly excludes `SWDIVD1` and
 a new fully frozen-front interpretation. Its qualification must remain intact.
@@ -136,3 +137,21 @@ This is implemented and partly tested, with canonical admission still pending.
 Before admission, qualify the touched water/CDE, rollback, restart, native and
 unchanged-postimage composition. Other bottom boundaries, examined-Ksat
 interpolation and broader thermal calendars acquire no authority here.
+
+
+The implicit Windows four full1096 and four35-day contexts now pass their
+owning daily water/CDE and every-prefix CDE guards, forty exact cold windows,
+170 compiled native refusals and active transactions. The absolute global
+water-prefix diagnostic reaches 1.4812746038016e-10 cm (day908); it does not
+satisfy an additional fixed1e-10 absolute trajectory-wide metric. That extra
+metric is retained explicitly and is not a governing acceptance claim. The
+actual inherited day/terminal and hydraulic-step-window rules are unchanged.
+
+Before the implicit route is admitted, close the retained `alpwetnoddrz` and
+`alpdrynodrtz` ownership at bottom6. Actual original `RootExtraction` can return
+before assigning them while original `Integral` consumes them. The already
+qualified two-rate carry is restricted to other boundary domains. The tested
+cold windows passing does not establish complete ownership for arbitrary
+retained values. Reuse that literal provider with a bounded new native domain;
+add no physical store and preserve all earlier observations as their actual
+version1 roles. Portable coupling qualification follows this dependency fix.
