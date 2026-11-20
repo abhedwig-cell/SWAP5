@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-snow-undrained-composition01",
+  "branch": "codex/nomacro-frost-cde-drainage-composition01",
   "last_commit": "c856e7078ae95373dde0eb93aa5a367ee5d9ee7f",
   "status": "WATER_SNOW_GROUNDWATER_CANONICAL_ADMITTED_ORDINARY_SNOW_DRAINAGE_OFF_QUALIFICATION_ACTIVE",
   "functional_completeness": "PARTIAL",
@@ -335,7 +335,7 @@
     }
   ],
   "running_ci": [],
-  "next_code_change": "Run existing11 Hupsel successor controls; actual clean detached sparse29 public route tests/hupsel51/verify_successor.py on current Snow undrained candidate; two committed never-merge negatives for changed compiler source and inherited WATER_SNOW_GROUNDWATER_ADMISSION_RAW_V1.zip. Current owner50030423a pins runtimeb0d4, readers626c, neutral093a with8rawarchives. Original Ubuntu44779472684 bothsuccess and bothindependentlyaudited; allselectedscience and12preserved35/coldpostimages pass. Do not replay models. Attach concrete artifact and PR to canonical aftercleanactualpublic/negative/docs checks; allterminalrequiredchecks, exactparents/tree merge andactualcanonicalpublic; separateadmissionreceipt. Continue next coherent functional gap immediately.",
+  "next_code_change": "Track PR1774 exacthead2c392b437 through all terminal required CI; no source updates or replays to its frozen branch. Exact synthetic parents(baseb546,head2c392)/complete tree327360a869 confirmed; clean29 publicPASS342.0010645s, committed source01517aacc REFUSED3.3441622s, inherited80cd763c7 REFUSED60.1809914s. Merge only exact proven parents/tree afterterminal. Run actual canonical public from C clean29. Seal separate actual admission and carry with this Frost/CDE/drainage branch; never relabel neutral093a admitted. Continue source-bound Frost/Divdra/CDE real production component and bounded valid composition after actual admission; original SWDIVD0+solute and fully-frozen-front refusals stay enforced. Source assessment FROST_CDE_COMPOSITION_SOURCE_ASSESSMENT_V1.json; global family/gap countsUNKNOWN.",
   "recovery_point": "STATUS.json:ordinary_weighted_history_isolation",
   "external_blocker": null,
   "test_selection": {
@@ -402,7 +402,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run existing11 Hupsel successor controls; actual clean detached sparse29 public route tests/hupsel51/verify_successor.py on current Snow undrained candidate; two committed never-merge negatives for changed compiler source and inherited WATER_SNOW_GROUNDWATER_ADMISSION_RAW_V1.zip. Current owner50030423a pins runtimeb0d4, readers626c, neutral093a with8rawarchives. Original Ubuntu44779472684 bothsuccess and bothindependentlyaudited; allselectedscience and12preserved35/coldpostimages pass. Do not replay models. Attach concrete artifact and PR to canonical aftercleanactualpublic/negative/docs checks; allterminalrequiredchecks, exactparents/tree merge andactualcanonicalpublic; separateadmissionreceipt. Continue next coherent functional gap immediately.",
+  "next_action": "Track PR1774 exacthead2c392b437 through all terminal required CI; no source updates or replays to its frozen branch. Exact synthetic parents(baseb546,head2c392)/complete tree327360a869 confirmed; clean29 publicPASS342.0010645s, committed source01517aacc REFUSED3.3441622s, inherited80cd763c7 REFUSED60.1809914s. Merge only exact proven parents/tree afterterminal. Run actual canonical public from C clean29. Seal separate actual admission and carry with this Frost/CDE/drainage branch; never relabel neutral093a admitted. Continue source-bound Frost/Divdra/CDE real production component and bounded valid composition after actual admission; original SWDIVD0+solute and fully-frozen-front refusals stay enforced. Source assessment FROST_CDE_COMPOSITION_SOURCE_ASSESSMENT_V1.json; global family/gap countsUNKNOWN.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -414,7 +414,7 @@
   "qualified_age_fixed_runtime": "67ef706a42dd894a9b67cf0e86ad90ce48ac1de6",
   "qualified_age_fixed_ubuntu": "58468f98452d55e556f0aa6420e074714154ba7e",
   "age_fixed_sealed_proof": "56ae017e413503891d6c1a9709d1c882f2a14edb",
-  "active_branch": "codex/nomacro-snow-undrained-composition01",
+  "active_branch": "codex/nomacro-frost-cde-drainage-composition01",
   "canonical_baseline": "66d6297b1ac0462c9be17f8df3db10c1773d1595",
   "calendar_results": {
     "source": "7943551d0",
@@ -844,7 +844,7 @@
       "stderr": ""
     }
   },
-  "working_branch": "codex/nomacro-snow-undrained-composition01",
+  "working_branch": "codex/nomacro-frost-cde-drainage-composition01",
   "prescribed_groundwater_chemical": {
     "baseline": "a787476a0f3db2490e75ff18afea097b82476332",
     "status": "ADMITTED_BOUNDED",
@@ -32090,5 +32090,40 @@
     "qualified_full_periods": 16,
     "qualified_short_contexts": 36,
     "canonical_admission": false
+  },
+  "snow_undrained_pending_canonical": {
+    "status": "PR1774_TERMINAL_CI_PENDING",
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1774",
+    "qualified_head": "2c392b437bc07c9fde50b35da9e741fedc2846f1",
+    "base": "b546801eaf24a01ee4dc457eb857ef46e6b61c30",
+    "synthetic": "ab6def32011a62647090fc5ded1d7325bc00206d",
+    "expected_complete_tree": "327360a86900e12cc2b08b98e526402455a00401",
+    "actual_public_observations": {
+      "SNOW_UNDRAINED_CLEAN_CANDIDATE_PUBLIC_OWNER_V1": {
+        "receipt": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\SNOW_UNDRAINED_CLEAN_CANDIDATE_PUBLIC_OWNER_V1.json",
+        "sha256": "42f487a19b6ff14cebe7e9150a47179dbaf7a16aee80210912a7567809209a28",
+        "head": "2c392b437bc07c9fde50b35da9e741fedc2846f1",
+        "returncode": 0,
+        "seconds": 342.00106449984014
+      },
+      "SNOW_UNDRAINED_COMMITTED_SOURCE_NEGATIVE_V1": {
+        "receipt": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\SNOW_UNDRAINED_COMMITTED_SOURCE_NEGATIVE_V1.json",
+        "sha256": "637373c5d67bf5309c58c9be8475592c7308d57d733aa79de283ce1f9fbb5a93",
+        "head": "01517aacc63b1861c78fb105690b9d4b15b9216e",
+        "returncode": 1,
+        "seconds": 3.3441621996462345
+      },
+      "SNOW_UNDRAINED_COMMITTED_INHERITED_NEGATIVE_V1": {
+        "receipt": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\SNOW_UNDRAINED_COMMITTED_INHERITED_NEGATIVE_V1.json",
+        "sha256": "b65c2905a9433308f69e9962c72aea3e2b5db455fa15aa247c1967314b5ed7b1",
+        "head": "80cd763c790c5b222336b055949f46cde284fb9e",
+        "returncode": 1,
+        "seconds": 60.180991400033236
+      }
+    },
+    "eleven_successor_tests": "PASS",
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS",
+    "actual_canonical_admission": false
   }
 }

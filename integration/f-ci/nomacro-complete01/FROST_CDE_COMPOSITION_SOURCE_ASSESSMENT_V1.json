@@ -1,0 +1,45 @@
+{
+  "status": "NEXT_FROST_CDE_DRAINAGE_SOURCE_CONTRACT_RECONCILED_NOT_IMPLEMENTED_NOT_QUALIFIED",
+  "source": "2c392b437bc07c9fde50b35da9e741fedc2846f1",
+  "pending_admission_pr": 1774,
+  "owning_family": "Frost geometry, original water/CDE, Snow and drainage process composition",
+  "known_existing_authority": "P free-bottom water/CDE and Q bounded drained water Frost, including qualified geometry/reference and original Snow/event/terminal receipts; all old failed/censored records remain authoritative.",
+  "candidate_missing_surface": [
+    "Current Frost guard requires SWHYST2 and bottom7 without drainage or bottom6 with drainage; other historically valid boundaries require source reconciliation.",
+    "Current drained Frost guard permits only SWDIVD0; original chemical reader correctly refuses SWDIVD0 with CDE. A CDE/Frost/drainage route must first reconcile actual original SWDIVD1 dispatch and state.",
+    "Existing Snow/CDE calendars and root/private state owners are separately qualified; Frost composition is explicitly excluded and must be owned as a bounded coupled domain.",
+    "Implicit Frost Jacobian and output-history combinations require actual original dispatch verification; no assumption of guard-only eligibility."
+  ],
+  "next_code_action": "After actual PR1774 canonical admission, pin canonical and start a bounded Frost/CDE/SWDIVD1 process and state composition contract. Preserve original invalid SWDIVD0+solute and fully frozen-front refusals. Reuse existing unmodified geometry only within proven dependency/input validity; qualify the actual FrozenCond_FLOW -> Divdra -> original CDE nodal sink/receipt seam with a small real production driver and measured original object closure, then coherent explicit/implicit/free/drained/calendar contexts as original source permits. No blanket Frost guard removal and no new Jacobian or mass compensation.",
+  "classifications": [
+    "MISSING_COMPOSITION",
+    "OVERRESTRICTIVE_GUARD_REQUIRES_ORIGINAL_SOURCE_PROOF",
+    "NUMERICAL_FAILURE_RETAINS_PRIOR_REFUSALS"
+  ],
+  "other_following_candidates": [
+    "Original alternative hydraulic model family including omitted reader-supported RIA12; retain model-specific strict failures and censors.",
+    "Original per-layer vapor/heat conserved-state integration; presently missing implementation/qualification.",
+    "AGE dry retained moment remains a separate unresolved scientific state contract; never discard it or add epsilon water."
+  ],
+  "global_family_and_gap_counts": "UNKNOWN",
+  "model_executions": 0,
+  "compilations": 0,
+  "sources": {
+    "app/hybrid_water/experimental_project.py": "8c2428f0a0f537bb1e4378e97b2efc7d30536ab7d0cf6d667e52b2ed35da65e9",
+    "app/hybrid_water/frost_reference.py": "5c0ff84b1764f3051bd541e6074ad70904b68cd693b7417bee9f94760e8d0844",
+    "integration/nomacro-coverage01/BLOCK_P_QUALIFICATION.json": "3bec452119725d2113a49b58900fd51abd455ecdc2cc6c3283944fb37f67b81b",
+    "integration/nomacro-coverage01/BLOCK_Q_QUALIFICATION.json": "087d7e980fbdf336d6977493a6e136aa9e853e197082eeddf8974e449b418a07",
+    "integration/nomacro-coverage01/BLOCK_P_ORIGINAL_CHEMICAL_DRAIN_REFUSAL.json": "3cc705ef3c6af1e9b8339f6890e64a25087df163d89b95f88c90380ab9c192b4",
+    "integration/f-ci/nomacro-complete01/GAP_MATRIX.json": "2b63256967b8b316479d4ca5e731a853a04c6e5f9259385f51b4996b81b91df5",
+    "reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01/manifest.json": "d6291109ed2810b730adad7eea2aa9c5e4b8738074162c6e51030d6c8fcdde2f",
+    "reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01/frozencond.f90": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2"
+  },
+  "original_reader_findings": {
+    "readswap.f90:744..750": "SWFROST0/1 is original; only the active-macropore Frost combination is explicitly nonoperational here. Original soil heat dependency remains.",
+    "readswap.f90:785..786": "Implicit conductivity is original0/1; mean7+implicit1 is explicitly forbidden. No Frost-specific implicit prohibition appears at this owning selector read.",
+    "readswap.f90:752..756": "Detailed weather+Snow is an original warning about incorrect sublimation, not a hard reader prohibition; scientific reference defect must be separated from valid forcing/domain constraints.",
+    "drainage.f90:245..246": "Actual original drainage reader forbids SWDIVD0 with SWSOLU>0 because lateral solute fluxes would be wrong. Retain this refusal.",
+    "FROST-GEOMETRY-01/manifest.json": "Existing corrected geometry authority explicitly excludes SWDIVD1 and new fully frozen front interpretation. It cannot be silently promoted.",
+    "FROST-GEOMETRY-01/frozencond.f90:238..240": "Actual existing production FrozenCond_FLOW contains SWDIVD1 calling divdra(ksatcp,min(gwl,zfrostbot)). Its process/state and reporting seam is present but outside current qualification."
+  }
+}
