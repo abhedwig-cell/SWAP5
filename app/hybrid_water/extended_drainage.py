@@ -119,6 +119,9 @@ def strict_trial_build(output, donor_build, patched, project):
     if implicit:
         from extended_implicit_pond import render as implicit_pond_source
         body=implicit_pond_source(body)
+        if selection(project)['swsrf']==2:
+            from extended_implicit_pond_switch import source as zero_pond_source
+            body=zero_pond_source(body)
     path.write_text(body,encoding='cp1252')
     terminal=terminal_source()
     if project.original_output:
@@ -157,8 +160,6 @@ def describe(directory, selected, original_output):
     text = path.read_text(encoding='cp1252')
     def integer(key):return int(one(text,key,r'[+-]?\d+'))
     swsrf, swsec, levels, division = map(integer,('SWSRF','SWSEC','NRSRF','SWDIVD'))
-    if selected.get('SWKIMPL')==1 and swsrf!=3:
-        raise ValueError('Implicit secondary-only extended drainage is not qualified: original Newton clock-resolution failure')
     if swsrf not in (2,3) or swsec not in (1,2) or not 1 <= levels <= 25:
         raise ValueError('Unqualified extended surfacewater domain')
     if levels <= swsrf-2 or division not in (0,1) or selected['SWSOLU'] and division == 0:
@@ -227,6 +228,9 @@ def metadata(project):
                     'discontinuous_original_near_saturation_behavior_preserved':False,
                     'implicit_soil_pond_chain_rule':'J*(1+s)/(1+dt*G+s); original soil-mean derivative once, existing pond/supply slope, no accepted state'} if implicit else {}),
                 exact_pond_scope='Original runoff() unchanged; exact linear outward solve or complete monotone original root bracket, with piecewise analytic tangent',
+                **({'zero_pond_switch_renderer_sha256':sha(Path(__file__).with_name('extended_implicit_pond_switch.py')),
+                    'zero_pond_reference_correction':'Original positive pond branch selected at h0>0; removes proved1e-6cm residual jump; original pond equation and all convergence/clock/balance limits unchanged',
+                    'original_positive_head_deadband_preserved':False} if implicit and selection(project)['swsrf']==2 else {}),
                 strict_trial_water_guard_cm=1e-10,strict_retry_clock_floor_ulps=8,
                 **({'output_receipt_renderer_sha256':sha(Path(__file__).with_name('extended_output_receipt.py'))} if project.original_output else {}),
                 codec=magic(project).decode(),domain=domain(project),bytes=size(project),
