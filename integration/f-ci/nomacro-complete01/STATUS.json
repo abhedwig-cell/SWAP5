@@ -402,7 +402,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Run new candidate dense-daily explicit Frost/SWDIVD1 water and CDE short35 O0 first, retaining existing geometry/thermal/native/event owners and explicitly selected overlap correction. New native codecs S5FDW001/S5FDC001 bind fixedSWDIVD1; no physical-state addition. CDE positive cutoff reused exact. Then affected O2/full/cold/reference and controls, portable qualification, whole compiler/source custody and bounded admission. Implicit Frost remains refused pending actual derivative seam proof. Original SWDIVD0+solute and fullyfrozen refusals retained. No canonical admission of new Frost domain.",
+  "next_action": "Track four active full1096 Frost/SWDIVD1 dense-daily water/CDE O0/O2 trajectories, reuse actual short-tested binaries only. Preserve any native/strict-budget refusals. Then actual full cold continuation and controls, independent complete source/compiler/raw forensic, portable campaign. No implicit Frost or broader calendar guard selected yet. Keep actual PR1774 admission and all original failed Frost/Divdra evidence unchanged.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -32136,7 +32136,7 @@
     "admission_archive_sha256": "d892f426579447b9fc5608e9d19ece61da3e00995c9905914854e37130c724e2"
   },
   "frost_cde_drainage_active_component": {
-    "status": "252_REAL_CDE_TASK2_CASES_AND_COMPLETE_SOURCE_INDEPENDENT_PASS_O0_O2_CANDIDATE_DAILY_INTEGRATION",
+    "status": "FOUR_DAILY_FROST_SWDIVD1_SHORT_CONTEXTS_AND_12_COLD_WINDOWS_PASS_FULLS_RUNNING",
     "baseline_canonical": "383526abddeb06ea61fe31fa7e342ebbd8a5c43d",
     "original_rate_producer": "34c00c123cbd02c910cc703b171435d9f36df38b",
     "diagnostic_producer": "200e0adbc63b5a216c003c1e71e2009a72c73e55",
@@ -32190,6 +32190,95 @@
       }
     ],
     "candidate_guards_implemented": true,
-    "public_canonical_guards_opened": false
+    "public_canonical_guards_opened": false,
+    "candidate_short_contexts": [
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-divdra-daily-water-short-O0-v2\\RESULT.json",
+        "sha256": "940aa933da739da00acea96ec01393c1d91a1517a4a108158c1330d9217c7ffd",
+        "status": "CANDIDATE_ACTUAL_FROST_SWDIVD1_WATER_SHORT_PASS_NOT_ADMITTED",
+        "producer": "0849d53c0d08f4498ae80b8dcc4d4c7e90f5e882",
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 9.984059412548874e-11,
+            "max_kernel_cm": 9.983480708797288e-11,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 7.624978578765242e-10
+          },
+          "model_seconds": 5.484137800056487,
+          "build_sha256": "f9b2abdd1fcd18827f51a22ce3b713439062013ea453ea62534774bd0401c0d2"
+        },
+        "cold_windows": 3
+      },
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-divdra-daily-cde-short-O0-v1\\RESULT.json",
+        "sha256": "0e633c517ed7b4a8cae6b876426ea5ce466f57642485e6f402eb376dad360270",
+        "status": "CANDIDATE_ACTUAL_FROST_SWDIVD1_CDE_SHORT_PASS_NOT_ADMITTED",
+        "producer": "0849d53c0d08f4498ae80b8dcc4d4c7e90f5e882",
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 9.984059412548874e-11,
+            "max_kernel_cm": 9.983480708797288e-11,
+            "max_solute_mg_cm2": 1.4765966227514582e-13,
+            "sum_water_residual_cm": 7.624978578765242e-10
+          },
+          "model_seconds": 6.40259059984237,
+          "build_sha256": "e39b109bd0e0ad554a9a29474419412fd58cae45c630a39524a38466d356b6ed"
+        },
+        "cold_windows": 3
+      },
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-divdra-daily-water-short-O2-v1\\RESULT.json",
+        "sha256": "1743603ebc5627fc9887d81cf24ccd171ca368c0b76af2dd77dbc7f9dd12acf7",
+        "status": "CANDIDATE_ACTUAL_FROST_SWDIVD1_WATER_SHORT_PASS_NOT_ADMITTED",
+        "producer": "0849d53c0d08f4498ae80b8dcc4d4c7e90f5e882",
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 9.984059412548874e-11,
+            "max_kernel_cm": 9.983480708797288e-11,
+            "max_solute_mg_cm2": 0,
+            "sum_water_residual_cm": 7.624978578765242e-10
+          },
+          "model_seconds": 6.597327300347388,
+          "build_sha256": "b56ab37e5aa41b67413f8f4d6a60562e2957ebdcc0103b77bac05312c5e3d25d"
+        },
+        "cold_windows": 3
+      },
+      {
+        "path": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-divdra-daily-cde-short-O2-v1\\RESULT.json",
+        "sha256": "1ed3094a47104400dc659304ae5d1a1774526988e4b0bcf377833cd6b952b80d",
+        "status": "CANDIDATE_ACTUAL_FROST_SWDIVD1_CDE_SHORT_PASS_NOT_ADMITTED",
+        "producer": "0849d53c0d08f4498ae80b8dcc4d4c7e90f5e882",
+        "trajectory": {
+          "status": "SHORT_PASS",
+          "days": 35,
+          "budgets": {
+            "days": 35,
+            "max_water_cm": 9.984059412548874e-11,
+            "max_kernel_cm": 9.983480708797288e-11,
+            "max_solute_mg_cm2": 1.4765966227514582e-13,
+            "sum_water_residual_cm": 7.624978578765242e-10
+          },
+          "model_seconds": 6.88439969997853,
+          "build_sha256": "e35d7986a7d748e8a8b96aa08916901c07ad5373ab64739a576295b37fb75026"
+        },
+        "cold_windows": 3
+      }
+    ],
+    "candidate_fulls_running": [
+      "water-O0",
+      "cde-O0",
+      "water-O2",
+      "cde-O2"
+    ],
+    "candidate_runtime": "0849d53c0d08f4498ae80b8dcc4d4c7e90f5e882"
   }
 }
