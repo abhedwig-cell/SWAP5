@@ -62,3 +62,5 @@ def validate(bundle, reference, project, identity):
         text = (bundle / 'solute.f90').read_text(encoding='cp1252')
         if text.count('               if (cmsy(i) <= 0d0) then') != 1 or '               if (cmsy(i) < vsmall) then' in text:
             raise ValueError('Foreign actual positive CDE cell-mass predicate')
+
+# Committed actual changed-source admission refusal control.
