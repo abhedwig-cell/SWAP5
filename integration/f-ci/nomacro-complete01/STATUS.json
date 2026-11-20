@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-cde-groundwater-clock01",
-  "last_commit": "a46b16a988a7a023bede1247e239f0f7608dc020",
-  "status": "SECONDARY_ACTUAL_CANONICAL_ADMITTED_ORDINARY_POND_V2_QUALIFICATION_RUNNING",
+  "branch": "codex/nomacro-groundwater-snow-cde01",
+  "last_commit": "8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0",
+  "status": "INTERVAL_ADMITTED_SNOW_REFERENCE_CORRECTION_TARGETED_QUALIFICATION_RUNNING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -31618,16 +31618,16 @@
     "admission_receipt": "GROUNDWATER_CDE_INTERVAL_MERGE_RECEIPT_V1.json"
   },
   "groundwater_snow_cde_batch": {
-    "status": "CORRECTED_CLOCK_FOURTEEN_SHORT_INDEPENDENT_PASS_DAY622_NUMERICAL_INVESTIGATION",
+    "status": "ROLLBACK_EVENT_AVAILABILITY_REFERENCE_CORRECTION_FIRST_TARGET_RUNNING",
     "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
     "candidate_predecessor": "c04f5ddd1fc253d27596014e406bbd849765d5c9",
     "gap": "CDE groundwater Snow1 non-daily interval and subdaily/per-step output currently refused by shared bottom1/snow guard; dense daily thermal CDE and complete thermal/groundwater providers already exist",
-    "next_action": "Read actual IO-only top-boundary day622 trace; test whether originalpositivehead1e-6deadband causes drytransition imbalance. Reuse qualified zero-switch correction only if observed cause supports it; preserve all failed runs. Currentclock short PASS does not establish full/native/source/portable/postimage qualification. Canonical3b interval admitted; no unaffected oldfull repeats.",
+    "next_action": "Complete source8b first h2clock O0 short/cold. If PASS, reuse exact bundle for full1096/9cold; do not repeat all7shorts until actual day622 correction passes. Then fresh O2/current affected contexts, strict source/native/transaction/portable and unchanged NoSnow postimages. Preserve d894 and87 failures; no tolerance change.",
     "functional_completion": "PARTIAL",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "global_counts": "UNKNOWN",
     "RC3_changed": false,
-    "runtime": "d894dbb904a2a4924b23869d8bb5c023b798a04c",
+    "runtime": "8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0",
     "prototype_source": "73b0f990ffac88ee521b7270529927a740fbfd6f",
     "scope": "Existing explicit SWKIMPL0 Snow1 CDE groundwater interval and per-step/subdaily calendars, hys0/1/2, drainage0/1. Existing Snow+implicit guard retained; SnowAGE originalreaderforbidden.",
     "actual_local_short_contexts": 14,
@@ -31664,6 +31664,9 @@
       "O2": "groundwater-snow-full-O2-v1"
     },
     "clock_correction": "d894 uses immutableepoch+integerday+acceptedlocaltcum instead of repeated large absolute additions; original dtCrit, output predicates, physical equations and mass guards unchanged; reference-defect correction still NOT_QUALIFIED",
-    "current_numerical_observation": "Private IO-only HeadCalc v5 matches89 accepted days532..621 exactly; day622 advances to tcum0.79296854 at dt1e-6, global budget_total5.4601171e-8 and Snow soil trial -6.0962936e-7; both exceed unchanged guards. Early ponded trials instead pass Snow soil and reject tighter global guard. No acceptedday622 or fullPASS."
+    "current_numerical_observation": "d894 O0/O2 full180 both censored after621accepted. IO-only first minimum-step exhaustion tcum0.7740405396077777 dt1e-6 residual5.46185038e-8. Atmospheric branch before it retains pond3.803234388e-6 with epd0.09159492134, q1=0.06307066324>Emax0.001743200815. Positive h0 deadband not observed. Full current scientific equivalence not established.",
+    "clock_only_runtime": "d894dbb904a2a4924b23869d8bb5c023b798a04c",
+    "current_first_cohort": "groundwater-snow-cohort-O0-v4 only h2-snow-clock-periodic; source8b",
+    "current_short_authority": "PENDING; d894 14short/44cold are historical after new retry/availability source changed"
   }
 }

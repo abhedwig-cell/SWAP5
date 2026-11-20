@@ -1,0 +1,135 @@
+{
+  "status": "ACTUAL_DIAGNOSTIC_FAILURE_NOT_QUALIFIED",
+  "model_source": "d894dbb904a2a4924b23869d8bb5c023b798a04c",
+  "full_runs": {
+    "O0": {
+      "receipt": {
+        "status": "FAILED_OR_CENSORED",
+        "source_commit": "a322c78ddb97c02801dc301132a2596fd990235c",
+        "parameters": {
+          "optimization": "O0",
+          "solute": 1,
+          "hysteresis": 2,
+          "bottom": 1,
+          "kmean": 4,
+          "perstep": false,
+          "mode": "periodic",
+          "format": 3,
+          "reset": 1,
+          "nprintday": 3,
+          "implicit": 0,
+          "epoch": null,
+          "drainage": 1,
+          "snow": 1,
+          "phase": "full"
+        },
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\groundwater-snow-cohort-O0-v3\\h2-snow-clock-periodic\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\groundwater-snow-cohort-O0-v3\\h2-snow-clock-periodic\\input",
+        "actual_short_receipt": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\groundwater-snow-cohort-O0-v3\\h2-snow-clock-periodic\\RESULT.json",
+        "actual_short_receipt_sha256": "4aa38d8c4820da5328e7771c9ac68b281b6d6f682630538298dba369cdb7bcb0",
+        "fresh_compilations": 0,
+        "fresh_short_models": 0,
+        "full_resource_cap_seconds": 180,
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "error": "TimeoutError('Model wall cap 180s')"
+      },
+      "actual_receipt_sha256": "cc0acfa39fe5227df92a4495268d79f90311df31a6d707885fd24ccdcdd59b10",
+      "accepted_days": 621,
+      "last_accepted_day": 621
+    },
+    "O2": {
+      "receipt": {
+        "status": "FAILED_OR_CENSORED",
+        "source_commit": "c7d5ddf1aed529535fcd96cd5b8b0b2600ea872e",
+        "parameters": {
+          "optimization": "O2",
+          "solute": 1,
+          "hysteresis": 2,
+          "bottom": 1,
+          "kmean": 4,
+          "perstep": false,
+          "mode": "periodic",
+          "format": 3,
+          "reset": 1,
+          "nprintday": 3,
+          "implicit": 0,
+          "epoch": null,
+          "drainage": 1,
+          "snow": 1,
+          "phase": "full"
+        },
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\groundwater-snow-cohort-O2-v2\\h2-snow-clock-periodic\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\groundwater-snow-cohort-O2-v2\\h2-snow-clock-periodic\\input",
+        "actual_short_receipt": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\groundwater-snow-cohort-O2-v2\\h2-snow-clock-periodic\\RESULT.json",
+        "actual_short_receipt_sha256": "41b9f69c49facabe462780cf9b8fd0b308c8711228e549575bf02e2ebf05bb53",
+        "fresh_compilations": 0,
+        "fresh_short_models": 0,
+        "full_resource_cap_seconds": 180,
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL",
+        "error": "TimeoutError('Model wall cap 180s')"
+      },
+      "actual_receipt_sha256": "03cb424b354a7c3eecc8a068f7f0fc30b62fe3af115d07f33b8ce34ebe447077",
+      "accepted_days": 621,
+      "last_accepted_day": 621
+    }
+  },
+  "private_io": {
+    "floor": {
+      "status": "PRIVATE_IO_ONLY_TRACE_PHYSICAL_PREFIX_MATCH_NOT_ADMITTED",
+      "numeric_source_unchanged_after_removing_exact_IO": true,
+      "original_BUILD_sha256": "be5226211541bd688bb0f494f1b2b942dafd7824669a3e451e974050cba87df0",
+      "source_file": "headcalc.f90",
+      "original_provider_lf_sha256": "b317f905fa95cd64cba6d83a787d3182fd3080cba1b223b4b9153ea679fbc8e1",
+      "actual_private_executable_sha256": "23075a3d0908f48b6d06b3417817fedce4fba259c5db3331dccba16862e00c3c",
+      "actual_private_provider_sha256": "ada2f4a3e5ab29edf40604736fb4ea0205772c35473f8b92c976ef484c98f5eb",
+      "original_binding_role": "INPUT_ORIGIN_ONLY",
+      "published_checkpoints": false,
+      "scientific_admission": false,
+      "actual_censor_or_refusal": "TimeoutError('Model wall cap 45s')",
+      "seconds": null,
+      "actual_trace": [
+        "PRIVATE_SNOW_GW_FLOOR_TRACE     622  7.74040539607777744E-001  9.99999999999999955E-007 -2.52820067484560415E-005  0.00000000000000000E+000  9.12912041101110461E-010 -5.90426087361539675E-010 -1.72744493367583702E-011  5.46185038136293936E-008 -5.46184962292584064E-008 -2.75000000000000000E+005       0       0       0 F",
+        "PRIVATE_SNOW_GW_FLOOR_TRACE     622  7.74041539607777773E-001  9.99999999999999955E-007 -5.05640136494078901E-005  0.00000000000000000E+000  3.51627268968535134E-010 -4.92116586901531622E-010  5.46012293642926353E-008 -4.92116583455589834E-016 -5.46185020750215172E-008  0.00000000000000000E+000       0       0       0 F",
+        "PRIVATE_SNOW_GW_FLOOR_TRACE     622  7.74042539607777802E-001  9.99999999999999955E-007 -7.58460208026390627E-005  0.00000000000000000E+000  7.64993648288969652E-010  1.41046853179265658E-009  5.46012288721760551E-008  1.41046853027223244E-015 -5.46185079240938071E-008  0.00000000000000000E+000       0       0       0 F",
+        "PRIVATE_SNOW_GW_FLOOR_TRACE     622  7.74043539607777831E-001  9.99999999999999955E-007 -1.01128027593557306E-004  0.00000000000000000E+000  3.44390155282425781E-010  1.21029518492746929E-010  5.46012302826445854E-008  1.21029516969569932E-016 -5.46185137695363953E-008  0.00000000000000000E+000       0       0       0 F",
+        "PRIVATE_SNOW_GW_FLOOR_TRACE     622  7.74044539607777859E-001  9.99999999999999955E-007 -1.26410034717622092E-004  0.00000000000000000E+000  3.32711639489113864E-010 -7.52006353835123903E-010  5.46012304036741057E-008 -7.52006355766147264E-016 -5.46185196148187223E-008  0.00000000000000000E+000       0       0       0 F",
+        "PRIVATE_SNOW_GW_FLOOR_TRACE     622  7.74045539607777888E-001  9.99999999999999955E-007 -1.51692041541127292E-004  0.00000000000000000E+000  7.83923363723015854E-010  1.28935665030978364E-009  5.46012296516677466E-008  1.28935664927470937E-015 -5.46185396742649501E-008  0.00000000000000000E+000       0       0       0 F",
+        "PRIVATE_SNOW_GW_FLOOR_TRACE     622  7.74046539607777917E-001  9.99999999999999955E-007 -1.76974048443137593E-004  0.00000000000000000E+000  2.35130560855001391E-010 -1.59167926234993207E-014  5.46012309410243959E-008 -1.59116462630700404E-020 -5.46185597300814763E-008  0.00000000000000000E+000       0       0       0 F",
+        "PRIVATE_SNOW_GW_FLOOR_TRACE     622  7.74047539607777946E-001  9.99999999999999955E-007 -2.02256054997696362E-004  0.00000000000000000E+000  3.13660833417550577E-010 -8.17534560068697985E-010  5.46012309410084875E-008 -8.17534555027581400E-016 -5.46185797892071816E-008  0.00000000000000000E+000       0       0       0 F"
+      ],
+      "trace_kind": "floor",
+      "actual_prefix_days": 89
+    },
+    "atmos": {
+      "status": "PRIVATE_IO_ONLY_TRACE_PHYSICAL_PREFIX_MATCH_NOT_ADMITTED",
+      "numeric_source_unchanged_after_removing_exact_IO": true,
+      "original_BUILD_sha256": "be5226211541bd688bb0f494f1b2b942dafd7824669a3e451e974050cba87df0",
+      "source_file": "boundtop.f90",
+      "original_provider_lf_sha256": "ea9d62eed9518fff6e6f46312d17885fb1a722bf108c5a02a5f30f2df87b4a15",
+      "actual_private_executable_sha256": "505e2731eb3b9e0ecbc6fe4442abe85f6df1e1496ebda1606532e6f38760b469",
+      "actual_private_provider_sha256": "0b33db92b4722b5595fad7fdd56c4d3d9171114aed4f5cf4b41c31c2789a561d",
+      "original_binding_role": "INPUT_ORIGIN_ONLY",
+      "published_checkpoints": false,
+      "scientific_admission": false,
+      "actual_censor_or_refusal": "TimeoutError('Model wall cap 45s')",
+      "seconds": null,
+      "actual_trace": [
+        "PRIVATE_SNOW_GW_ATMOS_TRACE     622  7.73999997007839502E-001  1.33333332428264839E-004  4.99995728066283396E-001  3.80323438847876598E-006  6.30706632361659053E-002  1.74320081475422685E-003 -9.15949213433797094E-002  9.15949213433797094E-002  0.00000000000000000E+000  3.16945602687510213E-009",
+        "PRIVATE_SNOW_GW_ATMOS_TRACE     622  7.73999997007839502E-001  1.33333332428264839E-004 -1.29591335398183037E+003  3.80323438847876598E-006  6.30706632361659053E-002  1.73498296454510778E-003 -9.15949213433797094E-002  9.15949213433797094E-002  0.00000000000000000E+000  3.16945602687510213E-009",
+        "PRIVATE_SNOW_GW_ATMOS_TRACE     622  7.73999997007839502E-001  1.33333332428264839E-004 -4.31637787508565964E+002  3.80323438847876598E-006  6.30706632361659053E-002  1.74046153135118723E-003 -9.15949213433797094E-002  9.15949213433797094E-002  0.00000000000000000E+000  3.16945602687510213E-009",
+        "PRIVATE_SNOW_GW_ATMOS_TRACE     622  7.73999997007839502E-001  1.33333332428264839E-004 -1.43545932017477782E+002  3.80323438847876598E-006  6.30706632361659053E-002  1.74228772028654669E-003 -9.15949213433797094E-002  9.15949213433797094E-002  0.00000000000000000E+000  3.16945602687510213E-009",
+        "PRIVATE_SNOW_GW_ATMOS_TRACE     622  7.73999997007839502E-001  1.33333332428264839E-004 -4.75153135204484087E+001  3.80323438847876598E-006  6.30706632361659053E-002  1.74289644993166687E-003 -9.15949213433797094E-002  9.15949213433797094E-002  0.00000000000000000E+000  3.16945602687510213E-009",
+        "PRIVATE_SNOW_GW_ATMOS_TRACE     622  7.73999997007839502E-001  1.33333332428264839E-004 -1.55051073547719458E+001  3.80323438847876598E-006  6.30706632361659053E-002  1.74309935981337345E-003 -9.15949213433797094E-002  9.15949213433797094E-002  0.00000000000000000E+000  3.16945602687510213E-009",
+        "PRIVATE_SNOW_GW_ATMOS_TRACE     622  7.73999997007839502E-001  1.33333332428264839E-004 -4.83503863287979296E+000  3.80323438847876598E-006  6.30706632361659053E-002  1.74316699644060926E-003 -9.15949213433797094E-002  9.15949213433797094E-002  0.00000000000000000E+000  3.16945602687510213E-009",
+        "PRIVATE_SNOW_GW_ATMOS_TRACE     622  7.73999997007839502E-001  1.33333332428264839E-004 -1.27834905891574202E+000  3.80323438847876598E-006  6.30706632361659053E-002  1.74318954198302077E-003 -9.15949213433797094E-002  9.15949213433797094E-002  0.00000000000000000E+000  3.16945602687510213E-009"
+      ],
+      "trace_kind": "atmos",
+      "actual_prefix_days": 89
+    }
+  },
+  "zero_pond_deadband": "No positive h0<=1e-6 activation observed in45second top probe; its observer asserted nonempty and failed. Actual failed receipt retained; do not relabel it PASS.",
+  "next_candidate_source": "8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0",
+  "next_candidate": "Literal qualified rollback/event/availability providers, activated only for explicit Snow groundwater calendars; qualification pending"
+}
