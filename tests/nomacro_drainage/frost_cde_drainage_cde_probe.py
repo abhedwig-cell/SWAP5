@@ -12,7 +12,9 @@ def source(text):
              '   public::frost_cde_probe_exponent\n')
     assert text.count(declaration) == 1
     anchor = '      select case (task)\n      case (1)'
-    assert text.count(anchor) == 1
+    start = text.index('submodule (MOD_Solute) MOD_Solute_CDE')
+    end = text.index('      end subroutine solute_CDE', start)
+    assert text[start:end].count(anchor) == 1
     setup = '''      case (97)
          if(.not.allocated(ldis))allocate(ldis(numlay))
          if(.not.allocated(thetav))allocate(thetav(numnod),diffus(numnod),dispr1(numnod),vpore2(numnod))
@@ -35,6 +37,7 @@ def source(text):
          return
 '''
     actual = text.replace(declaration, added + declaration, 1)
-    actual = actual.replace(anchor, '      select case (task)\n' + setup + '      case (1)', 1)
+    insertion = actual.index(anchor, actual.index('submodule (MOD_Solute) MOD_Solute_CDE'))
+    actual = actual[:insertion] + actual[insertion:].replace(anchor, '      select case (task)\n' + setup + '      case (1)', 1)
     assert actual.replace(added, '', 1).replace(setup, '', 1) == text
     return actual
