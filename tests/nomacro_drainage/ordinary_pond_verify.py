@@ -33,6 +33,14 @@ def norm(raw):return raw.replace(b'\r\n',b'\n')
 def sha(raw):return hashlib.sha256(raw).hexdigest()
 
 
+def strip_current_evidence(text):
+    addition='            /integration/f-ci/nomacro-complete01/ORDINARY_*\n'
+    if addition in text:
+        require(text.count(addition)==1,'Ambiguous ordinary scientific checkout')
+        text=text.replace(addition,'',1)
+    return text
+
+
 @lru_cache(maxsize=1)
 def guard_previous_source():
     require(not git('diff',RUNTIME,'--',*SURFACES),'Actual ordinary implicit compiler source differs from qualified runtime')
@@ -55,7 +63,12 @@ def guard_previous_source():
         require(norm((ROOT/path).read_bytes())==blob(READERS,path),'Frozen ordinary scientific observer changed: '+name)
     existing=set(git('ls-tree','-r','--name-only',PARENT,'--','tests').decode().splitlines())
     changed=set(git('diff','--name-only',PARENT,'--','tests').decode().splitlines()) & existing
-    require(changed=={OLD},'Earlier actual scientific/source owner changed beyond exact delegation')
+    projection='tests/nomacro_drainage/extended_verify.py'
+    require(changed=={OLD,projection},'Earlier actual scientific/source owner changed beyond exact delegation')
+    hook=b'    import ordinary_pond_verify as ordinary\n    text=ordinary.strip_current_evidence(text)\n'
+    body=norm((ROOT/projection).read_bytes())
+    require(body.count(hook)==1 and body.replace(hook,b'',1)==blob(PARENT,projection),
+            'Earlier source/scientific bodies changed beyond exact checkout projection')
     extra=b'            /integration/f-ci/nomacro-complete01/ORDINARY_*\n'
     for name in ('mc-sol01-column-input.yml','mc-sol01-swp-reader.yml'):
         path='.github/workflows/'+name;actual=norm((ROOT/path).read_bytes())
