@@ -34,6 +34,8 @@ COUNTS=dict(actual_full_periods=4,actual_days_per_full_period=1096,actual_full_c
 
 
 def strip_current_evidence(text):
+    import groundwater_snow_verify as groundwater_snow
+    text=groundwater_snow.strip_current_evidence(text)
     if PATTERN in text:
         require(text.count(PATTERN)==1,'Ambiguous groundwater interval scientific checkout')
         text=text.replace(PATTERN,'',1)
@@ -42,6 +44,8 @@ def strip_current_evidence(text):
 
 @lru_cache(maxsize=1)
 def guard_previous_source():
+    import groundwater_snow_verify as groundwater_snow
+    return groundwater_snow.guard_previous_source()
     require(not git('diff',RUNTIME,'--',*SURFACES),
             'Actual groundwater interval compiler source differs from qualified runtime')
     bridge=read(Path(__file__).with_name('groundwater_interval_parent_bridge.json'))
@@ -152,6 +156,8 @@ def inherited():
 
 
 def verify():
+    import groundwater_snow_verify as groundwater_snow
+    return groundwater_snow.verify()
     source();retained=inherited();win=science.windows(PROOF)
     portable={opt:science.ubuntu(PROOF,opt) for opt in ('O0','O2')}
     observations=[win,*portable.values()]

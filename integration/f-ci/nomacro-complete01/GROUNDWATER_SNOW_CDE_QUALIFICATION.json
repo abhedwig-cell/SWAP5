@@ -1,0 +1,1421 @@
+{
+  "status": "NEUTRAL_GROUNDWATER_SNOW_CDE_RAW_SCIENCE_PASS_PENDING_ADMISSION",
+  "runtime": "8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0",
+  "numeric_runtime": "8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0",
+  "predecessor": "3baf8a05786af8635e60b4df8518c77ff3f8eeb2",
+  "independent_readers": "35f85e8efd49d18e7575f71f3d41725012dc7b87",
+  "sealer_source": "ced236e71",
+  "archives": {
+    "GROUNDWATER_SNOW_CDE_UBUNTU_O0_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_SNOW_CDE_UBUNTU_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "4c5c3a543d5d8925f74806ed9481a58566a5136928fdc471aa28c4e8e1e59a42"
+    },
+    "GROUNDWATER_SNOW_CDE_UBUNTU_O2_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_SNOW_CDE_UBUNTU_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "dac914bbc0451140e1aee27e5f549d78e17a5997bbf5e9dbbf1486cd7cc62028"
+    },
+    "GROUNDWATER_SNOW_CDE_WINDOWS_O0_CONTROLS_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_SNOW_CDE_WINDOWS_O0_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "932889f09a1383a398a8f8491049bab8b1275804afd88f65044d72b34b8701a9"
+    },
+    "GROUNDWATER_SNOW_CDE_WINDOWS_O0_SCIENCE_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_SNOW_CDE_WINDOWS_O0_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "8f0265039c50e00057f5fa788af5565d7fe3aed7126dd5d2fc57d49644b10135"
+    },
+    "GROUNDWATER_SNOW_CDE_WINDOWS_O2_CONTROLS_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_SNOW_CDE_WINDOWS_O2_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "e935f0f9521b4f2c58a1a7e39d0697b131e21e7bd2f0f1d28562f35ec2c1bb82"
+    },
+    "GROUNDWATER_SNOW_CDE_WINDOWS_O2_SCIENCE_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_SNOW_CDE_WINDOWS_O2_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "d33b3fb5ae9615d07eccb32015c05821a5213a12582827301555a772f9065ed3"
+    },
+    "GROUNDWATER_SNOW_CDE_WINDOWS_SUPPORT_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_SNOW_CDE_WINDOWS_SUPPORT_RAW_ARCHIVE.json",
+      "record_lf_sha256": "f94aa507313f2e25d525c5051b5a7c69b0ba20f3c3c7771ea42e06a62e1ebafa"
+    }
+  },
+  "baseline_lf_sha256": "d86a38ec9c4ef8bd5760a2888fab193237f3a1d7d12daf1a7e0cf0af73b3dbd0",
+  "Windows": {
+    "status": "INDEPENDENT_SEALED_WINDOWS_SNOW_GROUNDWATER_SCIENCE_PASS",
+    "metrics": {
+      "O0": {
+        "short": {
+          "h2-snow-clock-periodic": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSC003",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 1,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.283249999999988,
+              "gross_snow_cm": 0.02675000000000066
+            },
+            "snow_soil_receipts": {
+              "actual_days": 35,
+              "maximum_absolute_residual_cm": 6.88338275267597e-14
+            },
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-snow-step-explicit": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSC001",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 6,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 1,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.2832499999999802,
+              "gross_snow_cm": 0.026749999999999944
+            },
+            "snow_soil_receipts": {
+              "actual_days": 35,
+              "maximum_absolute_residual_cm": 3.774758283725532e-14
+            },
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h0-snow-interval-monthly": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSI000",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 3,
+              "perstep": false,
+              "mode": "monthly",
+              "format": 2,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 1,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.2832499999999762,
+              "gross_snow_cm": 0.026749999999999934
+            },
+            "snow_soil_receipts": null,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-snow-interval-periodic-off": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSI003",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 5,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 0,
+              "nprintday": 1,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 0,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.2832499999999762,
+              "gross_snow_cm": 0.02674999999999996
+            },
+            "snow_soil_receipts": null,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h0-snow-clock-subdaily-off": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSC000",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 1,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 2,
+              "reset": 0,
+              "nprintday": 2,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 0,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.2832499999999953,
+              "gross_snow_cm": 0.026749999999999968
+            },
+            "snow_soil_receipts": {
+              "actual_days": 35,
+              "maximum_absolute_residual_cm": 2.930988785010413e-14
+            },
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-snow-interval-explicit-off": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSI001",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 2,
+              "perstep": false,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 0,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.283249999999997,
+              "gross_snow_cm": 0.026749999999999996
+            },
+            "snow_soil_receipts": null,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-snow-step-year": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 4,
+            "codec": "S5GSC003",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 0,
+              "epoch": "2002-12-15",
+              "drainage": 1,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 21.736729226916495,
+              "snow_rain_cm": 9.605249999999963,
+              "gross_snow_cm": 0.23475000000000013
+            },
+            "snow_soil_receipts": {
+              "actual_days": 35,
+              "maximum_absolute_residual_cm": 8.615330671091215e-14
+            },
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          }
+        },
+        "native": {
+          "h2-snow-clock-periodic": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 109,
+            "compiled_refusals": 109,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h1-snow-step-explicit": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 109,
+            "compiled_refusals": 109,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h0-snow-interval-monthly": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 106,
+            "compiled_refusals": 105,
+            "accepted_receipt_refusals": 1,
+            "actual_transactions": 1
+          },
+          "h2-snow-interval-periodic-off": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 106,
+            "compiled_refusals": 106,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          }
+        },
+        "source_controls": {
+          "h2-snow-clock-periodic": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 29,
+            "original_failed_producers_preserved": 1
+          },
+          "h1-snow-step-explicit": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 30,
+            "original_failed_producers_preserved": 0
+          },
+          "h0-snow-interval-monthly": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 27,
+            "original_failed_producers_preserved": 0
+          }
+        },
+        "full": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 1096,
+          "actual_cold_windows": 9,
+          "codec": "S5GSC003",
+          "parameters": {
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 1,
+            "snow": 1,
+            "phase": "full"
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 5.6528749999999865,
+            "gross_snow_cm": 2.731250000000001
+          },
+          "snow_soil_receipts": {
+            "actual_days": 1096,
+            "maximum_absolute_residual_cm": 1.0377601555866534e-12
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "actual_unselected_contexts": 3
+      },
+      "O2": {
+        "short": {
+          "h2-snow-clock-periodic": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSC003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 1,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.283249999999988,
+              "gross_snow_cm": 0.02675000000000066
+            },
+            "snow_soil_receipts": {
+              "actual_days": 35,
+              "maximum_absolute_residual_cm": 6.88338275267597e-14
+            },
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-snow-step-explicit": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSC001",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 6,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 1,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.2832499999999802,
+              "gross_snow_cm": 0.026749999999999944
+            },
+            "snow_soil_receipts": {
+              "actual_days": 35,
+              "maximum_absolute_residual_cm": 3.774758283725532e-14
+            },
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h0-snow-interval-monthly": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSI000",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 3,
+              "perstep": false,
+              "mode": "monthly",
+              "format": 2,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 1,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.2832499999999762,
+              "gross_snow_cm": 0.026749999999999934
+            },
+            "snow_soil_receipts": null,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-snow-interval-periodic-off": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSI003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 5,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 0,
+              "nprintday": 1,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 0,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.2832499999999762,
+              "gross_snow_cm": 0.02674999999999996
+            },
+            "snow_soil_receipts": null,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h0-snow-clock-subdaily-off": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSC000",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 1,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 2,
+              "reset": 0,
+              "nprintday": 2,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 0,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.2832499999999953,
+              "gross_snow_cm": 0.026749999999999968
+            },
+            "snow_soil_receipts": {
+              "actual_days": 35,
+              "maximum_absolute_residual_cm": 2.930988785010413e-14
+            },
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-snow-interval-explicit-off": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GSI001",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 2,
+              "perstep": false,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 0,
+              "epoch": null,
+              "drainage": 0,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 22.01003780794349,
+              "snow_rain_cm": 3.283249999999997,
+              "gross_snow_cm": 0.026749999999999996
+            },
+            "snow_soil_receipts": null,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-snow-step-year": {
+            "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 4,
+            "codec": "S5GSC003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 0,
+              "epoch": "2002-12-15",
+              "drainage": 1,
+              "snow": 1
+            },
+            "new_physical_state": false,
+            "snow_observation": {
+              "maximum_stock_cm": 21.736729226916495,
+              "snow_rain_cm": 9.605249999999963,
+              "gross_snow_cm": 0.23475000000000013
+            },
+            "snow_soil_receipts": {
+              "actual_days": 35,
+              "maximum_absolute_residual_cm": 8.615330671091215e-14
+            },
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          }
+        },
+        "native": {
+          "h2-snow-clock-periodic": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 109,
+            "compiled_refusals": 109,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h1-snow-step-explicit": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 109,
+            "compiled_refusals": 109,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h0-snow-interval-monthly": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 106,
+            "compiled_refusals": 105,
+            "accepted_receipt_refusals": 1,
+            "actual_transactions": 1
+          },
+          "h2-snow-interval-periodic-off": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 106,
+            "compiled_refusals": 106,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          }
+        },
+        "source_controls": {
+          "h2-snow-clock-periodic": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 29,
+            "original_failed_producers_preserved": 0
+          },
+          "h1-snow-step-explicit": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 30,
+            "original_failed_producers_preserved": 0
+          },
+          "h0-snow-interval-monthly": {
+            "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 27,
+            "original_failed_producers_preserved": 0
+          }
+        },
+        "full": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 1096,
+          "actual_cold_windows": 9,
+          "codec": "S5GSC003",
+          "parameters": {
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 1,
+            "snow": 1,
+            "phase": "full"
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 5.6528749999999865,
+            "gross_snow_cm": 2.731250000000001
+          },
+          "snow_soil_receipts": {
+            "actual_days": 1096,
+            "maximum_absolute_residual_cm": 1.0377601555866534e-12
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "actual_unselected_contexts": 3
+      }
+    },
+    "source_custody": {
+      "status": "ACTUAL_EXPLICIT_SNOW_GROUNDWATER_GIT_SOURCE_PROVIDER_COMPILED_CUSTODY_PASS",
+      "producer_source": "637a3d29bca02598534dec3059a1137aec48c521",
+      "source_members": 1482,
+      "actual_builds": [
+        "compiled/17/BUILD.json",
+        "compiled/18/BUILD.json",
+        "compiled/19/BUILD.json",
+        "compiled/20/BUILD.json",
+        "compiled/21/BUILD.json",
+        "compiled/22/BUILD.json",
+        "compiled/23/BUILD.json",
+        "compiled/38/BUILD.json",
+        "compiled/39/BUILD.json",
+        "compiled/40/BUILD.json",
+        "compiled/41/BUILD.json",
+        "compiled/42/BUILD.json",
+        "compiled/43/BUILD.json",
+        "compiled/44/BUILD.json"
+      ],
+      "source_archive_sha256": "f11b7c8191bc1aa6181f6c066df0605de5d99c9b48e8c22c154ed326bedf7b2b"
+    },
+    "actual_short_contexts": 14,
+    "actual_short_cold_windows": 44,
+    "actual_full_periods": 2,
+    "actual_full_cold_windows": 18,
+    "actual_native_refusals": 860,
+    "actual_compiled_refusals": 858,
+    "actual_accepted_receipt_refusals": 2,
+    "actual_source_policy_refusals": 172,
+    "actual_transaction_contexts": 8,
+    "actual_unselected_CDE_contexts": 6,
+    "actual_unselected_CDE_cold_windows": 6
+  },
+  "Ubuntu": {
+    "O0": {
+      "status": "INDEPENDENT_ORIGINAL_PORTABLE_SNOW_GROUNDWATER_SCIENCE_CONTROLS_PASS",
+      "short": {
+        "h2-snow-clock-periodic": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSC003",
+          "parameters": {
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 1,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.2832500000000024,
+            "gross_snow_cm": 0.026749999999999836
+          },
+          "snow_soil_receipts": {
+            "actual_days": 35,
+            "maximum_absolute_residual_cm": 3.108624468950438e-14
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h1-snow-step-explicit": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSC001",
+          "parameters": {
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 1,
+            "bottom": 1,
+            "kmean": 6,
+            "perstep": true,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 1,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.28324999999999,
+            "gross_snow_cm": 0.026749999999999944
+          },
+          "snow_soil_receipts": {
+            "actual_days": 35,
+            "maximum_absolute_residual_cm": 4.263256414560601e-14
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h0-snow-interval-monthly": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSI000",
+          "parameters": {
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 0,
+            "bottom": 1,
+            "kmean": 3,
+            "perstep": false,
+            "mode": "monthly",
+            "format": 2,
+            "reset": 1,
+            "nprintday": 1,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 1,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.2832499999999762,
+            "gross_snow_cm": 0.026749999999999934
+          },
+          "snow_soil_receipts": null,
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h2-snow-interval-periodic-off": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSI003",
+          "parameters": {
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 5,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 0,
+            "nprintday": 1,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 0,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.2832499999999762,
+            "gross_snow_cm": 0.02674999999999996
+          },
+          "snow_soil_receipts": null,
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h0-snow-clock-subdaily-off": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSC000",
+          "parameters": {
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 0,
+            "bottom": 1,
+            "kmean": 1,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 2,
+            "reset": 0,
+            "nprintday": 2,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 0,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.2832499999999953,
+            "gross_snow_cm": 0.026749999999999968
+          },
+          "snow_soil_receipts": {
+            "actual_days": 35,
+            "maximum_absolute_residual_cm": 1.9539925233402755e-14
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h1-snow-interval-explicit-off": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSI001",
+          "parameters": {
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 1,
+            "bottom": 1,
+            "kmean": 2,
+            "perstep": false,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 1,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 0,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.283249999999997,
+            "gross_snow_cm": 0.026749999999999996
+          },
+          "snow_soil_receipts": null,
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h2-snow-step-year": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 4,
+          "codec": "S5GSC003",
+          "parameters": {
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": true,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 1,
+            "implicit": 0,
+            "epoch": "2002-12-15",
+            "drainage": 1,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 21.736729226916495,
+            "snow_rain_cm": 9.605249999999977,
+            "gross_snow_cm": 0.23475000000000001
+          },
+          "snow_soil_receipts": {
+            "actual_days": 35,
+            "maximum_absolute_residual_cm": 6.439293542825908e-14
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        }
+      },
+      "full": {
+        "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "actual_days": 1096,
+        "actual_cold_windows": 9,
+        "codec": "S5GSC003",
+        "parameters": {
+          "optimization": "O0",
+          "solute": 1,
+          "hysteresis": 2,
+          "bottom": 1,
+          "kmean": 4,
+          "perstep": false,
+          "mode": "periodic",
+          "format": 3,
+          "reset": 1,
+          "nprintday": 3,
+          "implicit": 0,
+          "epoch": null,
+          "drainage": 1,
+          "snow": 1,
+          "phase": "full"
+        },
+        "new_physical_state": false,
+        "snow_observation": {
+          "maximum_stock_cm": 22.01003780794349,
+          "snow_rain_cm": 5.652875000000001,
+          "gross_snow_cm": 2.7312500000000024
+        },
+        "snow_soil_receipts": {
+          "actual_days": 1096,
+          "maximum_absolute_residual_cm": 1.7687934450449916e-13
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL"
+      },
+      "native": {
+        "h2-snow-clock-periodic": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+          "actual_refusals": 109,
+          "compiled_refusals": 109,
+          "accepted_receipt_refusals": 0,
+          "actual_transactions": 1
+        },
+        "h1-snow-step-explicit": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+          "actual_refusals": 109,
+          "compiled_refusals": 109,
+          "accepted_receipt_refusals": 0,
+          "actual_transactions": 1
+        },
+        "h0-snow-interval-monthly": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+          "actual_refusals": 106,
+          "compiled_refusals": 105,
+          "accepted_receipt_refusals": 1,
+          "actual_transactions": 1
+        },
+        "h2-snow-interval-periodic-off": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+          "actual_refusals": 106,
+          "compiled_refusals": 106,
+          "accepted_receipt_refusals": 0,
+          "actual_transactions": 1
+        }
+      },
+      "source_controls": {
+        "h2-snow-clock-periodic": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+          "actual_refusals": 29,
+          "original_failed_producers_preserved": 0
+        },
+        "h1-snow-step-explicit": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+          "actual_refusals": 30,
+          "original_failed_producers_preserved": 0
+        },
+        "h0-snow-interval-monthly": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+          "actual_refusals": 27,
+          "original_failed_producers_preserved": 0
+        }
+      },
+      "source_custody": {
+        "status": "ACTUAL_EXPLICIT_SNOW_GROUNDWATER_GIT_SOURCE_PROVIDER_COMPILED_CUSTODY_PASS",
+        "producer_source": "e51133e32fcc7d50ef2a948f09f9b611f262eb8b",
+        "source_members": 1422,
+        "actual_builds": [
+          "compiled/groundwater-snow/h0-snow-clock-subdaily-off/bundle/BUILD.json",
+          "compiled/groundwater-snow/h0-snow-interval-monthly/bundle/BUILD.json",
+          "compiled/groundwater-snow/h1-snow-interval-explicit-off/bundle/BUILD.json",
+          "compiled/groundwater-snow/h1-snow-step-explicit/bundle/BUILD.json",
+          "compiled/groundwater-snow/h2-snow-clock-periodic/bundle/BUILD.json",
+          "compiled/groundwater-snow/h2-snow-interval-periodic-off/bundle/BUILD.json",
+          "compiled/groundwater-snow/h2-snow-step-year/bundle/BUILD.json"
+        ],
+        "source_archive_sha256": "5560cdde2ad2ad7ea4f2b95ef3c337fdd5acd4eadbfd03482900f97a44353d6e"
+      },
+      "actual_short_contexts": 7,
+      "actual_short_cold_windows": 22,
+      "actual_full_periods": 1,
+      "actual_full_cold_windows": 9,
+      "actual_native_refusals": 430,
+      "actual_source_policy_refusals": 86,
+      "actual_transaction_contexts": 4,
+      "fresh_model_executions": 0
+    },
+    "O2": {
+      "status": "INDEPENDENT_ORIGINAL_PORTABLE_SNOW_GROUNDWATER_SCIENCE_CONTROLS_PASS",
+      "short": {
+        "h2-snow-clock-periodic": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSC003",
+          "parameters": {
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 1,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.2832500000000024,
+            "gross_snow_cm": 0.026749999999999836
+          },
+          "snow_soil_receipts": {
+            "actual_days": 35,
+            "maximum_absolute_residual_cm": 3.108624468950438e-14
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h1-snow-step-explicit": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSC001",
+          "parameters": {
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 1,
+            "bottom": 1,
+            "kmean": 6,
+            "perstep": true,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 1,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.28324999999999,
+            "gross_snow_cm": 0.026749999999999944
+          },
+          "snow_soil_receipts": {
+            "actual_days": 35,
+            "maximum_absolute_residual_cm": 4.263256414560601e-14
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h0-snow-interval-monthly": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSI000",
+          "parameters": {
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 0,
+            "bottom": 1,
+            "kmean": 3,
+            "perstep": false,
+            "mode": "monthly",
+            "format": 2,
+            "reset": 1,
+            "nprintday": 1,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 1,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.2832499999999762,
+            "gross_snow_cm": 0.026749999999999934
+          },
+          "snow_soil_receipts": null,
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h2-snow-interval-periodic-off": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSI003",
+          "parameters": {
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 5,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 0,
+            "nprintday": 1,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 0,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.2832499999999762,
+            "gross_snow_cm": 0.02674999999999996
+          },
+          "snow_soil_receipts": null,
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h0-snow-clock-subdaily-off": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSC000",
+          "parameters": {
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 0,
+            "bottom": 1,
+            "kmean": 1,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 2,
+            "reset": 0,
+            "nprintday": 2,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 0,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.2832499999999953,
+            "gross_snow_cm": 0.026749999999999968
+          },
+          "snow_soil_receipts": {
+            "actual_days": 35,
+            "maximum_absolute_residual_cm": 1.9539925233402755e-14
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h1-snow-interval-explicit-off": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "codec": "S5GSI001",
+          "parameters": {
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 1,
+            "bottom": 1,
+            "kmean": 2,
+            "perstep": false,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 1,
+            "implicit": 0,
+            "epoch": null,
+            "drainage": 0,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 22.01003780794349,
+            "snow_rain_cm": 3.283249999999997,
+            "gross_snow_cm": 0.026749999999999996
+          },
+          "snow_soil_receipts": null,
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "h2-snow-step-year": {
+          "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 4,
+          "codec": "S5GSC003",
+          "parameters": {
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": true,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 1,
+            "implicit": 0,
+            "epoch": "2002-12-15",
+            "drainage": 1,
+            "snow": 1
+          },
+          "new_physical_state": false,
+          "snow_observation": {
+            "maximum_stock_cm": 21.736729226916495,
+            "snow_rain_cm": 9.605249999999977,
+            "gross_snow_cm": 0.23475000000000001
+          },
+          "snow_soil_receipts": {
+            "actual_days": 35,
+            "maximum_absolute_residual_cm": 6.439293542825908e-14
+          },
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        }
+      },
+      "full": {
+        "status": "INDEPENDENT_EXPLICIT_SNOW_GROUNDWATER_CDE_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "actual_days": 1096,
+        "actual_cold_windows": 9,
+        "codec": "S5GSC003",
+        "parameters": {
+          "optimization": "O2",
+          "solute": 1,
+          "hysteresis": 2,
+          "bottom": 1,
+          "kmean": 4,
+          "perstep": false,
+          "mode": "periodic",
+          "format": 3,
+          "reset": 1,
+          "nprintday": 3,
+          "implicit": 0,
+          "epoch": null,
+          "drainage": 1,
+          "snow": 1,
+          "phase": "full"
+        },
+        "new_physical_state": false,
+        "snow_observation": {
+          "maximum_stock_cm": 22.01003780794349,
+          "snow_rain_cm": 5.652875000000001,
+          "gross_snow_cm": 2.7312500000000024
+        },
+        "snow_soil_receipts": {
+          "actual_days": 1096,
+          "maximum_absolute_residual_cm": 1.7687934450449916e-13
+        },
+        "whole_scientific_equivalence": "NOT_QUALIFIED",
+        "functional_completion": "PARTIAL"
+      },
+      "native": {
+        "h2-snow-clock-periodic": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+          "actual_refusals": 109,
+          "compiled_refusals": 109,
+          "accepted_receipt_refusals": 0,
+          "actual_transactions": 1
+        },
+        "h1-snow-step-explicit": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+          "actual_refusals": 109,
+          "compiled_refusals": 109,
+          "accepted_receipt_refusals": 0,
+          "actual_transactions": 1
+        },
+        "h0-snow-interval-monthly": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+          "actual_refusals": 106,
+          "compiled_refusals": 105,
+          "accepted_receipt_refusals": 1,
+          "actual_transactions": 1
+        },
+        "h2-snow-interval-periodic-off": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+          "actual_refusals": 106,
+          "compiled_refusals": 106,
+          "accepted_receipt_refusals": 0,
+          "actual_transactions": 1
+        }
+      },
+      "source_controls": {
+        "h2-snow-clock-periodic": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+          "actual_refusals": 29,
+          "original_failed_producers_preserved": 0
+        },
+        "h1-snow-step-explicit": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+          "actual_refusals": 30,
+          "original_failed_producers_preserved": 0
+        },
+        "h0-snow-interval-monthly": {
+          "status": "INDEPENDENT_ACTUAL_SNOW_GROUNDWATER_SOURCE_REFUSALS_PASS",
+          "actual_refusals": 27,
+          "original_failed_producers_preserved": 0
+        }
+      },
+      "source_custody": {
+        "status": "ACTUAL_EXPLICIT_SNOW_GROUNDWATER_GIT_SOURCE_PROVIDER_COMPILED_CUSTODY_PASS",
+        "producer_source": "e51133e32fcc7d50ef2a948f09f9b611f262eb8b",
+        "source_members": 1422,
+        "actual_builds": [
+          "compiled/groundwater-snow/h0-snow-clock-subdaily-off/bundle/BUILD.json",
+          "compiled/groundwater-snow/h0-snow-interval-monthly/bundle/BUILD.json",
+          "compiled/groundwater-snow/h1-snow-interval-explicit-off/bundle/BUILD.json",
+          "compiled/groundwater-snow/h1-snow-step-explicit/bundle/BUILD.json",
+          "compiled/groundwater-snow/h2-snow-clock-periodic/bundle/BUILD.json",
+          "compiled/groundwater-snow/h2-snow-interval-periodic-off/bundle/BUILD.json",
+          "compiled/groundwater-snow/h2-snow-step-year/bundle/BUILD.json"
+        ],
+        "source_archive_sha256": "5560cdde2ad2ad7ea4f2b95ef3c337fdd5acd4eadbfd03482900f97a44353d6e"
+      },
+      "actual_short_contexts": 7,
+      "actual_short_cold_windows": 22,
+      "actual_full_periods": 1,
+      "actual_full_cold_windows": 9,
+      "actual_native_refusals": 430,
+      "actual_source_policy_refusals": 86,
+      "actual_transaction_contexts": 4,
+      "fresh_model_executions": 0
+    }
+  },
+  "actual_full_periods": 4,
+  "actual_days_per_full_period": 1096,
+  "actual_full_cold_windows": 36,
+  "actual_short_contexts": 28,
+  "actual_short_cold_windows": 88,
+  "actual_native_refusals": 1720,
+  "actual_compiled_refusals": 1716,
+  "actual_accepted_receipt_refusals": 4,
+  "actual_transaction_contexts": 16,
+  "actual_source_policy_refusals": 344,
+  "actual_nonselected_CDE_contexts": 6,
+  "actual_nonselected_CDE_cold_windows": 6,
+  "daily_water_guard_cm": 1e-10,
+  "integrated_water_guard_cm": 1e-10,
+  "daily_CDE_guard_mg_cm2": 1e-10,
+  "integrated_CDE_guard_mg_cm2": 1e-10,
+  "full_model_cap_seconds": 180,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "AGE_admitted": false,
+  "groundwater_snow_admitted": false,
+  "implicit_snow_admitted": false,
+  "new_physical_state": false,
+  "classification": "REFERENCE_CORRECTIONS_COMPOSE_EXISTING_QUALIFIED_PROVIDERS",
+  "inherited_groundwater_interval_admission_sha256": "874519cf85f99e8e7ab8f1c3c1146f38ab19d14aa46d2dc42ea56872490f54e4",
+  "reference_corrections": [
+    "immutable epoch plus integer day and accepted local elapsed time",
+    "literal qualified original rollback, pond event and evaporation availability activated for selected explicitSnow"
+  ],
+  "scope": "Bounded original explicit SWKIMPL0 Snow1 CDE groundwater non-daily intervals, subdaily/per-step output, SWHYST0/1/2,SWDRA0/1. Existing soil/weather/thermal and hard original exclusions unchanged; no implicitSnow/AGE/frost/aquifer/active macro expansion."
+}

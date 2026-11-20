@@ -8,6 +8,9 @@ def magic(project):
     selected=active_selection(project)
     if selected is None or not selected.get('groundwater_cde_interval'):
         return None
+    if selected.get('groundwater_snow_cde_output'):
+        from groundwater_snow_cde import magic as snow_magic
+        return snow_magic(selected,False)
     history=selected['swhyst']
     return b'S5GIC001' if history==0 else ('S5GIH'+f'{2*history-1:03d}').encode()
 

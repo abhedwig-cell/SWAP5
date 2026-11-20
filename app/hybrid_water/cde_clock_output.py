@@ -43,7 +43,7 @@ def active_selection(project):
         if one(key)!=value:return None
     from experimental_project import inspect
     bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
-    if bottom not in (1,5,8) or bottom==1 and swsnow:return None
+    if bottom not in (1,5,8):return None
     drainage=one('SWDRA')
     if drainage not in (0,1) or bottom!=1 and drainage!=1:return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
@@ -54,7 +54,8 @@ def active_selection(project):
     return dict(cde_clock_output=True,cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),thermal_clock=bool(swsnow),thermal_step=bool(swsnow and perstep),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=drainage,
         swhyst=hys,swcsv=fmt,nprintday=nprint,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=1,flprintdt=perstep,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
-        **({'groundwater_cde_clock':True} if bottom==1 else {}))
+        **({'groundwater_cde_clock':True} if bottom==1 else {}),
+        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}))
 
 
 def selection(project):
@@ -101,6 +102,9 @@ def metadata(project):
                       groundwater_trial_provider_sha256=sha(folder/'age_groundwater_output.py'),
                       groundwater_clock_policy='existing-cde-clock-complete-groundwater-native-v1',
                       groundwater_new_physical_state=False)
+    if selected.get('groundwater_snow_cde_output'):
+        from groundwater_snow_cde import metadata as snow_groundwater_metadata
+        result.update(snow_groundwater_metadata(selected))
     return result
 
 
@@ -136,7 +140,7 @@ else
     source=source.replace(anchor,guard,1)
     if selected.get('groundwater_cde_clock'):
         from groundwater_cde_clock import integral as groundwater_integral
-        source=groundwater_integral(source,original,watstor)
+        source=groundwater_integral(source,original,watstor,selected)
     return source
 
 
@@ -235,6 +239,9 @@ def apply_build(output,donor_build,project,patched):
        tcum,hybrid_cde_old_dt,hybrid_cde_old_limit,dt_irr_event,dtCrit,dt,get_dtEvent
 """
     time_source=time_source.replace(anchor,closure+anchor,1)
+    if selected.get('groundwater_snow_cde_output'):
+        from groundwater_snow_clock import render as groundwater_snow_timecontrol
+        time_source=groundwater_snow_timecontrol(time_source,selected,project.start_clock)
     (output/'timecontrol.f90').write_text(time_source,encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
     groundwater=selected.get('groundwater_cde_clock',False)
@@ -262,4 +269,8 @@ def apply_build(output,donor_build,project,patched):
         for old,new in ordinary.output_patch('vector').edits(original):assert text.count(old)==1,old;text=text.replace(old,new,1)
         path.write_text(text,encoding='cp1252')
     extra=[regular.PROVIDER,'cde_interval_receipt','cde_clock_events','hybrid_age_output_state']+([domain] if domain else [])+['integral']+([SNOW_PROVIDER] if is_snow else [])+['timecontrol']
-    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched
+    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe')
+    if selected.get('groundwater_snow_cde_output'):
+        from groundwater_snow_retry import apply_build as snow_retry_build
+        patched=snow_retry_build(output,patched)
+    return patched

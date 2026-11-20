@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-cde-groundwater-clock01",
-  "last_commit": "a46b16a988a7a023bede1247e239f0f7608dc020",
-  "status": "SECONDARY_ACTUAL_CANONICAL_ADMITTED_ORDINARY_POND_V2_QUALIFICATION_RUNNING",
+  "branch": "codex/nomacro-groundwater-snow-cde01",
+  "last_commit": "10fbd5a09cee64a4b9c7c2551685e785e6d57d37",
+  "status": "GROUNDWATER_INTERVAL_ADMITTED_SNOW_SOURCE_RAW_QUALIFIED_CANONICAL_PR_PENDING",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -31043,7 +31043,7 @@
     "actual_corrected_nonselected_postimages": 8,
     "actual_final_input_guard_nonselected_postimages": 2,
     "actual_current_ordinary_zero_boundary_public_contexts": 4,
-    "actual_complete_archive_audits": "12 PASS: precorrection/corrected/final \u00c3\u0192\u00e2\u20ac\u201dWindows/Ubuntu \u00c3\u0192\u00e2\u20ac\u201dO0/O2",
+    "actual_complete_archive_audits": "12 PASS: precorrection/corrected/final Ãƒâ€”Windows/Ubuntu Ãƒâ€”O0/O2",
     "final_terminal_ci": {
       "run": 44640817201,
       "source": "9f472848850af09ecfd8221bb59e66357f7b7f7c",
@@ -31470,7 +31470,7 @@
       "receipt": "ORDINARY_IMPLICIT_POND_MERGE_RECEIPT_V1.json"
     }
   },
-  "current_canonical_sha": "21e3fcba2604c7546013f961e0bebaea63e5717f",
+  "current_canonical_sha": "3baf8a05786af8635e60b4df8518c77ff3f8eeb2",
   "current_numeric_source": "b96f69a397615d24f7af4fc1cdf28bf591957a04",
   "groundwater_cde_clock_batch": {
     "status": "ACTUAL_CANONICAL_ADMITTED",
@@ -31548,7 +31548,7 @@
     "admission_receipt": "GROUNDWATER_CDE_CLOCK_MERGE_RECEIPT_V1.json"
   },
   "groundwater_interval_drainage_batch": {
-    "status": "NEUTRAL_RAW_SCIENCE_SEALED_REGISTERED_ADMISSION_PENDING",
+    "status": "ACTUAL_CANONICAL_ADMITTED",
     "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
     "source": "744ad83d1",
     "candidate_predecessor": "04273b09f87db954d238c11202e2a58abd5413c8",
@@ -31556,7 +31556,7 @@
     "first_independent": "GROUNDWATER_INTERVAL_FIRST_O0_INDEPENDENT_V1.json PASS: actual35day and3exactcold",
     "local_O0": "groundwater-interval-cohort-O0-v1",
     "local_O2": "groundwater-interval-cohort-O2-v1",
-    "next_action": "Actual clean25scopedfixture publiccandidate; committed wrongsource and inheritedraw negative controls withsame25patterns. Require allPRchecks, exactorderedparents/fullqualifiedtree andactualcanonicalpublic; retain receipts nextfunctionalbatch. No further modelruns for metadata. Next candidate composition: Snow groundwater CDE clocks/intervals underexistingthermal/water/solute owners, after bounded dependency analysis; AGE drymoment remains separate reproducible blocker.",
+    "next_action": "Bounded interval/drainage composition admittedactualcanonical3baf8a057. Continue explicitSnowcalendar clockcounter defect; allneutral archives/readers stayfrozen. Nooldunaffectedfullperiod replays.",
     "functional_completion": "PARTIAL",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "global_family_and_gap_counts": "UNKNOWN",
@@ -31602,6 +31602,161 @@
     "actual_source_policy_refusals": 112,
     "source_and_archive_bindings": "PASS",
     "historical_successor_tests": "11_PASS",
-    "source_capsule": "groundwater-interval-current-source-v1: originalproducer526592214 appsource744 unchanged"
+    "source_capsule": "groundwater-interval-current-source-v1: originalproducer526592214 appsource744 unchanged",
+    "pr": 1770,
+    "candidate": "c04f5ddd1fc253d27596014e406bbd849765d5c9",
+    "clean_candidate_public": "PASS",
+    "clean_candidate_public_seconds": 230.51986570004374,
+    "source_negative": "1fab9d9ce0f0d4d83a47811955c5915f420bbea5",
+    "inherited_raw_negative": "d4f15a441d97ec1c72ddbd41635f192fd7973fa5",
+    "negative_controls": "BOTH_COMMITTED_CLEAN25_REFUSED_BEFORE_MODELS",
+    "ci_status": "47_TERMINAL_30_SUCCESS_17_SKIPPED_0_FAILURE",
+    "actual_canonical_admitted": true,
+    "actual_canonical": "3baf8a05786af8635e60b4df8518c77ff3f8eeb2",
+    "full_tree": "417ba842ffec17cfdc9b48a34893d123a01026a0",
+    "actual_canonical_public_seconds": 308.8277859999798,
+    "admission_receipt": "GROUNDWATER_CDE_INTERVAL_MERGE_RECEIPT_V1.json"
+  },
+  "groundwater_snow_cde_batch": {
+    "status": "FOUR_PLATFORM_SCIENCE_AND_REGISTERED_CLEAN_PUBLIC_PASS_READY_FOR_CANONICAL_PR",
+    "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
+    "candidate_predecessor": "c04f5ddd1fc253d27596014e406bbd849765d5c9",
+    "gap": "CDE groundwater Snow1 non-daily interval and subdaily/per-step output currently refused by shared bottom1/snow guard; dense daily thermal CDE and complete thermal/groundwater providers already exist",
+    "next_action": "Push final metadata-only postimage, createfunctionalPR tointegration/f-ci-canonical, storeAPI snapshotEV/GROUNDWATER_SNOW_PR_V1.json andattachartifact. Ifsnapshotexistsresumeit, neverduplicatePR. Pinallchecks toexacthead, verifyactualsyntheticparents/tree andexpectedheadmerge. Thenactualcanonicalclean26 public andseparateADMISSION_RAW seal withnextfunctionalbatch. Continue implicitSnow composition; hardAGE/Snow/KSATexclusionspreserved.",
+    "functional_completion": "PARTIAL",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "global_counts": "UNKNOWN",
+    "RC3_changed": false,
+    "runtime": "8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0",
+    "prototype_source": "73b0f990ffac88ee521b7270529927a740fbfd6f",
+    "scope": "Existing explicit SWKIMPL0 Snow1 CDE groundwater interval and per-step/subdaily calendars, hys0/1/2, drainage0/1. Existing Snow+implicit guard retained; SnowAGE originalreaderforbidden.",
+    "actual_local_short_contexts": 14,
+    "actual_local_short_cold_windows": 44,
+    "independent": "GROUNDWATER_SNOW_CORRECTED_CLOCK_FOURTEEN_SHORT_INDEPENDENT_V1.json:14short/44cold PASS currentd894; prior87 evidence remains historical",
+    "actual_full_status": "CURRENT_O0_CENSORED180_AFTER621_ACCEPTED_NOT_QUALIFIED",
+    "full_model_cap_seconds": 180,
+    "full_cap_increased": false,
+    "actual_first_native_refusals": 109,
+    "actual_first_source_policy_refusals": 16,
+    "actual_first_transaction_contexts": 1,
+    "actual_original_refusals": [
+      "groundwater-snow-original-refusal-v1: implicitSnowguard refuses beforecompile; unchangedexcluded scope",
+      "groundwater-snow-explicit-original-refusal-v1: explicit0originalthermaloutputrequiresdensedailycadence beforecompile"
+    ],
+    "cohorts": {
+      "O0": "groundwater-snow-cohort-O0-v3",
+      "O2": "groundwater-snow-cohort-O2-v2"
+    },
+    "fulls": {
+      "O0": "groundwater-snow-full-O0-v2",
+      "O2": "NOT_SELECTED_PENDING_O0_DIAGNOSIS"
+    },
+    "localization": "groundwater-snow-full-localize-O0-v2: originalnativecold364->367 and530->532 byteexact;532->633 accepted101days exactlysamephysicalprefix in17.7748426s; newactualcheckpoint633 restartrefused ERRORSTOP Inconsistent original global print counter (actual1899 expected1900 forNPRINTDAY3). No modelsource modified forlocalization.",
+    "observer_failure": "localizev1 oldfull-outputparser rejects censoredpartialREAL4file afterrealphysical/nativecold364PASS. Originalfailedobserverretained; v2 usesonlyphysical/nativeavailableprefix andexplicitlymakesno useroutput/fullqualificationclaim. No partialoutput repaired.",
+    "clock_evidence": "Actual private IO-only day633 trace: internal37888.99999992369 vs immutableepoch+integerday+tcum37889, lag7.631024345755577e-8 exceeds unchanged dtCrit1e-8; print1899 vs1900. Exact inverse restores original TimeControl; no private checkpoint publication or admission.",
+    "historical_uncorrected_runtime": "87af9af9e86fb27772e91c170c4525f10ffbdd1e",
+    "historical_uncorrected_cohorts": {
+      "O0": "groundwater-snow-cohort-O0-v2",
+      "O2": "groundwater-snow-cohort-O2-v1"
+    },
+    "historical_uncorrected_fulls": {
+      "O0": "groundwater-snow-full-O0-v1",
+      "O2": "groundwater-snow-full-O2-v1"
+    },
+    "clock_correction": "d894 uses immutableepoch+integerday+acceptedlocaltcum instead of repeated large absolute additions; original dtCrit, output predicates, physical equations and mass guards unchanged; reference-defect correction still NOT_QUALIFIED",
+    "current_numerical_observation": "d894 O0/O2 full180 both censored after621accepted. IO-only first minimum-step exhaustion tcum0.7740405396077777 dt1e-6 residual5.46185038e-8. Atmospheric branch before it retains pond3.803234388e-6 with epd0.09159492134, q1=0.06307066324>Emax0.001743200815. Positive h0 deadband not observed. Full current scientific equivalence not established.",
+    "clock_only_runtime": "d894dbb904a2a4924b23869d8bb5c023b798a04c",
+    "current_first_cohort": "groundwater-snow-cohort-O0-v4 only h2-snow-clock-periodic; source8b",
+    "current_short_authority": "PENDING; d894 14short/44cold are historical after new retry/availability source changed",
+    "current_first_full": "groundwater-snow-full-O0-v3: actual1096 days/9exact cold physical/native/useroutput PASS, independent GROUNDWATER_SNOW_RETRY_AVAILABILITY_FULL_O0_INDEPENDENT_V1.json PASS",
+    "current_first_full_model_seconds": 111.27877099998295,
+    "current_first_full_max_water_cm": 1.0377601555866534e-12,
+    "current_first_full_max_solute_mg_cm2": 6.31485597320236e-12,
+    "current_source_recovery": "h2O0sourcev3 actual timecontrol-source correctlyrefuses; observerprefixassertion fails after25 completed controls. v4 onlymissing4 controlsPASS. OriginalFAILED retained; actual_BUILD_sha identical.",
+    "current_cohort_roots": {
+      "O0": [
+        "groundwater-snow-cohort-O0-v4",
+        "groundwater-snow-cohort-O0-v5"
+      ],
+      "O2": [
+        "groundwater-snow-cohort-O2-v3"
+      ]
+    },
+    "current_full_roots": {
+      "O0": "groundwater-snow-full-O0-v3",
+      "O2": "groundwater-snow-full-O2-v3"
+    },
+    "historical_clock_only_short_contexts": 14,
+    "actual_current_short_contexts": 14,
+    "actual_current_short_cold_windows": 44,
+    "current_full_periods": 2,
+    "current_full_cold_windows": 18,
+    "current_native_refusals": 860,
+    "current_compiled_native_refusals": 858,
+    "current_public_receipt_refusals": 2,
+    "current_source_policy_refusals": 172,
+    "current_transaction_contexts": 8,
+    "current_unselected_NoSnow_contexts": 6,
+    "current_unselected_NoSnow_cold_windows": 6,
+    "current_windows_independent": "GROUNDWATER_SNOW_RETRY_AVAILABILITY_FOURTEEN_SHORT_INDEPENDENT_V1.json +FULL_O0/FULL_O2_INDEPENDENT_V1.json +GROUNDWATER_SNOW_WINDOWS_COMPLETE_CONTROLS_INDEPENDENT_V1.json",
+    "current_ubuntu_run": 44708585844,
+    "current_ubuntu_source": "e51133e32fcc7d50ef2a948f09f9b611f262eb8b",
+    "current_ubuntu_job_ids": {
+      "O0": 136194243437,
+      "O2": 136194243854
+    },
+    "current_ubuntu_status": "BOTH_JOBS_SUCCESS_ORIGINAL_ARTIFACTS_DOWNLOADED_INDEPENDENT_AUDIT_PENDING",
+    "current_ubuntu_artifacts": {
+      "O0": {
+        "id": 14615823837,
+        "bytes": 148110537,
+        "sha256": "962d8c418e420691d8c9cec147e874dd2dfd09efe7ee24b65f0a3d593bbd0045"
+      },
+      "O2": {
+        "id": 14616496288,
+        "bytes": 146713105,
+        "sha256": "30e3e3d1fe668a4902043f6881ce783476ac0a36bf2555c302dc64c0b0b830b2"
+      }
+    },
+    "current_windows_control_cohorts": {
+      "O0": "groundwater-snow-control-cohort-O0-v4",
+      "O2": "groundwater-snow-control-cohort-O2-v4"
+    },
+    "current_preservation_roots": {
+      "O0": "groundwater-snow-preservation-O0-v2",
+      "O2": "groundwater-snow-preservation-O2-v2"
+    },
+    "control_recovery": "Oldinterval Snow native helper hardcodeddrainage1; both h2intervaloff campaignsFAILED after47 actual native refusals. Ownnew helper selects actualdrainage0, recovers onlyoriginal ERRORSTOP payloads, preserves oldFAILED receipts, completes missing30 clock+29GW+transaction. All860native/172source controls independentlyPASS. No completed model periods repeated.",
+    "preservation_recovery": "v1 pure identity observer omitted changedGCC/GIC composition-source metadata; emittedFortran alreadybyteexact beforefailure and no35day models run. v2 reuses completedfirstbuilds, permitsonlyexact2knownhelperSHA changes alongsideoriginalallowedsource/SDK changes; all6 actualphysical/native/useroutput postimagesPASS.",
+    "archive_storage": "Original ZIPs above90MiB are stored as exact byteparts belowGit100MiB; fulloriginal ZIP SHA and every part bind reconstruction, no recompression. Original downloads remain protected evidence.",
+    "storage_provenance_note": "O0v4 allocation source-ref predates8b commit; actual compiled BUILD, originalproducer receipt and current sourcecapsule bind8b exactsource. Register-correction rejected existing overlap; original registration left protected, no manual registry edit.",
+    "current_ubuntu_independent": "GROUNDWATER_SNOW_UBUNTU_O0_INDEPENDENT_V1.json and O2: both original archives PASS; fresh pure selector/context checks also PASS on same unchanged extracted bytes",
+    "total_current_qualified_observations": {
+      "full1096": 4,
+      "full_cold_windows": 36,
+      "short35": 28,
+      "short_cold_windows": 88,
+      "native_refusals": 1720,
+      "compiled_native_refusals": 1716,
+      "public_receipt_refusals": 4,
+      "source_policy_refusals": 344,
+      "transaction_contexts": 16,
+      "unchanged_NoSnow_postimages": 6
+    },
+    "raw_seal": "All5 Windows logical ZIPs sealed once; O0science original completed ZIP reused byteexact afterpackagingname shadowfailure. OriginalUbuntu2ZIPs retained losslessly in2parts each. Seven logical raw archives, no member/source/BUILD rebinding or ZIP recompression.",
+    "frozen_readers": "35f85e8efd49d18e7575f71f3d41725012dc7b87",
+    "neutral_qualification": "eeb8720b3f3e821e57e5842deb6f3a52d8e24a21",
+    "registered_owner_candidate": "e8988c0b9",
+    "actual_historical_successor_tests": "11PASS",
+    "clean_candidate_public": "ACTUAL_CLEAN26_DETACHED_e8988c0b9_PASS_NO_MODELS",
+    "source_negative": "fd704fa09a51a7df87616952b06ea136fd18a1d5",
+    "source_negative_seconds": 3.2202992998063564,
+    "inherited_raw_negative": "e8d9f110aced4bdc4863d752dbf3d29843d2a990",
+    "inherited_raw_negative_seconds": 42.72571890009567,
+    "committed_negatives": "BOTH_ACTUAL_CLEAN26_REGISTERED_PUBLIC_REFUSED_BEFORE_MODELS; NEGATIVE_BRANCHES_NEVER_MERGE",
+    "clean_candidate_public_seconds": 549.6713702003472,
+    "clean_candidate_public_stdout_bytes": 52399,
+    "clean_candidate_public_receipt": "GROUNDWATER_SNOW_CLEAN_CANDIDATE_PUBLIC_OWNER_V1.json",
+    "actual_canonical_admitted": false
   }
 }
