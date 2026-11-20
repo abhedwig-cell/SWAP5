@@ -119,3 +119,5 @@ def complete_day(source):
 
 """
     return native.replace(source,'! 2.11 set flags and variables',patch+'! 2.11 set flags and variables')
+
+# Deliberate committed wrong-source admission control; never merge.
