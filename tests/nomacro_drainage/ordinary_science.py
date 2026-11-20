@@ -20,9 +20,10 @@ PREFIX='ORDINARY_IMPLICIT_POND_'
 
 @contextmanager
 def extracted(proof, labels):
-    with tempfile.TemporaryDirectory(prefix='ordinary-raw-') as temporary:
+    temporary_owner=tempfile.TemporaryDirectory(prefix='ordinary-raw-')
+    if os.name=='nt':temporary_owner.name='\\\\?\\'+str(Path(temporary_owner.name).resolve())
+    with temporary_owner as temporary:
         root=Path(temporary)
-        if os.name=='nt':root=Path('\\\\?\\'+str(root.resolve()))
         seen=set()
         for label in labels:
             path=Path(proof)/(PREFIX+label+'_RAW_ARCHIVE.zip');q=read(path.with_suffix('.json'))
@@ -150,7 +151,8 @@ def ubuntu(proof,opt,initial):
             require(digest(result/'BUILD.json')==entry['actual_BUILD_sha256'],'Ubuntu compiled projection differs')
             return result
         matrix=root/'ordinary-matrix';short={}
-        for name in read(matrix/'RESULT.json')['cases']:
+        expected=('water-groundwater','water-history1-head','cde-plate-history') if initial else ('cde-groundwater-history','water-plate','cde-head-history1')
+        for name in expected:
             case=matrix/name;q=read(case/'short/RESULT.json');short[name]=audit_short(case,bundle(q),case/'input')
         require(len(short)==3,'Ubuntu selected short denominator differs')
         name='ordinary-water' if initial else 'ordinary-cde';path=root/name;q=read(path/'RESULT.json')
