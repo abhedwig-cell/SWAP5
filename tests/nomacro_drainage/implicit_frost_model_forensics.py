@@ -3,10 +3,13 @@ import argparse
 import ast
 from decimal import Decimal, localcontext
 import hashlib
+import math
 import json
 from pathlib import Path
+import struct
 import subprocess
 import sys
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
 READERS = 'b285147254b208643423adea88a4fb5f1158b464'
@@ -69,6 +72,26 @@ def audit(profile, reference):
     project = experimental_project.load(inputs, original_output=True,
                                        time_step_policy='original-adaptive-event-closure-v1')
     validate_source(build, project, meta['identity'], reference)
+    # Independently decode the actual new private tail; do not call its
+    # producer's decoder or reconstruct values from physical outputs.
+    expected = [4, project.nodes, int(project.solute), 1, 2, 6, 1, 0]
+    root_records = {}
+    for line in (profile/'trajectory/original/donor.stdout').read_text(encoding='utf-8').splitlines():
+        if line.startswith('HYBRID_FROST_ROOT_NATIVE '):
+            values = tuple(map(float, line.split()[1:])); assert len(values) == 3
+            root_records.setdefault(values[0], set()).add(values[1:])
+    for own in q['own']:
+        end = own['end']; clock = project.start_clock + end
+        for directory in (profile/'trajectory', profile/('own-'+str(own['start']))):
+            with zipfile.ZipFile(directory/f'accepted-column-1-day-{end}.zip') as archive:
+                native = archive.read('macro.bin')
+            header = struct.unpack('<16i', native[-96:-32])
+            rates = struct.unpack('<4d', native[-32:])
+            assert list(header[:8]) == expected and list(header[8:]) == expected
+            assert rates[:2] == rates[2:] and all(map(math.isfinite, rates))
+            assert root_records.get(clock) == {rates[:2]}, 'Native root values differ from actual writer observations'
+    result['root_native_endpoints'] = len(q['own'])
+    result['actual_two_rate_root_native_header_witness_and_writer_values_verified'] = True
     return dict(**result, implicit_frost_source_parents_verified=True,
         frozen_scientific_reader=READERS, frozen_reader_sha256=hashlib.sha256(raw).hexdigest(),
         inherited_scientific_body_executed=True, changed_reader_constants=selector.count,
