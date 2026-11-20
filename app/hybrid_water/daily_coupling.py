@@ -245,8 +245,17 @@ def validate_bundle(bundle, reference, project):
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source
     expected_event=event_metadata((reference/'build/swap-selected/timecontrol.f90').read_bytes()) if project.time_step_policy==EVENT_POLICY else None
     if identity.get('time_event_closure')!=expected_event:raise ValueError('Foreign original TimeControl event-closure policy')
-    if expected_event and (bundle/'timecontrol.f90').read_bytes()!=event_source((reference/'build/swap-selected/timecontrol.f90').read_bytes()):
-        raise ValueError('Foreign actual corrected TimeControl source')
+    if expected_event:
+        expected_time=event_source((reference/'build/swap-selected/timecontrol.f90').read_bytes())
+        if implicit_frost:
+            from implicit_conductivity_retry import time_source as retry_time
+            from implicit_pond_event import time_source as implicit_event_time
+            expected_time=implicit_event_time(retry_time(expected_time.decode('cp1252').replace('\r\n','\n')))
+            actual_time=(bundle/'timecontrol.f90').read_text(encoding='cp1252')
+        else:
+            actual_time=(bundle/'timecontrol.f90').read_bytes()
+        if actual_time!=expected_time:
+            raise ValueError('Foreign actual corrected TimeControl source')
     if expected_event and (bundle/'terminal_water_receipt.f90').read_bytes()!=(h.APP/'terminal_water_receipt.f90').read_bytes():
         raise ValueError('Foreign actual terminal water receipt source')
     expected_frost=None
