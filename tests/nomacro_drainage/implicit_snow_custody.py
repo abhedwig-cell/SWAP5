@@ -11,8 +11,8 @@ from ordinary_pond_evidence import read,digest,require
 ROOT=Path(__file__).resolve().parents[2]
 
 
-def audit(root,build_paths=None):
-    root=Path(root);source=root/'source';cap=read(source/'RESULT.json');archive=source/cap['archive']
+def audit(root,build_paths=None,source_root=None):
+    root=Path(root);source=Path(source_root or root/'source');cap=read(source/'RESULT.json');archive=source/cap['archive']
     require(digest(archive)==cap['sha256'],'Actual implicit Snow source archive changed')
     tree={line.split('\t',1)[1]:line.split('\t',1)[0].split()[2] for line in
         subprocess.check_output(['git','ls-tree','-r',cap['producer_head']],cwd=ROOT,text=True).splitlines()}
@@ -73,7 +73,7 @@ def audit(root,build_paths=None):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('root',type=Path);p.add_argument('--builds',nargs='+',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
-    result=audit(a.root,a.builds)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('root',type=Path);p.add_argument('--builds',nargs='+',type=Path);p.add_argument('--source',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    result=audit(a.root,a.builds,a.source)
     with a.output.open('x',encoding='utf-8') as f:json.dump(result,f,indent=2);f.write('\n')
     print(result['status'],len(result['actual_builds']))
