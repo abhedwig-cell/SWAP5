@@ -80,7 +80,7 @@ branch occurs with remaining pond water and unbounded wet-pond evaporation;
 the first exhausted DTMIN trial has a5.46e-8cm residual. The positive-head
 deadband is not observed in that probe. None of these probes admits Snow.
 
-The next proposed correction composes the existing qualified original rollback,
+The correction at `8b8536033f` composes the existing qualified original rollback,
 pond-depletion event and pond-evaporation availability providers with this
 explicit Snow route. Their Fortran providers stay literal. The existing
 availability procedure bounds physical evaporation by available water and
@@ -92,3 +92,22 @@ HeadCalc, TimeControl and top-boundary inverse checks retain their original
 source identities. This reference correction requires fresh affected-surface
 qualification; prior short successes are historical after it is activated.
 No tolerance, mass limit, original equation or implicit-Snow admission changes.
+
+Actual Windows and Ubuntu O0/O2 observations now pass four1096-day periods,
+36 complete cold windows,28 short contexts and88 short cold windows. Independent
+observers confirm1720 native refusals (1716 compiled and4 public receipt),
+344 source/policy refusals and16 transaction contexts. Six current NoSnow
+postimages preserve generated Fortran, input, physical rows, complete native
+checkpoints and original user records exactly. Ubuntu run44708585844 at
+`e51133e32fcc7d50ef2a948f09f9b611f262eb8b` succeeds for both options; its
+original unrepacked artifacts independently pass complete source/provider,
+compiled and scientific custody. The application surface remains literal8b.
+
+Seven logical raw ZIP archives preserve failed/censored prototypes, private
+IO-only probes, incomplete control observers and the current successful runs.
+Large original ZIPs are stored as exact90MiB byteparts, with individual and
+complete ZIP hashes; reconstruction does not recompress the artifacts. The
+existing parent archive attributes stay unchanged. Frozen readers, neutral
+qualification, registered public source/raw verification and actual canonical
+admission remain separate gates. Canonical is still `3baf8a057`; this paragraph
+does not admit the Snow successor, implicit Snow, AGE or whole historical scope.

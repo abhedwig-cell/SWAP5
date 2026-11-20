@@ -14,7 +14,7 @@ import groundwater_snow_science as science
 PARENT='3baf8a05786af8635e60b4df8518c77ff3f8eeb2'
 RUNTIME='8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0'
 NUMERIC=RUNTIME
-READERS='READER_FREEZE_PENDING'
+READERS='35f85e8efd49d18e7575f71f3d41725012dc7b87'
 SEALED='NEUTRAL_SEAL_PENDING'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 QUAL='integration/f-ci/nomacro-complete01/GROUNDWATER_SNOW_CDE_QUALIFICATION.json'
