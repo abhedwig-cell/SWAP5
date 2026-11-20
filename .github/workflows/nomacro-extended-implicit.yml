@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       groundwater_controls_only:
-        description: Recover only missing h0 controls from original unchanged portable run 44682712004
+        description: Recover missing controls and current postimages from original unchanged portable run 44682712004
         type: boolean
         default: false
       groundwater_clock:
@@ -143,11 +143,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: abhedwig-cell/SWAP5
           run-id: 44682712004
-      - name: Recover only missing actual h0 groundwater controls and transactions
+      - name: Recover missing actual groundwater controls and transactions
         if: ${{ inputs.groundwater_controls_only }}
         run: |
           python3 -B tests/nomacro_drainage/groundwater_clock_origin.py --origin "$RUNNER_TEMP/groundwater-origin" --runner-root "$RUNNER_TEMP" --output "$RUNNER_TEMP/proof-current"
-          python3 -B tests/nomacro_drainage/groundwater_clock_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/groundwater-clock/h0-step-periodic" --reuse-clock-controls "$RUNNER_TEMP/proof/groundwater-clock-controls/h0-step-periodic" --output "$RUNNER_TEMP/proof-current/h0-controls"
+          for name in h2-periodic h1-step-explicit h0-step-periodic; do
+            python3 -B tests/nomacro_drainage/groundwater_clock_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/groundwater-clock/$name" --output "$RUNNER_TEMP/proof-current/controls/$name"
+          done
           python3 -B tests/nomacro_drainage/groundwater_clock_postimage.py --reference-work "$RUNNER_TEMP/provider" --cohort "$RUNNER_TEMP/groundwater-origin/groundwater-clock" --output "$RUNNER_TEMP/proof-current/postimages"
           for name in h2-periodic h0-step-periodic h1-explicit-monthly; do
             python3 -B tests/nomacro_drainage/groundwater_clock_source_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/groundwater-clock/$name" --output "$RUNNER_TEMP/proof-current/source-controls/$name"

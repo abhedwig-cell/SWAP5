@@ -15,7 +15,7 @@ m=original.m
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','profile','output'):p.add_argument('--'+key,type=Path,required=True)
-    a=p.parse_args();a.output.mkdir();q=json.loads((a.profile/'RESULT.json').read_text())
+    a=p.parse_args();a.output.mkdir(parents=True);q=json.loads((a.profile/'RESULT.json').read_text())
     bundle=Path(q['build_root']);project=m.e.load(q['input_root'],original_output=True)
     meta,_=m.validate_bundle(bundle,a.reference_work,project);before=m.sha(bundle/'BUILD.json')
     result=dict(status='RUNNING',actual_BUILD_sha256=before,refusals=[],model_executions=0,compilations=0)
