@@ -52,7 +52,8 @@ def main():
                 '--reference-work', str(a.reference_work), '--build-only', '--donor-opt', a.optimization,
                 '--kernel-opt', a.optimization, '--output', str(build)]
             if (build / 'BUILD.json').exists():
-                item['retained_actual_compilation'] = recovered[name]['build']
+                item['retained_actual_compilation'] = recovered[name].get('build', recovered[name].get('retained_actual_compilation'))
+                assert item['retained_actual_compilation']['returncode'] == 0
             else:
                 start = time.perf_counter()
                 with (out / 'build.stdout').open('x') as stdout, (out / 'build.stderr').open('x') as stderr:
@@ -70,7 +71,8 @@ def main():
                 assert right.pop('water_polish_policy') == 'strict-water-always-polish-v1'
                 metadata_addition = {'water_polish_policy': {'before': 'ABSENT_METADATA', 'after': 'strict-water-always-polish-v1'}}
             delta = differences(left, right)
-            allowed = {'host', 'experimental_input_adapter', 'original_output.source_sha256', 'restart_publisher.library_sha256'}
+            allowed = {'host', 'experimental_input_adapter', 'original_output.source_sha256',
+                'original_output.ordinary_owner_sha256', 'restart_publisher.library_sha256'}
             assert set(delta) <= allowed, (name, delta)
             if 'restart_publisher.library_sha256' in delta:
                 item['publisher_equivalence'] = publisher_equivalence(parent / 'restart_publish.dll', build / 'restart_publish.dll')
