@@ -9,7 +9,7 @@ from ordinary_pond_evidence import read,digest,require
 ROOT=Path(__file__).resolve().parents[2]
 
 
-def audit(root):
+def audit(root,expected_builds=6):
     root=Path(root);cap=read(root/'source/RESULT.json');archive=root/'source'/cap['archive']
     require(digest(archive)==cap['sha256'],'Actual clock source capsule changed')
     tree={s.split('\t',1)[1]:s.split('\t',1)[0].split()[2] for s in subprocess.check_output(['git','ls-tree','-r',cap['producer_head']],cwd=ROOT,text=True).splitlines()}
@@ -42,7 +42,7 @@ def audit(root):
             for field,name in [('source_sha256','ordinary_implicit_pond_switch.py'),('renderer_sha256','extended_implicit_pond_switch.py'),('pond_tangent_renderer_sha256','ordinary_implicit_pond_tangent.py'),('inherited_chain_rule_renderer_sha256','extended_implicit_pond.py')]:
                 require(policy[field]==cap['members']['app/hybrid_water/'+name]['sha256'],'Actual composed ordinary numerical source differs')
         builds.append(file.relative_to(root).as_posix())
-    require(len(builds)==6,'Actual original portable compiled denominator differs')
+    require(len(builds)==expected_builds,'Actual original portable compiled denominator differs')
     return dict(status='ACTUAL_GROUNDWATER_CLOCK_GIT_SOURCE_PROVIDER_COMPILED_CUSTODY_PASS',
                 producer_source=cap['producer_head'],source_members=len(present),actual_builds=builds,
                 source_archive_sha256=cap['sha256'])
