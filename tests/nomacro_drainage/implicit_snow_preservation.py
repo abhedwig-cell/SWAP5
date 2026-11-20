@@ -18,6 +18,7 @@ ALLOWED={'experimental_input_adapter','implicit_conductivity.source_sha256',
     'implicit_groundwater_trial.source_sha256','implicit_groundwater_trial.original_projection_owner_sha256',
     'ordinary_implicit_pond_switch.source_sha256','restart_publisher.library_sha256',
     'original_output.source_sha256','original_output.predecessor_owner_sha256',
+    'original_output.groundwater_trial_provider_sha256',
     'original_output.groundwater_snow_composition_sha256'}
 
 
