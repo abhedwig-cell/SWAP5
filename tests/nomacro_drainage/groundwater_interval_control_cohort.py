@@ -16,6 +16,7 @@ def main():
         parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--optimization',choices=('O0','O2'),required=True)
     parser.add_argument('--reuse-existing',action='store_true')
+    parser.add_argument('--recover-failed-source',action='store_true')
     args=parser.parse_args();args.output.mkdir()
     result=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                 native={},source_controls={},repeated_model_periods=0,fresh_compilations=0)
@@ -28,6 +29,9 @@ def main():
                 target=args.evidence/f'groundwater-interval-{kind}-{label}-{args.optimization}-v1'
                 expected=('ACTUAL_GROUNDWATER_CDE_INTERVAL_DRAINAGE_COMPILED_NATIVE_TRANSACTION_PASS' if group=='native'
                           else 'ACTUAL_GROUNDWATER_INTERVAL_DRAINAGE_SOURCE_POLICY_REFUSALS_PASS')
+                if group=='source_controls' and args.recover_failed_source and target.exists():
+                    failed=json.loads((target/'RESULT.json').read_text())
+                    if failed['status']=='FAILED':target=target.with_name(target.name[:-2]+'v2')
                 if target.exists():
                     assert args.reuse_existing and json.loads((target/'RESULT.json').read_text())['status']==expected
                     reused=True

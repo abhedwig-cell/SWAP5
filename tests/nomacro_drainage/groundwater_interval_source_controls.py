@@ -47,6 +47,8 @@ def main():
                 path.write_text(text,encoding='cp1252')
                 for identity in (bad['identity'],bad['binding']['build']):identity['donor_generated'][name]=m.sha(path)
                 expected=('Foreign actual groundwater CDE',) if name=='headcalc.f90' else ('provider','source')
+                if name=='headcalc.f90' and is_interval and meta['identity'].get('ordinary_implicit_pond_switch'):
+                    expected=('Foreign actual ordinary implicit coupled HeadCalc provider',)
             (target/'BUILD.json').write_text(json.dumps(bad,indent=2)+'\n')
             try:m.validate_bundle(target,a.reference_work,project)
             except ValueError as error:
