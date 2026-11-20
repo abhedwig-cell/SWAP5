@@ -13,7 +13,8 @@ def selection(text, selectors, boundary):
     required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=0, SWFROST=0,
                     SWHEA=1, SWCALT=2, SWMETDETAIL=0)
     if (selectors['SWKIMPL'] != 1 or any(selectors.get(k) != v for k, v in required.items())
-            or selectors.get('SWBR', 0) != 0 or boundary['SWBOTB'] not in (1, 5, 8)):
+            or selectors.get('SWBR', 0) != 0 or not (boundary['SWBOTB'] in (1,5,8)
+                or boundary['SWBOTB']==6 and selectors.get('SWDRA') in (1,2))):
         raise ValueError('Original implicit conductivity requires bounded analytical daily no-snow/no-frost/no-aquifer inputs')
     active = '\n'.join(line.split('!', 1)[0].strip() for line in text.splitlines()
                        if line.strip() and not line.lstrip().startswith('*'))

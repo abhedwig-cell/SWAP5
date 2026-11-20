@@ -45,7 +45,8 @@ def qualification():
 @lru_cache(maxsize=1)
 def guard_previous_source():
     qualification()
-    require(not git('diff',RUNTIME,'--',*SURFACES),'Actual hydraulic-history compiler source differs from qualified runtime')
+    import implicit_verify as implicit
+    implicit.guard_previous_source()
     expected=['app/hybrid_water/'+name for name in ('experimental_project.py','extended_drainage.py','extended_output_receipt.py','original_output.py','original_output_hysteresis.py')]
     require(git('diff','--name-only',BASE,RUNTIME,'--',*SURFACES).decode().splitlines()==expected,'Unexpected history physical compiler dependency changed')
     path='app/hybrid_water/experimental_project.py'
@@ -102,6 +103,8 @@ def scientific():
 
 
 def verify():
+    import implicit_verify as implicit
+    return implicit.verify()
     source();current=scientific();calendar=previous.scientific();drainage=previous.preceding.scientific()
     import weather_surface_verify as weather
     q=json.loads((PROOF/'WEATHER_TERMINAL_QUALIFICATION.json').read_bytes());weather.validate(q)

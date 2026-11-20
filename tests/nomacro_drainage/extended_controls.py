@@ -103,6 +103,21 @@ def history_attacks(raw,project):
     return result
 
 
+def implicit_attacks(raw,project):
+    from extended_drainage import selection,size
+    selected=selection(project)
+    if not selected.get('swkimpl'):return {}
+    hys=selected.get('swhyst',0)
+    result={'implicit-explicit-codec':((b'S5EDH001' if hys else b'S5EDO001')+raw[8:],True),
+            'implicit-other-history-codec':((b'S5EDK001' if hys else b'S5EHK001')+raw[8:],True)}
+    if hys:
+        header=struct.pack('<5i',1,project.nodes,0,hys,int(project.solute));prefix=raw[:-size(project)]
+        first=prefix.index(header+header);second=prefix.index(header+header,first+40);wire=bytearray(raw)
+        for at in (first+12,first+32,second+12,second+32):struct.pack_into('<i',wire,at,3-hys)
+        result['implicit-other-supported-history']=(bytes(wire),True)
+    return result
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work','profile-root','output'):p.add_argument('--'+name,type=Path,required=True)
@@ -143,6 +158,7 @@ def main():
         variants=attacks(members['macro.bin'])
         if a.original_output:variants.update(calendar_attacks(members['macro.bin'],project))
         if a.original_output:variants.update(history_attacks(members['macro.bin'],project))
+        if a.original_output:variants.update(implicit_attacks(members['macro.bin'],project))
         if a.positive_only:variants={}
         public_done={v['label'] for v in q['public_refusals']};native_done={v['label'] for v in q['native_refusals']}
         for label,(raw,compiled) in variants.items():
