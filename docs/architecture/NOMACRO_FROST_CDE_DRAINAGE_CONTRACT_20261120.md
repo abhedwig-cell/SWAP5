@@ -11,7 +11,7 @@ That invalid combination remains refused. Active macropores remain excluded.
 
 The original production seam to assess is
 `MOD_frost::FrozenCond(tsoil,tetop)` followed by
-`MOD_frost::FrozenBounds()`. The latter reads the actual committed module
+`MOD_frost::FrozenBounds()`. The latter reads the actual module
 state, computes partial-frost hydraulic reductions and, for `SWDIVD1`, calls
 the original `divdra(ksatcp,ztop)` with `ztop=min(gwl,zfrostbot)`.
 The original CDE procedure then consumes the resulting nodal drainage sinks.
