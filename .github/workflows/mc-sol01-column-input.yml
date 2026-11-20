@@ -75,6 +75,7 @@ jobs:
             /integration/f-ci/nomacro-complete01/GROUNDWATER_CDE_CLOCK_*
             /integration/f-ci/nomacro-complete01/GROUNDWATER_CDE_INTERVAL_*
             /integration/f-ci/nomacro-complete01/GROUNDWATER_SNOW_CDE_*
+            /integration/f-ci/nomacro-complete01/IMPLICIT_SNOW_COMPOSITION_*
       - name: Build both optimizations and run actual file/restart qualification
         run: |
           set -euo pipefail
