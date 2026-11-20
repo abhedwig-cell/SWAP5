@@ -108,6 +108,12 @@ def validate_source(bundle,project,identity,reference):
     if len(dispatch)!=1:raise ValueError('Changed original native dispatch')
     anchor=dispatch[0]+'if (restoring) then'
     expected=state.replace(expected,anchor,dispatch[0]+'call assert_no_implicit_pond_event()\n'+anchor)
+    if not selected['swkimpl']:
+        # The explicit retry owner runs before the native root owner. The
+        # implicit retry owner runs after it; retain each actual import order.
+        root='      use hybrid_snow_undrained_root_state,only:snow_undrained_root_checkpoint\n'
+        event='      use hybrid_implicit_pond_event_state,only:assert_no_implicit_pond_event\n'
+        expected=state.replace(expected,root+event,event+root)
     body=actual('macropore.f90').split(begin,1)[1].split(end,1)[0]
     if body!=expected:raise ValueError('Foreign complete original undrained Snow checkpoint procedure')
     raw=(originals/'integral.f90').read_text(encoding='cp1252');stock=(originals/'watstor.f90').read_text(encoding='cp1252')
