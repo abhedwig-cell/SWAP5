@@ -41,7 +41,9 @@ def main():
             if path.suffix.lower() in ('.o', '.mod', '.smod', '.f90', '.dll', '.so'):
                 shutil.copyfile(path, build/path.name)
         top = build/'boundtop.f90'
-        text = tangent_top(top.read_text(encoding='cp1252'))
+        text = top.read_text(encoding='cp1252')
+        if 'ordinary_implicit_top_jacobian' not in text:
+            text = tangent_top(text)
         visibility='public :: pondrunoff, q0, FlRunoff, ftoph, hsurf'
         assert text.count(visibility)==1
         top.write_text(text.replace(visibility,visibility+', h0max, k1max',1),encoding='cp1252')
@@ -65,17 +67,20 @@ def main():
         run = subprocess.run([str(exe)], cwd=build, capture_output=True, text=True, timeout=30)
         (out/'actual.stdout').write_text(run.stdout)
         (out/'actual.stderr').write_text(run.stderr)
-        run.check_returncode()
         for path in (top, driver, exe):
             shutil.copyfile(path, out/path.name)
         results[variant] = dict(actual_source_sha256=sha(top), driver_sha256=sha(driver),
                                 executable_sha256=sha(exe), actual_cases=len(run.stdout.splitlines()),
+                                actual_returncode=run.returncode,
                                 original_BUILD_sha256=sha(original/'BUILD.json'),
                                 compiled_objects={p.name: sha(p) for p in actual},
                                 ttutil_sha256=sha(ttutil/'libttutil.a'))
+    passed = run.returncode == 0 and 'ACTUAL_ORIGINAL_ORDINARY_POND_CHAIN_RULE_PASS 40' in run.stdout
     (args.output/'RESULT.json').write_text(json.dumps(dict(
-        status='ACTUAL_COMPLETE_ORIGINAL_ORDINARY_POND_TANGENT_COMPONENT',
+        status='ACTUAL_COMPLETE_ORIGINAL_ORDINARY_POND_TANGENT_COMPONENT' if passed else 'FAILED',
         qualification=False, variants=results), indent=2))
+    run.check_returncode()
+    assert passed
     print('ACTUAL_COMPLETE_ORIGINAL_ORDINARY_POND_TANGENT_COMPONENT')
 
 
