@@ -311,7 +311,8 @@ def validate_bundle(bundle, reference, project):
     from implicit_groundwater_state import native_metadata as groundwater_native_metadata,enabled as implicit_groundwater,state_source as implicit_state_source
     if identity.get('groundwater_native_state')!=groundwater_native_metadata(project,h.sha,h.APP):
         raise ValueError('Foreign prescribed groundwater native carry policy')
-    if implicit_groundwater(project) and (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project):
+    if (implicit_groundwater(project) and not (identity.get('original_output') or {}).get('groundwater_snow_water_output') and
+            (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project)):
         raise ValueError('Foreign actual implicit groundwater native provider')
     if lower_boundary==1:
         state_policy=identity['groundwater_native_state']
@@ -322,6 +323,9 @@ def validate_bundle(bundle, reference, project):
         elif state_policy.get('provider_filename')=='implicit_groundwater_native_state.f90':
             if (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project):
                 raise ValueError('Foreign actual implicit groundwater native provider')
+        elif state_policy.get('provider_filename')=='snow_water_groundwater_native_state.f90':
+            if (bundle/state_policy['provider_filename']).read_text(encoding='cp1252')!=implicit_state_source(project):
+                raise ValueError('Foreign actual water Snow groundwater native provider')
         else:
             state_name='groundwater_history_native_state.f90' if expected_lower and state_policy['domain_bytes']==104 else 'groundwater_native_state.f90'
             if (bundle/state_name).read_bytes()!=(h.APP/state_name).read_bytes():

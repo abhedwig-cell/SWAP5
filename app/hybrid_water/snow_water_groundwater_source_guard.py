@@ -1,13 +1,38 @@
 """Read-only source closure for the actual water Snow groundwater composition."""
 import hashlib
+import ast
+import inspect
+import re
 from pathlib import Path
 
 from snow_water_groundwater import selection,codec
 import snow_water_groundwater_build as build
 import snow_water_groundwater_state as native
 
-EXPLICIT_HEAD='241d188e6c71b7a55bc02768cfc76bb554617b1c7ffc953d73d299a07c911e1f'
+# Complete LF body from the admitted explicit water groundwater archive;
+# its original Windows CRLF byte hash is241d188e6c71b7a55bc02768cfc76bb554617b1c7ffc953d73d299a07c911e1f.
+EXPLICIT_HEAD='adce2758bbc73472579278696924b93188c2d6d6ec02c54f7ec297b23a35896a'
 IMPLICIT_HEAD='a13d2e813001ff1d366cca902c8384a4347e00627a4996fb5ed5f7a612fde4f9'
+
+
+def checkpoint_parent(reference,selected,project):
+    # Execute only the original pure prefix ending before its first write.
+    # The original compiler renderer is unchanged; no files are generated here.
+    import donor_sources
+    function=ast.parse(inspect.getsource(donor_sources.render_checkpoint)).body[0]
+    writes=[i for i,n in enumerate(function.body) if isinstance(n,ast.Expr) and isinstance(n.value,ast.Call) and
+        isinstance(n.value.func,ast.Attribute) and n.value.func.attr=='write_text']
+    if not writes:raise ValueError('Changed original native checkpoint renderer')
+    stop=writes[0];function.name='read_only_original_native'
+    function.body=function.body[:stop]+[ast.Return(value=ast.Name(id='macro',ctx=ast.Load()))]
+    module=ast.fix_missing_locations(ast.Module(body=[function],type_ignores=[]));namespace=dict(vars(donor_sources))
+    exec(compile(module,'<unchanged-original-native-pure-prefix>','exec'),namespace)
+    text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')
+    pond=re.findall(r'(?mi)^[ \t]*SWPONDMX[ \t]*=[ \t]*(\d+)',text)
+    if len(pond)!=1:raise ValueError('Ambiguous water Snow pond history domain')
+    return namespace[function.name](Path(reference)/'build',None,None,runtime=True,nonmacro=True,
+        hydraulic_history=bool(selected['swhyst']),thermal_history=True,management_state=True,
+        plant_et_state=selected['et']==1,micro_lookup_state=True,scheduled_pond_history=int(pond[0])==1)
 
 
 def validate_source(bundle,project,identity,reference):
@@ -55,6 +80,16 @@ def validate_source(bundle,project,identity,reference):
             f'call snow_water_groundwater_root_checkpoint(unit,{restoring},clock)'):
             if body.count(token)!=1:raise ValueError('Foreign actual water Snow native carry placement')
     originals=Path(reference)/'build/swap-selected'
+    expected=build.macro(checkpoint_parent(reference,selected,project),selected)
+    begin='    subroutine hybrid_macro_checkpoint(';end='    end subroutine hybrid_macro_checkpoint'
+    expected=expected.split(begin,1)[1].split(end,1)[0]
+    anchor='      use MOD_grid, only: numnod'
+    expected=native.replace(expected,anchor,'      use hybrid_implicit_pond_event_state,only:assert_no_implicit_pond_event\n'+anchor)
+    dispatch=re.findall(r'(?m)^([ \t]*)if \(restoring\) then$',expected)
+    if len(dispatch)!=1:raise ValueError('Changed original native dispatch')
+    anchor=dispatch[0]+'if (restoring) then'
+    expected=native.replace(expected,anchor,dispatch[0]+'call assert_no_implicit_pond_event()\n'+anchor)
+    if body!=expected:raise ValueError('Foreign complete original water Snow groundwater checkpoint procedure')
     equal('integral.f90',build.integral((originals/'integral.f90').read_text(encoding='cp1252'),
         (originals/'watstor.f90').read_text(encoding='cp1252'),selected))
     equal('hybrid_age_output_state.f90',build.clock.state_source(project))
