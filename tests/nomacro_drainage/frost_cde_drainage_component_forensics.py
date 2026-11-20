@@ -14,14 +14,17 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work', 'evidence', 'output'):
         p.add_argument('--' + name, type=Path, required=True)
+    p.add_argument('--optimization', choices=('O0', 'O2'))
+    p.add_argument('--component', type=Path)
     args = p.parse_args(); assert not args.output.exists()
+    assert args.component is None or args.optimization is not None
     sha = lambda raw: hashlib.sha256(raw).hexdigest()
     ref = args.reference_work / 'build'
     original = (ref / 'swap-selected/solute.f90').read_text(encoding='cp1252')
     divdra = (ref / 'swap-selected/divdra.f90').read_text(encoding='cp1252')
     observations = []
-    for opt in ('O0', 'O2'):
-        folder = args.evidence / ('frost-cde-drainage-cde-' + opt + '-v2')
+    for opt in ((args.optimization,) if args.optimization else ('O0', 'O2')):
+        folder = args.component or args.evidence / ('frost-cde-drainage-cde-' + opt + '-v2')
         raw = (folder / 'RESULT.json').read_bytes(); q = json.loads(raw)
         assert q['status'] == 'ACTUAL_FROST_CORRECTED_DIVDRA_CDE_TASK2_252_CASES_PASS_NOT_MODEL_QUALIFIED'
         assert q['model_periods'] == 0 and not q['canonical_admission']
@@ -52,7 +55,9 @@ def main():
             oldobjects = [Path(v).name for v in link if Path(v).parent == ref / 'swap-obj']
             expected = {v['name'] for v in q['original_object_closure']} - {'frozencond.o', 'divdra.o', 'solute.o'}
             assert set(oldobjects) == expected and len(oldobjects) == len(expected)
-            exe = folder / (mode + '-actual-frost-cde.exe')
+            executables = list(folder.glob(mode + '-actual-frost-cde*'))
+            assert len(executables) == 1
+            exe = executables[0]
             assert sha(exe.read_bytes()) == execution['executable_sha256']
             assert execution['returncode'] == 0 and not execution['stderr']
             rows = [s.split() for s in execution['stdout'].splitlines() if s.startswith('ACTUAL_FROST_CDE_TASK2 ')]
