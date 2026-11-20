@@ -8,7 +8,7 @@ from pathlib import Path, PurePosixPath
 import zipfile
 
 from frost_cde_drainage_model_forensics import audit as model
-from frost_cde_drainage_portable_forensics import binary
+from frost_cde_drainage_portable_forensics import binary, audit as portable
 from frost_cde_drainage_sealed_components import audit as components
 
 SHA = lambda raw: hashlib.sha256(raw).hexdigest()
@@ -158,3 +158,20 @@ def windows(proof):
             actual_short_contexts=4, actual_short_cold_windows=12, actual_compiled_refusals=166,
             actual_source_refusals=20, actual_descriptor_refusals=26, actual_transaction_contexts=4,
             actual_unselected_contexts=12, actual_unselected_cold_windows=12, model_executions=0, compiler_executions=0)
+
+
+def ubuntu(proof, optimization):
+    proof = Path(proof)
+    records = [json.loads((proof / f'FROST_DRAINAGE_UBUNTU_{role}_{optimization}_RAW_ARCHIVE.json').read_text())
+               for role in ('ORIGINAL', 'FOLLOWUPPASS')]
+    paths = [proof / record['archive'] for record in records]
+    for path, record in zip(paths, records):
+        assert path.stat().st_size == record['bytes'] and SHA(path.read_bytes()) == record['sha256']
+    with zipfile.ZipFile(paths[0]) as original, zipfile.ZipFile(paths[1]) as followup:
+        result = portable(original, followup, optimization)
+    return dict(status='SEALED_ACTUAL_FROST_UBUNTU_SOURCE_COMPONENT_MODELS_CONTROLS_PASS',
+        observations=result, actual_full_periods=2, actual_full_cold_windows=14,
+        actual_short_contexts=2, actual_short_cold_windows=6, actual_compiled_refusals=83,
+        actual_source_refusals=10, actual_descriptor_refusals=13, actual_transaction_contexts=2,
+        actual_unselected_contexts=0, actual_unselected_cold_windows=0,
+        model_executions=0, compiler_executions=0)
