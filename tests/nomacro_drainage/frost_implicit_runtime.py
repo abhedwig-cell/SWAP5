@@ -1,6 +1,7 @@
 """Run the unchanged Frost composition harness with explicit implicit inputs."""
 import argparse
 from pathlib import Path
+import re
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -21,7 +22,23 @@ def main():
     def fixture(destination, case, precision):
         original_fixture(destination, case, precision)
         path = destination/'swap.swp'
-        path.write_text(existing.assignment(path.read_text(encoding='cp1252'), 'SWKIMPL', 1), encoding='cp1252')
+        text = path.read_text(encoding='cp1252')
+        for key, value in dict(SWKIMPL=1, MAXIT=100, MAXBACKTR=10).items():
+            text = existing.assignment(text, key, value)
+
+        def fitted_ksat(match):
+            names = match[1].split(); rows = []
+            for line in match[2].splitlines():
+                fields = line.split()
+                assert len(fields) == len(names)
+                fields[names.index('KSATEXM')] = fields[names.index('KSATFIT')]
+                rows.append(' '.join(fields))
+            return match[1] + '\n'.join(rows) + '\n* End of table'
+
+        text, count = re.subn(r'(?mi)^([ \t]*ORES[ \t]+OSAT[^\r\n]*\n)(.*?)^\* End of table',
+                             fitted_ksat, text, count=1, flags=re.S)
+        assert count == 1, 'Missing original named fitted-Ksat parameter table'
+        path.write_text(text, encoding='cp1252')
 
     existing.thermal.fixture = fixture
     existing.main()
