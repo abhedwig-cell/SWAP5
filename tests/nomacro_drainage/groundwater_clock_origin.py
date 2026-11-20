@@ -24,7 +24,17 @@ def main():
     sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
     cap=read(a.origin/'source/RESULT.json')
     assert cap['producer_head']==ORIGIN
-    assert not subprocess.check_output(['git','diff',ORIGIN,'--','app','src','tools/solute','tools/vq','reference'],cwd=ROOT)
+    git=lambda *args:subprocess.check_output(['git',*args],cwd=ROOT)
+    changed=git('diff','--name-only',ORIGIN,'--','app','src','tools/solute','tools/vq','reference').decode().splitlines()
+    assert changed==['app/hybrid_water/daily_coupling.py','app/hybrid_water/groundwater_cde_clock_source_guard.py']
+    path='app/hybrid_water/daily_coupling.py';now=(ROOT/path).read_bytes().replace(b'\r\n',b'\n')
+    hook=b"    if ((identity.get('original_output') or {}).get('groundwater_cde_clock') and\n            not identity.get('ordinary_implicit_pond_switch')):\n        from groundwater_cde_clock_source_guard import validate as validate_groundwater_clock_source\n        validate_groundwater_clock_source(bundle,identity)\n"
+    assert now.count(hook)==1 and now.replace(hook,b'',1)==git('show',ORIGIN+':'+path)
+    path='app/hybrid_water/groundwater_cde_clock_source_guard.py';now=(ROOT/path).read_bytes().replace(b'\r\n',b'\n')
+    extra=b"EXPLICIT_PARENT_HEAD='becdfa41163769b4009f5ad596e85af5c4235edf1adde7ba8385e6e09f2c4beb'\n"
+    after=b"    expected=PARENT_HEAD if identity.get('implicit_conductivity') else EXPLICIT_PARENT_HEAD\n    if hashlib.sha256(source).hexdigest()!=expected:\n"
+    before=b'    if hashlib.sha256(source).hexdigest()!=PARENT_HEAD:\n'
+    assert now.count(extra)==now.count(after)==1 and now.replace(extra,b'',1).replace(after,before,1)==git('show',ORIGIN+':'+path)
     profile=a.origin/'groundwater-clock/h0-step-periodic';short=read(profile/'RESULT.json')
     assert short['status']=='ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'
     assert tuple(short['parameters'][k] for k in ('solute','hysteresis','bottom','kmean','perstep','mode','format','reset','nprintday'))==(1,0,1,3,True,'periodic',2,0,1)
@@ -54,7 +64,8 @@ def main():
     out.write_text(json.dumps(dict(status='ACTUAL_ORIGINAL_H0_CONTROL_DEPENDENCY_RESTORED',
         original_run=44682712004,original_source=ORIGIN,actual_BUILD_sha256=sha(actual_bundle/'BUILD.json'),
         actual_profile_receipt_sha256=sha(actual_profile/'RESULT.json'),actual_original_control_receipt_sha256=sha(controls/'RESULT.json'),
-        restored_paths=targets,source_app_unchanged=True,original_receipts_rebound=False,fresh_model_periods=0),indent=2)+'\n')
+        restored_paths=targets,numerical_model_sources_unchanged=True,exact_readonly_source_guard_bridge=changed,
+        original_receipts_rebound=False,fresh_model_periods=0),indent=2)+'\n')
     print('ACTUAL_ORIGINAL_H0_CONTROL_DEPENDENCY_RESTORED')
 
 
