@@ -31,6 +31,8 @@ def main():
         run('inputs','snow_undrained_fixture.py',['--output',a.output/'inputs'],60)
         run('cde-component','snow_undrained_cde_positive_component.py',[*common,'--build-root',a.build_root/'component',
             '--output',a.output/'cde-component','--optimization',a.optimization],180)
+        from snow_undrained_component_forensics import audit as component_audit
+        q['independent_cde_component']=component_audit(a.output/'cde-component',json.loads((a.reference_work/'PREPARED.json').read_text()));save()
         run('source','snow_undrained_source_probe.py',[*common,'--baseline',a.output/'inputs/RESULT.json',
             '--build-root',a.build_root/'models','--output',a.output/'source-forms','--optimization',a.optimization],1800)
         probe=a.output/'source-forms/RESULT.json';assert len(json.loads(probe.read_text())['cases'])==9
