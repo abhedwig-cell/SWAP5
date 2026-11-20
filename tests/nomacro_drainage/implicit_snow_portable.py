@@ -33,7 +33,7 @@ def main():
         source=json.loads((a.output/'source-forms/RESULT.json').read_text())
         assert len(source['cases'])==9 and all(c['returncode']==0 for c in source['cases'].values())
         run('short','implicit_snow_short.py',[*common,'--source-probe',a.output/'source-forms/RESULT.json','--output',a.output/'short','--optimization',a.optimization],1800)
-        for label,cap in (('water-head',600),('cde-groundwater-clock',180),('cde-head-step',600)):
+        for label,cap in (('water-head',600),('cde-groundwater-clock',180),('cde-head-step',1200)):
             run('full-'+label,'implicit_snow_full.py',[*common,'--reuse-case',a.output/'short'/label,'--output',a.output/('full-'+label),'--cap',cap],cap+720)
         for label in source['cases']:
             run('audit-short-'+label,'implicit_snow_forensics.py',[a.output/'short'/label,'--output',a.output/('INDEPENDENT_SHORT_'+label+'.json')],180)

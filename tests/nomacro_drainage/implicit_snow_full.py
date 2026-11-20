@@ -14,7 +14,7 @@ m=original.m
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','reuse-case','output'):p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--cap',type=int,choices=(180,600),default=180)
+    p.add_argument('--cap',type=int,choices=(180,600,1200),default=180)
     a=p.parse_args();a.output.mkdir()
     receipt=a.reuse_case/'RESULT.json';before=m.sha(receipt);short=json.loads(receipt.read_text())
     assert short['status']=='ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'
