@@ -34,6 +34,9 @@ def main():
         if a.kind=='cde':text=assignment(text,'CPRE','0.01')
         text+='\niHWCKmodel = 7\nALFA_2 = .005 .003\nNPAR_2 = 1.5 1.6\nOMEGA_1 = .8 .8\nH0 = -1e6 -1e6\n'
         path.write_text(text,encoding='cp1252')
+        if a.kind=='water':
+            for crop in inputs.glob('*.crp'):
+                crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
     m = thermal.m; policy = 'original-adaptive-day-seed-v1'
     q = dict(status='RUNNING', source=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         kind=a.kind, optimization=a.optimization, phase=a.phase, input_root=str(inputs),
