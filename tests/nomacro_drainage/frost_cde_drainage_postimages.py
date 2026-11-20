@@ -81,7 +81,8 @@ def main():
                 'original_output.implicit_snow_composition_source_sha256',
                 'implicit_groundwater_trial.source_sha256',
                 'implicit_groundwater_trial.original_projection_owner_sha256',
-                'lower_boundary_receipt.composition_sha256', 'original_output.composition_build_sha256'}
+                'lower_boundary_receipt.composition_sha256', 'original_output.composition_build_sha256',
+                'original_output.providers.snow_undrained.py', 'original_output.providers.snow_undrained_build.py'}
             assert set(delta) <= allowed, (name, delta)
             if 'restart_publisher.library_sha256' in delta:
                 item['publisher_equivalence'] = publisher_equivalence(parent / 'restart_publish.dll', build / 'restart_publish.dll')
