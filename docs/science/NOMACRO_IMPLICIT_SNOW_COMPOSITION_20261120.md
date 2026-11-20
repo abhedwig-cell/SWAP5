@@ -35,3 +35,16 @@ selected. Registered source/raw and actual canonical admission remain required.
 
 Whole historical closure is PARTIAL, whole science NOT_QUALIFIED, global family
 and gap counts UNKNOWN, and fixed RC3 authority unchanged.
+
+
+## Actual bounded observations and remaining admission
+
+The current nine contexts pass independent physical, native restart, user output, source and compiler custody checks at O0/O2 on Windows and Ubuntu: 36 short 35-day contexts with108 cold windows and12 continuous1096-day periods with108 cold windows. The final CDE head periods completed under an explicit1200s resource cap using unchanged compiled bundles. Earlier180/600s censored runs and unsuccessful segmented-output observations remain failed. The selected bottom codes are1 prescribed groundwater,5 prescribed head and8 soil-air; historical case labels containing "flux" or "head" are identifiers, not authoritative bottom descriptions.
+
+Two original dormant root stress diagnostic rates had been omitted from cold carry when the original RootExtraction early return leaves them unassigned. Separate96-byte domain/witness-bound tails preserve these existing rates in new water/CDE codec families; no physical state, equation, convergence criterion or1e-10 balance limit was changed. Current groundwater CDE layouts remain unchanged.
+
+Ubuntu initial run44732748938 failed after all science completed because a source-control scratch parent was absent. First controls recovery44735754865 completed three checks then failed before a model day because artifact extraction left original ELF executables0644. Final controls-only recovery44737214910 restored0755 with identical executable bytes, reused the three completed checks, and completed only missing controls. Both final jobs succeeded and their actual malformed native payloads, source forgeries, external transaction payloads and restored compiled inventories pass independent read-only audit. Earlier job conclusions and producer receipts remain FAILURE. No full/short model period or compiler was repeated during recovery.
+
+Fresh controls comprise200 compiled root startup refusals,144 source forgeries and16 transaction contexts. Twelve unchanged Windows postimages retain exact physical/native/user records and targeted cold continuity; unchanged full periods were reused. Inherited groundwater native controls require a separate exact dependency ledger and are not counted as fresh. All original Windows evidence and six original portable ZIPs have been retained losslessly. Public successor qualification and canonical admission are still pending.
+
+Water/Snow groundwater bottom1 remains a separate MISSING_COMPOSITION for explicit and implicit hydraulics, and is the next implementation batch. Whole historical functional completion remains PARTIAL, scientific equivalence NOT_QUALIFIED, family/gap counts UNKNOWN and fixed RC3 unchanged.
