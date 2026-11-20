@@ -99,6 +99,11 @@ jobs:
           PY
           python3 -B tests/nomacro_scheduled_subsurface/ordinary_pond_cohort.py --phase cde-full --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/ordinary-matrix" --reuse-case "$RUNNER_TEMP/proof/ordinary-matrix/cde-groundwater-history" --output "$RUNNER_TEMP/proof/ordinary-cde"
           python3 -B tests/nomacro_drainage/ordinary_pond_evidence.py "$RUNNER_TEMP/proof/ordinary-cde" --output "$RUNNER_TEMP/proof/ordinary-cde/FORENSICS_V1.json"
+          python3 -B tests/nomacro_drainage/ordinary_tangent_probe.py --limits --profile "$RUNNER_TEMP/proof/ordinary-matrix/cde-groundwater-history/short" --provider "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/ordinary-limits" --output "$RUNNER_TEMP/proof/ordinary-limits"
+          for name in cde-groundwater-history water-plate cde-head-history1; do
+            if [[ "$name" == water-plate ]]; then other=cde-groundwater-history; else other=water-plate; fi
+            python3 -B tests/nomacro_drainage/ordinary_pond_controls.py --profile "$RUNNER_TEMP/proof/ordinary-matrix/$name/short" --reference-work "$RUNNER_TEMP/provider" --other-head "$RUNNER_TEMP/builds/ordinary-matrix/$other/bundle/headcalc.f90" --output "$RUNNER_TEMP/proof/ordinary-matrix/$name/source-controls"
+          done
       - name: Retain actual compiled bytes and provider identity
         if: always()
         shell: python
