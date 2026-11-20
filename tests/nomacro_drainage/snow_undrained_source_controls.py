@@ -17,11 +17,12 @@ m=original.m
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','profile','scratch','output'):p.add_argument('--'+key,type=Path,required=True)
+    p.add_argument('--only',nargs='+')
     a=p.parse_args();a.output.mkdir();a.scratch.mkdir(parents=True)
     report=json.loads((a.profile/'RESULT.json').read_text());bundle=Path(report['build_root'])
     project=m.e.load(report['input_root'],original_output=True);meta,_=m.validate_bundle(bundle,a.reference_work,project)
     before=m.sha(bundle/'BUILD.json');inventory={p.name:m.sha(p) for p in bundle.iterdir() if p.is_file()}
-    sources=['headcalc.f90','timecontrol.f90','integral.f90','boundtop.f90','macropore.f90',
+    sources=['MOD_meteo.f90','headcalc.f90','timecontrol.f90','integral.f90','boundtop.f90','macropore.f90',
         'snow_undrained_root_state.f90',
         'original_output_thermal_domain.f90','thermal_output_snow_calendar_state.f90',
         'hybrid_age_output_state.f90','age_output_calendar_probe.f90',
@@ -29,12 +30,15 @@ def main():
     if project.solute:sources += ['solute.f90','original_cde_output_state.f90','cde_interval_receipt.f90','cde_clock_events.f90']
     assert all((bundle/n).is_file() for n in sources)
     policies=['native-codec','root-provider','trial-guard']
+    attacks=[*policies,*sources]
+    if a.only:
+        assert not set(a.only)-set(attacks);attacks=[v for v in attacks if v in a.only]
     q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=original.ROOT,text=True).strip(),
-        actual_BUILD_sha256=before,refusals=[],model_executions=0,compilations=0,expected_refusals=len(sources)+len(policies))
+        actual_BUILD_sha256=before,refusals=[],model_executions=0,compilations=0,expected_refusals=len(attacks))
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
-        for label in [*policies,*sources]:
+        for label in attacks:
             target=a.scratch/label;shutil.copytree(bundle,target,copy_function=os.link)
             forged=copy.deepcopy(meta)
             if label=='native-codec':forged['identity']['original_output']['native_codec']='S5FORGED'
