@@ -2,7 +2,11 @@
 
 This bounded numerical batch corrects the original ordinary, nonmacropore
 SWKIMPL1 pond interface. Neutral qualification is frozen at
-`4027e71aa5e8e9af64f1ae94cf64e9018a9b734d`; canonical admission remains pending.
+`4027e71aa5e8e9af64f1ae94cf64e9018a9b734d`; canonical admission is established by PR1768 at
+`c22d6ec1c5ede56b93d7f38635e38e4c277b3f51`. The complete qualified tree
+`1d5fa7c449fd788bc10d67ba06ad176d59cbfbce` and ordered parents match;
+the actual clean23-pattern registered public owner passes in152.6635203s.
+All48PR checks are terminal without failure.
 The numeric implementation is `b96f69a397615d24f7af4fc1cdf28bf591957a04`.
 The final read-only compiled-source guard is
 `614e1c5a5ce383222d6febb9d183aac14bf4a625`.
