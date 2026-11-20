@@ -35,7 +35,7 @@ def main():
     m = thermal.m; policy = 'original-adaptive-event-closure-v1'
     q = dict(status='RUNNING', source=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         kind=a.kind, optimization=a.optimization, phase=a.phase, input_root=str(inputs),
-        build_root=str(a.reuse_build or a.build_root), canonical_admission=False,
+        build_root=str(a.reuse_build or a.build_root / 'bundle'), canonical_admission=False,
         inventory={str(v.relative_to(inputs)): hashlib.sha256(v.read_bytes()).hexdigest()
                    for v in sorted(inputs.rglob('*')) if v.is_file()})
     def save(): (a.output / 'RESULT.json').write_text(json.dumps(q, indent=2) + '\n', encoding='utf-8')
@@ -43,7 +43,7 @@ def main():
     try:
         project = m.e.load(inputs, original_output=True, time_step_policy=policy)
         assert project.solute == (a.kind == 'cde')
-        build = a.reuse_build or a.build_root
+        build = a.reuse_build or a.build_root / 'bundle'
         if a.reuse_build is None:
             command = [sys.executable, '-B', str(ROOT / 'tools/solute/run_water.py'), '--model', project.model,
                 '--experimental-project', str(inputs), '--original-output', '--experimental-time-step-policy', policy,
