@@ -1,0 +1,68 @@
+{
+  "parent": "b546801eaf24a01ee4dc457eb857ef46e6b61c30",
+  "runtime": "b0d4acf8c02ba479c81535d7187675fd88878ee7",
+  "changes": {
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "runtime_line": 158,
+        "before": "        raise ValueError('Foreign original implicit conductivity numerical policy; rebuild without rebinding')\n",
+        "after": "        from snow_undrained_source_guard import unchanged_implicit_metadata\n        if not unchanged_implicit_metadata(identity.get('implicit_conductivity'),implicit_metadata(project),project):\n            raise ValueError('Foreign original implicit conductivity numerical policy; rebuild without rebinding')\n"
+      },
+      {
+        "runtime_line": 216,
+        "before": "    if (identity.get('original_output') or {}).get('groundwater_snow_water_output'):\n",
+        "after": "    if (identity.get('original_output') or {}).get('ordinary_snow_undrained_output'):\n        from snow_undrained_source_guard import validate_source as validate_undrained_snow\n        validate_undrained_snow(bundle,project,identity,reference)\n    elif (identity.get('original_output') or {}).get('groundwater_snow_water_output'):\n"
+      },
+      {
+        "runtime_line": 280,
+        "before": "        if not unchanged_clock_metadata(identity.get('original_output'),expected_output,project):\n",
+        "after": "        from snow_undrained_source_guard import unchanged_output_metadata\n        if not (unchanged_clock_metadata(identity.get('original_output'),expected_output,project) or\n                unchanged_output_metadata(identity.get('original_output'),expected_output,project)):\n"
+      }
+    ],
+    "app/hybrid_water/experimental_project.py": [
+      {
+        "runtime_line": 337,
+        "before": "",
+        "after": "    from snow_undrained import selection as undrained_selection,codec as undrained_codec\n    undrained=undrained_selection(project)\n    if undrained is not None:return undrained_codec(undrained)\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_water_output.py": [
+      {
+        "runtime_line": 46,
+        "before": "",
+        "after": "    from snow_undrained import selection as undrained_selection\n    undrained=undrained_selection(project)\n    if undrained is not None:return undrained\n"
+      },
+      {
+        "runtime_line": 60,
+        "before": "",
+        "after": "    from snow_undrained import selection as undrained_selection,metadata as undrained_metadata\n    undrained=undrained_selection(project)\n    if undrained is not None:return undrained_metadata(project,undrained)\n"
+      },
+      {
+        "runtime_line": 113,
+        "before": "",
+        "after": "    from snow_undrained import selection as undrained_selection\n    undrained=undrained_selection(project)\n    if undrained is not None:\n        from snow_undrained_build import apply_build as undrained_build\n        return undrained_build(output,donor_build,project,patched,undrained)\n"
+      }
+    ],
+    "app/hybrid_water/implicit_groundwater_state.py": [
+      {
+        "runtime_line": 126,
+        "before": "",
+        "after": "    from snow_undrained import selection as undrained_selection\n    undrained=undrained_selection(project)\n    if undrained is not None:\n        from snow_undrained_state import native_build as undrained_native_build\n        return undrained_native_build(output,project,patched,undrained)\n"
+      }
+    ],
+    "app/hybrid_water/implicit_snow_composition.py": [
+      {
+        "runtime_line": 12,
+        "before": "                bottom in (1,5,8) and drain in (0,1) and (bottom==1 or drain==1))\n",
+        "after": "                bottom in (1,5,8) and drain in (0,1))\n"
+      }
+    ]
+  },
+  "added": {
+    "app/hybrid_water/snow_undrained.py": "05d8ea80983476f18d60ad826457a4a962542c1725fefd9eefc2276cfc538b00",
+    "app/hybrid_water/snow_undrained_build.py": "64e20686e38e5714c21fbe2d379ea004fdef4af91a96278eaccb99c93b906eb9",
+    "app/hybrid_water/snow_undrained_cde_positive.py": "6a57f9b34210788da47a2e1e4b242b724ec66d22a292a445c9efb4f2513151bc",
+    "app/hybrid_water/snow_undrained_source_guard.py": "3153ad93a9616944566b24f4dde7f7761f3fc2ed9c1043058e5c4a105d437d41",
+    "app/hybrid_water/snow_undrained_state.py": "9c1df212d7b1d1086e4d99cd669a9082c4a92d44cc7c8807f0052f9d2f83ddef"
+  }
+}
