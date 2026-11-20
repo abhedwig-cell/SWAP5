@@ -2058,13 +2058,13 @@
       "classification": "MISSING_COMPOSITION_WITH_RETAINED_NUMERICAL_AND_REFERENCE_REFUSALS",
       "priority": 1,
       "source_assessment": "FROST_CDE_COMPOSITION_SOURCE_ASSESSMENT_V1.json",
-      "status": "EXPLICIT_CANONICAL_ADMITTED_IMPLICIT_WINDOWS_FULL_OBSERVATIONS_PASS_NATIVE_ROOT_CLOSURE_ACTIVE"
+      "status": "BOUNDED_IMPLICIT_NATIVE2_SCIENCE_PUBLIC_PASS_PR1776_EXACT_HEAD_CI_PENDING"
     },
     {
       "family": "Alternative original hydraulic models including RIA12",
       "classification": "NUMERICAL_FAILURE_AND_UNRECONCILED_ORIGINAL_DOMAIN",
       "priority": 2,
-      "status": "REUSE_EXISTING_BLOCK_I_FAILURES_AND_CENSORS_THEN_SOURCE_COMPONENT_ASSESSMENT"
+      "status": "SOURCE_AND_COMPONENT_DERIVATIVE_ASSESSMENT_ACTIVE_NO_MODEL_REPLAY"
     },
     {
       "family": "Original per-layer vapor and heat conservation/state",
@@ -2091,10 +2091,10 @@
   },
   "bounded_frost_drainage_implicit": {
     "classification": "MISSING_COMPOSITION",
-    "implementation": "BOUNDED_CANDIDATE_IMPLEMENTED",
+    "implementation": "QUALIFIED_BOUNDED_CANDIDATE_PUBLIC_PASS_PR1776_CI_PENDING",
     "component": "Exact existing qualified pond provider reused, only actual Frost surface mean arguments corrected; Windows O0/O2 full-Jacobian component passed",
-    "models": "Four Windows full1096 plus four35-day periods;40 exact cold windows;170 native refusals and active transactions pass. Extra absolute global water-prefix metric retained as a diagnostic, not an owning gate.",
-    "full_qualification": "WINDOWS_OBSERVED_PASS_NATIVE_RETAINED_ROOT_DIAGNOSTIC_CLOSURE_AND_UBUNTU_PENDING",
+    "models": "Windows and Ubuntu O0/O2: eight full1096 and eight35-day contexts,80exact cold windows,540 compiled native refusals,56descriptor/56source refusals,8active transactions; standalone original root8roundtrips/56refusals;16exact unselected35day/cold postimages. No unaffected full periods replayed.",
+    "full_qualification": "SCIENCE_AND_CLEAN_ACTUAL32PATTERN_PUBLIC_PASS_EXACT05D3_HEAD_CI_PENDING",
     "unsupported_preserved": [
       "AGE",
       "examinedKsat interpolation",
@@ -2102,6 +2102,11 @@
       "broader thermal calendars",
       "fully frozen front interpretation"
     ],
-    "whole_family_closed": false
+    "whole_family_closed": false,
+    "actual_PR": 1776,
+    "actual_qualified_head": "05d3a9dcddd9ac55b29e165a487e27442f8204df",
+    "actual_candidate_public_seconds": 378.8044145000167,
+    "native_root_carry": "Native2 exact original retained alpwetnoddrz/alpdrynodrtz; existing literal provider whole inverse to617c85; no new physical state",
+    "canonical_admission": false
   }
 }

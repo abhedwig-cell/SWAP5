@@ -2,8 +2,8 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-frost-implicit-boundary01",
-  "last_commit": "05d3a9dcddd9ac55b29e165a487e27442f8204df",
+  "branch": "codex/nomacro-hydraulic-constitutive01",
+  "last_commit": "03a06729a7bc74705b116c54a5407fe5d38c4a3e",
   "status": "EXPLICIT_FROST_CANONICALLY_ADMITTED_IMPLICIT_FROST_NATIVE_STATE_CLOSURE_ACTIVE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -32623,7 +32623,7 @@
     "scope": "Original daily analytical water/CDE, KW0, ordinarySnow, hysteresis2, numericalheat2, primary effectiveSWDIVD1, bottom6, prescribed surface temperature; no aquifer"
   },
   "implicit_frost_native_revision2": {
-    "status": "PR1776_ACTUAL_HEAD05D3_PUBLIC_OBSERVATION_AND_EXACT_HEAD_CI_RUNNING",
+    "status": "PR1776_QUALIFIED_ACTUAL_PUBLIC_PASS_EXACT_HEAD_CI_PENDING",
     "runtime_source": "664596939f699ddbf0ebbdfdcfedcd37c5cc60e7",
     "independent_reader_source": "e14e5793f",
     "root_compiled_controls_source": "79a401ecd",
@@ -32706,6 +32706,31 @@
     "cleanup_owned_resources_released": 21,
     "cleanup_actual_deleted": 21,
     "cleanup_net_free_change": -188493824,
-    "cleanup_report": "C:/Users/Veldh012/.codex/storage/swap5/reports/20261120-233729-87afd99f.json"
+    "cleanup_report": "C:/Users/Veldh012/.codex/storage/swap5/reports/20261120-233729-87afd99f.json",
+    "actual_candidate_public_seconds": 378.8044145000167,
+    "synthetic_merge": "102b87f5831933e1f8369ff46ce51e46aab34bb2",
+    "whole_qualified_tree": "6d411502313746a463296bd07b0ffee3530d3867",
+    "public_before_after_clean_exact": true,
+    "local_metadata_carry_not_pushed_to_PR1776": true
+  },
+  "next_hydraulic_constitutive_batch": {
+    "status": "SOURCE_COMPONENT_ASSESSMENT_ACTIVE",
+    "prior_authority": "integration/nomacro-coverage01/BLOCK_I_QUALIFICATION.json",
+    "strict_models_retained": [
+      3,
+      5,
+      6,
+      7,
+      9,
+      11
+    ],
+    "censored_models_retained": [
+      4,
+      8,
+      10
+    ],
+    "RIA12": "Original initialization column suspicion retained, not demonstrated or repaired",
+    "current_source": "Original dhconduc implements exponential2 then defaultMvG branch for all other analytical families; implicit guard currently accepts only1. Original prhead handles2 then defaultMvG; callers hysteresis/tillage, not HeadCalc. Do not infer this causes retained365-day failures.",
+    "next": "Measure actual original complete MOD_MvG and WC_K4..11 moisture/conductivity derivatives using full literal original modules and measured real object closure, finite differences without copied physics. Preserve all mismatches/refusals; only then select a justified correction or composition. No old full periods rerun."
   }
 }

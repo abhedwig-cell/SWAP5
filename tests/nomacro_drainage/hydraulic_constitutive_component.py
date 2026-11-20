@@ -1,0 +1,79 @@
+"""Measure original hydraulic derivative interfaces; retain every mismatch/refusal."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+ROOT=Path(__file__).resolve().parents[2]
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
+    p.add_argument('--optimization',choices=('O0','O2'),required=True)
+    a=p.parse_args();a.output.mkdir();a.build_root.mkdir(exist_ok=True)
+    sys.path.insert(0,str(ROOT/'app/hybrid_water'))
+    import user_prepare
+    from daily_host import NO_MACRO_FP_FLAGS
+    user_prepare.validate(a.reference_work);ref=a.reference_work/'build';objects=ref/'swap-obj'
+    sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+    q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+        optimization=a.optimization,compiler=[],original_models=[],model_periods=0,public_admitted=False,
+        purpose='Actual original watcon/moiscap and hconduc/dhconduc. Source assessment only; mismatches are not repaired or admitted.',
+        fixture='Existing original4..11 two-soil coefficients1..7/13..21; explicit full-module initialization with hysteresis0/Frost0/NoVap, alphaWet2alpha and entry-.01; no claim of original reader execution')
+    def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n',encoding='utf-8')
+    def run(command):return subprocess.run(command,cwd=a.build_root,capture_output=True,text=True,timeout=60)
+    def compile(command):
+        start=time.perf_counter();r=run(command);q['compiler'].append(dict(command=command,returncode=r.returncode,seconds=time.perf_counter()-start,stdout=r.stdout,stderr=r.stderr));save();r.check_returncode()
+    def symbols(paths,flag):
+        r=run(['nm','-g',flag,'--format=posix',*map(str,paths)]);r.check_returncode();table={};current=None
+        for line in r.stdout.splitlines():
+            if line.endswith(':'):current=Path(line[:-1]);table[current]=set();continue
+            if current is not None and line.strip():table[current].add(line.split()[0])
+        assert set(table)==set(paths);return table
+    save()
+    try:
+        flags=['gfortran','-'+a.optimization,'-ffree-line-length-none','-fcheck=all','-fimplicit-none','-finit-local-zero',
+            '-ffpe-trap=invalid,zero,overflow',*NO_MACRO_FP_FLAGS,'-I'+str(a.build_root),'-I'+str(objects),'-I'+str(ref/'ttutil-obj'),'-J'+str(a.build_root)]
+        files=sorted(path for path in objects.glob('*.o') if path.name!='swap_main.o')
+        defined=symbols(files,'--defined-only');undefined=symbols(files,'--undefined-only');lookup={}
+        for path,values in defined.items():
+            for value in values:lookup.setdefault(value,path)
+        affected={}
+        for name in ('WC_K_models_04_11','MOD_MvG_functions'):
+            source=ref/'swap-selected'/(name+'.f90');target=a.build_root/(name+'.f90');target.write_bytes(source.read_bytes())
+            obj=a.build_root/(name+'.o');compile([*flags,'-c',str(target),'-o',str(obj)])
+            assert objects/(name+'.o') in files;affected[objects/(name+'.o')]=obj
+            (a.output/target.name).write_bytes(target.read_bytes())
+        driver=Path(__file__).with_name('hydraulic_constitutive_probe.f90');obj=a.build_root/'driver.o';compile([*flags,'-c',str(driver),'-o',str(obj)])
+        selected={lookup[symbol] for values in symbols([obj,*affected.values()],'--undefined-only').values() for symbol in values if symbol in lookup}
+        while True:
+            before=set(selected)
+            for path in before:selected.update(lookup[symbol] for symbol in undefined[path] if symbol in lookup)
+            if before==selected:break
+        q['actual_original_object_closure']=[dict(name=path.name,sha256=sha(path)) for path in sorted(selected)]
+        q['original_rebuilt_sources']={name.name:dict(original_sha256=sha(ref/'swap-selected'/name.name),actual_sha256=sha(name)) for name in a.build_root.glob('*.f90')}
+        q['driver_sha256']=sha(driver)
+        exe=a.build_root/('actual-hydraulic'+('.exe' if os.name=='nt' else ''))
+        linked=[affected.get(path,path) for path in sorted(selected)]
+        for path in affected.values():
+            if path not in linked:linked.append(path)
+        compile([*flags,str(obj),*map(str,linked),str(ref/'ttutil-obj/libttutil.a'),'-o',str(exe)])
+        q['executable_sha256']=sha(exe)
+        for path in (exe,driver):(a.output/path.name).write_bytes(path.read_bytes())
+        for model in range(1,12):
+            r=run([str(exe),str(model)]);(a.output/('model'+str(model)+'.stdout')).write_text(r.stdout,encoding='utf-8');(a.output/('model'+str(model)+'.stderr')).write_text(r.stderr,encoding='utf-8')
+            rows=[line.split() for line in r.stdout.splitlines() if line.startswith('ACTUAL_ORIGINAL_HYDRAULIC ')]
+            if r.returncode==0:assert len(rows)==14 and not r.stderr
+            q['original_models'].append(dict(model=model,returncode=r.returncode,raw_rows=len(rows),status='COMPONENT_OBSERVED' if r.returncode==0 else 'ORIGINAL_COMPONENT_REFUSED',stderr=r.stderr));save()
+        q['status']='ACTUAL_ORIGINAL_HYDRAULIC_INTERFACES_OBSERVED_NO_ADMISSION'
+        print(q['status'],len(selected),[(row['model'],row['returncode']) for row in q['original_models']],flush=True)
+    except Exception as error:q.update(status='FAILED',error=repr(error));raise
+    finally:save()
+
+
+if __name__=='__main__':main()
