@@ -17,7 +17,7 @@ m=original.m
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','profile','scratch','output'):p.add_argument('--'+key,type=Path,required=True)
-    a=p.parse_args();a.output.mkdir();a.scratch.mkdir()
+    a=p.parse_args();a.output.mkdir();a.scratch.mkdir(parents=True)
     report=json.loads((a.profile/'RESULT.json').read_text());bundle=Path(report['build_root'])
     project=m.e.load(report['input_root'],original_output=True);meta,_=m.validate_bundle(bundle,a.reference_work,project)
     before=m.sha(bundle/'BUILD.json');inventory={p.name:m.sha(p) for p in bundle.iterdir() if p.is_file()}
