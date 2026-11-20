@@ -32461,5 +32461,38 @@
     "next_functional_branch": "codex/nomacro-frost-implicit-boundary01",
     "next_functional_probe_source": "1960cfbb3c39a601ebba8cab6a9d73767742e3af",
     "next_functional_probe_status": "Actual original HeadCalc/Boundtop/vector_F/jacobian_F; measured42-object closure; O0/O2 each108 ponded no-runoff cases; original and old frost0 Jacobians fail108, diagnostic surface derivative passes108. No production implementation or public implicit Frost admission."
+  },
+  "implicit_frost_followup": {
+    "status": "BOUNDED_CANDIDATE_IMPLEMENTED_NOT_INTEGRATED_MODEL_QUALIFIED",
+    "branch": "codex/nomacro-frost-implicit-boundary01",
+    "parent_candidate": "52061c8c1b48acbd995c8c602278fbd9c5e253ef",
+    "parent_PR": 1775,
+    "parent_actual_canonical_admission": "PENDING_ALL_EXACT_HEAD_GATES",
+    "component_source": "89ae8946863c4be0d385fe510d91b8b9db15d41f",
+    "component_windows_O0_O2": {
+      "states_per_optimization": 720,
+      "Jacobian_entries_per_variant": 6480,
+      "unextended_Frost0_mismatches_per_optimization": 192,
+      "corrected_mismatches": 0,
+      "maximum_scaled_error": 4.7189740743747435e-08
+    },
+    "component_proposed_renderer_byte_reuse": "EV/FROST_IMPLICIT_NUMERICAL_RENDERER_REUSE_V1.json",
+    "new_physical_state": false,
+    "new_native_codecs": [
+      "S5FIW001",
+      "S5FIC001"
+    ],
+    "scope": "Original daily analytical water/CDE, implicit conductivity, ordinary Snow, hysteresis2, primary effectiveSWDIVD1, bottom6, prescribed surface temperature; fittedKsat only; existing exact pond/event/retry/source owners",
+    "not_admitted": [
+      "AGE",
+      "examinedKsat interpolation",
+      "other bottom boundaries",
+      "broader thermal calendars",
+      "fully frozen front interpretation"
+    ],
+    "next": "Run tests/nomacro_drainage/frost_implicit_runtime.py --kind water --optimization O0 --phase short from this persisted source, registered build under W and unique output under protected EV. Inspect actual independent conservation, source/native/output and cold observations before selecting CDE/O2 or full trajectories. Continue PR1775 exact520 CI and merge gates independently; canonical public owner and separate actual admission carry still required.",
+    "whole_completion": "PARTIAL",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "global_family_and_gap_counts": "UNKNOWN"
   }
 }

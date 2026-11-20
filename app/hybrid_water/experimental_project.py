@@ -156,9 +156,9 @@ def inspect(directory, *, original_output=None):
             if not frost_drain_file.is_file():raise ValueError('Missing original frost drainage input')
             frost_divd=switches(frost_drain_file.read_text(encoding='cp1252')).get('SWDIVD')
             if frost_divd==1:
-                if (original_output is False or selected['SWKIMPL']!=0 or selected['SWSOLU'] not in (0,1)
+                if (original_output is False or selected['SWKIMPL'] not in (0,1) or selected['SWSOLU'] not in (0,1)
                         or selected.get('SWBR')!=0 or selected['SWMETDETAIL']!=0 or selected['SWSOPHY']!=0):
-                    raise ValueError('Candidate Frost SWDIVD1 requires explicit original daily analytical water/CDE without aquifer')
+                    raise ValueError('Candidate Frost SWDIVD1 requires bounded original daily analytical water/CDE without aquifer')
             elif frost_divd!=0:
                 raise ValueError('Invalid original Frost vertical drainage selector')
             if selected['SWSOLU'] and frost_divd==0:

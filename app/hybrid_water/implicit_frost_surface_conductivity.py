@@ -25,12 +25,16 @@ def source(text):
     return text.replace(IMPORT_ANCHOR, FLOOR_IMPORT + IMPORT_ANCHOR, 1)
 
 
-def validate(actual, original):
+def restore(actual):
     if actual.count(FLOOR_IMPORT) != 1:
         raise ValueError('Foreign actual Frost conductivity floor provider')
     for before, after in reversed(EDITS):
         if actual.count(after) != 2 or before in actual:
             raise ValueError('Foreign actual Frost mean-input source')
         actual = actual.replace(after, before)
-    if actual.replace(FLOOR_IMPORT, '', 1) != original:
+    return actual.replace(FLOOR_IMPORT, '', 1)
+
+
+def validate(actual, original):
+    if restore(actual) != original:
         raise ValueError('Qualified complete original implicit source changed')
