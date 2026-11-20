@@ -32736,7 +32736,7 @@
     "neutral_10_archives_and_flags_unchanged": true
   },
   "next_hydraulic_constitutive_batch": {
-    "status": "EVERY_TRIAL_YEAR364_ACCEPTED_DAY365_CENSORED_O0_O2_NATIVE_SATURATED_MATRIX_ASSESSMENT_SELECTED",
+    "status": "SATURATED_NULL_MODE_PROVEN_SEARCH_ONLY_DIAGONAL_367_DAY_CDE_O0_O2_INDEPENDENT_PASS_FULL_PERIODS_RUNNING",
     "prior_authority": "integration/nomacro-coverage01/BLOCK_I_QUALIFICATION.json",
     "strict_models_retained": [
       3,
@@ -32753,7 +32753,7 @@
     ],
     "RIA12": "Original initialization column suspicion retained, not demonstrated or repaired",
     "current_source": "Original dhconduc implements exponential2 then defaultMvG branch for all other analytical families; implicit guard currently accepts only1. Original prhead handles2 then defaultMvG; callers hysteresis/tillage, not HeadCalc. Do not infer this causes retained365-day failures.",
-    "next": "Complete original private HeadCalc/Jacobian/Tridag component for saturated flux/head and mixed states, O0/O2; compare a numerical search-only diagonal to the actual original default-MvG matrix. Preserve all364/365/censor roles. No new long periods until component and interface controls pass.",
+    "next": "Complete four changed-dependency1096-day water/CDE O0/O2 periods and exact cold windows; independently audit. Preserve all original failures/censors; no production/public admission yet.",
     "component_source": "04bdb290d",
     "component_contexts": 2,
     "original_module_models_observed": 11,
@@ -32788,7 +32788,7 @@
     "new_terminal_short_cold_windows": 12,
     "actual_terminal_receipt_terms_exact_per_day": 28,
     "actual_terminal_35day_contexts_all_terms_exact": 4,
-    "terminal_year_contexts_running": 2,
+    "terminal_year_contexts_running": 0,
     "old_day364_rejection_preserved_and_cold_exact": true,
     "production_or_public_admission": false,
     "end_only_year_O0_O2_failed": true,
@@ -32810,6 +32810,25 @@
     "model7_stage_source": "697f2d391",
     "source_hypothesis": "Original analytical families3..11 have exact zero moisture capacity at nonnegative head. The actual original HeadCalc flux/closed-bottom Jacobian then has a constant-pressure null mode when all cells are saturated and top is flux. Default original MvG instead uses its existing dt*1e-7 numerical capacity in that situation. Verify complete actual Jacobian/Tridag with state unchanged before proposing a linear-search-only preconditioner.",
     "no_new_physical_storage": true,
-    "no_state_or_flux_correction": true
+    "no_state_or_flux_correction": true,
+    "search_runtime_source": "46c2c1c74",
+    "search_component_source": "34b62f28f",
+    "search_component_cases_per_variant_and_optimizer": 90,
+    "original_saturated_zero_pivots_per_optimizer": 27,
+    "search_matrix_and_solution_exact_original_default_control": true,
+    "search_physical_capacity_water_heads_exact": true,
+    "search_unchanged_other_component_cases": 63,
+    "search_short_contexts": 4,
+    "search_short_exact_cold_windows": 12,
+    "search_year_days": 367,
+    "search_year_cde_contexts": 2,
+    "search_year_independent_pass": true,
+    "search_year_water_max": "9.984318146555315e-11",
+    "search_year_kernel_max": "9.98447990951945e-11",
+    "full_period_contexts_running": 4,
+    "current_canonical_reverified": "085c95c3202380bb01987fdb5741b437d2acbf12",
+    "every_trial_censor_accepted364_independently_audited": true,
+    "storage_cleanup_report": "C:/Users/Veldh012/.codex/storage/swap5/reports/20261121-004419-ffb4e194.json",
+    "storage_actual_net_free_bytes": 40280064
   }
 }
