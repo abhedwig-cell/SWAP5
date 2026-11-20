@@ -20,6 +20,10 @@ on:
       - '.github/workflows/pub-p2e08-reference-valid-calibration-domain.yml'
       - 'src/**'
       - 'reference/**'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/README.md'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/divdra.f90'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/manifest.json'
+      - 'tests/nomacro_drainage/frost_publication_scope.py'
   workflow_dispatch:
 
 jobs:
@@ -30,7 +34,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Select actual publication dependency changes
+        id: publication_scope
+        run: python3 tests/nomacro_drainage/frost_publication_scope.py
       - name: Install gfortran
+        if: steps.publication_scope.outputs.replay == 'true'
         run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: Construct Reference-only common calibration domain
+        if: steps.publication_scope.outputs.replay == 'true'
         run: bash tests/publication/run_pub_p2e08_reference_valid_calibration_domain.sh
