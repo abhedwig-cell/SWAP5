@@ -40,7 +40,7 @@ def active_selection(project):
         if one(key)!=value:return None
     from experimental_project import inspect
     bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
-    if bottom not in (1,5,8) or bottom==1 and swsnow:return None
+    if bottom not in (1,5,8):return None
     drainage=one('SWDRA')
     if drainage not in (0,1) or bottom!=1 and drainage!=1:return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
@@ -51,7 +51,8 @@ def active_selection(project):
     return dict(cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=drainage,
         swhyst=hys,swcsv=fmt,nprintday=1,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=requested,flprintdt=False,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
-        **({'groundwater_cde_interval':True} if bottom==1 else {}))
+        **({'groundwater_cde_interval':True} if bottom==1 else {}),
+        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}))
 
 
 def selection(project):
@@ -91,6 +92,9 @@ def metadata(project):
         result.update(groundwater_interval_composition_sha256=sha(folder/'groundwater_cde_interval.py'),
                       groundwater_interval_policy='existing-cde-interval-complete-groundwater-native-v1',
                       groundwater_new_physical_state=False)
+    if selected.get('groundwater_snow_cde_output'):
+        from groundwater_snow_cde import metadata as snow_groundwater_metadata
+        result.update(snow_groundwater_metadata(selected))
     return result
 
 
