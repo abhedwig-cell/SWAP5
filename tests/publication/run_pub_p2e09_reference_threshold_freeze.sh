@@ -61,3 +61,4 @@ count="$(grep -Fc 'PUB_P2E09_THRESHOLD|' "$BUILD/p2e09.txt")"
 
 echo "PUB_P2E09_THRESHOLD_OUTPUT_SHA256=$(sha256sum "$BUILD/p2e09.txt" | awk '{print $1}')"
 echo 'PUB_P2E09_REFERENCE_ONLY_THRESHOLD_FREEZE_GATE=PASS'
+# Actual committed dependency-scope negative; never merge.
