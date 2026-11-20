@@ -31470,7 +31470,7 @@
       "receipt": "ORDINARY_IMPLICIT_POND_MERGE_RECEIPT_V1.json"
     }
   },
-  "current_canonical_sha": "21e3fcba2604c7546013f961e0bebaea63e5717f",
+  "current_canonical_sha": "3baf8a05786af8635e60b4df8518c77ff3f8eeb2",
   "current_numeric_source": "b96f69a397615d24f7af4fc1cdf28bf591957a04",
   "groundwater_cde_clock_batch": {
     "status": "ACTUAL_CANONICAL_ADMITTED",
@@ -31548,7 +31548,7 @@
     "admission_receipt": "GROUNDWATER_CDE_CLOCK_MERGE_RECEIPT_V1.json"
   },
   "groundwater_interval_drainage_batch": {
-    "status": "MERGED_EXACT_TREE_ACTUAL_CANONICAL_PUBLIC_PENDING",
+    "status": "ACTUAL_CANONICAL_ADMITTED",
     "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
     "source": "744ad83d1",
     "candidate_predecessor": "04273b09f87db954d238c11202e2a58abd5413c8",
@@ -31556,7 +31556,7 @@
     "first_independent": "GROUNDWATER_INTERVAL_FIRST_O0_INDEPENDENT_V1.json PASS: actual35day and3exactcold",
     "local_O0": "groundwater-interval-cohort-O0-v1",
     "local_O2": "groundwater-interval-cohort-O2-v1",
-    "next_action": "Finish runningactualclean25canonicalpublic receipt, persistactualmerge/admissionraw withoutrewritingneutralqualification; currentmerge sourceC04 andbothnegativesalreadyactualPASS.",
+    "next_action": "Bounded interval/drainage composition admittedactualcanonical3baf8a057. Continue explicitSnowcalendar clockcounter defect; allneutral archives/readers stayfrozen. Nooldunaffectedfullperiod replays.",
     "functional_completion": "PARTIAL",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "global_family_and_gap_counts": "UNKNOWN",
@@ -31611,9 +31611,11 @@
     "inherited_raw_negative": "d4f15a441d97ec1c72ddbd41635f192fd7973fa5",
     "negative_controls": "BOTH_COMMITTED_CLEAN25_REFUSED_BEFORE_MODELS",
     "ci_status": "47_TERMINAL_30_SUCCESS_17_SKIPPED_0_FAILURE",
-    "actual_canonical_admitted": false,
+    "actual_canonical_admitted": true,
     "actual_canonical": "3baf8a05786af8635e60b4df8518c77ff3f8eeb2",
-    "full_tree": "417ba842ffec17cfdc9b48a34893d123a01026a0"
+    "full_tree": "417ba842ffec17cfdc9b48a34893d123a01026a0",
+    "actual_canonical_public_seconds": 308.8277859999798,
+    "admission_receipt": "GROUNDWATER_CDE_INTERVAL_MERGE_RECEIPT_V1.json"
   },
   "groundwater_snow_cde_batch": {
     "status": "FOURTEEN_SHORT_CONTEXTS_INDEPENDENT_PASS_FULL_CLOCK_DAY634_BLOCKED",

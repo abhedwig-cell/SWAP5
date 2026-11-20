@@ -57,8 +57,13 @@ Ubuntu run44692527051 at actual source
 `a55d62b16b8dfb6581a7e0b50ee774a07d82751e` succeeds for O0/O2. Both original
 unrepacked artifacts independently pass source/provider/compiled custody,
 eight short contexts, one full period and all affected controls per option.
-This continuation still requires immutable Windows raw, neutral qualification
-and registered source/raw/canonical admission. It is not yet admitted.
+This continuation is admitted through PR1770 on actual canonical
+`3baf8a05786af8635e60b4df8518c77ff3f8eeb2`, with exact ordered parents and
+full tree `417ba842ffec17cfdc9b48a34893d123a01026a0`. All47 checks terminate
+without failure; the actual clean25-pattern public owner passes in308.827786s
+without models. Both actual committed negative controls refuse. The separate
+immutable interval admission archive retains actual receipts and full CI logs;
+its SHA256 is `874519cf85f99e8e7ab8f1c3c1146f38ab19d14aa46d2dc42ea56872490f54e4`.
 
 Whole historical closure remains PARTIAL; whole scientific equivalence remains
 NOT_QUALIFIED; global family/gap counts are UNKNOWN. Fixed RC3 authority, AGE
