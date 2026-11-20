@@ -2,9 +2,9 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
-  "branch": "codex/nomacro-groundwater-snow-cde01",
-  "last_commit": "10fbd5a09cee64a4b9c7c2551685e785e6d57d37",
-  "status": "GROUNDWATER_INTERVAL_ADMITTED_SNOW_SOURCE_RAW_QUALIFIED_CANONICAL_PR_PENDING",
+  "branch": "codex/nomacro-implicit-snow-composition01",
+  "last_commit": "f870eed5dca27b17bb24b27833dc9b3c7f85aea0",
+  "status": "EXPLICIT_SNOW_CANONICAL_MERGED_POSTMERGE_PUBLIC_RUNNING_NEXT_SNOW_COMPOSITION_SOURCE_AUDIT",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
   "release_readiness": "RC3_QUALIFIED_FIXED_NAMED_PROFILES_ONLY",
@@ -31618,11 +31618,11 @@
     "admission_receipt": "GROUNDWATER_CDE_INTERVAL_MERGE_RECEIPT_V1.json"
   },
   "groundwater_snow_cde_batch": {
-    "status": "FOUR_PLATFORM_SCIENCE_AND_REGISTERED_CLEAN_PUBLIC_PASS_READY_FOR_CANONICAL_PR",
+    "status": "PR1771_ACTUAL_CANONICAL_QUALIFIED_TREE_MERGED_PUBLIC_RUNNING",
     "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
     "candidate_predecessor": "c04f5ddd1fc253d27596014e406bbd849765d5c9",
     "gap": "CDE groundwater Snow1 non-daily interval and subdaily/per-step output currently refused by shared bottom1/snow guard; dense daily thermal CDE and complete thermal/groundwater providers already exist",
-    "next_action": "Push final metadata-only postimage, createfunctionalPR tointegration/f-ci-canonical, storeAPI snapshotEV/GROUNDWATER_SNOW_PR_V1.json andattachartifact. Ifsnapshotexistsresumeit, neverduplicatePR. Pinallchecks toexacthead, verifyactualsyntheticparents/tree andexpectedheadmerge. Thenactualcanonicalclean26 public andseparateADMISSION_RAW seal withnextfunctionalbatch. Continue implicitSnow composition; hardAGE/Snow/KSATexclusionspreserved.",
+    "next_action": "Waitactualcanonicalpublic EV/GROUNDWATER_SNOW_ACTUAL_CANONICAL_PUBLIC_OWNER_V1; thenrunnewgroundwater_snow_admission_seal.py --evidenceEV, assertall4actualcontextreceipts andmetadata-only e898->22b relation. Persistfinalmergereceipt+admissionraw withthisnextfunctionalbranch, neverrewritesevenneutralarchives/readers/flags. Continue boundedimplicitSnow and missingwaterSnowgroundwatercalendar composition; inspectactual original dispatch/state beforechangingguards.",
     "functional_completion": "PARTIAL",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "global_counts": "UNKNOWN",
@@ -31757,6 +31757,23 @@
     "clean_candidate_public_seconds": 549.6713702003472,
     "clean_candidate_public_stdout_bytes": 52399,
     "clean_candidate_public_receipt": "GROUNDWATER_SNOW_CLEAN_CANDIDATE_PUBLIC_OWNER_V1.json",
-    "actual_canonical_admitted": false
+    "actual_canonical_admitted": false,
+    "pr": 1771,
+    "actual_canonical": "f870eed5dca27b17bb24b27833dc9b3c7f85aea0",
+    "ordered_parents": [
+      "3baf8a05786af8635e60b4df8518c77ff3f8eeb2",
+      "22b66948d54a3ae77b838aa10d9c4e31bff8ee52"
+    ],
+    "full_tree": "1ec9e9154cf598f319257f697b6dcb04f9fc0c9d",
+    "ci_status": "47_TERMINAL_30_SUCCESS_17_SKIPPED_0_FAILURE",
+    "actual_canonical_public": "RUNNING_CLEAN26_DETACHED_f870_SESSION77178"
+  },
+  "implicit_snow_composition_batch": {
+    "status": "SOURCE_INVESTIGATION_NOT_IMPLEMENTED",
+    "baseline": "f870eed5dca27b17bb24b27833dc9b3c7f85aea0",
+    "classification": "B_EXISTING_QUALIFIED_HYDRAULIC_THERMAL_STATE_COMPOSITION",
+    "original_guard": "implicit_conductivity.selection requires SWSNOW0",
+    "next_code_action": "Audit original-output descriptor calls, top-private history context and actualHeadCalc/TimeControl source forms. Compose existing numerical providers once; preserveactual noSnow0 and explicitSnow0 branches. Boundwater/CDE original-output analyticdaily nofrost/noaquifer supportedboundaries; examinedKSAT remainshardrefused. No newAGE/Snow scope.",
+    "scope_investigation": "Include existingwater/CDE Snow boundaries5/8 and prescribedgroundwater1 calendars whereoriginallyreachable; watergroundwaterdispatch currentlyhas separate noSnow selection and mustnotbeassumedavailable."
   }
 }
