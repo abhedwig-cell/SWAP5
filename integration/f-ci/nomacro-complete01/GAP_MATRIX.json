@@ -2058,7 +2058,7 @@
       "classification": "MISSING_COMPOSITION_WITH_RETAINED_NUMERICAL_AND_REFERENCE_REFUSALS",
       "priority": 1,
       "source_assessment": "FROST_CDE_COMPOSITION_SOURCE_ASSESSMENT_V1.json",
-      "status": "SOURCE_ASSESSED_NOT_IMPLEMENTED_NOT_QUALIFIED"
+      "status": "EXPLICIT_CANONICAL_ADMITTED_IMPLICIT_WINDOWS_FULL_OBSERVATIONS_PASS_NATIVE_ROOT_CLOSURE_ACTIVE"
     },
     {
       "family": "Alternative original hydraulic models including RIA12",
@@ -2078,5 +2078,30 @@
       "priority": 4,
       "status": "CONCRETE_RETAINED_BLOCKER_NO_DISPOSAL_OR_EPSILON_WATER"
     }
-  ]
+  ],
+  "bounded_frost_drainage_explicit": {
+    "classification": "BOUNDED_COMPOSITION_CANONICALLY_ADMITTED",
+    "scope": "SWKIMPL0, ordinarySnow, hysteresis2, numericalheat2, effectiveSWDIVD1 primarydrainage, bottom6, original daily water/CDE",
+    "actual_runtime": "6e40385c9b871992641f7a601bbf0ec30f5f68d3",
+    "qualification": "FROST_DRAINAGE_QUALIFICATION.json",
+    "actual_PR": 1775,
+    "canonical_admission": "ffa7ef153a79aafb4cf098a4c0031845c795e83f",
+    "whole_family_closed": false,
+    "actual_public_owner_seconds": 339.9103827001527
+  },
+  "bounded_frost_drainage_implicit": {
+    "classification": "MISSING_COMPOSITION",
+    "implementation": "BOUNDED_CANDIDATE_IMPLEMENTED",
+    "component": "Exact existing qualified pond provider reused, only actual Frost surface mean arguments corrected; Windows O0/O2 full-Jacobian component passed",
+    "models": "Four Windows full1096 plus four35-day periods;40 exact cold windows;170 native refusals and active transactions pass. Extra absolute global water-prefix metric retained as a diagnostic, not an owning gate.",
+    "full_qualification": "WINDOWS_OBSERVED_PASS_NATIVE_RETAINED_ROOT_DIAGNOSTIC_CLOSURE_AND_UBUNTU_PENDING",
+    "unsupported_preserved": [
+      "AGE",
+      "examinedKsat interpolation",
+      "other bottom boundaries",
+      "broader thermal calendars",
+      "fully frozen front interpretation"
+    ],
+    "whole_family_closed": false
+  }
 }

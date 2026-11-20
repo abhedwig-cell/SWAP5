@@ -1,0 +1,87 @@
+{
+  "parent": "ffa7ef153a79aafb4cf098a4c0031845c795e83f",
+  "runtime": "664596939f699ddbf0ebbdfdcfedcd37c5cc60e7",
+  "changes": {
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "runtime_line": 216,
+        "before": "    if (identity.get('original_output') or {}).get('ordinary_snow_undrained_output'):\n",
+        "after": "    implicit_frost=(identity.get('implicit_conductivity') or {}).get('implicit_frost_composition') is True\n    if implicit_frost:\n        from implicit_frost_source_guard import validate_source as validate_implicit_frost\n        validate_implicit_frost(bundle,project,identity,reference)\n    elif (identity.get('original_output') or {}).get('ordinary_snow_undrained_output'):\n"
+      },
+      {
+        "runtime_line": 248,
+        "before": "    if expected_event and (bundle/'timecontrol.f90').read_bytes()!=event_source((reference/'build/swap-selected/timecontrol.f90').read_bytes()):\n        raise ValueError('Foreign actual corrected TimeControl source')\n",
+        "after": "    if expected_event:\n        expected_time=event_source((reference/'build/swap-selected/timecontrol.f90').read_bytes())\n        if implicit_frost:\n            from implicit_conductivity_retry import time_source as retry_time\n            from implicit_pond_event import time_source as implicit_event_time\n            expected_time=implicit_event_time(retry_time(expected_time.decode('cp1252').replace('\\r\\n','\\n')))\n            actual_time=(bundle/'timecontrol.f90').read_text(encoding='cp1252')\n        else:\n            actual_time=(bundle/'timecontrol.f90').read_bytes()\n        if actual_time!=expected_time:\n            raise ValueError('Foreign actual corrected TimeControl source')\n"
+      }
+    ],
+    "app/hybrid_water/daily_host.py": [
+      {
+        "runtime_line": 898,
+        "before": "",
+        "after": "    from implicit_frost_composition import apply_build as implicit_frost_build\n    patched=implicit_frost_build(output,project,patched)\n"
+      }
+    ],
+    "app/hybrid_water/experimental_project.py": [
+      {
+        "runtime_line": 159,
+        "before": "                if (original_output is False or selected['SWKIMPL']!=0 or selected['SWSOLU'] not in (0,1)\n",
+        "after": "                if (original_output is False or selected['SWKIMPL'] not in (0,1) or selected['SWSOLU'] not in (0,1)\n"
+      },
+      {
+        "runtime_line": 161,
+        "before": "                    raise ValueError('Candidate Frost SWDIVD1 requires explicit original daily analytical water/CDE without aquifer')\n",
+        "after": "                    raise ValueError('Candidate Frost SWDIVD1 requires bounded original daily analytical water/CDE without aquifer')\n"
+      },
+      {
+        "runtime_line": 164,
+        "before": "",
+        "after": "            elif selected['SWKIMPL'] == 1:\n                raise ValueError('Candidate implicit Frost requires effective SWDIVD1')\n"
+      },
+      {
+        "runtime_line": 296,
+        "before": "    if report.get('implicit_conductivity') and policy!=ORIGINAL_TIME_POLICY:\n",
+        "after": "    from time_event_closure import POLICY as EVENT_POLICY\n    implicit_frost = report.get('implicit_conductivity', {}).get('implicit_frost_composition', False)\n    implicit_policy = EVENT_POLICY if implicit_frost else ORIGINAL_TIME_POLICY\n    if report.get('implicit_conductivity') and policy!=implicit_policy:\n"
+      },
+      {
+        "runtime_line": 309,
+        "before": "    from time_event_closure import POLICY as EVENT_POLICY\n",
+        "after": ""
+      }
+    ],
+    "app/hybrid_water/frost_drainage_composition.py": [
+      {
+        "runtime_line": 23,
+        "before": "",
+        "after": "    from implicit_frost_composition import enabled as implicit, codec as implicit_codec\n    if implicit(project): return implicit_codec(project)\n"
+      },
+      {
+        "runtime_line": 30,
+        "before": "",
+        "after": "    from implicit_frost_composition import enabled as implicit, metadata as implicit_metadata\n    if implicit(project): return implicit_metadata(project)\n"
+      },
+      {
+        "runtime_line": 69,
+        "before": "",
+        "after": "    from implicit_frost_composition import validate as implicit_validate\n    implicit_validate(bundle, project)\n"
+      }
+    ],
+    "app/hybrid_water/implicit_conductivity.py": [
+      {
+        "runtime_line": 14,
+        "before": "    snow=input_domain(selectors,boundary,original_output)\n    required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=int(snow), SWFROST=0,\n",
+        "after": "    from implicit_frost_composition import input_domain as frost_domain, source_identity as frost_identity\n    frost=frost_domain(selectors,boundary,original_output)\n    snow=input_domain(selectors,boundary,original_output) or frost\n    required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=int(snow), SWFROST=int(frost),\n"
+      },
+      {
+        "runtime_line": 68,
+        "before": "                **(source_identity() if snow else {}))\n",
+        "after": "                **(frost_identity() if frost else source_identity() if snow else {}))\n"
+      }
+    ]
+  },
+  "added": {
+    "app/hybrid_water/implicit_frost_composition.py": "865633ee2e6396551400c2917cde2b109f97ea3b1f67ad60f2625af6980befc1",
+    "app/hybrid_water/implicit_frost_root_state.py": "be2616a7617e57ded6980b4b80b10bc044458ed407831e34cec715f9f30907e5",
+    "app/hybrid_water/implicit_frost_source_guard.py": "873d07038adbd2ea493a5cd61ac4914ad55faee8fe089508aaee6ab45778a022",
+    "app/hybrid_water/implicit_frost_surface_conductivity.py": "13beb3cc51b2f4d1eb79678b8e55341b183913d707b3df0bfae5ca2b5fa61b30"
+  }
+}

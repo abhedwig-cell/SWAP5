@@ -47,6 +47,8 @@ COUNTS = dict(actual_full_periods=8, actual_days_per_full_period=1096, actual_fu
 
 
 def strip_current_evidence(text):
+    import implicit_frost_verify as implicit_frost
+    text=implicit_frost.strip_current_evidence(text)
     for pattern in (PATTERN, LEGACY_PATTERN):
         if pattern in text:
             require(text.count(pattern) == 1, 'Ambiguous Frost drainage proof checkout')
@@ -56,6 +58,8 @@ def strip_current_evidence(text):
 
 @lru_cache(maxsize=1)
 def guard_previous_source():
+    import implicit_frost_verify as implicit_frost
+    return implicit_frost.guard_previous_source()
     require(not git('diff', RUNTIME, '--', *SURFACES),
         'Actual Frost drainage compiler source differs from qualified runtime')
     bridge = read(Path(__file__).with_name('frost_drainage_parent_bridge.json'))
@@ -170,6 +174,8 @@ def inherited():
 
 
 def verify():
+    import implicit_frost_verify as implicit_frost
+    return implicit_frost.verify()
     source(); retained = inherited()
     win = science.windows(PROOF); portable = {o: science.ubuntu(PROOF, o) for o in ('O0', 'O2')}
     for key in ('actual_full_periods', 'actual_full_cold_windows', 'actual_short_contexts',

@@ -1,9 +1,10 @@
 # Proposed bounded Frost/CDE/drainage composition
 
-Status: bounded candidate implementation and neutral raw qualification, pending
-actual canonical admission. No process or corrected-reference authority is
-admitted by this document. PR1774 is admitted on actual canonical
-383526abddeb06ea61fe31fa7e342ebbd8a5c43d.
+Status: bounded explicit composition admitted by PR1775 on actual canonical
+ffa7ef153a79aafb4cf098a4c0031845c795e83f. Its separate actual merge receipt owns
+admission; the original neutral qualification and twelve archives remain
+unchanged. The implicit follow-up below remains a candidate. PR1774 is its
+unchanged predecessor at383526abddeb06ea61fe31fa7e342ebbd8a5c43d.
 
 The existing `FROST-GEOMETRY-01` manifest explicitly excludes `SWDIVD1` and
 a new fully frozen-front interpretation. Its qualification must remain intact.
@@ -87,3 +88,70 @@ from sealed bytes, including every CDE trajectory prefix mass balance.
 Neutral admission flags remain false; only an actual merge receipt can own
 canonical admission. The separate 48-input constitutive derivative probe grants
 no implicit Frost boundary-Jacobian or integrated model authority.
+
+## Next implicit boundary investigation: proposed, no public admission
+
+The next numerical seam calls complete actual original `HeadCalc`, with
+verification-only early entry to its private `vector_F` and `jacobian_F`.
+The measured original link closure has 42 objects. The complete residual
+procedure remains unchanged between the two final compared Jacobians.
+
+Reuse the actual qualified ordinary implicit pond chain rule, exact pond root,
+linear pond budget, history and availability providers. Their existing strict
+whole-source identity and inverse checks pass, including history parent SHA
+`e82dbca07c8676b7b2a1f29d57ddb320dbdf5187baeb7c3a0254431e57315664`.
+The earlier isolated soil-Jacobian experiments do not represent the complete
+qualified ordinary implicit route; their missing pond chain is already handled
+by that existing provider and supplies no reason to reimplement it.
+
+The final component uses bottom6, three nonuniform cells, two original
+hysteresis curves, six conductivity means, reductions 0/0.01/0.5/1 and three top
+heads. Five actual surface regimes are reached: dry flux, pond without runoff,
+linear runoff, nonlinear runoff and the existing instantaneous runoff branch.
+There are 720 states and 6480 actual three-by-three Jacobian entries per variant.
+Only fitted Ksat is included. Original examined-Ksat interpolation remains
+unsupported and refused. Zero reduction is a constitutive input here and grants
+no fully frozen front or integrated model authority.
+
+The qualified pond chain is reused literally. Only its mean-conductivity
+arguments are corrected to the actual Frost-reduced `Boundtop` inputs:
+`katm*rfcp+hconode_vsmall*(1-rfcp)` and
+`ksatfit*rfcp+hconode_vsmall*(1-rfcp)`. The existing numerical conductivity floor
+is imported from the original module; no new floor or tolerance is introduced.
+No physical flux or conservation ledger changes.
+
+Actual Windows O0/O2 receipts from source `89ae89468` each retain 192 mismatching
+entries in the unextended Frost-off composition. The proposed Frost surface
+correction matches all 6480 entries, maximum scaled discrepancy below 4.8e-8 at
+the prescribed 2e-6 derivative criterion. Water/solute conservation guards remain
+1e-10. These are component inputs, not full-model or portable qualification.
+Failed fixture/controller roles and all original observations remain preserved.
+
+The follow-up branch now implements a bounded candidate reader/build route,
+using distinct S5FIW001/S5FIC001 codecs with the existing complete payload.
+The actual implicit HeadCalc source closes by exact inverse to the qualified
+ordinary water parent; its complete implicit clock closes to the qualified
+explicit Frost clock. The first Windows O0 35-day water context passes the
+unchanged 1e-10 guards and all three physical/native/REAL4 cold windows.
+This is implemented and partly tested, with canonical admission still pending.
+Before admission, qualify the touched water/CDE, rollback, restart, native and
+unchanged-postimage composition. Other bottom boundaries, examined-Ksat
+interpolation and broader thermal calendars acquire no authority here.
+
+
+The implicit Windows four full1096 and four35-day contexts now pass their
+owning daily water/CDE and every-prefix CDE guards, forty exact cold windows,
+170 compiled native refusals and active transactions. The absolute global
+water-prefix diagnostic reaches 1.4812746038016e-10 cm (day908); it does not
+satisfy an additional fixed1e-10 absolute trajectory-wide metric. That extra
+metric is retained explicitly and is not a governing acceptance claim. The
+actual inherited day/terminal and hydraulic-step-window rules are unchanged.
+
+Before the implicit route is admitted, close the retained `alpwetnoddrz` and
+`alpdrynodrtz` ownership at bottom6. Actual original `RootExtraction` can return
+before assigning them while original `Integral` consumes them. The already
+qualified two-rate carry is restricted to other boundary domains. The tested
+cold windows passing does not establish complete ownership for arbitrary
+retained values. Reuse that literal provider with a bounded new native domain;
+add no physical store and preserve all earlier observations as their actual
+version1 roles. Portable coupling qualification follows this dependency fix.

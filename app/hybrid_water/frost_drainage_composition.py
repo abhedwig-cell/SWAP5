@@ -20,11 +20,15 @@ def enabled(project):
 
 
 def codec(project):
+    from implicit_frost_composition import enabled as implicit, codec as implicit_codec
+    if implicit(project): return implicit_codec(project)
     return b'S5FDC001' if project.solute else b'S5FDW001'
 
 
 def metadata(project):
     if not enabled(project): return None
+    from implicit_frost_composition import enabled as implicit, metadata as implicit_metadata
+    if implicit(project): return implicit_metadata(project)
     folder = Path(__file__).parent
     sha = lambda p: hashlib.sha256(p.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     providers = ['frost_drainage_composition.py', 'frost_divdra_overlap.py']
@@ -62,3 +66,5 @@ def validate(bundle, reference, project, identity):
         text = (bundle / 'solute.f90').read_text(encoding='cp1252')
         if text.count('               if (cmsy(i) <= 0d0) then') != 1 or '               if (cmsy(i) < vsmall) then' in text:
             raise ValueError('Foreign actual positive CDE cell-mass predicate')
+    from implicit_frost_composition import validate as implicit_validate
+    implicit_validate(bundle, project)

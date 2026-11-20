@@ -11,8 +11,10 @@ def selection(text, selectors, boundary, *, original_output=None):
     if selectors['SWKIMPL'] == 0:
         return None
     from implicit_snow_composition import input_domain,source_identity
-    snow=input_domain(selectors,boundary,original_output)
-    required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=int(snow), SWFROST=0,
+    from implicit_frost_composition import input_domain as frost_domain, source_identity as frost_identity
+    frost=frost_domain(selectors,boundary,original_output)
+    snow=input_domain(selectors,boundary,original_output) or frost
+    required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=int(snow), SWFROST=int(frost),
                     SWHEA=1, SWCALT=2, SWMETDETAIL=0)
     if (selectors['SWKIMPL'] != 1 or any(selectors.get(k) != v for k, v in required.items())
             or selectors.get('SWBR', 0) != 0 or not (boundary['SWBOTB'] in (1,5,8)
@@ -63,7 +65,7 @@ def selection(text, selectors, boundary, *, original_output=None):
                 interception_partition_policy='original-implicit-exact-interception-partition-v1',
                 saturation_derivative_policy='original-implicit-saturated-conductivity-derivative-v1',
                 finite_newton_policy='original-implicit-finite-newton-rate-rollback-v1',
-                **(source_identity() if snow else {}))
+                **(frost_identity() if frost else source_identity() if snow else {}))
 
 
 def metadata(project):

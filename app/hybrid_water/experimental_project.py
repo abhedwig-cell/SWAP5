@@ -156,11 +156,13 @@ def inspect(directory, *, original_output=None):
             if not frost_drain_file.is_file():raise ValueError('Missing original frost drainage input')
             frost_divd=switches(frost_drain_file.read_text(encoding='cp1252')).get('SWDIVD')
             if frost_divd==1:
-                if (original_output is False or selected['SWKIMPL']!=0 or selected['SWSOLU'] not in (0,1)
+                if (original_output is False or selected['SWKIMPL'] not in (0,1) or selected['SWSOLU'] not in (0,1)
                         or selected.get('SWBR')!=0 or selected['SWMETDETAIL']!=0 or selected['SWSOPHY']!=0):
-                    raise ValueError('Candidate Frost SWDIVD1 requires explicit original daily analytical water/CDE without aquifer')
+                    raise ValueError('Candidate Frost SWDIVD1 requires bounded original daily analytical water/CDE without aquifer')
             elif frost_divd!=0:
                 raise ValueError('Invalid original Frost vertical drainage selector')
+            elif selected['SWKIMPL'] == 1:
+                raise ValueError('Candidate implicit Frost requires effective SWDIVD1')
             if selected['SWSOLU'] and frost_divd==0:
                 raise ValueError('Original drainage reader refuses SWDIVD0 with solute transport')
         limits=[]
@@ -291,7 +293,10 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
         raise ValueError('Extended drainage hydraulic history requires explicit original-output state')
     if report.get('implicit_conductivity') and not original_output:
         raise ValueError('Original implicit conductivity requires explicit --original-output daily trial and state qualification')
-    if report.get('implicit_conductivity') and policy!=ORIGINAL_TIME_POLICY:
+    from time_event_closure import POLICY as EVENT_POLICY
+    implicit_frost = report.get('implicit_conductivity', {}).get('implicit_frost_composition', False)
+    implicit_policy = EVENT_POLICY if implicit_frost else ORIGINAL_TIME_POLICY
+    if report.get('implicit_conductivity') and policy!=implicit_policy:
         raise ValueError('Original implicit conductivity requires the original time-step policy')
     if report.get('age') and report['boundary']['SWBOTB']==1 and (age_irrigation_source or age_direct_soil_source):
         raise ValueError('Original AGE groundwater currently requires historical young-water source policy')
@@ -301,7 +306,6 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
         flags=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^!\r\n]+)',text)
         if len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F'):
             raise ValueError('FLPRINTDT requires separately selected --original-output state qualification')
-    from time_event_closure import POLICY as EVENT_POLICY
     from irrigation_pulse_time import POLICY as PULSE_POLICY
     from local_wetting_time import POLICY as WETTING_POLICY
     if policy==WETTING_POLICY and (report['selectors']['SWFROST']!=0 or report['selectors']['SWSNOW']!=0):

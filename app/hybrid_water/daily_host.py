@@ -895,6 +895,8 @@ end module plant_interface""")
     patched=extended_drainage_build(output,donor_build,project,patched)
     from ordinary_implicit_pond_switch import apply_build as ordinary_pond_build
     patched=ordinary_pond_build(output,project,patched)
+    from implicit_frost_composition import apply_build as implicit_frost_build
+    patched=implicit_frost_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
