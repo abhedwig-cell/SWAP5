@@ -48,7 +48,10 @@ subroutine frost_boundary_probe()
             thetm1(node)=watcon(node,h(node))
           end do
           call frost_probe_evaluate(mode)
-          if(mode==1.and.ftoph)error stop 'Actual dry flux boundary absent'
+          if(mode==1.and.ftoph)then
+            write(*,*)'DRY_BOUNDARY_OBSERVATION',cases+1,mode,examined,h(1),rfcp(1),pondm1,pond,hsurf,q0,qtop,peva,epd
+            error stop 'Actual dry flux boundary absent'
+          end if
           if(mode>1.and.(.not.ftoph.or.hsurf<=0d0))error stop 'Actual ponded boundary absent'
           if(mode==2.and.runots/=0d0)error stop 'Actual no-runoff boundary absent'
           if(mode>2.and.runots<=0d0)error stop 'Actual runoff boundary absent'
