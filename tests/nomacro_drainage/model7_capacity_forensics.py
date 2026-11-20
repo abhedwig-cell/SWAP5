@@ -36,10 +36,16 @@ def audit(profile,reference,allow_refusal=False):
     if terminal:
         imported='   use hybrid_model7_terminal_water_receipt, only: model7_terminal_water_residual\n   use variables, only: tcum\n'
         guard='\n         if(tcum+dt>=1d0-1d-8)then\n            if(abs(model7_terminal_water_residual())>1d-10)flnonconv=.true.\n         end if'
+        if terminal.get('trial_projection_period'):
+            guard='\n         if(abs(model7_terminal_water_residual())>1d-10)flnonconv=.true.'
         for part in (imported,guard):assert head.count(part)==1;head=head.replace(part,'',1)
         private=(build/'model7_terminal_water_receipt.f90').read_text(encoding='cp1252')
         assert SHA(private.encode('cp1252'))==terminal['provider_sha256'] and terminal['water_limit_cm']==1e-10
         line="    write(*,'(a,28(1x,es25.17e3))') 'MODEL7_TERMINAL_WATER_TERMS',terms\n"
+        if terminal.get('trial_projection_period'):
+            line="    if(tcum+dt>=1d0-1d-8)write(*,'(a,28(1x,es25.17e3))') 'MODEL7_TERMINAL_WATER_TERMS',terms\n"
+            extra_import='    use variables, only: tcum,dt\n'
+            assert private.count(extra_import)==1;private=private.replace(extra_import,'',1)
         assert private.count(line)==1;private=private.replace(line,'',1)
         inverse=[('hybrid_model7_terminal_water_receipt','hybrid_terminal_water_receipt'),
           ('model7_terminal_water_terms','terminal_water_terms'),('model7_terminal_water_residual','terminal_water_residual'),

@@ -7,7 +7,7 @@ STATE='model7_terminal_water_receipt'
 HEAD_PARENT_SHA='e8693175f3c0497d83fa9a59868250d4c0b76ca4e8a88de8d825ae5c25f6255f'
 IMPORT='   use hybrid_model7_terminal_water_receipt, only: model7_terminal_water_residual\n   use variables, only: tcum\n'
 ANCHOR='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
-GUARD='\n         if(tcum+dt>=1d0-1d-8)then\n            if(abs(model7_terminal_water_residual())>1d-10)flnonconv=.true.\n         end if'
+GUARD='\n         if(abs(model7_terminal_water_residual())>1d-10)flnonconv=.true.'
 
 
 def enabled(project):
@@ -38,7 +38,10 @@ def source():
         text=text.replace(before,after)
     anchor='    residual=real(sum(real(terms,real128)),8)'
     assert text.count(anchor)==1
-    text=text.replace(anchor,"    write(*,'(a,28(1x,es25.17e3))') 'MODEL7_TERMINAL_WATER_TERMS',terms\n"+anchor,1)
+    text=text.replace(anchor,"    if(tcum+dt>=1d0-1d-8)write(*,'(a,28(1x,es25.17e3))') 'MODEL7_TERMINAL_WATER_TERMS',terms\n"+anchor,1)
+    declaration='  real(8) function model7_terminal_water_residual() result(residual)\n'
+    assert text.count(declaration)==1
+    text=text.replace(declaration,declaration+'    use variables, only: tcum,dt\n',1)
     return text
 
 
@@ -47,7 +50,7 @@ def metadata(project):
     return dict(policy='original-explicit-model7-independent-terminal-water-trial-guard-v1',
       source_sha256=hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
       parent_receipt_sha256=PARENT_SHA,complete_before_guard_HeadCalc_sha256=HEAD_PARENT_SHA,provider_sha256=hashlib.sha256(source().encode('cp1252')).hexdigest(),
-      water_limit_cm=1e-10,accepted_state_or_flux_modified=False,new_physical_state=False,native_interface_changed=False,
+      water_limit_cm=1e-10,trial_projection_period='every original hydraulic trial; same fixed absolute day bound',accepted_state_or_flux_modified=False,new_physical_state=False,native_interface_changed=False,
       inactive_snow_terms='exact zero for the explicitly absent Snow process, matching public export',
       action='Only original Newton nonconvergence/rollback when the independent terminal receipt exceeds the unchanged public bound')
 
