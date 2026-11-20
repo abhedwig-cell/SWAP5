@@ -58,6 +58,10 @@ def metadata(project):
         root=snow_root_metadata(project,result['native_codec']) if result else None
         if root:
             result={**result,'native_codec':root['new_codec'],'implicit_snow_root_carry':root}
+        from implicit_snow_cde_root_carry import metadata as cde_root_metadata
+        root=cde_root_metadata(project,result['native_codec']) if result else None
+        if root:
+            result={**result,'native_codec':root['new_codec'],'implicit_snow_root_carry':root}
         return result
     sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
     return dict(policy=POLICY,native_codec=magic(project).decode(),**selected,source_sha256=sha(Path(__file__)),calendar_owner_sha256=sha(Path(regular.__file__)),clock_owner_sha256=sha(Path(clock.__file__)),perstep_owner_sha256=sha(Path(step_owner.__file__)),history_owner_sha256=sha(Path(history.__file__)),receipt_provider_sha256=sha(ROOT/'src/process/mod_original_output_receipt.f90'),original_integral_sha256=regular.INTEGRAL_SHA,original_watstor_sha256=clock.WATSTOR_SHA,original_timecontrol_sha256=clock.TIME_SHA,original_output_epoch=project.start_clock,physical_equations_changed=False,trial_water_guard_cm=1e-10,undefined_allocation_tails_serialized=False,preserves_requested_groups_and_precision=True)
@@ -95,7 +99,10 @@ def render_macro(original,project,selected):
 
 def apply_build(output,donor_build,project,patched):
     selected=active_selection(project)
-    if selected is None:return prior.apply_build(output,donor_build,project,patched)
+    if selected is None:
+        patched=prior.apply_build(output,donor_build,project,patched)
+        from implicit_snow_cde_root_carry import apply_build as cde_root_build
+        return cde_root_build(output,project,patched)
     if hashlib.sha256((donor_build/'swap-selected/hysteresis.f90').read_bytes().replace(b'\r\n',b'\n')).hexdigest()!=history.HYSTERESIS_SHA:raise ValueError('Changed original groundwater water hysteresis provider')
     (output/(regular.PROVIDER+'.f90')).write_bytes((ROOT/'src/process'/(regular.PROVIDER+'.f90')).read_bytes())
     (output/'hybrid_age_output_state.f90').write_text(regular.state_source(project),encoding='cp1252')

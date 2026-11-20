@@ -18,7 +18,7 @@ import groundwater_snow_forensics as snow
 from groundwater_snow_forensics import original,clock
 
 ROOT_CODECS={'S5IRW001':'S5ITW001','S5IRW002':'S5CTW002','S5IRW003':'S5STW001',
-             'S5IRW004':'S5SRW001','S5IRW005':'S5SPW001'}
+             'S5IRW004':'S5SRW001','S5IRW005':'S5SPW001','S5IRC001':'S5CIS001','S5IRC002':'S5CCS001'}
 
 
 def scalar(text,key):
@@ -41,7 +41,7 @@ def native(raw,row,build,selected,selectors):
             policy['fields']==['alpwetnoddrz','alpdrynodrtz'],'Actual implicit Snow root layout differs')
         require(len(raw)>96,'Truncated implicit Snow root carry')
         a,b=struct.unpack_from('<8i',raw,len(raw)-96),struct.unpack_from('<8i',raw,len(raw)-64)
-        expected=(1,n,0,1,selectors['SWHYST'],selectors['SWBOTB'],1,0)
+        expected=(1,n,selectors['SWSOLU'],1,selectors['SWHYST'],selectors['SWBOTB'],1,0)
         require(a==b==expected,'Actual implicit Snow root domain/witness differs')
         rates=struct.unpack_from('<2d',raw,len(raw)-32)
         require(rates==struct.unpack_from('<2d',raw,len(raw)-16) and original.finite(rates),

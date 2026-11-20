@@ -141,3 +141,5 @@ def validate_source(bundle,project,identity,reference):
         raise ValueError('Foreign complete implicit Snow original integral/soil projection')
     from implicit_snow_root_carry import validate_source as validate_root
     validate_root(bundle,project,output)
+    from implicit_snow_cde_root_carry import validate_source as validate_cde_root
+    validate_cde_root(bundle,project,output)
