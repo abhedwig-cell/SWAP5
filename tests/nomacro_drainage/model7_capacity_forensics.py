@@ -5,6 +5,7 @@ from decimal import Decimal,localcontext
 import hashlib
 import io
 import json
+import math
 from pathlib import Path
 import zipfile
 from frost_cde_drainage_portable_forensics import binary
@@ -34,6 +35,7 @@ def audit(profile,reference,allow_refusal=False,allow_censored=False):
     assert source.count(after)==1 and SHA(source.replace(after,before,1).encode('cp1252'))==BASE
     assert SHA(source.encode('cp1252'))==policy['corrected_lf_sha256']
     terminal=identity.get('model7_terminal_water');head=(build/'headcalc.f90').read_text(encoding='cp1252')
+    phase_transfers=0
     if terminal:
         imported='   use hybrid_model7_terminal_water_receipt, only: model7_terminal_water_residual\n   use variables, only: tcum\n'
         guard='\n         if(tcum+dt>=1d0-1d-8)then\n            if(abs(model7_terminal_water_residual())>1d-10)flnonconv=.true.\n         end if'
@@ -104,7 +106,23 @@ def audit(profile,reference,allow_refusal=False,allow_censored=False):
         assert len(observed)==len(rows)
         for row in rows:
             flux=row['external_flux_cm'];expected=flux[:7]+[-v for v in flux[7:]]+row['stock_start_cm']+[-v for v in row['stock_end_cm']]
-            assert observed[row['day']]==expected,'Terminal trial/public daily receipt terms differ'
+            trial=observed[row['day']]
+            if trial!=expected:
+                # HeadCalc precedes end-of-day CropDevelopment(4)/Integral(4).
+                # Original leaf loss transfers canopy water to interception.
+                # This is a phase correspondence check, never a mass gate.
+                pins={'MOD_cropdevelopment.f90':'2011db415c8dd3b97370305163a89bc37ea7a404067713e536a797677aaf8bb6',
+                      'integral.f90':'62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a'}
+                for name,digest in pins.items():
+                    assert SHA((reference/'build/swap-selected'/name).read_bytes().replace(b'\r\n',b'\n'))==digest
+                assert [i for i in range(28) if trial[i]!=expected[i]]==[7,25]
+                assert trial[7]>expected[7] and trial[25]<expected[25]<=0
+                with localcontext() as context:
+                    context.prec=80
+                    difference=abs(sum(dec(trial[i])-dec(expected[i]) for i in (7,25)))
+                    rounding=sum(dec(math.ulp(v))/2 for v in (trial[7],expected[7],trial[25],expected[25]))
+                    assert difference<=rounding,'Canopy/interception phase transfer is not conservative to binary rounding'
+                phase_transfers+=1
     if failed and not censored:
         assert abs(rows[-1]['independent_residual_cm'])>1e-10 and not list((profile/'trajectory').glob('accepted-*-day-'+str(len(rows))+'.zip'))
     elif not failed:
@@ -126,7 +144,7 @@ def audit(profile,reference,allow_refusal=False,allow_censored=False):
             expected=[row for row in output[1:] if low<=row[:19].decode().strip()<high]
             assert binary((cold/'original/result_output.bin').read_bytes())[1:]==expected
     status='RETAINED_ACTUAL_MODEL7_NEXT_DAY_CENSOR_ACCEPTED_PREFIX_AUDITED_NOT_PERIOD_PASS' if censored else 'RETAINED_ACTUAL_MODEL7_PUBLIC_WATER_GUARD_REFUSAL_INDEPENDENTLY_CONFIRMED' if failed else 'INDEPENDENT_MODEL7_CAPACITY_SOURCE_BUDGET_NATIVE_USER_OUTPUT_PASS'
-    return dict(status=status,producer=q['source'],kind=q['kind'],optimization=q['optimization'],days=len(rows),accepted_days=len(accepted),water_daily_max=str(maximum),CDE_daily_max=str(chemical),CDE_every_prefix_max=str(prefix),extra_absolute_global_water_prefix=str(waterprefix),extra_global_water_prefix_is_owning_gate=False,full_capacity_source_inverse=True,complete_HeadCalc_parent_inverse=True,terminal_receipt_parent_inverse=bool(terminal),all28_terminal_public_terms_exact=bool(terminal),cold_windows=0 if failed else len(q['own']),compiler_executions=0,model_executions=0,public_admission=False)
+    return dict(status=status,producer=q['source'],kind=q['kind'],optimization=q['optimization'],days=len(rows),accepted_days=len(accepted),water_daily_max=str(maximum),CDE_daily_max=str(chemical),CDE_every_prefix_max=str(prefix),extra_absolute_global_water_prefix=str(waterprefix),extra_global_water_prefix_is_owning_gate=False,full_capacity_source_inverse=True,complete_HeadCalc_parent_inverse=True,terminal_receipt_parent_inverse=bool(terminal),all28_terminal_public_terms_exact=bool(terminal) and phase_transfers==0,original_after_hydraulic_canopy_interception_transfers=phase_transfers,phase_transfer_uses_only_binary_operation_rounding=True,public_daily_mass_gate_unchanged=True,cold_windows=0 if failed else len(q['own']),compiler_executions=0,model_executions=0,public_admission=False)
 
 
 if __name__=='__main__':

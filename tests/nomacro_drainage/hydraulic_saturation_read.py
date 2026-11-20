@@ -14,8 +14,9 @@ def inspect(folder):
     for variant in ('original','search_diagonal'):
         raw=q['variants'][variant]
         assert raw['returncode']==0 and not raw['stderr']
-        for suffix,key in (('.f90','source_sha256'),('.exe','executable_sha256')):
-            assert hashlib.sha256((folder/(variant+suffix)).read_bytes()).hexdigest()==raw[key]
+        assert hashlib.sha256((folder/(variant+'.f90')).read_bytes()).hexdigest()==raw['source_sha256']
+        executables=[path for path in (folder/variant,folder/(variant+'.exe')) if path.is_file()]
+        assert len(executables)==1 and hashlib.sha256(executables[0].read_bytes()).hexdigest()==raw['executable_sha256']
         rows={}
         for line in raw['stdout'].splitlines():
             if not line.startswith('ACTUAL_SATURATED_JACOBIAN '):continue
