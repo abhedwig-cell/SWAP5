@@ -36,7 +36,7 @@ def strip_clock_trial(source,cde):
     return source
 
 
-def validate_source(bundle,project,identity):
+def validate_source(bundle,project,identity,reference):
     from experimental_project import inspect
     from implicit_snow_composition import input_domain
     report=inspect(project.input_directory)
@@ -113,3 +113,29 @@ def validate_source(bundle,project,identity):
     if (body.count('use hybrid_implicit_pond_event_state,only:assert_no_implicit_pond_event')!=1 or
             body.count('call assert_no_implicit_pond_event()')!=1):
         raise ValueError('Foreign implicit Snow pending-event native boundary')
+
+    original=Path(reference)/'build/swap-selected'
+    raw=(original/'integral.f90').read_text(encoding='cp1252')
+    stock=(original/'watstor.f90').read_text(encoding='cp1252')
+    import original_output_thermal as thermal
+    if output.get('cde_clock_output'):
+        from cde_clock_output import render_integral
+        expected=render_integral(raw,stock,output)
+    elif output.get('cde_interval_output'):
+        if groundwater:
+            from implicit_snow_interval import integral
+            expected=integral(raw,stock,output)
+        else:
+            from cde_interval_output import render_integral
+            expected=render_integral(raw,output)
+    elif output.get('thermal_clock'):
+        if output.get('thermal_reset'):
+            from thermal_output_reset import render_integral
+        elif output.get('flprintdt'):
+            from thermal_output_step import render_integral
+        else:
+            from thermal_output_clock import render_integral
+        expected=render_integral(raw,stock,output)
+    else:expected=thermal.render_integral(raw,None,output)
+    if (bundle/'integral.f90').read_text(encoding='cp1252')!=expected:
+        raise ValueError('Foreign complete implicit Snow original integral/soil projection')
