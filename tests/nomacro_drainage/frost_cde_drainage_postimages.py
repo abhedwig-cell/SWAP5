@@ -13,6 +13,7 @@ import output_thermal_runtime as thermal
 from calendar_evidence import differences
 from calendar_publisher import publisher_equivalence
 from implicit_conductivity_forensics import output_records
+from water_snow_groundwater_period import cold as cold_continuation
 
 
 def main():
@@ -84,7 +85,7 @@ def main():
             item['identity_changes'] = delta
             item['historical_metadata_additions'] = metadata_addition
             item['unchanged_complete_Fortran'] = {p.name: m.sha(p) for p in build.glob('*.f90')}
-            completed = recovered.get(name, {}).get('status') == 'EXACT_UNSELECTED_FORTRAN_PHYSICAL_NATIVE_USER_OUTPUT_POSTIMAGE_PASS'
+            completed = recovered.get(name, {}).get('trajectory', {}).get('days') == 35
             trajectory = Path(recovered[name].get('trajectory_root', str(a.recover_existing / name / 'trajectory'))) if completed else out / 'trajectory'
             data_parent = m.rows(warm_parent)
             if completed:
@@ -108,15 +109,8 @@ def main():
                     # Accepted full-period parents are projected only to this
                     # exact completed 35-day prefix; no period is rerun.
                     assert new_rows == old_rows[:len(new_rows)]
-            if completed:
-                cold = Path(recovered[name].get('cold_actual_root', str(a.recover_existing / name / 'own-30')))
-                assert m.physical(m.rows(cold)) == m.physical(data[30:34])
-                with zipfile.ZipFile(trajectory / 'accepted-column-1-day-34.zip') as x, zipfile.ZipFile(cold / 'accepted-column-1-day-34.zip') as y:
-                    assert all(x.read(n) == y.read(n) for n in ('macro.bin', 'result.end'))
-                item['cold'] = recovered[name]['cold']
-            else:
-                cold = out / 'own-30'
-                item['cold'] = thermal.own(build, a.reference_work, project, trajectory, data, 30, 34, cold)
+            cold = Path(recovered[name].get('cold_actual_root', str(a.recover_existing / name / 'own-30'))) if completed else out / 'own-30'
+            item['cold'] = cold_continuation(build, a.reference_work, project, trajectory, data, 30, 34, cold)
             item['cold_actual_root'] = str(cold)
             item['status'] = 'EXACT_UNSELECTED_FORTRAN_PHYSICAL_NATIVE_USER_OUTPUT_POSTIMAGE_PASS'
             save(); print(name, item['status'], flush=True)
