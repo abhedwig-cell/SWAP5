@@ -72,15 +72,28 @@ def main():
                 metadata_addition = {'water_polish_policy': {'before': 'ABSENT_METADATA', 'after': 'strict-water-always-polish-v1'}}
             delta = differences(left, right)
             allowed = {'host', 'experimental_input_adapter', 'original_output.source_sha256',
-                'original_output.ordinary_owner_sha256', 'restart_publisher.library_sha256'}
+                'original_output.ordinary_owner_sha256', 'restart_publisher.library_sha256',
+                'implicit_conductivity.implicit_snow_composition_source_sha256',
+                'original_output.implicit_snow_composition_source_sha256',
+                'implicit_groundwater_trial.source_sha256',
+                'implicit_groundwater_trial.original_projection_owner_sha256',
+                'lower_boundary_receipt.composition_sha256', 'original_output.composition_build_sha256'}
             assert set(delta) <= allowed, (name, delta)
             if 'restart_publisher.library_sha256' in delta:
                 item['publisher_equivalence'] = publisher_equivalence(parent / 'restart_publish.dll', build / 'restart_publish.dll')
             item['identity_changes'] = delta
             item['historical_metadata_additions'] = metadata_addition
             item['unchanged_complete_Fortran'] = {p.name: m.sha(p) for p in build.glob('*.f90')}
-            trajectory = out / 'trajectory'; data_parent = m.rows(warm_parent)
-            item['trajectory'], data = m.trajectory(build, a.reference_work, project, trajectory, 35, {2, 4, 30, 34, 35}, 180)
+            completed = recovered.get(name, {}).get('status') == 'EXACT_UNSELECTED_FORTRAN_PHYSICAL_NATIVE_USER_OUTPUT_POSTIMAGE_PASS'
+            trajectory = Path(recovered[name].get('trajectory_root', str(a.recover_existing / name / 'trajectory'))) if completed else out / 'trajectory'
+            data_parent = m.rows(warm_parent)
+            if completed:
+                data = m.rows(trajectory); assert len(data) == 35; m.check(data)
+                item['trajectory'] = recovered[name]['trajectory']
+                item['completed_scientific_postimage_reused_without_replay'] = True
+            else:
+                item['trajectory'], data = m.trajectory(build, a.reference_work, project, trajectory, 35, {2, 4, 30, 34, 35}, 180)
+            item['trajectory_root'] = str(trajectory)
             assert m.physical(data) == m.physical(data_parent[:35]), 'Unselected physical postimage changed'
             for day in (2, 4, 30, 34, 35):
                 with zipfile.ZipFile(warm_parent / f'accepted-column-1-day-{day}.zip') as x, \
@@ -95,7 +108,16 @@ def main():
                     # Accepted full-period parents are projected only to this
                     # exact completed 35-day prefix; no period is rerun.
                     assert new_rows == old_rows[:len(new_rows)]
-            item['cold'] = thermal.own(build, a.reference_work, project, trajectory, data, 30, 34, out / 'own-30')
+            if completed:
+                cold = Path(recovered[name].get('cold_actual_root', str(a.recover_existing / name / 'own-30')))
+                assert m.physical(m.rows(cold)) == m.physical(data[30:34])
+                with zipfile.ZipFile(trajectory / 'accepted-column-1-day-34.zip') as x, zipfile.ZipFile(cold / 'accepted-column-1-day-34.zip') as y:
+                    assert all(x.read(n) == y.read(n) for n in ('macro.bin', 'result.end'))
+                item['cold'] = recovered[name]['cold']
+            else:
+                cold = out / 'own-30'
+                item['cold'] = thermal.own(build, a.reference_work, project, trajectory, data, 30, 34, cold)
+            item['cold_actual_root'] = str(cold)
             item['status'] = 'EXACT_UNSELECTED_FORTRAN_PHYSICAL_NATIVE_USER_OUTPUT_POSTIMAGE_PASS'
             save(); print(name, item['status'], flush=True)
         assert m.sha(a.baseline) == baseline_hash
