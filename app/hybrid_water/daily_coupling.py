@@ -206,6 +206,13 @@ def validate_bundle(bundle, reference, project):
     from implicit_finite_newton import metadata as implicit_finite_metadata
     if identity.get('implicit_finite_newton')!=implicit_finite_metadata(project):
         raise ValueError('Foreign original implicit finite Newton rollback policy')
+    from ordinary_implicit_pond_switch import metadata as ordinary_pond_metadata,validate as validate_ordinary_pond
+    if identity.get('ordinary_implicit_pond_switch')!=ordinary_pond_metadata(project):
+        raise ValueError('Foreign ordinary implicit positive-pond reference policy')
+    validate_ordinary_pond(bundle,project)
+    if identity.get('ordinary_implicit_pond_switch'):
+        from ordinary_pond_source_guard import validate as validate_ordinary_pond_source
+        validate_ordinary_pond_source(bundle,project,identity)
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source

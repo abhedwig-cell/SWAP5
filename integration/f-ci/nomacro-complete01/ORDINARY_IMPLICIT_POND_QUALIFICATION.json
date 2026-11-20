@@ -1,0 +1,2050 @@
+{
+  "status": "NEUTRAL_ORDINARY_IMPLICIT_POND_RAW_SCIENCE_PASS_PENDING_ADMISSION",
+  "runtime": "614e1c5a5ce383222d6febb9d183aac14bf4a625",
+  "numeric_runtime": "b96f69a397615d24f7af4fc1cdf28bf591957a04",
+  "predecessor": "d785e2c3c415122b8e391d3979f1fbceb81ce5b5",
+  "independent_readers": "69f03573043fcd5bf6fe6c9b323bcccb176c485a",
+  "sealer_source": "4a80ae60f62c348f126e95afb5633f7503d3927c",
+  "archives": {
+    "ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O0_RAW_ARCHIVE": {
+      "record": "ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "811ed6f3621300ccf2de6c86c5dd47d21b13f4daa16906f385c30de95c5f1a86"
+    },
+    "ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O2_RAW_ARCHIVE": {
+      "record": "ORDINARY_IMPLICIT_POND_UBUNTU_FOLLOWUP_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "ad267a5943dbd8acc56ab45eedc2113b92ea23636bd371ad5f75c490ce76c7d7"
+    },
+    "ORDINARY_IMPLICIT_POND_UBUNTU_INITIAL_O0_RAW_ARCHIVE": {
+      "record": "ORDINARY_IMPLICIT_POND_UBUNTU_INITIAL_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "76a352f66743185aee0d24f21f799198ce9ecbc2ca2b4c8a93986a2647921443"
+    },
+    "ORDINARY_IMPLICIT_POND_UBUNTU_INITIAL_O2_RAW_ARCHIVE": {
+      "record": "ORDINARY_IMPLICIT_POND_UBUNTU_INITIAL_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "af583aa237dbeb3bc0db55767672c9ef4b04c1855fecb62a03722076a49f3fa5"
+    },
+    "ORDINARY_IMPLICIT_POND_WINDOWS_O0_RAW_ARCHIVE": {
+      "record": "ORDINARY_IMPLICIT_POND_WINDOWS_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "4c533f738c36cd45663152a861ce50a9a2d23b07a2788717de35521e0b698e27"
+    },
+    "ORDINARY_IMPLICIT_POND_WINDOWS_O2_RAW_ARCHIVE": {
+      "record": "ORDINARY_IMPLICIT_POND_WINDOWS_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "1de8409c048ce1e1e1dd380f8ed6d286a6e828f37e7f6cad3012481ea591c89d"
+    },
+    "ORDINARY_IMPLICIT_POND_WINDOWS_SUPPORT_RAW_ARCHIVE": {
+      "record": "ORDINARY_IMPLICIT_POND_WINDOWS_SUPPORT_RAW_ARCHIVE.json",
+      "record_lf_sha256": "746e605d2904a69a0ba7890b8d4ee10dfc9e29c12031bbea1247a3223ae5ffa3"
+    }
+  },
+  "Windows": {
+    "status": "INDEPENDENT_WINDOWS_ORDINARY_RAW_SCIENCE_PASS",
+    "metrics": {
+      "O0": {
+        "full": {
+          "water": {
+            "status": "INDEPENDENT_ORDINARY_FULL_SOURCE_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+            "actual_days": 1096,
+            "actual_cold_windows": 8,
+            "optimization": "O0",
+            "selectors": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-chain-O0-v1",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-chain-weighted-water-O0-qualified-budget-v1",
+              "optimization": "O0",
+              "solute": 0,
+              "hysteresis": 2,
+              "kmean": 6,
+              "bottom": 5,
+              "short_only": false,
+              "reuse_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-chain-weighted-water-O0-v1",
+              "full_model_cap": 600
+            },
+            "metrics": {
+              "days": 1096,
+              "whole_water_residual_cm": -4.986736940813821e-13
+            },
+            "functional_completion": "PARTIAL",
+            "whole_scientific_equivalence": "NOT_QUALIFIED"
+          },
+          "cde": {
+            "status": "INDEPENDENT_ORDINARY_FULL_SOURCE_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+            "actual_days": 1096,
+            "actual_cold_windows": 8,
+            "optimization": "O0",
+            "selectors": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O0-v1\\cde-groundwater-history\\short",
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "daily",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-recovered-O0-v1\\cde-groundwater-history\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O0-v1\\cde-groundwater-history\\input"
+            },
+            "metrics": {
+              "days": 1096,
+              "whole_water_residual_cm": -1.2743911073808591e-15,
+              "chemical": null
+            },
+            "functional_completion": "PARTIAL",
+            "whole_scientific_equivalence": "NOT_QUALIFIED"
+          }
+        },
+        "short": {
+          "water-groundwater": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O0-v1\\water-groundwater\\short",
+              "optimization": "O0",
+              "solute": 0,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 1,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 2,
+              "reset": 0,
+              "nprintday": 1,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-O0-v1\\water-groundwater\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O0-v1\\water-groundwater\\input"
+            }
+          },
+          "water-history1-head": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O0-v1\\water-history1-head\\short",
+              "optimization": "O0",
+              "solute": 0,
+              "hysteresis": 1,
+              "bottom": 5,
+              "kmean": 2,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-O0-v1\\water-history1-head\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O0-v1\\water-history1-head\\input"
+            }
+          },
+          "cde-plate-history": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O0-v1\\cde-plate-history\\short",
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 8,
+              "kmean": 3,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-O0-v1\\cde-plate-history\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O0-v1\\cde-plate-history\\input"
+            }
+          },
+          "cde-groundwater-history": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O0-v1\\cde-groundwater-history\\short",
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "daily",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-recovered-O0-v1\\cde-groundwater-history\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O0-v1\\cde-groundwater-history\\input"
+            }
+          },
+          "water-plate": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O0-v1\\water-plate\\short",
+              "optimization": "O0",
+              "solute": 0,
+              "hysteresis": 0,
+              "bottom": 8,
+              "kmean": 5,
+              "perstep": false,
+              "mode": "monthly",
+              "format": 2,
+              "reset": 1,
+              "nprintday": 1,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-recovered-O0-v1\\water-plate\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O0-v1\\water-plate\\input"
+            }
+          },
+          "cde-head-history1": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O0-v1\\cde-head-history1\\short",
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 5,
+              "kmean": 6,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-recovered-O0-v1\\cde-head-history1\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O0-v1\\cde-head-history1\\input"
+            }
+          }
+        },
+        "components": {
+          "chain": {
+            "status": "INDEPENDENT_ORIGINAL_POND_CHAIN_EQUATION_PASS",
+            "actual_points": 40,
+            "decimal_digits": 80,
+            "maximum_derivative_gap": 1.165473136590167e-14,
+            "exact_executed_driver_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+            "complete_model_source_equivalent": true,
+            "executed_nonmutation_ABA_and_fixed_limit_assertions": true
+          },
+          "limits": {
+            "status": "INDEPENDENT_ORIGINAL_POND_CHAIN_EQUATION_PASS",
+            "actual_points": 64,
+            "decimal_digits": 80,
+            "maximum_derivative_gap": 4.372505631048737e-15,
+            "exact_executed_driver_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+            "complete_model_source_equivalent": true,
+            "executed_nonmutation_ABA_and_fixed_limit_assertions": true
+          }
+        },
+        "controls": {
+          "groundwater": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          },
+          "water-step": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          },
+          "cde": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          },
+          "water": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          },
+          "cde-step": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          }
+        },
+        "current_native_postimages": 9,
+        "transactions": {
+          "water": {
+            "discard_no_day_advance": true,
+            "replay_exact": true,
+            "accept_exact": true,
+            "recovered_next_day_exact": true,
+            "origin_unchanged": true
+          },
+          "cde": {
+            "discard_no_day_advance": true,
+            "replay_exact": true,
+            "accept_exact": true,
+            "recovered_next_day_exact": true,
+            "origin_unchanged": true
+          }
+        },
+        "nonselected": {
+          "secondary-primary-postimage-cde-O0-v1": {
+            "status": "ACTUAL_NONSELECTED_INPUT_FORTRAN_KERNEL_PHYSICAL_NATIVE_PASS",
+            "current_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-nonselected-O0-v1\\0",
+            "prior_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\secondary-primary-postimage-cde-O0-v1",
+            "actual_days": 6,
+            "exact_native_days": [
+              2,
+              4
+            ],
+            "changed_identity_roles": [
+              "host",
+              "restart_publisher.library_sha256"
+            ],
+            "publisher": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "59facd5fa59ce7366fac5f9125b0b742d4f48c8cbe0789de4cbbb81b03f1c221",
+              "current_sha256": "29badc59bdbefc9b4b9be2ab0e0ed4b62a50495efafc4615fc890e1c3fa2294a",
+              "old_image_base": 12462522368,
+              "current_image_base": 9061269504,
+              "actual_relocations": 15,
+              "changed_byte_count": 39,
+              "changed_offsets": [
+                136,
+                137,
+                178,
+                179,
+                216,
+                217,
+                218,
+                6658,
+                6659,
+                7538,
+                7539,
+                7554,
+                7555,
+                7570,
+                7571,
+                7586,
+                7587,
+                7602,
+                7603,
+                7618,
+                7619,
+                7634,
+                7635,
+                7650,
+                7651,
+                7666,
+                7667,
+                7682,
+                7683,
+                7698,
+                7699,
+                7714,
+                7715,
+                7730,
+                7731,
+                8570,
+                8571,
+                9732,
+                9733
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "independent": {
+              "status": "INDEPENDENT_EXTENDED_ORIGINAL_CALENDAR_SOURCE_OBSERVATIONS_NATIVE_OUTPUT_PASS",
+              "actual_days": 6,
+              "warm": {
+                "days": 6,
+                "maximum_daily_inventory_residual_cm": 2.053094022916313e-14,
+                "reported_integrated_soil_water_residual_cm": -3.251831312903186e-14,
+                "integrated_soil_water_qualification": false,
+                "actual_zero_bottom_hydraulic_initial_and_day_frames": 7,
+                "original_counter_segments": {
+                  "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                  "actual_days": 6,
+                  "reset_segments": 7,
+                  "maximum_transfer_difference_cm": 1.6653345369377348e-16,
+                  "water_guard_cm": 1e-10,
+                  "physical_equations_changed": false,
+                  "whole_scientific_equivalence": "NOT_QUALIFIED"
+                }
+              },
+              "cold": [
+                {
+                  "days": 2,
+                  "maximum_daily_inventory_residual_cm": 2.053094022916313e-14,
+                  "reported_integrated_soil_water_residual_cm": -2.093339607558975e-14,
+                  "integrated_soil_water_qualification": false,
+                  "actual_zero_bottom_hydraulic_initial_and_day_frames": 3,
+                  "original_counter_segments": {
+                    "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                    "actual_days": 2,
+                    "reset_segments": 2,
+                    "maximum_transfer_difference_cm": 9.71445146547012e-17,
+                    "water_guard_cm": 1e-10,
+                    "physical_equations_changed": false,
+                    "whole_scientific_equivalence": "NOT_QUALIFIED"
+                  },
+                  "original_output": {
+                    "result_output.bin": {
+                      "exact": true,
+                      "continuation_records": 2,
+                      "kind": "original_REAL4_binary"
+                    }
+                  }
+                }
+              ],
+              "actual_complete_native_packages": 3,
+              "functional_completion": "PARTIAL",
+              "whole_scientific_equivalence": "NOT_QUALIFIED"
+            },
+            "original_BUILD_sha256": "6950d63d015aabdafd0d9b755ac5610d9af36f0cf4ad49a9c8f8414e76a74c1d",
+            "current_BUILD_sha256": "bec43165c7cff67d7dbf4b3267a8a3943f78f6b7b6493a6b27077a6c338a240f"
+          },
+          "secondary-pond-full-water-O0-v1": {
+            "status": "ACTUAL_NONSELECTED_INPUT_FORTRAN_KERNEL_PHYSICAL_NATIVE_PASS",
+            "current_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-nonselected-O0-v1\\1",
+            "prior_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\secondary-pond-full-water-O0-v1",
+            "actual_days": 6,
+            "exact_native_days": [
+              2,
+              4
+            ],
+            "changed_identity_roles": [
+              "host",
+              "restart_publisher.library_sha256"
+            ],
+            "publisher": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "8f927e4b12bc6fa44da6960a165b8619ec794f43bf3f2d5e61a5175d545f13a4",
+              "current_sha256": "e396396a26fd83e682af1143de8bac34ef658017ca9d06e8a2bd7251fa5e0c42",
+              "old_image_base": 11475943424,
+              "current_image_base": 11419779072,
+              "actual_relocations": 15,
+              "changed_byte_count": 39,
+              "changed_offsets": [
+                136,
+                137,
+                178,
+                179,
+                216,
+                217,
+                218,
+                6658,
+                6659,
+                7538,
+                7539,
+                7554,
+                7555,
+                7570,
+                7571,
+                7586,
+                7587,
+                7602,
+                7603,
+                7618,
+                7619,
+                7634,
+                7635,
+                7650,
+                7651,
+                7666,
+                7667,
+                7682,
+                7683,
+                7698,
+                7699,
+                7714,
+                7715,
+                7730,
+                7731,
+                8570,
+                8571,
+                9732,
+                9733
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "independent": {
+              "status": "INDEPENDENT_EXTENDED_ORIGINAL_CALENDAR_SOURCE_OBSERVATIONS_NATIVE_OUTPUT_PASS",
+              "actual_days": 6,
+              "warm": {
+                "days": 6,
+                "maximum_daily_inventory_residual_cm": 4.1723569044194164e-14,
+                "reported_integrated_soil_water_residual_cm": 7.178453794928763e-14,
+                "integrated_soil_water_qualification": false,
+                "actual_zero_bottom_hydraulic_initial_and_day_frames": 7,
+                "original_counter_segments": {
+                  "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                  "actual_days": 6,
+                  "reset_segments": 2,
+                  "maximum_transfer_difference_cm": 6.661338147750939e-16,
+                  "water_guard_cm": 1e-10,
+                  "physical_equations_changed": false,
+                  "whole_scientific_equivalence": "NOT_QUALIFIED"
+                }
+              },
+              "cold": [
+                {
+                  "days": 2,
+                  "maximum_daily_inventory_residual_cm": 2.216629657603164e-14,
+                  "reported_integrated_soil_water_residual_cm": 1.624519746154518e-14,
+                  "integrated_soil_water_qualification": false,
+                  "actual_zero_bottom_hydraulic_initial_and_day_frames": 3,
+                  "original_counter_segments": {
+                    "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                    "actual_days": 2,
+                    "reset_segments": 0,
+                    "maximum_transfer_difference_cm": 9.71445146547012e-17,
+                    "water_guard_cm": 1e-10,
+                    "physical_equations_changed": false,
+                    "whole_scientific_equivalence": "NOT_QUALIFIED"
+                  },
+                  "original_output": {
+                    "result_output.csv": {
+                      "exact": true,
+                      "continuation_records": 0,
+                      "kind": "original_ASCII"
+                    }
+                  }
+                }
+              ],
+              "actual_complete_native_packages": 3,
+              "functional_completion": "PARTIAL",
+              "whole_scientific_equivalence": "NOT_QUALIFIED"
+            },
+            "original_BUILD_sha256": "b710004cadcce83c46fef1b5210aa811f16652d0a9694e730d628df7c5874bd0",
+            "current_BUILD_sha256": "5b329686341f2b4e24d906353554f6d1e2ba00bad3d14f7fa97c593c479467e8"
+          },
+          "secondary-explicit-off-water-O0-v1": {
+            "status": "ACTUAL_NONSELECTED_INPUT_FORTRAN_KERNEL_PHYSICAL_NATIVE_PASS",
+            "current_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-nonselected-O0-v1\\2",
+            "prior_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\secondary-explicit-off-water-O0-v1",
+            "actual_days": 5,
+            "exact_native_days": [
+              2,
+              4
+            ],
+            "changed_identity_roles": [
+              "host",
+              "restart_publisher.library_sha256"
+            ],
+            "publisher": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "8daded89f13a34099d8a8b6b22c6d562690ddaca5878dd6e7a28e2852a9b7769",
+              "current_sha256": "7bda5e91eab89b31e51a7d4815ca6e75042e5b51a82774d388984e756e82cf61",
+              "old_image_base": 9672589312,
+              "current_image_base": 7984513024,
+              "actual_relocations": 15,
+              "changed_byte_count": 54,
+              "changed_offsets": [
+                136,
+                137,
+                178,
+                179,
+                180,
+                216,
+                217,
+                6658,
+                6659,
+                6660,
+                7538,
+                7539,
+                7540,
+                7554,
+                7555,
+                7556,
+                7570,
+                7571,
+                7572,
+                7586,
+                7587,
+                7588,
+                7602,
+                7603,
+                7604,
+                7618,
+                7619,
+                7620,
+                7634,
+                7635,
+                7636,
+                7650,
+                7651,
+                7652,
+                7666,
+                7667,
+                7668,
+                7682,
+                7683,
+                7684,
+                7698,
+                7699,
+                7700,
+                7714,
+                7715,
+                7716,
+                7730,
+                7731,
+                7732,
+                8570,
+                8571,
+                8572,
+                9732,
+                9733
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "independent": {
+              "status": "INDEPENDENT_EXTENDED_ORIGINAL_CALENDAR_SOURCE_OBSERVATIONS_NATIVE_OUTPUT_PASS",
+              "actual_days": 5,
+              "warm": {
+                "days": 5,
+                "maximum_daily_inventory_residual_cm": 1.5210055437364645e-14,
+                "reported_integrated_soil_water_residual_cm": 2.7756822448127272e-14,
+                "integrated_soil_water_qualification": false,
+                "original_counter_segments": {
+                  "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                  "actual_days": 5,
+                  "reset_segments": 2,
+                  "maximum_transfer_difference_cm": 2.498001805406602e-16,
+                  "water_guard_cm": 1e-10,
+                  "physical_equations_changed": false,
+                  "whole_scientific_equivalence": "NOT_QUALIFIED"
+                }
+              },
+              "cold": [
+                {
+                  "days": 2,
+                  "maximum_daily_inventory_residual_cm": 1.4307999229856705e-14,
+                  "reported_integrated_soil_water_residual_cm": 1.0055704099259932e-14,
+                  "integrated_soil_water_qualification": false,
+                  "original_counter_segments": {
+                    "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                    "actual_days": 2,
+                    "reset_segments": 0,
+                    "maximum_transfer_difference_cm": 1.1102230246251565e-16,
+                    "water_guard_cm": 1e-10,
+                    "physical_equations_changed": false,
+                    "whole_scientific_equivalence": "NOT_QUALIFIED"
+                  },
+                  "original_output": {
+                    "result_output.csv": {
+                      "exact": true,
+                      "continuation_records": 0,
+                      "kind": "original_ASCII"
+                    }
+                  }
+                }
+              ],
+              "actual_complete_native_packages": 3,
+              "functional_completion": "PARTIAL",
+              "whole_scientific_equivalence": "NOT_QUALIFIED"
+            },
+            "original_BUILD_sha256": "4bca70349640ea7e60d45bb7a1c7d695588b2501759bc001d72264827402ccfe",
+            "current_BUILD_sha256": "2afcb4cdc7694c4bbca70711b484a85b4fd41f0348e1d539a821b701a777c695"
+          }
+        }
+      },
+      "O2": {
+        "full": {
+          "water": {
+            "status": "INDEPENDENT_ORDINARY_FULL_SOURCE_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+            "actual_days": 1096,
+            "actual_cold_windows": 8,
+            "optimization": "O2",
+            "selectors": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-chain-O2-v1",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-chain-weighted-water-O2-qualified-budget-v1",
+              "optimization": "O2",
+              "solute": 0,
+              "hysteresis": 2,
+              "kmean": 6,
+              "bottom": 5,
+              "short_only": false,
+              "reuse_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-chain-weighted-water-O2-v1",
+              "full_model_cap": 600
+            },
+            "metrics": {
+              "days": 1096,
+              "whole_water_residual_cm": -4.986736940813821e-13
+            },
+            "functional_completion": "PARTIAL",
+            "whole_scientific_equivalence": "NOT_QUALIFIED"
+          },
+          "cde": {
+            "status": "INDEPENDENT_ORDINARY_FULL_SOURCE_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+            "actual_days": 1096,
+            "actual_cold_windows": 8,
+            "optimization": "O2",
+            "selectors": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O2-v1\\cde-groundwater-history\\short",
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "daily",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-recovered-O2-v1\\cde-groundwater-history\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O2-v1\\cde-groundwater-history\\input"
+            },
+            "metrics": {
+              "days": 1096,
+              "whole_water_residual_cm": -1.2743911073808591e-15,
+              "chemical": null
+            },
+            "functional_completion": "PARTIAL",
+            "whole_scientific_equivalence": "NOT_QUALIFIED"
+          }
+        },
+        "short": {
+          "water-groundwater": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O2-v1\\water-groundwater\\short",
+              "optimization": "O2",
+              "solute": 0,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 1,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 2,
+              "reset": 0,
+              "nprintday": 1,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-O2-v1\\water-groundwater\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O2-v1\\water-groundwater\\input"
+            }
+          },
+          "water-history1-head": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O2-v1\\water-history1-head\\short",
+              "optimization": "O2",
+              "solute": 0,
+              "hysteresis": 1,
+              "bottom": 5,
+              "kmean": 2,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-O2-v1\\water-history1-head\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O2-v1\\water-history1-head\\input"
+            }
+          },
+          "cde-plate-history": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O2-v1\\cde-plate-history\\short",
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 8,
+              "kmean": 3,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-O2-v1\\cde-plate-history\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O2-v1\\cde-plate-history\\input"
+            }
+          },
+          "cde-groundwater-history": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O2-v1\\cde-groundwater-history\\short",
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "daily",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-recovered-O2-v1\\cde-groundwater-history\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O2-v1\\cde-groundwater-history\\input"
+            }
+          },
+          "water-plate": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O2-v1\\water-plate\\short",
+              "optimization": "O2",
+              "solute": 0,
+              "hysteresis": 0,
+              "bottom": 8,
+              "kmean": 5,
+              "perstep": false,
+              "mode": "monthly",
+              "format": 2,
+              "reset": 1,
+              "nprintday": 1,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-recovered-O2-v1\\water-plate\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O2-v1\\water-plate\\input"
+            }
+          },
+          "cde-head-history1": {
+            "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O2-v1\\cde-head-history1\\short",
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 5,
+              "kmean": 6,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ordinary-pond-matrix-recovered-O2-v1\\cde-head-history1\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-recovered-O2-v1\\cde-head-history1\\input"
+            }
+          }
+        },
+        "components": {
+          "chain": {
+            "status": "INDEPENDENT_ORIGINAL_POND_CHAIN_EQUATION_PASS",
+            "actual_points": 40,
+            "decimal_digits": 80,
+            "maximum_derivative_gap": 1.165473136590167e-14,
+            "exact_executed_driver_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+            "complete_model_source_equivalent": true,
+            "executed_nonmutation_ABA_and_fixed_limit_assertions": true
+          },
+          "limits": {
+            "status": "INDEPENDENT_ORIGINAL_POND_CHAIN_EQUATION_PASS",
+            "actual_points": 64,
+            "decimal_digits": 80,
+            "maximum_derivative_gap": 4.372505631048737e-15,
+            "exact_executed_driver_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+            "complete_model_source_equivalent": true,
+            "executed_nonmutation_ABA_and_fixed_limit_assertions": true
+          }
+        },
+        "controls": {
+          "groundwater": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          },
+          "water-step": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          },
+          "cde": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          },
+          "water": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          },
+          "cde-step": {
+            "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+            "actual_refusals": 20,
+            "actual_malicious_sources": 7,
+            "actual_forged_policy_fields": 13,
+            "model_executions": 0
+          }
+        },
+        "current_native_postimages": 9,
+        "transactions": {
+          "water": {
+            "discard_no_day_advance": true,
+            "replay_exact": true,
+            "accept_exact": true,
+            "recovered_next_day_exact": true,
+            "origin_unchanged": true
+          },
+          "cde": {
+            "discard_no_day_advance": true,
+            "replay_exact": true,
+            "accept_exact": true,
+            "recovered_next_day_exact": true,
+            "origin_unchanged": true
+          }
+        },
+        "nonselected": {
+          "secondary-primary-postimage-cde-O2-v1": {
+            "status": "ACTUAL_NONSELECTED_INPUT_FORTRAN_KERNEL_PHYSICAL_NATIVE_PASS",
+            "current_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-nonselected-O2-v1\\0",
+            "prior_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\secondary-primary-postimage-cde-O2-v1",
+            "actual_days": 6,
+            "exact_native_days": [
+              2,
+              4
+            ],
+            "changed_identity_roles": [
+              "host",
+              "restart_publisher.library_sha256"
+            ],
+            "publisher": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "ceed67851423bad0ca200a962ff9f86d7501a55e87fb7dc8532bcfa736c5b015",
+              "current_sha256": "c1720858592be3b98e63d93e21bff7be84c75705bb54e505d49133a215826002",
+              "old_image_base": 8676245504,
+              "current_image_base": 15870918656,
+              "actual_relocations": 15,
+              "changed_byte_count": 54,
+              "changed_offsets": [
+                136,
+                137,
+                178,
+                179,
+                180,
+                216,
+                217,
+                6658,
+                6659,
+                6660,
+                7538,
+                7539,
+                7540,
+                7554,
+                7555,
+                7556,
+                7570,
+                7571,
+                7572,
+                7586,
+                7587,
+                7588,
+                7602,
+                7603,
+                7604,
+                7618,
+                7619,
+                7620,
+                7634,
+                7635,
+                7636,
+                7650,
+                7651,
+                7652,
+                7666,
+                7667,
+                7668,
+                7682,
+                7683,
+                7684,
+                7698,
+                7699,
+                7700,
+                7714,
+                7715,
+                7716,
+                7730,
+                7731,
+                7732,
+                8570,
+                8571,
+                8572,
+                9732,
+                9733
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "independent": {
+              "status": "INDEPENDENT_EXTENDED_ORIGINAL_CALENDAR_SOURCE_OBSERVATIONS_NATIVE_OUTPUT_PASS",
+              "actual_days": 6,
+              "warm": {
+                "days": 6,
+                "maximum_daily_inventory_residual_cm": 2.053094022916313e-14,
+                "reported_integrated_soil_water_residual_cm": -3.251831312903186e-14,
+                "integrated_soil_water_qualification": false,
+                "actual_zero_bottom_hydraulic_initial_and_day_frames": 7,
+                "original_counter_segments": {
+                  "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                  "actual_days": 6,
+                  "reset_segments": 7,
+                  "maximum_transfer_difference_cm": 1.6653345369377348e-16,
+                  "water_guard_cm": 1e-10,
+                  "physical_equations_changed": false,
+                  "whole_scientific_equivalence": "NOT_QUALIFIED"
+                }
+              },
+              "cold": [
+                {
+                  "days": 2,
+                  "maximum_daily_inventory_residual_cm": 2.053094022916313e-14,
+                  "reported_integrated_soil_water_residual_cm": -2.093339607558975e-14,
+                  "integrated_soil_water_qualification": false,
+                  "actual_zero_bottom_hydraulic_initial_and_day_frames": 3,
+                  "original_counter_segments": {
+                    "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                    "actual_days": 2,
+                    "reset_segments": 2,
+                    "maximum_transfer_difference_cm": 9.71445146547012e-17,
+                    "water_guard_cm": 1e-10,
+                    "physical_equations_changed": false,
+                    "whole_scientific_equivalence": "NOT_QUALIFIED"
+                  },
+                  "original_output": {
+                    "result_output.bin": {
+                      "exact": true,
+                      "continuation_records": 2,
+                      "kind": "original_REAL4_binary"
+                    }
+                  }
+                }
+              ],
+              "actual_complete_native_packages": 3,
+              "functional_completion": "PARTIAL",
+              "whole_scientific_equivalence": "NOT_QUALIFIED"
+            },
+            "original_BUILD_sha256": "eca60ee75352ff2e795339d1d1d38aac20f065476b38a94a3500789bb773c88d",
+            "current_BUILD_sha256": "ab6f65d54dcc9f398c0efc62e6bb4292210be3c001602ece692634a30f252394"
+          },
+          "secondary-pond-full-water-O2-v1": {
+            "status": "ACTUAL_NONSELECTED_INPUT_FORTRAN_KERNEL_PHYSICAL_NATIVE_PASS",
+            "current_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-nonselected-O2-v1\\1",
+            "prior_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\secondary-pond-full-water-O2-v1",
+            "actual_days": 6,
+            "exact_native_days": [
+              2,
+              4
+            ],
+            "changed_identity_roles": [
+              "host",
+              "restart_publisher.library_sha256"
+            ],
+            "publisher": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "0ba94cb7e4429e35f0f9ae6f9c91446b03a58ed7ae1a56847a27f7d7a8e22445",
+              "current_sha256": "9c2713adc540213d9b5d7f90b508d1aa991052c167daeb3af3f3fbf1a08d9c96",
+              "old_image_base": 8437170176,
+              "current_image_base": 12076646400,
+              "actual_relocations": 15,
+              "changed_byte_count": 54,
+              "changed_offsets": [
+                136,
+                137,
+                178,
+                179,
+                180,
+                216,
+                217,
+                6658,
+                6659,
+                6660,
+                7538,
+                7539,
+                7540,
+                7554,
+                7555,
+                7556,
+                7570,
+                7571,
+                7572,
+                7586,
+                7587,
+                7588,
+                7602,
+                7603,
+                7604,
+                7618,
+                7619,
+                7620,
+                7634,
+                7635,
+                7636,
+                7650,
+                7651,
+                7652,
+                7666,
+                7667,
+                7668,
+                7682,
+                7683,
+                7684,
+                7698,
+                7699,
+                7700,
+                7714,
+                7715,
+                7716,
+                7730,
+                7731,
+                7732,
+                8570,
+                8571,
+                8572,
+                9732,
+                9733
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "independent": {
+              "status": "INDEPENDENT_EXTENDED_ORIGINAL_CALENDAR_SOURCE_OBSERVATIONS_NATIVE_OUTPUT_PASS",
+              "actual_days": 6,
+              "warm": {
+                "days": 6,
+                "maximum_daily_inventory_residual_cm": 4.1723569044194164e-14,
+                "reported_integrated_soil_water_residual_cm": 7.178453794928763e-14,
+                "integrated_soil_water_qualification": false,
+                "actual_zero_bottom_hydraulic_initial_and_day_frames": 7,
+                "original_counter_segments": {
+                  "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                  "actual_days": 6,
+                  "reset_segments": 2,
+                  "maximum_transfer_difference_cm": 6.661338147750939e-16,
+                  "water_guard_cm": 1e-10,
+                  "physical_equations_changed": false,
+                  "whole_scientific_equivalence": "NOT_QUALIFIED"
+                }
+              },
+              "cold": [
+                {
+                  "days": 2,
+                  "maximum_daily_inventory_residual_cm": 2.216629657603164e-14,
+                  "reported_integrated_soil_water_residual_cm": 1.624519746154518e-14,
+                  "integrated_soil_water_qualification": false,
+                  "actual_zero_bottom_hydraulic_initial_and_day_frames": 3,
+                  "original_counter_segments": {
+                    "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                    "actual_days": 2,
+                    "reset_segments": 0,
+                    "maximum_transfer_difference_cm": 9.71445146547012e-17,
+                    "water_guard_cm": 1e-10,
+                    "physical_equations_changed": false,
+                    "whole_scientific_equivalence": "NOT_QUALIFIED"
+                  },
+                  "original_output": {
+                    "result_output.csv": {
+                      "exact": true,
+                      "continuation_records": 0,
+                      "kind": "original_ASCII"
+                    }
+                  }
+                }
+              ],
+              "actual_complete_native_packages": 3,
+              "functional_completion": "PARTIAL",
+              "whole_scientific_equivalence": "NOT_QUALIFIED"
+            },
+            "original_BUILD_sha256": "0f64bf709436394d159d0474ec4d8756d44c169a17444f8af2fd77495189786c",
+            "current_BUILD_sha256": "d7e11f00426defd3ba29d492aeb1a357fccffdb8291556817f138b6a6c3a8309"
+          },
+          "secondary-explicit-off-automatic-O2-v1": {
+            "status": "ACTUAL_NONSELECTED_INPUT_FORTRAN_KERNEL_PHYSICAL_NATIVE_PASS",
+            "current_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-nonselected-O2-v1\\2",
+            "prior_profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\secondary-explicit-off-automatic-O2-v1",
+            "actual_days": 6,
+            "exact_native_days": [
+              2,
+              4
+            ],
+            "changed_identity_roles": [
+              "host",
+              "restart_publisher.library_sha256"
+            ],
+            "publisher": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "16d6ba8f7db2827bbb746edfe496fc28a1717890a99da69308e1b71af7ae1fcb",
+              "current_sha256": "248bad7d11167678b77c45669f62cd351ce2b161ed3a903f94b4ed059abdcde5",
+              "old_image_base": 8254717952,
+              "current_image_base": 14892597248,
+              "actual_relocations": 15,
+              "changed_byte_count": 54,
+              "changed_offsets": [
+                136,
+                137,
+                178,
+                179,
+                180,
+                216,
+                217,
+                6658,
+                6659,
+                6660,
+                7538,
+                7539,
+                7540,
+                7554,
+                7555,
+                7556,
+                7570,
+                7571,
+                7572,
+                7586,
+                7587,
+                7588,
+                7602,
+                7603,
+                7604,
+                7618,
+                7619,
+                7620,
+                7634,
+                7635,
+                7636,
+                7650,
+                7651,
+                7652,
+                7666,
+                7667,
+                7668,
+                7682,
+                7683,
+                7684,
+                7698,
+                7699,
+                7700,
+                7714,
+                7715,
+                7716,
+                7730,
+                7731,
+                7732,
+                8570,
+                8571,
+                8572,
+                9732,
+                9733
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "independent": {
+              "status": "INDEPENDENT_EXTENDED_ORIGINAL_CALENDAR_SOURCE_OBSERVATIONS_NATIVE_OUTPUT_PASS",
+              "actual_days": 6,
+              "warm": {
+                "days": 6,
+                "maximum_daily_inventory_residual_cm": 5.800915303666443e-15,
+                "reported_integrated_soil_water_residual_cm": 1.8030227918325314e-14,
+                "integrated_soil_water_qualification": false,
+                "original_counter_segments": {
+                  "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                  "actual_days": 6,
+                  "reset_segments": 7,
+                  "maximum_transfer_difference_cm": 1.1102230246251565e-16,
+                  "water_guard_cm": 1e-10,
+                  "physical_equations_changed": false,
+                  "whole_scientific_equivalence": "NOT_QUALIFIED"
+                }
+              },
+              "cold": [
+                {
+                  "days": 2,
+                  "maximum_daily_inventory_residual_cm": 4.524158825347513e-15,
+                  "reported_integrated_soil_water_residual_cm": 6.03114563499374e-15,
+                  "integrated_soil_water_qualification": false,
+                  "original_counter_segments": {
+                    "status": "ACTUAL_ORIGINAL_COUNTER_RESET_RECONSTRUCTION_PASS",
+                    "actual_days": 2,
+                    "reset_segments": 2,
+                    "maximum_transfer_difference_cm": 4.5102810375396984e-17,
+                    "water_guard_cm": 1e-10,
+                    "physical_equations_changed": false,
+                    "whole_scientific_equivalence": "NOT_QUALIFIED"
+                  },
+                  "original_output": {
+                    "result_output.bin": {
+                      "exact": true,
+                      "continuation_records": 2,
+                      "kind": "original_REAL4_binary"
+                    }
+                  }
+                }
+              ],
+              "actual_complete_native_packages": 3,
+              "functional_completion": "PARTIAL",
+              "whole_scientific_equivalence": "NOT_QUALIFIED"
+            },
+            "original_BUILD_sha256": "075e477f2fff4b3b4bf8067cf566bbd0d35ec86fab7dce901c926be671007ab9",
+            "current_BUILD_sha256": "f9af158af03b22815e639c0bcda6b1b10f4d4f47ec0d280d0fb0d334acdab8b6"
+          }
+        }
+      },
+      "original_zero_switch": {
+        "status": "INDEPENDENT_ORDINARY_COMPLETE_TOP_REFERENCE_PASS",
+        "decimal_digits": 80,
+        "variants": {
+          "original": {
+            "actual_cases": 108,
+            "maximum_flux_gap_cm_day": 0.00011653829392689656
+          },
+          "zero": {
+            "actual_cases": 108,
+            "maximum_flux_gap_cm_day": 4.625268098321914e-15
+          }
+        }
+      }
+    },
+    "actual_full_periods": 4,
+    "actual_full_cold_windows": 32,
+    "short_contexts": 12,
+    "source_policy_refusals": 200,
+    "current_native_postimages": 18,
+    "transactions": 4,
+    "nonselected_contexts": 6
+  },
+  "Ubuntu": {
+    "O0-initial": {
+      "status": "INDEPENDENT_UBUNTU_ORDINARY_RAW_SCIENCE_PASS",
+      "full": {
+        "status": "INDEPENDENT_ORDINARY_FULL_SOURCE_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "actual_days": 1096,
+        "actual_cold_windows": 8,
+        "optimization": "O0",
+        "selectors": {
+          "reference_work": "/home/runner/work/_temp/provider",
+          "build_root": "/home/runner/work/_temp/builds/ordinary-water",
+          "output": "/home/runner/work/_temp/proof/ordinary-water",
+          "optimization": "O0",
+          "solute": 0,
+          "hysteresis": 2,
+          "kmean": 6,
+          "bottom": 5,
+          "short_only": false,
+          "reuse_profile": null,
+          "full_model_cap": 600
+        },
+        "metrics": {
+          "days": 1096,
+          "whole_water_residual_cm": -4.892656577374933e-13
+        },
+        "functional_completion": "PARTIAL",
+        "whole_scientific_equivalence": "NOT_QUALIFIED"
+      },
+      "short": {
+        "water-groundwater": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/water-groundwater/short",
+            "optimization": "O0",
+            "solute": 0,
+            "hysteresis": 0,
+            "bottom": 1,
+            "kmean": 1,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 2,
+            "reset": 0,
+            "nprintday": 1,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/water-groundwater/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/water-groundwater/input"
+          }
+        },
+        "water-history1-head": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/water-history1-head/short",
+            "optimization": "O0",
+            "solute": 0,
+            "hysteresis": 1,
+            "bottom": 5,
+            "kmean": 2,
+            "perstep": true,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/water-history1-head/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/water-history1-head/input"
+          }
+        },
+        "cde-plate-history": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/cde-plate-history/short",
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 8,
+            "kmean": 3,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/cde-plate-history/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/cde-plate-history/input"
+          }
+        }
+      },
+      "component": {
+        "status": "INDEPENDENT_ORIGINAL_POND_CHAIN_EQUATION_PASS",
+        "actual_points": 40,
+        "decimal_digits": 80,
+        "maximum_derivative_gap": 1.165473136590167e-14,
+        "exact_executed_driver_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+        "complete_model_source_equivalent": true,
+        "executed_nonmutation_ABA_and_fixed_limit_assertions": true
+      },
+      "source_policy_refusals": {},
+      "source_custody": {
+        "status": "ACTUAL_ORIGINAL_ORDINARY_GIT_SOURCE_PROVIDER_COMPILER_CUSTODY_PASS",
+        "producer_source": "a53b99d29b29df5badd9eb400ee3a53f08623284",
+        "actual_source_members": 1414,
+        "actual_builds": [
+          "compiled/ordinary-water/bundle/BUILD.json",
+          "compiled/ordinary-matrix/water-history1-head/bundle/BUILD.json",
+          "compiled/ordinary-matrix/water-groundwater/bundle/BUILD.json",
+          "compiled/ordinary-matrix/cde-plate-history/bundle/BUILD.json"
+        ],
+        "source_archive_sha256": "7f851e0a26e9e66d6349250365e9ecba5543f906e4a6f301e7c206a082721d96",
+        "provider_sha256": "188c65617b0f1ec83791b77de98444232fbb6bf432aed797c95224cd315a3d31"
+      },
+      "original_job_conclusion": "failure",
+      "initial_failure": "Unsupported subdaily CDE groundwater fixture after these successful observations"
+    },
+    "O0-followup": {
+      "status": "INDEPENDENT_UBUNTU_ORDINARY_RAW_SCIENCE_PASS",
+      "full": {
+        "status": "INDEPENDENT_ORDINARY_FULL_SOURCE_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "actual_days": 1096,
+        "actual_cold_windows": 8,
+        "optimization": "O0",
+        "selectors": {
+          "reference_work": "/home/runner/work/_temp/provider",
+          "output": "/home/runner/work/_temp/proof/ordinary-matrix/cde-groundwater-history/short",
+          "optimization": "O0",
+          "solute": 1,
+          "hysteresis": 2,
+          "bottom": 1,
+          "kmean": 4,
+          "perstep": false,
+          "mode": "daily",
+          "format": 3,
+          "reset": 1,
+          "nprintday": 1,
+          "phase": "short",
+          "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/cde-groundwater-history/bundle",
+          "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/cde-groundwater-history/input"
+        },
+        "metrics": {
+          "days": 1096,
+          "whole_water_residual_cm": 6.208729572996185e-14,
+          "chemical": null
+        },
+        "functional_completion": "PARTIAL",
+        "whole_scientific_equivalence": "NOT_QUALIFIED"
+      },
+      "short": {
+        "cde-groundwater-history": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/cde-groundwater-history/short",
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": false,
+            "mode": "daily",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 1,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/cde-groundwater-history/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/cde-groundwater-history/input"
+          }
+        },
+        "water-plate": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/water-plate/short",
+            "optimization": "O0",
+            "solute": 0,
+            "hysteresis": 0,
+            "bottom": 8,
+            "kmean": 5,
+            "perstep": false,
+            "mode": "monthly",
+            "format": 2,
+            "reset": 1,
+            "nprintday": 1,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/water-plate/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/water-plate/input"
+          }
+        },
+        "cde-head-history1": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/cde-head-history1/short",
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 1,
+            "bottom": 5,
+            "kmean": 6,
+            "perstep": true,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/cde-head-history1/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/cde-head-history1/input"
+          }
+        }
+      },
+      "component": {
+        "status": "INDEPENDENT_ORIGINAL_POND_CHAIN_EQUATION_PASS",
+        "actual_points": 64,
+        "decimal_digits": 80,
+        "maximum_derivative_gap": 4.372505631048737e-15,
+        "exact_executed_driver_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+        "complete_model_source_equivalent": true,
+        "executed_nonmutation_ABA_and_fixed_limit_assertions": true
+      },
+      "source_policy_refusals": {
+        "cde-groundwater-history": {
+          "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+          "actual_refusals": 20,
+          "actual_malicious_sources": 7,
+          "actual_forged_policy_fields": 13,
+          "model_executions": 0
+        },
+        "water-plate": {
+          "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+          "actual_refusals": 20,
+          "actual_malicious_sources": 7,
+          "actual_forged_policy_fields": 13,
+          "model_executions": 0
+        },
+        "cde-head-history1": {
+          "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+          "actual_refusals": 20,
+          "actual_malicious_sources": 7,
+          "actual_forged_policy_fields": 13,
+          "model_executions": 0
+        }
+      },
+      "source_custody": {
+        "status": "ACTUAL_ORIGINAL_ORDINARY_GIT_SOURCE_PROVIDER_COMPILER_CUSTODY_PASS",
+        "producer_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+        "actual_source_members": 1415,
+        "actual_builds": [
+          "compiled/ordinary-matrix/water-plate/bundle/BUILD.json",
+          "compiled/ordinary-matrix/cde-head-history1/bundle/BUILD.json",
+          "compiled/ordinary-matrix/cde-groundwater-history/bundle/BUILD.json"
+        ],
+        "source_archive_sha256": "8a803e9480de78b59097d729b558a584867c637ee059948b11da72923ed66534",
+        "provider_sha256": "2dc7f422bce2c5557fc567b071404a957fe1134f312d1fd2b67958a0c25c68b4"
+      },
+      "original_job_conclusion": "success",
+      "initial_failure": null
+    },
+    "O2-initial": {
+      "status": "INDEPENDENT_UBUNTU_ORDINARY_RAW_SCIENCE_PASS",
+      "full": {
+        "status": "INDEPENDENT_ORDINARY_FULL_SOURCE_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "actual_days": 1096,
+        "actual_cold_windows": 8,
+        "optimization": "O2",
+        "selectors": {
+          "reference_work": "/home/runner/work/_temp/provider",
+          "build_root": "/home/runner/work/_temp/builds/ordinary-water",
+          "output": "/home/runner/work/_temp/proof/ordinary-water",
+          "optimization": "O2",
+          "solute": 0,
+          "hysteresis": 2,
+          "kmean": 6,
+          "bottom": 5,
+          "short_only": false,
+          "reuse_profile": null,
+          "full_model_cap": 600
+        },
+        "metrics": {
+          "days": 1096,
+          "whole_water_residual_cm": -4.892656577374933e-13
+        },
+        "functional_completion": "PARTIAL",
+        "whole_scientific_equivalence": "NOT_QUALIFIED"
+      },
+      "short": {
+        "water-groundwater": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/water-groundwater/short",
+            "optimization": "O2",
+            "solute": 0,
+            "hysteresis": 0,
+            "bottom": 1,
+            "kmean": 1,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 2,
+            "reset": 0,
+            "nprintday": 1,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/water-groundwater/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/water-groundwater/input"
+          }
+        },
+        "water-history1-head": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/water-history1-head/short",
+            "optimization": "O2",
+            "solute": 0,
+            "hysteresis": 1,
+            "bottom": 5,
+            "kmean": 2,
+            "perstep": true,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/water-history1-head/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/water-history1-head/input"
+          }
+        },
+        "cde-plate-history": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/cde-plate-history/short",
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 8,
+            "kmean": 3,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/cde-plate-history/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/cde-plate-history/input"
+          }
+        }
+      },
+      "component": {
+        "status": "INDEPENDENT_ORIGINAL_POND_CHAIN_EQUATION_PASS",
+        "actual_points": 40,
+        "decimal_digits": 80,
+        "maximum_derivative_gap": 1.165473136590167e-14,
+        "exact_executed_driver_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+        "complete_model_source_equivalent": true,
+        "executed_nonmutation_ABA_and_fixed_limit_assertions": true
+      },
+      "source_policy_refusals": {},
+      "source_custody": {
+        "status": "ACTUAL_ORIGINAL_ORDINARY_GIT_SOURCE_PROVIDER_COMPILER_CUSTODY_PASS",
+        "producer_source": "a53b99d29b29df5badd9eb400ee3a53f08623284",
+        "actual_source_members": 1414,
+        "actual_builds": [
+          "compiled/ordinary-water/bundle/BUILD.json",
+          "compiled/ordinary-matrix/water-history1-head/bundle/BUILD.json",
+          "compiled/ordinary-matrix/water-groundwater/bundle/BUILD.json",
+          "compiled/ordinary-matrix/cde-plate-history/bundle/BUILD.json"
+        ],
+        "source_archive_sha256": "7f851e0a26e9e66d6349250365e9ecba5543f906e4a6f301e7c206a082721d96",
+        "provider_sha256": "fee74f9b4aada6d53810149216bda9355cd97ce0f1b86c8264843f3534460c33"
+      },
+      "original_job_conclusion": "failure",
+      "initial_failure": "Unsupported subdaily CDE groundwater fixture after these successful observations"
+    },
+    "O2-followup": {
+      "status": "INDEPENDENT_UBUNTU_ORDINARY_RAW_SCIENCE_PASS",
+      "full": {
+        "status": "INDEPENDENT_ORDINARY_FULL_SOURCE_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS",
+        "actual_days": 1096,
+        "actual_cold_windows": 8,
+        "optimization": "O2",
+        "selectors": {
+          "reference_work": "/home/runner/work/_temp/provider",
+          "output": "/home/runner/work/_temp/proof/ordinary-matrix/cde-groundwater-history/short",
+          "optimization": "O2",
+          "solute": 1,
+          "hysteresis": 2,
+          "bottom": 1,
+          "kmean": 4,
+          "perstep": false,
+          "mode": "daily",
+          "format": 3,
+          "reset": 1,
+          "nprintday": 1,
+          "phase": "short",
+          "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/cde-groundwater-history/bundle",
+          "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/cde-groundwater-history/input"
+        },
+        "metrics": {
+          "days": 1096,
+          "whole_water_residual_cm": 6.208729572996185e-14,
+          "chemical": null
+        },
+        "functional_completion": "PARTIAL",
+        "whole_scientific_equivalence": "NOT_QUALIFIED"
+      },
+      "short": {
+        "cde-groundwater-history": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/cde-groundwater-history/short",
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": false,
+            "mode": "daily",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 1,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/cde-groundwater-history/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/cde-groundwater-history/input"
+          }
+        },
+        "water-plate": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/water-plate/short",
+            "optimization": "O2",
+            "solute": 0,
+            "hysteresis": 0,
+            "bottom": 8,
+            "kmean": 5,
+            "perstep": false,
+            "mode": "monthly",
+            "format": 2,
+            "reset": 1,
+            "nprintday": 1,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/water-plate/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/water-plate/input"
+          }
+        },
+        "cde-head-history1": {
+          "status": "INDEPENDENT_ORDINARY_SHORT_NATIVE_OUTPUT_PASS",
+          "actual_days": 35,
+          "actual_cold_windows": 3,
+          "parameters": {
+            "reference_work": "/home/runner/work/_temp/provider",
+            "output": "/home/runner/work/_temp/proof/ordinary-matrix/cde-head-history1/short",
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 1,
+            "bottom": 5,
+            "kmean": 6,
+            "perstep": true,
+            "mode": "explicit",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "phase": "short",
+            "reuse_build": "/home/runner/work/_temp/builds/ordinary-matrix/cde-head-history1/bundle",
+            "existing_input": "/home/runner/work/_temp/proof/ordinary-matrix/cde-head-history1/input"
+          }
+        }
+      },
+      "component": {
+        "status": "INDEPENDENT_ORIGINAL_POND_CHAIN_EQUATION_PASS",
+        "actual_points": 64,
+        "decimal_digits": 80,
+        "maximum_derivative_gap": 4.372505631048737e-15,
+        "exact_executed_driver_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+        "complete_model_source_equivalent": true,
+        "executed_nonmutation_ABA_and_fixed_limit_assertions": true
+      },
+      "source_policy_refusals": {
+        "cde-groundwater-history": {
+          "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+          "actual_refusals": 20,
+          "actual_malicious_sources": 7,
+          "actual_forged_policy_fields": 13,
+          "model_executions": 0
+        },
+        "water-plate": {
+          "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+          "actual_refusals": 20,
+          "actual_malicious_sources": 7,
+          "actual_forged_policy_fields": 13,
+          "model_executions": 0
+        },
+        "cde-head-history1": {
+          "status": "INDEPENDENT_ACTUAL_ORDINARY_SOURCE_POLICY_REFUSALS_PASS",
+          "actual_refusals": 20,
+          "actual_malicious_sources": 7,
+          "actual_forged_policy_fields": 13,
+          "model_executions": 0
+        }
+      },
+      "source_custody": {
+        "status": "ACTUAL_ORIGINAL_ORDINARY_GIT_SOURCE_PROVIDER_COMPILER_CUSTODY_PASS",
+        "producer_source": "8b40b2243dc2d5a267702de06a7f727795c94e13",
+        "actual_source_members": 1415,
+        "actual_builds": [
+          "compiled/ordinary-matrix/water-plate/bundle/BUILD.json",
+          "compiled/ordinary-matrix/cde-head-history1/bundle/BUILD.json",
+          "compiled/ordinary-matrix/cde-groundwater-history/bundle/BUILD.json"
+        ],
+        "source_archive_sha256": "7aaaa0c04778914015aac86a6b89aced0241c3ae09027f69b17cd77b09cc7d94",
+        "provider_sha256": "402c28fae9540262d7316f895bcf8b9fe62c87b3e145fab3bdbd522977fc7666"
+      },
+      "original_job_conclusion": "success",
+      "initial_failure": null
+    }
+  },
+  "baseline_lf_sha256": "31c1d95e28eaa50146f908d217da2ab43cf82cfc7044622c8d0a13642abfa3cb",
+  "actual_full_periods": 8,
+  "actual_days_per_full_period": 1096,
+  "actual_full_cold_windows": 64,
+  "actual_short_contexts": 24,
+  "actual_short_cold_windows": 72,
+  "actual_source_policy_refusals": 320,
+  "actual_current_native_postimages": 18,
+  "actual_current_transactions": 4,
+  "actual_nonselected_contexts": 6,
+  "original_reference_defects": [
+    "Positive pond branch1e-6cm discontinuity",
+    "Missing conductivity/pond chain rule",
+    "Original nonlinear pond root stopped at1e-6cm"
+  ],
+  "daily_water_guard_cm": 1e-10,
+  "integrated_water_guard_cm": 1e-10,
+  "daily_CDE_guard_mg_cm2": 1e-10,
+  "integrated_CDE_guard_mg_cm2": 1e-10,
+  "new_native_format": false,
+  "new_physical_state": false,
+  "convergence_clock_mass_rollback_limits_changed": false,
+  "resource_budget_role": "Explicit600s full weighted water resource budget; original180s censored runs retained; CDEfull180s unchanged; no numerical tolerance change",
+  "original_initial_Ubuntu_job_conclusion": "FAILURE_AFTER_FULL_WATER_AND_THREE_SHORTS",
+  "followup_Ubuntu_job_conclusion": "SUCCESS_MISSING_ONLY_THREE_SHORTS_AND_FULL_CDE",
+  "ordinary_implicit_admitted": false,
+  "AGE_admitted": false,
+  "CDE_groundwater_subdaily_admitted": false,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}

@@ -45,6 +45,8 @@ def change(raw, old, new):
 
 @lru_cache(maxsize=1)
 def guard_previous_source():
+    import ordinary_pond_verify as ordinary
+    return ordinary.guard_previous_source()
     require(not git('diff', RUNTIME, '--', *SURFACES),
             'Actual secondary implicit compiler source differs from qualified runtime')
     expected = ['app/hybrid_water/'+name for name in ('daily_coupling.py', 'extended_drainage.py',
@@ -161,6 +163,8 @@ def scientific():
 
 
 def verify():
+    import ordinary_pond_verify as ordinary
+    return ordinary.verify()
     source()
     retained = inherited.verify(ROOT, PROOF)
     current = scientific()
