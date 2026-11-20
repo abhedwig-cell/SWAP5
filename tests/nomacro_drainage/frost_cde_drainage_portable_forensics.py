@@ -80,7 +80,8 @@ def audit(original, followup, opt):
             warm = root + '/trajectory'
             rows = [json.loads(s, parse_float=Decimal) for s in followup.read(warm + '/daily.jsonl').decode().splitlines()]
             days = 35 if phase == 'short' else 1096; assert len(rows) == days
-            water_max = Decimal(0); chemical_max = Decimal(0)
+            water_max = Decimal(0); chemical_max = Decimal(0); chemical_prefix_max = Decimal(0)
+            chemical_flows = [Decimal(0)]*6
             with localcontext() as ctx:
                 ctx.prec = 80
                 for day, row in enumerate(rows, 1):
@@ -92,6 +93,10 @@ def audit(original, followup, opt):
                         ledger = row['solute_ledger_mg_cm2']
                         residual = row['solute_end_mg_cm2'] - row['solute_start_mg_cm2'] - sum(ledger[2:5]) + sum(ledger[5:8])
                         chemical_max = max(chemical_max, abs(residual)); assert abs(residual) <= Decimal('1e-10')
+                        chemical_flows = [a+b for a, b in zip(chemical_flows, ledger[2:8])]
+                        prefix_residual = row['solute_end_mg_cm2']-rows[0]['solute_start_mg_cm2']-sum(chemical_flows[:3])+sum(chemical_flows[3:])
+                        chemical_prefix_max = max(chemical_prefix_max, abs(prefix_residual))
+                        assert abs(prefix_residual) <= Decimal('1e-10')
             witness = [list(map(float, s.split()[1:])) for s in followup.read(warm + '/original/donor.stdout').decode().splitlines() if s.startswith('HYBRID_FROST_WITNESS ')]
             assert len(witness) == days+1 and all(v[-1] == 1 for v in witness[1:]) and 0 < witness[20][0] < 1
             expected_windows = 3 if phase == 'short' else 7; assert len(profile['own']) == expected_windows
@@ -108,7 +113,8 @@ def audit(original, followup, opt):
                 actual = binary(followup.read(cold + '/original/result_output.bin'))[1:]
                 assert actual == expected
             results.append(dict(kind=kind, phase=phase, days=days, cold_windows=expected_windows,
-                water_max_decimal=str(water_max), chemical_max_decimal=str(chemical_max)))
+                water_max_decimal=str(water_max), chemical_max_decimal=str(chemical_max),
+                chemical_prefix_max_decimal=str(chemical_prefix_max)))
     return dict(status='INDEPENDENT_ORIGINAL_PORTABLE_SOURCE_COMPILER_WARM_COLD_USER_OUTPUT_CONTROLS_PASS',
         optimization=opt, results=results, components=component_result, native_refusals=83, transactions=2, water_model_periods_replayed=0,
         model_executions=0, compiler_executions=0, canonical_admission=False)

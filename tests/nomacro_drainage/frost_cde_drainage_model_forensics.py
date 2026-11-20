@@ -43,7 +43,8 @@ def audit(profile_path, reference, *, locations=None, provider_catalog=None):
     warm = locations['warm'] if locations else profile_path / 'trajectory'
     rows = [json.loads(s, parse_float=Decimal) for s in (warm / 'daily.jsonl').read_text().splitlines()]
     days = 35 if phase == 'short' else 1096; assert len(rows) == days
-    water_max = Decimal(0); chemical_max = Decimal(0)
+    water_max = Decimal(0); chemical_max = Decimal(0); chemical_prefix_max = Decimal(0)
+    chemical_flows = [Decimal(0)]*6
     with localcontext() as ctx:
         ctx.prec = 80
         for day, row in enumerate(rows, 1):
@@ -58,6 +59,10 @@ def audit(profile_path, reference, *, locations=None, provider_catalog=None):
                 chemical_max = max(chemical_max, abs(budget))
                 assert abs(budget) <= Decimal('1e-10')
                 assert abs(end - ledger[0]) <= Decimal('1e-10')
+                chemical_flows = [a+b for a, b in zip(chemical_flows, ledger[2:8])]
+                prefix = end-rows[0]['solute_start_mg_cm2']-sum(chemical_flows[:3])+sum(chemical_flows[3:])
+                chemical_prefix_max = max(chemical_prefix_max, abs(prefix))
+                assert abs(prefix) <= Decimal('1e-10')
     witness = [list(map(float, line.split()[1:])) for line in (warm / 'original/donor.stdout').read_text().splitlines()
                if line.startswith('HYBRID_FROST_WITNESS ')]
     assert len(witness) == days + 1 and all(v[-1] == 1 for v in witness[1:])
@@ -86,6 +91,7 @@ def audit(profile_path, reference, *, locations=None, provider_catalog=None):
         producer=profile['source'], result_sha256=sha(profile_path / 'RESULT.json'), kind=kind,
         optimization=opt, days=days, cold_windows=len(profile['own']), partial_frost_days=len(partial),
         actual_frost_day20=True, water_max_decimal=str(water_max), chemical_max_decimal=str(chemical_max),
+        chemical_prefix_max_decimal=str(chemical_prefix_max),
         model_executions=0, compiler_executions=0, canonical_admission=False)
 
 
