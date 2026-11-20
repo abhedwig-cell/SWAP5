@@ -1936,5 +1936,12 @@
     "receipt": "EXTENDED_DRAINAGE_SECONDARY_POND_MERGE_RECEIPT_V1.json",
     "original_accepted_days_before_correction": 288,
     "original_failure_before_correction": "Strict original Newton rollback reaches unchanged8ULP clock floor on day289; real nodal and pond/head flags retained. No accepted day289."
+  },
+  "ordinary_cde_groundwater_hysteresis_subdaily": {
+    "classification": "MISSING_COMPOSITION",
+    "implementation": "HARD_REFUSED_BEFORE_COMPILER",
+    "historical_function": "CDE SWKIMPL1/SWMEAN4/SWHYST2/bottom1, nonstep NPRINTDAY3/reset1",
+    "observed": "Windows O0/O2 cohortA53; Original hysteresis CDE output requires daily interval reset cadence;0compiles/0models for refusedcases",
+    "next_action": "After ordinary numerical admission, compose existing CDEclock with complete groundwater/history native owner; current numerical cohort uses already supported daily/reset1/NPRINTDAY1. Original refusal/raw inputs retained, no guard relaxation or scope-closure claim."
   }
 }

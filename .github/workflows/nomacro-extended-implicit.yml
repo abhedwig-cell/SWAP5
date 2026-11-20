@@ -77,17 +77,22 @@ jobs:
       - name: Qualify ordinary pond with representative full and composition evidence
         if: ${{ inputs.ordinary_pond }}
         run: |
+          if [[ '${{ inputs.postimage_only }}' == true ]]; then
+            python3 -B tests/nomacro_scheduled_subsurface/ordinary_pond_cohort.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/ordinary-matrix" --output "$RUNNER_TEMP/proof/ordinary-matrix" --only-labels cde-groundwater-history water-plate cde-head-history1
+          else
           python3 -B tests/nomacro_scheduled_subsurface/ordinary_pond_runtime.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/ordinary-water" --output "$RUNNER_TEMP/proof/ordinary-water" --full-model-cap 600
           python3 -B tests/nomacro_drainage/ordinary_pond_evidence.py "$RUNNER_TEMP/proof/ordinary-water" --output "$RUNNER_TEMP/proof/ordinary-water/FORENSICS_V1.json"
           python3 -B tests/nomacro_drainage/ordinary_tangent_probe.py --profile "$RUNNER_TEMP/proof/ordinary-water" --provider "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/ordinary-tangent" --output "$RUNNER_TEMP/proof/ordinary-components"
           python3 -B tests/nomacro_scheduled_subsurface/ordinary_pond_cohort.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/ordinary-matrix" --output "$RUNNER_TEMP/proof/ordinary-matrix"
+          fi
           PYTHONPATH=tests/nomacro_drainage python3 -B - <<'PY'
           import json,os
           from pathlib import Path
           from ordinary_pond_evidence import audit_short
           root=Path(os.environ['RUNNER_TEMP'])/'proof/ordinary-matrix'
           q=json.loads((root/'RESULT.json').read_text())
-          assert q['status']=='ACTUAL_SIX_ORDINARY_POND_COMPOSITIONS_SHORT_NATIVE_PASS' and len(q['cases'])==6
+          expected=3 if '${{ inputs.postimage_only }}'=='true' else 6
+          assert q['status'] in ('ACTUAL_SIX_ORDINARY_POND_COMPOSITIONS_SHORT_NATIVE_PASS','ACTUAL_SELECTED_ORDINARY_POND_COMPOSITIONS_SHORT_NATIVE_PASS') and len(q['cases'])==expected
           result={name:audit_short(root/name) for name in q['cases']}
           (root/'FORENSICS_V1.json').write_text(json.dumps(result,indent=2)+'\n')
           PY

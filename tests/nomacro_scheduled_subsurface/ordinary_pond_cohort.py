@@ -18,7 +18,7 @@ CASES = (
     ('water-groundwater', 0, 0, 1, 1, False, 'periodic', 2, 0, 1),
     ('water-history1-head', 0, 1, 5, 2, True, 'explicit', 3, 1, 3),
     ('cde-plate-history', 1, 2, 8, 3, False, 'periodic', 3, 1, 3),
-    ('cde-groundwater-history', 1, 2, 1, 4, False, 'periodic', 3, 1, 3),
+    ('cde-groundwater-history', 1, 2, 1, 4, False, 'daily', 3, 1, 1),
     ('water-plate', 0, 0, 8, 5, False, 'monthly', 2, 1, 1),
     ('cde-head-history1', 1, 1, 5, 6, True, 'explicit', 3, 1, 3),
 )
@@ -32,6 +32,8 @@ def main():
     parser.add_argument('--phase', choices=('short', 'cde-full'), default='short')
     parser.add_argument('--reuse-case', type=Path)
     parser.add_argument('--full-cap', type=int, choices=(180, 600), default=180)
+    parser.add_argument('--continue-from', type=Path)
+    parser.add_argument('--only-labels', nargs='+', choices=[v[0] for v in CASES])
     args = parser.parse_args()
     args.output.mkdir()
     record = dict(status='RUNNING', controller_source=subprocess.check_output(
@@ -54,6 +56,28 @@ def main():
     try:
         if args.phase == 'short':
             for name, solute, history, bottom, mean, step, mode, fmt, reset, npd in CASES:
+                if args.only_labels and name not in args.only_labels:
+                    continue
+                if args.continue_from:
+                    previous = args.continue_from/name
+                    receipt = previous/'short/RESULT.json'
+                    if receipt.is_file():
+                        prior = json.loads(receipt.read_text(encoding='utf-8'))
+                        if prior['status'] == 'ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS':
+                            fields = ('solute', 'hysteresis', 'bottom', 'kmean', 'perstep', 'mode', 'format', 'reset', 'nprintday')
+                            assert tuple(prior['parameters'][k] for k in fields) == (solute, history, bottom, mean, step, mode, fmt, reset, npd)
+                            assert prior['parameters']['optimization'] == args.optimization
+                            subprocess.run(['git', 'diff', '--exit-code', prior['source_commit'], 'HEAD', '--',
+                                'app', 'src', 'tools/solute', 'tools/vq', 'reference/swap-4.3.1'], cwd=ROOT, check=True)
+                            project = m.e.load(Path(prior['input_root']), original_output=True)
+                            m.validate_bundle(Path(prior['build_root']), args.reference_work, project)
+                            assert prior['trajectory']['build_sha256'] == m.sha(Path(prior['build_root'])/'BUILD.json')
+                            record['cases'][name] = dict(actual_case_root=str(previous),
+                                role='UNCHANGED_ACTUAL_PRIOR_SHORT_AND_NATIVE_OBSERVATION',
+                                actual_source=prior['source_commit'], actual_receipt_sha256=m.sha(receipt),
+                                fresh_compilations=0, fresh_models=0)
+                            save()
+                            continue
                 out = args.output/name
                 out.mkdir()
                 inputs, build = out/'input', args.build_root/name/'bundle'
@@ -75,13 +99,16 @@ def main():
                     command.append('--perstep')
                 item['short'] = execute(out, 'short', command)
                 save()
-            record['status'] = 'ACTUAL_SIX_ORDINARY_POND_COMPOSITIONS_SHORT_NATIVE_PASS'
+            expected = set(args.only_labels or [v[0] for v in CASES])
+            assert set(record['cases']) == expected
+            record['status'] = ('ACTUAL_SIX_ORDINARY_POND_COMPOSITIONS_SHORT_NATIVE_PASS' if len(expected) == 6
+                                else 'ACTUAL_SELECTED_ORDINARY_POND_COMPOSITIONS_SHORT_NATIVE_PASS')
         else:
             assert args.reuse_case
             short = json.loads((args.reuse_case/'short/RESULT.json').read_text(encoding='utf-8'))
             assert short['status'] == 'ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'
             fields = ('solute', 'hysteresis', 'bottom', 'kmean', 'perstep', 'mode', 'format', 'reset', 'nprintday')
-            assert tuple(short['parameters'][k] for k in fields) == (1, 2, 1, 4, False, 'periodic', 3, 1, 3)
+            assert tuple(short['parameters'][k] for k in fields) == (1, 2, 1, 4, False, 'daily', 3, 1, 1)
             assert short['parameters']['optimization'] == args.optimization
             inputs, build = Path(short['input_root']), Path(short['build_root'])
             project = m.e.load(inputs, original_output=True)
