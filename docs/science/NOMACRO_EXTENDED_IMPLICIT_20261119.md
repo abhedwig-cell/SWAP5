@@ -81,3 +81,55 @@ Then rerun affected full numerical compositions on the actual corrected source,
 with independently checked conservation/native/counters and unchanged explicit0
 postimages. Earlier failed and water-success source epochs remain separately
 retained. No admission is established by this development contract.
+
+## Bounded qualified source and actual campaigns
+
+Current numerical source9f472848850af09ecfd8221bb59e66357f7b7f7c is source-qualified;
+canonical admission is pending. The new public implicit route is bounded to
+primary+secondary SWSRF3 with existing SWSEC1/2, original bottom6 qbot0,
+water/CDE and SWHYST0/1/2. Original examined-Ksat interpolation, implicit mean7,
+AGE, snow/frost/alternative soil models and other existing exclusions remain
+refused. Secondary-only SWSRF2 is also refused: after the continuous-Mualem
+correction its water cohort accepts288days then strict original Newton retries
+reach the unchanged clock floor on day289, both optimizations/platforms.
+No accepted day289 is published; the actual failed source/input/raw is retained.
+
+Eight representative full1096day periods pass on Windows/Ubuntu O0/O2:
+automatic primary+secondary water/h0/monthly/text2 and CDE/h2/daily/binary3,
+with48exact complete native cold windows across ordinary/year/seasonal/end
+boundaries. Two additional Windows CDE/h0 full regressions and12cold windows
+close the actual original566day failure on unchanged original inputs. No
+Ubuntu h0 full-period claim is made. Eighteen current35day interaction contexts
+and54exact cold windows cover automatic water/CDE h0/1/2 and prescribed-stage
+waterh0/CDEh0,h2. Remaining combinations inherit only their unchanged owning
+interfaces and stated original evidence; this is not a full-family closure.
+
+The final input-only guard changes exactly two lines from numerical source5c78ec11c.
+Four Windows and two Ubuntu current35day CDE postimages preserve complete
+Fortran/input/compiler/kernel/provider identity except recorded Python source
+roles and independently checked PE link/loader fields; physical/native prefixes
+are exact. The full CDE periods were not repeated for that guard. Eight
+implicit-off numerical-source postimages plus two actual final-guard postimages
+retain original Fortran/input/physical/native bytes. Four ordinary SWDRA1/bottom6
+35day contexts and12cold windows preserve the existing implicit/output owners;
+four final public four-day/native receivers reuse the actual unchanged compiled
+bundles. Their whole-water1e-10 guard remains unchanged.
+
+Actual current primary plus same-context regression controls contain578public
+and540original compiled-loader native refusals. Four additional current CDE
+positive CLI/transaction contexts verify the input-only guard. Fourteen current
+policy/constitutive-source mutants and five excluded public configurations are
+refused before physical work/publication. The component qualification separately
+calls complete real original MOD_top/PondRunoff40cases/optimization and complete
+real original MOD_MvG32cases/optimization, with original object/TTUTIL custody,
+70digit independent Mualem values, numerical derivatives and A/B/A nonmutation.
+All12precorrection/corrected/final platform/optimization archive audits pass.
+
+Daily soil, secondary and combined water remain bounded at absolute1e-10cm;
+daily and integrated CDE remain bounded at1e-10mg/cm2. No whole-period integrated
+water1e-10 or whole-original equivalence claim is introduced. Failed original
+CDE571/566day prefixes, failed corrected secondary-only288day prefixes, original
+unrepacked CI ZIPs and read-only diagnostic sources/executables remain separate
+from qualified primary source phases. No BUILD or checkpoint source is rebound.
+Whole historical closure remains PARTIAL, whole science NOT_QUALIFIED, global
+family/gap counts UNKNOWN and the fixed named RC3 boundary unchanged.

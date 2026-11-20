@@ -1,0 +1,29 @@
+{
+  "status": "NEUTRAL_ACTUAL_WINDOWS_RAW_ARCHIVE_NO_ADMISSION_CLAIM",
+  "archive": "EXTENDED_DRAINAGE_IMPLICIT_CORRECTED_WINDOWS_SOURCE_RAW_ARCHIVE.zip",
+  "bytes": 5844734,
+  "sha256": "8d55c7d1ff2cdd18d66267fc781232d680621170ad09c4af60126be8ab0a148a",
+  "members": {
+    "source/actual-producer-source.zip": {
+      "bytes": 4308045,
+      "sha256": "ee0215fb2a22aeeeea01183b1b450c46f9c3df529ca63b32938264b553b65f2d"
+    },
+    "source/controller-source.tar": {
+      "bytes": 3512320,
+      "sha256": "3da887732b1148638bd24f9a49b7424e80b7c421e18cf7f905e77835c8e7b06c"
+    },
+    "source/RESULT.json": {
+      "bytes": 532709,
+      "sha256": "39c493f3299a361d87597f23f3e2dcdc25101e68dbe4a9dbbb441d0111326b39"
+    },
+    "provider-PREPARED.json": {
+      "bytes": 41046,
+      "sha256": "a2f529bc5d69c9e15bdda4c7aeb643a48685b50e10c2c1fce9eb639faf8a2da5"
+    },
+    "regression-controller.tar": {
+      "bytes": 3522560,
+      "sha256": "337d025d6fac8bac4f65b1e5c1044413d01c57fdd094838aeb227a4d37de787e"
+    }
+  },
+  "compiled_objects_excluded": "Reproducible original provider; actual emitted source, executable/library and BUILD bytes retained"
+}

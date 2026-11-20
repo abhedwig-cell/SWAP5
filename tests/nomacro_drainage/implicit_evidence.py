@@ -164,38 +164,6 @@ def nonselected(root,z,opt,proof,aliases):
  return reports
 
 
-def windows(path,opt):
- with extracted(path.with_name('EXTENDED_DRAINAGE_IMPLICIT_WINDOWS_SOURCE_RAW_ARCHIVE.zip')) as (sources,_):
-  cap=capsule(sources);shortcap=capsule(sources,'short-source');provider=json.loads((sources/'provider-PREPARED.json').read_text())
- reports={}
- with extracted(path) as (root,z):
-  aliases=json.loads(z.read('ACTUAL_COMPILED_ALIASES.json'))['profiles']
-  expected={'full-water','full-cde',*(f'short-{c}-h{h}' for c in ('water','automatic') for h in (0,1,2)),*(f'off-{c}-h{h}' for c,h in [('water',0),('automatic',0),('water',1),('automatic',2)]),'ordinary-s0-h0','ordinary-s1-h2'}
-  require(set(aliases)==expected,'Actual implicit profile/build inventory differs')
-  for prefix,item in aliases.items():
-   q=json.loads(z.read(prefix+'/RESULT.json'));raw=z.read(item['actual_build_prefix']+'/BUILD.json');require(prior.digest(raw)==item['actual_build_sha256']==q['trajectory']['build_sha256'] and item['producer_source']==q['source'],'Actual implicit source/build phase rebound')
-  for label,case,h in [('water','water',0),('cde','automatic',2)]:
-   prefix='full-'+label;bp=aliases[prefix]['actual_build_prefix'];report,build,rows=period(root,z,prefix,opt,1096,bp);source_binding(build,cap,provider)
-   report['controls']=controls(root,prefix,build,rows,cap,compiled_prefix=bp,control_name='controls-v1');report['short_full_postimage']=phase_postimage(root,prefix,f'short-{case}-h{h}',aliases);reports[prefix]=report
-  for case in ('water','automatic'):
-   for h in (0,1,2):
-    prefix=f'short-{case}-h{h}';report,build,_=period(root,z,prefix,opt,35,aliases[prefix]['actual_build_prefix']);source_binding(build,shortcap,provider);reports[prefix]=report
-  import implicit_zero_boundary_forensics as ordinary
-  for solu,h in [(0,0),(1,2)]:
-   prefix=f'ordinary-s{solu}-h{h}';bp=aliases[prefix]['actual_build_prefix'];build=json.loads(z.read(bp+'/BUILD.json'));prior.build_files(z,bp+'/',build);reports[prefix]=ordinary.audit(root/prefix,root/bp)
-   require(build['identity']['implicit_conductivity']['source_sha256']==cap['members']['app/hybrid_water/implicit_conductivity.py']['sha256'],'Actual ordinary boundary implicit source changed')
-  reports['explicit-off']=nonselected(root,z,opt,path.parent,aliases);reports['component']=component(root/'component',opt,provider)
- return reports
-
-
-def ubuntu(path,opt):
- record=json.loads(path.with_suffix('.json').read_text());require(record['repacked'] is False and record['origin_job_conclusion']=='success','Original Ubuntu implicit artifact repacked or not terminal success')
- with extracted(path) as (root,z):
-  cap=capsule(root);provider=json.loads((root/'provider-PREPARED.json').read_text());reports={}
-  for label in ('water','cde'):
-   report,build,rows=period(root,z,label,opt,1096);source_binding(build,cap,provider);report['controls']=controls(root,label,build,rows,cap);reports[label]=report
- return reports
-
 def ordinary_controls(root,profile,build,rows):
  directory=root/profile/'controls-v1';q=json.loads((directory/'RESULT.json').read_text())
  require(q['status']=='IMPLICIT_CONDUCTIVITY_NUMERICAL_NATIVE_TRANSACTION_DOMAIN_PASS' and q['build_sha256']==json.loads((root/profile/'RESULT.json').read_text())['trajectory']['build_sha256'],'Actual ordinary policy controls incomplete or rebound')
@@ -327,6 +295,90 @@ def corrected_ubuntu(path,opt):
   build=json.loads(z.read('water-build/BUILD.json'));prior.build_files(z,'water-build/',build);source_binding(build,cap,provider);input_domain(root/'water',build);corrected_source(path.parent,opt,root/'water-build')
   import implicit_failure_forensics as failed
   reports['failed-water-secondary']=failed.audit(root/'water',root/'water-build')
+ return reports
+
+def current_postimage(directory,before_directory,compiled_root,before_compiled_root):
+ a=json.loads((compiled_root/'BUILD.json').read_text());b=json.loads((before_compiled_root/'BUILD.json').read_text())
+ require({p.name:p.read_bytes() for p in compiled_root.glob('*.f90')}=={p.name:p.read_bytes() for p in before_compiled_root.glob('*.f90')},'Final input guard changed actual numerical Fortran')
+ require(a['inputs']==b['inputs'] and a['project']==b['project'],'Final input guard changed original input/project')
+ changed=differences(b['identity'],a['identity']);require(set(changed)<={'extended_drainage.source_sha256','restart_publisher.library_sha256'},'Final input guard changed numerical/compiler/provider identity')
+ if 'restart_publisher.library_sha256' in changed:
+  require((compiled_root/'restart_publish.dll').is_file() and (before_compiled_root/'restart_publish.dll').is_file(),'Unexpected current Linux publisher binary delta')
+  publisher_equivalence(before_compiled_root/'restart_publish.dll',compiled_root/'restart_publish.dll')
+ rows=prior.lines((directory/'trajectory/daily.jsonl').read_bytes());before=prior.lines((before_directory/'trajectory/daily.jsonl').read_bytes());require(len(rows)==35 and prior.physical(rows)==prior.physical(before[:35]),'Final current physical prefix changed')
+ for day in (2,4,14,17,30,35):require(prior.package((directory/f'trajectory/accepted-column-1-day-{day}.zip').read_bytes())[1]==prior.package((before_directory/f'trajectory/accepted-column-1-day-{day}.zip').read_bytes())[1],'Final current complete native prefix changed')
+ return dict(actual_days=35,exact_native_days=[2,4,14,17,30,35],changed_source_roles=changed,fresh_unaffected_CDE_full_periods=0)
+
+
+def composition_policy(root,build,bp):
+ directory=root/'composition-policy';q=json.loads((directory/'RESULT.json').read_text());require(q['status']=='ACTUAL_SEVEN_IMPLICIT_COMPOSITION_POLICY_CONSTITUTIVE_SOURCE_REFUSALS_PASS' and q['actual_build_sha256']==prior.digest((root/bp/'BUILD.json').read_bytes()),'Actual current composition policy source/bundle differs')
+ expected={'source_sha256','implicit_pond_renderer_sha256','implicit_soil_pond_chain_rule','continuous_saturation_renderer_sha256','near_saturation_reference_correction','discontinuous_original_near_saturation_behavior_preserved','actual-MOD-MvG'}
+ require({v['field'] for v in q['refusals']}==expected and len(q['refusals'])==7,'Actual current composition policy denominator changed')
+ for item in q['refusals']:
+  target=directory/item['field'];bad=json.loads((target/'BUILD.json').read_text())
+  require(item['before_worker'] is item['no_publication'] is True and item['expected'] in item['error'] and not list(target.rglob('donor.stdout')) and not list(target.rglob('accepted-*.zip')),'Actual current invalid composition entered worker/publication')
+  if item['field']=='actual-MOD-MvG':
+   require(bad==build and (target/'MOD_MvG_functions.f90').read_bytes()==(root/bp/'MOD_MvG_functions.f90').read_bytes()+b'\n! deliberately foreign actual constitutive source\n','Actual constitutive-source mutant differs from declared attack')
+  else:
+   require(differences(build['identity'],bad['identity'])==['extended_drainage.'+item['field']] and differences(build['binding'],bad['binding'])==['build.extended_drainage.'+item['field']],'Actual policy mutant changed another domain')
+   require(bad['identity']['extended_drainage'][item['field']]==bad['binding']['build']['extended_drainage'][item['field']]=='foreign','Actual immutable policy attack missing')
+ require(prior.digest((directory/'actual-controller.py').read_bytes())==json.loads((directory/'CONTROLLER_CUSTODY.json').read_text())['actual_controller_sha256'],'Actual control controller custody differs')
+ return dict(actual_before_worker_policy_and_constitutive_source_refusals=7)
+
+
+def scope(root):
+ directory=root/'scope';q=json.loads((directory/'RESULT.json').read_text());require(len(q['controls'])==5 and q['accepted_origin_unchanged'] is True,'Actual excluded implicit scope denominator/origin differs')
+ require({v['label'] for v in q['controls']}=={'compatibility','AGE','history3','secondary-only','examined-Ksat'},'Actual excluded implicit scope case omitted')
+ for item in q['controls']:
+  target=directory/item['label'];require(item['returncode']==2 and item['expected_refusal'] in (target/'actual.stderr').read_text() and item['no_compiler_source_or_executable'] is item['no_worker_or_publication'] is True,'Actual excluded implicit scope guard differs')
+  for name,value in item['input_sha256'].items():require(prior.digest((target/'input'/name.replace('\\','/')).read_bytes())==value,'Actual excluded implicit input changed')
+  require(not list(target.rglob('donor.stdout')) and not list(target.rglob('accepted-*.zip')) and not list(target.rglob('*.exe')) and not list(target.rglob('*.f90')),'Actual excluded implicit evidence executed/published model')
+ return dict(actual_public_before_compilation_scope_refusals=5,AGE_admitted=False,secondary_only_implicit_admitted=False)
+
+
+def windows(path,opt):
+ with extracted(path.with_name('EXTENDED_DRAINAGE_IMPLICIT_WINDOWS_SOURCE_RAW_ARCHIVE.zip')) as (sources,_):
+  cap=capsule(sources);provider=json.loads((sources/'provider-PREPARED.json').read_text());scope_report=scope(sources)
+ reports={}
+ with extracted(path) as (root,z),extracted(path.with_name(f'EXTENDED_DRAINAGE_IMPLICIT_CORRECTED_WINDOWS_{opt}_RAW_ARCHIVE.zip')) as (before,old):
+  aliases=json.loads(z.read('ACTUAL_COMPILED_ALIASES.json'))['profiles'];oldaliases=json.loads(old.read('ACTUAL_COMPILED_ALIASES.json'))['profiles'];batch=json.loads(z.read('SHORT_BATCH_RESULT.json'))
+  cases={('automatic',kind,h) for kind in ('water','cde') for h in (0,1,2)}|{('prescribed','water',0),('prescribed','cde',0),('prescribed','cde',2)}
+  require(batch['status']=='ACTUAL_NINE_PRIMARY_IMPLICIT35DAY_INTERACTIONS_AND27EXACT_NATIVE_WINDOWS_PASS' and {(v['case'],v['kind'],v['hysteresis']) for v in batch['contexts']}==cases and len(batch['contexts'])==9,'Actual current primary interaction selection differs')
+  expected={'full-water','final-off',*(f'short-{c}-{k}-h{h}' for c,k,h in cases)};require(set(aliases)==expected,'Actual current primary alias inventory differs')
+  for prefix,item in aliases.items():
+   q=json.loads(z.read(prefix+'/RESULT.json'));require(prior.digest(z.read(item['actual_build_prefix']+'/BUILD.json'))==item['actual_build_sha256']==q['trajectory']['build_sha256'] and item['producer_source']==q['source'],'Actual current primary compiler/source phase rebound')
+  require(aliases['full-water']['actual_build_prefix']==aliases['short-automatic-water-h0']['actual_build_prefix'],'Identical current full/short water compiled reuse lost')
+  bp=aliases['full-water']['actual_build_prefix'];report,build,rows=period(root,z,'full-water',opt,1096,bp);source_binding(build,cap,provider);input_domain(root/'full-water',build,True);corrected_source(path.parent,opt,root/bp);report['controls']=controls(root,'full-water',build,rows,cap,compiled_prefix=bp,control_name='controls-v1');reports['full-water']=report
+  reports['composition-policy']=composition_policy(root,build,bp)
+  for case,kind,h in sorted(cases):
+   prefix=f'short-{case}-{kind}-h{h}';bp=aliases[prefix]['actual_build_prefix'];report,build,rows=period(root,z,prefix,opt,35,bp);source_binding(build,cap,provider);input_domain(root/prefix,build,True);corrected_source(path.parent,opt,root/bp)
+   require(('solute_end_mg_cm2' in rows[0])==(kind=='cde') and build['identity']['original_output'].get('swhyst',0)==h,'Actual primary short chemical/history context differs')
+   if (case,kind,h)==('automatic','cde',2):report['positive-controls']=controls(root,prefix,build,rows,cap,positive=True,compiled_prefix=bp)
+   if case=='automatic' and kind=='cde' and h in (0,2):
+    oldprefix=f'full-cde-h{h}';report['current-postimage']=current_postimage(root/prefix,before/oldprefix,root/bp,before/oldaliases[oldprefix]['actual_build_prefix'])
+   reports[prefix]=report
+  import history_forensics,calendar_forensics
+  prefix='final-off';bp=aliases[prefix]['actual_build_prefix'];build=json.loads(z.read(bp+'/BUILD.json'));prior.build_files(z,bp+'/',build);case,h=('water',0) if opt=='O0' else ('automatic',2);oldprefix=f'off-{case}-h{h}';obp=oldaliases[oldprefix]['actual_build_prefix'];oldbuild=json.loads(old.read(obp+'/BUILD.json'))
+  require({p.name:p.read_bytes() for p in (root/bp).glob('*.f90')}=={p.name:p.read_bytes() for p in (before/obp).glob('*.f90')} and build['inputs']==oldbuild['inputs'] and build['project']==oldbuild['project'],'Final implicit-off input/Fortran changed')
+  changed=differences(oldbuild['identity'],build['identity']);require(set(changed)<={'extended_drainage.source_sha256','restart_publisher.library_sha256'},'Final implicit-off numerical identity changed')
+  if 'restart_publisher.library_sha256' in changed:publisher_equivalence(before/obp/'restart_publish.dll',root/bp/'restart_publish.dll')
+  require(prior.physical(prior.lines(z.read(prefix+'/trajectory/daily.jsonl')))==prior.physical(prior.lines(old.read(oldprefix+'/trajectory/daily.jsonl'))),'Final implicit-off physical postimage changed')
+  for day in (2,4):require(prior.package(z.read(prefix+f'/trajectory/accepted-column-1-day-{day}.zip'))[1]==prior.package(old.read(oldprefix+f'/trajectory/accepted-column-1-day-{day}.zip'))[1],'Final implicit-off complete native changed')
+  reports[prefix]=(history_forensics if h else calendar_forensics).audit_root(root/prefix,root/bp)
+  with zipfile.ZipFile(path.with_name(f'EXTENDED_DRAINAGE_IMPLICIT_PRECORRECTION_WINDOWS_{opt}_RAW_ARCHIVE.zip')) as early:
+   earlyaliases=json.loads(early.read('ACTUAL_COMPILED_ALIASES.json'))['profiles']
+   for solu,h in [(0,0),(1,2)]:reports[f'ordinary-current-s{solu}-h{h}']=ordinary_current(root,f'ordinary-current-s{solu}-h{h}',early,f'ordinary-s{solu}-h{h}',earlyaliases)
+ reports['scope']=scope_report
+ return reports
+
+
+def ubuntu(path,opt):
+ record=json.loads(path.with_suffix('.json').read_text());require(record['repacked'] is False and record['origin_job_conclusion']=='success','Original final Ubuntu artifact repacked or nonterminal')
+ reports={}
+ with extracted(path) as (root,z),extracted(path.with_name(f'EXTENDED_DRAINAGE_IMPLICIT_CORRECTED_UBUNTU_{opt}_RAW_ARCHIVE.zip')) as (before,old):
+  cap=capsule(root);provider=json.loads((root/'provider-PREPARED.json').read_text())
+  report,build,rows=period(root,z,'water',opt,1096);source_binding(build,cap,provider);input_domain(root/'water',build,True);corrected_source(path.parent,opt,root/'water-build');report['controls']=controls(root,'water',build,rows,cap);reports['water']=report
+  report,build,rows=period(root,z,'cde',opt,35);source_binding(build,cap,provider);input_domain(root/'cde',build,True);corrected_source(path.parent,opt,root/'cde-build');report['positive-controls']=controls(root,'cde',build,rows,cap,positive=True,control_name='controls');report['current-postimage']=current_postimage(root/'cde',before/'cde',root/'cde-build',before/'cde-build');reports['cde']=report
  return reports
 
 if __name__=='__main__':
