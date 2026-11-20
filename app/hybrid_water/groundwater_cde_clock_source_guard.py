@@ -15,6 +15,10 @@ def validate(bundle,identity):
     if (output.get('groundwater_cde_clock') is not True or output.get('cde_clock_output') is not True or
             output.get('native_codec') not in ('S5GCC001','S5GCH001','S5GCH003')):
         raise ValueError('Foreign groundwater CDE clock source domain')
+    actual=(Path(bundle)/'original_cde_output_state.f90').read_bytes().replace(b'\r\n',b'\n')
+    expected=Path(__file__).with_name('cde_interval_output_state.f90').read_bytes().replace(b'\r\n',b'\n')
+    if actual!=expected:
+        raise ValueError('Foreign actual groundwater CDE clock private-state provider')
     source=(Path(bundle)/'headcalc.f90').read_bytes().replace(b'\r\n',b'\n')
     for addition in ADDITIONS:
         if source.count(addition)!=1:

@@ -26,7 +26,10 @@ def main():
         for label in [*('policy-'+v for v in fields),'head-relaxed-guard','head-missing-guard','head-foreign-parent','cde-private-source']:
             target=a.output/label;target.mkdir();bad=copy.deepcopy(meta)
             for path in bundle.iterdir():
-                if path.name=='BUILD.json' or path.suffix.lower() in ('.f90','.dll','.so'):shutil.copyfile(path,target/path.name)
+                if path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.dll','.so','.exe'):shutil.copyfile(path,target/path.name)
+            # Materialize a valid complete executable fixture first. A refusal
+            # cannot be credited to missing files in a partial source fixture.
+            m.validate_bundle(target,a.reference_work,project)
             if label.startswith('policy-'):
                 field=label[len('policy-'):]
                 for identity in (bad['identity'],bad['binding']['build']):identity['original_output'][field]='foreign'
