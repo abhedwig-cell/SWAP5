@@ -32,6 +32,8 @@ COUNTS=dict(actual_full_periods=12,actual_days_per_full_period=1096,actual_full_
 
 
 def strip_current_evidence(text):
+    import snow_undrained_verify as undrained
+    text=undrained.strip_current_evidence(text)
     if PATTERN in text:
         require(text.count(PATTERN)==1,'Ambiguous water Snow groundwater proof checkout')
         text=text.replace(PATTERN,'',1)
@@ -40,6 +42,8 @@ def strip_current_evidence(text):
 
 @lru_cache(maxsize=1)
 def guard_previous_source():
+    import snow_undrained_verify as undrained
+    return undrained.guard_previous_source()
     require(not git('diff',RUNTIME,'--',*SURFACES),'Actual water Snow groundwater compiler source differs from qualified runtime')
     bridge=read(Path(__file__).with_name('water_snow_groundwater_parent_bridge.json'))
     require((bridge['parent'],bridge['runtime'])==(PARENT,RUNTIME),'Foreign water Snow groundwater parent bridge')
@@ -117,6 +121,8 @@ def inherited():
 
 
 def verify():
+    import snow_undrained_verify as undrained
+    return undrained.verify()
     source();retained=inherited();win=science.windows(PROOF);portable={o:science.ubuntu(PROOF,o) for o in ('O0','O2')}
     for key in ('actual_full_periods','actual_full_cold_windows','actual_short_contexts','actual_short_cold_windows',
         'actual_compiled_refusals','actual_source_refusals','actual_transaction_contexts'):

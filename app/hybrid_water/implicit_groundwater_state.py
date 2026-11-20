@@ -123,6 +123,11 @@ def validate_candidate(raw,receipt,project):
 
 
 def native_apply_build(output,project,patched):
+    from snow_undrained import selection as undrained_selection
+    undrained=undrained_selection(project)
+    if undrained is not None:
+        from snow_undrained_state import native_build as undrained_native_build
+        return undrained_native_build(output,project,patched,undrained)
     selected=snow_selection(project)
     if selected is not None:
         from snow_water_groundwater_build import native_build
