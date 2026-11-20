@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-hydraulic-constitutive01",
-  "last_commit": "1dab9f2e656fca5a4b2cca9c743b46ceae576e0c",
+  "last_commit": "8d4fd2f8161143ee3e5009f978db902845ad8bd8",
   "status": "EXPLICIT_FROST_CANONICALLY_ADMITTED_IMPLICIT_FROST_NATIVE_STATE_CLOSURE_ACTIVE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -32714,7 +32714,7 @@
     "local_metadata_carry_not_pushed_to_PR1776": true
   },
   "next_hydraulic_constitutive_batch": {
-    "status": "MODEL7_EXACT_CAPACITY_CORRECTION_O0_O2_BASELINE_AND_360_STATE_GRIDS_PASS_NOT_ADMITTED",
+    "status": "MODEL7_COMPONENT_CORRECTION_AND_FOUR_SHORT_PASS_YEAR_CDE_REFUSES_DAY364_STRICTLY_RETAINED",
     "prior_authority": "integration/nomacro-coverage01/BLOCK_I_QUALIFICATION.json",
     "strict_models_retained": [
       3,
@@ -32731,7 +32731,7 @@
     ],
     "RIA12": "Original initialization column suspicion retained, not demonstrated or repaired",
     "current_source": "Original dhconduc implements exponential2 then defaultMvG branch for all other analytical families; implicit guard currently accepts only1. Original prhead handles2 then defaultMvG; callers hysteresis/tillage, not HeadCalc. Do not infer this causes retained365-day failures.",
-    "next": "Introduce bounded original model7 capacity reference correction as exact one-expression full-source inverse; select only actual explicit model7 no-hysteresis context, actual original input/parser and integrated short/year-end failure-boundary proof before considering admission. Keep nondefault implicit conductivity hard refusal. Complete PR1776 CI/merge/canonical public proof independently; do not push metadata carry to its exact05d3head.",
+    "next": "Reuse actual year201 checkpoints to preserve exact cold201->363 accepted suffix and exact refused364; publish actual accepted363, then cold363->364 must refuse without commit. Do not relax1e-10 or adjust states/fluxes. Investigate independent terminal-vs-hydraulic-step receipt boundary before new longer periods. PR1776 exacthead05d3 CI still pending separately.",
     "component_source": "04bdb290d",
     "component_contexts": 2,
     "original_module_models_observed": 11,
@@ -32747,6 +32747,15 @@
     "grid_variations": "two soils, three secondary-alpha scales, five weights including0/1, three dry heads1e4/1e6/1e8, four unsaturated heads1..1000cm",
     "physical_water_and_conductivity_values_exact": true,
     "ten_other_models_baseline_rows_exact": 140,
-    "old_failure_and_censor_roles_preserved": true
+    "old_failure_and_censor_roles_preserved": true,
+    "actual_short_contexts": 4,
+    "actual_short_cold_windows": 12,
+    "short_cde_daily_max": "2.8676188197428827E-13",
+    "year_O0_O2_status": "FAILED_REJECTED_DAY364_AFTER363_ACCEPTED_DAYS",
+    "actual_refused_water_residual_cm": "1.0029004016143261E-10",
+    "actual_refused_kernel_residual_cm": "-1.0029665986621694E-10",
+    "mass_limit_unchanged": 1e-10,
+    "new_year_context_is_qualified": false,
+    "water_fixture_initial_roles": "Original active salinity with SWSOLU0 refused before build; valid explicit water-only SWSALINITY0 inputs kept separately asv2"
   }
 }
