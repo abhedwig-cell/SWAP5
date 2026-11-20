@@ -1,10 +1,14 @@
 name: Original water Snow groundwater composition qualification
 on:
-  push:
-    branches: [codex/nomacro-water-snow-groundwater01]
   workflow_dispatch:
+    inputs:
+      resume_original:
+        description: Reuse original44749932813 binaries; rebuild only four affected day-tail forms
+        type: boolean
+        default: false
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: nomacro-water-snow-groundwater-${{ github.ref }}
   cancel-in-progress: false
@@ -42,13 +46,28 @@ jobs:
         env:
           PYTHONPATH: app/hybrid_water
         run: |
-          mkdir -p "$RUNNER_TEMP/proof"
-          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"
-          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$RUNNER_TEMP/proof/controller-source.tar"
-          cp .github/workflows/nomacro-water-snow-groundwater.yml "$RUNNER_TEMP/proof/actual-workflow.yml"
-          git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$RUNNER_TEMP/proof/actual-workflow-git-blob.txt"
+          proof="$RUNNER_TEMP/proof"
+          if [[ '${{ inputs.resume_original }}' == true ]]; then proof="$RUNNER_TEMP/proof-current"; fi
+          mkdir -p "$proof"
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
+          cp .github/workflows/nomacro-water-snow-groundwater.yml "$proof/actual-workflow.yml"
+          git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Download original failed-run evidence without rebinding
+        if: inputs.resume_original
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 44749932813
+          name: water-snow-groundwater-${{ matrix.optimization }}-53f9ede58285c77f5fe34d4120dbfab709b41488
+          path: ${{ runner.temp }}/proof
+      - name: Reuse original binaries and qualify only affected day-tail repair
+        if: inputs.resume_original
+        run: |
+          python3 -B tests/nomacro_drainage/water_snow_groundwater_recover.py --reference-work "$RUNNER_TEMP/provider" --original-root "$RUNNER_TEMP/proof" --build-root "$RUNNER_TEMP/builds-current" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof-current/recovery" --optimization '${{ matrix.optimization }}'
       - name: Qualify coherent existing water Snow groundwater coupling
+        if: ${{ !inputs.resume_original }}
         run: |
           python3 -B tests/nomacro_drainage/water_snow_groundwater_portable.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof/water-snow-groundwater" --optimization '${{ matrix.optimization }}'
       - name: Preserve actual compiled bytes and original provider identity
@@ -57,16 +76,17 @@ jobs:
           python3 -B - <<'PY'
           import os,shutil,json,hashlib
           from pathlib import Path
-          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/('proof-current' if '${{ inputs.resume_original }}'=='true' else 'proof');proof.mkdir(exist_ok=True)
           provider=root/'provider/PREPARED.json'
           if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
           projection={}
-          for manifest in sorted((root/'builds').rglob('BUILD.json')):
-              build=manifest.parent;target=proof/'compiled'/build.relative_to(root/'builds');target.mkdir(parents=True)
-              for path in sorted(build.iterdir()):
-                  if path.is_file() and (path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.exe','.dll','.so')):
-                      shutil.copyfile(path,target/path.name)
-              projection[str(build)]=dict(archive_prefix=target.relative_to(proof).as_posix(),actual_BUILD_sha256=hashlib.sha256(manifest.read_bytes()).hexdigest())
+          for stem in ('builds','builds-current'):
+              for manifest in sorted((root/stem).rglob('BUILD.json')):
+                  build=manifest.parent;target=proof/'compiled'/stem/build.relative_to(root/stem);target.mkdir(parents=True)
+                  for path in sorted(build.iterdir()):
+                      if path.is_file() and (path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.exe','.dll','.so')):
+                          shutil.copyfile(path,target/path.name)
+                  projection[str(build)]=dict(archive_prefix=target.relative_to(proof).as_posix(),actual_BUILD_sha256=hashlib.sha256(manifest.read_bytes()).hexdigest())
           (proof/'COMPILED_PROJECTION_V1.json').write_text(json.dumps(projection,indent=2)+'\n')
           PY
       - name: Independently bind original source and compiler provenance
@@ -76,13 +96,18 @@ jobs:
           from pathlib import Path
           sys.path.insert(0,'tests/nomacro_drainage')
           from water_snow_groundwater_custody import audit
-          root=Path(os.environ['RUNNER_TEMP'])/'proof';q=audit(root)
+          root=Path(os.environ['RUNNER_TEMP'])/('proof-current' if '${{ inputs.resume_original }}'=='true' else 'proof')
+          selected=None
+          if '${{ inputs.resume_original }}'=='true':
+              r=json.loads((root/'recovery/RESULT.json').read_text())
+              selected=[Path(json.loads((Path(p)/'RESULT.json').read_text())['build_root']) for p in r['actual_short_profiles'].values()]
+          q=audit(root,selected)
           (root/'INDEPENDENT_SOURCE_COMPILER_CUSTODY_V1.json').write_text(json.dumps(q,indent=2)+'\n')
           print(q['status'])
           PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: water-snow-groundwater-${{ matrix.optimization }}-${{ github.sha }}
-          path: ${{ runner.temp }}/proof
+          name: ${{ inputs.resume_original && 'water-snow-groundwater-recovery' || 'water-snow-groundwater' }}-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ inputs.resume_original && format('{0}/proof-current', runner.temp) || format('{0}/proof', runner.temp) }}
           retention-days: 30

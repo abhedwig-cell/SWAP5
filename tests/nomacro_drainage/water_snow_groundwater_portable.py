@@ -33,7 +33,7 @@ def main():
             profile=a.output/('short-'+label)
             run('short-'+label,'water_snow_groundwater_period.py',[*common,'--source-probe',probe,'--label',label,'--output',profile],360)
             run('audit-short-'+label,'water_snow_groundwater_forensics.py',[profile,'--output',a.output/('INDEPENDENT_SHORT_'+label+'.json')],180)
-        for label,cap in (('explicit-h2-clock',600),('implicit-h1-step-reset',1200)):
+        for label,cap in (('explicit-h2-clock',600),('implicit-h1-step-reset',1200),('explicit-h0-daily',600)):
             profile=a.output/('full-'+label)
             run('full-'+label,'water_snow_groundwater_period.py',[*common,'--source-probe',probe,'--label',label,'--days',1096,'--cap',cap,'--output',profile],cap+720)
             run('audit-full-'+label,'water_snow_groundwater_forensics.py',[profile,'--output',a.output/('INDEPENDENT_FULL_'+label+'.json')],180)
