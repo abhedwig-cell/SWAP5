@@ -11,7 +11,8 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--work',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--work',type=Path,required=True)
+    p.add_argument('--resume-completed-archives',action='store_true');a=p.parse_args()
     evidence=a.work/'evidence';proof=ROOT/'integration/f-ci/nomacro-complete01';files={};builds=set()
     def visit(v):
         if isinstance(v,dict):
@@ -49,16 +50,28 @@ def main():
             if label!='SUPPORT':label+='_'+('CONTROLS' if control else 'SCIENCE')
             if label==group:selected[name]=file
         name=f'GROUNDWATER_SNOW_CDE_WINDOWS_{group}_RAW_ARCHIVE.zip'
-        path=evidence/name;record=proof/Path(name).with_suffix('.json');assert not path.exists() and not record.exists();members={}
-        with zipfile.ZipFile(path,'x',compression=zipfile.ZIP_DEFLATED) as z:
-            for name,file in sorted(selected.items()):
-                raw=file.read_bytes();members[name]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest());z.writestr(name,raw)
-            if group=='SUPPORT':
-                raw=(json.dumps(projection,indent=2)+'\n').encode();name='COMPILED_PROJECTION_V1.json'
-                members[name]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest());z.writestr(name,raw)
-        stored=store_original(path,proof,name)
+        path=evidence/name;record=proof/Path(name).with_suffix('.json');assert not record.exists();members={}
+        reused_original=path.exists()
+        if reused_original:
+            assert a.resume_completed_archives
+            with zipfile.ZipFile(path) as z:
+                assert set(z.namelist())==set(selected)|({'COMPILED_PROJECTION_V1.json'} if group=='SUPPORT' else set())
+                for member in z.namelist():
+                    raw=z.read(member)
+                    expected=(json.dumps(projection,indent=2)+'\n').encode() if member=='COMPILED_PROJECTION_V1.json' else selected[member].read_bytes()
+                    assert raw==expected,'Original completed archive source changed: '+member
+                    members[member]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+        else:
+            with zipfile.ZipFile(path,'x',compression=zipfile.ZIP_DEFLATED) as z:
+                for name,file in sorted(selected.items()):
+                    raw=file.read_bytes();members[name]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest());z.writestr(name,raw)
+                if group=='SUPPORT':
+                    raw=(json.dumps(projection,indent=2)+'\n').encode();name='COMPILED_PROJECTION_V1.json'
+                    members[name]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest());z.writestr(name,raw)
+        stored=store_original(path,proof,path.name)
         q=dict(status='ACTUAL_ORIGINAL_SNOW_GROUNDWATER_WINDOWS_RAW_SEALED_PENDING_ADMISSION',**stored,members=members,
                sealer_source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+               original_completed_archive_reused_without_repacking=reused_original,
                role='Original producer/BUILD/input/native/source identities and failed observers preserved without rebinding',
                functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED')
         record.write_text(json.dumps(q,indent=2)+'\n',encoding='utf-8');print(group,q['bytes'],q['sha256'],len(members),flush=True)
