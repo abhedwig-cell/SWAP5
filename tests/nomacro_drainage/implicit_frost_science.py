@@ -66,8 +66,10 @@ def windows(proof):
             blob=lambda value:hashlib.sha1(b'blob '+str(len(value)).encode()+b'\0'+value).hexdigest()
             assert blobs[name] in (blob(raw),blob(raw.replace(b'\r\n',b'\n')))
         reference=View(Bytes({'original/build/swap-selected/divdra.f90':current.get('original-provider-build/swap-selected/divdra.f90')}),'original')
-        audit=frozen_model();results=[];boundaries={};controls=[]
+        audit=frozen_model();results=[];boundaries={};roots={};controls=[]
         for opt in ('O0','O2'):
+            from implicit_frost_root_forensics import audit as root_audit
+            roots[opt]=root_audit(current.get,'profiles/frost-implicit-root-state-'+opt+'-v1',opt,prepared)
             boundaries[opt]=boundary_audit(ReadView(current,'profiles/frost-implicit-raw-residual-'+opt+'-v2'))
             for kind in ('water','cde'):
                 for phase in ('short','full'):
@@ -135,7 +137,7 @@ def windows(proof):
                 assert root['status']=='ACTUAL_COMPILED_IMPLICIT_FROST_ROOT_NATIVE_REFUSALS_PASS' and len(root['refusals'])==25
                 assert all(item['status']=='REFUSED' and item['authority']=='compiled_native' and 'ERROR STOP' in item['diagnostic'] for item in root['refusals'])
                 controls.append(dict(kind=kind,optimization=opt,compiled_native_refusals=len(cq['native_refusals'])+26,descriptor_refusals=7,source_refusals=len(cq['source_refusals']),transaction_contexts=1))
-        return dict(status='SEALED_ACTUAL_IMPLICIT_FROST_WINDOWS_RAW_SCIENCE_SOURCE_CONTROLS_PASS',results=results,boundaries=boundaries,controls=controls,actual_full_periods=4,actual_full_cold_windows=28,actual_short_contexts=4,actual_short_cold_windows=12,actual_compiled_refusals=270,actual_descriptor_refusals=28,actual_source_refusals=28,actual_transaction_contexts=4,compiler_executions=0,model_executions=0)
+        return dict(status='SEALED_ACTUAL_IMPLICIT_FROST_WINDOWS_RAW_SCIENCE_SOURCE_CONTROLS_PASS',results=results,boundaries=boundaries,root_providers=roots,controls=controls,actual_full_periods=4,actual_full_cold_windows=28,actual_short_contexts=4,actual_short_cold_windows=12,actual_compiled_refusals=270,actual_descriptor_refusals=28,actual_source_refusals=28,actual_transaction_contexts=4,compiler_executions=0,model_executions=0)
 
 
 def ubuntu(proof,opt):

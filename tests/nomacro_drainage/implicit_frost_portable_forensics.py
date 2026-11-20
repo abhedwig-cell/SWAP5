@@ -135,25 +135,9 @@ def audit(archive,opt):
                     assert binary(archive.read(cold+'/original/result_output.bin'))[1:]==expected
                 observations.append(dict(kind=kind,phase=phase,days=days,cold_windows=windows,water_max_decimal=str(water),CDE_max_decimal=str(chemical),CDE_prefix_max_decimal=str(chemical_prefix),extra_absolute_global_water_prefix=str(water_prefix),extra_global_water_prefix_is_owning_acceptance_gate=False))
     boundary=boundary_audit(ArchivePath(archive,prefix+'/boundary'))
-    root=read(prefix+'/root/RESULT.json')
-    assert root['status']=='ACTUAL_TWO_RATE_FROST_NATIVE_PROVIDER_ROUNDTRIPS_AND_14_REFUSALS_PASS_NOT_ADMITTED'
-    assert root['optimization']==opt and root['source']==PRODUCER and len(root['native'])==16
-    assert root['parent_provider_sha256']=='617c85df35a799ad400278d59d51f89941c9d6ef4f57193c7f124c40817ea0e2'
-    assert all(item['returncode']==0 for item in root['compiler'])
-    for kind,objects in root['actual_object_closures'].items():
-        assert len(objects)==40
-        for item in objects:assert item['sha256']==prepared['provider_files']['build/swap-obj/'+item['name']]
-    assert {(item['kind'],item['attack']) for item in root['native']}==set(__import__('itertools').product((0,1),('roundtrip','header','witness','value-witness','nonfinite','truncated','bad-frost','bad-bottom')))
-    for item in root['native']:
-        raw=archive.read(prefix+'/root/'+str(item['kind'])+'-'+item['attack']+'/root-native.bin')
-        assert len(raw)==item['bytes'] and SHA(raw)==item['input_sha256']
-        if item['attack']=='roundtrip':
-            assert item['returncode']==0 and not item['stderr'] and item['status']=='ROUNDTRIP_PASS'
-            assert raw==struct.pack('<16i4d',*([4,3,item['kind'],1,2,6,1,0]*2),.25,.875,.25,.875)
-        else:
-            assert item['returncode']!=0 and item['status']=='REFUSED'
-            assert 'Invalid native input accepted by actual provider' not in item['stderr']
-    return dict(status='INDEPENDENT_PORTABLE_IMPLICIT_FROST_NATIVE2_RAW_SCIENCE_SOURCE_CONTROLS_PASS',producer=PRODUCER,optimization=opt,observations=observations,boundary=boundary,compiled_native_refusals=135,transaction_contexts=2,model_executions=0,compiler_executions=0,canonical_admission=False)
+    from implicit_frost_root_forensics import audit as root_audit
+    root=root_audit(archive.read,prefix+'/root',opt,prepared)
+    return dict(status='INDEPENDENT_PORTABLE_IMPLICIT_FROST_NATIVE2_RAW_SCIENCE_SOURCE_CONTROLS_PASS',producer=PRODUCER,optimization=opt,observations=observations,boundary=boundary,root_provider=root,compiled_native_refusals=135,transaction_contexts=2,model_executions=0,compiler_executions=0,canonical_admission=False)
 
 
 if __name__=='__main__':
