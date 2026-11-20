@@ -48,3 +48,10 @@ Ubuntu initial run44732748938 failed after all science completed because a sourc
 Fresh controls comprise200 compiled root startup refusals,144 source forgeries and16 transaction contexts. Twelve unchanged Windows postimages retain exact physical/native/user records and targeted cold continuity; unchanged full periods were reused. Inherited groundwater native controls require a separate exact dependency ledger and are not counted as fresh. All original Windows evidence and six original portable ZIPs have been retained losslessly. Public successor qualification and canonical admission are still pending.
 
 Water/Snow groundwater bottom1 remains a separate MISSING_COMPOSITION for explicit and implicit hydraulics, and is the next implementation batch. Whole historical functional completion remains PARTIAL, scientific equivalence NOT_QUALIFIED, family/gap counts UNKNOWN and fixed RC3 unchanged.
+
+
+## Actual canonical admission
+
+PR #1772 merged the exact observed candidatea79dbc953 at canonical9c447f419d11743efe7464d3c8542ac1bc8fea4a, ordered parentsf870eed5dca27b17bb24b27833dc9b3c7f85aea0 and a79dbc953d3c86a68bb664e56e26c46dfb1e95de, complete tree8f518c1ccbfa783fa712adac569a984d8a440329. All47checks terminal:30success,17skipped,no failures. Actual clean27 candidate public PASS304.4515157s; actual clean27 canonical public PASS291.7778566s; both zero models, unchanged HEAD/tree/status. Actual source and inherited canonical evidence negatives were refused in3.8044283s and50.2809484s on never-merge branches. The separate202743-byte admission archive SHA256db8955a6c08c9ac8ccd22aca3ed9de100a67856b79d3d3835f818c78f1d29c77 retains original receipts, complete CI logs/API snapshots and observer source. Neutral qualification and its twelve original science archives remain unchanged.
+
+The next water/Snow groundwater batch is already implemented on its separate child branch. Whole historical scope remains PARTIAL/NOT_QUALIFIED, family and gap counts UNKNOWN and fixedRC3 unchanged.

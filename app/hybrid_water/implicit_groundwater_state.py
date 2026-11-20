@@ -10,7 +10,13 @@ STATE='implicit_groundwater_native_state'
 POLICY='original-implicit-water-groundwater-complete-hydraulic-carry-v1'
 
 
+def snow_selection(project):
+    from snow_water_groundwater import selection
+    return selection(project)
+
+
 def enabled(project):
+    if snow_selection(project) is not None:return True
     if not project.input_directory or project.macro or project.solute or project.age or not project.original_output:return False
     from experimental_project import inspect
     report=inspect(project.input_directory)
@@ -34,12 +40,20 @@ def numerical_selector(project):
 
 
 def domain(project):
+    selected=snow_selection(project)
+    if selected is not None:
+        from snow_water_groundwater_state import domain as snow_domain
+        return snow_domain(project,selected)
     from experimental_project import inspect
     s=inspect(project.input_directory)['selectors']
     return [4 if s['SWKIMPL'] else 5,project.nodes,0,0,1,s['SWHYST'],0,0,1,2,s['SWDRA'],s['SWCFBS'],s['SWKIMPL']]
 
 
 def magic(project):
+    selected=snow_selection(project)
+    if selected is not None:
+        from snow_water_groundwater import codec
+        return codec(selected)
     if not enabled(project):return prior.native_magic(project)
     return b'S5IGW001' if numerical_selector(project) else b'S5EGW001'
 
@@ -53,6 +67,10 @@ def boundary_metadata(project,sha,app,root):
 
 
 def state_source(project=None):
+    selected=snow_selection(project) if project is not None else None
+    if selected is not None:
+        from snow_water_groundwater_state import state_source as snow_source
+        return snow_source(selected['swkimpl'])
     source=Path(__file__).with_name('groundwater_history_native_state.f90').read_text(encoding='cp1252')
     for old,new in [('hybrid_groundwater_history_native_state','hybrid_implicit_groundwater_native_state'),
                     ('groundwater_history_native_checkpoint','implicit_groundwater_native_checkpoint'),
@@ -71,6 +89,10 @@ def state_source(project=None):
 
 
 def native_metadata(project,sha,app):
+    selected=snow_selection(project)
+    if selected is not None:
+        import snow_water_groundwater_state as snow_state
+        return dict(**snow_state.metadata(project,selected),template_sha256=sha(app/'groundwater_history_native_state.f90'),provider_filename=snow_state.STATE+'.f90',magic=magic(project).decode(),domain_bytes=104,placement='after complete original Snow calendar before96byte existing diagnostic tail')
     if not enabled(project):return prior.native_metadata(project,sha,app)
     return dict(policy=POLICY if numerical_selector(project) else 'original-explicit-water-groundwater-complete-hydraulic-carry-v1',source_sha256=sha(Path(__file__)),template_sha256=sha(app/'groundwater_history_native_state.f90'),provider_filename=STATE+'.f90',provider_sha256=hashlib.sha256(state_source(project).encode('cp1252')).hexdigest(),magic=magic(project).decode(),domain_bytes=104,actual_domain=domain(project),hydraulic_doubles='5*actual_nodes+4',placement='after existing physical state before optional original output calendar')
 
@@ -79,6 +101,10 @@ def native_enabled(project):return enabled(project) or prior.native_enabled(proj
 
 
 def validate_candidate(raw,receipt,project):
+    selected=snow_selection(project)
+    if selected is not None:
+        from snow_water_groundwater_state import validate_candidate as snow_validate
+        return snow_validate(raw,receipt,project,selected)
     if not enabled(project):return prior.validate_candidate(raw,receipt,project)
     n=project.nodes;header=struct.pack('<13i',*domain(project))
     if raw[:8]!=magic(project) or raw.count(header+header)!=1:raise ValueError('Foreign implicit groundwater native domain')
@@ -97,6 +123,10 @@ def validate_candidate(raw,receipt,project):
 
 
 def native_apply_build(output,project,patched):
+    selected=snow_selection(project)
+    if selected is not None:
+        from snow_water_groundwater_build import native_build
+        return native_build(output,project,patched,selected)
     if not enabled(project):return prior.native_apply_build(output,project,patched)
     (output/(STATE+'.f90')).write_text(state_source(project),encoding='cp1252')
     path=output/'macropore.f90';text=path.read_text(encoding='cp1252')

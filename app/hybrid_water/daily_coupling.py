@@ -211,7 +211,10 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Foreign ordinary implicit positive-pond reference policy')
     validate_ordinary_pond(bundle,project)
     implicit_snow=(identity.get('implicit_conductivity') or {}).get('implicit_snow_composition') is True
-    if implicit_snow:
+    if (identity.get('original_output') or {}).get('groundwater_snow_water_output'):
+        from snow_water_groundwater_source_guard import validate_source as validate_water_snow
+        validate_water_snow(bundle,project,identity,reference)
+    elif implicit_snow:
         from implicit_snow_source_guard import validate_source as validate_implicit_snow
         validate_implicit_snow(bundle,project,identity,reference)
     elif identity.get('ordinary_implicit_pond_switch'):
@@ -267,7 +270,10 @@ def validate_bundle(bundle, reference, project):
     if identity.get('cde_native_receipt')!=expected_cde_receipt:raise ValueError('Foreign CDE native receipt consistency policy; rebuild without rebinding')
     from groundwater_water_output import metadata as original_output_metadata
     expected_output=original_output_metadata(project)
-    if identity.get('original_output')!=expected_output:raise ValueError('Foreign original output policy; rebuild without rebinding')
+    if identity.get('original_output')!=expected_output:
+        from snow_water_groundwater_source_guard import unchanged_clock_metadata
+        if not unchanged_clock_metadata(identity.get('original_output'),expected_output,project):
+            raise ValueError('Foreign original output policy; rebuild without rebinding')
     if expected_output and expected_output.get('thermal_calendar',False):
         snow_provider='cde_interval_snow_state.f90' if expected_output.get('cde_interval_output',False) else 'thermal_output_snow_calendar_state.f90'
         if (bundle/'thermal_output_snow_calendar_state.f90').read_bytes()!=(h.APP/snow_provider).read_bytes():
@@ -308,7 +314,8 @@ def validate_bundle(bundle, reference, project):
     from implicit_groundwater_state import native_metadata as groundwater_native_metadata,enabled as implicit_groundwater,state_source as implicit_state_source
     if identity.get('groundwater_native_state')!=groundwater_native_metadata(project,h.sha,h.APP):
         raise ValueError('Foreign prescribed groundwater native carry policy')
-    if implicit_groundwater(project) and (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project):
+    if (implicit_groundwater(project) and not (identity.get('original_output') or {}).get('groundwater_snow_water_output') and
+            (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project)):
         raise ValueError('Foreign actual implicit groundwater native provider')
     if lower_boundary==1:
         state_policy=identity['groundwater_native_state']
@@ -319,6 +326,9 @@ def validate_bundle(bundle, reference, project):
         elif state_policy.get('provider_filename')=='implicit_groundwater_native_state.f90':
             if (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project):
                 raise ValueError('Foreign actual implicit groundwater native provider')
+        elif state_policy.get('provider_filename')=='snow_water_groundwater_native_state.f90':
+            if (bundle/state_policy['provider_filename']).read_text(encoding='cp1252')!=implicit_state_source(project):
+                raise ValueError('Foreign actual water Snow groundwater native provider')
         else:
             state_name='groundwater_history_native_state.f90' if expected_lower and state_policy['domain_bytes']==104 else 'groundwater_native_state.f90'
             if (bundle/state_name).read_bytes()!=(h.APP/state_name).read_bytes():

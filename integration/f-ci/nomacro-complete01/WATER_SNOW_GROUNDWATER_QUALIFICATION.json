@@ -1,0 +1,85 @@
+{
+  "status": "NEUTRAL_WATER_SNOW_GROUNDWATER_RAW_SCIENCE_PASS_PENDING_ADMISSION",
+  "runtime": "26ea91cf981126212fc71291426849f52d574cee",
+  "predecessor": "9c447f419d11743efe7464d3c8542ac1bc8fea4a",
+  "independent_readers": "7d71f3421d0cda273a005aba61b0612834761171",
+  "classification": "B_EXISTING_PROCESS_COMPOSITION_WITH_SEPARATELY_QUALIFIED_REFERENCE_DAY_TAIL_REPAIR",
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "AGE_admitted": false,
+  "water_snow_groundwater_admitted": false,
+  "new_physical_state": false,
+  "daily_water_guard_cm": 1e-10,
+  "integrated_water_guard_cm": 1e-10,
+  "actual_full_periods": 12,
+  "actual_days_per_full_period": 1096,
+  "actual_full_cold_windows": 108,
+  "actual_short_contexts": 36,
+  "actual_short_cold_windows": 108,
+  "actual_compiled_refusals": 390,
+  "actual_source_refusals": 96,
+  "actual_transaction_contexts": 6,
+  "actual_unselected_contexts": 10,
+  "actual_unselected_cold_windows": 10,
+  "archives": {
+    "PORTABLE_OBSERVATIONS": {
+      "record": "WATER_SNOW_GROUNDWATER_PORTABLE_OBSERVATIONS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "18ad16851f754446f3df00b2232f5105155242a3af273b1d54be18d3c7a9fc4c"
+    },
+    "UBUNTU_O0_INITIAL": {
+      "record": "WATER_SNOW_GROUNDWATER_UBUNTU_O0_INITIAL_RAW_ARCHIVE.json",
+      "record_lf_sha256": "7b06b624e377f867203140823959b04bf9234f495c3b34f481b7f457492280b8"
+    },
+    "UBUNTU_O0_RECOVERY": {
+      "record": "WATER_SNOW_GROUNDWATER_UBUNTU_O0_RECOVERY_RAW_ARCHIVE.json",
+      "record_lf_sha256": "7692e91283517a2f6d76b2d1045fddbd1c03218cd14a70dc75045145b202d473"
+    },
+    "UBUNTU_O2_INITIAL": {
+      "record": "WATER_SNOW_GROUNDWATER_UBUNTU_O2_INITIAL_RAW_ARCHIVE.json",
+      "record_lf_sha256": "d8783b5897cbd668ded2e90cc1d04c0924ebd75d8ea0b8f810b036a97fe7f3eb"
+    },
+    "UBUNTU_O2_RECOVERY": {
+      "record": "WATER_SNOW_GROUNDWATER_UBUNTU_O2_RECOVERY_RAW_ARCHIVE.json",
+      "record_lf_sha256": "1950b9fab2cb1a97740e7f5b19e7b1ea7d86d39d032849121c8fc88bed8bc90b"
+    },
+    "WINDOWS_O0_CONTROLS": {
+      "record": "WATER_SNOW_GROUNDWATER_WINDOWS_O0_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "36b1e192e2ac9f96159e4f55d1b39207daf1e8012977c31dc9bcfe468948b28c"
+    },
+    "WINDOWS_O0_SCIENCE": {
+      "record": "WATER_SNOW_GROUNDWATER_WINDOWS_O0_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "b2ddce647b9886b918d94516a7e092164e448cab65e37be43b299a56a67192be"
+    },
+    "WINDOWS_O2_CONTROLS": {
+      "record": "WATER_SNOW_GROUNDWATER_WINDOWS_O2_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "20e4f85de44a25c323d76cfe0761beb9bf39ed85bba5a1fd7eb3482f87a1bbe6"
+    },
+    "WINDOWS_O2_SCIENCE": {
+      "record": "WATER_SNOW_GROUNDWATER_WINDOWS_O2_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "0ea9ed4a47087da7c3e858991f425bbbef02943736eb8d147c6a7e7dc99b7cf1"
+    },
+    "WINDOWS_SUPPORT": {
+      "record": "WATER_SNOW_GROUNDWATER_WINDOWS_SUPPORT_RAW_ARCHIVE.json",
+      "record_lf_sha256": "246c1d73734a58594e74692ac3d5ca7db5c63741280f0c06225bebc3e8cb95dc"
+    }
+  },
+  "original_runs": [
+    {
+      "run": 44749932813,
+      "source": "53f9ede58285c77f5fe34d4120dbfab709b41488",
+      "conclusion": "FAILURE",
+      "role": "Original day25 rejection retained; no accepted day25"
+    },
+    {
+      "run": 44754314080,
+      "source": "26ea91cf981126212fc71291426849f52d574cee",
+      "conclusion": "SUCCESS",
+      "role": "Only four affected source forms rebuilt per optimization; original five clock/step binaries reused"
+    }
+  ],
+  "scope": "Nine actual water-only Snow1 bottom1 configurations: explicit/implicit, hysteresis0/1/2, drainage0/1, daily/monthly/clock/per-step/reset and one existing plant-ET configuration. Original analytical soil and daily weather heat1/method2. No active macropores, Frost, aquifer or AGE.",
+  "remaining": "Broader historical families and drainage-off Snow bottom5/8 remain unclosed; family/gap counts UNKNOWN.",
+  "inherited_observations_counted_fresh": false
+}

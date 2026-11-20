@@ -8,6 +8,8 @@ FUNCTION='hybrid_implicit_groundwater_trial'
 
 
 def enabled(project):
+    from snow_water_groundwater import selection as snow_selection
+    if snow_selection(project) is not None:return False
     if not project.input_directory or project.macro or project.age or not project.original_output:return False
     from experimental_project import inspect
     report=inspect(project.input_directory)

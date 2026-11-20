@@ -1,0 +1,100 @@
+{
+  "parent": "9c447f419d11743efe7464d3c8542ac1bc8fea4a",
+  "runtime": "26ea91cf981126212fc71291426849f52d574cee",
+  "changes": {
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "runtime_line": 214,
+        "before": "    if implicit_snow:\n",
+        "after": "    if (identity.get('original_output') or {}).get('groundwater_snow_water_output'):\n        from snow_water_groundwater_source_guard import validate_source as validate_water_snow\n        validate_water_snow(bundle,project,identity,reference)\n    elif implicit_snow:\n"
+      },
+      {
+        "runtime_line": 273,
+        "before": "    if identity.get('original_output')!=expected_output:raise ValueError('Foreign original output policy; rebuild without rebinding')\n",
+        "after": "    if identity.get('original_output')!=expected_output:\n        from snow_water_groundwater_source_guard import unchanged_clock_metadata\n        if not unchanged_clock_metadata(identity.get('original_output'),expected_output,project):\n            raise ValueError('Foreign original output policy; rebuild without rebinding')\n"
+      },
+      {
+        "runtime_line": 317,
+        "before": "    if implicit_groundwater(project) and (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project):\n",
+        "after": "    if (implicit_groundwater(project) and not (identity.get('original_output') or {}).get('groundwater_snow_water_output') and\n            (bundle/'implicit_groundwater_native_state.f90').read_text(encoding='cp1252')!=implicit_state_source(project)):\n"
+      },
+      {
+        "runtime_line": 329,
+        "before": "",
+        "after": "        elif state_policy.get('provider_filename')=='snow_water_groundwater_native_state.f90':\n            if (bundle/state_policy['provider_filename']).read_text(encoding='cp1252')!=implicit_state_source(project):\n                raise ValueError('Foreign actual water Snow groundwater native provider')\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_water_output.py": [
+      {
+        "runtime_line": 17,
+        "before": "",
+        "after": "    from snow_water_groundwater import selection as snow_selection\n    snow=snow_selection(project)\n    if snow is not None:return snow\n"
+      },
+      {
+        "runtime_line": 57,
+        "before": "",
+        "after": "    from snow_water_groundwater import selection as snow_selection,metadata as snow_metadata\n    snow=snow_selection(project)\n    if snow is not None:return snow_metadata(project,snow)\n"
+      },
+      {
+        "runtime_line": 107,
+        "before": "",
+        "after": "    from snow_water_groundwater import selection as snow_selection\n    snow=snow_selection(project)\n    if snow is not None:\n        from snow_water_groundwater_build import apply_build as snow_build\n        return snow_build(output,donor_build,project,patched,snow)\n"
+      }
+    ],
+    "app/hybrid_water/implicit_groundwater_state.py": [
+      {
+        "runtime_line": 13,
+        "before": "",
+        "after": "def snow_selection(project):\n    from snow_water_groundwater import selection\n    return selection(project)\n\n\n"
+      },
+      {
+        "runtime_line": 19,
+        "before": "",
+        "after": "    if snow_selection(project) is not None:return True\n"
+      },
+      {
+        "runtime_line": 43,
+        "before": "",
+        "after": "    selected=snow_selection(project)\n    if selected is not None:\n        from snow_water_groundwater_state import domain as snow_domain\n        return snow_domain(project,selected)\n"
+      },
+      {
+        "runtime_line": 53,
+        "before": "",
+        "after": "    selected=snow_selection(project)\n    if selected is not None:\n        from snow_water_groundwater import codec\n        return codec(selected)\n"
+      },
+      {
+        "runtime_line": 70,
+        "before": "",
+        "after": "    selected=snow_selection(project) if project is not None else None\n    if selected is not None:\n        from snow_water_groundwater_state import state_source as snow_source\n        return snow_source(selected['swkimpl'])\n"
+      },
+      {
+        "runtime_line": 92,
+        "before": "",
+        "after": "    selected=snow_selection(project)\n    if selected is not None:\n        import snow_water_groundwater_state as snow_state\n        return dict(**snow_state.metadata(project,selected),template_sha256=sha(app/'groundwater_history_native_state.f90'),provider_filename=snow_state.STATE+'.f90',magic=magic(project).decode(),domain_bytes=104,placement='after complete original Snow calendar before96byte existing diagnostic tail')\n"
+      },
+      {
+        "runtime_line": 104,
+        "before": "",
+        "after": "    selected=snow_selection(project)\n    if selected is not None:\n        from snow_water_groundwater_state import validate_candidate as snow_validate\n        return snow_validate(raw,receipt,project,selected)\n"
+      },
+      {
+        "runtime_line": 126,
+        "before": "",
+        "after": "    selected=snow_selection(project)\n    if selected is not None:\n        from snow_water_groundwater_build import native_build\n        return native_build(output,project,patched,selected)\n"
+      }
+    ],
+    "app/hybrid_water/implicit_groundwater_trial.py": [
+      {
+        "runtime_line": 11,
+        "before": "",
+        "after": "    from snow_water_groundwater import selection as snow_selection\n    if snow_selection(project) is not None:return False\n"
+      }
+    ]
+  },
+  "added": [
+    "app/hybrid_water/snow_water_groundwater.py",
+    "app/hybrid_water/snow_water_groundwater_build.py",
+    "app/hybrid_water/snow_water_groundwater_source_guard.py",
+    "app/hybrid_water/snow_water_groundwater_state.py"
+  ]
+}
