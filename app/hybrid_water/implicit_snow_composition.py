@@ -16,3 +16,4 @@ def source_identity():
     return dict(implicit_snow_composition=True,implicit_snow_policy=POLICY,
                 implicit_snow_composition_source_sha256=hashlib.sha256(
                     Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest())
+# Deliberately foreign actual source; negative branch must never merge.
