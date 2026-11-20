@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-hydraulic-constitutive01",
-  "last_commit": "03a06729a7bc74705b116c54a5407fe5d38c4a3e",
+  "last_commit": "1dab9f2e656fca5a4b2cca9c743b46ceae576e0c",
   "status": "EXPLICIT_FROST_CANONICALLY_ADMITTED_IMPLICIT_FROST_NATIVE_STATE_CLOSURE_ACTIVE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -32714,7 +32714,7 @@
     "local_metadata_carry_not_pushed_to_PR1776": true
   },
   "next_hydraulic_constitutive_batch": {
-    "status": "ORIGINAL_O0_O2_COMPLETE_DERIVATIVE_COMPONENT_OBSERVED_MODEL7_CORRECTION_PROBE_SELECTED",
+    "status": "MODEL7_EXACT_CAPACITY_CORRECTION_O0_O2_BASELINE_AND_360_STATE_GRIDS_PASS_NOT_ADMITTED",
     "prior_authority": "integration/nomacro-coverage01/BLOCK_I_QUALIFICATION.json",
     "strict_models_retained": [
       3,
@@ -32731,13 +32731,22 @@
     ],
     "RIA12": "Original initialization column suspicion retained, not demonstrated or repaired",
     "current_source": "Original dhconduc implements exponential2 then defaultMvG branch for all other analytical families; implicit guard currently accepts only1. Original prhead handles2 then defaultMvG; callers hysteresis/tillage, not HeadCalc. Do not infer this causes retained365-day failures.",
-    "next": "Test exact shared-normalization model7 capacity expression against original actual retention residual differences; no water/conductivity expression or mass/tolerance change. Finish PR1776 exact-head CI/merge/canonical proof independently.",
+    "next": "Introduce bounded original model7 capacity reference correction as exact one-expression full-source inverse; select only actual explicit model7 no-hysteresis context, actual original input/parser and integrated short/year-end failure-boundary proof before considering admission. Keep nondefault implicit conductivity hard refusal. Complete PR1776 CI/merge/canonical public proof independently; do not push metadata carry to its exact05d3head.",
     "component_source": "04bdb290d",
     "component_contexts": 2,
     "original_module_models_observed": 11,
     "points_each_opt": 154,
     "model7_moisture_capacity_mismatches_each_opt": 14,
     "assessment": "HYDRAULIC_CONSTITUTIVE_SOURCE_ASSESSMENT_V1.json",
-    "production_changed": false
+    "production_changed": false,
+    "component_grid_source": "1dab9f2e6",
+    "grid_states_per_optimizer_and_variant": 360,
+    "original_capacity_mismatches_per_grid": 216,
+    "corrected_capacity_mismatches_per_grid": 0,
+    "corrected_capacity_max_scaled_error": "6.841881814558263675926816421244975E-7",
+    "grid_variations": "two soils, three secondary-alpha scales, five weights including0/1, three dry heads1e4/1e6/1e8, four unsaturated heads1..1000cm",
+    "physical_water_and_conductivity_values_exact": true,
+    "ten_other_models_baseline_rows_exact": 140,
+    "old_failure_and_censor_roles_preserved": true
   }
 }

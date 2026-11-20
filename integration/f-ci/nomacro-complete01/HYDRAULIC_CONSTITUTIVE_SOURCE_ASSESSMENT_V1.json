@@ -17,5 +17,15 @@
   "classification": "REFERENCE_DEFECT_NUMERICAL_DERIVATIVE_CANDIDATE",
   "production_or_admission_changed": false,
   "new_model_periods": 0,
-  "next": "Apply exact reversible one-expression component correction to full original WC module; independent raw FD recomputation O0/O2; extend relevant bimodal/dry-limit parameter controls before production integration."
+  "next": "Apply exact reversible one-expression component correction to full original WC module; independent raw FD recomputation O0/O2; extend relevant bimodal/dry-limit parameter controls before production integration.",
+  "corrected_component_observation": {
+    "source": "1dab9f2e6",
+    "O0_O2_base14_capacity_points_pass": true,
+    "O0_O2_grid360_points_pass": true,
+    "old_grid_mismatches_each": 216,
+    "corrected_mismatches_each": 0,
+    "full_source_inverse": true,
+    "physical_retention_and_conductivity_bytes_unchanged": true,
+    "no_scientific_admission": true
+  }
 }
