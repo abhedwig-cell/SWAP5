@@ -339,39 +339,35 @@
   "recovery_point": "EXTENDED_DRAINAGE_SOURCE_ADMISSION.json",
   "external_blocker": null,
   "test_selection": {
-    "candidate": "9f472848850af09ecfd8221bb59e66357f7b7f7c",
-    "qualification_commit": "075e2e28fd3451b28799b6b1f6584c0dc5c1974a",
+    "candidate": "b96f69a397615d24f7af4fc1cdf28bf591957a04",
+    "qualification_commit": null,
     "groups": {
-      "implicit_real_components": {
-        "changed_dependency": "New coupled soil/pond tangent and separately corrected default near-saturation Mualem reference",
-        "scientific_claim": "Actual complete original MOD_top40cases/opt and MOD_MvG32cases/opt, source/object closure,70digit equation, derivatives and A/B/A",
+      "ordinary_pond_components": {
+        "changed_dependency": "Ordinary positive-pond dispatch, original nonlinear/lowRSRO root and coupled soil/pond Newton row",
+        "scientific_claim": "Actual complete original MOD_top all6means108points/variant; real finite-difference40points including nonlinear cases, nonmutation and fixedK limit",
         "owner": "SWAP5-NOMACRO-COMPLETE01",
-        "authority": "AGENTS.md independent local testability; NOMACRO_EXTENDED_IMPLICIT_20261119.md",
+        "authority": "ACCELERATE02 A/B; AGENTS.md independent local testability",
         "expected_seconds": 30,
-        "prior_execution": "PASS"
+        "prior_execution": "O0PASS; O2 pending"
       },
-      "implicit_primary_integrated": {
-        "changed_dependency": "Selected original implicit conductivity/pond/extended state coupling and real constitutive cutoff correction",
-        "scientific_claim": "Eight1096day representative primary full periods plus two Windows h0 same-context regressions,60full native cold windows;18short interactions/54cold; actual source/native/CLI/transaction guards",
+      "ordinary_weighted_full": {
+        "changed_dependency": "Actual ordinary V2 corrected reference/numerical interface, unchanged original physical parameters and micro-root owner",
+        "scientific_claim": "Complete1096day water/history2/mean6 trajectory and8exact native cold windows including failed163to165, year/late interfaces; representative O0/O2",
         "owner": "SWAP5-NOMACRO-COMPLETE01",
-        "authority": "ACCELERATE02 A/B/C; docs/verification/principles.md",
-        "expected_seconds": 1500,
-        "prior_execution": "PASS"
+        "authority": "COMPLETE01 full periods/restart and ACCELERATE02 new numerical qualification; workstream cost exception essential full affected representative",
+        "expected_seconds": 900,
+        "per_run_resource_cap_seconds": 600,
+        "routine_feedback": false,
+        "reason_short_insufficient": "35days never reaches day164 pond defect or postyear strongly stressed micro-root state. O0 original180budget nowaccepts586days, independently waterPASS; actual stable dt2e-4 and6/7accepted iterations exceed growth threshold3; no new hard convergence failure established. Full period required for qualification. Prior180censors remain failed/censored records.",
+        "physical_numerical_tolerances_changed": false,
+        "reuse": "Exact actual compiled bundles and35short/native observations revalidated, no fresh compile or short reruns for resource-budget selection",
+        "prior_execution": "O0 180s CENSORED586days; O2 180s running"
       },
-      "implicit_actual_public_owner": {
-        "changed_dependency": "Current bounded implicit source authority,16raw archives, source phase projections, neutral qualification and actual old scientific delegation",
-        "scientific_claim": "Clean detached22pattern registered public entry verifies exact current source and all actual scientific raw; committed numerical-source mutant must refuse before models",
+      "unaffected_full_campaigns": {
+        "changed_dependency": "No changed explicit/extended process bodies selected by ordinary predicate",
+        "scientific_claim": "Select actual affected-source postimages only; no unrelated movingFci/MODFLOW/RossFast/low-air/macro campaigns",
         "owner": "SWAP5-NOMACRO-COMPLETE01",
-        "authority": "docs/development/workstream-execution-protocol.md; exact canonical admission contract",
-        "expected_seconds": 1000,
-        "model_executions": 0,
-        "prior_execution": "NONE"
-      },
-      "unchanged_full_campaigns": {
-        "changed_dependency": "No changed old provider/physical/native surface beyond literal input predicates and selected read-only validator composition",
-        "scientific_claim": "Old admitted physical providers remain literal and original real science executes. Current selected explicit0 and ordinary compiled/public postimages are exact. No unrelated full moving F-CI, named-reference, RossFast, MODFLOW or active-macro campaigns.",
-        "owner": "SWAP5-NOMACRO-COMPLETE01",
-        "authority": "ACCELERATE02 C/D and change-impact selection",
+        "authority": "ACCELERATE02 C/D",
         "expected_seconds": 0,
         "prior_execution": "NOT_SELECTED_IMPACT"
       }
@@ -31160,7 +31156,7 @@
     "actual_original_bundle_validation": "PASS on original extracted source and unchanged historical BUILD;1.9258s",
     "old_profile": "C:/Users/Veldh012/swap5-complete01-evidence/implicit-weighted-harmonic-water-history-O0-v2",
     "controller": "tests/nomacro_scheduled_subsurface/weighted_history_diagnostic.py",
-    "next_action": "Current-source O2 V2 short/full with literal180cap; independently classify stable accepted-progress cost versus nonconvergence before any further numerical change. Current O0 accepted586days; native531..558 readonlyprefixexact. Ordinary whole stillNOT_QUALIFIED. Preserve micro-root source owner; no root or capacity change adopted.",
+    "next_action": "Finish running O2 original180budget and actual secondary canonical verifier; preservecensors. Run explicitly selected ordinary full600budget with --reuse-profile existingcurrent35/build,0compiles/0shortrepeats; all physical/convergence/clock/rollback limits unchanged. Full successes require independent source/raw/native qualification before anyadmission.",
     "qualification": false,
     "physical_numerical_guards_changed": false,
     "prefix_replay": {
@@ -31254,6 +31250,45 @@
       "previous_readonly_accepted_days": 28,
       "physical_rows_changed": true,
       "finding": "Removing original artificial saturated Jacobian capacity did not improve this state; production original capacity retained."
+    },
+    "prior_test_selection": {
+      "candidate": "9f472848850af09ecfd8221bb59e66357f7b7f7c",
+      "qualification_commit": "075e2e28fd3451b28799b6b1f6584c0dc5c1974a",
+      "groups": {
+        "implicit_real_components": {
+          "changed_dependency": "New coupled soil/pond tangent and separately corrected default near-saturation Mualem reference",
+          "scientific_claim": "Actual complete original MOD_top40cases/opt and MOD_MvG32cases/opt, source/object closure,70digit equation, derivatives and A/B/A",
+          "owner": "SWAP5-NOMACRO-COMPLETE01",
+          "authority": "AGENTS.md independent local testability; NOMACRO_EXTENDED_IMPLICIT_20261119.md",
+          "expected_seconds": 30,
+          "prior_execution": "PASS"
+        },
+        "implicit_primary_integrated": {
+          "changed_dependency": "Selected original implicit conductivity/pond/extended state coupling and real constitutive cutoff correction",
+          "scientific_claim": "Eight1096day representative primary full periods plus two Windows h0 same-context regressions,60full native cold windows;18short interactions/54cold; actual source/native/CLI/transaction guards",
+          "owner": "SWAP5-NOMACRO-COMPLETE01",
+          "authority": "ACCELERATE02 A/B/C; docs/verification/principles.md",
+          "expected_seconds": 1500,
+          "prior_execution": "PASS"
+        },
+        "implicit_actual_public_owner": {
+          "changed_dependency": "Current bounded implicit source authority,16raw archives, source phase projections, neutral qualification and actual old scientific delegation",
+          "scientific_claim": "Clean detached22pattern registered public entry verifies exact current source and all actual scientific raw; committed numerical-source mutant must refuse before models",
+          "owner": "SWAP5-NOMACRO-COMPLETE01",
+          "authority": "docs/development/workstream-execution-protocol.md; exact canonical admission contract",
+          "expected_seconds": 1000,
+          "model_executions": 0,
+          "prior_execution": "NONE"
+        },
+        "unchanged_full_campaigns": {
+          "changed_dependency": "No changed old provider/physical/native surface beyond literal input predicates and selected read-only validator composition",
+          "scientific_claim": "Old admitted physical providers remain literal and original real science executes. Current selected explicit0 and ordinary compiled/public postimages are exact. No unrelated full moving F-CI, named-reference, RossFast, MODFLOW or active-macro campaigns.",
+          "owner": "SWAP5-NOMACRO-COMPLETE01",
+          "authority": "ACCELERATE02 C/D and change-impact selection",
+          "expected_seconds": 0,
+          "prior_execution": "NOT_SELECTED_IMPACT"
+        }
+      }
     }
   }
 }

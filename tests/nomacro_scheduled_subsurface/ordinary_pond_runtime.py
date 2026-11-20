@@ -26,10 +26,13 @@ def main():
     parser.add_argument('--kmean', type=int, choices=range(1, 7), default=6)
     parser.add_argument('--bottom', type=int, choices=(1, 5, 8), default=5)
     parser.add_argument('--short-only', action='store_true')
+    parser.add_argument('--reuse-profile', type=Path)
+    parser.add_argument('--full-model-cap', type=int, choices=(180, 600), default=180)
     args = parser.parse_args()
     args.output.mkdir()
-    inputs = args.output/'input'
-    original.fixture(inputs, args.solute, args.hysteresis, args.bottom, True, args.kmean)
+    inputs = args.reuse_profile/'input' if args.reuse_profile else args.output/'input'
+    if not args.reuse_profile:
+        original.fixture(inputs, args.solute, args.hysteresis, args.bottom, True, args.kmean)
     project = m.e.load(inputs, original_output=True)
     build = args.build_root/'bundle'
     record = dict(status='RUNNING', controller_source=subprocess.check_output(
@@ -48,11 +51,27 @@ def main():
         result.check_returncode()
     save()
     try:
-        execute('build', [sys.executable, '-B', str(ROOT/'tools/solute/run_water.py'),
+        if args.reuse_profile:
+            short_path = args.reuse_profile/'short/RESULT.json'
+            short = json.loads(short_path.read_text())
+            assert short['status'] == 'ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'
+            assert short['build_root'] == str(build) and short['input_root'] == str(inputs)
+            assert all(short['parameters'][k] == getattr(args, k) for k in
+                       ('optimization', 'solute', 'hysteresis', 'bottom', 'kmean'))
+            assert short['parameters']['perstep'] and short['parameters']['mode'] == 'explicit'
+            assert short['parameters']['format'] == 3 and short['parameters']['reset'] == 1
+            m.validate_bundle(build, args.reference_work, project)
+            assert short['trajectory']['build_sha256'] == m.sha(build/'BUILD.json')
+            record['actual_unchanged_short_reused'] = dict(receipt=str(short_path),
+                receipt_sha256=m.sha(short_path), build_sha256=m.sha(build/'BUILD.json'),
+                fresh_compilations=0, fresh_short_models=0)
+            save()
+        else:
+            execute('build', [sys.executable, '-B', str(ROOT/'tools/solute/run_water.py'),
             '--model', project.model, '--experimental-project', str(inputs), '--original-output',
             '--reference-work', str(args.reference_work), '--build-only', '--donor-opt', args.optimization,
             '--kernel-opt', args.optimization, '--output', str(build)])
-        execute('short', [sys.executable, '-B', str(Path(original.__file__)),
+            execute('short', [sys.executable, '-B', str(Path(original.__file__)),
             '--reference-work', str(args.reference_work), '--output', str(args.output/'short'),
             '--optimization', args.optimization, '--solute', str(args.solute), '--hysteresis', str(args.hysteresis),
             '--bottom', str(args.bottom), '--kmean', str(args.kmean), '--perstep',
@@ -63,7 +82,7 @@ def main():
             windows = [(2, 4), (7, 9), (30, 34), (163, 165), (199, 201),
                        (364, 367), (530, 532), (1094, 1096)]
             record['full'], data = m.trajectory(build, args.reference_work, project,
-                full/'trajectory', 1096, {1096, *(v for pair in windows for v in pair)}, 180)
+                full/'trajectory', 1096, {1096, *(v for pair in windows for v in pair)}, args.full_model_cap)
             save()
             record['cold'] = []
             for start, end in windows:
