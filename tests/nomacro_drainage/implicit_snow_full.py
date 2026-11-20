@@ -14,6 +14,7 @@ m=original.m
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','reuse-case','output'):p.add_argument('--'+key,type=Path,required=True)
+    p.add_argument('--cap',type=int,choices=(180,600),default=180)
     a=p.parse_args();a.output.mkdir()
     receipt=a.reuse_case/'RESULT.json';before=m.sha(receipt);short=json.loads(receipt.read_text())
     assert short['status']=='ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'
@@ -26,13 +27,13 @@ def main():
     q=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=original.ROOT,text=True).strip(),
            parameters=parameters,build_root=str(build),input_root=str(inputs),
            actual_short_receipt=str(receipt),actual_short_receipt_sha256=before,fresh_compilations=0,
-           fresh_short_models=0,full_resource_cap_seconds=180,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
+           fresh_short_models=0,full_resource_cap_seconds=a.cap,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
     try:
         windows=[(2,4),(7,9),(30,34),(163,165),(199,201),(364,367),(530,532),(633,635),(1094,1096)]
         q['trajectory'],data=m.trajectory(build,a.reference_work,project,a.output/'trajectory',1096,
-            {1096,*(day for pair in windows for day in pair)},180)
+            {1096,*(day for pair in windows for day in pair)},a.cap)
         q['cold']=[];save()
         for low,high in windows:
             q['cold'].append(original.previous.own(build,a.reference_work,project,a.output/'trajectory',data,low,high,a.output/f'own-{low}'));save()
