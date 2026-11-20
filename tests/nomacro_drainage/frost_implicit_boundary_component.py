@@ -71,9 +71,9 @@ def main():
             after = 'k(1),' + conductivity + '*rfcp(1)+hconode_vsmall*(1d0-rfcp(1)),dz(1)'
             assert fixed.count(before) == 2
             fixed = fixed.replace(before, after)
-        anchor = '   use MOD_top,only:katm'
-        assert fixed.count(anchor) == 1
-        fixed = fixed.replace(anchor, '   use MOD_MvG,only:hconode_vsmall\n' + anchor, 1)
+        import_anchor = '   use MOD_top,only:katm'
+        assert fixed.count(import_anchor) == 1
+        fixed = fixed.replace(import_anchor, '   use MOD_MvG,only:hconode_vsmall\n' + import_anchor, 1)
         assert fixed != old
         assert original[start:end] in fixed
         # Reuse the exact accepted history/availability/pond providers, including
