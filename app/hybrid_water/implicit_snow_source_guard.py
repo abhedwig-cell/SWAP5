@@ -139,3 +139,5 @@ def validate_source(bundle,project,identity,reference):
     else:expected=thermal.render_integral(raw,None,output)
     if (bundle/'integral.f90').read_text(encoding='cp1252')!=expected:
         raise ValueError('Foreign complete implicit Snow original integral/soil projection')
+    from implicit_snow_root_carry import validate_source as validate_root
+    validate_root(bundle,project,output)

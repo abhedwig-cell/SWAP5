@@ -57,3 +57,20 @@ def apply_build(output,project,patched):
         body=body.replace(anchor,'        call implicit_snow_root_checkpoint(unit,'+restoring+',clock)\n'+anchor,1)
     path.write_text(text[:first]+body+text[last:],encoding='cp1252')
     return [STATE,*patched]
+
+
+def validate_source(bundle,project,output):
+    if not enabled(project):return
+    root=output.get('implicit_snow_root_carry')
+    if not root or root!=metadata(project,root['parent_codec']) or output['native_codec']!=root['new_codec']:
+        raise ValueError('Foreign implicit Snow root carry policy')
+    folder=Path(__file__).parent;bundle=Path(bundle)
+    if (bundle/(STATE+'.f90')).read_bytes().replace(b'\r\n',b'\n')!=(folder/(STATE+'.f90')).read_bytes().replace(b'\r\n',b'\n'):
+        raise ValueError('Foreign actual implicit Snow root rate provider')
+    body=(bundle/'macropore.f90').read_text(encoding='cp1252').split('    subroutine hybrid_macro_checkpoint(',1)[1].split('    end subroutine hybrid_macro_checkpoint',1)[0]
+    for part in ('use hybrid_implicit_snow_root_state,only:implicit_snow_root_checkpoint',
+                 'call implicit_snow_root_checkpoint(unit,.true.,clock)',
+                 'call implicit_snow_root_checkpoint(unit,.false.,clock)'):
+        if body.count(part)!=1:raise ValueError('Foreign actual implicit Snow root native owner')
+    if body.count("'"+root['new_codec']+"'")!=2 or "'"+root['parent_codec']+"'" in body:
+        raise ValueError('Foreign actual implicit Snow root native codec')
