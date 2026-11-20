@@ -2058,7 +2058,7 @@
       "classification": "MISSING_COMPOSITION_WITH_RETAINED_NUMERICAL_AND_REFERENCE_REFUSALS",
       "priority": 1,
       "source_assessment": "FROST_CDE_COMPOSITION_SOURCE_ASSESSMENT_V1.json",
-      "status": "SOURCE_ASSESSED_NOT_IMPLEMENTED_NOT_QUALIFIED"
+      "status": "EXPLICIT_NEUTRAL_SCIENCE_FROZEN_CANONICAL_PENDING_IMPLICIT_COMPONENT_AND_SHORTS_PASS_FULLS_SELECTED"
     },
     {
       "family": "Alternative original hydraulic models including RIA12",
@@ -2078,5 +2078,29 @@
       "priority": 4,
       "status": "CONCRETE_RETAINED_BLOCKER_NO_DISPOSAL_OR_EPSILON_WATER"
     }
-  ]
+  ],
+  "bounded_frost_drainage_explicit": {
+    "classification": "BOUNDED_COMPOSITION_SCIENCE_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "scope": "SWKIMPL0, ordinarySnow, hysteresis2, numericalheat2, effectiveSWDIVD1 primarydrainage, bottom6, original daily water/CDE",
+    "actual_runtime": "6e40385c9b871992641f7a601bbf0ec30f5f68d3",
+    "qualification": "FROST_DRAINAGE_QUALIFICATION.json",
+    "actual_PR": 1775,
+    "canonical_admission": "PENDING_EXACT520_TERMINAL_GATES_AND_ACTUAL_MERGE_PUBLIC_OBSERVATION",
+    "whole_family_closed": false
+  },
+  "bounded_frost_drainage_implicit": {
+    "classification": "MISSING_COMPOSITION",
+    "implementation": "BOUNDED_CANDIDATE_IMPLEMENTED",
+    "component": "Exact existing qualified pond provider reused, only actual Frost surface mean arguments corrected; Windows O0/O2 full-Jacobian component passed",
+    "models": "four actual35-day Windows contexts and12 physical/native/REAL4 cold windows pass; every-prefix independent water/CDE/source check pass",
+    "full_qualification": "SELECTED_NOT_COMPLETE",
+    "unsupported_preserved": [
+      "AGE",
+      "examinedKsat interpolation",
+      "other bottom boundaries",
+      "broader thermal calendars",
+      "fully frozen front interpretation"
+    ],
+    "whole_family_closed": false
+  }
 }

@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-frost-implicit-boundary01",
-  "last_commit": "feffcff53ca6faff28862fd01208c3091a857316",
+  "last_commit": "f568aa721d7df84020f810f719eb449180f10afb",
   "status": "EXPLICIT_FROST_ADMISSION_PENDING_IMPLICIT_FROST_SHORT_QUALIFICATION_ACTIVE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -32463,7 +32463,7 @@
     "next_functional_probe_status": "Actual original HeadCalc/Boundtop/vector_F/jacobian_F; measured42-object closure; O0/O2 each108 ponded no-runoff cases; original and old frost0 Jacobians fail108, diagnostic surface derivative passes108. No production implementation or public implicit Frost admission."
   },
   "implicit_frost_followup": {
-    "status": "WINDOWS_WATER_O0_SHORT_NATIVE_OUTPUT_COLD_PASS_CDE_AND_O2_NEXT",
+    "status": "FOUR_WINDOWS_SHORT_CONTEXTS_12_EXACT_COLD_AND_INDEPENDENT_PREFIX_BALANCES_PASS_FULLS_SELECTED",
     "branch": "codex/nomacro-frost-implicit-boundary01",
     "parent_candidate": "52061c8c1b48acbd995c8c602278fbd9c5e253ef",
     "parent_PR": 1775,
@@ -32497,14 +32497,48 @@
     "candidate_runtime": "feffcff53ca6faff28862fd01208c3091a857316",
     "short_contexts": [
       {
-        "receipt": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-implicit-daily-water-short-O0-v5\\RESULT.json",
-        "source": "feffcff53ca6faff28862fd01208c3091a857316",
         "kind": "water",
         "optimization": "O0",
-        "days": 35,
-        "max_water_cm": 3.844689323850847e-14,
-        "max_kernel_cm": 4.554689958524705e-14,
-        "exact_cold_windows": 3
+        "producer": "feffcff53ca6faff28862fd01208c3091a857316",
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-implicit-daily-water-short-O0-v5",
+        "independent": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\FROST_IMPLICIT_SHORT_WATER_O0_INDEPENDENT_V1.json",
+        "build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-implicit-daily-water-O0-v5\\bundle",
+        "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-implicit-daily-water-short-O0-v2\\input",
+        "maximum_water_decimal": "3.20912E-14",
+        "maximum_CDE_prefix_decimal": "0"
+      },
+      {
+        "kind": "cde",
+        "optimization": "O0",
+        "producer": "f08348087738705f17bfa83468f378f16fe0e1b1",
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-implicit-daily-cde-short-O0-v1",
+        "independent": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\FROST_IMPLICIT_SHORT_CDE_O0_INDEPENDENT_V1.json",
+        "build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-implicit-daily-cde-O0-v1\\bundle",
+        "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-implicit-daily-cde-short-O0-v1\\input",
+        "maximum_water_decimal": "3.20912E-14",
+        "maximum_CDE_prefix_decimal": "4.069895753E-14"
+      },
+      {
+        "kind": "water",
+        "optimization": "O2",
+        "producer": "f08348087738705f17bfa83468f378f16fe0e1b1",
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-implicit-daily-water-short-O2-v1",
+        "independent": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\FROST_IMPLICIT_SHORT_WATER_O2_INDEPENDENT_V1.json",
+        "build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-implicit-daily-water-O2-v1\\bundle",
+        "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-implicit-daily-water-short-O2-v1\\input",
+        "maximum_water_decimal": "3.20912E-14",
+        "maximum_CDE_prefix_decimal": "0"
+      },
+      {
+        "kind": "cde",
+        "optimization": "O2",
+        "producer": "f08348087738705f17bfa83468f378f16fe0e1b1",
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-implicit-daily-cde-short-O2-v1",
+        "independent": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\FROST_IMPLICIT_SHORT_CDE_O2_INDEPENDENT_V1.json",
+        "build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\frost-implicit-daily-cde-O2-v1\\bundle",
+        "inputs": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-implicit-daily-cde-short-O2-v1\\input",
+        "maximum_water_decimal": "3.20912E-14",
+        "maximum_CDE_prefix_decimal": "4.069895753E-14"
       }
     ],
     "source_parent_closure": "Whole HeadCalc inverse closes to qualified ordinary water HEAD1ba937; whole implicit retry/event TimeControl inverse closes to qualified explicit Frost parent14403; complete original Frost process bytes preserved. Existing pond/source/native event and codec guards active.",
@@ -32513,6 +32547,18 @@
       "v2 incompatible day/event policy guard before build/model",
       "v3 complete ordinary-source guard requires exact Frost composition; compiled bundle preserved, no model",
       "v4 complete event-TimeControl guard requires exact implicit composition; compiled bundle preserved, no model"
-    ]
+    ],
+    "full_selection": {
+      "reason": "New implicit Frost coupling changes accepted water timesteps and CDE/Frost/drainage state interactions over winter/year boundaries; 35-day source/conservation/cold checks passed. These are new selected implicit contexts, not replays of the unchanged explicit campaign.",
+      "contexts": 4,
+      "days_per_context": 1096,
+      "cold_windows_per_context": 7,
+      "reuse_exact_short_binaries": true,
+      "new_compilations": 0,
+      "all_four_compiled_source_surfaces_unchanged": true,
+      "build_metadata_or_checkpoint_rebinding": false,
+      "daily_and_integrated_water_CDE_guards": 1e-10,
+      "next": "Run existing frosted coupled harness --phase full --reuse-build <actual short build> --existing-input <actual short input>. Preserve original failed roles. Independently audit every actual completed prefix and cold archive. Continue parent PR1775 gates/merge independently."
+    }
   }
 }
