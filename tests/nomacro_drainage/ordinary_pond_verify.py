@@ -15,7 +15,7 @@ import ordinary_science as science
 PARENT='d785e2c3c415122b8e391d3979f1fbceb81ce5b5'
 RUNTIME='614e1c5a5ce383222d6febb9d183aac14bf4a625'
 NUMERIC='b96f69a397615d24f7af4fc1cdf28bf591957a04'
-READERS='ce911c7fccfb5c6f07cf58ab7ea29d933586593a'
+READERS='69f03573043fcd5bf6fe6c9b323bcccb176c485a'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 QUAL='integration/f-ci/nomacro-complete01/ORDINARY_IMPLICIT_POND_QUALIFICATION.json'
 SURFACES=('app','src','tools/solute','tools/vq','reference/swap-4.3.1')
