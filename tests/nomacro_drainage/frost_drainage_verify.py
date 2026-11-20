@@ -23,6 +23,7 @@ GUARD_HOOK = '    import frost_drainage_verify as frost\n    return frost.guard_
 VERIFY_HOOK = '    import frost_drainage_verify as frost\n    return frost.verify()\n'
 PROJECTION_HOOK = '    import frost_drainage_verify as frost\n    text=frost.strip_current_evidence(text)\n'
 PATTERN = '            /integration/f-ci/nomacro-complete01/FROST_DRAINAGE_*\n'
+LEGACY_PATTERN = '            /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*\n'
 PARSERS = ('frost_cde_drainage_science.py', 'frost_cde_drainage_model_forensics.py',
     'frost_cde_drainage_component_forensics.py', 'frost_cde_drainage_sealed_components.py',
     'frost_cde_drainage_portable_forensics.py', 'frost_drainage_parent_bridge.json')
@@ -35,9 +36,10 @@ COUNTS = dict(actual_full_periods=8, actual_days_per_full_period=1096, actual_fu
 
 
 def strip_current_evidence(text):
-    if PATTERN in text:
-        require(text.count(PATTERN) == 1, 'Ambiguous Frost drainage proof checkout')
-        text = text.replace(PATTERN, '', 1)
+    for pattern in (PATTERN, LEGACY_PATTERN):
+        if pattern in text:
+            require(text.count(pattern) == 1, 'Ambiguous Frost drainage proof checkout')
+            text = text.replace(pattern, '', 1)
     return text
 
 
@@ -74,7 +76,8 @@ def guard_previous_source():
     require(changed == {OLD}, 'Earlier actual scientific observer changed beyond Frost delegation')
     for name in ('mc-sol01-column-input.yml', 'mc-sol01-swp-reader.yml'):
         path = '.github/workflows/' + name; actual = norm((ROOT/path).read_bytes()).decode()
-        require(actual.count(PATTERN) == 1 and actual.replace(PATTERN, '', 1).encode() == blob(PARENT, path),
+        require(actual.count(PATTERN) == actual.count(LEGACY_PATTERN) == 1 and
+            actual.replace(PATTERN, '', 1).replace(LEGACY_PATTERN, '', 1).encode() == blob(PARENT, path),
             'Registered CI changed beyond Frost proof checkout')
     return True
 
