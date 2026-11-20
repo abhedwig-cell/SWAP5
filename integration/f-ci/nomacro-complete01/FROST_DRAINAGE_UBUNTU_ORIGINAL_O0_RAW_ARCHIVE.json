@@ -1,0 +1,1883 @@
+{
+  "status": "ORIGINAL_UBUNTU_FROST_ARTIFACT_BYTES_PRESERVED_PENDING_ADMISSION",
+  "archive": "FROST_DRAINAGE_UBUNTU_ORIGINAL_O0_RAW_ARCHIVE.zip",
+  "bytes": 11853844,
+  "sha256": "7b8e0631a29e9d53d3ceb7b6dddf409ecbd209c6f4423b872897fc91bba3bb64",
+  "storage": "single-original-zip",
+  "parts": [
+    {
+      "file": "FROST_DRAINAGE_UBUNTU_ORIGINAL_O0_RAW_ARCHIVE.zip",
+      "bytes": 11853844,
+      "sha256": "7b8e0631a29e9d53d3ceb7b6dddf409ecbd209c6f4423b872897fc91bba3bb64"
+    }
+  ],
+  "artifact_id": 14661250798,
+  "workflow_run": 44799554543,
+  "actual_producer_source": "5534a17df5ecc382cd4b8415c5bbd7d3954a0ea6",
+  "optimization": "O0",
+  "original_role": "ORIGINAL",
+  "members": {
+    "COMPILED_PROJECTION_V1.json": {
+      "bytes": 207,
+      "sha256": "59d4f7f8a44d3b46affcd5f89c7fbb1c863b99a8b64e4c2e83b75dae7f986aa1"
+    },
+    "actual-workflow.yml": {
+      "bytes": 3838,
+      "sha256": "a81eebc2b5cb8de0093227c4cd636664463d797452f4eb910093136d4a0657d5"
+    },
+    "actual-workflow-git-blob.txt": {
+      "bytes": 41,
+      "sha256": "2cebea24e63669aa49a975dd0042d93000f832f5fdba3712c302d61a35a163f2"
+    },
+    "compiled/builds/cde/guarded/divdra.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "compiled/builds/cde/guarded/driver.f90": {
+      "bytes": 5800,
+      "sha256": "ccf42789d37093fd065ac1f0206b35bf925b0756a8cf40f5a9f5834cd3d8ed4b"
+    },
+    "compiled/builds/cde/guarded/frozencond.f90": {
+      "bytes": 10567,
+      "sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2"
+    },
+    "compiled/builds/cde/guarded/solute.f90": {
+      "bytes": 51396,
+      "sha256": "042a2f2cce7b9b51736b661822183b099fbf125809b62d2bca7159c327402295"
+    },
+    "compiled/builds/cde/original/divdra.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "compiled/builds/cde/original/driver.f90": {
+      "bytes": 5800,
+      "sha256": "ccf42789d37093fd065ac1f0206b35bf925b0756a8cf40f5a9f5834cd3d8ed4b"
+    },
+    "compiled/builds/cde/original/frozencond.f90": {
+      "bytes": 7810,
+      "sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf"
+    },
+    "compiled/builds/cde/original/solute.f90": {
+      "bytes": 51398,
+      "sha256": "0b1fd5e0151839d9fe133e15534c768c8f91b6cb2311f39c25f84fe74cb70330"
+    },
+    "compiled/builds/overlap/corrected/divdra.f90": {
+      "bytes": 18340,
+      "sha256": "7baeda8b31f07c6b7321442d15ad53f09e210b5783706ca16be4ff22e47552fd"
+    },
+    "compiled/builds/overlap/original/divdra.f90": {
+      "bytes": 18332,
+      "sha256": "31485ca83f9fa875c64545a231c5b2d38771a161834e04d681580894df0228ef"
+    },
+    "compiled/builds/rates/guarded/divdra.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "compiled/builds/rates/guarded/frozencond.f90": {
+      "bytes": 10567,
+      "sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2"
+    },
+    "compiled/builds/rates/original/divdra.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "compiled/builds/rates/original/frozencond.f90": {
+      "bytes": 7810,
+      "sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf"
+    },
+    "compiled/builds/water/bundle/BUILD.json": {
+      "bytes": 43311,
+      "sha256": "0ade47c6dcd7a74a597ad8c13b1b354bee035845f4a13815913dd9d443b704e3"
+    },
+    "compiled/builds/water/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/builds/water/bundle/RWU_micro.f90": {
+      "bytes": 51432,
+      "sha256": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7"
+    },
+    "compiled/builds/water/bundle/age_output_calendar_probe.f90": {
+      "bytes": 904,
+      "sha256": "686c06655b26a0eea658f316bdb0d93640dd1e4841500c3be552cbe5e1e9a7cf"
+    },
+    "compiled/builds/water/bundle/boundtop.f90": {
+      "bytes": 13618,
+      "sha256": "ea9d62eed9518fff6e6f46312d17885fb1a722bf108c5a02a5f30f2df87b4a15"
+    },
+    "compiled/builds/water/bundle/day_donor": {
+      "bytes": 1864776,
+      "sha256": "d98dc9f39ccd80c34d4c6b6f65e49c4cf029c53690b1cdb9ec72b9fbf5be0a6d"
+    },
+    "compiled/builds/water/bundle/day_kernel": {
+      "bytes": 330224,
+      "sha256": "d7d19c847002342dd650fb16997692457320c55ebc74b788e8eaca00983b2b23"
+    },
+    "compiled/builds/water/bundle/divdra.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "compiled/builds/water/bundle/frozencond.f90": {
+      "bytes": 10567,
+      "sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2"
+    },
+    "compiled/builds/water/bundle/headcalc.f90": {
+      "bytes": 26733,
+      "sha256": "15bac3d3cc0ee41918b5c6bf53aa75f50c85a1bbc0f56db66431045ab9d87a69"
+    },
+    "compiled/builds/water/bundle/hybrid_age_output_state.f90": {
+      "bytes": 833,
+      "sha256": "f115166b4a9ebb9d6ae8e0def3add0b4972464669ade03269e28aab111955e9e"
+    },
+    "compiled/builds/water/bundle/integral.f90": {
+      "bytes": 34971,
+      "sha256": "4318ac785d30b220ec4722a60e207562467292cda30785d339bec54629e7e00b"
+    },
+    "compiled/builds/water/bundle/macropore.f90": {
+      "bytes": 90366,
+      "sha256": "74eca184164ce3f1ae053a08577243b97735ba216fc0eeebb3a205364fd909e8"
+    },
+    "compiled/builds/water/bundle/irrigation.f90": {
+      "bytes": 81220,
+      "sha256": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693"
+    },
+    "compiled/builds/water/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/builds/water/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/builds/water/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/builds/water/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/builds/water/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/builds/water/bundle/swap_csv_output.f90": {
+      "bytes": 133073,
+      "sha256": "6d403854dc7ebcb94e787f64e94293b62d2cb068430b5eb24ee5cf1df5af08f8"
+    },
+    "compiled/builds/water/bundle/swap_main.f90": {
+      "bytes": 11398,
+      "sha256": "770cb7428f547ad54d576d444fdfee10f4673b90e7961bccb7485a78aa671b7b"
+    },
+    "compiled/builds/water/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/builds/water/bundle/terminal_water_receipt.f90": {
+      "bytes": 2213,
+      "sha256": "dc491e5faa9c7ca8e0e1e2a573cac965cb2e7f790d1cb6ad89ab82e7b90a6540"
+    },
+    "compiled/builds/water/bundle/timecontrol.f90": {
+      "bytes": 18898,
+      "sha256": "7419088428e538da100a2c30c4b32f90fc2799d34f3336f4139cb55fb0f84f57"
+    },
+    "compiled/builds/water/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "controller-source.json": {
+      "bytes": 194740,
+      "sha256": "3e1a6ec2f781727efe78495dca36f38667519c25555239a26c69eaa2026cb792"
+    },
+    "frost-cde-drainage/INDEPENDENT_COMPONENT_V1.json": {
+      "bytes": 1234,
+      "sha256": "57dd39bbe6c83346d84b1b69c5d39d05801df5ca54b11677aae6faa63436683e"
+    },
+    "controller-source.tar": {
+      "bytes": 4597760,
+      "sha256": "e0fb4700438bfcfdb39b5e7a6b1546e7e3f03f25aa7fdfbdb530dcd1a5b441cd"
+    },
+    "frost-cde-drainage/RESULT.json": {
+      "bytes": 6699,
+      "sha256": "796e578da6d31ce95f2bc7a94e231932319607f38c0c97f517c5e3e2c8bd2f7a"
+    },
+    "frost-cde-drainage/cde/RESULT.json": {
+      "bytes": 690626,
+      "sha256": "776a4dd262d7eb1e3b468be1ad8923933fec7e2163ba645c9a8b8ba57e88c10d"
+    },
+    "frost-cde-drainage/cde/actual-driver.f90": {
+      "bytes": 5800,
+      "sha256": "ccf42789d37093fd065ac1f0206b35bf925b0756a8cf40f5a9f5834cd3d8ed4b"
+    },
+    "frost-cde-drainage/cde/guarded-actual-frost-cde": {
+      "bytes": 1647256,
+      "sha256": "fb31a3a3e9e4f7a3b740364147ae941f6f361d15c0611a2b0c113c58528a29ed"
+    },
+    "frost-cde-drainage/cde/guarded-compile.json": {
+      "bytes": 6049,
+      "sha256": "6065b14c8d2bcd704e77d2f4e7b928ddfe41154763ff29d51344a1fb6bf1e5bf"
+    },
+    "frost-cde-drainage/cde/guarded-divdra.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "frost-cde-drainage/cde/guarded-frozencond.f90": {
+      "bytes": 10567,
+      "sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2"
+    },
+    "frost-cde-drainage/cde/guarded-solute.f90": {
+      "bytes": 51396,
+      "sha256": "042a2f2cce7b9b51736b661822183b099fbf125809b62d2bca7159c327402295"
+    },
+    "frost-cde-drainage/cde/original-actual-frost-cde": {
+      "bytes": 1643040,
+      "sha256": "fe41a7491c83b4671802ab80c6de4ff590f9219934d4c22ce9e7ca04dcbbed99"
+    },
+    "frost-cde-drainage/cde/original-compile.json": {
+      "bytes": 5991,
+      "sha256": "3527a6c2aa0c20fe4fc9f0b7d461eb8f047352fee116373df93719630860008f"
+    },
+    "frost-cde-drainage/cde/original-divdra.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "frost-cde-drainage/cde/original-frozencond.f90": {
+      "bytes": 7810,
+      "sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf"
+    },
+    "frost-cde-drainage/cde/original-solute.f90": {
+      "bytes": 51398,
+      "sha256": "0b1fd5e0151839d9fe133e15534c768c8f91b6cb2311f39c25f84fe74cb70330"
+    },
+    "frost-cde-drainage/commands/cde.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/commands/cde.stdout": {
+      "bytes": 78,
+      "sha256": "b454c0986afb982e04a1393679b399097cd30b387aeee9bcb156c437127d6969"
+    },
+    "frost-cde-drainage/commands/independent-component.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/commands/independent-component.stdout": {
+      "bytes": 97,
+      "sha256": "90545ac6ae7fbea8f40068039a73bcee041a47e5776c6c6ae4d9bf042df14ea0"
+    },
+    "frost-cde-drainage/commands/overlap.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/commands/overlap.stdout": {
+      "bytes": 84,
+      "sha256": "8a9c80088e6b2e766923fd2a3166b28105681d3bb040e7f08821bfa01af55069"
+    },
+    "frost-cde-drainage/commands/rates.stdout": {
+      "bytes": 96,
+      "sha256": "0d029ed81bb2c93f30ab98b7c2b08ad2807a4c6ffa63a29d837dc7e8215526c0"
+    },
+    "frost-cde-drainage/commands/rates.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/commands/water-controls.stderr": {
+      "bytes": 725,
+      "sha256": "e8fe7318131f9ca26ff2571b7f22d934a420c4fae0c3cd41846d238571830e3d"
+    },
+    "frost-cde-drainage/commands/water-controls.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/commands/water-full-independent.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/commands/water-full-independent.stdout": {
+      "bytes": 69,
+      "sha256": "dc040d9acbbecd1d365b3ab86ae34f8aa382560d36f4469cf9c15444c67ee4cc"
+    },
+    "frost-cde-drainage/commands/water-full.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/commands/water-full.stdout": {
+      "bytes": 397,
+      "sha256": "447a91a78531bfcf2c37e9017306c60eae5da4eaf5860768a9d2833d655b7418"
+    },
+    "frost-cde-drainage/commands/water-short-independent.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/commands/water-short-independent.stdout": {
+      "bytes": 69,
+      "sha256": "dc040d9acbbecd1d365b3ab86ae34f8aa382560d36f4469cf9c15444c67ee4cc"
+    },
+    "frost-cde-drainage/commands/water-short.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/commands/water-short.stdout": {
+      "bytes": 395,
+      "sha256": "b126937e8daefd79b80543ca16cbce3acb83746b4ffda3b334924e219f60e254"
+    },
+    "frost-cde-drainage/overlap/RESULT.json": {
+      "bytes": 43073,
+      "sha256": "45b42c6c80b966bbcc86d65829d13f56e54a74e2f5f09fd46a8e496c3acecceb"
+    },
+    "frost-cde-drainage/overlap/actual-driver.f90": {
+      "bytes": 1395,
+      "sha256": "ae340a95265976fafa5cbab665168ce429095bd513c21540122dc56d06cdbec5"
+    },
+    "frost-cde-drainage/overlap/corrected-actual-divdra-overlap": {
+      "bytes": 1565888,
+      "sha256": "fb67630337f5a337fca5087b0664a94bc49ac37228460e4a4a1f0d601c044be7"
+    },
+    "frost-cde-drainage/overlap/corrected-probe.f90": {
+      "bytes": 18340,
+      "sha256": "7baeda8b31f07c6b7321442d15ad53f09e210b5783706ca16be4ff22e47552fd"
+    },
+    "frost-cde-drainage/overlap/corrected-compile.json": {
+      "bytes": 4526,
+      "sha256": "4c1ee6ffd39bb3ae6859ef8241dc8f968b46e54767b1ae08fd405c9a55a2267a"
+    },
+    "frost-cde-drainage/overlap/corrected-reference.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "frost-cde-drainage/overlap/original-actual-divdra-overlap": {
+      "bytes": 1570048,
+      "sha256": "a158cbc16a37001f1debeea97ff4f3e26f814e194da46dcaba0cfc3d57bb0303"
+    },
+    "frost-cde-drainage/overlap/original-compile.json": {
+      "bytes": 4518,
+      "sha256": "52a22dd2556ff03b24e2efdc550ae03411e2bf558dc5eca8a235783f4f44e7bc"
+    },
+    "frost-cde-drainage/overlap/original-probe.f90": {
+      "bytes": 18332,
+      "sha256": "31485ca83f9fa875c64545a231c5b2d38771a161834e04d681580894df0228ef"
+    },
+    "frost-cde-drainage/overlap/original-reference.f90": {
+      "bytes": 17973,
+      "sha256": "832c3d8f2709521db16f43c7fbe3952687c4a395ca3199f8727df9b83759ae8c"
+    },
+    "frost-cde-drainage/rates/RESULT.json": {
+      "bytes": 89642,
+      "sha256": "b62a26305c0b988436ea2e764c43e309d3a49397d38c8aae9a7f2053c7c86357"
+    },
+    "frost-cde-drainage/rates/actual-driver.f90": {
+      "bytes": 3916,
+      "sha256": "48d98e56aa7844efded92c346ad70bceaad11454e1d3d2c7d8900bea6b54bc20"
+    },
+    "frost-cde-drainage/rates/guarded-actual-divdra.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "frost-cde-drainage/rates/guarded-actual-frost-divdra": {
+      "bytes": 1587560,
+      "sha256": "87281e50858da6a441fa1a97df61908c9d622f9bc549d973097048ac80f9aa42"
+    },
+    "frost-cde-drainage/rates/guarded-compile.json": {
+      "bytes": 5343,
+      "sha256": "ce71eb2e11b6b193845d0594cc5211e8264e641f05a2f9c5b4aea83ddab2bcd3"
+    },
+    "frost-cde-drainage/rates/guarded-frozencond.f90": {
+      "bytes": 10567,
+      "sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2"
+    },
+    "frost-cde-drainage/rates/original-actual-divdra.f90": {
+      "bytes": 17981,
+      "sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e"
+    },
+    "frost-cde-drainage/rates/original-actual-frost-divdra": {
+      "bytes": 1583344,
+      "sha256": "0d9f017ec5a2b41c6d65de322703b71fa6850ee2c7a26862366369f15aaf67db"
+    },
+    "frost-cde-drainage/rates/original-compile.json": {
+      "bytes": 5297,
+      "sha256": "99ae9990729352fa2a561c8c075da3b7132f046b67936931e7357e9bc18751bd"
+    },
+    "frost-cde-drainage/rates/original-frozencond.f90": {
+      "bytes": 7810,
+      "sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf"
+    },
+    "frost-cde-drainage/water-full/RESULT.json": {
+      "bytes": 4268,
+      "sha256": "ea5edd476f44f822d14d04b70ac776608552eb4a692b2fd400532a9f90eb3f01"
+    },
+    "frost-cde-drainage/water-full/own-1094/accepted-column-1-day-1096.zip": {
+      "bytes": 1495135,
+      "sha256": "7e84c21b824bbc1e67659ffbaa4af6ad5df5d5b586a682fa48ab797564838ae0"
+    },
+    "frost-cde-drainage/water-full/own-1094/daily.jsonl": {
+      "bytes": 2767,
+      "sha256": "60e6a009dad7e06d8597148ee633a632ae6f26a5507efa5476a5bf7171641cb9"
+    },
+    "frost-cde-drainage/water-full/own-1094/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-1094/kernel.stdout": {
+      "bytes": 295,
+      "sha256": "40d9a51a26a4edf3bab229ba4c5ab55497fd603752110e3de9e94df23d0f6cb2"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/donor.stdout": {
+      "bytes": 7923,
+      "sha256": "b2b9da535f144647b1ae5f7b9d73db5e6f9d1fa7a60b404a9a30ff7d998de13d"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/macro-origin.bin": {
+      "bytes": 1468980,
+      "sha256": "d99c2f9baef8b766d93d0c0cd7d4eea8162ccd2226c33436df3bf2a016d15bb6"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/macro.bin": {
+      "bytes": 1468980,
+      "sha256": "46f32ddcbe0322367da628978d9bbb75619e7c8c44b55902e0321a0410d69f68"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/restart.end": {
+      "bytes": 3684,
+      "sha256": "ae688d2452bab271a32f56f70b740e650868cab93bf392352df3972fd06600c9"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/result.bal": {
+      "bytes": 1020,
+      "sha256": "402a49f1e43722d416683ec791bb83175be5181fc093116d9b275a58e217222f"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/result.blc": {
+      "bytes": 2549,
+      "sha256": "9a955034c0d15d5778ec76801beb38925aeeb5fab0f2cd78baa080a585750c07"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/result.end": {
+      "bytes": 1792,
+      "sha256": "5f56460c4c90f5af52c8b51af53c8f861d87181fcb61fdd98322071c894206e6"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/result_output.bin": {
+      "bytes": 3113,
+      "sha256": "acea214acc8681b095f72361205e5713326f7bb87b6c1e68ac9f65ee019f9941"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/swap.log": {
+      "bytes": 819,
+      "sha256": "f5aca56588df707b7d5aa00580a33ee61719f7595b8828c99c72606cc68adf41"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "82da39286e325f3794546f7110dde6aef0e36dd67ccfe803ce5d6ba272f87131"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "8196fcc6ee1c9267b1485d9b10cb5b49cde2682f8cc6e2d40d95d3adc063bde3"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-full/own-1094/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-full/own-1094-origin/macro.bin": {
+      "bytes": 1468980,
+      "sha256": "d99c2f9baef8b766d93d0c0cd7d4eea8162ccd2226c33436df3bf2a016d15bb6"
+    },
+    "frost-cde-drainage/water-full/own-1094-origin/result.end": {
+      "bytes": 3684,
+      "sha256": "ae688d2452bab271a32f56f70b740e650868cab93bf392352df3972fd06600c9"
+    },
+    "frost-cde-drainage/water-full/own-19/accepted-column-1-day-23.zip": {
+      "bytes": 1493002,
+      "sha256": "a91479f54ce45fbf6c4885fbfeff6683cf6d29b552a20eaed7b77b3d5b242754"
+    },
+    "frost-cde-drainage/water-full/own-19/daily.jsonl": {
+      "bytes": 3592,
+      "sha256": "f642cd55d5d8b835f6f825ecef4ff588206785b0d498e28403141837734051d6"
+    },
+    "frost-cde-drainage/water-full/own-19/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-19/kernel.stdout": {
+      "bytes": 541,
+      "sha256": "1b221b456beb63f5a601670cc41990d27f0f47198a94b135f782a23dff24aa10"
+    },
+    "frost-cde-drainage/water-full/own-19/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-full/own-19/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-full/own-19/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-19/original/donor.stdout": {
+      "bytes": 13527,
+      "sha256": "1afb371dd1695f60673eda04166047727e147c871b56f0d37ad6f2cfc77efd35"
+    },
+    "frost-cde-drainage/water-full/own-19/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-full/own-19/original/macro-origin.bin": {
+      "bytes": 1467348,
+      "sha256": "f2e1bdbf1805ed125caef394dcdc7b097def0dafb04e2d2cd9531bae72fd2831"
+    },
+    "frost-cde-drainage/water-full/own-19/original/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "4851e686cbb277b93da2dde554bade33a2d68d034861f72cb978b1cc993f7abd"
+    },
+    "frost-cde-drainage/water-full/own-19/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-full/own-19/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-full/own-19/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-full/own-19/original/restart.end": {
+      "bytes": 1768,
+      "sha256": "ea48011c04d05e5c9fe0f28b16c1d8818d3681c53c9044347c475c978322f29b"
+    },
+    "frost-cde-drainage/water-full/own-19/original/result.bal": {
+      "bytes": 189,
+      "sha256": "72343d4e6db69f8564c70ab269cce0b7468f417e6c88f814d13c59fc266055d0"
+    },
+    "frost-cde-drainage/water-full/own-19/original/result.blc": {
+      "bytes": 185,
+      "sha256": "9239369f928fb7e97bea4ff33c9551db8f246409fe53527b832de70f6282ec22"
+    },
+    "frost-cde-drainage/water-full/own-19/original/result.end": {
+      "bytes": 1768,
+      "sha256": "ed2946addc499503804681576604145a2155880e5cef78e4f883409dab0e46eb"
+    },
+    "frost-cde-drainage/water-full/own-19/original/result_output.bin": {
+      "bytes": 3695,
+      "sha256": "2cc6420be9726107d6a40bd3790336f51998a7f2ba8208338b11447f9399c494"
+    },
+    "frost-cde-drainage/water-full/own-19/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-full/own-19/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-full/own-19/original/swap.log": {
+      "bytes": 887,
+      "sha256": "9a9eeebb7a1eff47f9098e0843a33bffdeee21f894942a4aa0a97608507e1b63"
+    },
+    "frost-cde-drainage/water-full/own-19/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "c3dd384b051ac2a270ae4beb766eb68d6749d0399b512daab5e34fd1435395f4"
+    },
+    "frost-cde-drainage/water-full/own-19/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "f257fba500110fbecc3cac046318722b11594c3272fb6e09f1c566df508db3da"
+    },
+    "frost-cde-drainage/water-full/own-19/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-full/own-19-origin/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "f2e1bdbf1805ed125caef394dcdc7b097def0dafb04e2d2cd9531bae72fd2831"
+    },
+    "frost-cde-drainage/water-full/own-19/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-full/own-19-origin/result.end": {
+      "bytes": 1768,
+      "sha256": "ea48011c04d05e5c9fe0f28b16c1d8818d3681c53c9044347c475c978322f29b"
+    },
+    "frost-cde-drainage/water-full/own-199/accepted-column-1-day-201.zip": {
+      "bytes": 1493845,
+      "sha256": "3592a1043e34761ed8f36f2343fac8ad5106d4d3659f7d64246fff005cc76059"
+    },
+    "frost-cde-drainage/water-full/own-199/daily.jsonl": {
+      "bytes": 2638,
+      "sha256": "aba02c7994935638ff006331d80815876d913804f3d1ed67c92b31c8bf944a4a"
+    },
+    "frost-cde-drainage/water-full/own-199/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-199/kernel.stdout": {
+      "bytes": 291,
+      "sha256": "5d90ee6ccf25774b7c772e85c6f2c40ab7686414d7fd7bf889a14adc3e5ba91b"
+    },
+    "frost-cde-drainage/water-full/own-199/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-full/own-199/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-full/own-199/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-199/original/donor.stdout": {
+      "bytes": 7919,
+      "sha256": "76550c3f3e89afa8dbb6c6a8bf45987f0e6acff459f739bc1bd3027772cc9e8d"
+    },
+    "frost-cde-drainage/water-full/own-199/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-full/own-199/original/macro-origin.bin": {
+      "bytes": 1467348,
+      "sha256": "47cc4e57fde186264a385724d29ab7d1ee7a11167307ecea9fe86006c82980c1"
+    },
+    "frost-cde-drainage/water-full/own-199/original/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "ed798ae37fc9fc5da7d3fa0496a5bf1c3bf794e5f704780c6181a4e5ad1d1eba"
+    },
+    "frost-cde-drainage/water-full/own-199/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-full/own-199/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-full/own-199/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-full/own-199/original/restart.end": {
+      "bytes": 2176,
+      "sha256": "5d88d4cf46008f8ace0c2593fc1149785bd243c83a2ac169993237c20e125a08"
+    },
+    "frost-cde-drainage/water-full/own-199/original/result.bal": {
+      "bytes": 189,
+      "sha256": "af3c3ca7896b218d42f8a5559bc1b75b8cdb5f7b6a3ee1f43b4c8f5918f8c0b4"
+    },
+    "frost-cde-drainage/water-full/own-199/original/result.blc": {
+      "bytes": 185,
+      "sha256": "34f28afb254797abb89525b6883df6c3754525b11a793bc7426f1957bdff1c05"
+    },
+    "frost-cde-drainage/water-full/own-199/original/result.end": {
+      "bytes": 2176,
+      "sha256": "2e5b7287335beb145819bf47fb05cf4f67e7373f07148701ca889b134ef397b7"
+    },
+    "frost-cde-drainage/water-full/own-199/original/result_output.bin": {
+      "bytes": 3113,
+      "sha256": "ed54c8b33a2c35825ae2614c9c9b47a483f7377efc9511ac249d08f01c982c1f"
+    },
+    "frost-cde-drainage/water-full/own-199/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-full/own-199/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-full/own-199/original/swap.log": {
+      "bytes": 887,
+      "sha256": "7762e8ab73977c930ca5a81025504384ea4f5d2fcea0423dbf13453c21990265"
+    },
+    "frost-cde-drainage/water-full/own-199/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "00efd24792faea12274b64c2da5f22636ed78b38d65c035a83d7e440fff5bdea"
+    },
+    "frost-cde-drainage/water-full/own-199/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "b26bea003d17890bc584c1a9cde844e0f691eec16cdd0f6aed14d4f8a6690e00"
+    },
+    "frost-cde-drainage/water-full/own-199/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-full/own-199/original/swap.wrn": {
+      "bytes": 317,
+      "sha256": "7dd17b8b6ad2330270655251fafff979bd3aa12104f3bdedd2ce6e3b7b3358a0"
+    },
+    "frost-cde-drainage/water-full/own-199-origin/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "47cc4e57fde186264a385724d29ab7d1ee7a11167307ecea9fe86006c82980c1"
+    },
+    "frost-cde-drainage/water-full/own-199-origin/result.end": {
+      "bytes": 2176,
+      "sha256": "5d88d4cf46008f8ace0c2593fc1149785bd243c83a2ac169993237c20e125a08"
+    },
+    "frost-cde-drainage/water-full/own-2/accepted-column-1-day-4.zip": {
+      "bytes": 1493436,
+      "sha256": "473a6aaa9f94728611909a617a0c9bd7bb724337c81e2d5df742784e29f115f1"
+    },
+    "frost-cde-drainage/water-full/own-2/daily.jsonl": {
+      "bytes": 2644,
+      "sha256": "63fa935287d27c586c4535023bf5453eead1d3add80740ce0cea31fec92bfafe"
+    },
+    "frost-cde-drainage/water-full/own-2/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-2/kernel.stdout": {
+      "bytes": 283,
+      "sha256": "9a01ee139f4720c9549b59cb5faeffcc6ab139bf9fdb5642a186e67b09dd8725"
+    },
+    "frost-cde-drainage/water-full/own-2/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-full/own-2/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-full/own-2/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-2/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-full/own-2/original/donor.stdout": {
+      "bytes": 7911,
+      "sha256": "2d7094ff304870d08c08b01a9fbff9720cd6e7d73e4c9f82c8ea8e9174363366"
+    },
+    "frost-cde-drainage/water-full/own-2/original/macro-origin.bin": {
+      "bytes": 1467348,
+      "sha256": "e6622db544d9979872ce38d0b6cd572af85ee9a47943252de88007633cac5e56"
+    },
+    "frost-cde-drainage/water-full/own-2/original/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "a57ecb1151ec1db8ffcbcabcff1728a918e7d897a517a6aa295a7432cc87f740"
+    },
+    "frost-cde-drainage/water-full/own-2/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-full/own-2/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-full/own-2/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-full/own-2/original/restart.end": {
+      "bytes": 1768,
+      "sha256": "a69316971baae5d1e55ed7d79a26ffa132f52929a40f0c295c86624155feaa81"
+    },
+    "frost-cde-drainage/water-full/own-2/original/result.bal": {
+      "bytes": 189,
+      "sha256": "72343d4e6db69f8564c70ab269cce0b7468f417e6c88f814d13c59fc266055d0"
+    },
+    "frost-cde-drainage/water-full/own-2/original/result.blc": {
+      "bytes": 185,
+      "sha256": "9239369f928fb7e97bea4ff33c9551db8f246409fe53527b832de70f6282ec22"
+    },
+    "frost-cde-drainage/water-full/own-2/original/result.end": {
+      "bytes": 1768,
+      "sha256": "38cafae8d394682985f56506f26462e6a7e3969af21235023d9b29fd3a669f50"
+    },
+    "frost-cde-drainage/water-full/own-2/original/result_output.bin": {
+      "bytes": 3113,
+      "sha256": "6a527161bb34dcffbcc4f7ad9ab3b3c351facb01c6c7788710a61026045d877b"
+    },
+    "frost-cde-drainage/water-full/own-2/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-full/own-2/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-full/own-2/original/swap.log": {
+      "bytes": 819,
+      "sha256": "ee40e52d8919110fee1f909a5e9bc197f8e322d55da8a7249a01d0156a88d8e0"
+    },
+    "frost-cde-drainage/water-full/own-2/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "5424e2bf9a106944d7a6113f5827a5d7357b4ae894e4b051aa474790569f85e2"
+    },
+    "frost-cde-drainage/water-full/own-2/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-full/own-2/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "42ffaab0e4a2bd1acbe3dceefb8161e712a9a870e5eb01009d82cf860fd274b9"
+    },
+    "frost-cde-drainage/water-full/own-2/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-full/own-2-origin/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "e6622db544d9979872ce38d0b6cd572af85ee9a47943252de88007633cac5e56"
+    },
+    "frost-cde-drainage/water-full/own-2-origin/result.end": {
+      "bytes": 1768,
+      "sha256": "a69316971baae5d1e55ed7d79a26ffa132f52929a40f0c295c86624155feaa81"
+    },
+    "frost-cde-drainage/water-full/own-30/accepted-column-1-day-34.zip": {
+      "bytes": 1493426,
+      "sha256": "50b8faf527fc7fca1ac2487ef9a8d68b93f0f82194bc98da65538fd972abc6dc"
+    },
+    "frost-cde-drainage/water-full/own-30/daily.jsonl": {
+      "bytes": 5256,
+      "sha256": "a8bd41a9cdeb31628c560131df73a886952e09e912aabf7d3fdb831ec73f54fe"
+    },
+    "frost-cde-drainage/water-full/own-30/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-30/kernel.stdout": {
+      "bytes": 541,
+      "sha256": "9325204f44c6aee1fe3ab8e62a3b84565888e1320c99f2bd762fca54096edf63"
+    },
+    "frost-cde-drainage/water-full/own-30/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-full/own-30/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-full/own-30/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-30/original/donor.stdout": {
+      "bytes": 13527,
+      "sha256": "ed15afdfd504c4a540f65b3eb002076150cb63bb404e1578ffd9bdfc5e91ce8d"
+    },
+    "frost-cde-drainage/water-full/own-30/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-full/own-30/original/macro-origin.bin": {
+      "bytes": 1467348,
+      "sha256": "8412e509313c79ba409dc08bcf321d9a8baba0c90af4ea3c2b53887a5c0ea7aa"
+    },
+    "frost-cde-drainage/water-full/own-30/original/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "09650ffa198a8a3b0c2fdde8ad76b93a88c8a084d2c4b43933f56ed0eba87413"
+    },
+    "frost-cde-drainage/water-full/own-30/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-full/own-30/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-full/own-30/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-full/own-30/original/restart.end": {
+      "bytes": 1768,
+      "sha256": "c0ffc98055eac5c379ba43db7d6d51180d0288e701028308d68d7f4784fc6754"
+    },
+    "frost-cde-drainage/water-full/own-30/original/result.bal": {
+      "bytes": 189,
+      "sha256": "af3c3ca7896b218d42f8a5559bc1b75b8cdb5f7b6a3ee1f43b4c8f5918f8c0b4"
+    },
+    "frost-cde-drainage/water-full/own-30/original/result.blc": {
+      "bytes": 185,
+      "sha256": "34f28afb254797abb89525b6883df6c3754525b11a793bc7426f1957bdff1c05"
+    },
+    "frost-cde-drainage/water-full/own-30/original/result.end": {
+      "bytes": 1768,
+      "sha256": "38fcb68885e9c98342ab4b119310edec7b27e5e4176ebf906732cac644211e74"
+    },
+    "frost-cde-drainage/water-full/own-30/original/result_output.bin": {
+      "bytes": 3695,
+      "sha256": "38906010e6ff9967a9b441292f11ad4d495ce36187f172c8b325f5a134d5140a"
+    },
+    "frost-cde-drainage/water-full/own-30/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-full/own-30/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-full/own-30/original/swap.log": {
+      "bytes": 853,
+      "sha256": "f96a4dc7d3a7a27185d0ebd9ddc1821bce6afbac80d7d9c0398035cd01c4e6c3"
+    },
+    "frost-cde-drainage/water-full/own-30/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "cac5496db6ae5c79b66cac16d45c7ec7ac2c279e93cf79673fa411fdb84ab14f"
+    },
+    "frost-cde-drainage/water-full/own-30/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "d83181381554e001858d72dceafa780f00c588e1532dc372d974f5e08e3ea436"
+    },
+    "frost-cde-drainage/water-full/own-30/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-full/own-30/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-full/own-30-origin/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "8412e509313c79ba409dc08bcf321d9a8baba0c90af4ea3c2b53887a5c0ea7aa"
+    },
+    "frost-cde-drainage/water-full/own-30-origin/result.end": {
+      "bytes": 1768,
+      "sha256": "c0ffc98055eac5c379ba43db7d6d51180d0288e701028308d68d7f4784fc6754"
+    },
+    "frost-cde-drainage/water-full/own-364/accepted-column-1-day-367.zip": {
+      "bytes": 1493123,
+      "sha256": "1db4e07aedd1ba517e7e1bf2f81a2fd7722899ba8ee07e71c4239e445d34b967"
+    },
+    "frost-cde-drainage/water-full/own-364/daily.jsonl": {
+      "bytes": 3650,
+      "sha256": "c9a06e5da3b6fb0c2b8d4168539d6bc5ef15a30161b570d8763ec39078a8de9b"
+    },
+    "frost-cde-drainage/water-full/own-364/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-364/kernel.stdout": {
+      "bytes": 420,
+      "sha256": "050d5423022bb244e591de6cd03087f3e3df03eb1ca5f093c6cc6f13e4001d7a"
+    },
+    "frost-cde-drainage/water-full/own-364/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-full/own-364/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-full/own-364/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-364/original/donor.stdout": {
+      "bytes": 10727,
+      "sha256": "9e27c867b60d4356a69d586bce66ade7f30ab26563b8370d927f2d0cd4b25f2a"
+    },
+    "frost-cde-drainage/water-full/own-364/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-full/own-364/original/macro-origin.bin": {
+      "bytes": 1467348,
+      "sha256": "bc87c47cfd537a487ea8cdfc7d8efb7ad69073d7939a5bb5908ed3c68f760d4e"
+    },
+    "frost-cde-drainage/water-full/own-364/original/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "2ddc62ab5fee77daa6e6b389c82bb11ef7128872b5cd5b3cb58ad64afaea5a41"
+    },
+    "frost-cde-drainage/water-full/own-364/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-full/own-364/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-full/own-364/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-full/own-364/original/restart.end": {
+      "bytes": 1768,
+      "sha256": "eaf6dc1e93f71d0a02377c8a2b818d700993e653f191066a6ea9ce9bdf820457"
+    },
+    "frost-cde-drainage/water-full/own-364/original/result.bal": {
+      "bytes": 1020,
+      "sha256": "398b77f83500133f9ac2274265a523799054b08e49c1db63dbbeeb8684f3bf78"
+    },
+    "frost-cde-drainage/water-full/own-364/original/result.blc": {
+      "bytes": 2549,
+      "sha256": "778287e5da0ab6c0eb4e0dc4dbbfc367e2373a93b490c63deca47744f65f6d69"
+    },
+    "frost-cde-drainage/water-full/own-364/original/result.end": {
+      "bytes": 1768,
+      "sha256": "9896cd189bd4660bf6781c53a0b4b4e6118f742cdd1d28b33aa585bdb14c8728"
+    },
+    "frost-cde-drainage/water-full/own-364/original/result_output.bin": {
+      "bytes": 3404,
+      "sha256": "682ea1b69c8db20c68006426c0e2b6f6a9edb205a31ddbb38cc41c099bf06913"
+    },
+    "frost-cde-drainage/water-full/own-364/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-full/own-364/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-full/own-364/original/swap.log": {
+      "bytes": 1227,
+      "sha256": "8c504dae36bab2d8473c692b91461280ede5611953882f17d3d555d84bef9fad"
+    },
+    "frost-cde-drainage/water-full/own-364/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "00efd24792faea12274b64c2da5f22636ed78b38d65c035a83d7e440fff5bdea"
+    },
+    "frost-cde-drainage/water-full/own-364/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "3d47f71203e0e0e78eb3af9bb60aad77a1a3aee7af7988ec71e31387bb2d66b9"
+    },
+    "frost-cde-drainage/water-full/own-364/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-full/own-364/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-full/own-364-origin/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "bc87c47cfd537a487ea8cdfc7d8efb7ad69073d7939a5bb5908ed3c68f760d4e"
+    },
+    "frost-cde-drainage/water-full/own-530/accepted-column-1-day-532.zip": {
+      "bytes": 1496637,
+      "sha256": "a3c7c38d432d105d69354b292affb0d4007236cabc956991f0871339ec6bb2a9"
+    },
+    "frost-cde-drainage/water-full/own-530/daily.jsonl": {
+      "bytes": 2646,
+      "sha256": "9a7fa674612feedf9c25460de8d848afb9decd843e5a271570a0e78352bb3b36"
+    },
+    "frost-cde-drainage/water-full/own-530/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-364-origin/result.end": {
+      "bytes": 1768,
+      "sha256": "eaf6dc1e93f71d0a02377c8a2b818d700993e653f191066a6ea9ce9bdf820457"
+    },
+    "frost-cde-drainage/water-full/own-530/kernel.stdout": {
+      "bytes": 291,
+      "sha256": "26e9594217917937ecb4feb71d9365190b60b8c260f69557515b333583ef47fe"
+    },
+    "frost-cde-drainage/water-full/own-530/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-full/own-530/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-full/own-530/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/own-530/original/donor.stdout": {
+      "bytes": 7919,
+      "sha256": "17d4d0811e18a652c67ad64db51d43f5737afa3184cf76c53cd5a4914541b58a"
+    },
+    "frost-cde-drainage/water-full/own-530/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-full/own-530/original/macro-origin.bin": {
+      "bytes": 1468980,
+      "sha256": "4809438c429d9b1351b33f7614f6aab96cc153fd7bb926cac40c3377b0197be1"
+    },
+    "frost-cde-drainage/water-full/own-530/original/macro.bin": {
+      "bytes": 1468980,
+      "sha256": "2d29bf7b6de0c0f458cda55ba99f09fa591acba694201705b7c073e96da7926e"
+    },
+    "frost-cde-drainage/water-full/own-530/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-full/own-530/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-full/own-530/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-full/own-530/original/restart.end": {
+      "bytes": 3248,
+      "sha256": "78c5142d1653ba97a56cde3775a0b26f1a213c0a811f4af0ed0034c55a4ea9ed"
+    },
+    "frost-cde-drainage/water-full/own-530/original/result.bal": {
+      "bytes": 189,
+      "sha256": "deba7d09c90db9422eb7e70cf0d95887b9a90c7d2a57bca628206ee42addacbb"
+    },
+    "frost-cde-drainage/water-full/own-530/original/result.blc": {
+      "bytes": 185,
+      "sha256": "e3d0cc8265f40a64e4155b166565301792cc189313cfd16038305821904d2fbb"
+    },
+    "frost-cde-drainage/water-full/own-530/original/result.end": {
+      "bytes": 3344,
+      "sha256": "f8c920647fb4d4744bec2b54cf78ff84bc25e6d57e6e01729e0af39550acceaf"
+    },
+    "frost-cde-drainage/water-full/own-530/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-full/own-530/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-full/own-530/original/result_output.bin": {
+      "bytes": 3113,
+      "sha256": "dcfccda9e11de6997bf339475ea52584e4634d768242d10027cfe467543db323"
+    },
+    "frost-cde-drainage/water-full/own-530/original/swap.log": {
+      "bytes": 819,
+      "sha256": "9d75f527bc2c346598ef87dd4ccd2b18b4479ced331eb544981c9b1d3498e6b7"
+    },
+    "frost-cde-drainage/water-full/own-530/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "82da39286e325f3794546f7110dde6aef0e36dd67ccfe803ce5d6ba272f87131"
+    },
+    "frost-cde-drainage/water-full/own-530/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "0f107f5cb4a94c5b3ed38528ea88be04c83c6912b3f7c85e8963e2413bd12244"
+    },
+    "frost-cde-drainage/water-full/own-530/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-full/own-530/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-full/own-530-origin/macro.bin": {
+      "bytes": 1468980,
+      "sha256": "4809438c429d9b1351b33f7614f6aab96cc153fd7bb926cac40c3377b0197be1"
+    },
+    "frost-cde-drainage/water-full/own-530-origin/result.end": {
+      "bytes": 3248,
+      "sha256": "78c5142d1653ba97a56cde3775a0b26f1a213c0a811f4af0ed0034c55a4ea9ed"
+    },
+    "frost-cde-drainage/water-full/trajectory/BUILD.json": {
+      "bytes": 43310,
+      "sha256": "3bebe3dd643aa16bc090a8de22e1eba504836ee93cfc2908fd91d7b917720f8b"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-1094.zip": {
+      "bytes": 1497001,
+      "sha256": "33e940713334fbe65875cc2fd676bf53aa26c46b25e03425ec44d1e95ca49a56"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-1096.zip": {
+      "bytes": 1495138,
+      "sha256": "94135660363fb16563fa1be7c5fafea169df5bff16ef033f043ca79ab6d8e417"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-19.zip": {
+      "bytes": 1493305,
+      "sha256": "1278514c1dd2fc3a7e6dd529ef93ba070b78a032b67629be2a6327467844b061"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-199.zip": {
+      "bytes": 1493824,
+      "sha256": "bf7a9467e7b7a4963ad4b1bb7d7a89a1dae66c625bf10ef4d5d141ce8164bad2"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-2.zip": {
+      "bytes": 1493426,
+      "sha256": "55d17f3215a6c5387188984960c8e46e3e1d2b9de75f863b492cfc91bec8480d"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-201.zip": {
+      "bytes": 1493847,
+      "sha256": "ce182aab4c86f95885cc8d33935cf2a38705f434e4e7d47ad0795a264741b834"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-23.zip": {
+      "bytes": 1493003,
+      "sha256": "2c34b310f69069ac7b1f1e1631e340e2bc29e1727cf2fbe3a54c0c6a128cb076"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-30.zip": {
+      "bytes": 1493409,
+      "sha256": "f680cfcb85d4465f32855479d07177abb553c48c10a25b722d604afa9d51407b"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-34.zip": {
+      "bytes": 1493427,
+      "sha256": "7481d2d5710e469fabb6d644df06009e55a3d67819fa02a528a2df73936140da"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-364.zip": {
+      "bytes": 1493399,
+      "sha256": "8fb893e9c86792138e27fd69d52eb9b31ec4006b4a502417e9ba74b5f8feeee7"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-367.zip": {
+      "bytes": 1493125,
+      "sha256": "b4ca69baaf950ec9f7d4a47072eb0efd26979a65f93e13d08914e543fac647ac"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-4.zip": {
+      "bytes": 1493436,
+      "sha256": "2c0b335d452376b73ca9fad0e4f3228b2b7f1aa1c08f05802279f5ccc79295c5"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-530.zip": {
+      "bytes": 1496542,
+      "sha256": "646d32375a08447e7aa241c7bb88109a3d3cc7b3411ef58b26d1d723d877bbdf"
+    },
+    "frost-cde-drainage/water-full/trajectory/accepted-column-1-day-532.zip": {
+      "bytes": 1496639,
+      "sha256": "d9d53a0ce5a0d6d0b008bdf08942d027b457d871e7d566a74419db0dbe36d99f"
+    },
+    "frost-cde-drainage/water-full/trajectory/daily.jsonl": {
+      "bytes": 1446951,
+      "sha256": "e2eae552c48d62310fa6c1ec67121188264c6f7484015a4d3d393a467af41a08"
+    },
+    "frost-cde-drainage/water-full/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/trajectory/kernel.stdout": {
+      "bytes": 143573,
+      "sha256": "47d739a3a6c2bcced0252d118fe417357378e41b9c7a0abcd6d27a84a966ba12"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/donor.stdout": {
+      "bytes": 3079849,
+      "sha256": "43c615a8cefdd37e663bf1a8f107f0cc0fb93157011def275a44b285c2f33fd8"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/macro.bin": {
+      "bytes": 1468980,
+      "sha256": "46f32ddcbe0322367da628978d9bbb75619e7c8c44b55902e0321a0410d69f68"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/result.bal": {
+      "bytes": 2682,
+      "sha256": "5f5da64e4ebc9c649489a81ff05586bb257d116b48b507b72b07f34e2ba5b44d"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/result.end": {
+      "bytes": 1792,
+      "sha256": "5f56460c4c90f5af52c8b51af53c8f861d87181fcb61fdd98322071c894206e6"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/result.blc": {
+      "bytes": 7277,
+      "sha256": "4c12bde4b5a83b2fde62584fdc18095c60adfe58fff8dedaba9975caf9d4b5f2"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/result_output.bin": {
+      "bytes": 321467,
+      "sha256": "56bcdc330f06b4189c610610e4d5372fdcd219683ffe9c726ab38da66134a07e"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/swap.log": {
+      "bytes": 1499,
+      "sha256": "fce547c949300d82eb8d09b3ffefb2106b43af895aa248c96a4faeab1076d287"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "3a0664c7654d290c8e160f10133ca8c86f37e2702fd5ecd73296d5b0f8209efb"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/swap.swp": {
+      "bytes": 36024,
+      "sha256": "2185ac3a9ba6b662d480f7421a912adb3d6615bba077deaae63b52d42d1d61e2"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-full/trajectory/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-full-INDEPENDENT_V1.json": {
+      "bytes": 590,
+      "sha256": "f11bb887868b704e1a0d619b671faeb43ea6b4c6f1858c87c68cf1e8e7eebfce"
+    },
+    "frost-cde-drainage/water-short/RESULT.json": {
+      "bytes": 3480,
+      "sha256": "62ec040f6508181c432b3bac0ad7e374be0e190b72f2b3b0c3236891e5f5c067"
+    },
+    "frost-cde-drainage/water-short/build.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-short/build.stdout.txt": {
+      "bytes": 100,
+      "sha256": "3480dc703c4284a27c5b73b15c36564582c8b9e4fb1084efd1b8b1b123f0e7c4"
+    },
+    "frost-cde-drainage/water-short/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-short/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-short/input/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-short/input/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-short/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-short/input/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-short/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-short/input/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-short/input/swap.swp": {
+      "bytes": 36024,
+      "sha256": "56bbc9e4e5a9075c24b7f381e8637be42bbf9181b75de8ea4b632231373d34a2"
+    },
+    "frost-cde-drainage/water-short/input/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-short/own-19/accepted-column-1-day-23.zip": {
+      "bytes": 1493002,
+      "sha256": "2b163a81c127b5cc3f2b639eae83743607e66da2f1181c12f481a5169233c2f5"
+    },
+    "frost-cde-drainage/water-short/own-19/daily.jsonl": {
+      "bytes": 3592,
+      "sha256": "f642cd55d5d8b835f6f825ecef4ff588206785b0d498e28403141837734051d6"
+    },
+    "frost-cde-drainage/water-short/own-19/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-short/own-19/kernel.stdout": {
+      "bytes": 541,
+      "sha256": "1b221b456beb63f5a601670cc41990d27f0f47198a94b135f782a23dff24aa10"
+    },
+    "frost-cde-drainage/water-short/own-19/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-short/own-19/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-short/own-19/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-short/own-19/original/donor.stdout": {
+      "bytes": 13527,
+      "sha256": "1afb371dd1695f60673eda04166047727e147c871b56f0d37ad6f2cfc77efd35"
+    },
+    "frost-cde-drainage/water-short/own-19/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-short/own-19/original/macro-origin.bin": {
+      "bytes": 1467348,
+      "sha256": "f2e1bdbf1805ed125caef394dcdc7b097def0dafb04e2d2cd9531bae72fd2831"
+    },
+    "frost-cde-drainage/water-short/own-19/original/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "4851e686cbb277b93da2dde554bade33a2d68d034861f72cb978b1cc993f7abd"
+    },
+    "frost-cde-drainage/water-short/own-19/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-short/own-19/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-short/own-19/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-short/own-19/original/restart.end": {
+      "bytes": 1768,
+      "sha256": "ea48011c04d05e5c9fe0f28b16c1d8818d3681c53c9044347c475c978322f29b"
+    },
+    "frost-cde-drainage/water-short/own-19/original/result.bal": {
+      "bytes": 189,
+      "sha256": "3ca960795e422f8d329ee080b9b1f41d1dd9b1834c0de3b7cc69f1dd143589d4"
+    },
+    "frost-cde-drainage/water-short/own-19/original/result.blc": {
+      "bytes": 185,
+      "sha256": "348c6304eee09af6a21697c835d2323892e1f09eaf583cb36d3d5058b8bee49f"
+    },
+    "frost-cde-drainage/water-short/own-19/original/result.end": {
+      "bytes": 1768,
+      "sha256": "ed2946addc499503804681576604145a2155880e5cef78e4f883409dab0e46eb"
+    },
+    "frost-cde-drainage/water-short/own-19/original/result_output.bin": {
+      "bytes": 3695,
+      "sha256": "6ed5be407bb269149f33200cea48be162abf4c057c139ba9ddb768364c52c6a7"
+    },
+    "frost-cde-drainage/water-short/own-19/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-short/own-19/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-short/own-19/original/swap.log": {
+      "bytes": 887,
+      "sha256": "f23fcb27f5b2c993fa889e6f34da2ca951b8fb7e80f495d37e72f5184c77904a"
+    },
+    "frost-cde-drainage/water-short/own-19/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "05c0154e1e75cdac3eaac8da28fa9d5630446a6b645b51b872e0f9bcf5923598"
+    },
+    "frost-cde-drainage/water-short/own-19/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "f257fba500110fbecc3cac046318722b11594c3272fb6e09f1c566df508db3da"
+    },
+    "frost-cde-drainage/water-short/own-19/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-short/own-19/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-short/own-19-origin/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "f2e1bdbf1805ed125caef394dcdc7b097def0dafb04e2d2cd9531bae72fd2831"
+    },
+    "frost-cde-drainage/water-short/own-19-origin/result.end": {
+      "bytes": 1768,
+      "sha256": "ea48011c04d05e5c9fe0f28b16c1d8818d3681c53c9044347c475c978322f29b"
+    },
+    "frost-cde-drainage/water-short/own-2/accepted-column-1-day-4.zip": {
+      "bytes": 1493436,
+      "sha256": "59d8160ff70317ea3b39e54860ff4b57396cddcf5fda9739a664721800c9a6a1"
+    },
+    "frost-cde-drainage/water-short/own-2/daily.jsonl": {
+      "bytes": 2644,
+      "sha256": "63fa935287d27c586c4535023bf5453eead1d3add80740ce0cea31fec92bfafe"
+    },
+    "frost-cde-drainage/water-short/own-2/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-short/own-2/kernel.stdout": {
+      "bytes": 283,
+      "sha256": "9a01ee139f4720c9549b59cb5faeffcc6ab139bf9fdb5642a186e67b09dd8725"
+    },
+    "frost-cde-drainage/water-short/own-2/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-short/own-2/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-short/own-2/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-short/own-2/original/donor.stdout": {
+      "bytes": 7911,
+      "sha256": "2d7094ff304870d08c08b01a9fbff9720cd6e7d73e4c9f82c8ea8e9174363366"
+    },
+    "frost-cde-drainage/water-short/own-2/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-short/own-2/original/macro-origin.bin": {
+      "bytes": 1467348,
+      "sha256": "e6622db544d9979872ce38d0b6cd572af85ee9a47943252de88007633cac5e56"
+    },
+    "frost-cde-drainage/water-short/own-2/original/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "a57ecb1151ec1db8ffcbcabcff1728a918e7d897a517a6aa295a7432cc87f740"
+    },
+    "frost-cde-drainage/water-short/own-2/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-short/own-2/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-short/own-2/original/restart.end": {
+      "bytes": 1768,
+      "sha256": "a69316971baae5d1e55ed7d79a26ffa132f52929a40f0c295c86624155feaa81"
+    },
+    "frost-cde-drainage/water-short/own-2/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-short/own-2/original/result.bal": {
+      "bytes": 189,
+      "sha256": "3ca960795e422f8d329ee080b9b1f41d1dd9b1834c0de3b7cc69f1dd143589d4"
+    },
+    "frost-cde-drainage/water-short/own-2/original/result.blc": {
+      "bytes": 185,
+      "sha256": "348c6304eee09af6a21697c835d2323892e1f09eaf583cb36d3d5058b8bee49f"
+    },
+    "frost-cde-drainage/water-short/own-2/original/result.end": {
+      "bytes": 1768,
+      "sha256": "38cafae8d394682985f56506f26462e6a7e3969af21235023d9b29fd3a669f50"
+    },
+    "frost-cde-drainage/water-short/own-2/original/result_output.bin": {
+      "bytes": 3113,
+      "sha256": "ead7ca21845a22196cd49d2d5e7f673eb21663d747cf7476bef55c6a4c1205c2"
+    },
+    "frost-cde-drainage/water-short/own-2/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-short/own-2/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-short/own-2/original/swap.log": {
+      "bytes": 819,
+      "sha256": "20e17702e6470ea099b2a4ec4f6e4613ace948b05f98c93cb2463fa45c29d25c"
+    },
+    "frost-cde-drainage/water-short/own-2/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "1898e797aa5a6b751c9d05e5543f84ab8f7070d1f9c66fce1f0180eabaa8b936"
+    },
+    "frost-cde-drainage/water-short/own-2/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "5424e2bf9a106944d7a6113f5827a5d7357b4ae894e4b051aa474790569f85e2"
+    },
+    "frost-cde-drainage/water-short/own-2/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-short/own-2/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-short/own-2-origin/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "e6622db544d9979872ce38d0b6cd572af85ee9a47943252de88007633cac5e56"
+    },
+    "frost-cde-drainage/water-short/own-2-origin/result.end": {
+      "bytes": 1768,
+      "sha256": "a69316971baae5d1e55ed7d79a26ffa132f52929a40f0c295c86624155feaa81"
+    },
+    "frost-cde-drainage/water-short/own-30/accepted-column-1-day-34.zip": {
+      "bytes": 1493426,
+      "sha256": "a925dc2b5237e16f044de09c36a92a4d37d1adab481e364155f7c1842ae456e7"
+    },
+    "frost-cde-drainage/water-short/own-30/daily.jsonl": {
+      "bytes": 5256,
+      "sha256": "a8bd41a9cdeb31628c560131df73a886952e09e912aabf7d3fdb831ec73f54fe"
+    },
+    "frost-cde-drainage/water-short/own-30/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-short/own-30/kernel.stdout": {
+      "bytes": 541,
+      "sha256": "9325204f44c6aee1fe3ab8e62a3b84565888e1320c99f2bd762fca54096edf63"
+    },
+    "frost-cde-drainage/water-short/own-30/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-short/own-30/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-short/own-30/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-short/own-30/original/donor.stdout": {
+      "bytes": 13527,
+      "sha256": "ed15afdfd504c4a540f65b3eb002076150cb63bb404e1578ffd9bdfc5e91ce8d"
+    },
+    "frost-cde-drainage/water-short/own-30/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-short/own-30/original/macro-origin.bin": {
+      "bytes": 1467348,
+      "sha256": "8412e509313c79ba409dc08bcf321d9a8baba0c90af4ea3c2b53887a5c0ea7aa"
+    },
+    "frost-cde-drainage/water-short/own-30/original/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "09650ffa198a8a3b0c2fdde8ad76b93a88c8a084d2c4b43933f56ed0eba87413"
+    },
+    "frost-cde-drainage/water-short/own-30/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-short/own-30/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-short/own-30/original/restart.end": {
+      "bytes": 1768,
+      "sha256": "c0ffc98055eac5c379ba43db7d6d51180d0288e701028308d68d7f4784fc6754"
+    },
+    "frost-cde-drainage/water-short/own-30/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-short/own-30/original/result.bal": {
+      "bytes": 189,
+      "sha256": "159b1c79bb560ccbe5984b87d469bb2d03c8cfdcc09f402c2afa401c38727a96"
+    },
+    "frost-cde-drainage/water-short/own-30/original/result.blc": {
+      "bytes": 185,
+      "sha256": "b16b62c51fe8bf797b343c0c622f009a2fff827826eec8f3fe77ac0bda4d3a19"
+    },
+    "frost-cde-drainage/water-short/own-30/original/result.end": {
+      "bytes": 1768,
+      "sha256": "38fcb68885e9c98342ab4b119310edec7b27e5e4176ebf906732cac644211e74"
+    },
+    "frost-cde-drainage/water-short/own-30/original/result_output.bin": {
+      "bytes": 3695,
+      "sha256": "2fa9e30752b93efe81684599645b06d4f2648306c05833a430eea8a44c910abd"
+    },
+    "frost-cde-drainage/water-short/own-30/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-short/own-30/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-short/own-30/original/swap.log": {
+      "bytes": 853,
+      "sha256": "2a20dce114d14536dd0a0b2fbe8ee4d69ffc265670ace980bca9b21a6fc08f47"
+    },
+    "frost-cde-drainage/water-short/own-30/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "05c0154e1e75cdac3eaac8da28fa9d5630446a6b645b51b872e0f9bcf5923598"
+    },
+    "frost-cde-drainage/water-short/own-30/original/swap.swp": {
+      "bytes": 35967,
+      "sha256": "d83181381554e001858d72dceafa780f00c588e1532dc372d974f5e08e3ea436"
+    },
+    "frost-cde-drainage/water-short/own-30/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-short/own-30/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-short/own-30-origin/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "8412e509313c79ba409dc08bcf321d9a8baba0c90af4ea3c2b53887a5c0ea7aa"
+    },
+    "frost-cde-drainage/water-short/own-30-origin/result.end": {
+      "bytes": 1768,
+      "sha256": "c0ffc98055eac5c379ba43db7d6d51180d0288e701028308d68d7f4784fc6754"
+    },
+    "frost-cde-drainage/water-short/trajectory/BUILD.json": {
+      "bytes": 43310,
+      "sha256": "3bebe3dd643aa16bc090a8de22e1eba504836ee93cfc2908fd91d7b917720f8b"
+    },
+    "frost-cde-drainage/water-short/trajectory/accepted-column-1-day-19.zip": {
+      "bytes": 1493305,
+      "sha256": "0fb197a286b89bb7aef04af50b9354b3aad40b1bfb133f993cb50eca569863af"
+    },
+    "frost-cde-drainage/water-short/trajectory/accepted-column-1-day-23.zip": {
+      "bytes": 1493003,
+      "sha256": "78bbb5989d9b7b5ce63ac27f97ea7e134563dedabea14782ca169076fb405b63"
+    },
+    "frost-cde-drainage/water-short/trajectory/accepted-column-1-day-2.zip": {
+      "bytes": 1493426,
+      "sha256": "5e294fc1b4f8c2f7b41c6a000de6ed6cccbe026c6dd0f56e8a1597da0b3d401b"
+    },
+    "frost-cde-drainage/water-short/trajectory/accepted-column-1-day-30.zip": {
+      "bytes": 1493409,
+      "sha256": "47102ffa0e1af8993bfe0aed5ce80eb2310f611956d69545fcb3def5d2550a99"
+    },
+    "frost-cde-drainage/water-short/trajectory/accepted-column-1-day-34.zip": {
+      "bytes": 1493427,
+      "sha256": "620e3ccb6c0cec0e7565b315285d606a579b3063050fb4106a05df33cfbe6c2b"
+    },
+    "frost-cde-drainage/water-short/trajectory/accepted-column-1-day-35.zip": {
+      "bytes": 1493425,
+      "sha256": "000c17aa7117c4ba06b0988be5005803795df60b486a7caaaf5ac39428fc6e55"
+    },
+    "frost-cde-drainage/water-short/trajectory/accepted-column-1-day-4.zip": {
+      "bytes": 1493436,
+      "sha256": "ac7eee6b42f86ad7336184b7559a3866adb448a73f2167a9d2be05899eb502dd"
+    },
+    "frost-cde-drainage/water-short/trajectory/daily.jsonl": {
+      "bytes": 43441,
+      "sha256": "92bd4a2f63de490a71134d5103a31340abbdec5b691ce9674b5c666107b56172"
+    },
+    "frost-cde-drainage/water-short/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "frost-cde-drainage/water-short/trajectory/kernel.stdout": {
+      "bytes": 4485,
+      "sha256": "1ffb342bd59d022269fceefbbdeea1190a79bd24ee9267345d532b9c01322f1e"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/donor.stdout": {
+      "bytes": 100495,
+      "sha256": "d7c1acc471dbe2066c796c36364e959ab9dd7c8e9cde7ac7ce997d62ba37066e"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/grass.crp": {
+      "bytes": 30646,
+      "sha256": "e33412758a206eda3889106133eb98d2341a5ebe41cf6d81781b17575e4eca47"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/macro.bin": {
+      "bytes": 1467348,
+      "sha256": "22a6f555a8738e1b5cf8953c235601962e5026dbe4b7b2e817fd1f4c8f98be70"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/maize.crp": {
+      "bytes": 24155,
+      "sha256": "d7a17b427bea2686b9b7ed58ccf06438cc442808cb7772e6652d45bc51cd9ee6"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/potato.crp": {
+      "bytes": 30688,
+      "sha256": "28ec78179367e4e2a1f7891f0476e8f8fd3dadef1dc7b12d0154b7f07c6afd22"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/result.bal": {
+      "bytes": 189,
+      "sha256": "6b2e707b9c0532dfca81c420eac0b6e45f7c44f100029734ee0170778053db98"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/result.blc": {
+      "bytes": 185,
+      "sha256": "c6ea4955da61fb71442ef3f9eddb08a1b6debd07a02e47466425a8844fe40285"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/result.end": {
+      "bytes": 1768,
+      "sha256": "b60b7dd3962b0c55ed3afbd3f1e4a439d58ce52a08d1dbf64eaee8ce29ea59dc"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/result_output.bin": {
+      "bytes": 12716,
+      "sha256": "08302778df972415ebeb53e3a0ecf23d12c3655a5b26bf9c0718c5e63d344812"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/swap.dra": {
+      "bytes": 11716,
+      "sha256": "88d051727c4f91898f450eb2abe68788d293bed76eb900705f789181f519caea"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/swap.log": {
+      "bytes": 1363,
+      "sha256": "104bc5b1df4264333c0332f6d89b0056730b8769c74afde8ad3ee64019c407c9"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/swap.ok": {
+      "bytes": 165,
+      "sha256": "1729d92303606227959fcb0f8fcd549dd6c0f1c737c2ae383ccb34e0296ce958"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/swap.swp": {
+      "bytes": 36024,
+      "sha256": "2185ac3a9ba6b662d480f7421a912adb3d6615bba077deaae63b52d42d1d61e2"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/swap.tss": {
+      "bytes": 461,
+      "sha256": "55b7de85d4198ff33086dd5187d48e36fcc2059e7f9d2515899b7a3e96e6d521"
+    },
+    "frost-cde-drainage/water-short/trajectory/original/swap.wrn": {
+      "bytes": 71,
+      "sha256": "e0f3f573caf4cdd7d43bc171d7096019c82394fa2cc397c0c0ecdb8517f04481"
+    },
+    "frost-cde-drainage/water-short-INDEPENDENT_V1.json": {
+      "bytes": 588,
+      "sha256": "2e1f03fd07c9ca71b6eceb09608ffa0436366318aac70a1901ca48324619e462"
+    },
+    "provider-MOD_meteo.f90": {
+      "bytes": 85550,
+      "sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822"
+    },
+    "provider-PREPARED.json": {
+      "bytes": 40569,
+      "sha256": "bdf1fae999c2b469904319680b2ea99b4d690ec1b9a4e5cef0a471abffa1020b"
+    },
+    "source/RESULT.json": {
+      "bytes": 526479,
+      "sha256": "a35e7b07cb0630600b8bbbc0d56cf443caa53825f9ea9325105db36a862b4b81"
+    },
+    "source/actual-producer-source.zip": {
+      "bytes": 4199074,
+      "sha256": "ee44f429489a3907e68e5b83221606e876988cab15a6a908ceecbecf89d9046d"
+    }
+  },
+  "canonical_admission": false,
+  "sealer_source": "db9d3e83d52cd482b75182ff6f4aeb2949bbfff6"
+}
