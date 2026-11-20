@@ -213,6 +213,10 @@ def validate_bundle(bundle, reference, project):
     if identity.get('ordinary_implicit_pond_switch'):
         from ordinary_pond_source_guard import validate as validate_ordinary_pond_source
         validate_ordinary_pond_source(bundle,project,identity)
+    if ((identity.get('original_output') or {}).get('groundwater_cde_clock') and
+            not identity.get('ordinary_implicit_pond_switch')):
+        from groundwater_cde_clock_source_guard import validate as validate_groundwater_clock_source
+        validate_groundwater_clock_source(bundle,identity)
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
     from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
     from time_event_closure import POLICY as EVENT_POLICY, metadata as event_metadata, source as event_source

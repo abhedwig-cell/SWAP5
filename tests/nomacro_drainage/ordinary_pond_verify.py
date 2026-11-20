@@ -34,6 +34,8 @@ def sha(raw):return hashlib.sha256(raw).hexdigest()
 
 
 def strip_current_evidence(text):
+    import groundwater_clock_verify as groundwater_clock
+    text=groundwater_clock.strip_current_evidence(text)
     addition='            /integration/f-ci/nomacro-complete01/ORDINARY_*\n'
     if addition in text:
         require(text.count(addition)==1,'Ambiguous ordinary scientific checkout')
@@ -43,6 +45,8 @@ def strip_current_evidence(text):
 
 @lru_cache(maxsize=1)
 def guard_previous_source():
+    import groundwater_clock_verify as groundwater_clock
+    return groundwater_clock.guard_previous_source()
     require(not git('diff',RUNTIME,'--',*SURFACES),'Actual ordinary implicit compiler source differs from qualified runtime')
     expected=['app/hybrid_water/'+n for n in ('daily_coupling.py','daily_host.py','ordinary_implicit_pond_switch.py','ordinary_implicit_pond_tangent.py','ordinary_pond_source_guard.py')]
     require(git('diff','--name-only',PARENT,RUNTIME,'--',*SURFACES).decode().splitlines()==expected,'Unexpected ordinary process/state dependency changed')
@@ -141,6 +145,8 @@ def inherited():
 
 
 def verify():
+    import groundwater_clock_verify as groundwater_clock
+    return groundwater_clock.verify()
     source();old=inherited();win=science.windows(PROOF)
     portable={opt+('-initial' if initial else '-followup'):science.ubuntu(PROOF,opt,initial)
               for opt in ('O0','O2') for initial in (True,False)}

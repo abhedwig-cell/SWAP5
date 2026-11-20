@@ -22,6 +22,9 @@ def validate(bundle, project, identity):
     from experimental_project import inspect
     report = inspect(project.input_directory)
     if report['boundary']['SWBOTB'] == 1:
+        if identity['original_output'].get('groundwater_cde_clock'):
+            from groundwater_cde_clock_source_guard import validate as validate_groundwater_clock
+            return validate_groundwater_clock(bundle,identity)
         form = 'groundwater'
     else:
         step = identity['original_output'].get('flprintdt')

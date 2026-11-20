@@ -56,6 +56,7 @@ jobs:
             /integration/nomacro-coverage01/BLOCK_H_LAST_TEMPORAL_RAW.tar.xz
             /integration/f-ci/nomacro-complete01/EXTENDED_DRAINAGE_*
             /integration/f-ci/nomacro-complete01/ORDINARY_*
+            /integration/f-ci/nomacro-complete01/GROUNDWATER_CDE_CLOCK_*
       - name: Original native input and real application
         run: |
           set -euo pipefail

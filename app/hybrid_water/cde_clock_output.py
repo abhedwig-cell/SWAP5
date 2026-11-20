@@ -42,7 +42,8 @@ def active_selection(project):
     for key,value in dict(SWMACRO=0,SWSOLU=1,SWHEA=1,SWCALT=2,SWFROST=0,SWBR=0,SWDRA=1,SWMETDETAIL=0,SWSOPHY=0).items():
         if one(key)!=value:return None
     from experimental_project import inspect
-    if inspect(project.input_directory,original_output=True)['boundary']['SWBOTB'] not in (5,8):return None
+    bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
+    if bottom not in (1,5,8) or bottom==1 and swsnow:return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
     if hys not in (0,1,2):return None
     if monthly not in (0,1) or dates not in (0,1) or reset not in (0,1) or fmt not in (0,1,2,3) or not 0<=requested<=366:raise ValueError('Invalid original CDE interval selectors')
@@ -50,7 +51,8 @@ def active_selection(project):
     if precision is not None and not 5<=precision<=12:raise ValueError('Invalid original CDE interval precision')
     return dict(cde_clock_output=True,cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),thermal_clock=bool(swsnow),thermal_step=bool(swsnow and perstep),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=1,
         swhyst=hys,swcsv=fmt,nprintday=nprint,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=1,flprintdt=perstep,
-        groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision)
+        groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
+        **({'groundwater_cde_clock':True} if bottom==1 else {}))
 
 
 def selection(project):
@@ -60,6 +62,9 @@ def selection(project):
 
 def magic(project):
     selected=active_selection(project)
+    if selected is not None and selected.get('groundwater_cde_clock'):
+        from groundwater_cde_clock import magic as groundwater_magic
+        return groundwater_magic(project)
     return prior.magic(project) if selected is None else MAGICS['snow' if selected['swsnow'] else 'history' if selected['swhyst'] else 'ordinary']
 
 
@@ -89,6 +94,11 @@ def metadata(project):
         preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False,physical_equations_changed=False)
     if is_snow:result.update(snow_output_source_sha256=sha(folder/'cde_interval_snow_state.f90'),snow_output_fields=list(SNOW_FIELDS),snow_output_domain_bytes=32,snow_output_value_bytes=56,
         snow_stock='actual MOD_snow ssnow',snow_increment_slots=[2,3,13])
+    if selected.get('groundwater_cde_clock'):
+        result.update(groundwater_clock_composition_sha256=sha(folder/'groundwater_cde_clock.py'),
+                      groundwater_trial_provider_sha256=sha(folder/'age_groundwater_output.py'),
+                      groundwater_clock_policy='existing-cde-clock-complete-groundwater-native-v1',
+                      groundwater_new_physical_state=False)
     return result
 
 
@@ -121,7 +131,11 @@ if(outdatint(1)>0d0.and.outdatint(1)<original_output_start_clock-1d-8)then
  if(ioutdatint/=1)error stop 'Inconsistent original pending initial interval date pointer'
 else
  """+anchor+"\nend if"
-    return source.replace(anchor,guard,1)
+    source=source.replace(anchor,guard,1)
+    if selected.get('groundwater_cde_clock'):
+        from groundwater_cde_clock import integral as groundwater_integral
+        source=groundwater_integral(source,original,watstor)
+    return source
 
 
 def render_macro(original,project,selected):
@@ -221,7 +235,8 @@ def apply_build(output,donor_build,project,patched):
     time_source=time_source.replace(anchor,closure+anchor,1)
     (output/'timecontrol.f90').write_text(time_source,encoding='cp1252')
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual';assert text.count(anchor)==1
-    function='hybrid_snow_soil_trial_residual' if is_snow else 'hybrid_ordinary_trial_residual'
+    groundwater=selected.get('groundwater_cde_clock',False)
+    function='hybrid_groundwater_cde_clock_trial' if groundwater else 'hybrid_snow_soil_trial_residual' if is_snow else 'hybrid_ordinary_trial_residual'
     text=text.replace(anchor,'   use MOD_integral,only:'+function+'\n'+anchor,1)
     anchor='\n   implicit none\n';assert text.count(anchor)==1
     text=text.replace(anchor,anchor+'   real(8)::hybrid_cde_clock_trial_guard,hybrid_cde_clock_candidate_bottom\n',1)
@@ -234,6 +249,8 @@ def apply_build(output,donor_build,project,patched):
          end if
          hybrid_cde_clock_trial_guard="""+function+"""(hybrid_cde_clock_candidate_bottom)
          if(abs(hybrid_cde_clock_trial_guard)>1d-10)flnonconv=.true."""
+    if groundwater:
+        guard="\n         if(abs(hybrid_groundwater_cde_clock_trial(groundwater_bottom,groundwater_delta))>1d-10)flnonconv=.true."
     path.write_text(text.replace(anchor,anchor+guard,1),encoding='cp1252')
     if selected['swcsv']:
         path=output/'swap_csv_output.f90';text=path.read_text(encoding='cp1252');original=(donor_build/'swap-selected/swap_csv_output.f90').read_bytes()

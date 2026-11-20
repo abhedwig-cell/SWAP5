@@ -25,6 +25,9 @@ def enabled(project):return selection(project) is not None or prior.enabled(proj
 def magic(project):
     s=selection(project)
     if s is None:return prior.magic(project)
+    from groundwater_cde_clock import magic as clock_magic
+    composed=clock_magic(project)
+    if composed is not None:return composed
     index=2*s['hysteresis']+(1 if project.original_output else 2) if s['snow'] else 2*(s['hysteresis']-1)+(1 if project.original_output else 2)
     return (('S5GTC' if s['snow'] else 'S5GHC')+f'{index:03d}').encode()
 

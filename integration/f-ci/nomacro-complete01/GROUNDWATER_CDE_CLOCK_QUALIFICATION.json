@@ -1,0 +1,1113 @@
+{
+  "status": "NEUTRAL_GROUNDWATER_CDE_CLOCK_RAW_SCIENCE_PASS_PENDING_ADMISSION",
+  "runtime": "63edf690ef7b48ffef420f9ac7bf1f098c007bef",
+  "numeric_runtime": "e80d8cf7aa6f815081ce852bb558165c1b7d301b",
+  "predecessor": "c22d6ec1c5ede56b93d7f38635e38e4c277b3f51",
+  "independent_readers": "cabf065abb073034e80841c40094939ae85c6938",
+  "sealer_source": "cabf065abb073034e80841c40094939ae85c6938",
+  "archives": {
+    "GROUNDWATER_CDE_CLOCK_CONTROLS_UBUNTU_O0_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_CDE_CLOCK_CONTROLS_UBUNTU_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "f0dfd96084ae5acfd11a6acbde7c3c82ff3b9ba44b04d67af9e33eef4c8f7657"
+    },
+    "GROUNDWATER_CDE_CLOCK_CONTROLS_UBUNTU_O2_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_CDE_CLOCK_CONTROLS_UBUNTU_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "b331e2c6dd3d8b1e3c515b1f7cbe3df2378e9ce5a2bce78d15236dc9f43709bc"
+    },
+    "GROUNDWATER_CDE_CLOCK_INITIAL_UBUNTU_O0_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_CDE_CLOCK_INITIAL_UBUNTU_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "cff22b7534da34ec72e2944e8d6bc48414b4d7f7cb725667e681bdca4869ff0c"
+    },
+    "GROUNDWATER_CDE_CLOCK_INITIAL_UBUNTU_O2_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_CDE_CLOCK_INITIAL_UBUNTU_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "aa306e704418bdc15fa96eca4a12ba6c74cd240eb028d9ddfb6c1e74680f2e5e"
+    },
+    "GROUNDWATER_CDE_CLOCK_WINDOWS_O0_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_CDE_CLOCK_WINDOWS_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "fc48c84cb75b4bedd8508791482ac70a148fe588de5b11b527fe0e92d4b59f0f"
+    },
+    "GROUNDWATER_CDE_CLOCK_WINDOWS_O2_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_CDE_CLOCK_WINDOWS_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "d2087e5929d985ec4091c70d44823622d9d9e2b17f47ad8beed88d25f09d8323"
+    },
+    "GROUNDWATER_CDE_CLOCK_WINDOWS_SUPPORT_RAW_ARCHIVE": {
+      "record": "GROUNDWATER_CDE_CLOCK_WINDOWS_SUPPORT_RAW_ARCHIVE.json",
+      "record_lf_sha256": "58a79892089cc88fe5813d4fa0b1a350dc8935d321226f9687bbb7352f860f69"
+    }
+  },
+  "baseline_lf_sha256": "e848f11dc8751e323b8c772832a73499d0401d3d38318d2ab9467882dc7f871a",
+  "Windows": {
+    "status": "INDEPENDENT_SEALED_WINDOWS_GROUNDWATER_CLOCK_PASS",
+    "metrics": {
+      "O0": {
+        "short": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH003",
+            "parameters": {
+              "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+              "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\groundwater-cde-clock-h2-periodic-O0-v1",
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "phase": "short",
+              "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\groundwater-cde-clock-O0-v1\\bundle",
+              "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O0-v1\\cde-groundwater-history\\input"
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-step-explicit": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH001",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 6,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCC001",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 3,
+              "perstep": true,
+              "mode": "periodic",
+              "format": 2,
+              "reset": 0,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-explicit-monthly": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH001",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 2,
+              "perstep": false,
+              "mode": "monthly",
+              "format": 2,
+              "reset": 1,
+              "nprintday": 2,
+              "implicit": 0,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-subdaily-terminal": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 5,
+              "perstep": false,
+              "mode": "terminal",
+              "format": 3,
+              "reset": 0,
+              "nprintday": 2,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-step-year": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 4,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": "2002-12-15"
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          }
+        },
+        "controls": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 85,
+            "compiled_refusals": 85,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h1-step-explicit": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 85,
+            "compiled_refusals": 85,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 75,
+            "compiled_refusals": 74,
+            "accepted_receipt_refusals": 1,
+            "actual_transactions": 1
+          }
+        },
+        "source_controls": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          },
+          "h1-explicit-monthly": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          }
+        },
+        "full": {
+          "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 1096,
+          "actual_cold_windows": 8,
+          "codec": "S5GCH003",
+          "parameters": {
+            "reference_work": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider",
+            "output": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\groundwater-cde-clock-h2-periodic-O0-v1",
+            "optimization": "O0",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "phase": "full",
+            "reuse_build": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\groundwater-cde-clock-O0-v1\\bundle",
+            "existing_input": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\ordinary-pond-matrix-O0-v1\\cde-groundwater-history\\input"
+          },
+          "new_physical_state": false,
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "current_postimages": {
+          "status": "INDEPENDENT_CURRENT_COMPOSED_POSTIMAGES_PASS",
+          "actual_cold_windows": 6
+        },
+        "unselected": {
+          "CDE_contexts": 3,
+          "water_cached_native_contexts": 1
+        }
+      },
+      "O2": {
+        "short": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-step-explicit": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH001",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 6,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCC001",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 3,
+              "perstep": true,
+              "mode": "periodic",
+              "format": 2,
+              "reset": 0,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-explicit-monthly": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH001",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 2,
+              "perstep": false,
+              "mode": "monthly",
+              "format": 2,
+              "reset": 1,
+              "nprintday": 2,
+              "implicit": 0,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-subdaily-terminal": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 5,
+              "perstep": false,
+              "mode": "terminal",
+              "format": 3,
+              "reset": 0,
+              "nprintday": 2,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-step-year": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 4,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": "2002-12-15"
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          }
+        },
+        "controls": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 85,
+            "compiled_refusals": 85,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h1-step-explicit": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 85,
+            "compiled_refusals": 85,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 75,
+            "compiled_refusals": 74,
+            "accepted_receipt_refusals": 1,
+            "actual_transactions": 1
+          }
+        },
+        "source_controls": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          },
+          "h1-explicit-monthly": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          }
+        },
+        "full": {
+          "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+          "actual_days": 1096,
+          "actual_cold_windows": 8,
+          "codec": "S5GCH003",
+          "parameters": {
+            "optimization": "O2",
+            "solute": 1,
+            "hysteresis": 2,
+            "bottom": 1,
+            "kmean": 4,
+            "perstep": false,
+            "mode": "periodic",
+            "format": 3,
+            "reset": 1,
+            "nprintday": 3,
+            "implicit": 1,
+            "epoch": null,
+            "phase": "full"
+          },
+          "new_physical_state": false,
+          "whole_scientific_equivalence": "NOT_QUALIFIED",
+          "functional_completion": "PARTIAL"
+        },
+        "current_postimages": {
+          "status": "INDEPENDENT_CURRENT_COMPOSED_POSTIMAGES_PASS",
+          "actual_cold_windows": 6
+        },
+        "unselected": {
+          "CDE_contexts": 3,
+          "water_cached_native_contexts": 1
+        }
+      }
+    },
+    "source_custody": {
+      "status": "ACTUAL_GROUNDWATER_CLOCK_GIT_SOURCE_PROVIDER_COMPILED_CUSTODY_PASS",
+      "producer_source": "8d02ea21797f4f2312127def7c4b0d738e68b3f5",
+      "source_members": 1477,
+      "actual_builds": [
+        "compiled/0/BUILD.json",
+        "compiled/1/BUILD.json",
+        "compiled/10/BUILD.json",
+        "compiled/11/BUILD.json",
+        "compiled/2/BUILD.json",
+        "compiled/3/BUILD.json",
+        "compiled/4/BUILD.json",
+        "compiled/5/BUILD.json",
+        "compiled/6/BUILD.json",
+        "compiled/7/BUILD.json",
+        "compiled/8/BUILD.json",
+        "compiled/9/BUILD.json"
+      ],
+      "source_archive_sha256": "e386833cee19c95a266ac4f6e086589fca31c5d2e780eed201ee4b21a0f1e45e"
+    },
+    "actual_full_periods": 2,
+    "actual_full_cold_windows": 16,
+    "actual_short_contexts": 12,
+    "actual_short_cold_windows": 38,
+    "actual_native_refusals": 490,
+    "actual_transactions": 6,
+    "actual_source_policy_refusals": 54,
+    "actual_current_native_postimages": 12,
+    "actual_unselected_CDE_contexts": 6,
+    "actual_water_cached_cold_contexts": 2
+  },
+  "Ubuntu": {
+    "O0": {
+      "status": "INDEPENDENT_SEALED_PORTABLE_GROUNDWATER_CLOCK_PASS",
+      "initial_science": {
+        "science": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-step-explicit": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH001",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 6,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCC001",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 3,
+              "perstep": true,
+              "mode": "periodic",
+              "format": 2,
+              "reset": 0,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-explicit-monthly": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH001",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 2,
+              "perstep": false,
+              "mode": "monthly",
+              "format": 2,
+              "reset": 1,
+              "nprintday": 2,
+              "implicit": 0,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-subdaily-terminal": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 5,
+              "perstep": false,
+              "mode": "terminal",
+              "format": 3,
+              "reset": 0,
+              "nprintday": 2,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-step-year": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 4,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": "2002-12-15"
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "full": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 1096,
+            "actual_cold_windows": 8,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O0",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "implicit": 1,
+              "epoch": null,
+              "phase": "full"
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          }
+        },
+        "source_custody": {
+          "status": "ACTUAL_GROUNDWATER_CLOCK_GIT_SOURCE_PROVIDER_COMPILED_CUSTODY_PASS",
+          "producer_source": "5c0e2b34358940e02ae6f486f04e0f262df1c040",
+          "source_members": 1417,
+          "actual_builds": [
+            "compiled/groundwater-clock/h0-step-periodic/bundle/BUILD.json",
+            "compiled/groundwater-clock/h1-explicit-monthly/bundle/BUILD.json",
+            "compiled/groundwater-clock/h1-step-explicit/bundle/BUILD.json",
+            "compiled/groundwater-clock/h2-periodic/bundle/BUILD.json",
+            "compiled/groundwater-clock/h2-step-year/bundle/BUILD.json",
+            "compiled/groundwater-clock/h2-subdaily-terminal/bundle/BUILD.json"
+          ],
+          "source_archive_sha256": "83827cf6ec1e1a7e3a8193aced2abb3b298476fe16d05aaa52dc46b8ab28c954"
+        }
+      },
+      "controls_only_recovery": {
+        "controls": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 85,
+            "compiled_refusals": 85,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h1-step-explicit": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 85,
+            "compiled_refusals": 85,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 75,
+            "compiled_refusals": 74,
+            "accepted_receipt_refusals": 1,
+            "actual_transactions": 1
+          },
+          "source-h2-periodic": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          },
+          "source-h0-step-periodic": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          },
+          "source-h1-explicit-monthly": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          }
+        },
+        "postimages": {
+          "status": "INDEPENDENT_CURRENT_COMPOSED_POSTIMAGES_PASS",
+          "actual_cold_windows": 4
+        },
+        "source_custody": {
+          "status": "ACTUAL_GROUNDWATER_CLOCK_GIT_SOURCE_PROVIDER_COMPILED_CUSTODY_PASS",
+          "producer_source": "f964e80a1db329c0d3440e894fe2810c4208064b",
+          "source_members": 1417,
+          "actual_builds": [
+            "compiled/groundwater-clock/h0-step-periodic/bundle/BUILD.json",
+            "compiled/groundwater-clock/h1-explicit-monthly/bundle/BUILD.json",
+            "compiled/groundwater-clock/h1-step-explicit/bundle/BUILD.json",
+            "compiled/groundwater-clock/h2-periodic/bundle/BUILD.json"
+          ],
+          "source_archive_sha256": "d1934a4827488f67566ec7fcbea6adae7405b4b747e2b285fe3d9ae93c52cd52"
+        },
+        "original_dependency": {
+          "status": "ACTUAL_ORIGINAL_CLOCK_CONTROL_DEPENDENCIES_RESTORED",
+          "original_run": 44682712004,
+          "original_source": "5c0e2b34358940e02ae6f486f04e0f262df1c040",
+          "restored": {
+            "h2-periodic": {
+              "actual_BUILD_sha256": "f2bd9a4a9ee5319b7e7c8667ba11984a793b8cbfeb19e123bd7dedcec32ea672",
+              "actual_profile_receipt_sha256": "d40b10022d2b5f7657e192d1cd2e6cf438f49f94e95c77bedf8e44c7a22db8ca",
+              "origin_compiled_prefix": "compiled/groundwater-clock/h2-periodic/bundle"
+            },
+            "h1-step-explicit": {
+              "actual_BUILD_sha256": "f8e01cd8d6a6dab31c802206b1708fb2db440b9e669c9bce02b805b76fd75d1d",
+              "actual_profile_receipt_sha256": "8b0e00b7e1c634110993fecf8c4523d5ba87b138760f4e20bf182accc67e8fe9",
+              "origin_compiled_prefix": "compiled/groundwater-clock/h1-step-explicit/bundle"
+            },
+            "h0-step-periodic": {
+              "actual_BUILD_sha256": "42f7d35d3b34736a97baf27a705701dde9db2133e47ed901c0f5df766e3310e3",
+              "actual_profile_receipt_sha256": "55f86840d7e3b0dd23313cf2aa953fd41e00a5132af062280cc859a20ea32706",
+              "origin_compiled_prefix": "compiled/groundwater-clock/h0-step-periodic/bundle"
+            },
+            "h1-explicit-monthly": {
+              "actual_BUILD_sha256": "63c5c326764fadec3477f55c29454b934d1feb0ab7ed753efecebe18766336fc",
+              "actual_profile_receipt_sha256": "4930276aa4acd975d3fb4ee0053a596aa7feca82a39ef4ebbfe1729d3913dd3b",
+              "origin_compiled_prefix": "compiled/groundwater-clock/h1-explicit-monthly/bundle"
+            }
+          },
+          "restored_paths": [
+            "/home/runner/work/_temp/proof/groundwater-clock/h2-periodic",
+            "/home/runner/work/_temp/builds/groundwater-clock/h2-periodic/bundle",
+            "/home/runner/work/_temp/proof/groundwater-clock/h1-step-explicit",
+            "/home/runner/work/_temp/builds/groundwater-clock/h1-step-explicit/bundle",
+            "/home/runner/work/_temp/proof/groundwater-clock/h0-step-periodic",
+            "/home/runner/work/_temp/builds/groundwater-clock/h0-step-periodic/bundle",
+            "/home/runner/work/_temp/proof/groundwater-clock/h1-explicit-monthly",
+            "/home/runner/work/_temp/builds/groundwater-clock/h1-explicit-monthly/bundle"
+          ],
+          "numerical_model_sources_unchanged": true,
+          "exact_readonly_source_guard_bridge": [
+            "app/hybrid_water/daily_coupling.py",
+            "app/hybrid_water/groundwater_cde_clock_source_guard.py"
+          ],
+          "original_receipts_rebound": false,
+          "fresh_model_periods": 0
+        }
+      },
+      "initial_whole_job_conclusion": "FAILURE",
+      "controls_only_whole_job_conclusion": "SUCCESS",
+      "actual_full_periods": 1,
+      "actual_full_cold_windows": 8,
+      "actual_short_contexts": 6,
+      "actual_short_cold_windows": 19,
+      "actual_native_refusals": 245,
+      "actual_transactions": 3,
+      "actual_source_policy_refusals": 27,
+      "actual_current_native_postimages": 4,
+      "fresh_model_executions": 0
+    },
+    "O2": {
+      "status": "INDEPENDENT_SEALED_PORTABLE_GROUNDWATER_CLOCK_PASS",
+      "initial_science": {
+        "science": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-step-explicit": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH001",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 6,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCC001",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 0,
+              "bottom": 1,
+              "kmean": 3,
+              "perstep": true,
+              "mode": "periodic",
+              "format": 2,
+              "reset": 0,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h1-explicit-monthly": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH001",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 1,
+              "bottom": 1,
+              "kmean": 2,
+              "perstep": false,
+              "mode": "monthly",
+              "format": 2,
+              "reset": 1,
+              "nprintday": 2,
+              "implicit": 0,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-subdaily-terminal": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 3,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 5,
+              "perstep": false,
+              "mode": "terminal",
+              "format": 3,
+              "reset": 0,
+              "nprintday": 2,
+              "implicit": 1,
+              "epoch": null
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "h2-step-year": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 35,
+            "actual_cold_windows": 4,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": true,
+              "mode": "explicit",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 1,
+              "implicit": 1,
+              "epoch": "2002-12-15"
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          },
+          "full": {
+            "status": "INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS",
+            "actual_days": 1096,
+            "actual_cold_windows": 8,
+            "codec": "S5GCH003",
+            "parameters": {
+              "optimization": "O2",
+              "solute": 1,
+              "hysteresis": 2,
+              "bottom": 1,
+              "kmean": 4,
+              "perstep": false,
+              "mode": "periodic",
+              "format": 3,
+              "reset": 1,
+              "nprintday": 3,
+              "implicit": 1,
+              "epoch": null,
+              "phase": "full"
+            },
+            "new_physical_state": false,
+            "whole_scientific_equivalence": "NOT_QUALIFIED",
+            "functional_completion": "PARTIAL"
+          }
+        },
+        "source_custody": {
+          "status": "ACTUAL_GROUNDWATER_CLOCK_GIT_SOURCE_PROVIDER_COMPILED_CUSTODY_PASS",
+          "producer_source": "5c0e2b34358940e02ae6f486f04e0f262df1c040",
+          "source_members": 1417,
+          "actual_builds": [
+            "compiled/groundwater-clock/h0-step-periodic/bundle/BUILD.json",
+            "compiled/groundwater-clock/h1-explicit-monthly/bundle/BUILD.json",
+            "compiled/groundwater-clock/h1-step-explicit/bundle/BUILD.json",
+            "compiled/groundwater-clock/h2-periodic/bundle/BUILD.json",
+            "compiled/groundwater-clock/h2-step-year/bundle/BUILD.json",
+            "compiled/groundwater-clock/h2-subdaily-terminal/bundle/BUILD.json"
+          ],
+          "source_archive_sha256": "f5dd0adc1c7190c07654a7126b9d7ee252b1af4f7fe95891d66ec94b3af76777"
+        }
+      },
+      "controls_only_recovery": {
+        "controls": {
+          "h2-periodic": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 85,
+            "compiled_refusals": 85,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h1-step-explicit": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 85,
+            "compiled_refusals": 85,
+            "accepted_receipt_refusals": 0,
+            "actual_transactions": 1
+          },
+          "h0-step-periodic": {
+            "status": "INDEPENDENT_ACTUAL_CLOCK_GROUNDWATER_NATIVE_TRANSACTION_PASS",
+            "actual_refusals": 75,
+            "compiled_refusals": 74,
+            "accepted_receipt_refusals": 1,
+            "actual_transactions": 1
+          },
+          "source-h2-periodic": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          },
+          "source-h0-step-periodic": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          },
+          "source-h1-explicit-monthly": {
+            "status": "INDEPENDENT_NINE_ACTUAL_COMPOSED_SOURCE_REFUSALS_PASS",
+            "actual_refusals": 9
+          }
+        },
+        "postimages": {
+          "status": "INDEPENDENT_CURRENT_COMPOSED_POSTIMAGES_PASS",
+          "actual_cold_windows": 4
+        },
+        "source_custody": {
+          "status": "ACTUAL_GROUNDWATER_CLOCK_GIT_SOURCE_PROVIDER_COMPILED_CUSTODY_PASS",
+          "producer_source": "f964e80a1db329c0d3440e894fe2810c4208064b",
+          "source_members": 1417,
+          "actual_builds": [
+            "compiled/groundwater-clock/h0-step-periodic/bundle/BUILD.json",
+            "compiled/groundwater-clock/h1-explicit-monthly/bundle/BUILD.json",
+            "compiled/groundwater-clock/h1-step-explicit/bundle/BUILD.json",
+            "compiled/groundwater-clock/h2-periodic/bundle/BUILD.json"
+          ],
+          "source_archive_sha256": "d1934a4827488f67566ec7fcbea6adae7405b4b747e2b285fe3d9ae93c52cd52"
+        },
+        "original_dependency": {
+          "status": "ACTUAL_ORIGINAL_CLOCK_CONTROL_DEPENDENCIES_RESTORED",
+          "original_run": 44682712004,
+          "original_source": "5c0e2b34358940e02ae6f486f04e0f262df1c040",
+          "restored": {
+            "h2-periodic": {
+              "actual_BUILD_sha256": "a8c42648e4fecaadabad99e567b190a847cf0fcbd450cae25d01350639aa90f0",
+              "actual_profile_receipt_sha256": "0db7cd97ef45b3e44a0a2d8a4f583cc23f802f3564d37f257dfe39ae57788120",
+              "origin_compiled_prefix": "compiled/groundwater-clock/h2-periodic/bundle"
+            },
+            "h1-step-explicit": {
+              "actual_BUILD_sha256": "1bd455dd4e19e079e7e29e3a20bf88518b0e4c09b2612b99fdf7f97a142889c2",
+              "actual_profile_receipt_sha256": "f1821c9e960f0a00913bfe475837ff9dbcb3a8557b0a043c7e3f9f8d1697461d",
+              "origin_compiled_prefix": "compiled/groundwater-clock/h1-step-explicit/bundle"
+            },
+            "h0-step-periodic": {
+              "actual_BUILD_sha256": "e7e668618a48e9b27ebb12f6b36ac884b6c80196692f786e6faa064b40c07b44",
+              "actual_profile_receipt_sha256": "27f71d841c59cd9a3105ceced2271c7ee8ca616a831f117b65fa1675702f6a50",
+              "origin_compiled_prefix": "compiled/groundwater-clock/h0-step-periodic/bundle"
+            },
+            "h1-explicit-monthly": {
+              "actual_BUILD_sha256": "a6d00ee951098e3d6d7d01f0dd06994e609de45062cce01d6abceb0d0a1fd3b5",
+              "actual_profile_receipt_sha256": "d1d979c495d4f3a1d08141da8944184a1277fc81aef2cb3fc6e0be4c2285d4df",
+              "origin_compiled_prefix": "compiled/groundwater-clock/h1-explicit-monthly/bundle"
+            }
+          },
+          "restored_paths": [
+            "/home/runner/work/_temp/proof/groundwater-clock/h2-periodic",
+            "/home/runner/work/_temp/builds/groundwater-clock/h2-periodic/bundle",
+            "/home/runner/work/_temp/proof/groundwater-clock/h1-step-explicit",
+            "/home/runner/work/_temp/builds/groundwater-clock/h1-step-explicit/bundle",
+            "/home/runner/work/_temp/proof/groundwater-clock/h0-step-periodic",
+            "/home/runner/work/_temp/builds/groundwater-clock/h0-step-periodic/bundle",
+            "/home/runner/work/_temp/proof/groundwater-clock/h1-explicit-monthly",
+            "/home/runner/work/_temp/builds/groundwater-clock/h1-explicit-monthly/bundle"
+          ],
+          "numerical_model_sources_unchanged": true,
+          "exact_readonly_source_guard_bridge": [
+            "app/hybrid_water/daily_coupling.py",
+            "app/hybrid_water/groundwater_cde_clock_source_guard.py"
+          ],
+          "original_receipts_rebound": false,
+          "fresh_model_periods": 0
+        }
+      },
+      "initial_whole_job_conclusion": "FAILURE",
+      "controls_only_whole_job_conclusion": "SUCCESS",
+      "actual_full_periods": 1,
+      "actual_full_cold_windows": 8,
+      "actual_short_contexts": 6,
+      "actual_short_cold_windows": 19,
+      "actual_native_refusals": 245,
+      "actual_transactions": 3,
+      "actual_source_policy_refusals": 27,
+      "actual_current_native_postimages": 4,
+      "fresh_model_executions": 0
+    }
+  },
+  "actual_full_periods": 4,
+  "actual_days_per_full_period": 1096,
+  "actual_full_cold_windows": 32,
+  "actual_short_contexts": 24,
+  "actual_short_cold_windows": 76,
+  "actual_native_refusals": 980,
+  "actual_compiled_refusals": 976,
+  "actual_accepted_receipt_refusals": 4,
+  "actual_transaction_contexts": 12,
+  "actual_source_policy_refusals": 108,
+  "actual_current_native_postimages": 20,
+  "actual_nonselected_CDE_contexts": 6,
+  "actual_nonselected_water_cached_cold": 2,
+  "daily_water_guard_cm": 1e-10,
+  "integrated_water_guard_cm": 1e-10,
+  "daily_CDE_guard_mg_cm2": 1e-10,
+  "integrated_CDE_guard_mg_cm2": 1e-10,
+  "full_model_cap_seconds": 180,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "AGE_admitted": false,
+  "groundwater_clock_admitted": false,
+  "classification": "B_EXISTING_PROCESS_STATE_CLOCK_COMPOSITION",
+  "new_physical_state": false,
+  "scope": "SWBOTB1 SWDRA1 SWSNOW0 CDE clock (per-step OR NPRINTDAY>1), SWHYST0/1/2, SWKIMPL0/1 within existing analytic defaults; NPRINTDAY1 non-daily interval remains open",
+  "inherited_ordinary_admission_sha256": "24adb3e521e822945e2910686ff43c953a9e6840cf16ae8a16c7399fa4a06db9"
+}

@@ -2,6 +2,14 @@ name: Original secondary implicit zero-pond qualification
 on:
   workflow_dispatch:
     inputs:
+      groundwater_controls_only:
+        description: Recover missing controls and current postimages from original unchanged portable run 44682712004
+        type: boolean
+        default: false
+      groundwater_clock:
+        description: Compose existing CDE output clocks with complete groundwater and history state
+        type: boolean
+        default: false
       ordinary_pond:
         description: Qualify corrected ordinary pond, weighted history and six representative compositions
         type: boolean
@@ -12,6 +20,7 @@ on:
         default: false
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: nomacro-secondary-pond-${{ github.ref }}
   cancel-in-progress: false
@@ -48,12 +57,14 @@ jobs:
         env:
           PYTHONPATH: app/hybrid_water
         run: |
-          mkdir -p "$RUNNER_TEMP/proof"
-          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"
-          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$RUNNER_TEMP/proof/controller-source.tar"
+          proof="$RUNNER_TEMP/proof"
+          if [[ '${{ inputs.groundwater_controls_only }}' == true ]]; then proof="$RUNNER_TEMP/proof-current"; fi
+          mkdir -p "$proof"
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Qualify secondary water and CDE with original failure-crossing native windows
-        if: ${{ !inputs.ordinary_pond }}
+        if: ${{ !inputs.ordinary_pond && !inputs.groundwater_clock }}
         run: |
           for label in water cde; do
             extra=(--switch-window); days=1096
@@ -76,7 +87,7 @@ jobs:
             done
           fi
       - name: Qualify ordinary pond with representative full and composition evidence
-        if: ${{ inputs.ordinary_pond }}
+        if: ${{ inputs.ordinary_pond && !inputs.groundwater_clock }}
         run: |
           if [[ '${{ inputs.postimage_only }}' == true ]]; then
             python3 -B tests/nomacro_scheduled_subsurface/ordinary_pond_cohort.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/ordinary-matrix" --output "$RUNNER_TEMP/proof/ordinary-matrix" --only-labels cde-groundwater-history water-plate cde-head-history1
@@ -104,16 +115,55 @@ jobs:
             if [[ "$name" == water-plate ]]; then other=cde-groundwater-history; else other=water-plate; fi
             python3 -B tests/nomacro_drainage/ordinary_pond_controls.py --profile "$RUNNER_TEMP/proof/ordinary-matrix/$name/short" --reference-work "$RUNNER_TEMP/provider" --other-head "$RUNNER_TEMP/builds/ordinary-matrix/$other/bundle/headcalc.f90" --output "$RUNNER_TEMP/proof/ordinary-matrix/$name/source-controls"
           done
+      - name: Qualify existing groundwater CDE clock composition
+        if: ${{ inputs.groundwater_clock && !inputs.groundwater_controls_only }}
+        run: |
+          python3 -B tests/nomacro_drainage/groundwater_clock_runtime.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/groundwater-clock" --output "$RUNNER_TEMP/proof/groundwater-clock"
+          PYTHONPATH=tests/nomacro_drainage python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          from groundwater_clock_forensics import audit
+          root=Path(os.environ['RUNNER_TEMP'])/'proof/groundwater-clock'
+          q=json.loads((root/'RESULT.json').read_text())
+          assert q['status']=='ACTUAL_GROUNDWATER_CDE_CLOCK_COMPOSITION_COHORT_PASS' and len(q['cases'])==6
+          result={name:audit(Path(case['actual_case_root'])) for name,case in q['cases'].items()}
+          (root/'FORENSICS_V1.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+          python3 -B tests/nomacro_drainage/groundwater_clock_full.py --reference-work "$RUNNER_TEMP/provider" --reuse-case "$RUNNER_TEMP/proof/groundwater-clock/h2-periodic" --output "$RUNNER_TEMP/proof/groundwater-clock-full"
+          python3 -B tests/nomacro_drainage/groundwater_clock_forensics.py "$RUNNER_TEMP/proof/groundwater-clock-full" --output "$RUNNER_TEMP/proof/groundwater-clock-full/FORENSICS_V1.json"
+          for name in h2-periodic h1-step-explicit h0-step-periodic; do
+            python3 -B tests/nomacro_drainage/groundwater_clock_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/groundwater-clock/$name" --output "$RUNNER_TEMP/proof/groundwater-clock-controls/$name"
+          done
+      - name: Download original unchanged groundwater clock dependency
+        if: ${{ inputs.groundwater_controls_only }}
+        uses: actions/download-artifact@v4
+        with:
+          name: groundwater-cde-clock-${{ matrix.optimization }}-5c0e2b34358940e02ae6f486f04e0f262df1c040
+          path: ${{ runner.temp }}/groundwater-origin
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 44682712004
+      - name: Recover missing actual groundwater controls and transactions
+        if: ${{ inputs.groundwater_controls_only }}
+        run: |
+          python3 -B tests/nomacro_drainage/groundwater_clock_origin.py --origin "$RUNNER_TEMP/groundwater-origin" --runner-root "$RUNNER_TEMP" --output "$RUNNER_TEMP/proof-current"
+          for name in h2-periodic h1-step-explicit h0-step-periodic; do
+            python3 -B tests/nomacro_drainage/groundwater_clock_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/groundwater-clock/$name" --output "$RUNNER_TEMP/proof-current/controls/$name"
+          done
+          python3 -B tests/nomacro_drainage/groundwater_clock_postimage.py --reference-work "$RUNNER_TEMP/provider" --cohort "$RUNNER_TEMP/groundwater-origin/groundwater-clock" --output "$RUNNER_TEMP/proof-current/postimages"
+          for name in h2-periodic h0-step-periodic h1-explicit-monthly; do
+            python3 -B tests/nomacro_drainage/groundwater_clock_source_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/groundwater-clock/$name" --output "$RUNNER_TEMP/proof-current/source-controls/$name"
+          done
       - name: Retain actual compiled bytes and provider identity
         if: always()
         shell: python
         run: |
           import os,shutil
           from pathlib import Path
-          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/('proof-current' if '${{ inputs.groundwater_controls_only }}' == 'true' else 'proof');proof.mkdir(exist_ok=True)
           provider=root/'provider/PREPARED.json'
           if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
-          if '${{ inputs.ordinary_pond }}' == 'true':
+          if '${{ inputs.ordinary_pond }}' == 'true' or '${{ inputs.groundwater_clock }}' == 'true':
               import json,hashlib
               projection={}
               for manifest in sorted((root/'builds').rglob('BUILD.json')):
@@ -134,6 +184,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ${{ inputs.ordinary_pond && 'ordinary-implicit-pond' || 'secondary-implicit-pond' }}-${{ matrix.optimization }}-${{ github.sha }}
-          path: ${{ runner.temp }}/proof
+          name: ${{ inputs.groundwater_controls_only && 'groundwater-cde-clock-controls' || inputs.groundwater_clock && 'groundwater-cde-clock' || inputs.ordinary_pond && 'ordinary-implicit-pond' || 'secondary-implicit-pond' }}-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ inputs.groundwater_controls_only && format('{0}/proof-current', runner.temp) || format('{0}/proof', runner.temp) }}
           retention-days: 30
