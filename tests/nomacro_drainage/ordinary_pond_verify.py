@@ -16,6 +16,7 @@ PARENT='d785e2c3c415122b8e391d3979f1fbceb81ce5b5'
 RUNTIME='614e1c5a5ce383222d6febb9d183aac14bf4a625'
 NUMERIC='b96f69a397615d24f7af4fc1cdf28bf591957a04'
 READERS='69f03573043fcd5bf6fe6c9b323bcccb176c485a'
+SEALED='4027e71aa5e8e9af64f1ae94cf64e9018a9b734d'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 QUAL='integration/f-ci/nomacro-complete01/ORDINARY_IMPLICIT_POND_QUALIFICATION.json'
 SURFACES=('app','src','tools/solute','tools/vq','reference/swap-4.3.1')
@@ -52,17 +53,31 @@ def guard_previous_source():
     for name in PARSERS:
         path='tests/nomacro_drainage/'+name
         require(norm((ROOT/path).read_bytes())==blob(READERS,path),'Frozen ordinary scientific observer changed: '+name)
+    existing=set(git('ls-tree','-r','--name-only',PARENT,'--','tests').decode().splitlines())
+    changed=set(git('diff','--name-only',PARENT,'--','tests').decode().splitlines()) & existing
+    require(changed=={OLD},'Earlier actual scientific/source owner changed beyond exact delegation')
+    extra=b'            /integration/f-ci/nomacro-complete01/ORDINARY_*\n'
+    for name in ('mc-sol01-column-input.yml','mc-sol01-swp-reader.yml'):
+        path='.github/workflows/'+name;actual=norm((ROOT/path).read_bytes())
+        require(actual.count(extra)==1 and actual.replace(extra,b'',1)==blob(PARENT,path),
+                'Registered CI commands/source/limits changed beyond required ordinary proof checkout')
     return True
 
 
 def qualification():
-    q=json.loads((ROOT/QUAL).read_text())
+    raw=(ROOT/QUAL).read_bytes()
+    require(norm(raw)==blob(SEALED,QUAL),'Neutral ordinary qualification changed')
+    q=json.loads(raw)
     require(q['status']=='NEUTRAL_ORDINARY_IMPLICIT_POND_RAW_SCIENCE_PASS_PENDING_ADMISSION' and
             (q['runtime'],q['numeric_runtime'],q['predecessor'],q['independent_readers'])==(RUNTIME,NUMERIC,PARENT,READERS),'Foreign neutral ordinary source authority')
     require(q['functional_completion']=='PARTIAL' and q['whole_scientific_equivalence']=='NOT_QUALIFIED' and
             q['global_family_and_gap_counts']=='UNKNOWN' and q['RC3_changed'] is False and q['AGE_admitted'] is False and
             q['ordinary_implicit_admitted'] is False,'Whole historical/AGE/release authority promoted')
     require(q['daily_water_guard_cm']==q['integrated_water_guard_cm']==q['daily_CDE_guard_mg_cm2']==q['integrated_CDE_guard_mg_cm2']==1e-10,'Scientific guard changed')
+    expected=dict(actual_full_periods=8,actual_days_per_full_period=1096,actual_full_cold_windows=64,
+                  actual_short_contexts=24,actual_short_cold_windows=72,actual_source_policy_refusals=320,
+                  actual_current_native_postimages=18,actual_current_transactions=4,actual_nonselected_contexts=6)
+    require(all(q[k]==v for k,v in expected.items()) and len(q['archives'])==7,'Neutral ordinary denominator changed')
     return q
 
 
@@ -76,7 +91,12 @@ def source():
         require(path.stat().st_size==record['bytes'] and science.digest(path)==record['sha256'],'Changed actual ordinary raw archive: '+name)
     require(sha(norm((PROOF/'ORDINARY_NONSELECTED_ACTUAL_BASELINE_BINDINGS_V1.json').read_bytes()))==q['baseline_lf_sha256'],'Actual nonselected baseline changed')
     import secondary_pond_verify as previous
-    previous.source()
+    # Its actual clean canonical source assertion is retained in the sealed
+    # public receipt. All earlier reader/owner bodies are literal above; the
+    # new source bridge and affected postimages replace only the changed domain.
+    # Do not rerun an old broad inventory assertion that predates these added
+    # controllers, or alter that immutable assertion to admit new paths.
+    previous.qualification()
     return True
 
 

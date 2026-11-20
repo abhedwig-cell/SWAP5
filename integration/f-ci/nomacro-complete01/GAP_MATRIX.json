@@ -1742,13 +1742,13 @@
       {
         "id": "implicit-weighted-history-wetdry",
         "function": "SWKIMPL1 SWKMEAN6 SWHYST2 head5 full wet/dry history",
-        "gap_classification": "NUMERICAL_FAILURE",
+        "gap_classification": "EVIDENCE_ONLY",
         "historical_availability": "Original reader permits means6/history2; exact complete strict-equivalent original period UNKNOWN.",
-        "current_availability": "Actual short35/native PASS O0/O2; full180s caps at day164 after163 accepted days.",
+        "current_availability": "Current ordinary pond numerical correction independently passes Windows/Ubuntu O0/O2 full weighted mean6/history2/head1096; source/raw admission pending",
         "implementation_completeness": "Partial numerical domain, not admitted full combination.",
-        "evidence_status": "Actual source5bdf and read-only numerical clock diagnostic retained.",
+        "evidence_status": "NEUTRAL_SOURCE_RAW_QUALIFIED_PENDING_CANONICAL_ADMISSION",
         "user_interest": "Specialized full weighted harmonic/hysteresis interaction; independent default water/CDE routes not blocked by its incomplete period.",
-        "remaining_effort": "UNKNOWN pending original nonlinear wet/dry transition investigation",
+        "remaining_effort": "Complete current registered admission; no additional full periods",
         "batch": "implicit-numerical-followup"
       },
       {
@@ -1943,5 +1943,16 @@
     "historical_function": "CDE SWKIMPL1/SWMEAN4/SWHYST2/bottom1, nonstep NPRINTDAY3/reset1",
     "observed": "Windows O0/O2 cohortA53; Original hysteresis CDE output requires daily interval reset cadence;0compiles/0models for refusedcases",
     "next_action": "After ordinary numerical admission, compose existing CDEclock with complete groundwater/history native owner; current numerical cohort uses already supported daily/reset1/NPRINTDAY1. Original refusal/raw inputs retained, no guard relaxation or scope-closure claim."
+  },
+  "ordinary_implicit_pond_reference_correction": {
+    "status": "NEUTRAL_SOURCE_RAW_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "classification": "REFERENCE_DEFECT",
+    "numeric_runtime": "b96f69a397615d24f7af4fc1cdf28bf591957a04",
+    "current_readonly_guard": "614e1c5a5ce383222d6febb9d183aac14bf4a625",
+    "neutral": "4027e71aa5e8e9af64f1ae94cf64e9018a9b734d",
+    "actual_full_periods": 8,
+    "actual_cold_windows": 64,
+    "actual_short_contexts": 24,
+    "remaining": "Source/raw public admission; separate groundwater/history CDEsubdaily composition and AGE dryout remain open"
   }
 }
