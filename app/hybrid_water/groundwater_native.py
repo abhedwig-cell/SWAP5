@@ -13,6 +13,9 @@ def enabled(project):return selected_boundary(project)==1
 
 def magic(project):
     if not enabled(project):raise ValueError('No prescribed groundwater CDE native domain')
+    from groundwater_cde_clock import magic as clock_magic
+    composed=clock_magic(project)
+    if composed is not None:return composed
     return b'S5GWC001' if project.original_output else b'S5GWC002'
 
 
