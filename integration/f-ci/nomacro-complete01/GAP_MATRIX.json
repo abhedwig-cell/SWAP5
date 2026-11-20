@@ -1897,7 +1897,7 @@
     "selected_full_periods": 8,
     "actual_completed_full_periods": 8,
     "actual_explicit_off_postimages": 8,
-    "remaining": "Secondary-only SWSRF2 implicit Newton day289 hard refused; AGE dry-domain, broader weather/other lower-boundary compositions remain separate; whole family closure UNKNOWN",
+    "remaining": "Secondary bounded implicit route now admitted throughPR1767/d785; AGE dry-domain, broader weather/root/other lower-boundary compositions remain separate; whole family closureUNKNOWN",
     "AGE_admitted": false,
     "examined_Ksat_admitted": false,
     "full_family_closed": "UNKNOWN",
@@ -1919,13 +1919,11 @@
   },
   "extended_drainage_implicit_secondary_only": {
     "classification": "REFERENCE_DEFECT",
-    "implementation": "SOURCE_RAW_SCIENCE_PASS_SOURCE_OWNER_AND_CANONICAL_ADMISSION_PENDING",
+    "implementation": "ADMITTED_BOUNDED",
     "actual_source": "5c78ec11c",
-    "actual_scope": "Original secondary-only water after continuous-Mualem correction, SWSRF2/SWSEC2, Windows/Ubuntu O0/O2",
-    "accepted_days_each": 288,
-    "failure": "Strict original Newton rollback reaches unchanged8ULP clock floor on day289; real nodal and pond/head flags retained. No accepted day289.",
-    "qualified": false,
-    "next_action": "Actualcommitted source andinheritedraw refusals oncomplete22fixture; cleanregisteredcandidatepublicowner; terminalPRchecks,exactcanonicalmergeandactualowner. No more model campaigns for metadata/codeowneronly changes.",
+    "actual_scope": "SWSRF2/SWSEC1,2,water/CDE,history0..2,bottom6; eight1096day Windows/Ubuntu O0/O2 periods and56cold windows; other excluded domains remain refused",
+    "qualified": true,
+    "next_action": "Continue ordinary weighted-history numerical qualification and broader weather/root/lower-boundary composition; whole family closureUNKNOWN",
     "original_failure": "Original1e-6cm positive-pond deadband; continuousMualem retained, allsoil saturated. Original completeMOD_top closedformflux jump1.6648327577e-4cm/day; onlyzero switch changes. Separate original HeadCalc backtracking probe alone still fails.",
     "candidate_numeric_source": "56b97768c87ef0b3fdcb5ee9650dded422451654",
     "candidate_Windows_full_periods": 4,
@@ -1933,6 +1931,10 @@
     "candidate_final_runtime": "aec7c3598e6407827869d3d94fa92a5f2b682512",
     "candidate_full_periods": 8,
     "candidate_Windows_short_contexts": 18,
-    "source_qualification": "EXTENDED_DRAINAGE_SECONDARY_POND_QUALIFICATION.json"
+    "source_qualification": "EXTENDED_DRAINAGE_SECONDARY_POND_QUALIFICATION.json",
+    "actual_canonical": "d785e2c3c415122b8e391d3979f1fbceb81ce5b5",
+    "receipt": "EXTENDED_DRAINAGE_SECONDARY_POND_MERGE_RECEIPT_V1.json",
+    "original_accepted_days_before_correction": 288,
+    "original_failure_before_correction": "Strict original Newton rollback reaches unchanged8ULP clock floor on day289; real nodal and pond/head flags retained. No accepted day289."
   }
 }

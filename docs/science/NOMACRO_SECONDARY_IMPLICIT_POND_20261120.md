@@ -1,5 +1,14 @@
 # Secondary implicit drainage: continuous pond boundary
 
+Canonical admission: PR #1767 merged as `d785e2c3c415122b8e391d3979f1fbceb81ce5b5`,
+with exact ordered parents and complete qualified tree. The actual clean
+22-pattern registered public entry passes in 485.364 seconds after merge.
+The final candidate passes in 477.461 seconds; committed source and inherited
+raw mutations refuse. All 45 CI checks are terminal: 28 success, 17 skipped.
+`EXTENDED_DRAINAGE_SECONDARY_POND_MERGE_RECEIPT_V1.json` and the separate immutable
+`EXTENDED_DRAINAGE_SECONDARY_POND_ADMISSION_RAW_V1.zip` retain actual observations.
+The nine neutral scientific archives and frozen readers remain unchanged.
+
 The original positive-head deadband in `Boundtop` makes the soil residual
 discontinuous. After the separately qualified continuous-Mualem correction,
 the retained secondary-only water calculation accepts 288 days and fails on
@@ -64,7 +73,9 @@ Reuse requires the exact source bridge, literal prior scientific owners and
 readers, unchanged evidence checksums and the current affected postimages.
 Only recovery STATUS/GAP metadata is excluded from the prior evidence
 inventory. Binary proofs retain exact bytes; declared text permits only LF
-normalization. New secondary evidence is always independently decoded.
+normalization. Exact-path Git attributes preserve the sealed CRLF bytes of
+other inherited text, including Base64 capsules, on both operating systems.
+The initial Ubuntu checksum failure remains preserved as failed evidence. New secondary evidence is always independently decoded.
 Committed changed-source and changed-inherited-proof controls, and the clean
 22-pattern registered public entry, are required before admission.
 
