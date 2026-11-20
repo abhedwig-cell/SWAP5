@@ -3,6 +3,7 @@ import hashlib
 from pathlib import Path
 
 PARENT_HEAD='a13d2e813001ff1d366cca902c8384a4347e00627a4996fb5ed5f7a612fde4f9'
+EXPLICIT_PARENT_HEAD='becdfa41163769b4009f5ad596e85af5c4235edf1adde7ba8385e6e09f2c4beb'
 ADDITIONS=(
     b'   use MOD_integral,only:hybrid_groundwater_cde_clock_trial\n',
     b'   real(8)::hybrid_cde_clock_trial_guard,hybrid_cde_clock_candidate_bottom\n',
@@ -19,5 +20,6 @@ def validate(bundle,identity):
         if source.count(addition)!=1:
             raise ValueError('Foreign actual groundwater CDE clock HeadCalc provider')
         source=source.replace(addition,b'',1)
-    if hashlib.sha256(source).hexdigest()!=PARENT_HEAD:
+    expected=PARENT_HEAD if identity.get('implicit_conductivity') else EXPLICIT_PARENT_HEAD
+    if hashlib.sha256(source).hexdigest()!=expected:
         raise ValueError('Foreign actual groundwater CDE clock parent HeadCalc provider')
