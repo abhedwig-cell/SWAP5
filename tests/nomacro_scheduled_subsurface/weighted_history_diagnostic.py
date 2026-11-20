@@ -19,6 +19,8 @@ def main():
     parser.add_argument('--phase', choices=('prefix', 'nodes'), required=True)
     parser.add_argument('--prefix', type=Path)
     parser.add_argument('--build-root', type=Path)
+    parser.add_argument('--variant', choices=('original', 'zero-pond'), default='original')
+    parser.add_argument('--end', type=int, default=164)
     args = parser.parse_args()
     sys.path[:0] = [str(args.source_root/'tests/nomacro_scheduled_subsurface'),
                    str(args.source_root/'tests/nomacro_mixtures')]
@@ -37,7 +39,7 @@ def main():
         start, end, cap, parent = 34, 160, 60, args.short_profile/'trajectory'
     else:
         assert args.prefix and args.build_root
-        start, end, cap, parent = 160, 164, 45, args.prefix/'trajectory'
+        start, end, cap, parent = 160, args.end, 45, args.prefix/'trajectory'
         args.build_root.mkdir()
         for path in build.iterdir():
             if path.suffix.lower() in ('.o', '.mod', '.smod', '.f90', '.dll', '.so'):
@@ -61,6 +63,13 @@ def main():
       end if
 '''
         path.write_text(source.replace(anchor, observation+anchor, 1), encoding='cp1252')
+        if args.variant == 'zero-pond':
+            top = args.build_root/'boundtop.f90'
+            body = top.read_text(encoding='cp1252')
+            old = '      if (h0 <= 1.0d-6) then'
+            assert body.count(old) == 1
+            top.write_text(body.replace(old, '      if (h0 <= 0.0d0) then', 1), encoding='cp1252')
+            shutil.copyfile(top, args.output/top.name)
         provider = args.reference_work/'build/swap-obj'
         ttutil = args.reference_work/'build/ttutil-obj'
         original_objects = sorted(provider.glob('*.o'))
@@ -68,7 +77,9 @@ def main():
         objects = [args.build_root/p.name if (args.build_root/p.name).exists() else p for p in original_objects]
         objects += [p for p in sorted(args.build_root.glob('*.o')) if p.name not in known]
         donor = args.build_root/'diagnostic_donor.exe'
-        commands = [
+        commands = ([['gfortran', *meta['identity']['donor_flags'], '-I', str(args.build_root),
+                     '-I', str(provider), '-I', str(ttutil), '-c', 'boundtop.f90']]
+                    if args.variant == 'zero-pond' else []) + [
             ['gfortran', *meta['identity']['donor_flags'], '-I', str(args.build_root),
              '-I', str(provider), '-I', str(ttutil), '-c', 'headcalc.f90'],
             ['gfortran', '-o', str(donor), *map(str, objects), str(ttutil/'libttutil.a')]]
@@ -84,7 +95,7 @@ def main():
     checkpoint_sha = m.sha(checkpoint)
     origin = args.output/'origin'
     receipt = m.h.verify_checkpoint(checkpoint, start, meta['binding'], origin)
-    status = dict(status='RUNNING', qualification=False, phase=args.phase,
+    status = dict(status='RUNNING', qualification=False, phase=args.phase, variant=args.variant,
                   original_BUILD_sha256=build_sha, actual_donor_sha256=m.sha(donor),
                   original_checkpoint_sha256=checkpoint_sha, start=start, end=end, wall_cap_seconds=cap,
                   historical_source_capsule=str(args.source_root), original_binding_unchanged=True)
@@ -106,9 +117,10 @@ def main():
         actual = m.rows(trajectory)
         prior = m.rows(args.failed_profile/'trajectory')
         m.check(actual)
-        assert m.physical(actual) == m.physical(prior[start:start+len(actual)])
+        overlap = min(len(actual), len(prior)-start)
+        assert m.physical(actual[:overlap]) == m.physical(prior[start:start+overlap])
         assert m.sha(build/'BUILD.json') == build_sha and m.sha(checkpoint) == checkpoint_sha
-        status.update(exact_previously_accepted_days=len(actual), seconds=time.monotonic()-clock)
+        status.update(actual_days=len(actual), exact_previously_accepted_days=overlap, seconds=time.monotonic()-clock)
         save()
     if args.phase == 'prefix':
         assert len(actual) == end-start and (trajectory/f'accepted-column-1-day-{end}.zip').is_file()
