@@ -58,6 +58,8 @@ def main():
                  probe_sha256=sha(Path(__file__).with_name('frost_implicit_boundary_probe.f90')),
                  actual_original_object_closure=[dict(name=p.name, sha256=sha(p)) for p in sorted(selected)], variants={})
         old = implicit_conductivity_jacobian.source(original)
+        start = original.index('subroutine vector_F('); end = original.index('end subroutine vector_F')
+        assert original[start:end] in old
         fixed = old.replace('k(1),ksatfit(1),dz(1)', 'k(1),ksatfit(1)*rfcp(1)+1d-10*(1d0-rfcp(1)),dz(1)')
         top = 'dFdhM(1)=dFdhM(1)-dkdh(1)*hgrad(1)*dkmean(swkmean,k(1),ksatfit(1)*rfcp(1)+1d-10*(1d0-rfcp(1)),dz(1),dz(1))'
         assert fixed.count(top) == 1
@@ -69,6 +71,7 @@ def main():
               dkdh(1)*hgrad(1)*dkmean(swkmean,k(1),ksatfit(1)*rfcp(1)+1d-10*(1d0-rfcp(1)),dz(1),dz(1)))/ &
               (1d0+dt*kmean(1)/disnod(1))''', 1)
         assert fixed != old
+        assert original[start:end] in fixed
         # Original hconode_vsmall is exactly 1d-10; this diagnostic changes no physical source.
         driver = a.build_root / 'driver.f90'
         driver.write_text('program actual_boundary\ncall headcalc\nend program\n', encoding='ascii')
@@ -98,9 +101,17 @@ def main():
             assert all(math.isfinite(v) for row in values for v in row)
             observation.update(cases=len(rows), failures=sum(row[-1] > 2e-6 for row in values),
                                max_relative_error=max(row[-1] for row in values))
+            matrix_rows = [line.split() for line in result.stdout.splitlines() if line.startswith('ACTUAL_FROST_MATRIX ')]
+            assert len(matrix_rows) == 972 and all(len(row) == 9 for row in matrix_rows)
+            matrix_values = [[float(v) for v in row[4:]] for row in matrix_rows]
+            assert all(math.isfinite(v) for row in matrix_values for v in row)
+            observation.update(matrix_entries=len(matrix_rows),
+                matrix_failures=sum(row[-1] > 2e-6 for row in matrix_values),
+                matrix_max_relative_error=max(row[-1] for row in matrix_values))
             for path in (source, exe): (a.output / path.name).write_bytes(path.read_bytes())
             save()
         assert q['variants']['diagnostic_frost_boundary']['failures'] == 0
+        assert q['variants']['diagnostic_frost_boundary']['matrix_failures'] == 0
         assert q['variants']['qualified_frost0_jacobian']['failures'] > 0
         q['status'] = 'ACTUAL_PONDED_NO_RUNOFF_FROST_BOUNDARY_108_CASES_PASS_NO_PUBLIC_ADMISSION'
         print(q['status'], len(selected), flush=True)

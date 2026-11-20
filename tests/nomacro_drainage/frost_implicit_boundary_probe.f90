@@ -11,7 +11,8 @@ subroutine frost_boundary_probe()
   real(8),parameter::reductions(3)=[0.01d0,0.5d0,1d0]
   real(8),parameter::heads(3)=[-10d0,-30d0,-100d0]
   real(8)::baseline(3),delta,minus,plus,analytic,approximation,error,scale
-  integer::curve,mean,reduction,headindex,cases,node
+  real(8)::matrix(3,3),left_vector(3),right_vector(3),difference(3)
+  integer::curve,mean,reduction,headindex,cases,node,column,row
   NN=3;numnod=3;numlay=1;layer(1:4)=1;swfrost=1;swmacro=0;swrunon=0
   swsophy=0;iHWCKmodel=1;sw_use_elas=0;fl_use_tables=.false.;fl_use_kh_power=.false.
   swkimpl=1;swbotb=6;swredu=0;dt=0.01d0;pondmx=1000d0
@@ -47,6 +48,12 @@ subroutine frost_boundary_probe()
           if(.not.ftoph.or.hsurf<=0d0.or.runots/=0d0)error stop 'Actual ponded no-runoff boundary absent'
           call jacobian_F()
           analytic=dFdhM(1)
+          matrix=0d0
+          do node=1,3
+            matrix(node,node)=dFdhM(node)
+            if(node>1)matrix(node,node-1)=dFdhU(node)
+            if(node<3)matrix(node,node+1)=dFdhL(node)
+          end do
           delta=abs(h(1))*1d-5
           h(1:3)=baseline;h(1)=h(1)-delta
           call frost_probe_evaluate();minus=F(1)
@@ -58,6 +65,20 @@ subroutine frost_boundary_probe()
           cases=cases+1
           write(*,'(a,4(1x,i0),7(1x,es25.17e3))')'ACTUAL_FROST_BOUNDARY', &
               cases,curve,mean,headindex,reductions(reduction),baseline(1),analytic,approximation,error,scale,error/scale
+          do column=1,3
+            delta=abs(baseline(column))*1d-5
+            h(1:3)=baseline;h(column)=h(column)-delta
+            call frost_probe_evaluate();left_vector=F(1:3)
+            h(1:3)=baseline;h(column)=h(column)+delta
+            call frost_probe_evaluate();right_vector=F(1:3)
+            difference=(right_vector-left_vector)/(2d0*delta)
+            do row=1,3
+              error=abs(matrix(row,column)-difference(row))
+              scale=max(abs(matrix(row,column)),abs(difference(row)),1d-8)
+              write(*,'(a,3(1x,i0),5(1x,es25.17e3))')'ACTUAL_FROST_MATRIX', &
+                  cases,row,column,matrix(row,column),difference(row),error,scale,error/scale
+            end do
+          end do
         end do
       end do
     end do
