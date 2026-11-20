@@ -49,6 +49,29 @@ def checkpoint_parent(reference,selected,project):
         scheduled_pond_history=int(pond[0])==1)
 
 
+def solute_parent(reference,project):
+    """Read the unchanged original CDE renderer up to its first file write."""
+    import daily_host
+    from conserved_subsurface_solute import enabled as fixed,correction
+    from conserved_scheduled_subsurface_solute import enabled as scheduled
+    from conserved_aquifer_solute import enabled as aquifer,correction as aquifer_correction
+    function=ast.parse(inspect.getsource(daily_host.build)).body[0]
+    blocks=[n for n in function.body if isinstance(n,ast.If) and ast.unparse(n.test)=='project.solute'
+        and 'module subroutine hybrid_solute_checkpoint' in ast.unparse(n)]
+    if len(blocks)!=1:raise ValueError('Changed original CDE renderer')
+    body=blocks[0].body
+    writes=[i for i,n in enumerate(body) if isinstance(n,ast.Expr) and isinstance(n.value,ast.Call) and
+        isinstance(n.value.func,ast.Attribute) and n.value.func.attr=='write_text']
+    if len(writes)!=1:raise ValueError('Changed original CDE write boundary')
+    namespace={**vars(daily_host),'project':project,'donor_build':Path(reference)/'build',
+        'chemical_source':fixed(project) or scheduled(project),'chemical_correction':correction,
+        'aquifer_source':aquifer(project),'aquifer_correction':aquifer_correction}
+    module=ast.fix_missing_locations(ast.Module(body=body[:writes[0]],type_ignores=[]))
+    exec(compile(module,'<original-cde-read-only-prefix>','exec'),namespace)
+    from cde_interval_source import source
+    return source(namespace['source'])
+
+
 def validate_source(bundle,project,identity,reference):
     selected=selection(project);bundle=Path(bundle);folder=Path(__file__).parent
     if selected is None or identity['original_output'].get('native_codec')!=codec(selected).decode():
@@ -121,6 +144,7 @@ def validate_source(bundle,project,identity,reference):
     equal('hybrid_age_output_state.f90',build.clock.state_source(project))
     equal('age_output_calendar_probe.f90',build.probe(project,selected))
     if project.solute:
+        equal('solute.f90',solute_parent(reference,project))
         equal('original_cde_output_state.f90',(folder/'cde_interval_output_state.f90').read_text(encoding='cp1252'))
         equal('cde_interval_receipt.f90',(folder/'cde_interval_receipt.f90').read_text(encoding='cp1252'))
         if selected['flprintdt'] or selected['nprintday']>1:equal('cde_clock_events.f90',(folder/'cde_clock_events.f90').read_text(encoding='cp1252'))
