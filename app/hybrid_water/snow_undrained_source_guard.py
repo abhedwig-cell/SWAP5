@@ -69,7 +69,8 @@ def solute_parent(reference,project):
     module=ast.fix_missing_locations(ast.Module(body=body[:writes[0]],type_ignores=[]))
     exec(compile(module,'<original-cde-read-only-prefix>','exec'),namespace)
     from cde_interval_source import source
-    return source(namespace['source'])
+    from snow_undrained_cde_positive import source as preserve_positive
+    return preserve_positive(source(namespace['source']))
 
 
 def validate_source(bundle,project,identity,reference):
@@ -202,13 +203,41 @@ CURRENT_PROBE_CALLSITE="    (output/'age_output_calendar_probe.f90').write_text(
 
 def unchanged_output_metadata(old,expected,project):
     selected=selection(project)
-    if selected is None or not selected['swkimpl'] or not isinstance(old,dict) or not isinstance(expected,dict):return False
+    if selected is None or selected['kind']!='water' or not isinstance(old,dict) or not isinstance(expected,dict):return False
     projected={**old,'providers':dict(old.get('providers',{}))}
     name='snow_undrained_build.py'
     if projected['providers'].get(name)!=expected.get('providers',{}).get(name):
-        if selected['kind']=='cde' and not selected['flprintdt'] and selected['nprintday']==1:return False
-        if projected['providers'].get(name)!=LEGACY_BUILD_SHA:return False
         source=Path(build.__file__).read_text(encoding='utf-8')
+        if source.count(POSITIVE_BUILD_NEW)!=1:return False
+        source=source.replace(POSITIVE_BUILD_NEW,POSITIVE_BUILD_OLD,1)
+        old_sha=projected['providers'].get(name)
+        if old_sha==PRE_POSITIVE_BUILD_SHA:
+            if hashlib.sha256(source.encode()).hexdigest()!=PRE_POSITIVE_BUILD_SHA:return False
+            projected['providers'][name]=expected['providers'][name]
+        else:
+            if not selected['swkimpl'] or old_sha!=LEGACY_BUILD_SHA:return False
+            if not legacy_build_parent(source):return False
+            projected['providers'][name]=expected['providers'][name]
+        current=hashlib.sha256(Path(build.__file__).read_text(encoding='utf-8').encode()).hexdigest()
+        if expected.get('providers',{}).get(name)!=current:return False
+    domain='snow_undrained.py'
+    if projected['providers'].get(domain)!=expected.get('providers',{}).get(domain):
+        current_source=Path(__file__).with_name(domain).read_text(encoding='utf-8')
+        if current_source.count(POSITIVE_METADATA)!=1:return False
+        parent=current_source.replace(POSITIVE_METADATA,'',1)
+        old_sha=projected['providers'].get(domain)
+        if old_sha==PRE_POSITIVE_DOMAIN_SHA:
+            if hashlib.sha256(parent.encode()).hexdigest()!=PRE_POSITIVE_DOMAIN_SHA:return False
+        else:
+            if not selected['swkimpl'] or old_sha!=LEGACY_DOMAIN_SHA or parent.count(EXPLICIT_PARTITION_METADATA)!=1:return False
+            if hashlib.sha256(parent.replace(EXPLICIT_PARTITION_METADATA,'',1).encode()).hexdigest()!=LEGACY_DOMAIN_SHA:return False
+        current=hashlib.sha256(current_source.encode()).hexdigest()
+        if expected.get('providers',{}).get(domain)!=current:return False
+        projected['providers'][domain]=current
+    return projected==expected
+
+
+def legacy_build_parent(source):
         if source.count(EXPLICIT_PARTITION_BLOCK)!=1:return False
         source=source.replace(EXPLICIT_PARTITION_BLOCK,'',1)
         tree=ast.parse(source);last=tree.body[-1]
@@ -219,22 +248,14 @@ def unchanged_output_metadata(old,expected,project):
         if not prefix.endswith('\n\n') or prefix.count(CURRENT_PROBE_CALLSITE)!=1:return False
         parent=prefix[:-2].replace(CURRENT_PROBE_CALLSITE,LEGACY_PROBE_CALLSITE,1)
         if hashlib.sha256(parent.encode()).hexdigest()!=LEGACY_BUILD_SHA:return False
-        current=hashlib.sha256(Path(build.__file__).read_text(encoding='utf-8').encode()).hexdigest()
-        if expected.get('providers',{}).get(name)!=current:return False
-        projected['providers'][name]=current
-    domain='snow_undrained.py'
-    if projected['providers'].get(domain)!=expected.get('providers',{}).get(domain):
-        if projected['providers'].get(domain)!=LEGACY_DOMAIN_SHA:return False
-        current_source=Path(__file__).with_name(domain).read_text(encoding='utf-8')
-        if current_source.count(EXPLICIT_PARTITION_METADATA)!=1:return False
-        parent=current_source.replace(EXPLICIT_PARTITION_METADATA,'',1)
-        if hashlib.sha256(parent.encode()).hexdigest()!=LEGACY_DOMAIN_SHA:return False
-        current=hashlib.sha256(current_source.encode()).hexdigest()
-        if expected.get('providers',{}).get(domain)!=current:return False
-        projected['providers'][domain]=current
-    return projected==expected
+        return True
 
 
 EXPLICIT_PARTITION_BLOCK="        from implicit_interception_partition import source as exact_partition\n        meteo=output/'MOD_meteo.f90'\n        parent=(meteo if meteo.exists() else originals/'MOD_meteo.f90').read_text(encoding='cp1252')\n        meteo.write_text(exact_partition(parent),encoding='cp1252')\n        patched=['MOD_meteo',*(name for name in patched if name!='MOD_meteo')]\n"
 EXPLICIT_PARTITION_METADATA="    if not selected['swkimpl']:providers.append('implicit_interception_partition.py')\n"
 LEGACY_DOMAIN_SHA='73525f3852d99a383bfa12c8cd3f50e2ee9e54a1a863de353757fbbd76480a9e'
+PRE_POSITIVE_BUILD_SHA='410d179b577c2499447bfd98bd3b305617733178a989137156e65604dcfac861'
+PRE_POSITIVE_DOMAIN_SHA='72830a2b4332b8e5c42e5f668e9c68245db45bdf192e411d0a1da93d184a4dfa'
+POSITIVE_BUILD_OLD="        path=output/'solute.f90';path.write_text(bridge.source(path.read_text(encoding='cp1252')),encoding='cp1252')\n"
+POSITIVE_BUILD_NEW="        from snow_undrained_cde_positive import source as preserve_positive\n        path=output/'solute.f90';path.write_text(preserve_positive(bridge.source(path.read_text(encoding='cp1252'))),encoding='cp1252')\n"
+POSITIVE_METADATA="    if project.solute:providers.append('snow_undrained_cde_positive.py')\n"

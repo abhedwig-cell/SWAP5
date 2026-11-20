@@ -103,7 +103,8 @@ def apply_build(output,donor_build,project,patched,selected):
         for name in ('cde_interval_receipt','cde_clock_events'):
             (output/(name+'.f90')).write_bytes((folder/(name+'.f90')).read_bytes())
         (output/'original_cde_output_state.f90').write_bytes((folder/'cde_interval_output_state.f90').read_bytes())
-        path=output/'solute.f90';path.write_text(bridge.source(path.read_text(encoding='cp1252')),encoding='cp1252')
+        from snow_undrained_cde_positive import source as preserve_positive
+        path=output/'solute.f90';path.write_text(preserve_positive(bridge.source(path.read_text(encoding='cp1252'))),encoding='cp1252')
         patched.insert(patched.index('solute')+1,'original_cde_output_state')
         extra=['cde_interval_receipt']+(['cde_clock_events'] if selected['flprintdt'] or selected['nprintday']>1 else [])
     patched=[regular.PROVIDER,*extra,'hybrid_age_output_state',clock.DOMAIN,'integral',clock.SNOW_PROVIDER,'timecontrol',*patched]
