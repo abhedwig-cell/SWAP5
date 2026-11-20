@@ -268,6 +268,9 @@ def validate_bundle(bundle, reference, project):
     if identity.get('extended_drainage')!=extended_metadata(project):raise ValueError('Foreign extended drain state policy; rebuild without rebinding')
     if identity.get('extended_drainage') and (bundle/(extended_module+'.f90')).read_bytes()!=extended_source_bytes(project):
         raise ValueError('Foreign actual extended drain native state provider')
+    if (identity.get('extended_drainage') or {}).get('zero_pond_switch_renderer_sha256'):
+        from secondary_pond_source_guard import validate as validate_secondary_pond_source
+        validate_secondary_pond_source(bundle)
     from scheduled_subsurface_irrigation import enabled as scheduled_subsurface_enabled, POLICY as SCHEDULED_SUBSURFACE_POLICY
     expected_subsurface={'policy':SCHEDULED_SUBSURFACE_POLICY,'source_sha256':h.sha(h.APP/'scheduled_subsurface_irrigation.py')} if scheduled_subsurface_enabled(project) else None
     if identity.get('scheduled_subsurface_irrigation')!=expected_subsurface:raise ValueError('Foreign original scheduled subsurface irrigation policy')
