@@ -28,6 +28,14 @@ def main():
         tuples = 0
         sources = 0
         constants = 0
+        divd0 = 0
+        def visit_If(self, node):
+            self.generic_visit(node)
+            if (ast.unparse(node.test) == 'project.solute' and
+                    'input-original-invalid-divd0' in ast.unparse(node)):
+                self.divd0 += 1
+                node.test = ast.Constant(True)
+            return node
         def visit_Tuple(self, node):
             self.generic_visit(node)
             if [n.value if isinstance(n, ast.Constant) else None for n in node.elts] == ['implicit', 'SWKIMPL', 1]:
@@ -50,7 +58,7 @@ def main():
             return node
 
     adaptation = Scope(); function = adaptation.visit(functions[0])
-    if (adaptation.tuples, adaptation.sources, adaptation.constants) != (1, 1, 3):
+    if (adaptation.tuples, adaptation.sources, adaptation.constants, adaptation.divd0) != (1, 1, 3, 1):
         raise ValueError('Ambiguous bounded implicit control adaptation')
     namespace = dict(vars(previous))
     module = ast.fix_missing_locations(ast.Module(body=[function], type_ignores=[]))
