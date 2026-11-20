@@ -49,7 +49,7 @@ def native(raw,row,build,s,dz):
     return rates
 
 
-def audit(root,build_root=None,input_root=None):
+def audit(root,build_root=None,input_root=None,trajectory_root=None,cold_roots=None):
     root=Path(root);q=read(root/'RESULT.json');bpath=Path(build_root or q['build_root']);inputs=Path(input_root or q['input_root'])
     build=read(bpath/'BUILD.json');selected=build['identity']['original_output'];days=q['days']
     require(q['status']=='ACTUAL_WATER_SNOW_GROUNDWATER_PHYSICAL_NATIVE_OUTPUT_PERIOD_PASS' and days in (35,1096),
@@ -67,7 +67,7 @@ def audit(root,build_root=None,input_root=None):
         require(executable and digest(executable)==build['executable_sha256'][role] and
             {'-ffp-contract=off','-march=x86-64','-mtune=generic'}<=set(build['identity'][role+'_flags']),
             'Actual water Snow compiler/executable differs')
-    warm=Path(q.get('trajectory_root',root/'trajectory'));data=rows(warm)
+    warm=Path(trajectory_root or q.get('trajectory_root',root/'trajectory'));data=rows(warm)
     require(len(data)==days and data[0]['day']==1 and data[-1]['day']==days,'Actual water Snow period censored')
     water=original.water(data);original.original_observations((warm/'original/donor.stdout').read_bytes(),data,build['project']['start_date']);soil(warm,days)
     require(max(r['stock_end_cm'][2] for r in data)>0,'Actual Snow stock never positive')
@@ -95,7 +95,7 @@ def audit(root,build_root=None,input_root=None):
         return found
     require(checkpoints(warm,data)=={days,*(d for pair in windows for d in pair)},'Actual warm native denominator differs')
     def outputs(path):return {p.name:original.output_records(p.read_bytes(),p.name) for p in path.glob('result_output.*') if p.suffix in ('.csv','.bin')}
-    roots=q.get('cold_actual_roots') or [str(root/f'own-{low}') for low,high in windows]
+    roots=cold_roots or q.get('cold_actual_roots') or [str(root/f'own-{low}') for low,high in windows]
     require(len(roots)==len(windows),'Actual cold root denominator differs')
     for item,path in zip(q['cold'],roots):
         low,high=item['start'],item['end'];cold=Path(path);actual=rows(cold)
