@@ -55,8 +55,11 @@ def apply_build(output,project,patched):
         anchor=('        read(unit,iostat=ios) trailing' if restoring=='.true.' else '      end if\n      close(unit)')
         if body.count(anchor)!=1:raise ValueError('Changed Snow root native EOF owner')
         body=body.replace(anchor,'        call implicit_snow_root_checkpoint(unit,'+restoring+',clock)\n'+anchor,1)
-    path.write_text(text[:first]+body+text[last:],encoding='cp1252')
-    return [STATE,*patched]
+    # Compile the small state module in the existing native owner's unit. Its
+    # object is already linked by the unchanged qualified host recipe.
+    provider=(folder/(STATE+'.f90')).read_text(encoding='cp1252')
+    path.write_text(provider+'\n'+text[:first]+body+text[last:],encoding='cp1252')
+    return patched
 
 
 def validate_source(bundle,project,output):
@@ -67,7 +70,11 @@ def validate_source(bundle,project,output):
     folder=Path(__file__).parent;bundle=Path(bundle)
     if (bundle/(STATE+'.f90')).read_bytes().replace(b'\r\n',b'\n')!=(folder/(STATE+'.f90')).read_bytes().replace(b'\r\n',b'\n'):
         raise ValueError('Foreign actual implicit Snow root rate provider')
-    body=(bundle/'macropore.f90').read_text(encoding='cp1252').split('    subroutine hybrid_macro_checkpoint(',1)[1].split('    end subroutine hybrid_macro_checkpoint',1)[0]
+    text=(bundle/'macropore.f90').read_text(encoding='cp1252')
+    provider=(folder/(STATE+'.f90')).read_text(encoding='cp1252')+'\n'
+    if not text.startswith(provider) or text.count(provider)!=1:
+        raise ValueError('Foreign compiled implicit Snow root rate provider')
+    body=text.split('    subroutine hybrid_macro_checkpoint(',1)[1].split('    end subroutine hybrid_macro_checkpoint',1)[0]
     for part in ('use hybrid_implicit_snow_root_state,only:implicit_snow_root_checkpoint',
                  'call implicit_snow_root_checkpoint(unit,.true.,clock)',
                  'call implicit_snow_root_checkpoint(unit,.false.,clock)'):
