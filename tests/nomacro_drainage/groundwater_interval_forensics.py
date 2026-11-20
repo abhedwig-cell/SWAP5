@@ -86,7 +86,7 @@ def native(raw,row,build,selected):
 def audit(root,build_root=None,input_root=None):
     root=Path(root);q=read(root/'RESULT.json');buildpath=Path(build_root or q['build_root']);inputs=Path(input_root or q['input_root']);build=read(buildpath/'BUILD.json')
     full=q['parameters'].get('phase')=='full'
-    require(q['status']==('ACTUAL_GROUNDWATER_CDE_CLOCK_FULL_PHYSICAL_NATIVE_OUTPUT_PASS' if full else
+    require(q['status']==('ACTUAL_GROUNDWATER_CDE_INTERVAL_DRAINAGE_FULL_PHYSICAL_NATIVE_OUTPUT_PASS' if full else
             'ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'), 'Actual composed period incomplete')
     selected=build['identity']['original_output'];require(selected.get('groundwater_cde_clock') is True or selected.get('groundwater_cde_interval') is True,'Wrong actual composed output owner')
     for name,sha in build['inputs'].items():require(digest(inputs/name)==sha,'Actual composed input changed')

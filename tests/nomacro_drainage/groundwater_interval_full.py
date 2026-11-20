@@ -35,7 +35,7 @@ def main():
         for low,high in windows:
             q['cold'].append(original.previous.own(build,a.reference_work,project,a.output/'trajectory',data,low,high,a.output/f'own-{low}'));save()
         assert m.sha(build/'BUILD.json')==build_sha and m.sha(receipt)==before
-        q['status']='ACTUAL_GROUNDWATER_CDE_CLOCK_FULL_PHYSICAL_NATIVE_OUTPUT_PASS'
+        q['status']='ACTUAL_GROUNDWATER_CDE_INTERVAL_DRAINAGE_FULL_PHYSICAL_NATIVE_OUTPUT_PASS'
     except Exception as error:q.update(status='FAILED_OR_CENSORED',error=repr(error));raise
     finally:save()
     print(q['status'])
