@@ -14,11 +14,11 @@ subroutine frost_boundary_probe()
   integer::curve,mean,reduction,headindex,cases,node
   NN=3;numnod=3;numlay=1;layer(1:4)=1;swfrost=1;swmacro=0;swrunon=0
   swsophy=0;iHWCKmodel=1;sw_use_elas=0;fl_use_tables=.false.;fl_use_kh_power=.false.
-  swkimpl=1;swbotb=6;swredu=0;dt=0.1d0;pondmx=1d0
+  swkimpl=1;swbotb=6;swredu=0;dt=0.01d0;pondmx=1000d0
   dz(1:4)=[10d0,20d0,30d0,30d0];disnod(1:4)=[5d0,15d0,25d0,15d0]
   z(1:4)=[-5d0,-20d0,-45d0,-75d0]
   FrArMtrx=1d0;ArMpSs=0d0;sink=0d0;source=0d0;qrot=0d0
-  nraidt=0d0;nird=0d0;melt=0d0;peva=1d6;empreva=1d6;epond=0d0
+  nraidt=0d0;nird=0d0;melt=0d0;peva=0d0;empreva=0d0;epond=0d0
   qbot=0d0;fllowgwl=.false.;cofgen=0d0
   do node=1,4
     cofgen(1:12,node)=[0.02d0,0.43d0,83.2d0,0.02d0,0.5d0,1.5d0, &
@@ -44,7 +44,7 @@ subroutine frost_boundary_probe()
             thetm1(node)=watcon(node,h(node))
           end do
           call frost_probe_evaluate()
-          if(.not.ftoph.or.hsurf>=0d0)error stop 'Actual atmospheric head boundary absent'
+          if(.not.ftoph.or.hsurf<=0d0.or.runots/=0d0)error stop 'Actual ponded no-runoff boundary absent'
           call jacobian_F()
           analytic=dFdhM(1)
           delta=abs(h(1))*1d-5
@@ -68,7 +68,7 @@ end subroutine
 subroutine frost_probe_evaluate()
   implicit none
   integer::node
-  pondm1=0d0;pond=0d0;runots=0d0;flunsatok=.true.;flboth=.false.
+  pondm1=10d0;pond=0d0;runots=0d0;flunsatok=.true.;flboth=.false.
   do node=1,NN
     theta(node)=watcon(node,h(node))
     dimoca(node)=moiscap(node,h(node))

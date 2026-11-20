@@ -1,4 +1,4 @@
-"""Actual original dry atmospheric Frost boundary Jacobian; no model admission."""
+"""Actual original ponded no-runoff Frost boundary Jacobian; no admission."""
 import argparse
 import hashlib
 import json
@@ -25,7 +25,7 @@ def main():
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
     q = dict(status='RUNNING', source=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
              optimization=a.optimization, floating_point_profile=no_macro_fp_profile(), compiler=[], model_periods=0,
-             implicit_frost_public_admitted=False, scope='dry atmospheric head boundary; bottom6; three cells')
+             implicit_frost_public_admitted=False, scope='ponded no-runoff boundary; bottom6; three cells')
     def save(): (a.output / 'RESULT.json').write_text(json.dumps(q, indent=2) + '\n', encoding='utf-8')
     def run(cmd): return subprocess.run(cmd, cwd=a.build_root, capture_output=True, text=True, timeout=90)
     save()
@@ -58,7 +58,16 @@ def main():
                  probe_sha256=sha(Path(__file__).with_name('frost_implicit_boundary_probe.f90')),
                  actual_original_object_closure=[dict(name=p.name, sha256=sha(p)) for p in sorted(selected)], variants={})
         old = implicit_conductivity_jacobian.source(original)
-        fixed = old.replace('k(1),katm,dz(1)', 'k(1),katm*rfcp(1)+1d-10*(1d0-rfcp(1)),dz(1)')
+        fixed = old.replace('k(1),ksatfit(1),dz(1)', 'k(1),ksatfit(1)*rfcp(1)+1d-10*(1d0-rfcp(1)),dz(1)')
+        top = 'dFdhM(1)=dFdhM(1)-dkdh(1)*hgrad(1)*dkmean(swkmean,k(1),ksatfit(1)*rfcp(1)+1d-10*(1d0-rfcp(1)),dz(1),dz(1))'
+        assert fixed.count(top) == 1
+        fixed = fixed.replace(top, top + '''
+            ! Differentiate the actual eliminated pond storage equation.
+            dFdhM(1)=dFdhM(1)-kmean(1)/disnod(1)+ &
+              dkdh(1)*hgrad(1)*dkmean(swkmean,k(1),ksatfit(1)*rfcp(1)+1d-10*(1d0-rfcp(1)),dz(1),dz(1))
+            dFdhM(1)=dFdhM(1)+(kmean(1)/disnod(1)- &
+              dkdh(1)*hgrad(1)*dkmean(swkmean,k(1),ksatfit(1)*rfcp(1)+1d-10*(1d0-rfcp(1)),dz(1),dz(1)))/ &
+              (1d0+dt*kmean(1)/disnod(1))''', 1)
         assert fixed != old
         # Original hconode_vsmall is exactly 1d-10; this diagnostic changes no physical source.
         driver = a.build_root / 'driver.f90'
@@ -93,7 +102,7 @@ def main():
             save()
         assert q['variants']['diagnostic_frost_boundary']['failures'] == 0
         assert q['variants']['qualified_frost0_jacobian']['failures'] > 0
-        q['status'] = 'ACTUAL_DRY_ATMOSPHERIC_FROST_BOUNDARY_108_CASES_PASS_NO_PUBLIC_ADMISSION'
+        q['status'] = 'ACTUAL_PONDED_NO_RUNOFF_FROST_BOUNDARY_108_CASES_PASS_NO_PUBLIC_ADMISSION'
         print(q['status'], len(selected), flush=True)
     except Exception as error:
         q.update(status='FAILED', error=repr(error)); raise
