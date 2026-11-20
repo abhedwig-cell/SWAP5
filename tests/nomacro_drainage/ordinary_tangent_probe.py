@@ -22,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for key in ('profile', 'provider', 'build-root', 'output'):
         parser.add_argument('--'+key, type=Path, required=True)
+    parser.add_argument('--limits', action='store_true')
     args = parser.parse_args()
     q = json.loads((args.profile/'RESULT.json').read_text())
     original = Path(q['build_root'])
@@ -29,7 +30,8 @@ def main():
     actual_source((original/'boundtop.f90').read_bytes(), meta['identity']['original_output']['swhyst'])
     objects = args.provider/'build/swap-obj'
     ttutil = args.provider/'build/ttutil-obj'
-    driver = Path(__file__).with_name('test_ordinary_implicit_pond.f90')
+    driver = Path(__file__).with_name('test_ordinary_implicit_pond_limits.f90' if args.limits
+                                    else 'test_ordinary_implicit_pond.f90')
     args.output.mkdir()
     results = {}
     for variant in ('tangent',):
@@ -75,10 +77,11 @@ def main():
                                 original_BUILD_sha256=sha(original/'BUILD.json'),
                                 compiled_objects={p.name: sha(p) for p in actual},
                                 ttutil_sha256=sha(ttutil/'libttutil.a'))
-    passed = run.returncode == 0 and 'ACTUAL_ORIGINAL_ORDINARY_POND_CHAIN_RULE_PASS 40' in run.stdout
+    count = 64 if args.limits else 40
+    passed = run.returncode == 0 and ('ACTUAL_ORIGINAL_ORDINARY_POND_CHAIN_RULE_PASS '+str(count)) in run.stdout
     (args.output/'RESULT.json').write_text(json.dumps(dict(
         status='ACTUAL_COMPLETE_ORIGINAL_ORDINARY_POND_TANGENT_COMPONENT' if passed else 'FAILED',
-        qualification=False, variants=results), indent=2))
+        qualification=False, actual_interface_points=count, limits=args.limits, variants=results), indent=2))
     run.check_returncode()
     assert passed
     print('ACTUAL_COMPLETE_ORIGINAL_ORDINARY_POND_TANGENT_COMPONENT')
