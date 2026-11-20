@@ -1,5 +1,6 @@
 """Actual original ponded no-runoff Frost boundary Jacobian; no admission."""
 import argparse
+from decimal import Decimal, localcontext
 import hashlib
 import json
 import math
@@ -119,9 +120,21 @@ def main():
             observation.update(cases=len(rows), failures=sum(row[-1] > 2e-6 for row in values),
                                max_relative_error=max(row[-1] for row in values))
             matrix_rows = [line.split() for line in result.stdout.splitlines() if line.startswith('ACTUAL_FROST_MATRIX ')]
-            assert len(matrix_rows) == 6480 and all(len(row) == 9 for row in matrix_rows)
-            matrix_values = [[float(v) for v in row[4:]] for row in matrix_rows]
+            assert len(matrix_rows) == 6480 and all(len(row) == 12 for row in matrix_rows)
+            matrix_values = [[float(v) for v in row[4:9]] for row in matrix_rows]
             assert all(math.isfinite(v) for row in matrix_values for v in row)
+            # Independently recompute the difference from raw residual values,
+            # rather than trusting the Fortran-reported derivative/error alone.
+            with localcontext() as context:
+                context.prec = 80
+                for row in matrix_rows:
+                    analytic, reported = map(Decimal, row[4:6])
+                    left, right, delta = map(Decimal, row[9:12])
+                    assert delta > 0
+                    derivative = (right-left)/(2*delta)
+                    scale = max(abs(analytic), abs(derivative), Decimal('1e-8'))
+                    assert abs(derivative-reported)/scale < Decimal('1e-10')
+            observation['raw_residual_difference_recomputed_independently'] = True
             observation.update(matrix_entries=len(matrix_rows),
                 matrix_failures=sum(row[-1] > 2e-6 for row in matrix_values),
                 matrix_max_relative_error=max(row[-1] for row in matrix_values))

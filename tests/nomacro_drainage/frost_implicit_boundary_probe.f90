@@ -84,8 +84,9 @@ subroutine frost_boundary_probe()
             do row=1,3
               error=abs(matrix(row,column)-difference(row))
               scale=max(abs(matrix(row,column)),abs(difference(row)),1d-8)
-              write(*,'(a,3(1x,i0),5(1x,es25.17e3))')'ACTUAL_FROST_MATRIX', &
-                  cases,row,column,matrix(row,column),difference(row),error,scale,error/scale
+              write(*,'(a,3(1x,i0),8(1x,es25.17e3))')'ACTUAL_FROST_MATRIX', &
+                  cases,row,column,matrix(row,column),difference(row),error,scale,error/scale, &
+                  left_vector(row),right_vector(row),delta
             end do
           end do
         end do
