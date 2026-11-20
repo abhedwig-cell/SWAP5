@@ -1,0 +1,105 @@
+name: Original implicit Snow water and CDE composition qualification
+on:
+  workflow_dispatch:
+    inputs:
+      controls_only:
+        description: Complete only missing checks on original immutable run44732748938 artifacts
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: nomacro-implicit-snow-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        optimization: [O0, O2]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            tests/nomacro_mixtures
+            tests/nomacro_scheduled_subsurface
+            tests/nomacro_drainage
+            tests/saltfarm_newton
+            .github/workflows
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+            reference/swap-4.3.1/patches
+      - name: Preserve actual source and prepare immutable original provider
+        env:
+          PYTHONPATH: app/hybrid_water
+        run: |
+          proof="$RUNNER_TEMP/proof"
+          if [[ '${{ inputs.controls_only }}' == true ]]; then proof="$RUNNER_TEMP/proof-current"; fi
+          mkdir -p "$proof"
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
+          cp .github/workflows/nomacro-implicit-snow.yml "$proof/actual-workflow.yml"
+          git rev-parse HEAD:.github/workflows/nomacro-implicit-snow.yml > "$proof/actual-workflow-git-blob.txt"
+          python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Download exact original failed-run evidence
+        if: inputs.controls_only
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 44732748938
+          name: implicit-snow-composition-${{ matrix.optimization }}-03a8bcc4798726ca2e7980e95679c30f156f89c5
+          path: ${{ runner.temp }}/proof
+      - name: Fetch original source for exact dependency comparison
+        if: inputs.controls_only
+        run: git -c protocol.version=2 fetch --filter=blob:none --no-tags --depth=1 origin 03a8bcc4798726ca2e7980e95679c30f156f89c5
+      - name: Download completed original recovery checks
+        if: inputs.controls_only
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 44735754865
+          name: implicit-snow-controls-recovery-${{ matrix.optimization }}-f24c8e194b12f27c0506bbaa659fc693b95fb5fc
+          path: ${{ runner.temp }}/completed-controls
+      - name: Complete missing controls without compiler or period replay
+        if: inputs.controls_only
+        run: |
+          python3 -B tests/nomacro_drainage/implicit_snow_recover_controls.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --original-root "$RUNNER_TEMP/proof" --completed-controls "$RUNNER_TEMP/completed-controls/recovery" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof-current/recovery"
+      - name: Qualify coherent original implicit Snow coupling
+        if: ${{ !inputs.controls_only }}
+        run: |
+          python3 -B tests/nomacro_drainage/implicit_snow_portable.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof/implicit-snow"
+      - name: Preserve actual compiled bytes and original provider identity
+        if: always()
+        shell: python
+        run: |
+          import os,shutil,json,hashlib
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/('proof-current' if '${{ inputs.controls_only }}'=='true' else 'proof');proof.mkdir(exist_ok=True)
+          provider=root/'provider/PREPARED.json'
+          if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
+          projection={}
+          for manifest in sorted((root/'builds').rglob('BUILD.json')):
+              build=manifest.parent;target=proof/'compiled'/build.relative_to(root/'builds');target.mkdir(parents=True)
+              for path in sorted(build.iterdir()):
+                  if path.is_file() and (path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.exe','.dll','.so')):
+                      shutil.copyfile(path,target/path.name)
+              projection[str(build)]=dict(archive_prefix=target.relative_to(proof).as_posix(),actual_BUILD_sha256=hashlib.sha256(manifest.read_bytes()).hexdigest())
+          (proof/'COMPILED_PROJECTION_V1.json').write_text(json.dumps(projection,indent=2)+'\n')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ inputs.controls_only && 'implicit-snow-controls-recovery' || 'implicit-snow-composition' }}-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ inputs.controls_only && format('{0}/proof-current', runner.temp) || format('{0}/proof', runner.temp) }}
+          retention-days: 30

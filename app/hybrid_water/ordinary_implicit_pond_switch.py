@@ -34,7 +34,7 @@ def metadata(project):
                 renderer_sha256=hashlib.sha256(Path(__file__).with_name('extended_implicit_pond_switch.py').read_bytes()).hexdigest(),
                 pond_tangent_renderer_sha256=hashlib.sha256(Path(__file__).with_name('ordinary_implicit_pond_tangent.py').read_bytes()).hexdigest(),
                 inherited_chain_rule_renderer_sha256=hashlib.sha256(Path(__file__).with_name('extended_implicit_pond.py').read_bytes()).hexdigest(),
-                original_top_lf_sha256=ORIGINAL_TOP[bool(selectors['SWHYST'])],
+                original_top_lf_sha256=ORIGINAL_TOP[bool(selectors['SWHYST'] or selectors['SWSNOW'])],
                 original_positive_head_deadband_preserved=False, original_pond_equation_preserved=True,
                 original_nonlinear_approximate_root_preserved=False, root_iteration_bound=128,
                 derivative='Actual soil conductivity partial composed once with original pond/runoff response',
@@ -60,7 +60,7 @@ def actual_source(raw, history):
 def validate(bundle, project):
     selectors = selected(project)
     if selectors is not None:
-        actual_source((Path(bundle)/'boundtop.f90').read_bytes(), selectors['SWHYST'])
+        actual_source((Path(bundle)/'boundtop.f90').read_bytes(), selectors['SWHYST'] or selectors['SWSNOW'])
 
 
 def apply_build(output, project, patched):
@@ -69,7 +69,7 @@ def apply_build(output, project, patched):
         return patched
     path = output/'boundtop.f90'
     text = path.read_text(encoding='cp1252')
-    if hashlib.sha256(text.encode('cp1252')).hexdigest() != ORIGINAL_TOP[bool(selectors['SWHYST'])]:
+    if hashlib.sha256(text.encode('cp1252')).hexdigest() != ORIGINAL_TOP[bool(selectors['SWHYST'] or selectors['SWSNOW'])]:
         raise ValueError('Changed original ordinary implicit top before correction')
     from ordinary_implicit_pond_tangent import top,headcalc
     path.write_text(top(source(text)), encoding='cp1252')

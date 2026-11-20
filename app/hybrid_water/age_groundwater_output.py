@@ -50,7 +50,11 @@ def selection(project):
 
 def magic(project):
     selected=active_selection(project)
-    return prior.magic(project) if selected is None else MAGICS[bool(selected['swhyst'])]
+    parent=prior.magic(project) if selected is None else MAGICS[bool(selected['swhyst'])]
+    from implicit_snow_root_carry import magic as snow_root_magic
+    parent=snow_root_magic(project,parent)
+    from implicit_snow_cde_root_carry import magic as cde_root_magic
+    return cde_root_magic(project,parent)
 
 
 def domain(project):

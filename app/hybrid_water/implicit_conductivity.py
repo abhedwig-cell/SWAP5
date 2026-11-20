@@ -7,10 +7,12 @@ import re
 POLICY = 'original-headcalc-implicit-mualem-exact-boundary-strict-retry-v1'
 
 
-def selection(text, selectors, boundary):
+def selection(text, selectors, boundary, *, original_output=None):
     if selectors['SWKIMPL'] == 0:
         return None
-    required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=0, SWFROST=0,
+    from implicit_snow_composition import input_domain,source_identity
+    snow=input_domain(selectors,boundary,original_output)
+    required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=int(snow), SWFROST=0,
                     SWHEA=1, SWCALT=2, SWMETDETAIL=0)
     if (selectors['SWKIMPL'] != 1 or any(selectors.get(k) != v for k, v in required.items())
             or selectors.get('SWBR', 0) != 0 or not (boundary['SWBOTB'] in (1,5,8)
@@ -60,7 +62,8 @@ def selection(text, selectors, boundary):
                 pond_availability_policy='original-implicit-pond-evaporation-availability-v1',
                 interception_partition_policy='original-implicit-exact-interception-partition-v1',
                 saturation_derivative_policy='original-implicit-saturated-conductivity-derivative-v1',
-                finite_newton_policy='original-implicit-finite-newton-rate-rollback-v1')
+                finite_newton_policy='original-implicit-finite-newton-rate-rollback-v1',
+                **(source_identity() if snow else {}))
 
 
 def metadata(project):
@@ -70,4 +73,6 @@ def metadata(project):
     selected = inspect(project.input_directory).get('implicit_conductivity')
     if selected is None:
         return None
+    if selected.get('implicit_snow_composition') and not project.original_output:
+        raise ValueError('Implicit Snow composition requires original output ownership')
     return dict(selected, source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
