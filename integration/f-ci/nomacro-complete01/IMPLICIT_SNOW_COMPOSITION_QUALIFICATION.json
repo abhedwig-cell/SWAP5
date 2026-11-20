@@ -1,0 +1,100 @@
+{
+  "status": "NEUTRAL_IMPLICIT_SNOW_RAW_SCIENCE_PASS_PENDING_ADMISSION",
+  "runtime": "b726d1009eee14442d20e450bdb5d0105eb6f31c",
+  "predecessor": "f870eed5dca27b17bb24b27833dc9b3c7f85aea0",
+  "independent_readers": "108661c8d8964fcc8513290f82ea625e3a58f6c8",
+  "classification": "B_EXISTING_PROCESS_COMPOSITION_WITH_SEPARATELY_OBSERVED_LEGACY_DIAGNOSTIC_RESTART_REPAIR",
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "AGE_admitted": false,
+  "implicit_snow_admitted": false,
+  "water_snow_groundwater_admitted": false,
+  "new_physical_state": false,
+  "daily_water_guard_cm": 1e-10,
+  "integrated_water_guard_cm": 1e-10,
+  "daily_CDE_guard_mg_cm2": 1e-10,
+  "integrated_CDE_guard_mg_cm2": 1e-10,
+  "actual_full_periods": 12,
+  "actual_days_per_full_period": 1096,
+  "actual_full_cold_windows": 108,
+  "actual_short_contexts": 36,
+  "actual_short_cold_windows": 108,
+  "actual_fresh_compiled_refusals": 200,
+  "actual_fresh_source_refusals": 144,
+  "actual_transaction_contexts": 16,
+  "actual_unselected_contexts": 12,
+  "actual_unselected_cold_windows": 12,
+  "archives": {
+    "PORTABLE_OBSERVATIONS": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_PORTABLE_OBSERVATIONS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "972ca9feaf2138aca43250ffeca245bf49dff68f82cfac12e76d527f3e5e85f0"
+    },
+    "UBUNTU_O0_FINAL_RECOVERY": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_UBUNTU_O0_FINAL_RECOVERY_RAW_ARCHIVE.json",
+      "record_lf_sha256": "927905e4ffe454b48962fb6333f62884df9da8c00fee0cad17aeb24cf2d9d4d3"
+    },
+    "UBUNTU_O0_FIRST_RECOVERY": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_UBUNTU_O0_FIRST_RECOVERY_RAW_ARCHIVE.json",
+      "record_lf_sha256": "f16a36d38e8ab2ca8bc854d914db0e8d56862f984dfc20070caccef6b62ce1fd"
+    },
+    "UBUNTU_O0_INITIAL": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_UBUNTU_O0_INITIAL_RAW_ARCHIVE.json",
+      "record_lf_sha256": "d396b1110bc9e7075e7f488acd5a59b6e7b6e28166a674a40bc37f391c5d0db1"
+    },
+    "UBUNTU_O2_FINAL_RECOVERY": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_UBUNTU_O2_FINAL_RECOVERY_RAW_ARCHIVE.json",
+      "record_lf_sha256": "582bd7ad92e700018047aa4a8301c6deb35dac6313ae456b866ce4b6e0cc6a00"
+    },
+    "UBUNTU_O2_FIRST_RECOVERY": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_UBUNTU_O2_FIRST_RECOVERY_RAW_ARCHIVE.json",
+      "record_lf_sha256": "8702dc4c09d78e6eed5939fe685ee20127df5a10c3edc93f4b42a6396b724439"
+    },
+    "UBUNTU_O2_INITIAL": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_UBUNTU_O2_INITIAL_RAW_ARCHIVE.json",
+      "record_lf_sha256": "9dff9878bf92bad8f4b711755813509c35af7efa27c7ebd02e0937305e4ec805"
+    },
+    "WINDOWS_O0_CONTROLS": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_WINDOWS_O0_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "244754e246d7c1f36adf4fec9e4421013b45f1b45816c963adf7ffee98621f1f"
+    },
+    "WINDOWS_O0_SCIENCE": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_WINDOWS_O0_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "9886e8f07037706eb205fbc1b96669a24873d39a0b61e0d8412a1f695f3acf0b"
+    },
+    "WINDOWS_O2_CONTROLS": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_WINDOWS_O2_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "1017eee22155050d3adb1389715aa4d1de090da55d73502ef64cd76240c6a865"
+    },
+    "WINDOWS_O2_SCIENCE": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_WINDOWS_O2_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "484831ee184da4afc69b4780c469eeafae73f065d4f5603982d42dbd73d95e90"
+    },
+    "WINDOWS_SUPPORT": {
+      "record": "IMPLICIT_SNOW_COMPOSITION_WINDOWS_SUPPORT_RAW_ARCHIVE.json",
+      "record_lf_sha256": "ccfe56aa248ac29d8208c2855cd5e2c81e7cf3cfe5651d3d2026f10985883756"
+    }
+  },
+  "original_runs": [
+    {
+      "run": 44732748938,
+      "conclusion": "FAILURE",
+      "role": "All science independentlyPASS before missing scratch parent"
+    },
+    {
+      "run": 44735754865,
+      "conclusion": "FAILURE",
+      "role": "Three completed controls reused; subsequent ELF permission failure before accepted model day"
+    },
+    {
+      "run": 44737214910,
+      "conclusion": "SUCCESS",
+      "role": "Only missing controls; zero fresh compilations/full/short periods"
+    }
+  ],
+  "inherited_native_observations": 1720,
+  "inherited_native_observations_counted_fresh": false,
+  "remaining": "Water/Snow groundwater bottom1 explicit/implicit output/state unavailable; broader historical families remain UNKNOWN.",
+  "scope": "Nine actual configurations only; SWKIMPL1 Snow1 selected water bottom5/8 and CDE bottom1/5/8, drainage0 only selected CDE bottom1. Original analytical/day-weather heat1/method2; no active macropores/Frost/aquifer/AGE; unsupported examinedKsat route remains refused."
+}
