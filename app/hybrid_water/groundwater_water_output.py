@@ -14,6 +14,9 @@ POLICY='original-groundwater-water-complete-state-calendar-v1'
 
 
 def active_selection(project):
+    from snow_water_groundwater import selection as snow_selection
+    snow=snow_selection(project)
+    if snow is not None:return snow
     if not project.original_output or not project.input_directory or project.macro or project.solute or project.age:return None
     from implicit_groundwater_state import enabled,numerical_selector
     if not enabled(project):return None
@@ -51,6 +54,9 @@ def magic(project):
 
 
 def metadata(project):
+    from snow_water_groundwater import selection as snow_selection,metadata as snow_metadata
+    snow=snow_selection(project)
+    if snow is not None:return snow_metadata(project,snow)
     selected=active_selection(project)
     if selected is None:
         result=prior.metadata(project)
@@ -98,6 +104,11 @@ def render_macro(original,project,selected):
 
 
 def apply_build(output,donor_build,project,patched):
+    from snow_water_groundwater import selection as snow_selection
+    snow=snow_selection(project)
+    if snow is not None:
+        from snow_water_groundwater_build import apply_build as snow_build
+        return snow_build(output,donor_build,project,patched,snow)
     selected=active_selection(project)
     if selected is None:
         patched=prior.apply_build(output,donor_build,project,patched)

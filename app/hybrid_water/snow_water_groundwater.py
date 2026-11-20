@@ -1,6 +1,7 @@
 """Bounded original water/Snow groundwater domain; integration not yet admitted."""
 from pathlib import Path
 import re
+import hashlib
 
 POLICY='existing-water-snow-groundwater-calendar-composition-v1'
 
@@ -46,3 +47,22 @@ def codec(selected):
     if not selected.get('groundwater_snow_water_output'):raise ValueError('Foreign water Snow groundwater output')
     kind='R' if selected['flprintdt'] and selected['swres'] else 'P' if selected['flprintdt'] else 'C' if selected['nprintday']>1 else 'I'
     return ('S5WG'+kind+f"{selected['swkimpl']:03d}").encode()
+
+
+def metadata(project,selected):
+    import thermal_output_clock as water
+    import snow_water_groundwater_state as state
+    sha=lambda p:hashlib.sha256(Path(p).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+    folder=Path(__file__).parent
+    return dict(policy=POLICY,native_codec=codec(selected).decode(),**selected,
+        source_sha256=sha(__file__),composition_build_sha256=sha(folder/'snow_water_groundwater_build.py'),
+        native_composition=state.metadata(project,selected),
+        calendar_owner_sha256=sha(water.__file__),step_owner_sha256=sha(folder/'thermal_output_step.py'),
+        reset_owner_sha256=sha(folder/'thermal_output_reset.py'),
+        domain_source_sha256=sha(folder/(water.DOMAIN+'.f90')),
+        snow_output_source_sha256=sha(folder/(water.SNOW_PROVIDER+'.f90')),
+        receipt_provider_sha256=sha(water.ROOT/'src/process/mod_original_output_receipt.f90'),
+        original_integral_sha256=water.regular.INTEGRAL_SHA,
+        original_watstor_sha256=water.clock.WATSTOR_SHA,original_timecontrol_sha256=water.clock.TIME_SHA,
+        original_output_epoch=project.start_clock,physical_equations_changed=False,trial_water_guard_cm=1e-10,
+        preserves_requested_groups_and_precision=True,new_physical_state=False)

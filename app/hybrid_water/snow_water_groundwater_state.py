@@ -1,5 +1,7 @@
 """Literal hydraulic and existing diagnostic carry for water Snow groundwater."""
 import hashlib
+import math
+import struct
 from pathlib import Path
 
 STATE='snow_water_groundwater_native_state'
@@ -55,3 +57,24 @@ def metadata(project,selected):
         actual_domain=domain(project,selected),hydraulic_doubles='5*actual_nodes+4',
         diagnostic_rates='Original alpwetnoddrz,alpdrynodrtz; no physical store added',
         root_tail_bytes=96,new_physical_state=False)
+
+
+def validate_candidate(raw,receipt,project,selected):
+    from snow_water_groundwater import codec
+    n=project.nodes;header=struct.pack('<13i',*domain(project,selected))
+    if raw[:8]!=codec(selected) or raw.count(header+header)!=1:raise ValueError('Foreign water Snow groundwater native domain')
+    if len(raw)<36+104+8*(5*n+4)+96:raise ValueError('Incomplete water Snow groundwater native carry')
+    nodes,clock,step,canopy=struct.unpack_from('<i3d',raw,8)
+    if nodes!=n or not all(map(math.isfinite,(clock,step,canopy))) or not 0<step<=1 or canopy<0 or clock!=project.start_clock+receipt.get('day',-1) or canopy!=receipt.get('stock_end_cm',[None]*4)[3]:
+        raise ValueError('Actual water Snow groundwater native prefix differs')
+    offset=raw.index(header+header)+104;values=struct.unpack_from('<'+str(5*n+4)+'d',raw,offset)
+    if not all(map(math.isfinite,values)) or any(v<0 for v in values[n:5*n+2]) or values[-1]<0:
+        raise ValueError('Invalid water Snow groundwater hydraulic carry')
+    if list(values[:n])!=receipt.get('pressure_head_cm') or values[-2]!=receipt.get('groundwater_cm') or values[-1]!=receipt.get('stock_end_cm',[None])[0]:
+        raise ValueError('Actual water Snow groundwater hydraulic receipt differs')
+    root_header=(2,n,0,1,selected['swhyst'],1,selected['swkimpl'],0)
+    if struct.unpack_from('<8i',raw,len(raw)-96)!=root_header or struct.unpack_from('<8i',raw,len(raw)-64)!=root_header:
+        raise ValueError('Foreign water Snow groundwater root domain')
+    rates=struct.unpack_from('<2d',raw,len(raw)-32)
+    if not all(map(math.isfinite,rates)) or rates!=struct.unpack_from('<2d',raw,len(raw)-16):
+        raise ValueError('Invalid water Snow groundwater root witness')
