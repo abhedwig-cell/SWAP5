@@ -1,9 +1,11 @@
 name: Original implicit Snow water and CDE composition qualification
 on:
-  push:
-    branches: [codex/nomacro-implicit-snow-composition01]
-    paths: ['.github/workflows/nomacro-implicit-snow.yml']
   workflow_dispatch:
+    inputs:
+      controls_only:
+        description: Complete only missing checks on original immutable run44732748938 artifacts
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -43,13 +45,31 @@ jobs:
         env:
           PYTHONPATH: app/hybrid_water
         run: |
-          mkdir -p "$RUNNER_TEMP/proof"
-          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"
-          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$RUNNER_TEMP/proof/controller-source.tar"
-          cp .github/workflows/nomacro-implicit-snow.yml "$RUNNER_TEMP/proof/actual-workflow.yml"
-          git rev-parse HEAD:.github/workflows/nomacro-implicit-snow.yml > "$RUNNER_TEMP/proof/actual-workflow-git-blob.txt"
+          proof="$RUNNER_TEMP/proof"
+          if [[ '${{ inputs.controls_only }}' == true ]]; then proof="$RUNNER_TEMP/proof-current"; fi
+          mkdir -p "$proof"
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
+          cp .github/workflows/nomacro-implicit-snow.yml "$proof/actual-workflow.yml"
+          git rev-parse HEAD:.github/workflows/nomacro-implicit-snow.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Download exact original failed-run evidence
+        if: inputs.controls_only
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 44732748938
+          name: implicit-snow-composition-${{ matrix.optimization }}-03a8bcc4798726ca2e7980e95679c30f156f89c5
+          path: ${{ runner.temp }}/proof
+      - name: Fetch original source for exact dependency comparison
+        if: inputs.controls_only
+        run: git -c protocol.version=2 fetch --filter=blob:none --no-tags --depth=1 origin 03a8bcc4798726ca2e7980e95679c30f156f89c5
+      - name: Complete missing controls without compiler or period replay
+        if: inputs.controls_only
+        run: |
+          python3 -B tests/nomacro_drainage/implicit_snow_recover_controls.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --original-root "$RUNNER_TEMP/proof" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof-current/recovery"
       - name: Qualify coherent original implicit Snow coupling
+        if: ${{ !inputs.controls_only }}
         run: |
           python3 -B tests/nomacro_drainage/implicit_snow_portable.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof/implicit-snow"
       - name: Preserve actual compiled bytes and original provider identity
@@ -58,7 +78,7 @@ jobs:
         run: |
           import os,shutil,json,hashlib
           from pathlib import Path
-          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/('proof-current' if '${{ inputs.controls_only }}'=='true' else 'proof');proof.mkdir(exist_ok=True)
           provider=root/'provider/PREPARED.json'
           if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
           projection={}
@@ -72,6 +92,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: implicit-snow-composition-${{ matrix.optimization }}-${{ github.sha }}
-          path: ${{ runner.temp }}/proof
+          name: ${{ inputs.controls_only && 'implicit-snow-controls-recovery' || 'implicit-snow-composition' }}-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ inputs.controls_only && format('{0}/proof-current', runner.temp) || format('{0}/proof', runner.temp) }}
           retention-days: 30
