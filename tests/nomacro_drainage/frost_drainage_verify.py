@@ -150,6 +150,14 @@ def verify():
                 'actual_descriptor_refusals', 'actual_transaction_contexts',
                 'actual_unselected_contexts', 'actual_unselected_cold_windows'):
         require(sum(r[key] for r in [win, *portable.values()]) == COUNTS[key], 'Actual Frost denominator differs: ' + key)
+    contexts = list(win['components'].values()) + [r['observations']['components'] for r in portable.values()]
+    require(len(contexts) == 4, 'Missing actual platform/optimizer component context')
+    for count, component, field in (
+        ('actual_geometric_component_cases', 'overlap', 'corrected_geometric_cases'),
+        ('actual_Frost_rate_component_cases', 'rates', 'actual_original_and_guarded_rate_cases'),
+        ('actual_literal_CDE_task2_component_cases', 'cde', 'actual_literal_CDE_task2_cases')):
+        require(sum(c['components'][component][field] for c in contexts) == COUNTS[count],
+            'Actual independent Frost component denominator differs: ' + count)
     return dict(status='BOUNDED_FROST_DRAINAGE_SOURCE_RAW_ADMISSION_PASS', runtime=RUNTIME, **COUNTS,
         Windows=win, Ubuntu=portable, inherited_unchanged_owners=retained, model_executions=0,
         compiler_executions=0, canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',

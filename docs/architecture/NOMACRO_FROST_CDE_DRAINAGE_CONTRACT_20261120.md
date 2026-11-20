@@ -1,8 +1,9 @@
 # Proposed bounded Frost/CDE/drainage composition
 
-Status: source assessment and proposed verification contract. No new process,
-configuration or corrected-reference authority is admitted by this document.
-Implementation follows actual PR1774 canonical admission and reconciliation.
+Status: bounded candidate implementation and neutral raw qualification, pending
+actual canonical admission. No process or corrected-reference authority is
+admitted by this document. PR1774 is admitted on actual canonical
+383526abddeb06ea61fe31fa7e342ebbd8a5c43d.
 
 The existing `FROST-GEOMETRY-01` manifest explicitly excludes `SWDIVD1` and
 a new fully frozen-front interpretation. Its qualification must remain intact.
@@ -72,3 +73,17 @@ chemical and output state payload. No new physical state is introduced.
 Implicit Frost, other histories/boundaries and broader calendars remain outside
 this initial candidate until their affected procedure/state seams are proved.
 Candidate implementation is not canonical admission or a qualification claim.
+
+The neutral scientific record is
+integration/f-ci/nomacro-complete01/FROST_DRAINAGE_QUALIFICATION.json.
+Its immutable source, original refusals and actual Windows/Ubuntu O0/O2 bytes
+support eight full 1096-day trajectories, eight short trajectories, 80 cold
+windows, 332 compiled native refusals and eight transaction contexts. Twelve
+unselected 35-day/native/output postimages preserve the preceding admitted
+routes without repeating their full periods. The original failed overlap and
+portable/control harness roles remain preserved separately. Independent
+readers execute the real geometric, Frost rate and literal CDE task2 evidence
+from sealed bytes, including every CDE trajectory prefix mass balance.
+Neutral admission flags remain false; only an actual merge receipt can own
+canonical admission. The separate 48-input constitutive derivative probe grants
+no implicit Frost boundary-Jacobian or integrated model authority.
