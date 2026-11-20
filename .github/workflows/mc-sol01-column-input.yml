@@ -73,6 +73,7 @@ jobs:
             /integration/f-ci/nomacro-complete01/EXTENDED_DRAINAGE_*
             /integration/f-ci/nomacro-complete01/ORDINARY_*
             /integration/f-ci/nomacro-complete01/GROUNDWATER_CDE_CLOCK_*
+            /integration/f-ci/nomacro-complete01/GROUNDWATER_CDE_INTERVAL_*
       - name: Build both optimizations and run actual file/restart qualification
         run: |
           set -euo pipefail
