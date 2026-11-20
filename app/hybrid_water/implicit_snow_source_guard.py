@@ -6,6 +6,35 @@ remain separate from these development-route source checks.
 import hashlib
 from pathlib import Path
 
+# Complete old water TimeControl renderings at canonical f870, from original
+# 88b3... (thermal_output_clock/step). These precede implicit Snow development.
+WATER_TIME={'clock':'75bf57289000cc1ae4ed411b505bc072c469f355823b272ba8655883d6d11e63',
+            'step':'fa2f3581b7ad6552a707ae88d84bd5ddb03aa1fdc75ab0925842a261d94536e3'}
+
+
+def strip_clock_trial(source,cde):
+    declaration=('   real(8)::hybrid_cde_clock_trial_guard,hybrid_cde_clock_candidate_bottom\n' if cde else
+                 '   real(8)::hybrid_snow_trial_guard\n')
+    guard=('''
+         if(swbotb==8.and..not.flboth)then
+            hybrid_cde_clock_candidate_bottom=0d0
+         else
+            hybrid_cde_clock_candidate_bottom=-kmean(NN+1)*hgrad(NN+1)
+         end if
+         hybrid_cde_clock_trial_guard=hybrid_snow_soil_trial_residual(hybrid_cde_clock_candidate_bottom)
+         if(abs(hybrid_cde_clock_trial_guard)>1d-10)flnonconv=.true.''' if cde else '''
+         if(swbotb==8.and..not.flboth)then
+            hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(0d0)
+         else
+            hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(-kmean(NN+1)*hgrad(NN+1))
+         end if
+         if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true.''')
+    for part in ('   use MOD_integral,only:hybrid_snow_soil_trial_residual\n',declaration,guard):
+        raw=part.encode('cp1252')
+        if source.count(raw)!=1:raise ValueError('Foreign actual implicit Snow soil clock trial provider')
+        source=source.replace(raw,b'',1)
+    return source
+
 
 def validate_source(bundle,project,identity):
     from experimental_project import inspect
@@ -35,8 +64,17 @@ def validate_source(bundle,project,identity):
             raise ValueError('Foreign implicit Snow parent trial guard anchors')
         source=source.replace(anchor,b'   use MOD_integral,only:hybrid_implicit_groundwater_trial\n'+anchor,1)
         source=source.replace(guard,guard+b'\n         if(abs(hybrid_implicit_groundwater_trial(groundwater_bottom,groundwater_delta))>1d-10)flnonconv=.true.',1)
-    form=('groundwater' if groundwater else
-          ('cde' if project.solute else 'water')+('-step' if output.get('flprintdt') else ''))
+    if not groundwater:
+        if output.get('thermal_clock'):source=strip_clock_trial(source,bool(project.solute))
+        if report['boundary']['SWBOTB']==5:
+            from groundwater_snow_retry import inverse
+            from lower_boundary_receipt import render_headcalc
+            template=('logical                          :: flboth, flok\n'
+                      '         budget_step=projected_water_residual()\n'
+                      '            budget_step = projected_water_residual()\n')
+            source=render_headcalc(inverse(source.decode('cp1252'),
+                lambda text:render_headcalc(text,5),template),8).encode('cp1252')
+    form='groundwater' if groundwater else 'water'
     if hashlib.sha256(source).hexdigest()!=HEADS[form]:
         raise ValueError('Foreign complete implicit Snow HeadCalc parent')
 
@@ -50,7 +88,9 @@ def validate_source(bundle,project,identity):
     from groundwater_snow_clock import validate as clock_validate,PARENT_SHA,kind
     if output.get('groundwater_snow_cde_output'):
         clock_validate(source,output,output['original_output_epoch'])
-    elif hashlib.sha256(source.encode('cp1252')).hexdigest()!=PARENT_SHA[kind(output)]:
+    elif hashlib.sha256(source.encode('cp1252')).hexdigest()!=(
+            WATER_TIME['step' if output.get('flprintdt') else 'clock']
+            if output.get('thermal_clock') and not project.solute else PARENT_SHA[kind(output)]):
         raise ValueError('Foreign complete implicit Snow TimeControl parent')
 
     from ordinary_implicit_pond_switch import actual_source
@@ -62,7 +102,8 @@ def validate_source(bundle,project,identity):
     if output.get('cde_interval_output'):
         providers.append(('original_cde_output_state.f90','cde_interval_output_state.f90'))
     if output.get('thermal_calendar'):
-        providers.append(('thermal_output_snow_calendar_state.f90','cde_interval_snow_state.f90'))
+        providers.append(('thermal_output_snow_calendar_state.f90',
+            'cde_interval_snow_state.f90' if output.get('cde_interval_output') else 'thermal_output_snow_calendar_state.f90'))
     if groundwater:
         providers.append(('groundwater_history_native_state.f90','groundwater_history_native_state.f90'))
     for actual,parent in providers:
