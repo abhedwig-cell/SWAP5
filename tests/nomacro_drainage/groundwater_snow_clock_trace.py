@@ -18,12 +18,15 @@ def main():
     for name in ('reference-work','profile','warm','build-root','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--trace-kind',choices=('clock','head'),default='clock')
     p.add_argument('--target-day',type=int,default=633)
-    args=p.parse_args();args.output.mkdir();report=json.loads((args.profile/'RESULT.json').read_text())
+    p.add_argument('--resume-compiled',action='store_true')
+    args=p.parse_args();args.output.mkdir(exist_ok=args.resume_compiled);report=json.loads((args.profile/'RESULT.json').read_text())
     source=Path(report['build_root']);project=m.e.load(report['input_root'],original_output=True)
     meta,case=m.validate_bundle(source,args.reference_work,project)
-    original_build=m.sha(source/'BUILD.json');private=args.build_root/'bundle';shutil.copytree(source,private)
+    original_build=m.sha(source/'BUILD.json');private=args.build_root/'bundle'
+    if args.resume_compiled:assert private.is_dir()
+    else:shutil.copytree(source,private)
     provider='timecontrol.f90' if args.trace_kind=='clock' else 'headcalc.f90'
-    path=private/provider;raw=path.read_text(encoding='cp1252')
+    path=private/provider;raw=(source/provider).read_text(encoding='cp1252')
     anchor='            if (t1900 - hybrid_age_print_epoch + dtCrit > dble(nprintcount)/dble(nprintday)) then'
     addition="""            if(daycum==633.and.fldayend)write(*,'(a,2i10,6(1x,es25.17e3),2l2)') &
              'PRIVATE_SNOW_GW_CLOCK_TRACE',daycum,nprintcount,t1900, &
@@ -50,17 +53,21 @@ def main():
     else:
         assert raw.count(anchor)==1 and addition not in raw
         changed=raw.replace(anchor,addition+anchor,1);assert changed.replace(addition,'',1)==raw
-    path.write_text(changed,encoding='cp1252')
-    (args.output/('PRIVATE_'+provider)).write_text(changed,encoding='cp1252')
+    if args.resume_compiled:
+        assert path.read_text(encoding='cp1252')==(args.output/('PRIVATE_'+provider)).read_text(encoding='cp1252')==changed
+    else:
+        path.write_text(changed,encoding='cp1252')
+        (args.output/('PRIVATE_'+provider)).write_text(changed,encoding='cp1252')
     objects=args.reference_work/'build/swap-obj';ttutil=args.reference_work/'build/ttutil-obj'
     compile_command=['gfortran',*meta['identity']['donor_flags'],'-I',str(objects),'-I',str(ttutil),'-c',provider]
-    local={p.name.casefold():p for p in private.glob('*.o')};provider=sorted(objects.glob('*.o'));names={p.name.casefold() for p in provider}
+    local={p.name.casefold():p for p in private.glob('*.o')};provider_objects=sorted(objects.glob('*.o'));names={p.name.casefold() for p in provider_objects}
     donor=private/'day_donor.exe'
-    link_command=['gfortran','-o',str(donor),*[str(local.get(p.name.casefold(),p)) for p in provider],
+    link_command=['gfortran','-o',str(donor),*[str(local.get(p.name.casefold(),p)) for p in provider_objects],
                   *[str(p) for name,p in sorted(local.items()) if name not in names],str(ttutil/'libttutil.a')]
-    with (args.output/'compiler.stdout').open('x') as out,(args.output/'compiler.stderr').open('x') as err:
-        subprocess.run(compile_command,cwd=private,stdout=out,stderr=err,check=True)
-        subprocess.run(link_command,cwd=private,stdout=out,stderr=err,check=True)
+    if not args.resume_compiled:
+        with (args.output/'compiler.stdout').open('x') as out,(args.output/'compiler.stderr').open('x') as err:
+            subprocess.run(compile_command,cwd=private,stdout=out,stderr=err,check=True)
+            subprocess.run(link_command,cwd=private,stdout=out,stderr=err,check=True)
     assert m.sha(source/'BUILD.json')==original_build
     result=dict(status='PRIVATE_IO_TRACE_RUNNING_NOT_ADMITTED',numeric_source_unchanged_after_removing_exact_IO=True,
                 original_BUILD_sha256=original_build,source_file=provider,original_provider_lf_sha256=hashlib.sha256(raw.encode('cp1252')).hexdigest(),
