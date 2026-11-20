@@ -2,6 +2,10 @@ name: Original secondary implicit zero-pond qualification
 on:
   workflow_dispatch:
     inputs:
+      groundwater_snow:
+        description: Qualify bounded explicit Snow groundwater CDE with existing rollback and availability policies
+        type: boolean
+        default: false
       groundwater_interval:
         description: Qualify existing daily CDE groundwater intervals and drainage-off clocks
         type: boolean
@@ -68,7 +72,7 @@ jobs:
           python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Qualify secondary water and CDE with original failure-crossing native windows
-        if: ${{ !inputs.ordinary_pond && !inputs.groundwater_clock && !inputs.groundwater_interval }}
+        if: ${{ !inputs.ordinary_pond && !inputs.groundwater_clock && !inputs.groundwater_interval && !inputs.groundwater_snow }}
         run: |
           for label in water cde; do
             extra=(--switch-window); days=1096
@@ -91,7 +95,7 @@ jobs:
             done
           fi
       - name: Qualify ordinary pond with representative full and composition evidence
-        if: ${{ inputs.ordinary_pond && !inputs.groundwater_clock && !inputs.groundwater_interval }}
+        if: ${{ inputs.ordinary_pond && !inputs.groundwater_clock && !inputs.groundwater_interval && !inputs.groundwater_snow }}
         run: |
           if [[ '${{ inputs.postimage_only }}' == true ]]; then
             python3 -B tests/nomacro_scheduled_subsurface/ordinary_pond_cohort.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/ordinary-matrix" --output "$RUNNER_TEMP/proof/ordinary-matrix" --only-labels cde-groundwater-history water-plate cde-head-history1
@@ -119,8 +123,37 @@ jobs:
             if [[ "$name" == water-plate ]]; then other=cde-groundwater-history; else other=water-plate; fi
             python3 -B tests/nomacro_drainage/ordinary_pond_controls.py --profile "$RUNNER_TEMP/proof/ordinary-matrix/$name/short" --reference-work "$RUNNER_TEMP/provider" --other-head "$RUNNER_TEMP/builds/ordinary-matrix/$other/bundle/headcalc.f90" --output "$RUNNER_TEMP/proof/ordinary-matrix/$name/source-controls"
           done
+      - name: Qualify explicit Snow groundwater CDE corrected composition
+        if: ${{ inputs.groundwater_snow }}
+        run: |
+          python3 -B tests/nomacro_drainage/groundwater_snow_runtime.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/groundwater-snow" --output "$RUNNER_TEMP/proof/groundwater-snow"
+          PYTHONPATH=tests/nomacro_drainage python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          from groundwater_snow_forensics import audit
+          root=Path(os.environ['RUNNER_TEMP'])/'proof/groundwater-snow'
+          q=json.loads((root/'RESULT.json').read_text())
+          assert q['status']=='ACTUAL_SEVEN_EXPLICIT_SNOW_GROUNDWATER_CDE_CONTEXTS_PASS' and len(q['cases'])==7
+          (root/'FORENSICS_V1.json').write_text(json.dumps({name:audit(root/name) for name in q['cases']},indent=2)+'\n')
+          PY
+          python3 -B tests/nomacro_drainage/groundwater_snow_full.py --reference-work "$RUNNER_TEMP/provider" --reuse-case "$RUNNER_TEMP/proof/groundwater-snow/h2-snow-clock-periodic" --output "$RUNNER_TEMP/proof/groundwater-snow-full"
+          python3 -B tests/nomacro_drainage/groundwater_snow_forensics.py "$RUNNER_TEMP/proof/groundwater-snow-full" --output "$RUNNER_TEMP/proof/groundwater-snow-full/FORENSICS_V1.json"
+          python3 -B tests/nomacro_drainage/groundwater_snow_control_cohort.py --reference-work "$RUNNER_TEMP/provider" --cohort "$RUNNER_TEMP/proof/groundwater-snow" --evidence "$RUNNER_TEMP/proof" --output "$RUNNER_TEMP/proof/control-cohort" --optimization ${{ matrix.optimization }} --version v3
+          PYTHONPATH=tests/nomacro_drainage python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          from groundwater_snow_control_forensics import native_controls,source_controls
+          root=Path(os.environ['RUNNER_TEMP'])/'proof';profiles=root/'groundwater-snow'
+          q=json.loads((root/'control-cohort/RESULT.json').read_text())
+          assert q['status']=='ACTUAL_FOUR_NATIVE_THREE_SOURCE_SNOW_GROUNDWATER_CONTEXTS_PASS'
+          def build(name):return Path(json.loads((profiles/name/'RESULT.json').read_text())['build_root'])
+          native={name:native_controls(Path(item['actual_root']),profiles/name,build(name)) for name,item in q['native'].items()}
+          source={name:source_controls(Path(item['actual_root']),build(name)) for name,item in q['source_controls'].items()}
+          assert sum(v['actual_refusals'] for v in native.values())==430 and sum(v['actual_refusals'] for v in source.values())==86
+          (root/'control-cohort/FORENSICS_V1.json').write_text(json.dumps(dict(native=native,source_controls=source),indent=2)+'\n')
+          PY
       - name: Qualify groundwater CDE daily intervals and drainage-off composition
-        if: ${{ inputs.groundwater_interval }}
+        if: ${{ inputs.groundwater_interval && !inputs.groundwater_snow }}
         run: |
           python3 -B tests/nomacro_drainage/groundwater_interval_runtime.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/groundwater-interval" --output "$RUNNER_TEMP/proof/groundwater-interval"
           PYTHONPATH=tests/nomacro_drainage python3 -B - <<'PY'
@@ -136,7 +169,7 @@ jobs:
           python3 -B tests/nomacro_drainage/groundwater_interval_forensics.py "$RUNNER_TEMP/proof/groundwater-interval-full" --output "$RUNNER_TEMP/proof/groundwater-interval-full/FORENSICS_V1.json"
           python3 -B tests/nomacro_drainage/groundwater_interval_control_cohort.py --reference-work "$RUNNER_TEMP/provider" --cohort "$RUNNER_TEMP/proof/groundwater-interval" --evidence "$RUNNER_TEMP/proof" --output "$RUNNER_TEMP/proof/control-cohort" --optimization ${{ matrix.optimization }}
       - name: Qualify existing groundwater CDE clock composition
-        if: ${{ inputs.groundwater_clock && !inputs.groundwater_controls_only && !inputs.groundwater_interval }}
+        if: ${{ inputs.groundwater_clock && !inputs.groundwater_controls_only && !inputs.groundwater_interval && !inputs.groundwater_snow }}
         run: |
           python3 -B tests/nomacro_drainage/groundwater_clock_runtime.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/groundwater-clock" --output "$RUNNER_TEMP/proof/groundwater-clock"
           PYTHONPATH=tests/nomacro_drainage python3 -B - <<'PY'
@@ -155,7 +188,7 @@ jobs:
             python3 -B tests/nomacro_drainage/groundwater_clock_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/groundwater-clock/$name" --output "$RUNNER_TEMP/proof/groundwater-clock-controls/$name"
           done
       - name: Download original unchanged groundwater clock dependency
-        if: ${{ inputs.groundwater_controls_only }}
+        if: ${{ inputs.groundwater_controls_only && !inputs.groundwater_snow }}
         uses: actions/download-artifact@v4
         with:
           name: groundwater-cde-clock-${{ matrix.optimization }}-5c0e2b34358940e02ae6f486f04e0f262df1c040
@@ -164,7 +197,7 @@ jobs:
           repository: abhedwig-cell/SWAP5
           run-id: 44682712004
       - name: Recover missing actual groundwater controls and transactions
-        if: ${{ inputs.groundwater_controls_only }}
+        if: ${{ inputs.groundwater_controls_only && !inputs.groundwater_snow }}
         run: |
           python3 -B tests/nomacro_drainage/groundwater_clock_origin.py --origin "$RUNNER_TEMP/groundwater-origin" --runner-root "$RUNNER_TEMP" --output "$RUNNER_TEMP/proof-current"
           for name in h2-periodic h1-step-explicit h0-step-periodic; do
@@ -183,7 +216,7 @@ jobs:
           root=Path(os.environ['RUNNER_TEMP']);proof=root/('proof-current' if '${{ inputs.groundwater_controls_only }}' == 'true' else 'proof');proof.mkdir(exist_ok=True)
           provider=root/'provider/PREPARED.json'
           if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
-          if '${{ inputs.ordinary_pond }}' == 'true' or '${{ inputs.groundwater_clock }}' == 'true' or '${{ inputs.groundwater_interval }}' == 'true':
+          if '${{ inputs.ordinary_pond }}' == 'true' or '${{ inputs.groundwater_clock }}' == 'true' or '${{ inputs.groundwater_interval }}' == 'true' or '${{ inputs.groundwater_snow }}' == 'true':
               import json,hashlib
               projection={}
               for manifest in sorted((root/'builds').rglob('BUILD.json')):
@@ -204,6 +237,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ${{ inputs.groundwater_interval && 'groundwater-cde-interval-drainage' || inputs.groundwater_controls_only && 'groundwater-cde-clock-controls' || inputs.groundwater_clock && 'groundwater-cde-clock' || inputs.ordinary_pond && 'ordinary-implicit-pond' || 'secondary-implicit-pond' }}-${{ matrix.optimization }}-${{ github.sha }}
+          name: ${{ inputs.groundwater_snow && 'groundwater-snow-cde' || inputs.groundwater_interval && 'groundwater-cde-interval-drainage' || inputs.groundwater_controls_only && 'groundwater-cde-clock-controls' || inputs.groundwater_clock && 'groundwater-cde-clock' || inputs.ordinary_pond && 'ordinary-implicit-pond' || 'secondary-implicit-pond' }}-${{ matrix.optimization }}-${{ github.sha }}
           path: ${{ inputs.groundwater_controls_only && format('{0}/proof-current', runner.temp) || format('{0}/proof', runner.temp) }}
           retention-days: 30

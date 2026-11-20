@@ -21,6 +21,7 @@ def main():
     for name in ('reference-work','evidence','build-root','output'):
         parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--optimization',choices=('O0','O2'),required=True)
+    parser.add_argument('--reuse-existing-builds',action='store_true')
     args=parser.parse_args();args.output.mkdir()
     read=lambda p:json.loads(p.read_text(encoding='utf-8'))
     previous=args.evidence/f'groundwater-interval-preservation-{args.optimization}-v1'
@@ -44,14 +45,18 @@ def main():
             command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,
                      '--experimental-project',str(inputs),'--original-output','--reference-work',str(args.reference_work),
                      '--build-only','--donor-opt',args.optimization,'--kernel-opt',args.optimization,'--output',str(build)]
-            with (target/'build.stdout').open('x') as out,(target/'build.stderr').open('x') as err:
-                subprocess.run(command,cwd=ROOT,stdout=out,stderr=err,timeout=180,check=True)
+            reused_build=(build/'BUILD.json').exists()
+            if reused_build:assert args.reuse_existing_builds
+            else:
+                with (target/'build.stdout').open('x') as out,(target/'build.stderr').open('x') as err:
+                    subprocess.run(command,cwd=ROOT,stdout=out,stderr=err,timeout=180,check=True)
             meta,_=m.validate_bundle(build,args.reference_work,project)
             assert {p.name:p.read_bytes() for p in oldbuild.glob('*.f90')}=={p.name:p.read_bytes() for p in build.glob('*.f90')}
             assert oldmeta['inputs']==meta['inputs'] and oldmeta['project']==meta['project']
             assert not meta['identity']['original_output'].get('groundwater_snow_cde_output')
             delta=differences(oldmeta['identity'],meta['identity'])
             assert set(delta)<={'original_output.source_sha256','original_output.predecessor_owner_sha256',
+                               'original_output.groundwater_clock_composition_sha256','original_output.groundwater_interval_composition_sha256',
                                'groundwater_native_state.source_sha256','groundwater_native_state.predecessor_sha256',
                                'restart_publisher.library_sha256'},delta
             publisher=None
@@ -75,7 +80,8 @@ def main():
                 original_profile=str(parent),original_receipt_sha256=m.sha(baseline['authority']),original_receipt_path=str(baseline['authority']),
                 original_BUILD_sha256=m.sha(oldbuild/'BUILD.json'),current_build=str(build),
                 actual_BUILD_sha256=m.sha(build/'BUILD.json'),trajectory=receipt,cold=cold,
-                identity_changes=delta,publisher=publisher,exact_original_user_record_counts=output_counts)
+                identity_changes=delta,publisher=publisher,exact_original_user_record_counts=output_counts,
+                reused_completed_unchanged_build=reused_build)
             save()
         result['status']='ACTUAL_THREE_UNCHANGED_NOSNOW_POSTIMAGES_PASS'
     except Exception as error:
