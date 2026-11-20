@@ -64,10 +64,18 @@ jobs:
       - name: Fetch original source for exact dependency comparison
         if: inputs.controls_only
         run: git -c protocol.version=2 fetch --filter=blob:none --no-tags --depth=1 origin 03a8bcc4798726ca2e7980e95679c30f156f89c5
+      - name: Download completed original recovery checks
+        if: inputs.controls_only
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 44735754865
+          name: implicit-snow-controls-recovery-${{ matrix.optimization }}-f24c8e194b12f27c0506bbaa659fc693b95fb5fc
+          path: ${{ runner.temp }}/completed-controls
       - name: Complete missing controls without compiler or period replay
         if: inputs.controls_only
         run: |
-          python3 -B tests/nomacro_drainage/implicit_snow_recover_controls.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --original-root "$RUNNER_TEMP/proof" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof-current/recovery"
+          python3 -B tests/nomacro_drainage/implicit_snow_recover_controls.py --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --original-root "$RUNNER_TEMP/proof" --completed-controls "$RUNNER_TEMP/completed-controls/recovery" --scratch "$RUNNER_TEMP/source-refusals" --output "$RUNNER_TEMP/proof-current/recovery"
       - name: Qualify coherent original implicit Snow coupling
         if: ${{ !inputs.controls_only }}
         run: |

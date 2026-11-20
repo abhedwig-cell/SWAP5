@@ -21,6 +21,7 @@ ORIGINAL='03a8bcc4798726ca2e7980e95679c30f156f89c5'
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','original-root','scratch','output'):p.add_argument('--'+key,type=Path,required=True)
+    p.add_argument('--completed-controls',type=Path)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     a=p.parse_args();a.output.mkdir();logs=a.output/'commands';logs.mkdir()
     assert not subprocess.check_output(['git','diff','--name-only',ORIGINAL,'HEAD','--','app','src','reference','tools'],cwd=ROOT)
@@ -36,11 +37,41 @@ def main():
         target=Path(actual);assert target.resolve().is_relative_to(temp/'builds')
         source=a.original_root/entry['archive_prefix'];assert hashlib.sha256((source/'BUILD.json').read_bytes()).hexdigest()==entry['actual_BUILD_sha256']
         shutil.copytree(source,target)
+        # GitHub artifact extraction restores files as0644. Restore execution
+        # on the two original ELF payloads; their bytes and bindings stay exact.
+        for stem in ('day_donor','day_kernel'):
+            exe=target/stem;before=hashlib.sha256(exe.read_bytes()).hexdigest()
+            assert exe.read_bytes().startswith(b'\x7fELF') and not exe.is_symlink()
+            exe.chmod(0o755)
+            assert hashlib.sha256(exe.read_bytes()).hexdigest()==before
+    completed={}
+    if a.completed_controls:
+        previous=read_previous=json.loads((a.completed_controls/'RESULT.json').read_text())
+        assert previous['source']=='f24c8e194b12f27c0506bbaa659fc693b95fb5fc' and previous['status']=='FAILED'
+        assert previous['original_failed_producer_sha256']==hashlib.sha256(raw).hexdigest()
+        assert 'PermissionError' in (a.completed_controls/'commands/transactions-water-head.stderr').read_text()
+        completed={step['label']:step for step in previous['steps'] if step['status']=='PASS'}
+        assert set(completed)=={'missing-audit-full-cde-groundwater-clock','missing-audit-full-cde-head-step','source-controls-water-head'}
     q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         original_run=44732748938,original_source=ORIGINAL,original_failed_producer_sha256=hashlib.sha256(raw).hexdigest(),
-        original_failure_preserved=True,fresh_compilations=0,fresh_full_model_periods=0,fresh_short_model_periods=0,steps=[])
+        original_failure_preserved=True,prior_control_failure_preserved=True,executable_permission_restoration='ELF bytes unchanged;0644 to0755',
+        fresh_compilations=0,fresh_full_model_periods=0,fresh_short_model_periods=0,steps=[])
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     def run(label,script,args,cap):
+        if label in completed:
+            prior_path=(a.completed_controls/('INDEPENDENT_FULL_'+label.removeprefix('missing-audit-full-')+'.json') if label.startswith('missing-audit-full-') else
+                a.completed_controls/label/'RESULT.json')
+            result=json.loads(prior_path.read_text())
+            if label.startswith('missing-audit-full-'):
+                assert result['status']=='INDEPENDENT_IMPLICIT_SNOW_PHYSICAL_NATIVE_OUTPUT_PASS' and result['actual_days']==1096 and result['actual_cold_windows']==9
+            else:
+                assert result['status']=='ACTUAL_IMPLICIT_SNOW_PUBLIC_SOURCE_REFUSALS_PASS' and len(result['refusals'])==12
+                assert result['model_executions']==result['compilations']==0 and all(r['status']=='REFUSED' for r in result['refusals'])
+                build=json.loads((original/'short/water-head/RESULT.json').read_text())['build_root']
+                assert result['actual_BUILD_sha256']==hashlib.sha256((Path(build)/'BUILD.json').read_bytes()).hexdigest()
+            q['steps'].append(dict(label=label,status='REUSED_ORIGINAL_PASS',original_step=completed[label],
+                actual_reused_result=str(prior_path),actual_reused_result_sha256=hashlib.sha256(prior_path.read_bytes()).hexdigest()))
+            save();return
         cmd=[sys.executable,'-B',str(HERE/script),*map(str,args)];item=dict(label=label,command=cmd,status='RUNNING');q['steps'].append(item);save();start=time.monotonic()
         try:
             with (logs/(label+'.stdout')).open('x') as out,(logs/(label+'.stderr')).open('x') as err:
