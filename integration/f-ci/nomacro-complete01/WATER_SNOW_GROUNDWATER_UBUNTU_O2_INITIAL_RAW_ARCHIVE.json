@@ -1,0 +1,1766 @@
+{
+  "archive": "WATER_SNOW_GROUNDWATER_UBUNTU_O2_INITIAL_RAW_ARCHIVE.zip",
+  "bytes": 13670213,
+  "sha256": "a028da328a783f3da40fdbab5444b47e3f48e09727ebcffb10e8059a8c212d18",
+  "storage": "single-original-zip",
+  "parts": [
+    {
+      "file": "WATER_SNOW_GROUNDWATER_UBUNTU_O2_INITIAL_RAW_ARCHIVE.zip",
+      "bytes": 13670213,
+      "sha256": "a028da328a783f3da40fdbab5444b47e3f48e09727ebcffb10e8059a8c212d18"
+    }
+  ],
+  "members": {
+    "COMPILED_PROJECTION_V1.json": {
+      "bytes": 2054,
+      "sha256": "0dc8a29a6281ef86e9733ffc5ebc8da436132192150ce33360a8af135899f2ad"
+    },
+    "actual-workflow-git-blob.txt": {
+      "bytes": 41,
+      "sha256": "67be343c4e0a023c709e36193b9d6e7485d3380df5a131c69609fc35eaab9f8f"
+    },
+    "actual-workflow.yml": {
+      "bytes": 4162,
+      "sha256": "781f295847d82aad194a6531d50990bac044158755e9828db4e643c16e140105"
+    },
+    "compiled/explicit-h0-daily/bundle/BUILD.json": {
+      "bytes": 46905,
+      "sha256": "8000c3a1484e15e9a9977b8fae4030364d71e70536156792922740c0b833a362"
+    },
+    "compiled/explicit-h0-daily/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/explicit-h0-daily/bundle/RWU_micro.f90": {
+      "bytes": 51432,
+      "sha256": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7"
+    },
+    "compiled/explicit-h0-daily/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1584,
+      "sha256": "9f73c1bcf18d827f441e1e4c21beae653e5b82b4952bf3571a246f8fe9924031"
+    },
+    "compiled/explicit-h0-daily/bundle/boundtop.f90": {
+      "bytes": 14227,
+      "sha256": "e82dbca07c8676b7b2a1f29d57ddb320dbdf5187baeb7c3a0254431e57315664"
+    },
+    "compiled/explicit-h0-daily/bundle/day_donor": {
+      "bytes": 1725000,
+      "sha256": "754e55627d8dd1b21d96f73ccb420817c5cbaf305ad98b7ee166e589ba86e782"
+    },
+    "compiled/explicit-h0-daily/bundle/day_kernel": {
+      "bytes": 213680,
+      "sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da"
+    },
+    "compiled/explicit-h0-daily/bundle/headcalc.f90": {
+      "bytes": 29112,
+      "sha256": "34945dc244734a2b9c053b47086609ff788f7d0841556cbbae3c73dabe30f644"
+    },
+    "compiled/explicit-h0-daily/bundle/hybrid_age_output_state.f90": {
+      "bytes": 893,
+      "sha256": "860941d4d0ddb1c569e91a01d40076f94a108c5f0ec363e7c1db609d03054cc5"
+    },
+    "compiled/explicit-h0-daily/bundle/hybrid_step_budget.f90": {
+      "bytes": 4414,
+      "sha256": "3ca1598580a36b3c874b0fec25d92989c9150d66308e315b0392b88f1c05b045"
+    },
+    "compiled/explicit-h0-daily/bundle/implicit_pond_availability.f90": {
+      "bytes": 1055,
+      "sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+    },
+    "compiled/explicit-h0-daily/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2037,
+      "sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+    },
+    "compiled/explicit-h0-daily/bundle/integral.f90": {
+      "bytes": 41118,
+      "sha256": "866ffcf622ab4ced28d1cdf2f759af679c73506d2279b423cecd1e699687e411"
+    },
+    "compiled/explicit-h0-daily/bundle/irrigation.f90": {
+      "bytes": 81657,
+      "sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+    },
+    "compiled/explicit-h0-daily/bundle/macropore.f90": {
+      "bytes": 94913,
+      "sha256": "99e1d0b84d20161fa83662d586eec873ef4b4b7712d6ae8f2a195974b8f659ec"
+    },
+    "compiled/explicit-h0-daily/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/explicit-h0-daily/bundle/mod_prescribed_groundwater_reaction.f90": {
+      "bytes": 1994,
+      "sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+    },
+    "compiled/explicit-h0-daily/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/explicit-h0-daily/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/explicit-h0-daily/bundle/readswap.f90": {
+      "bytes": 59943,
+      "sha256": "82be08665adfd543e3530ad3a08559bb916e1ed46ee0709e2af73845bed540f8"
+    },
+    "compiled/explicit-h0-daily/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/explicit-h0-daily/bundle/snow_water_groundwater_native_state.f90": {
+      "bytes": 2870,
+      "sha256": "9d1b81515e1f6f7b989cbc9bb261608d131d50550cf70d29bab958f262874670"
+    },
+    "compiled/explicit-h0-daily/bundle/snow_water_groundwater_root_state.f90": {
+      "bytes": 1701,
+      "sha256": "2e20df2c291084f52094c4e72acf40b2387c521e12956d63e3e0ea8d6e5325f8"
+    },
+    "compiled/explicit-h0-daily/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/explicit-h0-daily/bundle/swap_csv_output.f90": {
+      "bytes": 132796,
+      "sha256": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784"
+    },
+    "compiled/explicit-h0-daily/bundle/swap_main.f90": {
+      "bytes": 11513,
+      "sha256": "7dc6a7e707ab54b287beb4a5f221cebb811d747ce46d49d5faf81f7d1a14674d"
+    },
+    "compiled/explicit-h0-daily/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/explicit-h0-daily/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 1990,
+      "sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534"
+    },
+    "compiled/explicit-h0-daily/bundle/timecontrol.f90": {
+      "bytes": 19382,
+      "sha256": "2f3ed26461f0ffb036f9f0deed71a6b0d0f71c54b91ce4f28e00c22d4e0e8163"
+    },
+    "compiled/explicit-h0-daily/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "compiled/explicit-h1-interval-off/bundle/BUILD.json": {
+      "bytes": 46905,
+      "sha256": "ca35569287ce88181f6b376956f775f45744139134a5002ad018c5211dc73f17"
+    },
+    "compiled/explicit-h1-interval-off/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/explicit-h1-interval-off/bundle/RWU_micro.f90": {
+      "bytes": 51432,
+      "sha256": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7"
+    },
+    "compiled/explicit-h1-interval-off/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1584,
+      "sha256": "9f73c1bcf18d827f441e1e4c21beae653e5b82b4952bf3571a246f8fe9924031"
+    },
+    "compiled/explicit-h1-interval-off/bundle/boundtop.f90": {
+      "bytes": 14227,
+      "sha256": "e82dbca07c8676b7b2a1f29d57ddb320dbdf5187baeb7c3a0254431e57315664"
+    },
+    "compiled/explicit-h1-interval-off/bundle/day_donor": {
+      "bytes": 1725000,
+      "sha256": "247b4a18dca8038bd820ed6935ffb1a806c9133e8188b7c9db3e8bf8e803501a"
+    },
+    "compiled/explicit-h1-interval-off/bundle/day_kernel": {
+      "bytes": 213680,
+      "sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da"
+    },
+    "compiled/explicit-h1-interval-off/bundle/headcalc.f90": {
+      "bytes": 29112,
+      "sha256": "34945dc244734a2b9c053b47086609ff788f7d0841556cbbae3c73dabe30f644"
+    },
+    "compiled/explicit-h1-interval-off/bundle/hybrid_age_output_state.f90": {
+      "bytes": 893,
+      "sha256": "860941d4d0ddb1c569e91a01d40076f94a108c5f0ec363e7c1db609d03054cc5"
+    },
+    "compiled/explicit-h1-interval-off/bundle/hybrid_step_budget.f90": {
+      "bytes": 4414,
+      "sha256": "3ca1598580a36b3c874b0fec25d92989c9150d66308e315b0392b88f1c05b045"
+    },
+    "compiled/explicit-h1-interval-off/bundle/implicit_pond_availability.f90": {
+      "bytes": 1055,
+      "sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+    },
+    "compiled/explicit-h1-interval-off/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2037,
+      "sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+    },
+    "compiled/explicit-h1-interval-off/bundle/integral.f90": {
+      "bytes": 41118,
+      "sha256": "866ffcf622ab4ced28d1cdf2f759af679c73506d2279b423cecd1e699687e411"
+    },
+    "compiled/explicit-h1-interval-off/bundle/irrigation.f90": {
+      "bytes": 81657,
+      "sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+    },
+    "compiled/explicit-h1-interval-off/bundle/macropore.f90": {
+      "bytes": 95738,
+      "sha256": "0b0a7ff97d3ffec17b84e0e0a43b0d4bab4c70afc0b4f7186a2c0c2908101d31"
+    },
+    "compiled/explicit-h1-interval-off/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/explicit-h1-interval-off/bundle/mod_prescribed_groundwater_reaction.f90": {
+      "bytes": 1994,
+      "sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+    },
+    "compiled/explicit-h1-interval-off/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/explicit-h1-interval-off/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/explicit-h1-interval-off/bundle/readswap.f90": {
+      "bytes": 59943,
+      "sha256": "82be08665adfd543e3530ad3a08559bb916e1ed46ee0709e2af73845bed540f8"
+    },
+    "compiled/explicit-h1-interval-off/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/explicit-h1-interval-off/bundle/snow_water_groundwater_native_state.f90": {
+      "bytes": 2870,
+      "sha256": "9d1b81515e1f6f7b989cbc9bb261608d131d50550cf70d29bab958f262874670"
+    },
+    "compiled/explicit-h1-interval-off/bundle/snow_water_groundwater_root_state.f90": {
+      "bytes": 1701,
+      "sha256": "2e20df2c291084f52094c4e72acf40b2387c521e12956d63e3e0ea8d6e5325f8"
+    },
+    "compiled/explicit-h1-interval-off/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/explicit-h1-interval-off/bundle/swap_main.f90": {
+      "bytes": 11513,
+      "sha256": "7dc6a7e707ab54b287beb4a5f221cebb811d747ce46d49d5faf81f7d1a14674d"
+    },
+    "compiled/explicit-h1-interval-off/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/explicit-h1-interval-off/bundle/swap_csv_output.f90": {
+      "bytes": 132796,
+      "sha256": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784"
+    },
+    "compiled/explicit-h1-interval-off/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 1990,
+      "sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534"
+    },
+    "compiled/explicit-h1-interval-off/bundle/timecontrol.f90": {
+      "bytes": 19382,
+      "sha256": "2f3ed26461f0ffb036f9f0deed71a6b0d0f71c54b91ce4f28e00c22d4e0e8163"
+    },
+    "compiled/explicit-h1-interval-off/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "compiled/explicit-h1-step-off/bundle/BUILD.json": {
+      "bytes": 46899,
+      "sha256": "48a5d773fb57d05533a3231af6875fb692b78323c936237dde3ed9a12240706e"
+    },
+    "compiled/explicit-h1-step-off/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/explicit-h1-step-off/bundle/RWU_micro.f90": {
+      "bytes": 51432,
+      "sha256": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7"
+    },
+    "compiled/explicit-h1-step-off/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1584,
+      "sha256": "9f73c1bcf18d827f441e1e4c21beae653e5b82b4952bf3571a246f8fe9924031"
+    },
+    "compiled/explicit-h1-step-off/bundle/boundtop.f90": {
+      "bytes": 14227,
+      "sha256": "e82dbca07c8676b7b2a1f29d57ddb320dbdf5187baeb7c3a0254431e57315664"
+    },
+    "compiled/explicit-h1-step-off/bundle/day_donor": {
+      "bytes": 1729096,
+      "sha256": "b3d7b171566fc859b294c939f0bcebeaac484d58ff8a2ed99465c92f6420577b"
+    },
+    "compiled/explicit-h1-step-off/bundle/day_kernel": {
+      "bytes": 213680,
+      "sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da"
+    },
+    "compiled/explicit-h1-step-off/bundle/headcalc.f90": {
+      "bytes": 29112,
+      "sha256": "34945dc244734a2b9c053b47086609ff788f7d0841556cbbae3c73dabe30f644"
+    },
+    "compiled/explicit-h1-step-off/bundle/hybrid_age_output_state.f90": {
+      "bytes": 893,
+      "sha256": "860941d4d0ddb1c569e91a01d40076f94a108c5f0ec363e7c1db609d03054cc5"
+    },
+    "compiled/explicit-h1-step-off/bundle/hybrid_step_budget.f90": {
+      "bytes": 4414,
+      "sha256": "3ca1598580a36b3c874b0fec25d92989c9150d66308e315b0392b88f1c05b045"
+    },
+    "compiled/explicit-h1-step-off/bundle/implicit_pond_availability.f90": {
+      "bytes": 1055,
+      "sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+    },
+    "compiled/explicit-h1-step-off/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2037,
+      "sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+    },
+    "compiled/explicit-h1-step-off/bundle/integral.f90": {
+      "bytes": 41464,
+      "sha256": "39f5ac89248be48c59cbf77cde8230a3c2b1cf68b6b56d38b780821183895407"
+    },
+    "compiled/explicit-h1-step-off/bundle/irrigation.f90": {
+      "bytes": 81657,
+      "sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+    },
+    "compiled/explicit-h1-step-off/bundle/macropore.f90": {
+      "bytes": 95738,
+      "sha256": "38eeaa0ba72e016f65794cb24e1bd92b01c20e5dd0fcc732e809106bedc5cf9b"
+    },
+    "compiled/explicit-h1-step-off/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/explicit-h1-step-off/bundle/mod_prescribed_groundwater_reaction.f90": {
+      "bytes": 1994,
+      "sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+    },
+    "compiled/explicit-h1-step-off/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/explicit-h1-step-off/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/explicit-h1-step-off/bundle/readswap.f90": {
+      "bytes": 59943,
+      "sha256": "82be08665adfd543e3530ad3a08559bb916e1ed46ee0709e2af73845bed540f8"
+    },
+    "compiled/explicit-h1-step-off/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/explicit-h1-step-off/bundle/snow_water_groundwater_native_state.f90": {
+      "bytes": 2870,
+      "sha256": "9d1b81515e1f6f7b989cbc9bb261608d131d50550cf70d29bab958f262874670"
+    },
+    "compiled/explicit-h1-step-off/bundle/snow_water_groundwater_root_state.f90": {
+      "bytes": 1701,
+      "sha256": "2e20df2c291084f52094c4e72acf40b2387c521e12956d63e3e0ea8d6e5325f8"
+    },
+    "compiled/explicit-h1-step-off/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/explicit-h1-step-off/bundle/swap_csv_output.f90": {
+      "bytes": 132796,
+      "sha256": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784"
+    },
+    "compiled/explicit-h1-step-off/bundle/swap_main.f90": {
+      "bytes": 11513,
+      "sha256": "7dc6a7e707ab54b287beb4a5f221cebb811d747ce46d49d5faf81f7d1a14674d"
+    },
+    "compiled/explicit-h1-step-off/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/explicit-h1-step-off/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 1990,
+      "sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534"
+    },
+    "compiled/explicit-h1-step-off/bundle/timecontrol.f90": {
+      "bytes": 20274,
+      "sha256": "d296af37142451eb2b071061dda87b5a64816cdf5ea91cb8b95a4a21d19e260b"
+    },
+    "compiled/explicit-h1-step-off/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "compiled/explicit-h2-clock/bundle/BUILD.json": {
+      "bytes": 46903,
+      "sha256": "923e182a757183cffe23b7201f795447adbc63a242f71c8945e54cfe3df3044b"
+    },
+    "compiled/explicit-h2-clock/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/explicit-h2-clock/bundle/RWU_micro.f90": {
+      "bytes": 51432,
+      "sha256": "440b57b84b4845090c2184755de4e4608c9063f3bf32b763113e0d325d6f91c7"
+    },
+    "compiled/explicit-h2-clock/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1584,
+      "sha256": "9f73c1bcf18d827f441e1e4c21beae653e5b82b4952bf3571a246f8fe9924031"
+    },
+    "compiled/explicit-h2-clock/bundle/boundtop.f90": {
+      "bytes": 14227,
+      "sha256": "e82dbca07c8676b7b2a1f29d57ddb320dbdf5187baeb7c3a0254431e57315664"
+    },
+    "compiled/explicit-h2-clock/bundle/day_donor": {
+      "bytes": 1725000,
+      "sha256": "2b67e84c255a1375b921b55668de451ce56a3349ea7dd26bc2e77a1b1433534f"
+    },
+    "compiled/explicit-h2-clock/bundle/day_kernel": {
+      "bytes": 213680,
+      "sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da"
+    },
+    "compiled/explicit-h2-clock/bundle/headcalc.f90": {
+      "bytes": 29112,
+      "sha256": "34945dc244734a2b9c053b47086609ff788f7d0841556cbbae3c73dabe30f644"
+    },
+    "compiled/explicit-h2-clock/bundle/hybrid_age_output_state.f90": {
+      "bytes": 893,
+      "sha256": "860941d4d0ddb1c569e91a01d40076f94a108c5f0ec363e7c1db609d03054cc5"
+    },
+    "compiled/explicit-h2-clock/bundle/hybrid_step_budget.f90": {
+      "bytes": 4414,
+      "sha256": "3ca1598580a36b3c874b0fec25d92989c9150d66308e315b0392b88f1c05b045"
+    },
+    "compiled/explicit-h2-clock/bundle/implicit_pond_availability.f90": {
+      "bytes": 1055,
+      "sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+    },
+    "compiled/explicit-h2-clock/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2037,
+      "sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+    },
+    "compiled/explicit-h2-clock/bundle/integral.f90": {
+      "bytes": 41117,
+      "sha256": "de6156e2e2ee27ceb104a03772a6d0210b375e51e9456e676c6bd7ddeb959dd7"
+    },
+    "compiled/explicit-h2-clock/bundle/irrigation.f90": {
+      "bytes": 81657,
+      "sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+    },
+    "compiled/explicit-h2-clock/bundle/macropore.f90": {
+      "bytes": 95738,
+      "sha256": "3bdc76556aa1fad294d40cf7bbd83ca6171ebb4153d41ae001fc72efb6438a40"
+    },
+    "compiled/explicit-h2-clock/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/explicit-h2-clock/bundle/mod_prescribed_groundwater_reaction.f90": {
+      "bytes": 1994,
+      "sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+    },
+    "compiled/explicit-h2-clock/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/explicit-h2-clock/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/explicit-h2-clock/bundle/readswap.f90": {
+      "bytes": 59943,
+      "sha256": "82be08665adfd543e3530ad3a08559bb916e1ed46ee0709e2af73845bed540f8"
+    },
+    "compiled/explicit-h2-clock/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/explicit-h2-clock/bundle/snow_water_groundwater_native_state.f90": {
+      "bytes": 2870,
+      "sha256": "9d1b81515e1f6f7b989cbc9bb261608d131d50550cf70d29bab958f262874670"
+    },
+    "compiled/explicit-h2-clock/bundle/snow_water_groundwater_root_state.f90": {
+      "bytes": 1701,
+      "sha256": "2e20df2c291084f52094c4e72acf40b2387c521e12956d63e3e0ea8d6e5325f8"
+    },
+    "compiled/explicit-h2-clock/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/explicit-h2-clock/bundle/swap_csv_output.f90": {
+      "bytes": 132796,
+      "sha256": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784"
+    },
+    "compiled/explicit-h2-clock/bundle/swap_main.f90": {
+      "bytes": 11513,
+      "sha256": "7dc6a7e707ab54b287beb4a5f221cebb811d747ce46d49d5faf81f7d1a14674d"
+    },
+    "compiled/explicit-h2-clock/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/explicit-h2-clock/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 1990,
+      "sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534"
+    },
+    "compiled/explicit-h2-clock/bundle/timecontrol.f90": {
+      "bytes": 20289,
+      "sha256": "16eb8e7335924b3373e88618d24fceb56e8607eaddc7e4e0aa22865111824ea3"
+    },
+    "compiled/explicit-h2-clock/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "compiled/implicit-h0-interval-off/bundle/BUILD.json": {
+      "bytes": 63251,
+      "sha256": "d0aee6e3d092956eadbb3c68cb02a4b1c9578568606b9c42776fb4970c48f740"
+    },
+    "compiled/implicit-h0-interval-off/bundle/MOD_MvG_functions.f90": {
+      "bytes": 37811,
+      "sha256": "77511928a86cccd129dc5010a144c299721fd19182915f8ddd1bf0230826a5c0"
+    },
+    "compiled/implicit-h0-interval-off/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/implicit-h0-interval-off/bundle/MOD_meteo.f90": {
+      "bytes": 83241,
+      "sha256": "f1c338398d437ad47f516749f32b5ff527131734df661b1b17af1cc0f99cdb0c"
+    },
+    "compiled/implicit-h0-interval-off/bundle/RWU_micro.f90": {
+      "bytes": 51436,
+      "sha256": "fdf6d123004dd94a0f6280406476d87bb90729f5ced8db8b09d5abe039a68656"
+    },
+    "compiled/implicit-h0-interval-off/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1584,
+      "sha256": "9f73c1bcf18d827f441e1e4c21beae653e5b82b4952bf3571a246f8fe9924031"
+    },
+    "compiled/implicit-h0-interval-off/bundle/boundtop.f90": {
+      "bytes": 15978,
+      "sha256": "10f7f095172c6def2e1925355e54b0dd5215021d66bb307297f9afe97b2f2e77"
+    },
+    "compiled/implicit-h0-interval-off/bundle/day_donor": {
+      "bytes": 1725072,
+      "sha256": "4b9cb6e691a246d6cb9a2c1896ee2b7cbbe550e4b3cf90678888bc8f75c3d61c"
+    },
+    "compiled/implicit-h0-interval-off/bundle/day_kernel": {
+      "bytes": 213680,
+      "sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da"
+    },
+    "compiled/implicit-h0-interval-off/bundle/headcalc.f90": {
+      "bytes": 30917,
+      "sha256": "a13d2e813001ff1d366cca902c8384a4347e00627a4996fb5ed5f7a612fde4f9"
+    },
+    "compiled/implicit-h0-interval-off/bundle/hybrid_age_output_state.f90": {
+      "bytes": 893,
+      "sha256": "860941d4d0ddb1c569e91a01d40076f94a108c5f0ec363e7c1db609d03054cc5"
+    },
+    "compiled/implicit-h0-interval-off/bundle/hybrid_step_budget.f90": {
+      "bytes": 4414,
+      "sha256": "3ca1598580a36b3c874b0fec25d92989c9150d66308e315b0392b88f1c05b045"
+    },
+    "compiled/implicit-h0-interval-off/bundle/implicit_pond_availability.f90": {
+      "bytes": 1055,
+      "sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+    },
+    "compiled/implicit-h0-interval-off/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2037,
+      "sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+    },
+    "compiled/implicit-h0-interval-off/bundle/integral.f90": {
+      "bytes": 41118,
+      "sha256": "866ffcf622ab4ced28d1cdf2f759af679c73506d2279b423cecd1e699687e411"
+    },
+    "compiled/implicit-h0-interval-off/bundle/irrigation.f90": {
+      "bytes": 81657,
+      "sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+    },
+    "compiled/implicit-h0-interval-off/bundle/macropore.f90": {
+      "bytes": 94913,
+      "sha256": "f36c9b1df6707908d7bd8b91d7601cccee8b76935215555b662a50dff61f417f"
+    },
+    "compiled/implicit-h0-interval-off/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/implicit-h0-interval-off/bundle/mod_prescribed_groundwater_reaction.f90": {
+      "bytes": 1994,
+      "sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+    },
+    "compiled/implicit-h0-interval-off/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/implicit-h0-interval-off/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/implicit-h0-interval-off/bundle/readswap.f90": {
+      "bytes": 59943,
+      "sha256": "82be08665adfd543e3530ad3a08559bb916e1ed46ee0709e2af73845bed540f8"
+    },
+    "compiled/implicit-h0-interval-off/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/implicit-h0-interval-off/bundle/snow_water_groundwater_native_state.f90": {
+      "bytes": 2870,
+      "sha256": "f6ffcca352ce267f20b85e42045f32a2074f653afc0c7b6225b2e6e9a0dd1b31"
+    },
+    "compiled/implicit-h0-interval-off/bundle/snow_water_groundwater_root_state.f90": {
+      "bytes": 1701,
+      "sha256": "f4b412564950e8ea53f3dd360bf46044883bf9a91840070a0189b666ee072fa9"
+    },
+    "compiled/implicit-h0-interval-off/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/implicit-h0-interval-off/bundle/swap_csv_output.f90": {
+      "bytes": 132796,
+      "sha256": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784"
+    },
+    "compiled/implicit-h0-interval-off/bundle/swap_main.f90": {
+      "bytes": 11513,
+      "sha256": "7dc6a7e707ab54b287beb4a5f221cebb811d747ce46d49d5faf81f7d1a14674d"
+    },
+    "compiled/implicit-h0-interval-off/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/implicit-h0-interval-off/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 1990,
+      "sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534"
+    },
+    "compiled/implicit-h0-interval-off/bundle/timecontrol.f90": {
+      "bytes": 19382,
+      "sha256": "2bb3f7253eda5a169e732050392dd5307048573f4af5e7e4c745508aca8f5921"
+    },
+    "compiled/implicit-h0-interval-off/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "compiled/implicit-h1-step-reset/bundle/BUILD.json": {
+      "bytes": 63243,
+      "sha256": "6910da139c5529e49711f78440b0dd4dbc008a124d9659b7bcbf9464c0dccd19"
+    },
+    "compiled/implicit-h1-step-reset/bundle/MOD_MvG_functions.f90": {
+      "bytes": 37811,
+      "sha256": "77511928a86cccd129dc5010a144c299721fd19182915f8ddd1bf0230826a5c0"
+    },
+    "compiled/implicit-h1-step-reset/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/implicit-h1-step-reset/bundle/MOD_meteo.f90": {
+      "bytes": 83241,
+      "sha256": "f1c338398d437ad47f516749f32b5ff527131734df661b1b17af1cc0f99cdb0c"
+    },
+    "compiled/implicit-h1-step-reset/bundle/RWU_micro.f90": {
+      "bytes": 51436,
+      "sha256": "fdf6d123004dd94a0f6280406476d87bb90729f5ced8db8b09d5abe039a68656"
+    },
+    "compiled/implicit-h1-step-reset/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1584,
+      "sha256": "9f73c1bcf18d827f441e1e4c21beae653e5b82b4952bf3571a246f8fe9924031"
+    },
+    "compiled/implicit-h1-step-reset/bundle/boundtop.f90": {
+      "bytes": 15978,
+      "sha256": "10f7f095172c6def2e1925355e54b0dd5215021d66bb307297f9afe97b2f2e77"
+    },
+    "compiled/implicit-h1-step-reset/bundle/day_donor": {
+      "bytes": 1729168,
+      "sha256": "9306a1b5fb333fde8cc88f902cbd4978f317844e1939511aeb3b7c4f07429f71"
+    },
+    "compiled/implicit-h1-step-reset/bundle/day_kernel": {
+      "bytes": 213680,
+      "sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da"
+    },
+    "compiled/implicit-h1-step-reset/bundle/headcalc.f90": {
+      "bytes": 30917,
+      "sha256": "a13d2e813001ff1d366cca902c8384a4347e00627a4996fb5ed5f7a612fde4f9"
+    },
+    "compiled/implicit-h1-step-reset/bundle/hybrid_age_output_state.f90": {
+      "bytes": 893,
+      "sha256": "860941d4d0ddb1c569e91a01d40076f94a108c5f0ec363e7c1db609d03054cc5"
+    },
+    "compiled/implicit-h1-step-reset/bundle/hybrid_step_budget.f90": {
+      "bytes": 4414,
+      "sha256": "3ca1598580a36b3c874b0fec25d92989c9150d66308e315b0392b88f1c05b045"
+    },
+    "compiled/implicit-h1-step-reset/bundle/implicit_pond_availability.f90": {
+      "bytes": 1055,
+      "sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+    },
+    "compiled/implicit-h1-step-reset/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2037,
+      "sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+    },
+    "compiled/implicit-h1-step-reset/bundle/integral.f90": {
+      "bytes": 42185,
+      "sha256": "1850cfb8f528f9fec8cd88e91523e61f17ad250976456ce658e0f1f5a8599082"
+    },
+    "compiled/implicit-h1-step-reset/bundle/irrigation.f90": {
+      "bytes": 81657,
+      "sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+    },
+    "compiled/implicit-h1-step-reset/bundle/macropore.f90": {
+      "bytes": 95738,
+      "sha256": "8b8d2f7beabd2669e9b782dfeec708bf51d381441fea9bc72d531a2e4becd4ec"
+    },
+    "compiled/implicit-h1-step-reset/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/implicit-h1-step-reset/bundle/mod_prescribed_groundwater_reaction.f90": {
+      "bytes": 1994,
+      "sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+    },
+    "compiled/implicit-h1-step-reset/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/implicit-h1-step-reset/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/implicit-h1-step-reset/bundle/readswap.f90": {
+      "bytes": 59943,
+      "sha256": "82be08665adfd543e3530ad3a08559bb916e1ed46ee0709e2af73845bed540f8"
+    },
+    "compiled/implicit-h1-step-reset/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/implicit-h1-step-reset/bundle/snow_water_groundwater_native_state.f90": {
+      "bytes": 2870,
+      "sha256": "f6ffcca352ce267f20b85e42045f32a2074f653afc0c7b6225b2e6e9a0dd1b31"
+    },
+    "compiled/implicit-h1-step-reset/bundle/snow_water_groundwater_root_state.f90": {
+      "bytes": 1701,
+      "sha256": "f4b412564950e8ea53f3dd360bf46044883bf9a91840070a0189b666ee072fa9"
+    },
+    "compiled/implicit-h1-step-reset/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/implicit-h1-step-reset/bundle/swap_csv_output.f90": {
+      "bytes": 132796,
+      "sha256": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784"
+    },
+    "compiled/implicit-h1-step-reset/bundle/swap_main.f90": {
+      "bytes": 11513,
+      "sha256": "7dc6a7e707ab54b287beb4a5f221cebb811d747ce46d49d5faf81f7d1a14674d"
+    },
+    "compiled/implicit-h1-step-reset/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/implicit-h1-step-reset/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 1990,
+      "sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534"
+    },
+    "compiled/implicit-h1-step-reset/bundle/timecontrol.f90": {
+      "bytes": 20274,
+      "sha256": "4075086fe4b121fd285dd69bff7c441fa59c2245dbdcbb887231c8800fe3118a"
+    },
+    "compiled/implicit-h1-step-reset/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "compiled/implicit-h2-clock/bundle/BUILD.json": {
+      "bytes": 63249,
+      "sha256": "5ce42367291c2d3d3619c0aa6a883eaa67ef26adb4d82ade561977de48e0c882"
+    },
+    "compiled/implicit-h2-clock/bundle/MOD_MvG_functions.f90": {
+      "bytes": 37811,
+      "sha256": "77511928a86cccd129dc5010a144c299721fd19182915f8ddd1bf0230826a5c0"
+    },
+    "compiled/implicit-h2-clock/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/implicit-h2-clock/bundle/MOD_meteo.f90": {
+      "bytes": 83241,
+      "sha256": "f1c338398d437ad47f516749f32b5ff527131734df661b1b17af1cc0f99cdb0c"
+    },
+    "compiled/implicit-h2-clock/bundle/RWU_micro.f90": {
+      "bytes": 51436,
+      "sha256": "fdf6d123004dd94a0f6280406476d87bb90729f5ced8db8b09d5abe039a68656"
+    },
+    "compiled/implicit-h2-clock/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1584,
+      "sha256": "9f73c1bcf18d827f441e1e4c21beae653e5b82b4952bf3571a246f8fe9924031"
+    },
+    "compiled/implicit-h2-clock/bundle/boundtop.f90": {
+      "bytes": 15978,
+      "sha256": "10f7f095172c6def2e1925355e54b0dd5215021d66bb307297f9afe97b2f2e77"
+    },
+    "compiled/implicit-h2-clock/bundle/day_donor": {
+      "bytes": 1729168,
+      "sha256": "3a6a43d79e2484fbb599091d038fe0380cf53820c7c4a75dc8e6d239feb089f7"
+    },
+    "compiled/implicit-h2-clock/bundle/day_kernel": {
+      "bytes": 213680,
+      "sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da"
+    },
+    "compiled/implicit-h2-clock/bundle/headcalc.f90": {
+      "bytes": 30917,
+      "sha256": "a13d2e813001ff1d366cca902c8384a4347e00627a4996fb5ed5f7a612fde4f9"
+    },
+    "compiled/implicit-h2-clock/bundle/hybrid_age_output_state.f90": {
+      "bytes": 893,
+      "sha256": "860941d4d0ddb1c569e91a01d40076f94a108c5f0ec363e7c1db609d03054cc5"
+    },
+    "compiled/implicit-h2-clock/bundle/hybrid_step_budget.f90": {
+      "bytes": 4414,
+      "sha256": "3ca1598580a36b3c874b0fec25d92989c9150d66308e315b0392b88f1c05b045"
+    },
+    "compiled/implicit-h2-clock/bundle/implicit_pond_availability.f90": {
+      "bytes": 1055,
+      "sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+    },
+    "compiled/implicit-h2-clock/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2037,
+      "sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+    },
+    "compiled/implicit-h2-clock/bundle/integral.f90": {
+      "bytes": 41117,
+      "sha256": "de6156e2e2ee27ceb104a03772a6d0210b375e51e9456e676c6bd7ddeb959dd7"
+    },
+    "compiled/implicit-h2-clock/bundle/irrigation.f90": {
+      "bytes": 81657,
+      "sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+    },
+    "compiled/implicit-h2-clock/bundle/macropore.f90": {
+      "bytes": 95738,
+      "sha256": "96cab1b0863123a0cb2a66d83a1588d86b81dc06ee168305f9a8276d76758e85"
+    },
+    "compiled/implicit-h2-clock/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/implicit-h2-clock/bundle/mod_prescribed_groundwater_reaction.f90": {
+      "bytes": 1994,
+      "sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+    },
+    "compiled/implicit-h2-clock/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/implicit-h2-clock/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/implicit-h2-clock/bundle/readswap.f90": {
+      "bytes": 59943,
+      "sha256": "82be08665adfd543e3530ad3a08559bb916e1ed46ee0709e2af73845bed540f8"
+    },
+    "compiled/implicit-h2-clock/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/implicit-h2-clock/bundle/snow_water_groundwater_native_state.f90": {
+      "bytes": 2870,
+      "sha256": "f6ffcca352ce267f20b85e42045f32a2074f653afc0c7b6225b2e6e9a0dd1b31"
+    },
+    "compiled/implicit-h2-clock/bundle/snow_water_groundwater_root_state.f90": {
+      "bytes": 1701,
+      "sha256": "f4b412564950e8ea53f3dd360bf46044883bf9a91840070a0189b666ee072fa9"
+    },
+    "compiled/implicit-h2-clock/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/implicit-h2-clock/bundle/swap_csv_output.f90": {
+      "bytes": 132796,
+      "sha256": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784"
+    },
+    "compiled/implicit-h2-clock/bundle/swap_main.f90": {
+      "bytes": 11513,
+      "sha256": "7dc6a7e707ab54b287beb4a5f221cebb811d747ce46d49d5faf81f7d1a14674d"
+    },
+    "compiled/implicit-h2-clock/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/implicit-h2-clock/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 1990,
+      "sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534"
+    },
+    "compiled/implicit-h2-clock/bundle/timecontrol.f90": {
+      "bytes": 20289,
+      "sha256": "05ea65ff678f2b35d39784b0a09344baa57dcbac1f7dc9f945eff49bcacaeb42"
+    },
+    "compiled/implicit-h2-clock/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/BUILD.json": {
+      "bytes": 63253,
+      "sha256": "b91dd5fcdf398978d900da5d2c3776d59e3e4b578f95b6bd7cec9f99841787ea"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/MOD_meteo.f90": {
+      "bytes": 83241,
+      "sha256": "f1c338398d437ad47f516749f32b5ff527131734df661b1b17af1cc0f99cdb0c"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/MOD_MvG_functions.f90": {
+      "bytes": 37811,
+      "sha256": "77511928a86cccd129dc5010a144c299721fd19182915f8ddd1bf0230826a5c0"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/RWU_micro.f90": {
+      "bytes": 51436,
+      "sha256": "fdf6d123004dd94a0f6280406476d87bb90729f5ced8db8b09d5abe039a68656"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1584,
+      "sha256": "9f73c1bcf18d827f441e1e4c21beae653e5b82b4952bf3571a246f8fe9924031"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/boundtop.f90": {
+      "bytes": 15978,
+      "sha256": "10f7f095172c6def2e1925355e54b0dd5215021d66bb307297f9afe97b2f2e77"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/day_donor": {
+      "bytes": 1729240,
+      "sha256": "b2b3ce8539fbc5225fb51c66fd3640855df8a4fef07cf83e56228529f01c7e30"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/headcalc.f90": {
+      "bytes": 30917,
+      "sha256": "a13d2e813001ff1d366cca902c8384a4347e00627a4996fb5ed5f7a612fde4f9"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/hybrid_age_output_state.f90": {
+      "bytes": 893,
+      "sha256": "860941d4d0ddb1c569e91a01d40076f94a108c5f0ec363e7c1db609d03054cc5"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/day_kernel": {
+      "bytes": 213680,
+      "sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/hybrid_step_budget.f90": {
+      "bytes": 4414,
+      "sha256": "3ca1598580a36b3c874b0fec25d92989c9150d66308e315b0392b88f1c05b045"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/implicit_pond_availability.f90": {
+      "bytes": 1055,
+      "sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2037,
+      "sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/integral.f90": {
+      "bytes": 41117,
+      "sha256": "de6156e2e2ee27ceb104a03772a6d0210b375e51e9456e676c6bd7ddeb959dd7"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/interface_plant.f90": {
+      "bytes": 14234,
+      "sha256": "09383cfe153262a8b8a46bca3b0c612cc9c2f3c537feb45dd7b996e50eb199e6"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/irrigation.f90": {
+      "bytes": 81657,
+      "sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/macropore.f90": {
+      "bytes": 95903,
+      "sha256": "b798e92f6eb3e6eca168325526da5d635cbc4c4b27b2b09fbe5805348705df0b"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/mod_prescribed_groundwater_reaction.f90": {
+      "bytes": 1994,
+      "sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/readswap.f90": {
+      "bytes": 59943,
+      "sha256": "82be08665adfd543e3530ad3a08559bb916e1ed46ee0709e2af73845bed540f8"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/snow_water_groundwater_root_state.f90": {
+      "bytes": 1701,
+      "sha256": "f4b412564950e8ea53f3dd360bf46044883bf9a91840070a0189b666ee072fa9"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/snow_water_groundwater_native_state.f90": {
+      "bytes": 2870,
+      "sha256": "f6ffcca352ce267f20b85e42045f32a2074f653afc0c7b6225b2e6e9a0dd1b31"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/swap_csv_output.f90": {
+      "bytes": 132796,
+      "sha256": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/swap_main.f90": {
+      "bytes": 11513,
+      "sha256": "7dc6a7e707ab54b287beb4a5f221cebb811d747ce46d49d5faf81f7d1a14674d"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 1990,
+      "sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "compiled/implicit-h2-daily/bundle/BUILD.json": {
+      "bytes": 63251,
+      "sha256": "d32f2a210f0038ad04cf06ba081e32254a1372c1a466762520f5b237024594b1"
+    },
+    "compiled/implicit-h2-daily/bundle/MOD_MvG_functions.f90": {
+      "bytes": 37811,
+      "sha256": "77511928a86cccd129dc5010a144c299721fd19182915f8ddd1bf0230826a5c0"
+    },
+    "compiled/implicit-h2-clock-plant-et/bundle/timecontrol.f90": {
+      "bytes": 20289,
+      "sha256": "05ea65ff678f2b35d39784b0a09344baa57dcbac1f7dc9f945eff49bcacaeb42"
+    },
+    "compiled/implicit-h2-daily/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 79159,
+      "sha256": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+    },
+    "compiled/implicit-h2-daily/bundle/MOD_meteo.f90": {
+      "bytes": 83241,
+      "sha256": "f1c338398d437ad47f516749f32b5ff527131734df661b1b17af1cc0f99cdb0c"
+    },
+    "compiled/implicit-h2-daily/bundle/RWU_micro.f90": {
+      "bytes": 51436,
+      "sha256": "fdf6d123004dd94a0f6280406476d87bb90729f5ced8db8b09d5abe039a68656"
+    },
+    "compiled/implicit-h2-daily/bundle/age_output_calendar_probe.f90": {
+      "bytes": 1584,
+      "sha256": "9f73c1bcf18d827f441e1e4c21beae653e5b82b4952bf3571a246f8fe9924031"
+    },
+    "compiled/implicit-h2-daily/bundle/boundtop.f90": {
+      "bytes": 15978,
+      "sha256": "10f7f095172c6def2e1925355e54b0dd5215021d66bb307297f9afe97b2f2e77"
+    },
+    "compiled/implicit-h2-daily/bundle/day_donor": {
+      "bytes": 1725072,
+      "sha256": "cd62e5429b4e6be8b281504bb69e4cfc2dff1494e24123ef96dc2b65cddc6cc2"
+    },
+    "compiled/implicit-h2-daily/bundle/headcalc.f90": {
+      "bytes": 30917,
+      "sha256": "a13d2e813001ff1d366cca902c8384a4347e00627a4996fb5ed5f7a612fde4f9"
+    },
+    "compiled/implicit-h2-daily/bundle/day_kernel": {
+      "bytes": 213680,
+      "sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da"
+    },
+    "compiled/implicit-h2-daily/bundle/hybrid_age_output_state.f90": {
+      "bytes": 893,
+      "sha256": "860941d4d0ddb1c569e91a01d40076f94a108c5f0ec363e7c1db609d03054cc5"
+    },
+    "compiled/implicit-h2-daily/bundle/hybrid_step_budget.f90": {
+      "bytes": 4414,
+      "sha256": "3ca1598580a36b3c874b0fec25d92989c9150d66308e315b0392b88f1c05b045"
+    },
+    "compiled/implicit-h2-daily/bundle/implicit_pond_availability.f90": {
+      "bytes": 1055,
+      "sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+    },
+    "compiled/implicit-h2-daily/bundle/implicit_pond_event_state.f90": {
+      "bytes": 2037,
+      "sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85"
+    },
+    "compiled/implicit-h2-daily/bundle/integral.f90": {
+      "bytes": 41118,
+      "sha256": "866ffcf622ab4ced28d1cdf2f759af679c73506d2279b423cecd1e699687e411"
+    },
+    "compiled/implicit-h2-daily/bundle/irrigation.f90": {
+      "bytes": 81657,
+      "sha256": "a799c5525113aae837bfd38e90c0addb8061a21135a9b66c1593d01ae265640a"
+    },
+    "compiled/implicit-h2-daily/bundle/macropore.f90": {
+      "bytes": 95738,
+      "sha256": "fc62a094af878c090055724a2fe087df96a61fe36e985def6ee632d75110ad16"
+    },
+    "compiled/implicit-h2-daily/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2664,
+      "sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd"
+    },
+    "compiled/implicit-h2-daily/bundle/mod_prescribed_groundwater_reaction.f90": {
+      "bytes": 1994,
+      "sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+    },
+    "compiled/implicit-h2-daily/bundle/original_output_thermal_domain.f90": {
+      "bytes": 1059,
+      "sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8"
+    },
+    "compiled/implicit-h2-daily/bundle/oxygenstress.f90": {
+      "bytes": 65252,
+      "sha256": "0b074ee055bbdde9c5d96a6fcb34346b5b0497cb5e09e91051559bf2ca97ce29"
+    },
+    "compiled/implicit-h2-daily/bundle/readswap.f90": {
+      "bytes": 59943,
+      "sha256": "82be08665adfd543e3530ad3a08559bb916e1ed46ee0709e2af73845bed540f8"
+    },
+    "compiled/implicit-h2-daily/bundle/restart_publish.so": {
+      "bytes": 16160,
+      "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+    },
+    "compiled/implicit-h2-daily/bundle/snow_water_groundwater_native_state.f90": {
+      "bytes": 2870,
+      "sha256": "f6ffcca352ce267f20b85e42045f32a2074f653afc0c7b6225b2e6e9a0dd1b31"
+    },
+    "compiled/implicit-h2-daily/bundle/snow_water_groundwater_root_state.f90": {
+      "bytes": 1701,
+      "sha256": "f4b412564950e8ea53f3dd360bf46044883bf9a91840070a0189b666ee072fa9"
+    },
+    "compiled/implicit-h2-daily/bundle/swap.f90": {
+      "bytes": 28590,
+      "sha256": "eaebe5467615bd7ecb06adcfb2b5d30c59031a00a36ee4541607aea7e719d4cf"
+    },
+    "compiled/implicit-h2-daily/bundle/swap_main.f90": {
+      "bytes": 11513,
+      "sha256": "7dc6a7e707ab54b287beb4a5f221cebb811d747ce46d49d5faf81f7d1a14674d"
+    },
+    "compiled/implicit-h2-daily/bundle/swap_csv_output.f90": {
+      "bytes": 132796,
+      "sha256": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784"
+    },
+    "compiled/implicit-h2-daily/bundle/swapoutput.f90": {
+      "bytes": 46530,
+      "sha256": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+    },
+    "compiled/implicit-h2-daily/bundle/thermal_output_snow_calendar_state.f90": {
+      "bytes": 1990,
+      "sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534"
+    },
+    "compiled/implicit-h2-daily/bundle/timecontrol.f90": {
+      "bytes": 19382,
+      "sha256": "2bb3f7253eda5a169e732050392dd5307048573f4af5e7e4c745508aca8f5921"
+    },
+    "compiled/implicit-h2-daily/bundle/wofost.f90": {
+      "bytes": 76709,
+      "sha256": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+    },
+    "controller-source.json": {
+      "bytes": 180593,
+      "sha256": "4bd215d4fc61451db82320471a89c8b7c5ca7f00ca17a11020d544b91e7dd987"
+    },
+    "controller-source.tar": {
+      "bytes": 4321280,
+      "sha256": "16e8f3ab0f594b5f0dff79d3c86a947de1eb29f9c43a954ba98ce6e97e96f3aa"
+    },
+    "provider-PREPARED.json": {
+      "bytes": 40575,
+      "sha256": "2b4d0cf536564727e86f1be8d7867f0efbbfe1d6ecb6655969ee5f088040cd8d"
+    },
+    "source/RESULT.json": {
+      "bytes": 519621,
+      "sha256": "5a7cfd3765c84039ae3f70a318ec60d5e945eef09288a1b5a66e2deb2ca11684"
+    },
+    "source/actual-producer-source.zip": {
+      "bytes": 4150386,
+      "sha256": "ec22c84cbb115e62502c42b04b7b82b9fbb2065233a45ccd4b26f5349c48dbc7"
+    },
+    "water-snow-groundwater/RESULT.json": {
+      "bytes": 2376,
+      "sha256": "9544e7ed8c3256317ee1c06ff0ce2d0f9ca0af9a500c51fb0b858aa78f3f53c8"
+    },
+    "water-snow-groundwater/commands/short-explicit-h0-daily.stderr": {
+      "bytes": 1257,
+      "sha256": "e7c2feb1b124d827661beead5895d1e55c9644e39845f4a9f69d7e491b214d81"
+    },
+    "water-snow-groundwater/commands/short-explicit-h0-daily.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/commands/source.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/commands/source.stdout": {
+      "bytes": 517,
+      "sha256": "bbf7eef0c0120a522535f47bb1d0ba8a0743c8b7e4c113ce7cd32fbc589e400a"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/RESULT.json": {
+      "bytes": 3697,
+      "sha256": "76eea952f9dce46a6243e9c6973bf9eb4e1dfb899e2a3c6b1158db699dcc6be3"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/BUILD.json": {
+      "bytes": 46904,
+      "sha256": "c3fbc701a8d3716eecdd39782ecccfeb389e820751b9a6127937cbe3dfc2b70a"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/accepted-column-1-day-4.zip": {
+      "bytes": 1494633,
+      "sha256": "a86841e06ea3ec83de86ebad626c77e035285ad73580119554408b75ea59e5ea"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/accepted-column-1-day-2.zip": {
+      "bytes": 1494605,
+      "sha256": "4d02527c7cf2221c11165ec93fa6aaffe22f7db25c8e4f4026cdd4e2a13a6911"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/accepted-column-1-day-7.zip": {
+      "bytes": 1494608,
+      "sha256": "a003b99d96451da492b2938b05c554ba2050e556e2851c2e7c0e4286377c864a"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/accepted-column-1-day-9.zip": {
+      "bytes": 1494568,
+      "sha256": "bf0d3fbcdb03bf93d9c3a15cf45ee0ac77d605b092ace6d9436903a4d411826b"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/daily.jsonl": {
+      "bytes": 33703,
+      "sha256": "8e47a06965d28ea8d43f57306672c68068ccf84cb7c59c8677f9c68d5214947d"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/283rd$00003.tmp": {
+      "bytes": 244992,
+      "sha256": "4bd4c4973a32fe6cd880ab8b5d4d9884edc6adfd9fc06662a21de9ea9782d13f"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/kernel.stdout": {
+      "bytes": 3204,
+      "sha256": "652dcf2829e02bccd2546b0a2003acc23dc5f5b76800a017715199085d847877"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/donor.stdout": {
+      "bytes": 87739,
+      "sha256": "3c39cc89e22766a7fef3ea210fbb2b364a4c23019c05843c0991e5ea67990910"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/fixed-irrigationrd$00002.tmp": {
+      "bytes": 1188,
+      "sha256": "e7c3f02b286a5191d4584d3cefaa33b88e854b28efa9536cd956d3ed69d31ad0"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/macro.bin": {
+      "bytes": 1467636,
+      "sha256": "1c250575cc5dbcb539979c47881c4cdd5e048d2e5a1cb584e261659b4c8ccf5a"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/result.bal": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/result.blc": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/result.end": {
+      "bytes": 784,
+      "sha256": "1c17cf33454b7097fbcf8d1f03076bf3adfcd67816a3c58890f181c6631db38d"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/result_output.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/swap.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/swap.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/swap.swp": {
+      "bytes": 35981,
+      "sha256": "295253e44cb101c07fac8229595754091dda0537a53b20f9aa672a74213bf0af"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/swap.wrn": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/swaprd$00001.tmp": {
+      "bytes": 19932,
+      "sha256": "af8295b13df8324cbf6902a0bed09579b007a17add6881e0b6b273760edb9efd"
+    },
+    "water-snow-groundwater/short-explicit-h0-daily/trajectory/original/swaprd$00004.tmp": {
+      "bytes": 5940,
+      "sha256": "d4b9efe2a723608be369a857dd1681e2e2d86a2ae9c27a1fda2b5cb567391cca"
+    },
+    "water-snow-groundwater/source-forms/RESULT.json": {
+      "bytes": 15576,
+      "sha256": "cbfa19e31fcf552cfefda6fac786e5cc4bcaf7645b576b7de5d4ecf330778697"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/build.stdout": {
+      "bytes": 100,
+      "sha256": "2f90f716cbb492998079a695925d31bf1ed9a9f9347957e76e736f7373a81da6"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/source-forms/explicit-h0-daily/input/swap.swp": {
+      "bytes": 35981,
+      "sha256": "b2b6bc7466aeb2ce0513871418a7af90d6a28403cdbd14fd648fd6b2cac844d9"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/build.stdout": {
+      "bytes": 100,
+      "sha256": "2f90f716cbb492998079a695925d31bf1ed9a9f9347957e76e736f7373a81da6"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-interval-off/input/swap.swp": {
+      "bytes": 35981,
+      "sha256": "a57ffb280ae611537c5536f7d1e07ef76f9a911924f048e5be81315fc72279bf"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/build.stdout": {
+      "bytes": 100,
+      "sha256": "2f90f716cbb492998079a695925d31bf1ed9a9f9347957e76e736f7373a81da6"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/source-forms/explicit-h1-step-off/input/swap.swp": {
+      "bytes": 36020,
+      "sha256": "872ff8ad5f130069753399789818905caec2533ebd30298a16232c31f4db4750"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/build.stdout": {
+      "bytes": 100,
+      "sha256": "2f90f716cbb492998079a695925d31bf1ed9a9f9347957e76e736f7373a81da6"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/source-forms/explicit-h2-clock/input/swap.swp": {
+      "bytes": 35981,
+      "sha256": "32bb72bc73260aeca1c1a8dd31c12aaf9511b72228c98defd0a64a05bb25061b"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/build.stdout": {
+      "bytes": 100,
+      "sha256": "2f90f716cbb492998079a695925d31bf1ed9a9f9347957e76e736f7373a81da6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/source-forms/implicit-h0-interval-off/input/swap.swp": {
+      "bytes": 35981,
+      "sha256": "ba88958d020a292812d23c3d1bdbc961330b33ea2c777a3815e708e8e9603061"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/build.stdout": {
+      "bytes": 100,
+      "sha256": "2f90f716cbb492998079a695925d31bf1ed9a9f9347957e76e736f7373a81da6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/source-forms/implicit-h1-step-reset/input/swap.swp": {
+      "bytes": 36020,
+      "sha256": "2dfba821719ccaa666b2b2b4e19a1e9d83484ab2a9c4afc50517b6597c6d6a3c"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/build.stdout": {
+      "bytes": 100,
+      "sha256": "2f90f716cbb492998079a695925d31bf1ed9a9f9347957e76e736f7373a81da6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock/input/swap.swp": {
+      "bytes": 35981,
+      "sha256": "426e5a4344f1230d7469a103eed8a26ed72255a1e0d73f686e43af3bee269317"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/build.stdout": {
+      "bytes": 100,
+      "sha256": "2f90f716cbb492998079a695925d31bf1ed9a9f9347957e76e736f7373a81da6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-clock-plant-et/input/swap.swp": {
+      "bytes": 35981,
+      "sha256": "010c14fad5218053fcfbc053ab479c752b83b8888792d25a1b76d57ebcf2baf9"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/build.stdout": {
+      "bytes": 100,
+      "sha256": "2f90f716cbb492998079a695925d31bf1ed9a9f9347957e76e736f7373a81da6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/283.met": {
+      "bytes": 71884,
+      "sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "water-snow-groundwater/source-forms/implicit-h2-daily/input/swap.swp": {
+      "bytes": 35981,
+      "sha256": "9a1274cc9969717477ada35f887f462513aafa59650596862d9e3b9f7cfccfb9"
+    }
+  },
+  "original_run": 44749932813,
+  "original_whole_job_conclusion": "FAILURE",
+  "role": "INITIAL",
+  "original_bytes_unchanged": true,
+  "original_failed_producers_preserved": true,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED"
+}
