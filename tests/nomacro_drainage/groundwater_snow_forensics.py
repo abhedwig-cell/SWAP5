@@ -8,6 +8,7 @@ from datetime import date, timedelta
 import hashlib
 import io
 import math
+import re
 from pathlib import Path
 import struct
 import sys
@@ -102,6 +103,15 @@ def audit(root,build_root=None,input_root=None):
             'ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'), 'Actual composed period incomplete')
     selected=build['identity']['original_output'];require(selected.get('groundwater_cde_clock') is True or selected.get('groundwater_cde_interval') is True,'Wrong actual composed output owner')
     for name,sha in build['inputs'].items():require(digest(inputs/name)==sha,'Actual composed input changed')
+    swp=(inputs/'swap.swp').read_text(encoding='cp1252')
+    for field,selector in (('hysteresis','SWHYST'),('bottom','SWBOTB'),('kmean','SWKMEAN'),
+                           ('implicit','SWKIMPL'),('snow','SWSNOW'),('drainage','SWDRA')):
+        values=re.findall(r'(?im)^\s*'+selector+r'\s*=\s*([+\-0-9.eEdD]+)',swp)
+        require(len(values)==1 and float(values[0].lower().replace('d','e'))==q['parameters'][field],
+                'Actual composed selector/claimed context differs: '+selector)
+    require((selected['swhyst'],selected['swdra'],selected['swsnow'],selected['nprintday'],selected['flprintdt'],selected['swcsv'])==
+            tuple(q['parameters'][key] for key in ('hysteresis','drainage','snow','nprintday','perstep','format')),
+            'Actual original output/claimed context differs')
     for name,sha in build['identity']['donor_generated'].items():require(digest(buildpath/name)==sha,'Actual composed generated source changed')
     for role,stem in [('donor','day_donor'),('kernel','day_kernel')]:
         exe=next((buildpath/(stem+s) for s in ('','.exe') if (buildpath/(stem+s)).exists()),None)

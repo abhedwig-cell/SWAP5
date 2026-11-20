@@ -1,0 +1,108 @@
+{
+  "parent": "3baf8a05786af8635e60b4df8518c77ff3f8eeb2",
+  "runtime": "8b8536033f1f260ff13d76f3b66cc1f4ccf7c4b0",
+  "changes": {
+    "app/hybrid_water/cde_clock_output.py": [
+      {
+        "runtime_line": 46,
+        "before": "    if bottom not in (1,5,8) or bottom==1 and swsnow:return None\n",
+        "after": "    if bottom not in (1,5,8):return None\n"
+      },
+      {
+        "runtime_line": 57,
+        "before": "        **({'groundwater_cde_clock':True} if bottom==1 else {}))\n",
+        "after": "        **({'groundwater_cde_clock':True} if bottom==1 else {}),\n        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}))\n"
+      },
+      {
+        "runtime_line": 105,
+        "before": "",
+        "after": "    if selected.get('groundwater_snow_cde_output'):\n        from groundwater_snow_cde import metadata as snow_groundwater_metadata\n        result.update(snow_groundwater_metadata(selected))\n"
+      },
+      {
+        "runtime_line": 143,
+        "before": "        source=groundwater_integral(source,original,watstor)\n",
+        "after": "        source=groundwater_integral(source,original,watstor,selected)\n"
+      },
+      {
+        "runtime_line": 242,
+        "before": "",
+        "after": "    if selected.get('groundwater_snow_cde_output'):\n        from groundwater_snow_clock import render as groundwater_snow_timecontrol\n        time_source=groundwater_snow_timecontrol(time_source,selected,project.start_clock)\n"
+      },
+      {
+        "runtime_line": 272,
+        "before": "    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched\n",
+        "after": "    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe')\n    if selected.get('groundwater_snow_cde_output'):\n        from groundwater_snow_retry import apply_build as snow_retry_build\n        patched=snow_retry_build(output,patched)\n    return patched\n"
+      }
+    ],
+    "app/hybrid_water/cde_interval_output.py": [
+      {
+        "runtime_line": 43,
+        "before": "    if bottom not in (1,5,8) or bottom==1 and swsnow:return None\n",
+        "after": "    if bottom not in (1,5,8):return None\n"
+      },
+      {
+        "runtime_line": 54,
+        "before": "        **({'groundwater_cde_interval':True} if bottom==1 else {}))\n",
+        "after": "        **({'groundwater_cde_interval':True} if bottom==1 else {}),\n        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}))\n"
+      },
+      {
+        "runtime_line": 95,
+        "before": "",
+        "after": "    if selected.get('groundwater_snow_cde_output'):\n        from groundwater_snow_cde import metadata as snow_groundwater_metadata\n        result.update(snow_groundwater_metadata(selected))\n"
+      },
+      {
+        "runtime_line": 204,
+        "before": "    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe');return patched\n",
+        "after": "    if selected.get('groundwater_snow_cde_output'):\n        from groundwater_snow_clock import render as groundwater_snow_timecontrol\n        if 'timecontrol' in patched or (output/'timecontrol.f90').exists():raise ValueError('Multiple Snow groundwater clock owners')\n        original_time=(donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')\n        (output/'timecontrol.f90').write_text(groundwater_snow_timecontrol(original_time,selected,project.start_clock),encoding='cp1252')\n        extra.append('timecontrol')\n    patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe')\n    if selected.get('groundwater_snow_cde_output'):\n        from groundwater_snow_retry import apply_build as snow_retry_build\n        patched=snow_retry_build(output,patched)\n    return patched\n"
+      }
+    ],
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "runtime_line": 216,
+        "before": "    if (identity.get('original_output') or {}).get('groundwater_cde_interval'):\n",
+        "after": "    if (identity.get('original_output') or {}).get('groundwater_snow_cde_output'):\n        from groundwater_snow_cde_source_guard import validate_source as validate_snow_groundwater_source\n        validate_snow_groundwater_source(bundle,identity)\n    elif (identity.get('original_output') or {}).get('groundwater_cde_interval'):\n"
+      },
+      {
+        "runtime_line": 223,
+        "before": "            not identity.get('ordinary_implicit_pond_switch')):\n",
+        "after": "            not identity.get('ordinary_implicit_pond_switch') and\n            not (identity.get('original_output') or {}).get('groundwater_snow_cde_output')):\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_cde_clock.py": [
+      {
+        "runtime_line": 13,
+        "before": "",
+        "after": "    if selected.get('groundwater_snow_cde_output'):\n        from groundwater_snow_cde import magic as snow_magic\n        return snow_magic(selected,True)\n"
+      },
+      {
+        "runtime_line": 27,
+        "before": "def integral(source,original,watstor):\n",
+        "after": "def integral(source,original,watstor,selected=None):\n"
+      },
+      {
+        "runtime_line": 29,
+        "before": "",
+        "after": "    if selected is not None and selected.get('groundwater_snow_cde_output'):\n        from groundwater_snow_cde import trial_source as snow_trial\n        start='real(8) function hybrid_snow_soil_trial_residual('\n        trial=snow_trial(original,watstor,selected)\n    else:trial=trial_source(original,watstor)\n"
+      },
+      {
+        "runtime_line": 36,
+        "before": "    return source[:first]+trial_source(original,watstor)+source[last:]\n",
+        "after": "    return source[:first]+trial+source[last:]\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_cde_interval.py": [
+      {
+        "runtime_line": 11,
+        "before": "",
+        "after": "    if selected.get('groundwater_snow_cde_output'):\n        from groundwater_snow_cde import magic as snow_magic\n        return snow_magic(selected,False)\n"
+      }
+    ]
+  },
+  "added": [
+    "app/hybrid_water/groundwater_snow_cde.py",
+    "app/hybrid_water/groundwater_snow_cde_source_guard.py",
+    "app/hybrid_water/groundwater_snow_clock.py",
+    "app/hybrid_water/groundwater_snow_retry.py"
+  ],
+  "classification": "REFERENCE_CORRECTIONS_COMPOSE_EXISTING_QUALIFIED_ROLLBACK_EVENT_AVAILABILITY_AND_ORIGINAL_SNOW_GROUNDWATER_CDE"
+}
