@@ -9,8 +9,8 @@ from ordinary_pond_evidence import read,digest,require
 ROOT=Path(__file__).resolve().parents[2]
 
 
-def audit(root,expected_builds=6):
-    root=Path(root);cap=read(root/'source/RESULT.json');archive=root/'source'/cap['archive']
+def audit(root,expected_builds=6,source_root=None,build_paths=None):
+    root=Path(root);source=Path(source_root or root/'source');cap=read(source/'RESULT.json');archive=source/cap['archive']
     require(digest(archive)==cap['sha256'],'Actual clock source capsule changed')
     tree={s.split('\t',1)[1]:s.split('\t',1)[0].split()[2] for s in subprocess.check_output(['git','ls-tree','-r',cap['producer_head']],cwd=ROOT,text=True).splitlines()}
     def sha(b):return hashlib.sha256(b).hexdigest()
@@ -25,7 +25,8 @@ def audit(root,expected_builds=6):
             require(len(raw)==item['bytes'] and sha(raw)==item['sha256'] and item['git_blob'] in (blob(raw),blob(lf)), 'Actual clock source bytes differ')
             if 'lf_normalized_sha256' in item:require(sha(lf)==item['lf_normalized_sha256'],'Actual clock LF source differs')
     provider=read(root/'provider-PREPARED.json');builds=[]
-    for file in sorted((root/'compiled').rglob('BUILD.json')):
+    paths=sorted(Path(p)/'BUILD.json' for p in build_paths) if build_paths is not None else sorted((root/'compiled').rglob('BUILD.json'))
+    for file in paths:
         build=read(file);i=build['identity'];output=i['original_output']
         for field,name in [('host','daily_host.py'),('adapter','donor_adapter.f90'),('driver','main.f90'),('experimental_input_adapter','experimental_project.py')]:
             require(i[field]==cap['members']['app/hybrid_water/'+name]['sha256'],'Actual clock compiler source differs')
@@ -34,6 +35,8 @@ def audit(root,expected_builds=6):
         require(i['ttutil_library']==provider['provider_files']['build/ttutil-obj/libttutil.a'],'Actual clock TTUTIL provider differs')
         for field,name in [('source_sha256','cde_clock_output.py'),('groundwater_clock_composition_sha256','groundwater_cde_clock.py'),('groundwater_trial_provider_sha256','age_groundwater_output.py')]:
             require(output[field]==cap['members']['app/hybrid_water/'+name]['lf_normalized_sha256'],'Actual composed clock renderer source differs')
+        actual_private=(file.parent/'original_cde_output_state.f90').read_bytes().replace(b'\r\n',b'\n')
+        require(sha(actual_private)==output['cde_output_state_sha256']==cap['members']['app/hybrid_water/cde_interval_output_state.f90']['lf_normalized_sha256'],'Actual compiled private-state template differs')
         native=i['groundwater_native_state'];history=bool(output['swhyst'])
         for field,name in [('source_sha256','groundwater_history_native.py' if history else 'groundwater_native.py'),('provider_sha256','groundwater_history_native_state.f90' if history else 'groundwater_native_state.f90')]:
             require(native[field]==cap['members']['app/hybrid_water/'+name]['sha256'],'Actual composed native source differs')
