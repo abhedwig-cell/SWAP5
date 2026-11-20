@@ -1939,11 +1939,11 @@
   },
   "ordinary_cde_groundwater_hysteresis_subdaily": {
     "classification": "MISSING_COMPOSITION",
-    "implementation": "IMPLEMENTED_AND_INDEPENDENT_SCIENCE_PASS_PENDING_SOURCE_RAW_ADMISSION",
+    "implementation": "REGISTERED_SOURCE_RAW_CLEAN_CANDIDATE_PASS_CANONICAL_PENDING",
     "historical_function": "CDE SWKIMPL1/SWMEAN4/SWHYST2/bottom1, nonstep NPRINTDAY3/reset1",
     "observed": "Windows O0/O2 cohortA53; Original hysteresis CDE output requires daily interval reset cadence;0compiles/0models for refusedcases",
-    "next_action": "Complete missing-only portablecontrols, frozen readers/raw and registered admission; existing npd1 nondaily interval and drainage0 routes remain separate composition gaps",
-    "actual_science": "Windows/Ubuntu O0/O2:24short35/76cold,4full1096/32cold; currentguard/preservation and source/nativecontrols separatelyqualified or pending portable recovery"
+    "next_action": "PR1769requires final3CIchecks then exactparents/tree merge and actualcanonicalpublic. Allseven originalrawarchives/frozenindependentreaders/neutralqualification, clean24public and bothactualcommittednegatives PASS.",
+    "actual_science": "Windows/Ubuntu O0/O2:24short35/76cold,4full1096/32cold,980native,12transactions,108sourcepolicyrefusals,20currentcoldpostimages,6unselectedCDE35+2cachedwatercold. InitialUbuntu jobs remainFAILURE; controls-only recoverybothSUCCESS."
   },
   "ordinary_implicit_pond_reference_correction": {
     "status": "BOUNDED_ACTUAL_CANONICAL_ADMITTED",
@@ -1959,8 +1959,20 @@
   },
   "ordinary_cde_groundwater_interval_npd1": {
     "classification": "MISSING_COMPOSITION",
-    "implementation": "HARD_REFUSED",
+    "implementation": "IMPLEMENTED_TWO_OPT_LOCAL_SCIENCE_AND_CONTROLS_PASS_PORTABLE_RUNNING",
     "historical_function": "Ordinary CDE groundwater/history NPRINTDAY1 non-daily interval/monthly/explicit calendars",
-    "next_action": "Next same-owner interval and drainage0 composition batch; currentclock path requires perstep ornpd>1; do not claim full calendar family closed"
+    "next_action": "Finish originalportable artifacts, 6currentunselectedCDE postimages, immutable raw and bounded source/raw admission. Whole calendar family closureUNKNOWN.",
+    "runtime": "744ad83d1",
+    "actual_local_science": "16short35/50cold,2full1096/16cold,642native,8transactions,56sourcepolicyrefusals. All independently decoded. Sourceobserver-only v1 failures retained; no model reruns.",
+    "portable_source": "a55d62b16b8dfb6581a7e0b50ee774a07d82751e",
+    "portable_run": 44692527051
+  },
+  "ordinary_cde_groundwater_drainage_off": {
+    "classification": "MISSING_COMPOSITION",
+    "implementation": "IMPLEMENTED_TWO_OPT_LOCAL_SCIENCE_AND_CONTROLS_PASS_PORTABLE_RUNNING",
+    "historical_function": "Existing SWDRA0 CDE groundwater process with NPRINTDAY1 non-daily intervals or subdaily/per-step clocks; hydraulic/native providers unchanged",
+    "runtime": "744ad83d1",
+    "scope": "SWSNOW0 analytic defaults, SWHYST0/1/2, explicit/implicit existing conductivity guards; daily SWDRA0 output and snow not expanded",
+    "next_action": "Same coherent interval/state-owner qualification as npd1 interval; no separatemetadataPR or duplicated fullcampaign."
   }
 }
