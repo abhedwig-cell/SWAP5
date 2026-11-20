@@ -55,7 +55,8 @@ def active_selection(project):
         swhyst=hys,swcsv=fmt,nprintday=nprint,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=1,flprintdt=perstep,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
         **({'groundwater_cde_clock':True} if bottom==1 else {}),
-        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}))
+        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}),
+        **({'implicit_snow_composition':True} if swsnow and one('SWKIMPL')==1 else {}))
 
 
 def selection(project):
@@ -270,7 +271,7 @@ def apply_build(output,donor_build,project,patched):
         path.write_text(text,encoding='cp1252')
     extra=[regular.PROVIDER,'cde_interval_receipt','cde_clock_events','hybrid_age_output_state']+([domain] if domain else [])+['integral']+([SNOW_PROVIDER] if is_snow else [])+['timecontrol']
     patched=[*extra,*patched];patched.insert(patched.index('swap'),'age_output_calendar_probe')
-    if selected.get('groundwater_snow_cde_output'):
+    if selected.get('groundwater_snow_cde_output') and not selected.get('implicit_snow_composition'):
         from groundwater_snow_retry import apply_build as snow_retry_build
         patched=snow_retry_build(output,patched)
     return patched

@@ -210,13 +210,17 @@ def validate_bundle(bundle, reference, project):
     if identity.get('ordinary_implicit_pond_switch')!=ordinary_pond_metadata(project):
         raise ValueError('Foreign ordinary implicit positive-pond reference policy')
     validate_ordinary_pond(bundle,project)
-    if identity.get('ordinary_implicit_pond_switch'):
+    implicit_snow=(identity.get('implicit_conductivity') or {}).get('implicit_snow_composition') is True
+    if implicit_snow:
+        from implicit_snow_composition import validate_source as validate_implicit_snow
+        validate_implicit_snow(bundle,project,identity)
+    elif identity.get('ordinary_implicit_pond_switch'):
         from ordinary_pond_source_guard import validate as validate_ordinary_pond_source
         validate_ordinary_pond_source(bundle,project,identity)
-    if (identity.get('original_output') or {}).get('groundwater_snow_cde_output'):
+    if not implicit_snow and (identity.get('original_output') or {}).get('groundwater_snow_cde_output'):
         from groundwater_snow_cde_source_guard import validate_source as validate_snow_groundwater_source
         validate_snow_groundwater_source(bundle,identity)
-    elif (identity.get('original_output') or {}).get('groundwater_cde_interval'):
+    elif not implicit_snow and (identity.get('original_output') or {}).get('groundwater_cde_interval'):
         from groundwater_cde_interval import validate_source as validate_groundwater_interval_source
         validate_groundwater_interval_source(bundle,identity)
     if ((identity.get('original_output') or {}).get('groundwater_cde_clock') and

@@ -265,7 +265,7 @@ def inspect(directory, *, original_output=None):
     if extended is not None:report['extended_drainage']=extended
     if selected['SWSOLU']==2:report['age']=True
     from implicit_conductivity import selection as implicit_selection
-    implicit = implicit_selection(text, selected, boundary)
+    implicit = implicit_selection(text, selected, boundary,original_output=original_output)
     if implicit is not None:report['implicit_conductivity']=implicit
     return report
 
