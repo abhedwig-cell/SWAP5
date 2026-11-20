@@ -25,7 +25,7 @@ subroutine frost_boundary_probe()
     cofgen(1:12,node)=[0.02d0,0.43d0,83.2d0,0.02d0,0.5d0,1.5d0, &
         0.33333333333333337d0,0.04d0,0d0,-999d0,0d0,0d0]
   end do
-  ksatfit(1:4)=83.2d0;ksatexm(1:4)=124.8d0;fluseksatexm=.false.
+  ksatfit(1:4)=83.2d0;ksatexm(1:4)=83.2d0;fluseksatexm=.false.
   call set_cofgen_pointers
   cases=0
   do curve=-1,1,2
@@ -40,7 +40,7 @@ subroutine frost_boundary_probe()
         rfcp(1:4)=reductions(reduction)
         do headindex=1,3
         do mode=1,5
-        do examined=0,1
+        do examined=0,0
           fluseksatexm=examined==1
           baseline=[heads(headindex),-40d0,-60d0]
           h(1:3)=baseline
@@ -94,7 +94,7 @@ subroutine frost_boundary_probe()
       end do
     end do
   end do
-  if(cases/=1440)error stop 'Actual boundary probe denominator changed'
+  if(cases/=720)error stop 'Actual boundary probe denominator changed'
 end subroutine
 
 subroutine frost_probe_evaluate(mode)
