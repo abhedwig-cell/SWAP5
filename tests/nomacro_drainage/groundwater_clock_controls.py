@@ -48,7 +48,13 @@ def groundwater(build,reference,project,full,out):
                     binding=meta['binding'],model=project.model,project=project)
         except (ValueError,RuntimeError) as error:
             diagnostic='\n'.join(p.read_text(encoding='utf-8',errors='replace') for p in target.rglob('donor.stderr'))
-            assert ('ERROR STOP' in diagnostic or 'native' in str(error).lower()) and not list(target.glob('accepted-*.zip')),(label,str(error),diagnostic)
+            # Ordinary groundwater restores the authoritative accessible head;
+            # the existing public receipt guard then rejects its disagreement.
+            # History modes instead compare the original hydraulic witness in
+            # the compiled reader. Preserve both actual refusal authorities.
+            public_head=(hys==0 and label=='hydraulic-head' and type(error) is ValueError and
+                         str(error)=='Restored donor state differs from the accepted checkpoint receipt')
+            assert ('ERROR STOP' in diagnostic or public_head) and not list(target.glob('accepted-*.zip')),(label,str(error),diagnostic)
             results.append(dict(attack=label,status='REFUSED',error=str(error),diagnostic=diagnostic))
         else:raise AssertionError('Corrupt groundwater CDE clock native accepted: '+label)
         assert m.sha(source)==before
