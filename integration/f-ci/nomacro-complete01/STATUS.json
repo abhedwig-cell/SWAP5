@@ -31147,7 +31147,7 @@
     }
   },
   "ordinary_weighted_history_isolation": {
-    "status": "ORDINARY_CONTINUOUS_POND_PRODUCTION_IMPLEMENTED_UNQUALIFIED",
+    "status": "ORDINARY_POND_V2_REAL_COMPONENT_PASS_INTEGRATION_IMPLEMENTED_UNQUALIFIED",
     "branch": "codex/nomacro-weighted-history-isolation01",
     "base": "1075e98a6e306e49203863c96eae1cd04e4c7ad5",
     "classification": "NUMERICAL_FAILURE",
@@ -31155,7 +31155,7 @@
     "actual_original_bundle_validation": "PASS on original extracted source and unchanged historical BUILD;1.9258s",
     "old_profile": "C:/Users/Veldh012/swap5-complete01-evidence/implicit-weighted-harmonic-water-history-O0-v2",
     "controller": "tests/nomacro_scheduled_subsurface/weighted_history_diagnostic.py",
-    "next_action": "Test separate V2 ordinary root prototype: preserve literal runoff() and analytic exactlinear branch, solve unchanged nonlinear/lowRSRO pond equation to adjacentfloating endpoints with bounded128iterations, combine actual soil derivative with its pond response. No tolerance/mass/state repair. Run actual complete original component40cases before selecting integrated prototype. Original failures/raw/exes retained.",
+    "next_action": "Allocate new phase-specific O0/O2 builds bound to current numericV2 source; literal35short/cold then1096full original180s cap and8coldwindows. No replay of zero-only full. Preserve original366day180s censor. Qualify lowRSRO/nonlinear components, current affected ordinary water/CDE/history/bottom seams and explicit/extended preservation before admission. PR1767 finaljob still in checkout; source1075 remains independent.",
     "qualification": false,
     "physical_numerical_guards_changed": false,
     "prefix_replay": {
@@ -31215,6 +31215,12 @@
       "nonlinear_case_fails_unchanged_fd_guard": true,
       "cause": "Original ordinary PondRunoff terminates at1e-6 head residual; actual nonlinear numerical root derivative differs from physical-equation tangent",
       "raw": "ordinary-pond-tangent-component-O0-v1/FAILED_V1.json"
+    },
+    "tangent_component_v2": {
+      "actual_complete_original_points": 40,
+      "status": "PASS actual finite differences, nonmutation, A/B/A, exact fixedK limit",
+      "physical_equation": "Literal original runoff() preserved. Exactlinear original closed form retained; nonlinear/lowRSRO original equation bracketed to adjacentfloating endpoints,128bound; strict1e-8 fd guard unchanged",
+      "profile": "ordinary-pond-tangent-component-O0-v2"
     }
   }
 }
