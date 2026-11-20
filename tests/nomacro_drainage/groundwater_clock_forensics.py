@@ -81,7 +81,9 @@ def native(raw,row,build,selected):
 
 def audit(root):
     root=Path(root);q=read(root/'RESULT.json');buildpath=Path(q['build_root']);inputs=Path(q['input_root']);build=read(buildpath/'BUILD.json')
-    require(q['status']=='ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS', 'Actual composed short incomplete')
+    full=q['parameters'].get('phase')=='full'
+    require(q['status']==('ACTUAL_GROUNDWATER_CDE_CLOCK_FULL_PHYSICAL_NATIVE_OUTPUT_PASS' if full else
+            'ACTUAL_ORIGINAL_IMPLICIT_CONDUCTIVITY_SHORT_PHYSICAL_COMPLETE_NATIVE_OUTPUT_PASS'), 'Actual composed period incomplete')
     selected=build['identity']['original_output'];require(selected.get('groundwater_cde_clock') is True,'Wrong actual composed output owner')
     for name,sha in build['inputs'].items():require(digest(inputs/name)==sha,'Actual composed input changed')
     for name,sha in build['identity']['donor_generated'].items():require(digest(buildpath/name)==sha,'Actual composed generated source changed')
@@ -91,8 +93,9 @@ def audit(root):
     for name in ('donor_flags','kernel_flags'):
         require({'-'+q['parameters']['optimization'],'-ffp-contract=off','-march=x86-64','-mtune=generic'}<=set(build['identity'][name]),'Actual composed arithmetic changed')
     warm=root/'trajectory';data=rows(warm)
-    require(len(data)==35 and data[0]['day']==1 and data[-1]['day']==35 and digest(buildpath/'BUILD.json')==q['trajectory']['build_sha256'], 'Actual composed period censored/rebound')
-    clock.ledger(data,35);original.water(data);original.original_observations((warm/'original/donor.stdout').read_bytes(),data,build['project']['start_date'])
+    days=1096 if full else 35
+    require(len(data)==days and data[0]['day']==1 and data[-1]['day']==days and digest(buildpath/'BUILD.json')==q['trajectory']['build_sha256'], 'Actual composed period censored/rebound')
+    clock.ledger(data,days);original.water(data);original.original_observations((warm/'original/donor.stdout').read_bytes(),data,build['project']['start_date'])
     class Files:
         def read(self,name):return (warm/name).read_bytes()
     clock.daily(Files(),'',data,build['project']['nodes'])
@@ -109,7 +112,8 @@ def audit(root):
             found.add(day)
         return found
     windows=[(2,4),(7,9),(30,34)]+([(17,20)] if q['parameters'].get('epoch') else [])
-    require(checkpoints(warm,data)=={35,*(d for pair in windows for d in pair)},'Actual composed warm native inventory differs')
+    if full:windows += [(163,165),(199,201),(364,367),(530,532),(1094,1096)]
+    require(checkpoints(warm,data)=={days,*(d for pair in windows for d in pair)},'Actual composed warm native inventory differs')
     require([(r['start'],r['end']) for r in q['cold']]==windows,'Actual composed cold denominator differs')
     def outputs(path):return {n:original.output_records((path/n).read_bytes(),n) for n in ('result_output.csv','result_output.bin') if (path/n).exists()}
     for r in q['cold']:
@@ -119,7 +123,7 @@ def audit(root):
         with zipfile.ZipFile(warm/f'accepted-column-1-day-{high}.zip') as a,zipfile.ZipFile(cold/f'accepted-column-1-day-{high}.zip') as b:
             require(all(a.read(n)==b.read(n) for n in ('macro.bin','result.end')),'Actual complete composed cold bytes differ')
         require(original.output_continuation(outputs(warm/'original'),outputs(cold/'original'),selected,low,high,build['project']['start_date'])==r['exact_original_output'],'Actual original composed user output differs')
-    return dict(status='INDEPENDENT_GROUNDWATER_CDE_CLOCK35_PHYSICAL_NATIVE_OUTPUT_PASS',actual_days=35,
+    return dict(status='INDEPENDENT_GROUNDWATER_CDE_CLOCK_PHYSICAL_NATIVE_OUTPUT_PASS',actual_days=days,
                 actual_cold_windows=len(windows),codec=build['identity']['groundwater_native_state']['magic'],parameters=q['parameters'],
                 new_physical_state=False,whole_scientific_equivalence='NOT_QUALIFIED',functional_completion='PARTIAL')
 
