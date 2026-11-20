@@ -41,10 +41,21 @@ def audit(root,build_paths=None,source_root=None):
         for name,value in i['donor_objects'].items():require(value==provider['provider_files']['build/swap-obj/'+name],'Actual original object provider differs')
         require(i['ttutil_library']==provider['provider_files']['build/ttutil-obj/libttutil.a'],'Actual original TTUTIL provider differs')
         for name,value in i['donor_generated'].items():require(digest(file.parent/name)==value,'Actual emitted implicit Snow source changed: '+name)
-        for name,policy in i.items():
+        direct=('implicit_conductivity','implicit_groundwater_trial','implicit_conductivity_retry',
+            'implicit_conductivity_jacobian','implicit_pond_event','implicit_root_finalization',
+            'implicit_pond_availability','implicit_interception_partition','implicit_saturation_derivative',
+            'implicit_finite_newton','ordinary_implicit_pond_switch')
+        for name in direct:
+            policy=i.get(name)
             key='app/hybrid_water/'+name+'.py'
             if isinstance(policy,dict) and 'source_sha256' in policy and key in cap['members']:
                 require(policy['source_sha256']==cap['members'][key]['sha256'],'Actual numerical source policy differs: '+name)
+        owner=('cde_clock_output' if o.get('cde_clock_output') else 'cde_interval_output' if o.get('cde_interval_output') else
+            'thermal_output_reset' if o.get('thermal_reset') else 'thermal_output_step' if o.get('thermal_step') else
+            'thermal_output_clock' if o.get('thermal_clock') else 'thermal_output_calendar' if o.get('thermal_calendar') else
+            'original_output_thermal')
+        require(o['source_sha256']==cap['members']['app/hybrid_water/'+owner+'.py']['lf_normalized_sha256'],
+                'Actual selected original output owner differs')
         require(i['implicit_conductivity']['implicit_snow_composition_source_sha256']==
             cap['members']['app/hybrid_water/implicit_snow_composition.py']['lf_normalized_sha256'],
             'Actual implicit Snow selector composition differs')
