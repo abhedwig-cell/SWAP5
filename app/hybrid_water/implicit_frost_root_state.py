@@ -2,6 +2,7 @@
 import hashlib
 import math
 from pathlib import Path
+import re
 import struct
 
 STATE = 'implicit_frost_root_state'
@@ -82,3 +83,29 @@ def validate_native(raw, project):
     if values[:2]!=values[2:] or not all(map(math.isfinite,values)):
         raise ValueError('Invalid implicit Frost root diagnostic values')
     return values[:2]
+
+
+def parent_macro(reference, project):
+    from experimental_project import inspect
+    from snow_undrained_source_guard import checkpoint_parent
+    from original_output_thermal import render_macro
+    report=inspect(project.input_directory)
+    text=render_macro(checkpoint_parent(reference,{'swhyst':2,'et':report['selectors']['SWETR']},project),project)
+    begin='    subroutine hybrid_macro_checkpoint(';end='    end subroutine hybrid_macro_checkpoint'
+    low=text.index(begin);high=text.index(end,low)+len(end);body=text[low:high]
+    anchor='      use MOD_grid, only: numnod'
+    if body.count(anchor)!=1:raise ValueError('Changed qualified native parent imports')
+    body=body.replace(anchor,'      use hybrid_implicit_pond_event_state,only:assert_no_implicit_pond_event\n'+anchor,1)
+    matches=list(re.finditer(r'(?m)^([ \t]*)if \(restoring\) then$',body))
+    if len(matches)!=1:raise ValueError('Changed qualified native pending-event owner')
+    anchor=matches[0].group()
+    body=body.replace(anchor,matches[0][1]+'call assert_no_implicit_pond_event()\n'+anchor,1)
+    return text[:low]+body+text[high:]
+
+
+def validate_source(bundle, project, reference):
+    if (bundle/(STATE+'.f90')).read_text(encoding='cp1252')!=source(project.solute):
+        raise ValueError('Foreign actual implicit Frost root provider source')
+    actual=(bundle/'macropore.f90').read_text(encoding='cp1252')
+    if restore_macro(actual,project)!=parent_macro(reference,project):
+        raise ValueError('Foreign complete actual implicit Frost native parent')

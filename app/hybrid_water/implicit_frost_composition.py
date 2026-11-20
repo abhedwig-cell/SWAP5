@@ -30,7 +30,7 @@ def source_identity():
 
 
 def codec(project):
-    return b'S5FIC001' if project.solute else b'S5FIW001'
+    return b'S5FIC002' if project.solute else b'S5FIW002'
 
 
 def metadata(project):
@@ -38,15 +38,18 @@ def metadata(project):
     folder = Path(__file__).parent
     providers = ['implicit_frost_composition.py', 'implicit_frost_surface_conductivity.py',
                  'implicit_frost_source_guard.py',
+                 'implicit_frost_root_state.py', 'implicit_snow_root_state.f90',
                  'frost_drainage_composition.py', 'frost_divdra_overlap.py',
                  'ordinary_implicit_pond_switch.py', 'ordinary_implicit_pond_tangent.py',
                  'extended_implicit_pond.py']
     if project.solute: providers.append('snow_undrained_cde_positive.py')
     sha = lambda p: hashlib.sha256(p.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+    from implicit_frost_root_state import metadata as root_metadata
     return dict(policy=POLICY, providers={name: sha(folder/name) for name in providers},
         correction='FROST-DIVDRA-OVERLAP-01', native_codec=codec(project).decode(),
         fixed_SWKIMPL=1, fixed_SWDIVD=1, examined_ksat_interpolation=False,
         new_physical_state=False, physical_equations_changed=False,
+        root_diagnostic_carry=root_metadata(project),
         chemical_positive_mass_policy='original-cde-preserve-positive-cell-mass-v1' if project.solute else None)
 
 
@@ -56,7 +59,8 @@ def apply_build(output, project, patched):
     path = output/'headcalc.f90'; original = path.read_text(encoding='cp1252')
     actual = source(original); validate(actual, original)
     path.write_text(actual, encoding='cp1252')
-    return patched
+    from implicit_frost_root_state import apply_build as root_build
+    return root_build(output, project, patched)
 
 
 def validate(bundle, project):

@@ -26,7 +26,7 @@ def audit(profile, reference):
     class NativeCodec(ast.NodeTransformer):
         count = 0
         def visit_Constant(self, node):
-            replacements = {b'S5FDW001': b'S5FIW001', b'S5FDC001': b'S5FIC001'}
+            replacements = {b'S5FDW001': b'S5FIW002', b'S5FDC001': b'S5FIC002'}
             if isinstance(node.value, bytes) and node.value in replacements:
                 self.count += 1
                 return ast.copy_location(ast.Constant(value=replacements[node.value]), node)
@@ -72,7 +72,7 @@ def audit(profile, reference):
     return dict(**result, implicit_frost_source_parents_verified=True,
         frozen_scientific_reader=READERS, frozen_reader_sha256=hashlib.sha256(raw).hexdigest(),
         inherited_scientific_body_executed=True, changed_reader_constants=selector.count,
-        reader_adaptation='only distinct S5FIW001/S5FIC001 native codec constants; no scientific statement changed',
+        reader_adaptation='only distinct S5FIW002/S5FIC002 native codec constants; no scientific statement changed',
         fresh_model_executions=0, fresh_compiler_executions=0)
 
 

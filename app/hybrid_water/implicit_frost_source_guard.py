@@ -58,3 +58,7 @@ def validate_source(bundle, project, identity, reference):
                         ('call assert_no_implicit_pond_event()', 1), ("'" + codec(project).decode() + "'", 2)):
         if body.count(part) != count:
             raise ValueError('Foreign actual implicit Frost native event/codec owner')
+    from implicit_frost_root_state import metadata as root_metadata, validate_source as validate_root
+    if identity['frost_drainage_composition'].get('root_diagnostic_carry')!=root_metadata(project):
+        raise ValueError('Foreign implicit Frost root diagnostic state policy')
+    validate_root(bundle, project, reference)

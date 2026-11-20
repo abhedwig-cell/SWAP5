@@ -74,7 +74,7 @@ def main():
     target = a.output/'explicit-parent-native-codec'; target.mkdir()
     origin = target/'origin'; receipt = m.h.verify_checkpoint(source, 4, meta['binding'], origin)
     native = origin/'macro.bin'; original = native.read_bytes()
-    assert original[:8] == (b'S5FIC001' if project.solute else b'S5FIW001')
+    assert original[:8] == (b'S5FIC002' if project.solute else b'S5FIW002')
     native.write_bytes((b'S5FDC001' if project.solute else b'S5FDW001') + original[8:])
     try:
         with contextlib.ExitStack() as stack:
