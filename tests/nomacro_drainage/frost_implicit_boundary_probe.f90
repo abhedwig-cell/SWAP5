@@ -8,7 +8,7 @@ subroutine frost_boundary_probe()
   use MOD_meteo,only:peva,empreva,epond
   use variables,only:indeks,ksatfit,ksatexm,fluseksatexm,swredu,pondmx
   implicit none
-  real(8),parameter::reductions(3)=[0.01d0,0.5d0,1d0]
+  real(8),parameter::reductions(4)=[0d0,0.01d0,0.5d0,1d0]
   real(8),parameter::heads(3)=[-10d0,-30d0,-100d0]
   real(8)::baseline(3),delta,minus,plus,analytic,approximation,error,scale
   real(8)::matrix(3,3),left_vector(3),right_vector(3),difference(3)
@@ -36,7 +36,7 @@ subroutine frost_boundary_probe()
     call boundtop(1)
     do mean=1,6
       swkmean=mean
-      do reduction=1,3
+      do reduction=1,size(reductions)
         rfcp(1:4)=reductions(reduction)
         do headindex=1,3
           baseline=[heads(headindex),-40d0,-60d0]
@@ -83,7 +83,7 @@ subroutine frost_boundary_probe()
       end do
     end do
   end do
-  if(cases/=108)error stop 'Actual boundary probe denominator changed'
+  if(cases/=144)error stop 'Actual boundary probe denominator changed'
 end subroutine
 
 subroutine frost_probe_evaluate()
