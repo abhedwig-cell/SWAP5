@@ -68,8 +68,8 @@ def main():
         fixed = old
         for conductivity in ('katm', 'ksatfit(1)'):
             before = 'k(1),' + conductivity + ',dz(1)'
-            selected = 'merge(ksatexm(1),ksatfit(1),fluseksatexm(1))' if conductivity == 'ksatfit(1)' else conductivity
-            after = 'k(1),' + selected + '*rfcp(1)+hconode_vsmall*(1d0-rfcp(1)),dz(1)'
+            surface_conductivity = 'merge(ksatexm(1),ksatfit(1),fluseksatexm(1))' if conductivity == 'ksatfit(1)' else conductivity
+            after = 'k(1),' + surface_conductivity + '*rfcp(1)+hconode_vsmall*(1d0-rfcp(1)),dz(1)'
             assert fixed.count(before) == 2
             fixed = fixed.replace(before, after)
         import_anchor = '   use MOD_top,only:katm'
