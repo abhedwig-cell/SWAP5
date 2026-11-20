@@ -1,6 +1,6 @@
 # Bounded water/Snow groundwater composition (2026-11-20)
 
-Qualified, pending actual canonical admission. Runtime `26ea91cf981126212fc71291426849f52d574cee`; predecessor `9c447f419d11743efe7464d3c8542ac1bc8fea4a`. The immutable WATER_SNOW_GROUNDWATER_QUALIFICATION.json and ten original logical archives in integration/f-ci/nomacro-complete01 own the bounded evidence. Global historical closure remains PARTIAL, whole scientific equivalence NOT_QUALIFIED, family and gap counts UNKNOWN, fixed RC3 unchanged.
+Canonically admitted through PR1773; actual merge and separate admission evidence are recorded below. Runtime `26ea91cf981126212fc71291426849f52d574cee`; predecessor `9c447f419d11743efe7464d3c8542ac1bc8fea4a`. The immutable WATER_SNOW_GROUNDWATER_QUALIFICATION.json and ten original logical archives in integration/f-ci/nomacro-complete01 own the bounded evidence. Global historical closure remains PARTIAL, whole scientific equivalence NOT_QUALIFIED, family and gap counts UNKNOWN, fixed RC3 unchanged.
 
 This batch composes existing original Snow, water and groundwater implementations at SWBOTB1. Existing hydraulic history and two root diagnostic rates receive complete typed native restart ownership, including explicit and implicit configurations. The original liquid Snow store SLW is already carried by result.end. Physical equations and conservation limits are unchanged; no new physical store is introduced.
 
@@ -33,3 +33,9 @@ Windows/Ubuntu O0/O2 independently pass12 complete1096day periods with108 cold w
 Readers reconstruct balances, complete native states, original output records, compiler/provider/source custody and actual refusal payloads from sealed bytes. Public verification runs no model or compiler. Neutral science does not confer canonical admission: committed clean sparse public observations, source/raw negatives, terminal CI, exact ordered merge parents/tree and actual canonical public observation remain required.
 
 Next coherent work is the historical drainage-off Snow composition at boundaries5/8 and its relevant restart ownership. Other historical families remain under the existing GAP_MATRIX.json; AGE dryout remains a separate numerical blocker. No whole-family closure count is claimed.
+
+## Actual canonical admission
+
+PR1773 admits this bounded scope on actual canonical `b546801eaf24a01ee4dc457eb857ef46e6b61c30`. Ordered parents are `9c447f419d11743efe7464d3c8542ac1bc8fea4a` and candidate `54afcc09cb80226fb46a77e169d38e7d0ca2390b`; full tree `79f3c2d7f962a91d934f5a0a2e95fd649f501ea9` exactly matches the qualified candidate and synthetic merge. All47 checks are terminal:30success and17skipped. Actual clean28 candidate and canonical public observations pass in307.180740s and297.2175175s with zero models and unchanged clean HEAD/tree/status. Separate committed source and inherited-raw negatives are refused.
+
+WATER_SNOW_GROUNDWATER_ADMISSION_RAW_V1.zip retains actual receipts, complete terminal public CI logs, all terminal checks, original API snapshots and the observation command. It has197614bytes and SHA256 `02e3eae6cf817754280fd0a00c5bfe3b4146e3558990c5424d5efa2ac7b0f717`. The separate WATER_SNOW_GROUNDWATER_MERGE_RECEIPT_V1.json owns actual admission; the neutral qualification and ten original scientific archives remain unchanged. Global family and gap counts remain UNKNOWN. Ordinary Snow water/CDE drainage-off composition is already under targeted qualification.
