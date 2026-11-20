@@ -1,4 +1,4 @@
-"""Retain actual clean 22-pattern registered public verification or refusal."""
+"""Retain actual clean ordinary proof fixture public verification or refusal."""
 import argparse
 import json
 import os
@@ -18,7 +18,8 @@ def main():
     assert not any(p.exists() for p in (out,err,receipt))
     def git(*args):return subprocess.check_output(['git',*args],cwd=a.checkout,text=True).strip()
     def snap():return dict(head=git('rev-parse','HEAD'),tree=git('rev-parse','HEAD^{tree}'),status=git('status','--short','--ignored'),sparse=git('sparse-checkout','list').splitlines())
-    before=snap();assert before['status']=='' and len(before['sparse'])==22
+    before=snap();assert before['status']=='' and len(before['sparse'])==23
+    assert before['sparse'][-1]=='/integration/f-ci/nomacro-complete01/ORDINARY_*'
     env=os.environ.copy();env.update(PYTHONDONTWRITEBYTECODE='1',TEMP=str(a.scratch),TMP=str(a.scratch))
     if os.name=='nt':env['PATH']='C:/msys64/ucrt64/bin;'+env['PATH']
     command=[sys.executable,'-B','tests/hupsel51/verify_successor.py'];start=time.monotonic()
