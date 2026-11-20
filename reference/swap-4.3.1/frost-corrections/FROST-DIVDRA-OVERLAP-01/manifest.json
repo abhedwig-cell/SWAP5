@@ -1,0 +1,26 @@
+{
+  "correction": "FROST-DIVDRA-OVERLAP-01",
+  "status": "PROPOSED_PENDING_REAL_PRODUCTION_COMPONENT_QUALIFICATION",
+  "base": "Actual original SWAP4.3.1 Divdra source",
+  "base_lf_sha256": "832c3d8f2709521db16f43c7fbe3952687c4a395ca3199f8727df9b83759ae8c",
+  "target_lf_sha256": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e",
+  "scope": "Separate original infiltration distribution where water level and discharge-layer bottom occupy the same cell; bounded Frost SWDIVD1 composition only after explicit scientific qualification.",
+  "edits": [
+    {
+      "before": "               if (icpbotdislay(idr) == icpwlev) dzcpbotdislay(idr) = dzcpwlevsat\n",
+      "after": "               ! FROST-DIVDRA-OVERLAP-01: retain the actual Lev2Comp above-bottom extent.\n"
+    }
+  ],
+  "physical_equations_changed": false,
+  "balance_compensation": false,
+  "tolerances_changed": false,
+  "global_B1_snapshot_promoted": false,
+  "whole_legacy_equivalence": false,
+  "production_admitted": false,
+  "exclusions": [
+    "Active macropores",
+    "New fully frozen-front interpretation",
+    "Automatic promotion of other drainage contexts",
+    "Whole historical equivalence"
+  ]
+}

@@ -63,3 +63,21 @@ Ubuntu run `44779472684` executes source
 both downloaded original artifacts independently pass. Original failed and
 superseded Windows observations retain their original status and raw bytes.
 Neutral qualification and canonical admission must remain separate records.
+
+## Actual canonical admission
+
+PR1774 merged as `383526abddeb06ea61fe31fa7e342ebbd8a5c43d`, with ordered parents
+`b546801eaf24a01ee4dc457eb857ef46e6b61c30` and
+`2c392b437bc07c9fde50b35da9e741fedc2846f1`; complete tree
+`327360a86900e12cc2b08b98e526402455a00401` equals the qualified candidate. All 47
+checks are terminal: 30 success and 17 skipped by the existing selection.
+The actual clean detached canonical public route passes in
+`324.423994100187` seconds with all 29 sparse patterns and unchanged
+HEAD/tree/status; no model or compiler executes in that observation.
+
+The separate actual-admission raw archive has SHA-256
+`d892f426579447b9fc5608e9d19ece61da3e00995c9905914854e37130c724e2`.
+`SNOW_UNDRAINED_MERGE_RECEIPT_V1.json` owns actual admission. The neutral
+qualification and eight original scientific archives remain unchanged and
+retain their pending-admission historical labels. Whole historical scope
+and global family/gap counts retain their stated limitations.

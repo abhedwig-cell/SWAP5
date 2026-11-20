@@ -1495,7 +1495,7 @@
     "next": "Separate explicit evaporation-age/dry-state semantics and qualified state owner; retain actual failure and original equations."
   },
   "coverage": {
-    "canonical_reconciled": "c22d6ec1c5ede56b93d7f38635e38e4c277b3f51",
+    "canonical_reconciled": "383526abddeb06ea61fe31fa7e342ebbd8a5c43d",
     "authority": "This object extends existing GAP_MATRIX; STATUS.json remains sole recovery record. Existing26boundedfamily rows and original_integer_reader_calls are inherited, not recounted as full closure.",
     "denominator_status": "INCOMPLETE_VALID_CONFIGURATION_CONSTRAINT_RECONCILIATION",
     "full_historical_families_closed": "UNKNOWN",
@@ -1633,18 +1633,18 @@
       {
         "id": "extended-drainage",
         "function": "Extended drainage/surface water SWDRA2",
-        "gap_classification": "MISSING_COMPOSITION",
+        "gap_classification": null,
         "historical_availability": {
           "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:807",
           "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/swap.f90:447",
           "supported": "Original drain1/2 and drain3 surfacewater update whenSWDRA2"
         },
-        "current_availability": "PublicSWDRA2 still refused. Original real O0/O2 signedflow/storage and rejected-surface mutation reproduced; atomic original state/native component0f61c648 tested. Public process/receipt/native composition pending.",
-        "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
-        "missing_composition_or_guard": "Original SurfaceWater modifiesSWST/WLS beforefldecdt rejection and original retry restores soil only; separate legacy defect demonstrated. Complete original state snapshot/typed native implemented as unactivated component; integrated transaction/combinedinventory still required.",
-        "evidence_status": "EXTENDED_DRAINAGE_SOURCE_ASSESSMENT.json and EXTENDED_DRAINAGE_COMPONENT_RAW.json; no public admission.",
+        "current_availability": "Bounded SWDRA2 primary/secondary and surfacewater admittedPR1763/66d6297; original calendarsPR1764/6a31bc7; hydraulic historyPR1765/ff1db4; primary implicitPR1766/21fce9b and secondary-only implicitPR1767/d785e2. These bounded routes are available; whole historical drainage family remains PARTIAL.",
+        "implementation_completeness": "BOUNDED_CANONICALLY_ADMITTED_WHOLE_FAMILY_UNKNOWN",
+        "missing_composition_or_guard": "Remaining AGE dry-domain, SWSRF1 saved-WL audit, broader weather/root/other boundaries are separate interactions; do not repeat admitted bounded routes.",
+        "evidence_status": "ACTUAL_CANONICAL_BOUNDED_SOURCE_RAW_NATIVE_RECEIPTS",
         "user_interest": "High for Dutch managed drainage/surface water projects",
-        "remaining_effort": "Medium/high; inventory existing drain owner states before implementation",
+        "remaining_effort": "No implementation for the admitted bounded subdomains; remaining interaction scope/effort UNKNOWN.",
         "batch": "drainage",
         "development_findings": {
           "canonical": "SWDRA2 still not admitted",
@@ -1759,13 +1759,29 @@
           "source": "Original MOD_MvG_functions.f90 hconduc shortcut relsat>1-1e-6",
           "actual_reference_behavior": "Discontinuous K22.1980235224733349 to22.76176 across actualSe0.999999; original implicit may continue without convergence"
         },
-        "current_availability": "Independently qualified real-original component O0/O2 and70digit equation; bounded primary implicit Windows/Ubuntu eight full periods plusWindows two exact same-context CDEh0 regressions PASS. Final source9f guard/source postimages and18shorts PASS; canonical admission pending. Secondary-only water day289 remains refused.",
+        "current_availability": "Primary original continuous Mualem reference correction admittedPR1766/21fce9b; separate secondary zero-positive-pond switch correction admittedPR1767/d785e2 with its own original production component and exact source/state qualification. Original failed/censored records remain unchanged.",
         "implementation_completeness": "IMPLEMENTED_BOUNDED_CORRECTION_NOT_CANONICALLY_ADMITTED",
-        "missing_composition_or_guard": "Complete corrected full/source/raw/native/transaction qualification; all explicit0 and ordinary implicit routes retain admitted providers.",
-        "evidence_status": "ACTUAL_ORIGINAL_FAILURES_AND_SEPARATE_COMPONENT_CORRECTION_RETAINED",
+        "missing_composition_or_guard": "Broader constitutive models, examined-Ksat and other process interactions retain their own classifications; no whole constitutive-family claim.",
+        "evidence_status": "ACTUAL_CANONICAL_BOUNDED_REFERENCE_CORRECTIONS_ADMITTED",
         "user_interest": "High: normal extended drainage implicit configurations fail strict conservation/convergence domain",
-        "remaining_effort": "Boundedprimary correctionadmittedPR1766; newsecondaryzero-pond correction separate qualificationrecord. No whole constitutivefamily closure claim.",
+        "remaining_effort": "None for the two admitted bounded corrections; remaining constitutive scope UNKNOWN.",
         "batch": "extended-implicit"
+      },
+      {
+        "id": "ordinary-snow-undrained",
+        "function": "Original ordinary Snow water/CDE drainage-off state and calendars",
+        "gap_classification": null,
+        "original_gap_classification": "MISSING_COMPOSITION",
+        "historical_availability": {
+          "source": "Original readswap, Snow, root, Solute and Integral dispatch",
+          "supported": "Actual bottom5/8, SWKIMPL0/1, SWSNOW1, SWDRA0 and existing analytical daily heat/history/calendar domain"
+        },
+        "current_availability": "Bounded PR1774 actualcanonical383526abddeb06ea61fe31fa7e342ebbd8a5c43d; six original composition refusals implemented, two reachable daily preservation cases and one positive CDE configuration; actualclean29publicPASS324.4239941s.",
+        "implementation_completeness": "BOUNDED_CANONICALLY_ADMITTED_WHOLE_FAMILY_UNKNOWN",
+        "missing_composition_or_guard": "Other Frost, detailed-weather, AGE and process contexts are separately classified; no all-Snow closure claim.",
+        "evidence_status": "ACTUAL_CANONICAL_SOURCE_RAW_NATIVE_OWNER_PASS",
+        "remaining_effort": "None within this bounded block; other original Snow interactions UNKNOWN.",
+        "batch": "ordinary-snow-undrained"
       }
     ],
     "next_batches": [
@@ -1808,7 +1824,8 @@
         "goal": "Classify actual alternative-model and vapor gaps, reuse original providers, implement supported missing couplings as one hydraulic/thermal family.",
         "gates": "Reuse existing BLOCK_I failures; independent constitutive/scientific checks only for actual changed implementation."
       }
-    ]
+    ],
+    "reconciliation_scope": "Actual bounded admission receipts and current source owners reconciled; complete historical valid-selector denominator remains incomplete and all global closure/gap counts UNKNOWN."
   },
   "weather_complete_receipt_root_carry": {
     "runtime": "2cf36f12d0608f681d69716c01644a2307401c76",
@@ -2025,10 +2042,41 @@
     "remaining_composition_gap_in_declared_scope": false
   },
   "ordinary_snow_drainage_off_composition": {
-    "classification": "MISSING_COMPOSITION",
-    "implementation": "BOUNDED_WINDOWS_COMPOSITION_QUALIFICATION_ACTIVE",
+    "classification": null,
+    "implementation": "BOUNDED_CANONICALLY_ADMITTED_PR1774",
     "historical_function": "Original Snow1 SWDRA0 water/CDE ordinary lower boundaries5/8 with existing output calendars and SWKIMPL0/1",
-    "observed": "Eight actual baseline preflights: six refused, two explicit dense daily reachable. Current16WindowsO0/O2 source formsPASS and12short35/36cold independentlyPASS; four corrected CDE interval/dense short contexts pending. Original day2 open-soil-frame failures and source/observer failures retained. No full period yet.",
-    "next_action": "Run four corrected CDE interval/dense O0/O2 short/cold contexts from new targeted bundles. Retain twelve completed current short periods and original failed records. Then representativefulls, native/source/transaction controls, unchanged actual postimages, portable qualification and new public owner."
-  }
+    "observed": "Six original composition refusals implemented plus two reachable daily preservation cases and one positive CPRE0.01 case. Windows/Ubuntu O0/O2:36short108cold,16full1096/144cold;200compilednative,144publicsource,8transactions;12unchanged35/coldpostimages. Original day2/day1066 and integrated CDE failures retained; no relaxed guard or mass compensation. Frozen readers626c, neutral093a; actualclean29public2c392 PASS342.0010645s and both committed negatives refused.",
+    "next_action": "Bounded block admitted; continue separate Frost/CDE/drainage original process/state composition. Broader Snow/Frost/weather/AGE scope remains open; whole family UNKNOWN.",
+    "actual_canonical": "383526abddeb06ea61fe31fa7e342ebbd8a5c43d",
+    "receipt": "SNOW_UNDRAINED_MERGE_RECEIPT_V1.json",
+    "actual_canonical_public_seconds": 324.423994100187,
+    "original_gap_classification": "MISSING_COMPOSITION"
+  },
+  "next_coherent_batches": [
+    {
+      "family": "Frost/CDE/drainage and existing Snow/output state",
+      "classification": "MISSING_COMPOSITION_WITH_RETAINED_NUMERICAL_AND_REFERENCE_REFUSALS",
+      "priority": 1,
+      "source_assessment": "FROST_CDE_COMPOSITION_SOURCE_ASSESSMENT_V1.json",
+      "status": "SOURCE_ASSESSED_NOT_IMPLEMENTED_NOT_QUALIFIED"
+    },
+    {
+      "family": "Alternative original hydraulic models including RIA12",
+      "classification": "NUMERICAL_FAILURE_AND_UNRECONCILED_ORIGINAL_DOMAIN",
+      "priority": 2,
+      "status": "REUSE_EXISTING_BLOCK_I_FAILURES_AND_CENSORS_THEN_SOURCE_COMPONENT_ASSESSMENT"
+    },
+    {
+      "family": "Original per-layer vapor and heat conservation/state",
+      "classification": "MISSING_IMPLEMENTATION",
+      "priority": 3,
+      "status": "SOURCE_AND_COMPONENT_CONTRACT_REQUIRED"
+    },
+    {
+      "family": "AGE dry retained surface moment",
+      "classification": "MISSING_IMPLEMENTATION_SCIENTIFIC_STATE_CONTRACT",
+      "priority": 4,
+      "status": "CONCRETE_RETAINED_BLOCKER_NO_DISPOSAL_OR_EPSILON_WATER"
+    }
+  ]
 }

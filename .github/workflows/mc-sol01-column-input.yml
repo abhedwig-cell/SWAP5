@@ -78,6 +78,8 @@ jobs:
             /integration/f-ci/nomacro-complete01/IMPLICIT_SNOW_COMPOSITION_*
             /integration/f-ci/nomacro-complete01/WATER_SNOW_GROUNDWATER_*
             /integration/f-ci/nomacro-complete01/SNOW_UNDRAINED_*
+            /integration/f-ci/nomacro-complete01/FROST_DRAINAGE_*
+            /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*
       - name: Build both optimizations and run actual file/restart qualification
         run: |
           set -euo pipefail

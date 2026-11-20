@@ -1,0 +1,56 @@
+{
+  "parent": "383526abddeb06ea61fe31fa7e342ebbd8a5c43d",
+  "runtime": "6e40385c9b871992641f7a601bbf0ec30f5f68d3",
+  "changes": {
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "runtime_line": 255,
+        "before": "",
+        "after": "    from frost_drainage_composition import validate as validate_frost_drainage\n    validate_frost_drainage(bundle,reference,project,identity)\n"
+      }
+    ],
+    "app/hybrid_water/daily_host.py": [
+      {
+        "runtime_line": 867,
+        "before": "",
+        "after": "    from frost_drainage_composition import apply_build as frost_drainage_build\n    patched=frost_drainage_build(output,donor_build,project,patched)\n"
+      },
+      {
+        "runtime_line": 1079,
+        "before": "",
+        "after": "    from frost_drainage_composition import metadata as frost_drainage_metadata\n    if frost_drainage_metadata(project) is not None:\n        build_identity['frost_drainage_composition']=frost_drainage_metadata(project)\n"
+      }
+    ],
+    "app/hybrid_water/experimental_project.py": [
+      {
+        "runtime_line": 157,
+        "before": "            if switches(frost_drain_file.read_text(encoding='cp1252')).get('SWDIVD')!=0:\n                raise ValueError('Bounded original frost reference excludes effective SWDIVD1')\n            if selected['SWSOLU']:\n",
+        "after": "            frost_divd=switches(frost_drain_file.read_text(encoding='cp1252')).get('SWDIVD')\n            if frost_divd==1:\n                if (original_output is False or selected['SWKIMPL']!=0 or selected['SWSOLU'] not in (0,1)\n                        or selected.get('SWBR')!=0 or selected['SWMETDETAIL']!=0 or selected['SWSOPHY']!=0):\n                    raise ValueError('Candidate Frost SWDIVD1 requires explicit original daily analytical water/CDE without aquifer')\n            elif frost_divd!=0:\n                raise ValueError('Invalid original Frost vertical drainage selector')\n            if selected['SWSOLU'] and frost_divd==0:\n"
+      },
+      {
+        "runtime_line": 245,
+        "before": "            if (path.resolve()!=frost_drain_file or sig.get('SWDIVD')!=0\n",
+        "after": "            if (path.resolve()!=frost_drain_file or sig.get('SWDIVD') not in (0,1)\n"
+      }
+    ],
+    "app/hybrid_water/original_output_thermal.py": [
+      {
+        "runtime_line": 30,
+        "before": "    event=project.time_step_policy=='original-adaptive-event-closure-v1' and frost==1 and drain==1 and not project.solute\n",
+        "after": "    from frost_drainage_composition import enabled as effective_frost_drainage\n    event=project.time_step_policy=='original-adaptive-event-closure-v1' and frost==1 and drain==1 and (not project.solute or effective_frost_drainage(project))\n"
+      },
+      {
+        "runtime_line": 52,
+        "before": "",
+        "after": "    from frost_drainage_composition import enabled,codec\n    if enabled(project):return codec(project)\n"
+      }
+    ]
+  },
+  "added": {
+    "app/hybrid_water/frost_divdra_overlap.py": "c1ed4a4cdd1a2b07523e9b11f882090d78199dcace829122f2c3a9137f6c72be",
+    "app/hybrid_water/frost_drainage_composition.py": "a90f25818263804cd93c03a254cf331aba3f39038bbbdec34a8f11453fbc8ef7",
+    "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/README.md": "2bd8be5d2c14ef74f4e373ad1b56c762de120872841da998864b604d54ae7eeb",
+    "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/divdra.f90": "81f415e7274b38f973450c1ad1e2d997766e3aebb837c4f3108c20f7bc10d13e",
+    "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/manifest.json": "1c54ef86b54de75a7a7f2825170fec1ae89b19e52be758a03a03d04f82e952ad"
+  }
+}

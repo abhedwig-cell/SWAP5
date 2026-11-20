@@ -864,6 +864,8 @@ end module plant_interface""")
         path.write_text(source,encoding='cp1252')
     if age_calendar is not None:
         patched=age_calendar_owner.apply_build(output,donor_build,project,patched)
+    from frost_drainage_composition import apply_build as frost_drainage_build
+    patched=frost_drainage_build(output,donor_build,project,patched)
     if age_source:patched=current_age_source.apply_build(output,project,patched)
     from implicit_groundwater_trial import apply_build as implicit_groundwater_trial_build
     patched=implicit_groundwater_trial_build(output,donor_build,project,patched)
@@ -1074,6 +1076,9 @@ end module plant_interface""")
         from frost_reference import POLICY as FROST_POLICY
         build_identity['frost_reference']={'policy':FROST_POLICY,'source_sha256':sha(APP/'frost_reference.py'),
             'generated_source_sha256':sha(output/'frozencond.f90')}
+    from frost_drainage_composition import metadata as frost_drainage_metadata
+    if frost_drainage_metadata(project) is not None:
+        build_identity['frost_drainage_composition']=frost_drainage_metadata(project)
     if scheduled_pond:
         from surface_schedule import POLICY as SURFACE_SCHEDULE_POLICY
         build_identity['surface_schedule']={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':sha(APP/'surface_schedule.py')}

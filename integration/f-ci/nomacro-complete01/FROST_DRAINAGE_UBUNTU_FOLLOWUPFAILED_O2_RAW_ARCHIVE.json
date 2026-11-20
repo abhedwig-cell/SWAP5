@@ -1,0 +1,59 @@
+{
+  "status": "ORIGINAL_UBUNTU_FROST_ARTIFACT_BYTES_PRESERVED_PENDING_ADMISSION",
+  "archive": "FROST_DRAINAGE_UBUNTU_FOLLOWUPFAILED_O2_RAW_ARCHIVE.zip",
+  "bytes": 5232458,
+  "sha256": "07caabefd255c0071d5e1efc2b6a099d458eaca106301e1944ac32fc623f99f5",
+  "storage": "single-original-zip",
+  "parts": [
+    {
+      "file": "FROST_DRAINAGE_UBUNTU_FOLLOWUPFAILED_O2_RAW_ARCHIVE.zip",
+      "bytes": 5232458,
+      "sha256": "07caabefd255c0071d5e1efc2b6a099d458eaca106301e1944ac32fc623f99f5"
+    }
+  ],
+  "artifact_id": 14660096921,
+  "workflow_run": 44800237549,
+  "actual_producer_source": "7c5e1630f5e376c2c4c40ba861369fe857fbc6fd",
+  "optimization": "O2",
+  "original_role": "FOLLOWUPFAILED",
+  "members": {
+    "COMPILED_PROJECTION_V1.json": {
+      "bytes": 3,
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+    },
+    "actual-workflow-git-blob.txt": {
+      "bytes": 41,
+      "sha256": "25ccdc8986938da0dae56a65ee1f8949430f2814ed656eab3ef4f1cbaf7eb3be"
+    },
+    "actual-workflow.yml": {
+      "bytes": 3900,
+      "sha256": "5c87cc3fa96bd28fede89aefeb63f98ca3e5436f8127129884a155693f6806df"
+    },
+    "controller-source.json": {
+      "bytes": 195073,
+      "sha256": "8463e40d68cc90c585b4a401a3319efa5172172253851be2e7f4320e76384bd0"
+    },
+    "controller-source.tar": {
+      "bytes": 4608000,
+      "sha256": "3c1b171e191fa14ac82446655b8a2fbbc8c997b640ae52c05ef0520d43e0933a"
+    },
+    "provider-MOD_meteo.f90": {
+      "bytes": 85550,
+      "sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822"
+    },
+    "provider-PREPARED.json": {
+      "bytes": 40575,
+      "sha256": "6cc5d7637961e9e718aa6918732acd4eb2617a1de8fa02f059646450525028cc"
+    },
+    "source/RESULT.json": {
+      "bytes": 526479,
+      "sha256": "e80d636d5aad6c908db39fe7862c5bfdb4e1248e11750b012ef453e711154db6"
+    },
+    "source/actual-producer-source.zip": {
+      "bytes": 4199074,
+      "sha256": "43a6ba8eb9c53d60ce40cf41a0adaea27664d93bac8d0222eab8255aa06adf4a"
+    }
+  },
+  "canonical_admission": false,
+  "sealer_source": "db9d3e83d52cd482b75182ff6f4aeb2949bbfff6"
+}

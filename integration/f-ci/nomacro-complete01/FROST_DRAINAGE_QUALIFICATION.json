@@ -1,0 +1,95 @@
+{
+  "status": "NEUTRAL_FROST_DRAINAGE_RAW_SCIENCE_PASS_PENDING_ADMISSION",
+  "runtime": "6e40385c9b871992641f7a601bbf0ec30f5f68d3",
+  "predecessor": "383526abddeb06ea61fe31fa7e342ebbd8a5c43d",
+  "independent_readers": "b285147254b208643423adea88a4fb5f1158b464",
+  "archives": {
+    "QUALIFICATION_OBSERVATIONS": {
+      "record": "FROST_DRAINAGE_QUALIFICATION_OBSERVATIONS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "058c827c550c92c01f195a077385c9f9bd9d258cb2ccf246dfef2071c9f8b2f8"
+    },
+    "UBUNTU_FOLLOWUPFAILED_O0": {
+      "record": "FROST_DRAINAGE_UBUNTU_FOLLOWUPFAILED_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "aaa8450c274236e5ed342764eff2b37c85895d4bbafc5dd0ed68c61806fbac4e"
+    },
+    "UBUNTU_FOLLOWUPFAILED_O2": {
+      "record": "FROST_DRAINAGE_UBUNTU_FOLLOWUPFAILED_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "b0f5da7e1872016d89f3c583f035e78105b4e06bd80ff8d010fbe0df13acc5f6"
+    },
+    "UBUNTU_FOLLOWUPPASS_O0": {
+      "record": "FROST_DRAINAGE_UBUNTU_FOLLOWUPPASS_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "1e58406873eed72653ac89e97214d182b023481cc25529ce8502b9166e4bf9e8"
+    },
+    "UBUNTU_FOLLOWUPPASS_O2": {
+      "record": "FROST_DRAINAGE_UBUNTU_FOLLOWUPPASS_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "19d84cd1562f1ba74f8d781a11dde7badcf9249ba011892a0e6775df2b86d1d4"
+    },
+    "UBUNTU_ORIGINAL_O0": {
+      "record": "FROST_DRAINAGE_UBUNTU_ORIGINAL_O0_RAW_ARCHIVE.json",
+      "record_lf_sha256": "6c64217e2f19a8b75947e3b90071e57d9142de6076e10f2652d772a39bd990db"
+    },
+    "UBUNTU_ORIGINAL_O2": {
+      "record": "FROST_DRAINAGE_UBUNTU_ORIGINAL_O2_RAW_ARCHIVE.json",
+      "record_lf_sha256": "5e9c4db133b925d880940a7f9d1154cc93080f96f57f24c1830f0591db253274"
+    },
+    "WINDOWS_O0_CONTROLS": {
+      "record": "FROST_DRAINAGE_WINDOWS_O0_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "7dce1a83db8b3ba2a3f76a6a6b68ddb18c6f2b5a3370d1b0c2ca0e86ca84d472"
+    },
+    "WINDOWS_O0_SCIENCE": {
+      "record": "FROST_DRAINAGE_WINDOWS_O0_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "e87d72ed16fe0c2e6c6cc8575df8c91a47a7a4625c606777ee4836e51ea6d70a"
+    },
+    "WINDOWS_O2_CONTROLS": {
+      "record": "FROST_DRAINAGE_WINDOWS_O2_CONTROLS_RAW_ARCHIVE.json",
+      "record_lf_sha256": "0ba37584a80c81f20f35fab6b3f4519095106007bdb9e993637e7a58b1ca0123"
+    },
+    "WINDOWS_O2_SCIENCE": {
+      "record": "FROST_DRAINAGE_WINDOWS_O2_SCIENCE_RAW_ARCHIVE.json",
+      "record_lf_sha256": "45310aba27e5a9976bf06766ff02f1f66dacc6ef0c36304ce6e88b5a29cd29c3"
+    },
+    "WINDOWS_SUPPORT": {
+      "record": "FROST_DRAINAGE_WINDOWS_SUPPORT_RAW_ARCHIVE.json",
+      "record_lf_sha256": "e4f13d44c0b510214395e673ec2a506d722e0a42fdfd2c8b74bac74459c34cf6"
+    }
+  },
+  "classification": [
+    "A_ORIGINAL_DIVDRA_PARTIAL_CELL_OVERLAP_REFERENCE_DEFECT",
+    "B_EXISTING_FROST_SNOW_CDE_DRAINAGE_PROCESS_STATE_COMPOSITION",
+    "C_EXISTING_POSITIVE_CDE_INPUT_DOMAIN"
+  ],
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "AGE_admitted": false,
+  "frost_drainage_admitted": false,
+  "implicit_Frost_admitted": false,
+  "fully_frozen_front_admitted": false,
+  "new_physical_state": false,
+  "broader_calendars_admitted": false,
+  "actual_full_periods": 8,
+  "actual_days_per_full_period": 1096,
+  "actual_full_cold_windows": 56,
+  "actual_short_contexts": 8,
+  "actual_short_cold_windows": 24,
+  "actual_compiled_refusals": 332,
+  "actual_source_refusals": 40,
+  "actual_descriptor_refusals": 52,
+  "actual_transaction_contexts": 8,
+  "actual_unselected_contexts": 12,
+  "actual_unselected_cold_windows": 12,
+  "actual_geometric_component_cases": 48,
+  "actual_Frost_rate_component_cases": 336,
+  "actual_literal_CDE_task2_component_cases": 1008,
+  "daily_water_guard_cm": 1e-10,
+  "integrated_water_guard_cm": 1e-10,
+  "daily_CDE_guard_mg_cm2": 1e-10,
+  "integrated_CDE_guard_mg_cm2": 1e-10,
+  "scope": "Explicit SWKIMPL0, ordinary Snow, numerical heat1/method2, SWHYST2, original bottom6, primary drainage with effective SWDIVD1, dense original daily water/CDE output and existing event/terminal guard. Original SWDIVD0+solute, invalid/fully closed Frost geometry, implicit Frost and broader calendar domains remain outside this admission.",
+  "reference_correction": "FROST-DIVDRA-OVERLAP-01 single original overwritten extent removed; existing geometry/reporting source chain unchanged and separately composed",
+  "existing_CDE_positive_mass_component": "Exact previously admitted helper/source reused; no fresh positive-cell component count",
+  "original_failed_roles_preserved": true,
+  "portable_water_full_periods_replayed": 0,
+  "fresh_unaffected_full_periods": 0
+}

@@ -27,7 +27,8 @@ def selection(project):
     if project.age:raise ValueError('Original thermal output excludes water age')
     mode=one('SWHYST');frost=one('SWFROST');drain=one('SWDRA')
     if mode not in (0,1,2) or frost not in (0,1) or drain not in (0,1):raise ValueError('Invalid original thermal output process domain')
-    event=project.time_step_policy=='original-adaptive-event-closure-v1' and frost==1 and drain==1 and not project.solute
+    from frost_drainage_composition import enabled as effective_frost_drainage
+    event=project.time_step_policy=='original-adaptive-event-closure-v1' and frost==1 and drain==1 and (not project.solute or effective_frost_drainage(project))
     if project.time_step_policy!='original-adaptive-day-seed-v1' and not event:raise ValueError('Original thermal output requires its admitted day/event policy')
     flags=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^!\r\n]+)',text)
     if len(flags)>1:raise ValueError('Ambiguous original hysteresis output FLPRINTDT')
@@ -48,6 +49,8 @@ def selection(project):
 
 
 def magic(project):
+    from frost_drainage_composition import enabled,codec
+    if enabled(project):return codec(project)
     selected=selection(project)
     return ordinary.magic(project) if selected is None else MAGICS[selected['kind']]
 
