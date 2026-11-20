@@ -16,7 +16,7 @@ m=original.m
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('reference-work','profile','warm','build-root','output'):p.add_argument('--'+name,type=Path,required=True)
-    p.add_argument('--trace-kind',choices=('clock','head','top','floor'),default='clock')
+    p.add_argument('--trace-kind',choices=('clock','head','top','floor','atmos'),default='clock')
     p.add_argument('--target-day',type=int,default=633)
     p.add_argument('--resume-compiled',action='store_true')
     args=p.parse_args();args.output.mkdir(exist_ok=args.resume_compiled);report=json.loads((args.profile/'RESULT.json').read_text())
@@ -25,7 +25,7 @@ def main():
     original_build=m.sha(source/'BUILD.json');private=args.build_root/'bundle'
     if args.resume_compiled:assert private.is_dir()
     else:shutil.copytree(source,private)
-    provider={'clock':'timecontrol.f90','head':'headcalc.f90','floor':'headcalc.f90','top':'boundtop.f90'}[args.trace_kind]
+    provider={'clock':'timecontrol.f90','head':'headcalc.f90','floor':'headcalc.f90','top':'boundtop.f90','atmos':'boundtop.f90'}[args.trace_kind]
     path=private/provider;raw=(source/provider).read_text(encoding='cp1252')
     anchor='            if (t1900 - hybrid_age_print_epoch + dtCrit > dble(nprintcount)/dble(nprintday)) then'
     addition="""            if(daycum==633.and.fldayend)write(*,'(a,2i10,6(1x,es25.17e3),2l2)') &
@@ -64,12 +64,21 @@ def main():
         changed=raw.replace('\nsubroutine headcalc\n','\nsubroutine headcalc\n'+imports,1)
         changed=changed.replace('\n   implicit none\n','\n   implicit none\n'+declaration,1).replace(anchor,anchor+addition,1)
         assert changed.replace(imports,'',1).replace(declaration,'',1).replace(addition,'',1)==raw
-    elif args.trace_kind=='top':
+    elif args.trace_kind in ('top','atmos'):
         anchor='      if (h0 <= 1.0d-6) then'
         addition="""      if(daycum==TRACE_DAY.and.h0>0d0.and.h0<=1d-6.and.private_snow_top_count<32)then
        private_snow_top_count=private_snow_top_count+1
        write(*,'(a,i8,8(1x,es25.17e3))')'PRIVATE_SNOW_GW_TOP_TRACE', &
         daycum,tcum,dt,h0,h(1),pondm1,q1,k1max,disnod(1)
+       flush(6)
+      end if
+""".replace('TRACE_DAY',str(args.target_day))
+        if args.trace_kind=='atmos':
+            anchor='      if (q1 >= 0.0d0 .AND. q1 > Emax) then'
+            addition="""      if(daycum==TRACE_DAY.and.q1>=0d0.and.q1>Emax.and.private_snow_top_count<8)then
+       private_snow_top_count=private_snow_top_count+1
+       write(*,'(a,i8,10(1x,es25.17e3))')'PRIVATE_SNOW_GW_ATMOS_TRACE', &
+        daycum,tcum,dt,h(1),pondm1,q1,Emax,q0,epd,reva,k1Atm
        flush(6)
       end if
 """.replace('TRACE_DAY',str(args.target_day))
@@ -120,7 +129,7 @@ def main():
         assert not list(target.glob('accepted-*.zip'))
         actual=m.rows(target);warm=m.rows(args.warm)
         assert m.physical(actual)==m.physical(warm[532:532+len(actual)])
-        prefix={'head':'PRIVATE_SNOW_GW_HEAD_TRACE','floor':'PRIVATE_SNOW_GW_FLOOR_TRACE','clock':'PRIVATE_SNOW_GW_CLOCK_TRACE','top':'PRIVATE_SNOW_GW_TOP_TRACE'}[args.trace_kind]
+        prefix={'head':'PRIVATE_SNOW_GW_HEAD_TRACE','floor':'PRIVATE_SNOW_GW_FLOOR_TRACE','clock':'PRIVATE_SNOW_GW_CLOCK_TRACE','top':'PRIVATE_SNOW_GW_TOP_TRACE','atmos':'PRIVATE_SNOW_GW_ATMOS_TRACE'}[args.trace_kind]
         lines=[s for s in (target/'original/donor.stdout').read_text(encoding='utf-8').splitlines() if s.startswith(prefix)]
         assert lines and (args.trace_kind!='clock' or len(lines)==1),lines
         result.update(status='PRIVATE_IO_ONLY_TRACE_PHYSICAL_PREFIX_MATCH_NOT_ADMITTED',seconds=seconds,actual_trace=lines,
