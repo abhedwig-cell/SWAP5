@@ -15,7 +15,7 @@ from extended_forensics import require
 BASE = '21fce9bc6275d998d3936e035c39ed4204efa70b'
 RUNTIME = 'aec7c3598e6407827869d3d94fa92a5f2b682512'
 READERS = 'd2563d2c9dd086b628673df1a2656d6ca8ca5ee1'
-SEALED = 'TO_BE_SEALED'
+SEALED = 'ec628fb8a58104ff4e5d1442b319e45bfbdc3b24'
 PROOF = ROOT/'integration/f-ci/nomacro-complete01'
 QUAL = 'integration/f-ci/nomacro-complete01/EXTENDED_DRAINAGE_SECONDARY_POND_QUALIFICATION.json'
 SURFACES = ('app', 'src', 'tools/solute', 'tools/vq', 'reference/swap-4.3.1')
