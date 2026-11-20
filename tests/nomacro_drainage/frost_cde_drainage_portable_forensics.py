@@ -10,6 +10,7 @@ import re
 import struct
 import subprocess
 import zipfile
+from frost_cde_drainage_sealed_components import audit as components
 
 ROOT = Path(__file__).resolve().parents[2]
 ORIGINAL = '5534a17df5ecc382cd4b8415c5bbd7d3954a0ea6'
@@ -36,6 +37,11 @@ def audit(original, followup, opt):
     assert SHA(Path(original.filename).read_bytes()) == q['original_sha256']
     prepared = read(followup, 'provider-PREPARED.json')
     assert prepared['source_archives']['SWAP.ZIP'] == '1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151'
+    with zipfile.ZipFile(io.BytesIO(original.read('source/actual-producer-source.zip'))) as cap, \
+         zipfile.ZipFile(io.BytesIO(cap.read('reference/swap-4.3.1/source-archives/SWAP.ZIP'))) as source:
+        component_result = components(original.read, original.namelist(),
+            {name: 'frost-cde-drainage/' + name for name in ('overlap', 'rates', 'cde')},
+            {name: source.read('SWAP/' + name + '.f90') for name in ('divdra', 'solute', 'frozencond')}, prepared, opt)
     for archive, head in ((original, ORIGINAL), (followup, FOLLOWUP)):
         manifest = read(archive, 'source/RESULT.json'); assert manifest['producer_head'] == head
         raw = archive.read('source/actual-producer-source.zip'); assert SHA(raw) == manifest['sha256']
@@ -104,7 +110,7 @@ def audit(original, followup, opt):
             results.append(dict(kind=kind, phase=phase, days=days, cold_windows=expected_windows,
                 water_max_decimal=str(water_max), chemical_max_decimal=str(chemical_max)))
     return dict(status='INDEPENDENT_ORIGINAL_PORTABLE_SOURCE_COMPILER_WARM_COLD_USER_OUTPUT_CONTROLS_PASS',
-        optimization=opt, results=results, native_refusals=83, transactions=2, water_model_periods_replayed=0,
+        optimization=opt, results=results, components=component_result, native_refusals=83, transactions=2, water_model_periods_replayed=0,
         model_executions=0, compiler_executions=0, canonical_admission=False)
 
 

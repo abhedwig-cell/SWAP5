@@ -9,6 +9,7 @@ import zipfile
 
 from frost_cde_drainage_model_forensics import audit as model
 from frost_cde_drainage_portable_forensics import binary
+from frost_cde_drainage_sealed_components import audit as components
 
 SHA = lambda raw: hashlib.sha256(raw).hexdigest()
 
@@ -76,8 +77,13 @@ def windows(proof):
         original = stack.enter_context(zipfile.ZipFile(io.BytesIO(cap.read('reference/swap-4.3.1/source-archives/SWAP.ZIP'))))
         assert SHA(cap.read('reference/swap-4.3.1/source-archives/SWAP.ZIP')) == prepared['source_archives']['SWAP.ZIP'] == '1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151'
         ref = View(Bytes({'original/build/swap-selected/divdra.f90': original.read('SWAP/divdra.f90')}), 'original')
-        results = []; controls = []
+        results = []; controls = []; component_results = {}
         for opt in ('O0', 'O2'):
+            component_results[opt] = components(current.get, current.names,
+                dict(overlap=f'profiles/frost-cde-drainage-overlap-{opt}-v1',
+                     rates=f'profiles/frost-cde-drainage-rates-corrected-{opt}-v1',
+                     cde=f'profiles/frost-cde-drainage-cde-{opt}-v2'),
+                {name: original.read('SWAP/' + name + '.f90') for name in ('divdra', 'solute', 'frozencond')}, prepared, opt)
             for kind in ('water', 'cde'):
                 for phase in ('short', 'full'):
                     version = 'v2' if (opt, kind, phase) == ('O0', 'water', 'short') else 'v1'
@@ -148,7 +154,7 @@ def windows(proof):
                 postimages.append(dict(name=name, optimization=opt, original_Fortran_exact=True, physical_native_exact=True, cold_exact=True))
         assert len(postimages) == 12
         return dict(status='SEALED_ACTUAL_FROST_WINDOWS_MODELS_CONTROLS_UNSELECTED_POSTIMAGES_PASS', results=results,
-            controls=controls, postimages=postimages, actual_full_periods=4, actual_full_cold_windows=28,
+            controls=controls, components=component_results, postimages=postimages, actual_full_periods=4, actual_full_cold_windows=28,
             actual_short_contexts=4, actual_short_cold_windows=12, actual_compiled_refusals=166,
             actual_source_refusals=20, actual_descriptor_refusals=26, actual_transaction_contexts=4,
             actual_unselected_contexts=12, actual_unselected_cold_windows=12, model_executions=0, compiler_executions=0)
