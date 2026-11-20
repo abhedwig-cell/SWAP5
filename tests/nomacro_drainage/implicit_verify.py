@@ -40,7 +40,9 @@ def qualification():
 
 @lru_cache(maxsize=1)
 def guard_previous_source():
- qualification();require(not git('diff',RUNTIME,'--',*SURFACES),'Actual implicit compiler source differs from qualified runtime')
+ qualification()
+ import secondary_pond_verify as secondary
+ secondary.guard_previous_source()
  expected=['app/hybrid_water/'+v for v in ('daily_coupling.py','extended_drainage.py','extended_implicit_pond.py','extended_implicit_saturation.py','implicit_conductivity.py')]
  require(git('diff','--name-only',BASE,RUNTIME,'--',*SURFACES).decode().splitlines()==expected,'Unexpected implicit scientific compiler dependency changed')
  path='app/hybrid_water/extended_drainage.py';anchor=b"    swsrf, swsec, levels, division = map(integer,('SWSRF','SWSEC','NRSRF','SWDIVD'))\n";added=b"    if selected.get('SWKIMPL')==1 and swsrf!=3:\n        raise ValueError('Implicit secondary-only extended drainage is not qualified: original Newton clock-resolution failure')\n"
@@ -87,6 +89,8 @@ def scientific():
 
 
 def verify():
+ import secondary_pond_verify as secondary
+ return secondary.verify()
  source();current=scientific();history=previous.scientific();calendar=previous.previous.scientific();drainage=previous.previous.preceding.scientific()
  import weather_surface_verify as weather
  q=json.loads((PROOF/'WEATHER_TERMINAL_QUALIFICATION.json').read_bytes());weather.validate(q);inherited_weather=weather.scientific(q);inherited=weather.inherited()

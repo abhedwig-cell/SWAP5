@@ -1,10 +1,15 @@
-name: Original extended drainage implicit conductivity qualification
+name: Original secondary implicit zero-pond qualification
 on:
   workflow_dispatch:
+    inputs:
+      postimage_only:
+        description: Validate current read-only source guard and unchanged primary postimages without repeating full periods
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
-  group: nomacro-extended-implicit-${{ github.ref }}
+  group: nomacro-secondary-pond-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   qualify:
@@ -34,7 +39,7 @@ jobs:
             reference/swap-4.3.1/projects
             reference/swap-4.3.1/source-archives
             reference/swap-4.3.1/patches
-      - name: Preserve actual source and prepare original provider
+      - name: Preserve source and prepare original provider
         env:
           PYTHONPATH: app/hybrid_water
         run: |
@@ -42,16 +47,28 @@ jobs:
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"
           git archive HEAD tests/nomacro_drainage tests/nomacro_scheduled_subsurface tests/nomacro_mixtures .github/workflows/nomacro-extended-implicit.yml > "$RUNNER_TEMP/proof/controller-source.tar"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Qualify integrated original implicit conductivity and drainage
+      - name: Qualify secondary water and CDE with original failure-crossing native windows
         run: |
-          for label in cde water; do
-            extra=(); controls_extra=()
-            if [[ "$label" == cde ]]; then case=automatic; mode=daily; fmt=3; history=2; days=35; controls_extra=(--positive-only); fi
-            if [[ "$label" == water ]]; then case=automatic; mode=monthly; fmt=2; history=0; days=1096; extra=(--water-only); fi
+          for label in water cde; do
+            extra=(--switch-window); days=1096
+            if [[ '${{ inputs.postimage_only }}' == true ]]; then extra=(); days=35; fi
+            if [[ "$label" == water ]]; then case=water; mode=monthly; fmt=2; history=0; fi
+            if [[ "$label" == cde ]]; then case=fixed; mode=daily; fmt=3; history=2; fi
             python3 -B tests/nomacro_drainage/calendar_runtime.py --case "$case" --mode "$mode" --format "$fmt" --hysteresis "$history" --implicit "${extra[@]}" --days "$days" --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label"
-            python3 -B tests/nomacro_drainage/implicit_forensics.py "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label/FORENSICS.json"
-            python3 -B tests/nomacro_drainage/extended_controls.py "${controls_extra[@]}" --original-output --reference-work "$RUNNER_TEMP/provider" --profile-root "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label/controls"
+            python3 -B tests/nomacro_drainage/secondary_pond_forensics.py "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label/FORENSICS.json"
+            python3 -B tests/nomacro_drainage/extended_controls.py --original-output --reference-work "$RUNNER_TEMP/provider" --profile-root "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label/controls"
           done
+          python3 -B tests/nomacro_drainage/secondary_pond_probe.py --profile "$RUNNER_TEMP/proof/water" --provider "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/components" --output "$RUNNER_TEMP/proof/components"
+          PYTHONPATH=tests/nomacro_drainage python3 -B -c 'import json,os;from pathlib import Path;from secondary_pond_forensics import component;p=Path(os.environ["RUNNER_TEMP"])/"proof/components";(p/"FORENSICS.json").write_text(json.dumps(component(p),indent=2))'
+          if [[ '${{ inputs.postimage_only }}' == true ]]; then
+            python3 -B tests/nomacro_drainage/secondary_pond_controls.py --profile "$RUNNER_TEMP/proof/water" --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/water/source-controls"
+            for label in primary-water primary-cde; do
+              extra=(); history=2; mode=daily; fmt=3
+              if [[ "$label" == primary-water ]]; then extra=(--water-only); history=0; mode=monthly; fmt=2; fi
+              python3 -B tests/nomacro_drainage/calendar_runtime.py --case automatic --mode "$mode" --format "$fmt" --hysteresis "$history" --implicit "${extra[@]}" --days 35 --optimization ${{ matrix.optimization }} --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label"
+              python3 -B tests/nomacro_drainage/implicit_forensics.py "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label/FORENSICS.json"
+            done
+          fi
       - name: Retain actual compiled bytes and provider identity
         if: always()
         shell: python
@@ -70,6 +87,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: extended-implicit-primary-${{ matrix.optimization }}-${{ github.sha }}
+          name: secondary-implicit-pond-${{ matrix.optimization }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30

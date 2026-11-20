@@ -13,7 +13,7 @@ import extended_runtime as previous
 from original_output_baseline import assignment
 from original_output_files import compare
 import original_output
-from extended_drainage import validate_candidate
+from extended_drainage import validate_candidate,selection as drainage_selection
 
 m=previous.m
 ROOT=previous.ROOT
@@ -101,6 +101,8 @@ def main():
     p.add_argument('--hysteresis',type=int,choices=(0,1,2),default=0)
     p.add_argument('--implicit',action='store_true')
     p.add_argument('--water-only',action='store_true')
+    p.add_argument('--switch-window',action='store_true',help='Additional native288/290 window for the secondary implicit pond correction')
+    p.add_argument('--secondary-prescribed',action='store_true',help='Declare original SWSRF2/SWSEC1 input interaction')
     p.add_argument('--reuse-build',type=Path)
     p.add_argument('--nprintday',type=int)
     p.add_argument('--end-date')
@@ -116,6 +118,15 @@ def main():
     save()
     try:
         q['fixture']=fixture(a.case,a.output/'input',a.mode,a.format,a.nprintday if a.nprintday is not None else (3 if a.mode=='subdaily' else 1),a.age,a.end_date,a.hysteresis,a.implicit,a.water_only)
+        if a.secondary_prescribed:
+            assert a.implicit and a.case in ('water','fixed')
+            path=a.output/'input/swap.dra';text=path.read_text(encoding='cp1252')
+            assert text.count('SWSEC = 2')==1
+            text=text.replace('SWSEC = 2','SWSEC = 1',1)
+            text+='\nDATESEC WLS\n2002-01-01 -40.0\n2002-01-05 -60.0\n2004-12-31 -40.0\n'
+            path.write_text(text,encoding='cp1252')
+            q['fixture']['inputs']['swap.dra']=hashlib.sha256(path.read_bytes()).hexdigest()
+            q['fixture']['declared_secondary_prescribed']='Original SWSRF2/SWSEC1, stated DATESEC levels; original soil/rotation retained'
         project=m.e.load(a.output/'input',original_output=True);build=a.reuse_build or a.build_root/a.case
         q.update(input_root=str(a.output/'input'),build_root=str(build),output_selection=original_output.selection(project));save()
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,
@@ -132,6 +143,9 @@ def main():
         if a.end_date is not None and a.days==5:windows.append((4,5))
         if a.days>=35:windows += [(14,17),(30,35)]
         if a.days==1096:windows += [(363,367),(530,532),(1094,1096)]
+        if a.switch_window:
+            assert a.days==1096 and a.implicit and drainage_selection(project)['swsrf']==2
+            windows.append((288,290))
         full=a.output/'trajectory'
         q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,a.days,{a.days,*(x for pair in windows for x in pair)},240)
         q['cold']=[];save()
