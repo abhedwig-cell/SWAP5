@@ -13,7 +13,7 @@ import extended_runtime as previous
 from original_output_baseline import assignment
 from original_output_files import compare
 import original_output
-from extended_drainage import validate_candidate
+from extended_drainage import validate_candidate,selection as drainage_selection
 
 m=previous.m
 ROOT=previous.ROOT
@@ -101,6 +101,7 @@ def main():
     p.add_argument('--hysteresis',type=int,choices=(0,1,2),default=0)
     p.add_argument('--implicit',action='store_true')
     p.add_argument('--water-only',action='store_true')
+    p.add_argument('--switch-window',action='store_true',help='Additional native288/290 window for the secondary implicit pond correction')
     p.add_argument('--reuse-build',type=Path)
     p.add_argument('--nprintday',type=int)
     p.add_argument('--end-date')
@@ -132,6 +133,9 @@ def main():
         if a.end_date is not None and a.days==5:windows.append((4,5))
         if a.days>=35:windows += [(14,17),(30,35)]
         if a.days==1096:windows += [(363,367),(530,532),(1094,1096)]
+        if a.switch_window:
+            assert a.days==1096 and a.implicit and drainage_selection(project)['swsrf']==2
+            windows.append((288,290))
         full=a.output/'trajectory'
         q['trajectory'],data=m.trajectory(build,a.reference_work,project,full,a.days,{a.days,*(x for pair in windows for x in pair)},240)
         q['cold']=[];save()
