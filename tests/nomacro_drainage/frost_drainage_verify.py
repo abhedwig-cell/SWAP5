@@ -27,13 +27,14 @@ LEGACY_PATTERN = '            /integration/f-ci/nomacro-complete01/OUTPUT_THERMA
 PUBLICATION_WORKFLOWS = ('pub-me-d1-transition-authority.yml', 'pub-me-d3-origin-authority.yml',
     'pub-p2e06-reference-local-balance-scaling.yml', 'pub-p2e07-reference-cancellation-floor.yml',
     'pub-p2e08-reference-valid-calibration-domain.yml', 'pub-p2e09-reference-threshold-freeze.yml',
-    'pub-p2e10-e0-broad-paired-matrix.yml')
+    'pub-p2e10-e0-broad-paired-matrix.yml', 'vq-reference.yml')
 PUBLICATION_EXCLUSIONS = ''.join("      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/" +
     name + "'\n" for name in ('README.md', 'divdra.f90', 'manifest.json'))
 PUBLICATION_HELPER = "      - 'tests/nomacro_drainage/frost_publication_scope.py'\n"
 PUBLICATION_SELECTION = ('      - name: Select actual publication dependency changes\n'
     '        id: publication_scope\n        run: python3 tests/nomacro_drainage/frost_publication_scope.py\n')
 PUBLICATION_CONDITION = "        if: steps.publication_scope.outputs.replay == 'true'\n"
+REFERENCE_SCOPE_CHECKOUT = '        with:\n          fetch-depth: 0\n'
 PARSERS = ('frost_cde_drainage_science.py', 'frost_cde_drainage_model_forensics.py',
     'frost_cde_drainage_component_forensics.py', 'frost_cde_drainage_sealed_components.py',
     'frost_cde_drainage_portable_forensics.py', 'frost_drainage_parent_bridge.json')
@@ -91,10 +92,15 @@ def guard_previous_source():
             'Registered CI changed beyond Frost proof checkout')
     for name in PUBLICATION_WORKFLOWS:
         path = '.github/workflows/' + name; actual = norm((ROOT/path).read_bytes()).decode()
-        for inserted, count in ((PUBLICATION_EXCLUSIONS, 1), (PUBLICATION_HELPER, 1),
-                                (PUBLICATION_SELECTION, 1), (PUBLICATION_CONDITION, 2)):
+        reference = name == 'vq-reference.yml'
+        for inserted, count in ((PUBLICATION_EXCLUSIONS, 2 if reference else 1),
+                                (PUBLICATION_HELPER, 2 if reference else 1),
+                                (PUBLICATION_SELECTION, 1), (PUBLICATION_CONDITION, 9 if reference else 2)):
             require(actual.count(inserted) == count, 'Ambiguous publication dependency selection')
             actual = actual.replace(inserted, '')
+        if reference:
+            require(actual.count(REFERENCE_SCOPE_CHECKOUT) == 1, 'Ambiguous reference scope Git history')
+            actual = actual.replace(REFERENCE_SCOPE_CHECKOUT, '', 1)
         require(actual.encode() == blob(PARENT, path),
             'Publication CI changed beyond explicit unchanged dependency selection')
     return True

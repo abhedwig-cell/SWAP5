@@ -4,6 +4,10 @@ on:
   pull_request:
     paths:
       - 'reference/swap-4.3.1/**'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/README.md'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/divdra.f90'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/manifest.json'
+      - 'tests/nomacro_drainage/frost_publication_scope.py'
       - 'tools/vq/**'
       - 'docs/verification/**'
       - 'docs/performance/evidence/F-PE19_B1_11_*'
@@ -13,6 +17,10 @@ on:
       - main
     paths:
       - 'reference/swap-4.3.1/**'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/README.md'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/divdra.f90'
+      - '!reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/manifest.json'
+      - 'tests/nomacro_drainage/frost_publication_scope.py'
       - 'tools/vq/**'
       - 'docs/verification/**'
       - 'docs/performance/evidence/F-PE19_B1_11_*'
@@ -29,39 +37,53 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Select actual publication dependency changes
+        id: publication_scope
+        run: python3 tests/nomacro_drainage/frost_publication_scope.py
 
       - name: Set up Python
+        if: steps.publication_scope.outputs.replay == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Install gate dependency
+        if: steps.publication_scope.outputs.replay == 'true'
         run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
 
       - name: Check B1.10 predecessor identity
+        if: steps.publication_scope.outputs.replay == 'true'
         run: python tools/vq/b1_snapshot_identity.py --pin tools/vq/cases/b1-10-reference-pin.json
 
       - name: Check pinned B1.11 corrected-reference identity
+        if: steps.publication_scope.outputs.replay == 'true'
         run: python tools/vq/b1_snapshot_identity.py --pin tools/vq/cases/b1-11-reference-pin.json
 
       - name: Check B1.11 SWAP-011 admission consistency
+        if: steps.publication_scope.outputs.replay == 'true'
         run: python tools/vq/b1_11_admission_gate.py
 
       - name: Recheck SWAP-012 predecessor inverse evidence
+        if: steps.publication_scope.outputs.replay == 'true'
         run: python reference/swap-4.3.1/patches/SWAP-012/tests/run_inverse_evidence_gate.py
 
       - name: Check SWAP-002 source-bound compiled tillage-start gate
+        if: steps.publication_scope.outputs.replay == 'true'
         run: |
           gfortran --version
           python reference/swap-4.3.1/patches/SWAP-002/tests/run_tillage_start_gate.py
 
       - name: Check VQ gate unit tests
+        if: steps.publication_scope.outputs.replay == 'true'
         run: |
           python -m unittest \
             tools.vq.test_b1_snapshot_identity \
             tools.vq.test_b2_reference_gate
 
       - name: Check deterministic B1.11 reconstruction tooling syntax
+        if: steps.publication_scope.outputs.replay == 'true'
         run: |
           python -m py_compile \
             tools/vq/b1_11_reconstruct.py \
