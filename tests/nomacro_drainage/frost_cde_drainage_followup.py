@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 import urllib.request
+from urllib.parse import urlparse
 import zipfile
 
 HERE = Path(__file__).resolve().parent
@@ -29,7 +30,13 @@ def main():
     artifact, size, digest = ARTIFACTS[a.optimization]
     request = urllib.request.Request(f'https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/{artifact}/zip',
         headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json'})
-    raw = urllib.request.urlopen(request, timeout=90).read()
+    class ArtifactRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            redirected = super().redirect_request(req, fp, code, msg, headers, newurl)
+            if redirected is not None and urlparse(req.full_url).netloc != urlparse(newurl).netloc:
+                redirected.remove_header('Authorization')
+            return redirected
+    raw = urllib.request.build_opener(ArtifactRedirect()).open(request, timeout=90).read()
     assert len(raw) == size and hashlib.sha256(raw).hexdigest() == digest
     retained = a.output / 'RETAINED_ORIGINAL_ARTIFACT_V1.json'
     q = dict(status='RUNNING', source=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
