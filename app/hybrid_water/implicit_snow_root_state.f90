@@ -1,7 +1,9 @@
 module hybrid_implicit_snow_root_state
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod
-  use variables, only: swsolu,swsnow,swhyst,swbotb,swkimpl,alpwetnoddrz,alpdrynodrtz
+  use MOD_swap_base, only: swsolu,swsnow,swhyst
+  use variables, only: swbotb,swkimpl
+  use MOD_re_global, only: alpwetnoddrz,alpdrynodrtz
   implicit none
   private
   public :: implicit_snow_root_checkpoint
