@@ -9,7 +9,8 @@ def unchanged():
     # These complete trees include every publication program, parameter,
     # preregistration and compiled source. Their actual canonical bytes survive.
     if frost.git('diff', frost.PARENT, 'HEAD', '--', 'src', 'tests/publication',
-                 'docs/publication', 'docs/publications', 'tests/fsi/fsi04_real_headcalc_stubs.f90'):
+                 'docs/publication', 'docs/publications', 'docs/verification',
+                 'docs/performance/evidence', 'tools/vq', 'tests/fsi/fsi04_real_headcalc_stubs.f90'):
         return False
     paths = frost.git('diff', '--no-renames', '--name-status', frost.PARENT, 'HEAD', '--', 'reference').decode().splitlines()
     expected = {'reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-OVERLAP-01/' + n
