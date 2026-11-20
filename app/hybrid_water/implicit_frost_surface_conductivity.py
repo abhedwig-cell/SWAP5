@@ -38,3 +38,5 @@ def restore(actual):
 def validate(actual, original):
     if restore(actual) != original:
         raise ValueError('Qualified complete original implicit source changed')
+
+# actual committed foreign implicit Frost source; never merge
