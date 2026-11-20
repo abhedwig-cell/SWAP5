@@ -1,5 +1,8 @@
 name: Original implicit Snow water and CDE composition qualification
 on:
+  push:
+    branches: [codex/nomacro-implicit-snow-composition01]
+    paths: ['.github/workflows/nomacro-implicit-snow.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -43,6 +46,8 @@ jobs:
           mkdir -p "$RUNNER_TEMP/proof"
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$RUNNER_TEMP/proof/source"
           python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$RUNNER_TEMP/proof/controller-source.tar"
+          cp .github/workflows/nomacro-implicit-snow.yml "$RUNNER_TEMP/proof/actual-workflow.yml"
+          git rev-parse HEAD:.github/workflows/nomacro-implicit-snow.yml > "$RUNNER_TEMP/proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Qualify coherent original implicit Snow coupling
         run: |
