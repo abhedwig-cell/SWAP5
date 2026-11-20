@@ -1,0 +1,119 @@
+"""Source-bound private weighted-history isolation; never admission evidence.
+
+Reuse the validated historical bundle without changing BUILD or its binding.
+The read-only instrumented executable has a separate identity and remains research.
+"""
+import argparse
+import json
+import shutil
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in ('source-root', 'short-profile', 'failed-profile', 'reference-work', 'output'):
+        parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--phase', choices=('prefix', 'nodes'), required=True)
+    parser.add_argument('--prefix', type=Path)
+    parser.add_argument('--build-root', type=Path)
+    args = parser.parse_args()
+    sys.path[:0] = [str(args.source_root/'tests/nomacro_scheduled_subsurface'),
+                   str(args.source_root/'tests/nomacro_mixtures')]
+    import implicit_conductivity_runtime as original
+    m = original.m
+    assert m.h.APP.resolve() == (args.source_root/'app/hybrid_water').resolve()
+    build = args.short_profile/'build'
+    build_sha = m.sha(build/'BUILD.json')
+    project = m.e.load(args.short_profile/'input', original_output=True)
+    meta, case = m.validate_bundle(build, args.reference_work, project)
+    args.output.mkdir()
+    trajectory = args.output/'trajectory'
+    trajectory.mkdir()
+    donor = m.h.executable(build, 'day_donor')
+    if args.phase == 'prefix':
+        start, end, cap, parent = 34, 160, 60, args.short_profile/'trajectory'
+    else:
+        assert args.prefix and args.build_root
+        start, end, cap, parent = 160, 164, 45, args.prefix/'trajectory'
+        args.build_root.mkdir()
+        for path in build.iterdir():
+            if path.suffix.lower() in ('.o', '.mod', '.smod', '.f90', '.dll', '.so'):
+                shutil.copyfile(path, args.build_root/path.name)
+        path = args.build_root/'headcalc.f90'
+        source = path.read_text(encoding='cp1252')
+        declaration = '   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, mass_polish_at'
+        anchor = '!     reset soil state variables'
+        assert source.count(anchor) == source.count(declaration) == 1
+        source = source.replace(declaration, declaration+'\n   integer,save::observed_failures=0', 1)
+        observation = '''
+      if(dt<1d-5.and.observed_failures<24)then
+         observed_failures=observed_failures+1
+         write(*,'(a,3(1x,i0),4(1x,es25.17e3))') 'WEIGHTED_FAILED_TRIAL', &
+            observed_failures,numbit,iBackTr,t1900,dt,pond,sum1
+         do i=1,NN
+            write(*,'(a,1x,i0,13(1x,es25.17e3))') 'WEIGHTED_FAILED_NODE', &
+               i,F(i),h(i),hold(i),theta(i),thetm1(i),dimoca(i),difh(i),k(i),dkdh(i),qrot(i),hgrad(i),dFdhM(i),dz(i)
+         end do
+         flush(6)
+      end if
+'''
+        path.write_text(source.replace(anchor, observation+anchor, 1), encoding='cp1252')
+        provider = args.reference_work/'build/swap-obj'
+        ttutil = args.reference_work/'build/ttutil-obj'
+        original_objects = sorted(provider.glob('*.o'))
+        known = {p.name for p in original_objects}
+        objects = [args.build_root/p.name if (args.build_root/p.name).exists() else p for p in original_objects]
+        objects += [p for p in sorted(args.build_root.glob('*.o')) if p.name not in known]
+        donor = args.build_root/'diagnostic_donor.exe'
+        commands = [
+            ['gfortran', *meta['identity']['donor_flags'], '-I', str(args.build_root),
+             '-I', str(provider), '-I', str(ttutil), '-c', 'headcalc.f90'],
+            ['gfortran', '-o', str(donor), *map(str, objects), str(ttutil/'libttutil.a')]]
+        logs = []
+        for command in commands:
+            result = subprocess.run(command, cwd=args.build_root, capture_output=True, text=True, timeout=60)
+            logs.append(dict(command=command, returncode=result.returncode, stdout=result.stdout, stderr=result.stderr))
+            (args.output/'COMPILATION.json').write_text(json.dumps(logs, indent=2))
+            result.check_returncode()
+        shutil.copyfile(path, args.output/path.name)
+        shutil.copyfile(donor, args.output/donor.name)
+    checkpoint = parent/f'accepted-column-1-day-{start}.zip'
+    checkpoint_sha = m.sha(checkpoint)
+    origin = args.output/'origin'
+    receipt = m.h.verify_checkpoint(checkpoint, start, meta['binding'], origin)
+    status = dict(status='RUNNING', qualification=False, phase=args.phase,
+                  original_BUILD_sha256=build_sha, actual_donor_sha256=m.sha(donor),
+                  original_checkpoint_sha256=checkpoint_sha, start=start, end=end, wall_cap_seconds=cap,
+                  historical_source_capsule=str(args.source_root), original_binding_unchanged=True)
+    def save():
+        (args.output/'RESULT.json').write_text(json.dumps(status, indent=2)+'\n')
+    save()
+    clock = time.monotonic()
+    try:
+        result, _ = m.bounded(cap, lambda: m.h.run(donor, m.h.executable(build, 'day_kernel'),
+            case, trajectory, end, checkpoint_day=start, origin=origin, origin_receipt=receipt,
+            runtime=True, publish_day=end, checkpoint_binding=meta['binding'], model=project.model, project=project))
+        assert result['first_refusal'] is None, result
+        status['status'] = 'RESEARCH_CONTINUATION_COMPLETE'
+    except Exception as error:
+        status.update(status='RESEARCH_FAILED_OR_CENSORED', error=repr(error))
+        if args.phase == 'prefix':
+            raise
+    finally:
+        actual = m.rows(trajectory)
+        prior = m.rows(args.failed_profile/'trajectory')
+        m.check(actual)
+        assert m.physical(actual) == m.physical(prior[start:start+len(actual)])
+        assert m.sha(build/'BUILD.json') == build_sha and m.sha(checkpoint) == checkpoint_sha
+        status.update(exact_previously_accepted_days=len(actual), seconds=time.monotonic()-clock)
+        save()
+    if args.phase == 'prefix':
+        assert len(actual) == end-start and (trajectory/f'accepted-column-1-day-{end}.zip').is_file()
+    print(json.dumps(status))
+
+
+if __name__ == '__main__':
+    main()
