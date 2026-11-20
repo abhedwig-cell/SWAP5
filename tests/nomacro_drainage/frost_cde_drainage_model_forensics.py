@@ -2,6 +2,7 @@
 import argparse
 from decimal import Decimal, localcontext
 import hashlib
+import io
 import json
 from pathlib import Path
 import struct
@@ -11,17 +12,20 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def audit(profile_path, reference):
+def audit(profile_path, reference, *, locations=None, provider_catalog=None):
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
     profile = json.loads((profile_path / 'RESULT.json').read_text(encoding='utf-8'))
     assert 'PASS_NOT_ADMITTED' in profile['status'] and not profile['canonical_admission']
     kind, opt, phase = profile['kind'], profile['optimization'], profile['phase']
-    build = Path(profile['build_root']); inputs = Path(profile['input_root'])
+    build = locations['bundle'] if locations else Path(profile['build_root'])
+    inputs = locations['inputs'] if locations else Path(profile['input_root'])
     meta = json.loads((build / 'BUILD.json').read_text()); identity = meta['identity']
     assert sha(build / 'BUILD.json') == profile['trajectory']['build_sha256']
     for name, digest in profile['inventory'].items(): assert sha(inputs / name) == digest
     for name, digest in identity['donor_generated'].items(): assert sha(build / name) == digest
-    for name, digest in identity['donor_objects'].items(): assert sha(reference / 'build/swap-obj' / name) == digest
+    for name, digest in identity['donor_objects'].items():
+        actual = provider_catalog['build/swap-obj/' + name] if provider_catalog else sha(reference / 'build/swap-obj' / name)
+        assert actual == digest
     assert '-' + opt in identity['donor_flags'] and '-' + opt in identity['kernel_flags']
     assert '-ffp-contract=off' in identity['donor_flags'] and '-ffp-contract=off' in identity['kernel_flags']
     for role, digest in meta['executable_sha256'].items():
@@ -36,7 +40,7 @@ def audit(profile_path, reference):
     assert actual.count(new) == 1 and actual.replace(new, old, 1) == original
     guarded = ROOT / 'reference/swap-4.3.1/frost-corrections/FROST-GEOMETRY-01/frozencond.f90'
     assert (build / 'frozencond.f90').read_bytes() == guarded.read_bytes()
-    warm = profile_path / 'trajectory'
+    warm = locations['warm'] if locations else profile_path / 'trajectory'
     rows = [json.loads(s, parse_float=Decimal) for s in (warm / 'daily.jsonl').read_text().splitlines()]
     days = 35 if phase == 'short' else 1096; assert len(rows) == days
     water_max = Decimal(0); chemical_max = Decimal(0)
@@ -63,7 +67,7 @@ def audit(profile_path, reference):
     for own in profile['own']:
         assert own['exact_physical'] and own['exact_complete_native'] and own['origin_unchanged']
         start, end = own['start'], own['end']
-        cold = profile_path / ('own-' + str(start))
+        cold = locations['cold'](start) if locations else profile_path / ('own-' + str(start))
         continuation = [json.loads(s) for s in (cold / 'daily.jsonl').read_text().splitlines()]
         # These are the scientific fields used by the existing physical projection.
         fields = ('stock_start_cm', 'stock_end_cm', 'external_flux_cm', 'pressure_head_cm', 'groundwater_cm',
@@ -72,8 +76,8 @@ def audit(profile_path, reference):
         assert len(continuation) == end-start
         for a, b in zip(continuation, original_rows[start:end]):
             assert all(a[k] == b[k] for k in fields)
-        with zipfile.ZipFile(warm / f'accepted-column-1-day-{end}.zip') as a, \
-             zipfile.ZipFile(cold / f'accepted-column-1-day-{end}.zip') as b:
+        with zipfile.ZipFile(io.BytesIO((warm / f'accepted-column-1-day-{end}.zip').read_bytes())) as a, \
+             zipfile.ZipFile(io.BytesIO((cold / f'accepted-column-1-day-{end}.zip').read_bytes())) as b:
             for name in ('macro.bin', 'result.end'): assert a.read(name) == b.read(name)
             native = a.read('macro.bin'); assert native[:8] == (b'S5FDC001' if kind == 'cde' else b'S5FDW001')
             header = struct.pack('<10i', 1, meta['project']['nodes'], 0, int(kind == 'cde'), 2, 1, 1, 1, 1, 2)
