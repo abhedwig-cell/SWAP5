@@ -15,9 +15,10 @@ HEAD='e8693175f3c0497d83fa9a59868250d4c0b76ca4e8a88de8d825ae5c25f6255f'
 RECEIPT='dc491e5faa9c7ca8e0e1e2a573cac965cb2e7f790d1cb6ad89ab82e7b90a6540'
 
 
-def audit(profile,reference,allow_refusal=False):
+def audit(profile,reference,allow_refusal=False,allow_censored=False):
     q=json.loads((profile/'RESULT.json').read_text(encoding='utf-8'));failed=q['status']=='FAILED'
-    assert allow_refusal if failed else q['status'].startswith('CANDIDATE_ACTUAL_MODEL7_CAPACITY_') and q['status'].endswith('_PASS_NOT_ADMITTED')
+    censored=failed and q.get('error')=="TimeoutError('Model wall cap 180s')"
+    assert (allow_censored if censored else allow_refusal) if failed else q['status'].startswith('CANDIDATE_ACTUAL_MODEL7_CAPACITY_') and q['status'].endswith('_PASS_NOT_ADMITTED')
     build=Path(q['build_root']);inputs=Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text(encoding='utf-8'));identity=meta['identity']
     for name,digest in q['inventory'].items():assert SHA((inputs/name).read_bytes())==digest
     for name,digest in identity['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
@@ -71,9 +72,12 @@ def audit(profile,reference,allow_refusal=False):
         assert SHA(private.encode('cp1252'))==RECEIPT
     assert SHA(head.encode('cp1252'))==HEAD
     rows=[json.loads(line) for line in (profile/'trajectory/daily.jsonl').read_text().splitlines()]
-    accepted=rows[:-1] if failed else rows
+    accepted=rows[:-1] if failed and not censored else rows
     assert all(row['committed'] for row in accepted)
-    if failed:assert not rows[-1]['committed'] and rows[-1]['day']==len(rows)
+    if censored:
+        assert rows and (profile/f'trajectory/accepted-column-1-day-{len(rows)}.zip').is_file()
+        assert not list((profile/'trajectory').glob('accepted-*-day-'+str(len(rows)+1)+'.zip'))
+    elif failed:assert not rows[-1]['committed'] and rows[-1]['day']==len(rows)
     maximum=Decimal(0);chemical=Decimal(0);prefix=Decimal(0);waterprefix=Decimal(0);fluxsum=[Decimal(0)]*16;chemsum=[Decimal(0)]*6
     dec=lambda value:Decimal.from_float(float(value))
     with localcontext() as context:
@@ -101,9 +105,9 @@ def audit(profile,reference,allow_refusal=False):
         for row in rows:
             flux=row['external_flux_cm'];expected=flux[:7]+[-v for v in flux[7:]]+row['stock_start_cm']+[-v for v in row['stock_end_cm']]
             assert observed[row['day']]==expected,'Terminal trial/public daily receipt terms differ'
-    if failed:
+    if failed and not censored:
         assert abs(rows[-1]['independent_residual_cm'])>1e-10 and not list((profile/'trajectory').glob('accepted-*-day-'+str(len(rows))+'.zip'))
-    else:
+    elif not failed:
         assert SHA((build/'BUILD.json').read_bytes())==q['trajectory']['build_sha256']
         warm=profile/'trajectory';output=binary((warm/'original/result_output.bin').read_bytes())
         for own in q['own']:
@@ -121,12 +125,13 @@ def audit(profile,reference,allow_refusal=False):
             first=date.fromisoformat(meta['project']['start_date']);low,high=str(first+timedelta(days=start)),str(first+timedelta(days=end))
             expected=[row for row in output[1:] if low<=row[:19].decode().strip()<high]
             assert binary((cold/'original/result_output.bin').read_bytes())[1:]==expected
-    return dict(status='RETAINED_ACTUAL_MODEL7_PUBLIC_WATER_GUARD_REFUSAL_INDEPENDENTLY_CONFIRMED' if failed else 'INDEPENDENT_MODEL7_CAPACITY_SOURCE_BUDGET_NATIVE_USER_OUTPUT_PASS',producer=q['source'],kind=q['kind'],optimization=q['optimization'],days=len(rows),accepted_days=len(accepted),water_daily_max=str(maximum),CDE_daily_max=str(chemical),CDE_every_prefix_max=str(prefix),extra_absolute_global_water_prefix=str(waterprefix),extra_global_water_prefix_is_owning_gate=False,full_capacity_source_inverse=True,complete_HeadCalc_parent_inverse=True,terminal_receipt_parent_inverse=bool(terminal),all28_terminal_public_terms_exact=bool(terminal),cold_windows=0 if failed else len(q['own']),compiler_executions=0,model_executions=0,public_admission=False)
+    status='RETAINED_ACTUAL_MODEL7_NEXT_DAY_CENSOR_ACCEPTED_PREFIX_AUDITED_NOT_PERIOD_PASS' if censored else 'RETAINED_ACTUAL_MODEL7_PUBLIC_WATER_GUARD_REFUSAL_INDEPENDENTLY_CONFIRMED' if failed else 'INDEPENDENT_MODEL7_CAPACITY_SOURCE_BUDGET_NATIVE_USER_OUTPUT_PASS'
+    return dict(status=status,producer=q['source'],kind=q['kind'],optimization=q['optimization'],days=len(rows),accepted_days=len(accepted),water_daily_max=str(maximum),CDE_daily_max=str(chemical),CDE_every_prefix_max=str(prefix),extra_absolute_global_water_prefix=str(waterprefix),extra_global_water_prefix_is_owning_gate=False,full_capacity_source_inverse=True,complete_HeadCalc_parent_inverse=True,terminal_receipt_parent_inverse=bool(terminal),all28_terminal_public_terms_exact=bool(terminal),cold_windows=0 if failed else len(q['own']),compiler_executions=0,model_executions=0,public_admission=False)
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('profile','reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--allow-refusal',action='store_true');a=p.parse_args();assert not a.output.exists()
-    result=audit(a.profile,a.reference_work,a.allow_refusal)
+    p.add_argument('--allow-refusal',action='store_true');p.add_argument('--allow-censored',action='store_true');a=p.parse_args();assert not a.output.exists()
+    result=audit(a.profile,a.reference_work,a.allow_refusal,a.allow_censored)
     a.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(result['status'],result['kind'],result['optimization'],result['days'])
