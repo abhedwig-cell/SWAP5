@@ -158,3 +158,5 @@ def probe(project,selected):
     if selected['flprintdt'] or selected['nprintday']>1:return cclock.probe_source(project,selected)
     from implicit_snow_interval import compose
     return compose(interval.probe_source(project,selected),clock.thermal.probe_source(project),clock.probe_source(project))
+
+# Committed source-identity negative control. Never merge.
