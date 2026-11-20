@@ -11,6 +11,11 @@ ROOT=Path(__file__).resolve().parents[2]
 PARENT='b546801eaf24a01ee4dc457eb857ef46e6b61c30'
 OLD_BUILD='53fca12f508800d5c57b9727b05d7fbeab71b229d4b5cb0d6b1fc082abedb0d1'
 OLD_DOMAIN='73525f3852d99a383bfa12c8cd3f50e2ee9e54a1a863de353757fbbd76480a9e'
+PRE_POSITIVE_BUILD='410d179b577c2499447bfd98bd3b305617733178a989137156e65604dcfac861'
+PRE_POSITIVE_DOMAIN='72830a2b4332b8e5c42e5f668e9c68245db45bdf192e411d0a1da93d184a4dfa'
+POSITIVE_OLD="        path=output/'solute.f90';path.write_text(bridge.source(path.read_text(encoding='cp1252')),encoding='cp1252')\n"
+POSITIVE_NEW="        from snow_undrained_cde_positive import source as preserve_positive\n        path=output/'solute.f90';path.write_text(preserve_positive(bridge.source(path.read_text(encoding='cp1252'))),encoding='cp1252')\n"
+POSITIVE_METADATA="    if project.solute:providers.append('snow_undrained_cde_positive.py')\n"
 PARTITION_BLOCK="""        from implicit_interception_partition import source as exact_partition
         meteo=output/'MOD_meteo.f90'
         parent=(meteo if meteo.exists() else originals/'MOD_meteo.f90').read_text(encoding='cp1252')
@@ -29,6 +34,17 @@ OLD_PROBE="""    if project.solute:
 
 
 def inherited_provider(name,text,actual,selected):
+    if POSITIVE_METADATA in text or POSITIVE_NEW in text:
+        if selected['kind']!='water':return False
+        if name=='snow_undrained.py':
+            if text.count(POSITIVE_METADATA)!=1:return False
+            text=text.replace(POSITIVE_METADATA,'',1)
+            if actual==PRE_POSITIVE_DOMAIN:return hashlib.sha256(text.encode()).hexdigest()==actual
+        elif name=='snow_undrained_build.py':
+            if text.count(POSITIVE_NEW)!=1:return False
+            text=text.replace(POSITIVE_NEW,POSITIVE_OLD,1)
+            if actual==PRE_POSITIVE_BUILD:return hashlib.sha256(text.encode()).hexdigest()==actual
+        else:return False
     if not selected['swkimpl']:return False
     if name=='snow_undrained.py':
         return actual==OLD_DOMAIN and text.count(PARTITION_METADATA)==1 and hashlib.sha256(
@@ -90,7 +106,8 @@ def audit(root,build_paths=None,source_root=None):
             'thermal_output_step.py','thermal_output_reset.py','implicit_snow_root_state.f90',
             'original_output_thermal_domain.f90','thermal_output_snow_calendar_state.f90'}
         if chemical:expected|={'cde_clock_output.py','cde_interval_output.py','cde_interval_source.py',
-            'cde_interval_output_state.f90','cde_interval_snow_state.f90','cde_interval_receipt.f90','cde_clock_events.f90'}
+            'cde_interval_output_state.f90','cde_interval_snow_state.f90','cde_interval_receipt.f90','cde_clock_events.f90',
+            'snow_undrained_cde_positive.py'}
         if not implicit:expected.add('implicit_interception_partition.py')
         require(set(o['providers'])==expected,'Actual compiler provider inventory differs')
         for name,value in o['providers'].items():
@@ -112,6 +129,6 @@ def audit(root,build_paths=None,source_root=None):
             exe=next((path.parent/(stem+s) for s in ('','.exe') if (path.parent/(stem+s)).exists()),None)
             require(exe and digest(exe)==b['executable_sha256'][role],'Actual compiled executable differs')
         out.append(dict(actual_BUILD_sha256=digest(path),native_codec=o['native_codec'],actual_compiler=i['compiler']))
-    require(len(out)==8,'Actual compiler context denominator differs')
+    require(len(out)==9,'Actual compiler context denominator differs')
     return dict(status='ACTUAL_SNOW_UNDRAINED_SOURCE_PROVIDER_COMPILER_CUSTODY_PASS',
         producer_source=cap['producer_head'],source_archive_sha256=cap['sha256'],actual_builds=out)
