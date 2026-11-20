@@ -17,7 +17,8 @@ CASES=(('explicit-h0-daily',0,0,False,'daily',1,0,1,4),
     ('implicit-h0-interval-off',1,0,False,'monthly',1,0,0,3),
     ('implicit-h1-step-reset',1,1,True,'explicit',3,1,1,6),
     ('implicit-h2-clock',1,2,False,'periodic',3,1,1,4),
-    ('implicit-h2-daily',1,2,False,'daily',1,0,1,4))
+    ('implicit-h2-daily',1,2,False,'daily',1,0,1,4),
+    ('implicit-h2-clock-plant-et',1,2,False,'periodic',3,1,1,4))
 
 
 def main():
@@ -34,6 +35,7 @@ def main():
             original.fixture(inputs,0,hys,1,step,mean,mode,3,reset,npd)
             path=inputs/'swap.swp';text=path.read_text(encoding='cp1252')
             for key,value in (('SWSNOW',1),('SWKIMPL',implicit),('SWDRA',drain)):text=assignment(text,key,value)
+            if label.endswith('-plant-et'):text=assignment(text,'SWCFBS',1)
             path.write_text(text,encoding='cp1252');project=original.m.e.load(inputs,original_output=True)
             sys.path.insert(0,str(original.ROOT/'app/hybrid_water'))
             from snow_water_groundwater import selection
