@@ -7,7 +7,7 @@ def magic(selected,clock):
     if not selected.get('groundwater_snow_cde_output') or selected['swsnow']!=1:
         raise ValueError('Foreign Snow groundwater output composition')
     history=selected['swhyst']
-    return ('S5GS'+('C' if clock else 'I')+f'{0 if history==0 else 2*history-1:03d}').encode()
+    return ('S5GX'+('C' if clock else 'I')+f'{0 if history==0 else 2*history-1:03d}').encode()
 
 
 def metadata(selected):
