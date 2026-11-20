@@ -35,13 +35,15 @@ def main():
     if args.trace_kind=='head':
         anchor='         if(abs(hybrid_groundwater_cde_clock_trial(groundwater_bottom,groundwater_delta))>1d-10)flnonconv=.true.'
         addition="""
-         if(daycum==TRACE_DAY.and.flnonconv.and.private_snow_trace_count<32)then
+         if(daycum==TRACE_DAY.and.flnonconv)then
           private_snow_trace_count=private_snow_trace_count+1
+          if(private_snow_trace_count<=32.or.mod(private_snow_trace_count,10000)==0)then
           write(*,'(a,i8,13(1x,es25.17e3),3l2)')'PRIVATE_SNOW_GW_HEAD_TRACE', &
            daycum,t1900,tcum,dt,h(1),pond,q0,groundwater_bottom,groundwater_delta, &
            budget_step,budget_total,1d-10*(t1900-budget_start+dt), &
            hybrid_groundwater_cde_clock_trial(groundwater_bottom,groundwater_delta),hsurf,ftoph,flnonconv,flrunoff
           flush(6)
+          end if
          end if
 """.replace('TRACE_DAY',str(args.target_day))
         imports='   use variables,only:daycum,tcum\n'
