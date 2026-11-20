@@ -68,7 +68,7 @@ jobs:
           python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Qualify secondary water and CDE with original failure-crossing native windows
-        if: ${{ !inputs.ordinary_pond && !inputs.groundwater_clock && !inputs.groundwater_interval && !inputs.groundwater_interval }}
+        if: ${{ !inputs.ordinary_pond && !inputs.groundwater_clock && !inputs.groundwater_interval }}
         run: |
           for label in water cde; do
             extra=(--switch-window); days=1096
