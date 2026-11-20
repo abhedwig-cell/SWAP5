@@ -1939,11 +1939,14 @@
   },
   "ordinary_cde_groundwater_hysteresis_subdaily": {
     "classification": "MISSING_COMPOSITION",
-    "implementation": "REGISTERED_SOURCE_RAW_CLEAN_CANDIDATE_PASS_CANONICAL_PENDING",
+    "implementation": "ADMITTED_BOUNDED",
     "historical_function": "CDE SWKIMPL1/SWMEAN4/SWHYST2/bottom1, nonstep NPRINTDAY3/reset1",
     "observed": "Windows O0/O2 cohortA53; Original hysteresis CDE output requires daily interval reset cadence;0compiles/0models for refusedcases",
-    "next_action": "PR1769requires final3CIchecks then exactparents/tree merge and actualcanonicalpublic. Allseven originalrawarchives/frozenindependentreaders/neutralqualification, clean24public and bothactualcommittednegatives PASS.",
-    "actual_science": "Windows/Ubuntu O0/O2:24short35/76cold,4full1096/32cold,980native,12transactions,108sourcepolicyrefusals,20currentcoldpostimages,6unselectedCDE35+2cachedwatercold. InitialUbuntu jobs remainFAILURE; controls-only recoverybothSUCCESS."
+    "next_action": "This boundedperstep/npd>1 GWclock gap admitted21e3fcba2. Continue same-owner non-daily npd1 interval/drainage batch; wholefamily closureUNKNOWN.",
+    "actual_science": "Windows/Ubuntu O0/O2:24short35/76cold,4full1096/32cold,980native,12transactions,108sourcepolicyrefusals,20currentcoldpostimages,6unselectedCDE35+2cachedwatercold. InitialUbuntu jobs remainFAILURE; controls-only recoverybothSUCCESS.",
+    "actual_canonical": "21e3fcba2604c7546013f961e0bebaea63e5717f",
+    "source_qualification": "GROUNDWATER_CDE_CLOCK_QUALIFICATION.json",
+    "receipt": "GROUNDWATER_CDE_CLOCK_MERGE_RECEIPT_V1.json"
   },
   "ordinary_implicit_pond_reference_correction": {
     "status": "BOUNDED_ACTUAL_CANONICAL_ADMITTED",
@@ -1965,7 +1968,9 @@
     "runtime": "744ad83d1",
     "actual_local_science": "16short35/50cold,2full1096/16cold,642native,8transactions,56sourcepolicyrefusals. All independently decoded. Sourceobserver-only v1 failures retained; no model reruns.",
     "portable_source": "a55d62b16b8dfb6581a7e0b50ee774a07d82751e",
-    "portable_run": 44692527051
+    "portable_run": 44692527051,
+    "portable_status": "BOTH_JOBS_SUCCESS_INDEPENDENT_ARCHIVE_AUDITS_RUNNING",
+    "unselected_postimages": "SIX_CURRENT35_CONTEXTS_EXACT_PASS"
   },
   "ordinary_cde_groundwater_drainage_off": {
     "classification": "MISSING_COMPOSITION",
@@ -1973,6 +1978,7 @@
     "historical_function": "Existing SWDRA0 CDE groundwater process with NPRINTDAY1 non-daily intervals or subdaily/per-step clocks; hydraulic/native providers unchanged",
     "runtime": "744ad83d1",
     "scope": "SWSNOW0 analytic defaults, SWHYST0/1/2, explicit/implicit existing conductivity guards; daily SWDRA0 output and snow not expanded",
-    "next_action": "Same coherent interval/state-owner qualification as npd1 interval; no separatemetadataPR or duplicated fullcampaign."
+    "next_action": "Same coherent interval/state-owner qualification as npd1 interval; no separatemetadataPR or duplicated fullcampaign.",
+    "portable_status": "BOTH_JOBS_SUCCESS_INDEPENDENT_ARCHIVE_AUDITS_RUNNING"
   }
 }
