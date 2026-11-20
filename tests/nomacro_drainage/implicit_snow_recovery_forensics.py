@@ -41,9 +41,14 @@ def transactions(root,profile,buildpath,inputs,external_source):
             r['actual_profile_sha256']==digest(profile/'RESULT.json') and
             r['checks']==dict.fromkeys(('discard_no_day_advance','replay_exact','accept_exact',
                 'recovered_next_day_exact','origin_unchanged'),True),'Transaction producer or checks differ')
+    return transaction_payloads(root/'actual',profile,buildpath,inputs,external_source)
+
+
+def transaction_payloads(actual,profile,buildpath,inputs,external_source):
+    build=read(buildpath/'BUILD.json');data=rows(profile/'trajectory')
     swp=(inputs/'swap.swp').read_text(encoding='cp1252')
     selectors={k:scalar(swp,k) for k in ('SWKIMPL','SWSNOW','SWSOLU','SWHYST','SWBOTB','SWDRA')}
-    actual=root/'actual';origin=checkpoint(profile/'trajectory/accepted-column-1-day-4.zip',build,data[3],selectors)
+    origin=checkpoint(profile/'trajectory/accepted-column-1-day-4.zip',build,data[3],selectors)
     expected=checkpoint(actual/'external/trial-1/accepted-column-1-day-5.zip',build,data[4],selectors)
     for rel in ('external/trial-1/accepted-column-1-day-5.zip','external/trial-2/accepted-column-1-day-5.zip'):
         require(checkpoint(actual/rel,build,data[4],selectors)==expected,'Actual discarded/replayed/published native payload differs')

@@ -1,0 +1,154 @@
+{
+  "parent": "f870eed5dca27b17bb24b27833dc9b3c7f85aea0",
+  "runtime": "b726d1009eee14442d20e450bdb5d0105eb6f31c",
+  "changes": {
+    "app/hybrid_water/age_groundwater_output.py": [
+      {
+        "runtime_line": 53,
+        "before": "    return prior.magic(project) if selected is None else MAGICS[bool(selected['swhyst'])]\n",
+        "after": "    parent=prior.magic(project) if selected is None else MAGICS[bool(selected['swhyst'])]\n    from implicit_snow_root_carry import magic as snow_root_magic\n    parent=snow_root_magic(project,parent)\n    from implicit_snow_cde_root_carry import magic as cde_root_magic\n    return cde_root_magic(project,parent)\n"
+      }
+    ],
+    "app/hybrid_water/cde_clock_output.py": [
+      {
+        "runtime_line": 58,
+        "before": "        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}))\n",
+        "after": "        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}),\n        **({'implicit_snow_composition':True} if swsnow and one('SWKIMPL')==1 else {}))\n"
+      },
+      {
+        "runtime_line": 274,
+        "before": "    if selected.get('groundwater_snow_cde_output'):\n",
+        "after": "    if selected.get('groundwater_snow_cde_output') and not selected.get('implicit_snow_composition'):\n"
+      }
+    ],
+    "app/hybrid_water/cde_interval_output.py": [
+      {
+        "runtime_line": 55,
+        "before": "        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}))\n",
+        "after": "        **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}),\n        **({'implicit_snow_composition':True} if swsnow and one('SWKIMPL')==1 else {}))\n"
+      },
+      {
+        "runtime_line": 212,
+        "before": "    if selected.get('groundwater_snow_cde_output'):\n",
+        "after": "    if selected.get('groundwater_snow_cde_output') and not selected.get('implicit_snow_composition'):\n"
+      }
+    ],
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "runtime_line": 213,
+        "before": "    if identity.get('ordinary_implicit_pond_switch'):\n",
+        "after": "    implicit_snow=(identity.get('implicit_conductivity') or {}).get('implicit_snow_composition') is True\n    if implicit_snow:\n        from implicit_snow_source_guard import validate_source as validate_implicit_snow\n        validate_implicit_snow(bundle,project,identity,reference)\n    elif identity.get('ordinary_implicit_pond_switch'):\n"
+      },
+      {
+        "runtime_line": 220,
+        "before": "    if (identity.get('original_output') or {}).get('groundwater_snow_cde_output'):\n",
+        "after": "    if not implicit_snow and (identity.get('original_output') or {}).get('groundwater_snow_cde_output'):\n"
+      },
+      {
+        "runtime_line": 223,
+        "before": "    elif (identity.get('original_output') or {}).get('groundwater_cde_interval'):\n",
+        "after": "    elif not implicit_snow and (identity.get('original_output') or {}).get('groundwater_cde_interval'):\n"
+      }
+    ],
+    "app/hybrid_water/experimental_project.py": [
+      {
+        "runtime_line": 268,
+        "before": "    implicit = implicit_selection(text, selected, boundary)\n",
+        "after": "    implicit = implicit_selection(text, selected, boundary,original_output=original_output)\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_snow_cde.py": [
+      {
+        "runtime_line": 20,
+        "before": "    from groundwater_snow_retry import metadata as retry_metadata\n    result.update(retry_metadata())\n",
+        "after": "    if selected.get('implicit_snow_composition'):\n        from implicit_snow_composition import source_identity\n        result.update(source_identity())\n    else:\n        from groundwater_snow_retry import metadata as retry_metadata\n        result.update(retry_metadata())\n"
+      }
+    ],
+    "app/hybrid_water/groundwater_water_output.py": [
+      {
+        "runtime_line": 55,
+        "before": "    if selected is None:return prior.metadata(project)\n",
+        "after": "    if selected is None:\n        result=prior.metadata(project)\n        from implicit_snow_root_carry import metadata as snow_root_metadata\n        root=snow_root_metadata(project,result['native_codec']) if result else None\n        if root:\n            result={**result,'native_codec':root['new_codec'],'implicit_snow_root_carry':root}\n        from implicit_snow_cde_root_carry import metadata as cde_root_metadata\n        root=cde_root_metadata(project,result['native_codec']) if result else None\n        if root:\n            result={**result,'native_codec':root['new_codec'],'implicit_snow_root_carry':root}\n        return result\n"
+      },
+      {
+        "runtime_line": 102,
+        "before": "    if selected is None:return prior.apply_build(output,donor_build,project,patched)\n",
+        "after": "    if selected is None:\n        patched=prior.apply_build(output,donor_build,project,patched)\n        from implicit_snow_cde_root_carry import apply_build as cde_root_build\n        return cde_root_build(output,project,patched)\n"
+      }
+    ],
+    "app/hybrid_water/implicit_conductivity.py": [
+      {
+        "runtime_line": 10,
+        "before": "def selection(text, selectors, boundary):\n",
+        "after": "def selection(text, selectors, boundary, *, original_output=None):\n"
+      },
+      {
+        "runtime_line": 13,
+        "before": "    required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=0, SWFROST=0,\n",
+        "after": "    from implicit_snow_composition import input_domain,source_identity\n    snow=input_domain(selectors,boundary,original_output)\n    required = dict(SWMACRO=0, SWSOPHY=0, SWSNOW=int(snow), SWFROST=0,\n"
+      },
+      {
+        "runtime_line": 65,
+        "before": "                finite_newton_policy='original-implicit-finite-newton-rate-rollback-v1')\n",
+        "after": "                finite_newton_policy='original-implicit-finite-newton-rate-rollback-v1',\n                **(source_identity() if snow else {}))\n"
+      },
+      {
+        "runtime_line": 76,
+        "before": "",
+        "after": "    if selected.get('implicit_snow_composition') and not project.original_output:\n        raise ValueError('Implicit Snow composition requires original output ownership')\n"
+      }
+    ],
+    "app/hybrid_water/implicit_groundwater_trial.py": [
+      {
+        "runtime_line": 15,
+        "before": "",
+        "after": "    if report['selectors']['SWSNOW']==1:\n        from cde_clock_output import active_selection\n        selected=active_selection(project)\n        # The existing Snow clock installs the actual soil/pond projection,\n        # including net rain, melt and the actual groundwater candidate once.\n        # The no-Snow whole-frame clone is a different control volume.\n        if selected is not None and selected.get('groundwater_snow_cde_output'):\n            return False\n"
+      },
+      {
+        "runtime_line": 34,
+        "before": "    return dict(policy=policy,source_sha256=sha(Path(__file__)),original_projection_owner_sha256=sha(Path(original.__file__)),receipt_provider_sha256=sha(root/'src/process/mod_original_output_receipt.f90'),reaction_provider_sha256=sha(root/'src/process/mod_prescribed_groundwater_reaction.f90'),original_integral_sha256=original.regular.INTEGRAL_SHA,original_watstor_sha256=original.clock.WATSTOR_SHA,guard_cm=1e-10,ownership='read-only original daily receipt clone before Integral/Fluxes; no accepted state assignment')\n",
+        "after": "    result=dict(policy=policy,source_sha256=sha(Path(__file__)),original_projection_owner_sha256=sha(Path(original.__file__)),receipt_provider_sha256=sha(root/'src/process/mod_original_output_receipt.f90'),reaction_provider_sha256=sha(root/'src/process/mod_prescribed_groundwater_reaction.f90'),original_integral_sha256=original.regular.INTEGRAL_SHA,original_watstor_sha256=original.clock.WATSTOR_SHA,guard_cm=1e-10,ownership='read-only original daily receipt clone before Integral/Fluxes; no accepted state assignment')\n    from implicit_snow_interval import selected as snow_interval\n    if snow_interval(project):\n        result.update(snow_interval_composition_sha256=sha(Path(__file__).with_name('implicit_snow_interval.py')),\n            snow_soil_owner_sha256=sha(Path(__file__).with_name('thermal_output_clock.py')),\n            snow_groundwater_owner_sha256=sha(Path(__file__).with_name('groundwater_snow_cde.py')),\n            control_volume='existing actual soil/pond with net rain/melt and actual groundwater delta')\n    return result\n"
+      },
+      {
+        "runtime_line": 45,
+        "before": "",
+        "after": "    from implicit_snow_root_carry import apply_build as snow_root_build\n    patched=snow_root_build(output,project,patched)\n"
+      },
+      {
+        "runtime_line": 48,
+        "before": "",
+        "after": "    from implicit_snow_interval import apply_build as snow_interval_build\n    patched=snow_interval_build(output,donor_build,project,patched)\n"
+      },
+      {
+        "runtime_line": 54,
+        "before": "    path.write_text(text.replace(anchor,trial+'\\n'+anchor,1),encoding='cp1252')\n",
+        "after": "    from implicit_snow_interval import selected as snow_interval\n    selected=snow_interval(project)\n    if selected is not None:\n        from implicit_snow_interval import trial_source as snow_trial\n        expected=snow_trial(source,stock,selected)\n        if text.count(expected)!=1:raise ValueError('Changed actual implicit Snow interval groundwater trial')\n    else:path.write_text(text.replace(anchor,trial+'\\n'+anchor,1),encoding='cp1252')\n"
+      }
+    ],
+    "app/hybrid_water/ordinary_implicit_pond_switch.py": [
+      {
+        "runtime_line": 37,
+        "before": "                original_top_lf_sha256=ORIGINAL_TOP[bool(selectors['SWHYST'])],\n",
+        "after": "                original_top_lf_sha256=ORIGINAL_TOP[bool(selectors['SWHYST'] or selectors['SWSNOW'])],\n"
+      },
+      {
+        "runtime_line": 63,
+        "before": "        actual_source((Path(bundle)/'boundtop.f90').read_bytes(), selectors['SWHYST'])\n",
+        "after": "        actual_source((Path(bundle)/'boundtop.f90').read_bytes(), selectors['SWHYST'] or selectors['SWSNOW'])\n"
+      },
+      {
+        "runtime_line": 72,
+        "before": "    if hashlib.sha256(text.encode('cp1252')).hexdigest() != ORIGINAL_TOP[bool(selectors['SWHYST'])]:\n",
+        "after": "    if hashlib.sha256(text.encode('cp1252')).hexdigest() != ORIGINAL_TOP[bool(selectors['SWHYST'] or selectors['SWSNOW'])]:\n"
+      }
+    ]
+  },
+  "added": [
+    "app/hybrid_water/implicit_snow_cde_root_carry.py",
+    "app/hybrid_water/implicit_snow_composition.py",
+    "app/hybrid_water/implicit_snow_interval.py",
+    "app/hybrid_water/implicit_snow_root_carry.py",
+    "app/hybrid_water/implicit_snow_root_state.f90",
+    "app/hybrid_water/implicit_snow_source_guard.py"
+  ]
+}
