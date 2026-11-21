@@ -49,6 +49,9 @@ def selection(project):
 
 
 def magic(project):
+    from hydraulic_vapor import native_magic as vapor_native_magic
+    vapor=vapor_native_magic(project)
+    if vapor is not None:return vapor
     from frost_drainage_composition import enabled,codec
     if enabled(project):return codec(project)
     selected=selection(project)

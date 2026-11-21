@@ -34,9 +34,12 @@ def selection(directory,selected,original_output):
     if any(m not in range(1,12) for m in models):raise ValueError('Original vapor excludes unqualified hydraulic model12')
     enabled=tuple(i+1 for i,(m,f) in enumerate(zip(models,flags)) if m in (8,9,10,11) and f)
     if not enabled:return None
-    required=dict(SWKIMPL=0,SWSOPHY=0,SWHYST=0,SWFROST=0,SWMACRO=0,SWSNOW=0,SWDRA=1,SWBOTB=6,SWBR=0,SWMETDETAIL=0,SWHEA=1,SWCALT=2)
-    if original_output is False or any(selected.get(k)!=v for k,v in required.items()) or selected.get('SWSOLU') not in (0,1):
-        raise ValueError('Active original vapor requires qualified explicit daily water/CDE, numerical heat, NoSnow/NoFrost/hysteresis0 primarydrainage bottom6')
+    required=dict(SWKIMPL=0,SWSOPHY=0,SWHYST=0,SWFROST=0,SWMACRO=0,SWDRA=1,SWBOTB=6,SWBR=0,SWMETDETAIL=0,SWHEA=1,SWCALT=2)
+    if original_output is False or any(selected.get(k)!=v for k,v in required.items()) or selected.get('SWSOLU') not in (0,1) or selected.get('SWSNOW') not in (0,1):
+        raise ValueError('Active original vapor requires qualified explicit daily water/CDE, numerical heat, NoFrost/hysteresis0 primarydrainage bottom6')
+    if selected['SWSNOW']:
+        from snow_vapor_composition import check_daily_output
+        check_daily_output(active,selected)
     return dict(models=list(models),SWVAPOR=list(flags),active_layers=list(enabled),numlay=count)
 
 
@@ -73,7 +76,7 @@ def metadata(project):
     selected=describe(project)
     if selected is None:return None
     capacity7=7 in selected['models'];q=json.loads((FOLDER/'manifest.json').read_text())
-    return dict(policy='original-per-layer-isothermal-vapor-kelvin-sign-v1',**selected,
+    result=dict(policy='original-per-layer-isothermal-vapor-kelvin-sign-v1',**selected,
         source_sha256=SHA(Path(__file__).read_bytes().replace(b'\r\n',b'\n')),
         manifest_sha256=SHA((FOLDER/'manifest.json').read_bytes().replace(b'\r\n',b'\n')),
         original_lf_sha256=q['base_lf_sha256'],corrected_lf_sha256=q['with_capacity7_lf_sha256' if capacity7 else 'target_lf_sha256'],
@@ -82,12 +85,24 @@ def metadata(project):
         hydraulic_history_carry=True,thermal_history_carry=True,hydraulic_thermal_native_doubles=7*project.nodes+6,
         microscopic_lookup_carry=True,oxygen_lookup_carry=True,top_lookup_carry=True,
         existing_microscopic_dry_endpoint_correction_composed=True,
-        native_domain_source_sha256=SHA(Path(__file__).with_name('hydraulic_vapor_native.f90').read_bytes().replace(b'\r\n',b'\n')))
+        native_domain_source_sha256=SHA(native_provider(project).replace(b'\r\n',b'\n')))
+    from snow_vapor_composition import metadata as snow_metadata
+    snow=snow_metadata(project)
+    if snow is not None:result['snow_composition']=snow
+    return result
 
 
 def native_magic(project):
     if describe(project) is None:return None
+    from snow_vapor_composition import snow_selected
+    if snow_selected(project):return b'S5HSC004' if project.solute else b'S5HSW004'
     return b'S5HVC003' if project.solute else b'S5HVW003'
+
+
+def native_provider(project):
+    original=Path(__file__).with_name('hydraulic_vapor_native.f90').read_bytes()
+    from snow_vapor_composition import snow_selected,native_source as snow_native_source
+    return snow_native_source(original) if snow_selected(project) else original
 
 
 def native_source(source,project):
@@ -112,11 +127,13 @@ def apply_build(output,reference,project,patched):
         if patched.count(NAME)!=1 or target.read_text(encoding='cp1252')!=capacity_source(original):raise ValueError('Foreign joint model7/vapor source ownership')
     elif NAME in patched or target.exists():raise ValueError('Multiple original vapor source owners')
     target.write_text(source(original,capacity7),encoding='cp1252')
-    native='hydraulic_vapor_native';(output/(native+'.f90')).write_bytes(Path(__file__).with_name(native+'.f90').read_bytes())
+    native='hydraulic_vapor_native';(output/(native+'.f90')).write_bytes(native_provider(project))
     macro=output/'macropore.f90';macro.write_text(native_source(macro.read_text(encoding='cp1252'),project),encoding='cp1252')
     if native in patched:raise ValueError('Multiple vapor native history owners')
     patched.insert(0,native)
     if NAME not in patched:patched.insert(0,NAME)
+    from snow_vapor_composition import apply_build as snow_build
+    patched=snow_build(output,project,patched)
     return patched
 
 
