@@ -85,6 +85,8 @@ def main():
                     q=json.loads(result.read_text())
                     if q.get('build_root') and 'vapor-native3-' not in q['build_root'] and Path(q['build_root'],'BUILD.json').is_file():build(Path(q['build_root']))
             elif path.is_file():add(path,'profiles/'+name)
+        correction=a.evidence/'WC_K_models_04_11.KELVIN_SIGN01.f90'
+        if correction.is_file():add(correction,'profiles/'+correction.name)
         # Native1/2 failed bundle bytes are unique evidence of their actual
         # source epochs; preserve before the registered builds are released.
         for name in ('vapor-8-daily-water-O0-v1','vapor-8-daily-water-O2-v1','vapor-11-daily-water-O0-v1','vapor-11-daily-water-O2-v1','vapor-native2-8-water-O0-v1'):
@@ -99,7 +101,8 @@ def main():
     stored=store_original(archive,proof,archive.name)
     q=dict(status='ACTUAL_WINDOWS_VAPOR_'+a.kind.upper()+'_SOURCE_BOUND_RAW_PRESERVED_NOT_ADMITTED',**stored,members=inventories,roles=roles,
         archiver_source=producer,actual_archiver_sha256=SHA(Path(__file__).read_bytes()),
-        actual_original_paths_rewritten=False,original_failed_roles_preserved=True,public_admission=False)
+        actual_original_paths_rewritten=False,original_failed_roles_preserved=True,public_admission=False,
+        native3_prefix_compiled_dependency='HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1' if a.kind=='research' else None)
     record.open('x',encoding='utf8').write(json.dumps(q,indent=2)+'\n');print(q['status'],q['bytes'],q['sha256'],len(files),flush=True)
 
 
