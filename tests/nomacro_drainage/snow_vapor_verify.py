@@ -73,8 +73,8 @@ def frontend_records(store):
   label=(f'{kind}-positive-{i}' if i<8 else f'{kind}-negative-{i-8}' if i<32 else f'{kind}-inactive-'+('model1','ignored-model7','all-off')[i-32] if i<35 else f'{kind}-prior-NoSnow')
   folder=store.view(prefix+label)
   for name,digest in item['input_inventory']:assert SHA((folder/name).read_bytes())==digest
-  text=(folder/'swap.swp').read_text(encoding='cp1252');switch=switches(text)
-  try:actual=selected(folder,switch,True)
+  text=(folder/'swap.swp').read_text(encoding='cp1252')
+  try:switch=switches(text);actual=selected(folder,switch,True)
   except ValueError:
    assert item['status']=='REFUSED_BEFORE_BUILD' and 8<=i<32;actual='REFUSED'
   else:
