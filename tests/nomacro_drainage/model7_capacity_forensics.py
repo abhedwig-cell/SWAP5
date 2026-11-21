@@ -16,11 +16,11 @@ HEAD='e8693175f3c0497d83fa9a59868250d4c0b76ca4e8a88de8d825ae5c25f6255f'
 RECEIPT='dc491e5faa9c7ca8e0e1e2a573cac965cb2e7f790d1cb6ad89ab82e7b90a6540'
 
 
-def audit(profile,reference,allow_refusal=False,allow_censored=False):
+def audit(profile,reference,allow_refusal=False,allow_censored=False,locations=None):
     q=json.loads((profile/'RESULT.json').read_text(encoding='utf-8'));failed=q['status']=='FAILED'
     censored=failed and q.get('error')=="TimeoutError('Model wall cap 180s')"
     assert (allow_censored if censored else allow_refusal) if failed else q['status'].startswith('CANDIDATE_ACTUAL_MODEL7_CAPACITY_') and q['status'].endswith('_PASS_NOT_ADMITTED')
-    build=Path(q['build_root']);inputs=Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text(encoding='utf-8'));identity=meta['identity']
+    build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text(encoding='utf-8'));identity=meta['identity']
     for name,digest in q['inventory'].items():assert SHA((inputs/name).read_bytes())==digest
     for name,digest in identity['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
     for name,digest in identity['donor_objects'].items():assert SHA((reference/'build/swap-obj'/name).read_bytes())==digest
