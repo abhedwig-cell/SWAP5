@@ -1,21 +1,28 @@
 """Read actual original Ubuntu artifacts through their original immutable paths."""
 from contextlib import ExitStack
 import json
+import subprocess
 from analytical_hydraulic_archives import Archive
-from analytical_hydraulic_science import CASES,SHA,source
+from analytical_hydraulic_science import CASES,SHA,source,controllers,ROOT
 from analytical_hydraulic_forensics import audit
 from hydraulic_mixed_analytical_read import audit as mixed_audit
 from analytical_interface_reuse import compare as interface_compare
 from model7_search_science import Store
 
 
-def read(proof):
+def read(proof,optimizations=('O0','O2')):
+    assert optimizations in (('O0',),('O2',),('O0','O2'))
     observations=[];sources={};components={}
     with ExitStack() as stack:
-        for opt in ('O0','O2'):
+        for opt in optimizations:
             admitted=Store(proof,'HYDRAULIC_MODEL7_SEARCH_UBUNTU_'+opt+'_RAW_V1',stack);old_projection=json.loads(admitted.get('COMPILED_PROJECTION_V1.json'))
             current=Archive(proof,'HYDRAULIC_ANALYTICAL_UBUNTU_'+opt+'_RAW_V1',stack)
             sources[opt]=source(current,'source');assert sources[opt]=='a7d7fba5fa1e07aeeedbc8a1042665c9a900fecc'
+            controller=controllers(current);assert controller['producer']==sources[opt]
+            workflow='.github/workflows/nomacro-water-snow-groundwater.yml'
+            actual=current.get('actual-workflow.yml').replace(b'\r\n',b'\n')
+            assert actual==subprocess.check_output(['git','show',sources[opt]+':'+workflow],cwd=ROOT)
+            assert current.get('actual-workflow-git-blob.txt').decode().strip()==subprocess.check_output(['git','rev-parse',sources[opt]+':'+workflow],cwd=ROOT,text=True).strip()
             prefix='analytical-hydraulic-family/'
             top=json.loads(current.get(prefix+'RESULT.json'))
             assert top['status']=='ACTUAL_ANALYTICAL_PORTABLE_20FULL_20SHORT_200COLD_MIXED_COMPONENTS_INDEPENDENT_PASS_NOT_ADMITTED'
@@ -39,7 +46,7 @@ def read(proof):
                         result=audit(profile,Reference(),locations=dict(build=build,inputs=inputs))
                         result['compiled_interface_reuse']=interface_compare(build,baseline,models)
                         assert result['days']==(35 if phase=='short' else 1096) and result['status']=='INDEPENDENT_ANALYTICAL_HYDRAULIC_SOURCE_BUDGET_NATIVE_USER_OUTPUT_PASS'
-                        observations.append(dict(case=label,kind=kind,phase=phase,**result))
-    assert len(observations)==80 and sum(item['days']==1096 for item in observations)==40
+                        observations.append(dict(case=label,phase=phase,**result))
+    assert len(observations)==40*len(optimizations) and sum(item['days']==1096 for item in observations)==20*len(optimizations)
     return dict(status='ACTUAL_UBUNTU_ANALYTICAL_FAMILY_RAW_FULL_NATIVE_MIXED_COMPONENTS_INDEPENDENT_PASS_NO_ADMISSION',sources=sources,components=components,observations=observations,
-        full1096_contexts=40,short35_contexts=40,exact_cold_windows=sum(item['cold_windows'] for item in observations),compiler_executions=0,model_executions=0,public_admission=False,whole_historical_family_closed=False)
+        optimizations=optimizations,full1096_contexts=20*len(optimizations),short35_contexts=20*len(optimizations),exact_cold_windows=sum(item['cold_windows'] for item in observations),compiler_executions=0,model_executions=0,public_admission=False,whole_historical_family_closed=False)

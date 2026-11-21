@@ -57,6 +57,7 @@ def guard_inherited():
     complete_inverse()
     import model7_verify as previous
     namespace=dict(vars(previous));namespace['PORTABLE']=PORTABLE
+    namespace['PATTERN']=previous.PATTERN+'            /integration/f-ci/nomacro-complete01/*ANALYTICAL*\n'
     # Only these two exact historical dependency queries project through the
     # complete source inverse above. Every other Git query remains literal.
     def projected_git(*args):

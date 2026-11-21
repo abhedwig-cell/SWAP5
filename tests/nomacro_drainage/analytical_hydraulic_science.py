@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import tarfile
 import zipfile
 from analytical_hydraulic_archives import Archive
 from analytical_hydraulic_forensics import audit
@@ -47,6 +48,21 @@ def source(store,prefix):
             blob=lambda b:hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
             assert blobs[name] in (blob(value),blob(value.replace(b'\r\n',b'\n')))
     return q['producer_head']
+
+
+def controllers(store,prefix='controller-source'):
+    q=json.loads(store.get(prefix+'.json'));raw=store.get(prefix+'.tar')
+    assert len(raw)==q['bytes'] and SHA(raw)==q['sha256']
+    entries=subprocess.check_output(['git','ls-tree','-r',q['producer_head']],cwd=ROOT,text=True)
+    blobs={line.split('\t',1)[1]:line.split('\t',1)[0].split()[2] for line in entries.splitlines()}
+    with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
+        members=archive.getmembers();assert len(members)==len(set(m.name for m in members))==len(q['members']) and {m.name for m in members}==set(q['members'])
+        for member in members:
+            assert member.isfile();value=archive.extractfile(member).read();item=q['members'][member.name]
+            assert SHA(value)==item['sha256'] and len(value)==item['bytes'] and item['git_blob']==blobs[member.name]
+            blob=lambda b:hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
+            assert blobs[member.name] in (blob(value),blob(value.replace(b'\r\n',b'\n')))
+    return dict(producer=q['producer_head'],members=len(q['members']),actual_source_and_Git_identities_exact=True)
 
 
 def windows_cde(proof):
