@@ -2054,29 +2054,44 @@
   },
   "next_coherent_batches": [
     {
-      "family": "Frost/CDE/drainage and existing Snow/output state",
-      "classification": "MISSING_COMPOSITION_WITH_RETAINED_NUMERICAL_AND_REFERENCE_REFUSALS",
+      "family": "Original initial profiles with already qualified Snow, hysteresis and implicit state owners",
+      "classification": "MISSING_COMPOSITION",
+      "qualification_strategy": "B_EXISTING_STATE_OWNER_COMPOSITION_AND_C_CONFIGURATIONS",
       "priority": 1,
-      "source_assessment": "FROST_CDE_COMPOSITION_SOURCE_ASSESSMENT_V1.json",
-      "status": "BOUNDED_IMPLICIT_NATIVE2_CANONICALLY_ADMITTED_PR1776_WHOLE_FAMILY_STILL_OPEN"
+      "status": "Current explicit dense daily NoSnow SWINCO1 batch14newcontexts source/rawqualified; actualpublicadmissionpending. Follow-on remainsopen.",
+      "next": "Inspect actual original initialization/history/thermal exports, then target coherent water/CDE O0/O2 and exact cold seams; retain AGE dry-moment and native5Snow exclusions."
     },
     {
-      "family": "Alternative original hydraulic models including RIA12",
-      "classification": "NUMERICAL_FAILURE_AND_UNRECONCILED_ORIGINAL_DOMAIN",
+      "family": "Original analytical/vapor output calendars across CDE and lower boundaries",
+      "classification": "MISSING_COMPOSITION",
+      "qualification_strategy": "B_UNCHANGED_OUTPUT_CLOCK_AND_NATIVE_STATE_COMPOSITION",
       "priority": 2,
-      "status": "ANALYTICAL_BOUNDED_ACTUAL_CANONICAL_5B8373D_ADMITTED_WHOLE_FAMILY_OPEN"
+      "status": "PR1783 ordinary analyticalwater calendars admitted1e639e0; PR1784 activevapor boundary5/6/8 dense daily admitted56efdcbb. Their unqualified crossdomains remainrefused.",
+      "next": "Locate exact original interval receipt/output state parent and qualify only newly changed calendar/native interactions; no repeated old periods."
     },
     {
-      "family": "Original per-layer vapor and heat conservation/state",
-      "classification": "REFERENCE_DEFECT_AND_MISSING_COUPLED_EVIDENCE",
+      "family": "Remaining Frost, drainage and analytical hydraulic state combinations",
+      "classification": "MISSING_COMPOSITION",
+      "qualification_strategy": "B_EXISTING_FROST_THERMAL_DRAINAGE_STATE_OWNERS",
       "priority": 3,
-      "status": "BOUNDED_VAPOR_ACTUAL_CANONICAL_277C6135F_ADMITTED_WHOLE_FAMILY_OPEN"
+      "status": "Bounded implicit/native2 actualPR1776 admitted; later analytical/vapor source owners compose exact prior science. Wholefamilyopen.",
+      "next": "Reconcile exact supported original reader domains before broadening; preserve hard originalSWDIVD0/solute and model3/oxygen2 refusals."
+    },
+    {
+      "family": "Alternative original hydraulic models including RIA12 and model3 oxygen interaction",
+      "classification": "REFERENCE_DEFECT",
+      "qualification_strategy": "INDEPENDENT_ORIGINAL_COMPONENT_AND_REFERENCE_ASSESSMENT_REQUIRED",
+      "priority": 4,
+      "status": "Models1..11 boundedanalytical/admitted; originalmodel3/OXY2 actualday524 hardnotimplemented retained; RIA12domain unresolved.",
+      "next": "Use original reader/constitutive dispatch to separate missing implementation from original reference defect, without relabeling original failure as SWAP5PASS."
     },
     {
       "family": "AGE dry retained surface moment",
-      "classification": "MISSING_IMPLEMENTATION_SCIENTIFIC_STATE_CONTRACT",
-      "priority": 4,
-      "status": "CONCRETE_RETAINED_BLOCKER_NO_DISPOSAL_OR_EPSILON_WATER"
+      "classification": "MISSING_IMPLEMENTATION",
+      "qualification_strategy": "SCIENTIFIC_STATE_CONTRACT_BEFORE_NEW_NUMERICS",
+      "priority": 5,
+      "status": "Concrete retained originaldry-pond momentblocker; no disposal, epsilon water or tolerance relaxation.",
+      "next": "Resolve actual conserved-age dry-state semantics under original science authority before changing equations/state. Keep all failed prefixes and unrelated safe compositions moving."
     }
   ],
   "bounded_frost_drainage_explicit": {
@@ -2245,6 +2260,8 @@
     "canonical_admission": false,
     "implementation": "BoundednewSWINCO1 admission selected onlyNoSnow/noFrost/nohysteresis explicitdailywater/CDE withordinarydrainage0/1 bottom5/6/8 andnumericheat2; originalreader/SoilWater unchanged. Notyetqualified/admitted.",
     "current_availability": "Source/rawqualifiednewboundedSWINCO1route runtime9e19329049ef92705fdca98948b4c4c1baba2ffa;14actualWindows/Ubuntu35contexts42cold98native56CDEsamples,exactoriginalinitialized34nodepressureprofiles,35frontendcontrols. Actualpublicandcanonicaladmissionpending.",
-    "remaining": "HistoricalwholefamilyPARTIAL: initialSnow/Frost/hysteresis/implicit/AGE andotheroriginaloutput/boundarydomains remainexcludedbynewboundedselector, notsilentlyclosed."
+    "remaining": "HistoricalwholefamilyPARTIAL: initialSnow/Frost/hysteresis/implicit/AGE andotheroriginaloutput/boundarydomains remainexcludedbynewboundedselector, notsilentlyclosed.",
+    "gap_classification": "OVERRESTRICTIVE_GUARD",
+    "qualification_strategy": "C_EXISTING_ORIGINAL_INITIALIZATION_CONFIGURATION_WITH_TARGETED_BOUNDARY_INTERACTIONS"
   }
 }
