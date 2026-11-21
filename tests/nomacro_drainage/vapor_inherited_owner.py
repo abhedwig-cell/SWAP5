@@ -81,6 +81,12 @@ def guard_inherited():
 
 
 def inherited_science():
+    from contextlib import ExitStack
+    from model7_search_science import Store
+    with ExitStack() as stack:
+        admission=Store(ROOT/'integration/f-ci/nomacro-complete01','HYDRAULIC_ANALYTICAL_ADMISSION_RAW_V1',stack)
+        assert admission.record['canonical']==PARENT and admission.record['sha256']=='de2809557fc94f68df90ce7c7b3f3b3868540b13fa79794b8f625bbe4a493c9d'
+        for name in admission.names:admission.get(name)
     import analytical_verify as previous
     with projection() as (inherited,projected_git):
         namespace=dict(vars(previous),ROOT=CheckedParent(),git=projected_git,inherited=inherited,guard_previous_source=guard_inherited)
