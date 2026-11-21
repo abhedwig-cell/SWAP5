@@ -39,10 +39,11 @@ def source(store,expected):
     return dict(source=expected,actual_source_bytes_sha256=q['sha256'],controller_bytes_sha256=json.loads(store.get('controller-source.json'))['sha256'])
 
 
-def controls(store,prefix,new_descriptor=True):
+def controls(store,prefix,expected_source=PRODUCER):
     q=json.loads(store.get(prefix+'/RESULT.json'))
     assert q['status']=='ACTUAL_COMPILED_VAPOR_NATIVE3_REFUSALS_AND_TRANSACTIONS_PASS_NOT_ADMITTED'
-    assert q['source']==PRODUCER and q['positive_compiled_startup'] and q['accepted_model_days']==0
+    if expected_source is not None:assert q['source']==expected_source
+    assert q['positive_compiled_startup'] and q['accepted_model_days']==0
     assert len(q['refusals'])==57 and len(q['inherited_output_native_refusals']) in (24,29)
     for row in q['refusals']+q['inherited_output_native_refusals']:
         middle='' if row in q['refusals'] else '/inherited-native'
