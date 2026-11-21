@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "integration/f-ci-canonical",
   "branch": "codex/nomacro-vapor-kelvin01",
-  "last_commit": "122ebd24b",
+  "last_commit": "a9c12ab589dbeeec3bbff63449feea06c44ae0e6",
   "status": "ANALYTICAL_FAMILY_ACTUALLY_CANONICALLY_ADMITTED_VAPOR_KELVIN_COUPLED_BATCH_ACTIVE",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -337,8 +337,8 @@
     "Actual085canonical preservationCI jobs136630795180/136630794710 fail beforemodel at stale verify_dataqual12_current source succession assertion; rawlogsretained in analyticalCDEarchive. Unresolved evidence/source succession, no claim of allcanonicalpushCIgreen."
   ],
   "running_ci": [],
-  "next_code_change": "Diagnose original retained hydraulic/thermal startup caches at day530; preserve all four1096warm/native-failed roles. Qualify scoped complete existing history carry before new CDE/full campaign; exactnative requirement and1e-10 owning gates unchanged. No public vapor admission.",
-  "recovery_point": "Actualcanonical5b8373d admitted archive de280955, PR1778 all44terminalchecks29success15skip and clean34 public477.329s. Current vapor runtime5d36/source30335; readerc68. Short35water8/11bothopts independentPASS; fourfullv1warm1096 each completedbutFAILED exactcold530. FirstfivecoldwindowsPASS; day531~1e-16fluxdifference. Current workingbranchcodex/nomacro-vapor-kelvin01 HEADnewnext. Allraw source/input/exes/BUILD untouched; do not rebind or promote failed roles. Next scopednativehistory diagnosis/fix.",
+  "next_code_change": "Run coherent native3 complete microscopic/oxygen/top composition water/CDE full1096 model8/11 O0/O2, then per-layer mixed7/8 and9/10. Independent model8O0 532prefix and exactcold530 PASS; no vapor admission yet. Preserve native1 and native2 failed roles.",
+  "recovery_point": "Actualcanonical5b8373d, PR1778 admitted. Vapor native3 runtime a9c12ab589dbeeec3bbff63449feea06c44ae0e6 with existing complete microscopic dry endpoint/provider composition: actual532days and exactcold530 PASS independently. All previous failed roles retained; full coupled qualification pending.",
   "external_blocker": null,
   "test_selection": {
     "candidate": "b96f69a397615d24f7af4fc1cdf28bf591957a04",
@@ -404,7 +404,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Diagnose original retained hydraulic/thermal startup caches at day530; preserve all four1096warm/native-failed roles. Qualify scoped complete existing history carry before new CDE/full campaign; exactnative requirement and1e-10 owning gates unchanged. No public vapor admission.",
+  "next_action": "Run coherent native3 complete microscopic/oxygen/top composition water/CDE full1096 model8/11 O0/O2, then per-layer mixed7/8 and9/10. Independent model8O0 532prefix and exactcold530 PASS; no vapor admission yet. Preserve native1 and native2 failed roles.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -33037,6 +33037,18 @@
       "maximum_daily_water_cm": "8:9.981607920306161e-11;11:9.9815228998823e-11",
       "evidence": "EV/VAPOR_ORIGINAL_NATIVE_COLD_DIVERGENCE_V1.json",
       "raw_profiles": "EV/vapor-{8|11}-daily-water-full-{O0|O2}-v1"
+    },
+    "native3_composition": {
+      "source": "a9c12ab589dbeeec3bbff63449feea06c44ae0e6",
+      "model8_water_O0_prefix532": "INDEPENDENT_PASS_NOT_ADMITTED",
+      "cold_window": [
+        530,
+        532
+      ],
+      "evidence": "EV/VAPOR_NATIVE3_8_WATER_PREFIX_O0_INDEPENDENT_V1.json",
+      "providers": "Literal qualified original complete micro/oxygen/top; includes existing microscopic dry endpoint correction",
+      "native2_hydraulic_thermal_only": "FAILED_COLD530_RETAINED",
+      "native3_full_campaign": "NEXT"
     }
   }
 }

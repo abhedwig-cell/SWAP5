@@ -19,7 +19,7 @@ CAPACITY_PARENT='7910cd29c045037778bfffdc7e40a77802d70fb477e0afa78be426776bd26e2
 
 def vapor_liquid_source(source,policy):
     assert policy['policy']=='original-per-layer-isothermal-vapor-kelvin-sign-v1'
-    assert policy['physical_equation_changed'] is True and policy['new_physical_water_store'] is False and policy['native_interface_changed'] is False and policy['tolerance_changed'] is False
+    assert policy['physical_equation_changed'] is True and policy['new_physical_water_store'] is False and policy['tolerance_changed'] is False
     joint=policy['existing_model7_capacity_composed'];expected=JOINT_TARGET if joint else VAPOR_TARGET
     assert SHA(source.encode('cp1252'))==policy['corrected_lf_sha256']==expected
     before='Hr        = dexp(h/100.0d0*MgRT)';after='Hr        = dexp(-h/100.0d0*MgRT)'
@@ -30,6 +30,27 @@ def vapor_liquid_source(source,policy):
 
 
 def audit(profile,reference,allow_refusal=False,allow_censored=False,locations=None):
+    q=json.loads((profile/'RESULT.json').read_text())
+    build=locations['build'] if locations else Path(q['build_root'])
+    identity=json.loads((build/'BUILD.json').read_text())['identity']
+    vapor=identity['hydraulic_vapor']
+    native3=vapor['native_interface_changed']
+    if native3:
+        assert vapor['native_codec']==('S5HVC003' if q['kind']=='cde' else 'S5HVW003')
+        for field in ('hydraulic_history_carry','thermal_history_carry','microscopic_lookup_carry','oxygen_lookup_carry','top_lookup_carry','existing_microscopic_dry_endpoint_correction_composed'):
+            assert vapor[field] is True
+        # Reuse the actual qualified providers byte for byte, including the
+        # already qualified dry endpoint correction. Do not recreate tables.
+        parent='5b8373d0809c25e24415f4d5dc01784a92ff481e'
+        for owner,filename in (('micro_lookup_state','RWU_micro.f90'),('oxygen_lookup_state','oxygenstress.f90')):
+            frozen=subprocess.check_output(['git','show',parent+':app/hybrid_water/'+owner+'.py'],cwd=ROOT)
+            namespace={};exec(compile(frozen,owner+'.py','exec'),namespace)
+            expected=namespace['render']((reference/'build/swap-selected'/filename).read_text(encoding='cp1252'))
+            assert (build/filename).read_text(encoding='cp1252')==expected
+        native=(build/'hydraulic_vapor_native.f90').read_bytes().replace(b'\r\n',b'\n')
+        assert SHA(native)==vapor['native_domain_source_sha256']
+    else:
+        assert 'native_codec' not in vapor
     raw=subprocess.check_output(['git','show',READERS+':'+PATH],cwd=ROOT)
     assert (ROOT/PATH).read_bytes().replace(b'\r\n',b'\n')==raw
     functions=[node for node in ast.parse(raw.decode()).body if isinstance(node,ast.FunctionDef) and node.name=='audit'];assert len(functions)==1
@@ -48,7 +69,11 @@ def audit(profile,reference,allow_refusal=False,allow_censored=False,locations=N
         changes=0
         phase_fields=0
         phase_signs=0
+        native_magics=0
         def visit_Constant(self,node):
+            if native3 and node.value in (b'S5IOC001',b'S5IOW001'):
+                self.native_magics+=1
+                return ast.copy_location(ast.Constant(b'S5HVC003' if node.value==b'S5IOC001' else b'S5HVW003'),node)
             if node.value=='CANDIDATE_ACTUAL_MODEL7_CAPACITY_':self.changes+=1;return ast.copy_location(ast.Constant('CANDIDATE_ACTUAL_VAPOR_FAMILY_'),node)
             return node
         def visit_Assert(self,node):
@@ -66,6 +91,7 @@ def audit(profile,reference,allow_refusal=False,allow_censored=False,locations=N
                 return [node,*ast.parse('assert expected[7] == -(-trial[7]+(expected[25]-trial[25]))').body]
             return node
     role=ControllerRole();function=role.visit(function);assert (role.changes,role.phase_fields,role.phase_signs)==(1,1,1)
+    assert role.native_magics==(2 if native3 else 0)
     namespace=dict(vars(inherited));namespace['vapor_liquid_source']=vapor_liquid_source;exec(compile(ast.fix_missing_locations(ast.Module(body=[function],type_ignores=[])),PATH,'exec'),namespace)
     result=namespace['audit'](profile,reference,allow_refusal,allow_censored,locations)
     q=json.loads((profile/'RESULT.json').read_text());build=locations['build'] if locations else Path(q['build_root']);identity=json.loads((build/'BUILD.json').read_text())['identity'];policy=identity['hydraulic_vapor'];assert policy['SWVAPOR']==q['vapor_flags'] and policy['active_layers'];assert policy['existing_model7_capacity_composed']==bool(identity.get('model7_capacity'));model=q['hydraulic_model'];models=q.get('layer_models',[model]);result.update(hydraulic_model=model,layer_models=models,frozen_scientific_reader=READERS,
