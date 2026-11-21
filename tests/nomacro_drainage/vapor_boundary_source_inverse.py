@@ -6,8 +6,8 @@ import analytical_calendar_source_inverse as calendar
 import snow_vapor_source_inverse as snow
 import snow_vapor_inherited_owner as initial
 BASE='70bae8871ec71b3c0969a6628cae596354f9c2e8'
-CORE='9cde60cff60e1a0b2d4a21019e69eefb1007bd8b'
-PORTABLE='69710a9453365da25015d28b79ceaaeb0a50c152'
+CORE='c1e1dd81382926053a42cda6260874483dab37b1'
+PORTABLE='7ee1fbcc8d18e91b9c3b5b6bf12eafd3a5df5a63'
 WORKFLOW='.github/workflows/nomacro-water-snow-groundwater.yml'
 CHANGED={'app/hybrid_water/cde_native_receipt.py':{'metadata','decode'},'app/hybrid_water/hydraulic_vapor.py':{'selection','metadata','native_magic','native_provider'},'app/hybrid_water/model7_terminal_water.py':{'enabled','source','head_parent_inverse','metadata','apply_build','validate'},'app/hybrid_water/original_output.py':{'selection'},'app/hybrid_water/vapor_boundary_composition.py':None}
 
@@ -27,6 +27,10 @@ def complete_inverse():
  # decoding remains literally identical, including every old rejection.
  path='app/hybrid_water/cde_native_receipt.py';function=lambda raw:next(n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='decode');current=function(blob(CORE,path));old=function(blob(BASE,path));branch=[n for n in current.body if isinstance(n,ast.If) and ast.unparse(n.test)=="aux[:8] == b'S5HBC005'"];assert len(branch)==1;current.body.remove(branch[0]);assert ast.dump(current,include_attributes=False)==ast.dump(old,include_attributes=False)
  assert norm((ROOT/WORKFLOW).read_bytes())==blob(PORTABLE,WORKFLOW)
+ path='app/hybrid_water/vapor_boundary_composition.py'
+ original=blob('9cde60cff60e1a0b2d4a21019e69eefb1007bd8b',path);current=blob(CORE,path)
+ functions=lambda raw:{n.name:ast.dump(n,include_attributes=False) for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef)}
+ a,b=functions(original),functions(current);assert set(a)==set(b) and {key for key in a if a[key]!=b[key]}=={'terminal_guard'}
  return True
 
 
