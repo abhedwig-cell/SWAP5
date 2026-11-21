@@ -21,7 +21,8 @@ def metadata():
                 native_stock_offset='48+8*(actual_nodes+1)',
                 native_stock='actual original saved SAMPRO, not reconstructed CMSY',
                 optional_native_prefixes={'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain',
-                    'S5HSC004':'48 + 8*(14+2*actual_layers), checked duplicated Snow vapor domain'},
+                    'S5HSC004':'48 + 8*(14+2*actual_layers), checked duplicated Snow vapor domain',
+                    'S5HBC005':'48 + 8*(14+2*actual_layers), checked duplicated bounded drainage/bottom vapor domain'},
                 stock_units='mg/cm2',comparison='exact native total and reported end stock',
                 physical_equations_changed=False)
 
@@ -30,6 +31,9 @@ def decode(aux,nodes,project=None):
     if type(nodes) is not int or not 1<=nodes<=1000:
         raise ValueError('Invalid CDE native receipt shape')
     offset=48
+    if aux[:8]==b'S5HBC005':
+        from vapor_boundary_composition import cde_offset
+        offset=cde_offset(aux,nodes,project)
     if aux[:8] in (b'S5HVC003',b'S5HSC004'):
         if len(aux)<offset+56:raise ValueError('Incomplete CDE vapor domain')
         domain=struct.unpack_from('<14i',aux,offset);layers=domain[2]

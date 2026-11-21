@@ -35,6 +35,9 @@ def selection(project):
     if project.solute and (nprint!=1 or monthly or dates or requested!=1 or perstep):
         raise ValueError('Original CDE output currently requires daily interval reset cadence')
     for key,value in dict(SWSNOW=0,SWBR=0,SWHYST=0,SWFROST=0,SWDRA=1,SWMETDETAIL=0).items():
+        if key=='SWDRA' and one(key)==0:
+            from vapor_boundary_composition import enabled as boundary_enabled
+            if boundary_enabled(project):continue
         if one('SWDRA')==2 and (key=='SWDRA' or key=='SWHYST' and one(key) in (1,2)):
             from extended_drainage import enabled as extended_drainage_enabled
             if extended_drainage_enabled(project):continue
