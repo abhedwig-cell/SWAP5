@@ -45,6 +45,9 @@ def guard_previous_source():
 
 def strip_current_evidence(text):
  assert text.count(PATTERN)<=1
+ if PATTERN in text and '\n  column:\n' in text:
+  assert text.count('    timeout-minutes: 45\n')==1
+  text=text.replace('    timeout-minutes: 45\n','    timeout-minutes: 10\n',1)
  return literal('strip_current_evidence',dict(vars(previous)))(text.replace(PATTERN,''))
 
 
