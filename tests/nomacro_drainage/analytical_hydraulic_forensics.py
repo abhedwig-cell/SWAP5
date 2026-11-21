@@ -11,7 +11,7 @@ READERS='e079d1554041c831cd0ab609835e2e79bf3c31a1'
 PATH='tests/nomacro_drainage/model7_capacity_forensics.py'
 
 
-def audit(profile,reference,allow_refusal=False,allow_censored=False):
+def audit(profile,reference,allow_refusal=False,allow_censored=False,locations=None):
     raw=subprocess.check_output(['git','show',READERS+':'+PATH],cwd=ROOT)
     assert (ROOT/PATH).read_bytes().replace(b'\r\n',b'\n')==raw
     functions=[node for node in ast.parse(raw.decode()).body if isinstance(node,ast.FunctionDef) and node.name=='audit'];assert len(functions)==1
@@ -44,7 +44,7 @@ def audit(profile,reference,allow_refusal=False,allow_censored=False):
             return node
     role=ControllerRole();function=role.visit(function);assert (role.changes,role.phase_fields,role.phase_signs)==(1,1,1)
     namespace=dict(vars(inherited));exec(compile(ast.fix_missing_locations(ast.Module(body=[function],type_ignores=[])),PATH,'exec'),namespace)
-    result=namespace['audit'](profile,reference,allow_refusal,allow_censored)
+    result=namespace['audit'](profile,reference,allow_refusal,allow_censored,locations)
     q=json.loads((profile/'RESULT.json').read_text());model=q['hydraulic_model'];models=q.get('layer_models',[model]);result.update(hydraulic_model=model,layer_models=models,frozen_scientific_reader=READERS,
         full_capacity_source_inverse=7 in models,original_capacity_provider_retained=7 not in models,scientific_ledger_native_body_unchanged=True,
         phase_correspondence_exact_original_double_subtraction_addition=True,public_mass_bounds_unchanged=True)
