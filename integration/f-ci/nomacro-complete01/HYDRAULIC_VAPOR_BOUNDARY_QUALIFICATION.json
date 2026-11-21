@@ -1,16 +1,16 @@
 {
   "status": "NEUTRAL_ORIGINAL_VAPOR_DRAINAGE_BOTTOM_NATIVE5_SOURCE_RAW_PASS_PENDING_ADMISSION",
   "migration_class": "B_EXISTING_UNCHANGED_PROCESS_AND_QUALIFIED_TRIAL_RECEIPT_COMPOSITION",
-  "runtime": "9cde60cff60e1a0b2d4a21019e69eefb1007bd8b",
+  "runtime": "c1e1dd81382926053a42cda6260874483dab37b1",
   "parent_source": "70bae8871ec71b3c0969a6628cae596354f9c2e8",
   "actual_previous_canonical": "1e639e0febd12922e48ed7e239f29f7fabb95909",
   "scope": "NoSnow explicit active per-layer vapor models8..11 including mixed7/8,8/11,9/10; water/CDE; drainage0/1 and bottom5/6/8, excluding old canonical drainage1/bottom6 which retains native3; numerical heat1/CALT2, hys0, NoFrost, no aquifer or AGE, original dense daily reset output. New native5 owns exact typed drainage/bottom context and unchanged complete original hydraulic/thermal/micro/oxygen/top payload.",
   "actual_Windows_year367_contexts": 4,
-  "actual_Windows_short35_contexts": 16,
-  "actual_Ubuntu_short35_contexts": 6,
-  "actual_exact_cold_windows": 86,
-  "actual_native_checkpoints": 194,
-  "exact_private_CDE_stocks": 132,
+  "actual_Windows_short35_contexts": 18,
+  "actual_Ubuntu_short35_contexts": 8,
+  "actual_exact_cold_windows": 98,
+  "actual_native_checkpoints": 222,
+  "exact_private_CDE_stocks": 160,
   "actual_compiled_native_refusals": 588,
   "actual_external_transaction_contexts": 12,
   "actual_frontend_controls": 55,
@@ -27,9 +27,9 @@
   "old_decoder_function_exact_after_single_new5_branch_inverse": true,
   "old_model_periods_repeated_for_unselected_metadata": false,
   "private_trial_Darcy_flux_is_not_later_public_Fluxes_reconstruction": true,
-  "retained_failures": "Four original precompiler HeadCalc parent refusals, sourcea286, retained with all source bytes. Exact already qualified linear-pond tangent or boundary Darcy trial receipt now composed via whole-source inverse. Native4 first readonly observer rejected the new5 descriptor key; the exact same successful compiled source postimage was recovered after admitting only that metadata key, without compiler/model repetition.",
+  "retained_failures": "Four original precompiler HeadCalc parent refusals, sourcea286, retained with all source bytes. Exact already qualified linear-pond tangent or boundary Darcy trial receipt now composed via whole-source inverse. Native4 first readonly observer rejected the new5 descriptor key; the exact same successful compiled source postimage was recovered after admitting only that metadata key, without compiler/model repetition. Two additional SWINCO1 input attempts refused before compiler/model execution by the unchanged generic initialization guard; actual closed tests use the existing SWINCO2/GWLI=-400 route. New explicit IF(flboth) receipt follows the already qualified boundary owner; two new Windows compiled open postimages reproduce every other Fortran/provider/flag and invert exactly only that logically identical scalar-argument selection. Original twenty-six observations and source9cde remain immutable; only four novel closed contexts are executed.",
   "zero_chemical_shape_only_contexts": 2,
-  "nonzero_CDE_contexts": 16,
+  "nonzero_CDE_contexts": 20,
   "raw_records": {
     "HYDRAULIC_VAPOR_BOUNDARY_WINDOWS_RAW_V1": {
       "archive": "HYDRAULIC_VAPOR_BOUNDARY_WINDOWS_RAW_V1.zip",
@@ -45,6 +45,21 @@
       "archive": "HYDRAULIC_VAPOR_BOUNDARY_UBUNTU_O2_RAW_V1.zip",
       "bytes": 32368720,
       "sha256": "e2c341bc6f04817ba13b4c87131b7f142229cb86cc6b1f4029a1ed66d6e6adb7"
+    },
+    "HYDRAULIC_VAPOR_BOUNDARY_GUARD_WINDOWS_RAW_V1": {
+      "archive": "HYDRAULIC_VAPOR_BOUNDARY_GUARD_WINDOWS_RAW_V1.zip",
+      "bytes": 7467781,
+      "sha256": "55df56fd91232583ae860ed7b9f84083e369f2fd91bfafadf483e2b0a68913b7"
+    },
+    "HYDRAULIC_VAPOR_BOUNDARY_GUARD_UBUNTU_O0_RAW_V1": {
+      "archive": "HYDRAULIC_VAPOR_BOUNDARY_GUARD_UBUNTU_O0_RAW_V1.zip",
+      "bytes": 10223569,
+      "sha256": "87dc98c451022f70c58779aa2ca1079a2080c1c8165827be3b021d46c53fe6f6"
+    },
+    "HYDRAULIC_VAPOR_BOUNDARY_GUARD_UBUNTU_O2_RAW_V1": {
+      "archive": "HYDRAULIC_VAPOR_BOUNDARY_GUARD_UBUNTU_O2_RAW_V1.zip",
+      "bytes": 10240104,
+      "sha256": "8a57dd12a0bbb3d4f573e173e6f8f8310f092756767c17724aa797e9ebf7bebc"
     }
   },
   "canonical_admission": false,
@@ -53,5 +68,15 @@
   "whole_scientific_equivalence": "NOT_QUALIFIED",
   "global_family_and_gap_counts": "UNKNOWN",
   "RC3_changed": false,
-  "independent_both_receipts_keep_fixed_1e_minus10_bound": true
+  "independent_both_receipts_keep_fixed_1e_minus10_bound": true,
+  "initial_runtime": "9cde60cff60e1a0b2d4a21019e69eefb1007bd8b",
+  "explicit_guard_ubuntu_workflow_run": 44900460727,
+  "explicit_guard_ubuntu_source": "7ee1fbcc8d18e91b9c3b5b6bf12eafd3a5df5a63",
+  "explicit_guard_ubuntu_both_jobs_success": true,
+  "explicit_guard_actual_new_closed_short35_contexts": 4,
+  "explicit_guard_actual_new_exact_cold_windows": 12,
+  "explicit_guard_compiled_open_postimage_builds_without_model_repeat": 2,
+  "explicit_guard_selected_scalar_argument_identical_for_both_boolean_states": true,
+  "closed_branch_does_not_evaluate_inactive_gradient": true,
+  "native5_format_and_validation_source_unchanged_after_initial_epoch": true
 }
