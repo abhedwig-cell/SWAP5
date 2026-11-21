@@ -1,0 +1,77 @@
+{
+  "status": "BOUNDED_EXISTING_ANALYTICAL_VAPOR_CDE_CALENDAR_COMPOSITION_SCIENCE_QUALIFIED_NOT_ADMITTED",
+  "runtime": "8842b11d9e397b590b7ca1997f37456271e93959",
+  "first_composed_runtime": "379673548d90b13421b5b1e2db6e928c676b11ed",
+  "parent_canonical": "904d3cdd1fb9132839bec689c22cdeecdba79676",
+  "classification": "B_EXISTING_PROCESS_CALENDAR_NATIVE_COMPOSITION_WITH_C_POSTIMAGE_INHERITANCE",
+  "scope": "Explicit NoSnow/noFrost/hys0 water-process+CDE, originalinitial2/3, numeric heat2, ordinary drainage1 bottom6 and activevapor drainage0/1 bottom5/6/8. Existing supported hydraulic models unchanged; targeted7/8/11 andmixed7/8 interactions. Original periodic/monthly/explicit-date/subdaily and no-resetperstep calendars. No AGE/macropores/implicit/Snow/hysteresis/pressureinitial1 nondaily admission.",
+  "actual_contexts": 38,
+  "short35_contexts": 36,
+  "year367_contexts": 2,
+  "Windows_contexts": 30,
+  "Ubuntu_contexts": 8,
+  "exact_cold_windows": 118,
+  "native_checkpoints": 272,
+  "exact_private_CDE_calendar_samples": 272,
+  "actual_compiled_native6_refusals": 312,
+  "actual_compiled_calendar_private_refusals": 188,
+  "actual_compiled_refusals": 500,
+  "frontend_controls": 39,
+  "selected_frontend_routes": 14,
+  "excluded_frontend_crosses": 25,
+  "external_transactions": 6,
+  "actual_transaction_prepares": 18,
+  "actual_transaction_commits": 6,
+  "actual_transaction_discards": 12,
+  "complete_compiled_postimages": 5,
+  "owning_absolute_water_and_CDE_limits": 1e-10,
+  "new_native_codec": "S5HCC006",
+  "native_interface_changed": true,
+  "unchanged_native_codecs": [
+    "S5HVW003",
+    "S5HVC003",
+    "S5HSW004",
+    "S5HSC004",
+    "S5HBW005",
+    "S5HBC005",
+    "S5CIC001",
+    "S5CCC001"
+  ],
+  "private_CDE_provider_unchanged": true,
+  "physical_process_equations_changed": false,
+  "new_physical_state": false,
+  "rollback_or_rejected_trial_semantics_changed": false,
+  "mass_or_convergence_limits_changed": false,
+  "production_authority_changed": false,
+  "original_receipts_rewritten": false,
+  "full_model_periods_repeated_for_metadata": 0,
+  "canonical_admission": false,
+  "whole_historical_family_closed": false,
+  "RC3_changed": false,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "raw_records": {
+    "ANALYTICAL_CDE_CALENDAR_WINDOWS_RAW_V1": {
+      "bytes": 116022540,
+      "sha256": "1cd41a449637d3e0d4c3bf052d82e2bf560ff35f833d1d8506de7f21512b3a0e",
+      "archive": "ANALYTICAL_CDE_CALENDAR_WINDOWS_RAW_V1.zip"
+    },
+    "ANALYTICAL_CDE_CALENDAR_UBUNTU_O0_RAW_V1": {
+      "bytes": 22997484,
+      "sha256": "02b35a0e15395cf22e9ef1d60f55e91a0998a2d0ab5f0f40fce378e2223de655",
+      "archive": "ANALYTICAL_CDE_CALENDAR_UBUNTU_O0_RAW_V1.zip"
+    },
+    "ANALYTICAL_CDE_CALENDAR_UBUNTU_O2_RAW_V1": {
+      "bytes": 23073771,
+      "sha256": "20f88e1afb0dc11ce0a64775a94137568667be885dad2b7d24a6b2cb815070d2",
+      "archive": "ANALYTICAL_CDE_CALENDAR_UBUNTU_O2_RAW_V1.zip"
+    },
+    "ANALYTICAL_CDE_CALENDAR_POSTIMAGE_RAW_V1": {
+      "bytes": 9693099,
+      "sha256": "41f21c2a417116a2b60790686e34a55f6b42f0400c742c8e0ca02e630e416579",
+      "archive": "ANALYTICAL_CDE_CALENDAR_POSTIMAGE_RAW_V1.zip"
+    }
+  },
+  "retained_failures": "Original12frontenddispatchrefusals; controllerBBCmissingexternalfixture; olddailywindowdecoder/countlabels andyearcutcount; source-onlywrongworkflowprojection; interval-controlselector namespace; independentmutationlocalshapevariable. Actualnative5densebuildregression379 andoverbroadfirstrepair1f intervalbuildrefusal retainedpremodels; final8842 soleNoneguard wholemoduleinverse, compiledpostimages independentlyPASS. Failedcompiledintervalpostimage afterphysicalequivalence onlymissedhistoricalsource descriptor; recoveredwithoutrecompile/modelrerun."
+}

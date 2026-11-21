@@ -1,0 +1,55 @@
+{
+  "status": "TARGETED_ORIGINAL_INITIAL_PRESSURE_FROST_SCIENCE_AND_COMPILED_DEPENDENCY_SURFACE_QUALIFIED_NOT_ADMITTED",
+  "classification": "C_EXISTING_INITIALIZATION_WITH_B_EXISTING_FROST_HISTORY_ROOT_STATE_OWNERS",
+  "runtime": "9ad885a9e5358263b27cc9fd40cfe23330c6006a",
+  "qualified_observer_source": "4dc50fb52f10cd7756d36f79b2b1d08416f5bb8f",
+  "scope": "Original initial1 HTB/legacyZI-H; dense daily explicit/implicit model1 water/CDE, Frost1 Snow1 history2 numeric heat2, drainage1 effectiveSWDIVD1 bottom6, corrected original event closure. No active Macro/AGE/aquifer/BBC/detailedweather/new calendars.",
+  "contexts": 12,
+  "windows_contexts": 8,
+  "targeted_ubuntu_contexts": 4,
+  "days": 35,
+  "exact_cold_windows": 36,
+  "native_checkpoints": 84,
+  "exact_initial_pressure_nodes": 34,
+  "original_saturated_tail_reinitializations": 11,
+  "compiler_postimages": 12,
+  "frontend_observations": 66,
+  "frontend_counts": {
+    "INITIAL1_SELECTED": 4,
+    "INITIAL2_RETAINED": 4,
+    "UNQUALIFIED_CROSS_REFUSED": 58
+  },
+  "owning_absolute_daily_terminal_water_and_every_prefix_CDE_limit": 1e-10,
+  "owning_hydraulic_cumulative_step_rule": "1e-10 times elapsed hydraulic window",
+  "additional_global_absolute_water_prefix_is_owning_gate": false,
+  "raw_records": {
+    "INITIAL_PROFILE_FROST_WINDOWS_RAW_V1": {
+      "sha256": "83bc1ed7eada4c5e83b6fc4a39fde2d19942495765647cb1cf0543e21ba81a60",
+      "bytes": 35778303
+    },
+    "INITIAL_PROFILE_FROST_UBUNTU_O0_RAW_V1": {
+      "sha256": "b7bce7aae6ebfe0e61caaaffe79980f762c09ff83ea15800bdeec07811080817",
+      "bytes": 15320699
+    },
+    "INITIAL_PROFILE_FROST_UBUNTU_O2_RAW_V1": {
+      "sha256": "33004e459bba477374b19bc02c0b553ce13a253e44b69f4555c16db20f028ec4",
+      "bytes": 15377311
+    }
+  },
+  "physical_process_equations_changed": false,
+  "original_initialization_equations_changed": false,
+  "new_physical_state": false,
+  "new_native_codec": false,
+  "native_interface_changed": false,
+  "mass_or_convergence_limits_changed": false,
+  "rollback_or_rejected_trial_semantics_changed": false,
+  "production_authority_changed": false,
+  "original_receipts_rewritten": false,
+  "canonical_admission": false,
+  "parent_joint74_actual_admission_pending": true,
+  "whole_historical_family_closed": false,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}

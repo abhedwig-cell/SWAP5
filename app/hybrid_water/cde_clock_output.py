@@ -43,9 +43,14 @@ def active_selection(project):
         if one(key)!=value:return None
     from experimental_project import inspect
     bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
-    if bottom not in (1,5,8):return None
+    if bottom not in (1,5,8):
+        from analytical_cde_calendar import bottom6_selected
+        if bottom!=6 or not bottom6_selected(project):return None
     drainage=one('SWDRA')
-    if drainage not in (0,1) or bottom!=1 and drainage!=1:return None
+    if drainage not in (0,1):return None
+    if bottom!=1 and drainage!=1:
+        from analytical_cde_calendar import vapor_selected
+        if not vapor_selected(project):return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
     if hys not in (0,1,2):return None
     if monthly not in (0,1) or dates not in (0,1) or reset not in (0,1) or fmt not in (0,1,2,3) or not 0<=requested<=366:raise ValueError('Invalid original CDE interval selectors')
@@ -54,6 +59,8 @@ def active_selection(project):
     return dict(cde_clock_output=True,cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),thermal_clock=bool(swsnow),thermal_step=bool(swsnow and perstep),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=drainage,
         swhyst=hys,swcsv=fmt,nprintday=nprint,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=1,flprintdt=perstep,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
+        **({'analytical_bottom6_calendar':True} if bottom==6 else {}),
+        **({'analytical_vapor_calendar':True} if __import__('analytical_cde_calendar').vapor_selected(project) else {}),
         **({'groundwater_cde_clock':True} if bottom==1 else {}),
         **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}),
         **({'implicit_snow_composition':True} if swsnow and one('SWKIMPL')==1 else {}))
@@ -66,6 +73,10 @@ def selection(project):
 
 def magic(project):
     selected=active_selection(project)
+    if selected is not None:
+        from analytical_cde_calendar import native_magic
+        composed=native_magic(project)
+        if composed is not None:return composed
     if selected is not None and selected.get('groundwater_cde_clock'):
         from groundwater_cde_clock import magic as groundwater_magic
         return groundwater_magic(project)
@@ -142,6 +153,14 @@ else
     if selected.get('groundwater_cde_clock'):
         from groundwater_cde_clock import integral as groundwater_integral
         source=groundwater_integral(source,original,watstor,selected)
+    if selected.get('analytical_bottom6_calendar'):
+        old="(swbotb/=5.and.swbotb/=8))error stop 'Foreign original ordinary Darcy trial domain'"
+        assert source.count(old)==1
+        source=source.replace(old,old.replace('swbotb/=8','swbotb/=6.and.swbotb/=8'),1)
+    if selected.get('analytical_vapor_calendar') and selected['swdra']==0:
+        old='swmacro/=0.or.swsnow/=0.or.swdra/=1'
+        assert source.count(old)==2
+        source=source.replace(old,'swmacro/=0.or.swsnow/=0.or.(swdra/=0.and.swdra/=1)')
     return source
 
 
@@ -261,6 +280,9 @@ def apply_build(output,donor_build,project,patched):
          if(abs(hybrid_cde_clock_trial_guard)>1d-10)flnonconv=.true."""
     if groundwater:
         guard="\n         if(abs(hybrid_groundwater_cde_clock_trial(groundwater_bottom,groundwater_delta))>1d-10)flnonconv=.true."
+    if selected.get('analytical_bottom6_calendar'):
+        from analytical_cde_calendar import head_guard
+        assert guard==head_guard(8);guard=head_guard(6)
     path.write_text(text.replace(anchor,anchor+guard,1),encoding='cp1252')
     if selected['swcsv']:
         path=output/'swap_csv_output.f90';text=path.read_text(encoding='cp1252');original=(donor_build/'swap-selected/swap_csv_output.f90').read_bytes()

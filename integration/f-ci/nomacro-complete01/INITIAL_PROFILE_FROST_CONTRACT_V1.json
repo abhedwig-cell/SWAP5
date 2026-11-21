@@ -1,0 +1,65 @@
+{
+  "status": "PRE_IMPLEMENTATION_CONTRACT_BOUNDED_ORIGINAL_PRESSURE_FROST_STATE_COMPOSITION",
+  "baseline_candidate": "b6b4959fb1301cedc95ddf551c11d6699a41e3ed",
+  "actual_canonical": "904d3cdd1fb9132839bec689c22cdeecdba79676",
+  "dependency": "PR1787joint74source/sciencequalified; freshpublic/negative/publication/CI/actualcanonicaladmission pending, never silentlyadmit thischild first.",
+  "classification": "C_ORIGINAL_INITIALIZATION_WITH_B_EXISTING_FROST_HISTORY_ROOT_STATE_OWNERS",
+  "actual_dispatch": "FOUR_ORIGINAL_QUALIFIED_FROST_PARENTS_SELECT_INITIAL2_AND_REFUSE_INITIAL1_BEFORE_BUILD",
+  "original_initializer": {
+    "status": "LITERAL_ORIGINAL_INITIAL_PRESSURE_BEFORE_THERMAL_SNOW_SOLUTE_STATE_INITIALIZATION",
+    "whole_sources": {
+      "swap.f90": {
+        "sha256": "87e0e7227d139570a38c43b45227bc576d135713337f5e6742e0019407994b7c",
+        "bytes": 26927
+      },
+      "soilwater.f90": {
+        "sha256": "d5926b6c30fba3177c261c9a24ef828dd9cd6b3dfb952b07ef00800ebd42415d",
+        "bytes": 7478
+      },
+      "readswap.f90": {
+        "sha256": "e6fc217798d3f0424641c61b92fb8831fcdeb78c19670def00695b82ab8e80fe",
+        "bytes": 59942
+      }
+    },
+    "ordered_call_anchors": [
+      "   call ReadSwap",
+      "   call SoilWater(1)",
+      "   if (swhea > 0) call SoilTemperature(1)",
+      "   if (swdra > 0) call drain(1)",
+      "   if (swsnow  == 1) call Snow(1, tsoil(1), tav, epond, peva, empreva)",
+      "   if (swsolu > 0) call Solute(1)"
+    ],
+    "original_HTB_interpolation_before_water_storage": true
+  },
+  "qualified_frost_providers": {
+    "app/hybrid_water/frost_drainage_composition.py": "6038ea434f0dd42c21e2804762d94ab56c7d1587021316300b8759e948148ca8",
+    "app/hybrid_water/frost_divdra_overlap.py": "c1ed4a4cdd1a2b07523e9b11f882090d78199dcace829122f2c3a9137f6c72be",
+    "app/hybrid_water/implicit_frost_composition.py": "865633ee2e6396551400c2917cde2b109f97ea3b1f67ad60f2625af6980befc1",
+    "app/hybrid_water/implicit_frost_surface_conductivity.py": "13beb3cc51b2f4d1eb79678b8e55341b183913d707b3df0bfae5ca2b5fa61b30",
+    "app/hybrid_water/implicit_frost_source_guard.py": "873d07038adbd2ea493a5cd61ac4914ad55faee8fe089508aaee6ab45778a022",
+    "app/hybrid_water/implicit_frost_root_state.py": "be2616a7617e57ded6980b4b80b10bc044458ed407831e34cec715f9f30907e5",
+    "app/hybrid_water/implicit_snow_root_state.f90": "617c85df35a799ad400278d59d51f89941c9d6ef4f57193c7f124c40817ea0e2",
+    "app/hybrid_water/implicit_conductivity.py": "0b175c9519c35edb3b61dea66678467e5abef8f83b57e9677bd5e41d400daa21"
+  },
+  "scope": "SWINCO1 originalHTB orlegacyZI/H; SWSOLU0/1; SWKIMPL0/1; originalmodel1 only, SWSOPHY0, SWSNOW1 SWFROST1 SWHYST2 SWHEA1 SWCALT2 SWDRA1 effectiveSWDIVD1 SWBOTB6; originaldense dailyNP1/PER1/MONTH0/ODAT0/RES1/nonstep output; NoMacro/AGE/aquifer/BBC/detailedweather.",
+  "implementation_plan": [
+    "Add only a pure bounded Frost/initialization context helper. Preserve the whole old pressure initialization guard and existing context helper through an exact literal inverse.",
+    "Delegate only the existing pressure-domain/state cross exclusions when actual original inputs select the full alreadyqualified Frost family. Keep olddenseoutput assertions and all existing Frost/drainage/Ksat/model/invalid-input checks unchanged.",
+    "Do not modify any Fortran/provider/root/native/calendar/rollback/numerical body or ABI. Treat input initialization1 as originalreadswap/SoilWater state, not a new physical process."
+  ],
+  "qualification_plan": [
+    "Four first-timeWindows35daycasesexplicit/implicit water/CDE perO0/O2; exact34node originalpressure including11originalsaturated-tail reinitializations; literal owningFrost/CDEprefix androot/history/physicalstate readers. Threeexactcoldwindows2-4,19-23,30-34.",
+    "Target both native1/native2 and chemical/water code paths onUbuntu O0/O2 using only representatives needed for the new initialization seam. No repeated unrelated1096day periods.",
+    "Wholecompiledinitial2-to-initial1 Fortran/provider/flags/nativeABI postimages, retaining actualpublisher comparator; source/model/Frost excluded-cross frontend and strictwrongsource/raw/inherited/publication controls under actualfinalhead.",
+    "Reuse unchanged previousFrost typed/native/root/externaltransaction evidence onlyafter exactcompiled/sourceinverse closure. Newpublicowner must preserve all earlier literal science bodies and actualproducer/raw identities."
+  ],
+  "owning_scientific_limits": "Unchanged literal Frost daily/terminal absolute1e-10cm and cumulative hydraulic-step 1e-10 times elapsedwindow; CDE every-prefix absolute1e-10mg/cm2. Additional absolute global waterprefix is retained as diagnostic, never silently promoted to a new owning acceptance gate.",
+  "numerical_implementation_changed": false,
+  "new_native_codec": false,
+  "new_physical_state": false,
+  "canonical_admission": false,
+  "whole_historical_family_closed": false,
+  "global_family_and_gap_counts": "UNKNOWN",
+  "whole_science": "NOT_QUALIFIED",
+  "RC3_changed": false
+}
