@@ -85,7 +85,12 @@ def main():
                 meta,_=m.validate_bundle(build,a.reference_work,project);oldmeta=json.loads((oldbuild/'BUILD.json').read_text())
                 before={v.name:v.read_bytes().replace(b'\r\n',b'\n') for v in oldbuild.glob('*.f90')};after={v.name:v.read_bytes().replace(b'\r\n',b'\n') for v in build.glob('*.f90')}
                 changed=[key for key in set(before)|set(after) if before.get(key)!=after.get(key)]
-                item['whole_Fortran_delta']=changed;item['identity_changes']=differences(oldmeta['identity'],meta['identity']);save()
+                compared=json.loads(json.dumps(meta['identity']));optional=None
+                if 'cde_native_receipt' in compared and 'optional_native_prefixes' in compared['cde_native_receipt'] and 'optional_native_prefixes' not in oldmeta['identity']['cde_native_receipt']:
+                    optional=compared['cde_native_receipt'].pop('optional_native_prefixes')
+                    assert optional=={'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain'}
+                    assert not meta['identity'].get('hydraulic_vapor')
+                item['whole_Fortran_delta']=changed;item['identity_changes']=differences(oldmeta['identity'],compared);item['inactive_vapor_only_CDE_descriptor']=optional;save()
                 assert not changed,changed
                 assert meta['identity']['donor_objects']==oldmeta['identity']['donor_objects']
                 for field in ('donor_flags','kernel_flags'):assert meta['identity'][field]==oldmeta['identity'][field]
@@ -110,9 +115,13 @@ def main():
                     assert actual.exists()==expected.is_file()
                     if actual.exists():
                         values=output_records(actual.read_bytes(),filename);assert values==output_records(expected.read_bytes(),filename)[:len(values)]
-                item['cold']=[]
-                for first,last in ((2,4),(30,34)):
-                    item['cold'].append(cold(build,a.reference_work,project,warm,data,first,last,out/('own-'+str(first))));save()
+                if retained and retained.get('status')=='ACTUAL_SIGNED_DEFAULT1_COMPLETE_COMPILED_FORTRAN_PROVIDER_PHYSICAL_NATIVE_USER_OUTPUT_SHORT_COLD_PASS_NOT_ADMITTED':
+                    assert len(retained['cold'])==2;item['cold']=retained['cold']
+                    item['retained_actual_cold_root']=retained.get('retained_actual_cold_root',str(a.recover_existing/name))
+                else:
+                    item['cold']=[]
+                    for first,last in ((2,4),(30,34)):
+                        item['cold'].append(cold(build,a.reference_work,project,warm,data,first,last,out/('own-'+str(first))));save()
                 item['status']='ACTUAL_SIGNED_DEFAULT1_COMPLETE_COMPILED_FORTRAN_PROVIDER_PHYSICAL_NATIVE_USER_OUTPUT_SHORT_COLD_PASS_NOT_ADMITTED';save();print(name,item['status'],flush=True)
         q['status']='THREE_ACTUAL_DEFAULT_MODEL_STATE_OWNER_POSTIMAGES_PASS_NOT_ADMITTED'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
