@@ -26,3 +26,21 @@ def native_controls(store,role,projection,controls):
   assert stderr==item['diagnostic'] and 'ERROR STOP' in stderr and not any('/accepted-' in n for n in names)
   assert all('HYBRID_READY' not in store.get(n).decode('utf8',errors='replace') for n in names if n.endswith('/donor.stdout'))
  return dict(status='INDEPENDENT_ACTUAL_ROOT_NATIVE3_ALL28_PAYLOADS_COMPILED_ERRORS_NO_READY_NO_DAYS_PASS',actual_compiled_refusals=28,independent_actual_payload_refusals=28,actual_BUILD_sha256=r['actual_BUILD_sha256'],compiler_executions=0,model_executions=0)
+
+
+def transactions(store,role,projection,prefix):
+ import implicit_snow_recovery_forensics as previous
+ path='tests/nomacro_drainage/implicit_snow_recovery_forensics.py'
+ assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==git('show',BASE+':'+path)
+ q=json.loads(store.get(role['profile']+'/RESULT.json'));entry=projection[q['build_root']];r=json.loads(store.get(prefix+'/RESULT.json'));assert r['status']=='ACTUAL_DENSE_DAILY_CDE_ROOT_NATIVE3_EXTERNAL_DISCARD_REPLAY_RECOVERY_PASS' and r['actual_BUILD_sha256']==SHA(store.get(entry['archive_prefix']+'/BUILD.json')) and r['initial_selector']==1
+ assert all(r['observations'][k] is True for k in ('discard_no_day_advance','replay_exact','accept_exact','recovered_next_day_exact','origin_unchanged'))
+ with zipfile.ZipFile(io.BytesIO(store.get(prefix+'/external/accepted-column-1-day-5.zip'))) as z:published=json.loads(z.read('checkpoint.json'))
+ source=published['binding']['external_daily']['source_sha256'];raw=git('show',BASE+':app/hybrid_water/daily_coupling.py');assert source in (SHA(raw),SHA(raw.replace(b'\n',b'\r\n')))
+ decode=types.FunctionType(parent.native.__code__,dict(parent.native.__globals__,ROOT_CODECS={**parent.ROOT_CODECS,'S5IRC003':'S5ITC001'}))
+ namespace=dict(previous.checkpoint.__globals__,native=decode,zipfile=types.SimpleNamespace(ZipFile=lambda path:zipfile.ZipFile(io.BytesIO(path.read_bytes()))))
+ checkpoint=types.FunctionType(previous.checkpoint.__code__,namespace,argdefs=previous.checkpoint.__defaults__)
+ namespace=dict(previous.transaction_payloads.__globals__,checkpoint=checkpoint,read=lambda path:json.loads(path.read_text()),digest=lambda path:SHA(path.read_bytes()))
+ exact=types.FunctionType(previous.transaction_payloads.__code__,namespace)
+ result=exact(store.view(prefix),store.view(role['profile']),store.view(entry['archive_prefix']),store.view(role['inputs']),source)
+ result.update(native_codec='S5IRC003',actual_prepared_days=3,actual_committed_days=1,actual_discarded_days=2,compiler_executions=0,model_executions=0)
+ return result
