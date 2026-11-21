@@ -4,6 +4,10 @@ from pathlib import Path
 import re
 
 STATE='snow_vapor_terminal_water_receipt'
+IMPORT='   use hybrid_terminal_water_receipt, only: terminal_water_residual\n   use variables, only: tcum\n'
+# Literal admitted Snow terminal phase: Snow(2) changes the whole day's stock
+# once at flDayStart, whereas Integral(3) accumulates rates over hydraulic dt.
+GUARD='\n         if(tcum+dt>=1d0-1d-8)then\n            if(abs(terminal_water_residual())>1d-10)flnonconv=.true.\n         end if'
 
 
 def snow_selected(project):
@@ -42,7 +46,8 @@ def metadata(project):
         source_sha256=hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
         original_snow_terminal_receipt_sha256=PARENT_SHA,complete_headcalc_parent_sha256=HEAD_PARENT_SHA,
         inherited_search_sha256=hashlib.sha256(SEARCH.encode()).hexdigest(),
-        fixed_absolute_trial_water_limit_cm=1e-10,new_physical_equation=False,
+        fixed_absolute_terminal_water_limit_cm=1e-10,new_physical_equation=False,
+        receipt_phase='Literal qualified Snow terminal day condition tcum+dt>=1d0-1d-8; hydraulic step budget remains checked every trial',
         native_domain_version=4,original_snow_state_owner='original_output_thermal',
         trial_action='Original Newton rejection and rollback only; no physical state or flux repair')
 
@@ -60,8 +65,8 @@ def apply_build(output,project,patched):
     anchor='   use hybrid_step_budget, only: projected_water_residual'
     if text.count(anchor)!=1 or text.count(ANCHOR)!=1 or text.count('end subroutine jacobian_F')!=1:
         raise ValueError('Changed qualified Snow vapor trial/search seam')
-    text=text.replace(anchor,'   use hybrid_terminal_water_receipt, only: terminal_water_residual\n'+anchor,1)
-    text=text.replace(ANCHOR,ANCHOR+'\n         if(abs(terminal_water_residual())>1d-10)flnonconv=.true.',1)
+    text=text.replace(anchor,IMPORT+anchor,1)
+    text=text.replace(ANCHOR,ANCHOR+GUARD,1)
     text=text.replace('end subroutine jacobian_F',SEARCH+'end subroutine jacobian_F',1)
     path.write_text(text,encoding='cp1252');patched.insert(0,STATE)
     return patched
@@ -74,8 +79,7 @@ def validate(bundle,project,identity):
     if hashlib.sha256(provider.encode('cp1252')).hexdigest()!=PARENT_SHA:
         raise ValueError('Changed complete original Snow terminal receipt')
     text=(bundle/'headcalc.f90').read_text(encoding='cp1252')
-    for part in ('   use hybrid_terminal_water_receipt, only: terminal_water_residual\n',
-                 '\n         if(abs(terminal_water_residual())>1d-10)flnonconv=.true.',SEARCH):
+    for part in (IMPORT,GUARD,SEARCH):
         if text.count(part)!=1:raise ValueError('Changed actual Snow vapor terminal/search composition')
         text=text.replace(part,'',1)
     if text.count(ANCHOR)!=1 or hashlib.sha256(text.encode('cp1252')).hexdigest()!=HEAD_PARENT_SHA:
