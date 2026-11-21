@@ -95,3 +95,5 @@ def validate(bundle,project,identity):
     # observation; no original numerical statement is removed here.
     if text.count(ANCHOR)!=1 or hashlib.sha256(text.encode('cp1252')).hexdigest()!=HEAD_PARENT_SHA:
         raise ValueError('Foreign complete original pre-terminal model7 HeadCalc parent')
+
+# Actual never-merge model7 source fingerprint control.
