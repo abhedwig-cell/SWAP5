@@ -18,7 +18,7 @@ def audit(profile,reference,locations=None):
  core=FIRST_CORE if q['case']=='model7-periodic6' else CLOCK_CORE
  assert q['case'] in ('model7-periodic6','model7-clock6','model7-perstep6')
  assert not git('diff',core,q['source'],'--','app','src','tools/solute','tools/vq','reference'),'Unreviewed actual analytical CDE composition producer'
- build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];selected=identity['original_output'];nodes=meta['project']['nodes'];magic=q['native_codec'].encode();assert magic in (b'S5CIC001',b'S5CCH001') and selected['kind']=='cde'
+ build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];selected=identity['original_output'];nodes=meta['project']['nodes'];magic=q['native_codec'].encode();assert magic in (b'S5CIC001',b'S5CCC001') and selected['kind']=='cde'
  if magic==b'S5CIC001':assert selected['period']==5
  else:assert selected['period']==1 and selected['analytical_bottom6_calendar'] and selected['cde_clock_output'] and (selected['nprintday']>1 or selected['flprintdt'])
  for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
@@ -46,7 +46,7 @@ def audit(profile,reference,locations=None):
  actual=(build/'headcalc.f90').read_bytes().replace(b'\r\n',b'\n')
  for key in ('IMPORT','GUARD','SEARCH'):
   part=constants[key].encode('cp1252');assert actual.count(part)==1;actual=actual.replace(part,b'',1)
- if magic==b'S5CCH001':
+ if magic==b'S5CCC001':
   code=git('show',CLOCK_CORE+':app/hybrid_water/analytical_cde_calendar.py');tree=ast.parse(code);namespace={}
   for n in tree.body:
    if isinstance(n,ast.Assign) and len(n.targets)==1 and isinstance(n.targets[0],ast.Name) and n.targets[0].id in ('HEAD_IMPORT','HEAD_DECL','HEAD_GUARD','CLOCK6_PARENT_SHA'):namespace[n.targets[0].id]=ast.literal_eval(n.value)
