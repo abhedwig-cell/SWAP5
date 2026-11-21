@@ -13,9 +13,11 @@ from analytical_hydraulic_archives import Archive
 from model7_search_science import Store
 from signed_hydraulic_source_inverse import complete_inverse,prior_source_projection,CheckedParent,PARENT,RUNTIME,CI,PATTERN
 from signed_hydraulic_postimages import read
+from signed_hydraulic_inherited_owner import projection as initial_ubuntu_projection
 import vapor_verify as previous
 
 SEALED='011c0eef0'
+READERS='9f977863a5297776c68c0011e0726e989d66aaa5'
 ADMISSION='c7c14b359820f9ebb96c73dbddd2bc8031ed1569'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/vapor_verify.py'
@@ -23,7 +25,7 @@ GUARD_HOOK='    import signed_hydraulic_verify as signed\n    return signed.guar
 VERIFY_HOOK='    import signed_hydraulic_verify as signed\n    return signed.verify()\n'
 STRIP_HOOK='    import signed_hydraulic_verify as signed\n    return signed.strip_current_evidence(text)\n'
 PUBLICATION_HOOK='    import signed_hydraulic_verify as signed\n    return signed.publication_dependencies_unchanged()\n'
-PARSERS=('signed_hydraulic_source_inverse.py','signed_hydraulic_postimages.py','signed_hydraulic_parser_controls.py','signed_hydraulic_preserve.py')
+PARSERS=('signed_hydraulic_source_inverse.py','signed_hydraulic_postimages.py','signed_hydraulic_parser_controls.py','signed_hydraulic_preserve.py','signed_hydraulic_inherited_owner.py')
 
 
 def literal(name,namespace):
@@ -41,7 +43,7 @@ def guard_previous_source():
     complete_inverse()
     for name in PARSERS:
         path='tests/nomacro_drainage/'+name
-        assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen signed-selector observer changed'
+        assert norm((ROOT/path).read_bytes())==blob(READERS,path),'Frozen signed-selector observer changed'
     raw=norm((ROOT/OLD).read_bytes()).decode()
     for hook in (GUARD_HOOK,VERIFY_HOOK,STRIP_HOOK,PUBLICATION_HOOK):
         assert raw.count(hook)==1;raw=raw.replace(hook,'',1)
@@ -102,10 +104,11 @@ def verify():
         assert norm((ROOT/path).read_bytes())==blob(ADMISSION,path)
         assert json.loads((ROOT/path).read_text())['canonical']=='277c6135ff4250a04ee3e3330530dc0895e0fc7d'
         for name in admission.names:admission.get(name)
-    with prior_source_projection():prior=literal('verify',prior_namespace())()
+    with prior_source_projection(),initial_ubuntu_projection():prior=literal('verify',prior_namespace())()
     assert prior['status']=='BOUNDED_ORIGINAL_PER_LAYER_VAPOR_KELVIN_LOOKUP_SOURCE_RAW_NATIVE_PASS'
     return dict(status='BOUNDED_ORIGINAL_SIGNED_HYDRAULIC_CONFIGURATION_SOURCE_RAW_NATIVE_PASS',runtime=git('rev-parse',RUNTIME).decode().strip(),
         targeted=actual,parser_controls=controls,inherited_actual_vapor_and_earlier_science=prior,
+        inherited_initial_Ubuntu_source_guard='Actual current HEAD decoder+parser diff checked; complete parser inverse; literal scientific body unchanged',
         compiler_executions=0,model_executions=0,new_full_periods=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',
         functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
 
