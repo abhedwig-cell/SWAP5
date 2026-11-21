@@ -8,6 +8,7 @@ import model7_capacity_forensics as inherited
 from analytical_hydraulic_archives import SHA
 BASE='70bae8871ec71b3c0969a6628cae596354f9c2e8'
 CORE='9cde60cff60e1a0b2d4a21019e69eefb1007bd8b'
+GUARD_CORE='c1e1dd81382926053a42cda6260874483dab37b1'
 READERS='e079d1554041c831cd0ab609835e2e79bf3c31a1'
 git=lambda *args:subprocess.check_output(['git',*args],cwd=ROOT)
 
@@ -32,7 +33,10 @@ def ledger_cold():
 
 def audit(profile,reference,locations=None):
  q=json.loads((profile/'RESULT.json').read_text());assert q['status']=='ACTUAL_VAPOR_BOUNDARY_NATIVE5_WATER_CDE_ORIGINAL_OUTPUT_EXACT_COLD_PASS_NOT_ADMITTED'
- assert not git('diff',CORE,q['source'],'--','app','src','tools/solute','tools/vq','reference')
+ explicit=bool(git('diff',CORE,q['source'],'--','app','src','tools/solute','tools/vq','reference'))
+ if explicit:
+  assert not git('diff',GUARD_CORE,q['source'],'--','app','src','tools/solute','tools/vq','reference')
+  assert git('diff','--name-only',CORE,GUARD_CORE,'--','app','src','tools/solute','tools/vq','reference').decode().splitlines()==['app/hybrid_water/vapor_boundary_composition.py']
  build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];vapor=identity['hydraulic_vapor'];boundary=vapor['boundary_composition'];bottom=boundary['bottom'];solute=q['kind']=='cde'
  for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
  for name,digest in identity['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
@@ -50,7 +54,9 @@ def audit(profile,reference,locations=None):
   assert inverse.count(before)==(2 if before=='    real(8), intent(in), optional :: boundary_flux\n' else 1);inverse=inverse.replace(before,after)
  namespace={'__file__':str(ROOT/'app/hybrid_water/model7_terminal_water.py')};exec(compile(git('show',BASE+':app/hybrid_water/model7_terminal_water.py'),'old-terminal-owner','exec'),namespace);assert inverse==namespace['source']()
  head=(build/'headcalc.f90').read_text(encoding='cp1252');guard=namespace['GUARD']
- if bottom in (5,8):guard=guard.replace('model7_terminal_water_residual()','model7_terminal_water_residual('+('-kmean(NN+1)*hgrad(NN+1)' if bottom==5 else 'merge(-kmean(NN+1)*hgrad(NN+1),0d0,flboth)')+')')
+ if bottom==8 and explicit:
+  opening=guard.replace('model7_terminal_water_residual()','model7_terminal_water_residual(-kmean(NN+1)*hgrad(NN+1))');closed=guard.replace('model7_terminal_water_residual()','model7_terminal_water_residual(0d0)');guard='\n         if(flboth)then'+opening+'\n         else'+closed+'\n         end if'
+ elif bottom in (5,8):guard=guard.replace('model7_terminal_water_residual()','model7_terminal_water_residual('+('-kmean(NN+1)*hgrad(NN+1)' if bottom==5 else 'merge(-kmean(NN+1)*hgrad(NN+1),0d0,flboth)')+')')
  for part in (namespace['IMPORT'],guard,namespace['SEARCH']):assert head.count(part)==1;head=head.replace(part,'',1)
  parents={6:'356fdea44df04ecb97f68936be0102c36b63f730d5c63950c8ad0ce453c313df',5:'86846f45207441207b24d71954b28ad4690a0a5ab6aca17883ecd3c1fb4a997d',8:'5f416dd85126383e39f2211f394b18590b1420cfbc2c49c408f7b4ec89de73d2'}
  assert SHA(head.encode('cp1252'))==policy['complete_before_guard_HeadCalc_sha256']==parents[bottom]
