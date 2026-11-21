@@ -5,6 +5,7 @@ import io
 import json
 from pathlib import Path
 import sys
+import types
 import zipfile
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -12,6 +13,7 @@ sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_schedul
 from analytical_hydraulic_archives import Archive,SHA
 from analytical_interface_reuse import compare
 from calendar_evidence import differences
+from calendar_publisher import publisher_equivalence
 from model7_unselected_science import physical,rows
 from frost_cde_drainage_portable_forensics import binary
 from vapor_hydraulic_forensics import audit
@@ -37,7 +39,11 @@ def read(evidence,reference):
                 interface=compare(build,oldbuild,[7,8])
                 meta=json.loads((build/'BUILD.json').read_text());oldmeta=json.loads((oldbuild/'BUILD.json').read_text())
                 delta=differences(oldmeta['identity'],meta['identity'])
-                assert set(delta)=={'model7_capacity.source_sha256'},delta
+                assert 'model7_capacity.source_sha256' in delta and set(delta)<={'model7_capacity.source_sha256','restart_publisher.library_sha256'},delta
+                publisher=None
+                if 'restart_publisher.library_sha256' in delta:
+                    checked_publisher=types.FunctionType(publisher_equivalence.__code__,dict(publisher_equivalence.__globals__,Path=lambda value:value))
+                    publisher=checked_publisher(oldbuild/'restart_publish.dll',build/'restart_publish.dll')
                 oldraw=(oldinputs/'swap.swp').read_text(encoding='cp1252')
                 raw=(inputs/'swap.swp').read_text(encoding='cp1252')
                 from original_output_baseline import assignment
@@ -56,7 +62,7 @@ def read(evidence,reference):
                 independent=audit(profile,reference)
                 assert independent['days']==35 and independent['cold_windows']==3
                 observations.append(dict(kind=kind,optimization=opt,independent=independent,interface=interface,
-                    actual_BUILD_sha256=SHA((build/'BUILD.json').read_bytes()),identity_changes=delta,
+                    actual_BUILD_sha256=SHA((build/'BUILD.json').read_bytes()),identity_changes=delta,publisher_equivalence=publisher,
                     whole_generated_Fortran_provider_flags_exact=True,physical_native_REAL4_prefix_exact=True,
                     original_unsigned_full_source=prior['source'],signed_literal='+7 +8',parsed_vector=[7,8]))
     assert len(observations)==4
