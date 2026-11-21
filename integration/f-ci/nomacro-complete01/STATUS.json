@@ -32928,19 +32928,34 @@
     "analytical_Windows_CDE_archive_storage": "exact original ZIP byte parts90MiB plusremainder"
   },
   "canonical_push_preservation_failures_observed": {
-    "head": "085c95c3202380bb01987fdb5741b437d2acbf12",
+    "head": "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
     "jobs": [
-      136630795180,
-      136630794710
+      136876797163,
+      136876797414
     ],
     "runs": [
-      44835514748,
-      44835514510
+      44914401059,
+      44914401061
     ],
     "failure": "integration/audits/verify_dataqual12_current.py source(): AssertionError unreviewed delta",
-    "phase": "Before model execution; broad historical baseline delta guard. Failure retained, no successful replay or source-closure reconciliation claimed.",
-    "logs": "EV/CANONICAL085_PRESERVATION_JOB<ID>_FULL.txt",
-    "classification": "EVIDENCE_ONLY_OR_SOURCE_SUCCESSION_GAP_UNRESOLVED"
+    "phase": "Beforemodel execution. Same previous broad historical baseline source guard remains unchanged inPR1785; exact path guard/statusdiff56efdcbb->a8aa149empty. No successful replay or source-closure reconciliation claimed.",
+    "classification": "EVIDENCE_ONLY_OR_SOURCE_SUCCESSION_GAP_UNRESOLVED",
+    "logs": "EV/INITIAL_PRESSURE_PROFILE_CANONICAL_a8aa149_JOB<ID>_PRESERVATION_FAILED_FULL_V1.txt",
+    "previous_observation": {
+      "head": "085c95c3202380bb01987fdb5741b437d2acbf12",
+      "jobs": [
+        136630795180,
+        136630794710
+      ],
+      "runs": [
+        44835514748,
+        44835514510
+      ],
+      "failure": "integration/audits/verify_dataqual12_current.py source(): AssertionError unreviewed delta",
+      "phase": "Before model execution; broad historical baseline delta guard. Failure retained, no successful replay or source-closure reconciliation claimed.",
+      "logs": "EV/CANONICAL085_PRESERVATION_JOB<ID>_FULL.txt",
+      "classification": "EVIDENCE_ONLY_OR_SOURCE_SUCCESSION_GAP_UNRESOLVED"
+    }
   },
   "analytical_hydraulic_family": {
     "classification": "NEW_CONFIGURATION_AND_LAYER_COMPOSITION_OF_ORIGINAL_EXPLICIT_MODELS",
