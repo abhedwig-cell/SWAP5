@@ -53,8 +53,8 @@ def main():
                 changed=differences(oldmeta['identity'],meta['identity'])
                 complete_inverse()
                 allowed={'host','model7_capacity.source_sha256','model7_terminal_water.source_sha256','model7_terminal_water.policy','experimental_input_adapter','restart_publisher.library_sha256'}
-                assert meta['identity']['experimental_input_adapter']==SHA((ROOT/'app/hybrid_water/experimental_project.py').read_bytes().replace(b'\r\n',b'\n'))
-                assert oldmeta['identity']['experimental_input_adapter']==SHA(blob(PARENT,'app/hybrid_water/experimental_project.py'))
+                assert meta['identity']['experimental_input_adapter']==SHA((ROOT/'app/hybrid_water/experimental_project.py').read_bytes())
+                assert oldmeta['identity']['experimental_input_adapter']==json.loads(old.get('profiles/model7-search-actual-source-v1/RESULT.json'))['members']['app/hybrid_water/experimental_project.py']['sha256']
                 publisher=None
                 if 'restart_publisher.library_sha256' in changed:
                     original=a.output/(kind+'-original-restart_publish.dll');original.write_bytes((oldbuild/'restart_publish.dll').read_bytes())
