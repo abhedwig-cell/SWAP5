@@ -9,15 +9,22 @@ ORIGINAL_SHA='1d40c5ea7aa1b2344409275603a3a603a52355fe3928ad7af24eb3bbbf379dcc'
 NAME='WC_K_models_04_11'
 
 
-def enabled(project):
-    if not project.input_directory or project.macro or project.age:return False
+def analytical_models(project):
+    if not project.input_directory or project.macro or project.age:return None
     from experimental_project import switches
     text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')
     active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))
     selected=switches(active)
-    if any(selected.get(name)!=0 for name in ('SWKIMPL','SWSOPHY','SWHYST','SWFROST','SWMACRO')):return False
+    if any(selected.get(name)!=0 for name in ('SWKIMPL','SWSOPHY','SWHYST','SWFROST','SWMACRO')):return None
     values=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
-    return len(values)==1 and re.fullmatch(r'7(?:[ \t]+7)*[ \t]*',values[0]) is not None
+    if len(values)!=1 or re.fullmatch(r'[0-9]+(?:[ \t]+[0-9]+)*[ \t]*',values[0]) is None:return None
+    models=tuple(map(int,values[0].split()))
+    return models if models and all(1<=model<=11 for model in models) else None
+
+
+def enabled(project):
+    models=analytical_models(project)
+    return bool(models and 7 in models)
 
 
 def source(original):
