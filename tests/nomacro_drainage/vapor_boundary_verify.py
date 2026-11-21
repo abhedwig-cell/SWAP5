@@ -11,15 +11,16 @@ from vapor_boundary_source_inverse import complete_inverse,calendar_complete_inv
 from vapor_boundary_central_science import read
 from vapor_boundary_records import native,frontend,unselected
 import analytical_calendar_verify as previous
-SEALED='c5e272fef0dd5c1d84ea3a69ba92582866cf4cdf'
+SEALED='256b7c06086053c293d4d26be7c95efbc1642386'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/analytical_calendar_verify.py'
 GUARD_HOOK=' import vapor_boundary_verify as boundary\n return boundary.guard_previous_source()\n'
 VERIFY_HOOK=' import vapor_boundary_verify as boundary\n return boundary.verify()\n'
 STRIP_HOOK='import vapor_boundary_verify as boundary;return boundary.strip_current_evidence(text);'
 PUBLICATION_HOOK=' import vapor_boundary_verify as boundary\n return boundary.publication_dependencies_unchanged()\n'
-PARSERS=('vapor_boundary_source_inverse.py','vapor_boundary_science.py','vapor_boundary_central_science.py','vapor_boundary_records.py','vapor_boundary_runtime.py','vapor_boundary_controls.py','vapor_boundary_inputs.py','vapor_boundary_batch.py','vapor_boundary_frontend_controls.py','vapor_boundary_preserve.py','vapor_boundary_ubuntu_preserve.py','vapor_boundary_unselected_postimage.py','vapor_boundary_assessment.py','analytical_calendar_admission_seal.py')
-RAW_NAMES=('HYDRAULIC_VAPOR_BOUNDARY_WINDOWS_RAW_V1','HYDRAULIC_VAPOR_BOUNDARY_UBUNTU_O0_RAW_V1','HYDRAULIC_VAPOR_BOUNDARY_UBUNTU_O2_RAW_V1')
+PARSERS=('vapor_boundary_source_inverse.py','vapor_boundary_science.py','vapor_boundary_central_science.py','vapor_boundary_records.py','vapor_boundary_runtime.py','vapor_boundary_controls.py','vapor_boundary_inputs.py','vapor_boundary_batch.py','vapor_boundary_frontend_controls.py','vapor_boundary_preserve.py','vapor_boundary_ubuntu_preserve.py','vapor_boundary_unselected_postimage.py','vapor_boundary_assessment.py','analytical_calendar_admission_seal.py','vapor_boundary_guard_postimage.py','vapor_boundary_guard_preserve.py','vapor_boundary_guard_ubuntu_preserve.py')
+INITIAL_RAW_NAMES=('HYDRAULIC_VAPOR_BOUNDARY_WINDOWS_RAW_V1','HYDRAULIC_VAPOR_BOUNDARY_UBUNTU_O0_RAW_V1','HYDRAULIC_VAPOR_BOUNDARY_UBUNTU_O2_RAW_V1')
+RAW_NAMES=INITIAL_RAW_NAMES+('HYDRAULIC_VAPOR_BOUNDARY_GUARD_WINDOWS_RAW_V1','HYDRAULIC_VAPOR_BOUNDARY_GUARD_UBUNTU_O0_RAW_V1','HYDRAULIC_VAPOR_BOUNDARY_GUARD_UBUNTU_O2_RAW_V1')
 
 
 def literal(name,namespace):
@@ -71,6 +72,7 @@ def verify():
  with ExitStack() as stack:
   for name in RAW_NAMES:
    store=Archive(PROOF,name,stack);assert store.record['sha256']==qual['raw_records'][name]['sha256'];windows=name==RAW_NAMES[0]
+   if name not in INITIAL_RAW_NAMES:continue
    if windows:dispatch=frontend(store);postimages=unselected(store,PROOF,stack)
    for role in store.record['roles']:
     label=role['profile'].split('/')[-1]
