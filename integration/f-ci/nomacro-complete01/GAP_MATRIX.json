@@ -2064,13 +2064,13 @@
       "family": "Alternative original hydraulic models including RIA12",
       "classification": "NUMERICAL_FAILURE_AND_UNRECONCILED_ORIGINAL_DOMAIN",
       "priority": 2,
-      "status": "MODEL7_ACTUALLY_ADMITTED_0ABCDD5;BROADER_ANALYTICAL_WINDOWS_UBUNTU80FULL_800COLD_RAW_PASS_PUBLIC_OWNER_ACTIVE"
+      "status": "ANALYTICAL_BOUNDED_ACTUAL_CANONICAL_5B8373D_ADMITTED_WHOLE_FAMILY_OPEN"
     },
     {
       "family": "Original per-layer vapor and heat conservation/state",
-      "classification": "MISSING_IMPLEMENTATION",
+      "classification": "REFERENCE_DEFECT_AND_MISSING_COUPLED_EVIDENCE",
       "priority": 3,
-      "status": "SOURCE_AND_COMPONENT_CONTRACT_REQUIRED"
+      "status": "ACTIVE_ORIGINAL_KELVIN_SIGN_DEFECT_COMPONENTS_AND_FIRST_COUPLED_WATER_SHORT_PASS"
     },
     {
       "family": "AGE dry retained surface moment",
@@ -2122,8 +2122,8 @@
     "scope": "Explicit all-model7 original analytical NoFrost/hysteresis0 water/CDE; NoSnow0 primaryDRA1 bottom6 originaldayseed trial receipt/search; native1 unchanged."
   },
   "bounded_original_explicit_analytical_hydraulics": {
-    "classification": "EVIDENCE_ONLY_PENDING_PUBLIC_AND_ACTUAL_CANONICAL_ADMISSION",
-    "implementation": "ORIGINAL_EXPLICIT_CONFIGURATION_AND_LAYER_COMPOSITION_BATCH_SOURCE_RAW_SCIENCE_PASS",
+    "classification": "BOUNDED_CONFIGURATION_AND_LAYER_COMPOSITION_CANONICALLY_ADMITTED",
+    "implementation": "ACTUAL_CANONICAL_ADMISSION_VERIFIED_PR1778",
     "scope": "models3..11, existing7reused; mixed1/7,7/3; KW0 Snow0 Frost0 hys0 DRA1 bottom6; water/dailyCDE native1 unchanged",
     "actual_Windows_full1096": 40,
     "actual_Ubuntu_full1096": 40,
@@ -2141,6 +2141,20 @@
     "unresolved": [
       "Original model3 plusphysicaloxygen2 is explicitlynotimplemented; earlyfuturecroprefusal; retainedoriginal523prefix/day524stop",
       "Implicitnondefaultconductivity, vapor, broaderboundaries, AGE and other original compositions remain separate gaps."
-    ]
+    ],
+    "actual_canonical": "5b8373d0809c25e24415f4d5dc01784a92ff481e",
+    "receipt": "HYDRAULIC_ANALYTICAL_MERGE_RECEIPT_V1.json",
+    "actual_candidate_public_seconds": 459.5504478998482,
+    "actual_canonical_public_seconds": 477.3290711999871
+  },
+  "original_per_layer_vapor": {
+    "classification": "REFERENCE_DEFECT_AND_MISSING_COUPLED_EVIDENCE",
+    "historical_availability": "Original reader selects perlayerNoVap for8..11; conductivity uses actualtsoil(node); no independentvaporwaterstore",
+    "reference_defect": "Original absolute-suction Kelvin exponent positive; separately bound negative-sign correction with originalcoefficients retained",
+    "reference": "reference/swap-4.3.1/hydraulic-corrections/VAPOR-KELVIN-SIGN01",
+    "component": "Actualoriginal/corrected O0/O2; interiorgrid192 andmixed1728 pervariant/opt; originaldrybound-stencil48rowFPEprefixes retained",
+    "coupled": "Four35daywater/12cold PASS independently; full1096 running; CDE/portable/public pending",
+    "whole_family_closed": false,
+    "public_admission": false
   }
 }
