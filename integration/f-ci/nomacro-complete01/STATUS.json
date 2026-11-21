@@ -1,9 +1,9 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
-  "canonical": "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
-  "branch": "codex/nomacro-initial-state-compositions01",
-  "last_commit": "2d8a58a84cb616483cf18ced1b49a43728c95108",
+  "canonical": "904d3cdd1fb9132839bec689c22cdeecdba79676",
+  "branch": "codex/nomacro-analytical-cde-calendars01",
+  "last_commit": "379673548d90b13421b5b1e2db6e928c676b11ed",
   "status": "INITIAL_STATE_COMPOSITION_FINAL_SOURCE_RAW_READY_PENDING_ACTUAL_CLEAN40_PUBLIC_CI_ADMISSION",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -337,8 +337,8 @@
     "Actual085canonical preservationCI jobs136630795180/136630794710 fail beforemodel at stale verify_dataqual12_current source succession assertion; rawlogsretained in analyticalCDEarchive. Unresolved evidence/source succession, no claim of allcanonicalpushCIgreen."
   ],
   "running_ci": [],
-  "next_code_change": "Freezeactualnewhead; genuineclean40Cpublic+N4realcommittedpushednegative01heads+pubfalse/true,allterminalexactheadCIandactualfullsyntheticparents/tree;safemergeonlythenactualcanonicalpublic/admission.NextCDEanalytical/vaporoutputcalendarcomposition.",
-  "recovery_point": "Actualcanonicala8aa149a2 equalsPR1785qualifiedtree8749a9 andexactparents,44terminal29success15skip/15SUCCESSruns. Candidatepublic1417.3175s,4realnegative04controls,pubfalse599.3120s. Actualcanonicalpublicsession64435running; canonicalpubfalse563.3194s. Nextunit30actualWindows/Ubuntu35contexts90cold210native126CDE112native-refusals,40sourcecontrols,56frontend,2transactions;3rawarchivesimmutableandcentralindependentPASS. NewliteralpriorpublicsourceguardPASS132.2935s; oldinitialUbuntu4originalfullperiod/28coldobservations rereadexact73.8538s throughtrue3pathunion,0model/compile. Freeze actualadmissiononlyaftercanonicalpositive.",
+  "next_code_change": "Generalize analytical_cde_calendar_science.py for complete bounded twelve-case Native6 family, retaining all prior actual sources and fixed limits.",
+  "recovery_point": "STATUS.json current analytical_cde_calendar_recovery plus immutable EV result/source records",
   "external_blocker": null,
   "test_selection": {
     "candidate": "b96f69a397615d24f7af4fc1cdf28bf591957a04",
@@ -397,14 +397,14 @@
   "qualified_ubuntu_carrier": "8110b4e8bdb6ff1fc9d05e0414c0fecf7b93869e",
   "canonical_pulse_baseline": "fd162a1ea22c41e798a431f39957aaff9c173e46",
   "prior_qualified_source": "b97a04d2c9509e4aa49a29a9a582df2ac4dd33d2",
-  "last_commit_role": "Current new-state public owner code and frozen30context neutral science, after merging actual PR1785 canonical. No new-state public/canonical admission claimed.",
+  "last_commit_role": "Current analytical/vapor CDE calendar composition runtime core; actual producer remains recorded in each raw result",
   "qualified_chemical_runtime": "0de849d96cb4e81af2f08a07cac6a48fd5a73ff8",
   "qualified_chemical_ubuntu_carrier": "6e749382691e7a8446eadb6dec0681f292277934",
   "chemical_sealed_proof": "6514334fb843f820da9e981bfb45d36bad36bf01",
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Freezeactualnewhead; genuineclean40Cpublic+N4realcommittedpushednegative01heads+pubfalse/true,allterminalexactheadCIandactualfullsyntheticparents/tree;safemergeonlythenactualcanonicalpublic/admission.NextCDEanalytical/vaporoutputcalendarcomposition.",
+  "next_action": "Finish actual remaining eight O0/O2 CDE calendar contexts; independently audit exact mass/private/calendar/cold and all complete qualified boundary parents. Seal actual PR1786 admission in this functional branch; then portable representative controls, central archive and full public admission gates. Do not merge current calendar batch until all exact-head gates complete.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -628,7 +628,7 @@
     "raw": "SevenactualrawZIPs allmemberforwardverified; Ubuntu83732906/75626433/8972373bytes unchangedactualartifacts. Fortyactualfull periods and238producer/build reportbindings prepared. Refinedzero-age10dayphysical andentirepredecessorpayload(exceptexplicitnewcodec+56bytepair) actualdays2/4/8exact bothopts.",
     "predecessor": "Previoushysteresisvalidatorhashesitsold3dispatchfiles. ValidateitsliteralcodeagainstboundedGitBASE040sourceimage+originalJSONrecords, neverrebindingoldreceiptstocurrentsource. ActualoldrawarchivebytesSHAverified; semanticpinnedbaselinePASS3.588sec. Alloldhelpers/controllersremainliteralundernewverifyhook."
   },
-  "canonical_head": "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
+  "canonical_head": "904d3cdd1fb9132839bec689c22cdeecdba79676",
   "age_irrigation_source_admission": {
     "status": "ACTUAL_AGE_IRRIGATION_SOURCE_CANONICAL_MERGE_VERIFIED",
     "pr": 1725,
@@ -32922,33 +32922,48 @@
     "analytical_Windows_CDE_archive_storage": "exact original ZIP byte parts90MiB plusremainder"
   },
   "canonical_push_preservation_failures_observed": {
-    "head": "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
+    "head": "904d3cdd1fb9132839bec689c22cdeecdba79676",
     "jobs": [
-      136876797163,
-      136876797414
+      136892901248,
+      136892901578
     ],
     "runs": [
-      44914401059,
-      44914401061
+      44919721650,
+      44919721728
     ],
     "failure": "integration/audits/verify_dataqual12_current.py source(): AssertionError unreviewed delta",
-    "phase": "Beforemodel execution. Same previous broad historical baseline source guard remains unchanged inPR1785; exact path guard/statusdiff56efdcbb->a8aa149empty. No successful replay or source-closure reconciliation claimed.",
+    "phase": "Before models; actual full CI logs retained. No source waiver or successful replay claimed.",
     "classification": "EVIDENCE_ONLY_OR_SOURCE_SUCCESSION_GAP_UNRESOLVED",
-    "logs": "EV/INITIAL_PRESSURE_PROFILE_CANONICAL_a8aa149_JOB<ID>_PRESERVATION_FAILED_FULL_V1.txt",
+    "logs": "EV/INITIAL_STATE_COMPOSITION_CANONICAL_904d3cd_JOB<ID>_PRESERVATION_FAILED_FULL_V1.txt",
     "previous_observation": {
-      "head": "085c95c3202380bb01987fdb5741b437d2acbf12",
+      "head": "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
       "jobs": [
-        136630795180,
-        136630794710
+        136876797163,
+        136876797414
       ],
       "runs": [
-        44835514748,
-        44835514510
+        44914401059,
+        44914401061
       ],
       "failure": "integration/audits/verify_dataqual12_current.py source(): AssertionError unreviewed delta",
-      "phase": "Before model execution; broad historical baseline delta guard. Failure retained, no successful replay or source-closure reconciliation claimed.",
-      "logs": "EV/CANONICAL085_PRESERVATION_JOB<ID>_FULL.txt",
-      "classification": "EVIDENCE_ONLY_OR_SOURCE_SUCCESSION_GAP_UNRESOLVED"
+      "phase": "Beforemodel execution. Same previous broad historical baseline source guard remains unchanged inPR1785; exact path guard/statusdiff56efdcbb->a8aa149empty. No successful replay or source-closure reconciliation claimed.",
+      "classification": "EVIDENCE_ONLY_OR_SOURCE_SUCCESSION_GAP_UNRESOLVED",
+      "logs": "EV/INITIAL_PRESSURE_PROFILE_CANONICAL_a8aa149_JOB<ID>_PRESERVATION_FAILED_FULL_V1.txt",
+      "previous_observation": {
+        "head": "085c95c3202380bb01987fdb5741b437d2acbf12",
+        "jobs": [
+          136630795180,
+          136630794710
+        ],
+        "runs": [
+          44835514748,
+          44835514510
+        ],
+        "failure": "integration/audits/verify_dataqual12_current.py source(): AssertionError unreviewed delta",
+        "phase": "Before model execution; broad historical baseline delta guard. Failure retained, no successful replay or source-closure reconciliation claimed.",
+        "logs": "EV/CANONICAL085_PRESERVATION_JOB<ID>_FULL.txt",
+        "classification": "EVIDENCE_ONLY_OR_SOURCE_SUCCESSION_GAP_UNRESOLVED"
+      }
     }
   },
   "analytical_hydraulic_family": {
@@ -33343,11 +33358,11 @@
   },
   "initial_state_composition_recovery": {
     "baseline": "aa1f645a0ae6ce64aa2beefc663ee2a45ec2e490",
-    "actual_current_canonical": "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
+    "actual_current_canonical": "904d3cdd1fb9132839bec689c22cdeecdba79676",
     "previous_batch": "PR1785actuallyadmitteda8aa149a22b67a7f5bbf7c2e4243002f89d7242c; clean39candidatepublic1417.3174966s,actualcanonicalpublic1368.6635244s,pubfalse599.3120/563.3194s;4realnegative04;44terminal29success15skip/15SUCCESSruns. Parentadmissionarchive8,707,328bytes144membersSHA3b98d9542200b247fe77d03033cee4cc5b42c3b3d445e3265da40e6cd40286a0. Canonical2oldbroadsourcepreservationfailuresretained/unresolved; neitherallpushCIsuccessnorwholeglobalqualificationclaimed.",
     "contract": "INITIAL_STATE_COMPOSITION_CONTRACT_V1.json",
     "actual_source_discovery": "9existingSWINCO2stateownerdomains actualfrontend/nativecodecsPASS theneachSWINCO1 refused; tenthimplicitSnowCDEdaily actualSWINCO2auxiliary_codec refused S5ITC001 beforebuild/models. PreserveactualFAILEDdispatchrecord.",
-    "next": "Freezeactualnewhead; genuineclean40Cpublic+N4realcommittedpushednegative01heads+pubfalse/true,allterminalexactheadCIandactualfullsyntheticparents/tree;safemergeonlythenactualcanonicalpublic/admission.NextCDEanalytical/vaporoutputcalendarcomposition.",
+    "next": "Seal completed actual admission using immutable public/negative/fullCI records in current functional CDE calendar branch.",
     "whole": "PARTIAL_NOT_QUALIFIED_GLOBAL_COUNTS_UNKNOWN_RC3_UNCHANGED",
     "first_native3_context": "Actualsource30a576162ed4922af6dbf5d99f341c776a054ef3 denseSnowCDEinitial2O0newS5IRC00335days+3exactphysical/native/outputcoldPASS; positiveSnowstock22.0100cm. Furtherindependent/native refusal/transaction proofrequired.",
     "current_source": "742ae128ae020b516b676cfe46c253ca063979a0",
@@ -33356,21 +33371,11 @@
     "portable_run": {
       "id": 44912666408,
       "source": "31c32def70aa66861ca03f518bc0bb3d8d8973c4",
-      "cases": [
-        "hys2-cde",
-        "implicit-cde",
-        "snow-vapor-water",
-        "implicit-snow-cde"
-      ],
-      "optimizations": [
-        "O0",
-        "O2"
-      ],
       "jobs": [
         136871580315,
         136871580527
       ],
-      "status": "RUNNING_OR_QUEUED"
+      "status": "BOTH_SUCCESS_ORIGINAL_ARTIFACTS_CENTRALLY_PRESERVED"
     },
     "source_controls": "Actual old20source/policyrefusals nowPASS waterO0; two earlier controllerstops preserved: wrong-formotherHeadactuallyidentical, then actualforeignsource refusedatboundaryinversewithdifferentdiagnostic. Newwrapperclonesliteraloldmain andchangesonlyexacthead-wrong-formexpecteddiagnostic; no mutation/check weakened.",
     "completed_science": "Windows20newinitial1+2root3initial2baselines, Ubuntu8newinitial1 =30actual35daycontexts; independentcentralPASS90cold210native126privateCDEstocks and112actualcompilednative3refusals;2wholeFortran/provider/flags/publisherpostimagesinheritWin56refusalswithoutrepeat;56frontendguardcontrols;40actualsource/policyrefusals;2externalroot3transactionsPASS6prepared2committed4discarded. Failedguardbuilds2 andfailedpositiveirrigationwitnessprepare1retainedwithoutacceptedday.",
@@ -33399,7 +33404,32 @@
       "model_executions": 0,
       "compiler_executions": 0,
       "retained_manual_incomplete_context_V1_refusal": true
-    }
+    },
+    "actual_PR": 1786,
+    "actual_head": "5c0cba9fbbd93ffb482199016f392e53e371e095",
+    "state": "ACTUAL_BOUNDED_CANONICAL_PUBLIC_VERIFIED_ADMISSION_ARCHIVE_PENDING",
+    "actual_all_terminal_CI": "44 terminal checks29success15skipped;15 workflow runs SUCCESS",
+    "actual_candidate_public_seconds": 1825.7905676001683,
+    "actual_canonical_public_seconds": 1664.2114136000164,
+    "actual_clean_sparse_patterns": 40,
+    "actual_canonical_publication_seconds": 756.3921098997816,
+    "actual_publication_scope": "candidate and actualcanonical false; actual negative true"
   },
-  "last_admitted_pr": 1785
+  "last_admitted_pr": 1786,
+  "analytical_cde_calendar_recovery": {
+    "classification": "B_EXISTING_ANALYTICAL_VAPOR_CDE_CALENDAR_COMPOSITION",
+    "baseline": "5c0cba9fbbd93ffb482199016f392e53e371e095",
+    "actual_canonical": "904d3cdd1fb9132839bec689c22cdeecdba79676",
+    "current_runtime_core": "379673548d90b13421b5b1e2db6e928c676b11ed",
+    "first_runtime_cores": [
+      "443c6b432a3f75695dbab0e0b66389638d7f94c0",
+      "b16249855004a00b54efe5203287ba321b61594c",
+      "1510278b9ad56b03273c6d6e2284b1360f57849c"
+    ],
+    "actual_completed": "First8Windows35daycontexts independentlyPASS24exactcold56native: M7periodic/subdaily/perstep plus vapor8periodic6 O0/O2; actual immutable producer percontext. All original sampro0/rounderr source unchanged.",
+    "actual_controls": "Vapor6 O0/O2 each52actualcompiledtypedrefusals plus literal transaction discard/replay/recovery. Each parent calendar/private47 controls actualcompiledrefusalsPASS,0 accepted mutant modeldays.",
+    "remaining_batch": "EV analytical-cde-calendar-remaining-eight-controller-v1.py running; session28903; firstmixed7/8clock8O0PASS. No APP edits while bundles are being validated.",
+    "whole": "PARTIAL_NOT_QUALIFIED_GLOBAL_COUNTS_UNKNOWN_RC3_UNCHANGED",
+    "next": "Finish actual remaining eight O0/O2 CDE calendar contexts; independently audit exact mass/private/calendar/cold and all complete qualified boundary parents. Seal actual PR1786 admission in this functional branch; then portable representative controls, central archive and full public admission gates. Do not merge current calendar batch until all exact-head gates complete."
+  }
 }
