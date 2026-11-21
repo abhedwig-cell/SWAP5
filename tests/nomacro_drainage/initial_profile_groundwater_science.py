@@ -29,7 +29,7 @@ def native(raw,row,meta,s,dz):
  elif s['SWSNOW']:detail=snow_cde.native(raw,row,meta,selected)
  elif selected.get('groundwater_cde_interval') or selected.get('groundwater_cde_clock'):detail=cde.native(raw,row,meta,selected)
  else:
-  daily_cde.native(raw,row,n,'S5GWC001');detail=original.output_calendar(raw,n,row,selected,meta['project']['start_date'],False)
+  daily_cde.native(raw,row,n,'S5GWC001');detail=original.output_calendar(raw,n,row,selected,meta['project']['start_date'],True)
  return dict(day=row['day'],actual_native_codec=raw[:8].decode(),literal_frozen_native_observer=True,details=detail)
 
 
@@ -69,6 +69,11 @@ def audit(profile,reference,locations=None):
  grid=re.search(r'(?mi)^[ \t]*ISUBLAY[ \t]+ISOILLAY[ \t]+HSUBLAY[ \t]+NCOMP[^\n]*\n((?:[ \t]*\d+[^\n]*\n)+)',text);assert grid;dz=[]
  for line in grid[1].splitlines():
   _,_,height,count=line.split();dz.extend([float(height)/int(count)]*int(count))
+ # switches() intentionally returns SW* switches, while the frozen Snow
+ # observer also consumes the actual non-SW NPRINTDAY input. Read that
+ # integer directly from the byte-inventoried descriptor, without changing
+ # any model input, metadata, codec or native value.
+ printdays=re.findall(r'(?mi)^[ \t]*NPRINTDAY[ \t]*=[ \t]*([+-]?[0-9]+)[ \t]*(?:!.*)?$',text);assert len(printdays)==1;s={**s,'NPRINTDAY':int(printdays[0])}
  measured=ledger(rows,q['kind'],stdout);original.original_observations(stdout.encode(),rows,meta['project']['start_date']);samples=[]
  for path in (profile/'trajectory').glob('accepted-column-1-day-*.zip'):
   day=int(path.name.split('-')[-1].split('.')[0])
