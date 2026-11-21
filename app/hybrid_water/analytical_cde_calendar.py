@@ -36,22 +36,33 @@ def render_clock_parent(source,bottom):
 
 
 def clock_selected(project):
- if not bottom6_selected(project):return False
+ if calendar_context(project) is None:return False
  from cde_clock_output import active_selection
  return active_selection(project) is not None
+
+
+def clock_parent_digest(project):
+ selected=calendar_context(project)
+ if selected is None:raise ValueError('No bounded analytical CDE calendar context')
+ if (selected['drainage'],selected['bottom'])==(1,6):return CLOCK6_PARENT_SHA
+ return {6:'3dcf72d8fcf977fb74ad7d53ff68774df07983602a1a3452d40e8d6be257f9f4',5:'96c401edf095e41113897afcdc4b4fd9454ddb104c3d570b47217e899f49a0be',8:'977c6c52429b2929900e311d963541fe04f17d13c102ab4a2b061d8cb4302928'}[selected['bottom']]
 
 
 def clock_parent_inverse(source,project,parent_sha):
  if not clock_selected(project):return None
  import hashlib
- actual=source
- for part in (HEAD_IMPORT,HEAD_DECL,head_guard(6)):
-  if source.count(part)!=1:raise ValueError('Foreign analytical CDE bottom6 trial source')
+ selected=calendar_context(project);bottom=selected['bottom'];actual=source
+ for part in (HEAD_IMPORT,HEAD_DECL,head_guard(bottom)):
+  if source.count(part)!=1:raise ValueError('Foreign analytical CDE calendar trial source')
   source=source.replace(part,'',1)
- if (hashlib.sha256(source.encode('cp1252')).hexdigest()!=parent_sha or
-     hashlib.sha256(actual.encode('cp1252')).hexdigest()!=CLOCK6_PARENT_SHA or
-     render_clock_parent(source,6)!=actual):
-  raise ValueError('Foreign complete qualified analytical CDE bottom6 HeadCalc parent')
+ if (selected['drainage'],bottom)==(1,6):
+  if hashlib.sha256(source.encode('cp1252')).hexdigest()!=parent_sha:raise ValueError('Foreign complete original analytical CDE parent')
+ else:
+  from vapor_boundary_composition import head_parent_inverse
+  head_parent_inverse(source,project,parent_sha)
+ if (hashlib.sha256(actual.encode('cp1252')).hexdigest()!=clock_parent_digest(project) or
+     render_clock_parent(source,bottom)!=actual):
+  raise ValueError('Foreign complete qualified analytical CDE calendar HeadCalc parent')
  return True
 
 

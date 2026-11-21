@@ -118,6 +118,12 @@ def metadata(project):
     from vapor_boundary_composition import enabled as boundary_enabled,metadata as boundary_metadata,parent_digest
     if boundary_enabled(project):
         result.update(boundary_composition=boundary_metadata(project),complete_before_guard_HeadCalc_sha256=parent_digest(boundary_metadata(project)['bottom']))
+    from analytical_cde_calendar import clock_selected,clock_parent_digest,calendar_context,HEAD_IMPORT,head_guard
+    if clock_selected(project):
+        result.update(complete_before_guard_HeadCalc_sha256=clock_parent_digest(project),
+            existing_output_trial_import_sha256=hashlib.sha256(HEAD_IMPORT.encode()).hexdigest(),
+            existing_output_trial_guard_sha256=hashlib.sha256(head_guard(calendar_context(project)['bottom']).encode()).hexdigest(),
+            existing_output_trial_owner='cde_clock_output')
     return result
 
 

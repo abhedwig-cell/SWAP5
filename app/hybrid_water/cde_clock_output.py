@@ -157,6 +157,10 @@ else
         old="(swbotb/=5.and.swbotb/=8))error stop 'Foreign original ordinary Darcy trial domain'"
         assert source.count(old)==1
         source=source.replace(old,old.replace('swbotb/=8','swbotb/=6.and.swbotb/=8'),1)
+    if selected.get('analytical_vapor_calendar') and selected['swdra']==0:
+        old='swmacro/=0.or.swsnow/=0.or.swdra/=1'
+        assert source.count(old)==2
+        source=source.replace(old,'swmacro/=0.or.swsnow/=0.or.(swdra/=0.and.swdra/=1)')
     return source
 
 
