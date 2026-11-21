@@ -1,0 +1,113 @@
+{
+  "parent": "5b8373d0809c25e24415f4d5dc01784a92ff481e",
+  "runtime": "daba948002340c0ec4710b0c2efa67edb8e8799e",
+  "changes": {
+    "app/hybrid_water/cde_native_receipt.py": [
+      {
+        "runtime_line": 23,
+        "before": "",
+        "after": "                optional_native_prefixes={'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain'},\n"
+      },
+      {
+        "runtime_line": 28,
+        "before": "def decode(aux,nodes):\n",
+        "after": "def decode(aux,nodes,project=None):\n"
+      },
+      {
+        "runtime_line": 31,
+        "before": "    if len(aux)<48+8*(nodes+2):raise ValueError('Incomplete CDE native receipt state')\n    conserved=struct.unpack_from('<'+str(nodes+2)+'d',aux,48)\n",
+        "after": "    offset=48\n    if aux[:8]==b'S5HVC003':\n        if len(aux)<offset+56:raise ValueError('Incomplete CDE vapor domain')\n        domain=struct.unpack_from('<14i',aux,offset);layers=domain[2]\n        if not 1<=layers<=1000 or domain!=(3,nodes,layers,0,1,0,0,0,0,0,1,2,1,6):\n            raise ValueError('Foreign CDE vapor domain')\n        count=14+2*layers;size=4*count\n        if len(aux)<offset+2*size:raise ValueError('Incomplete CDE vapor domain witness')\n        header=struct.unpack_from('<'+str(count)+'i',aux,offset)\n        if header!=struct.unpack_from('<'+str(count)+'i',aux,offset+size):\n            raise ValueError('Foreign CDE vapor domain witness')\n        models=header[14:14+layers];flags=header[14+layers:]\n        if any(m not in range(1,12) for m in models) or any(f not in (0,1) for f in flags) or not any(flags) or any(f and m<8 for m,f in zip(models,flags)):\n            raise ValueError('Foreign CDE vapor layer context')\n        if project is not None:\n            from hydraulic_vapor import describe\n            selected=describe(project)\n            if selected is None or tuple(selected['models'])!=models or tuple(f if m>=8 else 0 for m,f in zip(selected['models'],selected['SWVAPOR']))!=flags:\n                raise ValueError('CDE vapor native differs from project layers')\n        offset+=2*size\n    if len(aux)<offset+8*(nodes+2):raise ValueError('Incomplete CDE native receipt state')\n    conserved=struct.unpack_from('<'+str(nodes+2)+'d',aux,offset)\n"
+      },
+      {
+        "runtime_line": 59,
+        "before": "    actual=decode(aux,project.nodes);expected=receipt.get('solute_end_mg_cm2')\n",
+        "after": "    actual=decode(aux,project.nodes,project);expected=receipt.get('solute_end_mg_cm2')\n"
+      }
+    ],
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "runtime_line": 428,
+        "before": "",
+        "after": "    from hydraulic_vapor import validate as validate_hydraulic_vapor\n    validate_hydraulic_vapor(bundle,reference,project,identity)\n"
+      }
+    ],
+    "app/hybrid_water/daily_host.py": [
+      {
+        "runtime_line": 171,
+        "before": "    micro_state=bool(project.input_directory and not project.macro and (selector('SWHYST') or selector('SWSNOW')))\n",
+        "after": "    from micro_lookup_state import enabled as micro_lookup_enabled\n    micro_state=micro_lookup_enabled(project)\n"
+      },
+      {
+        "runtime_line": 293,
+        "before": "",
+        "after": "        from hydraulic_vapor import describe as describe_vapor\n        vapor_history = describe_vapor(project) is not None\n"
+      },
+      {
+        "runtime_line": 297,
+        "before": "                          hydraulic_history=bool(project.input_directory and selector('SWHYST')>0),\n                          thermal_history=bool(project.input_directory and selector('SWSNOW')>0),\n",
+        "after": "                          hydraulic_history=bool(project.input_directory and selector('SWHYST')>0) or vapor_history,\n                          thermal_history=bool(project.input_directory and selector('SWSNOW')>0) or vapor_history,\n"
+      },
+      {
+        "runtime_line": 905,
+        "before": "",
+        "after": "    from hydraulic_vapor import apply_build as hydraulic_vapor_build\n    patched=hydraulic_vapor_build(output,donor_build,project,patched)\n"
+      },
+      {
+        "runtime_line": 935,
+        "before": "",
+        "after": "                    *([str(output/'hydraulic_vapor_native.o')] if 'hydraulic_vapor_native' in patched else []),\n"
+      },
+      {
+        "runtime_line": 1042,
+        "before": "",
+        "after": "        from hydraulic_vapor import metadata as hydraulic_vapor_metadata\n        vapor_identity = hydraulic_vapor_metadata(project)\n        if vapor_identity is not None:build_identity['hydraulic_vapor'] = vapor_identity\n"
+      }
+    ],
+    "app/hybrid_water/experimental_project.py": [
+      {
+        "runtime_line": 77,
+        "before": "    # SWVAPOR is an original per-layer array; inspect every value, not only\n    # the first token seen by the scalar SW-selector inventory.\n    vapor = re.findall(r'(?mi)^[ \\t]*SWVAPOR[ \\t]*=[ \\t]*([^!\\r\\n]+)',text)\n    if vapor and (len(vapor)!=1 or not re.fullmatch(r'0(?:[ \\t]+0)*[ \\t]*',vapor[0])):\n        raise ValueError('Original vapor transport requires separate conserved-state qualification')\n",
+        "after": "    from hydraulic_vapor import selection as vapor_selection\n    vapor_selection(directory,selected,original_output)\n"
+      },
+      {
+        "runtime_line": 130,
+        "before": "                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},\n",
+        "after": "                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0,1},\n"
+      }
+    ],
+    "app/hybrid_water/micro_lookup_state.py": [
+      {
+        "runtime_line": 21,
+        "before": "    return bool(selected['SWHYST'] or selected['SWSNOW'])\n",
+        "after": "    from hydraulic_vapor import describe as vapor_selection\n    return bool(selected['SWHYST'] or selected['SWSNOW'] or vapor_selection(project) is not None)\n"
+      }
+    ],
+    "app/hybrid_water/model7_capacity.py": [
+      {
+        "runtime_line": 67,
+        "before": "",
+        "after": "    from hydraulic_vapor import metadata as vapor_metadata,validate as vapor_validate\n    if vapor_metadata(project) is not None:\n        vapor_validate(bundle,reference,project,identity)\n        return\n"
+      }
+    ],
+    "app/hybrid_water/original_output.py": [
+      {
+        "runtime_line": 80,
+        "before": "",
+        "after": "    from hydraulic_vapor import native_magic as vapor_native_magic\n    vapor=vapor_native_magic(project)\n    if vapor is not None:return vapor\n"
+      },
+      {
+        "runtime_line": 142,
+        "before": "    anchor='      use MOD_grid, only: numnod';assert source.count(anchor)==1\n",
+        "after": "    anchors=re.findall(r'(?m)^      use MOD_grid, only: numnod(?:,dz)?$',source);assert len(anchors)==1\n    anchor=anchors[0]\n"
+      }
+    ]
+  },
+  "added": {
+    "app/hybrid_water/hydraulic_vapor.py": "f112ce096c2fee2a5e03d794cafe56db5702b5cab3811c1702cb4ee9b0a21aa0",
+    "app/hybrid_water/hydraulic_vapor_native.f90": "a181df32399d64a4052f4e8d3d11133bb7388fd890c8f0e9139594bbc29877b0",
+    "reference/swap-4.3.1/hydraulic-corrections/VAPOR-KELVIN-SIGN01/README.md": "0e7a8c28a19ff6d978b4fb49ebbd84dc3a710005a13f33238d779bbc5c053f9f",
+    "reference/swap-4.3.1/hydraulic-corrections/VAPOR-KELVIN-SIGN01/WC_K_models_04_11.capacity7.f90": "ddaf8cd9d1effe893fca68d92fbd242285bce6de50ba84fb864f22978df49861",
+    "reference/swap-4.3.1/hydraulic-corrections/VAPOR-KELVIN-SIGN01/WC_K_models_04_11.f90": "9ad54cbf7887b0a6dc6555fa56ddd5486a5d96829af1bd437e0e8f341ca66fa8",
+    "reference/swap-4.3.1/hydraulic-corrections/VAPOR-KELVIN-SIGN01/manifest.json": "1a234ef7fb52c3951e8824f26acef2538704af4f46226ff62451eddaf1645b49"
+  }
+}
