@@ -36,6 +36,8 @@ def prepare(case,output,initial=1):
  table=('ZI = -0.5 -50.0 -195.0\nH = -20.0 -130.0 -210.0\n* End of table' if case=='plain-periodic-water' else 'HTB =\n -0.5 -20.0\n -50.0 -130.0\n -195.0 -210.0\n* End of table')
  text,count=re.subn(r'(?mi)^[ \t]*HTB[ \t]*=[ \t]*\n.*?^\* End of table',lambda _:table,text,count=1,flags=re.S);assert count==1
  path.write_text(text,encoding='cp1252')
+ if case=='plain-periodic-water':
+  for crop in output.glob('*.crp'):crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
 
 
 if __name__=='__main__':
