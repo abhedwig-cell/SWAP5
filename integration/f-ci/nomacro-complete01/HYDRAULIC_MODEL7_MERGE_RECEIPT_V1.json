@@ -1,0 +1,56 @@
+{
+  "status": "ACTUAL_CANONICAL_BOUNDED_MODEL7_ADMISSION_VERIFIED",
+  "PR": 1777,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1777",
+  "previous_canonical": "085c95c3202380bb01987fdb5741b437d2acbf12",
+  "qualified_head": "dcd7adebd6414b69e825e955471941a179be47b1",
+  "synthetic_merge": "8f4b72014ce73ad95af56460971f775d6dfc2172",
+  "actual_merge": "0abcdd5eb3a00327d505cdc897e92c50030ed3e7",
+  "ordered_parents": [
+    "085c95c3202380bb01987fdb5741b437d2acbf12",
+    "dcd7adebd6414b69e825e955471941a179be47b1"
+  ],
+  "whole_qualified_tree": "7c5dbb9bc08f5b3ed1745e7914c3ce6f47f4c8a6",
+  "all_terminal_PR_checks": 53,
+  "success": 38,
+  "skipped": 15,
+  "actual_candidate_public_seconds": 374.33730060001835,
+  "actual_canonical_public_seconds": 361.5331516000442,
+  "actual_canonical_sparse_patterns": 33,
+  "admission_archive_sha256": "dbd18b19cc8ef08044f5f9b48d1db0e20e9f6ca7bd82cf2da69168325f13ca79",
+  "model7_admitted": true,
+  "neutral_qualification_and_four_archives_unchanged": true,
+  "original_cancelled_attempt_retained": true,
+  "exact_head_retry_job": 136668617147,
+  "actual_original_Windows_capacity_grid": {
+    "O0": {
+      "states": 360,
+      "retained_original_mismatches": 216,
+      "corrected_mismatches": 0,
+      "max_scaled_capacity_derivative_error": 6.841881814558264e-07,
+      "water_and_conductivity_values_exact": true,
+      "finite_difference_diagnostic_bound": 2e-06
+    },
+    "O2": {
+      "states": 360,
+      "retained_original_mismatches": 216,
+      "corrected_mismatches": 0,
+      "max_scaled_capacity_derivative_error": 6.841881814558264e-07,
+      "water_and_conductivity_values_exact": true,
+      "finite_difference_diagnostic_bound": 2e-06
+    }
+  },
+  "public_compiler_executions": 0,
+  "public_model_executions": 0,
+  "AGE_admitted": false,
+  "implicit_nondefault_conductivity_admitted": false,
+  "other_hydraulic_models_admitted": false,
+  "new_physical_state": false,
+  "tolerance_changed": false,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "scope": "Explicit all-layer IHWCKmodel7, original analytical reader, no hysteresis/Frost/macropores/AGE; original day-seed output, NoSnow0 primary DRA1 closed bottom6 for saturated search and independent terminal trial guard. Daily water and CDE; original native/output owners retained.",
+  "canonical085_unrelated_push_preservation_failures_retained": true
+}

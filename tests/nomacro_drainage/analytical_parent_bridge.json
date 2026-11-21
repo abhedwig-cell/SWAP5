@@ -1,0 +1,81 @@
+{
+  "parent": "0abcdd5eb3a00327d505cdc897e92c50030ed3e7",
+  "runtime": "70589c1f69649fdb5919b109e498aec2cf6f3fa9",
+  "changes": {
+    "app/hybrid_water/experimental_project.py": [
+      {
+        "runtime_line": 82,
+        "before": "",
+        "after": "    hydraulic_rows=re.findall(r'(?mi)^[ \\t]*IHWCKMODEL[ \\t]*=[ \\t]*([^!\\r\\n]+)',text)\n    original_model3=any(int(token)==3 for row in hydraulic_rows for token in row.split() if re.fullmatch(r'[+-]?\\d+',token))\n"
+      },
+      {
+        "runtime_line": 246,
+        "before": "",
+        "after": "            if selected['SWSOPHY']==0 and original_model3 and sig.get('SWOXYGEN')==2:\n                raise ValueError('Original hydraulic model3 with physical oxygen stress2 is explicitly not implemented: '+path.name)\n"
+      }
+    ],
+    "app/hybrid_water/model7_capacity.py": [
+      {
+        "runtime_line": 12,
+        "before": "def enabled(project):\n    if not project.input_directory or project.macro or project.age:return False\n",
+        "after": "def analytical_models(project):\n    if not project.input_directory or project.macro or project.age:return None\n"
+      },
+      {
+        "runtime_line": 18,
+        "before": "    if any(selected.get(name)!=0 for name in ('SWKIMPL','SWSOPHY','SWHYST','SWFROST','SWMACRO')):return False\n",
+        "after": "    if any(selected.get(name)!=0 for name in ('SWKIMPL','SWSOPHY','SWHYST','SWFROST','SWMACRO')):return None\n"
+      },
+      {
+        "runtime_line": 20,
+        "before": "    return len(values)==1 and re.fullmatch(r'7(?:[ \\t]+7)*[ \\t]*',values[0]) is not None\n",
+        "after": "    if len(values)!=1 or re.fullmatch(r'[0-9]+(?:[ \\t]+[0-9]+)*[ \\t]*',values[0]) is None:return None\n    models=tuple(map(int,values[0].split()))\n    return models if models and all(1<=model<=11 for model in models) else None\n\n\ndef enabled(project):\n    models=analytical_models(project)\n    return bool(models and 7 in models)\n"
+      }
+    ],
+    "app/hybrid_water/model7_terminal_water.py": [
+      {
+        "runtime_line": 1,
+        "before": "\"\"\"Compose the existing read-only terminal receipt with explicit no-Snow model7.\"\"\"\n",
+        "after": "\"\"\"Reuse the qualified model7 trial receipt/search for original explicit families.\"\"\"\n"
+      },
+      {
+        "runtime_line": 22,
+        "before": "    from model7_capacity import enabled as capacity\n    if not capacity(project) or not project.original_output or project.time_step_policy!='original-adaptive-day-seed-v1':return False\n",
+        "after": "    from model7_capacity import analytical_models\n    models=analytical_models(project)\n    if not models or not any(model>=3 for model in models) or not project.original_output or project.time_step_policy!='original-adaptive-day-seed-v1':return False\n"
+      },
+      {
+        "runtime_line": 59,
+        "before": "    return dict(policy='original-explicit-model7-independent-terminal-water-trial-guard-v1',\n",
+        "after": "    return dict(policy='original-explicit-analytical-independent-terminal-water-trial-guard-v2',\n"
+      }
+    ],
+    "tests/nomacro_drainage/hydraulic_constitutive_component.py": [
+      {
+        "runtime_line": 20,
+        "before": "",
+        "after": "    p.add_argument('--mixed-layer',action='store_true')\n"
+      },
+      {
+        "runtime_line": 29,
+        "before": "        model7_capacity_correction=a.correct_model7_capacity,model7_parameter_grid=a.model7_grid,\n",
+        "after": "        model7_capacity_correction=a.correct_model7_capacity,model7_parameter_grid=a.model7_grid,mixed_original_layers=a.mixed_layer,\n"
+      },
+      {
+        "runtime_line": 64,
+        "before": "        driver=Path(__file__).with_name('hydraulic_model7_capacity_grid.f90' if a.model7_grid else 'hydraulic_constitutive_probe.f90');obj=a.build_root/'driver.o';compile([*flags,'-c',str(driver),'-o',str(obj)])\n",
+        "after": "        driver=Path(__file__).with_name('hydraulic_mixed_analytical_probe.f90' if a.mixed_layer else 'hydraulic_model7_capacity_grid.f90' if a.model7_grid else 'hydraulic_constitutive_probe.f90');obj=a.build_root/'driver.o';compile([*flags,'-c',str(driver),'-o',str(obj)])\n"
+      },
+      {
+        "runtime_line": 80,
+        "before": "        for model in ((7,) if a.model7_grid else range(1,12)):\n",
+        "after": "        for model in ((7,) if a.model7_grid or a.mixed_layer else range(1,12)):\n"
+      },
+      {
+        "runtime_line": 83,
+        "before": "            if r.returncode==0:assert len(rows)==(360 if a.model7_grid else 14) and not r.stderr\n",
+        "after": "            if r.returncode==0:assert len(rows)==(192 if a.mixed_layer else 360 if a.model7_grid else 14) and not r.stderr\n"
+      }
+    ]
+  },
+  "added": {},
+  "scope": "Exact complete app and original component-producer inverse; physical Fortran renderer bodies independently compared unchanged."
+}

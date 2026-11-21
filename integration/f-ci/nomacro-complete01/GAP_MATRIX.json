@@ -2064,7 +2064,7 @@
       "family": "Alternative original hydraulic models including RIA12",
       "classification": "NUMERICAL_FAILURE_AND_UNRECONCILED_ORIGINAL_DOMAIN",
       "priority": 2,
-      "status": "BOUNDED_MODEL7_WINDOWS_UBUNTU_8FULL_80COLD_RAW_SCIENCE_PASS_NO_ADMISSION_OTHER_MODELS_OPEN"
+      "status": "MODEL7_ACTUALLY_ADMITTED_0ABCDD5;BROADER_ANALYTICAL_WINDOWS_UBUNTU80FULL_800COLD_RAW_PASS_PUBLIC_OWNER_ACTIVE"
     },
     {
       "family": "Original per-layer vapor and heat conservation/state",
@@ -2110,5 +2110,37 @@
     "canonical_admission": "085c95c3202380bb01987fdb5741b437d2acbf12",
     "receipt": "FROST_IMPLICIT_MERGE_RECEIPT_V1.json",
     "actual_canonical_public_seconds": 358.61776329996064
+  },
+  "bounded_model7_explicit_hydraulics": {
+    "classification": "REFERENCE_DEFECT_AND_NUMERICAL_SEARCH_CANONICALLY_ADMITTED_BOUNDED",
+    "actual_PR": 1777,
+    "qualified_head": "dcd7adebd6414b69e825e955471941a179be47b1",
+    "canonical_admission": "0abcdd5eb3a00327d505cdc897e92c50030ed3e7",
+    "receipt": "HYDRAULIC_MODEL7_MERGE_RECEIPT_V1.json",
+    "whole_family_closed": false,
+    "actual_canonical_public_seconds": 361.5331516000442,
+    "scope": "Explicit all-model7 original analytical NoFrost/hysteresis0 water/CDE; NoSnow0 primaryDRA1 bottom6 originaldayseed trial receipt/search; native1 unchanged."
+  },
+  "bounded_original_explicit_analytical_hydraulics": {
+    "classification": "EVIDENCE_ONLY_PENDING_PUBLIC_AND_ACTUAL_CANONICAL_ADMISSION",
+    "implementation": "ORIGINAL_EXPLICIT_CONFIGURATION_AND_LAYER_COMPOSITION_BATCH_SOURCE_RAW_SCIENCE_PASS",
+    "scope": "models3..11, existing7reused; mixed1/7,7/3; KW0 Snow0 Frost0 hys0 DRA1 bottom6; water/dailyCDE native1 unchanged",
+    "actual_Windows_full1096": 40,
+    "actual_Ubuntu_full1096": 40,
+    "actual_main_short35": 80,
+    "actual_main_exact_cold_windows": 800,
+    "actual_model7_postimage_short35": 4,
+    "actual_model7_postimage_cold_windows": 12,
+    "compiled_native_refusals_reused": 212,
+    "fresh_unaffected_full_periods": 0,
+    "source": "70589c1f69649fdb5919b109e498aec2cf6f3fa9",
+    "readers": "8d9d36e02a91bdba2b8d1b24b03d60bda0f173e7",
+    "neutral_qualification": "HYDRAULIC_ANALYTICAL_QUALIFICATION.json",
+    "actual_Ubuntu_run": 44851861883,
+    "whole_family_closed": false,
+    "unresolved": [
+      "Original model3 plusphysicaloxygen2 is explicitlynotimplemented; earlyfuturecroprefusal; retainedoriginal523prefix/day524stop",
+      "Implicitnondefaultconductivity, vapor, broaderboundaries, AGE and other original compositions remain separate gaps."
+    ]
   }
 }

@@ -1,4 +1,4 @@
-"""Compose the existing read-only terminal receipt with explicit no-Snow model7."""
+"""Reuse the qualified model7 trial receipt/search for original explicit families."""
 import hashlib
 from pathlib import Path
 
@@ -19,8 +19,9 @@ SEARCH="""   ! Numerical search diagonal already present in original default MvG
 
 
 def enabled(project):
-    from model7_capacity import enabled as capacity
-    if not capacity(project) or not project.original_output or project.time_step_policy!='original-adaptive-day-seed-v1':return False
+    from model7_capacity import analytical_models
+    models=analytical_models(project)
+    if not models or not any(model>=3 for model in models) or not project.original_output or project.time_step_policy!='original-adaptive-day-seed-v1':return False
     from experimental_project import switches
     selected=switches((Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252'))
     return all(selected.get(name)==value for name,value in dict(SWSNOW=0,SWDRA=1,SWBOTB=6,SWBR=0,SWMETDETAIL=0).items())
@@ -55,7 +56,7 @@ def source():
 
 def metadata(project):
     if not enabled(project):return None
-    return dict(policy='original-explicit-model7-independent-terminal-water-trial-guard-v1',
+    return dict(policy='original-explicit-analytical-independent-terminal-water-trial-guard-v2',
       source_sha256=hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
       parent_receipt_sha256=PARENT_SHA,complete_before_guard_HeadCalc_sha256=HEAD_PARENT_SHA,provider_sha256=hashlib.sha256(source().encode('cp1252')).hexdigest(),
       water_limit_cm=1e-10,trial_projection_period='every original hydraulic trial; same fixed absolute day bound',accepted_state_or_flux_modified=False,new_physical_state=False,native_interface_changed=False,

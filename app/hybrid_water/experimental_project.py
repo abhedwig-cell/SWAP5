@@ -79,6 +79,8 @@ def inspect(directory, *, original_output=None):
     vapor = re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^!\r\n]+)',text)
     if vapor and (len(vapor)!=1 or not re.fullmatch(r'0(?:[ \t]+0)*[ \t]*',vapor[0])):
         raise ValueError('Original vapor transport requires separate conserved-state qualification')
+    hydraulic_rows=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^!\r\n]+)',text)
+    original_model3=any(int(token)==3 for row in hydraulic_rows for token in row.split() if re.fullmatch(r'[+-]?\d+',token))
     crop_files=set();crop_types={}
     if selected.get('SWCROP')==1:
         entries=crop_entries(text)
@@ -241,6 +243,8 @@ def inspect(directory, *, original_output=None):
                 raise ValueError('Original salinity stress requires active solute transport')
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):
                 raise ValueError('Original physical oxygen stress requires numerical soil heat for every future crop')
+            if selected['SWSOPHY']==0 and original_model3 and sig.get('SWOXYGEN')==2:
+                raise ValueError('Original hydraulic model3 with physical oxygen stress2 is explicitly not implemented: '+path.name)
         if extended is not None and path.resolve()==(directory/extended['file']).resolve():continue
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
             original_structure=lambda s:{k:v for k,v in s.items() if k!='SWDIVD'}

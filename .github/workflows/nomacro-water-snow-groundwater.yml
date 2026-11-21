@@ -1,11 +1,11 @@
-name: Original model7 capacity and saturated search qualification
+name: Original explicit analytical hydraulic family qualification
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: nomacro-model7-capacity-search-${{ github.ref }}
+  group: nomacro-analytical-hydraulic-family-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   qualify:
@@ -15,7 +15,7 @@ jobs:
       matrix:
         optimization: [O0, O2]
     runs-on: ubuntu-26.04
-    timeout-minutes: 90
+    timeout-minutes: 120
     env:
       OMP_NUM_THREADS: '1'
       PYTHONDONTWRITEBYTECODE: '1'
@@ -50,9 +50,9 @@ jobs:
           cp .github/workflows/nomacro-water-snow-groundwater.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Qualify original model7 derivative and numerical search with targeted coupled contexts
+      - name: Qualify original analytical family with coupled water and CDE native contexts
         run: |
-          python3 -B tests/nomacro_drainage/model7_capacity_portable.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/model7-capacity-search" --optimization '${{ matrix.optimization }}'
+          python3 -B tests/nomacro_drainage/analytical_hydraulic_portable.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/analytical-hydraulic-family" --optimization '${{ matrix.optimization }}'
       - name: Preserve actual compiled bytes and original provider identity
         if: always()
         run: |
@@ -86,6 +86,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: model7-capacity-search-${{ matrix.optimization }}-${{ github.sha }}
+          name: analytical-hydraulic-family-${{ matrix.optimization }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30
