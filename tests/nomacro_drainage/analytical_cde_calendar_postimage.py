@@ -28,8 +28,12 @@ def compare(old,new):
   for key,value in [('S5HBC005','48 + 8*(14+2*actual_layers), checked duplicated bounded drainage/bottom vapor domain'),('S5HCC006','48 + 8*(14+2*actual_layers), checked duplicated CDE calendar vapor domain')]:
    if key not in left:assert right.pop(key)==value;extra.append('cde_native_receipt.optional_native_prefixes.'+key)
  changed=differences(a['identity'],projected)+extra
- allowed={'experimental_input_adapter','hydraulic_vapor.source_sha256','model7_terminal_water.source_sha256','original_output.source_sha256','original_output.ordinary_owner_sha256','cde_native_receipt.source_sha256','restart_publisher.library_sha256','cde_native_receipt.optional_native_prefixes.S5HBC005','cde_native_receipt.optional_native_prefixes.S5HCC006'}
+ allowed={'experimental_input_adapter','hydraulic_vapor.source_sha256','hydraulic_vapor.CDE_calendar_composition.source_sha256','model7_terminal_water.source_sha256','original_output.source_sha256','original_output.ordinary_owner_sha256','cde_native_receipt.source_sha256','restart_publisher.library_sha256','cde_native_receipt.optional_native_prefixes.S5HBC005','cde_native_receipt.optional_native_prefixes.S5HCC006'}
  assert set(changed)<=allowed,changed
+ if 'hydraulic_vapor.CDE_calendar_composition.source_sha256' in changed:
+  from analytical_cde_calendar_source_inverse import blob,CORE,PREVIOUS_CORE
+  path='app/hybrid_water/analytical_cde_calendar.py';before=a['identity']['hydraulic_vapor']['CDE_calendar_composition']['source_sha256'];after=b['identity']['hydraulic_vapor']['CDE_calendar_composition']['source_sha256']
+  assert before in {SHA(blob(epoch,path)) for epoch in ('1510278b9ad56b03273c6d6e2284b1360f57849c',PREVIOUS_CORE)} and after==SHA(blob(CORE,path))
  exact=types.FunctionType(publisher_equivalence.__code__,dict(publisher_equivalence.__globals__,Path=lambda value:value));pe=exact(old/'restart_publish.dll',new/'restart_publish.dll')
  return dict(status='ACTUAL_COMPLETE_UNSELECTED_FORTRAN_PROVIDER_OBJECTS_FLAGS_NATIVE_ABI_AND_PUBLISHER_POSTIMAGE_UNCHANGED',complete_Fortran={name:SHA(raw) for name,raw in before.items()},only_source_descriptor_and_publisher_identity_changes=changed,publisher_equivalence=pe,compiler_executions_in_reader=0,model_executions=0)
 
