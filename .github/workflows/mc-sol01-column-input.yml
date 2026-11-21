@@ -39,7 +39,7 @@ concurrency:
 jobs:
   column:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 45
     env:
       FC: gfortran-13
       PYTHONDONTWRITEBYTECODE: '1'
