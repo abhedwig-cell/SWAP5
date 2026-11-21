@@ -60,9 +60,15 @@ def terminal_guard(project,original):
  selected=context(project)
  if selected is None or selected['bottom']==6:return original
  flux='-kmean(NN+1)*hgrad(NN+1)'
- if selected['bottom']==8:flux='merge('+flux+',0d0,flboth)'
  before='model7_terminal_water_residual()'
  if original.count(before)!=1:raise ValueError('Changed analytical terminal guard call')
+ if selected['bottom']==8:
+  # Follow the literal qualified lower-boundary receipt's IF(flboth) owner.
+  # The closed branch never evaluates a gradient that the original solver
+  # need not define for that branch; no physical flux or state is assigned.
+  opening=original.replace(before,'model7_terminal_water_residual('+flux+')',1)
+  closed=original.replace(before,'model7_terminal_water_residual(0d0)',1)
+  return '\n         if(flboth)then'+opening+'\n         else'+closed+'\n         end if'
  return original.replace(before,'model7_terminal_water_residual('+flux+')',1)
 
 
