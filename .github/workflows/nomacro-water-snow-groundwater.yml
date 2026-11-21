@@ -1,14 +1,14 @@
-name: Targeted original analytical vapor CDE calendars
+name: Targeted original pressure profile calendars
 on:
   push:
-    branches: [codex/nomacro-analytical-cde-calendars01]
+    branches: [codex/nomacro-initial-profile-calendars01]
     paths: ['.github/workflows/nomacro-water-snow-groundwater.yml']
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: nomacro-analytical-cde-calendars-${{ github.ref }}
+  group: nomacro-initial-profile-calendars-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   qualify:
@@ -48,22 +48,22 @@ jobs:
         run: |
           proof="$RUNNER_TEMP/proof"
           mkdir -p "$proof"
-          git fetch --no-tags --depth=1 --filter=blob:none origin 5c0cba9fbbd93ffb482199016f392e53e371e095 443c6b432a3f75695dbab0e0b66389638d7f94c0 b16249855004a00b54efe5203287ba321b61594c 1510278b9ad56b03273c6d6e2284b1360f57849c 379673548d90b13421b5b1e2db6e928c676b11ed e079d1554041c831cd0ab609835e2e79bf3c31a1
+          git fetch --no-tags --depth=1 --filter=blob:none origin 71db24532f006bc78ac570d1fccdd04b22482e0e 929764dcdb7dd66da1dccf2a29d5a3b7022c0d8b 5c0cba9fbbd93ffb482199016f392e53e371e095 e079d1554041c831cd0ab609835e2e79bf3c31a1
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
           python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           cp .github/workflows/nomacro-water-snow-groundwater.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Target four representative CDE calendar interactions
+      - name: Target four original pressure and calendar state interactions
         run: |
           opt='${{ matrix.optimization }}'
-          for kind in model7-perstep6 vapor8-monthly5 mixed7-8-clock-undrained8 vapor8-explicit-undrained5; do
-            label="analytical-cde-calendar-$kind-$opt-short"
-            python3 -B tests/nomacro_drainage/analytical_cde_calendar_inputs.py --case "$kind" --output "$RUNNER_TEMP/proof/inputs/$kind"
-            python3 -B tests/nomacro_drainage/analytical_cde_calendar_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --input "$RUNNER_TEMP/proof/inputs/$kind" --case "$kind" --days 35
-            python3 -B tests/nomacro_drainage/analytical_cde_calendar_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
-            if [[ "$kind" == mixed7-8-clock-undrained8 ]]; then
-              python3 -B tests/nomacro_drainage/analytical_cde_calendar_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-native-controls"
+          for kind in vapor-dra0-clock8-cde hys2-periodic-cde implicit-snow-clock-cde plain-periodic-water; do
+            label="initial-profile-calendar-$kind-$opt-short"
+            python3 -B tests/nomacro_drainage/initial_profile_calendar_inputs.py --case "$kind" --output "$RUNNER_TEMP/proof/inputs/$kind"
+            python3 -B tests/nomacro_drainage/initial_profile_calendar_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --input "$RUNNER_TEMP/proof/inputs/$kind" --case "$kind"
+            python3 -B tests/nomacro_drainage/initial_profile_calendar_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
+            if [[ "$kind" == implicit-snow-clock-cde ]]; then
+              python3 -B tests/nomacro_drainage/initial_profile_calendar_postimage.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --build-root "$RUNNER_TEMP/builds/$label-initial2-postimage" --output "$RUNNER_TEMP/proof/$label-initial2-postimage"
             fi
           done
       - name: Preserve actual compiled bytes and original provider identity
@@ -99,6 +99,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: analytical-cde-calendar-${{ matrix.optimization }}-${{ github.sha }}
+          name: initial-profile-calendar-${{ matrix.optimization }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30
