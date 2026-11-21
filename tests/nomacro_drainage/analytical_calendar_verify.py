@@ -12,7 +12,7 @@ from analytical_calendar_central_science import read
 from analytical_calendar_records import native,frontend,monthly
 import snow_vapor_verify as previous
 
-SEALED='e351e5c0efafc4b11aa7eef28f4f67bb01380ead'
+SEALED='eb47449e6619b99e83ffe088ad1a63320a5fc596'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/snow_vapor_verify.py'
 GUARD_HOOK=' import analytical_calendar_verify as calendar\n return calendar.guard_previous_source()\n'
