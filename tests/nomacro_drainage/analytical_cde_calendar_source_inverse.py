@@ -1,5 +1,5 @@
 """Bind calendar composition and retain the actual prior source succession."""
-import ast,os,subprocess
+import ast,os,subprocess,types
 from contextlib import contextmanager
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
@@ -106,17 +106,37 @@ def guard_parent_source():
  with prior_source_projection():return namespace['guard_previous_source']()
 
 
+def prior_vapor_frontend(store):
+ import vapor_boundary_records as records
+ import analytical_cde_calendar as calendar
+ path='tests/nomacro_drainage/vapor_boundary_records.py';raw=blob(BASE,path)
+ assert norm((ROOT/path).read_bytes())==raw
+ nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='frontend'];assert len(nodes)==1
+ namespace=dict(vars(records));exec(compile(ast.Module(body=nodes,type_ignores=[]),path,'exec'),namespace)
+ saved=calendar.input_context
+ # The existing literal archive observer already binds the caller's Path to
+ # the actual immutable ArchiveView. Extend that same read-only binding to
+ # its newly called pure input reader; no input or producer path is changed.
+ calendar.input_context=types.FunctionType(saved.__code__,dict(saved.__globals__,Path=lambda value:value),argdefs=saved.__defaults__)
+ try:return namespace['frontend'](store)
+ finally:calendar.input_context=saved
+
+
 @contextmanager
 def prior_source_projection():
  complete_inverse()
  import initial_state_composition_source_inverse as state
  import initial_state_composition_science as science
+ import vapor_boundary_records as records
+ import vapor_boundary_verify as boundary
  saved=(state.ROOT,state.complete_inverse,state.CheckedParentRoot,state.initial_parent_source_union)
  saved_science_inverse=science.complete_inverse
+ saved_frontends=(records.frontend,boundary.frontend)
  class CheckedParentRoot(saved[2]):
   def __truediv__(self,path):return SourceFile(str(path)) if str(path) in CHANGED else super().__truediv__(path)
  state.ROOT=CheckedSourceRoot();state.complete_inverse=state_parent_complete_inverse;state.CheckedParentRoot=CheckedParentRoot;state.initial_parent_source_union=state_parent_source_union
  science.complete_inverse=state_parent_complete_inverse
+ records.frontend=boundary.frontend=prior_vapor_frontend
  # Only checked Python/workflow source reads are projected. Real HEAD, raw
  # paths, producer identities, native payloads and original inputs stay actual.
  try:
@@ -124,3 +144,4 @@ def prior_source_projection():
  finally:
   state.ROOT,state.complete_inverse,state.CheckedParentRoot,state.initial_parent_source_union=saved
   science.complete_inverse=saved_science_inverse
+  records.frontend,boundary.frontend=saved_frontends
