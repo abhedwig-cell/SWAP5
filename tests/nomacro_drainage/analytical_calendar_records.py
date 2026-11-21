@@ -74,3 +74,22 @@ def frontend(store):
   else:assert (actual is not None)==(item['status']=='CLOCK') and item['status']!='REFUSED'
   counts[item['status']]=counts.get(item['status'],0)+1
  assert counts=={'DENSE':2,'CLOCK':5,'REFUSED':8};return counts
+
+
+def monthly(store):
+ from calendar_publisher import publisher_equivalence
+ from calendar_evidence import differences
+ from ordinary_pond_verify import blob
+ q=json.loads(store.get('profiles/analytical-calendar-vapor8-monthly-O2-postimage-v1/RESULT.json'))
+ projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));old=store.view(projection[q['original_build_root']]['archive_prefix']);new=store.view(projection[q['build_root']]['archive_prefix'])
+ before={p.name:p.read_bytes().replace(b'\r\n',b'\n') for p in old.glob('*.f90')};after={p.name:p.read_bytes().replace(b'\r\n',b'\n') for p in new.glob('*.f90')};assert before==after
+ a=json.loads((old/'BUILD.json').read_text());b=json.loads((new/'BUILD.json').read_text())
+ for field in ('donor_objects','donor_flags','kernel_flags'):assert a['identity'][field]==b['identity'][field]
+ changes=differences(a['identity'],b['identity']);assert changes==q['identity_changes'] and set(changes)=={'model7_terminal_water.source_sha256','restart_publisher.library_sha256'}
+ for meta,source in ((a,'208c25624268589b5f26cbc10f2113aca4276ae6'),(b,'102e95eb6d33107b81ab06576707fe0be9b215e2')):assert meta['identity']['model7_terminal_water']['source_sha256']==SHA(blob(source,'app/hybrid_water/model7_terminal_water.py'))
+ exact=types.FunctionType(publisher_equivalence.__code__,dict(publisher_equivalence.__globals__,Path=lambda path:path))
+ pe=exact(old/'restart_publish.dll',new/'restart_publish.dll')
+ original=store.get('profiles/vapor-monthly-current-postimage-v1/RESULT.json');assert SHA(original)==q['original_RESULT_sha256']
+ saved=json.loads(store.get('observations/ANALYTICAL_MONTHLY_EXACT_POSTIMAGE_INHERITANCE_V1.json'));assert saved['publisher_equivalence']==pe
+ assert SHA((new/'BUILD.json').read_bytes())==saved['actual_new_BUILD_sha256']
+ return dict(whole_Fortran_provider_flags_exact=True,source_inverse_exact=True,publisher_exact=pe,original_producer_preserved=True,model_executions=0)
