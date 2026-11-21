@@ -1,0 +1,113 @@
+{
+  "status": "ACTUAL_EIGHT_UNSELECTED_MODEL7_DEPENDENCY_POSTIMAGES_INDEPENDENT_PASS",
+  "contexts": [
+    {
+      "name": "water-groundwater-explicit-daily",
+      "optimization": "O0",
+      "days": 35,
+      "cold_window": [
+        30,
+        34
+      ],
+      "complete_compiled_Fortran_exact": true,
+      "physical_native_REAL4_exact": true,
+      "publisher_code_and_data_exact": true
+    },
+    {
+      "name": "ordinary-snow-cde-implicit-head-clock-positive",
+      "optimization": "O0",
+      "days": 35,
+      "cold_window": [
+        30,
+        34
+      ],
+      "complete_compiled_Fortran_exact": true,
+      "physical_native_REAL4_exact": true,
+      "publisher_code_and_data_exact": true
+    },
+    {
+      "name": "implicit-frost-water",
+      "optimization": "O0",
+      "days": 35,
+      "cold_window": [
+        30,
+        34
+      ],
+      "complete_compiled_Fortran_exact": true,
+      "physical_native_REAL4_exact": true,
+      "publisher_code_and_data_exact": true
+    },
+    {
+      "name": "implicit-frost-cde",
+      "optimization": "O0",
+      "days": 35,
+      "cold_window": [
+        30,
+        34
+      ],
+      "complete_compiled_Fortran_exact": true,
+      "physical_native_REAL4_exact": true,
+      "publisher_code_and_data_exact": true
+    },
+    {
+      "name": "water-groundwater-explicit-daily",
+      "optimization": "O2",
+      "days": 35,
+      "cold_window": [
+        30,
+        34
+      ],
+      "complete_compiled_Fortran_exact": true,
+      "physical_native_REAL4_exact": true,
+      "publisher_code_and_data_exact": true
+    },
+    {
+      "name": "ordinary-snow-cde-implicit-head-clock-positive",
+      "optimization": "O2",
+      "days": 35,
+      "cold_window": [
+        30,
+        34
+      ],
+      "complete_compiled_Fortran_exact": true,
+      "physical_native_REAL4_exact": true,
+      "publisher_code_and_data_exact": true
+    },
+    {
+      "name": "implicit-frost-water",
+      "optimization": "O2",
+      "days": 35,
+      "cold_window": [
+        30,
+        34
+      ],
+      "complete_compiled_Fortran_exact": true,
+      "physical_native_REAL4_exact": true,
+      "publisher_code_and_data_exact": true
+    },
+    {
+      "name": "implicit-frost-cde",
+      "optimization": "O2",
+      "days": 35,
+      "cold_window": [
+        30,
+        34
+      ],
+      "complete_compiled_Fortran_exact": true,
+      "physical_native_REAL4_exact": true,
+      "publisher_code_and_data_exact": true
+    }
+  ],
+  "unaffected_full_periods_replayed": 0,
+  "original_observer_failures_retained": [
+    "AssertionError(['host', 'restart_publisher.library_sha256'])",
+    "ValueError('Original output pilot currently excludes SWSNOW')",
+    "KeyError(\"There is no item named 'builds/frost-implicit-root-daily-water-O0-v1/bundle/BUILD.json' in the archive\")",
+    "AssertionError(['host', 'restart_publisher.library_sha256'])",
+    "ValueError('Original output pilot currently excludes SWSNOW')",
+    "KeyError(\"There is no item named 'builds/frost-implicit-root-daily-water-O2-v1/bundle/BUILD.json' in the archive\")"
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "public_admission": false
+}
