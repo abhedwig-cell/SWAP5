@@ -13,6 +13,7 @@ import original_output_matrix as thermal
 from implicit_conductivity_forensics import output_records
 from calendar_evidence import differences
 from calendar_publisher import publisher_equivalence
+from water_snow_groundwater_period import cold as cold_continuation
 from model7_search_science import Store,SHA
 m=thermal.m
 
@@ -46,7 +47,7 @@ def main():
                 command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--original-output',
                     '--experimental-time-step-policy',policy,'--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
                 if (build/'BUILD.json').exists():
-                    item['retained_actual_compilation']=recovered[name]['build'];assert item['retained_actual_compilation']['returncode']==0
+                    item['retained_actual_compilation']=recovered[name].get('build',recovered[name].get('retained_actual_compilation'));assert item['retained_actual_compilation']['returncode']==0
                 else:
                     r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
                     (out/'build.stdout').write_text(r.stdout);(out/'build.stderr').write_text(r.stderr);item['build']=dict(command=command,returncode=r.returncode);save();r.check_returncode()
@@ -61,17 +62,22 @@ def main():
                     original_dll=out/'original-restart_publish.dll';original_dll.write_bytes((base/'restart_publish.dll').read_bytes())
                     item['publisher_equivalence']=publisher_equivalence(original_dll,build/'restart_publish.dll')
                 item['identity_changes']=delta;item['unchanged_complete_Fortran']={key:SHA(value) for key,value in after.items()}
-                item['trajectory'],data=m.trajectory(build,a.reference_work,project,out/'trajectory',35,{2,4,30,34,35},180)
+                if recovered.get(name,{}).get('trajectory',{}).get('days')==35:
+                    trajectory=Path(recovered[name]['trajectory_root']);data=m.rows(trajectory);assert len(data)==35;m.check(data)
+                    item['trajectory']=recovered[name]['trajectory'];item['retained_actual_35day_postimage']=True
+                else:
+                    trajectory=out/'trajectory';item['trajectory'],data=m.trajectory(build,a.reference_work,project,trajectory,35,{2,4,30,34,35},180)
+                item['trajectory_root']=str(trajectory);save()
                 assert m.physical(data)==m.physical(m.rows(old_trajectory)[:35])
                 for day in (2,4,30,34,35):
-                    with zipfile.ZipFile(old_trajectory/f'accepted-column-1-day-{day}.zip') as x,zipfile.ZipFile(out/f'trajectory/accepted-column-1-day-{day}.zip') as y:
+                    with zipfile.ZipFile(old_trajectory/f'accepted-column-1-day-{day}.zip') as x,zipfile.ZipFile(trajectory/f'accepted-column-1-day-{day}.zip') as y:
                         assert all(x.read(key)==y.read(key) for key in ('macro.bin','result.end'))
                 for filename in ('result_output.csv','result_output.bin'):
-                    actual=out/'trajectory/original'/filename;prior=old_trajectory/'original'/filename
+                    actual=trajectory/'original'/filename;prior=old_trajectory/'original'/filename
                     assert actual.exists()==prior.exists()
                     if actual.exists():
                         rows=output_records(actual.read_bytes(),filename);assert rows==output_records(prior.read_bytes(),filename)[:len(rows)]
-                item['cold']=thermal.own(build,a.reference_work,project,out/'trajectory',data,30,34,out/'own-30')
+                item['cold']=cold_continuation(build,a.reference_work,project,trajectory,data,30,34,out/'own-30')
                 item['status']='UNSELECTED_COMPLETE_COMPILED_FORTRAN_35DAY_NATIVE_REAL4_COLD_EXACT_PASS';save();print(name,item['status'],flush=True)
             q['status']='ACTUAL_FOUR_TARGETED_UNSELECTED_MODEL7_DEPENDENCY_POSTIMAGES_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
