@@ -2064,7 +2064,7 @@
       "family": "Alternative original hydraulic models including RIA12",
       "classification": "NUMERICAL_FAILURE_AND_UNRECONCILED_ORIGINAL_DOMAIN",
       "priority": 2,
-      "status": "MODEL7_PR1777_PUBLIC_PASS_CI_RETRY_PENDING; ANALYTICAL3_FEDDES1_4_5_6_8_9_WINDOWS_CDE_FULL_PASS;10_11_AND_MIXED_FULL_RUNNING;WATER_UBUNTU_ADMISSION_PENDING"
+      "status": "MODEL7_BOUNDED_ACTUAL_CANONICAL_0ABCDD5_ADMITTED;BROADER_ANALYTICAL_WINDOWS_CDE20FULL_PASS_WATER_UBUNTU_PENDING"
     },
     {
       "family": "Original per-layer vapor and heat conservation/state",
@@ -2110,5 +2110,15 @@
     "canonical_admission": "085c95c3202380bb01987fdb5741b437d2acbf12",
     "receipt": "FROST_IMPLICIT_MERGE_RECEIPT_V1.json",
     "actual_canonical_public_seconds": 358.61776329996064
+  },
+  "bounded_model7_explicit_hydraulics": {
+    "classification": "REFERENCE_DEFECT_AND_NUMERICAL_SEARCH_CANONICALLY_ADMITTED_BOUNDED",
+    "actual_PR": 1777,
+    "qualified_head": "dcd7adebd6414b69e825e955471941a179be47b1",
+    "canonical_admission": "0abcdd5eb3a00327d505cdc897e92c50030ed3e7",
+    "receipt": "HYDRAULIC_MODEL7_MERGE_RECEIPT_V1.json",
+    "whole_family_closed": false,
+    "actual_canonical_public_seconds": 361.5331516000442,
+    "scope": "Explicit all-model7 original analytical NoFrost/hysteresis0 water/CDE; NoSnow0 primaryDRA1 bottom6 originaldayseed trial receipt/search; native1 unchanged."
   }
 }
