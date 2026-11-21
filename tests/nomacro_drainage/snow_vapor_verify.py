@@ -33,6 +33,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
+    import analytical_calendar_verify as calendar
+    return calendar.guard_previous_source()
  complete_inverse()
  for name in PARSERS:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen Snow vapor scientific observer changed'
@@ -52,11 +54,15 @@ def guard_previous_source():
 
 
 def strip_current_evidence(text):
+    import analytical_calendar_verify as calendar
+    return calendar.strip_current_evidence(text)
  if PATTERN in text:assert text.count(PATTERN)==1;text=text.replace(PATTERN,'',1)
  return literal('strip_current_evidence',dict(vars(previous)))(text)
 
 
 def publication_dependencies_unchanged():
+    import analytical_calendar_verify as calendar
+    return calendar.publication_dependencies_unchanged()
  guard_previous_source()
  with prior_source_projection():return literal('publication_dependencies_unchanged',prior_namespace())()
 
@@ -144,6 +150,8 @@ def native_records(store,role,windows):
 
 
 def verify():
+    import analytical_calendar_verify as calendar
+    return calendar.verify()
  guard_previous_source()
  paths=['HYDRAULIC_SNOW_VAPOR_QUALIFICATION.json',*[name+'.json' for name in RAW_NAMES]]
  for name in paths:
