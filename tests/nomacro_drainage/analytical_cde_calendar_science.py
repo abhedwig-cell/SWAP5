@@ -12,7 +12,7 @@ FIRST_CORE='443c6b432a3f75695dbab0e0b66389638d7f94c0'
 CLOCK_CORE='b16249855004a00b54efe5203287ba321b61594c'
 NATIVE6_CORE='1510278b9ad56b03273c6d6e2284b1360f57849c'
 COMPOSED_CORE='379673548d90b13421b5b1e2db6e928c676b11ed'
-FINAL_CORE='1f869b2fbbe385c29790cd7f719df87b85d83750'
+FINAL_CORE='8842b11d9e397b590b7ca1997f37456271e93959'
 CASES={
  'model7-periodic6':(1,6,'periodic'),'model7-clock6':(1,6,'clock'),'model7-perstep6':(1,6,'perstep'),
  'vapor8-periodic6':(1,6,'periodic'),'vapor8-monthly6':(1,6,'monthly'),

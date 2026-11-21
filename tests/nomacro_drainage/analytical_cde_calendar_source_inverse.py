@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 BASE='5c0cba9fbbd93ffb482199016f392e53e371e095'
 PREVIOUS_CORE='379673548d90b13421b5b1e2db6e928c676b11ed'
-CORE='1f869b2fbbe385c29790cd7f719df87b85d83750'
+CORE='8842b11d9e397b590b7ca1997f37456271e93959'
 PORTABLE='cbced0e1de4eb354dca0a2eecf4e1c9044259b18'
 WORKFLOW='.github/workflows/nomacro-water-snow-groundwater.yml'
 SURFACES=('app','src','tools/solute','tools/vq','reference')
@@ -50,16 +50,8 @@ def complete_inverse(check_ci=True):
  functions=lambda raw:{n.name:n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef)}
  before,after=functions(blob(PREVIOUS_CORE,path)),functions(blob(CORE,path))
  assert {key for key in before if ast.dump(before[key],include_attributes=False)!=ast.dump(after[key],include_attributes=False)}=={'clock_selection'}
- expected=ast.parse("""from original_output import selection
-if project.solute:
- from cde_clock_output import active_selection
- selected=active_selection(project)
- if selected is None:selected=selection(project)
-else:
- selected=selection(project)
-""").body
- assert ast.dump(ast.Module(body=after['clock_selection'].body[:2],type_ignores=[]),include_attributes=False)==ast.dump(ast.Module(body=expected,type_ignores=[]),include_attributes=False)
- assert ast.dump(ast.Module(body=before['clock_selection'].body[2:],type_ignores=[]),include_attributes=False)==ast.dump(ast.Module(body=after['clock_selection'].body[2:],type_ignores=[]),include_attributes=False)
+ raw=blob(CORE,path);guard=b'    if selected is None:return None\n'
+ assert raw.count(guard)==1 and raw.replace(guard,b'',1)==blob(PREVIOUS_CORE,path),'Incomplete absent-clock guard inverse'
  if check_ci:
   for path in CI:
    raw=norm((ROOT/path).read_bytes()).decode();assert raw.count(PATTERN)==1 and raw.replace(PATTERN,'',1).encode()==blob(BASE,path),'Unreviewed CDE calendar proof checkout delta'
