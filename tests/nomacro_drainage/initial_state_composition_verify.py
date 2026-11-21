@@ -37,6 +37,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
+ import analytical_cde_calendar_verify as calendar_owner
+ return calendar_owner.guard_previous_source()
  complete_inverse()
  for name in PARSERS:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen original state composition observer changed'
@@ -49,16 +51,22 @@ def guard_previous_source():
 
 
 def strip_current_evidence(text):
+ import analytical_cde_calendar_verify as calendar_owner
+ return calendar_owner.strip_current_evidence(text)
  assert text.count(PATTERN)<=1
  return literal('strip_current_evidence',dict(vars(previous)))(text.replace(PATTERN,''))
 
 
 def publication_dependencies_unchanged():
+ import analytical_cde_calendar_verify as calendar_owner
+ return calendar_owner.publication_dependencies_unchanged()
  guard_previous_source()
  with inherited_scope():return literal('publication_dependencies_unchanged',prior_namespace())()
 
 
 def verify():
+ import analytical_cde_calendar_verify as calendar_owner
+ return calendar_owner.verify()
  guard_previous_source();names=['INITIAL_STATE_COMPOSITION_QUALIFICATION.json',*[name+'.json' for name in RAW_NAMES]]
  for name in names:
   path='integration/f-ci/nomacro-complete01/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path)
