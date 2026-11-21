@@ -32,8 +32,8 @@ def compare(old,new):
  assert set(changed)<=allowed,changed
  if 'hydraulic_vapor.CDE_calendar_composition.source_sha256' in changed:
   from analytical_cde_calendar_source_inverse import blob,CORE,PREVIOUS_CORE
-  path='app/hybrid_water/analytical_cde_calendar.py';before=a['identity']['hydraulic_vapor']['CDE_calendar_composition']['source_sha256'];after=b['identity']['hydraulic_vapor']['CDE_calendar_composition']['source_sha256']
-  assert before in {SHA(blob(epoch,path)) for epoch in ('1510278b9ad56b03273c6d6e2284b1360f57849c',PREVIOUS_CORE)} and after==SHA(blob(CORE,path))
+  path='app/hybrid_water/analytical_cde_calendar.py';prior_hash=a['identity']['hydraulic_vapor']['CDE_calendar_composition']['source_sha256'];current_hash=b['identity']['hydraulic_vapor']['CDE_calendar_composition']['source_sha256']
+  assert prior_hash in {SHA(blob(epoch,path)) for epoch in ('1510278b9ad56b03273c6d6e2284b1360f57849c',PREVIOUS_CORE)} and current_hash==SHA(blob(CORE,path))
  exact=types.FunctionType(publisher_equivalence.__code__,dict(publisher_equivalence.__globals__,Path=lambda value:value));pe=exact(old/'restart_publish.dll',new/'restart_publish.dll')
  return dict(status='ACTUAL_COMPLETE_UNSELECTED_FORTRAN_PROVIDER_OBJECTS_FLAGS_NATIVE_ABI_AND_PUBLISHER_POSTIMAGE_UNCHANGED',complete_Fortran={name:SHA(raw) for name,raw in before.items()},only_source_descriptor_and_publisher_identity_changes=changed,publisher_equivalence=pe,compiler_executions_in_reader=0,model_executions=0)
 
