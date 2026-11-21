@@ -40,6 +40,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
+ import initial_state_composition_verify as state_owner
+ return state_owner.guard_previous_source()
  complete_inverse()
  for name in PARSERS:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen original initialization observer changed'
@@ -52,6 +54,8 @@ def guard_previous_source():
 
 
 def strip_current_evidence(text):
+ import initial_state_composition_verify as state_owner
+ return state_owner.strip_current_evidence(text)
  assert text.count(PATTERN)<=1
  if '\n  original-reader:\n' in text:
   assert text.count('    timeout-minutes: 45\n')==1
@@ -60,11 +64,15 @@ def strip_current_evidence(text):
 
 
 def publication_dependencies_unchanged():
+ import initial_state_composition_verify as state_owner
+ return state_owner.publication_dependencies_unchanged()
  guard_previous_source()
  with inherited_scope():return literal('publication_dependencies_unchanged',prior_namespace())()
 
 
 def verify():
+ import initial_state_composition_verify as state_owner
+ return state_owner.verify()
  guard_previous_source()
  names=['HYDRAULIC_INITIAL_PRESSURE_QUALIFICATION.json',*[name+'.json' for name in RAW_NAMES]]
  for name in names:
