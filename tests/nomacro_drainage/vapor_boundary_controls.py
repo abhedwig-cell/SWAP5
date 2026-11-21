@@ -30,7 +30,7 @@ def main():
     attacks.append((role+('-witness-' if witness_only else '-domain-')+str(i),edits))
  for magic in (b'S5HVW003',b'S5HVC003',b'S5HSW004',b'S5HSC004',b'S5IOW001',b'S5IOC001',b'S5HBW004',b'S5HBC004',b'S5HBW005' if project.solute else b'S5HBC005'):
   attacks.append((magic.decode(),[(0,magic)]))
- q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),actual_BUILD_sha256=m.sha(build/'BUILD.json'),checkpoint_sha256=digest,accepted_model_days=0,compiler_executions=0,refusals=[],public_admission=False)
+ q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),actual_BUILD_sha256=m.sha(build/'BUILD.json'),checkpoint_sha256=digest,native_control_accepted_model_days=0,compiler_executions=0,refusals=[],public_admission=False)
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
  def worker(label,raw):
   out=a.output/label;out.mkdir();origin=out/'origin';receipt=m.h.verify_checkpoint(source,4,meta['binding'],origin);(origin/'macro.bin').write_bytes(raw)
@@ -58,6 +58,7 @@ def main():
   path='tests/nomacro_scheduled_subsurface/original_output_controls.py'
   assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==subprocess.check_output(['git','show','70bae8871ec71b3c0969a6628cae596354f9c2e8:'+path],cwd=ROOT)
   q['transactions']=inherited.transactions(build,a.reference_work,project,a.profile/'trajectory',a.output/'transactions')
+  q['external_transaction_worker_prepares']=3;q['external_transaction_commits']=1
   q['status']='ACTUAL_VAPOR_BOUNDARY_NATIVE5_49_TYPED_REFUSALS_AND_EXTERNAL_DISCARD_REPLAY_RECOVERY_PASS'
  except Exception as error:q.update(status='FAILED',error=repr(error));raise
  finally:save()
