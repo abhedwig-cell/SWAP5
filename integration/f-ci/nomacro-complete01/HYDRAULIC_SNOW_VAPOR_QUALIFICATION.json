@@ -1,0 +1,53 @@
+{
+  "status": "NEUTRAL_ORIGINAL_SNOW_ACTIVE_VAPOR_SOURCE_RAW_NATIVE_PASS_PENDING_ADMISSION",
+  "migration_class": "B_EXISTING_UNCHANGED_PROCESS_COMPOSITION",
+  "runtime": "6e77aeb829a45e1f1781a429f60e632ecaa316ea",
+  "parent_source": "8e27dd9eb0f633050d2d82d00d28992435c313cb",
+  "actual_previous_canonical": "49a0641cb836d044c14c7146761ccff480c2f262",
+  "scope": "Original SWSNOW1 active per-layer vapor for models8..11 including mixed7/8, explicit water/CDE, numeric heat, hysteresis0, NoFrost, primary drainage bottom6, dense daily original output. Original Snow equations and already qualified corrected PDI constitutive implementations unchanged. Separate native4 with literal qualified Snow terminal receipt phase and existing saturated-null-mode numerical search.",
+  "actual_Windows_full1096_contexts": 4,
+  "actual_Windows_short35_contexts": 12,
+  "actual_Ubuntu_short35_contexts": 4,
+  "actual_exact_cold_windows": 76,
+  "actual_native_checkpoints": 168,
+  "exact_CDE_private_native_stock_samples": 84,
+  "actual_compiled_native_refusals": 528,
+  "actual_Windows_external_transaction_contexts": 4,
+  "actual_frontend_controls": 72,
+  "actual_original_reader_startups": 4,
+  "accepted_original_reader_model_days": 0,
+  "actual_ubuntu_workflow_run": 44884187780,
+  "actual_ubuntu_source": "1a1f2bc339403e4202df8decc7b22d0f8adc573e",
+  "actual_ubuntu_both_jobs_success": true,
+  "physical_process_equations_changed": false,
+  "new_physical_water_store": false,
+  "native_interface_changed": true,
+  "mass_or_convergence_limits_changed": false,
+  "owning_absolute_water_and_CDE_limits": 1e-10,
+  "retained_failed_attempts": "Two original build-validation failures before model steps and two original240s partial runs with1acceptedday; wrong intermediate Snow phase was replaced by the exact already qualified end-of-day Snow receipt phase, preserving every-trial hydraulic step budget. Original failures kept in Windowsraw.",
+  "prior_qualified_Kelvin_and_model7_corrections_inherited": true,
+  "raw_records": {
+    "HYDRAULIC_SNOW_VAPOR_WINDOWS_RAW_V1": {
+      "bytes": 84540021,
+      "sha256": "5819dd2a62b50c519a7160cbb92f38e29408f33ee1098704b22e436f62e554ac",
+      "archive": "HYDRAULIC_SNOW_VAPOR_WINDOWS_RAW_V1.zip"
+    },
+    "HYDRAULIC_SNOW_VAPOR_UBUNTU_O0_RAW_V1": {
+      "bytes": 27020327,
+      "sha256": "5624a8fd9d9001a877d9b0a22957f34260b93cbe271032f6736bccf364a8e1ca",
+      "archive": "HYDRAULIC_SNOW_VAPOR_UBUNTU_O0_RAW_V1.zip"
+    },
+    "HYDRAULIC_SNOW_VAPOR_UBUNTU_O2_RAW_V1": {
+      "bytes": 27055816,
+      "sha256": "0a541498785e8872c875b15c672a2eb3285d18cac0b1169ba05968f612c7c5ca",
+      "archive": "HYDRAULIC_SNOW_VAPOR_UBUNTU_O2_RAW_V1.zip"
+    }
+  },
+  "independent_status": "INDEPENDENT_WINDOWS_UBUNTU_SNOW_VAPOR_FOUR_FULL_SIXTEEN_SHORT_76_COLD_168_NATIVE_84_CDE_STOCK_PASS",
+  "canonical_admission": false,
+  "whole_historical_family_closed": false,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}
