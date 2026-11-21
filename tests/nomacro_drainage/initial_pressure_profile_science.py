@@ -8,7 +8,7 @@ import model7_capacity_forensics as inherited
 from analytical_hydraulic_archives import SHA
 from initial_pressure_profile_source_inverse import BASE,CORE,PATH,SURFACES,git,complete_inverse
 READERS='e079d1554041c831cd0ab609835e2e79bf3c31a1'
-CODECS={'closed-vapor-cde':b'S5HBC005','saturated-vapor-cde':b'S5HVC003','nonhydrostatic-water':b'S5IOW001','legacy-zih-water':b'S5IOW001'}
+CODECS={'head5-undrained-cde':b'S5HBC005','closed-vapor-cde':b'S5HBC005','saturated-vapor-cde':b'S5HVC003','nonhydrostatic-water':b'S5IOW001','legacy-zih-water':b'S5IOW001'}
 PROVIDER={'functions.f90':'c33ee3145daf0f0276448433090128104890d2bf5f71d79146d98639e524a661','readswap.f90':'e6fc217798d3f0424641c61b92fb8831fcdeb78c19670def00695b82ab8e80fe','soilwater.f90':'d5926b6c30fba3177c261c9a24ef828dd9cd6b3dfb952b07ef00800ebd42415d','swap_base.f90':'af54d6c6eafd2954f228be9a50ba92e7cefa231658d34de247d5b3b68aa58dab'}
 
 
@@ -78,14 +78,14 @@ def audit(profile,reference,locations=None):
  for role,digest in meta['executable_sha256'].items():
   files=[p for p in (build/('day_'+role),build/('day_'+role+'.exe')) if p.is_file()];assert len(files)==1 and SHA(files[0].read_bytes())==digest
  result=ledger_cold(magic)(profile,meta,dict(q,own=q['cold']),build)
- expected,initial=initialized_heads((inputs/'swap.swp').read_text(encoding='cp1252'));lines=(profile/'trajectory/original/donor.stdout').read_text().splitlines();actual=next(list(map(float,line.split()[3:])) for line in lines if line.startswith('HYBRID_HYDRAULIC '));assert len(actual)==nodes and actual==expected,'Original supplied pressure profile was not initialized exactly'
+ text=(inputs/'swap.swp').read_text(encoding='cp1252');expected,initial=initialized_heads(text);from experimental_project import switches;selectors=switches(text);lines=(profile/'trajectory/original/donor.stdout').read_text().splitlines();actual=next(list(map(float,line.split()[3:])) for line in lines if line.startswith('HYBRID_HYDRAULIC '));assert len(actual)==nodes and actual==expected,'Original supplied pressure profile was not initialized exactly'
  rows=[json.loads(line) for line in (profile/'trajectory/daily.jsonl').read_text().splitlines()];samples=stocks=0
  for path in (profile/'trajectory').glob('accepted-column-1-day-*.zip'):
   day=int(path.name.split('-')[-1].split('.')[0])
   with zipfile.ZipFile(io.BytesIO(path.read_bytes())) as z:aux=z.read('macro.bin')
   assert aux[:8]==magic;samples+=1
   if q['kind']=='cde':
-   vapor=identity['hydraulic_vapor'];domain=[5 if magic==b'S5HBC005' else 3,nodes,vapor['numlay'],0,1,0,0,0,0,0,1,2,1,8 if magic==b'S5HBC005' else 6]+vapor['models']+[f if m>=8 else 0 for m,f in zip(vapor['models'],vapor['SWVAPOR'])];packed=struct.pack('<'+str(len(domain))+'i',*domain);assert aux[48:48+2*len(packed)]==packed+packed
+   vapor=identity['hydraulic_vapor'];domain=[5 if magic==b'S5HBC005' else 3,nodes,vapor['numlay'],0,1,0,0,0,0,0,1,2,selectors['SWDRA'],selectors['SWBOTB']]+vapor['models']+[f if m>=8 else 0 for m,f in zip(vapor['models'],vapor['SWVAPOR'])];packed=struct.pack('<'+str(len(domain))+'i',*domain);assert aux[48:48+2*len(packed)]==packed+packed
    saved=struct.unpack_from('<'+str(nodes+2)+'d',aux,48+2*len(packed));assert all(math.isfinite(v) and v>=0 for v in saved) and saved[-1]==rows[day-1]['solute_end_mg_cm2'];stocks+=1
  result.update(status='INDEPENDENT_ORIGINAL_PRESSURE_PROFILE_INITIAL_HEADS_SOURCE_FIXED_WATER_CDE_NATIVE_EXACT_COLD_PASS',producer=q['source'],kind=q['kind'],optimization=q['optimization'],case=case,exact_initial_pressure_nodes=nodes,initial_profile=initial,native_checkpoints=samples,exact_private_CDE_stocks=stocks,native_codec=magic.decode(),CDE_initial_stock=rows[0].get('solute_start_mg_cm2'),compiler_executions=0,model_executions=0,canonical_admission=False)
  return result
