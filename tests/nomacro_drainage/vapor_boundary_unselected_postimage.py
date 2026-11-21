@@ -1,5 +1,5 @@
 """Build exact old native3/4 inputs and compare full compiled source postimages."""
-import argparse,ast,json,subprocess,sys,time,types
+import argparse,ast,copy,json,subprocess,sys,time,types
 from contextlib import ExitStack
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
@@ -8,6 +8,16 @@ from analytical_hydraulic_archives import Archive,SHA
 from calendar_evidence import differences
 from calendar_publisher import publisher_equivalence
 import original_output_matrix as original
+
+
+def identity_changes(before,actual):
+ projected=copy.deepcopy(actual);extra=[]
+ if 'cde_native_receipt' in before:
+  left=before['cde_native_receipt']['optional_native_prefixes'];right=projected['cde_native_receipt']['optional_native_prefixes']
+  assert set(right)==set(left)|{'S5HBC005'} and 'S5HBC005' not in left
+  assert right.pop('S5HBC005')=='48 + 8*(14+2*actual_layers), checked duplicated bounded drainage/bottom vapor domain'
+  extra=['cde_native_receipt.optional_native_prefixes.S5HBC005']
+ return differences(before,projected)+extra
 
 
 def main():
@@ -29,7 +39,7 @@ def main():
    actual,_=original.m.validate_bundle(build,a.reference_work,project);before=json.loads((old/'BUILD.json').read_text())
    for field in ('donor_objects','donor_flags','kernel_flags'):assert before['identity'][field]==actual['identity'][field]
    old_sources={file.name:file.read_bytes().replace(b'\r\n',b'\n') for file in old.glob('*.f90')};new_sources={file.name:file.read_bytes().replace(b'\r\n',b'\n') for file in build.glob('*.f90')};assert old_sources==new_sources
-   q['complete_generated_Fortran']={name:SHA(raw) for name,raw in new_sources.items()};q['identity_changes']=differences(before['identity'],actual['identity']);q['actual_BUILD_sha256']=SHA((build/'BUILD.json').read_bytes())
+   q['complete_generated_Fortran']={name:SHA(raw) for name,raw in new_sources.items()};q['identity_changes']=identity_changes(before['identity'],actual['identity']);q['actual_BUILD_sha256']=SHA((build/'BUILD.json').read_bytes())
    exact=types.FunctionType(publisher_equivalence.__code__,dict(publisher_equivalence.__globals__,Path=lambda path:path));q['publisher_equivalence']=exact(old/'restart_publish.dll',build/'restart_publish.dll')
    # For both old prefixes the new branch is unreachable, and the entire old
    # decoder function remains exact after removing that single literal branch.
