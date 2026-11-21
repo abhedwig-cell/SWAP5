@@ -16,7 +16,7 @@ def main():
  a=p.parse_args();complete_inverse();a.output.mkdir();prior=json.loads((a.profile/'RESULT.json').read_text());assert 'PASS_NOT_ADMITTED' in prior['status']
  source=git('rev-parse','HEAD').decode().strip()
  for sha in (source,prior['source']):assert not git('diff',CORE,sha,'--','app','src','tools/solute','tools/vq','reference')
- old=Path(prior['input_root']);before=(old/'swap.swp').read_text(encoding='cp1252');after=(a.input/'swap.swp').read_text(encoding='cp1252');assert assignment(before,'SWINCO',2)==after
+ old=Path(prior['input_root']);before=(old/'swap.swp').read_text(encoding='cp1252');after=(a.input/'swap.swp').read_text(encoding='cp1252');assert assignment(after,'SWINCO',1)==before
  for name in prior['inventory']:
   if name!='swap.swp':assert (old/name).read_bytes()==(a.input/name).read_bytes()
  project=original.m.e.load(a.input,original_output=True,time_step_policy='original-adaptive-event-closure-v1');assert original.m.e.switches(after)['SWINCO']==2
