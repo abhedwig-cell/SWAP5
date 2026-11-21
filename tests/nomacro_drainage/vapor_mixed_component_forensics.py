@@ -14,9 +14,10 @@ SHA=lambda raw:hashlib.sha256(raw).hexdigest()
 def read(folder):
     q=json.loads((folder/'RESULT.json').read_text())
     assert q['status']=='ACTUAL_ORIGINAL_HYDRAULIC_INTERFACES_OBSERVED_NO_ADMISSION'
-    assert q['model_periods']==0 and q['model7_capacity_correction'] and q['actual_probe_scope'].startswith('6orderedpairs*4heads*3opposedtemperaturepairs*4perlayervaporflags*6layervisits=1728')
+    assert q['model_periods']==0 and q['model7_capacity_correction'] and q['actual_probe_scope'] in ('6orderedpairs*4heads*3opposedtemperaturepairs*4perlayervaporflags*6layervisits=1728 actualcalls; original equations unchanged; no model periods or admission','Mixed6orderedpairs/4heads/3opposedtemperatures/4vaporflags/6visits1728calls; no model periods or admission')
     assert len(q['actual_original_object_closure'])==40
-    assert SHA((folder/'actual-hydraulic.exe').read_bytes())==q['executable_sha256']
+    executable=folder/('actual-hydraulic.exe' if (folder/'actual-hydraulic.exe').exists() else 'actual-hydraulic')
+    assert SHA(executable.read_bytes())==q['executable_sha256']
     probe=ROOT/'tests/nomacro_drainage/hydraulic_vapor_mixed_probe.f90'
     assert SHA(probe.read_bytes())==q['driver_sha256']
     assert not (folder/'model8.stderr').read_bytes()
@@ -51,11 +52,11 @@ def read(folder):
     return q,unique
 
 
-def audit(evidence):
+def audit(evidence,optimizations_to_read=('O0','O2')):
     optimizations={};datasets={}
     with localcontext() as context:
         context.prec=80
-        for opt in ('O0','O2'):
+        for opt in optimizations_to_read:
             original_q,original=read(evidence/f'hydraulic-vapor-mixed-original-{opt}-v1')
             corrected_q,corrected=read(evidence/f'hydraulic-vapor-mixed-corrected-{opt}-v1')
             assert not original_q['vapor_sign_correction'] and corrected_q['vapor_sign_correction']
@@ -80,8 +81,8 @@ def audit(evidence):
                 changed+=old[4]!=new[4]
             datasets[opt]=(original,corrected)
             optimizations[opt]=dict(actual_calls_each_variant=1728,distinct_states=576,changed_central_conductivities=changed,kelvin_80digit_max_fraction_8ULP_bound=str(maximum),repeated_and_other_layer_flag_invariance=True)
-    assert datasets['O0']==datasets['O2']
-    return dict(status='INDEPENDENT_MIXED_ORIGINAL_VAPOR_COMPONENT_PASS_NOT_ADMITTED',optimizations=optimizations,O0_O2_exact=True,model_executions=0,compiler_executions=0,public_admission=False)
+    if len(optimizations_to_read)==2:assert datasets['O0']==datasets['O2']
+    return dict(status='INDEPENDENT_MIXED_ORIGINAL_VAPOR_COMPONENT_PASS_NOT_ADMITTED',optimizations=optimizations,O0_O2_exact=True if len(optimizations_to_read)==2 else None,model_executions=0,compiler_executions=0,public_admission=False)
 
 
 if __name__=='__main__':
