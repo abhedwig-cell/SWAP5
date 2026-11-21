@@ -65,7 +65,10 @@ def initial_source_inverse():
 def prior_source_projection():
  complete_inverse()
  import default_model_grammar_source_inverse as previous
+ import signed_hydraulic_inherited_owner as inherited
+ from snow_vapor_inherited_owner import checked_initial_reader
  old_root,old_git,old_initial=previous.ROOT,previous.git,previous.initial_source_inverse
+ old_factory=inherited.checked_initial_reader
  for path in CI:
   raw=norm((ROOT/path).read_bytes()).decode();assert raw.count(PATTERN)<=1 and raw.replace(PATTERN,'').encode()==blob(PARENT,path)
  assert norm((ROOT/WORKFLOW).read_bytes())==blob('1a1f2bc339403e4202df8decc7b22d0f8adc573e',WORKFLOW)
@@ -74,5 +77,8 @@ def prior_source_projection():
   if args==('diff',previous.RUNTIME,'--',*SURFACES):complete_inverse();return b''
   return git(*args)
  previous.ROOT=CheckedParent();previous.git=checked_git;previous.initial_source_inverse=initial_source_inverse
+ inherited.checked_initial_reader=checked_initial_reader
  try:yield
- finally:previous.ROOT=old_root;previous.git=old_git;previous.initial_source_inverse=old_initial
+ finally:
+  previous.ROOT=old_root;previous.git=old_git;previous.initial_source_inverse=old_initial
+  inherited.checked_initial_reader=old_factory
