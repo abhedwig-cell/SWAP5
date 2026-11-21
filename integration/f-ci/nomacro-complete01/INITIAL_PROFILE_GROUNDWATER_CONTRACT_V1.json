@@ -100,5 +100,23 @@
   "whole_historical_completion": "PARTIAL",
   "whole_scientific_equivalence": "NOT_QUALIFIED",
   "global_family_and_gap_counts": "UNKNOWN",
-  "RC3_changed": false
+  "RC3_changed": false,
+  "parent_route_map": "INITIAL_PROFILE_GROUNDWATER_PARENT_ROUTES_V1.json",
+  "actual_final_native_codecs": [
+    "S5EGW001",
+    "S5GAH001",
+    "S5GAO001",
+    "S5GCH001",
+    "S5GCH003",
+    "S5GIH001",
+    "S5GIH003",
+    "S5GSC001",
+    "S5GSI000",
+    "S5GSI003",
+    "S5GWC001",
+    "S5IGW001",
+    "S5WGI000",
+    "S5WGR001"
+  ],
+  "native_schema_inference": "Always use actual public auxiliary_magic plus complete emitted bytes. The measured daily CDE final groundwater codec S5GWC001 differs from its original_output metadata base S5IOC001; preserve both, no codec/value rebinding."
 }
