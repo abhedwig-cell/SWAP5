@@ -23,7 +23,7 @@ def main():
     source=a.profile/'trajectory/accepted-column-1-day-532.zip';digest=m.sha(source)
     with zipfile.ZipFile(source) as archive:good=archive.read('macro.bin')
     assert good[:8]==vapor['native_codec'].encode()
-    values=[3,project.nodes,vapor['numlay'],0,int(project.solute),0,0,0,0,0,1,2,1,6]+vapor['models']+vapor['SWVAPOR']
+    values=[3,project.nodes,vapor['numlay'],0,int(project.solute),0,0,0,0,0,1,2,1,6]+vapor['models']+[flag if model in (8,9,10,11) else 0 for model,flag in zip(vapor['models'],vapor['SWVAPOR'])]
     header=struct.pack('<'+str(len(values))+'i',*values);assert good.count(header+header)==1
     domain=good.index(header+header);width=len(header)
     micros=[]
