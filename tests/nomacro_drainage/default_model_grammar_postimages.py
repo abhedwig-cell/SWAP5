@@ -65,7 +65,7 @@ def main():
             for name,oldinputs,oldbuild,oldwarm,provenance in baseline(ROOT/'integration/f-ci/nomacro-complete01',a.optimization,stack):
                 out=a.output/name;out.mkdir();retained=recovered.get(name)
                 if retained:
-                    inputs=Path(retained['input_root']);assert m.e.inventory(inputs)==retained['input_inventory']
+                    inputs=Path(retained['input_root']);assert json.loads(json.dumps(m.e.inventory(inputs)))==retained['input_inventory']
                 else:
                     inputs=out/'input';inputs.mkdir()
                     for file in oldinputs.glob('*'):
