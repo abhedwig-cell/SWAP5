@@ -32969,11 +32969,11 @@
       "independent": "ANALYTICAL_WINDOWS_CDE_RAW_SCIENCE_INDEPENDENT_V1.json"
     },
     "windows_water": {
-      "completed_full1096": 12,
-      "completed_short35": 16,
-      "remaining_contexts": 8,
-      "local_batch": "ANALYTICAL_REMAINING_WATER_BATCH_V1.py",
-      "session": 47199
+      "completed_full1096": 20,
+      "completed_short35": 20,
+      "exact_cold_windows": 200,
+      "raw_record": "HYDRAULIC_ANALYTICAL_WINDOWS_WATER_RAW_V1.json",
+      "independent": "ANALYTICAL_WINDOWS_WATER_RAW_SCIENCE_INDEPENDENT_V1.json"
     },
     "original_exclusions": [
       "Original model3 plus oxygen2 stops at day524 after523 committed days; original explicitly unimplemented combination. Earlyfuturecroprefusal now checked24roles withoutmodel/compiler.",
@@ -32982,6 +32982,15 @@
     "phase_correspondence": "Exact original double subtraction/addition handles sub-ULP canopy loss; allwater/CDEmassgatesunchanged.",
     "ubuntu": "Actual run44851861883 on a7d7fba5fa1e07aeeedbc8a1042665c9a900fecc, jobs136684828407O0/136684828190O2 running",
     "public_admission": false,
-    "whole_historical_family_closed": false
+    "whole_historical_family_closed": false,
+    "model7_reuse": {
+      "fresh_short35": 4,
+      "fresh_exact_cold_windows": 12,
+      "fresh_full_periods": 0,
+      "raw_record": "HYDRAULIC_ANALYTICAL_POSTIMAGES_RAW_V1.json",
+      "exact_complete_Fortran_and_provider_flags": true,
+      "compiled_native_refusals_reused": 212,
+      "unselected_dispatches_proved_unchanged": 8
+    }
   }
 }

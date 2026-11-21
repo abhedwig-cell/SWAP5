@@ -7,6 +7,7 @@ from analytical_hydraulic_science import CASES,SHA,source,mapped
 from analytical_hydraulic_archives import Archive
 from analytical_hydraulic_forensics import audit
 from model7_search_science import Store
+from analytical_interface_reuse import compare as interface_compare
 
 
 def read(proof):
@@ -15,6 +16,7 @@ def read(proof):
         store=Archive(proof,'HYDRAULIC_ANALYTICAL_WINDOWS_WATER_RAW_V1',stack)
         assert store.record['status']=='ACTUAL_ANALYTICAL_WINDOWS_WATER_RAW_FRONTEND_REFUSALS_PRESERVED_NO_ADMISSION'
         projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'))
+        admitted=Store(proof,'HYDRAULIC_MODEL7_SEARCH_WINDOWS_RAW_V1',stack);old_projection=json.loads(admitted.get('COMPILED_PROJECTION_V1.json'))
         provider=Store(proof,'FROST_IMPLICIT_WINDOWS_SUPPORT_RAW_ARCHIVE',stack)
         class Reference:
             def __truediv__(self,name):
@@ -26,6 +28,7 @@ def read(proof):
         assert len(controls['checks'])==24 and controls['compiler_executions']==controls['model_executions']==0
         assert controls['source']=='70589c1f69649fdb5919b109e498aec2cf6f3fa9'
         for opt in ('O0','O2'):
+            prior=json.loads(admitted.get(f'profiles/model7-search-daily-water-short-{opt}-v1/RESULT.json'));baseline=admitted.view(old_projection[prior['build_root']]['archive_prefix'])
             for label,models,oxygen in CASES:
                 for phase in ('short','full'):
                     profile=store.view(f'profiles/analytical-{label}-daily-water-{phase}-{opt}-v1')
@@ -34,6 +37,7 @@ def read(proof):
                     item=projection[q['build_root']];build=store.view(item['archive_prefix'])
                     assert SHA((build/'BUILD.json').read_bytes())==item['actual_BUILD_sha256']
                     result=audit(profile,Reference(),locations=dict(build=build,inputs=mapped(store,q['input_root'])))
+                    result['compiled_interface_reuse']=interface_compare(build,baseline,models)
                     assert result['days']==(35 if phase=='short' else 1096) and result['status']=='INDEPENDENT_ANALYTICAL_HYDRAULIC_SOURCE_BUDGET_NATIVE_USER_OUTPUT_PASS'
                     observations.append(dict(case=label,phase=phase,**result))
     assert len(observations)==40 and sum(item['days']==1096 for item in observations)==20

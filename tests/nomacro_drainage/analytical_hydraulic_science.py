@@ -12,6 +12,7 @@ from analytical_hydraulic_archives import Archive
 from analytical_hydraulic_forensics import audit
 from hydraulic_mixed_analytical_read import audit as mixed_audit
 from model7_search_science import Store
+from analytical_interface_reuse import compare as interface_compare
 
 ROOT=Path(__file__).resolve().parents[2]
 RUNTIME='75d04a1245dde4388d011ad7d47a16c304377a21'
@@ -58,9 +59,11 @@ def windows_cde(proof):
             def __truediv__(self,name):
                 assert name=='build' or name.startswith('build/')
                 return provider.view('original-provider-build') if name=='build' else provider.view('original-provider-build/'+name[6:])
+        admitted=Store(proof,'HYDRAULIC_MODEL7_SEARCH_WINDOWS_RAW_V1',stack);old_projection=json.loads(admitted.get('COMPILED_PROJECTION_V1.json'))
         sources={version:source(store,'profiles/analytical-trial-actual-source-'+version) for version in ('v1','v2')}
         for opt in ('O0','O2'):
             components[opt]=mixed_audit(store.view('profiles/hydraulic-mixed-layers-original-'+opt+'-v1'),store.view('profiles/hydraulic-mixed-layers-corrected-'+opt+'-v1'))
+            prior=json.loads(admitted.get(f'profiles/model7-search-daily-cde-short-{opt}-v1/RESULT.json'));baseline=admitted.view(old_projection[prior['build_root']]['archive_prefix'])
             for label,models,oxygen in CASES:
                 version='v2' if label in ('8','9') else 'v1'
                 for phase in ('short','full'):
@@ -72,7 +75,7 @@ def windows_cde(proof):
                     for key in ('SWKIMPL','SWHYST','SWFROST','SWSNOW','SWMACRO'):
                         assert re.findall(r'(?mi)^[ \t]*'+key+r'\s*=\s*(\d+)',control)==['0']
                     if max(models)>=8:assert re.findall(r'(?mi)^[ \t]*SWVAPOR\s*=\s*([^!\r\n]+)',control)[0].split()==['0','0']
-                    result=audit(profile,Reference(),locations=dict(build=build,inputs=inputs))
+                    result=audit(profile,Reference(),locations=dict(build=build,inputs=inputs));result['compiled_interface_reuse']=interface_compare(build,baseline,models)
                     assert result['days']==(35 if phase=='short' else 1096) and result['status']=='INDEPENDENT_ANALYTICAL_HYDRAULIC_SOURCE_BUDGET_NATIVE_USER_OUTPUT_PASS'
                     observations.append(dict(case=label,phase=phase,**result))
             # Original model3 + oxygen2 is an explicit original nonimplementation.

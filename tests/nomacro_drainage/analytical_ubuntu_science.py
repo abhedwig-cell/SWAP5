@@ -5,12 +5,15 @@ from analytical_hydraulic_archives import Archive
 from analytical_hydraulic_science import CASES,SHA,source
 from analytical_hydraulic_forensics import audit
 from hydraulic_mixed_analytical_read import audit as mixed_audit
+from analytical_interface_reuse import compare as interface_compare
+from model7_search_science import Store
 
 
 def read(proof):
     observations=[];sources={};components={}
     with ExitStack() as stack:
         for opt in ('O0','O2'):
+            admitted=Store(proof,'HYDRAULIC_MODEL7_SEARCH_UBUNTU_'+opt+'_RAW_V1',stack);old_projection=json.loads(admitted.get('COMPILED_PROJECTION_V1.json'))
             current=Archive(proof,'HYDRAULIC_ANALYTICAL_UBUNTU_'+opt+'_RAW_V1',stack)
             sources[opt]=source(current,'source');assert sources[opt]=='a7d7fba5fa1e07aeeedbc8a1042665c9a900fecc'
             prefix='analytical-hydraulic-family/'
@@ -26,6 +29,7 @@ def read(proof):
                     return reference if name=='build' else reference/name[6:]
             for label,models,oxygen in CASES:
                 for kind in ('water','cde'):
+                    prior=json.loads(admitted.get('model7-capacity-search/'+kind+'-short/RESULT.json'));baseline=admitted.view(old_projection[prior['build_root']]['archive_prefix'])
                     for phase in ('short','full'):
                         profile=current.view(prefix+label+'-'+kind+'-'+phase);q=json.loads((profile/'RESULT.json').read_text())
                         assert q['optimization']==opt and q['kind']==kind and q['layer_models']==models and q['oxygen_policy']==oxygen and q['source']==sources[opt]
@@ -33,6 +37,7 @@ def read(proof):
                         assert SHA((build/'BUILD.json').read_bytes())==item['actual_BUILD_sha256']
                         inputs=current.view(q['input_root'].split('/proof/',1)[1])
                         result=audit(profile,Reference(),locations=dict(build=build,inputs=inputs))
+                        result['compiled_interface_reuse']=interface_compare(build,baseline,models)
                         assert result['days']==(35 if phase=='short' else 1096) and result['status']=='INDEPENDENT_ANALYTICAL_HYDRAULIC_SOURCE_BUDGET_NATIVE_USER_OUTPUT_PASS'
                         observations.append(dict(case=label,kind=kind,phase=phase,**result))
     assert len(observations)==80 and sum(item['days']==1096 for item in observations)==40
