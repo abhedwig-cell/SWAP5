@@ -42,6 +42,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
+ import initial_pressure_profile_verify as initialization
+ return initialization.guard_previous_source()
  complete_inverse()
  for name in PARSERS:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen vapor boundary scientific observer changed'
@@ -53,15 +55,19 @@ def guard_previous_source():
  return True
 
 
-def strip_current_evidence(text):return literal('strip_current_evidence',dict(vars(previous)))(text)
+def strip_current_evidence(text):import initial_pressure_profile_verify as initialization;return initialization.strip_current_evidence(text);return literal('strip_current_evidence',dict(vars(previous)))(text)
 
 
 def publication_dependencies_unchanged():
+ import initial_pressure_profile_verify as initialization
+ return initialization.publication_dependencies_unchanged()
  guard_previous_source()
  with inherited_scope():return literal('publication_dependencies_unchanged',prior_namespace())()
 
 
 def verify():
+ import initial_pressure_profile_verify as initialization
+ return initialization.verify()
  guard_previous_source()
  paths=['HYDRAULIC_VAPOR_BOUNDARY_QUALIFICATION.json',*[name+'.json' for name in RAW_NAMES]]
  for name in paths:
