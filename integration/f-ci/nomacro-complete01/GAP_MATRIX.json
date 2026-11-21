@@ -1673,18 +1673,18 @@
       {
         "id": "vapor",
         "function": "Per-layer SWVAPOR1",
-        "gap_classification": "MISSING_IMPLEMENTATION",
+        "gap_classification": "MISSING_COMPOSITION",
         "historical_availability": {
           "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:618",
           "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:724",
           "supported": "Per-layer0/1 original reader; physical constitutive composition and heat coupling need exact audit"
         },
-        "current_availability": "Public reader rejects any nonzero layer. Source/process/native/heat dependency closure not qualified.",
+        "current_availability": "Bounded experimental per-layer8..11 daily water/CDE route implemented, Kelvin sign reference correction and existing complete dry-end micro/O2/top lookup carry composed. Windows8 homogeneous full1096/56cold independentlyPASS; mixed/Ubuntu batch active, no public admission.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
-        "missing_composition_or_guard": "Public reader rejects any nonzero layer. Source/process/native/heat dependency closure not qualified.",
-        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "missing_composition_or_guard": "Remaining broad thermal/frost/hysteresis/AGE/boundary domains unqualified; bounded coupled raw/public/canonical admission still pending.",
+        "evidence_status": "PARTIAL_NATIVE3_COUPLED_QUALIFICATION_NOT_ADMITTED",
         "user_interest": "Medium; drying and thermal profiles",
-        "remaining_effort": "High/UNKNOWN; no broad new architecture",
+        "remaining_effort": "Finish bounded active campaign and public exact-source owner; broader vapor compositions UNKNOWN",
         "batch": "constitutive"
       },
       {
