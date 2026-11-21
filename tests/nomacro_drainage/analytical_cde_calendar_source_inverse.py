@@ -122,6 +122,23 @@ def prior_vapor_frontend(store):
  finally:calendar.input_context=saved
 
 
+def prior_analytical_frontend(store):
+ import analytical_calendar_records as records
+ import ordinary_pond_verify as ordinary
+ path='tests/nomacro_drainage/analytical_calendar_records.py';raw=blob(BASE,path)
+ assert norm((ROOT/path).read_bytes())==raw
+ nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='frontend'];assert len(nodes)==1
+ namespace=dict(vars(records));exec(compile(ast.Module(body=nodes,type_ignores=[]),path,'exec'),namespace)
+ saved=ordinary.ROOT
+ # The unchanged historical observer inspects only this already inverted
+ # Python selector source. Archived inputs, Git and numerical bodies stay actual.
+ class PriorSelectorRoot:
+  def __truediv__(self,path):return SourceFile(str(path)) if str(path)=='app/hybrid_water/model7_terminal_water.py' else saved/path
+ ordinary.ROOT=PriorSelectorRoot()
+ try:return namespace['frontend'](store)
+ finally:ordinary.ROOT=saved
+
+
 @contextmanager
 def prior_source_projection():
  complete_inverse()
@@ -129,14 +146,18 @@ def prior_source_projection():
  import initial_state_composition_science as science
  import vapor_boundary_records as records
  import vapor_boundary_verify as boundary
+ import analytical_calendar_records as analytical_records
+ import analytical_calendar_verify as analytical_verify
  saved=(state.ROOT,state.complete_inverse,state.CheckedParentRoot,state.initial_parent_source_union)
  saved_science_inverse=science.complete_inverse
  saved_frontends=(records.frontend,boundary.frontend)
+ saved_analytical_frontends=(analytical_records.frontend,analytical_verify.frontend)
  class CheckedParentRoot(saved[2]):
   def __truediv__(self,path):return SourceFile(str(path)) if str(path) in CHANGED else super().__truediv__(path)
  state.ROOT=CheckedSourceRoot();state.complete_inverse=state_parent_complete_inverse;state.CheckedParentRoot=CheckedParentRoot;state.initial_parent_source_union=state_parent_source_union
  science.complete_inverse=state_parent_complete_inverse
  records.frontend=boundary.frontend=prior_vapor_frontend
+ analytical_records.frontend=analytical_verify.frontend=prior_analytical_frontend
  # Only checked Python/workflow source reads are projected. Real HEAD, raw
  # paths, producer identities, native payloads and original inputs stay actual.
  try:
@@ -145,3 +166,4 @@ def prior_source_projection():
   state.ROOT,state.complete_inverse,state.CheckedParentRoot,state.initial_parent_source_union=saved
   science.complete_inverse=saved_science_inverse
   records.frontend,boundary.frontend=saved_frontends
+  analytical_records.frontend,analytical_verify.frontend=saved_analytical_frontends
