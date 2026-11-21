@@ -1501,7 +1501,7 @@
     "next": "Separate explicit evaporation-age/dry-state semantics and qualified state owner; retain actual failure and original equations."
   },
   "coverage": {
-    "canonical_reconciled": "383526abddeb06ea61fe31fa7e342ebbd8a5c43d",
+    "canonical_reconciled": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2",
     "authority": "This object extends existing GAP_MATRIX; STATUS.json remains sole recovery record. Existing26boundedfamily rows and original_integer_reader_calls are inherited, not recounted as full closure.",
     "denominator_status": "INCOMPLETE_VALID_CONFIGURATION_CONSTRAINT_RECONCILIATION",
     "full_historical_families_closed": "UNKNOWN",
@@ -1524,7 +1524,7 @@
           "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/headcalc.f90:208",
           "supported": "SWKIMPL0/1 and means1..6, original explicit limits retained"
         },
-        "current_availability": "Ordinaryboundedimplicit admittedPR1759; primaryextended admittedPR1766 actual21fce9bc6 withcleanregisteredpublicownerPASS1023.3876902s. Separate secondary-only zero-pond switch correctionactualruntimeAEC independentlypasses8full1096+56cold/18Windows short/portable currentpostimages; sourceadmission/canonicalpending. Wholefamily closureUNKNOWN.",
+        "current_availability": "Ordinary bounded implicit PR1759, primary extended PR1766 and secondary-only pond PR1767/d785e2 actually admitted. Later bounded Snow/Frost state compositions are admitted separately. Implicit AGE remains hard-refused for its retained dry surface moment, and original examined Ksat is explicitly unimplemented.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
         "missing_composition_or_guard": "Separate implicit AGE dryout and full mean6/history wetdry blockers retain their own rows.",
         "evidence_status": "BOUNDED_CANONICALLY_ADMITTED_WHOLE_NOT_QUALIFIED",
@@ -1662,19 +1662,23 @@
       {
         "id": "alternative-hydraulic",
         "function": "Alternative constitutive models2..12",
-        "gap_classification": "NUMERICAL_FAILURE",
+        "gap_classification": "MISSING_COMPOSITION",
         "historical_availability": {
           "reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:369",
           "scalar_and_per_layer_range": "1..12, original exponential2/testing, bimodal3, PDI4..11, RIA12",
           "dispatch": "MOD_MvG_functions.f90 branches12 at325/455/614/818; RIA_Reader readswap556, original reader rejects RIA with hysteresis."
         },
-        "current_availability": "Bounded model2 PASS; existing models3/5/6/7/9/11 FAIL and4/8/10 CENSOR. Reuse BLOCK_I evidence; not mere guards. The earlier BLOCK_I inventory omitted reader-supported RIA12; exact RIA public/state admission remains UNKNOWN and requires source audit, not automatic failure classification.",
+        "current_availability": "Bounded explicit analytical models3..11 and mixed1/7,7/3 admitted PR1778, with earlier model2/model7 owners preserved. Later explicit vapor and calendars have separate bounded receipts. Old BLOCK_I FAIL/CENSOR observations are retained as historical cases; they do not describe blanket current unavailability of those models.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
-        "missing_composition_or_guard": "Bounded model2 PASS; existing models3/5/6/7/9/11 FAIL and4/8/10 CENSOR. Reuse BLOCK_I evidence; not mere guards.",
-        "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
+        "missing_composition_or_guard": "RIA12 public/state domain remains unqualified; model3 with oxygen2 original day524 explicitly unsupported remains a reference defect. Implicit analytical alternatives and unsupported crossproducts are not inferred.",
+        "evidence_status": "BOUNDED_ACTUAL_ANALYTICAL_ADMISSION_RECEIPT_WITH_REMAINING_DOMAINS_OPEN",
         "user_interest": "Medium; specialized original soil projects",
         "remaining_effort": "High/UNKNOWN until each existing failure classified",
-        "batch": "constitutive"
+        "batch": "constitutive",
+        "other_confirmed_classifications": [
+          "REFERENCE_DEFECT"
+        ],
+        "authority": "integration/f-ci/nomacro-complete01/HYDRAULIC_ANALYTICAL_MERGE_RECEIPT_V1.json"
       },
       {
         "id": "vapor",
@@ -1685,9 +1689,9 @@
           "dispatch": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:724",
           "supported": "Per-layer0/1 original reader; physical constitutive composition and heat coupling need exact audit"
         },
-        "current_availability": "Bounded experimental KW0 numericalheat/cal2 NoSnow/NoFrost/hys0 originaldailywater/CDE per-layer8..11 plus existing7 composition implemented.64unique full1096/448exactcold acrossWindows/Ubuntu independentlyPASS; Python private CDE stock offset fixed without repeating completed full periods. Public35source/raw owner prepared; actual admission pending.",
+        "current_availability": "Bounded explicit active per-layer vapor, later Snow/vapor, drainage/BOT5/6/8 and water calendars actually admitted; analytical CDE calendars are included in actual merged PR1787 with canonical readonly receipt pending. AGE/implicit/Frost and other unqualified crossproducts remain outside scope.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
-        "missing_composition_or_guard": "Remaining broad thermal/frost/hysteresis/AGE/boundary domains unqualified; bounded coupled raw/public/canonical admission still pending.",
+        "missing_composition_or_guard": "Retain remaining process/state restrictions; do not infer whole family closure from the current explicit analytical/vapor receipts.",
         "evidence_status": "SOURCE_BOUND_RAW_64FULL_448COLD_PASS_PUBLIC_CANONICAL_ADMISSION_PENDING",
         "user_interest": "Medium; drying and thermal profiles",
         "remaining_effort": "Finish actualclean35public/source/raw/inherited/publicationcontrols and exactheadCI/canonical admission. Broader vapor thermal/frost/hysteresis/AGE/boundary configurations remain open/UNKNOWN.",
@@ -1705,13 +1709,17 @@
           ],
           "supported": "Reachable original domains must respect original SWDIVD/solute reader restrictions"
         },
-        "current_availability": "Bounded water/drained frost admitted; closed/front/chemical failures and state compositions remain; do not unguard proven strict failures.",
+        "current_availability": "Bounded explicit and implicit ordinary Frost water/CDE admitted PR1775/1776; pressure/Frost12-context extension is included in actual merged PR1787 with canonical readonly receipt pending. Invalid/fully closed original Frost geometry, non-daily output, AGE and other unqualified combinations remain open.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
         "missing_composition_or_guard": "Bounded water/drained frost admitted; closed/front/chemical failures and state compositions remain; do not unguard proven strict failures.",
         "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
         "user_interest": "Medium/high for cold-season projects",
         "remaining_effort": "High/UNKNOWN; preserve current frost authority",
-        "batch": "later"
+        "batch": "later",
+        "other_confirmed_classifications": [
+          "MISSING_COMPOSITION"
+        ],
+        "retained_failure_surface": "Previous closed/front strict failures remain preserved; newly admitted primary drained dense daily CDE contexts do not waive or generalize them."
       },
       {
         "id": "osmotic-comment-only",
@@ -1788,6 +1796,39 @@
         "evidence_status": "ACTUAL_CANONICAL_SOURCE_RAW_NATIVE_OWNER_PASS",
         "remaining_effort": "None within this bounded block; other original Snow interactions UNKNOWN.",
         "batch": "ordinary-snow-undrained"
+      },
+      {
+        "id": "original-bottom9-explicit",
+        "function": "Original paired prescribed bottom head and flux, SWBOTB9/SWKIMPL0",
+        "gap_classification": "MISSING_IMPLEMENTATION",
+        "historical_availability": {
+          "reader": "Pinned SWAP.ZIP/readswap986..1006, DATE9A/HBOT9 and DATE9B/QBOT9",
+          "dispatch": "Pinned BoundBottom143..153 and HeadCalc153,549,595",
+          "supported": true
+        },
+        "current_availability": "Public experimental lower-boundary domain excludes9. Original explicit implementation exists; current strict day-kernel boundary/storage/receipt/native coupling is not qualified.",
+        "implementation_completeness": "ORIGINAL_PROCESS_PRESENT_CURRENT_COUPLING_UNQUALIFIED",
+        "missing_composition_or_guard": "Last node is prescribed from both h/q schedules and excluded from solved unknowns; total storage/flux consistency and complete final-node state must be independently qualified before exposing it.",
+        "evidence_status": "SOURCE_DISCOVERY_ONLY_NO_MODEL_OR_COMPILER",
+        "user_relevance": "Original projects using paired measured head/flux boundary cannot currently load.",
+        "remaining_effort": "Medium-to-large: inspect current boundary/storage interface, implement bounded explicit coupling and qualify independent mass/native/reference behavior.",
+        "authority": "integration/f-ci/nomacro-complete01/ORIGINAL_BOT9_EXPLICIT_IMPLICIT_SOURCE_DISCOVERY_V1.json"
+      },
+      {
+        "id": "original-bottom9-implicit",
+        "function": "Original SWBOTB9/SWKIMPL1 crossdomain",
+        "gap_classification": "OUT_OF_SCOPE",
+        "historical_availability": {
+          "dispatch": "Pinned original HeadCalc665 swap_error swbotb=9 AND swkimpl=1 not yet implemented",
+          "supported": false
+        },
+        "current_availability": "Hard refusal retained; original explicitly unimplemented crossdomain is outside requested historically supported extent.",
+        "implementation_completeness": "ORIGINAL_EXPLICITLY_UNIMPLEMENTED",
+        "missing_composition_or_guard": null,
+        "evidence_status": "PINNED_ORIGINAL_HARD_ERROR_VERIFIED_NO_MODEL",
+        "user_relevance": "Avoid claiming an unsupported original implicit option as a migrated capability.",
+        "remaining_effort": "No migration work for the explicitly unsupported original crossdomain.",
+        "authority": "integration/f-ci/nomacro-complete01/ORIGINAL_BOT9_EXPLICIT_IMPLICIT_SOURCE_DISCOVERY_V1.json"
       }
     ],
     "next_batches": [
@@ -2078,12 +2119,11 @@
       "next": "Sealactualcanonical86receipt, thenuseexistingunchangedownersforremaininghistoricalcrossdomains; preservehardcalendar/nativeconstraints."
     },
     {
-      "family": "Remaining Frost, drainage and analytical hydraulic state combinations",
-      "classification": "MISSING_COMPOSITION",
-      "qualification_strategy": "B_EXISTING_FROST_THERMAL_DRAINAGE_STATE_OWNERS",
-      "priority": 3,
-      "status": "Bounded implicit/native2 actualPR1776 admitted; later analytical/vapor source owners compose exact prior science. Wholefamilyopen.",
-      "next": "Reconcile exact supported original reader domains before broadening; preserve hard originalSWDIVD0/solute and model3/oxygen2 refusals."
+      "family": "Original explicit paired bottom head/flux boundary9",
+      "classification": "MISSING_IMPLEMENTATION",
+      "status": "Original explicit boundary implementation pinned; publicdomain excludes9. Original implicit counterpart explicitly unimplemented and OUT_OF_SCOPE, not a new SWKIMPL1 guard gap.",
+      "next": "Measure original explicit last-node storage/flux/native coupling against actual current day-kernel interface before any guarded implementation.",
+      "source_discovery": "integration/f-ci/nomacro-complete01/ORIGINAL_BOT9_EXPLICIT_IMPLICIT_SOURCE_DISCOVERY_V1.json"
     },
     {
       "family": "Alternative original hydraulic models including RIA12 and model3 oxygen interaction",
@@ -2360,10 +2400,10 @@
     "remaining_evidence_only_functions": "UNKNOWN",
     "current_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2",
     "next_dependency_ordered_blocks": [
-      "Finish actual86 canonical public proof and seal one combined admission; no additional model periods.",
-      "Freeze current AGE science/parser/source projection and24case raw records; do not install AGEpublicowner before actualFrost canonical84e public53719/publication42523 and final86admissionarchive. Then compose exact prior-source/public owner using EV age-verify-template-v1 (pendingactualSEALED/admissionSHA), addoneAGE CIprefix, run11oldrootboundaries/fullsource metadata checks, actual44patterncandidate/publication/fourrealnegativehead/exactCI/fullsynthetic/actualcanonicalproof. No numerical repeats.",
-      "After current AGE actualcanonical admission, close original initialpressure/prescribedgroundwater water+CDE+AGE/history/Snow/implicit/calendar seams as one46context planned batch, using actual20parent/refusal discovery and preimplementation contract; only unchanged existing physical/state owners.",
-      "Resolve retained dry surface AGE moment semantics under an explicit scientific contract; keep original concentration-reset branch and current amount-conservation refusal distinct.",
+      "Finish actual86 canonical readonly receipt, then admit current initialpressure AGE24 science with full final-head source/raw/native/negative/publication/CI/canonical gates; no repeated qualified model periods.",
+      "Then implement original initialpressure/prescribedgroundwater water/CDE/AGE/history/Snow/implicit/calendar batch from actual20dispatch gaps,14native codecs and preimplementation46context contract.",
+      "Implement bounded original explicit paired-head/flux BOT9 boundary after measuring actual current kernel/storage/receipt dependency surface; keep original BOT9+implicit hard-unsupported crossdomain excluded.",
+      "Resolve retained dry surface AGE moment semantics under an explicit scientific contract; keep original concentration reset and current amount-conservation refusal distinct.",
       "Compose actual later DATAQUAL15/native/application/heat policy source closures for legacy dataqual12 succession; no arbitrary allowlist, historical performance promotion or general performance experiments."
     ],
     "whole_completion": "PARTIAL",

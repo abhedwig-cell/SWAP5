@@ -118,5 +118,10 @@
     "S5WGI000",
     "S5WGR001"
   ],
-  "native_schema_inference": "Always use actual public auxiliary_magic plus complete emitted bytes. The measured daily CDE final groundwater codec S5GWC001 differs from its original_output metadata base S5IOC001; preserve both, no codec/value rebinding."
+  "native_schema_inference": "Always use actual public auxiliary_magic plus complete emitted bytes. The measured daily CDE final groundwater codec S5GWC001 differs from its original_output metadata base S5IOC001; preserve both, no codec/value rebinding.",
+  "retained_unqualified_crosses": [
+    "CDE implicit+Snow prescribed-groundwater pressure1 remains excluded from this planned batch; no such actual case is included.",
+    "AGE Snow/implicit/aquifer and explicit corrected positive incoming-age policy crosses remain excluded.",
+    "Original examined Ksat branch, SoilsDB and non-model1 remain excluded."
+  ]
 }

@@ -33774,5 +33774,15 @@
     "parent_route_map": "INITIAL_PROFILE_GROUNDWATER_PARENT_ROUTES_V1.json",
     "actual_final_native_codecs": 14,
     "actual_native_overlay_note": "Daily CDE final public S5GWC001 differs from base output metadata S5IOC001. Both actual observations preserved; future native verification must inspect final compiled stream, not infer schema from base metadata."
+  },
+  "original_bottom9_source_reconciliation": {
+    "source_discovery": "integration/f-ci/nomacro-complete01/ORIGINAL_BOT9_EXPLICIT_IMPLICIT_SOURCE_DISCOVERY_V1.json",
+    "explicit_historical_availability": true,
+    "explicit_classification": "MISSING_IMPLEMENTATION",
+    "implicit_historical_availability": false,
+    "implicit_classification": "OUT_OF_SCOPE",
+    "compiler_executions": 0,
+    "model_executions": 0,
+    "next": "After current AGE and pressure groundwater batches, measure actual explicit9 kernel boundary/storage/receipt interface before bounded implementation. No original unsupported implicit9 migration or false completion claim."
   }
 }
