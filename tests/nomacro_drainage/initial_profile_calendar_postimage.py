@@ -7,7 +7,7 @@ from analytical_hydraulic_archives import SHA
 from calendar_evidence import differences
 from calendar_publisher import publisher_equivalence
 from original_output_baseline import assignment
-from initial_profile_calendar_source_inverse import CORE,FIRST_CORE,git
+from initial_profile_calendar_source_inverse import CORE,FIRST_CORE,INTERVAL_CORE,git
 import original_output_matrix as original
 
 
@@ -31,7 +31,7 @@ def main():
  for key in ('profile','reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
  a=p.parse_args();a.output.mkdir();prior=json.loads((a.profile/'RESULT.json').read_text());assert prior['status']=='ACTUAL_ORIGINAL_INITIAL_PROFILE_CALENDAR_WATER_CDE_EXACT_COLD_PASS_NOT_ADMITTED'
  source=git('rev-parse','HEAD').decode().strip()
- for sha in (source,prior['source']):assert sum(not git('diff',epoch,sha,'--','app','src','tools/solute','tools/vq','reference') for epoch in (FIRST_CORE,CORE))==1
+ for sha in (source,prior['source']):assert sum(not git('diff',epoch,sha,'--','app','src','tools/solute','tools/vq','reference') for epoch in (FIRST_CORE,INTERVAL_CORE,CORE))==1
  q=dict(status='RUNNING',source=source,case=prior['case'],optimization=prior['optimization'],initial1_profile=str(a.profile),initial1_RESULT_sha256=SHA((a.profile/'RESULT.json').read_bytes()),initial1_build_root=prior['build_root'],build_root=str(a.build_root/'bundle'),input_root=str(a.output/'input'),model_executions=0,canonical_admission=False)
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
  save()
