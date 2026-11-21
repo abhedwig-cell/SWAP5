@@ -11,7 +11,7 @@ from initial_state_composition_source_inverse import PARENT,CORE,PATTERN,complet
 from initial_state_composition_central_science import read
 import initial_pressure_profile_verify as previous
 SEALED='cc9524f93f38f8533429932ad25bb2179e68bdc6'
-PARENT_ADMISSION_SHA='PENDING_ACTUAL_CANONICAL_OBSERVATION_AND_SEAL'
+PARENT_ADMISSION_SHA='3b98d9542200b247fe77d03033cee4cc5b42c3b3d445e3265da40e6cd40286a0'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/initial_pressure_profile_verify.py'
 GUARD_HOOK=' import initial_state_composition_verify as state_owner\n return state_owner.guard_previous_source()\n'
