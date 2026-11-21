@@ -1,14 +1,14 @@
-name: Targeted closed soil-air vapor guard continuation
+name: Targeted original initial pressure profiles
 on:
   push:
-    branches: [codex/nomacro-vapor-boundaries01]
+    branches: [codex/nomacro-initial-pressure-profiles01]
     paths: ['.github/workflows/nomacro-water-snow-groundwater.yml']
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: nomacro-vapor-boundaries-${{ github.ref }}
+  group: nomacro-initial-pressure-profiles-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   qualify:
@@ -48,20 +48,20 @@ jobs:
         run: |
           proof="$RUNNER_TEMP/proof"
           mkdir -p "$proof"
-          git fetch --no-tags --depth=1 --filter=blob:none origin c1e1dd81382926053a42cda6260874483dab37b1 9cde60cff60e1a0b2d4a21019e69eefb1007bd8b 70bae8871ec71b3c0969a6628cae596354f9c2e8 e079d1554041c831cd0ab609835e2e79bf3c31a1
+          git fetch --no-tags --depth=1 --filter=blob:none origin 9e19329049ef92705fdca98948b4c4c1baba2ffa 56df667d37c6e4070d6e552e493ddc0e28880a28 c1e1dd81382926053a42cda6260874483dab37b1 9cde60cff60e1a0b2d4a21019e69eefb1007bd8b 70bae8871ec71b3c0969a6628cae596354f9c2e8 e079d1554041c831cd0ab609835e2e79bf3c31a1
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
           python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           cp .github/workflows/nomacro-water-snow-groundwater.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Target only the new closed soil-air nonzero CDE continuation
+      - name: Target only two new original profile methods with unchanged processes
         run: |
           opt='${{ matrix.optimization }}'
-          for kind in closed-unit8-active-cde7-8; do
-            label="vapor-boundary-$kind-$opt-short"
-            python3 -B tests/nomacro_drainage/vapor_boundary_inputs.py --case "$kind" --output "$RUNNER_TEMP/proof/inputs/$label"
-            python3 -B tests/nomacro_drainage/vapor_boundary_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --input "$RUNNER_TEMP/proof/inputs/$label" --days 35
-            python3 -B tests/nomacro_drainage/vapor_boundary_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
+          for kind in legacy-zih-water saturated-vapor-cde; do
+            label="initial-pressure-$kind-$opt-short"
+            python3 -B tests/nomacro_drainage/initial_pressure_profile_inputs.py --case "$kind" --output "$RUNNER_TEMP/proof/inputs/$kind"
+            python3 -B tests/nomacro_drainage/initial_pressure_profile_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --input "$RUNNER_TEMP/proof/inputs/$kind" --days 35
+            python3 -B tests/nomacro_drainage/initial_pressure_profile_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
           done
       - name: Preserve actual compiled bytes and original provider identity
         if: always()
@@ -96,6 +96,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: vapor-boundary-closed-guard-${{ matrix.optimization }}-${{ github.sha }}
+          name: initial-pressure-profile-${{ matrix.optimization }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30

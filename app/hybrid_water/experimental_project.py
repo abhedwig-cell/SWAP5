@@ -130,6 +130,22 @@ def inspect(directory, *, original_output=None):
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0,1},
                    SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1})
     if extended is not None:allowed['SWDRA']={2}
+    if selected.get('SWINCO') == 1:
+        # Original HTB and legacy ZI/H already initialize the real SoilWater
+        # state. Select only the bounded unchanged-process composition; the
+        # original reader still owns table ordering, bounds and saturation.
+        domain={'SWMACRO':{0},'SWSOLU':{0,1},'SWHYST':{0},'SWSNOW':{0},
+                'SWFROST':{0},'SWHEA':{1},'SWCALT':{2},'SWKIMPL':{0},
+                'SWDRA':{0,1},'SWBOTB':{5,6,8},'SWBBCFILE':{0},
+                'SWMETDETAIL':{0},'SWBR':{0}}
+        if original_output is False or any(selected.get(key) not in values for key,values in domain.items()):
+            raise ValueError('Original pressure-profile initialization requires bounded explicit daily water/CDE without snow/frost/hysteresis/aquifer')
+        flags=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^!\r\n]+)',text)
+        if (int(one(text,'NPRINTDAY',r'[+-]?\d+'))!=1 or int(one(text,'PERIOD',r'[+-]?\d+'))!=1
+                or selected.get('SWMONTH')!=0 or selected.get('SWODAT')!=0 or selected.get('SWRES')!=1
+                or len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')):
+            raise ValueError('Original pressure-profile initialization requires dense original daily output')
+        allowed['SWINCO']={1,2,3}
     if (selected['SWSOLU']==2 and selected.get('SWMONTH')==0 and selected.get('SWODAT')==0
             and int(one(text,'PERIOD',r'[+-]?\d+'))>1
             and int(one(text,'NPRINTDAY',r'[+-]?\d+'))==1):
