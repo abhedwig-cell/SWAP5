@@ -1,0 +1,45 @@
+{
+  "parent": "afac661b04e0224f89b6d54060fdc9993f413eec",
+  "changes": {
+    ".github/workflows/nomacro-water-snow-groundwater.yml": {
+      "sha256": "a112ed7b9e7555942aa1c2ca83bd5397d583c9bc8bd438a6c035f0bde7e164eb",
+      "edits": [
+        {
+          "runtime_line": 53,
+          "before": "      - name: Reuse original initial periods after the Python-only receipt decoder correction\n        uses: actions/download-artifact@v4\n        with:\n          github-token: ${{ github.token }}\n          run-id: 44861552730\n          name: vapor-hydraulic-family-${{ matrix.optimization }}-effd77a2f326e9b8b0cee14181bc18b9c669f142\n          path: ${{ runner.temp }}/vapor-initial-original-proof\n",
+          "after": "      - name: Read permanently preserved original initial periods\n        run: |\n          previous=\"$RUNNER_TEMP/vapor-initial-central-archive\"\n          mkdir -p \"$previous\"\n          stem='HYDRAULIC_VAPOR_UBUNTU_INITIAL_${{ matrix.optimization }}_RAW_V1'\n          git show \"HEAD:integration/f-ci/nomacro-complete01/$stem.json\" > \"$previous/$stem.json\"\n          git show \"HEAD:integration/f-ci/nomacro-complete01/$stem.zip\" > \"$previous/$stem.zip\"\n"
+        },
+        {
+          "runtime_line": 62,
+          "before": "          python3 -B tests/nomacro_drainage/vapor_hydraulic_portable.py --reference-work \"$RUNNER_TEMP/provider\" --build-root \"$RUNNER_TEMP/builds\" --output \"$RUNNER_TEMP/proof/vapor-hydraulic-family\" --optimization '${{ matrix.optimization }}' --reuse-initial-proof \"$RUNNER_TEMP/vapor-initial-original-proof\"\n",
+          "after": "          python3 -B tests/nomacro_drainage/vapor_hydraulic_portable.py --reference-work \"$RUNNER_TEMP/provider\" --build-root \"$RUNNER_TEMP/builds\" --output \"$RUNNER_TEMP/proof/vapor-hydraulic-family\" --optimization '${{ matrix.optimization }}' --reuse-initial-archive \"$RUNNER_TEMP/vapor-initial-central-archive\"\n"
+        }
+      ]
+    },
+    "tests/nomacro_drainage/vapor_hydraulic_portable.py": {
+      "sha256": "734f9b011b25ee6c352357b85a9daedb6750ad2f39ef412af3264949903ca99d",
+      "edits": [
+        {
+          "runtime_line": 20,
+          "before": "    parser.add_argument('--reuse-initial-proof',type=Path)\n",
+          "after": "    reuse=parser.add_mutually_exclusive_group()\n    reuse.add_argument('--reuse-initial-proof',type=Path)\n    reuse.add_argument('--reuse-initial-archive',type=Path)\n"
+        },
+        {
+          "runtime_line": 41,
+          "before": "        if a.reuse_initial_proof:\n",
+          "after": "        if a.reuse_initial_proof or a.reuse_initial_archive:\n"
+        },
+        {
+          "runtime_line": 43,
+          "before": "            result['reused_initial']=read_initial(a.reuse_initial_proof,a.optimization)\n            (a.output/'MIXED_COMPONENT_INDEPENDENT.json').write_text(json.dumps(audit(a.reuse_initial_proof/'vapor-hydraulic-family',(a.optimization,)),indent=2)+'\\n')\n",
+          "after": "            from contextlib import ExitStack\n            from analytical_hydraulic_archives import Archive\n            with ExitStack() as stack:\n                initial=(Archive(a.reuse_initial_archive,'HYDRAULIC_VAPOR_UBUNTU_INITIAL_'+a.optimization+'_RAW_V1',stack).view('.')\n                         if a.reuse_initial_archive else a.reuse_initial_proof)\n                result['reused_initial']=read_initial(initial,a.optimization)\n                (a.output/'MIXED_COMPONENT_INDEPENDENT.json').write_text(json.dumps(audit(initial/'vapor-hydraulic-family',(a.optimization,)),indent=2)+'\\n')\n"
+        },
+        {
+          "runtime_line": 58,
+          "before": "            if a.reuse_initial_proof and label=='8':continue\n",
+          "after": "            if (a.reuse_initial_proof or a.reuse_initial_archive) and label=='8':continue\n"
+        }
+      ]
+    }
+  }
+}

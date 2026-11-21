@@ -17,7 +17,9 @@ CASES=(('8',[8],[1,1]),('11',[11],[1,1]),
 def main():
     parser=argparse.ArgumentParser()
     for name in ('reference-work','build-root','output'):parser.add_argument('--'+name,type=Path,required=True)
-    parser.add_argument('--reuse-initial-proof',type=Path)
+    reuse=parser.add_mutually_exclusive_group()
+    reuse.add_argument('--reuse-initial-proof',type=Path)
+    reuse.add_argument('--reuse-initial-archive',type=Path)
     parser.add_argument('--optimization',choices=('O0','O2'),required=True);a=parser.parse_args()
     a.output.mkdir();a.build_root.mkdir();logs=a.output/'commands';logs.mkdir()
     result=dict(status='RUNNING',producer=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
@@ -36,10 +38,15 @@ def main():
     common=['--reference-work',a.reference_work];opt=['--optimization',a.optimization]
     try:
         from vapor_mixed_component_forensics import audit
-        if a.reuse_initial_proof:
+        if a.reuse_initial_proof or a.reuse_initial_archive:
             from vapor_hydraulic_resume import read_initial
-            result['reused_initial']=read_initial(a.reuse_initial_proof,a.optimization)
-            (a.output/'MIXED_COMPONENT_INDEPENDENT.json').write_text(json.dumps(audit(a.reuse_initial_proof/'vapor-hydraulic-family',(a.optimization,)),indent=2)+'\n')
+            from contextlib import ExitStack
+            from analytical_hydraulic_archives import Archive
+            with ExitStack() as stack:
+                initial=(Archive(a.reuse_initial_archive,'HYDRAULIC_VAPOR_UBUNTU_INITIAL_'+a.optimization+'_RAW_V1',stack).view('.')
+                         if a.reuse_initial_archive else a.reuse_initial_proof)
+                result['reused_initial']=read_initial(initial,a.optimization)
+                (a.output/'MIXED_COMPONENT_INDEPENDENT.json').write_text(json.dumps(audit(initial/'vapor-hydraulic-family',(a.optimization,)),indent=2)+'\n')
             save()
         else:
             for corrected in (False,True):
@@ -48,7 +55,7 @@ def main():
                     '--mixed-grid','--correct-model7-capacity',*(['--correct-vapor-sign'] if corrected else [])],180)
             (a.output/'MIXED_COMPONENT_INDEPENDENT.json').write_text(json.dumps(audit(a.output,(a.optimization,)),indent=2)+'\n')
         for label,models,flags in CASES:
-            if a.reuse_initial_proof and label=='8':continue
+            if (a.reuse_initial_proof or a.reuse_initial_archive) and label=='8':continue
             extra=['--hydraulic-model',str(models[0]),'--layer-models',*map(str,models),'--vapor-flags',*map(str,flags)]
             for kind in ('water','cde'):
                 name=label+'-'+kind;build=a.build_root/name;profile=a.output/(name+'-full')

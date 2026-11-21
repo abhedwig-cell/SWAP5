@@ -42,6 +42,22 @@ class CheckedParent:
     def __str__(self):return str(ROOT)
 
 
+def portable_storage_inverse():
+    import json
+    import hashlib
+    bridge=json.loads(Path(__file__).with_name('vapor_portable_storage_bridge.json').read_text())
+    assert bridge['parent']==PORTABLE and set(bridge['changes'])=={WORKFLOW,'tests/nomacro_drainage/vapor_hydraulic_portable.py'}
+    for path,item in bridge['changes'].items():
+        raw=norm((ROOT/path).read_bytes())
+        assert hashlib.sha256(raw).hexdigest()==item['sha256']
+        lines=raw.decode().splitlines(True)
+        for edit in reversed(item['edits']):
+            at=edit['runtime_line']-1;after=edit['after'].splitlines(True)
+            assert lines[at:at+len(after)]==after;lines[at:at+len(after)]=edit['before'].splitlines(True)
+        assert ''.join(lines).encode()==blob(PORTABLE,path)
+    return True
+
+
 @contextmanager
 def projection():
     complete_inverse()
@@ -52,7 +68,7 @@ def projection():
         if PATTERN in actual:
             assert actual.count(PATTERN)==1;actual=actual.replace(PATTERN,'',1)
         assert actual.encode()==blob(PARENT,path)
-    assert norm((ROOT/WORKFLOW).read_bytes())==blob(PORTABLE,WORKFLOW)
+    portable_storage_inverse()
     import analytical_inherited_owner as previous
     import model7_verify as model7
     old_root,old_git,model_root=previous.ROOT,previous.git,model7.ROOT
