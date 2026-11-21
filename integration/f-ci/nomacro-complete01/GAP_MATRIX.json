@@ -2153,16 +2153,17 @@
     "reference_defect": "Original absolute-suction Kelvin exponent positive; separately bound negative-sign correction with originalcoefficients retained",
     "reference": "reference/swap-4.3.1/hydraulic-corrections/VAPOR-KELVIN-SIGN01",
     "component": "Actualoriginal/corrected O0/O2; interiorgrid192 andmixed1728 pervariant/opt; originaldrybound-stencil48rowFPEprefixes retained",
-    "coupled": "Four35daywater/12cold independentPASS; allfour1096warm trajectories completewithin1e-10; exactcold530fails atday531 (~1e-16flux), so no full/nativePASS. CDE/portable/public pending.",
     "whole_family_closed": false,
-    "public_admission": false,
-    "actual_canonical_admission": "PR1779actual277c6135ff4250a04ee3e3330530dc0895e0fc7d exactparents/treeclean35PASS585.1999522s;64full448coldneutralunchanged. Broaderfamilyopen."
+    "public_admission": "BOUNDED_NOSNOW_DOMAIN_ADMITTED_PR1779_WHOLE_FAMILY_OPEN",
+    "actual_canonical_admission": "PR1779actual277c6135ff4250a04ee3e3330530dc0895e0fc7d exactparents/treeclean35PASS585.1999522s;64full448coldneutralunchanged. Broaderfamilyopen.",
+    "retained_early_coupled": "Four35daywater/12cold independentPASS; allfour1096warm trajectories completewithin1e-10; exactcold530fails atday531 (~1e-16flux), so no full/nativePASS. CDE/portable/public pending.",
+    "coupled": "PR1779actual277c6135ff4250a04ee3e3330530dc0895e0fc7d admitted64full1096/448cold onWindows+Ubuntu O0/O2;native3 history/carry fixes and Kelvin sign correction retained; neutralarchivesunchanged"
   },
   "original_integer_selector_grammar": {
     "classification": "OVERRESTRICTIVE_GUARD_AND_MISSING_COMPOSITION",
     "historical_evidence": "5actualoriginalmodel1signed/zero spellingsacceptedwith0modeldays;4actualpriorunsignedfixtures reject12signedspellingvariants",
-    "bounded_analytical_status": "PR1780source786pendingclean36public/CI afterpreciseinitialUbuntu sourcepredicatebridge;4short35/12cold38parsercontrolsPASS",
-    "default_model_batch": "4literalregexpredicates implementednotyetqualified;ordinarywatergroundwaterotherwise silencestheexistingnativecarryselection;implicit/Snowguardsreject",
+    "bounded_analytical_status": "PR1780actual0c3d905102672354e7f8df4212e8075d7c133e31 admitted; actualclean36publicPASS640.8684335s and44terminalchecks",
+    "default_model_batch": "PR1781actual49a0641cb836d044c14c7146761ccff480c2f262 merged;6short35/12cold/90frontendcontrols;candidateclean37PASS685.4728585s;actualcanonicalpublic37RUNNING;wholefamilyUNKNOWN",
     "scope": "Originalpositiveintegerliteralspellingsonly, unchangedexistingphysics/couplings/nativecodecs. FullhistoricalfamilyclosureUNKNOWN",
     "current_code_changes": [
       {
@@ -2192,5 +2193,20 @@
     ],
     "global_family_and_gap_counts": "UNKNOWN",
     "fixed_RC3_changed": false
+  },
+  "snow_active_vapor_composition": {
+    "classification": "MISSING_COMPOSITION",
+    "migration_class": "B",
+    "historical_availability": "4actualoriginalSnow+vaporreaderstartupsaccepted,0modeldays; originalSnow2 atflDayStart withoriginalPDItemperature-dependentconductivity",
+    "current_implementation": "SOURCE6e77aeb829a45e1f1781a429f60e632ecaa316ea candidateNOT_ADMITTED",
+    "bounded_scope": "SWSNOW1;models8..11activeperlayerincluding7inmixedlayer;explicitwater/CDE;numericheat;primarydrainage/bottom6;NoFrost/hys0;originaldensedailyoutput",
+    "actual_windows": "4full1096/12short35/64exactcold;literalqualifiedmassandcoldbodyindependentPASS;140native/70privateCDEstock;264compilednative4+Snow-domainrefusals;4externaltransactions;72frontendcontrols",
+    "new_portable_scope": "4targetedUbuntu35daywater/CDE O0/O2;12cold+264compiledreaderrefusals, source1a1f2bc339403e4202df8decc7b22d0f8adc573e pendingactualrun",
+    "invariants": "Existingconstitutive/Snowequationsliteral;native4separate;literalexistingSnowterminalphase1e-10;originalNewtonrollbackandqualifiednull-modeSEARCH;nonewmassstate/floor/disposal/fallback",
+    "evidence_gap": "Centralrawcustody+publicactualpostimage/negativecontrols+portabletargetedqualificationpending",
+    "remaining": "Implicitvapor,hysteresis/Frost,AGE,otherboundaries/calendarsandwholehistoricalmatrixopen",
+    "whole_family_closed": false,
+    "canonical_admission": false,
+    "global_family_and_gap_counts": "UNKNOWN"
   }
 }
