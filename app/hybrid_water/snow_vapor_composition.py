@@ -84,3 +84,5 @@ def validate(bundle,project,identity):
         text=text.replace(part,'',1)
     if text.count(ANCHOR)!=1 or hashlib.sha256(text.encode('cp1252')).hexdigest()!=HEAD_PARENT_SHA:
         raise ValueError('Changed complete inverse Snow vapor HeadCalc')
+
+# Actual Snow vapor source negative; NEVER MERGE.
