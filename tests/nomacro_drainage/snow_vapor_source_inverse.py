@@ -42,7 +42,7 @@ class FrozenFile:
 
 
 class CheckedParent:
- def __truediv__(self,path):return FrozenFile(str(path)) if str(path) in {*CHANGED,*CI} else ROOT/path
+ def __truediv__(self,path):return FrozenFile(str(path)) if str(path) in {*CHANGED,*CI,WORKFLOW} else ROOT/path
  def __fspath__(self):return os.fspath(ROOT)
  def __str__(self):return str(ROOT)
 
