@@ -78,7 +78,27 @@ def metadata(project):
         manifest_sha256=SHA((FOLDER/'manifest.json').read_bytes().replace(b'\r\n',b'\n')),
         original_lf_sha256=q['base_lf_sha256'],corrected_lf_sha256=q['with_capacity7_lf_sha256' if capacity7 else 'target_lf_sha256'],
         existing_model7_capacity_composed=capacity7,reference_defect_corrected='Original absolute-suction Kelvin exponent sign',
-        physical_equation_changed=True,new_physical_water_store=False,native_interface_changed=False,tolerance_changed=False)
+        physical_equation_changed=True,new_physical_water_store=False,native_interface_changed=True,tolerance_changed=False,native_codec=native_magic(project).decode(),
+        hydraulic_history_carry=True,thermal_history_carry=True,additional_native_doubles=7*project.nodes+6,
+        native_domain_source_sha256=SHA(Path(__file__).with_name('hydraulic_vapor_native.f90').read_bytes().replace(b'\r\n',b'\n')))
+
+
+def native_magic(project):
+    if describe(project) is None:return None
+    return b'S5HVC002' if project.solute else b'S5HVW002'
+
+
+def native_source(source,project):
+    if describe(project) is None:return source
+    anchor='      use MOD_grid, only: numnod,dz'
+    if source.count(anchor)!=1:raise ValueError('Missing complete original vapor hydraulic history import')
+    source=source.replace(anchor,anchor+'\n      use hydraulic_vapor_native,only:vapor_native_domain_checkpoint',1)
+    anchor="        if(iyear<1.or.iyear>9999) error stop 'Invalid nonmacro calendar year'"
+    if source.count(anchor)!=1:raise ValueError('Missing original vapor restore clock')
+    source=source.replace(anchor,anchor+'\n        call vapor_native_domain_checkpoint(unit,.true.)',1)
+    anchor='        write(unit) t,iyear'
+    if source.count(anchor)!=1:raise ValueError('Missing original vapor capture clock')
+    return source.replace(anchor,anchor+'\n        call vapor_native_domain_checkpoint(unit,.false.)',1)
 
 
 def apply_build(output,reference,project,patched):
@@ -90,6 +110,10 @@ def apply_build(output,reference,project,patched):
         if patched.count(NAME)!=1 or target.read_text(encoding='cp1252')!=capacity_source(original):raise ValueError('Foreign joint model7/vapor source ownership')
     elif NAME in patched or target.exists():raise ValueError('Multiple original vapor source owners')
     target.write_text(source(original,capacity7),encoding='cp1252')
+    native='hydraulic_vapor_native';(output/(native+'.f90')).write_bytes(Path(__file__).with_name(native+'.f90').read_bytes())
+    macro=output/'macropore.f90';macro.write_text(native_source(macro.read_text(encoding='cp1252'),project),encoding='cp1252')
+    if native in patched:raise ValueError('Multiple vapor native history owners')
+    patched.insert(0,native)
     if NAME not in patched:patched.insert(0,NAME)
     return patched
 

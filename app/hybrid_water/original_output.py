@@ -77,6 +77,9 @@ def age_identity(original,project):
 
 
 def magic(project):
+    from hydraulic_vapor import native_magic as vapor_native_magic
+    vapor=vapor_native_magic(project)
+    if vapor is not None:return vapor
     return {'water':MAGIC,'cde':b'S5IOC001','age':b'S5IOA001'}[selection(project)['kind']]
 
 
@@ -136,7 +139,8 @@ def render_macro(source,project):
     prefix,suffix=source[:first],source[last:];source=source[first:last]
     magics=re.findall(r"'(S5[A-Z0-9]{6})'",source);assert len(magics)==2 and len(set(magics))==1,magics
     source=source.replace("'"+magics[0]+"'","'"+magic(project).decode()+"'")
-    anchor='      use MOD_grid, only: numnod';assert source.count(anchor)==1
+    anchors=re.findall(r'(?m)^      use MOD_grid, only: numnod(?:,dz)?$',source);assert len(anchors)==1
+    anchor=anchors[0]
     source=source.replace(anchor,anchor+'\n      use MOD_integral,only:hybrid_output_calendar_checkpoint',1)
     if project.solute:
         source=source.replace(anchor,anchor+'\n      use hybrid_original_cde_output_state,only:hybrid_cde_output_checkpoint',1)

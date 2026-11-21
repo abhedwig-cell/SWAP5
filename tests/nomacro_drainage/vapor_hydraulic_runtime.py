@@ -25,7 +25,7 @@ def main():
     p.add_argument('--layer-models',type=int,choices=range(1,12),nargs='+')
     p.add_argument('--vapor-flags',type=int,choices=(0,1),nargs='+',default=[1,1])
     p.add_argument('--oxygen-policy',choices=('original','feddes1'),default='original')
-    p.add_argument('--phase', choices=('short', 'year', 'full'), default='short')
+    p.add_argument('--phase', choices=('short', 'year', 'full','native2-window'), default='short')
     p.add_argument('--reuse-build', type=Path)
     p.add_argument('--existing-input', type=Path)
     a = p.parse_args();models=a.layer_models or [a.hydraulic_model]
@@ -76,10 +76,11 @@ def main():
         assert meta['identity']['hydraulic_vapor']['SWVAPOR']==a.vapor_flags
         assert meta['identity']['hydraulic_vapor']['models']==expanded
         assert bool(meta['identity'].get('model7_capacity'))==(7 in models)
-        days = {'short':35,'year':367,'full':1096}[a.phase]
+        days = {'short':35,'year':367,'full':1096,'native2-window':532}[a.phase]
         windows = [(2, 4), (19, 23), (30, 34)]
         if a.phase in ('year','full'): windows += [(199,201),(364,367)]
         if a.phase=='full': windows += [(530,532),(1094,1096)]
+        if a.phase=='native2-window':windows=[(530,532)]
         cuts = {days} | {d for pair in windows for d in pair}
         trajectory = a.output / 'trajectory'
         q['trajectory'], data = m.trajectory(build, a.reference_work, project, trajectory, days, cuts, 180)

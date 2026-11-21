@@ -289,10 +289,12 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         swap = output / "swap.f90"
         day_source = swap.read_text(encoding="cp1252")
         module = day_source[:day_source.index("end module hybrid_day_window") + len("end module hybrid_day_window")]
+        from hydraulic_vapor import describe as describe_vapor
+        vapor_history = describe_vapor(project) is not None
         render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS.get(checkpoint_day, 2),
                           runtime=runtime_checkpoint, nonmacro=not project.macro, solute_state=project.solute, age_state=project.age,
-                          hydraulic_history=bool(project.input_directory and selector('SWHYST')>0),
-                          thermal_history=bool(project.input_directory and selector('SWSNOW')>0),
+                          hydraulic_history=bool(project.input_directory and selector('SWHYST')>0) or vapor_history,
+                          thermal_history=bool(project.input_directory and selector('SWSNOW')>0) or vapor_history,
                           management_state=management_state,
                           plant_et_state=bool(project.input_directory and selector('SWCFBS')==1),
                           micro_lookup_state=micro_state,
@@ -929,6 +931,7 @@ end module plant_interface""")
                     *([str(output/(name+'.o')) for name in ('groundwater_native_state','groundwater_history_native_state','age_groundwater_native_state') if name in patched] if lower_boundary==1 else []),
                     *([str(output/'implicit_groundwater_native_state.o')] if 'implicit_groundwater_native_state' in patched else []),
                     *([str(output/'model7_terminal_water_receipt.o')] if 'model7_terminal_water_receipt' in patched else []),
+                    *([str(output/'hydraulic_vapor_native.o')] if 'hydraulic_vapor_native' in patched else []),
                     *([str(output/'implicit_pond_event_state.o')] if 'implicit_pond_event_state' in patched else []),
                     *([str(output/'implicit_pond_availability.o')] if 'implicit_pond_availability' in patched else []),
                     *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
