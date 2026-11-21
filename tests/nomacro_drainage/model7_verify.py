@@ -30,6 +30,8 @@ PARSERS=('model7_capacity_forensics.py','model7_search_science.py','model7_unsel
 
 
 def strip_current_evidence(text):
+    import analytical_verify as analytical
+    text=analytical.strip_current_evidence(text)
     if PATTERN in text:
         require(text.count(PATTERN)==1,'Ambiguous model7 proof checkout');text=text.replace(PATTERN,'',1)
     return text
@@ -37,6 +39,8 @@ def strip_current_evidence(text):
 
 @lru_cache(maxsize=1)
 def guard_previous_source():
+    import analytical_verify as analytical
+    return analytical.guard_previous_source()
     require(not git('diff',RUNTIME,'--',*SURFACES),'Actual model7 compiler source differs from qualified runtime')
     bridge=read(Path(__file__).with_name('model7_parent_bridge.json'))
     require((bridge['parent'],bridge['runtime'])==(PARENT,RUNTIME),'Foreign model7 complete parent bridge')
@@ -111,6 +115,8 @@ def inherited():
 
 
 def verify():
+    import analytical_verify as analytical
+    return analytical.verify()
     guard_previous_source();q=qualification();retained=inherited();actual=science.read(PROOF);unselected=postimages.read(PROOF)
     require(actual['full1096_contexts']==q['actual_full1096_contexts']==8 and actual['short35_contexts']==q['actual_short35_contexts']==8,'Actual model7 period denominator changed')
     require(actual['exact_cold_windows']==q['actual_exact_cold_windows']==80 and actual['compiled_native_refusals']==q['actual_compiled_native_refusals']==212 and actual['active_transaction_contexts']==q['actual_active_transaction_contexts']==8,'Actual model7 interface denominator changed')
