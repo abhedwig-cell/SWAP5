@@ -11,7 +11,7 @@ m=original.m
 CASES={'vapor8-nprint2':(8,True,2,False,1,0),'vapor11-nprint3':(11,True,3,False,1,0),
        'model7-nprint2':(7,False,2,False,1,0),'feddes3-nprint3':(3,False,3,False,1,0),
        'vapor8-perstep':(8,True,1,True,0,0),'vapor8-limit1440':(8,True,1440,False,1,0),
-       'vapor8-monthly':(8,True,1,False,1,1)}
+       'vapor8-monthly':(8,True,1,False,1,1),'mixed7-8-nprint2':((7,8),True,2,False,1,0)}
 
 
 def main():
@@ -19,17 +19,19 @@ def main():
  for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
  p.add_argument('--case',choices=CASES,required=True);p.add_argument('--optimization',choices=('O0','O2'),required=True)
  p.add_argument('--days',type=int,choices=(2,35,367),required=True);a=p.parse_args();a.output.mkdir()
- model,vapor,nprint,perstep,reset,monthly=CASES[a.case];inputs=a.output/'input';shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',inputs)
+ selector,vapor,nprint,perstep,reset,monthly=CASES[a.case]
+ models=(selector,) if isinstance(selector,int) else selector;model=models[0]
+ inputs=a.output/'input';shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',inputs)
  path=inputs/'swap.swp';text=path.read_text(encoding='cp1252')
  for key,value in dict(SWSOLU=0,SWSNOW=0,SWCSV=3,NPRINTDAY=nprint,SWMONTH=monthly,PERIOD=1,SWODAT=0,SWRES=reset,FLPRINTDT='.TRUE.' if perstep else '.FALSE.').items():
   text=assignment(text,key,value) if re.search(r'(?mi)^[ \t]*'+key+r'[ \t]*=',text) else text+'\n'+key+' = '+str(value)+'\n'
- text+=f'\niHWCKmodel = {model}\nALFA_2 = .005 .003\nNPAR_2 = 1.5 1.6\nOMEGA_1 = .8 .8\nH0 = -1e6 -1e6\nHA = -10.0 -10.0\nAPAR = -1.5 -1.5\nOMEGA_K = .01 .01\nSWVAPOR = '+('1 1' if vapor else '0 0')+'\n'
+ text+='\niHWCKmodel = '+' '.join(map(str,models))+'\nALFA_2 = .005 .003\nNPAR_2 = 1.5 1.6\nOMEGA_1 = .8 .8\nH0 = -1e6 -1e6\nHA = -10.0 -10.0\nAPAR = -1.5 -1.5\nOMEGA_K = .01 .01\nSWVAPOR = '+('1 1' if vapor else '0 0')+'\n'
  path.write_text(text,encoding='cp1252')
  for crop in inputs.glob('*.crp'):
   body=assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0)
   if model==3:body=assignment(body,'SWOXYGEN',1)
   crop.write_text(body,encoding='cp1252')
- q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),case=a.case,hydraulic_model=model,active_vapor=vapor,kind='water',optimization=a.optimization,days=a.days,input_root=str(inputs),build_root=str(a.build_root/'bundle'),canonical_admission=False)
+ q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),case=a.case,hydraulic_model=model,layer_models=list(models),active_vapor=vapor,kind='water',optimization=a.optimization,days=a.days,input_root=str(inputs),build_root=str(a.build_root/'bundle'),canonical_admission=False)
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
  save()
  try:
