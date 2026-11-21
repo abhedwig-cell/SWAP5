@@ -44,7 +44,10 @@ def active_selection(project):
         from analytical_cde_calendar import bottom6_selected
         if bottom!=6 or not bottom6_selected(project):return None
     drainage=one('SWDRA')
-    if drainage not in (0,1) or bottom!=1 and drainage!=1:return None
+    if drainage not in (0,1):return None
+    if bottom!=1 and drainage!=1:
+        from analytical_cde_calendar import vapor_selected
+        if not vapor_selected(project):return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
     if hys not in (0,1,2):return None
     if monthly not in (0,1) or dates not in (0,1) or reset not in (0,1) or fmt not in (0,1,2,3) or not 0<=requested<=366:raise ValueError('Invalid original CDE interval selectors')
@@ -53,6 +56,7 @@ def active_selection(project):
     return dict(cde_interval_output=True,thermal_output=bool(swsnow),thermal_calendar=bool(swsnow),kind='cde',swsnow=swsnow,swhea=1,swcalt=2,swfrost=0,swdra=drainage,
         swhyst=hys,swcsv=fmt,nprintday=1,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=requested,flprintdt=False,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
+        **({'analytical_vapor_calendar':True} if __import__('analytical_cde_calendar').vapor_selected(project) else {}),
         **({'groundwater_cde_interval':True} if bottom==1 else {}),
         **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}),
         **({'implicit_snow_composition':True} if swsnow and one('SWKIMPL')==1 else {}))
@@ -65,6 +69,10 @@ def selection(project):
 
 def magic(project):
     selected=active_selection(project)
+    if selected is not None:
+        from analytical_cde_calendar import native_magic
+        composed=native_magic(project)
+        if composed is not None:return composed
     if selected is not None and selected.get('groundwater_cde_interval'):
         from groundwater_cde_interval import magic as groundwater_magic
         return groundwater_magic(project)

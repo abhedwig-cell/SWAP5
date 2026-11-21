@@ -39,7 +39,10 @@ def selection(directory,selected,original_output):
     required=dict(SWKIMPL=0,SWSOPHY=0,SWHYST=0,SWFROST=0,SWMACRO=0,SWBR=0,SWMETDETAIL=0,SWHEA=1,SWCALT=2)
     if original_output is False or any(selected.get(k)!=v for k,v in required.items()) or selected.get('SWSOLU') not in (0,1) or selected.get('SWSNOW') not in (0,1) or boundary is None and (selected.get('SWDRA'),selected.get('SWBOTB'))!=(1,6):
         raise ValueError('Active original vapor requires qualified explicit daily water/CDE, numerical heat, NoFrost/hysteresis0 primarydrainage bottom6')
-    if boundary is not None:boundary_daily(active)
+    if boundary is not None:
+        from analytical_cde_calendar import input_context
+        composed=input_context(directory,original_output)
+        if composed is None or not composed['vapor']:boundary_daily(active)
     if selected['SWSNOW']:
         from snow_vapor_composition import check_daily_output
         check_daily_output(active,selected)
@@ -95,11 +98,20 @@ def metadata(project):
     from vapor_boundary_composition import metadata as boundary_metadata
     boundary=boundary_metadata(project)
     if boundary is not None:result['boundary_composition']=boundary
+    from analytical_cde_calendar import metadata as calendar_metadata
+    calendar=calendar_metadata(project)
+    if calendar is not None:
+        result['CDE_calendar_composition']=calendar
+        if boundary is not None:
+            result['boundary_composition']=dict(boundary,native_domain_version=6,inherited_native_domain_version=5)
     return result
 
 
 def native_magic(project):
     if describe(project) is None:return None
+    from analytical_cde_calendar import native_magic as calendar_native_magic
+    composed=calendar_native_magic(project)
+    if composed is not None:return composed
     from vapor_boundary_composition import context as boundary_context
     if boundary_context(project) is not None:return b'S5HBC005' if project.solute else b'S5HBW005'
     from snow_vapor_composition import snow_selected
@@ -109,6 +121,8 @@ def native_magic(project):
 
 def native_provider(project):
     original=Path(__file__).with_name('hydraulic_vapor_native.f90').read_bytes()
+    from analytical_cde_calendar import vapor_selected,native_provider as calendar_native_source
+    if vapor_selected(project):return calendar_native_source(original)
     from vapor_boundary_composition import context as boundary_context,native_source as boundary_native_source
     if boundary_context(project) is not None:return boundary_native_source(original)
     from snow_vapor_composition import snow_selected,native_source as snow_native_source
