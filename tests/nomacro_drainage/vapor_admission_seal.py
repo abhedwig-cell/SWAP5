@@ -48,20 +48,21 @@ def main():
  name='VAPOR_FINAL_PUBLICATION_SCOPE_NEGATIVE_V1.txt'
  assert 'PUBLICATION_REPLAY_SELECTED=true' in (ev/name).read_text();files[name]=ev/name
  checks=load('VAPOR_PR1779_ALL_TERMINAL_CHECKS_V1.json')
- assert checks['headRevision']==HEAD and not checks['hasMore'] and not checks['statuses'] and checks['checks']
+ assert checks['headRevision']==HEAD and not checks['hasMore'] and not checks['statuses'] and len(checks['checks'])==53
  assert all(c['head_sha']==HEAD and c['status']=='completed' and c['conclusion'] in ('success','skipped') for c in checks['checks'])
- runs=load('VAPOR_PR1779_ALL_TERMINAL_RUNS_V1.json')['workflow_runs']
- assert runs and all(r['head_sha']==HEAD and r['status']=='completed' and r['conclusion']=='success' for r in runs)
+ assert sum(c['conclusion']=='success' for c in checks['checks'])==38
+ runrecord=load('VAPOR_PR1779_ALL_TERMINAL_RUNS_V1.json');runs=runrecord['workflow_runs']
+ assert runrecord['total_count']==len(runs)==24 and all(r['head_sha']==HEAD and r['status']=='completed' and r['conclusion']=='success' for r in runs)
  pre=load('VAPOR_PR1779_IMMEDIATE_PREMERGE_V1.json');merge=load('VAPOR_PR1779_ACTUAL_MERGE_API_V1.json')
  assert pre['head']['sha']==HEAD and pre['base']['sha']==PARENT and pre['merge_commit_sha']==SYNTHETIC and pre['mergeable'] and not pre['draft']
  assert merge['merged'] is True and merge['sha']==canonical
- for job in (136743781599,136743781552):assert STATUS in (ev/f'VAPOR_PR1779_FINAL_JOB{job}_FULL.txt').read_text(encoding='utf8')
+ for job in (136743781599,136743781552,136748367099):assert STATUS in (ev/f'VAPOR_PR1779_FINAL_JOB{job}_FULL.txt').read_text(encoding='utf8')
  qualpath='integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_QUALIFICATION.json';q=json.loads((root/qualpath).read_text());neutral=[qualpath]
  assert q['vapor_family_admitted'] is False and q['actual_full1096_contexts']==64 and q['actual_exact_cold_windows']==448
  for item in q['archives'].values():
   record=proof/item['record'];r=json.loads(record.read_text());neutral.append(record.relative_to(root).as_posix())
   neutral.extend((proof/name).relative_to(root).as_posix() for name in ([v['file'] for v in r['parts']] if r.get('parts') else [r['archive']]))
- assert not git('diff',HEAD,'--',*neutral),'Neutral vapor science or raw archives changed'
+ assert len(neutral)==19 and not git('diff',HEAD,'--',*neutral),'Neutral vapor science or raw archives changed'
  for path in ev.glob('VAPOR_PR1779_*'):assert path.is_file();files[path.name]=path
  for name in ('VAPOR_PUBLIC_OBSERVE_V1.py','VAPOR_FINAL_NEGATIVES_OBSERVE_V1.json','VAPOR_ACTUAL_CANONICAL_POSTIMAGE_V1.json'):files[name]=ev/name
  members={name:dict(bytes=path.stat().st_size,sha256=SHA(path.read_bytes())) for name,path in files.items()}
