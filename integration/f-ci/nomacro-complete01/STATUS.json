@@ -33735,6 +33735,41 @@
     "actual_canonical_public_session": 53719,
     "actual_canonical_publication_session": 42523,
     "canonical_receipt_sealed": false,
-    "next": "Keep N immutable actual84e clean43 until both readonly proofs complete. Then run final86 admission sealer with actual API/head/tree/parents and persist with AGE functional work; capture actual canonical push CI separately, do not waive legacy SOURCE gap."
+    "next": "Keep N immutable actual84e clean43 until both readonly proofs complete. Then run final86 admission sealer with actual API/head/tree/parents and persist with AGE functional work; capture actual canonical push CI separately, do not waive legacy SOURCE gap.",
+    "actual_canonical_push_CI_existing_source_failures": {
+      "status": "ACTUAL_CANONICAL_TWO_LEGACY_PRESERVATION_SOURCE_REFUSALS_RETAINED_NOT_WAIVED",
+      "canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2",
+      "logs": [
+        {
+          "job_id": 137001164983,
+          "file": "INITIAL_PROFILE_FROST_CANONICAL_84e815a_JOB137001164983_PRESERVATION_FAILED_FULL_V1.txt",
+          "bytes": 565434,
+          "sha256": "4ba30ff3b96707d2cee24193935ffdc54ec4a536e4c1c617a741585eb6bbcbba",
+          "refusal": "verify_dataqual12_current.py source scientific_delta unreviewed delta"
+        },
+        {
+          "job_id": 137001164832,
+          "file": "INITIAL_PROFILE_FROST_CANONICAL_84e815a_JOB137001164832_PRESERVATION_FAILED_FULL_V1.txt",
+          "bytes": 532350,
+          "sha256": "176cd1e542d271ffc2e37937f5d7d3a6a81b00cf8c93fe9e946903d157289aae",
+          "refusal": "verify_dataqual12_current.py source scientific_delta unreviewed delta"
+        }
+      ],
+      "old_source_assertions_changed": false,
+      "old_performance_promoted": false,
+      "remaining_canonical_jobs_still_running": true
+    }
+  },
+  "initial_profile_groundwater_next_discovery": {
+    "status": "ACTUAL_TWENTY_EXISTING_PRESCRIBED_GROUNDWATER_PARENT_AND_PRESSURE_DISPATCH_OBSERVATIONS_COMPLETE",
+    "source": "354b6c9b792bed3a5cb0d10de96393d2568163f8",
+    "discovery": "INITIAL_PROFILE_GROUNDWATER_DISCOVERY_V1.json",
+    "contract": "INITIAL_PROFILE_GROUNDWATER_CONTRACT_V1.json",
+    "actual_parents_selected": 20,
+    "actual_original_pressure_refusals": 20,
+    "compiler_executions": 0,
+    "model_executions": 0,
+    "scientific_qualification_claimed": false,
+    "next": "Map twenty actual dispatch cases to exact existing original groundwater/state/input evidence; implement only after current AGE actual canonical admission. ExistingFrostcanonicalreadonlyproof andAGEsealedsource remain unchanged."
   }
 }
