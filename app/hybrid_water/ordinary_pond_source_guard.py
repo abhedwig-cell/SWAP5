@@ -55,3 +55,5 @@ def validate(bundle, project, identity):
             lambda text:render_headcalc(text,5),template),8).encode('cp1252')
     if hashlib.sha256(source).hexdigest() != HEADS[form]:
         raise ValueError('Foreign actual ordinary implicit coupled HeadCalc provider')
+
+# Actual initial state composition source negative; NEVER MERGE.
