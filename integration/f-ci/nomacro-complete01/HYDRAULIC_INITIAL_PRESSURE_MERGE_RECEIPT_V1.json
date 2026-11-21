@@ -1,0 +1,47 @@
+{
+  "status": "ACTUAL_CANONICAL_ORIGINAL_INITIAL_PRESSURE_PROFILE_ADMISSION_VERIFIED",
+  "PR": 1785,
+  "previous_canonical": "56efdcbb78cbf4cdedd3b70bc44b76323f7112b4",
+  "qualified_head": "83ec37ac4aeba6901c6eea28d1b5d0f72633f2a8",
+  "synthetic_merge": "fdcc40cdca1a1d4b9f885a283e59701e78caa6d8",
+  "actual_merge": "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
+  "ordered_parents": [
+    "56efdcbb78cbf4cdedd3b70bc44b76323f7112b4",
+    "83ec37ac4aeba6901c6eea28d1b5d0f72633f2a8"
+  ],
+  "whole_qualified_tree": "8749a93476d8dc52f0f1da19bf79336f8629a2c5",
+  "all_terminal_PR_checks": 44,
+  "success": 29,
+  "skipped": 15,
+  "all15workflow_runs_success": true,
+  "actual_candidate_public_seconds": 1417.3174966000952,
+  "actual_canonical_public_seconds": 1368.6635243999772,
+  "actual_canonical_sparse_patterns": 39,
+  "admission_archive_sha256": "3b98d9542200b247fe77d03033cee4cc5b42c3b3d445e3265da40e6cd40286a0",
+  "canonical_admission": true,
+  "short35_contexts": 14,
+  "exact_cold_windows": 42,
+  "native_checkpoints": 98,
+  "exact_private_CDE_stocks": 56,
+  "frontend_controls": 35,
+  "fresh_compilations_for_admission": 0,
+  "fresh_model_periods_for_admission": 0,
+  "neutral_qualification_and_raw_unchanged": true,
+  "scope": "New SWINCO1 arbitrary original HTB and legacy ZI/H: original-output dense daily numeric-heat2 NoSnow/noFrost/nohysteresis explicit water/CDE, ordinary drainage0/1 and original lowerboundary5/6/8. Actual representative HTBnonhydrostatic/saturationcrossing/closedsoilair/undrainedprescribedhead andlegacyZI/H. SWINCO2/3 preserve literal old route. Other initial process/output domains remain refused.",
+  "earlier_failed_and_cancelled_controls_retained": true,
+  "unused_raw_V2_controller_probe_not_counted": true,
+  "canonical_push_all_workflows_success": false,
+  "canonical_push_preservation_jobs_failed": [
+    136876797163,
+    136876797414
+  ],
+  "canonical_push_preservation_runs_failed": [
+    44914401059,
+    44914401061
+  ],
+  "canonical_push_preservation_failure": "Existing unresolved verify_dataqual12_current.py broad scientific_delta source succession assertion; before model execution, full logs retained, no waiver or successful replay claimed",
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}

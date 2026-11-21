@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 
 STATE='implicit_snow_root_state'
-CODECS={'S5CIS001':'S5IRC001','S5CCS001':'S5IRC002'}
+CODECS={'S5CIS001':'S5IRC001','S5CCS001':'S5IRC002','S5ITC001':'S5IRC003'}
 
 
 def provider_source():

@@ -1,0 +1,78 @@
+{
+  "status": "BOUNDED_ORIGINAL_INITIAL_STATE_COMPOSITIONS_SOURCE_RAW_QUALIFIED_NOT_ADMITTED",
+  "runtime": "e36585da4cde1c4044bad0f833c7a8f10f368849",
+  "physical_core": "23e8f8c228d6b2d3667a45932f02011e02cc0c80",
+  "parent_canonical": "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
+  "scope": "Original pressure-profile SWINCO1, dense daily original output, numeric heat2, water/CDE, NoFrost/noaquifer; NoSnowexplicit hys1/2 DRA1/BOT6, explicitSnow/hys0 DRA1/BOT6, NoSnowimplicit/hys0 DRA1/BOT5, implicitSnow/hys0 DRA1/BOT5. Preserve all prior initial2/3 routes. Active macropores excluded.",
+  "classification": [
+    "B_EXISTING_STATE_PROCESS_COMPOSITION",
+    "C_EXISTING_ORIGINAL_INITIALIZER_CONFIGURATION"
+  ],
+  "actual_short35_contexts": 30,
+  "new_initial1_contexts": 28,
+  "new_root_native3_initial2_baselines": 2,
+  "exact_cold_windows": 90,
+  "native_checkpoints": 210,
+  "exact_private_CDE_stocks": 126,
+  "actual_compiled_root_native3_refusals": 112,
+  "unchanged_Windows_profile1_root_refusals_inherited": 56,
+  "actual_source_policy_refusals": 40,
+  "actual_frontend_controls": 56,
+  "actual_root3_external_transaction_contexts": 2,
+  "actual_transaction_prepared_days": 6,
+  "actual_transaction_committed_days": 2,
+  "actual_transaction_discarded_days": 4,
+  "retained_failed_transaction_prepares_before_commit": 1,
+  "retained_compiled_source_guard_refusals_before_models": 2,
+  "owning_absolute_water_and_CDE_limits": 1e-10,
+  "native_interface_changed": true,
+  "new_native_codec": "S5IRC003",
+  "unchanged_parent_codec": "S5ITC001",
+  "unchanged_existing_native_codecs": [
+    "S5IRC001",
+    "S5IRC002"
+  ],
+  "root_diagnostic_fields": [
+    "alpwetnoddrz",
+    "alpdrynodrtz"
+  ],
+  "literal_root_diagnostic_carry_bytes": 96,
+  "original_initialization_equations_changed": false,
+  "physical_process_equations_changed": false,
+  "new_physical_state": false,
+  "root_diagnostic_provider_body_changed": false,
+  "mass_or_convergence_limits_changed": false,
+  "rollback_or_rejected_trial_semantics_changed": false,
+  "production_authority_changed": false,
+  "canonical_admission": false,
+  "whole_historical_family_closed": false,
+  "RC3_changed": false,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "raw_records": {
+    "INITIAL_STATE_COMPOSITION_WINDOWS_RAW_V1": {
+      "archive": "INITIAL_STATE_COMPOSITION_WINDOWS_RAW_V1.zip",
+      "bytes": 78627457,
+      "sha256": "da75dceee0291104d7bb1288450b1cb0ee395003cd7d0dedc89554ed53d3c165"
+    },
+    "INITIAL_STATE_COMPOSITION_UBUNTU_O0_RAW_V1": {
+      "archive": "INITIAL_STATE_COMPOSITION_UBUNTU_O0_RAW_V1.zip",
+      "bytes": 19532728,
+      "sha256": "387044c382acb5690494a3d73a31f40019f50a4c6ba8fc975cb8952ef2fb88b9",
+      "actual_workflow_run": 44912666408,
+      "actual_artifact": 14710532568,
+      "actual_producer": "31c32def70aa66861ca03f518bc0bb3d8d8973c4"
+    },
+    "INITIAL_STATE_COMPOSITION_UBUNTU_O2_RAW_V1": {
+      "archive": "INITIAL_STATE_COMPOSITION_UBUNTU_O2_RAW_V1.zip",
+      "bytes": 19592256,
+      "sha256": "da0f5fabbfc4871452dd48f69ac1d44099e47ed0cc29fe64bcbc6b3acd0e730a",
+      "actual_workflow_run": 44912666408,
+      "actual_artifact": 14710960536,
+      "actual_producer": "31c32def70aa66861ca03f518bc0bb3d8d8973c4"
+    }
+  },
+  "original_receipts_rewritten": false,
+  "full_periods_repeated": 0
+}
