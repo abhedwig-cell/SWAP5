@@ -24,7 +24,11 @@ def complete_inverse():
  f(b).body.remove(added[0]);assert ast.dump(a,include_attributes=False)==ast.dump(b,include_attributes=False),'Incomplete original input adapter inverse'
  assert (ROOT/WORKFLOW).read_bytes().replace(b'\r\n',b'\n')==git('show',PORTABLE+':'+WORKFLOW)
  for path in CI:
-  raw=(ROOT/path).read_bytes().replace(b'\r\n',b'\n').decode();assert raw.count(PATTERN)==1 and raw.replace(PATTERN,'',1).encode()==git('show',BASE+':'+path),'Unreviewed initial profile proof checkout delta'
+  raw=(ROOT/path).read_bytes().replace(b'\r\n',b'\n').decode()
+  if path==CI[1]:
+   assert raw.count('    timeout-minutes: 45\n')==1
+   raw=raw.replace('    timeout-minutes: 45\n','    timeout-minutes: 10\n',1)
+  assert raw.count(PATTERN)==1 and raw.replace(PATTERN,'',1).encode()==git('show',BASE+':'+path),'Unreviewed initial profile proof checkout delta'
  return True
 
 

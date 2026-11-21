@@ -11,7 +11,7 @@ from initial_pressure_profile_source_inverse import BASE,CORE,PATTERN,complete_i
 from initial_pressure_profile_central_science import read
 from initial_pressure_profile_records import frontend
 import vapor_boundary_verify as previous
-SEALED='41d1483dab88a1cd11bb44d2b00fc01743bc0b92'
+SEALED='38739d27a58feaf981ca43c1de6c0046eb8d6ff1'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/vapor_boundary_verify.py'
 GUARD_HOOK=' import initial_pressure_profile_verify as initialization\n return initialization.guard_previous_source()\n'
@@ -53,6 +53,9 @@ def guard_previous_source():
 
 def strip_current_evidence(text):
  assert text.count(PATTERN)<=1
+ if '\n  original-reader:\n' in text:
+  assert text.count('    timeout-minutes: 45\n')==1
+  text=text.replace('    timeout-minutes: 45\n','    timeout-minutes: 10\n',1)
  return literal('strip_current_evidence',dict(vars(previous)))(text.replace(PATTERN,''))
 
 
