@@ -67,8 +67,16 @@ def qualification():
         require(q[key] is False,'Unqualified analytical authority promoted: '+key)
     require((q['functional_completion'],q['whole_scientific_equivalence'],q['global_family_and_gap_counts'])==('PARTIAL','NOT_QUALIFIED','UNKNOWN'),'Whole historical family promoted')
     for key in ('daily_water_guard_cm','daily_CDE_guard_mg_cm2','every_prefix_CDE_guard_mg_cm2'):require(q[key]==1e-10,'Scientific analytical mass bound changed')
-    for item in q['archives'].values():
-        path=PROOF/item['record'];require(norm(path.read_bytes())==blob(SEALED,path.relative_to(ROOT).as_posix()),'Neutral analytical raw inventory changed')
+    from contextlib import ExitStack
+    from analytical_hydraulic_archives import Archive
+    from model7_search_science import Store
+    with ExitStack() as stack:
+        for item in q['archives'].values():
+            path=PROOF/item['record'];require(norm(path.read_bytes())==blob(SEALED,path.relative_to(ROOT).as_posix()),'Neutral analytical raw inventory changed')
+            record=read(path)
+            require(all(record[k]==item[k] for k in ('archive','bytes','sha256')),'Foreign neutral analytical raw identity')
+            # Authenticate every original ZIP before inherited scientific work.
+            (Archive if 'parts' in record else Store)(PROOF,path.stem,stack)
     return q
 
 
