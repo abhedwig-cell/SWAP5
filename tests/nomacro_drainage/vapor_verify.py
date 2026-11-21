@@ -30,6 +30,8 @@ PARSERS=('vapor_source_inverse.py','vapor_parent_bridge.json','vapor_inherited_o
 
 
 def strip_current_evidence(text):
+    import signed_hydraulic_verify as signed
+    return signed.strip_current_evidence(text)
     if inherited.PATTERN in text:
         require(text.count(inherited.PATTERN)==1,'Ambiguous vapor proof checkout');text=text.replace(inherited.PATTERN,'',1)
     return text
@@ -37,6 +39,8 @@ def strip_current_evidence(text):
 
 @lru_cache(maxsize=1)
 def guard_previous_source():
+    import signed_hydraulic_verify as signed
+    return signed.guard_previous_source()
     complete_inverse()
     for name in PARSERS:
         path='tests/nomacro_drainage/'+name
@@ -60,6 +64,8 @@ def guard_previous_source():
 
 
 def publication_dependencies_unchanged():
+    import signed_hydraulic_verify as signed
+    return signed.publication_dependencies_unchanged()
     guard_previous_source()
     scopes=('src','app/solute_project','tests/publication','docs/publication','docs/publications','docs/verification','docs/performance/evidence','tools/vq','tools/solute','tests/fsi/fsi04_real_headcalc_stubs.f90')
     if git('diff',PARENT,'HEAD','--',*scopes):return False
@@ -118,6 +124,8 @@ def frontend_records():
 
 
 def verify():
+    import signed_hydraulic_verify as signed
+    return signed.verify()
     guard_previous_source();q=qualification();prior=inherited.inherited_science()
     actual_windows=windows.read(PROOF);actual_ubuntu=ubuntu.read(PROOF);unchanged=unselected.read(PROOF);retained=research.read(PROOF);frontend=frontend_records()
     require(actual_windows['full1096_contexts']==actual_ubuntu['full1096_contexts']==32,'Actual vapor full denominator changed')
