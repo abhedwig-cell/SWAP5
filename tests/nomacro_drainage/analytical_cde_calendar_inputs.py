@@ -17,7 +17,9 @@ CASES={
  'vapor8-monthly5':('8',True,1,5,'monthly'),
  'mixed7-8-clock8':('7 8',True,1,8,'clock'),
  'mixed7-8-perstep8':('7 8',True,1,8,'perstep'),
- 'vapor8-explicit-undrained5':('8',True,0,5,'explicit')}
+ 'vapor8-explicit-undrained5':('8',True,0,5,'explicit'),
+ 'vapor11-periodic-undrained6':('11',True,0,6,'periodic'),
+ 'mixed7-8-clock-undrained8':('7 8',True,0,8,'clock')}
 
 
 def prepare(case,output,dense=False):

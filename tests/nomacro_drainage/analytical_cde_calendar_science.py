@@ -11,6 +11,17 @@ BASE='5c0cba9fbbd93ffb482199016f392e53e371e095'
 FIRST_CORE='443c6b432a3f75695dbab0e0b66389638d7f94c0'
 CLOCK_CORE='b16249855004a00b54efe5203287ba321b61594c'
 NATIVE6_CORE='1510278b9ad56b03273c6d6e2284b1360f57849c'
+COMPOSED_CORE='379673548d90b13421b5b1e2db6e928c676b11ed'
+CASES={
+ 'model7-periodic6':(1,6,'periodic'),'model7-clock6':(1,6,'clock'),'model7-perstep6':(1,6,'perstep'),
+ 'vapor8-periodic6':(1,6,'periodic'),'vapor8-monthly6':(1,6,'monthly'),
+ 'mixed7-8-clock6':(1,6,'clock'),'mixed7-8-perstep6':(1,6,'perstep'),
+ 'vapor8-periodic5':(1,5,'periodic'),'vapor8-monthly5':(1,5,'monthly'),
+ 'mixed7-8-clock8':(1,8,'clock'),'mixed7-8-perstep8':(1,8,'perstep'),
+ 'vapor8-explicit-undrained5':(0,5,'explicit'),
+ 'vapor11-periodic-undrained6':(0,6,'periodic'),'mixed7-8-clock-undrained8':(0,8,'clock')}
+BOUNDARY_PARENTS={6:'356fdea44df04ecb97f68936be0102c36b63f730d5c63950c8ad0ce453c313df',5:'86846f45207441207b24d71954b28ad4690a0a5ab6aca17883ecd3c1fb4a997d',8:'5f416dd85126383e39f2211f394b18590b1420cfbc2c49c408f7b4ec89de73d2'}
+BOUNDARY_CLOCK_PARENTS={6:'3dcf72d8fcf977fb74ad7d53ff68774df07983602a1a3452d40e8d6be257f9f4',5:'96c401edf095e41113897afcdc4b4fd9454ddb104c3d570b47217e899f49a0be',8:'977c6c52429b2929900e311d963541fe04f17d13c102ab4a2b061d8cb4302928'}
 git=lambda *a:subprocess.check_output(['git',*a],cwd=ROOT)
 
 
@@ -47,12 +58,16 @@ loop.body[-3:]=ast.parse("exact_output_interval(warm/'original',cold/'original',
 
 def audit(profile,reference,locations=None):
  q=json.loads((profile/'RESULT.json').read_text());assert q['status']=='ACTUAL_ORIGINAL_ANALYTICAL_CDE_CALENDAR_FIXED_MASS_NATIVE_EXACT_COLD_PASS_NOT_ADMITTED' and q['days'] in (35,367)
- core=NATIVE6_CORE if q['case']=='vapor8-periodic6' else FIRST_CORE if q['case']=='model7-periodic6' else CLOCK_CORE
- assert q['case'] in ('model7-periodic6','model7-clock6','model7-perstep6','vapor8-periodic6')
+ assert q['case'] in CASES
+ drain,bottom,mode=CASES[q['case']]
+ core=NATIVE6_CORE if q['case']=='vapor8-periodic6' else FIRST_CORE if q['case']=='model7-periodic6' else CLOCK_CORE if q['case'].startswith('model7-') else COMPOSED_CORE
  assert not git('diff',core,q['source'],'--','app','src','tools/solute','tools/vq','reference'),'Unreviewed actual analytical CDE composition producer'
  build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];selected=identity['original_output'];nodes=meta['project']['nodes'];magic=q['native_codec'].encode();assert magic in (b'S5CIC001',b'S5CCC001',b'S5HCC006') and selected['kind']=='cde'
- if magic in (b'S5CIC001',b'S5HCC006'):assert selected['period']==5
- else:assert selected['period']==1 and selected['analytical_bottom6_calendar'] and selected['cde_clock_output'] and (selected['nprintday']>1 or selected['flprintdt'])
+ if mode=='periodic':assert selected['period']==5
+ elif mode=='monthly':assert selected['swmonth']==1 and selected['swres']==0
+ elif mode=='explicit':assert selected['swodat']==1 and selected['swres']==0
+ else:assert selected['period']==1 and selected['cde_clock_output'] and (selected['nprintday']>1 or selected['flprintdt']) and bool(selected['flprintdt'])==(mode=='perstep')
+ assert selected['swdra']==drain
  for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
  for name,digest in identity['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
  for name,digest in identity['donor_objects'].items():assert SHA((reference/'build/swap-obj'/name).read_bytes())==digest
@@ -76,7 +91,9 @@ def audit(profile,reference,locations=None):
    # Decode actual duplicated native6 integers independently. The read-only
    # parent view removes only that verified wrapper, leaving every conserved
    # stock/calendar/private-state byte exact for the literal old decoder.
-   expected=[6,nodes,layers,0,1,0,0,0,0,0,1,2,1,6]+models+flags;packed=struct.pack('<'+str(len(expected))+'i',*expected)
+   expected_models=[7,8] if q['case'].startswith('mixed7-8-') else [11 if q['case'].startswith('vapor11-') else 8]*layers
+   assert models==expected_models and flags==[int(m>=8) for m in models]
+   expected=[6,nodes,layers,0,1,0,0,0,0,0,1,2,drain,bottom]+models+flags;packed=struct.pack('<'+str(len(expected))+'i',*expected)
    assert raw[48:48+2*len(packed)]==packed+packed and struct.unpack_from('<i',raw,8)[0]==nodes
    parent=raw[:48]+raw[48+2*len(packed):]
   details=output_calendar(parent,nodes,rows[day-1],selected,meta['project']['start_date'],True);samples.append(dict(day=day,calendar_header=details['calendar_header'],private_stock_exact=True))
@@ -85,17 +102,28 @@ def audit(profile,reference,locations=None):
  for n in tree.body:
   if isinstance(n,ast.Assign) and len(n.targets)==1 and isinstance(n.targets[0],ast.Name) and n.targets[0].id in ('IMPORT','GUARD','SEARCH','HEAD_PARENT_SHA'):constants[n.targets[0].id]=ast.literal_eval(n.value)
  actual=(build/'headcalc.f90').read_bytes().replace(b'\r\n',b'\n')
- for key in ('IMPORT','GUARD','SEARCH'):
-  part=constants[key].encode('cp1252');assert actual.count(part)==1;actual=actual.replace(part,b'',1)
- if magic==b'S5CCC001':
+ guard=constants['GUARD']
+ if (drain,bottom)!=(1,6):
+  # Evaluate only the frozen literal guard renderer for the independently
+  # observed domain. No producer input or project identity is substituted.
+  tree=ast.parse(git('show',BASE+':app/hybrid_water/vapor_boundary_composition.py'))
+  functions=[n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='terminal_guard'];assert len(functions)==1
+  namespace=dict(context=lambda _:dict(drainage=drain,bottom=bottom))
+  exec(compile(ast.Module(body=functions,type_ignores=[]),'frozen-qualified-boundary-terminal-guard','exec'),namespace)
+  guard=namespace['terminal_guard'](None,guard)
+ for part in (constants['IMPORT'],guard,constants['SEARCH']):
+  part=part.encode('cp1252');assert actual.count(part)==1;actual=actual.replace(part,b'',1)
+ if mode in ('clock','perstep'):
   code=git('show',CLOCK_CORE+':app/hybrid_water/analytical_cde_calendar.py');tree=ast.parse(code);namespace={}
   for n in tree.body:
    if isinstance(n,ast.Assign) and len(n.targets)==1 and isinstance(n.targets[0],ast.Name) and n.targets[0].id in ('HEAD_IMPORT','HEAD_DECL','HEAD_GUARD','CLOCK6_PARENT_SHA'):namespace[n.targets[0].id]=ast.literal_eval(n.value)
   functions=[n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='head_guard'];assert len(functions)==1;exec(compile(ast.Module(body=functions,type_ignores=[]),'frozen-literal-CDE-clock-source','exec'),namespace)
-  assert SHA(actual)==namespace['CLOCK6_PARENT_SHA']
-  for part in (namespace['HEAD_IMPORT'],namespace['HEAD_DECL'],namespace['head_guard'](6)):
+  expected_parent=namespace['CLOCK6_PARENT_SHA'] if (drain,bottom)==(1,6) else BOUNDARY_CLOCK_PARENTS[bottom]
+  assert SHA(actual)==expected_parent
+  for part in (namespace['HEAD_IMPORT'],namespace['HEAD_DECL'],namespace['head_guard'](bottom)):
    raw=part.encode('cp1252');assert actual.count(raw)==1;actual=actual.replace(raw,b'',1)
- assert SHA(actual)==constants['HEAD_PARENT_SHA'],'Actual complete original qualified model7 HeadCalc differs'
+ expected_parent=constants['HEAD_PARENT_SHA'] if (drain,bottom)==(1,6) else BOUNDARY_PARENTS[bottom]
+ assert SHA(actual)==expected_parent,'Actual complete original qualified model7/boundary HeadCalc differs'
  assert (build/'original_cde_output_state.f90').read_bytes().replace(b'\r\n',b'\n')==git('show',BASE+':app/hybrid_water/cde_interval_output_state.f90')
  result.update(status='INDEPENDENT_ORIGINAL_ANALYTICAL_CDE_CALENDAR6_FIXED_MASS_CALENDAR_PRIVATE_STATE_EXACT_COLD_PASS',producer=q['source'],kind='cde',optimization=q['optimization'],native_codec=magic.decode(),actual_original_daily_increment_rows=daily['actual_days'],integrated_actual_chemical_residual_mg_cm2=daily['integrated_actual_chemical_residual_mg_cm2'],native_calendar_samples=sorted(samples,key=lambda v:v['day']),complete_qualified_model7_HeadCalc_parent_unchanged=True,literal_CDE_private_sampro0_rounderr_provider_unchanged=True,compiler_executions=0,model_executions=0,canonical_admission=False)
  return result
