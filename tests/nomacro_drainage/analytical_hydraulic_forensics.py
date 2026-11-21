@@ -29,6 +29,7 @@ def audit(profile,reference,allow_refusal=False,allow_censored=False):
             if node.value=='CANDIDATE_ACTUAL_MODEL7_CAPACITY_':self.changes+=1;return ast.copy_location(ast.Constant('CANDIDATE_ACTUAL_ANALYTICAL_FAMILY_'),node)
             return node
         def visit_Assert(self,node):
+            self.generic_visit(node)
             expression=ast.unparse(node.test)
             if expression=='[i for i in range(28) if trial[i] != expected[i]] == [7, 25]':
                 self.phase_fields+=1
