@@ -16,7 +16,15 @@ m=inherited.m
 def main():
     parser=argparse.ArgumentParser()
     for name in ('reference-work','profile','output'):parser.add_argument('--'+name,type=Path,required=True)
-    a=parser.parse_args();a.output.mkdir()
+    a=parser.parse_args()
+    from vapor_receipt_bridge import receipt_bridge
+    profile=json.loads((a.profile/'RESULT.json').read_text())
+    with receipt_bridge(Path(profile['build_root'])) as bridge:
+        execute(a,bridge)
+
+
+def execute(a,bridge):
+    a.output.mkdir()
     profile=json.loads((a.profile/'RESULT.json').read_text());build=Path(profile['build_root'])
     project=m.e.load(profile['input_root'],original_output=True,time_step_policy='original-adaptive-day-seed-v1')
     meta,case=m.validate_bundle(build,a.reference_work,project);vapor=meta['identity']['hydraulic_vapor']
@@ -57,6 +65,7 @@ def main():
         ('top-clock',top+4,clock+1),('top-nan',top+12,float('nan'))))
     attacks.append(('micro-trailer',[(micro_end,struct.pack('<i',0))]))
     result=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+        receipt_identity_bridge=bridge,
         actual_BUILD_sha256=m.sha(build/'BUILD.json'),original_checkpoint_sha256=digest,
         accepted_model_days=0,refusals=[],public_admission=False)
     def save():(a.output/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
