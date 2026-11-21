@@ -16,10 +16,14 @@ def read(folder):
     assert q['status']=='ACTUAL_ORIGINAL_HYDRAULIC_INTERFACES_OBSERVED_NO_ADMISSION'
     assert q['model_periods']==0 and q['model7_capacity_correction'] and q['actual_probe_scope'] in ('6orderedpairs*4heads*3opposedtemperaturepairs*4perlayervaporflags*6layervisits=1728 actualcalls; original equations unchanged; no model periods or admission','Mixed6orderedpairs/4heads/3opposedtemperatures/4vaporflags/6visits1728calls; no model periods or admission')
     assert len(q['actual_original_object_closure'])==40
-    executable=folder/('actual-hydraulic.exe' if (folder/'actual-hydraulic.exe').exists() else 'actual-hydraulic')
+    executable=folder/('actual-hydraulic.exe' if (folder/'actual-hydraulic.exe').is_file() else 'actual-hydraulic')
     assert SHA(executable.read_bytes())==q['executable_sha256']
     probe=ROOT/'tests/nomacro_drainage/hydraulic_vapor_mixed_probe.f90'
-    assert SHA(probe.read_bytes())==q['driver_sha256']
+    actual_probes=[folder/name for name in ('hydraulic_vapor_mixed_probe.f90','hydraulic_vapor_mixed_probe_v1.f90') if (folder/name).is_file()]
+    assert len(actual_probes)==1
+    actual_probe=actual_probes[0].read_bytes()
+    assert SHA(actual_probe)==q['driver_sha256']
+    assert actual_probe.replace(b'\r\n',b'\n')==probe.read_bytes().replace(b'\r\n',b'\n')
     assert not (folder/'model8.stderr').read_bytes()
     target=ROOT/'reference/swap-4.3.1/hydraulic-corrections/VAPOR-KELVIN-SIGN01/WC_K_models_04_11.capacity7.f90'
     source=target.read_bytes().replace(b'\r\n',b'\n')
