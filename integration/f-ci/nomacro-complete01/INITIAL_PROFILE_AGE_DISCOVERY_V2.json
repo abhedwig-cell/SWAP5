@@ -1,0 +1,1646 @@
+{
+  "status": "TEN_EXISTING_AGE_PARENTS_SELECT_INITIAL2_AND_REFUSE_ORIGINAL_PRESSURE_INITIAL1_BEFORE_BUILD",
+  "source": "181c88805082cb2b957835ab1384b959550b5da7",
+  "checks": [
+    {
+      "case": "dense-plain",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-plain-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "78426dd01e65eb935c283dde57573d1158a97c2b69e8df52cef0e89943d75e63"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-plain-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "4ed698b8ffedeaf4d8133a02e11584c378d2c2a70120f988a6e3eac8efe7a61a"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 0,
+        "SWRES": 0,
+        "SWODAT": 0,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 0,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    },
+    {
+      "case": "dense-surface",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-surface-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "c2bd9fcab145cd70a954f2ed1d27f0e15a779a33e80c909d5849cce7f384bbb1"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "a63982097235583feaf94d8f13d7f2773808ad13619dbe0d42b26c685cf8de3b"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-surface-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "c2bd9fcab145cd70a954f2ed1d27f0e15a779a33e80c909d5849cce7f384bbb1"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "53c8a86acfeab9b191d6f02feec9a3031bd44913bd00c1f850aef558a4d83a4b"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 0,
+        "SWRES": 0,
+        "SWODAT": 0,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 1,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    },
+    {
+      "case": "dense-subsurface-interval",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-subsurface-interval-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "026f47c836938b3f6408658a67b37f3367ecf570fda757b0793507ddbcc4b8c5"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "a63982097235583feaf94d8f13d7f2773808ad13619dbe0d42b26c685cf8de3b"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-subsurface-interval-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "026f47c836938b3f6408658a67b37f3367ecf570fda757b0793507ddbcc4b8c5"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "53c8a86acfeab9b191d6f02feec9a3031bd44913bd00c1f850aef558a4d83a4b"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 0,
+        "SWRES": 0,
+        "SWODAT": 0,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 1,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    },
+    {
+      "case": "periodic-plain",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\periodic-plain-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "8b25230491b898289c6d24274b86ba7f7334f74039a82f1d9dd17bf1f3a0c294"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\periodic-plain-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "949e4ed8c5bc77975506a1b3413167a2478b37146ddd588e79e797556a72a8a5"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 0,
+        "SWRES": 0,
+        "SWODAT": 0,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 0,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    },
+    {
+      "case": "monthly-subsurface",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\monthly-subsurface-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "026f47c836938b3f6408658a67b37f3367ecf570fda757b0793507ddbcc4b8c5"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "11c468bca63b616752b3bfcff44937583211ca80d30223955d123dddd321bb98"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\monthly-subsurface-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "026f47c836938b3f6408658a67b37f3367ecf570fda757b0793507ddbcc4b8c5"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "908337415046d8779e1cb58ea1d6ed8f4d4fa90054a7f8f68409a30215e27f2e"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 1,
+        "SWRES": 0,
+        "SWODAT": 0,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 1,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    },
+    {
+      "case": "subdaily-surface",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\subdaily-surface-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "c2bd9fcab145cd70a954f2ed1d27f0e15a779a33e80c909d5849cce7f384bbb1"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "5d47262b9e8ad7d0b570f8e6897b0daa19d4af2a661fdb22a46f6af12ce88d46"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\subdaily-surface-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "c2bd9fcab145cd70a954f2ed1d27f0e15a779a33e80c909d5849cce7f384bbb1"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "0cbabf41360a53c4f645ac9fa05a7436d9c438da8c195404474bf7050262e0f7"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 0,
+        "SWRES": 0,
+        "SWODAT": 0,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 1,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    },
+    {
+      "case": "explicit-plain",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\explicit-plain-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "6c694d6b2609a668e87bbd91018d64b2492e6664f2e0a4ce59156284331a083b"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\explicit-plain-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "f061eec1f890567603475e8092e44342b146ea95232416e0cf39d1ae8cedb010"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 0,
+        "SWRES": 0,
+        "SWODAT": 1,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 0,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    },
+    {
+      "case": "annual-plain",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\annual-plain-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "7529d7e78806a209c693e118850e0c6d02715d445d9ba6aa1a81e7606991a190"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\annual-plain-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "dd6863e4cfe91e49b1c113757a9526e84562724e9458c24e13a3e5e4b5d2feec"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 0,
+        "SWRES": 0,
+        "SWODAT": 0,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 0,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    },
+    {
+      "case": "dense-mean1-plain",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-mean1-plain-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "345fe903b83f78a5058d6d7fe89667fb8b63b694af4b902462ee3605b67c1e27"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-mean1-plain-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "10467a072ed565210c8672e9c360fe4138882489e3bdc33a3c91fa6c95351954"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 0,
+        "SWRES": 0,
+        "SWODAT": 0,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 0,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 1,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    },
+    {
+      "case": "dense-mean6-plain",
+      "parent_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-mean6-plain-initial2",
+      "parent_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "e856d6456575f0d343d8c232c1476d9c8189f3e638982812ef954792730e1431"
+        ]
+      ],
+      "actual_parent_codec": "S5IOA001",
+      "parent_selected": true,
+      "pressure_input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\initial-profile-age-original-dispatch-v2\\dense-mean6-plain-initial1",
+      "pressure_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "121e9ee59d9adcd3fc7f746a3e4a2793a8a331ef27c960b60bfb79902fe20c26"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "0074867ffc4516d63b4acfed5cb4b58c54032c90a50b5d36755d55d52605ca1d"
+        ]
+      ],
+      "actual_pressure_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "exact_original_initial_pressure_nodes": 34,
+      "original_initial_profile": {
+        "legacy_ZI_H": false,
+        "profile_knots": [
+          [
+            0.5,
+            -93.0
+          ],
+          [
+            195.0,
+            120.0
+          ]
+        ],
+        "saturated_nodes_reinitialized_by_original": 11
+      },
+      "selectors": {
+        "SWSCRE": 0,
+        "SWERROR": 0,
+        "SWMONTH": 0,
+        "SWRES": 0,
+        "SWODAT": 0,
+        "SWYRVAR": 0,
+        "SWHEADER": 0,
+        "SWBAL": 1,
+        "SWBLC": 1,
+        "SWSBA": 0,
+        "SWBMA": 0,
+        "SWCSV": 1,
+        "SWDISCRVERT": 0,
+        "SWEND": 0,
+        "SWENDTYPE": 1,
+        "SWENDFILTER": 0,
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0,
+        "SWCROP": 1,
+        "SWIRFIX": 0,
+        "SWIRGFIL": 1,
+        "SWINCO": 2,
+        "SWPONDMX": 0,
+        "SWRUNON": 0,
+        "SWCFBS": 0,
+        "SWREDU": 1,
+        "SWSOPHY": 0,
+        "SWHYST": 0,
+        "SWMACRO": 0,
+        "SWSNOW": 0,
+        "SWFROST": 0,
+        "SWKMEAN": 6,
+        "SWKIMPL": 0,
+        "SWDRA": 1,
+        "SWBBCFILE": 0,
+        "SWBOTB": 6,
+        "SW2": 2,
+        "SWBOTB3RESVERT": 0,
+        "SWBOTB3IMPL": 0,
+        "SW3": 1,
+        "SW4": 1,
+        "SWQHBOT": 2,
+        "SWHEA": 1,
+        "SWCALT": 2,
+        "SWTOPBHEA": 1,
+        "SWBOTBHEA": 1,
+        "SWSOLU": 2,
+        "SWBOTBC": 0,
+        "SWSP": 0,
+        "SWDC": 0,
+        "SWBR": 0
+      }
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "implementation_changed": false,
+  "canonical_admission": false,
+  "dispatch_observation_only": true,
+  "individual_parent_scientific_qualification_claimed": false,
+  "provider_source_pins": {
+    "functions.f90": "c33ee3145daf0f0276448433090128104890d2bf5f71d79146d98639e524a661",
+    "readswap.f90": "e6fc217798d3f0424641c61b92fb8831fcdeb78c19670def00695b82ab8e80fe",
+    "soilwater.f90": "d5926b6c30fba3177c261c9a24ef828dd9cd6b3dfb952b07ef00800ebd42415d",
+    "swap_base.f90": "af54d6c6eafd2954f228be9a50ba92e7cefa231658d34de247d5b3b68aa58dab"
+  },
+  "unchanged_AGE_owners": {
+    "conserved_original_age.py": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+    "age_output_calendar.py": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+    "age_output_schedule.py": "d1773a5b0ef4c9532aa615f431cb99b39640e9a7c39b5d3c0b3c6ae2bf21f04c",
+    "age_output_clock.py": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+    "age_irrigation_source.py": "21f4d7bebbf3f2cd1a84aedf3993079693ccf3395790b61cca0b6c507c7015e7",
+    "age_direct_soil_source.py": "501a08567f3269089aa386315595c02e3bdbf0958e8269088743fbf631972c95"
+  }
+}
