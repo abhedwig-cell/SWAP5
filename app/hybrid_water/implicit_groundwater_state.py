@@ -27,7 +27,7 @@ def enabled(project):
     active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))
     models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]+)',active)
     remainder=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
-    if (len(models)>1 or models and re.fullmatch(r'1(?:[ \t]+1)*[ \t]*',models[0].strip()) is None
+    if (len(models)>1 or models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0].strip()) is None
             or re.search(r'(?i)\b(?:IHWCKMODEL|SWAP_SOILS_DB)\b',remainder)):return False
     required=dict(SWMACRO=0,SWSOLU=0,SWSNOW=0,SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0)
     return (s['SWKIMPL']==0 and all(s.get(k)==v for k,v in required.items())

@@ -27,7 +27,7 @@ def selection(text, selectors, boundary, *, original_output=None):
     models = re.findall(r'(?mi)^IHWCKMODEL\s*=\s*(.*)$', active)
     remainder = re.sub(r'(?mi)^IHWCKMODEL\s*=\s*[^\r\n]*$', '', active)
     if (re.search(r'(?i)\bIHWCKMODEL\b', remainder) or len(models) > 1
-            or models and not re.fullmatch(r'1(?:[ \t]+1)*[ \t]*', models[0])):
+            or models and not re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*', models[0])):
         raise ValueError('Original implicit conductivity requires default Mualem model1')
     # Read the actual original named parameter table. Original TTUTIL remains
     # authoritative for numeric ranges; this guard excludes its unsupported
