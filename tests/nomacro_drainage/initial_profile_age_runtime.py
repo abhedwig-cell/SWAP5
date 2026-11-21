@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'tests/nomacro_drainage')]
 import original_output_matrix as original
-CASES=('dense-plain','dense-surface','dense-subsurface-interval','periodic-plain','monthly-subsurface','subdaily-surface')
+CASES=('dense-plain','dense-surface','dense-subsurface-interval','periodic-plain','monthly-subsurface','subdaily-surface','explicit-plain','annual-plain','dense-mean1-plain','dense-mean6-plain')
 
 
 def main():
