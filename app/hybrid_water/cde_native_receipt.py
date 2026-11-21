@@ -20,7 +20,8 @@ def metadata():
                 conserved_cde_prefix_offset_bytes=48,
                 native_stock_offset='48+8*(actual_nodes+1)',
                 native_stock='actual original saved SAMPRO, not reconstructed CMSY',
-                optional_native_prefixes={'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain'},
+                optional_native_prefixes={'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain',
+                    'S5HSC004':'48 + 8*(14+2*actual_layers), checked duplicated Snow vapor domain'},
                 stock_units='mg/cm2',comparison='exact native total and reported end stock',
                 physical_equations_changed=False)
 
@@ -29,10 +30,11 @@ def decode(aux,nodes,project=None):
     if type(nodes) is not int or not 1<=nodes<=1000:
         raise ValueError('Invalid CDE native receipt shape')
     offset=48
-    if aux[:8]==b'S5HVC003':
+    if aux[:8] in (b'S5HVC003',b'S5HSC004'):
         if len(aux)<offset+56:raise ValueError('Incomplete CDE vapor domain')
         domain=struct.unpack_from('<14i',aux,offset);layers=domain[2]
-        if not 1<=layers<=1000 or domain!=(3,nodes,layers,0,1,0,0,0,0,0,1,2,1,6):
+        snow=aux[:8]==b'S5HSC004'
+        if not 1<=layers<=1000 or domain!=(4 if snow else 3,nodes,layers,0,1,0,0,int(snow),0,0,1,2,1,6):
             raise ValueError('Foreign CDE vapor domain')
         count=14+2*layers;size=4*count
         if len(aux)<offset+2*size:raise ValueError('Incomplete CDE vapor domain witness')
@@ -47,6 +49,8 @@ def decode(aux,nodes,project=None):
             selected=describe(project)
             if selected is None or tuple(selected['models'])!=models or tuple(f if m>=8 else 0 for m,f in zip(selected['models'],selected['SWVAPOR']))!=flags:
                 raise ValueError('CDE vapor native differs from project layers')
+            from snow_vapor_composition import snow_selected
+            if snow_selected(project)!=snow:raise ValueError('CDE vapor native differs from project Snow process')
         offset+=2*size
     if len(aux)<offset+8*(nodes+2):raise ValueError('Incomplete CDE native receipt state')
     conserved=struct.unpack_from('<'+str(nodes+2)+'d',aux,offset)

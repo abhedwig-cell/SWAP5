@@ -49,6 +49,9 @@ def selection(project):
 
 
 def magic(project):
+    from hydraulic_vapor import native_magic as vapor_native_magic
+    vapor=vapor_native_magic(project)
+    if vapor is not None:return vapor
     from frost_drainage_composition import enabled,codec
     if enabled(project):return codec(project)
     selected=selection(project)
@@ -59,6 +62,9 @@ def metadata(project):
     selected=selection(project)
     if selected is None:return previous_output_metadata(project)
     sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+    from hydraulic_vapor import describe as vapor_selection
+    vapor=vapor_selection(project)
+    stock_offset=48+8*(14+2*vapor['numlay']) if vapor is not None else 48
     return dict(policy=POLICY,native_codec=magic(project).decode(),**selected,
                 source_sha256=sha(Path(__file__)),ordinary_owner_sha256=sha(Path(ordinary.__file__)),
                 domain_source_sha256=sha(Path(__file__).with_name(DOMAIN+'.f90')),
@@ -70,7 +76,7 @@ def metadata(project):
                 vector_catalog_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-VECTOR-OUTPUT-01/source.py') if selected['swcsv'] else None,
                 binary_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-BINARY-OUTPUT-01/source.py') if selected['swcsv']==3 else None,
                 preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False,
-                conserved_cde_prefix_offset_bytes=48 if project.solute else None,
+                conserved_cde_prefix_offset_bytes=stock_offset if project.solute else None,
                 snow_stock='actual MOD_snow ssnow',snow_increment_slots=[2,3,13],
                 physical_equations_changed=False,native_domain_bytes=80)
 
