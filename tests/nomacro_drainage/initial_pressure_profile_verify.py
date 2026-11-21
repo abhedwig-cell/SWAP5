@@ -11,7 +11,7 @@ from initial_pressure_profile_source_inverse import BASE,CORE,PATTERN,complete_i
 from initial_pressure_profile_central_science import read
 from initial_pressure_profile_records import frontend
 import vapor_boundary_verify as previous
-SEALED='39205805a09566582e40603dccfc2e9066d02526'
+SEALED='41d1483dab88a1cd11bb44d2b00fc01743bc0b92'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/vapor_boundary_verify.py'
 GUARD_HOOK=' import initial_pressure_profile_verify as initialization\n return initialization.guard_previous_source()\n'
