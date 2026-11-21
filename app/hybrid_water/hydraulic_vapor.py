@@ -144,3 +144,7 @@ def validate(bundle,reference,project,identity):
     original=(reference/'build/swap-selected'/(NAME+'.f90')).read_bytes()
     if (bundle/(NAME+'.f90')).read_text(encoding='cp1252')!=source(original,expected['existing_model7_capacity_composed']):raise ValueError('Foreign complete joint original vapor/capacity source')
     if NAME+'.o' in identity['donor_objects']:raise ValueError('Uncorrected original vapor object retained')
+    if (bundle/'hydraulic_vapor_native.f90').read_bytes().replace(b'\r\n',b'\n')!=native_provider(project).replace(b'\r\n',b'\n'):
+        raise ValueError('Foreign complete vapor native domain owner')
+    from snow_vapor_composition import validate as snow_validate
+    snow_validate(bundle,project,identity)

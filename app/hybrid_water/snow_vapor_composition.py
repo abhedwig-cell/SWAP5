@@ -3,6 +3,8 @@ import hashlib
 from pathlib import Path
 import re
 
+STATE='snow_vapor_terminal_water_receipt'
+
 
 def snow_selected(project):
     if not project.input_directory:return False
@@ -47,7 +49,7 @@ def metadata(project):
 
 def apply_build(output,project,patched):
     if not snow_selected(project):return patched
-    from model7_terminal_water import STATE,HEAD_PARENT_SHA,SEARCH,ANCHOR,PARENT_SHA
+    from model7_terminal_water import HEAD_PARENT_SHA,SEARCH,ANCHOR,PARENT_SHA
     if STATE in patched:raise ValueError('Multiple Snow vapor terminal receipt owners')
     source=Path(__file__).with_name('terminal_water_receipt.f90').read_text(encoding='cp1252').encode('cp1252')
     if hashlib.sha256(source).hexdigest()!=PARENT_SHA:raise ValueError('Changed literal original Snow terminal receipt')
@@ -63,3 +65,18 @@ def apply_build(output,project,patched):
     text=text.replace('end subroutine jacobian_F',SEARCH+'end subroutine jacobian_F',1)
     path.write_text(text,encoding='cp1252');patched.insert(0,STATE)
     return patched
+
+
+def validate(bundle,project,identity):
+    if not snow_selected(project):return
+    from model7_terminal_water import HEAD_PARENT_SHA,SEARCH,ANCHOR,PARENT_SHA
+    provider=(bundle/(STATE+'.f90')).read_text(encoding='cp1252')
+    if hashlib.sha256(provider.encode('cp1252')).hexdigest()!=PARENT_SHA:
+        raise ValueError('Changed complete original Snow terminal receipt')
+    text=(bundle/'headcalc.f90').read_text(encoding='cp1252')
+    for part in ('   use hybrid_terminal_water_receipt, only: terminal_water_residual\n',
+                 '\n         if(abs(terminal_water_residual())>1d-10)flnonconv=.true.',SEARCH):
+        if text.count(part)!=1:raise ValueError('Changed actual Snow vapor terminal/search composition')
+        text=text.replace(part,'',1)
+    if text.count(ANCHOR)!=1 or hashlib.sha256(text.encode('cp1252')).hexdigest()!=HEAD_PARENT_SHA:
+        raise ValueError('Changed complete inverse Snow vapor HeadCalc')
