@@ -32,6 +32,8 @@ def main():
  for path in CHANGED:
   extra['source-current/'+path]=(ROOT/path).read_bytes()
   if CHANGED[path] is not None:extra['source-parent/'+path]=subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT)
+ for epoch in ('443c6b432a3f75695dbab0e0b66389638d7f94c0','b16249855004a00b54efe5203287ba321b61594c','1510278b9ad56b03273c6d6e2284b1360f57849c'):
+  for path in CHANGED:extra['source-history/'+epoch+'/'+path]=subprocess.check_output(['git','show',epoch+':'+path],cwd=ROOT)
  extra['SOURCE_CUSTODY_V1.json']=(json.dumps(dict(runtime=CORE,baseline=BASE,original_provider_archive='HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1',original_provider_sha256='804b6c36afe0bbac5a84dd84c289a864f3ef0874b739fb9dbc15539c17ad903a',all_physical_equations_unchanged=True,original_receipts_rewritten=False,new_native_codec='S5HCC006'),indent=2)+'\n').encode()
  members={name:dict(bytes=path.stat().st_size,sha256=SHA(path.read_bytes())) for name,path in files.items()};members.update({name:dict(bytes=len(raw),sha256=SHA(raw)) for name,raw in extra.items()})
  name='ANALYTICAL_CDE_CALENDAR_WINDOWS_RAW_V1';archive=a.staging/(name+'.zip');assert a.staging.is_dir() and not any(a.staging.iterdir()) and not (proof/(name+'.json')).exists()
