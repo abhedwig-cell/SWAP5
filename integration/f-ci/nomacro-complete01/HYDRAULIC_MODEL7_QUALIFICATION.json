@@ -1,0 +1,71 @@
+{
+  "status": "NEUTRAL_MODEL7_CAPACITY_SATURATED_SEARCH_RAW_SCIENCE_PASS_PENDING_ADMISSION",
+  "runtime": "46c2c1c74a4ee9941612863d805120be4dcb87d5",
+  "predecessor": "085c95c3202380bb01987fdb5741b437d2acbf12",
+  "independent_readers": "e079d1554041c831cd0ab609835e2e79bf3c31a1",
+  "archives": {
+    "HYDRAULIC_MODEL7_SEARCH_WINDOWS_RAW_V1": {
+      "archive": "HYDRAULIC_MODEL7_SEARCH_WINDOWS_RAW_V1.zip",
+      "bytes": 51695772,
+      "sha256": "1388112089c668ec9b2871599f387a517b1cab5eaa30e9b2bfe339b1119c0d82",
+      "record": "HYDRAULIC_MODEL7_SEARCH_WINDOWS_RAW_V1.json"
+    },
+    "HYDRAULIC_MODEL7_SEARCH_UBUNTU_O0_RAW_V1": {
+      "archive": "HYDRAULIC_MODEL7_SEARCH_UBUNTU_O0_RAW_V1.zip",
+      "bytes": 23828553,
+      "sha256": "176cfcd9cfd394f626295e87506575051a9c7253daaf4f9c9c89758930862d90",
+      "record": "HYDRAULIC_MODEL7_SEARCH_UBUNTU_O0_RAW_V1.json"
+    },
+    "HYDRAULIC_MODEL7_SEARCH_UBUNTU_O2_RAW_V1": {
+      "archive": "HYDRAULIC_MODEL7_SEARCH_UBUNTU_O2_RAW_V1.zip",
+      "bytes": 23756911,
+      "sha256": "fbf60ea615ed9436cb78f88af33a2c4b0a6156b121a4b368a4dafe290e9cc970",
+      "record": "HYDRAULIC_MODEL7_SEARCH_UBUNTU_O2_RAW_V1.json"
+    },
+    "HYDRAULIC_MODEL7_UNSELECTED_WINDOWS_RAW_V1": {
+      "archive": "HYDRAULIC_MODEL7_UNSELECTED_WINDOWS_RAW_V1.zip",
+      "bytes": 11326413,
+      "sha256": "8ded676f040a3582e0b997aa0a691b0cbabe246206a4cbe27124cce76e131438",
+      "record": "HYDRAULIC_MODEL7_UNSELECTED_WINDOWS_RAW_V1.json"
+    }
+  },
+  "scope": "Explicit all-layer IHWCKmodel7, original analytical reader, no hysteresis/Frost/macropores/AGE; original day-seed output, NoSnow0 primary DRA1 closed bottom6 for saturated search and independent terminal trial guard. Daily water and CDE; original native/output owners retained.",
+  "actual_full1096_contexts": 8,
+  "actual_short35_contexts": 8,
+  "actual_exact_cold_windows": 80,
+  "actual_compiled_native_refusals": 212,
+  "actual_active_transaction_contexts": 8,
+  "actual_unselected35_contexts": 8,
+  "actual_unselected_cold_windows": 8,
+  "unaffected_full_periods_replayed": 0,
+  "original_model7_capacity_grid_states_per_optimizer_and_platform": 360,
+  "original_grid_capacity_mismatches": 216,
+  "corrected_grid_capacity_mismatches": 0,
+  "scientific_FD_scaled_derivative_limit": 2e-06,
+  "actual_saturation_matrix_cases_per_variant_optimizer_platform": 90,
+  "original_zero_pivots_per_optimizer_platform": 27,
+  "unchanged_other_matrix_cases": 63,
+  "daily_water_guard_cm": 1e-10,
+  "daily_CDE_guard_mg_cm2": 1e-10,
+  "every_prefix_CDE_guard_mg_cm2": 1e-10,
+  "extra_fixed_absolute_global_water_prefix_is_owning_gate": false,
+  "original_capacity_defect": "Moisture capacity derivative normalized each lobe separately, while physical retention uses shared normalization. One expression corrected; all actual water/conductivity values unchanged.",
+  "numerical_search": "Only fully saturated flux-top closed-bottom null mode. Same matrix as actual original default-MvG numerical diagonal. Physical capacity/storage/residual unchanged; original nonlinear guards retained.",
+  "post_hydraulic_canopy_phase": "Original crop leaf-capacity loss followed by Integral4 moves canopy water to interception. Other26 terminal/public terms exact; paired transfer conservative to binary-operation rounding. Independent public daily mass gate unchanged.",
+  "original_failure_and_censor_roles_preserved": true,
+  "new_physical_state": false,
+  "native_interface_changed": false,
+  "tolerance_changed": false,
+  "physical_water_or_conductivity_changed": false,
+  "model7_admitted": false,
+  "implicit_nondefault_conductivity_admitted": false,
+  "AGE_admitted": false,
+  "other_hydraulic_models_admitted": false,
+  "broader_boundaries_admitted": false,
+  "RC3_changed": false,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "canonical_admission": "OWNED_BY_FUTURE_ACTUAL_MERGE_RECEIPT",
+  "canonical085_historical_preservation_jobs": "Actual failures retained; DATAQUAL12 unreviewed-delta before model. No fresh or successful historical replay claimed."
+}
