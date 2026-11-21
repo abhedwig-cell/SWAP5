@@ -52,3 +52,34 @@ def frontend(store):
  assert counts=={'ORIGINAL_REFUSAL_NOW_SELECTED_NATIVE5':24,'PRIOR_NATIVE_CODEC_PRESERVED':2,'HISTORICAL_INACTIVE_VAPOR_PRESERVED':3,'UNQUALIFIED_COMPOSITION_REFUSED':26};return counts
 
 
+def unselected(store,proof,stack):
+ from analytical_hydraulic_archives import Archive
+ from vapor_boundary_unselected_postimage import identity_changes
+ from calendar_publisher import publisher_equivalence
+ from ordinary_pond_verify import blob
+ projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));results={}
+ for codec in ('native3','native4'):
+  prefix='profiles/vapor-boundary-unselected-'+codec+'-O0-v1';q=json.loads(store.get(prefix+'/RESULT.json'));assert q['model_executions']==0
+  old_store=Archive(proof,q['archive'],stack);assert old_store.record['sha256']==q['old_archive_sha256'];prior=json.loads(old_store.get(q['old_profile']+'/RESULT.json'));old_projection=json.loads(old_store.get('COMPILED_PROJECTION_V1.json'));old=old_store.view(old_projection[prior['build_root']]['archive_prefix']);new=store.view(projection[q['build_root']]['archive_prefix'])
+  before=json.loads((old/'BUILD.json').read_text());actual=json.loads((new/'BUILD.json').read_text());assert prior['source']==q['old_producer'] and SHA(old_store.get(q['old_profile']+'/RESULT.json'))==q['old_RESULT_sha256']
+  for field in ('donor_objects','donor_flags','kernel_flags'):assert before['identity'][field]==actual['identity'][field]
+  left={p.name:p.read_bytes().replace(b'\r\n',b'\n') for p in old.glob('*.f90')};right={p.name:p.read_bytes().replace(b'\r\n',b'\n') for p in new.glob('*.f90')};assert left==right
+  changes=identity_changes(before['identity'],actual['identity']);expected={'hydraulic_vapor.source_sha256','restart_publisher.library_sha256'}|({'model7_terminal_water.source_sha256','original_output.source_sha256'} if codec=='native3' else {'original_output.ordinary_owner_sha256','cde_native_receipt.source_sha256','cde_native_receipt.optional_native_prefixes.S5HBC005'});assert set(changes)==expected
+  sources={'hydraulic_vapor.source_sha256':'app/hybrid_water/hydraulic_vapor.py'}
+  if codec=='native3':sources.update({'model7_terminal_water.source_sha256':'app/hybrid_water/model7_terminal_water.py','original_output.source_sha256':'app/hybrid_water/original_output.py'})
+  else:sources.update({'original_output.ordinary_owner_sha256':'app/hybrid_water/original_output.py','cde_native_receipt.source_sha256':'app/hybrid_water/cde_native_receipt.py'})
+  for field,path in sources.items():
+   def value(meta):
+    v=meta['identity']
+    for part in field.split('.'):v=v[part]
+    return v
+   assert value(before)==SHA(blob(prior['source'],path)) and value(actual)==SHA(blob(CORE,path))
+  exact=types.FunctionType(publisher_equivalence.__code__,dict(publisher_equivalence.__globals__,Path=lambda value:value));pe=exact(old/'restart_publish.dll',new/'restart_publish.dll')
+  if codec=='native3':assert q['status'].startswith('ACTUAL_UNSELECTED_NATIVE3_OR_NATIVE4_COMPLETE') and q['identity_changes']==changes and q['publisher_equivalence']==pe
+  else:
+   assert q['status']=='FAILED' and q['error']=="ValueError('Actual postimage compiler identity keys differ')"
+   recovered=json.loads(store.get('observations/VAPOR_BOUNDARY_NATIVE4_UNSELECTED_POSTIMAGE_RECOVERED_V1.json'));assert recovered['original_failed_RESULT_sha256']==SHA(store.get(prefix+'/RESULT.json')) and recovered['actual_BUILD_sha256']==SHA((new/'BUILD.json').read_bytes()) and recovered['identity_changes']==changes and recovered['publisher_equivalence']==pe and recovered['compiler_executions']==recovered['model_executions']==0
+  results[codec]=dict(whole_Fortran_provider_flags_exact=True,only_source_and_exact_new5_descriptor_and_PE_identity_changes=changes,publisher_equivalence=pe,original_producer_preserved=True,model_executions=0)
+ return results
+
+
