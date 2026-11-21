@@ -4,6 +4,8 @@ from pathlib import Path
 
 
 def unchanged():
+    import model7_verify as model7
+    return model7.publication_dependencies_unchanged()
     import frost_drainage_verify as frost
     frost.guard_previous_source()
     # These complete trees include every publication program, parameter,

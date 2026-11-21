@@ -1,0 +1,18 @@
+{
+  "id": "CAPACITY-MODEL7-01",
+  "status": "COMPONENT_QUALIFIED_INTEGRATED_ADMISSION_PENDING",
+  "base_lf_sha256": "1d40c5ea7aa1b2344409275603a3a603a52355fe3928ad7af24eb3bbbf379dcc",
+  "target_lf_sha256": "7910cd29c045037778bfffdc7e40a77802d70fb477e0afa78be426776bd26e27",
+  "edits": [
+    {
+      "before": "   C_MvG_2_s = (WCs-WCr)*(Omega1*C1(h)/(1.0d0-Gam01) + Omega2*C2(h)/(1.0d0-Gam02))",
+      "after": "   C_MvG_2_s = (WCs-WCr)*(Omega1*C1(h) + Omega2*C2(h))/(1.0d0-Omega1*Gam01-Omega2*Gam02)"
+    }
+  ],
+  "original_water_and_conductivity_functions_unchanged": true,
+  "physical_state_added": false,
+  "production_or_public_admitted": false,
+  "original_model7_capacity_mismatches_per_opt": 216,
+  "corrected_capacity_mismatches_per_opt": 0,
+  "states_per_opt": 360
+}

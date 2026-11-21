@@ -1,0 +1,29 @@
+{
+  "status": "ACTUAL_SATURATED_ORIGINAL_NULL_MODE_AND_SEARCH_OPERATOR_CONFIRMED_NO_ADMISSION",
+  "results": [
+    {
+      "optimization": "O0",
+      "cases_per_variant": 90,
+      "original_zero_pivots": 27,
+      "unchanged_other_cases": 63,
+      "physical_values_exact": true,
+      "search_matrix_and_solution_exact_original_default_control": true,
+      "original_object_count": 42,
+      "result_sha256": "b04a2ecb79eafc0cadcc3ecbae344d663a89717bf0ef337c8a757a716c0f9320"
+    },
+    {
+      "optimization": "O2",
+      "cases_per_variant": 90,
+      "original_zero_pivots": 27,
+      "unchanged_other_cases": 63,
+      "physical_values_exact": true,
+      "search_matrix_and_solution_exact_original_default_control": true,
+      "original_object_count": 42,
+      "result_sha256": "8d07dc18f4edb3c94653029bdf87bd8f57051d976690c9c8b5084bb6a02972cf"
+    }
+  ],
+  "whole_model_qualified": false,
+  "day365_fixed": false,
+  "physical_capacity_changed": false,
+  "limitation": "Dyadic verification geometry, prescribed interface conductances; independent of an integrated model period."
+}
