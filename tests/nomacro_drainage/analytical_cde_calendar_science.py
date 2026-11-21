@@ -13,6 +13,37 @@ CLOCK_CORE='b16249855004a00b54efe5203287ba321b61594c'
 git=lambda *a:subprocess.check_output(['git',*a],cwd=ROOT)
 
 
+def cadence_ledger_cold(magic):
+ import initial_pressure_profile_science as original
+ import original_output_files as output
+ from default_model_grammar_science import OutputView
+ path='tests/nomacro_drainage/initial_pressure_profile_science.py';raw=git('show',BASE+':'+path)
+ assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==raw
+ nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='ledger_cold'];assert len(nodes)==1
+ function=nodes[0];positions=[i for i,n in enumerate(function.body) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='codec' for t in n.targets)];assert len(positions)==1
+ # The already qualified analytical/calendar reader replaces only the daily
+ # DATE-window output tail with the literal existing DATETIME-aware comparator.
+ # All conserved mass, actual physical/native and cold assertions stay intact.
+ statements=ast.parse("""selected=body[first:phase]+cold.orelse[0].body
+loops=[n for n in ast.walk(ast.Module(body=selected,type_ignores=[])) if isinstance(n,ast.For) and isinstance(n.target,ast.Name) and n.target.id=='own']
+assert len(loops)==1
+loop=loops[0]
+assert isinstance(loop.body[-3],ast.Assign) and isinstance(loop.body[-2],ast.Assign) and isinstance(loop.body[-1],ast.Assert)
+assert ast.unparse(loop.body[-1].test)=="binary((cold / 'original/result_output.bin').read_bytes())[1:] == expected"
+loop.body[-3:]=ast.parse("exact_output_interval(warm/'original',cold/'original',meta['identity']['original_output'],start,end,meta['project']['start_date'])").body
+""").body
+ function.body[positions[0]:positions[0]]=statements
+ additions=[n for n in function.body if isinstance(n,ast.AugAssign) and ast.unparse(n.target)=='tree.body[0].body' and isinstance(n.value,ast.ListComp)];assert len(additions)==1
+ generator=additions[0].value.generators[0];assert ast.unparse(generator.iter)=='body[first:phase] + cold.orelse[0].body';generator.iter=ast.Name(id='selected',ctx=ast.Load())
+ assignments=[n for n in function.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='namespace' for t in n.targets)];assert len(assignments)==1
+ assignments[0].value.keywords.append(ast.keyword(arg='exact_output_interval',value=ast.Name(id='exact_output_interval',ctx=ast.Load())))
+ for path in ('tests/nomacro_scheduled_subsurface/original_output_files.py','tests/nomacro_drainage/default_model_grammar_science.py'):
+  assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==git('show',BASE+':'+path)
+ def exact_output_interval(full,cold,selected,start,end,date):return output.compare(OutputView(full),OutputView(cold),selected,start,end,date)
+ namespace=dict(vars(original),exact_output_interval=exact_output_interval);exec(compile(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])),'literal-original-CDE-ledger-with-qualified-cadence-comparator','exec'),namespace)
+ return namespace['ledger_cold'](magic)
+
+
 def audit(profile,reference,locations=None):
  q=json.loads((profile/'RESULT.json').read_text());assert q['status']=='ACTUAL_ORIGINAL_ANALYTICAL_CDE_CALENDAR_FIXED_MASS_NATIVE_EXACT_COLD_PASS_NOT_ADMITTED' and q['days'] in (35,367)
  core=FIRST_CORE if q['case']=='model7-periodic6' else CLOCK_CORE
@@ -30,7 +61,7 @@ def audit(profile,reference,locations=None):
   paths=[p for p in (build/('day_'+role),build/('day_'+role+'.exe')) if p.is_file()];assert len(paths)==1 and SHA(paths[0].read_bytes())==meta['executable_sha256'][role]
  for path in ('tests/nomacro_drainage/initial_pressure_profile_science.py','tests/nomacro_scheduled_subsurface/implicit_conductivity_forensics.py','tests/nomacro_scheduled_subsurface/cde_interval_runtime.py'):
   assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==git('show',BASE+':'+path),'Frozen independent original reader changed'
- result=ledger_cold(magic)(profile,meta,dict(q,own=q['cold']),build)
+ result=cadence_ledger_cold(magic)(profile,meta,dict(q,own=q['cold']),build)
  # Literal original observed six-RHS increments, with every prefix and day
  # checked at their existing absolute1e-10 chemical bound.
  daily=audit_daily(profile/'trajectory',q['days'],nodes)
