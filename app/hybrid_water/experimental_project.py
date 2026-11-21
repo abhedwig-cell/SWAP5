@@ -392,3 +392,5 @@ def auxiliary_magic(project):
     formats = (b'S5HUP012',b'S5SHS013',b'S5SSN014',b'S5SMX015') if project.solute else (
                b'S5WAT007',b'S5WHS008',b'S5WSN009',b'S5WMX010')
     return formats[history]
+
+# Deliberate unqualified analytical source control; NEVER MERGE.
