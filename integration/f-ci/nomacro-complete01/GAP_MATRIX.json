@@ -2148,12 +2148,12 @@
     "actual_canonical_public_seconds": 477.3290711999871
   },
   "original_per_layer_vapor": {
-    "classification": "REFERENCE_DEFECT_AND_MISSING_COUPLED_EVIDENCE",
+    "classification": "REFERENCE_DEFECT_AND_MISSING_RESTART_COMPOSITION",
     "historical_availability": "Original reader selects perlayerNoVap for8..11; conductivity uses actualtsoil(node); no independentvaporwaterstore",
     "reference_defect": "Original absolute-suction Kelvin exponent positive; separately bound negative-sign correction with originalcoefficients retained",
     "reference": "reference/swap-4.3.1/hydraulic-corrections/VAPOR-KELVIN-SIGN01",
     "component": "Actualoriginal/corrected O0/O2; interiorgrid192 andmixed1728 pervariant/opt; originaldrybound-stencil48rowFPEprefixes retained",
-    "coupled": "Four35daywater/12cold PASS independently; full1096 running; CDE/portable/public pending",
+    "coupled": "Four35daywater/12cold independentPASS; allfour1096warm trajectories completewithin1e-10; exactcold530fails atday531 (~1e-16flux), so no full/nativePASS. CDE/portable/public pending.",
     "whole_family_closed": false,
     "public_admission": false
   }
