@@ -15,6 +15,8 @@ GUARD='app/hybrid_water/ordinary_pond_source_guard.py'
 CHANGED={ADAPTER,CALENDAR,SELECTOR,GUARD}
 WORKFLOW='.github/workflows/nomacro-water-snow-groundwater.yml'
 PORTABLE='f4f868daf99f81c0e22a754901576935adb869ef'
+CI=('.github/workflows/mc-sol01-column-input.yml','.github/workflows/mc-sol01-swp-reader.yml')
+PATTERN='            /integration/f-ci/nomacro-complete01/INITIAL_PROFILE_CALENDAR*\n'
 git=lambda *a:subprocess.check_output(['git',*a],cwd=ROOT)
 blob=lambda sha,path:git('show',sha+':'+path)
 norm=lambda raw:raw.replace(b'\r\n',b'\n')
@@ -39,6 +41,8 @@ def complete_inverse():
   assert text.count(block)==1;text=text.replace(block,b'',1)
  assert text==blob(BASE,GUARD),'Incomplete original interval/per-step water-trial source guard inverse'
  assert norm((ROOT/WORKFLOW).read_bytes())==blob(PORTABLE,WORKFLOW),'Unreviewed targeted implicit calendar workflow'
+ for path in CI:
+  text=norm((ROOT/path).read_bytes()).decode();assert text.count(PATTERN)==1 and text.replace(PATTERN,'',1).encode()==blob(BASE,path),'Unreviewed initial calendar proof checkout delta'
  # All original numerical code, state providers and constitutive/calendaring
  # generators are outside these three exact admission-only source changes.
  return True
@@ -51,7 +55,7 @@ class SourceFile:
 
 
 class CheckedParentRoot:
- def __truediv__(self,path):return SourceFile(str(path)) if str(path) in ({ADAPTER,CALENDAR,GUARD,WORKFLOW}) else ROOT/path
+ def __truediv__(self,path):return SourceFile(str(path)) if str(path) in ({ADAPTER,CALENDAR,GUARD,WORKFLOW,*CI}) else ROOT/path
  def __fspath__(self):return os.fspath(ROOT)
  def __str__(self):return str(ROOT)
 
