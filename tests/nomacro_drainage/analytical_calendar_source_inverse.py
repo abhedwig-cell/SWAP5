@@ -83,8 +83,10 @@ def prior_source_projection():
  # module through signed.CheckedParent. Extend that source-only fallback after
  # proving the complete new module and the unchanged old terminal body above.
  assert blob(BASE,PATH)==blob('daba94800',PATH)==blob('5b8373d0809c25e24415f4d5dc01784a92ff481e',PATH)
- saved=inherited.initial_source_inverse;saved_root=signed.ROOT
- inherited.initial_source_inverse=initial_source_inverse;signed.ROOT=CheckedTerminalRoot()
+ saved=inherited.initial_source_inverse;saved_parent=signed.CheckedParent
+ class CheckedTerminalParent(saved_parent):
+  def __truediv__(self,path):return FrozenTerminal() if str(path)==PATH else super().__truediv__(path)
+ inherited.initial_source_inverse=initial_source_inverse;signed.CheckedParent=CheckedTerminalParent
  try:
   with projection():yield
- finally:inherited.initial_source_inverse=saved;signed.ROOT=saved_root
+ finally:inherited.initial_source_inverse=saved;signed.CheckedParent=saved_parent
