@@ -34,6 +34,7 @@ def main():
             text=assignment(text,key,value)
         if a.kind=='cde':text=assignment(text,'CPRE','0.01')
         text+=f'\niHWCKmodel = {a.hydraulic_model}\nALFA_2 = .005 .003\nNPAR_2 = 1.5 1.6\nOMEGA_1 = .8 .8\nH0 = -1e6 -1e6\n'
+        if a.hydraulic_model>=8:text+='HA = -10 -10\nAPAR = -1.5 -1.5\nOMEGA_K = .01 .01\nSWVAPOR = 0 0\n'
         path.write_text(text,encoding='cp1252')
         if a.kind=='water':
             for crop in inputs.glob('*.crp'):
