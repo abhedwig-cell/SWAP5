@@ -26,3 +26,5 @@ def selection(directory,original_output=True):
  drain=folder/(prefix+name+'.dra')
  if not drain.is_file() or switches(drain.read_text(encoding='cp1252')).get('SWDIVD')!=1:return None
  return dict(policy='original-pressure-profile-qualified-dense-frost-state-composition-v1',kind='cde' if selected['SWSOLU'] else 'water',implicit=selected['SWKIMPL'],new_native_codec=False,physical_equations_changed=False)
+
+# Actual committed pressure Frost negative control; never merge.
