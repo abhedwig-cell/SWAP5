@@ -27,7 +27,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--evidence',type=Path,required=True);a=p.parse_args()
     proof=ROOT/'integration/f-ci/nomacro-complete01';ev=a.evidence
     git=lambda *args:subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
-    load=lambda name:decoded(json.loads((ev/name).read_text()))
+    load=lambda name:decoded(json.loads((ev/name).read_text(encoding='utf-8')))
     for commit in (CANONICAL,SYNTHETIC):assert git('show','-s','--format=%P',commit).split()==[PARENT,HEAD]
     assert all(git('rev-parse',commit+'^{tree}')==TREE for commit in (HEAD,CANONICAL,SYNTHETIC))
     cases=[('MODEL7_CANDIDATE_PUBLIC_OWNER_V1',HEAD,None),
@@ -50,7 +50,7 @@ def main():
     for case,path in zip(cases[1:5],expected):assert git('diff','--name-only',HEAD,case[1])==path
     positive=load('MODEL7_FINAL_PUBLICATION_SCOPE_POSITIVE_V1.json')
     assert positive['head']==CANONICAL and positive['tree']==TREE and not positive['status'] and 'PUBLICATION_REPLAY_SELECTED=false' in positive['stdout']
-    assert 'PUBLICATION_REPLAY_SELECTED=true' in (ev/'MODEL7_FINAL_PUBLICATION_SCOPE_NEGATIVE_V1.txt').read_text()
+    assert 'PUBLICATION_REPLAY_SELECTED=true' in (ev/'MODEL7_FINAL_PUBLICATION_SCOPE_NEGATIVE_V1.txt').read_text(encoding='utf-8')
     checks=load('MODEL7_PR1777_ALL53_TERMINAL_CHECKS_V1.json')
     assert checks['headRevision']==HEAD and len(checks['checks'])==53 and not checks['hasMore'] and not checks['statuses']
     assert all(c['head_sha']==HEAD and c['status']=='completed' and c['conclusion'] in ('success','skipped') for c in checks['checks'])
@@ -60,10 +60,10 @@ def main():
     assert merge['sha']==CANONICAL and merge['merged'] is True
     cancelled=load('MODEL7_PR1777_CANCELLED_RUN1_V1.json');assert cancelled['id']==44844163689 and cancelled['conclusion']=='cancelled' and cancelled['head_sha']==HEAD
     original=ev/'MODEL7_PR1777_CANCELLED_HUPSEL_ORIGINAL.zip';assert original.stat().st_size==7179475 and SHA(original.read_bytes())=='64f63d4622186842fc914a502453187e6b5c7460243af20249975fd954beddf8'
-    assert 'undrained FULL_AND_NATIVE_RESTART_PASS' in (ev/'MODEL7_PR1777_CANCELLED_JOB136659682089_FULL.txt').read_text()
-    for job in (136659681837,136666483356):assert 'BOUNDED_MODEL7_CAPACITY_SATURATED_SEARCH_SOURCE_RAW_ADMISSION_PASS' in (ev/f'MODEL7_PR1777_FINAL_JOB{job}_FULL.txt').read_text()
-    retry=(ev/'MODEL7_PR1777_FINAL_JOB136668617147_FULL.txt').read_text();assert all(word in retry for word in ('grass FULL_AND_NATIVE_RESTART_PASS','hupsel FULL_AND_NATIVE_RESTART_PASS','salt FULL_AND_NATIVE_RESTART_PASS'))
-    qualpath='integration/f-ci/nomacro-complete01/HYDRAULIC_MODEL7_QUALIFICATION.json';q=json.loads((ROOT/qualpath).read_text())
+    assert 'undrained FULL_AND_NATIVE_RESTART_PASS' in (ev/'MODEL7_PR1777_CANCELLED_JOB136659682089_FULL.txt').read_text(encoding='utf-8')
+    for job in (136659681837,136666483356):assert 'BOUNDED_MODEL7_CAPACITY_SATURATED_SEARCH_SOURCE_RAW_ADMISSION_PASS' in (ev/f'MODEL7_PR1777_FINAL_JOB{job}_FULL.txt').read_text(encoding='utf-8')
+    retry=(ev/'MODEL7_PR1777_FINAL_JOB136668617147_FULL.txt').read_text(encoding='utf-8');assert all(word in retry for word in ('grass FULL_AND_NATIVE_RESTART_PASS','hupsel FULL_AND_NATIVE_RESTART_PASS','salt FULL_AND_NATIVE_RESTART_PASS'))
+    qualpath='integration/f-ci/nomacro-complete01/HYDRAULIC_MODEL7_QUALIFICATION.json';q=json.loads((ROOT/qualpath).read_text(encoding='utf-8'))
     paths=[qualpath]+[str(Path(qualpath).parent/name) for item in q['archives'].values() for name in (item['record'],item['archive'])]
     assert len(paths)==9 and not git('diff',HEAD,'--',*paths),'Neutral model7 role changed'
     # Earlier Windows capacity grids remain research evidence, read directly
