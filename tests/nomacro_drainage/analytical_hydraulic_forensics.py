@@ -29,8 +29,8 @@ def audit(profile,reference,allow_refusal=False,allow_censored=False):
     role=ControllerRole();function=role.visit(function);assert role.changes==1
     namespace=dict(vars(inherited));exec(compile(ast.fix_missing_locations(ast.Module(body=[function],type_ignores=[])),PATH,'exec'),namespace)
     result=namespace['audit'](profile,reference,allow_refusal,allow_censored)
-    q=json.loads((profile/'RESULT.json').read_text());model=q['hydraulic_model'];result.update(hydraulic_model=model,frozen_scientific_reader=READERS,
-        full_capacity_source_inverse=model==7,original_capacity_provider_retained=model!=7,scientific_ledger_native_body_unchanged=True)
+    q=json.loads((profile/'RESULT.json').read_text());model=q['hydraulic_model'];models=q.get('layer_models',[model]);result.update(hydraulic_model=model,layer_models=models,frozen_scientific_reader=READERS,
+        full_capacity_source_inverse=7 in models,original_capacity_provider_retained=7 not in models,scientific_ledger_native_body_unchanged=True)
     if q['status']!='FAILED':result['status']='INDEPENDENT_ANALYTICAL_HYDRAULIC_SOURCE_BUDGET_NATIVE_USER_OUTPUT_PASS'
     return result
 

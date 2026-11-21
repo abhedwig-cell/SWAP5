@@ -22,11 +22,12 @@ def main():
     p.add_argument('--kind', choices=('water', 'cde'), required=True)
     p.add_argument('--optimization', choices=('O0', 'O2'), required=True)
     p.add_argument('--hydraulic-model',type=int,choices=range(3,12),required=True)
+    p.add_argument('--layer-models',type=int,choices=range(1,12),nargs='+')
     p.add_argument('--oxygen-policy',choices=('original','feddes1'),default='original')
     p.add_argument('--phase', choices=('short', 'year', 'full'), default='short')
     p.add_argument('--reuse-build', type=Path)
     p.add_argument('--existing-input', type=Path)
-    a = p.parse_args(); a.output.mkdir()
+    a = p.parse_args(); a.output.mkdir();models=a.layer_models or [a.hydraulic_model]
     inputs = a.existing_input or a.output / 'input'
     if a.existing_input is None:
         shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',inputs)
@@ -34,8 +35,8 @@ def main():
         for key,value in dict(SWSOLU=int(a.kind=='cde'),SWCSV=3,NPRINTDAY=1,SWMONTH=0,PERIOD=1,SWODAT=0,SWRES=1).items():
             text=assignment(text,key,value)
         if a.kind=='cde':text=assignment(text,'CPRE','0.01')
-        text+=f'\niHWCKmodel = {a.hydraulic_model}\nALFA_2 = .005 .003\nNPAR_2 = 1.5 1.6\nOMEGA_1 = .8 .8\nH0 = -1e6 -1e6\n'
-        if a.hydraulic_model>=8:text+='HA = -10.0 -10.0\nAPAR = -1.5 -1.5\nOMEGA_K = .01 .01\nSWVAPOR = 0 0\n'
+        text+='\niHWCKmodel = '+' '.join(map(str,models))+'\nALFA_2 = .005 .003\nNPAR_2 = 1.5 1.6\nOMEGA_1 = .8 .8\nH0 = -1e6 -1e6\n'
+        if max(models)>=8:text+='HA = -10.0 -10.0\nAPAR = -1.5 -1.5\nOMEGA_K = .01 .01\nSWVAPOR = 0 0\n'
         path.write_text(text,encoding='cp1252')
         if a.kind=='water':
             for crop in inputs.glob('*.crp'):
@@ -45,7 +46,7 @@ def main():
                 crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWOXYGEN',1),encoding='cp1252')
     m = thermal.m; policy = 'original-adaptive-day-seed-v1'
     q = dict(status='RUNNING', source=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-        kind=a.kind, optimization=a.optimization, phase=a.phase, hydraulic_model=a.hydraulic_model, oxygen_policy=a.oxygen_policy, input_root=str(inputs),
+        kind=a.kind, optimization=a.optimization, phase=a.phase, hydraulic_model=a.hydraulic_model, layer_models=models, oxygen_policy=a.oxygen_policy, input_root=str(inputs),
         build_root=str(a.reuse_build or a.build_root / 'bundle'), canonical_admission=False,
         inventory={str(v.relative_to(inputs)): hashlib.sha256(v.read_bytes()).hexdigest()
                    for v in sorted(inputs.rglob('*')) if v.is_file()})
@@ -68,7 +69,7 @@ def main():
             save(); result.check_returncode()
         meta,_=m.validate_bundle(build, a.reference_work, project)
         assert meta['identity'].get('model7_terminal_water')
-        assert bool(meta['identity'].get('model7_capacity'))==(a.hydraulic_model==7)
+        assert bool(meta['identity'].get('model7_capacity'))==(7 in models)
         days = {'short':35,'year':367,'full':1096}[a.phase]
         windows = [(2, 4), (19, 23), (30, 34)]
         if a.phase in ('year','full'): windows += [(199,201),(364,367)]
