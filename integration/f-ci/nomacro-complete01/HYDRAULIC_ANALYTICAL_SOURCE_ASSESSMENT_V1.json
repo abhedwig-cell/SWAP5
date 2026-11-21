@@ -1,0 +1,32 @@
+{
+  "status": "ORIGINAL_MODEL3_OXYGEN2_EXPLICIT_UNIMPLEMENTED_COMBINATION_CONFIRMED_VALID_FEDDES1_ROLE_SEPARATED",
+  "source": "75d04a1245dde4388d011ad7d47a16c304377a21",
+  "classification": "OUT_OF_SCOPE_ORIGINAL_EXPLICITLY_UNIMPLEMENTED_COMBINATION",
+  "scope": "IHWCKmodel3 with activated original physical oxygen stress2, first active potato day524",
+  "original_source_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
+  "original_source_lf_sha256": "732b98597f256e17be5a455a02926bb8a8e4126f7382bb2390b6f4bcd3db0b8a",
+  "profiles": [
+    {
+      "optimization": "O0",
+      "status": "FAILED",
+      "error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 0\")",
+      "actual_accepted_days": 523,
+      "original_stop_day": 524,
+      "result_sha256": "08880cbcaebedc4c191492350a7a4c6603c589d58cb7eac381cbabe0b704468a",
+      "original_swap_err_sha256": "c0816b1c5b38a524cb16f5188b6ed4c5511342d59e24910803513b9b95eddb08",
+      "period_is_qualified": false
+    },
+    {
+      "optimization": "O2",
+      "status": "FAILED",
+      "error": "RuntimeError(\"Missing {'HYBRID_DAY_RETURN'}, process exited with 0\")",
+      "actual_accepted_days": 523,
+      "original_stop_day": 524,
+      "result_sha256": "f9b40960aa9ab6043903379fec1b214fece31608be99d88c6cd1103693981533",
+      "original_swap_err_sha256": "c0816b1c5b38a524cb16f5188b6ed4c5511342d59e24910803513b9b95eddb08",
+      "period_is_qualified": false
+    }
+  ],
+  "next": "Keep original failed input role intact. Qualify separate explicit Feddes1 input; add fail-closed future-rotation preflight for original model3 plusoxygen2 after preserving current model-generation source and finishing same-build runs.",
+  "scientific_admission": false
+}
