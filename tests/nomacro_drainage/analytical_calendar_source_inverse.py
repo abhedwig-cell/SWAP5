@@ -1,5 +1,5 @@
 """Extend exact prior source predicates for one unchanged-process composition."""
-import ast,types
+import ast,os,types
 from contextlib import contextmanager
 from ordinary_pond_verify import ROOT,blob,norm,git,SURFACES
 import snow_vapor_source_inverse as old
@@ -60,6 +60,17 @@ class CheckedRoot:
  def __truediv__(self,path):return FrozenWorkflow() if str(path)==WORKFLOW else ROOT/path
 
 
+class FrozenTerminal:
+ def read_bytes(self):return blob(BASE,PATH)
+ def read_text(self,encoding='utf8'):return self.read_bytes().decode(encoding)
+
+
+class CheckedTerminalRoot:
+ def __truediv__(self,path):return FrozenTerminal() if str(path)==PATH else ROOT/path
+ def __fspath__(self):return os.fspath(ROOT)
+ def __str__(self):return str(ROOT)
+
+
 @contextmanager
 def prior_source_projection():
  complete_inverse()
@@ -67,7 +78,13 @@ def prior_source_projection():
  # Actual Git HEAD, producer fields and all scientific paths stay actual.
  namespace=dict(vars(old),ROOT=CheckedRoot(),complete_inverse=snow_complete_inverse,initial_source_inverse=initial_source_inverse)
  projection=clone('prior_source_projection',namespace)
- saved=inherited.initial_source_inverse;inherited.initial_source_inverse=initial_source_inverse
+ import signed_hydraulic_source_inverse as signed
+ # The literal vapor guard separately checks the formerly unchanged terminal
+ # module through signed.CheckedParent. Extend that source-only fallback after
+ # proving the complete new module and the unchanged old terminal body above.
+ assert blob(BASE,PATH)==blob('daba94800',PATH)==blob('5b8373d0809c25e24415f4d5dc01784a92ff481e',PATH)
+ saved=inherited.initial_source_inverse;saved_root=signed.ROOT
+ inherited.initial_source_inverse=initial_source_inverse;signed.ROOT=CheckedTerminalRoot()
  try:
   with projection():yield
- finally:inherited.initial_source_inverse=saved
+ finally:inherited.initial_source_inverse=saved;signed.ROOT=saved_root
