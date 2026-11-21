@@ -32,6 +32,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
+ import initial_profile_frost_verify as frost_owner
+ return frost_owner.guard_previous_source()
  complete_inverse()
  for name in PARSERS:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen initial profile calendar observer changed'
@@ -44,6 +46,8 @@ def guard_previous_source():
 
 
 def strip_current_evidence(text):
+ import initial_profile_frost_verify as frost_owner
+ return frost_owner.strip_current_evidence(text)
  assert text.count(PATTERN)<=1
  if PATTERN in text and '\n  column:\n' in text:
   assert text.count('    timeout-minutes: 45\n')==1
@@ -52,11 +56,15 @@ def strip_current_evidence(text):
 
 
 def publication_dependencies_unchanged():
+ import initial_profile_frost_verify as frost_owner
+ return frost_owner.publication_dependencies_unchanged()
  guard_previous_source()
  with prior_source_projection():return literal('publication_dependencies_unchanged',prior_namespace())()
 
 
 def verify():
+ import initial_profile_frost_verify as frost_owner
+ return frost_owner.verify()
  guard_previous_source();names=['INITIAL_PROFILE_CALENDAR_QUALIFICATION.json','INITIAL_PROFILE_CALENDAR_COADMISSION_CONTRACT_V1.json','INITIAL_PROFILE_CALENDAR_CI_DEADLINE_CONTRACT_V1.json','ANALYTICAL_CDE_CALENDAR_CANDIDATE_STAGE_RAW_V1.json',*[name+'.json' for name in RAW_NAMES]]
  for name in names:
   path='integration/f-ci/nomacro-complete01/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path)

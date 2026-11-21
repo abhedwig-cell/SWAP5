@@ -13,9 +13,9 @@ PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/initial_profile_calendar_verify.py'
 # This owner remains uninstalled until all real 74-context candidate gates
 # have been sealed explicitly as a noncanonical intermediate stage.
-SEALED='PENDING_FINAL_OBSERVER_FREEZE'
+SEALED='8ea0d2eb891f3e9d8e493ba3bd4c6ccd9f2167e3'
 PREVIOUS_CANONICAL='904d3cdd1fb9132839bec689c22cdeecdba79676'
-PARENT_STAGE_SHA='PENDING_ACTUAL_74CONTEXT_CANDIDATE_STAGE_ARCHIVE'
+PARENT_STAGE_SHA='3f2b6414ab96b5c8bcc0f27e6df16712b3ea6e7e7e1553e2f414d08e6ca2b19b'
 GUARD_HOOK=' import initial_profile_frost_verify as frost_owner\n return frost_owner.guard_previous_source()\n'
 VERIFY_HOOK=' import initial_profile_frost_verify as frost_owner\n return frost_owner.verify()\n'
 STRIP_HOOK=' import initial_profile_frost_verify as frost_owner\n return frost_owner.strip_current_evidence(text)\n'
