@@ -1,11 +1,14 @@
-name: Original per-layer vapor hydraulic family qualification
+name: Targeted original Snow vapor native composition
 on:
+  push:
+    branches: [codex/nomacro-snow-vapor-composition01]
+    paths: ['.github/workflows/nomacro-water-snow-groundwater.yml']
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: nomacro-vapor-hydraulic-family-${{ github.ref }}
+  group: nomacro-snow-vapor-composition-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   qualify:
@@ -15,7 +18,7 @@ jobs:
       matrix:
         optimization: [O0, O2]
     runs-on: ubuntu-26.04
-    timeout-minutes: 120
+    timeout-minutes: 30
     env:
       OMP_NUM_THREADS: '1'
       PYTHONDONTWRITEBYTECODE: '1'
@@ -23,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           sparse-checkout: |
             app
             src
@@ -45,21 +48,21 @@ jobs:
         run: |
           proof="$RUNNER_TEMP/proof"
           mkdir -p "$proof"
+          git fetch --no-tags --depth=1 --filter=blob:none origin 6e77aeb829a45e1f1781a429f60e632ecaa316ea 8e27dd9eb0f633050d2d82d00d28992435c313cb e079d1554041c831cd0ab609835e2e79bf3c31a1 5b8373d0809c25e24415f4d5dc01784a92ff481e
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
           python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           cp .github/workflows/nomacro-water-snow-groundwater.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Read permanently preserved original initial periods
+      - name: Target Snow vapor water CDE and exact native restart in both compiler variants
         run: |
-          previous="$RUNNER_TEMP/vapor-initial-central-archive"
-          mkdir -p "$previous"
-          stem='HYDRAULIC_VAPOR_UBUNTU_INITIAL_${{ matrix.optimization }}_RAW_V1'
-          git show "HEAD:integration/f-ci/nomacro-complete01/$stem.json" > "$previous/$stem.json"
-          git show "HEAD:integration/f-ci/nomacro-complete01/$stem.zip" > "$previous/$stem.zip"
-      - name: Qualify original vapor with coupled water CDE and complete lookup native contexts
-        run: |
-          python3 -B tests/nomacro_drainage/vapor_hydraulic_portable.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/vapor-hydraulic-family" --optimization '${{ matrix.optimization }}' --reuse-initial-archive "$RUNNER_TEMP/vapor-initial-central-archive"
+          opt='${{ matrix.optimization }}'
+          for kind in water cde; do
+            label="snow-vapor-$kind-$opt-short"
+            python3 -B tests/nomacro_drainage/snow_vapor_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --kind "$kind" --layer-models 8 --days 35
+            python3 -B tests/nomacro_drainage/snow_vapor_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
+            python3 -B tests/nomacro_drainage/snow_vapor_native_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-native-controls"
+          done
       - name: Preserve actual compiled bytes and original provider identity
         if: always()
         run: |
@@ -72,9 +75,9 @@ jobs:
           meteo=root/'provider/build/swap-selected/MOD_meteo.f90'
           if meteo.is_file():shutil.copyfile(meteo,proof/'provider-MOD_meteo.f90')
           projection={}
-          for stem in ('builds','builds-current'):
+          for stem in ('builds',):
               for path in sorted((root/stem).rglob('*')):
-                  if path.is_file() and (path.name in ('BUILD.json','day_donor','day_kernel') or path.suffix.lower() in ('.f90','.exe','.dll','.so')):
+                  if path.is_file():
                       target=proof/'compiled'/stem/path.relative_to(root/stem);target.parent.mkdir(parents=True,exist_ok=True)
                       shutil.copyfile(path,target)
                       if path.name=='BUILD.json':
@@ -93,6 +96,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: vapor-hydraulic-family-${{ matrix.optimization }}-${{ github.sha }}
+          name: snow-vapor-composition-${{ matrix.optimization }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30
