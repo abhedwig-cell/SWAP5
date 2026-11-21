@@ -61,7 +61,7 @@ def read(evidence,reference,store=None):
                 assert physical(rows(warm))==physical(rows(oldwarm)[:35])
                 for day in (2,4,19,23,30,34):
                     name=f'accepted-column-1-day-{day}.zip'
-                    with zipfile.ZipFile(warm/name) as a,zipfile.ZipFile(io.BytesIO((oldwarm/name).read_bytes())) as b:
+                    with zipfile.ZipFile(io.BytesIO((warm/name).read_bytes())) as a,zipfile.ZipFile(io.BytesIO((oldwarm/name).read_bytes())) as b:
                         for member in ('macro.bin','result.end'):assert a.read(member)==b.read(member)
                 current=binary((warm/'original/result_output.bin').read_bytes())
                 assert current==binary((oldwarm/'original/result_output.bin').read_bytes())[:len(current)]
