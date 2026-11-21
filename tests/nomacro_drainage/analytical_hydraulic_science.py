@@ -27,7 +27,17 @@ def mapped(store,path):return store.view('profiles/'+path.replace('\\','/').spli
 def source(store,prefix):
     q=json.loads(store.get(prefix+'/RESULT.json'));raw=store.get(prefix+'/actual-producer-source.zip')
     assert len(raw)==q['bytes'] and SHA(raw)==q['sha256']
-    assert not subprocess.check_output(['git','diff',RUNTIME,q['producer_head'],'--','app','src','tools/solute','tools/vq','reference/swap-4.3.1'],cwd=ROOT)
+    changed=subprocess.check_output(['git','diff','--name-only',RUNTIME,q['producer_head'],'--','app','src','tools/solute','tools/vq','reference/swap-4.3.1'],cwd=ROOT,text=True).splitlines()
+    if changed:
+        bridge=json.loads((ROOT/'tests/nomacro_drainage/analytical_frontend_guard_bridge.json').read_text())
+        assert changed==[bridge['path']] and bridge['parent']==RUNTIME
+        actual=subprocess.check_output(['git','show',q['producer_head']+':'+bridge['path']],cwd=ROOT)
+        assert SHA(actual)==bridge['guard_sha256']
+        inverse=actual.decode()
+        for line in bridge['remove_exact_once']:
+            assert inverse.count(line)==1;inverse=inverse.replace(line,'',1)
+        parent=subprocess.check_output(['git','show',RUNTIME+':'+bridge['path']],cwd=ROOT)
+        assert inverse.encode()==parent and SHA(parent)==bridge['parent_sha256']
     entries=subprocess.check_output(['git','ls-tree','-r',q['producer_head']],cwd=ROOT,text=True)
     blobs={line.split('\t',1)[1]:line.split('\t',1)[0].split()[2] for line in entries.splitlines()}
     with zipfile.ZipFile(io.BytesIO(raw)) as z:

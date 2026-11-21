@@ -1,0 +1,14 @@
+{
+  "parent": "75d04a1245dde4388d011ad7d47a16c304377a21",
+  "guard_source": "70589c1f69649fdb5919b109e498aec2cf6f3fa9",
+  "path": "app/hybrid_water/experimental_project.py",
+  "parent_sha256": "779b906ded3605ff8813debdd04c2265a8c7bdde955ecf9082ce8cc80b9320b4",
+  "guard_sha256": "e6258df96defb779ee01479f7b2937a8cc254d17de931761b5306ead29ad80a6",
+  "remove_exact_once": [
+    "    hydraulic_rows=re.findall(r'(?mi)^[ \\t]*IHWCKMODEL[ \\t]*=[ \\t]*([^!\\r\\n]+)',text)\n",
+    "    original_model3=any(int(token)==3 for row in hydraulic_rows for token in row.split() if re.fullmatch(r'[+-]?\\d+',token))\n",
+    "            if selected['SWSOPHY']==0 and original_model3 and sig.get('SWOXYGEN')==2:\n",
+    "                raise ValueError('Original hydraulic model3 with physical oxygen stress2 is explicitly not implemented: '+path.name)\n"
+  ],
+  "meaning": "Conservative preflight refusal of original explicitly unimplemented model3/oxygen2; no generated physical code changes"
+}
