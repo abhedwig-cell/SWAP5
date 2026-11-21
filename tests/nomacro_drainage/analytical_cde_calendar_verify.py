@@ -38,6 +38,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
+ import initial_profile_calendar_verify as profile_owner
+ return profile_owner.guard_previous_source()
  complete_inverse()
  for name in PARSERS:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen analytical CDE calendar observer changed'
@@ -50,16 +52,22 @@ def guard_previous_source():
 
 
 def strip_current_evidence(text):
+ import initial_profile_calendar_verify as profile_owner
+ return profile_owner.strip_current_evidence(text)
  assert text.count(PATTERN)<=1
  return literal('strip_current_evidence',dict(vars(previous)))(text.replace(PATTERN,''))
 
 
 def publication_dependencies_unchanged():
+ import initial_profile_calendar_verify as profile_owner
+ return profile_owner.publication_dependencies_unchanged()
  guard_previous_source()
  with inherited_scope():return literal('publication_dependencies_unchanged',prior_namespace())()
 
 
 def verify():
+ import initial_profile_calendar_verify as profile_owner
+ return profile_owner.verify()
  guard_previous_source();names=['ANALYTICAL_CDE_CALENDAR_QUALIFICATION.json',*[name+'.json' for name in RAW_NAMES]]
  for name in names:
   path='integration/f-ci/nomacro-complete01/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path)

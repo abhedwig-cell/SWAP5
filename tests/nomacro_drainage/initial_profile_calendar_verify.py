@@ -11,7 +11,7 @@ from ordinary_pond_verify import git,blob,norm
 import analytical_cde_calendar_verify as previous
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/analytical_cde_calendar_verify.py'
-SEALED='PENDING_FINAL_OBSERVER_FREEZE'
+SEALED='6b93c5c20a193ab853cc09baa7178c89bb6ad9cb'
 PREVIOUS_CANONICAL='904d3cdd1fb9132839bec689c22cdeecdba79676'
 PARENT_STAGE_SHA='04170603aaf564c7411bc879e71bc2bac9dfdb9cdedcb2ba4d160735fadeb93b'
 GUARD_HOOK=' import initial_profile_calendar_verify as profile_owner\n return profile_owner.guard_previous_source()\n'
@@ -54,7 +54,7 @@ def publication_dependencies_unchanged():
 
 
 def verify():
- guard_previous_source();names=['INITIAL_PROFILE_CALENDAR_QUALIFICATION.json',*[name+'.json' for name in RAW_NAMES]]
+ guard_previous_source();names=['INITIAL_PROFILE_CALENDAR_QUALIFICATION.json','INITIAL_PROFILE_CALENDAR_COADMISSION_CONTRACT_V1.json','ANALYTICAL_CDE_CALENDAR_CANDIDATE_STAGE_RAW_V1.json',*[name+'.json' for name in RAW_NAMES]]
  for name in names:
   path='integration/f-ci/nomacro-complete01/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path)
  qual=json.loads((PROOF/names[0]).read_text());assert qual['runtime']==CORE and qual['owning_absolute_water_and_CDE_limits']==1e-10
