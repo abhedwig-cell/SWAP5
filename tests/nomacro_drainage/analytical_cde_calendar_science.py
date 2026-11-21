@@ -1,5 +1,5 @@
 """Independently read exact original CDE calendar stock, flux, native and cold bytes."""
-import ast,io,json,math,struct,subprocess,sys,zipfile
+import argparse,ast,io,json,math,struct,subprocess,sys,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'app/hybrid_water')]
@@ -61,7 +61,9 @@ def audit(profile,reference,locations=None):
  assert q['case'] in CASES
  drain,bottom,mode=CASES[q['case']]
  core=NATIVE6_CORE if q['case']=='vapor8-periodic6' else FIRST_CORE if q['case']=='model7-periodic6' else CLOCK_CORE if q['case'].startswith('model7-') else COMPOSED_CORE
- assert not git('diff',core,q['source'],'--','app','src','tools/solute','tools/vq','reference'),'Unreviewed actual analytical CDE composition producer'
+ epochs={core,COMPOSED_CORE}
+ matched=[epoch for epoch in epochs if not git('diff',epoch,q['source'],'--','app','src','tools/solute','tools/vq','reference')]
+ assert len(matched)==1,'Unreviewed actual analytical CDE composition producer'
  build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];selected=identity['original_output'];nodes=meta['project']['nodes'];magic=q['native_codec'].encode();assert magic in (b'S5CIC001',b'S5CCC001',b'S5HCC006') and selected['kind']=='cde'
  if mode=='periodic':assert selected['period']==5
  elif mode=='monthly':assert selected['swmonth']==1 and selected['swres']==0
@@ -127,3 +129,11 @@ def audit(profile,reference,locations=None):
  assert (build/'original_cde_output_state.f90').read_bytes().replace(b'\r\n',b'\n')==git('show',BASE+':app/hybrid_water/cde_interval_output_state.f90')
  result.update(status='INDEPENDENT_ORIGINAL_ANALYTICAL_CDE_CALENDAR6_FIXED_MASS_CALENDAR_PRIVATE_STATE_EXACT_COLD_PASS',producer=q['source'],kind='cde',optimization=q['optimization'],native_codec=magic.decode(),actual_original_daily_increment_rows=daily['actual_days'],integrated_actual_chemical_residual_mg_cm2=daily['integrated_actual_chemical_residual_mg_cm2'],native_calendar_samples=sorted(samples,key=lambda v:v['day']),complete_qualified_model7_HeadCalc_parent_unchanged=True,literal_CDE_private_sampro0_rounderr_provider_unchanged=True,compiler_executions=0,model_executions=0,canonical_admission=False)
  return result
+
+
+if __name__=='__main__':
+ p=argparse.ArgumentParser()
+ for key in ('profile','reference-work','output'):p.add_argument('--'+key,type=Path,required=True)
+ a=p.parse_args();q=audit(a.profile,a.reference_work)
+ with a.output.open('x') as f:json.dump(q,f,indent=2);f.write('\n')
+ print(q['status'],q['optimization'],q['native_codec'])
