@@ -1,0 +1,37 @@
+{
+  "parent": "085c95c3202380bb01987fdb5741b437d2acbf12",
+  "runtime": "46c2c1c74a4ee9941612863d805120be4dcb87d5",
+  "changes": {
+    "app/hybrid_water/daily_coupling.py": [
+      {
+        "runtime_line": 426,
+        "before": "",
+        "after": "    from model7_capacity import validate as validate_model7_capacity\n    validate_model7_capacity(bundle,reference,project,identity)\n    from model7_terminal_water import validate as validate_model7_terminal\n    validate_model7_terminal(bundle,project,identity)\n"
+      }
+    ],
+    "app/hybrid_water/daily_host.py": [
+      {
+        "runtime_line": 900,
+        "before": "",
+        "after": "    from model7_capacity import apply_build as model7_capacity_build\n    patched=model7_capacity_build(output,donor_build,project,patched)\n    from model7_terminal_water import apply_build as model7_terminal_build\n    patched=model7_terminal_build(output,project,patched)\n"
+      },
+      {
+        "runtime_line": 929,
+        "before": "",
+        "after": "                    *([str(output/'model7_terminal_water_receipt.o')] if 'model7_terminal_water_receipt' in patched else []),\n"
+      },
+      {
+        "runtime_line": 982,
+        "before": "",
+        "after": "    from model7_capacity import metadata as model7_capacity_metadata\n    model7_policy=model7_capacity_metadata(project)\n    if model7_policy is not None:build_identity['model7_capacity']=model7_policy\n    from model7_terminal_water import metadata as model7_terminal_metadata\n    model7_terminal=model7_terminal_metadata(project)\n    if model7_terminal is not None:build_identity['model7_terminal_water']=model7_terminal\n"
+      }
+    ]
+  },
+  "added": {
+    "app/hybrid_water/model7_capacity.py": "dae82fa05d4efcfa48260bacf748de9cf3a136d382415c796976954e3b0e8e02",
+    "app/hybrid_water/model7_terminal_water.py": "5c6a783d9d42c25dccd56da7e50a9d99c05233720dc3d94b57b69b75753f6e28",
+    "reference/swap-4.3.1/hydraulic-corrections/CAPACITY-MODEL7-01/README.md": "a8f3d5569f13e8405ab7d6d5b116727b02def1049fe759d4e172e71a872c69b6",
+    "reference/swap-4.3.1/hydraulic-corrections/CAPACITY-MODEL7-01/WC_K_models_04_11.f90": "7910cd29c045037778bfffdc7e40a77802d70fb477e0afa78be426776bd26e27",
+    "reference/swap-4.3.1/hydraulic-corrections/CAPACITY-MODEL7-01/manifest.json": "eb1f1b104c1a7b38142e4c9b08f95ebf1c3d6d0318b317d830c772a6acede3cb"
+  }
+}

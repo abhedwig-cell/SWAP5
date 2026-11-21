@@ -32,6 +32,7 @@ def main():
     try:
         with ExitStack() as stack:
             proof=ROOT/'integration/f-ci/nomacro-complete01';support=Store(proof,'FROST_IMPLICIT_WINDOWS_SUPPORT_RAW_ARCHIVE',stack)
+            frost=Store(proof,'FROST_IMPLICIT_WINDOWS_'+a.optimization+'_SCIENCE_RAW_ARCHIVE',stack)
             old=Store(proof,'FROST_IMPLICIT_WINDOWS_UNSELECTED_'+a.optimization+'_RAW_ARCHIVE',stack)
             selected=[]
             manifest=json.loads((a.evidence/f'implicit-frost-unselected-postimages-{a.optimization}-v1/RESULT.json').read_text())
@@ -52,7 +53,7 @@ def main():
                     r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
                     (out/'build.stdout').write_text(r.stdout);(out/'build.stderr').write_text(r.stderr);item['build']=dict(command=command,returncode=r.returncode);save();r.check_returncode()
                 meta,_=m.validate_bundle(build,a.reference_work,project);assert not meta['identity'].get('model7_capacity') and not meta['identity'].get('model7_terminal_water')
-                projection=json.loads(archive.get(projection_name))[b['build_root']];prefix=projection['prefix'];base=archive.view(prefix)
+                projection=json.loads(archive.get(projection_name))[b['build_root']];prefix=projection['prefix'];base=(frost if archive is support else archive).view(prefix)
                 assert SHA((base/'BUILD.json').read_bytes())==projection['actual_BUILD_sha256']
                 before={path.name:path.read_bytes() for path in base.glob('*.f90')};after={path.name:path.read_bytes() for path in build.glob('*.f90')}
                 assert before==after,'Unselected complete compiled Fortran changed: '+name
@@ -77,7 +78,9 @@ def main():
                     assert actual.exists()==prior.exists()
                     if actual.exists():
                         rows=output_records(actual.read_bytes(),filename);assert rows==output_records(prior.read_bytes(),filename)[:len(rows)]
-                item['cold']=cold_continuation(build,a.reference_work,project,trajectory,data,30,34,out/'own-30')
+                if recovered.get(name,{}).get('status')=='UNSELECTED_COMPLETE_COMPILED_FORTRAN_35DAY_NATIVE_REAL4_COLD_EXACT_PASS':
+                    item['cold']=recovered[name]['cold'];item['retained_cold_actual_root']=recovered[name].get('retained_cold_actual_root',str(a.recover_existing/name/'own-30'))
+                else:item['cold']=cold_continuation(build,a.reference_work,project,trajectory,data,30,34,out/'own-30')
                 item['status']='UNSELECTED_COMPLETE_COMPILED_FORTRAN_35DAY_NATIVE_REAL4_COLD_EXACT_PASS';save();print(name,item['status'],flush=True)
             q['status']='ACTUAL_FOUR_TARGETED_UNSELECTED_MODEL7_DEPENDENCY_POSTIMAGES_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
