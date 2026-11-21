@@ -63,11 +63,13 @@ def source(project=None):
 
 
 def clock_selection(project):
+    from original_output import selection
     if project.solute:
-        from cde_clock_output import selection
+        from cde_clock_output import active_selection
+        selected=active_selection(project)
+        if selected is None:selected=selection(project)
     else:
-        from original_output import selection
-    selected=selection(project)
+        selected=selection(project)
     if selected['nprintday']==1 and not selected['flprintdt']:return None
     if selected['swmonth'] or selected['swodat']:
         raise ValueError('Analytical subdaily trial composition requires ordinary daily output opportunities')
