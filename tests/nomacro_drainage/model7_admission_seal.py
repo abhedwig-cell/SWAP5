@@ -24,7 +24,7 @@ def decoded(q):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--evidence',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--evidence',type=Path,required=True);p.add_argument('--verify-only',action='store_true');a=p.parse_args()
     proof=ROOT/'integration/f-ci/nomacro-complete01';ev=a.evidence
     git=lambda *args:subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
     load=lambda name:decoded(json.loads((ev/name).read_text(encoding='utf-8')))
@@ -65,7 +65,8 @@ def main():
     retry=(ev/'MODEL7_PR1777_FINAL_JOB136668617147_FULL.txt').read_text(encoding='utf-8');assert all(word in retry for word in ('grass FULL_AND_NATIVE_RESTART_PASS','hupsel FULL_AND_NATIVE_RESTART_PASS','salt FULL_AND_NATIVE_RESTART_PASS'))
     qualpath='integration/f-ci/nomacro-complete01/HYDRAULIC_MODEL7_QUALIFICATION.json';q=json.loads((ROOT/qualpath).read_text(encoding='utf-8'))
     paths=[qualpath]+[str(Path(qualpath).parent/name) for item in q['archives'].values() for name in (item['record'],item['archive'])]
-    assert len(paths)==9 and not git('diff',HEAD,'--',*paths),'Neutral model7 role changed'
+    paths += ['integration/f-ci/nomacro-complete01/HYDRAULIC_MODEL7_PRETERMINAL_RESEARCH_RAW_V1'+suffix for suffix in ('.json','.zip')]
+    assert len(paths)==11 and not git('diff',HEAD,'--',*paths),'Neutral model7 role changed'
     # Earlier Windows capacity grids remain research evidence, read directly
     # here rather than counted as new periods or rebound to a later producer.
     with ExitStack() as stack:
@@ -74,8 +75,16 @@ def main():
     extra=['MODEL7_PUBLIC_OBSERVE_V1.py','MODEL7_FINAL_PUBLICATION_SCOPE_POSITIVE_V1.json','MODEL7_FINAL_PUBLICATION_SCOPE_NEGATIVE_V1.txt','MODEL7_FINAL_NEGATIVES_OBSERVE_V1.json','MODEL7_ACTUAL_CANONICAL_POSTIMAGE_V1.json']
     for name in extra:files[name]=ev/name
     for path in ev.glob('MODEL7_PR1777_*'):assert path.is_file();files[path.name]=path
-    archive=proof/'HYDRAULIC_MODEL7_ADMISSION_RAW_V1.zip';assert not archive.exists() and not archive.with_suffix('.json').exists()
+    archive=proof/'HYDRAULIC_MODEL7_ADMISSION_RAW_V1.zip'
     members={name:dict(bytes=path.stat().st_size,sha256=SHA(path.read_bytes())) for name,path in files.items()}
+    if a.verify_only:
+        record=json.loads(archive.with_suffix('.json').read_text(encoding='utf-8'))
+        assert record['members']==members and record['sha256']==SHA(archive.read_bytes()) and record['actual_original_Windows_capacity_grid']==windows_grid
+        with zipfile.ZipFile(archive) as z:
+            assert len(z.namelist())==len(set(z.namelist()))==len(members)
+            for name,item in members.items():raw=z.read(name);assert len(raw)==item['bytes'] and SHA(raw)==item['sha256']
+        print('ACTUAL_CANONICAL_MODEL7_ADMISSION_AND_ALL_NEUTRAL_RESEARCH_REVERIFIED_WITHOUT_WRITES',flush=True);return
+    assert not archive.exists() and not archive.with_suffix('.json').exists()
     with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED) as z:
         for name,path in sorted(files.items()):z.write(path,name)
     with zipfile.ZipFile(archive) as z:
