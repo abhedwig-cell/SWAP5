@@ -128,3 +128,5 @@ def validate(bundle,project,identity):
     # observation; no original numerical statement is removed here.
     if text.count(ANCHOR)!=1 or head_parent_inverse(text)!=(clock_selection(project) is not None):
         raise ValueError('Foreign complete original pre-terminal model7 HeadCalc parent')
+
+# Actual analytical calendar source negative; NEVER MERGE.
