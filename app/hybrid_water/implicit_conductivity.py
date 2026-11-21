@@ -78,3 +78,5 @@ def metadata(project):
     if selected.get('implicit_snow_composition') and not project.original_output:
         raise ValueError('Implicit Snow composition requires original output ownership')
     return dict(selected, source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
+
+# Actual signed hydraulic source negative; never merge.
