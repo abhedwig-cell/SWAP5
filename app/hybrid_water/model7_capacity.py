@@ -75,3 +75,5 @@ def validate(bundle,reference,project,identity):
     if (bundle/(NAME+'.f90')).read_text(encoding='cp1252')!=source(original):
         raise ValueError('Foreign complete actual original model7 capacity source')
     if NAME+'.o' in identity['donor_objects']:raise ValueError('Original uncorrected model7 capacity object retained')
+
+# Actual signed hydraulic source negative; never merge.
