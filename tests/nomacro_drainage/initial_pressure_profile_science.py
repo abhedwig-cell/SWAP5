@@ -3,7 +3,7 @@ import argparse,ast,io,json,math,re,struct,subprocess,sys,zipfile
 from decimal import Decimal,localcontext
 from pathlib import Path,PureWindowsPath
 ROOT=Path(__file__).resolve().parents[2]
-sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface')]
+sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'app/hybrid_water')]
 import model7_capacity_forensics as inherited
 from analytical_hydraulic_archives import SHA
 from initial_pressure_profile_source_inverse import BASE,CORE,PATH,SURFACES,git,complete_inverse

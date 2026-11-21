@@ -54,12 +54,13 @@ def prior_source_projection():
  complete_inverse()
  import vapor_boundary_source_inverse as boundary
  import signed_hydraulic_source_inverse as signed
- saved=(boundary.ROOT,boundary.complete_inverse,signed.CheckedParent)
+ import snow_vapor_verify as snow_owner
+ saved=(boundary.ROOT,boundary.complete_inverse,signed.CheckedParent,snow_owner.ROOT)
  class InitialParent(saved[2]):
   def __truediv__(self,path):return SourceFile(PATH) if str(path)==PATH else super().__truediv__(path)
  # Only fully inverted source files are viewed through their actual previous
  # bytes. Git HEAD, producer identities and every scientific input/raw path
  # remain actual; no original reader or scientific assertion is replaced.
- boundary.ROOT=CheckedRoot();boundary.complete_inverse=boundary_complete_inverse;signed.CheckedParent=InitialParent
+ boundary.ROOT=CheckedRoot();boundary.complete_inverse=boundary_complete_inverse;signed.CheckedParent=InitialParent;snow_owner.ROOT=CheckedRoot()
  try:yield
- finally:boundary.ROOT,boundary.complete_inverse,signed.CheckedParent=saved
+ finally:boundary.ROOT,boundary.complete_inverse,signed.CheckedParent,snow_owner.ROOT=saved
