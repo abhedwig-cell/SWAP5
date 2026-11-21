@@ -76,6 +76,9 @@ def clock_selection(project):
 
 def head_parent_inverse(text,project=None):
     if project is not None:
+        from analytical_cde_calendar import clock_parent_inverse
+        composed=clock_parent_inverse(text,project,HEAD_PARENT_SHA)
+        if composed is not None:return composed
         from vapor_boundary_composition import enabled as boundary_enabled,head_parent_inverse as boundary_inverse
         if boundary_enabled(project):return boundary_inverse(text,project,HEAD_PARENT_SHA)
     digest=hashlib.sha256(text.encode('cp1252')).hexdigest()
@@ -106,6 +109,12 @@ def metadata(project):
             existing_output_trial_guard_sha256=hashlib.sha256(CLOCK_GUARD.encode()).hexdigest(),
             existing_output_trial_water_limit_cm=1e-10,
             existing_output_trial_owner='original_output',existing_output_trial_unchanged=True)
+    if clock is not None and clock.get('analytical_bottom6_calendar'):
+        from analytical_cde_calendar import CLOCK6_PARENT_SHA,HEAD_IMPORT,head_guard
+        result.update(complete_before_guard_HeadCalc_sha256=CLOCK6_PARENT_SHA,
+            existing_output_trial_import_sha256=hashlib.sha256(HEAD_IMPORT.encode()).hexdigest(),
+            existing_output_trial_guard_sha256=hashlib.sha256(head_guard(6).encode()).hexdigest(),
+            existing_output_trial_owner='cde_clock_output')
     from vapor_boundary_composition import enabled as boundary_enabled,metadata as boundary_metadata,parent_digest
     if boundary_enabled(project):
         result.update(boundary_composition=boundary_metadata(project),complete_before_guard_HeadCalc_sha256=parent_digest(boundary_metadata(project)['bottom']))
