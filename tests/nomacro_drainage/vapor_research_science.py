@@ -13,7 +13,7 @@ from model7_unselected_science import physical
 
 
 def component(folder,provider,corrected):
-    q=json.loads((folder/'RESULT.json').read_text());assert q['vapor_sign_correction']==corrected and q['model_periods']==0
+    q=json.loads((folder/'RESULT.json').read_text());assert q.get('vapor_sign_correction',False)==corrected and q['model_periods']==0
     assert len(q['actual_original_object_closure'])==40
     for item in q['actual_original_object_closure']:
         assert SHA((provider/'swap-obj'/item['name']).read_bytes())==item['sha256']
@@ -32,9 +32,10 @@ def component(folder,provider,corrected):
     return rows
 
 
-def mass_and_native_failure(profile,build,provider,days,codec):
+def mass_and_native_failure(profile,build,provider,days,codec,inputs):
     q=json.loads((profile/'RESULT.json').read_text());assert q['status']=='FAILED' and q['error']=='AssertionError()'
     assert q['trajectory']['days']==days
+    for name,digest in q['inventory'].items():assert SHA((inputs/name).read_bytes())==digest
     meta=json.loads((build/'BUILD.json').read_text());assert SHA((build/'BUILD.json').read_bytes())==q['trajectory']['build_sha256']
     for name,digest in meta['identity']['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
     for role,digest in meta['executable_sha256'].items():assert SHA((build/('day_'+role+'.exe')).read_bytes())==digest
@@ -94,13 +95,13 @@ def read(proof):
                 result=audit(short,Reference(),locations=dict(build=current.view(projection[q['build_root']]['archive_prefix']),inputs=mapped(current,q['input_root'])))
                 assert result['days']==35 and result['cold_windows']==3
                 full=current.view(f'profiles/vapor-{model}-daily-water-full-{opt}-v1');q=json.loads((full/'RESULT.json').read_text())
-                observed,rows=mass_and_native_failure(full,current.view(projection[q['build_root']]['archive_prefix']),provider,1096,b'S5IOW001')
+                observed,rows=mass_and_native_failure(full,current.view(projection[q['build_root']]['archive_prefix']),provider,1096,b'S5IOW001',mapped(current,q['input_root']))
                 observations.append(dict(model=model,optimization=opt,short=result,retained_failure=observed))
                 if model==8 and opt=='O0':oldprefix=rows[:532]
         assert single['O0']==single['O2']
         mixed_result=mixed(current.view('profiles'))
         native2=current.view('profiles/vapor-native2-8-water-prefix-O0-v1');q=json.loads((native2/'RESULT.json').read_text())
-        native2_result,rows=mass_and_native_failure(native2,current.view(projection[q['build_root']]['archive_prefix']),provider,532,b'S5HVW002')
+        native2_result,rows=mass_and_native_failure(native2,current.view(projection[q['build_root']]['archive_prefix']),provider,532,b'S5HVW002',mapped(current,q['input_root']))
         assert physical(rows)==physical(oldprefix)
     return dict(status='ORIGINAL_VAPOR_KELVIN_COMPONENT_REFERENCE_AND_NATIVE1_NATIVE2_FAILURES_INDEPENDENTLY_RETAINED_NOT_ADMITTED',
         observations=observations,mixed=mixed_result,native2=native2_result,old_failures_promoted=False,compiler_executions=0,model_executions=0,public_admission=False)
