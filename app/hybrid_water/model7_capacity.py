@@ -64,6 +64,10 @@ def apply_build(output,reference,project,patched):
 def validate(bundle,reference,project,identity):
     expected=metadata(project)
     if identity.get('model7_capacity')!=expected:raise ValueError('Foreign original model7 capacity policy')
+    from hydraulic_vapor import metadata as vapor_metadata,validate as vapor_validate
+    if vapor_metadata(project) is not None:
+        vapor_validate(bundle,reference,project,identity)
+        return
     if expected is None:
         if NAME+'.f90' in identity['donor_generated']:raise ValueError('Unselected model7 capacity source owner')
         return

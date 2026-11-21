@@ -899,6 +899,8 @@ end module plant_interface""")
     patched=implicit_frost_build(output,project,patched)
     from model7_capacity import apply_build as model7_capacity_build
     patched=model7_capacity_build(output,donor_build,project,patched)
+    from hydraulic_vapor import apply_build as hydraulic_vapor_build
+    patched=hydraulic_vapor_build(output,donor_build,project,patched)
     from model7_terminal_water import apply_build as model7_terminal_build
     patched=model7_terminal_build(output,project,patched)
     for name in patched:
@@ -1033,6 +1035,9 @@ end module plant_interface""")
     selected_output=original_output_metadata(project)
     if selected_output is not None:build_identity['original_output']=selected_output
     if project.input_directory:
+        from hydraulic_vapor import metadata as hydraulic_vapor_metadata
+        vapor_identity = hydraulic_vapor_metadata(project)
+        if vapor_identity is not None:build_identity['hydraulic_vapor'] = vapor_identity
         build_identity['experimental_input_adapter'] = sha(APP/'experimental_project.py')
     if project.time_step_policy == LOCAL_WETTING_TIME_POLICY:
         from local_wetting_time import metadata as wetting_metadata
