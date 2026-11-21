@@ -431,7 +431,7 @@
   "source_contract_required": [
     "Bind exact original readswap/SoilWater HTB initializer ordering before Frost and hydraulic-history initialization. Do not infer active original compatibility from selector acceptance alone.",
     "Use only existing qualified explicitFrost native1 and implicitFrost root-native2 daily water/CDE owners, primarySWDIVD1/bottom6, hysteresis2, numericalheat2, ordinarySnow, no AGE/macropores. Retain examinedKsat/frozenfront exclusions.",
-    "Require actual34node initial pressure, fixedwater/CDEeveryprefix, originalFrost/root/history invariants and3exactcold windows perO0/O2 context; no newnativeABI orphysicalequations.",
+    "Require actual34node initialpressure, literal Frost owning daily/terminal water1e-10 and cumulative hydraulic-step elapsedwindow rule, unchanged CDE everyprefix1e-10, nativeFrost/root/history invariants and3exactcold windows perO0/O2 context. No new ABI orphysicalequations.",
     "Prove complete compiled initial2-to-initial1 Fortran/provider/flags/nativeABI postimage before reusing existingtypednative/refusal evidence. Preserve all original inputs/source epochs/failures."
   ],
   "compiler_executions": 0,
@@ -440,5 +440,32 @@
   "canonical_admission": false,
   "whole_historical_family_closed": false,
   "global_family_and_gap_counts": "UNKNOWN",
-  "RC3_changed": false
+  "RC3_changed": false,
+  "original_source_ordering": {
+    "status": "LITERAL_ORIGINAL_INITIAL_PRESSURE_BEFORE_THERMAL_SNOW_SOLUTE_STATE_INITIALIZATION",
+    "whole_sources": {
+      "swap.f90": {
+        "sha256": "87e0e7227d139570a38c43b45227bc576d135713337f5e6742e0019407994b7c",
+        "bytes": 26927
+      },
+      "soilwater.f90": {
+        "sha256": "d5926b6c30fba3177c261c9a24ef828dd9cd6b3dfb952b07ef00800ebd42415d",
+        "bytes": 7478
+      },
+      "readswap.f90": {
+        "sha256": "e6fc217798d3f0424641c61b92fb8831fcdeb78c19670def00695b82ab8e80fe",
+        "bytes": 59942
+      }
+    },
+    "ordered_call_anchors": [
+      "   call ReadSwap",
+      "   call SoilWater(1)",
+      "   if (swhea > 0) call SoilTemperature(1)",
+      "   if (swdra > 0) call drain(1)",
+      "   if (swsnow  == 1) call Snow(1, tsoil(1), tav, epond, peva, empreva)",
+      "   if (swsolu > 0) call Solute(1)"
+    ],
+    "original_HTB_interpolation_before_water_storage": true
+  },
+  "owning_scientific_limits": "Unchanged literal Frost daily/terminal absolute1e-10cm and cumulative hydraulic-step 1e-10 times elapsedwindow; CDE every-prefix absolute1e-10mg/cm2. Additional absolute global waterprefix is retained as diagnostic, never silently promoted to a new owning acceptance gate."
 }
