@@ -63,7 +63,7 @@ def main():
                     item['publisher_equivalence']=publisher_equivalence(original_dll,build/'restart_publish.dll')
                 item['identity_changes']=delta;item['unchanged_complete_Fortran']={key:SHA(value) for key,value in after.items()}
                 if recovered.get(name,{}).get('trajectory',{}).get('days')==35:
-                    trajectory=Path(recovered[name]['trajectory_root']);data=m.rows(trajectory);assert len(data)==35;m.check(data)
+                    trajectory=Path(recovered[name].get('trajectory_root',str(a.recover_existing/name/'trajectory')));data=m.rows(trajectory);assert len(data)==35;m.check(data)
                     item['trajectory']=recovered[name]['trajectory'];item['retained_actual_35day_postimage']=True
                 else:
                     trajectory=out/'trajectory';item['trajectory'],data=m.trajectory(build,a.reference_work,project,trajectory,35,{2,4,30,34,35},180)
