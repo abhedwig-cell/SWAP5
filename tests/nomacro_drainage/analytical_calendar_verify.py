@@ -15,10 +15,10 @@ import snow_vapor_verify as previous
 SEALED='e351e5c0efafc4b11aa7eef28f4f67bb01380ead'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/snow_vapor_verify.py'
-GUARD_HOOK='    import analytical_calendar_verify as calendar\n    return calendar.guard_previous_source()\n'
-VERIFY_HOOK='    import analytical_calendar_verify as calendar\n    return calendar.verify()\n'
-STRIP_HOOK='    import analytical_calendar_verify as calendar\n    return calendar.strip_current_evidence(text)\n'
-PUBLICATION_HOOK='    import analytical_calendar_verify as calendar\n    return calendar.publication_dependencies_unchanged()\n'
+GUARD_HOOK=' import analytical_calendar_verify as calendar\n return calendar.guard_previous_source()\n'
+VERIFY_HOOK=' import analytical_calendar_verify as calendar\n return calendar.verify()\n'
+STRIP_HOOK=' import analytical_calendar_verify as calendar\n return calendar.strip_current_evidence(text)\n'
+PUBLICATION_HOOK=' import analytical_calendar_verify as calendar\n return calendar.publication_dependencies_unchanged()\n'
 PARSERS=('analytical_calendar_source_inverse.py','analytical_calendar_science.py','analytical_calendar_native_state.py','analytical_calendar_postimages.py','analytical_calendar_controls.py','analytical_calendar_frontend.py','analytical_calendar_preserve.py','analytical_calendar_ubuntu_preserve.py','analytical_calendar_central_science.py','analytical_calendar_records.py','analytical_monthly_postimage.py','analytical_calendar_batch.py','snow_vapor_admission_seal.py')
 RAW_NAMES=('HYDRAULIC_ANALYTICAL_CALENDAR_WINDOWS_RAW_V1','HYDRAULIC_ANALYTICAL_CALENDAR_UBUNTU_O0_RAW_V1','HYDRAULIC_ANALYTICAL_CALENDAR_UBUNTU_O2_RAW_V1')
 
