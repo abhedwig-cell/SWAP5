@@ -55,9 +55,7 @@ def guard_previous_source():
  return True
 
 
-def strip_current_evidence(text):return literal('strip_current_evidence',dict(vars(previous)))(text)
- import vapor_boundary_verify as boundary
- return boundary.strip_current_evidence(text)
+def strip_current_evidence(text):import vapor_boundary_verify as boundary;return boundary.strip_current_evidence(text);return literal('strip_current_evidence',dict(vars(previous)))(text)
 
 
 def publication_dependencies_unchanged():
