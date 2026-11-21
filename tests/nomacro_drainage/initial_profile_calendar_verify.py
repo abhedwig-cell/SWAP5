@@ -12,13 +12,13 @@ import analytical_cde_calendar_verify as previous
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/analytical_cde_calendar_verify.py'
 SEALED='PENDING_FINAL_OBSERVER_FREEZE'
-PARENT_CANONICAL='PENDING_ACTUAL_PARENT_ADMISSION'
-PARENT_ADMISSION_SHA='PENDING_ACTUAL_PARENT_ADMISSION'
+PREVIOUS_CANONICAL='904d3cdd1fb9132839bec689c22cdeecdba79676'
+PARENT_STAGE_SHA='PENDING_ACTUAL_CANDIDATE_STAGE_CLOSURE'
 GUARD_HOOK=' import initial_profile_calendar_verify as profile_owner\n return profile_owner.guard_previous_source()\n'
 VERIFY_HOOK=' import initial_profile_calendar_verify as profile_owner\n return profile_owner.verify()\n'
 STRIP_HOOK=' import initial_profile_calendar_verify as profile_owner\n return profile_owner.strip_current_evidence(text)\n'
 PUBLICATION_HOOK=' import initial_profile_calendar_verify as profile_owner\n return profile_owner.publication_dependencies_unchanged()\n'
-PARSERS=tuple('initial_profile_calendar_'+name+'.py' for name in ('source_inverse','science','central_science','runtime','inputs','frontend','records','postimage','windows_preserve','ubuntu_preserve'))
+PARSERS=tuple('initial_profile_calendar_'+name+'.py' for name in ('source_inverse','science','central_science','runtime','inputs','frontend','records','postimage','windows_preserve','ubuntu_preserve'))+('analytical_cde_calendar_candidate_stage_seal.py',)
 RAW_NAMES=('INITIAL_PROFILE_CALENDAR_WINDOWS_RAW_V1','INITIAL_PROFILE_CALENDAR_UBUNTU_O0_RAW_V1','INITIAL_PROFILE_CALENDAR_UBUNTU_O2_RAW_V1','INITIAL_PROFILE_CALENDAR_IMPLICIT_UBUNTU_O0_RAW_V1','INITIAL_PROFILE_CALENDAR_IMPLICIT_UBUNTU_O2_RAW_V1')
 
 
@@ -63,12 +63,14 @@ def verify():
  with ExitStack() as stack:
   for name in RAW_NAMES:
    store=Archive(PROOF,name,stack);assert store.record['sha256']==qual['raw_records'][name]['sha256']
-  admission=Archive(PROOF,'ANALYTICAL_CDE_CALENDAR_ADMISSION_RAW_V1',stack)
-  assert admission.record['candidate']==BASE and admission.record['canonical']==PARENT_CANONICAL and admission.record['sha256']==PARENT_ADMISSION_SHA
+  admission=Archive(PROOF,'ANALYTICAL_CDE_CALENDAR_CANDIDATE_STAGE_RAW_V1',stack)
+  assert admission.record['candidate']==BASE and admission.record['previous_canonical']==PREVIOUS_CANONICAL and admission.record['sha256']==PARENT_STAGE_SHA
+  assert admission.record['canonical_admission'] is False and admission.record['standalone_merge_claimed'] is False and admission.record['final_integrated_head_gates_required'] is True
   for name in admission.names:admission.get(name)
  with prior_source_projection():prior=literal('verify',prior_namespace())()
  assert prior['status']=='BOUNDED_ORIGINAL_ANALYTICAL_VAPOR_CDE_CALENDAR_SOURCE_RAW_NATIVE_PASS'
- return dict(status='BOUNDED_ORIGINAL_INITIAL_PROFILE_CALENDAR_SOURCE_RAW_NATIVE_PASS',runtime=CORE,targeted=actual,inherited_analytical_CDE_and_all_prior_science=prior,compiler_executions=0,model_executions=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
+ assert len(prior['targeted']['profiles'])==38
+ return dict(status='BOUNDED_ORIGINAL_INITIAL_PROFILE_CALENDAR_SOURCE_RAW_NATIVE_PASS',runtime=CORE,targeted=actual,inherited_analytical_CDE_and_all_prior_science=prior,coadmission=dict(contexts=74,exact_cold_windows=226,native_calendar_samples=524,actual_compiled_refusals=500,frontend_observations=94,compiled_postimages=21,previous_canonical=PREVIOUS_CANONICAL,phase1_standalone_admission_claimed=False),compiler_executions=0,model_executions=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
 
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
