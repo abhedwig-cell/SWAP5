@@ -159,3 +159,5 @@ def metadata(project):
  import hashlib
  source=Path(__file__).read_bytes().replace(b'\r\n',b'\n');provider=native_provider(Path(__file__).with_name('hydraulic_vapor_native.f90').read_bytes())
  return dict(policy='original-analytical-vapor-CDE-calendar-composition-v1',native_domain_version=6,native_codec=MAGIC.decode(),source_sha256=hashlib.sha256(source).hexdigest(),native_provider_sha256=hashlib.sha256(provider).hexdigest(),CDE_private_state_version=2,CDE_private_fields=['sampro0','rounderr'],physical_equations_changed=False,new_physical_state=False,fixed_absolute_water_and_CDE_limits=1e-10)
+
+# Actual committed bounded calendar negative control; never merge.
