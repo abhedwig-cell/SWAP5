@@ -16,7 +16,7 @@ from signed_hydraulic_postimages import read
 import vapor_verify as previous
 
 SEALED='011c0eef0'
-ADMISSION='PENDING_ACTUAL_CANONICAL_PUBLIC_OBSERVATION'
+ADMISSION='c7c14b359820f9ebb96c73dbddd2bc8031ed1569'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/vapor_verify.py'
 GUARD_HOOK='    import signed_hydraulic_verify as signed\n    return signed.guard_previous_source()\n'
