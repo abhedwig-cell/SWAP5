@@ -17,7 +17,7 @@ def analytical_models(project):
     selected=switches(active)
     if any(selected.get(name)!=0 for name in ('SWKIMPL','SWSOPHY','SWHYST','SWFROST','SWMACRO')):return None
     values=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
-    if len(values)!=1 or re.fullmatch(r'[0-9]+(?:[ \t]+[0-9]+)*[ \t]*',values[0]) is None:return None
+    if len(values)!=1 or re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',values[0]) is None:return None
     models=tuple(map(int,values[0].split()))
     return models if models and all(1<=model<=11 for model in models) else None
 
