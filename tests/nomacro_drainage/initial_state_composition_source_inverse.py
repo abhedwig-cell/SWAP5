@@ -1,13 +1,18 @@
 """Bind exact state-selector composition and one old root-carry parent extension."""
-import ast,subprocess
+import ast,subprocess,os
+from contextlib import contextmanager
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 BASE='e4dfd5fd0274c51e56ac30baf247cea51a304321'
 PHYSICAL_CORE='23e8f8c228d6b2d3667a45932f02011e02cc0c80'
-PREVIOUS_GUARD='8ada573a8'
-PREVIOUS_GUARD=subprocess.check_output(['git','rev-parse',PREVIOUS_GUARD],cwd=ROOT,text=True).strip()
+PREVIOUS_GUARD='8ada573a86cdabf2699fbb7a4c63d150552b88cc'
 CORE='e36585da4cde1c4044bad0f833c7a8f10f368849'
 GUARD='app/hybrid_water/ordinary_pond_source_guard.py'
+PARENT='a8aa149a22b67a7f5bbf7c2e4243002f89d7242c'
+PORTABLE='31c32def70aa66861ca03f518bc0bb3d8d8973c4'
+WORKFLOW='.github/workflows/nomacro-water-snow-groundwater.yml'
+CI=('.github/workflows/mc-sol01-column-input.yml','.github/workflows/mc-sol01-swp-reader.yml')
+PATTERN='            /integration/f-ci/nomacro-complete01/INITIAL_STATE_COMPOSITION*\n'
 ADAPTER='app/hybrid_water/experimental_project.py'
 ROOT_CARRY='app/hybrid_water/implicit_snow_cde_root_carry.py'
 SURFACES=('app','src','tools/solute','tools/vq','reference')
@@ -41,4 +46,52 @@ def complete_inverse():
  for block in (DENSE_BLOCK,GUARD_BLOCK):
   assert current.count(block.encode())==1;current=current.replace(block.encode(),b'',1)
  assert current==git('show',BASE+':'+GUARD),'Incomplete literal dense/boundary receipt guard inverse'
+ assert not git('diff',BASE,PARENT,'--',*SURFACES),'Parent canonical physical tree moved'
+ assert (ROOT/WORKFLOW).read_bytes().replace(b'\r\n',b'\n')==git('show',PORTABLE+':'+WORKFLOW)
+ for path in CI:
+  raw=(ROOT/path).read_bytes().replace(b'\r\n',b'\n').decode();assert raw.count(PATTERN)==1 and raw.replace(PATTERN,'',1).encode()==git('show',PARENT+':'+path),'Unreviewed state proof checkout delta'
  return True
+
+
+class SourceFile:
+ def __init__(self,path):self.path=path
+ def read_bytes(self):return git('show',PARENT+':'+self.path)
+ def read_text(self,encoding='utf8'):return self.read_bytes().decode(encoding)
+ def __fspath__(self):return os.fspath(ROOT/self.path)
+ def __str__(self):return str(ROOT/self.path)
+
+
+class CheckedParentRoot:
+ def __truediv__(self,path):return SourceFile(str(path)) if str(path) in (ADAPTER,ROOT_CARRY,GUARD,WORKFLOW,*CI) else ROOT/path
+ def __fspath__(self):return os.fspath(ROOT)
+ def __str__(self):return str(ROOT)
+
+
+def initial_parent_complete_inverse():
+ import initial_pressure_profile_source_inverse as initial
+ path='tests/nomacro_drainage/initial_pressure_profile_source_inverse.py';raw=git('show',PARENT+':'+path);nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='complete_inverse'];assert len(nodes)==1
+ function=nodes[0];assert isinstance(function.body[0],ast.Assert) and ast.unparse(function.body[0].test)=="not git('diff', CORE, '--', *SURFACES)";function.body[0]=ast.parse('state_complete_inverse()').body[0]
+ namespace=dict(vars(initial),ROOT=CheckedParentRoot(),state_complete_inverse=complete_inverse);exec(compile(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])),path,'exec'),namespace);return namespace['complete_inverse']()
+
+
+def initial_parent_source_union():
+ import initial_pressure_profile_source_inverse as initial
+ import vapor_boundary_source_inverse as boundary
+ path='tests/nomacro_drainage/vapor_boundary_source_inverse.py';raw=git('show',initial.BASE+':'+path);nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='initial_source_inverse'];assert len(nodes)==1
+ found=[n for n in nodes[0].body if isinstance(n,ast.Assert) and ast.unparse(n.test)=='actual == previous | set(CHANGED)'];assert len(found)==1
+ found[0].test=ast.parse('actual == previous | set(CHANGED) | STATE_PATHS',mode='eval').body
+ namespace=dict(vars(boundary),ROOT=initial.CheckedRoot(),complete_inverse=initial.boundary_complete_inverse,STATE_PATHS={ADAPTER,ROOT_CARRY,GUARD})
+ exec(compile(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])),path,'exec'),namespace);return namespace['initial_source_inverse']()
+
+
+@contextmanager
+def prior_source_projection():
+ complete_inverse()
+ import initial_pressure_profile_source_inverse as initial
+ saved=(initial.ROOT,initial.complete_inverse,initial.initial_source_inverse)
+ # Fully inverted source reads only. Actual Git/HEAD/producer identities,
+ # native payloads, scientific inputs and every old numerical assertion stay
+ # literal and current; no scientific data path is projected.
+ initial.ROOT=CheckedParentRoot();initial.complete_inverse=initial_parent_complete_inverse;initial.initial_source_inverse=initial_parent_source_union
+ try:yield
+ finally:initial.ROOT,initial.complete_inverse,initial.initial_source_inverse=saved
