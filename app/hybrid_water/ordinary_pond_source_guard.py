@@ -41,7 +41,27 @@ def validate(bundle, project, identity):
                 dense['requested_period'] != 1):
             raise ValueError('Foreign actual ordinary dense CDE source form')
         form='water'
+    if project.solute:
+        # Ordinary interval output carries private CDE state without adding
+        # the distinct subdaily hydraulic trial. Select the existing complete
+        # water-trial parent from actual inputs, never a mutable source hash.
+        from cde_interval_output import active_selection as interval_selection
+        from cde_clock_output import active_selection as clock_selection
+        interval=interval_selection(project)
+        if interval is not None and clock_selection(project) is None:
+            if identity['original_output'].get('cde_interval_output') is not True:
+                raise ValueError('Foreign actual ordinary CDE interval source form')
+            form='water'
     source = (Path(bundle)/'headcalc.f90').read_bytes().replace(b'\r\n', b'\n')
+    if not project.solute:
+        from perstep_output_domain import active_selection as perstep_selection
+        perstep=perstep_selection(project)
+        if perstep is not None and not perstep['swsnow']:
+            if identity['original_output'].get('perstep_domain') is not True:
+                raise ValueError('Foreign actual ordinary per-step source form')
+            from initial_profile_calendar import perstep_water_parent_inverse
+            source=perstep_water_parent_inverse(source.decode('cp1252')).encode('cp1252')
+            form='water'
     if report['boundary']['SWBOTB'] == 5:
         # Invert only the literal admitted prescribed-head receipt projection.
         # The whole numerical body must still equal the qualified air-boundary

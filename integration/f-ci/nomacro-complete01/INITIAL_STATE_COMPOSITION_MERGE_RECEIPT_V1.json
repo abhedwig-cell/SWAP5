@@ -1,0 +1,46 @@
+{
+  "status": "ACTUAL_CANONICAL_ORIGINAL_INITIAL_STATE_COMPOSITION_ADMISSION_VERIFIED",
+  "PR": 1786,
+  "previous_canonical": "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
+  "qualified_head": "5c0cba9fbbd93ffb482199016f392e53e371e095",
+  "synthetic_merge": "c24f72f547b12a0a2f2c4edfb59a10b79e647442",
+  "actual_merge": "904d3cdd1fb9132839bec689c22cdeecdba79676",
+  "ordered_parents": [
+    "a8aa149a22b67a7f5bbf7c2e4243002f89d7242c",
+    "5c0cba9fbbd93ffb482199016f392e53e371e095"
+  ],
+  "whole_qualified_tree": "47eb063eaca3ed78287cbe71e68898f4f74d9e50",
+  "all_terminal_PR_checks": 44,
+  "success": 29,
+  "skipped": 15,
+  "all15workflow_runs_success": true,
+  "actual_candidate_public_seconds": 1825.7905676001683,
+  "actual_canonical_public_seconds": 1664.2114136000164,
+  "actual_canonical_sparse_patterns": 40,
+  "admission_archive_sha256": "ef54d7540f754c1a206c1258a910a1e3b893d582dbaae6c091d4eb931ed041cb",
+  "canonical_admission": true,
+  "short35_contexts": 30,
+  "exact_cold_windows": 90,
+  "native_checkpoints": 210,
+  "exact_private_CDE_stocks": 126,
+  "frontend_controls": 56,
+  "fresh_compilations_for_admission": 0,
+  "fresh_model_periods_for_admission": 0,
+  "neutral_qualification_and_raw_unchanged": true,
+  "scope": "Original pressure-profile SWINCO1, dense daily original output, numeric heat2, water/CDE, NoFrost/noaquifer; NoSnowexplicit hys1/2 DRA1/BOT6, explicitSnow/hys0 DRA1/BOT6, NoSnowimplicit/hys0 DRA1/BOT5, implicitSnow/hys0 DRA1/BOT5. Preserve all prior initial2/3 routes. Active macropores excluded.",
+  "earlier_failed_and_cancelled_controls_retained": true,
+  "canonical_push_all_workflows_success": false,
+  "canonical_push_preservation_jobs_failed": [
+    136892901248,
+    136892901578
+  ],
+  "canonical_push_preservation_runs_failed": [
+    44919721650,
+    44919721728
+  ],
+  "canonical_push_preservation_failure": "Existing unresolved verify_dataqual12_current.py broad scientific_delta source succession assertion; before model execution, full logs retained, no waiver or successful replay claimed",
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}

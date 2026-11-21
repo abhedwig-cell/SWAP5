@@ -1,0 +1,19 @@
+{
+  "status": "PRE_CHANGE_CONTRACT_REPAIR_CI_OBSERVER_DEADLINE_ONLY",
+  "baseline": "b6b4959fb1301cedc95ddf551c11d6699a41e3ed",
+  "PR": 1787,
+  "actual_cancelled_column_job": 136950201008,
+  "actual_run": 44938455550,
+  "actual_diagnostic": "Ten-minutejobdeadline cancelledtheunchangedpublicverify_successor read-only74contextproof. No numericalassertionfailure reported; allpriorphysicalcolumnstepscomplete. Never treat cancellation as PASS.",
+  "original_artifact": {
+    "id": 14720397956,
+    "bytes": 1133379,
+    "sha256": "4f01812fe5fbedabf72d7119895a4b46b500cdf016a864e0e35aa3377628616d"
+  },
+  "change": "Column jobtimeout10to45minutes, matchingalreadyqualifiedreader45. Preserve every command/modelperiod/source/native/mass/rollback assertion unchanged. Exactnewworkflow inverse must restore10andremoveonlynewinitialcalendarproofpattern to the actualoldwholeworkflow.",
+  "qualification": "No modelperiodreplay. Newexactintegratedhead stillrequiresclean42publicpositive/fourrealnegatives/publicationfalseandtrue/allterminalCI/fullsynthetic; oldsupersededobservationspreservedwithoutcurrentheadclaim.",
+  "model_execution_limits_changed": false,
+  "mass_or_convergence_limits_changed": false,
+  "physical_source_changed": false,
+  "canonical_admission": false
+}
