@@ -2070,7 +2070,7 @@
       "family": "Original per-layer vapor and heat conservation/state",
       "classification": "REFERENCE_DEFECT_AND_MISSING_COUPLED_EVIDENCE",
       "priority": 3,
-      "status": "ACTIVE_ORIGINAL_KELVIN_SIGN_DEFECT_COMPONENTS_AND_FIRST_COUPLED_WATER_SHORT_PASS"
+      "status": "BOUNDED_VAPOR_ACTUAL_CANONICAL_277C6135F_ADMITTED_WHOLE_FAMILY_OPEN"
     },
     {
       "family": "AGE dry retained surface moment",
@@ -2155,6 +2155,42 @@
     "component": "Actualoriginal/corrected O0/O2; interiorgrid192 andmixed1728 pervariant/opt; originaldrybound-stencil48rowFPEprefixes retained",
     "coupled": "Four35daywater/12cold independentPASS; allfour1096warm trajectories completewithin1e-10; exactcold530fails atday531 (~1e-16flux), so no full/nativePASS. CDE/portable/public pending.",
     "whole_family_closed": false,
-    "public_admission": false
+    "public_admission": false,
+    "actual_canonical_admission": "PR1779actual277c6135ff4250a04ee3e3330530dc0895e0fc7d exactparents/treeclean35PASS585.1999522s;64full448coldneutralunchanged. Broaderfamilyopen."
+  },
+  "original_integer_selector_grammar": {
+    "classification": "OVERRESTRICTIVE_GUARD_AND_MISSING_COMPOSITION",
+    "historical_evidence": "5actualoriginalmodel1signed/zero spellingsacceptedwith0modeldays;4actualpriorunsignedfixtures reject12signedspellingvariants",
+    "bounded_analytical_status": "PR1780source786pendingclean36public/CI afterpreciseinitialUbuntu sourcepredicatebridge;4short35/12cold38parsercontrolsPASS",
+    "default_model_batch": "4literalregexpredicates implementednotyetqualified;ordinarywatergroundwaterotherwise silencestheexistingnativecarryselection;implicit/Snowguardsreject",
+    "scope": "Originalpositiveintegerliteralspellingsonly, unchangedexistingphysics/couplings/nativecodecs. FullhistoricalfamilyclosureUNKNOWN",
+    "current_code_changes": [
+      {
+        "file": "app/hybrid_water/implicit_conductivity.py",
+        "only_changed_function": "selection",
+        "before": "r'1(?:[ \\t]+1)*[ \\t]*'",
+        "after": "r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*'"
+      },
+      {
+        "file": "app/hybrid_water/implicit_groundwater_state.py",
+        "only_changed_function": "enabled",
+        "before": "r'1(?:[ \\t]+1)*[ \\t]*'",
+        "after": "r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*'"
+      },
+      {
+        "file": "app/hybrid_water/snow_undrained.py",
+        "only_changed_function": "selection",
+        "before": "r'1(?:[ \\t]+1)*[ \\t]*'",
+        "after": "r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*'"
+      },
+      {
+        "file": "app/hybrid_water/snow_water_groundwater.py",
+        "only_changed_function": "selection",
+        "before": "r'1(?:[ \\t]+1)*[ \\t]*'",
+        "after": "r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*'"
+      }
+    ],
+    "global_family_and_gap_counts": "UNKNOWN",
+    "fixed_RC3_changed": false
   }
 }

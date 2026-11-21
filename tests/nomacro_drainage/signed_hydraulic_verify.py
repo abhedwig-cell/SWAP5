@@ -40,6 +40,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
+    import default_model_grammar_verify as grammar
+    return grammar.guard_previous_source()
     complete_inverse()
     for name in PARSERS:
         path='tests/nomacro_drainage/'+name
@@ -56,11 +58,15 @@ def guard_previous_source():
 
 
 def strip_current_evidence(text):
+    import default_model_grammar_verify as grammar
+    return grammar.strip_current_evidence(text)
     if PATTERN in text:assert text.count(PATTERN)==1;text=text.replace(PATTERN,'',1)
     return literal('strip_current_evidence',dict(vars(previous)))(text)
 
 
 def publication_dependencies_unchanged():
+    import default_model_grammar_verify as grammar
+    return grammar.publication_dependencies_unchanged()
     guard_previous_source()
     with prior_source_projection():return literal('publication_dependencies_unchanged',prior_namespace())()
 
@@ -85,6 +91,8 @@ def parser_controls(store):
 
 
 def verify():
+    import default_model_grammar_verify as grammar
+    return grammar.verify()
     guard_previous_source()
     for name in ('HYDRAULIC_SIGNED_SELECTORS_QUALIFICATION.json','HYDRAULIC_SIGNED_SELECTORS_WINDOWS_RAW_V1.json'):
         path='integration/f-ci/nomacro-complete01/'+name
