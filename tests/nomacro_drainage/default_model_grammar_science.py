@@ -1,6 +1,5 @@
 """Read signed-default raw postimages against admitted unsigned byte interfaces."""
 from contextlib import ExitStack
-from datetime import date
 import io
 import json
 from pathlib import Path
@@ -99,7 +98,7 @@ def read(evidence,store=None):
                     member=f'accepted-column-1-day-{high}.zip'
                     with zipfile.ZipFile(io.BytesIO((warm/member).read_bytes())) as a,zipfile.ZipFile(io.BytesIO((cold/member).read_bytes())) as b:
                         for native in ('macro.bin','result.end'):assert a.read(native)==b.read(native)
-                    output=compare_output(warm/'original',cold/'original',meta['identity']['original_output'],low,high,date.fromisoformat(meta['project']['start_date']))
+                    output=compare_output(warm/'original',cold/'original',meta['identity']['original_output'],low,high,meta['project']['start_date'])
                     receipt=next(v for v in item['cold'] if (v['start'],v['end'])==(low,high))
                     assert receipt['exact_physical'] and receipt['exact_complete_native'] and receipt['origin_unchanged'] and receipt['exact_original_output']==output
                 observations.append(dict(optimization=opt,case=name,whole_Fortran_provider_flags_exact=True,source_only_identity_changes=delta,physical_native_and_user_output_exact=True,cold_windows=2,actual_BUILD_sha256=item['actual_BUILD_sha256']))
