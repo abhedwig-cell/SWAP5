@@ -49,7 +49,56 @@ def terminal_source(original):
  for before,after in edits:
   if text.count(before)!=1:raise ValueError('Changed complete analytical terminal receipt seam')
   text=text.replace(before,after,1)
+ edits=[('  use iso_fortran_env, only: real128','  use iso_fortran_env, only: real128\n  use ieee_arithmetic, only: ieee_is_finite'),('subroutine model7_terminal_water_terms(terms)','subroutine model7_terminal_water_terms(terms,boundary_flux)'),('    real(8), intent(out) :: terms(28)','    real(8), intent(in), optional :: boundary_flux\n    real(8), intent(out) :: terms(28)'),('    qbotts=qbot*dt','    qbotts=qbot*dt\n    if(present(boundary_flux))then\n      if(.not.ieee_is_finite(boundary_flux))error stop \'Nonfinite analytical boundary trial receipt\'\n      qbotts=boundary_flux*dt\n    end if'),('function model7_terminal_water_residual() result(residual)','function model7_terminal_water_residual(boundary_flux) result(residual)'),('    call model7_terminal_water_terms(terms)','    call model7_terminal_water_terms(terms,boundary_flux)'),('    real(8) :: terms(28)','    real(8), intent(in), optional :: boundary_flux\n    real(8) :: terms(28)')]
+ for before,after in edits:
+  if text.count(before)!=1:raise ValueError('Changed analytical trial boundary flux argument seam')
+  text=text.replace(before,after,1)
  return text
+
+
+def terminal_guard(project,original):
+ selected=context(project)
+ if selected is None or selected['bottom']==6:return original
+ flux='-kmean(NN+1)*hgrad(NN+1)'
+ if selected['bottom']==8:flux='merge('+flux+',0d0,flboth)'
+ before='model7_terminal_water_residual()'
+ if original.count(before)!=1:raise ValueError('Changed analytical terminal guard call')
+ return original.replace(before,'model7_terminal_water_residual('+flux+')',1)
+
+
+def head_parent_inverse(text,project,parent_sha):
+ selected=context(project)
+ if selected is None:raise ValueError('No bounded vapor boundary source owner')
+ actual=text;bottom=selected['bottom']
+ if SHA(text.encode('cp1252'))!=parent_digest(bottom):raise ValueError('Foreign complete vapor boundary HeadCalc postimage')
+ if bottom in (5,8):
+  from lower_boundary_receipt import render_headcalc
+  for anchor in ('         budget_step=projected_water_residual()','            budget_step = projected_water_residual()'):
+   indent=anchor[:len(anchor)-len(anchor.lstrip())]
+   if bottom==8:lines=['if(swmacro==0.and.swbotb==8)then','  if(flboth)then','    budget_step=projected_water_residual(-kmean(NN+1)*hgrad(NN+1))','  else','    budget_step=projected_water_residual(0d0)','  end if','else','  budget_step=projected_water_residual()','end if']
+   else:lines=['if(swmacro==0.and.swbotb==5)then','  budget_step=projected_water_residual(-kmean(NN+1)*hgrad(NN+1))','else','  budget_step=projected_water_residual()','end if']
+   rendered='\n'.join(indent+line for line in lines)
+   if text.count(rendered)!=1:raise ValueError('Changed literal original boundary step receipt')
+   text=text.replace(rendered,anchor,1)
+  if render_headcalc(text,bottom)!=actual:raise ValueError('Incomplete qualified boundary receipt inverse')
+ else:
+  # Literal already qualified daily_host linear-pond Jacobian; no tangent,
+  # flux or capacity is introduced by this composition.
+  before='   use hybrid_step_budget, only: projected_water_residual'
+  after=before+', linear_pond_top_jacobian\n   use variables, only: rsro, rsroexp, pondmx'
+  old='   if (ftoph) dFdhM(1) = dFdhM(1) + kmean(1)/disnod(1)'
+  new='   if (ftoph) then\n      if (flrunoff .and. rsroexp==1d0 .and. rsro>=1d-3) then\n         dFdhM(1)=dFdhM(1)+linear_pond_top_jacobian(kmean(1)/disnod(1),dt,pond,pondmx,rsro)\n      else\n         dFdhM(1)=dFdhM(1)+kmean(1)/disnod(1)\n      end if\n   end if'
+  import ast
+  literals=[n.value for n in ast.walk(ast.parse(Path(__file__).with_name('daily_host.py').read_text())) if isinstance(n,ast.Constant) and isinstance(n.value,str)]
+  if after not in literals or new not in literals:raise ValueError('Changed qualified linear pond tangent source')
+  if text.count(after)!=1 or text.count(new)!=1:raise ValueError('Changed complete linear pond HeadCalc parent')
+  text=text.replace(after,before,1).replace(new,old,1)
+ if SHA(text.encode('cp1252'))!=parent_sha:raise ValueError('Foreign complete pre-boundary analytical HeadCalc')
+ return False
+
+
+def parent_digest(bottom):
+ return {6:'356fdea44df04ecb97f68936be0102c36b63f730d5c63950c8ad0ce453c313df',5:'86846f45207441207b24d71954b28ad4690a0a5ab6aca17883ecd3c1fb4a997d',8:'5f416dd85126383e39f2211f394b18590b1420cfbc2c49c408f7b4ec89de73d2'}[bottom]
 
 
 def metadata(project):

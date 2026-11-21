@@ -71,7 +71,10 @@ def clock_selection(project):
     return selected
 
 
-def head_parent_inverse(text):
+def head_parent_inverse(text,project=None):
+    if project is not None:
+        from vapor_boundary_composition import enabled as boundary_enabled,head_parent_inverse as boundary_inverse
+        if boundary_enabled(project):return boundary_inverse(text,project,HEAD_PARENT_SHA)
     digest=hashlib.sha256(text.encode('cp1252')).hexdigest()
     if digest==HEAD_PARENT_SHA:return False
     if digest!=CLOCK_PARENT_SHA or text.count(CLOCK_IMPORT)!=1 or text.count(CLOCK_GUARD)!=1:
@@ -100,6 +103,9 @@ def metadata(project):
             existing_output_trial_guard_sha256=hashlib.sha256(CLOCK_GUARD.encode()).hexdigest(),
             existing_output_trial_water_limit_cm=1e-10,
             existing_output_trial_owner='original_output',existing_output_trial_unchanged=True)
+    from vapor_boundary_composition import enabled as boundary_enabled,metadata as boundary_metadata,parent_digest
+    if boundary_enabled(project):
+        result.update(boundary_composition=boundary_metadata(project),complete_before_guard_HeadCalc_sha256=parent_digest(boundary_metadata(project)['bottom']))
     return result
 
 
@@ -108,11 +114,12 @@ def apply_build(output,project,patched):
     if STATE in patched:raise ValueError('Multiple model7 terminal receipt owners')
     (output/(STATE+'.f90')).write_text(source(project),encoding='cp1252');patched.insert(0,STATE)
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252')
-    if head_parent_inverse(text)!=(clock_selection(project) is not None):
+    if head_parent_inverse(text,project)!=(clock_selection(project) is not None):
         raise ValueError('Original output trial composition differs from actual analytical HeadCalc')
     anchor='   use hybrid_step_budget, only: projected_water_residual'
     if text.count(anchor)!=1 or text.count(ANCHOR)!=1:raise ValueError('Changed model7 complete HeadCalc terminal seam')
-    text=text.replace(anchor,IMPORT+anchor,1).replace(ANCHOR,ANCHOR+GUARD,1)
+    from vapor_boundary_composition import terminal_guard
+    text=text.replace(anchor,IMPORT+anchor,1).replace(ANCHOR,ANCHOR+terminal_guard(project,GUARD),1)
     if text.count('end subroutine jacobian_F')!=1:raise ValueError('Changed model7 search operator seam')
     text=text.replace('end subroutine jacobian_F',SEARCH+'end subroutine jacobian_F',1)
     path.write_text(text,encoding='cp1252');return patched
@@ -126,10 +133,11 @@ def validate(bundle,project,identity):
         return
     if (bundle/(STATE+'.f90')).read_text(encoding='cp1252')!=source(project):raise ValueError('Foreign complete model7 terminal receipt')
     text=(bundle/'headcalc.f90').read_text(encoding='cp1252')
-    for part in (IMPORT,GUARD,SEARCH):
+    from vapor_boundary_composition import terminal_guard
+    for part in (IMPORT,terminal_guard(project,GUARD),SEARCH):
         if text.count(part)!=1:raise ValueError('Foreign model7 actual terminal guard')
         text=text.replace(part,'',1)
     # The complete pre-guard HeadCalc is separately pinned in the qualification
     # observation; no original numerical statement is removed here.
-    if text.count(ANCHOR)!=1 or head_parent_inverse(text)!=(clock_selection(project) is not None):
+    if text.count(ANCHOR)!=1 or head_parent_inverse(text,project)!=(clock_selection(project) is not None):
         raise ValueError('Foreign complete original pre-terminal model7 HeadCalc parent')
