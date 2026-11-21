@@ -18,7 +18,8 @@ def enabled(project):
     if not project.input_directory or project.macro:return False
     from experimental_project import inspect
     selected=inspect(project.input_directory)['selectors']
-    return bool(selected['SWHYST'] or selected['SWSNOW'])
+    from hydraulic_vapor import describe as vapor_selection
+    return bool(selected['SWHYST'] or selected['SWSNOW'] or vapor_selection(project) is not None)
 
 def render(source):
     if not re.search(r'Mcount\s*=\s*801\b',source) or not re.search(r'wiltpoint\s*=\s*-20000\.0d0',source):

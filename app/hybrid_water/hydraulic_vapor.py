@@ -79,13 +79,15 @@ def metadata(project):
         original_lf_sha256=q['base_lf_sha256'],corrected_lf_sha256=q['with_capacity7_lf_sha256' if capacity7 else 'target_lf_sha256'],
         existing_model7_capacity_composed=capacity7,reference_defect_corrected='Original absolute-suction Kelvin exponent sign',
         physical_equation_changed=True,new_physical_water_store=False,native_interface_changed=True,tolerance_changed=False,native_codec=native_magic(project).decode(),
-        hydraulic_history_carry=True,thermal_history_carry=True,additional_native_doubles=7*project.nodes+6,
+        hydraulic_history_carry=True,thermal_history_carry=True,hydraulic_thermal_native_doubles=7*project.nodes+6,
+        microscopic_lookup_carry=True,oxygen_lookup_carry=True,top_lookup_carry=True,
+        existing_microscopic_dry_endpoint_correction_composed=True,
         native_domain_source_sha256=SHA(Path(__file__).with_name('hydraulic_vapor_native.f90').read_bytes().replace(b'\r\n',b'\n')))
 
 
 def native_magic(project):
     if describe(project) is None:return None
-    return b'S5HVC002' if project.solute else b'S5HVW002'
+    return b'S5HVC003' if project.solute else b'S5HVW003'
 
 
 def native_source(source,project):

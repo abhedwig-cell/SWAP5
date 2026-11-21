@@ -168,7 +168,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         values=re.findall(r'(?mi)^\s*'+name+r'\s*=\s*(\d+)\b',control)
         if len(values)!=1:raise ValueError('Missing/ambiguous physical selector: '+name)
         return int(values[0])
-    micro_state=bool(project.input_directory and not project.macro and (selector('SWHYST') or selector('SWSNOW')))
+    from micro_lookup_state import enabled as micro_lookup_enabled
+    micro_state=micro_lookup_enabled(project)
     from implicit_groundwater_state import selected_boundary
     lower_boundary=selected_boundary(project)
     lower_receipt=lower_boundary is not None
