@@ -46,6 +46,7 @@ def main():
         assert len(z.namelist())==len(set(z.namelist()))==len(members)
         for name,item in members.items():raw=z.read(name);assert len(raw)==item['bytes'] and SHA(raw)==item['sha256']
     q=dict(status='ACTUAL_ORIGINAL_SIGNED_HYDRAULIC_WINDOWS_RAW_SEALED_NOT_ADMITTED',archive=archive.name,bytes=archive.stat().st_size,sha256=SHA(archive.read_bytes()),members=members,roles=roles,runtime=subprocess.check_output(['git','rev-parse',runtime],cwd=ROOT,text=True).strip(),sealer_source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),actual_short35_contexts=4,actual_exact_cold_windows=12,new_full_periods=0,original_reader_startups=3,parser_controls=38,original_provider_dependency='HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1: immutable complete original provider',original_unsigned_full_dependencies=['HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1','HYDRAULIC_VAPOR_WINDOWS_CDE_RAW_V1'],canonical_admission=False)
+    q['parts']=[dict(file=archive.name,bytes=q['bytes'],sha256=q['sha256'])]
     archive.with_suffix('.json').write_text(json.dumps(q,indent=2)+'\n');print(q['status'],q['bytes'],q['sha256'],len(members))
 
 
