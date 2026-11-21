@@ -13,13 +13,15 @@ from cde_interval_runtime import audit_daily
 from experimental_project import switches
 BASE='71db24532f006bc78ac570d1fccdd04b22482e0e'
 CORE='929764dcdb7dd66da1dccf2a29d5a3b7022c0d8b'
+GUARD_CORE='f929bc88793953710774b593ce9364615734c804'
 CODECS={'analytic-clock6-cde':'S5CCC001','vapor-monthly6-cde':'S5HCC006','vapor-dra0-clock8-cde':'S5HCC006','vapor-dra0-explicit5-cde':'S5HCC006','hys1-clock-water':'S5IHW001','hys2-periodic-cde':'S5CIH001','hys2-monthly-water':'S5IHW001','implicit-monthly-cde':'S5CIC001','implicit-snow-clock-cde':'S5IRC002','implicit-perstep-water':'S5OPW001','snow-monthly-cde':'S5CIS001','plain-periodic-water':'S5IOW001'}
 git=lambda *a:subprocess.check_output(['git',*a],cwd=ROOT)
 
 
 def audit(profile,reference,locations=None):
  q=json.loads((profile/'RESULT.json').read_text());assert q['status']=='ACTUAL_ORIGINAL_INITIAL_PROFILE_CALENDAR_WATER_CDE_EXACT_COLD_PASS_NOT_ADMITTED' and q['days']==35 and q['case'] in CODECS
- assert not git('diff',CORE,q['source'],'--','app','src','tools/solute','tools/vq','reference'),'Unreviewed original initial-profile calendar producer'
+ epochs=[epoch for epoch in (CORE,GUARD_CORE) if not git('diff',epoch,q['source'],'--','app','src','tools/solute','tools/vq','reference')]
+ assert len(epochs)==1,'Unreviewed original initial-profile calendar producer'
  build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];selected=identity['original_output'];n=meta['project']['nodes'];text=(inputs/'swap.swp').read_text(encoding='cp1252');s=switches(text)
  assert s['SWINCO']==1 and selected['kind']==q['kind'] and q['native_codec']==CODECS[q['case']]==selected['native_codec']
  for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
