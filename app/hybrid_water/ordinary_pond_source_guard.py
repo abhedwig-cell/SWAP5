@@ -53,6 +53,15 @@ def validate(bundle, project, identity):
                 raise ValueError('Foreign actual ordinary CDE interval source form')
             form='water'
     source = (Path(bundle)/'headcalc.f90').read_bytes().replace(b'\r\n', b'\n')
+    if not project.solute:
+        from perstep_output_domain import active_selection as perstep_selection
+        perstep=perstep_selection(project)
+        if perstep is not None and not perstep['swsnow']:
+            if identity['original_output'].get('perstep_domain') is not True:
+                raise ValueError('Foreign actual ordinary per-step source form')
+            from initial_profile_calendar import perstep_water_parent_inverse
+            source=perstep_water_parent_inverse(source.decode('cp1252')).encode('cp1252')
+            form='water'
     if report['boundary']['SWBOTB'] == 5:
         # Invert only the literal admitted prescribed-head receipt projection.
         # The whole numerical body must still equal the qualified air-boundary
