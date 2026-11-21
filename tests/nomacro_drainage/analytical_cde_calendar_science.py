@@ -12,6 +12,7 @@ FIRST_CORE='443c6b432a3f75695dbab0e0b66389638d7f94c0'
 CLOCK_CORE='b16249855004a00b54efe5203287ba321b61594c'
 NATIVE6_CORE='1510278b9ad56b03273c6d6e2284b1360f57849c'
 COMPOSED_CORE='379673548d90b13421b5b1e2db6e928c676b11ed'
+FINAL_CORE='1f869b2fbbe385c29790cd7f719df87b85d83750'
 CASES={
  'model7-periodic6':(1,6,'periodic'),'model7-clock6':(1,6,'clock'),'model7-perstep6':(1,6,'perstep'),
  'vapor8-periodic6':(1,6,'periodic'),'vapor8-monthly6':(1,6,'monthly'),
@@ -61,7 +62,7 @@ def audit(profile,reference,locations=None):
  assert q['case'] in CASES
  drain,bottom,mode=CASES[q['case']]
  core=NATIVE6_CORE if q['case']=='vapor8-periodic6' else FIRST_CORE if q['case']=='model7-periodic6' else CLOCK_CORE if q['case'].startswith('model7-') else COMPOSED_CORE
- epochs={core,COMPOSED_CORE}
+ epochs={core,COMPOSED_CORE,FINAL_CORE}
  matched=[epoch for epoch in epochs if not git('diff',epoch,q['source'],'--','app','src','tools/solute','tools/vq','reference')]
  assert len(matched)==1,'Unreviewed actual analytical CDE composition producer'
  build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];selected=identity['original_output'];nodes=meta['project']['nodes'];magic=q['native_codec'].encode();assert magic in (b'S5CIC001',b'S5CCC001',b'S5HCC006') and selected['kind']=='cde'

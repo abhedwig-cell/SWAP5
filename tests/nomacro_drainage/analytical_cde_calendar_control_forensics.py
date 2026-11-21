@@ -1,7 +1,7 @@
 """Rebuild actual archived mutations and inspect compiled refusals and replay."""
 import ast,io,json,struct,types,zipfile
 from analytical_hydraulic_archives import SHA
-from analytical_cde_calendar_source_inverse import ROOT,BASE,CORE,blob,git,SURFACES
+from analytical_cde_calendar_source_inverse import ROOT,BASE,CORE,PREVIOUS_CORE,blob,git,SURFACES
 from analytical_cde_calendar_science import CASES,NATIVE6_CORE
 
 
@@ -10,7 +10,7 @@ def frontend(store):
  path='app/hybrid_water/analytical_cde_calendar.py';assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==blob(CORE,path)
  observer=types.FunctionType(selected.input_context.__code__,dict(selected.input_context.__globals__,Path=lambda value:value),argdefs=selected.input_context.__defaults__)
  q=json.loads(store.get('profiles/analytical-cde-calendar-frontend-v2/RESULT.json'));assert q['status']=='FOURTEEN_CALENDAR_ROUTES_AND_TWENTY_FIVE_EXCLUDED_CROSSES_PASS' and len(q['checks'])==39 and q['compiler_executions']==q['model_executions']==0
- assert not git('diff',CORE,q['source'],'--',*SURFACES)
+ assert not git('diff',PREVIOUS_CORE,q['source'],'--',*SURFACES)
  counts={}
  for item in q['checks']:
   relative=item['input_root'].replace('\\','/').split('/evidence/',1)[1];folder=store.view('profiles/'+relative)
@@ -36,7 +36,7 @@ def native(store,role,prefix):
  for n in ast.walk(function):
   if isinstance(n,ast.Constant) and n.value==49:n.value=52
   elif isinstance(n,ast.Constant) and n.value=='ACTUAL_VAPOR_BOUNDARY_NATIVE5_49_TYPED_REFUSALS_AND_EXTERNAL_DISCARD_REPLAY_RECOVERY_PASS':n.value='ACTUAL_CDE_CALENDAR_VAPOR_NATIVE6_52_TYPED_REFUSALS_AND_EXTERNAL_DISCARD_REPLAY_RECOVERY_PASS'
- controls=json.loads(store.get(prefix+'/RESULT.json'));epochs=[epoch for epoch in (NATIVE6_CORE,CORE) if not git('diff',epoch,controls['source'],'--',*SURFACES)];assert len(epochs)==1
+ controls=json.loads(store.get(prefix+'/RESULT.json'));epochs=[epoch for epoch in (NATIVE6_CORE,PREVIOUS_CORE,CORE) if not git('diff',epoch,controls['source'],'--',*SURFACES)];assert len(epochs)==1
  namespace=dict(vars(parent),CORE=epochs[0],calendar_domain=lambda case:dict(zip(('drainage','bottom'),CASES[case][:2])))
  exec(compile(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])),path,'exec'),namespace)
  return namespace['native'](store,role,prefix)

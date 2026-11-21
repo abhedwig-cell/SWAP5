@@ -4,7 +4,8 @@ from contextlib import contextmanager
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 BASE='5c0cba9fbbd93ffb482199016f392e53e371e095'
-CORE='379673548d90b13421b5b1e2db6e928c676b11ed'
+PREVIOUS_CORE='379673548d90b13421b5b1e2db6e928c676b11ed'
+CORE='1f869b2fbbe385c29790cd7f719df87b85d83750'
 PORTABLE='cbced0e1de4eb354dca0a2eecf4e1c9044259b18'
 WORKFLOW='.github/workflows/nomacro-water-snow-groundwater.yml'
 SURFACES=('app','src','tools/solute','tools/vq','reference')
@@ -44,6 +45,21 @@ def complete_inverse(check_ci=True):
  for name in ('hydraulic_vapor_native.f90','cde_interval_output_state.f90','vapor_boundary_composition.py','terminal_water_receipt.f90'):
   path='app/hybrid_water/'+name;assert norm((ROOT/path).read_bytes())==blob(BASE,path)
  assert norm((ROOT/WORKFLOW).read_bytes())==blob(PORTABLE,WORKFLOW)
+ path='app/hybrid_water/model7_terminal_water.py'
+ assert git('diff','--name-only',PREVIOUS_CORE,CORE,'--',*SURFACES).decode().splitlines()==[path]
+ functions=lambda raw:{n.name:n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef)}
+ before,after=functions(blob(PREVIOUS_CORE,path)),functions(blob(CORE,path))
+ assert {key for key in before if ast.dump(before[key],include_attributes=False)!=ast.dump(after[key],include_attributes=False)}=={'clock_selection'}
+ expected=ast.parse("""from original_output import selection
+if project.solute:
+ from cde_clock_output import active_selection
+ selected=active_selection(project)
+ if selected is None:selected=selection(project)
+else:
+ selected=selection(project)
+""").body
+ assert ast.dump(ast.Module(body=after['clock_selection'].body[:2],type_ignores=[]),include_attributes=False)==ast.dump(ast.Module(body=expected,type_ignores=[]),include_attributes=False)
+ assert ast.dump(ast.Module(body=before['clock_selection'].body[2:],type_ignores=[]),include_attributes=False)==ast.dump(ast.Module(body=after['clock_selection'].body[2:],type_ignores=[]),include_attributes=False)
  if check_ci:
   for path in CI:
    raw=norm((ROOT/path).read_bytes()).decode();assert raw.count(PATTERN)==1 and raw.replace(PATTERN,'',1).encode()==blob(BASE,path),'Unreviewed CDE calendar proof checkout delta'

@@ -11,7 +11,9 @@ import original_output_matrix as original
 CASES={
  'native3':('HYDRAULIC_ANALYTICAL_CALENDAR_WINDOWS_RAW_V1','profiles/analytical-calendar-vapor8-nprint2-O0-v1','S5HVW003'),
  'native4':('HYDRAULIC_SNOW_VAPOR_WINDOWS_RAW_V1','profiles/snow-vapor-cde-O0-v3','S5HSC004'),
- 'native5':('HYDRAULIC_VAPOR_BOUNDARY_GUARD_WINDOWS_RAW_V1','profiles/vapor-boundary-closed-unit8-active-cde7-8-O0-v2','S5HBC005')}
+ 'native5':('HYDRAULIC_VAPOR_BOUNDARY_GUARD_WINDOWS_RAW_V1','profiles/vapor-boundary-closed-unit8-active-cde7-8-O0-v2','S5HBC005'),
+ 'calendar-interval':('ANALYTICAL_CDE_CALENDAR_WINDOWS_RAW_V1','profiles/analytical-cde-calendar-vapor8-periodic6-O0-v1','S5HCC006'),
+ 'calendar-clock':('ANALYTICAL_CDE_CALENDAR_WINDOWS_RAW_V1','profiles/analytical-cde-calendar-mixed7-8-clock-undrained8-O0-v1','S5HCC006')}
 
 
 def compare(old,new):
