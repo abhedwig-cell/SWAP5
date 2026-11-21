@@ -10,7 +10,7 @@ from model7_search_science import Store
 from analytical_cde_calendar_source_inverse import BASE,CORE,PATTERN,complete_inverse,state_parent_complete_inverse,prior_source_projection
 from analytical_cde_calendar_central_science import read
 import initial_state_composition_verify as previous
-SEALED='b4877cec308ccd764830a995f84f02bab572a978'
+SEALED='4e2a2cca32ab2ca031ae29fa97abf82188b04304'
 PARENT_CANONICAL='904d3cdd1fb9132839bec689c22cdeecdba79676'
 PARENT_ADMISSION_SHA='ef54d7540f754c1a206c1258a910a1e3b893d582dbaae6c091d4eb931ed041cb'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
