@@ -1891,7 +1891,9 @@
     "reason": "Existing retained-AGE evaporation leaves positive AGE with zero final pond/infiltration/runoff capacity; water budget closes exactly in small real component. A resolution would change the scientific evaporation/storage contract; none selected.",
     "scope": "Selected actual original automatic primary/secondary geometry and100day initialsoilAGE; do not infer whole-family numerical counts.",
     "independent_of_water_CDE_qualification": true,
-    "global_gap_counts": "UNKNOWN"
+    "global_gap_counts": "UNKNOWN",
+    "original_source_discovery": "AGE_DRY_SURFACE_SOURCE_DISCOVERY_V1.json",
+    "original_source_interpretation": "Original AGE concentration branch explicitly resets Agepond to zero when surface carrying capacity is absent. The current conserved-moment provider instead refuses positive available AGE with zero pond/infiltration/runoff capacity. These are distinct semantics; neither disposal, epsilon carrier water nor tolerance relaxation is an acceptable migration shortcut."
   },
   "extended_drainage_hydraulic_history": {
     "classification": null,
@@ -2347,11 +2349,11 @@
     "remaining_evidence_only_functions": "UNKNOWN",
     "current_canonical": "904d3cdd1fb9132839bec689c22cdeecdba79676",
     "next_dependency_ordered_blocks": [
-      "Finish current coherent analytical/vapor CDE calendar composition admission",
-      "Complete current original pressure+calendar admission:36scientificcontexts/16compiledpostimages/55frontends qualified; no furthermodelperiods needed for unchanged source; public/canonicalevidence pending.",
-      "Investigate remaining vapor/hysteresis/implicit boundary crosses against originalconductivity dispatch; distinguish unimplemented originalKsat interpolation",
-      "Reconcile remaining Frost/output state-owner compositions against existing scientificcontracts",
-      "Close actual legacy scientific source succession without changing oldnumerical/referenceassertions"
+      "Completeactualjoint74PR1787head2de:44terminal29success15skip/all15runsSUCCESS/fourrealnegative03/publicationfalse2014s complete; healthyCpublic42391 pending, thenactualcanonical42public/PUBseal.",
+      "AdmitcurrentboundedoriginalpressureFrostbatch:12sciencecontexts36exactcold84native12compiledpostimages66frontendscentralPASS; allpriorsourceguardsPASS. Preparednewowneruninstalledpendingactualparentadmission.",
+      "ComposeoriginalpressureAGE with existingS5IOA001 dense/periodic/monthly/subdaily owners andzero-agefixedsurface/subsurfaceincomingwater; sixcurrentparentsselectedandpressure1refused. No newscientificproof inferred.",
+      "ResolveAGEfullydrysurface retained-momentstate semantics asaseparate scientific/stateownerblock; pinnedoriginalzero-concentrationbranchandcurrentpositive-momentrefusalrecorded. Preserveallactualday163/365failures.",
+      "Closelegacydataqual07-to12 production/performance-source succession throughactualDATAQUAL15/native/application/explicitheatpolicy dependencyclosures; no arbitrarysourceallowlist, oldperformancepromotion or generalperformancecampaign."
     ],
     "whole_completion": "PARTIAL",
     "whole_science": "NOT_QUALIFIED",

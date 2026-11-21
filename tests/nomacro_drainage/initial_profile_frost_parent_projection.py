@@ -5,6 +5,8 @@ from initial_profile_frost_source_inverse import ROOT,BASE,CORE,ADAPTER,SELECTOR
 PARENT='2de490869d688fd2eff0721b7d466d67956fc654'
 PORTABLE='a755331a7444395d932f22b634520b64077e1a6d'
 WORKFLOW='.github/workflows/nomacro-water-snow-groundwater.yml'
+CI=('.github/workflows/mc-sol01-column-input.yml','.github/workflows/mc-sol01-swp-reader.yml')
+PATTERN='            /integration/f-ci/nomacro-complete01/INITIAL_PROFILE_FROST*\n'
 
 
 class SourceFile:
@@ -14,7 +16,7 @@ class SourceFile:
 
 
 class CheckedParentRoot:
- def __truediv__(self,path):return SourceFile(str(path)) if str(path) in {ADAPTER,WORKFLOW} else ROOT/path
+ def __truediv__(self,path):return SourceFile(str(path)) if str(path) in {ADAPTER,WORKFLOW,*CI} else ROOT/path
  def __fspath__(self):return os.fspath(ROOT)
  def __str__(self):return str(ROOT)
 
@@ -23,6 +25,9 @@ def profile_parent_complete_inverse():
  import initial_profile_calendar_source_inverse as previous
  complete_inverse();assert not git('diff',BASE,PARENT,'--',*previous.SURFACES),'Parent metadata repair changed physical source'
  assert norm((ROOT/WORKFLOW).read_bytes())==blob(PORTABLE,WORKFLOW),'Unreviewed original pressure/Frost portable workflow'
+ for path in CI:
+  actual=norm((ROOT/path).read_bytes());assert actual.count(PATTERN.encode()) in (0,1)
+  assert actual.replace(PATTERN.encode(),b'')==blob(PARENT,path),'Unreviewed Frost proof checkout delta'
  path='tests/nomacro_drainage/initial_profile_calendar_source_inverse.py';raw=blob(PARENT,path);assert norm((ROOT/path).read_bytes())==raw
  nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='complete_inverse'];assert len(nodes)==1
  function=nodes[0];assert isinstance(function.body[0],ast.Assert) and ast.unparse(function.body[0].test)=="not git('diff', CORE, '--', *SURFACES)"

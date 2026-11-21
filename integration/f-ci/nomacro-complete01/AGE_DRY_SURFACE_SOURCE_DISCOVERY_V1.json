@@ -1,0 +1,21 @@
+{
+  "status": "ORIGINAL_DRY_SURFACE_AGE_RESET_AND_CURRENT_RETAINED_MOMENT_REFUSAL_SOURCE_CONFIRMED",
+  "source": "72d9b732e1f31baecc055db0381741a9bd45484f",
+  "original_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "member": "SWAP/solute.f90",
+  "whole_original_member_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+  "original_lines": [
+    918,
+    938
+  ],
+  "actual_original_fragment": "! ---       time step and cumulative time\n            dtsolu  = min(dtsolu,(dt-tcumsol))\n            dtsolu  = max(dtsolu,dtmin)\n            tcumsol = tcumsol + dtsolu\n\n! ---       solute flux at soil surface\n            Agesurf = (nird*Ageirr + nraidt*Agepre)*dtsolu + Pondm1*Agepondm1                      ! mg cm-2\n            if (qtop < -1.d-6) then\n               Agepond  = Agesurf / (pond-qtop*dtsolu)                                             ! mg cm-3\n               Agefluxt = qtop*(1.0d0-ArMpSs)*Agepond*dtsolu                                       ! mg cm-2\n               Agesurf  = Agesurf + Agefluxt                                                       ! mg cm-2\n               isqtop   = qtop*(1.0d0-ArMpSs)*Agepond                                              ! mg cm-2 d-1\n               icAgetopdwn = icAgetopdwn + qtop*(1.0d0-ArMpSs)*0.5d0*(Agepond+Agepondm1) * dtsolu  ! mg cm-2\n            else\n               Agepond  = 0.0d0\n               Agefluxt = 0.0d0\n            end if\n            icAgesur    = icAgesur + 0.5d0*(Agepond+Agepondm1) * runots\n\n! ---       calculate mass balance for each compartment\n\n",
+  "fragment_sha256": "e6b1972bf107880ae03a3664e0a94f9dddff4237508d201e743f2ef321935189",
+  "current_provider": "src/process/mod_b111_surface_age_budget.f90",
+  "current_provider_sha256": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+  "interpretation": "Original AGE concentration branch explicitly resets Agepond to zero when surface carrying capacity is absent. The current conserved-moment provider instead refuses positive available AGE with zero pond/infiltration/runoff capacity. These are distinct semantics; neither disposal, epsilon carrier water nor tolerance relaxation is an acceptable migration shortcut.",
+  "required_next_scientific_decision": "Bind the existing retained-moment evaporation contract to an explicit dry-state owner or separately qualify a changed evaporation contract. Do not reinterpret the old concentration reset as proof that deleting conserved AGE is correct.",
+  "implementation_changed": false,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}
