@@ -12,7 +12,7 @@ from snow_vapor_source_inverse import complete_inverse,prior_source_projection,C
 from snow_vapor_central_science import read
 import default_model_grammar_verify as previous
 
-SOURCE_SEALED='148d6dae6ac8ed3594d578abc7e36d0c42125d66'
+SOURCE_SEALED='c43c684fc3b8cd452e6c8438ff30e55d9ff26235'
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/default_model_grammar_verify.py'
 GUARD_HOOK='    import snow_vapor_verify as snow_vapor\n    return snow_vapor.guard_previous_source()\n'
@@ -36,7 +36,8 @@ def guard_previous_source():
  complete_inverse()
  for name in PARSERS:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen Snow vapor scientific observer changed'
- path='tests/nomacro_drainage/snow_vapor_source_inverse.py';assert norm((ROOT/path).read_bytes())==blob(SOURCE_SEALED,path)
+ for name in ('snow_vapor_source_inverse.py','snow_vapor_inherited_owner.py'):
+  path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SOURCE_SEALED,path)
  raw=norm((ROOT/OLD).read_bytes()).decode()
  for hook in (GUARD_HOOK,VERIFY_HOOK,STRIP_HOOK,PUBLICATION_HOOK):assert raw.count(hook)==1;raw=raw.replace(hook,'',1)
  assert raw.encode()==blob(PARENT,OLD),'Earlier default-model scientific body changed beyond exact delegation'
