@@ -23,6 +23,19 @@ EXPECTED={
 def mapped(store,path):return store.view('profiles/'+str(path).replace('\\','/').split('/evidence/',1)[1])
 
 
+class OutputView:
+    """Supply filename suffixes to the unchanged literal output comparator."""
+    def __init__(self,path):self.path=path
+    @property
+    def name(self):return self.path.name
+    @property
+    def suffix(self):return Path(self.name).suffix
+    def __truediv__(self,name):return OutputView(self.path/name)
+    def glob(self,pattern):return [OutputView(v) for v in self.path.glob(pattern)]
+    def read_bytes(self):return self.path.read_bytes()
+    def read_text(self,encoding='utf8'):return self.path.read_text(encoding=encoding)
+
+
 def read(evidence,store=None):
     complete_inverse();observations=[];stocks=0
     locate=lambda path:mapped(store,path) if store else Path(path)
@@ -98,7 +111,7 @@ def read(evidence,store=None):
                     member=f'accepted-column-1-day-{high}.zip'
                     with zipfile.ZipFile(io.BytesIO((warm/member).read_bytes())) as a,zipfile.ZipFile(io.BytesIO((cold/member).read_bytes())) as b:
                         for native in ('macro.bin','result.end'):assert a.read(native)==b.read(native)
-                    output=compare_output(warm/'original',cold/'original',meta['identity']['original_output'],low,high,meta['project']['start_date'])
+                    output=compare_output(OutputView(warm/'original'),OutputView(cold/'original'),meta['identity']['original_output'],low,high,meta['project']['start_date'])
                     receipt=next(v for v in item['cold'] if (v['start'],v['end'])==(low,high))
                     assert receipt['exact_physical'] and receipt['exact_complete_native'] and receipt['origin_unchanged'] and receipt['exact_original_output']==output
                 observations.append(dict(optimization=opt,case=name,whole_Fortran_provider_flags_exact=True,source_only_identity_changes=delta,physical_native_and_user_output_exact=True,cold_windows=2,actual_BUILD_sha256=item['actual_BUILD_sha256']))
