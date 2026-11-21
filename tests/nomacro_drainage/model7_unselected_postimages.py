@@ -12,6 +12,7 @@ sys.path.insert(0,str(ROOT/'tests/nomacro_scheduled_subsurface'))
 import original_output_matrix as thermal
 from implicit_conductivity_forensics import output_records
 from calendar_evidence import differences
+from calendar_publisher import publisher_equivalence
 from model7_search_science import Store,SHA
 m=thermal.m
 
@@ -19,9 +20,14 @@ m=thermal.m
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference-work','build-root','output','evidence'):p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args();a.output.mkdir();a.build_root.mkdir(exist_ok=True)
+    p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--recover-existing',type=Path);a=p.parse_args();a.output.mkdir();a.build_root.mkdir(exist_ok=True)
     q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),optimization=a.optimization,profiles={},unaffected_full_periods_replayed=0)
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
+    recovered={}
+    if a.recover_existing:
+        previous=json.loads((a.recover_existing/'RESULT.json').read_text());assert previous['status']=='FAILED'
+        assert not subprocess.check_output(['git','diff',previous['source'],'HEAD','--','app','src','tools/solute','tools/vq','reference'],cwd=ROOT)
+        recovered=previous['profiles'];q['original_failed_observer']=dict(path=str(a.recover_existing/'RESULT.json'),sha256=SHA((a.recover_existing/'RESULT.json').read_bytes()))
     try:
         with ExitStack() as stack:
             proof=ROOT/'integration/f-ci/nomacro-complete01';support=Store(proof,'FROST_IMPLICIT_WINDOWS_SUPPORT_RAW_ARCHIVE',stack)
@@ -39,15 +45,21 @@ def main():
                 item=q['profiles'][name]=dict(status='RUNNING',baseline=b,time_policy=policy,input_root=str(inputs),build_root=str(build));save()
                 command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',project.model,'--experimental-project',str(inputs),'--original-output',
                     '--experimental-time-step-policy',policy,'--reference-work',str(a.reference_work),'--build-only','--donor-opt',a.optimization,'--kernel-opt',a.optimization,'--output',str(build)]
-                r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
-                (out/'build.stdout').write_text(r.stdout);(out/'build.stderr').write_text(r.stderr);item['build']=dict(command=command,returncode=r.returncode);save();r.check_returncode()
+                if (build/'BUILD.json').exists():
+                    item['retained_actual_compilation']=recovered[name]['build'];assert item['retained_actual_compilation']['returncode']==0
+                else:
+                    r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=180)
+                    (out/'build.stdout').write_text(r.stdout);(out/'build.stderr').write_text(r.stderr);item['build']=dict(command=command,returncode=r.returncode);save();r.check_returncode()
                 meta,_=m.validate_bundle(build,a.reference_work,project);assert not meta['identity'].get('model7_capacity') and not meta['identity'].get('model7_terminal_water')
                 projection=json.loads(archive.get(projection_name))[b['build_root']];prefix=projection['prefix'];base=archive.view(prefix)
                 assert SHA((base/'BUILD.json').read_bytes())==projection['actual_BUILD_sha256']
                 before={path.name:path.read_bytes() for path in base.glob('*.f90')};after={path.name:path.read_bytes() for path in build.glob('*.f90')}
                 assert before==after,'Unselected complete compiled Fortran changed: '+name
                 oldmeta=json.loads((base/'BUILD.json').read_text());delta=differences(oldmeta['identity'],meta['identity'])
-                assert set(delta)<={'host','original_output.composition_build_sha256'},delta
+                assert set(delta)<={'host','original_output.composition_build_sha256','restart_publisher.library_sha256'},delta
+                if 'restart_publisher.library_sha256' in delta:
+                    original_dll=out/'original-restart_publish.dll';original_dll.write_bytes((base/'restart_publish.dll').read_bytes())
+                    item['publisher_equivalence']=publisher_equivalence(original_dll,build/'restart_publish.dll')
                 item['identity_changes']=delta;item['unchanged_complete_Fortran']={key:SHA(value) for key,value in after.items()}
                 item['trajectory'],data=m.trajectory(build,a.reference_work,project,out/'trajectory',35,{2,4,30,34,35},180)
                 assert m.physical(data)==m.physical(m.rows(old_trajectory)[:35])
