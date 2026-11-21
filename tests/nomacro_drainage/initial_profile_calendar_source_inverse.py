@@ -100,6 +100,15 @@ def prior_calendar_frontend(store):
  finally:selected.input_context=saved
 
 
+def guard_parent_source():
+ import analytical_cde_calendar_verify as previous
+ path='tests/nomacro_drainage/analytical_cde_calendar_verify.py';raw=blob(BASE,path)
+ nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='guard_previous_source'];assert len(nodes)==1
+ namespace=dict(vars(previous),complete_inverse=calendar_parent_complete_inverse)
+ exec(compile(ast.Module(body=nodes,type_ignores=[]),path,'exec'),namespace)
+ with prior_source_projection():return namespace['guard_previous_source']()
+
+
 @contextmanager
 def prior_source_projection():
  complete_inverse()

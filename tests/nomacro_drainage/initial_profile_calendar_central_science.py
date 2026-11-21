@@ -5,15 +5,17 @@ from pathlib import Path
 from analytical_hydraulic_archives import Archive,SHA
 from initial_profile_calendar_science import audit
 from initial_profile_calendar_postimage import compare
+from initial_profile_calendar_records import frontend
 
 
 def read(proof,names):
- observations=[];postimages=[]
+ observations=[];postimages=[];dispatch=None
  with ExitStack() as stack:
   for name in names:
    store=Archive(proof,name,stack);projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));portable='UBUNTU' in name
    if not portable:
     provider=Archive(proof,'HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1',stack)
+    dispatch=frontend(store)
     # Preserve the original shared provider rather than copying its build into
     # each configuration archive. Its accepted whole ZIP is checked above.
    class Reference:
@@ -32,7 +34,7 @@ def read(proof,names):
     result=compare(store.view(baseline['archive_prefix']),store.view(original['archive_prefix']))
     assert result==q['postimage'],'Archived complete compiled postimage differs'
     postimages.append(dict(archive=name,profile=prefix,postimage=result))
- return dict(status='CENTRAL_ORIGINAL_INITIAL_PROFILE_CALENDAR_SCIENCE_AND_COMPLETE_COMPILED_POSTIMAGES_PASS',contexts=len(observations),exact_cold_windows=3*len(observations),native_calendar_samples=7*len(observations),compiler_postimages=len(postimages),observations=observations,postimages=postimages,compiler_executions=0,model_executions=0,canonical_admission=False)
+ return dict(status='CENTRAL_ORIGINAL_INITIAL_PROFILE_CALENDAR_SCIENCE_AND_COMPLETE_COMPILED_POSTIMAGES_PASS',contexts=len(observations),exact_cold_windows=3*len(observations),native_calendar_samples=7*len(observations),compiler_postimages=len(postimages),observations=observations,postimages=postimages,frontend=dispatch,compiler_executions=0,model_executions=0,canonical_admission=False)
 
 
 if __name__=='__main__':
