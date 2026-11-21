@@ -43,7 +43,9 @@ def active_selection(project):
         if one(key)!=value:return None
     from experimental_project import inspect
     bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
-    if bottom not in (1,5,8):return None
+    if bottom not in (1,5,8):
+        from analytical_cde_calendar import bottom6_selected
+        if bottom!=6 or not bottom6_selected(project):return None
     drainage=one('SWDRA')
     if drainage not in (0,1) or bottom!=1 and drainage!=1:return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')

@@ -63,7 +63,10 @@ def source(project=None):
 
 
 def clock_selection(project):
-    from original_output import selection
+    if project.solute:
+        from cde_clock_output import selection
+    else:
+        from original_output import selection
     selected=selection(project)
     if selected['nprintday']==1 and not selected['flprintdt']:return None
     if selected['swmonth'] or selected['swodat']:
