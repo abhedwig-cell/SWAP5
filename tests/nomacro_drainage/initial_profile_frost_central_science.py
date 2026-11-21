@@ -13,6 +13,8 @@ from initial_profile_calendar_postimage import compare
 from frost_cde_drainage_model_forensics import audit as explicit
 from implicit_frost_science import frozen_model
 from experimental_project import switches
+from original_output_baseline import assignment
+from initial_profile_frost_records import frontend
 
 
 def audit(store,role,projection,reference):
@@ -68,11 +70,12 @@ def audit(store,role,projection,reference):
 
 
 def read(proof,names):
- complete_inverse();observations=[];postimages=[]
+ complete_inverse();observations=[];postimages=[];dispatch=None
  with ExitStack() as stack:
   provider=Archive(proof,'HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1',stack)
   for name in names:
    store=Archive(proof,name,stack);projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));portable='UBUNTU' in name
+   if not portable:dispatch=frontend(store)
    class Reference:
     def __truediv__(self,key):
      assert key.startswith('build/');return (store if portable else provider).view('original-provider-build/'+key[6:])
@@ -80,9 +83,17 @@ def read(proof,names):
    for prefix in store.record['postimages']:
     q=json.loads(store.get(prefix+'/RESULT.json'));assert q['status']=='ACTUAL_ORIGINAL_PRESSURE_FROST_INITIAL2_WHOLE_COMPILED_POSTIMAGE_AND_NATIVE_ABI_PASS_NO_MODEL_REPLAY' and not git('diff',CORE,q['source'],'--','app','src','tools/solute','tools/vq','reference')
     prior=projection[q['initial1_build_root']];baseline=projection[q['build_root']]
+    role=next(role for role in store.record['roles'] if json.loads(store.get(role['profile']+'/RESULT.json'))['build_root']==q['initial1_build_root'])
+    original_profile=store.get(role['profile']+'/RESULT.json');assert SHA(original_profile)==q['initial1_RESULT_sha256']
+    path=q['input_root'].replace('\\','/');relative=('inputs/'+path.rsplit('/',1)[1]) if portable else 'profiles/'+path.split('/evidence/',1)[1]
+    inputs=store.view(relative);original_inputs=store.view(role['inputs'])
+    for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
+    assert assignment((inputs/'swap.swp').read_text(encoding='cp1252'),'SWINCO',1)==(original_inputs/'swap.swp').read_text(encoding='cp1252')
+    for name in json.loads(original_profile)['inventory']:
+     if name!='swap.swp':assert (inputs/name).read_bytes()==(original_inputs/name).read_bytes()
     for item in (prior,baseline):assert SHA(store.get(item['archive_prefix']+'/BUILD.json'))==item['actual_BUILD_sha256']
     result=compare(store.view(baseline['archive_prefix']),store.view(prior['archive_prefix']));assert result==q['postimage'];postimages.append(dict(archive=name,profile=prefix,postimage=result))
- return dict(status='CENTRAL_ORIGINAL_PRESSURE_FROST_SCIENCE_AND_WHOLE_COMPILED_POSTIMAGES_PASS',contexts=len(observations),exact_cold_windows=3*len(observations),native_checkpoints=7*len(observations),compiler_postimages=len(postimages),observations=observations,postimages=postimages,compiler_executions=0,model_executions=0,canonical_admission=False)
+ return dict(status='CENTRAL_ORIGINAL_PRESSURE_FROST_SCIENCE_AND_WHOLE_COMPILED_POSTIMAGES_PASS',contexts=len(observations),exact_cold_windows=3*len(observations),native_checkpoints=7*len(observations),compiler_postimages=len(postimages),observations=observations,postimages=postimages,frontend=dispatch,compiler_executions=0,model_executions=0,canonical_admission=False)
 
 
 if __name__=='__main__':
