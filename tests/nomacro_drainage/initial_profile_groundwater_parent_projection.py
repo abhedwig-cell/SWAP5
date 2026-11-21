@@ -5,7 +5,7 @@ from initial_profile_groundwater_source_inverse import ROOT,BASE,CORE,ADAPTER,SE
 AGE_SEALED='354b6c9b792bed3a5cb0d10de96393d2568163f8'
 FROST='06e980f4bb17e43e4cc61cf4fc2d6ea17204526d'
 AGE_PORTABLE='86f3cdc1c87ee731676967f10a491ee801942238'
-PORTABLE=AGE_PORTABLE
+PORTABLE='67cbd7028d8d63aebe2a6166b6b04cf884f21a65'
 WORKFLOW='.github/workflows/nomacro-water-snow-groundwater.yml'
 CI=('.github/workflows/mc-sol01-column-input.yml','.github/workflows/mc-sol01-swp-reader.yml')
 PATTERN='            /integration/f-ci/nomacro-complete01/INITIAL_PROFILE_*\n'

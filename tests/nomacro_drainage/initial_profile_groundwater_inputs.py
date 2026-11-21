@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface')]
 from initial_profile_groundwater_discovery import CASES,fixture
 from original_output_baseline import assignment
-SOURCE='e0cfc4ceca8927d89cb112a155049248d1d1a4dd'
+SOURCE='4a4053c210ce5bdd8cb2506b79dcf9ad8b42a43f'
 SELECTED=('water-h2-implicit-clock','cde-h1-snow-step','age-h2-monthly')
 
 
