@@ -77,6 +77,8 @@ def guard_previous_source():
 
 
 def publication_dependencies_unchanged():
+    import vapor_verify as vapor
+    return vapor.publication_dependencies_unchanged()
     guard_previous_source()
     if git('diff',PARENT,'HEAD','--','src','app/solute_project','tests/publication','docs/publication','docs/publications','docs/verification','docs/performance/evidence','tools/vq','tools/solute','tests/fsi/fsi04_real_headcalc_stubs.f90'):return False
     bridge=read(Path(__file__).with_name('model7_parent_bridge.json'))

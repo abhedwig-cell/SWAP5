@@ -1,0 +1,23 @@
+{
+  "status": "SEPARATE_ORIGINAL_KELVIN_SUCTION_SIGN_CORRECTION_REFERENCE_PENDING_COUPLED_QUALIFICATION",
+  "original_raw_sha256": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd",
+  "base_lf_sha256": "1d40c5ea7aa1b2344409275603a3a603a52355fe3928ad7af24eb3bbbf379dcc",
+  "target_lf_sha256": "9ad54cbf7887b0a6dc6555fa56ddd5486a5d96829af1bd437e0e8f341ca66fa8",
+  "edits": [
+    {
+      "before": "Hr        = dexp(h/100.0d0*MgRT)",
+      "after": "Hr        = dexp(-h/100.0d0*MgRT)"
+    }
+  ],
+  "primary_publication": "https://doi.org/10.1002/wrcr.20548",
+  "primary_review_equation26": "https://doi.org/10.1002/vzj2.20338",
+  "primary_author_code": "https://zenodo.org/records/10950456/files/pdi.py?download=1",
+  "published_author_code_md5": "0fbee8e7cb9921576613ec81cf7d2f55",
+  "author_code_relative_humidity_expression": "HR = np.exp(-0.01*MGRT*h)",
+  "original_calls": "All four K_PDI variants call Kvap_func(WC,dabs(h),Temp)",
+  "changes": "Only Kelvin exponent sign; original coefficients, retention, capacity and liquid conductivity retained. Contemporary author diffusivity/density constants are not substituted.",
+  "public_admission": false,
+  "with_capacity7_lf_sha256": "ddaf8cd9d1effe893fca68d92fbd242285bce6de50ba84fb864f22978df49861",
+  "capacity7_parent_lf_sha256": "7910cd29c045037778bfffdc7e40a77802d70fb477e0afa78be426776bd26e27",
+  "new_physical_water_store": false
+}

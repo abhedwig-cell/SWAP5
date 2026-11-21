@@ -74,11 +74,8 @@ def inspect(directory, *, original_output=None):
     # Descriptor-only helper calls accept the historical output domain. Actual
     # executions use load() with an explicit compatibility/original choice.
     if original_output is not False and 'SWCSV' not in selected:selected['SWCSV']=0
-    # SWVAPOR is an original per-layer array; inspect every value, not only
-    # the first token seen by the scalar SW-selector inventory.
-    vapor = re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^!\r\n]+)',text)
-    if vapor and (len(vapor)!=1 or not re.fullmatch(r'0(?:[ \t]+0)*[ \t]*',vapor[0])):
-        raise ValueError('Original vapor transport requires separate conserved-state qualification')
+    from hydraulic_vapor import selection as vapor_selection
+    vapor_selection(directory,selected,original_output)
     hydraulic_rows=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^!\r\n]+)',text)
     original_model3=any(int(token)==3 for row in hydraulic_rows for token in row.split() if re.fullmatch(r'[+-]?\d+',token))
     crop_files=set();crop_types={}
@@ -130,7 +127,7 @@ def inspect(directory, *, original_output=None):
                    SWSP={0, 1}, SWDC={0, 1}, SWBR={0,1}, SWHEA={0, 1}, SWCALT={1,2},
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKIMPL={0,1}, SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
-                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},
+                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0,1},
                    SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1})
     if extended is not None:allowed['SWDRA']={2}
     if (selected['SWSOLU']==2 and selected.get('SWMONTH')==0 and selected.get('SWODAT')==0

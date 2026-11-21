@@ -34,6 +34,8 @@ PARSERS=('analytical_inherited_owner.py','analytical_parent_bridge.json','analyt
 
 
 def strip_current_evidence(text):
+    import vapor_verify as vapor
+    text=vapor.strip_current_evidence(text)
     if PATTERN in text:
         require(text.count(PATTERN)==1,'Ambiguous analytical proof checkout');text=text.replace(PATTERN,'',1)
     return text
@@ -41,6 +43,8 @@ def strip_current_evidence(text):
 
 @lru_cache(maxsize=1)
 def guard_previous_source():
+    import vapor_verify as vapor
+    return vapor.guard_previous_source()
     inherited.complete_inverse()
     for name in PARSERS:
         path='tests/nomacro_drainage/'+name
@@ -92,6 +96,8 @@ def inherited_admission():
 
 
 def verify():
+    import vapor_verify as vapor
+    return vapor.verify()
     guard_previous_source();q=qualification();prior=inherited_admission()
     cde=windows_cde.windows_cde(PROOF);water=windows_water.read(PROOF);portable=ubuntu.read(PROOF);post=postimages.read(PROOF);dispatch=unselected.read(PROOF)
     require(cde['full1096_contexts']==water['full1096_contexts']==20 and portable['full1096_contexts']==40,'Actual analytical full period denominator changed')

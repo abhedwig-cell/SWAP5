@@ -1,11 +1,11 @@
-name: Original explicit analytical hydraulic family qualification
+name: Original per-layer vapor hydraulic family qualification
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: nomacro-analytical-hydraulic-family-${{ github.ref }}
+  group: nomacro-vapor-hydraulic-family-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   qualify:
@@ -50,9 +50,16 @@ jobs:
           cp .github/workflows/nomacro-water-snow-groundwater.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Qualify original analytical family with coupled water and CDE native contexts
+      - name: Read permanently preserved original initial periods
         run: |
-          python3 -B tests/nomacro_drainage/analytical_hydraulic_portable.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/analytical-hydraulic-family" --optimization '${{ matrix.optimization }}'
+          previous="$RUNNER_TEMP/vapor-initial-central-archive"
+          mkdir -p "$previous"
+          stem='HYDRAULIC_VAPOR_UBUNTU_INITIAL_${{ matrix.optimization }}_RAW_V1'
+          git show "HEAD:integration/f-ci/nomacro-complete01/$stem.json" > "$previous/$stem.json"
+          git show "HEAD:integration/f-ci/nomacro-complete01/$stem.zip" > "$previous/$stem.zip"
+      - name: Qualify original vapor with coupled water CDE and complete lookup native contexts
+        run: |
+          python3 -B tests/nomacro_drainage/vapor_hydraulic_portable.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/vapor-hydraulic-family" --optimization '${{ matrix.optimization }}' --reuse-initial-archive "$RUNNER_TEMP/vapor-initial-central-archive"
       - name: Preserve actual compiled bytes and original provider identity
         if: always()
         run: |
@@ -86,6 +93,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: analytical-hydraulic-family-${{ matrix.optimization }}-${{ github.sha }}
+          name: vapor-hydraulic-family-${{ matrix.optimization }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30
