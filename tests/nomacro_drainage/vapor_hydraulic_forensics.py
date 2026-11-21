@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import subprocess
 import model7_capacity_forensics as inherited
+SHA=inherited.SHA
 
 ROOT=Path(__file__).resolve().parents[2]
 READERS='e079d1554041c831cd0ab609835e2e79bf3c31a1'
@@ -69,7 +70,7 @@ def audit(profile,reference,allow_refusal=False,allow_censored=False,locations=N
     result=namespace['audit'](profile,reference,allow_refusal,allow_censored,locations)
     q=json.loads((profile/'RESULT.json').read_text());build=locations['build'] if locations else Path(q['build_root']);identity=json.loads((build/'BUILD.json').read_text())['identity'];policy=identity['hydraulic_vapor'];assert policy['SWVAPOR']==q['vapor_flags'] and policy['active_layers'];assert policy['existing_model7_capacity_composed']==bool(identity.get('model7_capacity'));model=q['hydraulic_model'];models=q.get('layer_models',[model]);result.update(hydraulic_model=model,layer_models=models,frozen_scientific_reader=READERS,
         full_capacity_source_inverse=7 in models,original_capacity_equations_retained_through_complete_Kelvin_inverse=7 not in models,scientific_ledger_native_body_unchanged=True,
-        phase_correspondence_exact_original_double_subtraction_addition=True,public_mass_bounds_unchanged=True)
+        phase_correspondence_exact_original_double_subtraction_addition=True,public_mass_bounds_unchanged=True,complete_original_Kelvin_sign_source_inverse=True,vapor_flags=q['vapor_flags'],active_vapor_layers=policy['active_layers'])
     if q['status']!='FAILED':result['status']='INDEPENDENT_ORIGINAL_VAPOR_SOURCE_BUDGET_NATIVE_USER_OUTPUT_PASS'
     return result
 
