@@ -32,5 +32,16 @@ def validate(bundle, project, identity):
             raise ValueError('Foreign ordinary implicit original output source form')
         form = ('cde' if project.solute else 'water')+('-step' if step else '')
     source = (Path(bundle)/'headcalc.f90').read_bytes().replace(b'\r\n', b'\n')
+    if report['boundary']['SWBOTB'] == 5:
+        # Invert only the literal admitted prescribed-head receipt projection.
+        # The whole numerical body must still equal the qualified air-boundary
+        # parent below; no generated/candidate hash authorizes a provider.
+        from groundwater_snow_retry import inverse
+        from lower_boundary_receipt import render_headcalc
+        template=('logical                          :: flboth, flok\n'
+                  '         budget_step=projected_water_residual()\n'
+                  '            budget_step = projected_water_residual()\n')
+        source=render_headcalc(inverse(source.decode('cp1252'),
+            lambda text:render_headcalc(text,5),template),8).encode('cp1252')
     if hashlib.sha256(source).hexdigest() != HEADS[form]:
         raise ValueError('Foreign actual ordinary implicit coupled HeadCalc provider')
