@@ -1,14 +1,14 @@
-name: Targeted analytical water output calendars
+name: Targeted closed soil-air vapor guard continuation
 on:
   push:
-    branches: [codex/nomacro-analytical-calendars01]
+    branches: [codex/nomacro-vapor-boundaries01]
     paths: ['.github/workflows/nomacro-water-snow-groundwater.yml']
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: nomacro-analytical-calendars-${{ github.ref }}
+  group: nomacro-vapor-boundaries-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   qualify:
@@ -48,20 +48,20 @@ jobs:
         run: |
           proof="$RUNNER_TEMP/proof"
           mkdir -p "$proof"
-          git fetch --no-tags --depth=1 --filter=blob:none origin 102e95eb6d33107b81ab06576707fe0be9b215e2 bd9426711347a1bd7694d39e5c65345db0e25406 e079d1554041c831cd0ab609835e2e79bf3c31a1 5b8373d0809c25e24415f4d5dc01784a92ff481e
+          git fetch --no-tags --depth=1 --filter=blob:none origin c1e1dd81382926053a42cda6260874483dab37b1 9cde60cff60e1a0b2d4a21019e69eefb1007bd8b 70bae8871ec71b3c0969a6628cae596354f9c2e8 e079d1554041c831cd0ab609835e2e79bf3c31a1
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
           python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           cp .github/workflows/nomacro-water-snow-groundwater.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Target subdaily and no-reset per-step water with exact native restart
+      - name: Target only the new closed soil-air nonzero CDE continuation
         run: |
           opt='${{ matrix.optimization }}'
-          for kind in vapor8-nprint2 vapor8-perstep; do
-            label="analytical-calendar-$kind-$opt-short"
-            python3 -B tests/nomacro_drainage/analytical_calendar_postimages.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --case "$kind" --days 35
-            python3 -B tests/nomacro_drainage/analytical_calendar_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
-            python3 -B tests/nomacro_drainage/analytical_calendar_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-native-controls"
+          for kind in closed-unit8-active-cde7-8; do
+            label="vapor-boundary-$kind-$opt-short"
+            python3 -B tests/nomacro_drainage/vapor_boundary_inputs.py --case "$kind" --output "$RUNNER_TEMP/proof/inputs/$label"
+            python3 -B tests/nomacro_drainage/vapor_boundary_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --input "$RUNNER_TEMP/proof/inputs/$label" --days 35
+            python3 -B tests/nomacro_drainage/vapor_boundary_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
           done
       - name: Preserve actual compiled bytes and original provider identity
         if: always()
@@ -96,6 +96,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: analytical-calendars-${{ matrix.optimization }}-${{ github.sha }}
+          name: vapor-boundary-closed-guard-${{ matrix.optimization }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30

@@ -27,10 +27,12 @@ def enabled(project):
     if not models or not any(model>=3 for model in models) or not project.original_output or project.time_step_policy!='original-adaptive-day-seed-v1':return False
     from experimental_project import switches
     selected=switches((Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252'))
-    return all(selected.get(name)==value for name,value in dict(SWSNOW=0,SWDRA=1,SWBOTB=6,SWBR=0,SWMETDETAIL=0).items())
+    if all(selected.get(name)==value for name,value in dict(SWSNOW=0,SWDRA=1,SWBOTB=6,SWBR=0,SWMETDETAIL=0).items()):return True
+    from vapor_boundary_composition import enabled as boundary_enabled
+    return all(selected.get(name)==value for name,value in dict(SWSNOW=0,SWBR=0,SWMETDETAIL=0).items()) and boundary_enabled(project)
 
 
-def source():
+def source(project=None):
     text=Path(__file__).with_name('terminal_water_receipt.f90').read_text(encoding='cp1252')
     if hashlib.sha256(text.encode('cp1252')).hexdigest()!=PARENT_SHA:raise ValueError('Qualified terminal receipt source changed')
     edits=[('hybrid_terminal_water_receipt','hybrid_model7_terminal_water_receipt'),
@@ -54,6 +56,9 @@ def source():
     declaration='  real(8) function model7_terminal_water_residual() result(residual)\n'
     assert text.count(declaration)==1
     text=text.replace(declaration,declaration+'    use variables, only: tcum,dt\n',1)
+    if project is not None:
+        from vapor_boundary_composition import enabled as boundary_enabled,terminal_source
+        if boundary_enabled(project):return terminal_source(text)
     return text
 
 
@@ -66,7 +71,10 @@ def clock_selection(project):
     return selected
 
 
-def head_parent_inverse(text):
+def head_parent_inverse(text,project=None):
+    if project is not None:
+        from vapor_boundary_composition import enabled as boundary_enabled,head_parent_inverse as boundary_inverse
+        if boundary_enabled(project):return boundary_inverse(text,project,HEAD_PARENT_SHA)
     digest=hashlib.sha256(text.encode('cp1252')).hexdigest()
     if digest==HEAD_PARENT_SHA:return False
     if digest!=CLOCK_PARENT_SHA or text.count(CLOCK_IMPORT)!=1 or text.count(CLOCK_GUARD)!=1:
@@ -81,7 +89,7 @@ def metadata(project):
     if not enabled(project):return None
     result=dict(policy='original-explicit-analytical-independent-terminal-water-trial-guard-v2',
       source_sha256=hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
-      parent_receipt_sha256=PARENT_SHA,complete_before_guard_HeadCalc_sha256=HEAD_PARENT_SHA,provider_sha256=hashlib.sha256(source().encode('cp1252')).hexdigest(),
+      parent_receipt_sha256=PARENT_SHA,complete_before_guard_HeadCalc_sha256=HEAD_PARENT_SHA,provider_sha256=hashlib.sha256(source(project).encode('cp1252')).hexdigest(),
       water_limit_cm=1e-10,trial_projection_period='every original hydraulic trial; same fixed absolute day bound',accepted_state_or_flux_modified=False,new_physical_state=False,native_interface_changed=False,
       search_operator='original default-MvG numerical diagonal, only fully saturated flux/closed-bottom null mode; physical capacity and residual unchanged',
       search_operator_sha256=hashlib.sha256(SEARCH.encode()).hexdigest(),
@@ -95,19 +103,23 @@ def metadata(project):
             existing_output_trial_guard_sha256=hashlib.sha256(CLOCK_GUARD.encode()).hexdigest(),
             existing_output_trial_water_limit_cm=1e-10,
             existing_output_trial_owner='original_output',existing_output_trial_unchanged=True)
+    from vapor_boundary_composition import enabled as boundary_enabled,metadata as boundary_metadata,parent_digest
+    if boundary_enabled(project):
+        result.update(boundary_composition=boundary_metadata(project),complete_before_guard_HeadCalc_sha256=parent_digest(boundary_metadata(project)['bottom']))
     return result
 
 
 def apply_build(output,project,patched):
     if not enabled(project):return patched
     if STATE in patched:raise ValueError('Multiple model7 terminal receipt owners')
-    (output/(STATE+'.f90')).write_text(source(),encoding='cp1252');patched.insert(0,STATE)
+    (output/(STATE+'.f90')).write_text(source(project),encoding='cp1252');patched.insert(0,STATE)
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252')
-    if head_parent_inverse(text)!=(clock_selection(project) is not None):
+    if head_parent_inverse(text,project)!=(clock_selection(project) is not None):
         raise ValueError('Original output trial composition differs from actual analytical HeadCalc')
     anchor='   use hybrid_step_budget, only: projected_water_residual'
     if text.count(anchor)!=1 or text.count(ANCHOR)!=1:raise ValueError('Changed model7 complete HeadCalc terminal seam')
-    text=text.replace(anchor,IMPORT+anchor,1).replace(ANCHOR,ANCHOR+GUARD,1)
+    from vapor_boundary_composition import terminal_guard
+    text=text.replace(anchor,IMPORT+anchor,1).replace(ANCHOR,ANCHOR+terminal_guard(project,GUARD),1)
     if text.count('end subroutine jacobian_F')!=1:raise ValueError('Changed model7 search operator seam')
     text=text.replace('end subroutine jacobian_F',SEARCH+'end subroutine jacobian_F',1)
     path.write_text(text,encoding='cp1252');return patched
@@ -119,12 +131,13 @@ def validate(bundle,project,identity):
     if expected is None:
         if STATE+'.f90' in identity['donor_generated']:raise ValueError('Unselected model7 terminal source')
         return
-    if (bundle/(STATE+'.f90')).read_text(encoding='cp1252')!=source():raise ValueError('Foreign complete model7 terminal receipt')
+    if (bundle/(STATE+'.f90')).read_text(encoding='cp1252')!=source(project):raise ValueError('Foreign complete model7 terminal receipt')
     text=(bundle/'headcalc.f90').read_text(encoding='cp1252')
-    for part in (IMPORT,GUARD,SEARCH):
+    from vapor_boundary_composition import terminal_guard
+    for part in (IMPORT,terminal_guard(project,GUARD),SEARCH):
         if text.count(part)!=1:raise ValueError('Foreign model7 actual terminal guard')
         text=text.replace(part,'',1)
     # The complete pre-guard HeadCalc is separately pinned in the qualification
     # observation; no original numerical statement is removed here.
-    if text.count(ANCHOR)!=1 or head_parent_inverse(text)!=(clock_selection(project) is not None):
+    if text.count(ANCHOR)!=1 or head_parent_inverse(text,project)!=(clock_selection(project) is not None):
         raise ValueError('Foreign complete original pre-terminal model7 HeadCalc parent')

@@ -34,9 +34,12 @@ def selection(directory,selected,original_output):
     if any(m not in range(1,12) for m in models):raise ValueError('Original vapor excludes unqualified hydraulic model12')
     enabled=tuple(i+1 for i,(m,f) in enumerate(zip(models,flags)) if m in (8,9,10,11) and f)
     if not enabled:return None
-    required=dict(SWKIMPL=0,SWSOPHY=0,SWHYST=0,SWFROST=0,SWMACRO=0,SWDRA=1,SWBOTB=6,SWBR=0,SWMETDETAIL=0,SWHEA=1,SWCALT=2)
-    if original_output is False or any(selected.get(k)!=v for k,v in required.items()) or selected.get('SWSOLU') not in (0,1) or selected.get('SWSNOW') not in (0,1):
+    from vapor_boundary_composition import selected_context,check_daily_output as boundary_daily
+    boundary=selected_context(selected)
+    required=dict(SWKIMPL=0,SWSOPHY=0,SWHYST=0,SWFROST=0,SWMACRO=0,SWBR=0,SWMETDETAIL=0,SWHEA=1,SWCALT=2)
+    if original_output is False or any(selected.get(k)!=v for k,v in required.items()) or selected.get('SWSOLU') not in (0,1) or selected.get('SWSNOW') not in (0,1) or boundary is None and (selected.get('SWDRA'),selected.get('SWBOTB'))!=(1,6):
         raise ValueError('Active original vapor requires qualified explicit daily water/CDE, numerical heat, NoFrost/hysteresis0 primarydrainage bottom6')
+    if boundary is not None:boundary_daily(active)
     if selected['SWSNOW']:
         from snow_vapor_composition import check_daily_output
         check_daily_output(active,selected)
@@ -89,11 +92,16 @@ def metadata(project):
     from snow_vapor_composition import metadata as snow_metadata
     snow=snow_metadata(project)
     if snow is not None:result['snow_composition']=snow
+    from vapor_boundary_composition import metadata as boundary_metadata
+    boundary=boundary_metadata(project)
+    if boundary is not None:result['boundary_composition']=boundary
     return result
 
 
 def native_magic(project):
     if describe(project) is None:return None
+    from vapor_boundary_composition import context as boundary_context
+    if boundary_context(project) is not None:return b'S5HBC005' if project.solute else b'S5HBW005'
     from snow_vapor_composition import snow_selected
     if snow_selected(project):return b'S5HSC004' if project.solute else b'S5HSW004'
     return b'S5HVC003' if project.solute else b'S5HVW003'
@@ -101,6 +109,8 @@ def native_magic(project):
 
 def native_provider(project):
     original=Path(__file__).with_name('hydraulic_vapor_native.f90').read_bytes()
+    from vapor_boundary_composition import context as boundary_context,native_source as boundary_native_source
+    if boundary_context(project) is not None:return boundary_native_source(original)
     from snow_vapor_composition import snow_selected,native_source as snow_native_source
     return snow_native_source(original) if snow_selected(project) else original
 
