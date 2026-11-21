@@ -80,7 +80,7 @@ def input_context(directory,original_output=True):
  from experimental_project import switches
  text=(Path(directory)/'swap.swp').read_text(encoding='cp1252');selected=switches(text)
  domain=dict(SWMACRO=0,SWSOLU=1,SWKIMPL=0,SWSOPHY=0,SWHYST=0,SWSNOW=0,SWFROST=0,SWBBCFILE=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0)
- if any(selected.get(k)!=v for k,v in domain.items()) or selected.get('SWINCO') not in (2,3):return None
+ if any(selected.get(k)!=v for k,v in domain.items()) or selected.get('SWINCO') not in (1,2,3):return None
  drain,bottom=selected.get('SWDRA'),selected.get('SWBOTB')
  if drain not in (0,1) or bottom not in (5,6,8):return None
  active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))

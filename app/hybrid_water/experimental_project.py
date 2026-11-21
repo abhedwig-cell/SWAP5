@@ -146,12 +146,14 @@ def inspect(directory, *, original_output=None):
         elif snow:state_supported=boundary_pair==((1,5) if implicit else (1,6))
         elif implicit:state_supported=boundary_pair==(1,5)
         else:state_supported=True
-        if not state_supported:
+        from initial_profile_calendar import selection as initial_calendar_selection
+        initial_calendar=initial_calendar_selection(directory,original_output)
+        if not state_supported and initial_calendar is None:
             raise ValueError('Unqualified original pressure-profile state-owner cross composition')
         flags=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^!\r\n]+)',text)
         if (int(one(text,'NPRINTDAY',r'[+-]?\d+'))!=1 or int(one(text,'PERIOD',r'[+-]?\d+'))!=1
                 or selected.get('SWMONTH')!=0 or selected.get('SWODAT')!=0 or selected.get('SWRES')!=1
-                or len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')):
+                or len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')) and initial_calendar is None:
             raise ValueError('Original pressure-profile initialization requires dense original daily output')
         allowed['SWINCO']={1,2,3}
     if (selected['SWSOLU']==2 and selected.get('SWMONTH')==0 and selected.get('SWODAT')==0
