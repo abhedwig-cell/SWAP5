@@ -38,6 +38,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
+    import snow_vapor_verify as snow_vapor
+    return snow_vapor.guard_previous_source()
     complete_inverse()
     for name in PARSERS:
         path='tests/nomacro_drainage/'+name
@@ -56,11 +58,15 @@ def guard_previous_source():
 
 
 def strip_current_evidence(text):
+    import snow_vapor_verify as snow_vapor
+    return snow_vapor.strip_current_evidence(text)
     if PATTERN in text:assert text.count(PATTERN)==1;text=text.replace(PATTERN,'',1)
     return literal('strip_current_evidence',dict(vars(previous)))(text)
 
 
 def publication_dependencies_unchanged():
+    import snow_vapor_verify as snow_vapor
+    return snow_vapor.publication_dependencies_unchanged()
     guard_previous_source()
     with prior_source_projection():return literal('publication_dependencies_unchanged',prior_namespace())()
 
@@ -90,6 +96,8 @@ def frontend_records(store):
 
 
 def verify():
+    import snow_vapor_verify as snow_vapor
+    return snow_vapor.verify()
     guard_previous_source()
     for name in ('HYDRAULIC_DEFAULT_MODEL_GRAMMAR_QUALIFICATION.json','HYDRAULIC_DEFAULT_MODEL_GRAMMAR_WINDOWS_RAW_V1.json'):
         path='integration/f-ci/nomacro-complete01/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path)
