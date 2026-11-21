@@ -21,7 +21,7 @@ from vapor_windows_science import mapped
 from signed_hydraulic_source_inverse import complete_inverse,RUNTIME
 
 
-def read(evidence,reference):
+def read(evidence,reference,store=None):
     complete_inverse();observations=[]
     with ExitStack() as stack:
         for kind in ('water','cde'):
@@ -32,7 +32,13 @@ def read(evidence,reference):
                 q=json.loads((profile/'RESULT.json').read_text())
                 assert q['source'].startswith(RUNTIME) and q['status']==f'CANDIDATE_ACTUAL_VAPOR_FAMILY_8_{kind.upper()}_SHORT_PASS_NOT_ADMITTED'
                 assert q['layer_models']==[7,8] and q['vapor_flags']==[1,1]
-                build=Path(q['build_root']);inputs=Path(q['input_root'])
+                if store is None:
+                    build=Path(q['build_root']);inputs=Path(q['input_root'])
+                else:
+                    compiled=json.loads(store.get('COMPILED_PROJECTION_V1.json'))
+                    build=store.view(compiled[q['build_root']]['archive_prefix'])
+                    inputs=mapped(store,q['input_root'])
+                    assert SHA((build/'BUILD.json').read_bytes())==compiled[q['build_root']]['actual_BUILD_sha256']
                 role=next(v for v in old.record['roles'] if v['case']=='mixed-7-8' and v['optimization']==opt)
                 baseline=old.view(role['profile']);prior=json.loads((baseline/'RESULT.json').read_text())
                 oldbuild=old.view(projection[prior['build_root']]['archive_prefix']);oldinputs=mapped(old,prior['input_root'])
@@ -59,7 +65,7 @@ def read(evidence,reference):
                         for member in ('macro.bin','result.end'):assert a.read(member)==b.read(member)
                 current=binary((warm/'original/result_output.bin').read_bytes())
                 assert current==binary((oldwarm/'original/result_output.bin').read_bytes())[:len(current)]
-                independent=audit(profile,reference)
+                independent=audit(profile,reference,locations=dict(build=build,inputs=inputs))
                 assert independent['days']==35 and independent['cold_windows']==3
                 observations.append(dict(kind=kind,optimization=opt,independent=independent,interface=interface,
                     actual_BUILD_sha256=SHA((build/'BUILD.json').read_bytes()),identity_changes=delta,publisher_equivalence=publisher,
