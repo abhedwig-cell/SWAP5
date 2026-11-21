@@ -1,5 +1,5 @@
 """Confirm the actual Snow-vapor dispatch and retained unsupported boundaries."""
-import argparse,json,shutil,subprocess,sys
+import argparse,json,re,shutil,subprocess,sys
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -17,7 +17,8 @@ def main():
  def load(folder):return e.load(folder,original_output=True,time_step_policy='original-adaptive-day-seed-v1')
  def inputs(base,label,edits):
   folder=a.output/label;shutil.copytree(base,folder);path=folder/'swap.swp';text=path.read_text(encoding='cp1252')
-  for key,value in edits.items():text=assignment(text,key,value)
+  for key,value in edits.items():
+   text=assignment(text,key,value) if re.search(r'(?mi)^[ \t]*'+key+r'[ \t]*=',text) else text+'\n'+key+' = '+str(value)+'\n'
   path.write_text(text,encoding='cp1252');return folder
  save()
  try:
