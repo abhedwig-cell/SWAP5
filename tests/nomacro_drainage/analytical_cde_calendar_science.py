@@ -99,7 +99,8 @@ def audit(profile,reference,locations=None):
    assert raw[48:48+2*len(packed)]==packed+packed and struct.unpack_from('<i',raw,8)[0]==nodes
    parent=raw[:48]+raw[48+2*len(packed):]
   details=output_calendar(parent,nodes,rows[day-1],selected,meta['project']['start_date'],True);samples.append(dict(day=day,calendar_header=details['calendar_header'],private_stock_exact=True))
- assert len(samples)==(11 if q['days']==367 else 7) and rows[-1]['solute_end_mg_cm2']>0
+ expected_days={q['days'],2,4,19,23,30,34}|({199,201,364} if q['days']==367 else set())
+ assert {sample['day'] for sample in samples}==expected_days and rows[-1]['solute_end_mg_cm2']>0
  source=git('show',BASE+':app/hybrid_water/model7_terminal_water.py');tree=ast.parse(source);constants={}
  for n in tree.body:
   if isinstance(n,ast.Assign) and len(n.targets)==1 and isinstance(n.targets[0],ast.Name) and n.targets[0].id in ('IMPORT','GUARD','SEARCH','HEAD_PARENT_SHA'):constants[n.targets[0].id]=ast.literal_eval(n.value)
