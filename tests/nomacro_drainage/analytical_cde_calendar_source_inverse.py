@@ -110,12 +110,17 @@ def guard_parent_source():
 def prior_source_projection():
  complete_inverse()
  import initial_state_composition_source_inverse as state
+ import initial_state_composition_science as science
  saved=(state.ROOT,state.complete_inverse,state.CheckedParentRoot,state.initial_parent_source_union)
+ saved_science_inverse=science.complete_inverse
  class CheckedParentRoot(saved[2]):
   def __truediv__(self,path):return SourceFile(str(path)) if str(path) in CHANGED else super().__truediv__(path)
  state.ROOT=CheckedSourceRoot();state.complete_inverse=state_parent_complete_inverse;state.CheckedParentRoot=CheckedParentRoot;state.initial_parent_source_union=state_parent_source_union
+ science.complete_inverse=state_parent_complete_inverse
  # Only checked Python/workflow source reads are projected. Real HEAD, raw
  # paths, producer identities, native payloads and original inputs stay actual.
  try:
   with state.prior_source_projection():yield
- finally:state.ROOT,state.complete_inverse,state.CheckedParentRoot,state.initial_parent_source_union=saved
+ finally:
+  state.ROOT,state.complete_inverse,state.CheckedParentRoot,state.initial_parent_source_union=saved
+  science.complete_inverse=saved_science_inverse
