@@ -49,18 +49,27 @@ def boundary_complete_inverse():
  namespace=dict(vars(boundary),ROOT=CheckedRoot(),initial_complete_inverse=complete_inverse);exec(compile(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])),path,'exec'),namespace);return namespace['complete_inverse']()
 
 
+def initial_source_inverse():
+ import vapor_boundary_source_inverse as boundary
+ path='tests/nomacro_drainage/vapor_boundary_source_inverse.py';raw=git('show',BASE+':'+path);nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='initial_source_inverse'];assert len(nodes)==1
+ found=[n for n in nodes[0].body if isinstance(n,ast.Assert) and ast.unparse(n.test)=='actual == previous | set(CHANGED)'];assert len(found)==1
+ found[0].test=ast.parse('actual == previous | set(CHANGED) | {INITIAL_PATH}',mode='eval').body
+ namespace=dict(vars(boundary),ROOT=CheckedRoot(),complete_inverse=boundary_complete_inverse,INITIAL_PATH=PATH)
+ exec(compile(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])),path,'exec'),namespace);return namespace['initial_source_inverse']()
+
+
 @contextmanager
 def prior_source_projection():
  complete_inverse()
  import vapor_boundary_source_inverse as boundary
  import signed_hydraulic_source_inverse as signed
  import snow_vapor_verify as snow_owner
- saved=(boundary.ROOT,boundary.complete_inverse,signed.CheckedParent,snow_owner.ROOT)
+ saved=(boundary.ROOT,boundary.complete_inverse,signed.CheckedParent,snow_owner.ROOT,boundary.initial_source_inverse)
  class InitialParent(saved[2]):
   def __truediv__(self,path):return SourceFile(PATH) if str(path)==PATH else super().__truediv__(path)
  # Only fully inverted source files are viewed through their actual previous
  # bytes. Git HEAD, producer identities and every scientific input/raw path
  # remain actual; no original reader or scientific assertion is replaced.
- boundary.ROOT=CheckedRoot();boundary.complete_inverse=boundary_complete_inverse;signed.CheckedParent=InitialParent;snow_owner.ROOT=CheckedRoot()
+ boundary.ROOT=CheckedRoot();boundary.complete_inverse=boundary_complete_inverse;signed.CheckedParent=InitialParent;snow_owner.ROOT=CheckedRoot();boundary.initial_source_inverse=initial_source_inverse
  try:yield
- finally:boundary.ROOT,boundary.complete_inverse,signed.CheckedParent,snow_owner.ROOT=saved
+ finally:boundary.ROOT,boundary.complete_inverse,signed.CheckedParent,snow_owner.ROOT,boundary.initial_source_inverse=saved
