@@ -22,6 +22,7 @@ def main():
     p.add_argument('--kind', choices=('water', 'cde'), required=True)
     p.add_argument('--optimization', choices=('O0', 'O2'), required=True)
     p.add_argument('--hydraulic-model',type=int,choices=range(3,12),required=True)
+    p.add_argument('--oxygen-policy',choices=('original','feddes1'),default='original')
     p.add_argument('--phase', choices=('short', 'year', 'full'), default='short')
     p.add_argument('--reuse-build', type=Path)
     p.add_argument('--existing-input', type=Path)
@@ -39,9 +40,12 @@ def main():
         if a.kind=='water':
             for crop in inputs.glob('*.crp'):
                 crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWSALINITY',0),encoding='cp1252')
+        if a.oxygen_policy=='feddes1':
+            for crop in inputs.glob('*.crp'):
+                crop.write_text(assignment(crop.read_text(encoding='cp1252'),'SWOXYGEN',1),encoding='cp1252')
     m = thermal.m; policy = 'original-adaptive-day-seed-v1'
     q = dict(status='RUNNING', source=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-        kind=a.kind, optimization=a.optimization, phase=a.phase, hydraulic_model=a.hydraulic_model, input_root=str(inputs),
+        kind=a.kind, optimization=a.optimization, phase=a.phase, hydraulic_model=a.hydraulic_model, oxygen_policy=a.oxygen_policy, input_root=str(inputs),
         build_root=str(a.reuse_build or a.build_root / 'bundle'), canonical_admission=False,
         inventory={str(v.relative_to(inputs)): hashlib.sha256(v.read_bytes()).hexdigest()
                    for v in sorted(inputs.rglob('*')) if v.is_file()})
