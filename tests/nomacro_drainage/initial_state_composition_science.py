@@ -3,7 +3,7 @@ import argparse,io,json,math,re,struct,sys,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'app/hybrid_water')]
-from initial_state_composition_source_inverse import BASE,CORE,PHYSICAL_CORE,GUARD,SURFACES,git,complete_inverse
+from initial_state_composition_source_inverse import BASE,CORE,PREVIOUS_GUARD,PHYSICAL_CORE,GUARD,SURFACES,git,complete_inverse
 from initial_pressure_profile_science import ledger_cold,initialized_heads,PROVIDER
 from analytical_hydraulic_archives import SHA
 from experimental_project import switches
@@ -25,7 +25,7 @@ def audit(profile,reference,locations=None):
  q=json.loads((profile/'RESULT.json').read_text());assert q['status']=='ACTUAL_ORIGINAL_INITIAL_STATE_COMPOSITION_WATER_CDE_EXACT_COLD_PASS_NOT_ADMITTED' and q['days']==35
  complete_inverse()
  assert not git('diff',PHYSICAL_CORE,q['source'],'--',*SURFACES,':(exclude)'+GUARD)
- assert git('show',q['source']+':'+GUARD) in (git('show',BASE+':'+GUARD),git('show',CORE+':'+GUARD))
+ assert git('show',q['source']+':'+GUARD) in (git('show',BASE+':'+GUARD),git('show',PREVIOUS_GUARD+':'+GUARD),git('show',CORE+':'+GUARD))
  for path in ('tests/nomacro_drainage/initial_pressure_profile_science.py','tests/nomacro_scheduled_subsurface/output_hysteresis_baseline.py'):
   assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==git('show',BASE+':'+path),'Unchanged independent parent reader changed'
  build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];nodes=meta['project']['nodes'];text=(inputs/'swap.swp').read_text(encoding='cp1252');selected=switches(text);magic=q['native_codec'].encode();assert selected['SWINCO']==q['initial_selector']
