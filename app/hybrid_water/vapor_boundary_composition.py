@@ -128,3 +128,5 @@ def cde_offset(aux,nodes,project=None):
   selected=describe(project);boundary=context(project)
   if selected is None or boundary is None or domain[12:]!=(boundary['drainage'],boundary['bottom']) or tuple(selected['models'])!=models or tuple(f if m>=8 else 0 for m,f in zip(selected['models'],selected['SWVAPOR']))!=flags:raise ValueError('CDE vapor boundary native differs from actual project')
  return 48+2*size
+
+# Actual vapor boundary source negative; NEVER MERGE.
