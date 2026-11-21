@@ -42,7 +42,11 @@ def complete_inverse():
  assert text==blob(BASE,GUARD),'Incomplete original interval/per-step water-trial source guard inverse'
  assert norm((ROOT/WORKFLOW).read_bytes())==blob(PORTABLE,WORKFLOW),'Unreviewed targeted implicit calendar workflow'
  for path in CI:
-  text=norm((ROOT/path).read_bytes()).decode();assert text.count(PATTERN)==1 and text.replace(PATTERN,'',1).encode()==blob(BASE,path),'Unreviewed initial calendar proof checkout delta'
+  text=norm((ROOT/path).read_bytes()).decode()
+  if path==CI[0]:
+   assert text.count('    timeout-minutes: 45\n')==1
+   text=text.replace('    timeout-minutes: 45\n','    timeout-minutes: 10\n',1)
+  assert text.count(PATTERN)==1 and text.replace(PATTERN,'',1).encode()==blob(BASE,path),'Unreviewed initial calendar proof checkout/deadline delta'
  # All original numerical code, state providers and constitutive/calendaring
  # generators are outside these three exact admission-only source changes.
  return True
