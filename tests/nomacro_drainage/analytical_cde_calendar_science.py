@@ -10,6 +10,7 @@ from cde_interval_runtime import audit_daily
 BASE='5c0cba9fbbd93ffb482199016f392e53e371e095'
 FIRST_CORE='443c6b432a3f75695dbab0e0b66389638d7f94c0'
 CLOCK_CORE='b16249855004a00b54efe5203287ba321b61594c'
+NATIVE6_CORE='1510278b9ad56b03273c6d6e2284b1360f57849c'
 git=lambda *a:subprocess.check_output(['git',*a],cwd=ROOT)
 
 
@@ -46,11 +47,11 @@ loop.body[-3:]=ast.parse("exact_output_interval(warm/'original',cold/'original',
 
 def audit(profile,reference,locations=None):
  q=json.loads((profile/'RESULT.json').read_text());assert q['status']=='ACTUAL_ORIGINAL_ANALYTICAL_CDE_CALENDAR_FIXED_MASS_NATIVE_EXACT_COLD_PASS_NOT_ADMITTED' and q['days'] in (35,367)
- core=FIRST_CORE if q['case']=='model7-periodic6' else CLOCK_CORE
- assert q['case'] in ('model7-periodic6','model7-clock6','model7-perstep6')
+ core=NATIVE6_CORE if q['case']=='vapor8-periodic6' else FIRST_CORE if q['case']=='model7-periodic6' else CLOCK_CORE
+ assert q['case'] in ('model7-periodic6','model7-clock6','model7-perstep6','vapor8-periodic6')
  assert not git('diff',core,q['source'],'--','app','src','tools/solute','tools/vq','reference'),'Unreviewed actual analytical CDE composition producer'
- build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];selected=identity['original_output'];nodes=meta['project']['nodes'];magic=q['native_codec'].encode();assert magic in (b'S5CIC001',b'S5CCC001') and selected['kind']=='cde'
- if magic==b'S5CIC001':assert selected['period']==5
+ build=locations['build'] if locations else Path(q['build_root']);inputs=locations['inputs'] if locations else Path(q['input_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];selected=identity['original_output'];nodes=meta['project']['nodes'];magic=q['native_codec'].encode();assert magic in (b'S5CIC001',b'S5CCC001',b'S5HCC006') and selected['kind']=='cde'
+ if magic in (b'S5CIC001',b'S5HCC006'):assert selected['period']==5
  else:assert selected['period']==1 and selected['analytical_bottom6_calendar'] and selected['cde_clock_output'] and (selected['nprintday']>1 or selected['flprintdt'])
  for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
  for name,digest in identity['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
@@ -69,7 +70,16 @@ def audit(profile,reference,locations=None):
  for path in (profile/'trajectory').glob('accepted-column-1-day-*.zip'):
   day=int(path.name.split('-')[-1].split('.')[0])
   with zipfile.ZipFile(io.BytesIO(path.read_bytes())) as z:raw=z.read('macro.bin')
-  assert raw[:8]==magic;details=output_calendar(raw,nodes,rows[day-1],selected,meta['project']['start_date'],True);samples.append(dict(day=day,calendar_header=details['calendar_header'],private_stock_exact=True))
+  assert raw[:8]==magic;parent=raw
+  if magic==b'S5HCC006':
+   vapor=identity['hydraulic_vapor'];layers=vapor['numlay'];models=vapor['models'];flags=[f if m>=8 else 0 for m,f in zip(models,vapor['SWVAPOR'])]
+   # Decode actual duplicated native6 integers independently. The read-only
+   # parent view removes only that verified wrapper, leaving every conserved
+   # stock/calendar/private-state byte exact for the literal old decoder.
+   expected=[6,nodes,layers,0,1,0,0,0,0,0,1,2,1,6]+models+flags;packed=struct.pack('<'+str(len(expected))+'i',*expected)
+   assert raw[48:48+2*len(packed)]==packed+packed and struct.unpack_from('<i',raw,8)[0]==nodes
+   parent=raw[:48]+raw[48+2*len(packed):]
+  details=output_calendar(parent,nodes,rows[day-1],selected,meta['project']['start_date'],True);samples.append(dict(day=day,calendar_header=details['calendar_header'],private_stock_exact=True))
  assert len(samples)==(11 if q['days']==367 else 7) and rows[-1]['solute_end_mg_cm2']>0
  source=git('show',BASE+':app/hybrid_water/model7_terminal_water.py');tree=ast.parse(source);constants={}
  for n in tree.body:
