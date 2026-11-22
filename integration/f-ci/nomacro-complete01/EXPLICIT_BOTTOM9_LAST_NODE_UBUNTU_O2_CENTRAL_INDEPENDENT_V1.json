@@ -1,0 +1,1347 @@
+{
+  "status": "ACTUAL_TARGETED_LINUX_LAST_NODE_WATER_ORIGINAL_ARCHIVE_SCIENCE_NATIVE_COLD_COMPILED_BYTES_REPLAY_PASS_NOT_ADMITTED",
+  "optimization": "O2",
+  "source": {
+    "producer": "e462878f2cac5895b0dbdc9ae90d1276384f0327",
+    "source_sha256": "10c92f621496fd5a357f591db471d934a4390fd294aea8f0f5d8ac22cdb6df16",
+    "controller_sha256": "fda72ab3e9d2e71f79341ae0dc4c06c95b1fc9c4153e2e11c2d478b2cca7dff9",
+    "source_members": 1525,
+    "controller_members": 843,
+    "toolchain": {
+      "gfortran": {
+        "version": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+        "target": "x86_64-linux-gnu"
+      },
+      "gcc": {
+        "version": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "sha256": "864711037b900acdb7a449cf48d912cefa935b527fb60c767ccb956779e66136",
+        "target": "x86_64-linux-gnu"
+      },
+      "ar": {
+        "version": "GNU ar (GNU Binutils for Ubuntu) 2.46",
+        "sha256": "22c9d13affd2bea0f0237533ccb1bb2682eb9d22d6a4ed953bcc38445c8c98ab"
+      }
+    },
+    "original_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "science": {
+    "status": "INDEPENDENT_EXPLICIT9_ORIGINAL_LAST_NODE_DRAINAGE_ALL_NODE_DARCY_LEDGER_NATIVE_COLD_COMPILED_PASS_NOT_ADMITTED",
+    "producer": "e462878f2cac5895b0dbdc9ae90d1276384f0327",
+    "case": "water-last-node-drainage",
+    "optimization": "O2",
+    "actual_days": 35,
+    "initial_pressure": {
+      "legacy_ZI_H": false,
+      "profile_knots": [
+        [
+          0.5,
+          0.0
+        ],
+        [
+          195.0,
+          0.0
+        ]
+      ],
+      "saturated_nodes_reinitialized_by_original": 0
+    },
+    "measured": {
+      "water_daily_max_decimal": "2.220446049250313080847263336181640625E-16",
+      "additional_water_every_prefix_max_decimal": "7.7715611723760957829654216766357421875E-15",
+      "additional_absolute_global_water_prefix_is_owning_gate": false,
+      "CDE_daily_max_decimal": "0",
+      "CDE_every_prefix_max_decimal": "0",
+      "water_and_CDE_absolute_limit": 1e-10
+    },
+    "independent_final_Darcy_sink_continuity": [
+      {
+        "day": 1,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 2,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 3,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 4,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 5,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 6,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 7,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 8,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 9,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 10,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 11,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 12,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 13,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 14,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 15,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 16,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 17,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 18,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 19,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 20,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 21,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 22,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 23,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 24,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 25,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 26,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 27,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 28,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 29,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 30,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 31,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 32,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 33,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 34,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      },
+      {
+        "day": 35,
+        "all_actual_node_Darcy_and_sink_residual_cm_per_day_max": 1.1102230246251565e-16,
+        "last_node_lateral_cm": 0.25,
+        "declared_prescribed_bottom_flux_cm": -0.75,
+        "actual_original_AFGEN_bottom_flux_cm": -0.7500000000000001,
+        "actual_last_pressure_cm": 4.440892098500626e-16,
+        "literal_original_BoundBottom_pressure_equation_exact": true
+      }
+    ],
+    "native": [
+      {
+        "day": 2,
+        "registered_transport_observer": {
+          "magic": "S5IOW001",
+          "calendar": {
+            "calendar_offset": 1360808,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              1,
+              1,
+              2,
+              0,
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1465176
+          },
+          "sequential_record_lengths": [
+            4,
+            4,
+            4,
+            272,
+            8,
+            4,
+            4,
+            8,
+            4,
+            4,
+            272,
+            4,
+            4,
+            8,
+            4,
+            4
+          ]
+        },
+        "calendar_header": [
+          1,
+          34,
+          1,
+          6513,
+          1,
+          1,
+          2,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "calendar_28term_residual_cm": -2.220446049250313e-16,
+        "actual_END_pressure_exact": true
+      },
+      {
+        "day": 4,
+        "registered_transport_observer": {
+          "magic": "S5IOW001",
+          "calendar": {
+            "calendar_offset": 1360808,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              1,
+              1,
+              4,
+              0,
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1465176
+          },
+          "sequential_record_lengths": [
+            4,
+            4,
+            4,
+            272,
+            8,
+            4,
+            4,
+            8,
+            4,
+            4,
+            272,
+            4,
+            4,
+            8,
+            4,
+            4
+          ]
+        },
+        "calendar_header": [
+          1,
+          34,
+          1,
+          6513,
+          1,
+          1,
+          4,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "calendar_28term_residual_cm": -2.220446049250313e-16,
+        "actual_END_pressure_exact": true
+      },
+      {
+        "day": 19,
+        "registered_transport_observer": {
+          "magic": "S5IOW001",
+          "calendar": {
+            "calendar_offset": 1360808,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              1,
+              1,
+              19,
+              0,
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1465176
+          },
+          "sequential_record_lengths": [
+            4,
+            4,
+            4,
+            272,
+            8,
+            4,
+            4,
+            8,
+            4,
+            4,
+            272,
+            4,
+            4,
+            8,
+            4,
+            4
+          ]
+        },
+        "calendar_header": [
+          1,
+          34,
+          1,
+          6513,
+          1,
+          1,
+          19,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "calendar_28term_residual_cm": -2.220446049250313e-16,
+        "actual_END_pressure_exact": true
+      },
+      {
+        "day": 23,
+        "registered_transport_observer": {
+          "magic": "S5IOW001",
+          "calendar": {
+            "calendar_offset": 1360808,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              1,
+              1,
+              23,
+              0,
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1465176
+          },
+          "sequential_record_lengths": [
+            4,
+            4,
+            4,
+            272,
+            8,
+            4,
+            4,
+            8,
+            4,
+            4,
+            272,
+            4,
+            4,
+            8,
+            4,
+            4
+          ]
+        },
+        "calendar_header": [
+          1,
+          34,
+          1,
+          6513,
+          1,
+          1,
+          23,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "calendar_28term_residual_cm": -2.220446049250313e-16,
+        "actual_END_pressure_exact": true
+      },
+      {
+        "day": 30,
+        "registered_transport_observer": {
+          "magic": "S5IOW001",
+          "calendar": {
+            "calendar_offset": 1360808,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              1,
+              1,
+              30,
+              0,
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1465176
+          },
+          "sequential_record_lengths": [
+            4,
+            4,
+            4,
+            272,
+            8,
+            4,
+            4,
+            8,
+            4,
+            4,
+            272,
+            4,
+            4,
+            8,
+            4,
+            4
+          ]
+        },
+        "calendar_header": [
+          1,
+          34,
+          1,
+          6513,
+          1,
+          1,
+          30,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "calendar_28term_residual_cm": -2.220446049250313e-16,
+        "actual_END_pressure_exact": true
+      },
+      {
+        "day": 34,
+        "registered_transport_observer": {
+          "magic": "S5IOW001",
+          "calendar": {
+            "calendar_offset": 1360808,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              1,
+              1,
+              34,
+              0,
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1465176
+          },
+          "sequential_record_lengths": [
+            4,
+            4,
+            4,
+            272,
+            8,
+            4,
+            4,
+            8,
+            4,
+            4,
+            272,
+            4,
+            4,
+            8,
+            4,
+            4
+          ]
+        },
+        "calendar_header": [
+          1,
+          34,
+          1,
+          6513,
+          1,
+          1,
+          34,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "calendar_28term_residual_cm": -2.220446049250313e-16,
+        "actual_END_pressure_exact": true
+      },
+      {
+        "day": 35,
+        "registered_transport_observer": {
+          "magic": "S5IOW001",
+          "calendar": {
+            "calendar_offset": 1360808,
+            "calendar_header": [
+              1,
+              34,
+              1,
+              6513,
+              1,
+              1,
+              35,
+              0,
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            "calendar_end": 1465176
+          },
+          "sequential_record_lengths": [
+            4,
+            4,
+            4,
+            272,
+            8,
+            4,
+            4,
+            8,
+            4,
+            4,
+            272,
+            4,
+            4,
+            8,
+            4,
+            4
+          ]
+        },
+        "calendar_header": [
+          1,
+          34,
+          1,
+          6513,
+          1,
+          1,
+          35,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "calendar_28term_residual_cm": -2.220446049250313e-16,
+        "actual_END_pressure_exact": true
+      }
+    ],
+    "cold": [
+      {
+        "start": 2,
+        "end": 4,
+        "complete_native_byte_exact": true,
+        "physical_exact": true,
+        "actual_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 2,
+            "kind": "original_REAL4_binary"
+          }
+        }
+      },
+      {
+        "start": 19,
+        "end": 23,
+        "complete_native_byte_exact": true,
+        "physical_exact": true,
+        "actual_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 4,
+            "kind": "original_REAL4_binary"
+          }
+        }
+      },
+      {
+        "start": 30,
+        "end": 34,
+        "complete_native_byte_exact": true,
+        "physical_exact": true,
+        "actual_user_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 4,
+            "kind": "original_REAL4_binary"
+          }
+        }
+      }
+    ],
+    "whole_compiled_postimage": {
+      "status": "ACTUAL_INITIAL2_TO_INITIAL1_WHOLE_FORTRAN_PROVIDER_FLAGS_NATIVE_ABI_AND_PUBLISHER_POSTIMAGE_EXACT",
+      "complete_Fortran": {
+        "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77",
+        "age_output_calendar_probe.f90": "cf0cdf52687528486c0221f7ae326e08dd86d7708ab1147e24c885541c3f8916",
+        "boundtop.f90": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0",
+        "headcalc.f90": "155dd85c118026439cd837e5b7f2178c9cae99a536b3c5e27b9e751912ebe80c",
+        "hybrid_age_output_state.f90": "f115166b4a9ebb9d6ae8e0def3add0b4972464669ade03269e28aab111955e9e",
+        "hybrid_step_budget.f90": "4de11a646618045f80e22010e1750ee11952bd6e46ff126786c703fb2d5ffeed",
+        "integral.f90": "a391f60768443ded138884768a765a55211e8f6b9a52810ec4d0b80e10b2b367",
+        "irrigation.f90": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693",
+        "macropore.f90": "29999b8f14a422a457dac38f8f5189926b4474ef75547bdd9781bb3da696ee07",
+        "mod_original_output_receipt.f90": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "readswap.f90": "7187919658dcdcf833dac2ca6166a6c178a56780b9a17937c612153094a10ff6",
+        "swap.f90": "2f051858703d8edb1878ab10c21c1c57cd37aaeee0a329e6303f45f70b4e2fa9",
+        "swap_csv_output.f90": "0cf31307e816a0d82e6c257fe652bee89bb0d16b8305c222dec0b802bc4fd784",
+        "swap_main.f90": "770cb7428f547ad54d576d444fdfee10f4673b90e7961bccb7485a78aa671b7b",
+        "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+        "timecontrol.f90": "cacee4db3fe6ceec26f15c2bae77c9a5f5d66fa5eb3aa80a89715d4acdab2d3b",
+        "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a"
+      },
+      "only_publisher_identity_changes": [],
+      "publisher_equivalence": {
+        "status": "ACTUAL_PUBLISHER_BYTES_EXACT",
+        "sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7"
+      },
+      "unchanged_existing_native_ABI": true,
+      "compiler_executions_in_reader": 0,
+      "model_executions": 0
+    },
+    "compiler_executions": 0,
+    "model_executions": 0,
+    "canonical_admission": false
+  },
+  "actual_compiled": {
+    "status": "ALL_ACTUAL_GENERATED_OBJECT_MODULE_EXECUTABLE_PUBLISHER_CODE_DATA_POSTIMAGES_VERIFIED",
+    "files": [
+      {
+        "file": "MOD_cropdevelopment.o",
+        "left_sha256": "8898b63f8743860585cc4aeb149c6e56e4cad1470faf117f3d4cb63ad702bc99",
+        "right_sha256": "8898b63f8743860585cc4aeb149c6e56e4cad1470faf117f3d4cb63ad702bc99",
+        "left_bytes": 102504,
+        "right_bytes": 102504,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "age_output_calendar_probe.o",
+        "left_sha256": "8fa07631c121ee3f10a737f3a98ed76336afd295a5580a46afe4447c73ac1c73",
+        "right_sha256": "8fa07631c121ee3f10a737f3a98ed76336afd295a5580a46afe4447c73ac1c73",
+        "left_bytes": 6064,
+        "right_bytes": 6064,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "boundtop.o",
+        "left_sha256": "d55806b37f5f531762ed16d9303a16207adb93535a63ae2d96b5caf1d45d9361",
+        "right_sha256": "d55806b37f5f531762ed16d9303a16207adb93535a63ae2d96b5caf1d45d9361",
+        "left_bytes": 12720,
+        "right_bytes": 12720,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "day_donor",
+        "left_sha256": "9ccd54bd361b1733cd0d58bbf021a8a8fe9a756f77ff0a63d172f80d3ea3ac6b",
+        "right_sha256": "9ccd54bd361b1733cd0d58bbf021a8a8fe9a756f77ff0a63d172f80d3ea3ac6b",
+        "left_bytes": 1676512,
+        "right_bytes": 1676512,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "day_kernel",
+        "left_sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da",
+        "right_sha256": "7c64c94cea2c9ad4dfce3675ae5476cd233e402e1b3b350ea0388ccd03e911da",
+        "left_bytes": 213680,
+        "right_bytes": 213680,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "headcalc.o",
+        "left_sha256": "88056f2e8d5863d5b0b1091d407741c1f432095713ea749ed112b85c140b5dbb",
+        "right_sha256": "88056f2e8d5863d5b0b1091d407741c1f432095713ea749ed112b85c140b5dbb",
+        "left_bytes": 37904,
+        "right_bytes": 37904,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_age_output_state.mod",
+        "left_sha256": "b5eff4dfbccb057312bc1f1ed40430071788be4dca7cbb9be1f61e20dc657487",
+        "right_sha256": "b5eff4dfbccb057312bc1f1ed40430071788be4dca7cbb9be1f61e20dc657487",
+        "left_bytes": 2765,
+        "right_bytes": 2765,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_age_output_state.o",
+        "left_sha256": "eeb47fcbe280c380c423952a0fae2034f9e86d35d71f9c6c6f497f02c478eeb1",
+        "right_sha256": "eeb47fcbe280c380c423952a0fae2034f9e86d35d71f9c6c6f497f02c478eeb1",
+        "left_bytes": 2536,
+        "right_bytes": 2536,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_day_window.mod",
+        "left_sha256": "4810a3d8fc919a1e0ac658e5285bdf4e08eaabf008220c521c1fdf341c3c2f79",
+        "right_sha256": "4810a3d8fc919a1e0ac658e5285bdf4e08eaabf008220c521c1fdf341c3c2f79",
+        "left_bytes": 366,
+        "right_bytes": 366,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_step_budget.mod",
+        "left_sha256": "9ff0bb4d080debf57b044adf812fbf4b2ed205d839b5fa54d139560d6fd45a67",
+        "right_sha256": "9ff0bb4d080debf57b044adf812fbf4b2ed205d839b5fa54d139560d6fd45a67",
+        "left_bytes": 1099,
+        "right_bytes": 1099,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_step_budget.o",
+        "left_sha256": "a510a42910ac710bb3c986868d4c10d8fd45fd6071279758e3f793e6604bc20a",
+        "right_sha256": "a510a42910ac710bb3c986868d4c10d8fd45fd6071279758e3f793e6604bc20a",
+        "left_bytes": 6520,
+        "right_bytes": 6520,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "integral.o",
+        "left_sha256": "a53eadbe03fce499d64bc1708041a5be07be79a41b72dd8e3668d541863fefa5",
+        "right_sha256": "a53eadbe03fce499d64bc1708041a5be07be79a41b72dd8e3668d541863fefa5",
+        "left_bytes": 55296,
+        "right_bytes": 55296,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "irrigation.o",
+        "left_sha256": "3832fc6e9cb4e55878d21019623fbb8f72a4134b796c4b7788c8ae473b9d29e5",
+        "right_sha256": "3832fc6e9cb4e55878d21019623fbb8f72a4134b796c4b7788c8ae473b9d29e5",
+        "left_bytes": 110376,
+        "right_bytes": 110376,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "macropore.o",
+        "left_sha256": "a721d5f188714127f8202ec333e9102d7e50280280695a8296bc0e1afe456ba8",
+        "right_sha256": "a721d5f188714127f8202ec333e9102d7e50280280695a8296bc0e1afe456ba8",
+        "left_bytes": 489776,
+        "right_bytes": 489776,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_accepted_trajectory_directional_publication.mod",
+        "left_sha256": "55c19604a018c6a7f3b198fc85d965a28cd64ae64465d8e3801064da26acf2d2",
+        "right_sha256": "55c19604a018c6a7f3b198fc85d965a28cd64ae64465d8e3801064da26acf2d2",
+        "left_bytes": 4368,
+        "right_bytes": 4368,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_accepted_trajectory_directional_sensitivity.mod",
+        "left_sha256": "4d69aa5857e57999e157ad3b005ec9b04a8a4b1951873787ac2b485e470bcb18",
+        "right_sha256": "4d69aa5857e57999e157ad3b005ec9b04a8a4b1951873787ac2b485e470bcb18",
+        "left_bytes": 4665,
+        "right_bytes": 4665,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_canonical_contracts.mod",
+        "left_sha256": "87d040bde395a68da2bd91f97b0085ccb49a2eab5fa75c3e81e98a76a1e4744e",
+        "right_sha256": "87d040bde395a68da2bd91f97b0085ccb49a2eab5fa75c3e81e98a76a1e4744e",
+        "left_bytes": 12872,
+        "right_bytes": 12872,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_canonical_interval_runtime.mod",
+        "left_sha256": "956d3be5d96c71217c688b7f5870fde3083c98d306d309cf396c2579d806d34c",
+        "right_sha256": "956d3be5d96c71217c688b7f5870fde3083c98d306d309cf396c2579d806d34c",
+        "left_bytes": 12858,
+        "right_bytes": 12858,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_cropdevelopment.mod",
+        "left_sha256": "29db6645d29bf52a105af99fbea1151aada11885f1379d573d8df25697fa64de",
+        "right_sha256": "29db6645d29bf52a105af99fbea1151aada11885f1379d573d8df25697fa64de",
+        "left_bytes": 4009,
+        "right_bytes": 4009,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_fmr_soil_water_application_host.mod",
+        "left_sha256": "ea7b616c117e37a847b7b13027c2f459fc5e87bf63d4899cbfc0077c8b5eaf06",
+        "right_sha256": "ea7b616c117e37a847b7b13027c2f459fc5e87bf63d4899cbfc0077c8b5eaf06",
+        "left_bytes": 1313,
+        "right_bytes": 1313,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_groundwater_coupling_contract.mod",
+        "left_sha256": "1b21f1ba9b9cf75452f148423037cd605566bb76d0869a974b5ecafb456e48c5",
+        "right_sha256": "1b21f1ba9b9cf75452f148423037cd605566bb76d0869a974b5ecafb456e48c5",
+        "left_bytes": 4100,
+        "right_bytes": 4100,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_groundwater_interface_mass_ledger.mod",
+        "left_sha256": "1e8fa8ddbb5a953eeee55d17993b09aa8fd0a82eb8e813615adc87178aed7e41",
+        "right_sha256": "1e8fa8ddbb5a953eeee55d17993b09aa8fd0a82eb8e813615adc87178aed7e41",
+        "left_bytes": 6592,
+        "right_bytes": 6592,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_groundwater_swap_forcing_adapter.mod",
+        "left_sha256": "dfca06b3b408001c825a860b2c026f55b9680d2a73a0935176ae746948c98716",
+        "right_sha256": "dfca06b3b408001c825a860b2c026f55b9680d2a73a0935176ae746948c98716",
+        "left_bytes": 24262,
+        "right_bytes": 24262,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_groundwater_swap_transaction_participant.mod",
+        "left_sha256": "adaad49f01336dd99cbf2837db925353ea43619d6a364197a4cbca12d460f381",
+        "right_sha256": "adaad49f01336dd99cbf2837db925353ea43619d6a364197a4cbca12d460f381",
+        "left_bytes": 26907,
+        "right_bytes": 26907,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_integral.mod",
+        "left_sha256": "fbff43672bceacb9666cefab061cfc48b7a09530bfedca6213df0f6e148e443c",
+        "right_sha256": "fbff43672bceacb9666cefab061cfc48b7a09530bfedca6213df0f6e148e443c",
+        "left_bytes": 4234,
+        "right_bytes": 4234,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_irrigation.mod",
+        "left_sha256": "c87a0e30c3e1ab980ef79dce5a96851107348978b58b3947f678dbc128e85d64",
+        "right_sha256": "c87a0e30c3e1ab980ef79dce5a96851107348978b58b3947f678dbc128e85d64",
+        "left_bytes": 4286,
+        "right_bytes": 4286,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_kernel_transactions.mod",
+        "left_sha256": "b932fcab64c21b2bf62b0937387dff6e6c307da109b1d0be353eba0c13e70008",
+        "right_sha256": "b932fcab64c21b2bf62b0937387dff6e6c307da109b1d0be353eba0c13e70008",
+        "left_bytes": 23772,
+        "right_bytes": 23772,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_macropore.mod",
+        "left_sha256": "e56dbfc4219b6c8c110951df731b7c845c7e3cd1868f6dbd66157ea9aae97b15",
+        "right_sha256": "e56dbfc4219b6c8c110951df731b7c845c7e3cd1868f6dbd66157ea9aae97b15",
+        "left_bytes": 4157,
+        "right_bytes": 4157,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_original_output_receipt.mod",
+        "left_sha256": "e2d597d98857d6c2deef89c301da52b0b0810b8be00d1c4e41c0f587d08f7141",
+        "right_sha256": "e2d597d98857d6c2deef89c301da52b0b0810b8be00d1c4e41c0f587d08f7141",
+        "left_bytes": 2331,
+        "right_bytes": 2331,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_original_output_receipt.o",
+        "left_sha256": "70748c1a1673c8cb0dfd80a3288682f47af8e51fa1f94fea71c5ea43463a069f",
+        "right_sha256": "70748c1a1673c8cb0dfd80a3288682f47af8e51fa1f94fea71c5ea43463a069f",
+        "left_bytes": 3704,
+        "right_bytes": 3704,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_soil_water_accepted_step_direction_contract.mod",
+        "left_sha256": "205155901f4c38d5ee697a2c232a956389a51b4c95c01c19c054570ed4bad9a8",
+        "right_sha256": "205155901f4c38d5ee697a2c232a956389a51b4c95c01c19c054570ed4bad9a8",
+        "left_bytes": 1972,
+        "right_bytes": 1972,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_timer.mod",
+        "left_sha256": "4f7a6131a225ad2175ea9e5a77aa69bdfe09d7b178a79fc435bca28a4e01770d",
+        "right_sha256": "4f7a6131a225ad2175ea9e5a77aa69bdfe09d7b178a79fc435bca28a4e01770d",
+        "left_bytes": 222,
+        "right_bytes": 222,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_top.mod",
+        "left_sha256": "a86f702f532bcba8d7c46f779325f394511eabe9b2c5cd19cb9ba169bf85df61",
+        "right_sha256": "a86f702f532bcba8d7c46f779325f394511eabe9b2c5cd19cb9ba169bf85df61",
+        "left_bytes": 433,
+        "right_bytes": 433,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_transaction_reference.mod",
+        "left_sha256": "5f8265c6bacb3e379bb742e419554924cd8d1cc33dd47fa23d847e00d2873e8e",
+        "right_sha256": "5f8265c6bacb3e379bb742e419554924cd8d1cc33dd47fa23d847e00d2873e8e",
+        "left_bytes": 6809,
+        "right_bytes": 6809,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_wofost.mod",
+        "left_sha256": "9cdbbc8727130741ac3cf33f43d25fb27ca18d49a41c085e5f400567eef1b28f",
+        "right_sha256": "9cdbbc8727130741ac3cf33f43d25fb27ca18d49a41c085e5f400567eef1b28f",
+        "left_bytes": 4134,
+        "right_bytes": 4134,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "probe_kernel_donor.mod",
+        "left_sha256": "3861ca7861f07c0a80c94b4c672ab894c57a18bedd7f77f7406f126f82003a99",
+        "right_sha256": "3861ca7861f07c0a80c94b4c672ab894c57a18bedd7f77f7406f126f82003a99",
+        "left_bytes": 36257,
+        "right_bytes": 36257,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "readswap.o",
+        "left_sha256": "602bd1b1b652a93f305e7a9e26f04d1a8269b862b4012fa6c4095768434f3136",
+        "right_sha256": "602bd1b1b652a93f305e7a9e26f04d1a8269b862b4012fa6c4095768434f3136",
+        "left_bytes": 120224,
+        "right_bytes": 120224,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "restart_publish.so",
+        "left_sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+        "right_sha256": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+        "left_bytes": 16160,
+        "right_bytes": 16160,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swap.o",
+        "left_sha256": "71ceb33c3f4111b782cfb2e7a7b9af5709d44741bc7aa786de6f1616a50ef497",
+        "right_sha256": "71ceb33c3f4111b782cfb2e7a7b9af5709d44741bc7aa786de6f1616a50ef497",
+        "left_bytes": 31136,
+        "right_bytes": 31136,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swap_csv_output.mod",
+        "left_sha256": "7667cb44fed3f1571d6970ccf179f57d35769205e6a9fe6505877f9057f4cb33",
+        "right_sha256": "7667cb44fed3f1571d6970ccf179f57d35769205e6a9fe6505877f9057f4cb33",
+        "left_bytes": 2878,
+        "right_bytes": 2878,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swap_csv_output.o",
+        "left_sha256": "5fcdde164761f5b2e7a0c29d565a55d034e6e26b7186b95723795b14a74bc1f0",
+        "right_sha256": "5fcdde164761f5b2e7a0c29d565a55d034e6e26b7186b95723795b14a74bc1f0",
+        "left_bytes": 221352,
+        "right_bytes": 221352,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swap_exchange.mod",
+        "left_sha256": "37b622285148a67502e998fa29e3878cbd64baa57c62ef390cf12f8eeda8b87e",
+        "right_sha256": "37b622285148a67502e998fa29e3878cbd64baa57c62ef390cf12f8eeda8b87e",
+        "left_bytes": 1470,
+        "right_bytes": 1470,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swap_main.o",
+        "left_sha256": "bef6207721194c64bf92516c23d752b1deef885f80236f77173b86a469b36bc9",
+        "right_sha256": "bef6207721194c64bf92516c23d752b1deef885f80236f77173b86a469b36bc9",
+        "left_bytes": 11216,
+        "right_bytes": 11216,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swapoutput.o",
+        "left_sha256": "bfc4dcccdd2cc8d4cee954987e625676490501d6266c4a5bf2aaf3b76de6cb21",
+        "right_sha256": "bfc4dcccdd2cc8d4cee954987e625676490501d6266c4a5bf2aaf3b76de6cb21",
+        "left_bytes": 89832,
+        "right_bytes": 89832,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "timecontrol.o",
+        "left_sha256": "30bf565cf262913f2f7612b025413d785c48a9c65dbb892c7fdcdac6672f2a34",
+        "right_sha256": "30bf565cf262913f2f7612b025413d785c48a9c65dbb892c7fdcdac6672f2a34",
+        "left_bytes": 28320,
+        "right_bytes": 28320,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "wofost.o",
+        "left_sha256": "1715f51e7f2106ced36721eb896e2c6d0c017386bfc7b6b492e72fd8ed6df474",
+        "right_sha256": "1715f51e7f2106ced36721eb896e2c6d0c017386bfc7b6b492e72fd8ed6df474",
+        "left_bytes": 93256,
+        "right_bytes": 93256,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      }
+    ],
+    "raw_bytes_rewritten": false,
+    "model_executions": 0,
+    "compiler_executions_in_reader": 0
+  },
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}

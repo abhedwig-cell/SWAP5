@@ -36,7 +36,7 @@ def main():
  assert 'PUBLICATION_REPLAY_SELECTED=true' in (ev/'INITIAL_PROFILE_AGE_GROUNDWATER_FINAL_PUBLICATION_SCOPE_NEGATIVE_V1.txt').read_text()
  checks=load('INITIAL_PROFILE_AGE_GROUNDWATER_PR1788_ALL_TERMINAL_CHECKS_V1.json');assert checks['headRevision']==HEAD and not checks['hasMore'] and not checks['statuses'] and len(checks['checks'])==44 and all(c['head_sha']==HEAD and c['status']=='completed' and c['conclusion'] in ('success','skipped') for c in checks['checks']) and sum(c['conclusion']=='success' for c in checks['checks'])==29
  runs=load('INITIAL_PROFILE_AGE_GROUNDWATER_PR1788_ALL_TERMINAL_RUNS_V1.json');assert runs['total_count']==len(runs['workflow_runs'])==15 and all(v['head_sha']==HEAD and v['status']=='completed' and v['conclusion']=='success' for v in runs['workflow_runs'])
- pre=load('INITIAL_PROFILE_AGE_GROUNDWATER_PR1788_IMMEDIATE_PREMERGE_V1.json');assert pre['head']['sha']==HEAD and pre['base']['sha']==PARENT and pre['merge_commit_sha']==SYNTHETIC and pre['mergeable'] and not pre['draft']
+ pre=load('INITIAL_PROFILE_AGE_GROUNDWATER_PR1788_IMMEDIATE_PREMERGE_V2.json');assert pre['head']['sha']==HEAD and pre['base']['sha']==PARENT and pre['merge_commit_sha']==SYNTHETIC and pre['mergeable'] and not pre['draft']
  logs=load('INITIAL_PROFILE_AGE_GROUNDWATER_PR1788_FULL_PASS_LOGS_V1.json');assert logs['head']==HEAD and {item['check_name'] for item in logs['logs']}=={'original-reader','column'} and len(logs['logs'])==2
  for item in logs['logs']:
   assert any(check['id']==item['job_id'] and check['name']==item['check_name'] and check['conclusion']=='success' for check in checks['checks'])
