@@ -40,6 +40,37 @@ def monthly(proof,opt):
  return dict(status='ACTUAL_COMPLETED_UBUNTU_CDE9_MONTHLY_ARCHIVE_SCIENCE_NATIVE_COLD_WHOLE_COMPILED_PASS_WITHOUT_MODEL_REPLAY',optimization=opt,source=provenance,science=result,original_CI_failure_preserved=True,incorrect_observer_zero_profile_replaced_by_original_all_node_Darcy_mass_guard=True,mass_or_convergence_limits_changed=False,compiler_executions=0,model_executions=0,canonical_admission=False)
 
 
+DRAIN_PRODUCER='27d68c0efa06512e02a4548fa7869419a6f0ae89'
+DRAIN_SPECS={'O0':(14742116012,11705234,'bbbb31afa6cb600a78be89175f34738bc37f8d2993b42ffbdff6adee10af59d1'),
+ 'O2':(14741797576,11743495,'cf06bf8238d3ed729320f2fc5d8a1ef7dfcbf045014d7a54c03d50a628324fca')}
+
+
+def seal_drain(proof,opt):
+ artifact,size,digest=DRAIN_SPECS[opt];name='EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_'+opt+'_RAW_V1';path=proof/(name+'.zip')
+ assert path.stat().st_size==size and SHA(path.read_bytes())==digest
+ with zipfile.ZipFile(path) as z:
+  assert len(z.namelist())==len(set(z.namelist()))
+  members={n:dict(bytes=len(z.read(n)),sha256=SHA(z.read(n))) for n in z.namelist()}
+ record=dict(status='ACTUAL_NEW_CDE9_DISTRIBUTED_SUBDAILY_UBUNTU_SCIENCE_NATIVE_COLD_WHOLE_COMPILED_RAW_PRESERVED_NOT_ADMITTED',archive=path.name,bytes=size,sha256=digest,parts=[dict(file=path.name,bytes=size,sha256=digest)],members=members,actual_artifact=artifact,actual_run=44990955100,actual_producer=DRAIN_PRODUCER,optimization=opt,new_short35_contexts=1,new_native_checkpoints=7,new_exact_cold_windows=3,new_compiled_counterparts=1,completed_monthly_model_periods_replayed=False,canonical_admission=False)
+ p=proof/(name+'.json')
+ if p.exists():assert json.loads(p.read_text())==record
+ else:p.write_text(json.dumps(record,indent=2)+'\n')
+
+
+def drain(proof,opt):
+ complete_inverse()
+ with ExitStack() as stack:
+  store=Archive(proof,'EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_'+opt+'_RAW_V1',stack)
+  assert (store.record['actual_artifact'],store.record['bytes'],store.record['sha256'])==DRAIN_SPECS[opt]
+  original,provenance=source(store,stack,DRAIN_PRODUCER,CDE_POLICY_CORE);reference=Reference(store,original)
+  projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));label='explicit-bottom9-cde-distributed-subdaily-'+opt+'-short';profile=ReadView(store,label);post=ReadView(store,label+'-initial1-counterpart')
+  q=json.loads((profile/'RESULT.json').read_text());p=json.loads((post/'RESULT.json').read_text());assert q['source']==p['source']==DRAIN_PRODUCER
+  assert q['input_root']=='/home/runner/work/_temp/proof/inputs/cde-distributed-subdaily-initial2' and p['input_root']=='/home/runner/work/_temp/proof/inputs/cde-distributed-subdaily-initial1' and p['reference_profile']=='/home/runner/work/_temp/proof/'+label
+  loc=dict(inputs=ReadView(store,'inputs/cde-distributed-subdaily-initial2'),counter_inputs=ReadView(store,'inputs/cde-distributed-subdaily-initial1'),build=built(store,projection,q['build_root']),counter=built(store,projection,p['build_root']),original_profile_path=p['reference_profile'])
+  result=audit(profile,reference,post,loc);assert result==json.loads(store.get(label+'-INDEPENDENT.json'))
+ return dict(status='ACTUAL_NEW_UBUNTU_CDE9_DISTRIBUTED_SUBDAILY_CENTRAL_ARCHIVE_SCIENCE_NATIVE_COLD_WHOLE_COMPILED_PASS_NOT_ADMITTED',optimization=opt,source=provenance,science=result,actual_CI_and_central_scientific_observations_equal=True,compiler_executions=0,model_executions=0,canonical_admission=False)
+
+
 def capsule(store,prefix,head,stack,controller):
  q=json.loads(store.get(prefix+'/RESULT.json'));raw=store.get(prefix+'/actual-producer-source.zip')
  assert q['producer_head']==head and len(raw)==q['bytes'] and SHA(raw)==q['sha256'] and not git('diff',CDE_CORE,head,'--','app','src','tools/solute','tools/vq','reference')
@@ -97,8 +128,9 @@ def windows(proof):
 
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--output',type=Path,required=True);p.add_argument('--monthly',choices=('O0','O2'));p.add_argument('--seal-monthly',action='store_true');a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--output',type=Path,required=True);p.add_argument('--monthly',choices=('O0','O2'));p.add_argument('--seal-monthly',action='store_true');p.add_argument('--drain',choices=('O0','O2'));p.add_argument('--seal-drain',action='store_true');a=p.parse_args();assert not (a.drain and a.monthly)
  if a.seal_monthly:assert a.monthly;seal_monthly(a.proof,a.monthly)
- result=monthly(a.proof,a.monthly) if a.monthly else windows(a.proof)
+ if a.seal_drain:assert a.drain;seal_drain(a.proof,a.drain)
+ result=drain(a.proof,a.drain) if a.drain else monthly(a.proof,a.monthly) if a.monthly else windows(a.proof)
  with a.output.open('x') as out:json.dump(result,out,indent=2);out.write('\n')
  print(result['status'],flush=True)
