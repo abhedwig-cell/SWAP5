@@ -74,7 +74,13 @@ def read(proof,names):
     profile=ReadView(store,role['profile']);q=json.loads((profile/'RESULT.json').read_text());item=projection[q['build_root']];build=store.view(item['archive_prefix']);assert SHA((build/'BUILD.json').read_bytes())==item['actual_BUILD_sha256']
     actual=audit(profile,Reference(),locations=dict(inputs=store.view(role['inputs']),build=build));assert actual==role['science'] and actual['status']==SCI
     from initial_profile_groundwater_activity import audit as activity
-    active=activity(profile,store.view(role['inputs']),Reference());assert active==role['activity']
+    active=activity(profile,store.view(role['inputs']),Reference())
+    # Directory enumeration order is platform dependent; bind every complete
+    # observation by its original checkpoint day, preserving all values.
+    def ordered(value):
+     rows=value['history_checkpoints'];assert len({row['day'] for row in rows})==len(rows)
+     return dict(value,history_checkpoints=sorted(rows,key=lambda row:row['day']))
+    assert ordered(active)==ordered(role['activity'])
     meta=json.loads((build/'BUILD.json').read_text());selected=meta['identity']['original_output'];start_date=meta['project']['start_date'];user=[]
     for cold in q['cold']:
      result=outputs(profile/'trajectory/original',profile/('own-'+str(cold['start']))/'original',selected,cold['start'],cold['end'],start_date);assert result==cold['exact_user_output'];user.append(result)

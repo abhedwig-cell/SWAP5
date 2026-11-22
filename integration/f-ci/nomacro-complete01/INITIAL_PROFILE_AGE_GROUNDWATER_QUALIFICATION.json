@@ -1,0 +1,77 @@
+{
+  "status": "JOINT_ORIGINAL_PRESSURE_AGE24_GROUNDWATER46_SOURCE_RAW_SCIENCE_AND_POSTIMAGES_QUALIFIED_NOT_ADMITTED",
+  "previous_qualified_candidate": "06e980f4bb17e43e4cc61cf4fc2d6ea17204526d",
+  "required_actual_parent_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2",
+  "contexts": 70,
+  "short35_contexts": 70,
+  "exact_cold_windows": 210,
+  "native_checkpoints": 490,
+  "compiler_postimages": 70,
+  "frontend_observations": 238,
+  "original_initial_pressure_nodes_per_context": 34,
+  "original_saturated_tail_adjustments_per_context": 11,
+  "raw_records": {
+    "INITIAL_PROFILE_AGE_WINDOWS_RAW_V1": {
+      "bytes": 74020677,
+      "sha256": "f4d6ba937b88d9d013af51b5d1facb075cf5c4c83f802db47f6a9d0d6e243e14"
+    },
+    "INITIAL_PROFILE_AGE_UBUNTU_O0_RAW_V1": {
+      "bytes": 14904942,
+      "sha256": "7aa44824af619181e79ea93e6e4920f872ff7392898a49728076ef7fd76ee95b"
+    },
+    "INITIAL_PROFILE_AGE_UBUNTU_O2_RAW_V1": {
+      "bytes": 14971125,
+      "sha256": "ea3af24f21ee549351aa83a7978b47dac27a5a8d684a560af5e358093efc068a"
+    },
+    "INITIAL_PROFILE_GROUNDWATER_WINDOWS_RAW_V1": {
+      "bytes": 155517656,
+      "sha256": "4ae92167aeb5f7d951c4055f4351794ac95e9f1eaf05c1d0d1e92cf6c706b186"
+    },
+    "INITIAL_PROFILE_GROUNDWATER_UBUNTU_O0_RAW_V1": {
+      "bytes": 19373453,
+      "sha256": "eacaf8d901157f5c27b73eed5a322ff9002f3bbbf91337333d448226dd86432f"
+    },
+    "INITIAL_PROFILE_GROUNDWATER_UBUNTU_O2_RAW_V1": {
+      "bytes": 19494394,
+      "sha256": "d14a7bd50c7aa37152be9462926264566fecfc2f8ff0d827a4f88728bc7fd798"
+    }
+  },
+  "water_absolute_limit": 1e-10,
+  "owning_AGE_policy": "8192 * binary64 epsilon * max(1, actual previous/current stocks and measured interval fluxes)",
+  "additional_cumulative_AGE_metric_is_owning_acceptance_gate": false,
+  "physical_process_equations_changed": false,
+  "original_initialization_equations_changed": false,
+  "new_physical_state": false,
+  "new_native_codec": false,
+  "native_interface_changed": false,
+  "mass_or_convergence_limits_changed": false,
+  "rollback_or_rejected_trial_semantics_changed": false,
+  "production_authority_changed": false,
+  "original_receipts_rewritten": false,
+  "explicit_positive_incoming_AGE_policy_cross_qualified": false,
+  "dry_surface_AGE_gap_closed": false,
+  "canonical_admission": false,
+  "whole_historical_family_closed": false,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "age_runtime": "9694eb2c4cc69f71c2ef90bc64b500fd35cb9924",
+  "groundwater_runtime": "4a4053c210ce5bdd8cb2506b79dcf9ad8b42a43f",
+  "age_contexts": 24,
+  "groundwater_contexts": 46,
+  "actual_groundwater_native_codecs": 14,
+  "actual_groundwater_activity_contexts": 46,
+  "combined_contexts": 156,
+  "combined_short35_contexts": 154,
+  "combined_year367_contexts": 2,
+  "combined_exact_cold_windows": 472,
+  "combined_native_calendar_samples": 1098,
+  "combined_compiled_postimages": 103,
+  "inherited_actual_canonical_contexts": 86,
+  "inherited_actual_admission_sha256": "db03a988270bd3ad29a745bf51d30f825d4f6455157e73d11ef2daa1d7d54b73",
+  "standalone_AGE110_admission_claimed": false,
+  "prior_AGE_periods_repeated": 0,
+  "central_read_model_executions": 0,
+  "central_read_compiler_executions": 0
+}

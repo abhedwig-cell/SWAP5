@@ -1,4 +1,4 @@
-"""Preserve actual AGE outputs and complete compiled counterparts once."""
+"""Preserve actual pressure/groundwater outputs and complete compiled counterparts once."""
 import argparse,json,subprocess,zipfile
 from pathlib import Path
 from analytical_hydraulic_archives import SHA
