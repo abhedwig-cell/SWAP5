@@ -100,7 +100,7 @@ def metadata(project):
         annual_counter_policy='original-global-or-completed-year-count-v1' if selected['flprintdt'] else 'original-print-period-counter-v1',
         timecontrol_composition='literal-original-snow-perstep-coincident-end-day-v1' if is_snow and selected['flprintdt'] else 'literal-original-snow-subdaily-coincident-end-day-v1' if is_snow else 'literal-original-bound-output-epoch-v1',
         clock_event_closure_source_sha256=sha(folder/'cde_clock_events.f90'),clock_event_coincidence_policy='actual-local-irrigation-and-end-day-existing-dtcrit-v1',clock_event_dtcrit=1e-8,
-        trial_receipt_policy='literal-original-independent-soil-candidate-bottom-cde-clock-v1',
+        trial_receipt_policy=('literal-original-all-node-prescribed-bottom-cde-clock-v1' if selected.get('paired_head_flux_cde_calendar') else 'literal-original-independent-soil-candidate-bottom-cde-clock-v1'),
         private_bridge_source_sha256=sha(Path(bridge.__file__)),private_cde_interval_fields=list(bridge.FIELDS),cde_output_state_sha256=sha(folder/'cde_interval_output_state.f90'),
         cde_output_state_version=2,cde_output_state_reals=20+project.nodes,cde_output_state_private_reals=2,cde_daily_receipt_source_sha256=sha(folder/'cde_interval_receipt.f90'),
         cde_daily_flux_policy='actual-original-six-rhs-increments-including-corrected-ssdi-v1',cde_daily_mass_guard_mg_cm2=1e-10,
