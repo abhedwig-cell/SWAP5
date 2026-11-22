@@ -280,7 +280,11 @@ def inspect(directory, *, original_output=None):
         if extended is not None and path.resolve()==(directory/extended['file']).resolve():continue
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
             original_structure=lambda s:{k:v for k,v in s.items() if k!='SWDIVD'}
-            if (path.resolve()!=frost_drain_file or sig.get('SWDIVD') not in (0,1)
+            paired_last_node_water=(paired_boundary is not None and selected['SWSOLU']==0
+                and selected['SWDRA']==1 and sig.get('SWDIVD')==0
+                and path.resolve()==(directory/(one(text,'PATHDRAIN',r"'[^']*'").strip("'").strip()
+                    +one(text,'DRFIL',r"'[^']+'").strip("'")+'.dra')).resolve())
+            if ((path.resolve()!=frost_drain_file and not paired_last_node_water) or sig.get('SWDIVD') not in (0,1)
                     or original_structure(sig) not in list(map(original_structure,drain_signatures))):
                 raise ValueError('Drainage process/state combination is not implemented: '+path.name)
         if path.suffix.lower() == '.dra':
