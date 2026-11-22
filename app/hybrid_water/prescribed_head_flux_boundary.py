@@ -118,3 +118,14 @@ def render_output_trial(source,original,watstor):
  if previous.count(old)!=1 or previous.count('implicit none\n')!=1 or source.count(previous)!=1:raise ValueError('Changed whole original paired-boundary output trial seam')
  current=previous.replace('implicit none\n','use variables,only:swbotb\nimplicit none\n',1).replace(old,new,1)
  return source.replace(previous,current,1)
+
+
+CDE_CLOCK_IMPORT='   use MOD_integral,only:hybrid_ordinary_trial_residual\n'
+CDE_CLOCK_DECL='   real(8)::hybrid_cde_clock_trial_guard,hybrid_cde_clock_candidate_bottom\n'
+CDE_CLOCK_GUARD='\n         if(swbotb==8.and..not.flboth)then\n            hybrid_cde_clock_candidate_bottom=0d0\n         else\n            hybrid_cde_clock_candidate_bottom=-kmean(NN+1)*hgrad(NN+1)\n         end if\n         hybrid_cde_clock_trial_guard=hybrid_ordinary_trial_residual(hybrid_cde_clock_candidate_bottom)\n         if(abs(hybrid_cde_clock_trial_guard)>1d-10)flnonconv=.true.'
+
+def render_cde_clock_headcalc(source):
+ for old,new in ((CDE_CLOCK_IMPORT,'   use MOD_integral,only:hybrid_output_trial_residual\n'),(CDE_CLOCK_DECL,''),(CDE_CLOCK_GUARD,'\n         if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.')):
+  if source.count(old)!=1:raise ValueError('Changed whole original CDE clock trial seam')
+  source=source.replace(old,new,1)
+ return source

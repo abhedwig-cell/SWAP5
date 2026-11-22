@@ -880,6 +880,10 @@ end module plant_interface""")
     patched=implicit_groundwater_trial_build(output,donor_build,project,patched)
     if lower_boundary==9 and age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt']):
         from prescribed_head_flux_boundary import render_timecontrol,render_output_trial
+        if age_calendar.get('cde_clock_output'):
+            from prescribed_head_flux_boundary import render_cde_clock_headcalc
+            head=output/'headcalc.f90'
+            head.write_text(render_cde_clock_headcalc(head.read_text(encoding='cp1252')),encoding='cp1252')
         integral=output/'integral.f90'
         integral.write_text(render_output_trial(integral.read_text(encoding='cp1252'),
             (donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252'),
