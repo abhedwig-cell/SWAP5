@@ -47,7 +47,7 @@ def selection(directory,original_output=True):
     if not math.isfinite(number) or not lower<=number<=upper:return None
     if values and stamp<=values[-1][0]:return None
     values.append((stamp,number))
-   if len(values)<2 or values[0][0]>start or values[-1][0]<end:return None
+   if not values or not (any(start<=stamp<=end for stamp,_ in values) or values[0][0]<=start and values[-1][0]>=end):return None
    tables[axis]=len(values)
  except (ValueError,OverflowError):return None
  return dict(policy=POLICY,kind=('water','cde','age')[s['SWSOLU']],drainage=s['SWDRA'],initial=s['SWINCO'],table_rows=tables,physical_equations_changed=False,new_native_codec=False)
