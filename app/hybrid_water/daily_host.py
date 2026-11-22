@@ -879,7 +879,11 @@ end module plant_interface""")
     from implicit_groundwater_trial import apply_build as implicit_groundwater_trial_build
     patched=implicit_groundwater_trial_build(output,donor_build,project,patched)
     if lower_boundary==9 and age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt']):
-        from prescribed_head_flux_boundary import render_timecontrol
+        from prescribed_head_flux_boundary import render_timecontrol,render_output_trial
+        integral=output/'integral.f90'
+        integral.write_text(render_output_trial(integral.read_text(encoding='cp1252'),
+            (donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252'),
+            (donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')),encoding='cp1252')
         path=output/'timecontrol.f90'
         if 'timecontrol' not in patched or not path.is_file():raise ValueError('Missing actual original paired-boundary output clock owner')
         path.write_text(render_timecontrol(path.read_text(encoding='cp1252')),encoding='cp1252')

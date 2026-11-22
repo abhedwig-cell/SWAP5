@@ -108,3 +108,13 @@ def render_readswap(source,original_start_clock,boundary):
   if source.count(old)!=1:raise ValueError('Changed original paired-table validation clock')
   source=source.replace(old,f"call checkdate(ifnd,dates,tend,{original_start_clock:.17g}d0,'{key}','readswap//swbotb=9      ')",1)
  return source
+
+
+def render_output_trial(source,original,watstor):
+ from age_output_clock import trial_receipt_source
+ previous=trial_receipt_source(original,watstor)
+ old="if(swmacro/=0.or.swsnow/=0.or.swdra/=1)error stop 'Foreign original trial receipt domain'"
+ new="if(swmacro/=0.or.swsnow/=0.or.swbotb/=9.or.swdra<0.or.swdra>1)error stop 'Foreign original trial receipt domain'"
+ if previous.count(old)!=1 or previous.count('implicit none\n')!=1 or source.count(previous)!=1:raise ValueError('Changed whole original paired-boundary output trial seam')
+ current=previous.replace('implicit none\n','use variables,only:swbotb\nimplicit none\n',1).replace(old,new,1)
+ return source.replace(previous,current,1)
