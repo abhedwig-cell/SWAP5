@@ -3,7 +3,7 @@ import argparse,io,json,math,re,struct,sys,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'app/hybrid_water')]
-from explicit_bottom9_source_inverse import BASE,CORE,complete_inverse,blob,norm,git,producer_epoch,PRE_CLOCK,CLOCK_ONLY
+from explicit_bottom9_source_inverse import BASE,CORE,complete_inverse,blob,norm,git,producer_epoch,PRE_CLOCK,CLOCK_ONLY,CDE_CORE
 from analytical_hydraulic_archives import SHA
 from initial_profile_groundwater_science import ledger
 from initial_profile_age_science import native as age_native
@@ -17,7 +17,7 @@ import prescribed_head_flux_boundary as boundary
 def audit(profile,reference,postimage,locations=None):
  complete_inverse();q=json.loads((profile/'RESULT.json').read_text());kind=q['kind'];assert kind=='water' and q['case']=='water-last-node-drainage'
  assert q['status']=='ACTUAL_EXPLICIT_PAIRED_HEAD_FLUX_PHYSICAL_NATIVE_EXACT_COLD_USER_OUTPUT_PASS_NOT_ADMITTED' and len(q['cold'])==3
- epoch=producer_epoch(q['source']);assert epoch=='last-node-admission'
+ epoch=producer_epoch(q['source']);assert epoch in ('last-node-admission','cde-calendar')
  readers=('tests/nomacro_drainage/initial_profile_groundwater_science.py','tests/nomacro_drainage/initial_profile_age_science.py','tests/nomacro_drainage/initial_profile_age_ledger.py','tests/nomacro_drainage/initial_pressure_profile_science.py','tests/nomacro_drainage/analytical_calendar_native_state.py','tests/nomacro_scheduled_subsurface/implicit_conductivity_forensics.py','tests/nomacro_scheduled_subsurface/original_output_files.py')
  for name in readers:assert norm((ROOT/name).read_bytes())==blob(BASE,name),name
  inputs=locations['inputs'] if locations else Path(q['input_root']);build=locations['build'] if locations else Path(q['build_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];assert SHA((build/'BUILD.json').read_bytes())==q['trajectory']['build_sha256']
@@ -34,7 +34,7 @@ def audit(profile,reference,postimage,locations=None):
  selected=identity['original_output']
  assert selected['nprintday']==1 and selected['flprintdt'] is False and selected['swmonth']==selected['swodat']==0 and selected['requested_period']==1
  if selected['nprintday']>1 or selected['flprintdt']:
-  assert epoch=='composed-clock'
+  assert epoch in ('composed-clock','cde-calendar')
   from age_output_clock import render_timecontrol
   time_source=render_timecontrol(time_source)
   import original_output
@@ -42,7 +42,7 @@ def audit(profile,reference,postimage,locations=None):
   expected_integral=boundary.render_output_trial(original_output.render_integral(original_integral,watstor,selected),original_integral,watstor)
   assert (build/'integral.f90').read_text(encoding='cp1252')==expected_integral
  assert (build/'timecontrol.f90').read_text(encoding='cp1252')==boundary.render_timecontrol(time_source)
- source_epoch={'pre-clock':PRE_CLOCK,'clock-only':CLOCK_ONLY,'composed-clock':CORE,'last-node-admission':CORE}[epoch]
+ source_epoch={'pre-clock':PRE_CLOCK,'clock-only':CLOCK_ONLY,'composed-clock':CORE,'cde-calendar':CDE_CORE,'last-node-admission':CORE}[epoch]
  for field,path in ((identity['host'],'app/hybrid_water/daily_host.py'),(identity['lower_boundary_receipt']['source_sha256'],'app/hybrid_water/prescribed_head_flux_boundary.py')):
   raw=blob(source_epoch,path);assert field in {SHA(raw),SHA(raw.replace(b'\n',b'\r\n'))},'Actual producer raw SOURCE digest differs from its complete committed epoch'
 

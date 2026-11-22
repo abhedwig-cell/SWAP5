@@ -9,6 +9,7 @@ CLOCK_ONLY='4d4fb1b8e059f9137ec217e52f262222ead6ce1c'
 CORE='7979888d70950b27c2fc30c92320ff5bb62d9a53'
 LAST_NODE_CORE='57bd7fecbbb6c3944b4f28cfc29cb368d371398a'
 CDE_CORE='dcf509f80e77866b24ca06a021df3e3e53fd3ec0'
+CDE_POLICY_CORE='a2039fa529adb74bec571f493bc4c541dddf2a9a'
 ADAPTER='app/hybrid_water/experimental_project.py'
 FROZEN_CLOCK_HELPER='d905cad376b42e709c3bf7949dbc8faebf119f24'
 MODULE='app/hybrid_water/prescribed_head_flux_boundary.py'
@@ -43,6 +44,9 @@ CDE_SELECT='    from prescribed_head_flux_boundary import selection as paired_se
 CDE_DICT="        **({'paired_head_flux_cde_calendar':True} if paired_bottom else {}),\n"
 
 def source_before_cde(path,raw):
+ if path=='app/hybrid_water/cde_clock_output.py':
+  old=b"trial_receipt_policy='literal-original-independent-soil-candidate-bottom-cde-clock-v1',";new=b"trial_receipt_policy=('literal-original-all-node-prescribed-bottom-cde-clock-v1' if selected.get('paired_head_flux_cde_calendar') else 'literal-original-independent-soil-candidate-bottom-cde-clock-v1'),"
+  assert raw.count(new)==1;raw=raw.replace(new,old,1)
  if path==MODULE:
   assert raw.count(CDE_APPEND.encode())==1;return raw.replace(CDE_APPEND.encode(),b'',1)
  if path==HOST:
@@ -54,18 +58,18 @@ def source_before_cde(path,raw):
 
 
 def checked_cde_delta():
- assert not git('diff',CDE_CORE,'--',*SURFACES),'Unreviewed actual CDE paired-calendar composition source'
+ assert not git('diff',CDE_POLICY_CORE,'--',*SURFACES),'Unreviewed actual CDE paired-calendar composition source'
  assert set(git('diff','--name-only',LAST_NODE_CORE,CDE_CORE,'--',*SURFACES).decode().splitlines())==CDE_PATHS
  functions=lambda value:{n.name:ast.dump(n,include_attributes=False) for n in ast.parse(value).body if isinstance(n,ast.FunctionDef)}
  for path in CDE_PATHS:
-  raw=norm((ROOT/path).read_bytes());assert raw==blob(CDE_CORE,path)
+  raw=norm((ROOT/path).read_bytes());assert raw==blob(CDE_POLICY_CORE,path)
   assert source_before_cde(path,raw)==blob(LAST_NODE_CORE,path),'Incomplete whole CDE calendar source inverse: '+path
   before,after=functions(blob(LAST_NODE_CORE,path)),functions(raw)
   if path==MODULE:
    assert set(after)==set(before)|{'render_cde_clock_headcalc'} and all(before[name]==after[name] for name in before)
   else:
    expected='build' if path==HOST else 'active_selection'
-   assert before.keys()==after.keys() and {name for name in before if before[name]!=after[name]}=={expected}
+   assert before.keys()==after.keys() and {name for name in before if before[name]!=after[name]}==({expected,'metadata'} if path=='app/hybrid_water/cde_clock_output.py' else {expected})
    if path!=HOST:assert blob(LAST_NODE_CORE,path)==blob(BASE,path),'CDE predecessor SOURCE metadata view is not exact'
  return True
 
@@ -117,6 +121,7 @@ def complete_inverse():
  return frozen_clock_inverse()()
 
 def producer_epoch(sha):
+ if not git('diff',CDE_POLICY_CORE,sha,'--',*SURFACES):return 'cde-calendar'
  if not git('diff',CDE_CORE,sha,'--',*SURFACES):return 'cde-calendar'
  if not git('diff',LAST_NODE_CORE,sha,'--',*SURFACES):return 'last-node-admission'
  for label,epoch in (('pre-clock',PRE_CLOCK),('clock-only',CLOCK_ONLY),('composed-clock',CORE)):

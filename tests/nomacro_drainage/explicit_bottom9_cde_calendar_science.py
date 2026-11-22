@@ -132,7 +132,7 @@ def audit(profile,reference,postimage,locations=None):
   if kind=='cde':assert sum(row['solute_ledger_mg_cm2'][5] for row in rows)>0
  else:
   for row in rows:
-   assert row['stock_start_cm']==row['stock_end_cm']==rows[0]['stock_start_cm'] and row['pressure_head_cm'][-1]==0
+   assert row['stock_start_cm']==row['stock_end_cm']==rows[0]['stock_start_cm'] and row['pressure_head_cm']==[0.]*34 and row['stock_end_cm'][1]==0
    assert abs(row['external_flux_cm'][0]-1.)<=1e-10 and abs(row['external_flux_cm'][-1]-1.)<=1e-10 and max(map(abs,row['external_flux_cm'][1:-1]))==0
  native=[]
  for path in (profile/'trajectory').glob('accepted-column-1-day-*.zip'):

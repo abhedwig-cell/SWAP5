@@ -3,7 +3,7 @@ import argparse,io,json,math,re,struct,sys,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'app/hybrid_water')]
-from explicit_bottom9_source_inverse import BASE,CORE,complete_inverse,blob,norm,git,producer_epoch,PRE_CLOCK,CLOCK_ONLY
+from explicit_bottom9_source_inverse import BASE,CORE,complete_inverse,blob,norm,git,producer_epoch,PRE_CLOCK,CLOCK_ONLY,CDE_CORE
 from analytical_hydraulic_archives import SHA
 from initial_profile_groundwater_science import ledger
 from initial_profile_age_science import native as age_native
@@ -33,7 +33,7 @@ def audit(profile,reference,postimage,locations=None):
  time_source=(reference/'build/swap-selected/timecontrol.f90').read_text(encoding='cp1252')
  selected=identity['original_output']
  if selected['nprintday']>1 or selected['flprintdt']:
-  assert epoch=='composed-clock'
+  assert epoch in ('composed-clock','cde-calendar')
   from age_output_clock import render_timecontrol
   time_source=render_timecontrol(time_source)
   import original_output
@@ -41,7 +41,7 @@ def audit(profile,reference,postimage,locations=None):
   expected_integral=boundary.render_output_trial(original_output.render_integral(original_integral,watstor,selected),original_integral,watstor)
   assert (build/'integral.f90').read_text(encoding='cp1252')==expected_integral
  assert (build/'timecontrol.f90').read_text(encoding='cp1252')==boundary.render_timecontrol(time_source)
- source_epoch={'pre-clock':PRE_CLOCK,'clock-only':CLOCK_ONLY,'composed-clock':CORE}[epoch]
+ source_epoch={'pre-clock':PRE_CLOCK,'clock-only':CLOCK_ONLY,'composed-clock':CORE,'cde-calendar':CDE_CORE}[epoch]
  for field,path in ((identity['host'],'app/hybrid_water/daily_host.py'),(identity['lower_boundary_receipt']['source_sha256'],'app/hybrid_water/prescribed_head_flux_boundary.py')):
   raw=blob(source_epoch,path);assert field in {SHA(raw),SHA(raw.replace(b'\n',b'\r\n'))},'Actual producer raw SOURCE digest differs from its complete committed epoch'
 
