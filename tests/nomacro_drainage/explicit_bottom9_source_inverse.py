@@ -7,6 +7,8 @@ BASE='8ae1661391ed35125421290de3fb5d95ec8cd5b5'
 PRE_CLOCK='c0952e394647179d591a855fcaf1a7270871fb2b'
 CLOCK_ONLY='4d4fb1b8e059f9137ec217e52f262222ead6ce1c'
 CORE='7979888d70950b27c2fc30c92320ff5bb62d9a53'
+LAST_NODE_CORE='57bd7fecbbb6c3944b4f28cfc29cb368d371398a'
+ADAPTER='app/hybrid_water/experimental_project.py'
 FROZEN_CLOCK_HELPER='d905cad376b42e709c3bf7949dbc8faebf119f24'
 MODULE='app/hybrid_water/prescribed_head_flux_boundary.py'
 HOST='app/hybrid_water/daily_host.py'
@@ -25,8 +27,26 @@ TRIAL_FUNCTION='\n\ndef render_output_trial(source,original,watstor):\n from age
 CLOCK_LATE="    if lower_boundary==9 and age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt']):\n        from prescribed_head_flux_boundary import render_timecontrol\n        path=output/'timecontrol.f90'\n        if 'timecontrol' not in patched or not path.is_file():raise ValueError('Missing actual original paired-boundary output clock owner')\n        path.write_text(render_timecontrol(path.read_text(encoding='cp1252')),encoding='cp1252')\n"
 FINAL_LATE="    if lower_boundary==9 and age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt']):\n        from prescribed_head_flux_boundary import render_timecontrol,render_output_trial\n        integral=output/'integral.f90'\n        integral.write_text(render_output_trial(integral.read_text(encoding='cp1252'),\n            (donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252'),\n            (donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')),encoding='cp1252')\n        path=output/'timecontrol.f90'\n        if 'timecontrol' not in patched or not path.is_file():raise ValueError('Missing actual original paired-boundary output clock owner')\n        path.write_text(render_timecontrol(path.read_text(encoding='cp1252')),encoding='cp1252')\n"
 
+OLD_DRAIN_GUARD="            if (path.resolve()!=frost_drain_file or sig.get('SWDIVD') not in (0,1)\n"
+NEW_DRAIN_GUARD='''            paired_last_node_water=(paired_boundary is not None and selected['SWSOLU']==0
+                and selected['SWDRA']==1 and sig.get('SWDIVD')==0
+                and path.resolve()==(directory/(one(text,'PATHDRAIN',r"'[^']*'").strip("'").strip()
+                    +one(text,'DRFIL',r"'[^']+'").strip("'")+'.dra')).resolve())
+            if ((path.resolve()!=frost_drain_file and not paired_last_node_water) or sig.get('SWDIVD') not in (0,1)
+'''
+
+def checked_last_node_delta():
+ assert not git('diff',LAST_NODE_CORE,'--',*SURFACES),'Unreviewed paired-boundary last-node admission source'
+ assert git('diff','--name-only',CORE,LAST_NODE_CORE,'--',*SURFACES).decode().splitlines()==[ADAPTER]
+ raw=norm((ROOT/ADAPTER).read_bytes());assert raw==blob(LAST_NODE_CORE,ADAPTER)
+ assert raw.count(NEW_DRAIN_GUARD.encode())==1 and raw.replace(NEW_DRAIN_GUARD.encode(),OLD_DRAIN_GUARD.encode(),1)==blob(CORE,ADAPTER),'Incomplete whole last-node water admission inverse'
+ functions=lambda value:{n.name:ast.dump(n,include_attributes=False) for n in ast.parse(value).body if isinstance(n,ast.FunctionDef)}
+ before,after=functions(blob(CORE,ADAPTER)),functions(raw)
+ assert before.keys()==after.keys() and {name for name in before if before[name]!=after[name]}=={'inspect'}
+ return True
+
 def checked_final_delta():
- assert not git('diff',CORE,'--',*SURFACES),'Unreviewed final paired-boundary physical source'
+ checked_last_node_delta()
  assert git('diff','--name-only',CLOCK_ONLY,CORE,'--',*SURFACES).decode().splitlines()==[HOST,MODULE]
  for path in (HOST,MODULE):assert norm((ROOT/path).read_bytes())==blob(CORE,path)
  assert blob(CORE,MODULE)==blob(CLOCK_ONLY,MODULE)+TRIAL_FUNCTION.encode(),'Foreign whole literal trial renderer append'
@@ -39,7 +59,7 @@ class IntermediateFile:
  def read_text(self,encoding='utf8'):return self.read_bytes().decode(encoding)
 
 class CheckedIntermediateRoot:
- def __truediv__(self,path):return IntermediateFile(str(path)) if str(path) in (HOST,MODULE) else ROOT/path
+ def __truediv__(self,path):return IntermediateFile(str(path)) if str(path) in (HOST,MODULE,ADAPTER) else ROOT/path
  def __fspath__(self):return os.fspath(ROOT)
  def __str__(self):return str(ROOT)
 
@@ -62,6 +82,7 @@ def complete_inverse():
  return frozen_clock_inverse()()
 
 def producer_epoch(sha):
+ if not git('diff',LAST_NODE_CORE,sha,'--',*SURFACES):return 'last-node-admission'
  for label,epoch in (('pre-clock',PRE_CLOCK),('clock-only',CLOCK_ONLY),('composed-clock',CORE)):
   if not git('diff',epoch,sha,'--',*SURFACES):return label
  raise AssertionError('Unreviewed actual explicit9 producer source')
