@@ -832,6 +832,12 @@ end module plant_interface""")
                 (output/'readswap.f90').write_text(render_readswap(source,project.start_clock,lower_boundary),encoding='cp1252')
                 if 'readswap' in patched:raise ValueError('Multiple original reader state owners')
                 patched.append('readswap')
+            if lower_boundary==9:
+                from prescribed_head_flux_boundary import render_timecontrol
+                path=output/'timecontrol.f90'
+                source=(path if path.exists() else donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
+                path.write_text(render_timecontrol(source),encoding='cp1252')
+                if 'timecontrol' not in patched:patched.append('timecontrol')
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
     from surface_schedule import enabled as surface_schedule_enabled
     scheduled_pond=surface_schedule_enabled(project)

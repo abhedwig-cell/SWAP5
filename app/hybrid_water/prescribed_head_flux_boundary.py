@@ -63,7 +63,7 @@ def boundary_metadata(project,sha,app,root):
  if selected_boundary(project)!=9:
   from implicit_groundwater_state import boundary_metadata as previous
   return previous(project,sha,app,root)
- return dict(policy=POLICY,source_sha256=sha(app/'prescribed_head_flux_boundary.py'),template_sha256=sha(app/'hybrid_step_budget.f90'),effective_SWBOTB=9,prescribed_external_flux_unchanged=True,all_actual_node_storage_included=True,groundwater_reaction_substituted=False,new_native_codec=False)
+ return dict(policy=POLICY,source_sha256=sha(app/'prescribed_head_flux_boundary.py'),template_sha256=sha(app/'hybrid_step_budget.f90'),effective_SWBOTB=9,prescribed_external_flux_unchanged=True,all_actual_node_storage_included=True,groundwater_reaction_substituted=False,new_native_codec=False,strict_retry_provider_sha256=sha(app/'implicit_conductivity_retry.py'),strict_retry_predicate='swmacro==0.and.swbotb==9',strict_retry_clock_floor_ulps=8)
 
 
 def render_budget(source,boundary):
@@ -81,8 +81,21 @@ def render_headcalc(source,boundary):
   return previous(source,boundary)
  for anchor in ('         budget_step=projected_water_residual()', '            budget_step = projected_water_residual()'):
   if source.count(anchor)!=1:raise ValueError('Changed original independent convergence/final water receipt')
- # Both original equations and the two mandatory trial guards are unchanged.
- return source
+ # Reuse the admitted original rollback rule. The original DTMIN fallback
+ # otherwise continues an unconverged overconstrained trial indefinitely.
+ from implicit_conductivity_retry import headcalc_source
+ result=headcalc_source(source);old='swmacro==0.and.swkimpl==1'
+ if result.count(old)!=1:raise ValueError('Changed qualified original rollback predicate')
+ return result.replace(old,'swmacro==0.and.swbotb==9',1)
+
+
+def render_timecontrol(source):
+ from implicit_conductivity_retry import time_source
+ result=time_source(source)
+ for old,new in [('use variables,only:swkimpl','use variables,only:swbotb'),('swmacro==0.and.swkimpl==1','swmacro==0.and.swbotb==9')]:
+  if result.count(old)!=1:raise ValueError('Changed qualified original retry clock/predicate')
+  result=result.replace(old,new,1)
+ return result
 
 
 def render_readswap(source,original_start_clock,boundary):
