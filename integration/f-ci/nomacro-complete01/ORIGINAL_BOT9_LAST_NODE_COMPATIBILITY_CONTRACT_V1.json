@@ -1,0 +1,64 @@
+{
+  "status": "ORIGINAL_EXPLICIT9_LAST_NODE_CONSISTENCY_AND_UNCHANGED_FLUX_OWNER_CONTRACT_NO_IMPLEMENTATION",
+  "source": "8ae1661391ed35125421290de3fb5d95ec8cd5b5",
+  "original_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "original_fragments": {
+    "headcalc.f90:143-154": {
+      "member_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "first_line": 143,
+      "last_line": 154,
+      "source": "         else\n!           groundwater below soil profile\n            fllowgwl = .TRUE.\n            hbot     = gwlinp - z(numnod) + 0.5d0*dz(numnod)\n         end if\n      end if\n\n   else\n!     for all other swbotb cases\n      NN = numnod\n      if (swbotb == 9) NN = numnod - 1\n   end if"
+    },
+    "headcalc.f90:541-551": {
+      "member_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "first_line": 541,
+      "last_line": 551,
+      "source": "      F(i) = (theta(i) - thetm1(i)) * FrArMtrx(i) * dz(i) / dt + sink(i) - source(i) + qrot(i) - kmean(i) * hgrad(i) + kmean(i+1) * hgrad(i+1)\n   end do\n\n!  for bottom BC\n   if (swbotb == 1 .AND. (.NOT.fllowgwl)) then\n      hgrad(NN+1) = h(NN)/(z(nn)-gwlinp) + 1.0d0\n   else if (swbotb == 5 .OR. (swbotb == 1 .AND. fllowgwl)) then\n      hgrad(NN+1) = (h(NN) - hbot) / disnod(NN+1) + 1.0d0\n   else if (swbotb == 9) then\n      hgrad(NN+1) = (h(NN) - h(NN+1)) / disnod(NN+1) + 1.0d0\n   end if"
+    },
+    "headcalc.f90:586-600": {
+      "member_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "first_line": 586,
+      "last_line": 600,
+      "source": "         ! extra groundwater flux might be added\n         if (sw4 == 1) qbot = qbot + afgen(qbotab,mabbc*2,t1900+dt)\n         F(NN) = F(NN) - qbot     \n      \n      else if (swbotb == 5 .OR. (swbotb == 1 .AND. fllowgwl)) then\n         \n         ! pressure head at lower boundary specified\n         F(NN) = F(NN) + kmean(NN+1) * hgrad(NN+1)\n\n      else if (swbotb == 9) then\n         \n         ! pressure head at lower boundary specified\n         F(NN) = F(NN) + kmean(NN+1) * hgrad(NN+1)\n         !!!F(NN) = F(NN) - qbot\n      "
+    },
+    "headcalc.f90:663-665": {
+      "member_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "first_line": 663,
+      "last_line": 665,
+      "source": "!  special case when SwKimpl = 1\n   if (SwKimpl == 1) then\n      if (swbotb == 9) call swap_error ('headcalc', 'swbotb = 9 AND swkimpl = 1 not yet implemented')"
+    },
+    "boundbottom.f90:143-154": {
+      "member_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+      "first_line": 143,
+      "last_line": 154,
+      "source": "      ! simultaneously: fixed h and fixed q at bottom\n      if (swbotb == 9) then\n         qbot            = afgen (qbotab,mabbc*2,t1900+dt)\n         hbot            = afgen (hbotab,mabbc*2,t1900+dt)\n         thetabot        = watcon(numnod,hbot)\n         kbot            = hconduc(numnod,hbot,thetabot,rfcp(numnod))\n         kmean(numnod+1) = kbot\n         h(numnod)       = hbot - (qbot/kbot + 1.0d0) * disnod(numnod+1)\n         theta(numnod)   = watcon(numnod,h(numnod))\n         k(numnod)       = hconduc(numnod,h(numnod),theta(numnod),rfcp(numnod))\n      end if\n"
+    },
+    "fluxes.f90:24-46": {
+      "member_sha256": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550",
+      "first_line": 24,
+      "last_line": 46,
+      "source": "! ----------------------------------------------------------------------\n\n! --- determine qbot if not specified\n!      if (swbotb == 5 .OR. swbotb == 7 .OR. swbotb == 8 .OR. swbotb == -2 .OR. (swbotb == 1 .AND. fllowgwl) .OR. swbotb == 9) then\n      if (swbotb == 5 .OR. swbotb == 7 .OR. swbotb == 8 .OR. swbotb == -2 .OR. (swbotb == 1 .AND. fllowgwl)) then\n         qbot = qtop + qrosum + qdrtot  + (volact-volm1)/dt - qssdisum\n         if (swmacro == 1) qbot = qbot - QMaPo\n      end if\n\n! --- calculate fluxes (cm/d) from changes in volume per compartment\n      i      = numnod+1\n      q(i)   = qbot\n      inq(i) = inq(i) + q(i)*dt\n      do i = numnod, 1, -1\n         if (swmacro == 0) then\n            q(i) = - (theta(i)-thetm1(i)+qimmob(i))*dz(i)/dt + q(i+1)-qrot(i)+qssdi(i)\n         else\n            q(i) = - (theta(i)-thetm1(i)+qimmob(i))*FrArMtrx(i)*dz(i)/dt + q(i+1)-qrot(i)+QExcMpMtx(i)+qssdi(i)\n         end if\n         q(i)   = q(i) - sum(qdra(1:nrlevs,i))\n         inq(i) = inq(i) + q(i)*dt\n      end do\n"
+    }
+  },
+  "development_class": "B_NEW_COUPLING_OF_UNCHANGED_ORIGINAL_PROCESS_IMPLEMENTATIONS",
+  "original_last_node_pressure": "h(n)=hbot-(qbot/kbot+1)*disnod(n+1), with kbot evaluated at prescribed hbot",
+  "actual_Richards_unknowns": "1..n-1; its last lower-interface flow is -kmean(n)*hgrad(n), not prescribed qbot",
+  "sign_convention": "Original q is positive upward; original Fluxes recurrence is authoritative",
+  "last_node_compatibility_identity": "(theta_n-thetm1_n)*dz_n = dt*(qbot-q_Darcy_n-qrot_n+qssdi_n-sum(qdra(:,n)))",
+  "whole_water_owner": "Use every actual node plus pond/Snow stocks and actual prescribed external qbot. Never reconstruct qbot from total storage or substitute the SWBOTB1 groundwater reaction.",
+  "mandatory_controls": [
+    "Keep SWKIMPL1 plus BOT9 original not-yet-implemented refusal.",
+    "Verify actual original paired DATE9A/HBOT9 and DATE9B/QBOT9 schedules independently, including both AFGEN clocks and table input hashes.",
+    "Measure the actual final-node pressure relation, retention, Darcy interface, sinks and storage on accepted trials before original Fluxes reconstructs reporting interfaces.",
+    "A nonzero compatibility defect must cause unchanged water-balance rejection or explicit reference-defect classification; no tail storage exclusion, external compensating source, flux substitution or tolerance relaxation.",
+    "Start with an actual original-reference physical pilot; if it fails, preserve raw first refusal before choosing a bounded coupling.",
+    "Bundle supported water/CDE/AGE state, original initialization and calendar compositions by the same boundary owner only after the physical pilot; exact native/cold/O0/O2 and integrated compiled postimages remain required."
+  ],
+  "water_absolute_limit": 1e-10,
+  "production_changed": false,
+  "reference_equations_changed": false,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "scientific_qualification": "NOT_QUALIFIED",
+  "canonical_admission": false
+}
