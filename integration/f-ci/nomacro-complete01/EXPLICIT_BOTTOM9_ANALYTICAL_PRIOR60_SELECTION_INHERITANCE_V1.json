@@ -1,0 +1,2056 @@
+{
+  "status": "ALL60_QUALIFIED_PRIOR_PAIRED9_ACTUAL_INPUTS_HAVE_EXACT_UNCHANGED_SELECTION_UNDER_ANALYTICAL_EXTENSION",
+  "old_selection_source": "a2039fa529adb74bec571f493bc4c541dddf2a9a",
+  "new_selection_source": "9c9e35ca34c5831505425ed7546f58c311ecb8c0",
+  "whole_old_module_sha256": "687e3241de5620f29ed64294876d5dc446fe90ad9b2558e6896959f01fb52242",
+  "whole_new_module_sha256": "fbb586a75f88ac9ece332672cdb1be961c4b0e8fdd3fa7e33dbe5d5e723a177a",
+  "only_changed_APP_SRC_function": "selection",
+  "all_other_APP_SRC_TOOL_REFERENCE_bytes_exact": true,
+  "all_non9_routes_return_before_modified_guard": true,
+  "observations": [
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-daily-O0-composition-v1",
+      "actual_prior_RESULT_sha256": "01844157b8187ba89d48dbc615a0b953394c2ccd232ff984ac8c56d21e4dc81c",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "a2658de64931e85c1d7b0286a0d8471283098e6a039b074e94a12611b5580ca6",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-daily-O2-composition-v1",
+      "actual_prior_RESULT_sha256": "e77eb19b395532af1e35dbb11dc63199860503de6d5e0e00798ce03ad3d3d5e9",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "a2658de64931e85c1d7b0286a0d8471283098e6a039b074e94a12611b5580ca6",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-periodic-O0-composition-v1",
+      "actual_prior_RESULT_sha256": "324865d19f7fc8b2b8ab28f28879a57865d207229f144a364ef2ce0af74d0651",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "808157c1dd2f8c9ffe9406fdf69681fd7f2f6d9fe0cfcd043471047be3eb9034",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-periodic-O2-composition-v1",
+      "actual_prior_RESULT_sha256": "d94bbddd77c11a713c28382a230c5adb7aa7375f7333df43e29b0cbea909aa4f",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "808157c1dd2f8c9ffe9406fdf69681fd7f2f6d9fe0cfcd043471047be3eb9034",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-monthly-O0-composition-v1",
+      "actual_prior_RESULT_sha256": "a52b3044d662e08b8824c12c604af668a9ec78f3b63f03e761673eca7461bdcf",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "3e6aa331901e172cd7d5aff3908c03e1148651211ebc109467ed079dd915ac43",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-monthly-O2-composition-v1",
+      "actual_prior_RESULT_sha256": "f04135bb9db91588d9b80d7731604b60509965f1b4d326d750f78f78f9d2e21c",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "3e6aa331901e172cd7d5aff3908c03e1148651211ebc109467ed079dd915ac43",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-mean6-O0-composition-v1",
+      "actual_prior_RESULT_sha256": "21e059b81c3c6fb1f7a4604f5906e9d23443e33fde49deae13423ffd607d1a01",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "cce401d37f34f4090a85c6377ca72c8e98c9497b8d0f1424721826954cfdb665",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-mean6-O2-composition-v1",
+      "actual_prior_RESULT_sha256": "59fc8fce5bd22b3175d82a2962a144fde1633bff80327d105a1fe044c1b31e3d",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "cce401d37f34f4090a85c6377ca72c8e98c9497b8d0f1424721826954cfdb665",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-cde-pressure-daily-O2-composition-v1",
+      "actual_prior_RESULT_sha256": "16acf5354bbbcd94ec3ec3c09fd1840e2e93cf9a2e60b94816c18f7bcb6dd845",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "30b3b5055229a6a5c3ef72c1e07e6784d33c29256eee07ba8b9030f8714b161b",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-cde-pressure-mean6-O0-composition-v1",
+      "actual_prior_RESULT_sha256": "6a496f6cc17d083289bac40270dffa7f27a1466a897763847cfdd00e1a40a723",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "cc45febdfd626572772847cc5fbc664858ff3d44e2d0e7cf17c8a495a80ea855",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-cde-pressure-mean6-O2-composition-v1",
+      "actual_prior_RESULT_sha256": "1aac60096f82bcb42ea660eff7be92428178bf66a2faad826212294bd6d2de7d",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "cc45febdfd626572772847cc5fbc664858ff3d44e2d0e7cf17c8a495a80ea855",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-daily-O2-composition-v1",
+      "actual_prior_RESULT_sha256": "89f2b06dd8ddc24d56b2970c04c435a7cea2ad3998325084bc828a0577d371dd",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "0684e464afbd29bcac56690f9df5ffef71f2918dc97fa392abfbcbceb856746e",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-monthly-O0-composition-v1",
+      "actual_prior_RESULT_sha256": "8017b4b5202a1a2f7d516a33467e43fac9d450330edfc70ee367fc33d7a7c848",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "f2cd8adf7e4f5cf5fb1108d9d55078cc417ef88df97535b112a235cfad2f8381",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-monthly-O2-composition-v1",
+      "actual_prior_RESULT_sha256": "0effa717127e367acbb5eeaa7d82408f00ec911943188a13f8595887c52ff214",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "f2cd8adf7e4f5cf5fb1108d9d55078cc417ef88df97535b112a235cfad2f8381",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-mean6-O0-composition-v1",
+      "actual_prior_RESULT_sha256": "bc815fd68547595d27ffd02d31ea1c63096c1780db35fb8ef2ed36cc572eb42b",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "ee59ddc4ce7405446440acdde206b20ba9c26f863c99aee1a1d52930ed939149",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-mean6-O2-composition-v1",
+      "actual_prior_RESULT_sha256": "1126b04af4de92e5849836e668ea2499223e45cb2b506b0e3183c5e9d75d6e8c",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "ee59ddc4ce7405446440acdde206b20ba9c26f863c99aee1a1d52930ed939149",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-cde-pressure-daily-O0-v1",
+      "actual_prior_RESULT_sha256": "38c42d7b7ed0236a9b7703edb7fd6b0a2e01f28c118df16bd5f711d33721df91",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "30b3b5055229a6a5c3ef72c1e07e6784d33c29256eee07ba8b9030f8714b161b",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-daily-O0-v1",
+      "actual_prior_RESULT_sha256": "b6c47b70307be31445908330be636d0a738751f10fbea3029f3b481e622b3eb5",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "0684e464afbd29bcac56690f9df5ffef71f2918dc97fa392abfbcbceb856746e",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-distributed-drain-water-O0-v1",
+      "actual_prior_RESULT_sha256": "8bb3c78422377c5663d9718c6118daa76fd5dbf8463303a2bbb8a850b5dfa6e5",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "4b66d8b9b17869d55fb98f63bbbd03a2b37b9070febf4dbd2a488245878d494b",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-distributed-drain-water-O2-v1",
+      "actual_prior_RESULT_sha256": "120b39daa8ef277219840319724b1d21f67bc43296b6d22d914968f914814d2f",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "4b66d8b9b17869d55fb98f63bbbd03a2b37b9070febf4dbd2a488245878d494b",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-distributed-drain-cde-O0-v1",
+      "actual_prior_RESULT_sha256": "777e1dbc268a2bafffbbf645d522190d4d4e6ac64cba6200be10beac2e839f74",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "f2255a4fcdc1ff6c9b2f53755bec0ebb8020d18cffb1deb80925c1fefe89431b",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-distributed-drain-cde-O2-v1",
+      "actual_prior_RESULT_sha256": "efabc3eeb16b035d8282a3e7e27470bdc47ddea02847b23ade2e4528f1f6e797",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "f2255a4fcdc1ff6c9b2f53755bec0ebb8020d18cffb1deb80925c1fefe89431b",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-distributed-drain-age-O0-v1",
+      "actual_prior_RESULT_sha256": "b86fd3f16d08e9e5e5918856c2ca83834aad2653c252d6e2d8e147b8b0f70855",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "cb4a71ada6900bcde2562ecdc8d08e40ecd89f13268a8c7549b2906a1bcecfba",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-distributed-drain-age-O2-v1",
+      "actual_prior_RESULT_sha256": "8215bedb6876aca32ea42f41df3100f7cdfd02d2481504563d1b0b8cf29f345c",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "cb4a71ada6900bcde2562ecdc8d08e40ecd89f13268a8c7549b2906a1bcecfba",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-subdaily-O0-current-clock-v2",
+      "actual_prior_RESULT_sha256": "2f6c5f1f84b5893a5ef2a0f0852efc3cc9ab550c0f8006fd1ad0bb30bbc70af5",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "276d704b17a36fbd1f9a30817aa257a3de16b1abad2dfb325933e6f49773ea0c",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-subdaily-O2-current-clock-v2",
+      "actual_prior_RESULT_sha256": "a64c96abf2ee6d5f35309f25a777af93fad00e196cb8aa1566d204ee3e4cb1a3",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "276d704b17a36fbd1f9a30817aa257a3de16b1abad2dfb325933e6f49773ea0c",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-step-O0-current-clock-v2",
+      "actual_prior_RESULT_sha256": "7e3b11735d12ee8daaa842b77e8e53c8a508a09b70d9a921b2896bbe5ded4562",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "9d08a2e6535038cb2fd97aa51cac2348cd66288c3eac6dbbd1d96db525f6cfb4",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 1,
+          "DATE9B": 1
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 1,
+          "DATE9B": 1
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-water-pressure-step-O2-current-clock-v2",
+      "actual_prior_RESULT_sha256": "4e4a4e67a104eda51488071ec74957c48688af7cd2f7d425fda724918a609cd5",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "9d08a2e6535038cb2fd97aa51cac2348cd66288c3eac6dbbd1d96db525f6cfb4",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 1,
+          "DATE9B": 1
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 1,
+          "DATE9B": 1
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-subdaily-O0-current-clock-v2",
+      "actual_prior_RESULT_sha256": "8e5cd1305fdf05188dd25a1bf086edec660d6c2fd653a0b1aee35c88132d445d",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "fb5abb94877f114ca9c6c9cee0a96107c040018bf26f5d97443bf6404a2b58b1",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-subdaily-O2-current-clock-v2",
+      "actual_prior_RESULT_sha256": "b5248c462195c4a330a2ccd75247d56c00df5fd893803e577d76d83ba7e81a9e",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "fb5abb94877f114ca9c6c9cee0a96107c040018bf26f5d97443bf6404a2b58b1",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-step-O0-current-clock-v2",
+      "actual_prior_RESULT_sha256": "93a467a08898b58e46c9744c2a1fe8ccbbc18eb4b3e0287c29a91d48336b5188",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "0a7251efe810114ca1e049e0d50e169e7f1b04b4d39eac724b99898a948de822",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-age-pressure-step-O2-current-clock-v2",
+      "actual_prior_RESULT_sha256": "3217d9b91a2844a91a109c52fabc77799992d0e19ba8cd9709cd9ac970e11f4b",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "0a7251efe810114ca1e049e0d50e169e7f1b04b4d39eac724b99898a948de822",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-hydrostatic-O0-v2",
+      "actual_prior_RESULT_sha256": "4cbb45786aa8acad0d3dae5e24b514b491ad3160af841c16710b0d9927ae51d4",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "d2ecdaf352f55c8e5411139c231c718958045a01b80431b3c62b7de3a2543adc",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-hydrostatic-O2-v3",
+      "actual_prior_RESULT_sha256": "3fdef42b8267f69a4fbe472d84625cb855700c5a14f5e8e52a06102be82030ef",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "d2ecdaf352f55c8e5411139c231c718958045a01b80431b3c62b7de3a2543adc",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-unitgradient-O0-v2",
+      "actual_prior_RESULT_sha256": "b92f2139e9a88a3a0d45a3d698ee175ad899a426f3eddaa12cc8d78eaf885757",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "25b0d9b685a7530fd42ae7d554b22192908432400274f213c39b7b4a860ecd90",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "archive_sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "profile": "profiles/explicit-bottom9-unitgradient-O2-v3",
+      "actual_prior_RESULT_sha256": "ea9dc65d055ac7d010915feadba01e60012fc8d74a62a9b2f1c38fbf2c394d54",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "25b0d9b685a7530fd42ae7d554b22192908432400274f213c39b7b4a860ecd90",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_UBUNTU_O0_RAW_V1",
+      "archive_sha256": "eef2f2930ad3edf7dd440a77817891082c7b6e9277c29c1904407ff12ca3c336",
+      "profile": "explicit-bottom9-water-pressure-step-O0-short",
+      "actual_prior_RESULT_sha256": "e565b528b202866d244d7d71c5137e690782e2674c0ce067ff48077176fed183",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_UBUNTU_O0_RAW_V1",
+      "actual_swap_swp_sha256": "12a1c27c504f4f698e05bb85cb28ab341297b4c83c6510953cafd34dcfafd97a",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 1,
+          "DATE9B": 1
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 1,
+          "DATE9B": 1
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_UBUNTU_O0_RAW_V1",
+      "archive_sha256": "eef2f2930ad3edf7dd440a77817891082c7b6e9277c29c1904407ff12ca3c336",
+      "profile": "explicit-bottom9-cde-distributed-drain-O0-short",
+      "actual_prior_RESULT_sha256": "3be32384b7404352d357f397d34e6586478821163739ccf3d5eb34d56dbdf0d0",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_UBUNTU_O0_RAW_V1",
+      "actual_swap_swp_sha256": "f2255a4fcdc1ff6c9b2f53755bec0ebb8020d18cffb1deb80925c1fefe89431b",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_UBUNTU_O0_RAW_V1",
+      "archive_sha256": "eef2f2930ad3edf7dd440a77817891082c7b6e9277c29c1904407ff12ca3c336",
+      "profile": "explicit-bottom9-age-pressure-subdaily-O0-short",
+      "actual_prior_RESULT_sha256": "54fd4c3d2716423d7d35ec55172bc567fcea6b8c2e479bf95315a0a0ed205506",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_UBUNTU_O0_RAW_V1",
+      "actual_swap_swp_sha256": "1b8a60e54080f77aa630d290c49194bf5076d6829a777f1739370561acb601e4",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_UBUNTU_O2_RAW_V1",
+      "archive_sha256": "73ee45d2d9c2e971fab5dd5d2c989d498185d1c6b42a7240d99c3f0199fb02c1",
+      "profile": "explicit-bottom9-water-pressure-step-O2-short",
+      "actual_prior_RESULT_sha256": "5886e41b2cbbf9d16c24f2decb92dea90ad558cd596283cb56afb982052cf70e",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_UBUNTU_O2_RAW_V1",
+      "actual_swap_swp_sha256": "12a1c27c504f4f698e05bb85cb28ab341297b4c83c6510953cafd34dcfafd97a",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 1,
+          "DATE9B": 1
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 1,
+          "DATE9B": 1
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_UBUNTU_O2_RAW_V1",
+      "archive_sha256": "73ee45d2d9c2e971fab5dd5d2c989d498185d1c6b42a7240d99c3f0199fb02c1",
+      "profile": "explicit-bottom9-cde-distributed-drain-O2-short",
+      "actual_prior_RESULT_sha256": "18d3b5d379c091b34d3fa6833ede02bc6323d7fc7051e63f04423283840b8d40",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_UBUNTU_O2_RAW_V1",
+      "actual_swap_swp_sha256": "f2255a4fcdc1ff6c9b2f53755bec0ebb8020d18cffb1deb80925c1fefe89431b",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_UBUNTU_O2_RAW_V1",
+      "archive_sha256": "73ee45d2d9c2e971fab5dd5d2c989d498185d1c6b42a7240d99c3f0199fb02c1",
+      "profile": "explicit-bottom9-age-pressure-subdaily-O2-short",
+      "actual_prior_RESULT_sha256": "5156f148831021b0e68ac5c143d629708f56bddb31c7255125da019e4c326d73",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_UBUNTU_O2_RAW_V1",
+      "actual_swap_swp_sha256": "1b8a60e54080f77aa630d290c49194bf5076d6829a777f1739370561acb601e4",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "age",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_LAST_NODE_WINDOWS_RAW_V1",
+      "archive_sha256": "6c9d908626532aedc9c8993231c7052443e7ab11645a59b1cda836ca5bc5a453",
+      "profile": "profiles/explicit-bottom9-water-last-node-drainage-O0-v1",
+      "actual_prior_RESULT_sha256": "a32b1d7928f6d688f1fcbf800888612c6919eafcfb3f8e0fb50c979a676247b0",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "3fff148565702b85c92447442042516193896d7b96b5365f097cead0f87bedf0",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_LAST_NODE_WINDOWS_RAW_V1",
+      "archive_sha256": "6c9d908626532aedc9c8993231c7052443e7ab11645a59b1cda836ca5bc5a453",
+      "profile": "profiles/explicit-bottom9-water-last-node-drainage-O2-v1",
+      "actual_prior_RESULT_sha256": "753d9c85439f34e9455aca0eeee759ab6bf530fe20faede8e9386330af39b597",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "3fff148565702b85c92447442042516193896d7b96b5365f097cead0f87bedf0",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_LAST_NODE_UBUNTU_O0_RAW_V1",
+      "archive_sha256": "5ebf562ee93695e3e1e12406a992840c7a1ab70367e5e3c45769fe0747e2d404",
+      "profile": "explicit-bottom9-water-last-node-drainage-O0-short",
+      "actual_prior_RESULT_sha256": "7ce96aa99ac9ee3b00e3f3c25efb3584e7fb2354d28d9ad79959c7ac2f2c8e5a",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_LAST_NODE_UBUNTU_O0_RAW_V1",
+      "actual_swap_swp_sha256": "d16f6ca16e7b93c2056030bdefb8c0406812cb8bb93241904c50828dbb262bec",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_LAST_NODE_UBUNTU_O2_RAW_V1",
+      "archive_sha256": "fdefee9162f717faf126361be4c522072cce3bb24e842a9a206b6d9d798aeba8",
+      "profile": "explicit-bottom9-water-last-node-drainage-O2-short",
+      "actual_prior_RESULT_sha256": "14d5f43d2dcf7f7fec61f0bc271c71051cfe9c8864d44b19c186c950300f811a",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_LAST_NODE_UBUNTU_O2_RAW_V1",
+      "actual_swap_swp_sha256": "d16f6ca16e7b93c2056030bdefb8c0406812cb8bb93241904c50828dbb262bec",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "water",
+        "drainage": 1,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-subdaily-O0-v1",
+      "actual_prior_RESULT_sha256": "5c9e81ebcbafb0297f93fb5dcde12388dee107dc4c4097ad9b9c0f0c3feb4134",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "7ef486e9666e1c40c445c68121e5011e2102235caff781cd8b56e1da2d7b7be3",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-periodic-O0-v1",
+      "actual_prior_RESULT_sha256": "49da23e4bb22e8db0bf71bee441de06a9131431a4e856ea1bad5933ede505c71",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "eba2deecc4f126c480d5185e3e1e9d6ab65b3e6b5f8d109dab3f0194815f439f",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-monthly-O0-v1",
+      "actual_prior_RESULT_sha256": "ebd6f17d76c16a606d71276632555ce220214dff79c684689a7f05e707bf5d4c",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "f352b93d6f2cd03f17988d875731f0f6cc97fcee032629acaf08a6b2e23dc83e",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-step-O0-v1",
+      "actual_prior_RESULT_sha256": "55c3f9633f71d88832a02adfc2c032d84723575bea94cd6bc7d47b28d68865cb",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "485fc1aa207b21df84070ba7a39ec639926143dc33109b8768df71757e9d201e",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-distributed-subdaily-O0-v1",
+      "actual_prior_RESULT_sha256": "9eadb25b236a78c407ff93080da2759c3344a33e21bdd066d721877133e07f13",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "7a9aedbd85b2d826926fdecbe2960c184c3aecd77eda00091f48b24108086c37",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-periodic-O2-v1",
+      "actual_prior_RESULT_sha256": "5da05f09d549e22f0fc7facdc21f3e01db9db4c9e39f2007558622e101155f54",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "eba2deecc4f126c480d5185e3e1e9d6ab65b3e6b5f8d109dab3f0194815f439f",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-monthly-O2-v1",
+      "actual_prior_RESULT_sha256": "2427a308027ecc03aeff9674e4b8dcb4567d6e8826105944134352a32ec315e5",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "f352b93d6f2cd03f17988d875731f0f6cc97fcee032629acaf08a6b2e23dc83e",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-subdaily-O2-v1",
+      "actual_prior_RESULT_sha256": "4612a4df2dfdf75cef1dff70a677dc79e604ce990fe2fd9a58083e939ce144e8",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "7ef486e9666e1c40c445c68121e5011e2102235caff781cd8b56e1da2d7b7be3",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-step-O2-v1",
+      "actual_prior_RESULT_sha256": "72bd8c30f32927bd3080921ba450cfdad65b97dacd59fddc9ccef79fcfb04cb9",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "485fc1aa207b21df84070ba7a39ec639926143dc33109b8768df71757e9d201e",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "archive_sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef",
+      "profile": "profiles/explicit-bottom9-cde-distributed-subdaily-O2-v1",
+      "actual_prior_RESULT_sha256": "a778ec6d76bdd9ca5ccda97680a27b92333fac743adc577fbe0fd73642523360",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1",
+      "actual_swap_swp_sha256": "7a9aedbd85b2d826926fdecbe2960c184c3aecd77eda00091f48b24108086c37",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O0_RAW_V1",
+      "archive_sha256": "0c0589cf434b903cfd6d4ecde40345e872cd13f6de83d6e12b33cc25811892ee",
+      "profile": "explicit-bottom9-cde-monthly-O0-short",
+      "actual_prior_RESULT_sha256": "916620efa587aeed35fa4db7b0e927475407d4a14c6e8ab5a6a5cf91fd6f5145",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O0_RAW_V1",
+      "actual_swap_swp_sha256": "75562766669b178873c967ffdb8421bf3d2b9747dd462a7b32dcec9ee9246f6a",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O2_RAW_V1",
+      "archive_sha256": "a04e96b0e7367d51ba7a4f68d3205cb52ed51ea202cf4c13fb85b3b844996c33",
+      "profile": "explicit-bottom9-cde-monthly-O2-short",
+      "actual_prior_RESULT_sha256": "73698d332ec08c81e05812e1733a7d1682fcb557800c804daf72b1d7646592ab",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O2_RAW_V1",
+      "actual_swap_swp_sha256": "75562766669b178873c967ffdb8421bf3d2b9747dd462a7b32dcec9ee9246f6a",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O0_RAW_V1",
+      "archive_sha256": "bbbb31afa6cb600a78be89175f34738bc37f8d2993b42ffbdff6adee10af59d1",
+      "profile": "explicit-bottom9-cde-distributed-subdaily-O0-short",
+      "actual_prior_RESULT_sha256": "1da4492d3ad0efb7d75025e063bc732fd6408a865126e57f44f89e6a0ad54310",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O0_RAW_V1",
+      "actual_swap_swp_sha256": "7a9aedbd85b2d826926fdecbe2960c184c3aecd77eda00091f48b24108086c37",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    },
+    {
+      "archive": "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O2_RAW_V1",
+      "archive_sha256": "cf06bf8238d3ed729320f2fc5d8a1ef7dfcbf045014d7a54c03d50a628324fca",
+      "profile": "explicit-bottom9-cde-distributed-subdaily-O2-short",
+      "actual_prior_RESULT_sha256": "9fb613bf4293a9d8384284132bbe720075e07c4bb15d4a9c0eb7210adbc7b582",
+      "actual_input_archive": "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O2_RAW_V1",
+      "actual_swap_swp_sha256": "7a9aedbd85b2d826926fdecbe2960c184c3aecd77eda00091f48b24108086c37",
+      "actual_original_model1_or_implicit_default": true,
+      "old_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "new_bounded_selection": {
+        "policy": "original-explicit-prescribed-head-flux-all-node-trial-v1",
+        "kind": "cde",
+        "drainage": 1,
+        "initial": 2,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false
+      },
+      "semantics_exact": true
+    }
+  ],
+  "actual_prior_native_bindings_or_producers_rewritten": false,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}
