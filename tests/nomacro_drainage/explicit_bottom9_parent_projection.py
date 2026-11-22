@@ -11,7 +11,7 @@ import initial_profile_groundwater_source_inverse as source
 import initial_profile_groundwater_parent_projection as projection
 PATHS={MODULE,*('app/hybrid_water/'+name for name in ('daily_coupling.py','daily_host.py','experimental_project.py','original_output.py'))}|CDE_PATHS
 WORKFLOW='.github/workflows/nomacro-explicit-bottom9.yml'
-WORKFLOW_SOURCE='edbd9ab51b7a87a896aa7b89ff1e2452304a11a4'
+WORKFLOW_SOURCE='525938cfb3c5d41537a72fc69b928e3796c6c59a'
 CI=projection.CI
 PATTERN='            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9*\n'
 
