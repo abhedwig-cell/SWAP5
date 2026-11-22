@@ -1,5 +1,5 @@
 """Compare every actual compiled file, retaining PE link metadata differences."""
-import json,sys
+import json,sys,types
 from pathlib import Path
 R=Path(__file__).resolve().parents[2];sys.path.insert(0,str(R/'tests/nomacro_drainage'))
 from analytical_hydraulic_archives import SHA
@@ -16,7 +16,7 @@ def compare(left,right):
   if old==new:item['status']='ACTUAL_COMPLETE_COMPILED_BYTES_EXACT'
   else:
    assert path.suffix.lower() in ('.dll','.exe') and old[:2]==new[:2]==b'MZ'
-   item['PE_loader_relative_whole_code_data']=publisher_equivalence(path,b[name]);item['status']='ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED'
+   read_PE=types.FunctionType(publisher_equivalence.__code__,dict(publisher_equivalence.__globals__,Path=lambda value:value));item['PE_loader_relative_whole_code_data']=read_PE(path,b[name]);item['status']='ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED'
   observed.append(item)
  assert {'day_donor.exe','day_kernel.exe','restart_publish.dll'}<=set(a) or {'day_donor','day_kernel','restart_publish.so'}<=set(a)
  return dict(status='ALL_ACTUAL_GENERATED_OBJECT_MODULE_EXECUTABLE_PUBLISHER_CODE_DATA_POSTIMAGES_VERIFIED',files=observed,raw_bytes_rewritten=False,model_executions=0,compiler_executions_in_reader=0)
