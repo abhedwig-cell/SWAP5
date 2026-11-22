@@ -34,6 +34,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
+ import initial_profile_age_groundwater_verify as joint_owner
+ return joint_owner.guard_previous_source()
  complete_inverse();profile_parent_complete_inverse()
  for name in PARSERS:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen original pressure/Frost observer changed'
@@ -47,16 +49,22 @@ def guard_previous_source():
 
 
 def strip_current_evidence(text):
+ import initial_profile_age_groundwater_verify as joint_owner
+ return joint_owner.strip_current_evidence(text)
  assert text.count(PATTERN)<=1
  return literal('strip_current_evidence',dict(vars(previous)))(text.replace(PATTERN,''))
 
 
 def publication_dependencies_unchanged():
+ import initial_profile_age_groundwater_verify as joint_owner
+ return joint_owner.publication_dependencies_unchanged()
  guard_previous_source()
  with prior_source_projection():return literal('publication_dependencies_unchanged',prior_namespace())()
 
 
 def verify():
+ import initial_profile_age_groundwater_verify as joint_owner
+ return joint_owner.verify()
  guard_previous_source()
  for name in ('INITIAL_PROFILE_FROST_QUALIFICATION.json','INITIAL_PROFILE_FROST_CONTRACT_V1.json','INITIAL_PROFILE_FROST_COADMISSION_CONTRACT_V1.json',*[name+'.json' for name in RAW_NAMES],'INITIAL_PROFILE_CALENDAR_CANDIDATE_STAGE_RAW_V1.json'):
   path='integration/f-ci/nomacro-complete01/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path)
