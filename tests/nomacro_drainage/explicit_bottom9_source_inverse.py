@@ -8,6 +8,7 @@ PRE_CLOCK='c0952e394647179d591a855fcaf1a7270871fb2b'
 CLOCK_ONLY='4d4fb1b8e059f9137ec217e52f262222ead6ce1c'
 CORE='7979888d70950b27c2fc30c92320ff5bb62d9a53'
 LAST_NODE_CORE='57bd7fecbbb6c3944b4f28cfc29cb368d371398a'
+CDE_CORE='dcf509f80e77866b24ca06a021df3e3e53fd3ec0'
 ADAPTER='app/hybrid_water/experimental_project.py'
 FROZEN_CLOCK_HELPER='d905cad376b42e709c3bf7949dbc8faebf119f24'
 MODULE='app/hybrid_water/prescribed_head_flux_boundary.py'
@@ -35,8 +36,42 @@ NEW_DRAIN_GUARD='''            paired_last_node_water=(paired_boundary is not No
             if ((path.resolve()!=frost_drain_file and not paired_last_node_water) or sig.get('SWDIVD') not in (0,1)
 '''
 
+CDE_PATHS={HOST,MODULE,'app/hybrid_water/cde_clock_output.py','app/hybrid_water/cde_interval_output.py'}
+CDE_APPEND="\n\nCDE_CLOCK_IMPORT='   use MOD_integral,only:hybrid_ordinary_trial_residual\\n'\nCDE_CLOCK_DECL='   real(8)::hybrid_cde_clock_trial_guard,hybrid_cde_clock_candidate_bottom\\n'\nCDE_CLOCK_GUARD='\\n         if(swbotb==8.and..not.flboth)then\\n            hybrid_cde_clock_candidate_bottom=0d0\\n         else\\n            hybrid_cde_clock_candidate_bottom=-kmean(NN+1)*hgrad(NN+1)\\n         end if\\n         hybrid_cde_clock_trial_guard=hybrid_ordinary_trial_residual(hybrid_cde_clock_candidate_bottom)\\n         if(abs(hybrid_cde_clock_trial_guard)>1d-10)flnonconv=.true.'\n\ndef render_cde_clock_headcalc(source):\n for old,new in ((CDE_CLOCK_IMPORT,'   use MOD_integral,only:hybrid_output_trial_residual\\n'),(CDE_CLOCK_DECL,''),(CDE_CLOCK_GUARD,'\\n         if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.')):\n  if source.count(old)!=1:raise ValueError('Changed whole original CDE clock trial seam')\n  source=source.replace(old,new,1)\n return source\n"
+CDE_LATE="        if age_calendar.get('cde_clock_output'):\n            from prescribed_head_flux_boundary import render_cde_clock_headcalc\n            head=output/'headcalc.f90'\n            head.write_text(render_cde_clock_headcalc(head.read_text(encoding='cp1252')),encoding='cp1252')\n"
+CDE_SELECT='    from prescribed_head_flux_boundary import selection as paired_selection\n    paired_bottom=bottom==9 and paired_selection(project.input_directory,project.original_output) is not None\n'
+CDE_DICT="        **({'paired_head_flux_cde_calendar':True} if paired_bottom else {}),\n"
+
+def source_before_cde(path,raw):
+ if path==MODULE:
+  assert raw.count(CDE_APPEND.encode())==1;return raw.replace(CDE_APPEND.encode(),b'',1)
+ if path==HOST:
+  assert raw.count(CDE_LATE.encode())==1;return raw.replace(CDE_LATE.encode(),b'',1)
+ assert path in CDE_PATHS
+ for new,old in ((CDE_SELECT,''),(CDE_DICT,''),('    if bottom not in (1,5,8) and not paired_bottom:','    if bottom not in (1,5,8):'),('    if bottom!=1 and drainage!=1 and not paired_bottom:','    if bottom!=1 and drainage!=1:')):
+  assert raw.count(new.encode())==1;raw=raw.replace(new.encode(),old.encode(),1)
+ return raw
+
+
+def checked_cde_delta():
+ assert not git('diff',CDE_CORE,'--',*SURFACES),'Unreviewed actual CDE paired-calendar composition source'
+ assert set(git('diff','--name-only',LAST_NODE_CORE,CDE_CORE,'--',*SURFACES).decode().splitlines())==CDE_PATHS
+ functions=lambda value:{n.name:ast.dump(n,include_attributes=False) for n in ast.parse(value).body if isinstance(n,ast.FunctionDef)}
+ for path in CDE_PATHS:
+  raw=norm((ROOT/path).read_bytes());assert raw==blob(CDE_CORE,path)
+  assert source_before_cde(path,raw)==blob(LAST_NODE_CORE,path),'Incomplete whole CDE calendar source inverse: '+path
+  before,after=functions(blob(LAST_NODE_CORE,path)),functions(raw)
+  if path==MODULE:
+   assert set(after)==set(before)|{'render_cde_clock_headcalc'} and all(before[name]==after[name] for name in before)
+  else:
+   expected='build' if path==HOST else 'active_selection'
+   assert before.keys()==after.keys() and {name for name in before if before[name]!=after[name]}=={expected}
+   if path!=HOST:assert blob(LAST_NODE_CORE,path)==blob(BASE,path),'CDE predecessor SOURCE metadata view is not exact'
+ return True
+
+
 def checked_last_node_delta():
- assert not git('diff',LAST_NODE_CORE,'--',*SURFACES),'Unreviewed paired-boundary last-node admission source'
+ checked_cde_delta()
  assert git('diff','--name-only',CORE,LAST_NODE_CORE,'--',*SURFACES).decode().splitlines()==[ADAPTER]
  raw=norm((ROOT/ADAPTER).read_bytes());assert raw==blob(LAST_NODE_CORE,ADAPTER)
  assert raw.count(NEW_DRAIN_GUARD.encode())==1 and raw.replace(NEW_DRAIN_GUARD.encode(),OLD_DRAIN_GUARD.encode(),1)==blob(CORE,ADAPTER),'Incomplete whole last-node water admission inverse'
@@ -48,7 +83,7 @@ def checked_last_node_delta():
 def checked_final_delta():
  checked_last_node_delta()
  assert git('diff','--name-only',CLOCK_ONLY,CORE,'--',*SURFACES).decode().splitlines()==[HOST,MODULE]
- for path in (HOST,MODULE):assert norm((ROOT/path).read_bytes())==blob(CORE,path)
+ for path in (HOST,MODULE):assert source_before_cde(path,norm((ROOT/path).read_bytes()))==blob(CORE,path)
  assert blob(CORE,MODULE)==blob(CLOCK_ONLY,MODULE)+TRIAL_FUNCTION.encode(),'Foreign whole literal trial renderer append'
  text=blob(CORE,HOST).decode();assert text.count(FINAL_LATE)==1 and text.replace(FINAL_LATE,CLOCK_LATE,1).encode()==blob(CLOCK_ONLY,HOST),'Foreign output-clock-only builder composition'
  return True
@@ -82,6 +117,7 @@ def complete_inverse():
  return frozen_clock_inverse()()
 
 def producer_epoch(sha):
+ if not git('diff',CDE_CORE,sha,'--',*SURFACES):return 'cde-calendar'
  if not git('diff',LAST_NODE_CORE,sha,'--',*SURFACES):return 'last-node-admission'
  for label,epoch in (('pre-clock',PRE_CLOCK),('clock-only',CLOCK_ONLY),('composed-clock',CORE)):
   if not git('diff',epoch,sha,'--',*SURFACES):return label

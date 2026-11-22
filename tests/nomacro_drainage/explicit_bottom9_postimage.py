@@ -15,7 +15,7 @@ def main():
  for key in ('profile','input','reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
  a=p.parse_args();complete_inverse();a.output.mkdir();prior=json.loads((a.profile/'RESULT.json').read_text());assert prior['status']=='ACTUAL_EXPLICIT_PAIRED_HEAD_FLUX_PHYSICAL_NATIVE_EXACT_COLD_USER_OUTPUT_PASS_NOT_ADMITTED'
  source=git('rev-parse','HEAD').decode().strip()
- assert producer_epoch(source)==producer_epoch(prior['source']) and producer_epoch(source) in ('composed-clock','last-node-admission')
+ assert producer_epoch(source)==producer_epoch(prior['source']) and producer_epoch(source) in ('composed-clock','last-node-admission','cde-calendar')
  old=Path(prior['input_root']);assert assignment((a.input/'swap.swp').read_bytes().decode('cp1252'),'SWINCO',1).encode('cp1252')==(old/'swap.swp').read_bytes(),'Actual original2-to1 input generation is not byte-exact'
  for name,digest in prior['input_inventory']:
   if name!='swap.swp':assert (old/name).read_bytes()==(a.input/name).read_bytes()

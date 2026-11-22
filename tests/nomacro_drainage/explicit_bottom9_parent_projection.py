@@ -5,11 +5,11 @@ from contextlib import contextmanager
 from pathlib import Path
 R=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(R/'tests/nomacro_drainage'),str(R/'tests/nomacro_scheduled_subsurface'),str(R/'app/hybrid_water')]
-from explicit_bottom9_source_inverse import BASE,CORE,MODULE,complete_inverse,blob,git,norm
+from explicit_bottom9_source_inverse import BASE,CORE,MODULE,CDE_PATHS,complete_inverse,blob,git,norm
 import initial_profile_age_groundwater_verify as joint
 import initial_profile_groundwater_source_inverse as source
 import initial_profile_groundwater_parent_projection as projection
-PATHS={MODULE,*('app/hybrid_water/'+name for name in ('daily_coupling.py','daily_host.py','experimental_project.py','original_output.py'))}
+PATHS={MODULE,*('app/hybrid_water/'+name for name in ('daily_coupling.py','daily_host.py','experimental_project.py','original_output.py'))}|CDE_PATHS
 WORKFLOW='.github/workflows/nomacro-explicit-bottom9.yml'
 WORKFLOW_SOURCE='e462878f2cac5895b0dbdc9ae90d1276384f0327'
 CI=projection.CI

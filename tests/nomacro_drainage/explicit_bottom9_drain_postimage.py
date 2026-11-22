@@ -1,7 +1,7 @@
 """Build only an initial1 counterpart; preserve the actual initial2 model identity."""
 import argparse,json,subprocess,sys,time
 from pathlib import Path
-from explicit_bottom9_source_inverse import ROOT,CORE,complete_inverse,git
+from explicit_bottom9_source_inverse import ROOT,CORE,complete_inverse,git,producer_epoch
 from initial_profile_calendar_postimage import compare
 from explicit_bottom9_compiled_postimage import compare as binary
 from original_output_baseline import assignment
@@ -12,7 +12,7 @@ def main():
  p=argparse.ArgumentParser()
  for key in ('profile','input','reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
  a=p.parse_args();complete_inverse();prior=json.loads((a.profile/'RESULT.json').read_text());assert prior['status']=='ACTUAL_EXPLICIT_PAIRED_HEAD_FLUX_PHYSICAL_NATIVE_EXACT_COLD_USER_OUTPUT_PASS_NOT_ADMITTED';source=git('rev-parse','HEAD').decode().strip()
- for sha in (source,prior['source']):assert not git('diff',CORE,sha,'--','app','src','tools/solute','tools/vq','reference')
+ assert producer_epoch(source)==producer_epoch(prior['source']) and producer_epoch(source) in ('composed-clock','last-node-admission','cde-calendar')
  primary=Path(prior['input_root']);flags=original.m.e.switches((primary/'swap.swp').read_text(encoding='cp1252'));assert flags['SWINCO']==2 and flags['SWDRA']==1 and flags['SWBOTB']==9
  assert assignment((a.input/'swap.swp').read_bytes().decode('cp1252'),'SWINCO',2).encode('cp1252')==(primary/'swap.swp').read_bytes()
  for name,digest in prior['input_inventory']:

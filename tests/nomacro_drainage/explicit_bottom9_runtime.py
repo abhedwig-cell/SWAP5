@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'tests/nomacro_drainage')]
 import original_output_matrix as original
-from explicit_bottom9_source_inverse import CORE,LAST_NODE_CORE,complete_inverse,git
+from explicit_bottom9_source_inverse import CORE,LAST_NODE_CORE,CDE_CORE,complete_inverse,git
 from groundwater_water_output import metadata
 from original_output_files import compare
 m=original.m
@@ -25,7 +25,7 @@ def main():
  p=argparse.ArgumentParser()
  for key in ('input','reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
  p.add_argument('--case',required=True);p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args();complete_inverse();a.output.mkdir()
- q=dict(status='RUNNING',source=git('rev-parse','HEAD').decode().strip(),physical_core=CORE,input_admission_core=LAST_NODE_CORE,case=a.case,optimization=a.optimization,days=35,input_root=str(a.input),input_inventory=m.e.inventory(a.input),build_root=str(a.build_root/'bundle'),canonical_admission=False)
+ q=dict(status='RUNNING',source=git('rev-parse','HEAD').decode().strip(),physical_core=CORE,input_admission_core=LAST_NODE_CORE,composition_core=CDE_CORE,case=a.case,optimization=a.optimization,days=35,input_root=str(a.input),input_inventory=m.e.inventory(a.input),build_root=str(a.build_root/'bundle'),canonical_admission=False)
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
  save()
  try:
