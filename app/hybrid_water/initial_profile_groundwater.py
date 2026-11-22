@@ -29,3 +29,5 @@ def selection(directory,original_output=True):
  remainder=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
  if re.search(r'(?i)\bIHWCKMODEL\b',remainder) or len(models)>1 or models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:return None
  return dict(policy='original-pressure-profile-existing-prescribed-groundwater-state-composition-v1',kind=('water','cde','age')[selected['SWSOLU']],history=selected['SWHYST'],snow=selected['SWSNOW'],implicit=selected['SWKIMPL'],drainage=selected['SWDRA'],new_native_codec=False,physical_equations_changed=False)
+
+# Actual committed pressure AGE negative control; never merge.
