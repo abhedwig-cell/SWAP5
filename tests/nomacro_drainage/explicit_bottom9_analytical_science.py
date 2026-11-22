@@ -40,7 +40,31 @@ def reference_point(model):
  return observations[0],dict(original_archive=name,original_archive_sha256=q['sha256'],original_actual_producers=producers,actual_original_O0_O2_values_exact=True,model=model,soil=1,actual_original_values=observations[0],new_component_compilations=0)
 
 
-def audit(profile,reference,postimage,locations=None):
+def observed_samples(folder,profile,reference,locations=None):
+ q=json.loads((folder/'RESULT.json').read_text());assert q['status']=='ACTUAL_ORIGINAL_CONSTITUTIVE_FUNCTIONS_OBSERVED_AT_ALL_ACCEPTED_NODE_PRESSURES_NO_MODEL_PERIOD' and q['model_periods']==0
+ assert q['profile_RESULT_sha256']==SHA((profile/'RESULT.json').read_bytes()) and q['daily_sha256']==SHA((profile/'trajectory/daily.jsonl').read_bytes())
+ assert (q['profile']==locations['original_profile_path'] if locations else Path(q['profile'])==profile)
+ assert producer_epoch(q['source'])=='analytical-paired';component=q['component'];assert producer_epoch(component['source'])=='analytical-paired'
+ directory=locations['reference_component'] if locations else Path(q['component_profile']);assert json.loads((directory/'COMPONENT.json').read_text())==component
+ driver='tests/nomacro_drainage/explicit_bottom9_analytical_reference_probe.f90';raw=(directory/Path(driver).name).read_bytes();assert SHA(raw)==component['driver_sha256'] and norm(raw)==blob(component['source'],driver)
+ assert SHA((directory/component['executable']).read_bytes())==component['executable_sha256'] and all(item['returncode']==0 for item in component['compiler'])
+ for name,digest in component['original_provider_files'].items():assert SHA((reference/name).read_bytes())==digest
+ for name,digest in component['original_rebuilt_sources'].items():assert SHA((directory/name).read_bytes())==digest
+ assert SHA(norm((directory/'WC_K_models_04_11.f90').read_bytes()))=='7910cd29c045037778bfffdc7e40a77802d70fb477e0afa78be426776bd26e27'
+ assert norm((directory/'MOD_MvG_functions.f90').read_bytes())==norm((reference/'build/swap-selected/MOD_MvG_functions.f90').read_bytes())
+ for command in component['compiler']:assert '-'+q['optimization'] in command['command'] and '-ffp-contract=off' in command['command']
+ raw=(folder/'sample.stdout').read_bytes();assert SHA(raw)==q['stdout_sha256'] and not (folder/'sample.stderr').read_bytes()
+ head_raw=(folder/'actual-heads.txt').read_bytes();assert SHA(head_raw)==q['head_input_sha256'];lines=head_raw.decode().splitlines();assert int(lines[0])==len(q['heads']) and list(map(float,lines[1:]))==q['heads']
+ observed={}
+ for line in raw.decode().splitlines():
+  if not line.startswith('ACTUAL_ORIGINAL_HYDRAULIC_SAMPLE '):continue
+  words=line.split();assert len(words)==14;model,soil,index=map(int,words[1:4]);values=list(map(float,words[4:]));assert model==q['model'] and soil in (1,2) and 1<=index<=len(q['heads']) and values[0]==q['heads'][index-1] and all(map(math.isfinite,values)) and (soil,index) not in observed;observed[soil,index]=values
+ assert len(observed)==2*len(q['heads'])
+ for index in range(1,len(q['heads'])+1):assert observed[1,index]==observed[2,index]==q['observations'][index-1]
+ return {row[0]:row for row in q['observations']},dict(source=q['source'],component_source=component['source'],model=q['model'],optimization=q['optimization'],distinct_actual_pressures=len(q['heads']),original_function_calls=len(observed),raw_stdout_sha256=q['stdout_sha256'],all_actual_node_pressure_bits_observed=True,model_periods=0)
+
+
+def audit(profile,reference,postimage,locations=None,reference_samples=None):
  complete_inverse();q=json.loads((profile/'RESULT.json').read_text());kind=q['kind'];assert kind in ('water','cde') and q['layer_models'] and len(set(q['layer_models']))==1
  assert q['status']=='ACTUAL_EXPLICIT_PAIRED_HEAD_FLUX_PHYSICAL_NATIVE_EXACT_COLD_USER_OUTPUT_PASS_NOT_ADMITTED' and len(q['cold'])==3
  epoch=producer_epoch(q['source']);assert epoch=='analytical-paired'
@@ -86,19 +110,23 @@ def audit(profile,reference,postimage,locations=None):
  for label,expected in (('ALFA_2',[.005]*2),('NPAR_2',[1.5]*2),('OMEGA_1',[.8]*2),('H0',[-1e6]*2),('HA',[-10.]*2),('APAR',[-1.5]*2),('OMEGA_K',[.01]*2)):
   match=re.findall(r'(?mi)^[ \t]*'+label+r'[ \t]*=[ \t]*([^\r\n!]*)',text);assert len(match)==1 and list(map(float,match[0].split()))==expected
  assert sum(dz)==200.;continuity=[]
+ samples={head:point};sample_receipt=None
+ if reference_samples is not None:samples,sample_receipt=observed_samples(reference_samples,profile,reference,locations)
+ assert all(h in samples for row in rows for h in row['pressure_head_cm']),'An actual original constitutive observation is required at every distinct accepted pressure'
+ previous_theta=[samples[head][1]]*34
  for row in rows:
-  # These measured controls use the actual original -10cm reference point.
-  # A different pressure requires another original constitutive observation,
-  # never an invented exact-zero or replacement mass tolerance.
-  h=row['pressure_head_cm'];assert h==[head]*34 and row['stock_end_cm'][1:]==[0.]*5
-  assert row['stock_start_cm']==row['stock_end_cm']==rows[0]['stock_start_cm'] and abs(row['stock_end_cm'][0]-theta*sum(dz))<=1e-10
+  h=row['pressure_head_cm'];assert len(h)==34 and row['stock_end_cm'][1:]==[0.]*5
+  actual=[samples[value] for value in h];theta_nodes=[value[1] for value in actual];conductivity_nodes=[value[3] for value in actual]
+  assert all(0<value[1]<.433878 and value[2]>0 and 0<value[3]<83.24164 for value in actual)
+  independent_stock=math.fsum(t*height for t,height in zip(theta_nodes,dz));assert abs(row['stock_end_cm'][0]-independent_stock)<=1e-10
   flux=row['external_flux_cm'];assert abs(flux[0]-conductivity)<=1e-10 and abs(flux[-1]-conductivity)<=1e-10 and max(map(abs,flux[1:-1]))==0
-  faces=[-flux[0]]+[-conductivity*((h[i-1]-h[i])/(.5*(dz[i-1]+dz[i]))+1.) for i in range(1,34)]+[-row['bottom_outward_cm']]
-  # Flux-top boundary owns the actual negative surface head rather than pond0.
-  # The first face is prescribed infiltration; every interior and bottom face
-  # is checked against the independent original constitutive K and gradients.
-  residual=max(abs(faces[i+1]-faces[i]) for i in range(34));assert residual<=1e-10
-  continuity.append(dict(day=row['day'],all_actual_node_Darcy_residual_cm_per_day_max=residual,actual_soil_stock_cm=row['stock_end_cm'][0],independent_original_theta_stock_cm=theta*sum(dz)))
+  # SWKMEAN1 is the literal original unweighted arithmetic mean. Paired9
+  # supplies both external faces; all34 actual node stocks remain included.
+  assert re.search(r'(?mi)^[ \t]*SWKMEAN[ \t]*=[ \t]*1[ \t]*(?:!.*)?$',text)
+  faces=[-flux[0]]+[-.5*(conductivity_nodes[i-1]+conductivity_nodes[i])*((h[i-1]-h[i])/(.5*(dz[i-1]+dz[i]))+1.) for i in range(1,34)]+[-row['bottom_outward_cm']]
+  residual=max(abs((theta_nodes[i]-previous_theta[i])*dz[i]+faces[i]-faces[i+1]) for i in range(34));assert residual<=1e-10
+  previous_theta=theta_nodes
+  continuity.append(dict(day=row['day'],all_actual_node_Darcy_and_storage_residual_cm_per_day_max=residual,actual_soil_stock_cm=row['stock_end_cm'][0],independent_original_theta_stock_cm=independent_stock))
  native=[]
  for path in (profile/'trajectory').glob('accepted-column-1-day-*.zip'):
   day=int(path.stem.split('-')[-1]);row=rows[day-1]
@@ -135,11 +163,12 @@ def audit(profile,reference,postimage,locations=None):
   if name!='swap.swp':assert (counter_inputs/name).read_bytes()==(inputs/name).read_bytes()
  from explicit_bottom9_compiled_postimage import compare as compare_binary
  whole=compare_binary(build,counter)
- return dict(status='INDEPENDENT_NONLINEAR_PAIRED9_ORIGINAL_CONSTITUTIVE_POINT_ALL_NODE_DARCY_MASS_NATIVE_EXACT_COLD_COMPILED_POSTIMAGE_PASS_NOT_ADMITTED',original_constitutive_point=original_point,all_actual_node_Darcy=continuity,nonlinear_hydraulic_capacity_active=capacity>0,unsaturated_retention_active=theta<.433878,whole_actual_compiled_binary=whole,producer=q['source'],case=q['case'],optimization=q['optimization'],actual_days=35,initial_pressure=initial,measured=measured,native=sorted(native,key=lambda item:item['day']),cold=cold,whole_compiled_postimage=compiled,compiler_executions=0,model_executions=0,canonical_admission=False)
+ return dict(status='INDEPENDENT_NONLINEAR_PAIRED9_ORIGINAL_CONSTITUTIVE_POINT_ALL_NODE_DARCY_MASS_NATIVE_EXACT_COLD_COMPILED_POSTIMAGE_PASS_NOT_ADMITTED',original_constitutive_point=original_point,actual_original_pressure_samples=sample_receipt,all_actual_node_Darcy=continuity,nonlinear_hydraulic_capacity_active=capacity>0,unsaturated_retention_active=theta<.433878,whole_actual_compiled_binary=whole,producer=q['source'],case=q['case'],optimization=q['optimization'],actual_days=35,initial_pressure=initial,measured=measured,native=sorted(native,key=lambda item:item['day']),cold=cold,whole_compiled_postimage=compiled,compiler_executions=0,model_executions=0,canonical_admission=False)
 
 if __name__=='__main__':
  p=argparse.ArgumentParser()
  for key in ('profile','reference-work','postimage','output'):p.add_argument('--'+key,type=Path,required=True)
- a=p.parse_args();q=audit(a.profile,a.reference_work,a.postimage)
+ p.add_argument('--reference-samples',type=Path)
+ a=p.parse_args();q=audit(a.profile,a.reference_work,a.postimage,reference_samples=a.reference_samples)
  with a.output.open('x') as out:json.dump(q,out,indent=2);out.write('\n')
  print(q['status'],q['case'],q['optimization'])

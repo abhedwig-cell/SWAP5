@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "79ff3ab235f8b07535bf5273dcda32f4bef15f7d",
   "branch": "codex/nomacro-initial-profile-age-groundwater01",
-  "last_commit": "9c3dccc6f81eb1b82e04d1c4a465f18ba882ec80",
+  "last_commit": "5ba56595b7f453981c0b407d4aeb58958bdb5be8",
   "status": "PARENT156_ACTUAL_CANONICAL_SEALED_COMPOSITION216_FROZEN67_PUBLIC_RUNNING_NEXT_ANALYTICAL_FIRST_INDEPENDENT_PASS",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -432,7 +432,7 @@
   "qualified_scheduled_chemical_runtime": "6c5b084d93724be546daf387f8bd1d0a31add3c9",
   "qualified_scheduled_chemical_ubuntu_carrier": "70293c7e7807d02c08643617e63b49e054044221",
   "scheduled_chemical_sealed_proof": "a5ee02d766a6c5434eeb613d95bc003e9a301ef7",
-  "next_action": "Complete remaining eleven representative model3/7/11 water+CDE O0/O2 contexts with original constitutive point and unchanged all-node/ledger/native/cold guards; exact source capsules and initial2 wholecompiled counterparts. Reuse completed model3-water-O0 actual9c3d without new periods; do not move C or N until their frozen216 observers finish. Then final67 negative02, terminal exact-head CI, integrated postimage and actual-canonical admission.",
+  "next_action": "Commit original sampled-pressure reference component and readonly independent reader. Compile one O0/O2 original component each and observe actual pressures. Reuse completed model7-water-O0 and all4 model3 periods; continue seven remaining Windows periods. No repeated model period for observer repair.",
   "qualified_aquifer_runtime": "931f4c033361bfb5139e706d92641aeafc9292df",
   "qualified_aquifer_ubuntu_carrier": "fbe3347a484ca78cb4ce46c217b4977cc4485545",
   "aquifer_sealed_proof": "680df6a5cea1b66b3b79d36d1f9230db0f33ed61",
@@ -34203,7 +34203,7 @@
     "actual_PR1789_current15_workflow_runs": "Fresh exact67d263:16 workflows,12success4in_progress; no failures observed."
   },
   "explicit_bottom9_analytical_recovery_v1": {
-    "status": "ACTUAL_MODEL3_WATER_O0_ORIGINAL_CONSTITUTIVE_POINT_35D_7NATIVE_3EXACT_COLD_WHOLE_COMPILED_INDEPENDENT_PASS_NOT_ADMITTED",
+    "status": "MODEL3_ALL4_INDEPENDENT_PASS_MODEL7_ACTUAL_PERIOD_NATIVE_COLD_COMPILED_PASS_NEW_EXACT_HEAD_OBSERVER_REFUSED_REFERENCE_SAMPLES_PREPARED",
     "branch": "codex/nomacro-explicit-bottom9-analytical01",
     "parent_candidate": "02813169713f103b846ab95657e5c5f830bc77d4",
     "actual_parent_canonical_admission_pending": true,
@@ -34211,7 +34211,7 @@
     "proposed_input_discovery": "EV/EXPLICIT_BOTTOM9_ANALYTICAL_INPUT_SOURCE_DISCOVERY_V3.json",
     "input_roots": "EV/explicit-bottom9-analytical-inputs-real-lexeme-v1/model{3,7,11}-{water,cde}-initial1",
     "scope": "Existing original explicit analytical models3..11 with paired9 water/CDE. Start active nonlinear constant-negative-pressure controls; keep AGE/model2/RIA12, active vapor/Snow/Frost/hysteresis separate.",
-    "next_code_action": "Complete remaining eleven representative model3/7/11 water+CDE O0/O2 contexts with original constitutive point and unchanged all-node/ledger/native/cold guards; exact source capsules and initial2 wholecompiled counterparts. Reuse completed model3-water-O0 actual9c3d without new periods; do not move C or N until their frozen216 observers finish. Then final67 negative02, terminal exact-head CI, integrated postimage and actual-canonical admission.",
+    "next_code_action": "Commit original sampled-pressure reference component and readonly independent reader. Compile one O0/O2 original component each and observe actual pressures. Reuse completed model7-water-O0 and all4 model3 periods; continue seven remaining Windows periods. No repeated model period for observer repair.",
     "compiler_executions": 3,
     "model_executions": 0,
     "canonical_admission": false,
@@ -34221,7 +34221,14 @@
     "completed_counter": "EV/explicit-bottom9-analytical-model3-water-O0-v2-initial2-postimage",
     "independent": "EV/EXPLICIT_BOTTOM9_ANALYTICAL_MODEL3_WATER_O0_CENTRAL_INDEPENDENT_V1.json",
     "failed_original_input": "EV/explicit-bottom9-analytical-model3-water-O0-v1: RDDATA refused INTEGER HBOT9 -10 in DOUBLE table before any accepted day; exact-value -10.0 lexical repair, no physics change",
-    "completed_physical_periods": 1,
-    "independent_reader": "tests/nomacro_drainage/explicit_bottom9_analytical_science.py"
+    "completed_physical_periods": 5,
+    "independent_reader": "tests/nomacro_drainage/explicit_bottom9_analytical_science.py",
+    "completed_independent_contexts": 4,
+    "failed_observer": "EV/explicit-bottom9-analytical-model7-water-O0-v3-reader.stderr.txt",
+    "actual_model7_max_pressure_departure_cm": 1.5276668818842154e-13,
+    "failed_assertion": "New synthetic exact -10cm assertion; existing physical mass, native and cold guards passed. No tolerance or state change. Original functions will be sampled at every actual pressure, and all-node Darcy+storage recomputed.",
+    "batch_record": "EV/EXPLICIT_BOTTOM9_ANALYTICAL_WINDOWS_BATCH_V1.json",
+    "frontend_controls": "EV/EXPLICIT_BOTTOM9_ANALYTICAL_ACTUAL_FRONTEND_CONTROLS_V1.json",
+    "portable_proposal": "EV/explicit-bottom9-analytical-portable-batch-proposal-v1.py"
   }
 }
