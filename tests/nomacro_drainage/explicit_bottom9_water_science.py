@@ -6,6 +6,7 @@ from analytical_hydraulic_archives import SHA
 from initial_profile_groundwater_science import ledger
 from implicit_conductivity_forensics import general_checkpoint,original_observations
 from analytical_calendar_native_state import decode,terminal_terms
+from original_output_files import compare as compare_outputs
 import prescribed_head_flux_boundary as boundary
 
 
@@ -16,7 +17,8 @@ def audit(profile,reference):
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(BASE,path)
  path='tests/nomacro_scheduled_subsurface/implicit_conductivity_forensics.py';assert norm((ROOT/path).read_bytes())==blob(BASE,path)
  inputs=Path(q['input_root']);build=Path(q['build_root']);meta=json.loads((build/'BUILD.json').read_text(encoding='utf8'));identity=meta['identity']
- for name,digest in q['input_inventory'].items():assert SHA((inputs/name).read_bytes())==digest
+ inventory=q['input_inventory'];pairs=inventory.items() if isinstance(inventory,dict) else inventory
+ for name,digest in pairs:assert SHA((inputs/name).read_bytes())==digest
  for name,digest in identity['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
  for name,digest in identity['donor_objects'].items():assert SHA((reference/'build/swap-obj'/name).read_bytes())==digest
  for role,digest in meta['executable_sha256'].items():
@@ -32,7 +34,11 @@ def audit(profile,reference):
   assert 'ERROR STOP Implicit original retry reached clock resolution' in (profile/'trajectory/original/donor.stderr').read_text(encoding='utf8')
   assert q['events'][-1]['seconds']<60 and q['status']!='ACTUAL_WALL_CAP_NOT_A_SCIENTIFIC_REFUSAL'
   return dict(status='ACTUAL_INCOMPATIBLE_PAIRED_FORCING_ORIGINAL_CLOCK_RESOLUTION_REFUSAL_NO_COMMITTED_DAY',producer=q['source'],accepted_days=0,deadline_counted_as_refusal=False,compiler_executions=0,model_executions=0,canonical_admission=False)
- assert [event['returncode'] for event in q['events']]==[0,0] and len(rows)==35 and all(row['committed'] for row in rows)
+ if 'events' in q:assert [event['returncode'] for event in q['events']]==[0,0]
+ else:
+  assert q['status']=='ACTUAL_EXPLICIT_PAIRED_HEAD_FLUX_PHYSICAL_NATIVE_EXACT_COLD_USER_OUTPUT_PASS_NOT_ADMITTED' and q['build']['returncode']==0 and len(q['cold'])==3
+  assert SHA((build/'BUILD.json').read_bytes())==q['trajectory']['build_sha256']
+ assert len(rows)==35 and all(row['committed'] for row in rows)
  text=(inputs/'swap.swp').read_text(encoding='cp1252');grid=re.search(r'(?mi)^[ \t]*ISUBLAY[ \t]+ISOILLAY[ \t]+HSUBLAY[ \t]+NCOMP[^\n]*\n((?:[ \t]*\d+[^\n]*\n)+)',text);assert grid;dz=[]
  for line in grid[1].splitlines():
   _,_,height,count=line.split();dz.extend([float(height)/int(count)]*int(count))
@@ -60,7 +66,15 @@ def audit(profile,reference):
  elif q['case']=='hydrostatic':
   assert all(max(map(abs,row['external_flux_cm']))==0.0 and row['stock_start_cm']==row['stock_end_cm'] for row in rows)
  else:raise AssertionError('Unregistered explicit9 water control')
- return dict(status='INDEPENDENT_EXPLICIT9_FIRST_WATER_SOURCE_STOCK_LEDGER_REGISTERED_NATIVE_PASS_NOT_ADMITTED',producer=q['source'],case=q['case'],optimization=q['optimization'],actual_days=35,measured=measured,native=native,maximum_pressure_magnitude_cm_diagnostic_only=maximum_head,compiler_executions=0,model_executions=0,cold_windows_still_required=True,canonical_admission=False)
+ cold=[]
+ for item in q.get('cold',[]):
+  start,end=item['start'],item['end'];directory=profile/('own-'+str(start));own=[json.loads(line) for line in (directory/'daily.jsonl').read_text().splitlines()];assert len(own)==end-start
+  for a,b in zip(own,rows[start:end]):
+   for field in ('stock_start_cm','stock_end_cm','external_flux_cm','pressure_head_cm','groundwater_cm','drainage_outward_cm','bottom_outward_cm'):assert a[field]==b[field]
+  with zipfile.ZipFile(profile/f'trajectory/accepted-column-1-day-{end}.zip') as warm,zipfile.ZipFile(directory/f'accepted-column-1-day-{end}.zip') as own:
+   for name in ('macro.bin','result.end'):assert warm.read(name)==own.read(name)
+  outputs=compare_outputs(profile/'trajectory/original',directory/'original',identity['original_output'],start,end,meta['project']['start_date']);assert outputs==item['exact_user_output'];cold.append(dict(start=start,end=end,complete_native_byte_exact=True,physical_exact=True,actual_user_output=outputs))
+ return dict(status='INDEPENDENT_EXPLICIT9_FIRST_WATER_SOURCE_STOCK_LEDGER_REGISTERED_NATIVE_PASS_NOT_ADMITTED',producer=q['source'],case=q['case'],optimization=q['optimization'],actual_days=35,measured=measured,native=native,cold=cold,maximum_pressure_magnitude_cm_diagnostic_only=maximum_head,compiler_executions=0,model_executions=0,cold_windows_still_required=not bool(cold),canonical_admission=False)
 
 
 if __name__=='__main__':
