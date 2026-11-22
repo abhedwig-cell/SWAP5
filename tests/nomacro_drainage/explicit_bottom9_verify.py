@@ -1,5 +1,5 @@
 """Own explicit9 composition; retain complete literal admitted156 science."""
-import ast,hashlib,io,json,sys
+import ast,hashlib,io,json,re,sys
 from pathlib import Path
 from contextlib import ExitStack,redirect_stdout
 ROOT=Path(__file__).resolve().parents[2]
@@ -13,7 +13,8 @@ from explicit_bottom9_cde_central import windows as cde_windows,monthly as cde_m
 import initial_profile_age_groundwater_verify as previous
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 OLD='tests/nomacro_drainage/initial_profile_age_groundwater_verify.py'
-SEALED='c59731559d7dd675263306cee900d57863f6ecf2'
+SELF='tests/nomacro_drainage/explicit_bottom9_verify.py'
+SEALED='8d1ebf1e27f4a067d5cb602c423016ff5cf9e4f8'
 PREVIOUS_CANONICAL='79ff3ab235f8b07535bf5273dcda32f4bef15f7d'
 PARENT_ADMISSION_SHA='d40920872fcb4946417ffc3e4bbe6b2f5a545ae45bd271a8f9373ae9739b7f2f'
 CONTRACT_SHA='3517d5e50630e31e78e4df34cf8b09fc4ec1e7103c3e1e33b9cd0b8423a889b3'
@@ -31,7 +32,16 @@ def checked_current_source():
  values=json.loads(contract);assert values['parent_contexts']==156 and values['new_explicit9_contexts']==60 and values['combined_contexts']==216 and values['previous_actual_canonical']==PREVIOUS_CANONICAL and values['parent_qualified_head']==BASE and values['parent_admission_sha256']==PARENT_ADMISSION_SHA
  assert values['canonical_admission'] is False and values['whole_historical_family_closed'] is False and values['RC3_changed'] is False
  for path in git('ls-tree','-r','--name-only',SEALED,'--','tests/nomacro_drainage').decode().splitlines():
-  if Path(path).name.startswith('explicit_bottom9_') and path.endswith('.py'):assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen explicit9 proof dependency changed: '+path
+  if Path(path).name.startswith('explicit_bottom9_') and path.endswith('.py'):
+   actual=norm((ROOT/path).read_bytes());expected=blob(SEALED,path)
+   if path==SELF:
+    # Bind this complete public reader body too. Only its one immutable
+    # dependency-anchor literal is excluded from recursive self-reference.
+    pattern=br"(?m)^SEALED='[0-9a-f]{40}'$"
+    actual,a=re.subn(pattern,b"SEALED='IMMUTABLE_DEPENDENCY_ANCHOR'",actual)
+    expected,b=re.subn(pattern,b"SEALED='IMMUTABLE_DEPENDENCY_ANCHOR'",expected)
+    assert a==b==1
+   assert actual==expected,'Frozen explicit9 proof dependency changed: '+path
  for path in git('ls-tree','-r','--name-only',SEALED,'--','integration/f-ci/nomacro-complete01').decode().splitlines():
   if Path(path).name.startswith('EXPLICIT_BOTTOM9') and path.endswith('.json'):assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen explicit9 raw/qualification record changed: '+path
  raw=norm((ROOT/OLD).read_bytes()).decode()
