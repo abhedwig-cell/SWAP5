@@ -1,0 +1,1113 @@
+{
+  "status": "ALL277_ACTUAL_HISTORICAL_SOURCE_AND_INPUT_BYTES_EQUAL_REAL_4E55_GIT_BLOBS",
+  "actual_head": "4e55baf8ab1889d00cd8594c4dc5519d20430011",
+  "materialized_source_copies": [
+    {
+      "path": "app/solute_column/read_swp_chemistry.f90",
+      "checkout_before_sha256": "57dbdcd78ea4e2abc2ebc9d139c10f68c723e557c73cff19bb137790edc29409",
+      "actual_historical_Git_blob_sha256": "5da90907a6c5741daa7c131b8a144a8f6ef1b7f3804615381c9b00e4079cf0b7",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "app/solute_column/read_swp_heat.f90",
+      "checkout_before_sha256": "befd861d94eb4e523a1b76fadc93dc6cbd9d2f4bcfc1b2d40a03da626712eaec",
+      "actual_historical_Git_blob_sha256": "2d1ac41e3b5e594a1803baab4600abb9eabfebc97473780ad1703d4525d60ae3",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json",
+      "checkout_before_sha256": "10a2e479bd0c4aba0d60cb2475527f634cd614c953a541566b43361ff00bbdad",
+      "actual_historical_Git_blob_sha256": "74ae154153d7695ed2f3718f6a352832caf7db6527a833ea58c27fd2eee33115",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+      "checkout_before_sha256": "609496d1aecfb397da5a7c9121268799c9d52fc4567f0c7bc233b09d84219622",
+      "actual_historical_Git_blob_sha256": "d28c2def250392ff62c37c20eae5c3bffca03870915baf88b4816a0084bc17dc",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64",
+      "checkout_before_sha256": "67679133c7adbefdbcb7dd8e89137e20c7f0c307ce22b4fa7b379dfb8e11cd8c",
+      "actual_historical_Git_blob_sha256": "4221b5bf89bc979673e88229858f6820e0c8d196083a68d56068c46e61b2d98b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/audits/verify_dataqual09_current.py",
+      "checkout_before_sha256": "b660692d60c51f15f0edabfe4ee2fc14e2055edc6874854fdf1fc90a89b34c85",
+      "actual_historical_Git_blob_sha256": "3d3e9cd0f9a15d9cf63b234d46988d986de3a065ad518c3e9089d7913281ac27",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/audits/verify_dataqual10_current.py",
+      "checkout_before_sha256": "425c80250e18b6916f84cde17781cb7233e1195caa4f5815b8042ea0ef539d73",
+      "actual_historical_Git_blob_sha256": "2bbd62c4989b7d967cff55b17393da9e5c7801951e6f19be6efd60e087fc4dd6",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/audits/verify_dataqual11_current.py",
+      "checkout_before_sha256": "c3d88d5d500e3bf5cfa263046424741e87ed23b09d0da959db60d7e18bc9928c",
+      "actual_historical_Git_blob_sha256": "1a676af0998caa780423cc5d1e5f09101ac54178f6d4f2a99a6e8427bae84725",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/audits/verify_dataqual12_current.py",
+      "checkout_before_sha256": "eb94fbcf3685e52004b39325dfb355b0a6fbaf64b922f6537cd6917c341645f6",
+      "actual_historical_Git_blob_sha256": "29ffdf4abc310ced579166065d31fd1eef3e91421cc11e566347080962afcfa4",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/dataqual10/BUILD_O0.json",
+      "checkout_before_sha256": "59fd36c1232513daa49b40fec469891e4a67e1b68fd6ded7704278b7039c2291",
+      "actual_historical_Git_blob_sha256": "f448b825a75e8933020cad3dc08e7098a2e468e9d7a7e125dd64053c14c30ecd",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/dataqual10/BUILD_O2.json",
+      "checkout_before_sha256": "c96e5d9c70bf289d95af3d39387056b7805e2ccabac679d582e3e89d87279e97",
+      "actual_historical_Git_blob_sha256": "efa426b8ae36a919b762e392c065b5cfeb9bf520a1aed3efc4426d90840393fc",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/dataqual10/ORACLES.json",
+      "checkout_before_sha256": "4df98aaa7d83173efb82bd60c273939114f976d0ce8792170b578765d4b74c0b",
+      "actual_historical_Git_blob_sha256": "a0b560c88935a1eb0a2219d66c0fc4e886ca08abea6f1da2fbb3406cc89dcb82",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/dataqual10/STATUS.json",
+      "checkout_before_sha256": "0c4b23f12449d661bc6faa0819f97fc8731c549988e0e38d71c9be3aa17902f5",
+      "actual_historical_Git_blob_sha256": "5e152a45349c0bbe34901a95d3c378ce22597d0a58f112aea8f1c7034f18051e",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/dataqual10/run_contract.py",
+      "checkout_before_sha256": "1a897a5d38a59ee2da52a9d55180cb89f1dcae8b4ea42ab4c073f337dfeed4c2",
+      "actual_historical_Git_blob_sha256": "d34efb12c37654f050994249a0dacdc4b129f149a6fc4b7119dcd2bca93acd2b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/dataqual10/run_native_fsi.sh",
+      "checkout_before_sha256": "4d196baa87c54cc68b85ed99eff98f53a7e66cf49ef29b89a8070746fb24986a",
+      "actual_historical_Git_blob_sha256": "4a62f11d0de0d469b5c8ca88a4e502d1c3ad1110e2fa13fe67735b34be4ca0f9",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/dataqual10/seal.py",
+      "checkout_before_sha256": "4bac2b7bef636d8d6278fc56c437e056e857f137bb41e12edce27d103e822bd2",
+      "actual_historical_Git_blob_sha256": "6704cc7a732944d78ead929174c446a124b9ef8d87a1002f4dd6d01925c9778f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/dataqual11/STATUS.json",
+      "checkout_before_sha256": "2c152a3714be92e595609f748a8cdf347f436380209590057d3479bf3abe0a8b",
+      "actual_historical_Git_blob_sha256": "9a044255b9d4ed05186dfb806436f3e66947717639a8674f0a56ab5b71c431ca",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "integration/dataqual12/RESULT.json",
+      "checkout_before_sha256": "4dbda776b33c8b32fcb1a9b385eb6e7833fb8f725c62c9e04190495f8c682fd9",
+      "actual_historical_Git_blob_sha256": "995b7b5b2c988bec61f241e98142ca4a2b0a7d49806523f604c338afd8ab487c",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "reference/swap-4.3.1/projects/MANIFEST.json",
+      "checkout_before_sha256": "4e47f07053dd80f5496b959247d2b0ae3081ff64ed521c8e5e629b41e756888d",
+      "actual_historical_Git_blob_sha256": "b99f3f961daa5e3184f6989d83f4899bfd2d5514c2d4e1eed69677b1f0400668",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90",
+      "checkout_before_sha256": "bae4904e2a04669554ad5f13201fbb2f5f57b5ea4f7e6fc61ee204738fed869f",
+      "actual_historical_Git_blob_sha256": "62c88eb7012ccd7b2c8c14f98c71ac9ffca0618de2337bf91cc29975540595dd",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "checkout_before_sha256": "bd7fc85f157cad0403f4622edb92c561a442acb2ba4e1657521f63b4053c061b",
+      "actual_historical_Git_blob_sha256": "c863927a8974a5753b71fe6d6d19e995576af102446953ca9527797cf78e767b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/adapter/mod_fmr_mode7_temporal_head_envelope.f90",
+      "checkout_before_sha256": "3fb4a68451485b6c57677dc257b8fabac770e749e2b88b10b0a10dd9d9548d97",
+      "actual_historical_Git_blob_sha256": "729a425e6c8e6a32819ab8aaafb8bf40add5df31cf346fa9ecbca88466f39426",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+      "checkout_before_sha256": "b4351a0ab33bd62b540980c602ea03bef5de676af521aefcbbf3d1b456c511d9",
+      "actual_historical_Git_blob_sha256": "c09975cb3aeaaaa503868e436900e371c41589475d6c362f6d0d72fbda667c4f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/crop/mod_crop_bartholomeus_input.f90",
+      "checkout_before_sha256": "4df387f0b2e47c1f80228aac2776fe34e77a3bb833719359f07485055e32546f",
+      "actual_historical_Git_blob_sha256": "470c4fd84eb636db1b1d30682c94539db896fa7bb3d1911c36d3c9c1d13fd024",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/crop/mod_crop_root_profile_static.f90",
+      "checkout_before_sha256": "2e9d5c0ce197631a01f86918863fef3d1cc3840d7113baabd050f15f178fbc66",
+      "actual_historical_Git_blob_sha256": "79c54eedac5126236b7ecc3e02d5485012a4f0438ff79e7677452dd9a9f47b95",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/crop/mod_wofost_rate_table.f90",
+      "checkout_before_sha256": "bccb94aecf4a3228964c1a3f977d1966e4a62b2aa40ea114399d75823d21c337",
+      "actual_historical_Git_blob_sha256": "611b2891e64ec992a395174117d029f9f0d196ca3c04a18e858a9ced809d8777",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/kernel/mod_kernel_committed_persistence.f90",
+      "checkout_before_sha256": "986f82877a09cad808a424ebdeeb73b64bf93892d80beca2f5583c95b1df3874",
+      "actual_historical_Git_blob_sha256": "5b7de4dc602dbd9c83cf121e984d52b3cb99757efaf1a16a4a219881f8bfb147",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_micro.f90",
+      "checkout_before_sha256": "c66e782e0d416b86701cdf652a7cd970da0a3d865b30adcf4a8c29b15488d36f",
+      "actual_historical_Git_blob_sha256": "9dae62dc9c7990e700acb979ea0994b7640e0473cd49fd2154acfcc52fb539d6",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_microbial.f90",
+      "checkout_before_sha256": "6520230700a68de8b8371a0a3ab526fc07493284d5e141d23cac343ed1a08e68",
+      "actual_historical_Git_blob_sha256": "2056fcee48425d543daaf3a28e7eb7f58346a5566c8a74c458456fb73774bea3",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90",
+      "checkout_before_sha256": "8f85be1ca4463f0c359cbee384f3fdf3165e8e6342ff5bddc5c574a9b3fed6c4",
+      "actual_historical_Git_blob_sha256": "c3fff3222e11ba39ee73b727f56fd12fab4e48b8c811348b9be2cf8cfbc27afc",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_parameter_contract.f90",
+      "checkout_before_sha256": "0d7ab3b915e5ef15a1b334502034a91417b86fde0e63f122a28ddd2d4f881f6b",
+      "actual_historical_Git_blob_sha256": "9e71144aa62c3bb3a1b186457e43f5f213b7a90f212619eb4890c5a1ebeab122",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_profile_response.f90",
+      "checkout_before_sha256": "28e3e54431c6fd893130c0911cd8d4e0421882b96317705ede2ad946337d7508",
+      "actual_historical_Git_blob_sha256": "76f8bde09cd0b283608ff60e76b42f635d937af725d4be134094b902686b24df",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_response_assembly.f90",
+      "checkout_before_sha256": "63bf8f2a4e1035c11e77d0a3ebf6fe0464313304f3fb2b54192b4101c60c8345",
+      "actual_historical_Git_blob_sha256": "5db54d54f7e5cafa641512bd5c2409b1d0d9f4b257e4f575c09ff93e4265a6fc",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90",
+      "checkout_before_sha256": "3dd13ebae28f371094021788753d4ea4ff76e6538d15749fc347c04184f7f105",
+      "actual_historical_Git_blob_sha256": "f8ee306cbdf277d1b9fd296628567b68ea08c07f7c395aa9a855346727d505f7",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_temperature.f90",
+      "checkout_before_sha256": "7afc0e6df26f93160a3b79b10007493a44ca9166e4325974d0bfa40060226b0d",
+      "actual_historical_Git_blob_sha256": "03576b59a1903aa97c5e2de939d60710074b80ddbe1619c140af121a29064a4f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_waterfilm.f90",
+      "checkout_before_sha256": "a4efee774c596782fb2a3ed5281f8cd097fab6d24d10ac0923a8188a43da0986",
+      "actual_historical_Git_blob_sha256": "878a2a15d178f8516e9f6f3fa433e695c6db2593a007f7a31de85eb469e51f3b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/physics/oxygen/mod_oxygen_macro_zero_depth.f90",
+      "checkout_before_sha256": "be8b0e6177fc3250eb57afbc05b177b8da52d8a7419bfbd973c127caeff33e22",
+      "actual_historical_Git_blob_sha256": "2b2f3896b44767f15dbd2099ed21d3f77c828899efdaf4c2bc1e77f3f4082b1f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_macropore_covering_layer_input.f90",
+      "checkout_before_sha256": "fc9031affd0a22bf9592ca22e2dc6465bd728055f07eac84fba308aa8d6dc753",
+      "actual_historical_Git_blob_sha256": "3de7c233ba7d2f7653d403f86b085749806fe5445078db9729d39cb6c77bb554",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90",
+      "checkout_before_sha256": "749669bd9d6682b985f60c52a91e6dc4e2fcc13d8ae9204d0178e53cbc0eb658",
+      "actual_historical_Git_blob_sha256": "78b67df4e9f9565af37f11e84ec1e008617a0c9144a1d62bd6ae4e2f106893f8",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90",
+      "checkout_before_sha256": "f75f5885aede30d1a89ba2a474c9558aa25bc86ed2ea94af6f8ab9ea96cf3c86",
+      "actual_historical_Git_blob_sha256": "9fa872a01226a6206ffb0d20eb3629ebe96f1ca27cb3641d4b8c2881e7577b73",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90",
+      "checkout_before_sha256": "625a6b00763665759255109e2726affe8dde4138f8f2d5d038d7b569640acf5b",
+      "actual_historical_Git_blob_sha256": "6482e11f9c95f5e8ec338507238a230702355f7b53be311816f341d6a6cb10b7",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a5_top_partition.f90",
+      "checkout_before_sha256": "d9dff1f2abd477a4aaeb4813ee358ddd7c214d847644058d65a1dc6487e70942",
+      "actual_historical_Git_blob_sha256": "86f0af006c8ae3a2d58124b0bd1fa2a61d85813051da38eef84c8b9df946a001",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90",
+      "checkout_before_sha256": "2086b8d35c479ece4abb3492f03c774a2c833ced0320254010f2e8ff91826308",
+      "actual_historical_Git_blob_sha256": "75e49a060ff8bf5b8e45a95ac0ea7872daf7380afab95de244780e92f02dac94",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90",
+      "checkout_before_sha256": "d2d5fb7c40ccad4ae3f51616bd497b3d29570d9f484dfc6819e15e95cf702f34",
+      "actual_historical_Git_blob_sha256": "f628543f5e04d39c0dc99532ac391b672314709877f93a001684336b50232bfb",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90",
+      "checkout_before_sha256": "fc8c63debbafb9bbbe10d343f3db570ec633b9551d01ff92067087a1288f2559",
+      "actual_historical_Git_blob_sha256": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90",
+      "checkout_before_sha256": "9b88166e8a4a329ec47293f9d888aae3c7e95920dd4933a8a68fadff1f439562",
+      "actual_historical_Git_blob_sha256": "d41f24f73ad9fbb0fa4ef1557437faae83f73b8f759cf0634d72685fc2ec02e4",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90",
+      "checkout_before_sha256": "e7458a536aa107c4e37cb70eaa450d567247f3560307ef4e26d1b791ab1f8a92",
+      "actual_historical_Git_blob_sha256": "ea1b5008abcf6241b82acc38e33526ca0833f9ac592884f729c42655c1b855c9",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90",
+      "checkout_before_sha256": "83af798ae9dad92d403ec561391d4605d7766a3deec006a6fe73ad79508eea1a",
+      "actual_historical_Git_blob_sha256": "98cb4da7c906dd01525ca630707a8d5b4a11e4871b24b75126fbacf8a8e418ff",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90",
+      "checkout_before_sha256": "fe0e18e4fc1fe60c1599ea6a8e7dcfb231b192eaed33f4e2cc7508db196a9e3d",
+      "actual_historical_Git_blob_sha256": "51043eddc6680fbc1039998435000b73c569c998c9e86cca8f10c9f077b0d35b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90",
+      "checkout_before_sha256": "2a27dbb76b12b0c830e8efabcde9a7115fcb346b76a1bb001f1edaa59026431a",
+      "actual_historical_Git_blob_sha256": "0c86ae585e64abe3e9663dcaa3e57bb95c3ffdc0552a36305f7c926fe6a3b1e6",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_endpoint_release.f90",
+      "checkout_before_sha256": "ad301ed3eb725fb57b02f0ca175bc0ca36cf376c0a05ecd6d5b71555a239dfd6",
+      "actual_historical_Git_blob_sha256": "9dbf13e578c95f8c8c9cbd0fdf093a1ad82b3ec48ec0ce405850fc92d39c5284",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_preferential_router.f90",
+      "checkout_before_sha256": "23848dd04084e83c41f88b2efd3c53074e0b15b3a0240539b71544cdaa1c71c1",
+      "actual_historical_Git_blob_sha256": "6c7b1c03106410631cf4916e3ea7175269da6c608b727e1c185dd94ad6a5c009",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_surface_event_age.f90",
+      "checkout_before_sha256": "e325a89eea07f5ebf492fbe85cf937d325371b60714af79c4136e3ce1dfb8f1f",
+      "actual_historical_Git_blob_sha256": "fb94b2d9f1139e7b4980657a939c172d00be4ab1adca1cc968e8f8b2e5dcce15",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_surface_sorptivity.f90",
+      "checkout_before_sha256": "17f683a13a38e34dddbe27ee4b684c7b687f939ad6e8cd1e10a924686dc18a90",
+      "actual_historical_Git_blob_sha256": "2d17efe9cabeb992e6b3ec01d930351fd23f8c3e2660b9d89d84fc96bf62d90a",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_unponded_activation.f90",
+      "checkout_before_sha256": "d4c478214831d1cb53c5a83da9de3592933826dcbff80818ad551cdf9b73505a",
+      "actual_historical_Git_blob_sha256": "9b94fe35abea3fa47c1a38a46b047ea25603467b91c535dbe890b0042c9b9962",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_b111_explicit_cauchy_profile_flux.f90",
+      "checkout_before_sha256": "cae1c08fa43b9b972bdb411767725584c67484909ea3460ce1232d31e35abda4",
+      "actual_historical_Git_blob_sha256": "ed04df5fc2884cd47a1beab26e79b419dd9146c6a4ed0ed03555d6f98839e79f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_b111_persistent_pond.f90",
+      "checkout_before_sha256": "1f85aba6bbb1cc48439b0cf102d3e71752b14a52886aac705390165b71fa2a22",
+      "actual_historical_Git_blob_sha256": "214a7c62f943b6188d69dcd99fd5bb684c87ff9f4287133b4d17df9c360eccc6",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_b111_pond_solute_exchange.f90",
+      "checkout_before_sha256": "57b37d9d329b256e128d5cc1a96fc84095cc6600350353598f47e1ea8591c49b",
+      "actual_historical_Git_blob_sha256": "e78834e5ecd4cb8e074549e8bc031ce9a6964c13d098fbc56736f8cbd61e1ed3",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_b111_reactive_solute_substep.f90",
+      "checkout_before_sha256": "fdfe45043a046d95fcd667e7cd5c1dbd92d51f7b2c94668ed294e6b8196d70ce",
+      "actual_historical_Git_blob_sha256": "175176481a5c3620e0d1429b15b74e3bdaaaa1f4a3167e12851174d743ef081b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_b111_solute_decay.f90",
+      "checkout_before_sha256": "db7be8eebf794b9ff983ef396195bf18aa225c7d66e4ef15f55f62d3e81ffed5",
+      "actual_historical_Git_blob_sha256": "601c4b77d33520d023286b44b00a658337417c76ee3a12d51e25674421447b9c",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_b111_solute_sorption.f90",
+      "checkout_before_sha256": "fed2f1e7440a076e4b6afcbf5ab2f9f4afc99ad6e95b0e50de49bbc7b23b67d1",
+      "actual_historical_Git_blob_sha256": "0eef10b501db3ab8e60715c24f7b5e403166b4007288a5ef8b31f6280490f7eb",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_b111_surface_age_owner.f90",
+      "checkout_before_sha256": "4d474df7c97b1998f3810ff45eba003265e0dadafd2c6d9f66b0a284e24fee32",
+      "actual_historical_Git_blob_sha256": "ee4058b331134ffed68f2c528b56518b9502365fa0117bef0e237fc8d023e855",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_bartholomeus_runtime_input.f90",
+      "checkout_before_sha256": "10aef5ceb4286bb487f6ddffd36d2bb993189d5d28ae1f025fa316c1c7fc2925",
+      "actual_historical_Git_blob_sha256": "ff905a0a1a19350a80d156bfaf4c3967a587f90d2c867a8585a3f155d7a5cc97",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_daily_rain_duration.f90",
+      "checkout_before_sha256": "7c5550c3e438f882a2759b5ea6948be48a2fd2ba2576dde6344ab07c98a70ea4",
+      "actual_historical_Git_blob_sha256": "6c957b9802332932a6953b63237e7aa3ffd42933151f49d926c78e04cbaf7a24",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_b19_separate_infiltration_adapter.f90",
+      "checkout_before_sha256": "ee7d6bb849405d485111792881af0d620052a5ecd94639554abde2f2be4164fd",
+      "actual_historical_Git_blob_sha256": "66c2307df33223dc3d0db31a08987427438841c58c47c89eaf4835a6f46ca2f0",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_dramet3_response.f90",
+      "checkout_before_sha256": "f0cbf5f8ab19a7f45b0980e9e41695e407db6578de1d370e829e9dff8af1dcbf",
+      "actual_historical_Git_blob_sha256": "690a80a5a91dcc5f3e02883bf1fd9800e5d0efbab163e6255cac1b1723372976",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_empirical_interflow_response.f90",
+      "checkout_before_sha256": "ec075dbab3f0e7a61002e96bfee0e7b6c6db9a0f7a6f5f2c8d8e37b3b57918ff",
+      "actual_historical_Git_blob_sha256": "32fd0dc80f4f62ce3158836769508fa6e0dab8c9a3a38e02280c0596ebb89c70",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_ernst_ipos45_preparation.f90",
+      "checkout_before_sha256": "5c9c60b270a6c1df053927d626d2ba25492e6f0ffc76b623fe46845bc4aa5223",
+      "actual_historical_Git_blob_sha256": "a562c0cd43edc5b21af47f5977ae001c896d9e288e992a3501972ea267ecb5d5",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_ernst_ipos45_response.f90",
+      "checkout_before_sha256": "9f069070df133e4a3819a1f1fb56f786bed31ef5693dcdff115f39b708bfc0ff",
+      "actual_historical_Git_blob_sha256": "9263511e6bc86e704021d7bbd84d8f277e220f724bb49233d7512777b7147f00",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_extended_exchange.f90",
+      "checkout_before_sha256": "c9f63a34d7c279632e65bf8c61376cf245cff0886ddf0f13cba36fb7b37de855",
+      "actual_historical_Git_blob_sha256": "598043509c62414918fea3d61e76c6d146bb76f3413318c2444e3181bae2c292",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_hooghoudt_equivalent_depth.f90",
+      "checkout_before_sha256": "1316914c6397096dbf34c77b509f741427b0d3c794cce440277423da955bcfce",
+      "actual_historical_Git_blob_sha256": "2e4331a9b286476cd2a7e0553ba590c0cf017c4941ae6f141e6edce47c3ac3aa",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_hooghoudt_ipos1_response.f90",
+      "checkout_before_sha256": "8337da9eeb642b6165b0cc09f983673cbe880de797659fb22514d0a0bcf37ba3",
+      "actual_historical_Git_blob_sha256": "1eed82b76a59048bbf50d02831e7236a50452f0067417d26a4fca6f44868a690",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_hooghoudt_ipos23_response.f90",
+      "checkout_before_sha256": "d62d7f3bce1fdd6abdc2103cd14a2b51e6c2538ebdb6fc497025a8178334a003",
+      "actual_historical_Git_blob_sha256": "efdb4510aab0833d06950cc6dc8f1853678189ad9b29b02de985c7e4bc9ca93d",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_multilevel_aggregation.f90",
+      "checkout_before_sha256": "171fb05149274b20a5d5b105d2268e1efe3b135d90b7c21c053b6ead209906b1",
+      "actual_historical_Git_blob_sha256": "42444d0719dc9d8470a7803acad3aa328cb3c7fb080e84b0ae568f4df501967e",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_process.f90",
+      "checkout_before_sha256": "e558b425540792dab32593651f42fd0a85be105ac720252177fdc658962026a4",
+      "actual_historical_Git_blob_sha256": "4ad68b1b1fc1e4b58737ea94f11a899cc05079e11bd46b910c0e88ab568ce66b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_spatial_distribution.f90",
+      "checkout_before_sha256": "66e1e3054a5d0981102a93d03ab203d07d2f187bf58cf3b9520ee1136156ab78",
+      "actual_historical_Git_blob_sha256": "29dcd8b23ac76b032857202cbd7ae670f26e18cd04a7f85dafb662773f3b6ca6",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_drainage_tabulated_response.f90",
+      "checkout_before_sha256": "809c906e7018094c90a6be274e89dad975e09be2988b22313dc000043452eae6",
+      "actual_historical_Git_blob_sha256": "84672d1c500c163c38bf98dbe0224559fd6a27189a95fde8911bdcce2f490f9b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_frost_bottom_boundary_effect.f90",
+      "checkout_before_sha256": "7b1528e2a472433798d2e025c3a1f79af1c20ef53788405f80664386880b0e8d",
+      "actual_historical_Git_blob_sha256": "e1a80b791552a25beae21851e273cc39a7a522fc3c975031a724c2005a4cda68",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_frost_divdra_drainage_effect.f90",
+      "checkout_before_sha256": "335dd71dbc8eed13c6dde1f53112565c9fa82be03f104655f67b272298ef5d9f",
+      "actual_historical_Git_blob_sha256": "1cf2bf1d292af041ce96208045484961b4b730ba7325141bb5ecafafa48cecca",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_frost_drainage_effect.f90",
+      "checkout_before_sha256": "d3a30cbaec35a9a61e0b17f5bb3fb47ac1b125207637fc4e68e58a0262bc80b6",
+      "actual_historical_Git_blob_sha256": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_frost_geometry_effect.f90",
+      "checkout_before_sha256": "5e4aeb921f83627e5dff1473f83366f53ac83592ec41bb0b09a2303911043c9e",
+      "actual_historical_Git_blob_sha256": "a1b025631d4f9eed58e3f5f08d22aaa965f9a77c0933b35305812e6f47b3d212",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_frost_hydraulic_effect.f90",
+      "checkout_before_sha256": "3e4d18cb2e054ce4902963b02942cec7f2c019d1b75c556e44d0b1a4dae30683",
+      "actual_historical_Git_blob_sha256": "aa202064505f4d5e21e6da6900fe2c6ba9ec5bb3e653f41990e367abb10d74e5",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_frost_low_air_drainage_effect.f90",
+      "checkout_before_sha256": "bf92bdfd9e087a9930589ce4c826d3dfd7b860063e9c0c4896b2bf75966e1411",
+      "actual_historical_Git_blob_sha256": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_frost_multilevel_divdra_effect.f90",
+      "checkout_before_sha256": "300f30d91bf43bd0e71ac51095377503d1cf5517ce6904d88d88e62687c85f19",
+      "actual_historical_Git_blob_sha256": "50176734b0751b6bee4bad3b2ec5975badef94145d1124c405bf49d494a8b15f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_pond_water_temporal_difference.f90",
+      "checkout_before_sha256": "8fee9e8d8dfc197408a0b14f13c85fb0374d889835b7fd30807f6594b1cc7f57",
+      "actual_historical_Git_blob_sha256": "59f9dfe1d7d30d269669ea50b5a8675b77d534f44acc95d1c50ac3d967737afb",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_restricted_fixed_weir_surface_water.f90",
+      "checkout_before_sha256": "6d9d6bc128269af8f425d8ff894cef2cc100f9118338f6b4f119ad18d5cd4ccc",
+      "actual_historical_Git_blob_sha256": "72f2b91e8e4a882b8fc71934ba98d816bd5999cb4e11ef842ce550d742a0e158",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_restricted_surface_evaporation.f90",
+      "checkout_before_sha256": "e415c1155e865cde8f85d92e723507f271600afe4e28de30c1261712844cfd7a",
+      "actual_historical_Git_blob_sha256": "7f35440dd71189668c0259d44092a1262f8d09791971347fdfd1f7e6cbb2c475",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_root_frost_stress.f90",
+      "checkout_before_sha256": "391eefc49ab3a2a0539b66bf071a32cbd304c1e51f2d17f24afb0420c68e31a0",
+      "actual_historical_Git_blob_sha256": "336d85f1fe094b2b85c999491467c4a83de37898c1da941738d81050d82421a4",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_root_micro_matric_flux_table.f90",
+      "checkout_before_sha256": "d5d7c6f31cbfeeff017c0cf7d03117a4ee43ec88238335feef2d1a56758b3bed",
+      "actual_historical_Git_blob_sha256": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_root_salinity_response.f90",
+      "checkout_before_sha256": "70ef89d6ec0970de9268ddc0c51123d2826ad0103eceae57445b1e207cc87ea8",
+      "actual_historical_Git_blob_sha256": "4ef0bf62ae7abb43d283c82370ae6aa102f8f4d9cc96ecd8617b64f91fbb448a",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_root_uptake_compensation.f90",
+      "checkout_before_sha256": "b9fbf18de3001aa080a25d1189dc20f0317c7830cf781aaa4598211635ba4992",
+      "actual_historical_Git_blob_sha256": "8d462ca72adc2de88946408449d88c3739c46d97cabd954288b878a6c0cbb230",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_root_uptake_oxygen_composition.f90",
+      "checkout_before_sha256": "edf1d6c5e521dc78b23dac0b15b631df1ca8d2b553454a2e8440666d6e7dd8ea",
+      "actual_historical_Git_blob_sha256": "a5e04d82ed7f6faea1d76be0ac81cffdde3cda14e0523075cd441ea3928c927e",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_root_water_uptake_process.f90",
+      "checkout_before_sha256": "4a2a89214e8d7aa247f58426ad57b0f947afbc5f0dc422ce984b34af14038069",
+      "actual_historical_Git_blob_sha256": "0b6347fe91fd5174908f0966c4fe2bdf2084e4cf8baa945b7a4f3a0be0d2ca14",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_rutter_event_integrator.f90",
+      "checkout_before_sha256": "879027fae1726711adb7f5b86bbc65167b5209212a9bb122349f2cb518e380f0",
+      "actual_historical_Git_blob_sha256": "8033bcca89c8d488db2d754f1b345234e4dcea5f2b8fc7aad5ca45abab91de5f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_rutter_interception_process.f90",
+      "checkout_before_sha256": "8860787bad40e6888314201986a3d1058ddef030dfa8dbfb8618fc90e5e933c3",
+      "actual_historical_Git_blob_sha256": "7d0bc19366a331d793860e1b22e3407c682b64158a86eb6f59d032e325af17ab",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_snow_process.f90",
+      "checkout_before_sha256": "2b43611f63402b603d1655ed7e3d452a600226cb99cb26f1070a98a4419296ef",
+      "actual_historical_Git_blob_sha256": "1590a91275f99f3412bf71a263c0fa61371b106810c6a662c249b7d1b3c89293",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_solute_compartment_state.f90",
+      "checkout_before_sha256": "1de600a1154bb05678c27bef759efba9bbf4d3a332853f862b5fc04d9adb5ba5",
+      "actual_historical_Git_blob_sha256": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_solute_macropore_exchange.f90",
+      "checkout_before_sha256": "57bd0e5db0f976d305b695b1d571c3a5076bfa069ea3d11c01db2df1559e3444",
+      "actual_historical_Git_blob_sha256": "ecb3a215a6e692730d23a0ae8289e203c428dd78ab647b53cedb9e23fbd32864",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_solute_mobile_advection_dispersion.f90",
+      "checkout_before_sha256": "b923b0ae321fd223144a15d4951fc8913689bcbaad06ee01c76579d89cc02c21",
+      "actual_historical_Git_blob_sha256": "e619f6e1a022a43ed83d39e89ddaad1a97e4ad3a0603bb24023914a2dbe64c3b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_solute_mobile_macro_salt_transport.f90",
+      "checkout_before_sha256": "2d427c26c8e5b40910bde837f15ffdcc340b2d2f0f0e6a4a91e790265de05e6d",
+      "actual_historical_Git_blob_sha256": "1228c8c6768f82d27081cbb4c0915e7ec8412376a9dc84963f2bc6dc35da354c",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_solute_mobile_salt_state.f90",
+      "checkout_before_sha256": "48c8601f54b95fb29ca552aa405cbd6440da1f864517fd835ac73f2f450ee938",
+      "actual_historical_Git_blob_sha256": "7e9463600dd47e4f9a9b05f6f4a8ab68684c383d7dabc80195c212c6da920094",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/process/mod_solute_water_face_flux_reconstruction.f90",
+      "checkout_before_sha256": "c11f0a7dec4d81d3a88354fa756271acd07ca0aab4123d053f0a4c43cde800cc",
+      "actual_historical_Git_blob_sha256": "d0a1b97386d7383982a407f209ea91604c76ae4ae01841bf4865367d0c24b04a",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "checkout_before_sha256": "97893c3d9a62e408ca9328fe086248b01d341e10fa93daede7222545ea11845e",
+      "actual_historical_Git_blob_sha256": "3bba0d4c16685c6af91e84285d1c296c396c72fcf91978c412ca1ca1d6a8270f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_b111_surface_age_trace_bridge.f90",
+      "checkout_before_sha256": "bcad691c19d6e23a0c94728301dc001042878fac02b2327d811d6fa86b6f1a52",
+      "actual_historical_Git_blob_sha256": "a3754179c3ff63c3d310cf77e2cd79bb4374dbafa10165e8039d99bee7e99c36",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_canonical_contracts.f90",
+      "checkout_before_sha256": "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d",
+      "actual_historical_Git_blob_sha256": "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_b111_age_joint_application.f90",
+      "checkout_before_sha256": "83be6199530854a3ac80684be1fec9305857fb7ee0fa7fcfe74ea3258aa0d5fc",
+      "actual_historical_Git_blob_sha256": "c73f6f03df022f394f5db0edad4ad83c1bf454fdd55fd6c51ef77a83cc69e366",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_b111_age_route.f90",
+      "checkout_before_sha256": "02f96d3a4ea773a3b164bcf80f7c5d5300e0178e03afb3749765bddd304eb4db",
+      "actual_historical_Git_blob_sha256": "b2bdfb98f883aa7d6b9d7be89f388d5d73626bc0fa009f7764640834cfad87e4",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_b111_matrix_joint_application.f90",
+      "checkout_before_sha256": "7b0a0639f2df82f710ca7458a0f8cf221495b36e12af8628e0dc1c1d90f858e1",
+      "actual_historical_Git_blob_sha256": "a42209c08c14a2a9fa587f8cdfa735e9e68fc5e273705bf95a54b9e9916dd653",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_b111_pond_joint_application.f90",
+      "checkout_before_sha256": "a12167a84f815ae7362ff6dd80d196bf24e6c15f7070e2ba3a21ac30c640abdd",
+      "actual_historical_Git_blob_sha256": "8745e5c911356a371a65618893076426a2ac835ae425638456e1de3abdeb605f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bartholomeus_activation.f90",
+      "checkout_before_sha256": "51e85ea135d7ab1ef42a15b61ecaeab0edb57043af991af92f2ac6da95f2092c",
+      "actual_historical_Git_blob_sha256": "612e72478a24e0ab106a77f680510db119f4f578303bf1dac856340e4fc27a15",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bartholomeus_contract.f90",
+      "checkout_before_sha256": "a9a58f49731aa871cefbd6c67816f7111e9936638b4354e15f70b34c86084c4f",
+      "actual_historical_Git_blob_sha256": "bd9678ae1133544c036b78b8e36e2cfaac2b520ea3f321a6f60a7c74854474cb",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_base_salt_temporal_policy.f90",
+      "checkout_before_sha256": "87d3b0712d0807a86e971aa92826fe5b59abb82029e01073efc3cdcb281704dd",
+      "actual_historical_Git_blob_sha256": "5723d4bdaf6cea1a6c589b29b2dc6e590d1d5a943f4ba8215436cf409f15d179",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bottom_thermal_carrier.f90",
+      "checkout_before_sha256": "a10e895a802f85f50171e0ab81db879e87447cfeff321b95501c689282a03bc7",
+      "actual_historical_Git_blob_sha256": "11bd9843d454f2e64295afd8b7a1e120de3c5d048af3f217e15fb8724b1e9ead",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_committed_restart.f90",
+      "checkout_before_sha256": "8427926fc6725a78bca17676974d1f41bdac0c709e848b3b579a7dff3b670522",
+      "actual_historical_Git_blob_sha256": "842d87dc68fef7dda6fbe17371d6ed5e4d3ed1a5fa5d2e5e58d42c12ed088b2f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_drainage_qbot_directional_binding.f90",
+      "checkout_before_sha256": "ab20cc963e753d73dd76d90a9ba2f542b15d088089a30fb021b4ff9b06aecff0",
+      "actual_historical_Git_blob_sha256": "c5bbaeb07083f66ad95271ffee70fce6174ec6140e0e843aafde2c144002c62f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_drainage_response_binding.f90",
+      "checkout_before_sha256": "501572a14edfb53dcd1d956bd9d64ff390a4c6bf1b58e95494c790cfbb955621",
+      "actual_historical_Git_blob_sha256": "5a7f08da264771b1cbc63228f882fec59d01c662b11fc15ef5d3a5535c6d8ef6",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90",
+      "checkout_before_sha256": "d964e255f9bd21b07b3ff433859ca7813c5b15764d3e10fa04e52c4731a2fd6d",
+      "actual_historical_Git_blob_sha256": "bc61897382b2969c899e271ef41d495f7b06d378d5c7a6bf6490d506d232f527",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90",
+      "checkout_before_sha256": "3422d3afc5b0fb8bc17ceda0d5131ab4a48973571770cc73de2865f9e4468512",
+      "actual_historical_Git_blob_sha256": "3928ba93416c2271d93d275e0688a4656256558cc68e65b6aff615663fcad7ff",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90",
+      "checkout_before_sha256": "f846647f8538fa6aeae0a86142e140f97472d020d9222cf03aa71bb0e5c203ea",
+      "actual_historical_Git_blob_sha256": "94f5852d14dfdfbdad80b37335d6eb00d365091efb47953467a89cbf4c1f504f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_macropore_configuration.f90",
+      "checkout_before_sha256": "eb4b09559746f250e62050313ae04f0ca513fc6f23a8fb0e988576f06fdf2ead",
+      "actual_historical_Git_blob_sha256": "8c71e63e5d4787b1c1b8d167542c3226bcc37ac1c607c59e0823f663c149283c",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_macropore_top_input.f90",
+      "checkout_before_sha256": "3ae3adf90060b6b66104f5bb2bbc41fc897ea6c1df35ea61ff25a01a619af620",
+      "actual_historical_Git_blob_sha256": "4a5c959849a3937be3535948648a77ab01d86c357372255a57ac48be26f1f5ad",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_micro_mvg_table_binding.f90",
+      "checkout_before_sha256": "d51363c9f7c7afaec0c3a7ddd604b8f8fc4d6ed1cadc195addf51ea58dcbe705",
+      "actual_historical_Git_blob_sha256": "64077bd4b29768f4252a5b42e6b8fbc317210d81b56352732b30a9d653d10cc8",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+      "checkout_before_sha256": "da6d053b649ea612042e89f7eaeaabbefd23cb4f5bf32bc6266550ef8762ab64",
+      "actual_historical_Git_blob_sha256": "82d83551659fc63c8a3fdf6bd25fac07d6d76021f475ef3e4176c1061739a2e1",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_rfm_activation_binding.f90",
+      "checkout_before_sha256": "d93cdb60eb6edc3b627b5539727f8b1f78f2b219f09f7a3ca85efcbe223b87e5",
+      "actual_historical_Git_blob_sha256": "7f9f8bb438e576bcbe9fd3cf0a396f1867a3eae97593ecae5b26c9cbba1a9a2e",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+      "checkout_before_sha256": "e44862db69c4bc3c29bc0dc64a63953831c1f1a01a41c1234a112404ab623b50",
+      "actual_historical_Git_blob_sha256": "b29091b566c5b37038f4028b8665a071bee89e6b275c0eee861cce1a8707e8dd",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90",
+      "checkout_before_sha256": "f327f3056190badc108021f426b4aec421a95b9d594a3a781d4731ffb2562531",
+      "actual_historical_Git_blob_sha256": "fba92c8b38224ce2530b83dec8dba4166153f1d63fbf9791d117519dd65b0c3f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_soil_water_application_host.f90",
+      "checkout_before_sha256": "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937",
+      "actual_historical_Git_blob_sha256": "6315a507c697bd033d88bba63403176927841638458879986d7bcf1825a8ae3c",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_fmr_top_sensible_boundary_carrier.f90",
+      "checkout_before_sha256": "25cebbca8ad05428e30b63c017e343ef0531045b34c36a73455da2ae256f68a5",
+      "actual_historical_Git_blob_sha256": "1f18e99142f8ef30c1684e31af3ab21fea54b85e875aa69a22001c9c1a4a4d1f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_macropore_continuation_state.f90",
+      "checkout_before_sha256": "2a8d2597041ebaab40f87d448eed7218784c97d931467cdade5ce65106728f8e",
+      "actual_historical_Git_blob_sha256": "ce0e8289429f7bacfb4c04ce49fbec4a6d2500f0d383ce7fb8970e34eb216dc6",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_macropore_single_column_runtime.f90",
+      "checkout_before_sha256": "dc19535a4be1a29f4ba821786434a1ae12080a438376d1411225a624897fd78c",
+      "actual_historical_Git_blob_sha256": "c8ebc71e10736e823d7cbed8d7b7e0d2771e261440ff6dcbe766cfaf1886b015",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_macropore_standard_rate_adapter.f90",
+      "checkout_before_sha256": "a97903e4e85c9db4200fa36e6ed9eb2695443415bad6023d7fc8893aca7a4c75",
+      "actual_historical_Git_blob_sha256": "d28e618a53458724d7f222bc2fbd3a5d46aed4faad9752334f86d2d656c693ab",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90",
+      "checkout_before_sha256": "3d5140a5958541b5a355777277c523484e80736a9183ce2d08ee3c50db0b08a6",
+      "actual_historical_Git_blob_sha256": "4f364b414cad429ef92ccb8edcd47b76b12c5cd31fd606c9302a56e14746ea76",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_ic_hydrostatic_head.f90",
+      "checkout_before_sha256": "76a8dcab8c172dcbd91e5876eaac99b3a049b74503228fad6a305b4468781b03",
+      "actual_historical_Git_blob_sha256": "98097a135a124829a14abe175ac756bf9a11d8c8a9beb20838bac3e76e65d4e5",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_ic_storage_geometry.f90",
+      "checkout_before_sha256": "705b668982fc831aafaec35d1d3fdbd8cb56d8ff2fc4fd83eb6efbce9284229a",
+      "actual_historical_Git_blob_sha256": "c28e25843b5df880f057a12af5dfede57c487dbf119998a61075799d6411f6fe",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_live_trial_preparer.f90",
+      "checkout_before_sha256": "7ed42a9113dce078f59a9dcf3607e4c56307e91872a52429c6d6fa5f3c7cf0aa",
+      "actual_historical_Git_blob_sha256": "4c204b7b5afe40080443d2e8d9a33475be0ae63608e1d64b575b65b0405f6966",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_matrix_source_provider.f90",
+      "checkout_before_sha256": "0e85383466cdec9d25a31449af6560f3e1256b723c79f3bed35d5693d058d753",
+      "actual_historical_Git_blob_sha256": "231f4cf0be4468b095eea2eb4ec61045e1416a8e6035b629fd4ebdcfb45b395d",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_physical_state.f90",
+      "checkout_before_sha256": "fe7d5911cff8e2368679f65e207017ab2aa19d26cbcc6eecc263e55fb7cbb597",
+      "actual_historical_Git_blob_sha256": "67815114e53c622088d9716712054376215164523da1189433f6ad537d91641d",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_production_candidate_composer.f90",
+      "checkout_before_sha256": "2642fce2ef8c9b7e20e8bacf836354f5c8d6e0301ae9eb868e082d9e78fd87e8",
+      "actual_historical_Git_blob_sha256": "1de30b8af1dcf4ff1b026a3e886a66af4fabd39444b1a7b2f3a426743c6ed286",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_runtime_configuration.f90",
+      "checkout_before_sha256": "c0e68abe6862aefe911f3f350b2e7ec525473debb68adf48d1f41be2afe67dce",
+      "actual_historical_Git_blob_sha256": "131e2c004577a779e836d4533e9d750803895b701322ee0abfdba66c4af0210d",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_surface_forcing.f90",
+      "checkout_before_sha256": "21affcd31290dc6c0cf72326ca0fc3c830b9f6e034b08e516fd0fe9549902926",
+      "actual_historical_Git_blob_sha256": "c708c6fdd8a080f91181c37614dc5ca6b56b0a8af36b325bcea7c6c252174784",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_unponded_surface_composition.f90",
+      "checkout_before_sha256": "d8082c6f122bc5f6413fc51159195ec415bff97469ff328b7350fc0473371061",
+      "actual_historical_Git_blob_sha256": "480e5aaca15bc97df642346c82914df0dd31b3b5fa73936ea540be4cc3ae8f90",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_wall_hydraulic_history_binding.f90",
+      "checkout_before_sha256": "5ab174b5dd9853b22183760e20a81c0f9514ff35f4005bf241df34980bbaea09",
+      "actual_historical_Git_blob_sha256": "dd521ce36bda6d2a7ce522d05589c9cf74367c5c592043e5a416737205e84922",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rfm_whole_column_candidate_ledger.f90",
+      "checkout_before_sha256": "82427743a9304fdd1c1ac744703ec7cf7a0f01205421ddbd41481dabb86bc007",
+      "actual_historical_Git_blob_sha256": "7eca15037600639bb96baf1cbf292ed556759f525e7352bdb7c8ea8455d84dc8",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_root_uptake_compensation_execution.f90",
+      "checkout_before_sha256": "1b9c48b1a6d39a43afd2a028ad66c8b91280439c121a931aed0d8997d46ff33e",
+      "actual_historical_Git_blob_sha256": "638b64fdefb019673bee37ee71ce7f293b965206dd26544bea12c9a2b21d021d",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rossfast_d3r_execution_policy.f90",
+      "checkout_before_sha256": "ba87b6714cd301d6c69175ce914dd6eb470b55c78f3edd1a118187c8afe4efc7",
+      "actual_historical_Git_blob_sha256": "5c64376250027ccd4f5dd256ad75e8a87e81e1547156c8851757248fed87a558",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/runtime/mod_rossfast_d3r_model_binding.f90",
+      "checkout_before_sha256": "266958998f58fc939899729177ae1549d4d5cf190cc32f29e8a59cd49a88cf47",
+      "actual_historical_Git_blob_sha256": "1c4569d6eae9417c6d2adc5760dc76ea3fd4de0267fbb427cc944da1357f32bf",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b110_default_mvg_directional_provider.f90",
+      "checkout_before_sha256": "8932e7542119c6bbe8bce9ad6de3104edffb92ae95fb974d3047cda37fa097f2",
+      "actual_historical_Git_blob_sha256": "40ed0f09d7ab29007cb89008c9e95d9b8dee2be882972775a8385798ebffe55b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_core.f90",
+      "checkout_before_sha256": "124df58909982800e57ceefad5368fa26dd87413c32097dc106fdc3f0ce1d2c5",
+      "actual_historical_Git_blob_sha256": "6bdc5210911803a9b36e41b38aa706c92b8cab3e30ca797cc6d6be2586153336",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_provider.f90",
+      "checkout_before_sha256": "d54a35c2ac1f7c9c696e416173b44c39fac7a0fb9d86d98aadc548c4af9461ff",
+      "actual_historical_Git_blob_sha256": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+      "checkout_before_sha256": "fc8242e6bfa2debfe88ef66d61695497fe6d855e339b0b170f3de46d5fa53ec9",
+      "actual_historical_Git_blob_sha256": "e622d52f8edd35cd50e1235226e52570c9be0e8e345c632b6b8f2e00a6fbcfcf",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b110_root_sink_provider.f90",
+      "checkout_before_sha256": "0bd93e68aa6123bb793df6822b414ce0e8ba17d1dd2abe8d7a7473949a462934",
+      "actual_historical_Git_blob_sha256": "7679dec5f23ea59ceabd3f5a1f7de65b30728b4ca6999dc33d499665acd0cd2e",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b110_smooth_freatic_projection.f90",
+      "checkout_before_sha256": "33f06ac1506fcc32f8a0446bc60798dee2e120ab0af3f4361612ccc9d10c5991",
+      "actual_historical_Git_blob_sha256": "9b89f3415f7131ebc1e673245db7403cd06844d916b303ae3440c3de139d93ab",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b110_source_sink_provider.f90",
+      "checkout_before_sha256": "be874aa56110f5de621d84cdc048198c0e76905ce0ee7d36d2d32dea879e918c",
+      "actual_historical_Git_blob_sha256": "9f77a9fbd2f79b93aff97f8f5bee3ba8d7314a9d179c2fb3f3a0b93de33f118d",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b111_conductivity_power_tail.f90",
+      "checkout_before_sha256": "5e8990e39ca9934cdd79d92fd972fce13fd1cb50b2cd0eae856e66a81a856615",
+      "actual_historical_Git_blob_sha256": "07b76a826041822277d2732c47c141e65d80ae959be87cea6df8506565f5f3bb",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b111_extended_hydraulic_provider.f90",
+      "checkout_before_sha256": "5a4b4eaeca856789e6060755bffbb6559d4ad90b2d4498dce25b8559e1a251bd",
+      "actual_historical_Git_blob_sha256": "dba10db02b0fc545ee00c907c725cf73083400af83531ff8276a14a074574633",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b111_hysteresis_state.f90",
+      "checkout_before_sha256": "d584f90e05a1fe0cbcb3a85a1091260c542fed000097bd63baf8620eeb8011aa",
+      "actual_historical_Git_blob_sha256": "f2011f882aae813c14f64a99237ed68fab9aee6bb21414290283b2aa2c483f5a",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b111_legacy_hydraulic_provider.f90",
+      "checkout_before_sha256": "a8eb49b7238f66803a94af34a1d86a18e9b8e605dbbd1d8275780d032db07747",
+      "actual_historical_Git_blob_sha256": "8ec995d888d4f7017b30dca674e544c84d2fb060e341cb5cafa9f92c52821fef",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b111_linear_table_provider.f90",
+      "checkout_before_sha256": "f1e78d305146eb7a0bd20c499c3f0b844a1ca8a256c4c157156d86c34f92307f",
+      "actual_historical_Git_blob_sha256": "5a364c13d21d6c79557714acb289cbf9b4578dfc3f06716edb655807d2b73b85",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_b111_profile_groundwater_projection.f90",
+      "checkout_before_sha256": "055705029a202746c681e38a67780ce89f65212d588dfaac5a1e546ba4b1579a",
+      "actual_historical_Git_blob_sha256": "c6f190a8fb28a0cf5aa12909e5de043058f333e1710e77a247f27e6b9ecd7c66",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+      "checkout_before_sha256": "ec2cacf6a78604798ad2fa7583b8b22b106cab5e8766423190a2d2f815c19b02",
+      "actual_historical_Git_blob_sha256": "83fac9a3f6bbae7f097b9f0d72d018b3d8d50553a8325f5a3f7b7f1d86f7e9e8",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_frost_hydraulic_provider.f90",
+      "checkout_before_sha256": "a1dce39817844eaaafd18ee5fabfd68976d8d32c1dcc86ef13b0e50077a63df8",
+      "actual_historical_Git_blob_sha256": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_macropore_exchange_overlay_provider.f90",
+      "checkout_before_sha256": "231908287ea4cf39586c8b1b7f07bf81b24c5d8b5462eec2a55e06ce5505e02a",
+      "actual_historical_Git_blob_sha256": "0fc247a6ccc9bd233cf62ba45feca9692d2c96909f374999c03708c1665a3459",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_process_hydraulic_view.f90",
+      "checkout_before_sha256": "fb741e2274f179a7cff636fce8f618ed7ddb4b84fc68d60be8898bb80742d72e",
+      "actual_historical_Git_blob_sha256": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_reference_linear_solver.f90",
+      "checkout_before_sha256": "df14ec3c5724ffcc7e1a1bed64f2438ef0ef7dc0cc684002fc57198c75b75f44",
+      "actual_historical_Git_blob_sha256": "d2becea870d10dd954e1c3d3072992ccea0d85e3237fd159050379160f13fd33",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_state_binding.f90",
+      "checkout_before_sha256": "5a1e4dfa67ed7252067394a2b78871566ca03050f9e1f59b03b9569d506cea6c",
+      "actual_historical_Git_blob_sha256": "11609ee59a2f1a888c408c611a54b773f931bb5e0b5c46bd3ebb4a016bcf32d2",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "checkout_before_sha256": "b87af1528c0123121a94c3447e88ebc3c1716cb7873ea00cc5524ae4d41545b9",
+      "actual_historical_Git_blob_sha256": "68b4956d9bf2f2e52ac2623b5f64ce2c0285e8ed7121ca6752212b79e0a72f2a",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "checkout_before_sha256": "e84f8e9e026b846e3c77c43b0bf7760e22df1f2c73bc4df2427526ba1ab736a0",
+      "actual_historical_Git_blob_sha256": "cb899e79f1cb667d852ea97342efaa4924b90cbb2a1529629819291012273f5e",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_rossfast_d3r_soil_water_solver.f90",
+      "checkout_before_sha256": "cd596be8912af7d61af97173d3a1a01efde5d927870bfa068d441702893238a6",
+      "actual_historical_Git_blob_sha256": "b922853f9c141f1bba14628509db92600bba66d6581b185e012d9c9a746a79fe",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_rossfast_d3r_table_kernel.f90",
+      "checkout_before_sha256": "c95ebd66f98e1f01c0af2299f8ee517334d57403b7fc63262820409be0f99a3b",
+      "actual_historical_Git_blob_sha256": "5c1a4c5f78cd153cb37d02b7f11a0d6c1ced4c36822001979d1fc4311288f4a8",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_rossfast_d3r_table_provider.f90",
+      "checkout_before_sha256": "0e4b1c2ae34ddefd1964c3a4fb2f97d03676b056076221a0985db5d0e9cb6c93",
+      "actual_historical_Git_blob_sha256": "cb5988be404d220f30fa70a1e9920c4e0aa65b3ce53325f0e99cff49f7913ce5",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "checkout_before_sha256": "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f",
+      "actual_historical_Git_blob_sha256": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+      "checkout_before_sha256": "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835",
+      "actual_historical_Git_blob_sha256": "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+      "checkout_before_sha256": "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393",
+      "actual_historical_Git_blob_sha256": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/transaction/mod_fkt_temporal_indicator_history.f90",
+      "checkout_before_sha256": "190f729610bf58161fffc7ebd2bb32c4d30f2f13367e198247abcf2b528974b5",
+      "actual_historical_Git_blob_sha256": "f17deb9c343d17dc426689a589080048c208c38171b2a967ca9650211f3596db",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "checkout_before_sha256": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+      "actual_historical_Git_blob_sha256": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "tests/dataqual11/qualify_original_rain.py",
+      "checkout_before_sha256": "d6ef08e41ddc11ab6e1957e886e8cc60b4c2359310c3a305981e65e8d426e854",
+      "actual_historical_Git_blob_sha256": "e951503f389e90cbacc2ecde5dee2faccf925236d422b2e0ee44cc76aeccab1b",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "tests/dataqual11/test_rain_duration.f90",
+      "checkout_before_sha256": "9abf50fc594bef598d57a8ae66fc05b0cdc0826b71527b478f6c1adb1ac2fde7",
+      "actual_historical_Git_blob_sha256": "e05a8dea35d5ef05530df5db806310a426cb92cb137d13774516c049f5773d00",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "tests/dataqual12/collect_qualification.py",
+      "checkout_before_sha256": "f05e85e8407cad96cb095a660520c2f3ca7edb4742b959aa4a7919fb5953732c",
+      "actual_historical_Git_blob_sha256": "71ebbb7a3d3e2e54abcf9219ee9130e6cb52cf5f8335edf37f555e748850e058",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "tests/nut-sol/test_dataqual10_limiter_jacobian.f90",
+      "checkout_before_sha256": "1b80b001d6fd41c95baed2104445fb0b531490c2ad57d29f09404158baf3a5e5",
+      "actual_historical_Git_blob_sha256": "be01fd8d56921813bdd5aedb556f4a77c976b73c1b1b3be149224bc10c660e43",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "tests/nut-sol/test_dataqual10_low_rank_solve.f90",
+      "checkout_before_sha256": "830fd666699975f7c532d68cd1e557667d4f3bd57b5def36e206ca523a68f19c",
+      "actual_historical_Git_blob_sha256": "bb95ecb422d71785c091373140bdb6eed12db61ad066381c15937ec60ce08a8f",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "tools/solute/run_column.py",
+      "checkout_before_sha256": "d38342e0241a95038ee4d4da6e4c107a85c17e4e8f7fe2987178333d2bd87c30",
+      "actual_historical_Git_blob_sha256": "f25bd74d11b095a65ce517576db4cd408277a07bc0b1514fbef54bbc9371526e",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "tools/solute/run_dataqual_batch.py",
+      "checkout_before_sha256": "b842caa168a949de07294eebd7a600ad96b6c3b623cea2005c5c44e12cb5318a",
+      "actual_historical_Git_blob_sha256": "978b6d1d144ca9a855f3b9c1556d61411034550fcef6bc4de6537a40c80ef537",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "tools/solute/run_fallow_project.py",
+      "checkout_before_sha256": "7be0f331d36dcfb1417390f2944274d6e716c4c9e4133154b2ee2ae82dac8024",
+      "actual_historical_Git_blob_sha256": "03ee28a5bb31d0d74ba93b20feda4d11c6960a28386d80117d901793765850cc",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    },
+    {
+      "path": "tools/solute/run_historical_projects.py",
+      "checkout_before_sha256": "115c6723291b1555f1eac5241e262acabbc1fc19abffd293cff374cdf6c4fa9d",
+      "actual_historical_Git_blob_sha256": "6d0438294f1197420119baa15b95c774325e727133ad4c3c5fff8f4d99b84539",
+      "kind": "Literal immutable source working-copy materialization; no formula/parameter change"
+    }
+  ],
+  "preserved_current_scientific_fixture_paths_touched": false,
+  "actual_Git_HEAD_projected": false,
+  "staged_delta": false
+}
