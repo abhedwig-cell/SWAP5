@@ -1,0 +1,55 @@
+{
+  "status": "READ_ONLY_NEXT_EXPLICIT9_ANALYTICAL_HYDRAULIC_AND_SNOW_DEPENDENCY_DISCOVERY_NO_IMPLEMENTATION_OR_QUALIFICATION",
+  "actual_head": "881e4ee9b21e476dd5aca53ed3c139ddcef1b81b",
+  "sources": {
+    "app/hybrid_water/prescribed_head_flux_boundary.py": {
+      "raw_sha256": "7ef7c86fb796a0de7a93dd6c1d5dd93df1ab488bd72a0cf59cd19a20bbe58d87",
+      "git_blob": "f5406c82e1594ca7cfe6fcfd3e235b736f078f92"
+    },
+    "app/hybrid_water/model7_capacity.py": {
+      "raw_sha256": "0ccd9b608b89e86eae0a5653691541ef06af5963cae4d65844dfd9de2194183d",
+      "git_blob": "137ee56fa699abf648b94baf791a513a5e24dc17"
+    },
+    "app/hybrid_water/model7_terminal_water.py": {
+      "raw_sha256": "0ccd5a6851e65c6bcf9debabc16d1ea580dab7c8118c57836bf3e01e0a946e07",
+      "git_blob": "88dbb0ff30cf0e38ff470be6bbcd482efe348eb8"
+    },
+    "app/hybrid_water/age_output_clock.py": {
+      "raw_sha256": "3aa34546424fbb09c89dc5f915ebfec1b3861d0b8845748e1b2c8972ffb5c3f6",
+      "git_blob": "df748a0a98a3d4d75923bcf6fff269c54cbce210"
+    },
+    "tests/nomacro_drainage/hydraulic_mixed_analytical_probe.f90": {
+      "raw_sha256": "38e6f3af348777e6172a1dbc18593c4da4d2df2356c61cb9e848916a83e3ad9c",
+      "git_blob": "715bf19dc6506b64cac4bcda1bef5c6c88db7501"
+    },
+    "tests/nomacro_drainage/analytical_hydraulic_runtime.py": {
+      "raw_sha256": "08a94f7720c3d20733d527e73b2faa567dc141e370c9b92cd4b4e218bb2d462f",
+      "git_blob": "b5771252875377324e1cd347032d95568e618290"
+    }
+  },
+  "next_coherent_candidate": {
+    "classification": [
+      "MISSING_COMPOSITION",
+      "OVERRESTRICTIVE_GUARD"
+    ],
+    "scope": "Paired9 water/CDE with already-qualified explicit analytical models3..11, beginning active nonzero negative pressure and per-layer controls; AGE/model2/RIA12 remain separately unqualified.",
+    "current_guard": "Original paired9 selection currently accepts only per-layer model1.",
+    "existing_owners": [
+      "Original analytical_models selection and model7 capacity correction",
+      "Original full constitutive probe calls WatCon/Moiscap/HConduc/dHConduc without copied laws",
+      "Current all-node prescribed9 budget and strict retry"
+    ],
+    "first_concrete_action": "Prepare paired9 constant nonzero-pressure controls with exact original model coefficients; evaluate original HConduc to derive mutually compatible head/flux forcing before admission changes. Require nonlinear constitutive activation, actual35day water/CDE ledgers, native/cold and compiled postimages. Do not assume saturated model1 science qualifies nonlinear models.",
+    "mass_or_convergence_limits_to_change": false
+  },
+  "Snow9": {
+    "classification": "MISSING_COMPOSITION",
+    "source_blocker": "The existing output trial clone deliberately serializes zero snow end-store and rejects SWSNOW1; snow9 cannot be admitted by changing only a selector.",
+    "first_required_action": "Bind actual original snow trial storage/flux terms and seven-scalar state owner under a separately qualified composition; preserve the currently qualified snow-off whole inverse."
+  },
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "source_modified": false,
+  "canonical_admission": false,
+  "global_counts": "UNKNOWN"
+}

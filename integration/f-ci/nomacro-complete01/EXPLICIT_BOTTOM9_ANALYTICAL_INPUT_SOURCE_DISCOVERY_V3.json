@@ -1,0 +1,432 @@
+{
+  "status": "SIX_PROPOSED_NONLINEAR_PAIRED9_INPUTS_FROM_PRESERVED_ACTUAL_ORIGINAL_K_ALL_REFUSED_BY_CURRENT_ADMISSION",
+  "source": "881e4ee9b21e476dd5aca53ed3c139ddcef1b81b",
+  "original_component_archive_sha256": "5b11bee40e7dd392fe1a0cf87cf6164cb840cac5f45516baf7a06b7dce083350",
+  "cases": [
+    {
+      "model": 3,
+      "kind": "water",
+      "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-input-discovery-v3\\model3-water-initial1",
+      "input_inventory": [
+        [
+          "283.met",
+          "b44c5d7ae67902053714dcf38d47e15fa56ca8b2987392ca8a9df4d94f1936a7"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "fb5cb88dec30dcfa464e9f54858495f3e63cca9b8ff3b4d2149d7e446e9019b7"
+        ],
+        [
+          "maize.crp",
+          "e611cdb24cb8cc7c50ebb8d39edb43cb109b1714d35fdb5497b0dbbb5c9e85a3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "9582da4e49d815175863884f218d7d3debe644a4e8618fc108f9b982774ac43a"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "77bf40219c0e0c812655785ba18583fc942775e9f6f60144f7c0ebc0bf48019d"
+        ]
+      ],
+      "original_component_producer": "04bdb290d5ef6ce8ae80923d12e437cbe3824b94",
+      "original_component_O0_O2_exact": true,
+      "actual_original_component_row": [
+        3.0,
+        1.0,
+        4.0,
+        -10.0,
+        0.42349748084307187,
+        0.0013066558288279144,
+        14.058454488400942,
+        1.5812460608533492,
+        0.42349735017737866,
+        0.4234976115085445,
+        14.058314078911625,
+        14.058594899709348,
+        0.0001
+      ],
+      "declared_uniform_initial_head": -10.0,
+      "declared_bottom_head": -10.0,
+      "declared_bottom_flux": -14.058454488400942,
+      "declared_rain_cm_day": 14.058454488400942,
+      "original_hard_oxygen2_case_selected": false,
+      "actual_existing_frontend_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "model": 3,
+      "kind": "cde",
+      "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-input-discovery-v3\\model3-cde-initial1",
+      "input_inventory": [
+        [
+          "283.met",
+          "b44c5d7ae67902053714dcf38d47e15fa56ca8b2987392ca8a9df4d94f1936a7"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "fb5cb88dec30dcfa464e9f54858495f3e63cca9b8ff3b4d2149d7e446e9019b7"
+        ],
+        [
+          "maize.crp",
+          "e611cdb24cb8cc7c50ebb8d39edb43cb109b1714d35fdb5497b0dbbb5c9e85a3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "9582da4e49d815175863884f218d7d3debe644a4e8618fc108f9b982774ac43a"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "3070b54bcedde53d54aa6234feafa02edec3ccdf7a5e4bd6d69dd6b8afa99277"
+        ]
+      ],
+      "original_component_producer": "04bdb290d5ef6ce8ae80923d12e437cbe3824b94",
+      "original_component_O0_O2_exact": true,
+      "actual_original_component_row": [
+        3.0,
+        1.0,
+        4.0,
+        -10.0,
+        0.42349748084307187,
+        0.0013066558288279144,
+        14.058454488400942,
+        1.5812460608533492,
+        0.42349735017737866,
+        0.4234976115085445,
+        14.058314078911625,
+        14.058594899709348,
+        0.0001
+      ],
+      "declared_uniform_initial_head": -10.0,
+      "declared_bottom_head": -10.0,
+      "declared_bottom_flux": -14.058454488400942,
+      "declared_rain_cm_day": 14.058454488400942,
+      "original_hard_oxygen2_case_selected": false,
+      "actual_existing_frontend_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "model": 7,
+      "kind": "water",
+      "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-input-discovery-v3\\model7-water-initial1",
+      "input_inventory": [
+        [
+          "283.met",
+          "f9dac9227536243a04498a389c677edb1fccb7b59535670fd158000a8aee8e72"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "fb5cb88dec30dcfa464e9f54858495f3e63cca9b8ff3b4d2149d7e446e9019b7"
+        ],
+        [
+          "maize.crp",
+          "e611cdb24cb8cc7c50ebb8d39edb43cb109b1714d35fdb5497b0dbbb5c9e85a3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "9582da4e49d815175863884f218d7d3debe644a4e8618fc108f9b982774ac43a"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "da69e10722be84c7f80be4fa08c323cd5158107d3225640cc4cdf5caab247881"
+        ]
+      ],
+      "original_component_producer": "04bdb290d5ef6ce8ae80923d12e437cbe3824b94",
+      "original_component_O0_O2_exact": true,
+      "actual_original_component_row": [
+        7.0,
+        1.0,
+        4.0,
+        -10.0,
+        0.423204660194823,
+        0.0013473284536008139,
+        13.977318682896069,
+        1.5791606856672615,
+        0.4232045258432243,
+        0.42320479454619486,
+        13.977178041936263,
+        13.977459325682954,
+        0.0001
+      ],
+      "declared_uniform_initial_head": -10.0,
+      "declared_bottom_head": -10.0,
+      "declared_bottom_flux": -13.977318682896069,
+      "declared_rain_cm_day": 13.977318682896069,
+      "original_hard_oxygen2_case_selected": false,
+      "actual_existing_frontend_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "model": 7,
+      "kind": "cde",
+      "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-input-discovery-v3\\model7-cde-initial1",
+      "input_inventory": [
+        [
+          "283.met",
+          "f9dac9227536243a04498a389c677edb1fccb7b59535670fd158000a8aee8e72"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "fb5cb88dec30dcfa464e9f54858495f3e63cca9b8ff3b4d2149d7e446e9019b7"
+        ],
+        [
+          "maize.crp",
+          "e611cdb24cb8cc7c50ebb8d39edb43cb109b1714d35fdb5497b0dbbb5c9e85a3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "9582da4e49d815175863884f218d7d3debe644a4e8618fc108f9b982774ac43a"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "3ae8a7148ed2da8fc4cd5c86803861e06bcd19e4bddc86d9132b9a8a0bcfa3ba"
+        ]
+      ],
+      "original_component_producer": "04bdb290d5ef6ce8ae80923d12e437cbe3824b94",
+      "original_component_O0_O2_exact": true,
+      "actual_original_component_row": [
+        7.0,
+        1.0,
+        4.0,
+        -10.0,
+        0.423204660194823,
+        0.0013473284536008139,
+        13.977318682896069,
+        1.5791606856672615,
+        0.4232045258432243,
+        0.42320479454619486,
+        13.977178041936263,
+        13.977459325682954,
+        0.0001
+      ],
+      "declared_uniform_initial_head": -10.0,
+      "declared_bottom_head": -10.0,
+      "declared_bottom_flux": -13.977318682896069,
+      "declared_rain_cm_day": 13.977318682896069,
+      "original_hard_oxygen2_case_selected": false,
+      "actual_existing_frontend_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "model": 11,
+      "kind": "water",
+      "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-input-discovery-v3\\model11-water-initial1",
+      "input_inventory": [
+        [
+          "283.met",
+          "bd44dd4497f567a41c8db008e5ec8030a5d77f28e811c7dcb810f6c60d015ebf"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "fb5cb88dec30dcfa464e9f54858495f3e63cca9b8ff3b4d2149d7e446e9019b7"
+        ],
+        [
+          "maize.crp",
+          "e611cdb24cb8cc7c50ebb8d39edb43cb109b1714d35fdb5497b0dbbb5c9e85a3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "9582da4e49d815175863884f218d7d3debe644a4e8618fc108f9b982774ac43a"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "083fac8449cabaa6d408fbe559831ef890bc5042768207b892a57e94635825d7"
+        ]
+      ],
+      "original_component_producer": "04bdb290d5ef6ce8ae80923d12e437cbe3824b94",
+      "original_component_O0_O2_exact": true,
+      "actual_original_component_row": [
+        11.0,
+        1.0,
+        4.0,
+        -10.0,
+        0.42292669035798225,
+        0.0014303737494106693,
+        14.492335346690389,
+        1.6272695672930348,
+        0.42292654732044327,
+        0.4229268333951931,
+        14.492191201206087,
+        14.492479493963074,
+        0.0001
+      ],
+      "declared_uniform_initial_head": -10.0,
+      "declared_bottom_head": -10.0,
+      "declared_bottom_flux": -14.492335346690389,
+      "declared_rain_cm_day": 14.492335346690389,
+      "original_hard_oxygen2_case_selected": false,
+      "actual_existing_frontend_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "model": 11,
+      "kind": "cde",
+      "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-input-discovery-v3\\model11-cde-initial1",
+      "input_inventory": [
+        [
+          "283.met",
+          "bd44dd4497f567a41c8db008e5ec8030a5d77f28e811c7dcb810f6c60d015ebf"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "fb5cb88dec30dcfa464e9f54858495f3e63cca9b8ff3b4d2149d7e446e9019b7"
+        ],
+        [
+          "maize.crp",
+          "e611cdb24cb8cc7c50ebb8d39edb43cb109b1714d35fdb5497b0dbbb5c9e85a3"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "9582da4e49d815175863884f218d7d3debe644a4e8618fc108f9b982774ac43a"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "51cf41bc7f57effeb447df8d5858da6d39b723e4d8b5a0db79d763dd27ce506b"
+        ]
+      ],
+      "original_component_producer": "04bdb290d5ef6ce8ae80923d12e437cbe3824b94",
+      "original_component_O0_O2_exact": true,
+      "actual_original_component_row": [
+        11.0,
+        1.0,
+        4.0,
+        -10.0,
+        0.42292669035798225,
+        0.0014303737494106693,
+        14.492335346690389,
+        1.6272695672930348,
+        0.42292654732044327,
+        0.4229268333951931,
+        14.492191201206087,
+        14.492479493963074,
+        0.0001
+      ],
+      "declared_uniform_initial_head": -10.0,
+      "declared_bottom_head": -10.0,
+      "declared_bottom_flux": -14.492335346690389,
+      "declared_rain_cm_day": 14.492335346690389,
+      "original_hard_oxygen2_case_selected": false,
+      "actual_existing_frontend_refusal": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    }
+  ],
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "new_inputs_are_not_current_runtime_qualification": true,
+  "physical_or_numerical_source_modified": false,
+  "canonical_admission": false
+}
