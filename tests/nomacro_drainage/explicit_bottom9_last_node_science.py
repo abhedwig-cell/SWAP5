@@ -72,16 +72,22 @@ def audit(profile,reference,postimage,locations=None):
   assert norm((reference/'build/swap-selected/drainage.f90').read_bytes())==norm(original.read('SWAP/drainage.f90'))
  original_drain=(reference/'build/swap-selected/drainage.f90').read_text(encoding='cp1252')
  assert 'qdra(level,numnod) = qdrain(level)' in original_drain and 'swdivd == 0 .AND. swsolu > 0' in original_drain
- for row in rows:
-  assert row['stock_start_cm']==row['stock_end_cm']==rows[0]['stock_start_cm'] and row['pressure_head_cm'][-1]==0
+ with zipfile.ZipFile(io.BytesIO(archive.read_bytes())) as original:
+  assert norm((reference/'build/swap-selected/boundbottom.f90').read_bytes())==norm(original.read('SWAP/boundbottom.f90'))
+ hydraulic=[list(map(float,line.split()[1:])) for line in stdout.splitlines() if line.startswith('HYBRID_HYDRAULIC ')];assert len(hydraulic)==36
+ for row,accepted in zip(rows,hydraulic[1:]):
+  assert row['stock_start_cm']==row['stock_end_cm']==rows[0]['stock_start_cm']
   flux=row['external_flux_cm'];h=row['pressure_head_cm'];pond=row['stock_end_cm'][1]
-  assert max(map(abs,h))==0 and pond==0 and abs(flux[0]-1.)<=1e-10 and abs(flux[-1]-.75)<=1e-10 and abs(flux[13]-.25)<=1e-10
+  assert accepted[2:]==h and h[:-1]==[0.]*33 and min(h)>=0
+  actual_qbot=accepted[1]
+  assert h[-1]==1.25-(actual_qbot+1.)*.5*dz[-1],'Literal original BoundBottom equation differs; actual AFGEN flux is retained'
+  assert pond==0 and abs(flux[0]-1.)<=1e-10 and abs(flux[-1]-.75)<=1e-10 and abs(flux[13]-.25)<=1e-10
   assert max(abs(value) for i,value in enumerate(flux) if i not in (0,13,15))==0
   assert abs(row['drainage_outward_cm']-.25)<=1e-10 and abs(row['bottom_outward_cm']-.75)<=1e-10
-  faces=[-((pond-h[0])/(.5*dz[0])+1.)]+[-((h[i-1]-h[i])/(.5*(dz[i-1]+dz[i]))+1.) for i in range(1,34)]+[-.75]
+  faces=[-((pond-h[0])/(.5*dz[0])+1.)]+[-((h[i-1]-h[i])/(.5*(dz[i-1]+dz[i]))+1.) for i in range(1,34)]+[actual_qbot]
   lateral=[0.]*33+[.25];residual=[faces[i+1]-faces[i]-lateral[i] for i in range(34)]
   assert max(map(abs,residual))<=1e-10
-  continuity.append(dict(day=row['day'],all_actual_node_Darcy_and_sink_residual_cm_per_day_max=max(map(abs,residual)),last_node_lateral_cm=.25,prescribed_bottom_flux_cm=-.75))
+  continuity.append(dict(day=row['day'],all_actual_node_Darcy_and_sink_residual_cm_per_day_max=max(map(abs,residual)),last_node_lateral_cm=.25,declared_prescribed_bottom_flux_cm=-.75,actual_original_AFGEN_bottom_flux_cm=actual_qbot,actual_last_pressure_cm=h[-1],literal_original_BoundBottom_pressure_equation_exact=True))
  native=[]
  for path in (profile/'trajectory').glob('accepted-column-1-day-*.zip'):
   day=int(path.stem.split('-')[-1]);row=rows[day-1]
