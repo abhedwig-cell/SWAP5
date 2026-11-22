@@ -1,4 +1,4 @@
-"""Seal the actual final 86-context admission, never an intermediate candidate."""
+"""Seal the actual final 156-context admission, never an intermediate candidate."""
 import argparse,json,subprocess,zipfile
 from pathlib import Path
 from analytical_hydraulic_archives import SHA
@@ -21,7 +21,7 @@ def main():
  controls=load('INITIAL_PROFILE_AGE_GROUNDWATER_FINAL_NEGATIVES_OBSERVE_V1.json');assert controls['status']=='FOUR_ACTUAL_COMMITTED_PUSHED_CLEAN44_PUBLIC_NEGATIVES_REFUSED' and controls['candidate']==HEAD and len(controls['controls'])==4 and controls['never_merge'] is True
  expected={'SOURCE':'app/hybrid_water/initial_profile_groundwater.py','RAW':'integration/f-ci/nomacro-complete01/INITIAL_PROFILE_GROUNDWATER_WINDOWS_RAW_V1.zip.part001','INHERITED':'integration/f-ci/nomacro-complete01/INITIAL_PROFILE_FROST_ADMISSION_RAW_V1.zip','PUBLICATION':'tests/publication/run_pub_p2e09_reference_threshold_freeze.sh'}
  assert {item['role']:item['path'] for item in controls['controls']}==expected
- cases=[('INITIAL_PROFILE_AGE_GROUNDWATER_FINAL_CANDIDATE_PUBLIC_OWNER_V1',HEAD,False),('INITIAL_PROFILE_AGE_GROUNDWATER_ACTUAL_CANONICAL_PUBLIC_OWNER_V1',canonical,False)]+[('INITIAL_PROFILE_AGE_GROUNDWATER_FINAL_'+item['role']+'_NEGATIVE_PUBLIC_V1',item['head'],True) for item in controls['controls']];observations={}
+ cases=[('INITIAL_PROFILE_AGE_GROUNDWATER_FINAL_CANDIDATE_PUBLIC_OWNER_V2',HEAD,False),('INITIAL_PROFILE_AGE_GROUNDWATER_ACTUAL_CANONICAL_PUBLIC_OWNER_V1',canonical,False)]+[('INITIAL_PROFILE_AGE_GROUNDWATER_FINAL_'+item['role']+'_NEGATIVE_PUBLIC_V1',item['head'],True) for item in controls['controls']];observations={}
  for label,head,negative in cases:
   q=load(label+'.json');observations[label]=q;assert q['status']=='ACTUAL_PUBLIC_COMMAND_RETURNED' and q['before']==q['after'] and q['before']['head']==head and not q['before']['status'] and len(q['before']['sparse'])==44 and q['model_executions']==q['compiler_executions']==0 and q['command'][-1]=='tests/hupsel51/verify_successor.py'
   out=(ev/(label+'.stdout.txt')).read_bytes();err=(ev/(label+'.stderr.txt')).read_bytes()

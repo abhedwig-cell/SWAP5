@@ -44,7 +44,12 @@ def prepare(case,output,initial=1):
  if solute==1:table(r'(^[ \t]*CMLTB[ \t]*=[ \t]*\r?\n)(.*?)(^[ \t]*\* End of table)',lambda _: ' -10.0 0.01\n -195.0 0.01\n')
  if solute==2:table(r'(^[ \t]*AGEMLTB[ \t]*=[ \t]*\r?\n)(.*?)(^[ \t]*\* End of table)',lambda _: ' -10.0 100.0\n -195.0 100.0\n')
  assert not re.search(r'(?mi)^[ \t]*DATE9[AB]\b',text)
- text+='\n* Declared saturated unit-gradient explicit9 control.\nDATE9A HBOT9\n2002-01-01 0.0\n2004-01-01 0.0\n* End of table\nDATE9B QBOT9\n2002-01-01 -1.0\n2004-01-01 -1.0\n* End of table\n';path.write_bytes(text.encode('cp1252'))
+ text+='\n* Declared saturated unit-gradient explicit9 control.\nDATE9A HBOT9\n2002-01-01 0.0\n2004-01-01 0.0\n* End of table\nDATE9B QBOT9\n2002-01-01 -1.0\n2004-01-01 -1.0\n* End of table\n'
+ if solute==0 and mode=='step':
+  for axis,value,number in (('DATE9A','HBOT9',0.),('DATE9B','QBOT9',-1.)):
+   pattern=r'(?mis)(^[ \t]*'+axis+r'[ \t]+'+value+r'[^\r\n]*\r?\n).*?(^[ \t]*\* End of table)'
+   text,count=re.subn(pattern,lambda m:m[1]+'2002-01-19 '+str(number)+'\n'+m[2],text);assert count==1
+ path.write_bytes(text.encode('cp1252'))
  meteo=output/'283.met';lines=meteo.read_bytes().decode('cp1252').splitlines(keepends=True);count=0
  for i,line in enumerate(lines):
   if not line.startswith("'283',"):continue

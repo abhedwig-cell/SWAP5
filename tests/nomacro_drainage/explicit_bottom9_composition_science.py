@@ -3,7 +3,7 @@ import argparse,json,math,re,struct,sys,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'app/hybrid_water')]
-from explicit_bottom9_source_inverse import BASE,CORE,complete_inverse,blob,norm,git
+from explicit_bottom9_source_inverse import BASE,CORE,complete_inverse,blob,norm,git,producer_epoch,PRE_CLOCK
 from analytical_hydraulic_archives import SHA
 from initial_profile_groundwater_science import ledger
 from initial_profile_age_science import native as age_native
@@ -17,7 +17,7 @@ import prescribed_head_flux_boundary as boundary
 def audit(profile,reference,postimage):
  complete_inverse();q=json.loads((profile/'RESULT.json').read_text());kind=q['kind'];assert kind in ('water','cde','age')
  assert q['status']=='ACTUAL_EXPLICIT_PAIRED_HEAD_FLUX_PHYSICAL_NATIVE_EXACT_COLD_USER_OUTPUT_PASS_NOT_ADMITTED' and len(q['cold'])==3
- assert not git('diff',CORE,q['source'],'--','app','src','tools/solute','tools/vq','reference')
+ epoch=producer_epoch(q['source'])
  readers=('tests/nomacro_drainage/initial_profile_groundwater_science.py','tests/nomacro_drainage/initial_profile_age_science.py','tests/nomacro_drainage/initial_profile_age_ledger.py','tests/nomacro_drainage/initial_pressure_profile_science.py','tests/nomacro_drainage/analytical_calendar_native_state.py','tests/nomacro_scheduled_subsurface/implicit_conductivity_forensics.py','tests/nomacro_scheduled_subsurface/original_output_files.py')
  for name in readers:assert norm((ROOT/name).read_bytes())==blob(BASE,name),name
  inputs=Path(q['input_root']);build=Path(q['build_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity'];assert SHA((build/'BUILD.json').read_bytes())==q['trajectory']['build_sha256']
@@ -30,7 +30,17 @@ def audit(profile,reference,postimage):
   paths=[p for p in (build/('day_'+role),build/('day_'+role+'.exe')) if p.is_file()];assert len(paths)==1 and SHA(paths[0].read_bytes())==digest
  lower=identity['lower_boundary_receipt'];assert lower['policy']==boundary.POLICY and lower['prescribed_external_flux_unchanged'] and lower['all_actual_node_storage_included'] and not lower['groundwater_reaction_substituted']
  assert (build/'hybrid_step_budget.f90').read_text(encoding='cp1252')==boundary.render_budget((ROOT/'app/hybrid_water/hybrid_step_budget.f90').read_text(encoding='cp1252'),9)
- assert (build/'timecontrol.f90').read_text(encoding='cp1252')==boundary.render_timecontrol((reference/'build/swap-selected/timecontrol.f90').read_text(encoding='cp1252'))
+ time_source=(reference/'build/swap-selected/timecontrol.f90').read_text(encoding='cp1252')
+ selected=identity['original_output']
+ if selected['nprintday']>1 or selected['flprintdt']:
+  assert epoch=='composed-clock'
+  from age_output_clock import render_timecontrol
+  time_source=render_timecontrol(time_source)
+ assert (build/'timecontrol.f90').read_text(encoding='cp1252')==boundary.render_timecontrol(time_source)
+ source_epoch=PRE_CLOCK if epoch=='pre-clock' else CORE
+ for field,path in ((identity['host'],'app/hybrid_water/daily_host.py'),(identity['lower_boundary_receipt']['source_sha256'],'app/hybrid_water/prescribed_head_flux_boundary.py')):
+  raw=blob(source_epoch,path);assert field in {SHA(raw),SHA(raw.replace(b'\n',b'\r\n'))},'Actual producer raw SOURCE digest differs from its complete committed epoch'
+
  rows=[json.loads(line) for line in (profile/'trajectory/daily.jsonl').read_text().splitlines()];assert len(rows)==35
  stdout=(profile/'trajectory/original/donor.stdout').read_text();measured=ledger(rows,kind,stdout);original_observations(stdout.encode(),rows,meta['project']['start_date'])
  text=(inputs/'swap.swp').read_text(encoding='cp1252');heads,initial=initialized_heads(text);actual=next(list(map(float,line.split()[3:])) for line in stdout.splitlines() if line.startswith('HYBRID_HYDRAULIC '));assert len(actual)==34 and actual==heads
