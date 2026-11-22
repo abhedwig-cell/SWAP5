@@ -33,7 +33,7 @@ def windows(ev,work,staging):
                         assert q[field] not in post_by_primary;post_by_primary[q[field]]=path
         elif path.is_file():files['observations/'+path.name]=path
     for path in sorted(work.iterdir()):
-        if not path.is_dir() or not path.name.startswith('explicit-bottom9'):continue
+        if path==staging or not path.is_dir() or not path.name.startswith('explicit-bottom9'):continue
         tree(path,'compiled/'+path.name)
         meta=path/'bundle/BUILD.json'
         if meta.is_file():projection[str(meta.parent)]=dict(archive_prefix='compiled/'+path.name+'/bundle',actual_BUILD_sha256=SHA(meta.read_bytes()))
