@@ -1,7 +1,7 @@
 """Independently read actual explicit9 controls; never count a deadline refusal."""
 import argparse,io,json,re,struct,zipfile
 from pathlib import Path
-from explicit_bottom9_source_inverse import ROOT,BASE,CORE,complete_inverse,blob,norm,git
+from explicit_bottom9_source_inverse import ROOT,BASE,CORE,complete_inverse,blob,norm,git,producer_epoch
 from analytical_hydraulic_archives import SHA
 from initial_profile_groundwater_science import ledger
 from implicit_conductivity_forensics import general_checkpoint,original_observations
@@ -10,13 +10,13 @@ from original_output_files import compare as compare_outputs
 import prescribed_head_flux_boundary as boundary
 
 
-def audit(profile,reference):
+def audit(profile,reference,locations=None):
  complete_inverse();q=json.loads((profile/'RESULT.json').read_text(encoding='utf8'))
- assert not git('diff',CORE,q['source'],'--','app','src','tools/solute','tools/vq','reference')
+ assert producer_epoch(q['source'])=='pre-clock'
  for name in ('initial_profile_groundwater_science.py','analytical_calendar_native_state.py'):
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(BASE,path)
  path='tests/nomacro_scheduled_subsurface/implicit_conductivity_forensics.py';assert norm((ROOT/path).read_bytes())==blob(BASE,path)
- inputs=Path(q['input_root']);build=Path(q['build_root']);meta=json.loads((build/'BUILD.json').read_text(encoding='utf8'));identity=meta['identity']
+ inputs=locations['inputs'] if locations else Path(q['input_root']);build=locations['build'] if locations else Path(q['build_root']);meta=json.loads((build/'BUILD.json').read_text(encoding='utf8'));identity=meta['identity']
  inventory=q['input_inventory'];pairs=inventory.items() if isinstance(inventory,dict) else inventory
  for name,digest in pairs:assert SHA((inputs/name).read_bytes())==digest
  for name,digest in identity['donor_generated'].items():assert SHA((build/name).read_bytes())==digest
@@ -45,7 +45,7 @@ def audit(profile,reference):
  assert len(dz)==meta['project']['nodes']==34
  stdout=(profile/'trajectory/original/donor.stdout').read_text(encoding='utf8');measured=ledger(rows,'water',stdout);original_observations(stdout.encode(),rows,meta['project']['start_date'])
  native=[];selected={**identity['original_output'],'swhyst':0}
- for path in sorted((profile/'trajectory').glob('accepted-column-1-day-*.zip')):
+ for path in sorted((profile/'trajectory').glob('accepted-column-1-day-*.zip'),key=lambda path:path.name):
   day=int(path.name.split('-')[-1].split('.')[0]);row=rows[day-1];raw=path.read_bytes();observed=general_checkpoint(raw,meta,row,selected,dz)
   with zipfile.ZipFile(io.BytesIO(raw)) as z:
    state,header=decode(z.read('macro.bin'),(build/'integral.f90').read_text(encoding='cp1252'),34)
@@ -71,7 +71,7 @@ def audit(profile,reference):
   start,end=item['start'],item['end'];directory=profile/('own-'+str(start));own=[json.loads(line) for line in (directory/'daily.jsonl').read_text().splitlines()];assert len(own)==end-start
   for a,b in zip(own,rows[start:end]):
    for field in ('stock_start_cm','stock_end_cm','external_flux_cm','pressure_head_cm','groundwater_cm','drainage_outward_cm','bottom_outward_cm'):assert a[field]==b[field]
-  with zipfile.ZipFile(profile/f'trajectory/accepted-column-1-day-{end}.zip') as warm,zipfile.ZipFile(directory/f'accepted-column-1-day-{end}.zip') as own:
+  with zipfile.ZipFile(io.BytesIO((profile/f'trajectory/accepted-column-1-day-{end}.zip').read_bytes())) as warm,zipfile.ZipFile(io.BytesIO((directory/f'accepted-column-1-day-{end}.zip').read_bytes())) as own:
    for name in ('macro.bin','result.end'):assert warm.read(name)==own.read(name)
   outputs=compare_outputs(profile/'trajectory/original',directory/'original',identity['original_output'],start,end,meta['project']['start_date']);assert outputs==item['exact_user_output'];cold.append(dict(start=start,end=end,complete_native_byte_exact=True,physical_exact=True,actual_user_output=outputs))
  return dict(status='INDEPENDENT_EXPLICIT9_FIRST_WATER_SOURCE_STOCK_LEDGER_REGISTERED_NATIVE_PASS_NOT_ADMITTED',producer=q['source'],case=q['case'],optimization=q['optimization'],actual_days=35,measured=measured,native=native,cold=cold,maximum_pressure_magnitude_cm_diagnostic_only=maximum_head,compiler_executions=0,model_executions=0,cold_windows_still_required=not bool(cold),canonical_admission=False)

@@ -116,9 +116,89 @@ def ubuntu(proof,opt):
         return dict(status='ACTUAL_THREE_LINUX_EXPLICIT9_CENTRAL_ARCHIVE_SCIENCE_NATIVE_COLD_COMPILED_BYTES_REPLAY_PASS_NOT_ADMITTED',source=provenance,contexts=results,compiler_executions=0,model_executions=0,producer_metadata_rewritten=False,canonical_admission=False)
 
 
+def windows(proof):
+    from explicit_bottom9_water_science import audit as water
+    from explicit_bottom9_water_reuse_science import audit as reuse
+    from explicit_bottom9_source_inverse import PRE_CLOCK,CLOCK_ONLY,producer_epoch,checked_final_delta
+    from calendar_evidence import differences
+    complete_inverse();checked_final_delta()
+    with ExitStack() as stack:
+        store=Archive(proof,'EXPLICIT_BOTTOM9_WINDOWS_RAW_V1',stack)
+        provider=Archive(proof,'HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1',stack)
+        assert provider.record['sha256']=='804b6c36afe0bbac5a84dd84c289a864f3ef0874b739fb9dbc15539c17ad903a'
+        custody=json.loads(store.get('SOURCE_CUSTODY_V1.json'));assert custody['final_physical_core']==CORE and custody['intermediate_physical_core']==CLOCK_ONLY
+        projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'))
+        def build(actual):
+            item=projection[actual];view=ReadView(store,item['archive_prefix'])
+            assert SHA((view/'BUILD.json').read_bytes())==item['actual_BUILD_sha256']
+            return view
+        def mapped(actual):
+            relative=actual.replace('\\','/').split('/evidence/',1)[1]
+            assert '..' not in PurePosixPath(relative).parts and not PurePosixPath(relative).is_absolute()
+            return ReadView(store,'profiles/'+relative)
+        original=None;capsules=[]
+        for label,epoch in [('preclock-actual-source-99c4','99c4d7ca481f703937ed32e63b4af5bf847c3b85'),('current-actual-source-d905','d905cad376b42e709c3bf7949dbc8faebf119f24'),('final-actual-source-f3fc','f3fc5705f09e93ab0aa57eceee78bbcfd2014517')]:
+            prefix='profiles/explicit-bottom9-'+label+'-v1/';q=json.loads(store.get(prefix+'RESULT.json'));raw=store.get(prefix+'actual-producer-source.zip')
+            assert q['producer_head']==epoch and len(raw)==q['bytes'] and SHA(raw)==q['sha256']
+            expected={line.split('\t',1)[1]:line.split('\t',1)[0].split()[2] for line in git('ls-tree','-r',epoch).decode().splitlines()}
+            z=stack.enter_context(zipfile.ZipFile(io.BytesIO(raw)))
+            absent={n for n,i in q['members'].items() if i.get('checkout')=='ABSENT'}
+            assert set(z.namelist())==set(q['members'])-absent
+            for name,item in q['members'].items():
+                assert item['git_blob']==expected[name]
+                if name in absent:assert item==dict(git_blob=expected[name],checkout='ABSENT');continue
+                value=z.read(name);assert len(value)==item['bytes'] and SHA(value)==item['sha256']
+                blob=lambda v:hashlib.sha1(b'blob '+str(len(v)).encode()+b'\0'+v).hexdigest()
+                assert expected[name] in (blob(value),blob(value.replace(b'\r\n',b'\n')))
+            value=z.read('reference/swap-4.3.1/source-archives/SWAP.ZIP')
+            assert SHA(value)=='1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151'
+            if original is not None:assert original==value
+            original=value;capsules.append(dict(producer=epoch,sha256=q['sha256'],actual_members=len(z.namelist()),explicit_absent_members=len(absent)))
+        reference=Reference(provider,original);results=[]
+        assert len(store.record['roles'])==32 and len(store.record['water_controls'])==4
+        for role in store.record['roles']:
+            primary=ReadView(store,role['profile']);post=ReadView(store,role['postimage']);q=json.loads((primary/'RESULT.json').read_text());p=json.loads((post/'RESULT.json').read_text())
+            assert role['producer']==q['source'] and role['case']==q['case'] and role['optimization']==q['optimization']
+            assert mapped(role['original_profile_path']).path==primary.path and mapped(q['input_root']).path==role['inputs'] and mapped(p['input_root']).path==role['counter_inputs']
+            loc=dict(inputs=ReadView(store,role['inputs']),build=build(q['build_root']),counter=build(p['build_root']),counter_inputs=ReadView(store,role['counter_inputs']),original_profile_path=role['original_profile_path'])
+            actual=(drainage if role['distributed_drain'] else composition)(primary,reference,post,loc)
+            compiled=binary(loc['counter'],loc['build']) if role['distributed_drain'] else binary(loc['build'],loc['counter'])
+            if role['distributed_drain']:assert compiled==p['actual_complete_compiled_bytes']
+            results.append(dict(profile=role['profile'],science=actual,actual_compiled_binary=compiled))
+            print('ACTUAL_WINDOWS_CENTRAL_SCIENCE_NATIVE_COLD_COMPILED_PASS',q['case'],q['optimization'],flush=True)
+        inherited=json.loads(store.get('observations/EXPLICIT_BOTTOM9_ALL24_PRECLOCK_PERIODS_CURRENT_SOURCE_COMPILED_INHERITANCE_V2.json'))
+        final=json.loads(store.get('observations/EXPLICIT_BOTTOM9_FINAL_NONCLOCK24_SOURCE_INHERITANCE_V1.json'))
+        assert inherited['current_physical_core']==CLOCK_ONLY and inherited['old_physical_core']==PRE_CLOCK and len(inherited['observations'])==24
+        assert final['actual_intermediate_comparison_sha256']==SHA(store.get('observations/EXPLICIT_BOTTOM9_ALL24_PRECLOCK_PERIODS_CURRENT_SOURCE_COMPILED_INHERITANCE_V2.json')) and final['actual_final_head_model_executions_for_these24']==0 and len(final['observations'])==24
+        inheritance=[]
+        for item in inherited['observations']:
+            primary=mapped(item['prior_profile']);raw=(primary/'RESULT.json').read_bytes();q=json.loads(raw);a=build(q['build_root']);b=build(item['build_root']);old=json.loads((a/'BUILD.json').read_text());new=json.loads((b/'BUILD.json').read_text())
+            assert SHA(raw)==item['prior_RESULT_sha256'] and q['source']==item['original_producer'] and producer_epoch(q['source'])=='pre-clock'
+            assert SHA((a/'BUILD.json').read_bytes())==item['original_BUILD_sha256'] and SHA((b/'BUILD.json').read_bytes())==item['current_BUILD_sha256']
+            assert old['binding']==item['original_binding_unchanged'] and new['binding']==item['actual_current_binding']
+            assert set(differences(old['identity'],new['identity']))<=set(('host','lower_boundary_receipt.source_sha256','restart_publisher.library_sha256'))
+            for meta in (old,new):assert meta['identity']['original_output']['nprintday']==1 and meta['identity']['original_output']['flprintdt'] is False
+            actual=binary(a,b);assert actual==item['compiled']
+            # Every generated Fortran byte after newline normalization must also
+            # remain exact, independently of all compiled code/data comparisons.
+            fortran=lambda root:{p.name:p.read_bytes().replace(b'\r\n',b'\n') for p in root.glob('*.f90')}
+            assert fortran(a) and fortran(a)==fortran(b)
+            inheritance.append(dict(profile=primary.path,original_producer=q['source'],actual_intermediate_producer=inherited['source'],clock_branch_selected=False,actual_compiled=actual))
+        assert {i['profile'] for i in inheritance}=={r['profile'] for r in store.record['roles'] if producer_epoch(r['producer'])=='pre-clock'}
+        controls=[]
+        for role in store.record['water_controls']:
+            primary=ReadView(store,role['profile']);q=json.loads((primary/'RESULT.json').read_text());loc=dict(inputs=ReadView(store,role['inputs']),build=build(q['build_root']),original_profile_path=role['original_profile_path'])
+            assert mapped(q['input_root']).path==role['inputs'] and mapped(role['original_profile_path']).path==primary.path
+            actual=reuse(primary,ReadView(store,role['native_campaign']),reference,loc) if role['optimization']=='O0' else water(primary,reference,loc)
+            controls.append(dict(profile=role['profile'],science=actual));print('ACTUAL_WINDOWS_EARLIER_WATER_CONTROL_CENTRAL_PASS',role['case'],role['optimization'],flush=True)
+        return dict(status='ACTUAL_WINDOWS32_COMPOSITIONS_PLUS4_EARLIER_WATER_CONTROLS_AND24_COMPILED_INHERITANCE_CENTRAL_REPLAY_PASS_NOT_ADMITTED',contexts=results,water_controls=controls,intermediate_compiled_inheritance=inheritance,actual_source_capsules=capsules,original_provider_archive=custody['original_provider_archive'],original_provider_sha256=provider.record['sha256'],compiler_executions=0,model_executions=0,producer_metadata_rewritten=False,canonical_admission=False)
+
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--seal',action='store_true');p.add_argument('--output',type=Path,required=True);a=p.parse_args()
-    if a.seal:seal(a.proof,a.optimization)
-    result=ubuntu(a.proof,a.optimization)
+    p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--optimization',choices=('O0','O2'));p.add_argument('--seal',action='store_true');p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    if a.seal:
+        assert a.optimization
+        seal(a.proof,a.optimization)
+    result=ubuntu(a.proof,a.optimization) if a.optimization else windows(a.proof)
     with a.output.open('x',encoding='utf-8') as out:json.dump(result,out,indent=2);out.write('\n')
     print(result['status'],a.optimization,flush=True)
