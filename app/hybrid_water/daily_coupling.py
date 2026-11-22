@@ -327,8 +327,8 @@ def validate_bundle(bundle, reference, project):
     from surface_schedule import enabled as surface_schedule_enabled,POLICY as SURFACE_SCHEDULE_POLICY
     expected_schedule={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':h.sha(h.APP/'surface_schedule.py')} if surface_schedule_enabled(project) else None
     if identity.get('surface_schedule')!=expected_schedule:raise ValueError('Foreign original surface schedule')
-    from implicit_groundwater_state import selected_boundary,boundary_metadata as lower_metadata
-    from age_groundwater_output import render_budget
+    from prescribed_head_flux_boundary import selected_boundary,boundary_metadata as lower_metadata
+    from prescribed_head_flux_boundary import render_budget
     lower_boundary=selected_boundary(project)
     lower=lower_boundary is not None
     expected_lower=lower_metadata(project,h.sha,h.APP,h.ROOT)
