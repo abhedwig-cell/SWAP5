@@ -11,7 +11,7 @@ import initial_profile_groundwater_source_inverse as source
 import initial_profile_groundwater_parent_projection as projection
 PATHS={MODULE,*('app/hybrid_water/'+name for name in ('daily_coupling.py','daily_host.py','experimental_project.py','original_output.py'))}|CDE_PATHS
 WORKFLOW='.github/workflows/nomacro-explicit-bottom9.yml'
-WORKFLOW_SOURCE='e462878f2cac5895b0dbdc9ae90d1276384f0327'
+WORKFLOW_SOURCE='edbd9ab51b7a87a896aa7b89ff1e2452304a11a4'
 CI=projection.CI
 PATTERN='            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9*\n'
 
@@ -104,7 +104,7 @@ def prior_source_projection():
  complete_inverse();workflow_metadata_inverse();context=parent_context();bindings=[]
  import analytical_calendar_verify as calendar
  original_literal=calendar.literal
- # Views cover four fully inverted SOURCE files and the two exactly inverted
+ # Views cover the fully inverted SOURCE files and the two exactly inverted
  # CI sparse entries. Native data, receipts, identities and Git queries stay.
  for module in list(sys.modules.values()):
   if module is None:continue
