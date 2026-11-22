@@ -1,0 +1,2520 @@
+{
+  "status": "TWENTY_ACTUAL_PRESCRIBED_GROUNDWATER_PARENT_NATIVE_AND_SOURCE_METADATA_ROUTES_MAPPED",
+  "source": "fe8c8e619abe9d855ce33fc5936cb3cd53bf5886",
+  "discovery_source": "354b6c9b792bed3a5cb0d10de96393d2568163f8",
+  "checks": [
+    {
+      "case": "water-explicit-daily",
+      "actual_native_codec": "S5EGW001",
+      "actual_original_output_metadata": {
+        "policy": "original-groundwater-water-complete-state-calendar-v1",
+        "native_codec": "S5EGW001",
+        "groundwater_water_output": true,
+        "kind": "water",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 0,
+        "et": 0,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 1,
+        "period": 1,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "f8844e285fb144b30494f3ee2db49267ffebcb01a3bc5156b859ae31a1a43c5f",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "history_owner_sha256": "123d446724a5c7d042bfe23c1d48db3e3a85110a8cd810e4af51cada96a3757d",
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_output_epoch": 37256,
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "undefined_allocation_tails_serialized": false,
+        "preserves_requested_groups_and_precision": true
+      },
+      "actual_metadata_native_codec": "S5EGW001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "e4fd04a65199f4630c47d3f63a113aacc43d5a0af2f88eb9b057b1a043aefd78"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "water-h2-periodic",
+      "actual_native_codec": "S5EGW001",
+      "actual_original_output_metadata": {
+        "policy": "original-groundwater-water-complete-state-calendar-v1",
+        "native_codec": "S5EGW001",
+        "groundwater_water_output": true,
+        "kind": "water",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 2,
+        "et": 0,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 3,
+        "period": 3,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "f8844e285fb144b30494f3ee2db49267ffebcb01a3bc5156b859ae31a1a43c5f",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "history_owner_sha256": "123d446724a5c7d042bfe23c1d48db3e3a85110a8cd810e4af51cada96a3757d",
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_output_epoch": 37256,
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "undefined_allocation_tails_serialized": false,
+        "preserves_requested_groups_and_precision": true
+      },
+      "actual_metadata_native_codec": "S5EGW001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "8502863a997a96146ed74b77a49de39b8d16cc7d88876034b3bf6bf5da7f070d"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "water-h1-monthly",
+      "actual_native_codec": "S5EGW001",
+      "actual_original_output_metadata": {
+        "policy": "original-groundwater-water-complete-state-calendar-v1",
+        "native_codec": "S5EGW001",
+        "groundwater_water_output": true,
+        "kind": "water",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 1,
+        "et": 0,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 1,
+        "swodat": 0,
+        "swres": 0,
+        "requested_period": 0,
+        "period": 0,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "f8844e285fb144b30494f3ee2db49267ffebcb01a3bc5156b859ae31a1a43c5f",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "history_owner_sha256": "123d446724a5c7d042bfe23c1d48db3e3a85110a8cd810e4af51cada96a3757d",
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_output_epoch": 37256,
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "undefined_allocation_tails_serialized": false,
+        "preserves_requested_groups_and_precision": true
+      },
+      "actual_metadata_native_codec": "S5EGW001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "d32992f4f5a1ffcd206b6c635e59bbfd1ff1058241aab09348b1f0c7c5285d49"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "water-h1-step-off",
+      "actual_native_codec": "S5EGW001",
+      "actual_original_output_metadata": {
+        "policy": "original-groundwater-water-complete-state-calendar-v1",
+        "native_codec": "S5EGW001",
+        "groundwater_water_output": true,
+        "kind": "water",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 0,
+        "swhyst": 1,
+        "et": 0,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 1,
+        "swres": 0,
+        "requested_period": 3,
+        "period": 1,
+        "flprintdt": true,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "f8844e285fb144b30494f3ee2db49267ffebcb01a3bc5156b859ae31a1a43c5f",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "history_owner_sha256": "123d446724a5c7d042bfe23c1d48db3e3a85110a8cd810e4af51cada96a3757d",
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_output_epoch": 37256,
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "undefined_allocation_tails_serialized": false,
+        "preserves_requested_groups_and_precision": true
+      },
+      "actual_metadata_native_codec": "S5EGW001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "575d8414ca0e01322fda6110d9e1c81dbad6fc4a49683e4f344f1d3f80b6a50c"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "water-h2-implicit-clock",
+      "actual_native_codec": "S5IGW001",
+      "actual_original_output_metadata": {
+        "policy": "original-groundwater-water-complete-state-calendar-v1",
+        "native_codec": "S5IGW001",
+        "groundwater_water_output": true,
+        "kind": "water",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 2,
+        "et": 0,
+        "swcsv": 3,
+        "nprintday": 3,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 3,
+        "period": 1,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "f8844e285fb144b30494f3ee2db49267ffebcb01a3bc5156b859ae31a1a43c5f",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "history_owner_sha256": "123d446724a5c7d042bfe23c1d48db3e3a85110a8cd810e4af51cada96a3757d",
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_output_epoch": 37256,
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "undefined_allocation_tails_serialized": false,
+        "preserves_requested_groups_and_precision": true
+      },
+      "actual_metadata_native_codec": "S5IGW001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "391439b966241529091cec209a1d0e555c7c5124c12ab8e39ae4124e326ca719"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "water-snow-daily",
+      "actual_native_codec": "S5WGI000",
+      "actual_original_output_metadata": {
+        "policy": "existing-water-snow-groundwater-calendar-composition-v1",
+        "native_codec": "S5WGI000",
+        "groundwater_snow_water_output": true,
+        "thermal_output": true,
+        "thermal_calendar": true,
+        "thermal_clock": false,
+        "thermal_step": false,
+        "thermal_reset": false,
+        "kind": "water",
+        "swsnow": 1,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 0,
+        "et": 0,
+        "swkimpl": 0,
+        "swbotb": 1,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 1,
+        "period": 1,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "51e66654c35eb820f1f7217b5cdd32728ebcba6f456668035b4e5adc6f1106f5",
+        "composition_build_sha256": "5e119ab7f9634cdc28b25e32d32670bef93e003a78a35e9eef0c6e452662d676",
+        "native_composition": {
+          "policy": "original-water-snow-groundwater-hydraulic-diagnostic-carry-v1",
+          "source_sha256": "a8292876cf9bcb46a46342269f4b12a651738828078085b6312e7f748bf24613",
+          "provider_sha256": "9d1b81515e1f6f7b989cbc9bb261608d131d50550cf70d29bab958f262874670",
+          "root_provider_sha256": "2e20df2c291084f52094c4e72acf40b2387c521e12956d63e3e0ea8d6e5325f8",
+          "actual_domain": [
+            14,
+            34,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            2,
+            1,
+            0,
+            0
+          ],
+          "hydraulic_doubles": "5*actual_nodes+4",
+          "diagnostic_rates": "Original alpwetnoddrz,alpdrynodrtz; no physical store added",
+          "root_tail_bytes": 96,
+          "new_physical_state": false
+        },
+        "calendar_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+        "step_owner_sha256": "da0ae26f8c969d70b3116f9f76fb272fb0ef28434b8529d4bfee3d0ba06987c6",
+        "reset_owner_sha256": "210d1422fe4d3f02f4d02d0d5003994f8d2e04ee971a0f3a5e897750ea0423d8",
+        "domain_source_sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8",
+        "snow_output_source_sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534",
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_output_epoch": 37256,
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "preserves_requested_groups_and_precision": true,
+        "new_physical_state": false
+      },
+      "actual_metadata_native_codec": "S5WGI000",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "d041d6962f049354233ea6228175847501094101d8760c5891e0187098ffdb55"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "water-h2-snow-monthly",
+      "actual_native_codec": "S5WGI000",
+      "actual_original_output_metadata": {
+        "policy": "existing-water-snow-groundwater-calendar-composition-v1",
+        "native_codec": "S5WGI000",
+        "groundwater_snow_water_output": true,
+        "thermal_output": true,
+        "thermal_calendar": true,
+        "thermal_clock": false,
+        "thermal_step": false,
+        "thermal_reset": false,
+        "kind": "water",
+        "swsnow": 1,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 2,
+        "et": 0,
+        "swkimpl": 0,
+        "swbotb": 1,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 1,
+        "swodat": 0,
+        "swres": 0,
+        "requested_period": 0,
+        "period": 0,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "51e66654c35eb820f1f7217b5cdd32728ebcba6f456668035b4e5adc6f1106f5",
+        "composition_build_sha256": "5e119ab7f9634cdc28b25e32d32670bef93e003a78a35e9eef0c6e452662d676",
+        "native_composition": {
+          "policy": "original-water-snow-groundwater-hydraulic-diagnostic-carry-v1",
+          "source_sha256": "a8292876cf9bcb46a46342269f4b12a651738828078085b6312e7f748bf24613",
+          "provider_sha256": "9d1b81515e1f6f7b989cbc9bb261608d131d50550cf70d29bab958f262874670",
+          "root_provider_sha256": "2e20df2c291084f52094c4e72acf40b2387c521e12956d63e3e0ea8d6e5325f8",
+          "actual_domain": [
+            14,
+            34,
+            0,
+            0,
+            1,
+            2,
+            1,
+            0,
+            1,
+            2,
+            1,
+            0,
+            0
+          ],
+          "hydraulic_doubles": "5*actual_nodes+4",
+          "diagnostic_rates": "Original alpwetnoddrz,alpdrynodrtz; no physical store added",
+          "root_tail_bytes": 96,
+          "new_physical_state": false
+        },
+        "calendar_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+        "step_owner_sha256": "da0ae26f8c969d70b3116f9f76fb272fb0ef28434b8529d4bfee3d0ba06987c6",
+        "reset_owner_sha256": "210d1422fe4d3f02f4d02d0d5003994f8d2e04ee971a0f3a5e897750ea0423d8",
+        "domain_source_sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8",
+        "snow_output_source_sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534",
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_output_epoch": 37256,
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "preserves_requested_groups_and_precision": true,
+        "new_physical_state": false
+      },
+      "actual_metadata_native_codec": "S5WGI000",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "7866e20bed0e14fa8fc816da5f471d86bb07af7ec8bfb617f8d05ec2b18b9053"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "water-h1-snow-implicit-step",
+      "actual_native_codec": "S5WGR001",
+      "actual_original_output_metadata": {
+        "policy": "existing-water-snow-groundwater-calendar-composition-v1",
+        "native_codec": "S5WGR001",
+        "groundwater_snow_water_output": true,
+        "thermal_output": true,
+        "thermal_calendar": true,
+        "thermal_clock": true,
+        "thermal_step": true,
+        "thermal_reset": true,
+        "kind": "water",
+        "swsnow": 1,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 1,
+        "et": 0,
+        "swkimpl": 1,
+        "swbotb": 1,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 1,
+        "swres": 1,
+        "requested_period": 3,
+        "period": 1,
+        "flprintdt": true,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "51e66654c35eb820f1f7217b5cdd32728ebcba6f456668035b4e5adc6f1106f5",
+        "composition_build_sha256": "5e119ab7f9634cdc28b25e32d32670bef93e003a78a35e9eef0c6e452662d676",
+        "native_composition": {
+          "policy": "original-water-snow-groundwater-hydraulic-diagnostic-carry-v1",
+          "source_sha256": "a8292876cf9bcb46a46342269f4b12a651738828078085b6312e7f748bf24613",
+          "provider_sha256": "f6ffcca352ce267f20b85e42045f32a2074f653afc0c7b6225b2e6e9a0dd1b31",
+          "root_provider_sha256": "f4b412564950e8ea53f3dd360bf46044883bf9a91840070a0189b666ee072fa9",
+          "actual_domain": [
+            15,
+            34,
+            0,
+            0,
+            1,
+            1,
+            1,
+            0,
+            1,
+            2,
+            1,
+            0,
+            1
+          ],
+          "hydraulic_doubles": "5*actual_nodes+4",
+          "diagnostic_rates": "Original alpwetnoddrz,alpdrynodrtz; no physical store added",
+          "root_tail_bytes": 96,
+          "new_physical_state": false
+        },
+        "calendar_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+        "step_owner_sha256": "da0ae26f8c969d70b3116f9f76fb272fb0ef28434b8529d4bfee3d0ba06987c6",
+        "reset_owner_sha256": "210d1422fe4d3f02f4d02d0d5003994f8d2e04ee971a0f3a5e897750ea0423d8",
+        "domain_source_sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8",
+        "snow_output_source_sha256": "41b352e009a849f4acd0733000e867091244ca2aafe041ba9a2f14c8e4f0e534",
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_output_epoch": 37256,
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "preserves_requested_groups_and_precision": true,
+        "new_physical_state": false
+      },
+      "actual_metadata_native_codec": "S5WGR001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "e9f871812ec02d39501ea15f6158526e19a43fdc78e1585f7064ab04ffd6f380"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "cde-explicit-daily",
+      "actual_native_codec": "S5GWC001",
+      "actual_original_output_metadata": {
+        "policy": "original-user-output-controls-v1",
+        "native_codec": "S5IOC001",
+        "kind": "cde",
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 1,
+        "period": 1,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "39637b3408894b6726bddff8d94c9ed774f41379810e910a0975e7600de66295",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_output_epoch": 37256,
+        "cde_output_state_sha256": "eb82d50ec0ff0d6b74c17c4eafe658504758f8f6d0f7bb8118798815e85fc286",
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+        "preserves_requested_groups_and_precision": true,
+        "undefined_allocation_tails_serialized": false
+      },
+      "actual_metadata_native_codec": "S5IOC001",
+      "metadata_codec_equals_final_public_codec": false,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "b1ada7282788549b4b8d0849442cfb846dfac0ea2a365bfcdc1a0d6b0c9bd6c0"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": true,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "cde-h2-periodic",
+      "actual_native_codec": "S5GIH003",
+      "actual_original_output_metadata": {
+        "policy": "original-cde-interval-output-and-observed-daily-flux-v1",
+        "native_codec": "S5GIH003",
+        "cde_interval_output": true,
+        "thermal_output": false,
+        "thermal_calendar": false,
+        "kind": "cde",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 2,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 3,
+        "period": 3,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "groundwater_cde_interval": true,
+        "source_sha256": "881bc75609f455a9113c4cdd1022a1fd4164c79b3fb6233dc321f267a6150414",
+        "predecessor_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "ordinary_owner_sha256": "39637b3408894b6726bddff8d94c9ed774f41379810e910a0975e7600de66295",
+        "thermal_owner_sha256": "7377655873f3e43a5fb0c8d2e9629fc7418b25328b09187bc1e972845a7bf71c",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+        "native_domain_bytes": 40,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+        "original_output_epoch": 37256,
+        "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+        "private_cde_interval_fields": [
+          "sampro0",
+          "rounderr"
+        ],
+        "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+        "cde_output_state_version": 2,
+        "cde_output_state_reals": 54,
+        "cde_output_state_private_reals": 2,
+        "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+        "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+        "cde_daily_mass_guard_mg_cm2": 1e-10,
+        "calendar_initial_past_date_policy": "original-initial-interval-pointer-remains-one-v1",
+        "original_pending_dates_not_normalized": true,
+        "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+        "conserved_cde_prefix_offset_bytes": 48,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+        "preserves_requested_groups_and_precision": true,
+        "undefined_allocation_tails_serialized": false,
+        "physical_equations_changed": false,
+        "groundwater_interval_composition_sha256": "a32f49b13cc45eb59fc1cf69b330a31d10de65924e8ac62097659c229f021260",
+        "groundwater_interval_policy": "existing-cde-interval-complete-groundwater-native-v1",
+        "groundwater_new_physical_state": false
+      },
+      "actual_metadata_native_codec": "S5GIH003",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "b1499804b186060463964c2c70d3ae2c6c0ece216cf35727207e37e20cbc0b11"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": true,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "cde-h1-monthly",
+      "actual_native_codec": "S5GIH001",
+      "actual_original_output_metadata": {
+        "policy": "original-cde-interval-output-and-observed-daily-flux-v1",
+        "native_codec": "S5GIH001",
+        "cde_interval_output": true,
+        "thermal_output": false,
+        "thermal_calendar": false,
+        "kind": "cde",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 1,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 1,
+        "swodat": 0,
+        "swres": 0,
+        "requested_period": 0,
+        "period": 0,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "groundwater_cde_interval": true,
+        "source_sha256": "881bc75609f455a9113c4cdd1022a1fd4164c79b3fb6233dc321f267a6150414",
+        "predecessor_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "ordinary_owner_sha256": "39637b3408894b6726bddff8d94c9ed774f41379810e910a0975e7600de66295",
+        "thermal_owner_sha256": "7377655873f3e43a5fb0c8d2e9629fc7418b25328b09187bc1e972845a7bf71c",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+        "native_domain_bytes": 40,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+        "original_output_epoch": 37256,
+        "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+        "private_cde_interval_fields": [
+          "sampro0",
+          "rounderr"
+        ],
+        "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+        "cde_output_state_version": 2,
+        "cde_output_state_reals": 54,
+        "cde_output_state_private_reals": 2,
+        "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+        "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+        "cde_daily_mass_guard_mg_cm2": 1e-10,
+        "calendar_initial_past_date_policy": "original-initial-interval-pointer-remains-one-v1",
+        "original_pending_dates_not_normalized": true,
+        "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+        "conserved_cde_prefix_offset_bytes": 48,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+        "preserves_requested_groups_and_precision": true,
+        "undefined_allocation_tails_serialized": false,
+        "physical_equations_changed": false,
+        "groundwater_interval_composition_sha256": "a32f49b13cc45eb59fc1cf69b330a31d10de65924e8ac62097659c229f021260",
+        "groundwater_interval_policy": "existing-cde-interval-complete-groundwater-native-v1",
+        "groundwater_new_physical_state": false
+      },
+      "actual_metadata_native_codec": "S5GIH001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "e401939a064d4e5baf8e311e53545b3cbac00b3ea9c23203357dd5166f2c902b"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": true,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "cde-h1-step-off",
+      "actual_native_codec": "S5GCH001",
+      "actual_original_output_metadata": {
+        "policy": "original-cde-clock-output-and-observed-daily-flux-v1",
+        "native_codec": "S5GCH001",
+        "cde_clock_output": true,
+        "cde_interval_output": true,
+        "thermal_output": false,
+        "thermal_calendar": false,
+        "thermal_clock": false,
+        "thermal_step": false,
+        "kind": "cde",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 0,
+        "swhyst": 1,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 1,
+        "swres": 0,
+        "requested_period": 3,
+        "period": 1,
+        "flprintdt": true,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "groundwater_cde_clock": true,
+        "source_sha256": "67e9b2eb3aa3d780e0c14c0ae119728fcdb203cc3c3942305f9df978964bfc41",
+        "predecessor_owner_sha256": "881bc75609f455a9113c4cdd1022a1fd4164c79b3fb6233dc321f267a6150414",
+        "ordinary_owner_sha256": "39637b3408894b6726bddff8d94c9ed774f41379810e910a0975e7600de66295",
+        "thermal_owner_sha256": "7377655873f3e43a5fb0c8d2e9629fc7418b25328b09187bc1e972845a7bf71c",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+        "native_domain_bytes": 40,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+        "original_output_epoch": 37256,
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "snow_clock_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+        "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_flprintdt_date_gated": true,
+        "annual_counter_policy": "original-global-or-completed-year-count-v1",
+        "timecontrol_composition": "literal-original-bound-output-epoch-v1",
+        "clock_event_closure_source_sha256": "9eaf8590c62d9855b3fefbc9fb66434ec516c0f704e70af8e83e171024683406",
+        "clock_event_coincidence_policy": "actual-local-irrigation-and-end-day-existing-dtcrit-v1",
+        "clock_event_dtcrit": 1e-08,
+        "trial_receipt_policy": "literal-original-independent-soil-candidate-bottom-cde-clock-v1",
+        "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+        "private_cde_interval_fields": [
+          "sampro0",
+          "rounderr"
+        ],
+        "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+        "cde_output_state_version": 2,
+        "cde_output_state_reals": 54,
+        "cde_output_state_private_reals": 2,
+        "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+        "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+        "cde_daily_mass_guard_mg_cm2": 1e-10,
+        "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+        "original_pending_dates_not_normalized": true,
+        "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+        "conserved_cde_prefix_offset_bytes": 48,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+        "preserves_requested_groups_and_precision": true,
+        "undefined_allocation_tails_serialized": false,
+        "physical_equations_changed": false,
+        "groundwater_clock_composition_sha256": "7128c29341d0b5a793edf7757e34d51fd2a9676ccdc0722d4eb14fe8d6ba3045",
+        "groundwater_trial_provider_sha256": "f04eaa34791afdf4d30ef90d75d53baf8a6fdcd3e1b1173d5d23bf3c8a8a0b3f",
+        "groundwater_clock_policy": "existing-cde-clock-complete-groundwater-native-v1",
+        "groundwater_new_physical_state": false
+      },
+      "actual_metadata_native_codec": "S5GCH001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "0b957a30d6e7f37bc31c7dd2292a3913f942045a2e84a5b5224996b9919e82b8"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": true,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "cde-h2-implicit-clock",
+      "actual_native_codec": "S5GCH003",
+      "actual_original_output_metadata": {
+        "policy": "original-cde-clock-output-and-observed-daily-flux-v1",
+        "native_codec": "S5GCH003",
+        "cde_clock_output": true,
+        "cde_interval_output": true,
+        "thermal_output": false,
+        "thermal_calendar": false,
+        "thermal_clock": false,
+        "thermal_step": false,
+        "kind": "cde",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 2,
+        "swcsv": 3,
+        "nprintday": 3,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 3,
+        "period": 1,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "groundwater_cde_clock": true,
+        "source_sha256": "67e9b2eb3aa3d780e0c14c0ae119728fcdb203cc3c3942305f9df978964bfc41",
+        "predecessor_owner_sha256": "881bc75609f455a9113c4cdd1022a1fd4164c79b3fb6233dc321f267a6150414",
+        "ordinary_owner_sha256": "39637b3408894b6726bddff8d94c9ed774f41379810e910a0975e7600de66295",
+        "thermal_owner_sha256": "7377655873f3e43a5fb0c8d2e9629fc7418b25328b09187bc1e972845a7bf71c",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "domain_source_sha256": "a76680e1b7101b9f75240ce2000f78ba07dfb15384b106372b43fcad2fe0fa39",
+        "native_domain_bytes": 40,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+        "original_output_epoch": 37256,
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "snow_clock_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+        "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_flprintdt_date_gated": false,
+        "annual_counter_policy": "original-print-period-counter-v1",
+        "timecontrol_composition": "literal-original-bound-output-epoch-v1",
+        "clock_event_closure_source_sha256": "9eaf8590c62d9855b3fefbc9fb66434ec516c0f704e70af8e83e171024683406",
+        "clock_event_coincidence_policy": "actual-local-irrigation-and-end-day-existing-dtcrit-v1",
+        "clock_event_dtcrit": 1e-08,
+        "trial_receipt_policy": "literal-original-independent-soil-candidate-bottom-cde-clock-v1",
+        "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+        "private_cde_interval_fields": [
+          "sampro0",
+          "rounderr"
+        ],
+        "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+        "cde_output_state_version": 2,
+        "cde_output_state_reals": 54,
+        "cde_output_state_private_reals": 2,
+        "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+        "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+        "cde_daily_mass_guard_mg_cm2": 1e-10,
+        "calendar_initial_past_date_policy": "original-initial-interval-pointer-remains-one-v1",
+        "original_pending_dates_not_normalized": true,
+        "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+        "conserved_cde_prefix_offset_bytes": 48,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+        "preserves_requested_groups_and_precision": true,
+        "undefined_allocation_tails_serialized": false,
+        "physical_equations_changed": false,
+        "groundwater_clock_composition_sha256": "7128c29341d0b5a793edf7757e34d51fd2a9676ccdc0722d4eb14fe8d6ba3045",
+        "groundwater_trial_provider_sha256": "f04eaa34791afdf4d30ef90d75d53baf8a6fdcd3e1b1173d5d23bf3c8a8a0b3f",
+        "groundwater_clock_policy": "existing-cde-clock-complete-groundwater-native-v1",
+        "groundwater_new_physical_state": false
+      },
+      "actual_metadata_native_codec": "S5GCH003",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "354131cf4d4755b3080ca77afd46e800a52d1e11614092554ebbcd0b0abeac35"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": true,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "cde-snow-monthly",
+      "actual_native_codec": "S5GSI000",
+      "actual_original_output_metadata": {
+        "policy": "original-cde-interval-output-and-observed-daily-flux-v1",
+        "native_codec": "S5GSI000",
+        "cde_interval_output": true,
+        "thermal_output": true,
+        "thermal_calendar": true,
+        "kind": "cde",
+        "swsnow": 1,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 0,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 1,
+        "swodat": 0,
+        "swres": 0,
+        "requested_period": 0,
+        "period": 0,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "groundwater_cde_interval": true,
+        "groundwater_snow_cde_output": true,
+        "source_sha256": "881bc75609f455a9113c4cdd1022a1fd4164c79b3fb6233dc321f267a6150414",
+        "predecessor_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "ordinary_owner_sha256": "39637b3408894b6726bddff8d94c9ed774f41379810e910a0975e7600de66295",
+        "thermal_owner_sha256": "7377655873f3e43a5fb0c8d2e9629fc7418b25328b09187bc1e972845a7bf71c",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "domain_source_sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8",
+        "native_domain_bytes": 80,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+        "original_output_epoch": 37256,
+        "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+        "private_cde_interval_fields": [
+          "sampro0",
+          "rounderr"
+        ],
+        "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+        "cde_output_state_version": 2,
+        "cde_output_state_reals": 54,
+        "cde_output_state_private_reals": 2,
+        "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+        "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+        "cde_daily_mass_guard_mg_cm2": 1e-10,
+        "calendar_initial_past_date_policy": "original-initial-interval-pointer-remains-one-v1",
+        "original_pending_dates_not_normalized": true,
+        "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+        "conserved_cde_prefix_offset_bytes": 48,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+        "preserves_requested_groups_and_precision": true,
+        "undefined_allocation_tails_serialized": false,
+        "physical_equations_changed": false,
+        "snow_output_source_sha256": "477374c748a3713001ee6c9e5c6f9ca9820a6f9599cd6c683e01315aba1150a2",
+        "snow_output_fields": [
+          "cgsnow",
+          "cmelt",
+          "csnrai",
+          "csubl",
+          "isnrai",
+          "igsnow",
+          "isubl"
+        ],
+        "snow_output_domain_bytes": 32,
+        "snow_output_value_bytes": 56,
+        "snow_stock": "actual MOD_snow ssnow",
+        "snow_increment_slots": [
+          2,
+          3,
+          13
+        ],
+        "groundwater_interval_composition_sha256": "a32f49b13cc45eb59fc1cf69b330a31d10de65924e8ac62097659c229f021260",
+        "groundwater_interval_policy": "existing-cde-interval-complete-groundwater-native-v1",
+        "groundwater_new_physical_state": false,
+        "groundwater_snow_composition_sha256": "ba1ffa01a5ebba3918ba024747c2f028f731fd8cbb33b0516f01e69c6ddb091e",
+        "groundwater_snow_policy": "existing-explicit-snow-groundwater-cde-composition-v1",
+        "groundwater_snow_new_physical_state": false,
+        "groundwater_snow_clock_provider_sha256": "7923d3fab92054914dec1238fdd6907d2bd17b45f86e5e90a0e497b2591b414f",
+        "groundwater_snow_clock_policy": "immutable-epoch-integer-day-accepted-local-elapsed-clock-v1",
+        "groundwater_snow_retry_policy": "existing-original-rollback-pond-event-explicit-snow-v1",
+        "groundwater_snow_retry_provider_sha256": "8a98d46c4c70ac71f878d734c64b667d88182c46a3954911871d1e528fbd8d80",
+        "groundwater_snow_retry_parent_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
+        "groundwater_snow_pond_parent_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622",
+        "groundwater_snow_pond_state_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+        "groundwater_snow_availability_parent_sha256": "223c590f4006b6c39bd904930ba18ca9e08e3dbc4dbb5c76ae4395d05d4408cd",
+        "groundwater_snow_availability_state_sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+      },
+      "actual_metadata_native_codec": "S5GSI000",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "d45c0cd9cc501cc57c9a7cfb7c08036bb101d2b2a20cd3b6bb0be4a229ab4dab"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": true,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "cde-h2-snow-periodic",
+      "actual_native_codec": "S5GSI003",
+      "actual_original_output_metadata": {
+        "policy": "original-cde-interval-output-and-observed-daily-flux-v1",
+        "native_codec": "S5GSI003",
+        "cde_interval_output": true,
+        "thermal_output": true,
+        "thermal_calendar": true,
+        "kind": "cde",
+        "swsnow": 1,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 0,
+        "swhyst": 2,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 0,
+        "requested_period": 3,
+        "period": 3,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "groundwater_cde_interval": true,
+        "groundwater_snow_cde_output": true,
+        "source_sha256": "881bc75609f455a9113c4cdd1022a1fd4164c79b3fb6233dc321f267a6150414",
+        "predecessor_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "ordinary_owner_sha256": "39637b3408894b6726bddff8d94c9ed774f41379810e910a0975e7600de66295",
+        "thermal_owner_sha256": "7377655873f3e43a5fb0c8d2e9629fc7418b25328b09187bc1e972845a7bf71c",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "domain_source_sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8",
+        "native_domain_bytes": 80,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+        "original_output_epoch": 37256,
+        "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+        "private_cde_interval_fields": [
+          "sampro0",
+          "rounderr"
+        ],
+        "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+        "cde_output_state_version": 2,
+        "cde_output_state_reals": 54,
+        "cde_output_state_private_reals": 2,
+        "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+        "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+        "cde_daily_mass_guard_mg_cm2": 1e-10,
+        "calendar_initial_past_date_policy": "original-initial-interval-pointer-remains-one-v1",
+        "original_pending_dates_not_normalized": true,
+        "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+        "conserved_cde_prefix_offset_bytes": 48,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+        "preserves_requested_groups_and_precision": true,
+        "undefined_allocation_tails_serialized": false,
+        "physical_equations_changed": false,
+        "snow_output_source_sha256": "477374c748a3713001ee6c9e5c6f9ca9820a6f9599cd6c683e01315aba1150a2",
+        "snow_output_fields": [
+          "cgsnow",
+          "cmelt",
+          "csnrai",
+          "csubl",
+          "isnrai",
+          "igsnow",
+          "isubl"
+        ],
+        "snow_output_domain_bytes": 32,
+        "snow_output_value_bytes": 56,
+        "snow_stock": "actual MOD_snow ssnow",
+        "snow_increment_slots": [
+          2,
+          3,
+          13
+        ],
+        "groundwater_interval_composition_sha256": "a32f49b13cc45eb59fc1cf69b330a31d10de65924e8ac62097659c229f021260",
+        "groundwater_interval_policy": "existing-cde-interval-complete-groundwater-native-v1",
+        "groundwater_new_physical_state": false,
+        "groundwater_snow_composition_sha256": "ba1ffa01a5ebba3918ba024747c2f028f731fd8cbb33b0516f01e69c6ddb091e",
+        "groundwater_snow_policy": "existing-explicit-snow-groundwater-cde-composition-v1",
+        "groundwater_snow_new_physical_state": false,
+        "groundwater_snow_clock_provider_sha256": "7923d3fab92054914dec1238fdd6907d2bd17b45f86e5e90a0e497b2591b414f",
+        "groundwater_snow_clock_policy": "immutable-epoch-integer-day-accepted-local-elapsed-clock-v1",
+        "groundwater_snow_retry_policy": "existing-original-rollback-pond-event-explicit-snow-v1",
+        "groundwater_snow_retry_provider_sha256": "8a98d46c4c70ac71f878d734c64b667d88182c46a3954911871d1e528fbd8d80",
+        "groundwater_snow_retry_parent_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
+        "groundwater_snow_pond_parent_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622",
+        "groundwater_snow_pond_state_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+        "groundwater_snow_availability_parent_sha256": "223c590f4006b6c39bd904930ba18ca9e08e3dbc4dbb5c76ae4395d05d4408cd",
+        "groundwater_snow_availability_state_sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04"
+      },
+      "actual_metadata_native_codec": "S5GSI003",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "a54d8abf8a4878a38c939f74950c4f9cc9a3449e3c9e02274968af1ba85bef19"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": true,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "cde-h1-snow-step",
+      "actual_native_codec": "S5GSC001",
+      "actual_original_output_metadata": {
+        "policy": "original-cde-clock-output-and-observed-daily-flux-v1",
+        "native_codec": "S5GSC001",
+        "cde_clock_output": true,
+        "cde_interval_output": true,
+        "thermal_output": true,
+        "thermal_calendar": true,
+        "thermal_clock": true,
+        "thermal_step": true,
+        "kind": "cde",
+        "swsnow": 1,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 1,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 1,
+        "swres": 1,
+        "requested_period": 3,
+        "period": 1,
+        "flprintdt": true,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "groundwater_cde_clock": true,
+        "groundwater_snow_cde_output": true,
+        "source_sha256": "67e9b2eb3aa3d780e0c14c0ae119728fcdb203cc3c3942305f9df978964bfc41",
+        "predecessor_owner_sha256": "881bc75609f455a9113c4cdd1022a1fd4164c79b3fb6233dc321f267a6150414",
+        "ordinary_owner_sha256": "39637b3408894b6726bddff8d94c9ed774f41379810e910a0975e7600de66295",
+        "thermal_owner_sha256": "7377655873f3e43a5fb0c8d2e9629fc7418b25328b09187bc1e972845a7bf71c",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "domain_source_sha256": "86bd406b343ed5025317548fae285d8a6bb0bc03b5a61d1eb0b1e5b8c2b043b8",
+        "native_domain_bytes": 80,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_solute_sha256": "6e451efc04fd555c8ed6eaa4425de1a31e6032d8ab2b806495d94033ade1fa86",
+        "original_output_epoch": 37256,
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "snow_clock_owner_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+        "perstep_owner_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_flprintdt_date_gated": true,
+        "annual_counter_policy": "original-global-or-completed-year-count-v1",
+        "timecontrol_composition": "literal-original-snow-perstep-coincident-end-day-v1",
+        "clock_event_closure_source_sha256": "9eaf8590c62d9855b3fefbc9fb66434ec516c0f704e70af8e83e171024683406",
+        "clock_event_coincidence_policy": "actual-local-irrigation-and-end-day-existing-dtcrit-v1",
+        "clock_event_dtcrit": 1e-08,
+        "trial_receipt_policy": "literal-original-independent-soil-candidate-bottom-cde-clock-v1",
+        "private_bridge_source_sha256": "023258ed9756897968e8cb89c2d5f74aee9cf5af0d7564ead4c4251ab7a036e7",
+        "private_cde_interval_fields": [
+          "sampro0",
+          "rounderr"
+        ],
+        "cde_output_state_sha256": "edd27ab82112896b0e9ca972cbdd8a3bf8527c64fdf9a538c8182bfb8824b02f",
+        "cde_output_state_version": 2,
+        "cde_output_state_reals": 54,
+        "cde_output_state_private_reals": 2,
+        "cde_daily_receipt_source_sha256": "7b862886162137e9ce9b1a257814d061a0cde164c87f99c77c0092da2fc6f4a9",
+        "cde_daily_flux_policy": "actual-original-six-rhs-increments-including-corrected-ssdi-v1",
+        "cde_daily_mass_guard_mg_cm2": 1e-10,
+        "calendar_initial_past_date_policy": "original-initial-pending-one-and-perstep-nonfuture-pointer-v1",
+        "original_pending_dates_not_normalized": true,
+        "cde_interval_anchor": "actual saved sampro0; validated against actual SAMPRO-sampro0 == original SDSTOR; never reconstructed",
+        "conserved_cde_prefix_offset_bytes": 48,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457",
+        "preserves_requested_groups_and_precision": true,
+        "undefined_allocation_tails_serialized": false,
+        "physical_equations_changed": false,
+        "snow_output_source_sha256": "477374c748a3713001ee6c9e5c6f9ca9820a6f9599cd6c683e01315aba1150a2",
+        "snow_output_fields": [
+          "cgsnow",
+          "cmelt",
+          "csnrai",
+          "csubl",
+          "isnrai",
+          "igsnow",
+          "isubl"
+        ],
+        "snow_output_domain_bytes": 32,
+        "snow_output_value_bytes": 56,
+        "snow_stock": "actual MOD_snow ssnow",
+        "snow_increment_slots": [
+          2,
+          3,
+          13
+        ],
+        "groundwater_clock_composition_sha256": "7128c29341d0b5a793edf7757e34d51fd2a9676ccdc0722d4eb14fe8d6ba3045",
+        "groundwater_trial_provider_sha256": "da0ae26f8c969d70b3116f9f76fb272fb0ef28434b8529d4bfee3d0ba06987c6",
+        "groundwater_clock_policy": "existing-cde-clock-complete-groundwater-native-v1",
+        "groundwater_new_physical_state": false,
+        "groundwater_snow_composition_sha256": "ba1ffa01a5ebba3918ba024747c2f028f731fd8cbb33b0516f01e69c6ddb091e",
+        "groundwater_snow_policy": "existing-explicit-snow-groundwater-cde-composition-v1",
+        "groundwater_snow_new_physical_state": false,
+        "groundwater_snow_clock_provider_sha256": "7923d3fab92054914dec1238fdd6907d2bd17b45f86e5e90a0e497b2591b414f",
+        "groundwater_snow_clock_policy": "immutable-epoch-integer-day-accepted-local-elapsed-clock-v1",
+        "groundwater_snow_retry_policy": "existing-original-rollback-pond-event-explicit-snow-v1",
+        "groundwater_snow_retry_provider_sha256": "8a98d46c4c70ac71f878d734c64b667d88182c46a3954911871d1e528fbd8d80",
+        "groundwater_snow_retry_parent_sha256": "4bb279c749471af3e0ba7301a59ace5ad23063d12641aee8c2e6611891aebdd6",
+        "groundwater_snow_pond_parent_sha256": "1ac9fcc82508b5e792a5b79fccd03b459ed134fd56df41bc1af1dc28899fe622",
+        "groundwater_snow_pond_state_sha256": "8de699298d7f4ceb34cad5ae0af400262578cb794ba6b0e2a5de15d0f01ffe85",
+        "groundwater_snow_availability_parent_sha256": "223c590f4006b6c39bd904930ba18ca9e08e3dbc4dbb5c76ae4395d05d4408cd",
+        "groundwater_snow_availability_state_sha256": "e97fee18a71c31817886eb36feb03cb811717fc283a3dad8a3f69ea1811f6e04",
+        "groundwater_snow_soil_trial_provider_sha256": "bc791465c9b900e59082d2baf20f8d4d8b7afce28bf596804a500cf45c7fd5a3",
+        "groundwater_snow_print_domain_provider_sha256": "beb7bdf88a36ec32d66464ddc36da042a2ee7bbf623a1623ca46a92789ea0bda"
+      },
+      "actual_metadata_native_codec": "S5GSC001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+        ],
+        [
+          "grass.crp",
+          "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+        ],
+        [
+          "maize.crp",
+          "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "4cf8d9d3a16af9d838d53449847211003ad051fe63ece1b61e2e8ac2cd863007"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": false,
+        "solute": true,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "age-explicit-daily",
+      "actual_native_codec": "S5GAO001",
+      "actual_original_output_metadata": {
+        "policy": "original-young-age-prescribed-groundwater-state-v1",
+        "native_codec": "S5GAO001",
+        "age_groundwater_output": true,
+        "kind": "age",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 0,
+        "et": 0,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 1,
+        "requested_period": 1,
+        "period": 1,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "f04eaa34791afdf4d30ef90d75d53baf8a6fdcd3e1b1173d5d23bf3c8a8a0b3f",
+        "predecessor_owner_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "original_output_epoch": 37256,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "reaction_provider_sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004",
+        "state_template_sha256": "950afea31e182c0567f3e2568d2b054459ea3543f8c0c14919edcf30a1284b1a",
+        "state_generated_sha256": "17567af034a399694a2ae889a77166a641ad20dc12dd57f51e2350f8e8bd8c4f",
+        "native_domain": [
+          3,
+          34,
+          0,
+          2,
+          1,
+          0,
+          0,
+          0,
+          1,
+          2,
+          1,
+          0,
+          1
+        ],
+        "native_domain_bytes": 104,
+        "hydraulic_doubles": "5*actual_nodes+4",
+        "hysteresis_domain_bytes": 0,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+        "age_providers": {
+          "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+          "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+          "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+          "providers": {
+            "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+            "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+            "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+            "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+          },
+          "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+          "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+          "effluent_missing": -9999.0,
+          "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+          "units": "cm day",
+          "native_codec": "S5AGE002",
+          "chemical_mass_guard_changed": false
+        },
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "trial_receipt_policy": "literal-original-integral-clone-actual-groundwater-reaction-and-storage-v1",
+        "preserves_requested_groups_and_precision": true,
+        "original_flprintdt_date_gated": true,
+        "undefined_allocation_tails_serialized": false,
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+      },
+      "actual_metadata_native_codec": "S5GAO001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "c2bd9fcab145cd70a954f2ed1d27f0e15a779a33e80c909d5849cce7f384bbb1"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "911f42f8db0720b6fd74123862096e2ac17e66c50df1322cc5a54061fb8f79a2"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": true,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "age-h2-monthly",
+      "actual_native_codec": "S5GAH001",
+      "actual_original_output_metadata": {
+        "policy": "original-young-age-prescribed-groundwater-state-v1",
+        "native_codec": "S5GAH001",
+        "age_groundwater_output": true,
+        "kind": "age",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 2,
+        "et": 0,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 1,
+        "swodat": 0,
+        "swres": 0,
+        "requested_period": 0,
+        "period": 0,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "f04eaa34791afdf4d30ef90d75d53baf8a6fdcd3e1b1173d5d23bf3c8a8a0b3f",
+        "predecessor_owner_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "original_output_epoch": 37256,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "reaction_provider_sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004",
+        "state_template_sha256": "950afea31e182c0567f3e2568d2b054459ea3543f8c0c14919edcf30a1284b1a",
+        "state_generated_sha256": "17567af034a399694a2ae889a77166a641ad20dc12dd57f51e2350f8e8bd8c4f",
+        "native_domain": [
+          3,
+          34,
+          0,
+          2,
+          1,
+          2,
+          0,
+          0,
+          1,
+          2,
+          1,
+          0,
+          1
+        ],
+        "native_domain_bytes": 104,
+        "hydraulic_doubles": "5*actual_nodes+4",
+        "hysteresis_domain_bytes": 40,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+        "age_providers": {
+          "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+          "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+          "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+          "providers": {
+            "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+            "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+            "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+            "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+          },
+          "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+          "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+          "effluent_missing": -9999.0,
+          "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+          "units": "cm day",
+          "native_codec": "S5AGE002",
+          "chemical_mass_guard_changed": false
+        },
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "trial_receipt_policy": "literal-original-integral-clone-actual-groundwater-reaction-and-storage-v1",
+        "preserves_requested_groups_and_precision": true,
+        "original_flprintdt_date_gated": true,
+        "undefined_allocation_tails_serialized": false,
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+      },
+      "actual_metadata_native_codec": "S5GAH001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "c2bd9fcab145cd70a954f2ed1d27f0e15a779a33e80c909d5849cce7f384bbb1"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "1ffabad0058357f0fe7955221df7142f88184a2b1e70583412a8f13bd1bedd1a"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": true,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "age-h1-subdaily",
+      "actual_native_codec": "S5GAH001",
+      "actual_original_output_metadata": {
+        "policy": "original-young-age-prescribed-groundwater-state-v1",
+        "native_codec": "S5GAH001",
+        "age_groundwater_output": true,
+        "kind": "age",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 0,
+        "swhyst": 1,
+        "et": 0,
+        "swcsv": 3,
+        "nprintday": 3,
+        "swmonth": 0,
+        "swodat": 0,
+        "swres": 0,
+        "requested_period": 3,
+        "period": 1,
+        "flprintdt": false,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "f04eaa34791afdf4d30ef90d75d53baf8a6fdcd3e1b1173d5d23bf3c8a8a0b3f",
+        "predecessor_owner_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "original_output_epoch": 37256,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "reaction_provider_sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004",
+        "state_template_sha256": "950afea31e182c0567f3e2568d2b054459ea3543f8c0c14919edcf30a1284b1a",
+        "state_generated_sha256": "17567af034a399694a2ae889a77166a641ad20dc12dd57f51e2350f8e8bd8c4f",
+        "native_domain": [
+          3,
+          34,
+          0,
+          2,
+          1,
+          1,
+          0,
+          0,
+          1,
+          2,
+          0,
+          0,
+          1
+        ],
+        "native_domain_bytes": 104,
+        "hydraulic_doubles": "5*actual_nodes+4",
+        "hysteresis_domain_bytes": 40,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+        "age_providers": {
+          "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+          "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+          "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+          "providers": {
+            "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+            "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+            "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+            "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+          },
+          "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+          "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+          "effluent_missing": -9999.0,
+          "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+          "units": "cm day",
+          "native_codec": "S5AGE002",
+          "chemical_mass_guard_changed": false
+        },
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "trial_receipt_policy": "literal-original-integral-clone-actual-groundwater-reaction-and-storage-v1",
+        "preserves_requested_groups_and_precision": true,
+        "original_flprintdt_date_gated": true,
+        "undefined_allocation_tails_serialized": false,
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+      },
+      "actual_metadata_native_codec": "S5GAH001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "c2bd9fcab145cd70a954f2ed1d27f0e15a779a33e80c909d5849cce7f384bbb1"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "04f23ff3b74b7b3775cd0ac8ca54c9ef6bc75249d59eb90d8eb56a63e3354c12"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": true,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    },
+    {
+      "case": "age-explicit-step",
+      "actual_native_codec": "S5GAO001",
+      "actual_original_output_metadata": {
+        "policy": "original-young-age-prescribed-groundwater-state-v1",
+        "native_codec": "S5GAO001",
+        "age_groundwater_output": true,
+        "kind": "age",
+        "swsnow": 0,
+        "swhea": 1,
+        "swcalt": 2,
+        "swfrost": 0,
+        "swdra": 1,
+        "swhyst": 0,
+        "et": 0,
+        "swcsv": 3,
+        "nprintday": 1,
+        "swmonth": 0,
+        "swodat": 1,
+        "swres": 0,
+        "requested_period": 3,
+        "period": 1,
+        "flprintdt": true,
+        "groups": "WATBAL,GWL",
+        "num_decimals": 12,
+        "source_sha256": "f04eaa34791afdf4d30ef90d75d53baf8a6fdcd3e1b1173d5d23bf3c8a8a0b3f",
+        "predecessor_owner_sha256": "bfebe7a2a442c9fabb1117f6b5b5159f2f8ee60fc7154f58a5d22eb5727b9003",
+        "calendar_owner_sha256": "54eb9f686c40f71582e293163d3654f397d17ee7daaad2ed5a4602ec67b16a10",
+        "clock_owner_sha256": "dddb98fa57bbf1eb205388fb70cb8d687ac024bba19aceae189d78e4bc397acd",
+        "original_output_epoch": 37256,
+        "receipt_provider_sha256": "9222ecee6bb4ff8958f4c0f970aeed2bd320e8017f6ff24a5128ee43fe1600dd",
+        "reaction_provider_sha256": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004",
+        "state_template_sha256": "950afea31e182c0567f3e2568d2b054459ea3543f8c0c14919edcf30a1284b1a",
+        "state_generated_sha256": "17567af034a399694a2ae889a77166a641ad20dc12dd57f51e2350f8e8bd8c4f",
+        "native_domain": [
+          3,
+          34,
+          0,
+          2,
+          1,
+          0,
+          0,
+          0,
+          1,
+          2,
+          1,
+          0,
+          1
+        ],
+        "native_domain_bytes": 104,
+        "hydraulic_doubles": "5*actual_nodes+4",
+        "hysteresis_domain_bytes": 0,
+        "original_integral_sha256": "62e4d36693eb090eb7ba2c20871fce619ab4314cee75bb6961aa531cb734207a",
+        "original_timecontrol_sha256": "88b3d17865169672767b2d53460a625e191a6f6527067261e41bd99fd98e7c84",
+        "original_watstor_sha256": "71d5e7c93fecfe444f0862532f1db3bbfbef1ca0c552e673e45340216e27589c",
+        "original_hysteresis_sha256": "e6f5e4744e0a393a9e890abc0aaedaead91fe0128d84c9a7f8864b381c4c2fb8",
+        "age_providers": {
+          "policy": "original-water-midpoint-age-provider-and-explicit-surface-v1",
+          "source_sha256": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+          "correction_sha256": "5c7f3654c323dae8c3e5f70cd12b4359eda3ecef771cad6afa37a0c16be642e7",
+          "providers": {
+            "mod_solute_compartment_state": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+            "mod_b111_age_tracer_substep": "01dfcbbf058257d39b9132d473d3994ea0cc595e6bacccf1fe71da0366af280e",
+            "mod_b111_surface_age_budget": "d2c25fa02ec2bfab33c508187fa9256cc0018559f16afa11eb1d1646eeac0b1a",
+            "mod_age_effluent_observer": "fc5ed6830daa510b11e17d4bcf8a8cf344346244b72212e2bc138c216a85c52d"
+          },
+          "effluent_policy": "water-weighted-positive-export-age-over-output-interval-v1",
+          "effluent_units": "age_amount(cm day)/actual_positive_export_water(cm)",
+          "effluent_missing": -9999.0,
+          "age_tolerance": "8192*epsilon*max(1,actual_age_inventory,actual_age_fluxes)",
+          "units": "cm day",
+          "native_codec": "S5AGE002",
+          "chemical_mass_guard_changed": false
+        },
+        "physical_equations_changed": false,
+        "trial_water_guard_cm": 1e-10,
+        "trial_receipt_policy": "literal-original-integral-clone-actual-groundwater-reaction-and-storage-v1",
+        "preserves_requested_groups_and_precision": true,
+        "original_flprintdt_date_gated": true,
+        "undefined_allocation_tails_serialized": false,
+        "vector_catalog_correction_sha256": "be539f485a996b05b8daa0d8c8e864610ebef7f2dd1520ea50735452f729f162",
+        "binary_correction_sha256": "0d41daaec65f164998e0af425f8056d2a50db4b8da1dad92c2969e901c06b457"
+      },
+      "actual_metadata_native_codec": "S5GAO001",
+      "metadata_codec_equals_final_public_codec": true,
+      "actual_input_inventory": [
+        [
+          "283.met",
+          "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+        ],
+        [
+          "control_plot.inp",
+          "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+        ],
+        [
+          "fixed-irrigation.irg",
+          "c2bd9fcab145cd70a954f2ed1d27f0e15a779a33e80c909d5849cce7f384bbb1"
+        ],
+        [
+          "grass.crp",
+          "4423dae21f1ebef492bbb427a45b0384b541035c6445ed1b9727b43ce2f2a2ee"
+        ],
+        [
+          "maize.crp",
+          "4827e4d73b71832bedf7774717d51c8fc221bb52442751e43b867a51d3f009b7"
+        ],
+        [
+          "plot_swap.cmd",
+          "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+        ],
+        [
+          "potato.crp",
+          "7d4d581482ac22519d1f3d72acf388e84960a5457cf65cb4ca07a8a3fa2eea24"
+        ],
+        [
+          "run_swap.cmd",
+          "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+        ],
+        [
+          "swap.dra",
+          "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+        ],
+        [
+          "swap.swp",
+          "fe69d938b2464afc6cb0347a4e0465d6342be2bcbe30f1f346ebc8e4d429df56"
+        ]
+      ],
+      "actual_parent_project": {
+        "model": "HYBRID_NOMACRO_WATER",
+        "nodes": 34,
+        "age": true,
+        "solute": false,
+        "macro": false,
+        "start_date": "2002-01-01",
+        "end_date": "2004-12-31",
+        "time_step_policy": "original-adaptive-day-seed-v1"
+      },
+      "scientific_qualification_claimed": false
+    }
+  ],
+  "codecs": [
+    "S5EGW001",
+    "S5GAH001",
+    "S5GAO001",
+    "S5GCH001",
+    "S5GCH003",
+    "S5GIH001",
+    "S5GIH003",
+    "S5GSC001",
+    "S5GSI000",
+    "S5GSI003",
+    "S5GWC001",
+    "S5IGW001",
+    "S5WGI000",
+    "S5WGR001"
+  ],
+  "actual_metadata_entrypoint": "groundwater_water_output.metadata, exactly daily_host/daily_coupling production metadata entrypoint",
+  "controller_setup_failures": [
+    "First attempted original_output.metadata is only a lower-level ordinary output provider, not the full groundwater metadata route; original SWHYST rejection correctly exposed wrong observer API choice.",
+    "Second attempted to assert aggregate output metadata codec equals final public auxiliary magic. Some original implicit/native overlays use a distinct final magic. Preserve both actual observations, never rebind one to the other."
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "individual_parent_scientific_qualification_claimed": false,
+  "canonical_admission": false,
+  "next": "Compare actual source metadata and complete emitted compiled bodies against admitted groundwater owners. Independently decode actual final native bytes from public auxiliary_magic, do not infer final schema solely from original_output metadata."
+}

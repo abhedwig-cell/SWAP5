@@ -1,0 +1,42 @@
+{
+  "status": "PREPARED_RECOVERABLE_CONTROLLERS_NOT_EXECUTED_NOT_AN_ADMISSION",
+  "archive": "INITIAL_PROFILE_AGE_PREPARED_ADMISSION_CONTROLLERS_V1.zip",
+  "bytes": 13616,
+  "sha256": "51c38458b8ba0a8cefdb885d14862d157f32f86283136a9a74c80fb1d49692bf",
+  "members": {
+    "initial-profile-age-install-public-owner-v1.py": {
+      "bytes": 4087,
+      "sha256": "9e3e1d3c931e0a6c9899137f444114152c52f0139f9816c66de99fd1924c5641"
+    },
+    "initial-profile-age-verify-template-v1.py": {
+      "bytes": 6851,
+      "sha256": "8fb491282cc003c68b4cf8499d9d7763667ed98245a838a7f05ade51bf99d0d7"
+    },
+    "initial-profile-age-admission-seal-template-v1.py": {
+      "bytes": 8625,
+      "sha256": "d191a6e980032bdfe54239de1cf29a82a15414d8bc9c7f7bdd4915fc31c2c6f9"
+    },
+    "initial-profile-age-final-negatives-controller-v1.py": {
+      "bytes": 3616,
+      "sha256": "2b97ab56eef78ccbec4cbb0ca818fda3ab7c8811ccc5ce3fab4b2274ee47a7d3"
+    },
+    "INITIAL_PROFILE_AGE_PUBLIC_OBSERVE_V1.py": {
+      "bytes": 1846,
+      "sha256": "8faa59e08f35b69ffaed339598d41cfcdcd52a47e1ed98547638b2b111c4cab7"
+    },
+    "INITIAL_PROFILE_AGE_PUBLICATION_OBSERVE_V1.py": {
+      "bytes": 1913,
+      "sha256": "06bfd52bf8a3f1ad67f385061b28dc418bc8d54be9ebf320998b18b0bbf96a51"
+    },
+    "initial-profile-groundwater-selector-template-v1.py": {
+      "bytes": 2590,
+      "sha256": "457582e4a69d5b3481c44d0a7d9027711c019e8b0ca1b7581956f9b94edb1c6d"
+    }
+  },
+  "source_before_recovery_commit": "c8ebb23b0e40e62873fa35621bb791ed34517f07",
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "preconditions": "Keep actualcanonical N84e clean43 immutable until PUBLIC53719 and PUBLICATION42523 both return0 unchanged; actual final86 sealer then records canonical archive/receipt. Commit those actual records on AGE functional branch first. Only then run installer against clean frozen source and actual parent admission SHA. No guessed candidate/synthetic/tree/PR identity.",
+  "next_actual_scientific_batch": "AGE24 new contexts and all inherited86,110 total; no new model periods for admission. Next pressure groundwater selector is a draft, public route unchanged.",
+  "canonical_admission": false
+}

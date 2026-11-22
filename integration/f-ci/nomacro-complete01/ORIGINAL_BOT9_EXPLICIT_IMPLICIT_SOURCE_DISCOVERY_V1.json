@@ -1,0 +1,79 @@
+{
+  "status": "PINNED_ORIGINAL_BOT9_EXPLICIT_IMPLEMENTATION_AND_IMPLICIT_HARD_UNSUPPORTED_DISPATCH_DISTINGUISHED",
+  "source": "8cf21411be83f5f8422462f879937dd580a2114c",
+  "original_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "records": [
+    {
+      "member": "SWAP/readswap.f90",
+      "bytes": 61300,
+      "original_member_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+      "normalized_member_sha256": "e6fc217798d3f0424641c61b92fb8831fcdeb78c19670def00695b82ab8e80fe",
+      "fragments": [
+        {
+          "first_line": 986,
+          "last_line": 1006,
+          "source": "      ! simultaneously: fixed h and fixed q at bottom\n      if (swbotb == 9) then\n         call rdatim ('date9a',dates,mabbc,ifnd)\n         call rdfdor('hbot9',-1.0d10,1000.d0,hbottom,mabbc,ifnd)\n! -      at least one date must be within simulation period\n         call checkdate(ifnd,dates,tend,tstart,'date9a','readswap//swbotb=9      ')\n! -      store pressure head values in hbotab\n         do i = 1, ifnd\n            hbotab(i*2)   = hbottom(i) \n            hbotab(i*2-1) = dates(i)\n         end do\n         call rdatim ('date9b',dates,mabbc,ifnd)\n         call rdfdor('qbot9',-100.0d0,100.d0,hbottom,mabbc,ifnd)\n! -      at least one date must be within simulation period\n         call checkdate(ifnd,dates,tend,tstart,'date9b','readswap//swbotb=9      ')\n! -      store flux values in qbotab\n         do i = 1, ifnd\n            qbotab(i*2)   = hbottom(i) \n            qbotab(i*2-1) = dates(i)\n         end do\n      end if\n"
+        }
+      ]
+    },
+    {
+      "member": "SWAP/boundbottom.f90",
+      "bytes": 6054,
+      "original_member_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+      "normalized_member_sha256": "2bd4bf99e0fb8cf170cf6323e8326fa4408e474fbe76b5ccd9146de8a41e9c7b",
+      "fragments": [
+        {
+          "first_line": 143,
+          "last_line": 153,
+          "source": "      ! simultaneously: fixed h and fixed q at bottom\n      if (swbotb == 9) then\n         qbot            = afgen (qbotab,mabbc*2,t1900+dt)\n         hbot            = afgen (hbotab,mabbc*2,t1900+dt)\n         thetabot        = watcon(numnod,hbot)\n         kbot            = hconduc(numnod,hbot,thetabot,rfcp(numnod))\n         kmean(numnod+1) = kbot\n         h(numnod)       = hbot - (qbot/kbot + 1.0d0) * disnod(numnod+1)\n         theta(numnod)   = watcon(numnod,h(numnod))\n         k(numnod)       = hconduc(numnod,h(numnod),theta(numnod),rfcp(numnod))\n      end if\n"
+        }
+      ]
+    },
+    {
+      "member": "SWAP/headcalc.f90",
+      "bytes": 26096,
+      "original_member_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "normalized_member_sha256": "f2885def8bd50fd65abb71d00969440881aacac0e8131eed28325dd864a0cebf",
+      "fragments": [
+        {
+          "first_line": 146,
+          "last_line": 154,
+          "source": "            hbot     = gwlinp - z(numnod) + 0.5d0*dz(numnod)\n         end if\n      end if\n\n   else\n!     for all other swbotb cases\n      NN = numnod\n      if (swbotb == 9) NN = numnod - 1\n   end if\n"
+        },
+        {
+          "first_line": 540,
+          "last_line": 551,
+          "source": "   do i = 2, NN-1\n      F(i) = (theta(i) - thetm1(i)) * FrArMtrx(i) * dz(i) / dt + sink(i) - source(i) + qrot(i) - kmean(i) * hgrad(i) + kmean(i+1) * hgrad(i+1)\n   end do\n\n!  for bottom BC\n   if (swbotb == 1 .AND. (.NOT.fllowgwl)) then\n      hgrad(NN+1) = h(NN)/(z(nn)-gwlinp) + 1.0d0\n   else if (swbotb == 5 .OR. (swbotb == 1 .AND. fllowgwl)) then\n      hgrad(NN+1) = (h(NN) - hbot) / disnod(NN+1) + 1.0d0\n   else if (swbotb == 9) then\n      hgrad(NN+1) = (h(NN) - h(NN+1)) / disnod(NN+1) + 1.0d0\n   end if\n"
+        },
+        {
+          "first_line": 587,
+          "last_line": 600,
+          "source": "         if (sw4 == 1) qbot = qbot + afgen(qbotab,mabbc*2,t1900+dt)\n         F(NN) = F(NN) - qbot     \n      \n      else if (swbotb == 5 .OR. (swbotb == 1 .AND. fllowgwl)) then\n         \n         ! pressure head at lower boundary specified\n         F(NN) = F(NN) + kmean(NN+1) * hgrad(NN+1)\n\n      else if (swbotb == 9) then\n         \n         ! pressure head at lower boundary specified\n         F(NN) = F(NN) + kmean(NN+1) * hgrad(NN+1)\n         !!!F(NN) = F(NN) - qbot\n      \n"
+        },
+        {
+          "first_line": 651,
+          "last_line": 667,
+          "source": "         dFdhM(NN) = dFdhM(NN) + 1.0d0 / (disnod(NN+1)/kmean(NN+1) + rimlay)   \n      else if (SwBotb3ResVert == 1) then\n         dFdhM(NN) = dFdhM(NN) + 1.0d0 / rimlay\n      end if\n   else if (swbotb == 5 .OR. (swbotb == 1 .AND. fllowgwl) .OR. swbotb == 9) then\n      dFdhM(NN) = dFdhM(NN) + kmean(NN+1)/disnod(NN+1)         \n   else if (swbotb == 7 .OR. swbotb == -2) then ! implicitly: kmean(NN+1)\n      dFdhM(NN) = dFdhM(NN) + dkdh(NN) * 0.5d0\n   else if (swbotb == 8 .AND. flboth) then\n      dFdhM(NN) = dFdhM(NN) + kmean(NN+1)/disnod(NN+1)\n   end if\n\n!  special case when SwKimpl = 1\n   if (SwKimpl == 1) then\n      if (swbotb == 9) call swap_error ('headcalc', 'swbotb = 9 AND swkimpl = 1 not yet implemented')\n!     first layer\n      dFdhM(1) = dFdhM(1) + dkdh(1) * hgrad(2) * dkmean(swkmean,k(1),k(2),dz(1),dz(2))\n"
+        }
+      ]
+    }
+  ],
+  "explicit": {
+    "historical_availability": true,
+    "original_boundary": "Reads independent DATE9A/HBOT9 and DATE9B/QBOT9 tables; evaluates at actual t1900+dt, computes last-node head/theta/K from both prescribed boundary values, HeadCalc excludes last node from solved unknowns.",
+    "current_public_availability": false,
+    "classification": "MISSING_IMPLEMENTATION",
+    "scientific_qualification": "NOT_QUALIFIED",
+    "next": "Inspect actual current day kernel boundary/storage/receipt interface and original solute dispatch before bounded implementation; strict independent water conservation and complete final-node/native carry required."
+  },
+  "implicit": {
+    "historical_availability": false,
+    "original_result": "swap_error: swbotb = 9 AND swkimpl = 1 not yet implemented",
+    "classification": "OUT_OF_SCOPE",
+    "reason": "Requested supported historical extent excludes this original explicitly unimplemented crossdomain; retain hard refusal."
+  },
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "implementation_changed": false,
+  "initial_observer_setup_failure": "First read requested boundbottom lines138..163 although original member has158lines; IndexError before headcalc read. Corrected exact in-member ranges preserve original source, no model/compile."
+}

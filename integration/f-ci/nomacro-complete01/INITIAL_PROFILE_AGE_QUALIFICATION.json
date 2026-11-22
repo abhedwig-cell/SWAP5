@@ -1,0 +1,48 @@
+{
+  "status": "BOUNDED_ORIGINAL_PRESSURE_AGE_SOURCE_RAW_SCIENCE_AND_POSTIMAGE_QUALIFIED_NOT_ADMITTED",
+  "runtime": "9694eb2c4cc69f71c2ef90bc64b500fd35cb9924",
+  "previous_qualified_candidate": "06e980f4bb17e43e4cc61cf4fc2d6ea17204526d",
+  "required_actual_parent_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2",
+  "contexts": 24,
+  "short35_contexts": 24,
+  "exact_cold_windows": 72,
+  "native_checkpoints": 168,
+  "compiler_postimages": 24,
+  "frontend_observations": 92,
+  "original_initial_pressure_nodes_per_context": 34,
+  "original_saturated_tail_adjustments_per_context": 11,
+  "raw_records": {
+    "INITIAL_PROFILE_AGE_WINDOWS_RAW_V1": {
+      "bytes": 74020677,
+      "sha256": "f4d6ba937b88d9d013af51b5d1facb075cf5c4c83f802db47f6a9d0d6e243e14"
+    },
+    "INITIAL_PROFILE_AGE_UBUNTU_O0_RAW_V1": {
+      "bytes": 14904942,
+      "sha256": "7aa44824af619181e79ea93e6e4920f872ff7392898a49728076ef7fd76ee95b"
+    },
+    "INITIAL_PROFILE_AGE_UBUNTU_O2_RAW_V1": {
+      "bytes": 14971125,
+      "sha256": "ea3af24f21ee549351aa83a7978b47dac27a5a8d684a560af5e358093efc068a"
+    }
+  },
+  "water_absolute_limit": 1e-10,
+  "owning_AGE_policy": "8192 * binary64 epsilon * max(1, actual previous/current stocks and measured interval fluxes)",
+  "additional_cumulative_AGE_metric_is_owning_acceptance_gate": false,
+  "physical_process_equations_changed": false,
+  "original_initialization_equations_changed": false,
+  "new_physical_state": false,
+  "new_native_codec": false,
+  "native_interface_changed": false,
+  "mass_or_convergence_limits_changed": false,
+  "rollback_or_rejected_trial_semantics_changed": false,
+  "production_authority_changed": false,
+  "original_receipts_rewritten": false,
+  "explicit_positive_incoming_AGE_policy_cross_qualified": false,
+  "dry_surface_AGE_gap_closed": false,
+  "canonical_admission": false,
+  "whole_historical_family_closed": false,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}

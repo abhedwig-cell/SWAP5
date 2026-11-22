@@ -1,0 +1,127 @@
+{
+  "status": "PREIMPLEMENTATION_BOUNDED_ORIGINAL_PRESSURE_PRESCRIBED_GROUNDWATER_COMPOSITION_CONTRACT",
+  "discovery": "INITIAL_PROFILE_GROUNDWATER_DISCOVERY_V1.json",
+  "actual_discovery_source": "354b6c9b792bed3a5cb0d10de96393d2568163f8",
+  "migration_class": "B_UNCHANGED_PRESCRIBED_GROUNDWATER_STATE_OWNERS_WITH_C_ORIGINAL_INITIALIZATION_CONFIGURATION",
+  "required_predecessor": "Actual admitted initial pressure AGE110-context owner/receipt, not yet available",
+  "historical_availability": "Pinned original readswap SWINCO1 HTB/ZI-H and SoilWater initial state; twenty actual initial2 public groundwater parent dispatches select while otherwise identical initial1 inputs refuse before any compiler/model.",
+  "cases": [
+    "water-explicit-daily",
+    "water-h2-periodic",
+    "water-h1-monthly",
+    "water-h1-step-off",
+    "water-h2-implicit-clock",
+    "water-snow-daily",
+    "water-h2-snow-monthly",
+    "water-h1-snow-implicit-step",
+    "cde-explicit-daily",
+    "cde-h2-periodic",
+    "cde-h1-monthly",
+    "cde-h1-step-off",
+    "cde-h2-implicit-clock",
+    "cde-snow-monthly",
+    "cde-h2-snow-periodic",
+    "cde-h1-snow-step",
+    "age-explicit-daily",
+    "age-h2-monthly",
+    "age-h1-subdaily",
+    "age-explicit-step"
+  ],
+  "planned_windows_contexts": 40,
+  "planned_portable_cases": [
+    "water-h2-implicit-clock",
+    "cde-h1-snow-step",
+    "age-h2-monthly"
+  ],
+  "planned_portable_contexts": 6,
+  "planned_total_contexts": 46,
+  "planned_exact_cold_windows": 138,
+  "planned_native_samples": 322,
+  "planned_compiled_initial2_postimages": 46,
+  "days_per_new_context": 35,
+  "exact_cold_pairs": [
+    [
+      2,
+      4
+    ],
+    [
+      19,
+      23
+    ],
+    [
+      30,
+      34
+    ]
+  ],
+  "checkpoint_days": [
+    2,
+    4,
+    19,
+    23,
+    30,
+    34,
+    35
+  ],
+  "scope": "SWBOTB1 inline prescribed crossing water table, SWDRA0/1, model1/SWSOPHY0 only; actual existing water/CDE/AGE owners, hys0/1/2, Snow only for water/CDE; implicit water/CDE only with examined Ksat branch inactive; dense/periodic/monthly/explicit/subdaily/perstep only existing parent-supported domains.",
+  "young_AGE_only": true,
+  "explicit_positive_incoming_AGE_cross": false,
+  "no_active_macropores": true,
+  "new_native_codec": false,
+  "new_state": false,
+  "physical_equations_changed": false,
+  "provider_pins": {
+    "functions.f90": "c33ee3145daf0f0276448433090128104890d2bf5f71d79146d98639e524a661",
+    "readswap.f90": "e6fc217798d3f0424641c61b92fb8831fcdeb78c19670def00695b82ab8e80fe",
+    "soilwater.f90": "d5926b6c30fba3177c261c9a24ef828dd9cd6b3dfb952b07ef00800ebd42415d",
+    "swap_base.f90": "af54d6c6eafd2954f228be9a50ba92e7cefa231658d34de247d5b3b68aa58dab"
+  },
+  "process_owner_pins": {
+    "app/hybrid_water/groundwater_water_output.py": "f8844e285fb144b30494f3ee2db49267ffebcb01a3bc5156b859ae31a1a43c5f",
+    "app/hybrid_water/groundwater_history_native.py": "dedc4ad1ab571984c3bed929879ccbdf8769a4676c43773584fa7cb97b72ad1c",
+    "app/hybrid_water/groundwater_cde_clock.py": "7128c29341d0b5a793edf7757e34d51fd2a9676ccdc0722d4eb14fe8d6ba3045",
+    "app/hybrid_water/groundwater_cde_interval.py": "a32f49b13cc45eb59fc1cf69b330a31d10de65924e8ac62097659c229f021260",
+    "app/hybrid_water/groundwater_snow_cde.py": "ba1ffa01a5ebba3918ba024747c2f028f731fd8cbb33b0516f01e69c6ddb091e",
+    "app/hybrid_water/snow_water_groundwater.py": "51e66654c35eb820f1f7217b5cdd32728ebcba6f456668035b4e5adc6f1106f5",
+    "app/hybrid_water/age_groundwater_output.py": "f04eaa34791afdf4d30ef90d75d53baf8a6fdcd3e1b1173d5d23bf3c8a8a0b3f",
+    "app/hybrid_water/conserved_original_age.py": "de43f8b3b9aa489ae0f23345b81dd00a1b04052a7e0d8faa9ba8d0bec15d8c4c",
+    "app/hybrid_water/implicit_conductivity.py": "0b175c9519c35edb3b61dea66678467e5abef8f83b57e9677bd5e41d400daa21"
+  },
+  "scientific_acceptance": [
+    "Every actual initial1 emitted whole compiled/provider/flags/native ABI postimage must equal its same-optimization actual initial2 counterpart; no initial2 model replay solely for administration.",
+    "Independently evaluate every original pressure head and original saturation adjustment, prescribed boundary water/solute/AGE reaction and complete selected native payloads.",
+    "Owning daily water/CDE absolute1e-10; independent CDE every elapsed prefix1e-10; unchanged AGE daily amount/moment8192epsilon stock/flux scale, no tolerance adjustment.",
+    "Actual complete physical/native/user-output cold equality at every selected window; preserve Snow/hysteresis/implicit trial/rejected/rollback semantics through unchanged literal owners and targeted state checks.",
+    "Actual parent dispatch is discovery only; map selected contexts to their already qualified source/build/state owners before inheritance. No new scientific qualification inferred from dispatch."
+  ],
+  "implementation_started": false,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "parent_route_map": "INITIAL_PROFILE_GROUNDWATER_PARENT_ROUTES_V1.json",
+  "actual_final_native_codecs": [
+    "S5EGW001",
+    "S5GAH001",
+    "S5GAO001",
+    "S5GCH001",
+    "S5GCH003",
+    "S5GIH001",
+    "S5GIH003",
+    "S5GSC001",
+    "S5GSI000",
+    "S5GSI003",
+    "S5GWC001",
+    "S5IGW001",
+    "S5WGI000",
+    "S5WGR001"
+  ],
+  "native_schema_inference": "Always use actual public auxiliary_magic plus complete emitted bytes. The measured daily CDE final groundwater codec S5GWC001 differs from its original_output metadata base S5IOC001; preserve both, no codec/value rebinding.",
+  "retained_unqualified_crosses": [
+    "CDE implicit+Snow prescribed-groundwater pressure1 remains excluded from this planned batch; no such actual case is included.",
+    "AGE Snow/implicit/aquifer and explicit corrected positive incoming-age policy crosses remain excluded.",
+    "Original examined Ksat branch, SoilsDB and non-model1 remain excluded."
+  ]
+}

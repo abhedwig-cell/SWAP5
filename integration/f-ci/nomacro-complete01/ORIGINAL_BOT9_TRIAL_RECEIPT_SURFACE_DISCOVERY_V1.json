@@ -1,0 +1,35 @@
+{
+  "status": "ORIGINAL_BOT9_PRESCRIBED_FLUX_AND_MISSING_INDEPENDENT_TRIAL_RECEIPT_SURFACE_RECONCILED_NO_PHYSICAL_CHANGE",
+  "source": "c8ebb23b0e40e62873fa35621bb791ed34517f07",
+  "original_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "original_fluxes_member_sha256": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550",
+  "original_fluxes_fragment": {
+    "first_line": 24,
+    "last_line": 46,
+    "source": "! ----------------------------------------------------------------------\n\n! --- determine qbot if not specified\n!      if (swbotb == 5 .OR. swbotb == 7 .OR. swbotb == 8 .OR. swbotb == -2 .OR. (swbotb == 1 .AND. fllowgwl) .OR. swbotb == 9) then\n      if (swbotb == 5 .OR. swbotb == 7 .OR. swbotb == 8 .OR. swbotb == -2 .OR. (swbotb == 1 .AND. fllowgwl)) then\n         qbot = qtop + qrosum + qdrtot  + (volact-volm1)/dt - qssdisum\n         if (swmacro == 1) qbot = qbot - QMaPo\n      end if\n\n! --- calculate fluxes (cm/d) from changes in volume per compartment\n      i      = numnod+1\n      q(i)   = qbot\n      inq(i) = inq(i) + q(i)*dt\n      do i = numnod, 1, -1\n         if (swmacro == 0) then\n            q(i) = - (theta(i)-thetm1(i)+qimmob(i))*dz(i)/dt + q(i+1)-qrot(i)+qssdi(i)\n         else\n            q(i) = - (theta(i)-thetm1(i)+qimmob(i))*FrArMtrx(i)*dz(i)/dt + q(i+1)-qrot(i)+QExcMpMtx(i)+qssdi(i)\n         end if\n         q(i)   = q(i) - sum(qdra(1:nrlevs,i))\n         inq(i) = inq(i) + q(i)*dt\n      end do\n\n"
+  },
+  "actual_provider_Fluxes_normalized_bytes_equal_original": true,
+  "current_receipt_source_pins": {
+    "app/hybrid_water/hybrid_step_budget.f90": "aac67d0eb9d3c613401294f982b4ae463084dca7dc5ddcc50a0100b7eea073c3",
+    "app/hybrid_water/lower_boundary_receipt.py": "316dedcd6e8d91fc73aa1a8059cf06f778a69785b4cef8acb365b34fd1414c95",
+    "app/hybrid_water/groundwater_boundary_receipt.py": "909fd4e74750bcddd6734af6f3b5021da37e33a657eac55ca60d6be37c200b22",
+    "src/process/mod_prescribed_groundwater_reaction.f90": "8f6005e60f83ded67fa76376033bca489e70b19371cfcdee134930a863d23004"
+  },
+  "measured_current_source": {
+    "public_lower_boundary_domain": "1..8",
+    "base_independent_budget_modes": "abs2,4,6,7,(3 with Snow)",
+    "existing_head_receipt": "5/8 only",
+    "existing_prescribed_groundwater_reaction": "1 only; adds constrained saturated-tail storage and sink/source contribution to an independent Darcy reaction"
+  },
+  "future_acceptance_contract": [
+    "Original active Fluxes conditional excludes9 even though an adjacent commented version includes it: original BOT9 preserves the prescribed qbot9 table value. Do not substitute a reaction flux derived from total storage.",
+    "Original HeadCalc excludes last node from solved unknowns while BoundBottom prescribes its head/theta from simultaneous hbot9/qbot9 schedules. Measure its storage and interface/sink continuity independently.",
+    "Reject incompatible paired forcing under unchanged water1e-10 rather than silently changing supplied flux, adding a compensating water source or relaxing the balance.",
+    "Keep original implicit9 hard-unimplemented refusal. A new explicit9 coupling needs actual original reference and typed complete-state qualification before admission."
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "implementation_changed": false,
+  "scientific_qualification": "NOT_QUALIFIED",
+  "canonical_admission": false
+}

@@ -1,14 +1,14 @@
-name: Targeted original pressure and Frost state composition
+name: Targeted original pressure and prescribed groundwater state composition
 on:
   push:
-    branches: [codex/nomacro-initial-profile-frost01]
+    branches: [codex/nomacro-initial-profile-age-groundwater01]
     paths: ['.github/workflows/nomacro-water-snow-groundwater.yml']
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: nomacro-initial-profile-frost-${{ github.ref }}
+  group: nomacro-initial-profile-age-groundwater-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   qualify:
@@ -43,29 +43,30 @@ jobs:
             /reference/swap-4.3.1/patches/**
             /reference/swap-4.3.1/frost-corrections/**
             /reference/swap-4.3.1/hydraulic-corrections/**
-            /integration/f-ci/nomacro-complete01/INITIAL_PROFILE_FROST_CONTRACT_V1.json
+            /integration/f-ci/nomacro-complete01/INITIAL_PROFILE_GROUNDWATER_CONTRACT_V1.json
       - name: Preserve actual source and prepare immutable original provider
         env:
           PYTHONPATH: app/hybrid_water
         run: |
           proof="$RUNNER_TEMP/proof"
           mkdir -p "$proof"
-          git fetch --no-tags --depth=1 --filter=blob:none origin b6b4959fb1301cedc95ddf551c11d6699a41e3ed 9ad885a9e5358263b27cc9fd40cfe23330c6006a b285147254b208643423adea88a4fb5f1158b464 e079d1554041c831cd0ab609835e2e79bf3c31a1
+          git fetch --no-tags --depth=1 --filter=blob:none origin 84e815a0ba9f59a2d56fe838a3b13361ad8670a2 4a4053c210ce5bdd8cb2506b79dcf9ad8b42a43f 9694eb2c4cc69f71c2ef90bc64b500fd35cb9924 b285147254b208643423adea88a4fb5f1158b464 e079d1554041c831cd0ab609835e2e79bf3c31a1
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
           python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           cp .github/workflows/nomacro-water-snow-groundwater.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-water-snow-groundwater.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
-      - name: Target only original pressure with native1 water and native2 CDE Frost
+      - name: Target only pressure groundwater typed state and source interfaces
         run: |
           opt='${{ matrix.optimization }}'
-          for kind in explicit-water implicit-cde; do
-            label="initial-profile-frost-$kind-$opt-short"
-            python3 -B tests/nomacro_drainage/initial_profile_frost_inputs.py --case "$kind" --initial 1 --output "$RUNNER_TEMP/proof/inputs/$kind-initial1"
-            python3 -B tests/nomacro_drainage/frost_cde_drainage_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --existing-input "$RUNNER_TEMP/proof/inputs/$kind-initial1" --kind "${kind##*-}"
-            python3 -B tests/nomacro_drainage/initial_profile_frost_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
-            python3 -B tests/nomacro_drainage/initial_profile_frost_inputs.py --case "$kind" --initial 2 --output "$RUNNER_TEMP/proof/inputs/$kind-initial2"
-            python3 -B tests/nomacro_drainage/initial_profile_frost_postimage.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --input "$RUNNER_TEMP/proof/inputs/$kind-initial2" --build-root "$RUNNER_TEMP/builds/$label-initial2-postimage" --output "$RUNNER_TEMP/proof/$label-initial2-postimage"
+          for case in water-h2-implicit-clock cde-h1-snow-step age-h2-monthly; do
+            label="initial-profile-groundwater-$case-$opt-short"
+            python3 -B tests/nomacro_drainage/initial_profile_groundwater_inputs.py --case "$case" --initial 1 --output "$RUNNER_TEMP/proof/inputs/$case-initial1"
+            python3 -B tests/nomacro_drainage/initial_profile_groundwater_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --input "$RUNNER_TEMP/proof/inputs/$case-initial1" --case "$case"
+            python3 -B tests/nomacro_drainage/initial_profile_groundwater_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
+            python3 -B tests/nomacro_drainage/initial_profile_groundwater_activity.py --profile "$RUNNER_TEMP/proof/$label" --input "$RUNNER_TEMP/proof/inputs/$case-initial1" --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/$label-ACTIVE.json"
+            python3 -B tests/nomacro_drainage/initial_profile_groundwater_inputs.py --case "$case" --initial 2 --output "$RUNNER_TEMP/proof/inputs/$case-initial2"
+            python3 -B tests/nomacro_drainage/initial_profile_groundwater_postimage.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --input "$RUNNER_TEMP/proof/inputs/$case-initial2" --build-root "$RUNNER_TEMP/builds/$label-initial2-postimage" --output "$RUNNER_TEMP/proof/$label-initial2-postimage"
           done
       - name: Preserve actual compiled bytes and original provider identity
         if: always()
@@ -100,6 +101,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: initial-profile-frost-${{ matrix.optimization }}-${{ github.sha }}
+          name: initial-profile-groundwater-${{ matrix.optimization }}-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30
