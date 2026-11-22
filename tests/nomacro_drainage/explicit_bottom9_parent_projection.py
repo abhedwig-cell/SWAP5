@@ -110,6 +110,17 @@ def prior_source_projection():
   if module is None:continue
   filename=getattr(module,'__file__',None);root=getattr(module,'ROOT',None)
   if filename and not Path(filename).name.startswith('explicit_bottom9_') and Path(filename).is_relative_to(R/'tests') and isinstance(root,Path) and root==R:bindings.append((module,'ROOT',CheckedParentRoot()))
+ # Scientific readers imported this same SOURCE guard by value. Route those
+ # exact aliases through the whole checked explicit9 inverse as well; their
+ # numerical/native/raw reader bodies and real Git/data identities stay intact.
+ inherited_inverse=source.complete_inverse
+ for module in list(sys.modules.values()):
+  if module is None or module in (source,projection,joint):continue
+  filename=getattr(module,'__file__',None)
+  if (filename and Path(filename).is_relative_to(R/'tests')
+      and not Path(filename).name.startswith('explicit_bottom9_')
+      and getattr(module,'complete_inverse',None) is inherited_inverse):
+   bindings.append((module,'complete_inverse',groundwater_inverse))
  for module in (source,projection,joint):bindings.append((module,'complete_inverse',groundwater_inverse))
  bindings.extend([(projection,'prior_source_projection',context),(joint,'prior_source_projection',context)])
  bindings.append((calendar,'literal',lambda name,namespace:snow_workflow_literal(original_literal,name,namespace)))
