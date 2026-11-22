@@ -61,7 +61,7 @@ def observed_samples(folder,profile,reference,locations=None):
   words=line.split();assert len(words)==14;model,soil,index=map(int,words[1:4]);values=list(map(float,words[4:]));assert model==q['model'] and soil in (1,2) and 1<=index<=len(q['heads']) and values[0]==q['heads'][index-1] and all(map(math.isfinite,values)) and (soil,index) not in observed;observed[soil,index]=values
  assert len(observed)==2*len(q['heads'])
  for index in range(1,len(q['heads'])+1):assert observed[1,index]==observed[2,index]==q['observations'][index-1]
- return {row[0]:row for row in q['observations']},dict(source=q['source'],component_source=component['source'],model=q['model'],optimization=q['optimization'],distinct_actual_pressures=len(q['heads']),original_function_calls=len(observed),raw_stdout_sha256=q['stdout_sha256'],all_actual_node_pressure_bits_observed=True,model_periods=0)
+ return {row[0]:row for row in q['observations']},dict(source=q['source'],component_source=component['source'],model=q['model'],optimization=q['optimization'],distinct_actual_pressures=len(q['heads']),original_constitutive_observation_rows=len(observed),direct_constitutive_function_invocations=8*len(observed),raw_stdout_sha256=q['stdout_sha256'],all_actual_node_pressure_bits_observed=True,model_periods=0)
 
 
 def audit(profile,reference,postimage,locations=None,reference_samples=None):
@@ -111,7 +111,9 @@ def audit(profile,reference,postimage,locations=None,reference_samples=None):
   match=re.findall(r'(?mi)^[ \t]*'+label+r'[ \t]*=[ \t]*([^\r\n!]*)',text);assert len(match)==1 and list(map(float,match[0].split()))==expected
  assert sum(dz)==200.;continuity=[]
  samples={head:point};sample_receipt=None
- if reference_samples is not None:samples,sample_receipt=observed_samples(reference_samples,profile,reference,locations)
+ if reference_samples is not None:
+  samples,sample_receipt=observed_samples(reference_samples,profile,reference,locations)
+  assert sample_receipt['model']==model and sample_receipt['optimization']==q['optimization']
  assert all(h in samples for row in rows for h in row['pressure_head_cm']),'An actual original constitutive observation is required at every distinct accepted pressure'
  previous_theta=[samples[head][1]]*34
  for row in rows:
