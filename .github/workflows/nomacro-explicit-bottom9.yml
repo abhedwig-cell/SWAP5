@@ -7,8 +7,8 @@ on:
     inputs:
       cohort:
         type: choice
-        default: cde-calendars
-        options: [cde-calendars, last-node-water, clocks-and-distributed-drain]
+        default: cde-distributed-subdaily
+        options: [cde-distributed-subdaily, cde-calendars, last-node-water, clocks-and-distributed-drain]
 permissions:
   contents: read
   actions: read
@@ -63,15 +63,16 @@ jobs:
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
       - name: Target the selected paired-boundary composition cohort
         env:
-          COHORT: ${{ inputs.cohort || 'cde-calendars' }}
+          COHORT: ${{ inputs.cohort || 'cde-distributed-subdaily' }}
         run: |
           opt='${{ matrix.optimization }}'
           cases="water-last-node-drainage"
           if [ "$COHORT" = cde-calendars ]; then cases="cde-monthly cde-distributed-subdaily"; fi
+          if [ "$COHORT" = cde-distributed-subdaily ]; then cases="cde-distributed-subdaily"; fi
           if [ "$COHORT" = clocks-and-distributed-drain ]; then cases="water-pressure-step cde-distributed-drain age-pressure-subdaily"; fi
           for case in $cases; do
             label="explicit-bottom9-$case-$opt-short"
-            if [ "$COHORT" = cde-calendars ]; then
+            if [ "$COHORT" = cde-calendars ] || [ "$COHORT" = cde-distributed-subdaily ]; then
               post="$label-initial2-postimage"
               if [ "$case" = cde-distributed-subdaily ]; then post="$label-initial1-counterpart"; fi
               python3 -B tests/nomacro_drainage/explicit_bottom9_cde_batch.py --case "$case" --optimization "$opt" --inputs "$RUNNER_TEMP/proof/inputs" --reference-work "$RUNNER_TEMP/provider" --primary-build "$RUNNER_TEMP/builds/$label" --counter-build "$RUNNER_TEMP/builds/$post" --profile "$RUNNER_TEMP/proof/$label" --postimage "$RUNNER_TEMP/proof/$post" --output "$RUNNER_TEMP/proof/$label-CASE-RESULT.json"

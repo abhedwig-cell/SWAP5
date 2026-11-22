@@ -132,8 +132,15 @@ def audit(profile,reference,postimage,locations=None):
   if kind=='cde':assert sum(row['solute_ledger_mg_cm2'][5] for row in rows)>0
  else:
   for row in rows:
-   assert row['stock_start_cm']==row['stock_end_cm']==rows[0]['stock_start_cm'] and row['pressure_head_cm']==[0.]*34 and row['stock_end_cm'][1]==0
+   assert row['stock_start_cm']==row['stock_end_cm']==rows[0]['stock_start_cm'] and row['pressure_head_cm'][-1]==0 and row['stock_end_cm'][1]==0
    assert abs(row['external_flux_cm'][0]-1.)<=1e-10 and abs(row['external_flux_cm'][-1]-1.)<=1e-10 and max(map(abs,row['external_flux_cm'][1:-1]))==0
+   # The original Newton iteration leaves tiny interior pressure roundoff.
+   # Check the unchanged all-node Darcy equations at the existing mass guard;
+   # do not require a synthetic exactly-zero interior pressure profile.
+   h=row['pressure_head_cm'];pond=row['stock_end_cm'][1]
+   faces=[-((pond-h[0])/(.5*dz[0])+1.)]+[-((h[i-1]-h[i])/(.5*(dz[i-1]+dz[i]))+1.) for i in range(1,34)]+[-row['bottom_outward_cm']]
+   assert max(abs(faces[i+1]-faces[i]) for i in range(34))<=1e-10 and abs(faces[0]+row['external_flux_cm'][0])<=1e-10
+
  native=[]
  for path in (profile/'trajectory').glob('accepted-column-1-day-*.zip'):
   day=int(path.stem.split('-')[-1]);row=rows[day-1]

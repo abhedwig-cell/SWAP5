@@ -1,0 +1,144 @@
+{
+  "status": "ACTUAL_CDE_MONTHLY_MODELS_NATIVE_COLD_AND_COMPILED_COMPLETE_CI_FAILED_NEW_ZERO_PROFILE_OBSERVER",
+  "run": {
+    "id": 44990472976,
+    "head_sha": "fc9732bd6fc02b505d6439d660cadc5cb7c126d7",
+    "status": "completed",
+    "conclusion": "failure",
+    "path": ".github/workflows/nomacro-explicit-bottom9.yml",
+    "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44990472976"
+  },
+  "jobs": [
+    {
+      "id": 137110195368,
+      "name": "qualify (O2)",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Preserve actual source and prepare immutable original provider",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Target the selected paired-boundary composition cohort",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 4
+        },
+        {
+          "name": "Preserve actual compiled bytes and original provider identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        }
+      ]
+    },
+    {
+      "id": 137110195544,
+      "name": "qualify (O0)",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Preserve actual source and prepare immutable original provider",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Target the selected paired-boundary composition cohort",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 4
+        },
+        {
+          "name": "Preserve actual compiled bytes and original provider identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14741696269,
+      "name": "explicit-bottom9-O0-fc9732bd6fc02b505d6439d660cadc5cb7c126d7",
+      "size_in_bytes": 11596326,
+      "digest": "sha256:0c0589cf434b903cfd6d4ecde40345e872cd13f6de83d6e12b33cc25811892ee",
+      "expired": false
+    },
+    {
+      "id": 14741069671,
+      "name": "explicit-bottom9-O2-fc9732bd6fc02b505d6439d660cadc5cb7c126d7",
+      "size_in_bytes": 11637272,
+      "digest": "sha256:a04e96b0e7367d51ba7a4f68d3205cb52ed51ea202cf4c13fb85b3b844996c33",
+      "expired": false
+    }
+  ],
+  "repair": "Read completed monthly original artifacts using original all-node Darcy mass guard; do not replay either completed35day period. Both raw observer-failure logs and original ZIPs retained.",
+  "model_periods_replayed_for_observer_repair": 0,
+  "canonical_admission": false
+}

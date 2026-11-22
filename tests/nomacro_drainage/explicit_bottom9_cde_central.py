@@ -6,7 +6,38 @@ from analytical_hydraulic_archives import Archive,SHA
 from explicit_bottom9_archive_science import ReadView,Reference,source
 from explicit_bottom9_last_node_central import built
 from explicit_bottom9_cde_calendar_science import audit
-from explicit_bottom9_source_inverse import ROOT,CDE_CORE,complete_inverse,git
+from explicit_bottom9_source_inverse import ROOT,CDE_CORE,CDE_POLICY_CORE,complete_inverse,git
+
+
+MONTHLY_PRODUCER='fc9732bd6fc02b505d6439d660cadc5cb7c126d7'
+MONTHLY_SPECS={'O0':(14741696269,11596326,'0c0589cf434b903cfd6d4ecde40345e872cd13f6de83d6e12b33cc25811892ee'),
+ 'O2':(14741069671,11637272,'a04e96b0e7367d51ba7a4f68d3205cb52ed51ea202cf4c13fb85b3b844996c33')}
+
+
+def seal_monthly(proof,opt):
+ artifact,size,digest=MONTHLY_SPECS[opt];name='EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_'+opt+'_RAW_V1';path=proof/(name+'.zip')
+ assert path.stat().st_size==size and SHA(path.read_bytes())==digest
+ with zipfile.ZipFile(path) as z:
+  assert len(z.namelist())==len(set(z.namelist()))==885
+  members={n:dict(bytes=len(z.read(n)),sha256=SHA(z.read(n))) for n in z.namelist()}
+ record=dict(status='ACTUAL_COMPLETE_CDE9_MONTHLY_MODEL_AND_COMPILED_COUNTERPART_RAW_PRESERVED_WITH_FAILED_SYNTHETIC_ZERO_PROFILE_OBSERVER',archive=path.name,bytes=size,sha256=digest,parts=[dict(file=path.name,bytes=size,sha256=digest)],members=members,actual_artifact=artifact,actual_run=44990472976,actual_producer=MONTHLY_PRODUCER,optimization=opt,actual_CI_conclusion='failure',actual_failure='New independent observer incorrectly required interior pressure exactly zero; raw actual pressure roundoff1.64e-15. Model35/native7/cold3/wholecompiled completed.',new_short35_contexts=1,new_native_checkpoints=7,new_exact_cold_windows=3,model_replay_for_observer_repair=False,canonical_admission=False)
+ p=proof/(name+'.json')
+ if p.exists():assert json.loads(p.read_text())==record
+ else:p.write_text(json.dumps(record,indent=2)+'\n')
+
+
+def monthly(proof,opt):
+ complete_inverse()
+ with ExitStack() as stack:
+  store=Archive(proof,'EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_'+opt+'_RAW_V1',stack)
+  assert (store.record['actual_artifact'],store.record['bytes'],store.record['sha256'])==MONTHLY_SPECS[opt]
+  original,provenance=source(store,stack,MONTHLY_PRODUCER,CDE_POLICY_CORE);reference=Reference(store,original)
+  projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));label='explicit-bottom9-cde-monthly-'+opt+'-short';profile=ReadView(store,label);post=ReadView(store,label+'-initial2-postimage')
+  q=json.loads((profile/'RESULT.json').read_text());p=json.loads((post/'RESULT.json').read_text());assert q['source']==p['source']==MONTHLY_PRODUCER
+  assert q['input_root']=='/home/runner/work/_temp/proof/inputs/cde-monthly-initial1' and p['input_root']=='/home/runner/work/_temp/proof/inputs/cde-monthly-initial2' and p['initial1_profile']=='/home/runner/work/_temp/proof/'+label
+  loc=dict(inputs=ReadView(store,'inputs/cde-monthly-initial1'),counter_inputs=ReadView(store,'inputs/cde-monthly-initial2'),build=built(store,projection,q['build_root']),counter=built(store,projection,p['build_root']),original_profile_path=p['initial1_profile'])
+  result=audit(profile,reference,post,loc)
+ return dict(status='ACTUAL_COMPLETED_UBUNTU_CDE9_MONTHLY_ARCHIVE_SCIENCE_NATIVE_COLD_WHOLE_COMPILED_PASS_WITHOUT_MODEL_REPLAY',optimization=opt,source=provenance,science=result,original_CI_failure_preserved=True,incorrect_observer_zero_profile_replaced_by_original_all_node_Darcy_mass_guard=True,mass_or_convergence_limits_changed=False,compiler_executions=0,model_executions=0,canonical_admission=False)
 
 
 def capsule(store,prefix,head,stack,controller):
@@ -66,6 +97,8 @@ def windows(proof):
 
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--output',type=Path,required=True);a=p.parse_args();result=windows(a.proof)
+ p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--output',type=Path,required=True);p.add_argument('--monthly',choices=('O0','O2'));p.add_argument('--seal-monthly',action='store_true');a=p.parse_args()
+ if a.seal_monthly:assert a.monthly;seal_monthly(a.proof,a.monthly)
+ result=monthly(a.proof,a.monthly) if a.monthly else windows(a.proof)
  with a.output.open('x') as out:json.dump(result,out,indent=2);out.write('\n')
  print(result['status'],flush=True)
