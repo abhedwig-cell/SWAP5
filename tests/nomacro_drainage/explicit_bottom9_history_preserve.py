@@ -44,6 +44,7 @@ def windows(ev,staging,reference):
    path=Path(q['allocation']['path']);prefix='diagnostic-compiled/'+path.name;tree(path,prefix);diagnostics[str(path)]=dict(archive_prefix=prefix,diagnostic_executable_sha256=q['diagnostic_executable_sha256'],scientific_admission=False)
  for path in sorted(ev.iterdir()):
   if not path.name.lower().startswith(('explicit-bottom9-history','explicit_bottom9_history')):continue
+  if '_capacity_' in path.name.lower() or '_prior_own_registered_resource_sizes_' in path.name.lower():continue
   if path.is_dir():
    tree(path,'profiles/'+path.name)
    result=path/'RESULT.json'
