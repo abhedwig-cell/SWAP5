@@ -23,7 +23,10 @@ def selection(project):
     models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]+)',active)
     remainder=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
     if len(models)>1 or models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0].strip()) is None or re.search(r'(?i)\b(?:IHWCKMODEL|SWAP_SOILS_DB)\b',remainder):
-        raise ValueError('Ordinary Snow drainage-off requires original analytical model1')
+        # New paired9 analytical composition stays explicit with hysteresis0.
+        # The actual paired Snow selector above already validated every model.
+        if report['boundary']['SWBOTB']!=9 or s['SWKIMPL']!=0 or s['SWHYST']!=0:
+            raise ValueError('Ordinary Snow drainage-off requires original analytical model1 or bounded explicit paired analytical Snow')
     def one(key,default=None,quoted=False):
         pattern=r"'[^']*'" if quoted else r'[+-]?\d+'
         values=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*('+pattern+r')[ \t]*(?:!.*)?$',text)
