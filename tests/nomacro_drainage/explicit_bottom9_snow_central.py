@@ -9,6 +9,39 @@ from explicit_bottom9_compiled_postimage import compare
 from explicit_bottom9_analytical_central import capsule
 
 
+def windows(proof,scratch):
+ complete_inverse();scratch=Path(scratch);assert scratch.is_dir() and not any(scratch.iterdir());results=[]
+ with ExitStack() as stack:
+  store=Archive(proof,'EXPLICIT_BOTTOM9_SNOW_WINDOWS_RAW_V1',stack);record=store.record
+  index=json.loads(store.get('COMMITTED_SOURCE_INDEX_V1.json'));assert index['working_source_capture_claimed'] is False
+  objects=set()
+  for head,rows in index['epochs'].items():
+   expected={line.split('\t')[1]:dict(git_blob=line.split('\t')[0].split()[2],mode=line.split('\t')[0].split()[0]) for line in git('ls-tree','-r',head,'--',*index['scope']).decode().splitlines()};assert rows==expected
+   for item in rows.values():objects.add(item['git_blob'])
+  import hashlib
+  for digest in objects:
+   raw=store.get('committed-source/blobs/'+digest);assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==digest
+  for name in store.names:
+   path=scratch/name;assert path.resolve().is_relative_to(scratch.resolve());path.parent.mkdir(parents=True,exist_ok=True)
+   with path.open('xb') as out:out.write(store.get(name))
+  projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));assert len(record['roles'])==4 and len(projection)==12
+  def built(value):
+   item=projection[value];path=scratch/item['archive_prefix'];assert SHA((path/'BUILD.json').read_bytes())==item['actual_BUILD_sha256'];return path
+  for role in record['roles']:
+   profile=scratch/role['profile'];post=scratch/role['postimage'];q=json.loads((profile/'RESULT.json').read_text());p=json.loads((post/'RESULT.json').read_text());first,second=built(q['build_root']),built(p['build_root'])
+   assert q['source']==role['producer'] and q.get('observer_source')==role['observer'] and p['profile']==role['original_profile_path'] and p['profile_RESULT_sha256']==SHA((profile/'RESULT.json').read_bytes())
+   assert p['actual_compiler_start_HEAD']==p['actual_compiler_end_HEAD']==p['source']
+   meta=json.loads((first/'BUILD.json').read_text())
+   for digest,path in [(meta['identity']['host'],'app/hybrid_water/daily_host.py'),(meta['identity']['lower_boundary_receipt']['source_sha256'],'app/hybrid_water/prescribed_head_flux_boundary.py')]:
+    raw=store.get('committed-source/blobs/'+index['epochs'][q['source']][path]['git_blob']);assert digest in (SHA(raw),SHA(raw.replace(b'\n',b'\r\n')))
+   assert compare(first,second)==p['compiled']
+   for row in p['generated_sources']:
+    a=(first/row['file']).read_bytes();b=(second/row['file']).read_bytes();assert SHA(a)==row['actual_initial1_sha256'] and SHA(b)==row['actual_initial2_sha256'] and a.replace(b'\r\n',b'\n')==b.replace(b'\r\n',b'\n')
+   actual=audit(profile,dict(inputs=scratch/role['inputs'],build=first));assert actual==json.loads(store.get(role['independent']));results.append(actual)
+   print('CENTRAL_WINDOWS_ACTIVE_SNOW9_SCIENCE_NATIVE_COLD_WHOLE_COMPILED_PASS',role['kind'],role['optimization'],flush=True)
+ return dict(status='ALL4_WINDOWS_ACTIVE_SNOW9_ORIGINAL_ARCHIVE_COMMITTED_SOURCE_NATIVE_COLD_COMPILED_INDEPENDENT_PASS_NOT_ADMITTED',contexts=results,source_epochs=sorted(index['epochs']),raw_sha256=record['sha256'],compiler_executions=0,model_executions=0,canonical_admission=False)
+
+
 def ubuntu(proof,opt,scratch):
  complete_inverse();results=[];scratch=Path(scratch);assert scratch.is_dir() and not any(scratch.iterdir())
  with ExitStack() as stack:
@@ -46,6 +79,6 @@ def ubuntu(proof,opt,scratch):
 
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--scratch',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();q=ubuntu(a.proof,a.optimization,a.scratch)
+ p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--optimization',choices=('O0','O2'));p.add_argument('--scratch',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();q=ubuntu(a.proof,a.optimization,a.scratch) if a.optimization else windows(a.proof,a.scratch)
  with a.output.open('x') as f:json.dump(q,f,indent=2);f.write('\n')
  print(q['status'],a.optimization)
