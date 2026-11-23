@@ -5,6 +5,23 @@ import re
 POLICY='existing-original-snow-explicit-paired9-all-node-soil-receipt-v1'
 
 
+def _validate_calendar(text):
+    def one(key,default=None,quoted=False):
+        pattern=r"'[^']*'" if quoted else r'[+-]?\d+'
+        values=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*('+pattern+r')[ \t]*(?:!.*)?$',text)
+        if not values and default is not None:return default
+        if len(values)!=1:raise ValueError('Missing/ambiguous ordinary Snow drainage-off '+key)
+        return values[0][1:-1] if quoted else int(values[0])
+    flags=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^!\r\n]+)',text)
+    token=flags[0].strip().upper() if flags else '.FALSE.'
+    if len(flags)>1 or token not in ('.TRUE.','TRUE','.T.','T','.FALSE.','FALSE','.F.','F'):raise ValueError('Invalid ordinary Snow drainage-off step flag')
+    step=token in ('.TRUE.','TRUE','.T.','T');npd=one('NPRINTDAY');monthly=one('SWMONTH');fmt=one('SWCSV',0)
+    dates=0 if monthly else one('SWODAT');reset=0 if monthly else one('SWRES');requested=0 if monthly else one('PERIOD')
+    precision=one('NUM_DECIMALS',5) if fmt else None
+    if not 1<=npd<=1440 or monthly not in (0,1) or fmt not in (0,1,2,3) or dates not in (0,1) or reset not in (0,1) or not 0<=requested<=366 or precision is not None and not 5<=precision<=12:
+        raise ValueError('Invalid ordinary Snow drainage-off output domain')
+
+
 def selection(directory,original_output=True):
  if not directory or original_output is False:return None
  from experimental_project import switches
@@ -19,12 +36,8 @@ def selection(directory,original_output=True):
  vapor=re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^\r\n]*)',active)
  if len(vapor)>1:return None
  if vapor and (re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',vapor[0]) is None or any(int(value)!=0 for value in vapor[0].split())):return None
- daily={'NPRINTDAY':1,'PERIOD':1,'SWMONTH':0,'SWODAT':0,'SWRES':1}
- for key,value in daily.items():
-  values=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([^\r\n]*)',active)
-  if len(values)!=1 or re.fullmatch(r'[+-]?[0-9]+[ \t]*',values[0]) is None or int(values[0])!=value:return None
- flags=re.findall(r'(?mi)^[ \t]*FLPRINTDT[ \t]*=[ \t]*([^\r\n]*)',active)
- if len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F'):return None
+ try:_validate_calendar(text)
+ except ValueError:return None
  return dict(selected,policy=POLICY,snow_state='actual original seven-scalar Snow carry',soil_receipt='actual net rainfall/irrigation and melt; all nodes; actual prescribed qbot',physical_equations_changed=False)
 
 

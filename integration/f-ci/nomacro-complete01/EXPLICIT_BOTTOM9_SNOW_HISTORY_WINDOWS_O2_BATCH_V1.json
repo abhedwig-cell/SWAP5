@@ -1,0 +1,12 @@
+{
+  "status": "FAILED_ACTUAL_WINDOWS_SNOW_HISTORY_BATCH_NOT_QUALIFIED",
+  "actual_source": "262e9cbc3d44244d0e8ca720e0c7147228be3b98",
+  "optimization": "O2",
+  "controller_sha256": "15354871e5c3685bb27a49c890c2daa22f942c7ecd7cb8ade931f7b773de892d",
+  "contexts": [],
+  "canonical_admission": false,
+  "prior280_model_periods_replayed": 0,
+  "active": "explicit-bottom9-snow-history-water-hys1-O2-v1",
+  "error": "CalledProcessError(1, ['C:\\\\Users\\\\Veldh012\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe', '-B', 'C:\\\\Users\\\\Veldh012\\\\OneDrive - Wageningen University & Research\\\\Documents\\\\ChatGPT\\\\SWAP5-finaliseren\\\\tools\\\\storage\\\\cleanup.py', 'allocate', '--task', '01a1e8b4-228b-75f1-8ac4-b07ca1e15713', '--kind', 'build', '--name', 'explicit-bottom9-snow-history-water-hys1-O2-v1', '--variant', 'O2', '--source-ref', '262e9cbc3d44244d0e8ca720e0c7147228be3b98', '--recipe', 'Actual Snow-history water hysteresis1 O235day and3 exact cold windows, one-byte derived immutable input'], b'', b'{\"error\": \"Another registry operation holds C:\\\\\\\\Users\\\\\\\\Veldh012\\\\\\\\.codex\\\\\\\\storage\\\\\\\\swap5\\\\\\\\state.lock; no cleanup performed\"}\\r\\n')",
+  "actual_completion_head": "262e9cbc3d44244d0e8ca720e0c7147228be3b98"
+}
