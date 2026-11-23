@@ -18,6 +18,8 @@ def owner(selected):return reset if selected['flprintdt'] and selected['swres'] 
 def trial_source(original,watstor,selected):
     result=clock.soil_trial_source(original,watstor)
     result=native.replace(result,'swdra/=1.or.','swdra/=0.or.')
+    if selected['swbotb']==9:
+        result=native.replace(result,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')
     return native.replace(result,'nprintday<2','(nprintday<1.or.nprintday>1440)')
 
 
@@ -88,7 +90,7 @@ def apply_build(output,donor_build,project,patched,selected):
     path=output/'headcalc.f90';text=path.read_text(encoding='cp1252');anchor='   use hybrid_step_budget, only: projected_water_residual'
     text=native.replace(text,anchor,'   use MOD_integral,only:'+FUNCTION+'\n'+anchor)
     anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
-    path.write_text(head_trial(text),encoding='cp1252')
+    path.write_text(head_trial(text,selected),encoding='cp1252')
     if selected['swcsv']:
         path=output/'swap_csv_output.f90';text=path.read_text(encoding='cp1252');original=(originals/'swap_csv_output.f90').read_bytes()
         if selected['swcsv']==3:
@@ -137,7 +139,7 @@ def cde_events(time_source):
     return time_source
 
 
-def head_trial(text):
+def head_trial(text,selected=None):
     anchor='\n   implicit none\n'
     text=native.replace(text,anchor,anchor+'   real(8)::hybrid_snow_trial_guard\n')
     anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
@@ -148,6 +150,8 @@ def head_trial(text):
             hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(-kmean(NN+1)*hgrad(NN+1))
          end if
          if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true."""
+    if selected is not None and selected['swbotb']==9:
+        guard='\n         hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(qbot)\n         if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true.'
     return native.replace(text,anchor,anchor+guard)
 
 

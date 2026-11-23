@@ -93,7 +93,7 @@ def validate_source(bundle,project,identity,reference):
     def add(text):
         anchor='   use hybrid_step_budget, only: projected_water_residual'
         text=state.replace(text,anchor,'   use MOD_integral,only:hybrid_snow_soil_trial_residual\n'+anchor)
-        return build.head_trial(text)
+        return build.head_trial(text,selected)
     source=inverse(source,add,template)
     if selected['swkimpl']:
         from ordinary_pond_source_guard import HEADS

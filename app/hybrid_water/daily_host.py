@@ -172,6 +172,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     micro_state=micro_lookup_enabled(project)
     from prescribed_head_flux_boundary import selected_boundary
     lower_boundary=selected_boundary(project)
+    from prescribed_snow_boundary import enabled as paired_snow_enabled
+    paired_snow=paired_snow_enabled(project)
     lower_receipt=lower_boundary is not None
     from fixed_irrigation_file import enabled as fixed_irrigation_file_enabled
     fixed_file=fixed_irrigation_file_enabled(project)
@@ -825,14 +827,15 @@ end module plant_interface""")
             budget_source=output/'hybrid_step_budget.f90'
             budget_source.write_text(render_budget((APP/'hybrid_step_budget.f90').read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
             path=output/'headcalc.f90'
-            path.write_text(render_headcalc(path.read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
+            if not paired_snow:
+                path.write_text(render_headcalc(path.read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
             if lower_boundary in (1,5,9):
                 from prescribed_head_flux_boundary import render_readswap
                 source=(donor_build/'swap-selected/readswap.f90').read_text(encoding='cp1252')
                 (output/'readswap.f90').write_text(render_readswap(source,project.start_clock,lower_boundary),encoding='cp1252')
                 if 'readswap' in patched:raise ValueError('Multiple original reader state owners')
                 patched.append('readswap')
-            if lower_boundary==9 and not (age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt'])):
+            if lower_boundary==9 and not paired_snow and not (age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt'])):
                 from prescribed_head_flux_boundary import render_timecontrol
                 path=output/'timecontrol.f90'
                 source=(path if path.exists() else donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
@@ -878,7 +881,7 @@ end module plant_interface""")
     if age_source:patched=current_age_source.apply_build(output,project,patched)
     from implicit_groundwater_trial import apply_build as implicit_groundwater_trial_build
     patched=implicit_groundwater_trial_build(output,donor_build,project,patched)
-    if lower_boundary==9 and age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt']):
+    if lower_boundary==9 and not paired_snow and age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt']):
         from prescribed_head_flux_boundary import render_timecontrol,render_output_trial
         if age_calendar.get('cde_clock_output'):
             from prescribed_head_flux_boundary import render_cde_clock_headcalc
