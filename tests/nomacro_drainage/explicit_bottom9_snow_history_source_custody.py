@@ -6,12 +6,13 @@ from explicit_bottom9_analytical_inherited_custody import tracked_working_files,
 from analytical_hydraulic_archives import SHA
 SELF='tests/nomacro_drainage/explicit_bottom9_snow_history_verify.py'
 JOINT='tests/nomacro_drainage/initial_profile_age_groundwater_verify.py'
-DOMAINS=(*SOURCE_DOMAINS,'docs/publication','docs/publications','docs/verification','docs/performance/evidence')
+ACTUAL_COMPILER_SOURCE='6154891091824c9f0f64c9fff299ad320ccd9479'
+DOMAINS=(*SOURCE_DOMAINS,'.gitattributes','docs/publication','docs/publications','docs/verification','docs/performance/evidence')
 PREFIX='integration/f-ci/nomacro-complete01/'
 
 
 def source(anchor):
- complete_inverse();head=git('rev-parse','HEAD');assert not git('for-each-ref','--format=%(refname)','refs/replace')
+ complete_inverse();head=git('rev-parse','HEAD');assert not git('diff',ACTUAL_COMPILER_SOURCE,'HEAD','--','app','src','tools','reference'),'Current execution source differs from actual completed whole compiled postimages';assert not git('for-each-ref','--format=%(refname)','refs/replace')
  assert re.fullmatch('[0-9a-f]{40}',anchor) and not git('status','--porcelain=v1','--untracked-files=all','--',*DOMAINS),'Dirty scientific Source'
  def tree(ref):
   return {line.split('\t',1)[1]:line.split('\t',1)[0] for line in git('ls-tree','-rl',ref,'--',*DOMAINS).decode().splitlines()}
@@ -55,6 +56,10 @@ def source(anchor):
 
 def inherited_evidence():
  head=git('rev-parse','HEAD');tracked=tracked_working_files();rows=[]
+ eol={}
+ for row in git('ls-files','--eol','-z','--',PREFIX).split(b'\0'):
+  if row:
+   meta,path=row.split(b'\t',1);eol[path.decode()]=meta.decode().split()
  for line in git('ls-tree','-rl',CORE,'--',PREFIX).decode().splitlines():
   meta,path=line.split('\t',1);mode,kind,digest,size=meta.split()
   if Path(path).name in ('STATUS.json','GAP_MATRIX.json'):continue
@@ -65,16 +70,18 @@ def inherited_evidence():
   for item in rows:
    path=ROOT/item['path'];total=0;sha=hashlib.sha256();obj=hashlib.sha1(b'blob '+str(item['bytes']).encode()+b'\0')
    if materialized(item['path'],tracked):
-    raw=path.read_bytes()
-    if path.suffix.lower() in ('.json','.md','.txt','.csv','.tsv','.yml','.yaml','.b64','.sha256','.log','.stdout','.stderr','.rst','.tex','.bib','.py','.f90','.f','.c','.h','.cpp','.sh','.toml','.html','.css','.js','.svg'):raw=raw.replace(b'\r\n',b'\n')
-    total=len(raw);sha.update(raw);obj.update(raw);storage='ACTUAL_WORKING_BYTES'
+    raw=path.read_bytes();working_raw_sha256=SHA(raw);raw_blob=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest();storage='ACTUAL_WORKING_BYTES_EXACT'
+    if raw_blob!=item['git_blob']:
+     spelling=eol[item['path']];assert 'i/lf' in spelling and 'attr/-text' not in spelling and b'\0' not in raw,'Changed opaque scientific evidence bytes: '+item['path']
+     raw=raw.replace(b'\r\n',b'\n');storage='ACTUAL_GIT_TEXT_CRLF_LF_SPELLING_WITH_EXACT_ORIGINAL_GIT_BLOB_AND_SEPARATE_RAW_HASH'
+    total=len(raw);sha.update(raw);obj.update(raw)
    else:
     process.stdin.write((item['git_blob']+'\n').encode());process.stdin.flush();assert process.stdout.readline().decode().split()==[item['git_blob'],'blob',str(item['bytes'])];remaining=item['bytes']
     while remaining:
      block=process.stdout.read(min(remaining,8*1024*1024));assert block;remaining-=len(block);total+=len(block);sha.update(block);obj.update(block)
     assert process.stdout.read(1)==b'\n';storage='ACTUAL_IMMUTABLE_GIT_BLOB_WITH_REAL_SKIP_WORKTREE'
    assert total==item['bytes'] and obj.hexdigest()==item['git_blob'],'Changed inherited scientific evidence bytes: '+item['path']
-   observed.append(dict(**item,actual_sha256=sha.hexdigest(),storage=storage))
+   observed.append(dict(**item,actual_git_bytes_sha256=sha.hexdigest(),actual_raw_sha256=working_raw_sha256 if storage.startswith('ACTUAL_') and storage!='ACTUAL_IMMUTABLE_GIT_BLOB_WITH_REAL_SKIP_WORKTREE' else sha.hexdigest(),storage=storage))
  finally:process.stdin.close();assert process.wait(timeout=30)==0
  assert git('rev-parse','HEAD')==head
  return dict(status='ALL_CANONICAL280_EVIDENCE_BLOBS_AND_DECLARATIONS_FRESH_EXACT_NO_CACHED_OR_PROJECTED_BYTES',actual_parent=CORE,files=observed,total_bytes=sum(x['bytes'] for x in rows),compiler_executions=0,model_executions=0)
