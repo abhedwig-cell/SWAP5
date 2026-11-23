@@ -10,7 +10,10 @@ def selection(project):
     if not project.original_output or not project.input_directory or project.macro or project.age:return None
     from experimental_project import inspect
     report=inspect(project.input_directory,original_output=True);s=report['selectors']
-    if s['SWSNOW']!=1 or s['SWDRA']!=0 or report['boundary']['SWBOTB'] not in (5,8):return None
+    if s['SWSNOW']!=1 or s['SWDRA']!=0 or report['boundary']['SWBOTB'] not in (5,8,9):return None
+    if report['boundary']['SWBOTB']==9:
+        from prescribed_snow_boundary import enabled
+        if not enabled(project):return None
     required=dict(SWMACRO=0,SWSOLU=int(project.solute),SWSNOW=1,SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0)
     if any(s.get(k)!=v for k,v in required.items()) or s['SWKIMPL'] not in (0,1) or s['SWHYST'] not in (0,1,2) or s['SWDRA']!=0:
         raise ValueError('Ordinary Snow drainage-off requires bounded analytical daily thermal history')
@@ -35,7 +38,7 @@ def selection(project):
     precision=one('NUM_DECIMALS',5) if fmt else None
     if not 1<=npd<=1440 or monthly not in (0,1) or fmt not in (0,1,2,3) or dates not in (0,1) or reset not in (0,1) or not 0<=requested<=366 or precision is not None and not 5<=precision<=12:
         raise ValueError('Invalid ordinary Snow drainage-off output domain')
-    return dict(**({'cde_interval_output':True,'cde_clock_output':npd>1 or step} if project.solute else {}),ordinary_snow_undrained_output=True,thermal_output=True,thermal_calendar=True,
+    return dict(**({'paired_snow_boundary':True} if report['boundary']['SWBOTB']==9 else {}),**({'cde_interval_output':True,'cde_clock_output':npd>1 or step} if project.solute else {}),ordinary_snow_undrained_output=True,thermal_output=True,thermal_calendar=True,
         thermal_clock=step or npd>1,thermal_step=step,thermal_reset=step and bool(reset),kind='cde' if project.solute else 'water',
         swsnow=1,swhea=1,swcalt=2,swfrost=0,swdra=s['SWDRA'],swhyst=s['SWHYST'],et=one('SWCFBS'),
         swkimpl=s['SWKIMPL'],swbotb=report['boundary']['SWBOTB'],swcsv=fmt,nprintday=npd,swmonth=monthly,swodat=dates,swres=reset,
@@ -60,6 +63,7 @@ def metadata(project,selected):
         'cde_interval_output_state.f90','cde_interval_snow_state.f90','cde_interval_receipt.f90','cde_clock_events.f90']
     if not selected['swkimpl']:providers.append('implicit_interception_partition.py')
     if project.solute:providers.append('snow_undrained_cde_positive.py')
+    if selected['swbotb']==9:providers+=['prescribed_snow_boundary.py','prescribed_head_flux_boundary.py']
     return dict(policy=POLICY,native_codec=codec(selected).decode(),**selected,
         providers={name:sha(folder/name) for name in providers},
         original_output_epoch=project.start_clock,physical_equations_changed=False,new_physical_state=False,

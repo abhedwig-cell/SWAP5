@@ -1,0 +1,3549 @@
+{
+  "status": "ALL4_ACTUAL_PARENT_AND_CANDIDATE_PRIOR_SNOW5_8_COMPLETE_GENERATED_SOURCE_AND_COMPILED_POSTIMAGES_PASS_NO_MODEL_PERIODS",
+  "actual_parent": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+  "actual_candidate": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+  "comparisons": [
+    {
+      "kind": "water",
+      "optimization": "O0",
+      "actual_parent": {
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-water-O0-actual-parent-v1",
+        "status": "ACTUAL_PRIOR_SNOW_COMPILE_ONLY_RETURNED",
+        "source": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "actual_start_HEAD": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "actual_end_HEAD": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "kind": "water",
+        "optimization": "O0",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-water-O0-actual-parent-v1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\water",
+        "returncode": 0,
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\water",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-day-seed-v1",
+          "--reference-work",
+          "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O0",
+          "--kernel-opt",
+          "O0",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-water-O0-actual-parent-v1\\bundle"
+        ],
+        "model_executions": 0,
+        "canonical_admission": false
+      },
+      "actual_candidate": {
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-water-O0-candidate-v1",
+        "status": "ACTUAL_PRIOR_SNOW_COMPILE_ONLY_RETURNED",
+        "source": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "actual_start_HEAD": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "actual_end_HEAD": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "kind": "water",
+        "optimization": "O0",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-water-O0-candidate-v1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\water",
+        "returncode": 0,
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\water",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-day-seed-v1",
+          "--reference-work",
+          "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O0",
+          "--kernel-opt",
+          "O0",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-water-O0-candidate-v1\\bundle"
+        ],
+        "model_executions": 0,
+        "canonical_admission": false
+      },
+      "generated_sources": [
+        {
+          "file": "age_output_calendar_probe.f90",
+          "actual_parent_sha256": "52e5590e7106030ddb524541ef0f042a9402c74b35b47f5d83b0022b14e30817",
+          "actual_candidate_sha256": "52e5590e7106030ddb524541ef0f042a9402c74b35b47f5d83b0022b14e30817"
+        },
+        {
+          "file": "boundtop.f90",
+          "actual_parent_sha256": "c609f1892e6f07a63f00512808c728d25619161b3734409e71a1472a276cbe61",
+          "actual_candidate_sha256": "c609f1892e6f07a63f00512808c728d25619161b3734409e71a1472a276cbe61"
+        },
+        {
+          "file": "headcalc.f90",
+          "actual_parent_sha256": "97babc84da6766e32c305abf7879b79cf67184c6756d3042a66a850e25fab4aa",
+          "actual_candidate_sha256": "97babc84da6766e32c305abf7879b79cf67184c6756d3042a66a850e25fab4aa"
+        },
+        {
+          "file": "hybrid_age_output_state.f90",
+          "actual_parent_sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de",
+          "actual_candidate_sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de"
+        },
+        {
+          "file": "hybrid_step_budget.f90",
+          "actual_parent_sha256": "91af7be7d680fffe02e3e78205503ab8c986eb4b8ee3bdd103e4b835706f9bec",
+          "actual_candidate_sha256": "91af7be7d680fffe02e3e78205503ab8c986eb4b8ee3bdd103e4b835706f9bec"
+        },
+        {
+          "file": "implicit_pond_availability.f90",
+          "actual_parent_sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7",
+          "actual_candidate_sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+        },
+        {
+          "file": "implicit_pond_event_state.f90",
+          "actual_parent_sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651",
+          "actual_candidate_sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+        },
+        {
+          "file": "integral.f90",
+          "actual_parent_sha256": "ca3b9716a588fdd213135ee43b52fe41edfa4850b6333ba28a83c66d72e762a0",
+          "actual_candidate_sha256": "ca3b9716a588fdd213135ee43b52fe41edfa4850b6333ba28a83c66d72e762a0"
+        },
+        {
+          "file": "irrigation.f90",
+          "actual_parent_sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d",
+          "actual_candidate_sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d"
+        },
+        {
+          "file": "macropore.f90",
+          "actual_parent_sha256": "50b8fd351c8d3c973efe5efa0441aac1c9e693cb6cec10c50eb11dc8218588ff",
+          "actual_candidate_sha256": "50b8fd351c8d3c973efe5efa0441aac1c9e693cb6cec10c50eb11dc8218588ff"
+        },
+        {
+          "file": "MOD_cropdevelopment.f90",
+          "actual_parent_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "actual_candidate_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+        },
+        {
+          "file": "MOD_meteo.f90",
+          "actual_parent_sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae",
+          "actual_candidate_sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+        },
+        {
+          "file": "mod_original_output_receipt.f90",
+          "actual_parent_sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e",
+          "actual_candidate_sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+        },
+        {
+          "file": "original_output_thermal_domain.f90",
+          "actual_parent_sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209",
+          "actual_candidate_sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209"
+        },
+        {
+          "file": "oxygenstress.f90",
+          "actual_parent_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "actual_candidate_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f"
+        },
+        {
+          "file": "readswap.f90",
+          "actual_parent_sha256": "84623b684079644773465fa94c3513762f213adb8eeaf8127de82aa0142cc4e6",
+          "actual_candidate_sha256": "84623b684079644773465fa94c3513762f213adb8eeaf8127de82aa0142cc4e6"
+        },
+        {
+          "file": "RWU_micro.f90",
+          "actual_parent_sha256": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+          "actual_candidate_sha256": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c"
+        },
+        {
+          "file": "snow_undrained_root_state.f90",
+          "actual_parent_sha256": "148ec08348f12cc76781363356f6f19e2c733aac9c8ed2bf99cfea0729e536c4",
+          "actual_candidate_sha256": "148ec08348f12cc76781363356f6f19e2c733aac9c8ed2bf99cfea0729e536c4"
+        },
+        {
+          "file": "swap.f90",
+          "actual_parent_sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0",
+          "actual_candidate_sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0"
+        },
+        {
+          "file": "swapoutput.f90",
+          "actual_parent_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "actual_candidate_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+        },
+        {
+          "file": "swap_csv_output.f90",
+          "actual_parent_sha256": "430425e333c1005e8656801cb018a8d17acd595f240e0ab6d9a2bfec39ba8375",
+          "actual_candidate_sha256": "430425e333c1005e8656801cb018a8d17acd595f240e0ab6d9a2bfec39ba8375"
+        },
+        {
+          "file": "swap_main.f90",
+          "actual_parent_sha256": "4a45874ec164d601494ebf8a2e7126aa96e7dd6ce9f3343f2690d0fc3e9b0725",
+          "actual_candidate_sha256": "4a45874ec164d601494ebf8a2e7126aa96e7dd6ce9f3343f2690d0fc3e9b0725"
+        },
+        {
+          "file": "thermal_output_snow_calendar_state.f90",
+          "actual_parent_sha256": "7cc3d72c8e235a68e16e856b20fe1b7fe75a25fafa902f19aec6af0fc5e48ce0",
+          "actual_candidate_sha256": "7cc3d72c8e235a68e16e856b20fe1b7fe75a25fafa902f19aec6af0fc5e48ce0"
+        },
+        {
+          "file": "timecontrol.f90",
+          "actual_parent_sha256": "5fa11fda589ed87de9f7e4deb168bdcbe0da9212dfad8b7d85b1ab901f14347b",
+          "actual_candidate_sha256": "5fa11fda589ed87de9f7e4deb168bdcbe0da9212dfad8b7d85b1ab901f14347b"
+        },
+        {
+          "file": "wofost.f90",
+          "actual_parent_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "actual_candidate_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+        }
+      ],
+      "compiled": {
+        "status": "ALL_ACTUAL_GENERATED_OBJECT_MODULE_EXECUTABLE_PUBLISHER_CODE_DATA_POSTIMAGES_VERIFIED",
+        "files": [
+          {
+            "file": "MOD_cropdevelopment.o",
+            "left_sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4",
+            "right_sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4",
+            "left_bytes": 113751,
+            "right_bytes": 113751,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "MOD_meteo.o",
+            "left_sha256": "187f51d97e3add64adca7f813ec9a4f01c4871e10cc9382e26cb27c5717a6994",
+            "right_sha256": "187f51d97e3add64adca7f813ec9a4f01c4871e10cc9382e26cb27c5717a6994",
+            "left_bytes": 147425,
+            "right_bytes": 147425,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "RWU_micro.o",
+            "left_sha256": "219651f54dbc7d96f4cb43daf61c6070f9adb2c4028acad6088ad9ca31a9b3b6",
+            "right_sha256": "219651f54dbc7d96f4cb43daf61c6070f9adb2c4028acad6088ad9ca31a9b3b6",
+            "left_bytes": 74477,
+            "right_bytes": 74477,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "age_output_calendar_probe.o",
+            "left_sha256": "c3d4f57db8fec3cb20234d9ddecd4f05ca106f106c0297b4ac840ceffaa7fc7a",
+            "right_sha256": "c3d4f57db8fec3cb20234d9ddecd4f05ca106f106c0297b4ac840ceffaa7fc7a",
+            "left_bytes": 8579,
+            "right_bytes": 8579,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "boundtop.o",
+            "left_sha256": "e97e8e245700c0a45ed2b21968dc73e79d86251de0dcb2d37b4ed739279574eb",
+            "right_sha256": "e97e8e245700c0a45ed2b21968dc73e79d86251de0dcb2d37b4ed739279574eb",
+            "left_bytes": 26162,
+            "right_bytes": 26162,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "day_donor.exe",
+            "left_sha256": "2f07ff77dbc3f979d0deee4142617537df56cc80c9aec1b9265b00190854ecaf",
+            "right_sha256": "6c58f35773fc7f42760b66aebfbc97580f4515f0da9ea5a02fab6efe4a40428b",
+            "left_bytes": 2237546,
+            "right_bytes": 2237546,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "2f07ff77dbc3f979d0deee4142617537df56cc80c9aec1b9265b00190854ecaf",
+              "current_sha256": "6c58f35773fc7f42760b66aebfbc97580f4515f0da9ea5a02fab6efe4a40428b",
+              "old_image_base": 5368709120,
+              "current_image_base": 5368709120,
+              "actual_relocations": 1280,
+              "changed_byte_count": 3,
+              "changed_offsets": [
+                136,
+                216,
+                217
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "day_kernel.exe",
+            "left_sha256": "0bf7159f053de3ce66cc3bceeb5c45dbb1965c0ecbf0b355694ad67e129a069e",
+            "right_sha256": "b8315eeaf84adbb36a8e47c32132b2c628e8b98ac94894498220396198985487",
+            "left_bytes": 364079,
+            "right_bytes": 364079,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "0bf7159f053de3ce66cc3bceeb5c45dbb1965c0ecbf0b355694ad67e129a069e",
+              "current_sha256": "b8315eeaf84adbb36a8e47c32132b2c628e8b98ac94894498220396198985487",
+              "old_image_base": 5368709120,
+              "current_image_base": 5368709120,
+              "actual_relocations": 274,
+              "changed_byte_count": 3,
+              "changed_offsets": [
+                136,
+                216,
+                217
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "headcalc.o",
+            "left_sha256": "a9f3fadf2de1977844b0ff6874df9cc7817dddabde29d17012d468f6901d72c9",
+            "right_sha256": "a9f3fadf2de1977844b0ff6874df9cc7817dddabde29d17012d468f6901d72c9",
+            "left_bytes": 57932,
+            "right_bytes": 57932,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_age_output_state.mod",
+            "left_sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523",
+            "right_sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523",
+            "left_bytes": 2780,
+            "right_bytes": 2780,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_age_output_state.o",
+            "left_sha256": "8271a7faf65ac5f3af9196bc1d9306b373820bee76b856c62f36b3a2d90ede7b",
+            "right_sha256": "8271a7faf65ac5f3af9196bc1d9306b373820bee76b856c62f36b3a2d90ede7b",
+            "left_bytes": 1834,
+            "right_bytes": 1834,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_day_window.mod",
+            "left_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+            "right_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+            "left_bytes": 366,
+            "right_bytes": 366,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_implicit_pond_availability.mod",
+            "left_sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906",
+            "right_sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906",
+            "left_bytes": 1653,
+            "right_bytes": 1653,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_implicit_pond_event_state.mod",
+            "left_sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca",
+            "right_sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca",
+            "left_bytes": 1745,
+            "right_bytes": 1745,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_output_thermal_domain.mod",
+            "left_sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f",
+            "right_sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f",
+            "left_bytes": 306,
+            "right_bytes": 306,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_snow_undrained_root_state.mod",
+            "left_sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255",
+            "right_sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255",
+            "left_bytes": 1610,
+            "right_bytes": 1610,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_step_budget.mod",
+            "left_sha256": "1f195ed369ac5ed0c7e6a91d98790d314da85579b19495e3557297682e00b588",
+            "right_sha256": "1f195ed369ac5ed0c7e6a91d98790d314da85579b19495e3557297682e00b588",
+            "left_bytes": 2152,
+            "right_bytes": 2152,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_step_budget.o",
+            "left_sha256": "3a7bfd1973790f2ce1c7292d3d059e514b7225dcfb928a509a015c9f20cdd7ff",
+            "right_sha256": "3a7bfd1973790f2ce1c7292d3d059e514b7225dcfb928a509a015c9f20cdd7ff",
+            "left_bytes": 12746,
+            "right_bytes": 12746,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_thermal_output_snow_calendar_state.mod",
+            "left_sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959",
+            "right_sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959",
+            "left_bytes": 1965,
+            "right_bytes": 1965,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "implicit_pond_availability.o",
+            "left_sha256": "558981a46e549857b2a09db4016ca4a60eccbff5aa193b651ea939d6fdb02858",
+            "right_sha256": "558981a46e549857b2a09db4016ca4a60eccbff5aa193b651ea939d6fdb02858",
+            "left_bytes": 1861,
+            "right_bytes": 1861,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "implicit_pond_event_state.o",
+            "left_sha256": "5412a8187f0558dae82539c1b076d35e593e3746aa661993699bacfe6fee1f16",
+            "right_sha256": "5412a8187f0558dae82539c1b076d35e593e3746aa661993699bacfe6fee1f16",
+            "left_bytes": 3790,
+            "right_bytes": 3790,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "integral.o",
+            "left_sha256": "f29bb72b9efd8ea90e562374b8093c6d8cfb3b0a2782b31f44431558382eab9d",
+            "right_sha256": "f29bb72b9efd8ea90e562374b8093c6d8cfb3b0a2782b31f44431558382eab9d",
+            "left_bytes": 87573,
+            "right_bytes": 87573,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "irrigation.o",
+            "left_sha256": "dfc59e9ced88fc3ceace84f7123cb66af2e4e22ce0822259e83fd0b648539f7d",
+            "right_sha256": "dfc59e9ced88fc3ceace84f7123cb66af2e4e22ce0822259e83fd0b648539f7d",
+            "left_bytes": 81864,
+            "right_bytes": 81864,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "macropore.o",
+            "left_sha256": "c5fe0617f2a7a3be42faff65c4c636972031668987aadc9259c53a75ba4cc4e9",
+            "right_sha256": "c5fe0617f2a7a3be42faff65c4c636972031668987aadc9259c53a75ba4cc4e9",
+            "left_bytes": 515181,
+            "right_bytes": 515181,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_accepted_trajectory_directional_publication.mod",
+            "left_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+            "right_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+            "left_bytes": 4417,
+            "right_bytes": 4417,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_accepted_trajectory_directional_sensitivity.mod",
+            "left_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+            "right_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+            "left_bytes": 4709,
+            "right_bytes": 4709,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_canonical_contracts.mod",
+            "left_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+            "right_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+            "left_bytes": 12974,
+            "right_bytes": 12974,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_canonical_interval_runtime.mod",
+            "left_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+            "right_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+            "left_bytes": 12951,
+            "right_bytes": 12951,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_cropdevelopment.mod",
+            "left_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+            "right_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+            "left_bytes": 4009,
+            "right_bytes": 4009,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_fmr_soil_water_application_host.mod",
+            "left_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+            "right_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+            "left_bytes": 1313,
+            "right_bytes": 1313,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_coupling_contract.mod",
+            "left_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+            "right_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+            "left_bytes": 4100,
+            "right_bytes": 4100,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_interface_mass_ledger.mod",
+            "left_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+            "right_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+            "left_bytes": 6592,
+            "right_bytes": 6592,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_swap_forcing_adapter.mod",
+            "left_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+            "right_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+            "left_bytes": 24540,
+            "right_bytes": 24540,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_swap_transaction_participant.mod",
+            "left_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+            "right_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+            "left_bytes": 27203,
+            "right_bytes": 27203,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_integral.mod",
+            "left_sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed",
+            "right_sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed",
+            "left_bytes": 4362,
+            "right_bytes": 4362,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_irrigation.mod",
+            "left_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+            "right_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+            "left_bytes": 4286,
+            "right_bytes": 4286,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_kernel_transactions.mod",
+            "left_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+            "right_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+            "left_bytes": 23972,
+            "right_bytes": 23972,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_macropore.mod",
+            "left_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+            "right_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+            "left_bytes": 4157,
+            "right_bytes": 4157,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_meteo.mod",
+            "left_sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f",
+            "right_sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f",
+            "left_bytes": 1962,
+            "right_bytes": 1962,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_original_output_receipt.mod",
+            "left_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+            "right_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+            "left_bytes": 2331,
+            "right_bytes": 2331,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_original_output_receipt.o",
+            "left_sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d",
+            "right_sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d",
+            "left_bytes": 3663,
+            "right_bytes": 3663,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_rwu_micro.mod",
+            "left_sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448",
+            "right_sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448",
+            "left_bytes": 1154,
+            "right_bytes": 1154,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_soil_water_accepted_step_direction_contract.mod",
+            "left_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+            "right_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+            "left_bytes": 2006,
+            "right_bytes": 2006,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_timer.mod",
+            "left_sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a",
+            "right_sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a",
+            "left_bytes": 222,
+            "right_bytes": 222,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_top.mod",
+            "left_sha256": "71cc3adc487720fb4ab43122906b6e6b10c2c489a85906fb9d994454f1bfa2ea",
+            "right_sha256": "71cc3adc487720fb4ab43122906b6e6b10c2c489a85906fb9d994454f1bfa2ea",
+            "left_bytes": 587,
+            "right_bytes": 587,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_transaction_reference.mod",
+            "left_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+            "right_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+            "left_bytes": 6815,
+            "right_bytes": 6815,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_wofost.mod",
+            "left_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+            "right_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+            "left_bytes": 4134,
+            "right_bytes": 4134,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "o2_pars.mod",
+            "left_sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316",
+            "right_sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316",
+            "left_bytes": 1274,
+            "right_bytes": 1274,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "original_output_thermal_domain.o",
+            "left_sha256": "6e63e6fa52e9c87016b3e1a6d87956be6707f8ac71be2a3910b457c9a7953aa5",
+            "right_sha256": "6e63e6fa52e9c87016b3e1a6d87956be6707f8ac71be2a3910b457c9a7953aa5",
+            "left_bytes": 5729,
+            "right_bytes": 5729,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "oxygenstress.o",
+            "left_sha256": "6aa974ba2afdf8eba00b1c0157cd18673cd068929db1f5c3170a711009669705",
+            "right_sha256": "6aa974ba2afdf8eba00b1c0157cd18673cd068929db1f5c3170a711009669705",
+            "left_bytes": 47625,
+            "right_bytes": 47625,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "probe_kernel_donor.mod",
+            "left_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+            "right_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+            "left_bytes": 36537,
+            "right_bytes": 36537,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "readswap.o",
+            "left_sha256": "a247fc23162ac395fda35859d80530de6400cea0ac5fb64bb3af1f85ff2d1163",
+            "right_sha256": "a247fc23162ac395fda35859d80530de6400cea0ac5fb64bb3af1f85ff2d1163",
+            "left_bytes": 134539,
+            "right_bytes": 134539,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "restart_publish.dll",
+            "left_sha256": "681cd75f2b12c720ce66d570d3d9c13f22157da9bee432fe94191ea752fd40cd",
+            "right_sha256": "5de8403826bab0f80bde22be0f3b02975f81d9b82d01f12dcc7bfaf0853189db",
+            "left_bytes": 30291,
+            "right_bytes": 30291,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "681cd75f2b12c720ce66d570d3d9c13f22157da9bee432fe94191ea752fd40cd",
+              "current_sha256": "5de8403826bab0f80bde22be0f3b02975f81d9b82d01f12dcc7bfaf0853189db",
+              "old_image_base": 13975224320,
+              "current_image_base": 15566176256,
+              "actual_relocations": 15,
+              "changed_byte_count": 36,
+              "changed_offsets": [
+                136,
+                178,
+                179,
+                216,
+                217,
+                6658,
+                6659,
+                7538,
+                7539,
+                7554,
+                7555,
+                7570,
+                7571,
+                7586,
+                7587,
+                7602,
+                7603,
+                7618,
+                7619,
+                7634,
+                7635,
+                7650,
+                7651,
+                7666,
+                7667,
+                7682,
+                7683,
+                7698,
+                7699,
+                7714,
+                7715,
+                7730,
+                7731,
+                8570,
+                8571,
+                9732
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "swap.o",
+            "left_sha256": "5b5efab7154d84db3dfdc84e59c1ed5d5818fd95282c4b5ab402dc3d174be9df",
+            "right_sha256": "5b5efab7154d84db3dfdc84e59c1ed5d5818fd95282c4b5ab402dc3d174be9df",
+            "left_bytes": 47736,
+            "right_bytes": 47736,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_csv_output.mod",
+            "left_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+            "right_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+            "left_bytes": 2955,
+            "right_bytes": 2955,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_csv_output.o",
+            "left_sha256": "0e762f400f67c2db42e47a48f1088610da31d3a0d58287e22e637931fb073482",
+            "right_sha256": "0e762f400f67c2db42e47a48f1088610da31d3a0d58287e22e637931fb073482",
+            "left_bytes": 297397,
+            "right_bytes": 297397,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_exchange.mod",
+            "left_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+            "right_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+            "left_bytes": 1470,
+            "right_bytes": 1470,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_main.o",
+            "left_sha256": "ebb08fe373d8c2057420ebcf79573c70f58fc4b911f17168f3b57324ac67ddc7",
+            "right_sha256": "ebb08fe373d8c2057420ebcf79573c70f58fc4b911f17168f3b57324ac67ddc7",
+            "left_bytes": 11253,
+            "right_bytes": 11253,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swapoutput.o",
+            "left_sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213",
+            "right_sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213",
+            "left_bytes": 108454,
+            "right_bytes": 108454,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "thermal_output_snow_calendar_state.o",
+            "left_sha256": "55c55333e804f62dfe3a2b797ce8bf6def02fb6ce0d225c6248c625253bbc24f",
+            "right_sha256": "55c55333e804f62dfe3a2b797ce8bf6def02fb6ce0d225c6248c625253bbc24f",
+            "left_bytes": 8615,
+            "right_bytes": 8615,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "timecontrol.o",
+            "left_sha256": "b9c1446a8676a4fa32a760223e318fbebc74a13ce2e5e78fc728a1f6a1f5914f",
+            "right_sha256": "b9c1446a8676a4fa32a760223e318fbebc74a13ce2e5e78fc728a1f6a1f5914f",
+            "left_bytes": 40996,
+            "right_bytes": 40996,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "wofost.o",
+            "left_sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822",
+            "right_sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822",
+            "left_bytes": 105790,
+            "right_bytes": 105790,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          }
+        ],
+        "raw_bytes_rewritten": false,
+        "model_executions": 0,
+        "compiler_executions_in_reader": 0
+      }
+    },
+    {
+      "kind": "cde",
+      "optimization": "O0",
+      "actual_parent": {
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-cde-O0-actual-parent-v1",
+        "status": "ACTUAL_PRIOR_SNOW_COMPILE_ONLY_RETURNED",
+        "source": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "actual_start_HEAD": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "actual_end_HEAD": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "kind": "cde",
+        "optimization": "O0",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-cde-O0-actual-parent-v1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\cde",
+        "returncode": 0,
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\cde",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-day-seed-v1",
+          "--reference-work",
+          "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O0",
+          "--kernel-opt",
+          "O0",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-cde-O0-actual-parent-v1\\bundle"
+        ],
+        "model_executions": 0,
+        "canonical_admission": false
+      },
+      "actual_candidate": {
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-cde-O0-candidate-v1",
+        "status": "ACTUAL_PRIOR_SNOW_COMPILE_ONLY_RETURNED",
+        "source": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "actual_start_HEAD": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "actual_end_HEAD": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "kind": "cde",
+        "optimization": "O0",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-cde-O0-candidate-v1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\cde",
+        "returncode": 0,
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\cde",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-day-seed-v1",
+          "--reference-work",
+          "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O0",
+          "--kernel-opt",
+          "O0",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-cde-O0-candidate-v1\\bundle"
+        ],
+        "model_executions": 0,
+        "canonical_admission": false
+      },
+      "generated_sources": [
+        {
+          "file": "age_output_calendar_probe.f90",
+          "actual_parent_sha256": "e49fa2675108ce2cda3621a4cab43c3e34535a213d57eafd763e075b20792b58",
+          "actual_candidate_sha256": "e49fa2675108ce2cda3621a4cab43c3e34535a213d57eafd763e075b20792b58"
+        },
+        {
+          "file": "boundtop.f90",
+          "actual_parent_sha256": "c609f1892e6f07a63f00512808c728d25619161b3734409e71a1472a276cbe61",
+          "actual_candidate_sha256": "c609f1892e6f07a63f00512808c728d25619161b3734409e71a1472a276cbe61"
+        },
+        {
+          "file": "cde_clock_events.f90",
+          "actual_parent_sha256": "5b5d54a1b5558fd38fb1368070f855394e7068aa69aeb4aece0a6b3288698964",
+          "actual_candidate_sha256": "5b5d54a1b5558fd38fb1368070f855394e7068aa69aeb4aece0a6b3288698964"
+        },
+        {
+          "file": "cde_interval_receipt.f90",
+          "actual_parent_sha256": "023ceb3252b5251059a4e4997d04e2f648cd8be2a15e04fd431e5606565dec7c",
+          "actual_candidate_sha256": "023ceb3252b5251059a4e4997d04e2f648cd8be2a15e04fd431e5606565dec7c"
+        },
+        {
+          "file": "headcalc.f90",
+          "actual_parent_sha256": "393c9c49d48d0f40580cf2720efe6ea9e1ec1f2c3a14750e4fc86461b10155ea",
+          "actual_candidate_sha256": "393c9c49d48d0f40580cf2720efe6ea9e1ec1f2c3a14750e4fc86461b10155ea"
+        },
+        {
+          "file": "hybrid_age_output_state.f90",
+          "actual_parent_sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de",
+          "actual_candidate_sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de"
+        },
+        {
+          "file": "hybrid_step_budget.f90",
+          "actual_parent_sha256": "40230f24d302e0d605585f3d66d8d912b1bdc41571f3bc44ca242d6a10677046",
+          "actual_candidate_sha256": "40230f24d302e0d605585f3d66d8d912b1bdc41571f3bc44ca242d6a10677046"
+        },
+        {
+          "file": "implicit_pond_availability.f90",
+          "actual_parent_sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7",
+          "actual_candidate_sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+        },
+        {
+          "file": "implicit_pond_event_state.f90",
+          "actual_parent_sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651",
+          "actual_candidate_sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+        },
+        {
+          "file": "integral.f90",
+          "actual_parent_sha256": "53393dd68b4669ca58de6591a0a36f79296271761fc450c9ebabd542719f2fd1",
+          "actual_candidate_sha256": "53393dd68b4669ca58de6591a0a36f79296271761fc450c9ebabd542719f2fd1"
+        },
+        {
+          "file": "irrigation.f90",
+          "actual_parent_sha256": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66",
+          "actual_candidate_sha256": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66"
+        },
+        {
+          "file": "macropore.f90",
+          "actual_parent_sha256": "2840b95934186032f5ec3573c52cbcafc33ee4a02a3376bca28fbb76611fd96c",
+          "actual_candidate_sha256": "2840b95934186032f5ec3573c52cbcafc33ee4a02a3376bca28fbb76611fd96c"
+        },
+        {
+          "file": "MOD_cropdevelopment.f90",
+          "actual_parent_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "actual_candidate_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+        },
+        {
+          "file": "MOD_meteo.f90",
+          "actual_parent_sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae",
+          "actual_candidate_sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+        },
+        {
+          "file": "mod_original_output_receipt.f90",
+          "actual_parent_sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e",
+          "actual_candidate_sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+        },
+        {
+          "file": "mod_subsurface_solute_source.f90",
+          "actual_parent_sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+          "actual_candidate_sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f"
+        },
+        {
+          "file": "original_cde_output_state.f90",
+          "actual_parent_sha256": "0b05d5b71639775bcb0ab949bb5cf353edbc0a5b79b40548649723af6333f321",
+          "actual_candidate_sha256": "0b05d5b71639775bcb0ab949bb5cf353edbc0a5b79b40548649723af6333f321"
+        },
+        {
+          "file": "original_output_thermal_domain.f90",
+          "actual_parent_sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209",
+          "actual_candidate_sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209"
+        },
+        {
+          "file": "oxygenstress.f90",
+          "actual_parent_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "actual_candidate_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f"
+        },
+        {
+          "file": "RWU_micro.f90",
+          "actual_parent_sha256": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+          "actual_candidate_sha256": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c"
+        },
+        {
+          "file": "snow_undrained_root_state.f90",
+          "actual_parent_sha256": "17b625d2eb12d344081b8493cfccf36f96333d0e229143154d13af2ad08ca7c8",
+          "actual_candidate_sha256": "17b625d2eb12d344081b8493cfccf36f96333d0e229143154d13af2ad08ca7c8"
+        },
+        {
+          "file": "solute.f90",
+          "actual_parent_sha256": "e4269c3cb6fc0649c1a3bdcc1673c02a9a7a56ec130ad1225edbad80c0aa1178",
+          "actual_candidate_sha256": "e4269c3cb6fc0649c1a3bdcc1673c02a9a7a56ec130ad1225edbad80c0aa1178"
+        },
+        {
+          "file": "swap.f90",
+          "actual_parent_sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0",
+          "actual_candidate_sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0"
+        },
+        {
+          "file": "swapoutput.f90",
+          "actual_parent_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "actual_candidate_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+        },
+        {
+          "file": "swap_csv_output.f90",
+          "actual_parent_sha256": "fe5efd0d2f2d1f3f5837c62d8101104d30441b86655b8e8f3c852390624039c5",
+          "actual_candidate_sha256": "fe5efd0d2f2d1f3f5837c62d8101104d30441b86655b8e8f3c852390624039c5"
+        },
+        {
+          "file": "swap_main.f90",
+          "actual_parent_sha256": "994867ed726957a39c7c68962b6493b6a286328fce9d3df2e1c1e33840d8499a",
+          "actual_candidate_sha256": "994867ed726957a39c7c68962b6493b6a286328fce9d3df2e1c1e33840d8499a"
+        },
+        {
+          "file": "thermal_output_snow_calendar_state.f90",
+          "actual_parent_sha256": "3afb9bb69a87d8fa6b57b2885b88d23b1be761da707a5ff6fb99e70596ab594d",
+          "actual_candidate_sha256": "3afb9bb69a87d8fa6b57b2885b88d23b1be761da707a5ff6fb99e70596ab594d"
+        },
+        {
+          "file": "timecontrol.f90",
+          "actual_parent_sha256": "5fa11fda589ed87de9f7e4deb168bdcbe0da9212dfad8b7d85b1ab901f14347b",
+          "actual_candidate_sha256": "5fa11fda589ed87de9f7e4deb168bdcbe0da9212dfad8b7d85b1ab901f14347b"
+        },
+        {
+          "file": "wofost.f90",
+          "actual_parent_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "actual_candidate_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+        }
+      ],
+      "compiled": {
+        "status": "ALL_ACTUAL_GENERATED_OBJECT_MODULE_EXECUTABLE_PUBLISHER_CODE_DATA_POSTIMAGES_VERIFIED",
+        "files": [
+          {
+            "file": "MOD_cropdevelopment.o",
+            "left_sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4",
+            "right_sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4",
+            "left_bytes": 113751,
+            "right_bytes": 113751,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "MOD_meteo.o",
+            "left_sha256": "187f51d97e3add64adca7f813ec9a4f01c4871e10cc9382e26cb27c5717a6994",
+            "right_sha256": "187f51d97e3add64adca7f813ec9a4f01c4871e10cc9382e26cb27c5717a6994",
+            "left_bytes": 147425,
+            "right_bytes": 147425,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "RWU_micro.o",
+            "left_sha256": "219651f54dbc7d96f4cb43daf61c6070f9adb2c4028acad6088ad9ca31a9b3b6",
+            "right_sha256": "219651f54dbc7d96f4cb43daf61c6070f9adb2c4028acad6088ad9ca31a9b3b6",
+            "left_bytes": 74477,
+            "right_bytes": 74477,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "age_output_calendar_probe.o",
+            "left_sha256": "5ef5d13f670d3e91db007581381e113476b8e69acfbfa1af018a5c0d7303696f",
+            "right_sha256": "5ef5d13f670d3e91db007581381e113476b8e69acfbfa1af018a5c0d7303696f",
+            "left_bytes": 15417,
+            "right_bytes": 15417,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "boundtop.o",
+            "left_sha256": "e97e8e245700c0a45ed2b21968dc73e79d86251de0dcb2d37b4ed739279574eb",
+            "right_sha256": "e97e8e245700c0a45ed2b21968dc73e79d86251de0dcb2d37b4ed739279574eb",
+            "left_bytes": 26162,
+            "right_bytes": 26162,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "cde_interval_receipt.o",
+            "left_sha256": "2715d96a4a0ae7b96f87b154c1766e18f226527d798dcec56a0572a8678d1701",
+            "right_sha256": "2715d96a4a0ae7b96f87b154c1766e18f226527d798dcec56a0572a8678d1701",
+            "left_bytes": 4918,
+            "right_bytes": 4918,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "day_donor.exe",
+            "left_sha256": "bd723a6b3aa633599e5a4d22ffe182030856ee8dac344c52fc53943f30c8f339",
+            "right_sha256": "0967b736e6ca6486f89a523b246f2b8abcb0cdae7ab743c6166ac8868d1d1414",
+            "left_bytes": 2262478,
+            "right_bytes": 2262478,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "bd723a6b3aa633599e5a4d22ffe182030856ee8dac344c52fc53943f30c8f339",
+              "current_sha256": "0967b736e6ca6486f89a523b246f2b8abcb0cdae7ab743c6166ac8868d1d1414",
+              "old_image_base": 5368709120,
+              "current_image_base": 5368709120,
+              "actual_relocations": 1282,
+              "changed_byte_count": 2,
+              "changed_offsets": [
+                136,
+                216
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "day_kernel.exe",
+            "left_sha256": "20642f96cb1bb09c0de4f81acb72a9cd896596bc64644e0d029ff0e9ad5c11f4",
+            "right_sha256": "8dbed5d1f4512452718f080e8c08830613b2c4cc9d8669e4f40357dfcdd7bb1a",
+            "left_bytes": 364079,
+            "right_bytes": 364079,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "20642f96cb1bb09c0de4f81acb72a9cd896596bc64644e0d029ff0e9ad5c11f4",
+              "current_sha256": "8dbed5d1f4512452718f080e8c08830613b2c4cc9d8669e4f40357dfcdd7bb1a",
+              "old_image_base": 5368709120,
+              "current_image_base": 5368709120,
+              "actual_relocations": 274,
+              "changed_byte_count": 2,
+              "changed_offsets": [
+                136,
+                216
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "headcalc.o",
+            "left_sha256": "748b4c05d19e7976f298848d73d0638ccd301e07d76aeb64ec30819047c00726",
+            "right_sha256": "748b4c05d19e7976f298848d73d0638ccd301e07d76aeb64ec30819047c00726",
+            "left_bytes": 58088,
+            "right_bytes": 58088,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_age_output_state.mod",
+            "left_sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523",
+            "right_sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523",
+            "left_bytes": 2780,
+            "right_bytes": 2780,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_age_output_state.o",
+            "left_sha256": "8271a7faf65ac5f3af9196bc1d9306b373820bee76b856c62f36b3a2d90ede7b",
+            "right_sha256": "8271a7faf65ac5f3af9196bc1d9306b373820bee76b856c62f36b3a2d90ede7b",
+            "left_bytes": 1834,
+            "right_bytes": 1834,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_cde_interval_receipt.mod",
+            "left_sha256": "e108ce579fdc3063dbe3b9d760130ff7301429acf4b592ec8b0db144d0da9a2b",
+            "right_sha256": "e108ce579fdc3063dbe3b9d760130ff7301429acf4b592ec8b0db144d0da9a2b",
+            "left_bytes": 2062,
+            "right_bytes": 2062,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_day_window.mod",
+            "left_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+            "right_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+            "left_bytes": 366,
+            "right_bytes": 366,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_implicit_pond_availability.mod",
+            "left_sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906",
+            "right_sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906",
+            "left_bytes": 1653,
+            "right_bytes": 1653,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_implicit_pond_event_state.mod",
+            "left_sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca",
+            "right_sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca",
+            "left_bytes": 1745,
+            "right_bytes": 1745,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_original_cde_output_state.mod",
+            "left_sha256": "9304b544b6fd670f0694142a78fc282747709be70e928f83cf25295f20fcb6c8",
+            "right_sha256": "9304b544b6fd670f0694142a78fc282747709be70e928f83cf25295f20fcb6c8",
+            "left_bytes": 1611,
+            "right_bytes": 1611,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_original_cde_output_state.smod",
+            "left_sha256": "dfc45a99447990b4f204bac76bcad5d38071cef850ade90833803bb788061d1b",
+            "right_sha256": "dfc45a99447990b4f204bac76bcad5d38071cef850ade90833803bb788061d1b",
+            "left_bytes": 2687,
+            "right_bytes": 2687,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_output_thermal_domain.mod",
+            "left_sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f",
+            "right_sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f",
+            "left_bytes": 306,
+            "right_bytes": 306,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_snow_undrained_root_state.mod",
+            "left_sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255",
+            "right_sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255",
+            "left_bytes": 1610,
+            "right_bytes": 1610,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_step_budget.mod",
+            "left_sha256": "1f195ed369ac5ed0c7e6a91d98790d314da85579b19495e3557297682e00b588",
+            "right_sha256": "1f195ed369ac5ed0c7e6a91d98790d314da85579b19495e3557297682e00b588",
+            "left_bytes": 2152,
+            "right_bytes": 2152,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_step_budget.o",
+            "left_sha256": "020b154e0ae60198abbedf877240af1da2fa6f649ba08a0b872d054ed4619a73",
+            "right_sha256": "020b154e0ae60198abbedf877240af1da2fa6f649ba08a0b872d054ed4619a73",
+            "left_bytes": 12746,
+            "right_bytes": 12746,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_thermal_output_snow_calendar_state.mod",
+            "left_sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959",
+            "right_sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959",
+            "left_bytes": 1965,
+            "right_bytes": 1965,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "implicit_pond_availability.o",
+            "left_sha256": "558981a46e549857b2a09db4016ca4a60eccbff5aa193b651ea939d6fdb02858",
+            "right_sha256": "558981a46e549857b2a09db4016ca4a60eccbff5aa193b651ea939d6fdb02858",
+            "left_bytes": 1861,
+            "right_bytes": 1861,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "implicit_pond_event_state.o",
+            "left_sha256": "5412a8187f0558dae82539c1b076d35e593e3746aa661993699bacfe6fee1f16",
+            "right_sha256": "5412a8187f0558dae82539c1b076d35e593e3746aa661993699bacfe6fee1f16",
+            "left_bytes": 3790,
+            "right_bytes": 3790,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "integral.o",
+            "left_sha256": "a8f608fbf916c86cf57fb2e422cc26c86f64acfa71acac4f96d542e0fd8320df",
+            "right_sha256": "a8f608fbf916c86cf57fb2e422cc26c86f64acfa71acac4f96d542e0fd8320df",
+            "left_bytes": 87841,
+            "right_bytes": 87841,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "irrigation.o",
+            "left_sha256": "ff5b87299ebe42116ce97649f0aaf43723af3776369ca55496392fd28503507a",
+            "right_sha256": "ff5b87299ebe42116ce97649f0aaf43723af3776369ca55496392fd28503507a",
+            "left_bytes": 82092,
+            "right_bytes": 82092,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "macropore.o",
+            "left_sha256": "e39580df41c7e30ffb51d5755bbbf3fa4af941b476018125ffc51e465abe2131",
+            "right_sha256": "e39580df41c7e30ffb51d5755bbbf3fa4af941b476018125ffc51e465abe2131",
+            "left_bytes": 520913,
+            "right_bytes": 520913,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_accepted_trajectory_directional_publication.mod",
+            "left_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+            "right_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+            "left_bytes": 4417,
+            "right_bytes": 4417,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_accepted_trajectory_directional_sensitivity.mod",
+            "left_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+            "right_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+            "left_bytes": 4709,
+            "right_bytes": 4709,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_canonical_contracts.mod",
+            "left_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+            "right_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+            "left_bytes": 12974,
+            "right_bytes": 12974,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_canonical_interval_runtime.mod",
+            "left_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+            "right_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+            "left_bytes": 12951,
+            "right_bytes": 12951,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_cropdevelopment.mod",
+            "left_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+            "right_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+            "left_bytes": 4009,
+            "right_bytes": 4009,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_fmr_soil_water_application_host.mod",
+            "left_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+            "right_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+            "left_bytes": 1313,
+            "right_bytes": 1313,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_coupling_contract.mod",
+            "left_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+            "right_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+            "left_bytes": 4100,
+            "right_bytes": 4100,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_interface_mass_ledger.mod",
+            "left_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+            "right_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+            "left_bytes": 6592,
+            "right_bytes": 6592,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_swap_forcing_adapter.mod",
+            "left_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+            "right_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+            "left_bytes": 24540,
+            "right_bytes": 24540,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_swap_transaction_participant.mod",
+            "left_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+            "right_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+            "left_bytes": 27203,
+            "right_bytes": 27203,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_integral.mod",
+            "left_sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed",
+            "right_sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed",
+            "left_bytes": 4362,
+            "right_bytes": 4362,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_irrigation.mod",
+            "left_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+            "right_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+            "left_bytes": 4286,
+            "right_bytes": 4286,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_kernel_transactions.mod",
+            "left_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+            "right_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+            "left_bytes": 23972,
+            "right_bytes": 23972,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_macropore.mod",
+            "left_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+            "right_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+            "left_bytes": 4157,
+            "right_bytes": 4157,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_meteo.mod",
+            "left_sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f",
+            "right_sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f",
+            "left_bytes": 1962,
+            "right_bytes": 1962,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_original_output_receipt.mod",
+            "left_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+            "right_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+            "left_bytes": 2331,
+            "right_bytes": 2331,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_original_output_receipt.o",
+            "left_sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d",
+            "right_sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d",
+            "left_bytes": 3663,
+            "right_bytes": 3663,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_rwu_micro.mod",
+            "left_sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448",
+            "right_sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448",
+            "left_bytes": 1154,
+            "right_bytes": 1154,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_soil_water_accepted_step_direction_contract.mod",
+            "left_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+            "right_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+            "left_bytes": 2006,
+            "right_bytes": 2006,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_solute.mod",
+            "left_sha256": "df34f34dd42d0edacee29ebdfbbe6e42f84be1bcf89f0acbbadea2cab3d8d6f8",
+            "right_sha256": "df34f34dd42d0edacee29ebdfbbe6e42f84be1bcf89f0acbbadea2cab3d8d6f8",
+            "left_bytes": 1008,
+            "right_bytes": 1008,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_solute.smod",
+            "left_sha256": "4e3e9e6d748168f882ecc1d9814015d184db94c7d98615cd4d4f15368a9f21ee",
+            "right_sha256": "4e3e9e6d748168f882ecc1d9814015d184db94c7d98615cd4d4f15368a9f21ee",
+            "left_bytes": 1142,
+            "right_bytes": 1142,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_solute@mod_calc_agetracer.smod",
+            "left_sha256": "e2fa351f0590bbf880f5e1b85d9ebae752d206786b797de6fa6d329e553fb072",
+            "right_sha256": "e2fa351f0590bbf880f5e1b85d9ebae752d206786b797de6fa6d329e553fb072",
+            "left_bytes": 1523,
+            "right_bytes": 1523,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_solute@mod_solute_cde.smod",
+            "left_sha256": "44207d92ae7c9d5d406a9a3574b8d13f1ad178ceb557dfdea32a036a26bb7ac2",
+            "right_sha256": "44207d92ae7c9d5d406a9a3574b8d13f1ad178ceb557dfdea32a036a26bb7ac2",
+            "left_bytes": 3403,
+            "right_bytes": 3403,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_subsurface_solute_source.mod",
+            "left_sha256": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254",
+            "right_sha256": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254",
+            "left_bytes": 1868,
+            "right_bytes": 1868,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_subsurface_solute_source.o",
+            "left_sha256": "dd0186422bb4ae72c067d99e33d34380c8d4483ec2be3a23fb670f04176b0c5a",
+            "right_sha256": "dd0186422bb4ae72c067d99e33d34380c8d4483ec2be3a23fb670f04176b0c5a",
+            "left_bytes": 4106,
+            "right_bytes": 4106,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_timer.mod",
+            "left_sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a",
+            "right_sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a",
+            "left_bytes": 222,
+            "right_bytes": 222,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_top.mod",
+            "left_sha256": "71cc3adc487720fb4ab43122906b6e6b10c2c489a85906fb9d994454f1bfa2ea",
+            "right_sha256": "71cc3adc487720fb4ab43122906b6e6b10c2c489a85906fb9d994454f1bfa2ea",
+            "left_bytes": 587,
+            "right_bytes": 587,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_transaction_reference.mod",
+            "left_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+            "right_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+            "left_bytes": 6815,
+            "right_bytes": 6815,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_wofost.mod",
+            "left_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+            "right_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+            "left_bytes": 4134,
+            "right_bytes": 4134,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "o2_pars.mod",
+            "left_sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316",
+            "right_sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316",
+            "left_bytes": 1274,
+            "right_bytes": 1274,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "original_cde_output_state.o",
+            "left_sha256": "e75c2ffdb2e0de39f71aae61c45ac463042e0082a0f82c7df5837d80edb38af9",
+            "right_sha256": "e75c2ffdb2e0de39f71aae61c45ac463042e0082a0f82c7df5837d80edb38af9",
+            "left_bytes": 17078,
+            "right_bytes": 17078,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "original_output_thermal_domain.o",
+            "left_sha256": "6e63e6fa52e9c87016b3e1a6d87956be6707f8ac71be2a3910b457c9a7953aa5",
+            "right_sha256": "6e63e6fa52e9c87016b3e1a6d87956be6707f8ac71be2a3910b457c9a7953aa5",
+            "left_bytes": 5729,
+            "right_bytes": 5729,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "oxygenstress.o",
+            "left_sha256": "6aa974ba2afdf8eba00b1c0157cd18673cd068929db1f5c3170a711009669705",
+            "right_sha256": "6aa974ba2afdf8eba00b1c0157cd18673cd068929db1f5c3170a711009669705",
+            "left_bytes": 47625,
+            "right_bytes": 47625,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "probe_kernel_donor.mod",
+            "left_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+            "right_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+            "left_bytes": 36537,
+            "right_bytes": 36537,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "restart_publish.dll",
+            "left_sha256": "ea37ba7d29cd781a81832f1894e5d838cc907325cb7f120692e394d1e392137d",
+            "right_sha256": "ce281a94068cfd8d9f912caef6e93f02e996851e42dc40378df96ee1fd7138a8",
+            "left_bytes": 30291,
+            "right_bytes": 30291,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "ea37ba7d29cd781a81832f1894e5d838cc907325cb7f120692e394d1e392137d",
+              "current_sha256": "ce281a94068cfd8d9f912caef6e93f02e996851e42dc40378df96ee1fd7138a8",
+              "old_image_base": 11348213760,
+              "current_image_base": 9921691648,
+              "actual_relocations": 15,
+              "changed_byte_count": 37,
+              "changed_offsets": [
+                136,
+                178,
+                179,
+                216,
+                217,
+                218,
+                6658,
+                6659,
+                7538,
+                7539,
+                7554,
+                7555,
+                7570,
+                7571,
+                7586,
+                7587,
+                7602,
+                7603,
+                7618,
+                7619,
+                7634,
+                7635,
+                7650,
+                7651,
+                7666,
+                7667,
+                7682,
+                7683,
+                7698,
+                7699,
+                7714,
+                7715,
+                7730,
+                7731,
+                8570,
+                8571,
+                9732
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "solute.o",
+            "left_sha256": "4d3f0e505a9fa1655e0dd38941c5891377b92550674f681ea24642a6a0415f7a",
+            "right_sha256": "4d3f0e505a9fa1655e0dd38941c5891377b92550674f681ea24642a6a0415f7a",
+            "left_bytes": 103371,
+            "right_bytes": 103371,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap.o",
+            "left_sha256": "5b5efab7154d84db3dfdc84e59c1ed5d5818fd95282c4b5ab402dc3d174be9df",
+            "right_sha256": "5b5efab7154d84db3dfdc84e59c1ed5d5818fd95282c4b5ab402dc3d174be9df",
+            "left_bytes": 47736,
+            "right_bytes": 47736,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_csv_output.mod",
+            "left_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+            "right_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+            "left_bytes": 2955,
+            "right_bytes": 2955,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_csv_output.o",
+            "left_sha256": "ec6233aa299343c3fa2e3511678a8f59031c9e044a91d2a83c59e16197f109e2",
+            "right_sha256": "ec6233aa299343c3fa2e3511678a8f59031c9e044a91d2a83c59e16197f109e2",
+            "left_bytes": 298457,
+            "right_bytes": 298457,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_exchange.mod",
+            "left_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+            "right_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+            "left_bytes": 1470,
+            "right_bytes": 1470,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_main.o",
+            "left_sha256": "e7ece79f24099428e018cf7bf890f9cf3c27ee6a7502ec6d6717a8c1bcb3ca54",
+            "right_sha256": "e7ece79f24099428e018cf7bf890f9cf3c27ee6a7502ec6d6717a8c1bcb3ca54",
+            "left_bytes": 11856,
+            "right_bytes": 11856,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swapoutput.o",
+            "left_sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213",
+            "right_sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213",
+            "left_bytes": 108454,
+            "right_bytes": 108454,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "thermal_output_snow_calendar_state.o",
+            "left_sha256": "b9459b5e1c536b5667e3025e85e70f188f1dbe3cef34cb557fa7c7410bd600a8",
+            "right_sha256": "b9459b5e1c536b5667e3025e85e70f188f1dbe3cef34cb557fa7c7410bd600a8",
+            "left_bytes": 8663,
+            "right_bytes": 8663,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "timecontrol.o",
+            "left_sha256": "b9c1446a8676a4fa32a760223e318fbebc74a13ce2e5e78fc728a1f6a1f5914f",
+            "right_sha256": "b9c1446a8676a4fa32a760223e318fbebc74a13ce2e5e78fc728a1f6a1f5914f",
+            "left_bytes": 40996,
+            "right_bytes": 40996,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "wofost.o",
+            "left_sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822",
+            "right_sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822",
+            "left_bytes": 105790,
+            "right_bytes": 105790,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          }
+        ],
+        "raw_bytes_rewritten": false,
+        "model_executions": 0,
+        "compiler_executions_in_reader": 0
+      }
+    },
+    {
+      "kind": "water",
+      "optimization": "O2",
+      "actual_parent": {
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-water-O2-actual-parent-v1",
+        "status": "ACTUAL_PRIOR_SNOW_COMPILE_ONLY_RETURNED",
+        "source": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "actual_start_HEAD": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "actual_end_HEAD": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "kind": "water",
+        "optimization": "O2",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-water-O2-actual-parent-v1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\water",
+        "returncode": 0,
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\water",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-day-seed-v1",
+          "--reference-work",
+          "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O2",
+          "--kernel-opt",
+          "O2",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-water-O2-actual-parent-v1\\bundle"
+        ],
+        "model_executions": 0,
+        "canonical_admission": false
+      },
+      "actual_candidate": {
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-water-O2-candidate-v1",
+        "status": "ACTUAL_PRIOR_SNOW_COMPILE_ONLY_RETURNED",
+        "source": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "actual_start_HEAD": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "actual_end_HEAD": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "kind": "water",
+        "optimization": "O2",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-water-O2-candidate-v1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\water",
+        "returncode": 0,
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\water",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-day-seed-v1",
+          "--reference-work",
+          "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O2",
+          "--kernel-opt",
+          "O2",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-water-O2-candidate-v1\\bundle"
+        ],
+        "model_executions": 0,
+        "canonical_admission": false
+      },
+      "generated_sources": [
+        {
+          "file": "age_output_calendar_probe.f90",
+          "actual_parent_sha256": "52e5590e7106030ddb524541ef0f042a9402c74b35b47f5d83b0022b14e30817",
+          "actual_candidate_sha256": "52e5590e7106030ddb524541ef0f042a9402c74b35b47f5d83b0022b14e30817"
+        },
+        {
+          "file": "boundtop.f90",
+          "actual_parent_sha256": "c609f1892e6f07a63f00512808c728d25619161b3734409e71a1472a276cbe61",
+          "actual_candidate_sha256": "c609f1892e6f07a63f00512808c728d25619161b3734409e71a1472a276cbe61"
+        },
+        {
+          "file": "headcalc.f90",
+          "actual_parent_sha256": "97babc84da6766e32c305abf7879b79cf67184c6756d3042a66a850e25fab4aa",
+          "actual_candidate_sha256": "97babc84da6766e32c305abf7879b79cf67184c6756d3042a66a850e25fab4aa"
+        },
+        {
+          "file": "hybrid_age_output_state.f90",
+          "actual_parent_sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de",
+          "actual_candidate_sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de"
+        },
+        {
+          "file": "hybrid_step_budget.f90",
+          "actual_parent_sha256": "91af7be7d680fffe02e3e78205503ab8c986eb4b8ee3bdd103e4b835706f9bec",
+          "actual_candidate_sha256": "91af7be7d680fffe02e3e78205503ab8c986eb4b8ee3bdd103e4b835706f9bec"
+        },
+        {
+          "file": "implicit_pond_availability.f90",
+          "actual_parent_sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7",
+          "actual_candidate_sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+        },
+        {
+          "file": "implicit_pond_event_state.f90",
+          "actual_parent_sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651",
+          "actual_candidate_sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+        },
+        {
+          "file": "integral.f90",
+          "actual_parent_sha256": "ca3b9716a588fdd213135ee43b52fe41edfa4850b6333ba28a83c66d72e762a0",
+          "actual_candidate_sha256": "ca3b9716a588fdd213135ee43b52fe41edfa4850b6333ba28a83c66d72e762a0"
+        },
+        {
+          "file": "irrigation.f90",
+          "actual_parent_sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d",
+          "actual_candidate_sha256": "70a452b171e00cf782169f138fc8644ca7cbbb0f121eaed1bb69b055c6d1472d"
+        },
+        {
+          "file": "macropore.f90",
+          "actual_parent_sha256": "50b8fd351c8d3c973efe5efa0441aac1c9e693cb6cec10c50eb11dc8218588ff",
+          "actual_candidate_sha256": "50b8fd351c8d3c973efe5efa0441aac1c9e693cb6cec10c50eb11dc8218588ff"
+        },
+        {
+          "file": "MOD_cropdevelopment.f90",
+          "actual_parent_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "actual_candidate_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+        },
+        {
+          "file": "MOD_meteo.f90",
+          "actual_parent_sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae",
+          "actual_candidate_sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+        },
+        {
+          "file": "mod_original_output_receipt.f90",
+          "actual_parent_sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e",
+          "actual_candidate_sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+        },
+        {
+          "file": "original_output_thermal_domain.f90",
+          "actual_parent_sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209",
+          "actual_candidate_sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209"
+        },
+        {
+          "file": "oxygenstress.f90",
+          "actual_parent_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "actual_candidate_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f"
+        },
+        {
+          "file": "readswap.f90",
+          "actual_parent_sha256": "84623b684079644773465fa94c3513762f213adb8eeaf8127de82aa0142cc4e6",
+          "actual_candidate_sha256": "84623b684079644773465fa94c3513762f213adb8eeaf8127de82aa0142cc4e6"
+        },
+        {
+          "file": "RWU_micro.f90",
+          "actual_parent_sha256": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+          "actual_candidate_sha256": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c"
+        },
+        {
+          "file": "snow_undrained_root_state.f90",
+          "actual_parent_sha256": "148ec08348f12cc76781363356f6f19e2c733aac9c8ed2bf99cfea0729e536c4",
+          "actual_candidate_sha256": "148ec08348f12cc76781363356f6f19e2c733aac9c8ed2bf99cfea0729e536c4"
+        },
+        {
+          "file": "swap.f90",
+          "actual_parent_sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0",
+          "actual_candidate_sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0"
+        },
+        {
+          "file": "swapoutput.f90",
+          "actual_parent_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "actual_candidate_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+        },
+        {
+          "file": "swap_csv_output.f90",
+          "actual_parent_sha256": "430425e333c1005e8656801cb018a8d17acd595f240e0ab6d9a2bfec39ba8375",
+          "actual_candidate_sha256": "430425e333c1005e8656801cb018a8d17acd595f240e0ab6d9a2bfec39ba8375"
+        },
+        {
+          "file": "swap_main.f90",
+          "actual_parent_sha256": "4a45874ec164d601494ebf8a2e7126aa96e7dd6ce9f3343f2690d0fc3e9b0725",
+          "actual_candidate_sha256": "4a45874ec164d601494ebf8a2e7126aa96e7dd6ce9f3343f2690d0fc3e9b0725"
+        },
+        {
+          "file": "thermal_output_snow_calendar_state.f90",
+          "actual_parent_sha256": "7cc3d72c8e235a68e16e856b20fe1b7fe75a25fafa902f19aec6af0fc5e48ce0",
+          "actual_candidate_sha256": "7cc3d72c8e235a68e16e856b20fe1b7fe75a25fafa902f19aec6af0fc5e48ce0"
+        },
+        {
+          "file": "timecontrol.f90",
+          "actual_parent_sha256": "5fa11fda589ed87de9f7e4deb168bdcbe0da9212dfad8b7d85b1ab901f14347b",
+          "actual_candidate_sha256": "5fa11fda589ed87de9f7e4deb168bdcbe0da9212dfad8b7d85b1ab901f14347b"
+        },
+        {
+          "file": "wofost.f90",
+          "actual_parent_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "actual_candidate_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+        }
+      ],
+      "compiled": {
+        "status": "ALL_ACTUAL_GENERATED_OBJECT_MODULE_EXECUTABLE_PUBLISHER_CODE_DATA_POSTIMAGES_VERIFIED",
+        "files": [
+          {
+            "file": "MOD_cropdevelopment.o",
+            "left_sha256": "3dd5503c0e402b580da15834037bf0809226a2e61b72e5ab2801e5e2a6464455",
+            "right_sha256": "3dd5503c0e402b580da15834037bf0809226a2e61b72e5ab2801e5e2a6464455",
+            "left_bytes": 102229,
+            "right_bytes": 102229,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "MOD_meteo.o",
+            "left_sha256": "afaa16b2986104534b54478a55306f06deab0c8a9602ffd7e7967caf4bd71c71",
+            "right_sha256": "afaa16b2986104534b54478a55306f06deab0c8a9602ffd7e7967caf4bd71c71",
+            "left_bytes": 98705,
+            "right_bytes": 98705,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "RWU_micro.o",
+            "left_sha256": "490bb79b7841c4e78c2cbedb1cf1b6dd9a26f3df44113dd8257d50dd57597f17",
+            "right_sha256": "490bb79b7841c4e78c2cbedb1cf1b6dd9a26f3df44113dd8257d50dd57597f17",
+            "left_bytes": 52979,
+            "right_bytes": 52979,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "age_output_calendar_probe.o",
+            "left_sha256": "9a3649008173435f645e05a20b5c29ad8f59ce2d79c59f27acdc0e94086ec3ba",
+            "right_sha256": "9a3649008173435f645e05a20b5c29ad8f59ce2d79c59f27acdc0e94086ec3ba",
+            "left_bytes": 7875,
+            "right_bytes": 7875,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "boundtop.o",
+            "left_sha256": "e870c585b874723ce3d3c72ecde74aa1250f18048b56a4a59cd6a055ae762814",
+            "right_sha256": "e870c585b874723ce3d3c72ecde74aa1250f18048b56a4a59cd6a055ae762814",
+            "left_bytes": 22796,
+            "right_bytes": 22796,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "day_donor.exe",
+            "left_sha256": "2bda2deb16f29ec69b0394e12eb56ced9edd640ddf2970e762da01a6bcc937a5",
+            "right_sha256": "9fa33ce6adf968d9e407bc18c5d43672ac51fe312fd3727303548e515b5089f2",
+            "left_bytes": 2053144,
+            "right_bytes": 2053144,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "2bda2deb16f29ec69b0394e12eb56ced9edd640ddf2970e762da01a6bcc937a5",
+              "current_sha256": "9fa33ce6adf968d9e407bc18c5d43672ac51fe312fd3727303548e515b5089f2",
+              "old_image_base": 5368709120,
+              "current_image_base": 5368709120,
+              "actual_relocations": 1285,
+              "changed_byte_count": 2,
+              "changed_offsets": [
+                136,
+                216
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "day_kernel.exe",
+            "left_sha256": "ba02f73f67a9315a77c46e0fd1de4bdb66e0b8c8d3546da3d5160648c5c53293",
+            "right_sha256": "845fb28060e474e5a6dac92b23dbae8fbb9fd2ea38d4540a55795276fccee691",
+            "left_bytes": 255284,
+            "right_bytes": 255284,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "ba02f73f67a9315a77c46e0fd1de4bdb66e0b8c8d3546da3d5160648c5c53293",
+              "current_sha256": "845fb28060e474e5a6dac92b23dbae8fbb9fd2ea38d4540a55795276fccee691",
+              "old_image_base": 5368709120,
+              "current_image_base": 5368709120,
+              "actual_relocations": 276,
+              "changed_byte_count": 2,
+              "changed_offsets": [
+                136,
+                216
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "headcalc.o",
+            "left_sha256": "868437b0630f3df4fd50211553963c248f523cd37fd6d210f5c38cc2d128d3ef",
+            "right_sha256": "868437b0630f3df4fd50211553963c248f523cd37fd6d210f5c38cc2d128d3ef",
+            "left_bytes": 47993,
+            "right_bytes": 47993,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_age_output_state.mod",
+            "left_sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523",
+            "right_sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523",
+            "left_bytes": 2780,
+            "right_bytes": 2780,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_age_output_state.o",
+            "left_sha256": "e2e65256dc7aa999375e540174916435821ea5d3eb6b4ff6523f04358a754ae7",
+            "right_sha256": "e2e65256dc7aa999375e540174916435821ea5d3eb6b4ff6523f04358a754ae7",
+            "left_bytes": 1740,
+            "right_bytes": 1740,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_day_window.mod",
+            "left_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+            "right_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+            "left_bytes": 366,
+            "right_bytes": 366,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_implicit_pond_availability.mod",
+            "left_sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906",
+            "right_sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906",
+            "left_bytes": 1653,
+            "right_bytes": 1653,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_implicit_pond_event_state.mod",
+            "left_sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca",
+            "right_sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca",
+            "left_bytes": 1745,
+            "right_bytes": 1745,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_output_thermal_domain.mod",
+            "left_sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f",
+            "right_sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f",
+            "left_bytes": 306,
+            "right_bytes": 306,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_snow_undrained_root_state.mod",
+            "left_sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255",
+            "right_sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255",
+            "left_bytes": 1610,
+            "right_bytes": 1610,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_step_budget.mod",
+            "left_sha256": "1f195ed369ac5ed0c7e6a91d98790d314da85579b19495e3557297682e00b588",
+            "right_sha256": "1f195ed369ac5ed0c7e6a91d98790d314da85579b19495e3557297682e00b588",
+            "left_bytes": 2152,
+            "right_bytes": 2152,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_step_budget.o",
+            "left_sha256": "a797780642cb26b8db54131433254da0921e0ed2f29b67be5d3a3479fc7f0b43",
+            "right_sha256": "a797780642cb26b8db54131433254da0921e0ed2f29b67be5d3a3479fc7f0b43",
+            "left_bytes": 12422,
+            "right_bytes": 12422,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_thermal_output_snow_calendar_state.mod",
+            "left_sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959",
+            "right_sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959",
+            "left_bytes": 1965,
+            "right_bytes": 1965,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "implicit_pond_availability.o",
+            "left_sha256": "a08d36fb2f45ed2dfadfd1bbdfe7fb34614f3fc18d592f37cb54696485b18803",
+            "right_sha256": "a08d36fb2f45ed2dfadfd1bbdfe7fb34614f3fc18d592f37cb54696485b18803",
+            "left_bytes": 1423,
+            "right_bytes": 1423,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "implicit_pond_event_state.o",
+            "left_sha256": "e69201f49d65866464c9c897f002434241522e79238a57ff27d41fa16bab2735",
+            "right_sha256": "e69201f49d65866464c9c897f002434241522e79238a57ff27d41fa16bab2735",
+            "left_bytes": 3200,
+            "right_bytes": 3200,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "integral.o",
+            "left_sha256": "def6627b7df92d9fb5c661a92773e61abe08628e291c7f67b14380f526d1174b",
+            "right_sha256": "def6627b7df92d9fb5c661a92773e61abe08628e291c7f67b14380f526d1174b",
+            "left_bytes": 68278,
+            "right_bytes": 68278,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "irrigation.o",
+            "left_sha256": "e7072087eeee73b02eefb535b9ac228e4c0a2872f7d76d8e144d15487c6d21c1",
+            "right_sha256": "e7072087eeee73b02eefb535b9ac228e4c0a2872f7d76d8e144d15487c6d21c1",
+            "left_bytes": 78868,
+            "right_bytes": 78868,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "macropore.o",
+            "left_sha256": "fecc28effcf57ce791374f4180165e2c1b92c410fca59e19375fe541b6f40e95",
+            "right_sha256": "fecc28effcf57ce791374f4180165e2c1b92c410fca59e19375fe541b6f40e95",
+            "left_bytes": 496063,
+            "right_bytes": 496063,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_accepted_trajectory_directional_publication.mod",
+            "left_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+            "right_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+            "left_bytes": 4417,
+            "right_bytes": 4417,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_accepted_trajectory_directional_sensitivity.mod",
+            "left_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+            "right_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+            "left_bytes": 4709,
+            "right_bytes": 4709,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_canonical_contracts.mod",
+            "left_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+            "right_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+            "left_bytes": 12974,
+            "right_bytes": 12974,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_canonical_interval_runtime.mod",
+            "left_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+            "right_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+            "left_bytes": 12951,
+            "right_bytes": 12951,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_cropdevelopment.mod",
+            "left_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+            "right_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+            "left_bytes": 4009,
+            "right_bytes": 4009,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_fmr_soil_water_application_host.mod",
+            "left_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+            "right_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+            "left_bytes": 1313,
+            "right_bytes": 1313,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_coupling_contract.mod",
+            "left_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+            "right_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+            "left_bytes": 4100,
+            "right_bytes": 4100,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_interface_mass_ledger.mod",
+            "left_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+            "right_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+            "left_bytes": 6592,
+            "right_bytes": 6592,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_swap_forcing_adapter.mod",
+            "left_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+            "right_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+            "left_bytes": 24540,
+            "right_bytes": 24540,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_swap_transaction_participant.mod",
+            "left_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+            "right_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+            "left_bytes": 27203,
+            "right_bytes": 27203,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_integral.mod",
+            "left_sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed",
+            "right_sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed",
+            "left_bytes": 4362,
+            "right_bytes": 4362,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_irrigation.mod",
+            "left_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+            "right_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+            "left_bytes": 4286,
+            "right_bytes": 4286,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_kernel_transactions.mod",
+            "left_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+            "right_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+            "left_bytes": 23972,
+            "right_bytes": 23972,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_macropore.mod",
+            "left_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+            "right_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+            "left_bytes": 4157,
+            "right_bytes": 4157,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_meteo.mod",
+            "left_sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f",
+            "right_sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f",
+            "left_bytes": 1962,
+            "right_bytes": 1962,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_original_output_receipt.mod",
+            "left_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+            "right_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+            "left_bytes": 2331,
+            "right_bytes": 2331,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_original_output_receipt.o",
+            "left_sha256": "b48cc53e9d54c88993ec103f52f70deebb42be0162bb0da63d7f5a26156ce629",
+            "right_sha256": "b48cc53e9d54c88993ec103f52f70deebb42be0162bb0da63d7f5a26156ce629",
+            "left_bytes": 2751,
+            "right_bytes": 2751,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_rwu_micro.mod",
+            "left_sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448",
+            "right_sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448",
+            "left_bytes": 1154,
+            "right_bytes": 1154,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_soil_water_accepted_step_direction_contract.mod",
+            "left_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+            "right_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+            "left_bytes": 2006,
+            "right_bytes": 2006,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_timer.mod",
+            "left_sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a",
+            "right_sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a",
+            "left_bytes": 222,
+            "right_bytes": 222,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_top.mod",
+            "left_sha256": "71cc3adc487720fb4ab43122906b6e6b10c2c489a85906fb9d994454f1bfa2ea",
+            "right_sha256": "71cc3adc487720fb4ab43122906b6e6b10c2c489a85906fb9d994454f1bfa2ea",
+            "left_bytes": 587,
+            "right_bytes": 587,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_transaction_reference.mod",
+            "left_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+            "right_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+            "left_bytes": 6815,
+            "right_bytes": 6815,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_wofost.mod",
+            "left_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+            "right_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+            "left_bytes": 4134,
+            "right_bytes": 4134,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "o2_pars.mod",
+            "left_sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316",
+            "right_sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316",
+            "left_bytes": 1274,
+            "right_bytes": 1274,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "original_output_thermal_domain.o",
+            "left_sha256": "f9470b4d8117b57d1728ed3edcf0787ca62cf14608868c7876d3f6b50ccc74c8",
+            "right_sha256": "f9470b4d8117b57d1728ed3edcf0787ca62cf14608868c7876d3f6b50ccc74c8",
+            "left_bytes": 5397,
+            "right_bytes": 5397,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "oxygenstress.o",
+            "left_sha256": "b50a7ef49681094bcf80aed316d4c9119e1ad4df7cedcf8b9e148b0c642fbd66",
+            "right_sha256": "b50a7ef49681094bcf80aed316d4c9119e1ad4df7cedcf8b9e148b0c642fbd66",
+            "left_bytes": 37663,
+            "right_bytes": 37663,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "probe_kernel_donor.mod",
+            "left_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+            "right_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+            "left_bytes": 36537,
+            "right_bytes": 36537,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "readswap.o",
+            "left_sha256": "794e1c1ee1a7981b633b49ebe57795fb265a29dd430cebb22d0eed649f049ac2",
+            "right_sha256": "794e1c1ee1a7981b633b49ebe57795fb265a29dd430cebb22d0eed649f049ac2",
+            "left_bytes": 108737,
+            "right_bytes": 108737,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "restart_publish.dll",
+            "left_sha256": "903245de7aa70612c9fb7bf558f1acb7fa98f9ca729a5fb95f1ec7b6c840e5fc",
+            "right_sha256": "56c15f64bb0b35c35cc75c6afb91bcc1e8de856326a94cf573c236ff13d77aa0",
+            "left_bytes": 30291,
+            "right_bytes": 30291,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "903245de7aa70612c9fb7bf558f1acb7fa98f9ca729a5fb95f1ec7b6c840e5fc",
+              "current_sha256": "56c15f64bb0b35c35cc75c6afb91bcc1e8de856326a94cf573c236ff13d77aa0",
+              "old_image_base": 12317163520,
+              "current_image_base": 10167648256,
+              "actual_relocations": 15,
+              "changed_byte_count": 36,
+              "changed_offsets": [
+                136,
+                178,
+                179,
+                216,
+                217,
+                6658,
+                6659,
+                7538,
+                7539,
+                7554,
+                7555,
+                7570,
+                7571,
+                7586,
+                7587,
+                7602,
+                7603,
+                7618,
+                7619,
+                7634,
+                7635,
+                7650,
+                7651,
+                7666,
+                7667,
+                7682,
+                7683,
+                7698,
+                7699,
+                7714,
+                7715,
+                7730,
+                7731,
+                8570,
+                8571,
+                9732
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "swap.o",
+            "left_sha256": "143ea4194805177950615751bf73edbcebf997437bd85ed2e6228910d7e0f872",
+            "right_sha256": "143ea4194805177950615751bf73edbcebf997437bd85ed2e6228910d7e0f872",
+            "left_bytes": 46149,
+            "right_bytes": 46149,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_csv_output.mod",
+            "left_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+            "right_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+            "left_bytes": 2955,
+            "right_bytes": 2955,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_csv_output.o",
+            "left_sha256": "3eb0e3d20b42de4ae9dedea06f3b48169ac435a27f208888f6ee792901a03903",
+            "right_sha256": "3eb0e3d20b42de4ae9dedea06f3b48169ac435a27f208888f6ee792901a03903",
+            "left_bytes": 250567,
+            "right_bytes": 250567,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_exchange.mod",
+            "left_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+            "right_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+            "left_bytes": 1470,
+            "right_bytes": 1470,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_main.o",
+            "left_sha256": "76a7c740f4fff384d8847cfc5605ef593e17d91c79db2c56a2d92052f44f563f",
+            "right_sha256": "76a7c740f4fff384d8847cfc5605ef593e17d91c79db2c56a2d92052f44f563f",
+            "left_bytes": 11439,
+            "right_bytes": 11439,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swapoutput.o",
+            "left_sha256": "12c63bdce0287354b1e46a994720b3b81986a9d671b7743b6014f5a70a7c92aa",
+            "right_sha256": "12c63bdce0287354b1e46a994720b3b81986a9d671b7743b6014f5a70a7c92aa",
+            "left_bytes": 100326,
+            "right_bytes": 100326,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "thermal_output_snow_calendar_state.o",
+            "left_sha256": "47572055cb18fc4825ad51919b7be5e6e4755f5730115362b6c111599d1b3688",
+            "right_sha256": "47572055cb18fc4825ad51919b7be5e6e4755f5730115362b6c111599d1b3688",
+            "left_bytes": 8409,
+            "right_bytes": 8409,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "timecontrol.o",
+            "left_sha256": "05660750ba6bc6578bcb78fd60526d91df25d713d9975f3ba77af0635e1638a4",
+            "right_sha256": "05660750ba6bc6578bcb78fd60526d91df25d713d9975f3ba77af0635e1638a4",
+            "left_bytes": 37639,
+            "right_bytes": 37639,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "wofost.o",
+            "left_sha256": "3321c466eeec63a5cd420c5d4310416428cf0483c25d1254d94cc16431887525",
+            "right_sha256": "3321c466eeec63a5cd420c5d4310416428cf0483c25d1254d94cc16431887525",
+            "left_bytes": 85637,
+            "right_bytes": 85637,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          }
+        ],
+        "raw_bytes_rewritten": false,
+        "model_executions": 0,
+        "compiler_executions_in_reader": 0
+      }
+    },
+    {
+      "kind": "cde",
+      "optimization": "O2",
+      "actual_parent": {
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-cde-O2-actual-parent-v1",
+        "status": "ACTUAL_PRIOR_SNOW_COMPILE_ONLY_RETURNED",
+        "source": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "actual_start_HEAD": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "actual_end_HEAD": "04dadca2bf52027ef9c72360684c86bd98aa77ff",
+        "kind": "cde",
+        "optimization": "O2",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-cde-O2-actual-parent-v1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\cde",
+        "returncode": 0,
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\cde",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-day-seed-v1",
+          "--reference-work",
+          "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O2",
+          "--kernel-opt",
+          "O2",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-cde-O2-actual-parent-v1\\bundle"
+        ],
+        "model_executions": 0,
+        "canonical_admission": false
+      },
+      "actual_candidate": {
+        "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-cde-O2-candidate-v1",
+        "status": "ACTUAL_PRIOR_SNOW_COMPILE_ONLY_RETURNED",
+        "source": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "actual_start_HEAD": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "actual_end_HEAD": "bec5549e30b0a3d7d66b73e52437491a69f504a1",
+        "kind": "cde",
+        "optimization": "O2",
+        "build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-cde-O2-candidate-v1\\bundle",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\cde",
+        "returncode": 0,
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--model",
+          "HYBRID_NOMACRO_WATER",
+          "--experimental-project",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-snow-prior-original-inputs-v1\\cde",
+          "--original-output",
+          "--experimental-time-step-policy",
+          "original-adaptive-day-seed-v1",
+          "--reference-work",
+          "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+          "--build-only",
+          "--donor-opt",
+          "O2",
+          "--kernel-opt",
+          "O2",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\explicit-bottom9-snow-prior-cde-O2-candidate-v1\\bundle"
+        ],
+        "model_executions": 0,
+        "canonical_admission": false
+      },
+      "generated_sources": [
+        {
+          "file": "age_output_calendar_probe.f90",
+          "actual_parent_sha256": "e49fa2675108ce2cda3621a4cab43c3e34535a213d57eafd763e075b20792b58",
+          "actual_candidate_sha256": "e49fa2675108ce2cda3621a4cab43c3e34535a213d57eafd763e075b20792b58"
+        },
+        {
+          "file": "boundtop.f90",
+          "actual_parent_sha256": "c609f1892e6f07a63f00512808c728d25619161b3734409e71a1472a276cbe61",
+          "actual_candidate_sha256": "c609f1892e6f07a63f00512808c728d25619161b3734409e71a1472a276cbe61"
+        },
+        {
+          "file": "cde_clock_events.f90",
+          "actual_parent_sha256": "5b5d54a1b5558fd38fb1368070f855394e7068aa69aeb4aece0a6b3288698964",
+          "actual_candidate_sha256": "5b5d54a1b5558fd38fb1368070f855394e7068aa69aeb4aece0a6b3288698964"
+        },
+        {
+          "file": "cde_interval_receipt.f90",
+          "actual_parent_sha256": "023ceb3252b5251059a4e4997d04e2f648cd8be2a15e04fd431e5606565dec7c",
+          "actual_candidate_sha256": "023ceb3252b5251059a4e4997d04e2f648cd8be2a15e04fd431e5606565dec7c"
+        },
+        {
+          "file": "headcalc.f90",
+          "actual_parent_sha256": "393c9c49d48d0f40580cf2720efe6ea9e1ec1f2c3a14750e4fc86461b10155ea",
+          "actual_candidate_sha256": "393c9c49d48d0f40580cf2720efe6ea9e1ec1f2c3a14750e4fc86461b10155ea"
+        },
+        {
+          "file": "hybrid_age_output_state.f90",
+          "actual_parent_sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de",
+          "actual_candidate_sha256": "8f10325b36ddffc52eb65d7dd450f8e9ea67ac9394fa556dc71b8236514c76de"
+        },
+        {
+          "file": "hybrid_step_budget.f90",
+          "actual_parent_sha256": "40230f24d302e0d605585f3d66d8d912b1bdc41571f3bc44ca242d6a10677046",
+          "actual_candidate_sha256": "40230f24d302e0d605585f3d66d8d912b1bdc41571f3bc44ca242d6a10677046"
+        },
+        {
+          "file": "implicit_pond_availability.f90",
+          "actual_parent_sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7",
+          "actual_candidate_sha256": "ddb9bf2a4f1755dac221d270f40f28a24ce81d1d8291c481913d51714cb25ec7"
+        },
+        {
+          "file": "implicit_pond_event_state.f90",
+          "actual_parent_sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651",
+          "actual_candidate_sha256": "0aac6ca53c7d88a2793366ab726b56fbb1e71105cad62682a01867e7a3045651"
+        },
+        {
+          "file": "integral.f90",
+          "actual_parent_sha256": "53393dd68b4669ca58de6591a0a36f79296271761fc450c9ebabd542719f2fd1",
+          "actual_candidate_sha256": "53393dd68b4669ca58de6591a0a36f79296271761fc450c9ebabd542719f2fd1"
+        },
+        {
+          "file": "irrigation.f90",
+          "actual_parent_sha256": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66",
+          "actual_candidate_sha256": "62b07bc97439845dd88e764eff979dc173faeed0492651a87e4a4c1255137c66"
+        },
+        {
+          "file": "macropore.f90",
+          "actual_parent_sha256": "2840b95934186032f5ec3573c52cbcafc33ee4a02a3376bca28fbb76611fd96c",
+          "actual_candidate_sha256": "2840b95934186032f5ec3573c52cbcafc33ee4a02a3376bca28fbb76611fd96c"
+        },
+        {
+          "file": "MOD_cropdevelopment.f90",
+          "actual_parent_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5",
+          "actual_candidate_sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+        },
+        {
+          "file": "MOD_meteo.f90",
+          "actual_parent_sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae",
+          "actual_candidate_sha256": "c265397927e219787d294b1cfa273871c0e2dd90ecc1af371b954cfcddac6fae"
+        },
+        {
+          "file": "mod_original_output_receipt.f90",
+          "actual_parent_sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e",
+          "actual_candidate_sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+        },
+        {
+          "file": "mod_subsurface_solute_source.f90",
+          "actual_parent_sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f",
+          "actual_candidate_sha256": "0a5cf80aa06eecf23ad408292b710e56d616a2236acb8b26f14527f0f838fd0f"
+        },
+        {
+          "file": "original_cde_output_state.f90",
+          "actual_parent_sha256": "0b05d5b71639775bcb0ab949bb5cf353edbc0a5b79b40548649723af6333f321",
+          "actual_candidate_sha256": "0b05d5b71639775bcb0ab949bb5cf353edbc0a5b79b40548649723af6333f321"
+        },
+        {
+          "file": "original_output_thermal_domain.f90",
+          "actual_parent_sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209",
+          "actual_candidate_sha256": "e3e3b5f66787349d3075b67a3e0893cbe18a6d33891d9a75ef4ab17f7a14e209"
+        },
+        {
+          "file": "oxygenstress.f90",
+          "actual_parent_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+          "actual_candidate_sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f"
+        },
+        {
+          "file": "RWU_micro.f90",
+          "actual_parent_sha256": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c",
+          "actual_candidate_sha256": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c"
+        },
+        {
+          "file": "snow_undrained_root_state.f90",
+          "actual_parent_sha256": "17b625d2eb12d344081b8493cfccf36f96333d0e229143154d13af2ad08ca7c8",
+          "actual_candidate_sha256": "17b625d2eb12d344081b8493cfccf36f96333d0e229143154d13af2ad08ca7c8"
+        },
+        {
+          "file": "solute.f90",
+          "actual_parent_sha256": "e4269c3cb6fc0649c1a3bdcc1673c02a9a7a56ec130ad1225edbad80c0aa1178",
+          "actual_candidate_sha256": "e4269c3cb6fc0649c1a3bdcc1673c02a9a7a56ec130ad1225edbad80c0aa1178"
+        },
+        {
+          "file": "swap.f90",
+          "actual_parent_sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0",
+          "actual_candidate_sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0"
+        },
+        {
+          "file": "swapoutput.f90",
+          "actual_parent_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+          "actual_candidate_sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+        },
+        {
+          "file": "swap_csv_output.f90",
+          "actual_parent_sha256": "fe5efd0d2f2d1f3f5837c62d8101104d30441b86655b8e8f3c852390624039c5",
+          "actual_candidate_sha256": "fe5efd0d2f2d1f3f5837c62d8101104d30441b86655b8e8f3c852390624039c5"
+        },
+        {
+          "file": "swap_main.f90",
+          "actual_parent_sha256": "994867ed726957a39c7c68962b6493b6a286328fce9d3df2e1c1e33840d8499a",
+          "actual_candidate_sha256": "994867ed726957a39c7c68962b6493b6a286328fce9d3df2e1c1e33840d8499a"
+        },
+        {
+          "file": "thermal_output_snow_calendar_state.f90",
+          "actual_parent_sha256": "3afb9bb69a87d8fa6b57b2885b88d23b1be761da707a5ff6fb99e70596ab594d",
+          "actual_candidate_sha256": "3afb9bb69a87d8fa6b57b2885b88d23b1be761da707a5ff6fb99e70596ab594d"
+        },
+        {
+          "file": "timecontrol.f90",
+          "actual_parent_sha256": "5fa11fda589ed87de9f7e4deb168bdcbe0da9212dfad8b7d85b1ab901f14347b",
+          "actual_candidate_sha256": "5fa11fda589ed87de9f7e4deb168bdcbe0da9212dfad8b7d85b1ab901f14347b"
+        },
+        {
+          "file": "wofost.f90",
+          "actual_parent_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+          "actual_candidate_sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+        }
+      ],
+      "compiled": {
+        "status": "ALL_ACTUAL_GENERATED_OBJECT_MODULE_EXECUTABLE_PUBLISHER_CODE_DATA_POSTIMAGES_VERIFIED",
+        "files": [
+          {
+            "file": "MOD_cropdevelopment.o",
+            "left_sha256": "3dd5503c0e402b580da15834037bf0809226a2e61b72e5ab2801e5e2a6464455",
+            "right_sha256": "3dd5503c0e402b580da15834037bf0809226a2e61b72e5ab2801e5e2a6464455",
+            "left_bytes": 102229,
+            "right_bytes": 102229,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "MOD_meteo.o",
+            "left_sha256": "afaa16b2986104534b54478a55306f06deab0c8a9602ffd7e7967caf4bd71c71",
+            "right_sha256": "afaa16b2986104534b54478a55306f06deab0c8a9602ffd7e7967caf4bd71c71",
+            "left_bytes": 98705,
+            "right_bytes": 98705,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "RWU_micro.o",
+            "left_sha256": "490bb79b7841c4e78c2cbedb1cf1b6dd9a26f3df44113dd8257d50dd57597f17",
+            "right_sha256": "490bb79b7841c4e78c2cbedb1cf1b6dd9a26f3df44113dd8257d50dd57597f17",
+            "left_bytes": 52979,
+            "right_bytes": 52979,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "age_output_calendar_probe.o",
+            "left_sha256": "f91c060d39adb52da8e946da2f050b98905f8eca2a089a8b1de333b8fbe0bd3c",
+            "right_sha256": "f91c060d39adb52da8e946da2f050b98905f8eca2a089a8b1de333b8fbe0bd3c",
+            "left_bytes": 14379,
+            "right_bytes": 14379,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "boundtop.o",
+            "left_sha256": "e870c585b874723ce3d3c72ecde74aa1250f18048b56a4a59cd6a055ae762814",
+            "right_sha256": "e870c585b874723ce3d3c72ecde74aa1250f18048b56a4a59cd6a055ae762814",
+            "left_bytes": 22796,
+            "right_bytes": 22796,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "cde_interval_receipt.o",
+            "left_sha256": "12cb944a9407851bab6999857a66d0539abe3b8f93f32ae6d31c23777b6777f8",
+            "right_sha256": "12cb944a9407851bab6999857a66d0539abe3b8f93f32ae6d31c23777b6777f8",
+            "left_bytes": 4302,
+            "right_bytes": 4302,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "day_donor.exe",
+            "left_sha256": "4996713e7c612bc17a9346b00a03ac464bed32376cb1c7934382e97d8195f4af",
+            "right_sha256": "b0ef30c91d9cb2eb0134921b7fa9cbf3dbd3b537ce1a535ea7f2c0efeed1d2a1",
+            "left_bytes": 2072316,
+            "right_bytes": 2072316,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "4996713e7c612bc17a9346b00a03ac464bed32376cb1c7934382e97d8195f4af",
+              "current_sha256": "b0ef30c91d9cb2eb0134921b7fa9cbf3dbd3b537ce1a535ea7f2c0efeed1d2a1",
+              "old_image_base": 5368709120,
+              "current_image_base": 5368709120,
+              "actual_relocations": 1287,
+              "changed_byte_count": 3,
+              "changed_offsets": [
+                136,
+                216,
+                217
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "day_kernel.exe",
+            "left_sha256": "c65af7199c34a0ea12d65c836dfffd025962742c0f2fe97cf393c28f10f98dd6",
+            "right_sha256": "ab7d361ff516b6860417c455c54b91d7e464f2bcf1ee1d9eba592e714fabcabd",
+            "left_bytes": 255284,
+            "right_bytes": 255284,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "c65af7199c34a0ea12d65c836dfffd025962742c0f2fe97cf393c28f10f98dd6",
+              "current_sha256": "ab7d361ff516b6860417c455c54b91d7e464f2bcf1ee1d9eba592e714fabcabd",
+              "old_image_base": 5368709120,
+              "current_image_base": 5368709120,
+              "actual_relocations": 276,
+              "changed_byte_count": 3,
+              "changed_offsets": [
+                136,
+                216,
+                217
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "headcalc.o",
+            "left_sha256": "1e0a5be6c7a003708711708a6e7ededbcedf849aa4a8c3c1833c8392dee63061",
+            "right_sha256": "1e0a5be6c7a003708711708a6e7ededbcedf849aa4a8c3c1833c8392dee63061",
+            "left_bytes": 48181,
+            "right_bytes": 48181,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_age_output_state.mod",
+            "left_sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523",
+            "right_sha256": "7f2b4641f3349535d1138390627dbe3b47f0c6bc58cc4c1cfe7f86bdbe3d8523",
+            "left_bytes": 2780,
+            "right_bytes": 2780,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_age_output_state.o",
+            "left_sha256": "e2e65256dc7aa999375e540174916435821ea5d3eb6b4ff6523f04358a754ae7",
+            "right_sha256": "e2e65256dc7aa999375e540174916435821ea5d3eb6b4ff6523f04358a754ae7",
+            "left_bytes": 1740,
+            "right_bytes": 1740,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_cde_interval_receipt.mod",
+            "left_sha256": "e108ce579fdc3063dbe3b9d760130ff7301429acf4b592ec8b0db144d0da9a2b",
+            "right_sha256": "e108ce579fdc3063dbe3b9d760130ff7301429acf4b592ec8b0db144d0da9a2b",
+            "left_bytes": 2062,
+            "right_bytes": 2062,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_day_window.mod",
+            "left_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+            "right_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+            "left_bytes": 366,
+            "right_bytes": 366,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_implicit_pond_availability.mod",
+            "left_sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906",
+            "right_sha256": "506074c6c5eb2bb7750b32772cd62bfaab5eed78cf331a7773a2a5ea4fd48906",
+            "left_bytes": 1653,
+            "right_bytes": 1653,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_implicit_pond_event_state.mod",
+            "left_sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca",
+            "right_sha256": "728ff031457137d728f5b96155b4c18cb4423f6d457707b5f24114afa792f1ca",
+            "left_bytes": 1745,
+            "right_bytes": 1745,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_original_cde_output_state.mod",
+            "left_sha256": "9304b544b6fd670f0694142a78fc282747709be70e928f83cf25295f20fcb6c8",
+            "right_sha256": "9304b544b6fd670f0694142a78fc282747709be70e928f83cf25295f20fcb6c8",
+            "left_bytes": 1611,
+            "right_bytes": 1611,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_original_cde_output_state.smod",
+            "left_sha256": "dfc45a99447990b4f204bac76bcad5d38071cef850ade90833803bb788061d1b",
+            "right_sha256": "dfc45a99447990b4f204bac76bcad5d38071cef850ade90833803bb788061d1b",
+            "left_bytes": 2687,
+            "right_bytes": 2687,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_output_thermal_domain.mod",
+            "left_sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f",
+            "right_sha256": "0921e6d39f6d0cc3a8eea851599f19f1b1d1724d19329b77091afbf3bc748b5f",
+            "left_bytes": 306,
+            "right_bytes": 306,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_snow_undrained_root_state.mod",
+            "left_sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255",
+            "right_sha256": "9527e1d1efb9e29aef6733a712dc03566e6fbfa842ba0554fc93a28267f84255",
+            "left_bytes": 1610,
+            "right_bytes": 1610,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_step_budget.mod",
+            "left_sha256": "1f195ed369ac5ed0c7e6a91d98790d314da85579b19495e3557297682e00b588",
+            "right_sha256": "1f195ed369ac5ed0c7e6a91d98790d314da85579b19495e3557297682e00b588",
+            "left_bytes": 2152,
+            "right_bytes": 2152,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_step_budget.o",
+            "left_sha256": "e7c3c6e1b2716f1c2c1a8769d4cb6bd6e48efcb697bcca63d2f222760bf0e50a",
+            "right_sha256": "e7c3c6e1b2716f1c2c1a8769d4cb6bd6e48efcb697bcca63d2f222760bf0e50a",
+            "left_bytes": 12422,
+            "right_bytes": 12422,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "hybrid_thermal_output_snow_calendar_state.mod",
+            "left_sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959",
+            "right_sha256": "a2d3ee111b225ee63beec5954be54879d9ec1c20eb6b85182295d21f47370959",
+            "left_bytes": 1965,
+            "right_bytes": 1965,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "implicit_pond_availability.o",
+            "left_sha256": "a08d36fb2f45ed2dfadfd1bbdfe7fb34614f3fc18d592f37cb54696485b18803",
+            "right_sha256": "a08d36fb2f45ed2dfadfd1bbdfe7fb34614f3fc18d592f37cb54696485b18803",
+            "left_bytes": 1423,
+            "right_bytes": 1423,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "implicit_pond_event_state.o",
+            "left_sha256": "e69201f49d65866464c9c897f002434241522e79238a57ff27d41fa16bab2735",
+            "right_sha256": "e69201f49d65866464c9c897f002434241522e79238a57ff27d41fa16bab2735",
+            "left_bytes": 3200,
+            "right_bytes": 3200,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "integral.o",
+            "left_sha256": "385407415ea06a17e66c05d3aad62952c71fd1123f07b483f359d038ed7f9533",
+            "right_sha256": "385407415ea06a17e66c05d3aad62952c71fd1123f07b483f359d038ed7f9533",
+            "left_bytes": 68468,
+            "right_bytes": 68468,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "irrigation.o",
+            "left_sha256": "26bf6a21e73e37e7240e8e390cbf68d8473f76507ebdb9be3b265dcbba3906bd",
+            "right_sha256": "26bf6a21e73e37e7240e8e390cbf68d8473f76507ebdb9be3b265dcbba3906bd",
+            "left_bytes": 79148,
+            "right_bytes": 79148,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "macropore.o",
+            "left_sha256": "24ee6bec38a46ea2b689614a41803f6dd22d3e04d79a7999d712f55bb1b4f5ca",
+            "right_sha256": "24ee6bec38a46ea2b689614a41803f6dd22d3e04d79a7999d712f55bb1b4f5ca",
+            "left_bytes": 500811,
+            "right_bytes": 500811,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_accepted_trajectory_directional_publication.mod",
+            "left_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+            "right_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+            "left_bytes": 4417,
+            "right_bytes": 4417,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_accepted_trajectory_directional_sensitivity.mod",
+            "left_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+            "right_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+            "left_bytes": 4709,
+            "right_bytes": 4709,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_canonical_contracts.mod",
+            "left_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+            "right_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+            "left_bytes": 12974,
+            "right_bytes": 12974,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_canonical_interval_runtime.mod",
+            "left_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+            "right_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+            "left_bytes": 12951,
+            "right_bytes": 12951,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_cropdevelopment.mod",
+            "left_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+            "right_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+            "left_bytes": 4009,
+            "right_bytes": 4009,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_fmr_soil_water_application_host.mod",
+            "left_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+            "right_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+            "left_bytes": 1313,
+            "right_bytes": 1313,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_coupling_contract.mod",
+            "left_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+            "right_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+            "left_bytes": 4100,
+            "right_bytes": 4100,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_interface_mass_ledger.mod",
+            "left_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+            "right_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+            "left_bytes": 6592,
+            "right_bytes": 6592,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_swap_forcing_adapter.mod",
+            "left_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+            "right_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+            "left_bytes": 24540,
+            "right_bytes": 24540,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_groundwater_swap_transaction_participant.mod",
+            "left_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+            "right_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+            "left_bytes": 27203,
+            "right_bytes": 27203,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_integral.mod",
+            "left_sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed",
+            "right_sha256": "8d1ba63d4a832ebd1f2295a7182e090a8db388aaa3b6710be5de54d6842d35ed",
+            "left_bytes": 4362,
+            "right_bytes": 4362,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_irrigation.mod",
+            "left_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+            "right_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+            "left_bytes": 4286,
+            "right_bytes": 4286,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_kernel_transactions.mod",
+            "left_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+            "right_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+            "left_bytes": 23972,
+            "right_bytes": 23972,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_macropore.mod",
+            "left_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+            "right_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+            "left_bytes": 4157,
+            "right_bytes": 4157,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_meteo.mod",
+            "left_sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f",
+            "right_sha256": "c6c874d288bdac405d376a4fd42d819d491ee29778718d4660b287a549dcd33f",
+            "left_bytes": 1962,
+            "right_bytes": 1962,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_original_output_receipt.mod",
+            "left_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+            "right_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+            "left_bytes": 2331,
+            "right_bytes": 2331,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_original_output_receipt.o",
+            "left_sha256": "b48cc53e9d54c88993ec103f52f70deebb42be0162bb0da63d7f5a26156ce629",
+            "right_sha256": "b48cc53e9d54c88993ec103f52f70deebb42be0162bb0da63d7f5a26156ce629",
+            "left_bytes": 2751,
+            "right_bytes": 2751,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_rwu_micro.mod",
+            "left_sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448",
+            "right_sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448",
+            "left_bytes": 1154,
+            "right_bytes": 1154,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_soil_water_accepted_step_direction_contract.mod",
+            "left_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+            "right_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+            "left_bytes": 2006,
+            "right_bytes": 2006,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_solute.mod",
+            "left_sha256": "df34f34dd42d0edacee29ebdfbbe6e42f84be1bcf89f0acbbadea2cab3d8d6f8",
+            "right_sha256": "df34f34dd42d0edacee29ebdfbbe6e42f84be1bcf89f0acbbadea2cab3d8d6f8",
+            "left_bytes": 1008,
+            "right_bytes": 1008,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_solute.smod",
+            "left_sha256": "4e3e9e6d748168f882ecc1d9814015d184db94c7d98615cd4d4f15368a9f21ee",
+            "right_sha256": "4e3e9e6d748168f882ecc1d9814015d184db94c7d98615cd4d4f15368a9f21ee",
+            "left_bytes": 1142,
+            "right_bytes": 1142,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_solute@mod_calc_agetracer.smod",
+            "left_sha256": "e2fa351f0590bbf880f5e1b85d9ebae752d206786b797de6fa6d329e553fb072",
+            "right_sha256": "e2fa351f0590bbf880f5e1b85d9ebae752d206786b797de6fa6d329e553fb072",
+            "left_bytes": 1523,
+            "right_bytes": 1523,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_solute@mod_solute_cde.smod",
+            "left_sha256": "44207d92ae7c9d5d406a9a3574b8d13f1ad178ceb557dfdea32a036a26bb7ac2",
+            "right_sha256": "44207d92ae7c9d5d406a9a3574b8d13f1ad178ceb557dfdea32a036a26bb7ac2",
+            "left_bytes": 3403,
+            "right_bytes": 3403,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_subsurface_solute_source.mod",
+            "left_sha256": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254",
+            "right_sha256": "a5cb6f76850e945fce2e5105a3c2eea27b0affc245746eca3300d9cd897d1254",
+            "left_bytes": 1868,
+            "right_bytes": 1868,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_subsurface_solute_source.o",
+            "left_sha256": "eda9c98efb6b92a08716392bfa82bd53682fb97c4fa35abfa0e13908680d2cc4",
+            "right_sha256": "eda9c98efb6b92a08716392bfa82bd53682fb97c4fa35abfa0e13908680d2cc4",
+            "left_bytes": 2398,
+            "right_bytes": 2398,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_timer.mod",
+            "left_sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a",
+            "right_sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a",
+            "left_bytes": 222,
+            "right_bytes": 222,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_top.mod",
+            "left_sha256": "71cc3adc487720fb4ab43122906b6e6b10c2c489a85906fb9d994454f1bfa2ea",
+            "right_sha256": "71cc3adc487720fb4ab43122906b6e6b10c2c489a85906fb9d994454f1bfa2ea",
+            "left_bytes": 587,
+            "right_bytes": 587,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_transaction_reference.mod",
+            "left_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+            "right_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+            "left_bytes": 6815,
+            "right_bytes": 6815,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "mod_wofost.mod",
+            "left_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+            "right_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+            "left_bytes": 4134,
+            "right_bytes": 4134,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "o2_pars.mod",
+            "left_sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316",
+            "right_sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316",
+            "left_bytes": 1274,
+            "right_bytes": 1274,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "original_cde_output_state.o",
+            "left_sha256": "0b8a48636c95c44126cae81ba43fe0e789a31dd36fbf2965893f64acabbfd701",
+            "right_sha256": "0b8a48636c95c44126cae81ba43fe0e789a31dd36fbf2965893f64acabbfd701",
+            "left_bytes": 13678,
+            "right_bytes": 13678,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "original_output_thermal_domain.o",
+            "left_sha256": "f9470b4d8117b57d1728ed3edcf0787ca62cf14608868c7876d3f6b50ccc74c8",
+            "right_sha256": "f9470b4d8117b57d1728ed3edcf0787ca62cf14608868c7876d3f6b50ccc74c8",
+            "left_bytes": 5397,
+            "right_bytes": 5397,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "oxygenstress.o",
+            "left_sha256": "b50a7ef49681094bcf80aed316d4c9119e1ad4df7cedcf8b9e148b0c642fbd66",
+            "right_sha256": "b50a7ef49681094bcf80aed316d4c9119e1ad4df7cedcf8b9e148b0c642fbd66",
+            "left_bytes": 37663,
+            "right_bytes": 37663,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "probe_kernel_donor.mod",
+            "left_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+            "right_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+            "left_bytes": 36537,
+            "right_bytes": 36537,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "restart_publish.dll",
+            "left_sha256": "55b0659137e27b1605fc20b096fb5a8846373c663dba40655358f0d042915faf",
+            "right_sha256": "5ebf06acd88d36b286c3ce0f741591de99a6466ccd37c97ca4770fe28f60837c",
+            "left_bytes": 30291,
+            "right_bytes": 30291,
+            "PE_loader_relative_whole_code_data": {
+              "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+              "old_sha256": "55b0659137e27b1605fc20b096fb5a8846373c663dba40655358f0d042915faf",
+              "current_sha256": "5ebf06acd88d36b286c3ce0f741591de99a6466ccd37c97ca4770fe28f60837c",
+              "old_image_base": 14978056192,
+              "current_image_base": 15802957824,
+              "actual_relocations": 15,
+              "changed_byte_count": 36,
+              "changed_offsets": [
+                136,
+                178,
+                179,
+                216,
+                217,
+                6658,
+                6659,
+                7538,
+                7539,
+                7554,
+                7555,
+                7570,
+                7571,
+                7586,
+                7587,
+                7602,
+                7603,
+                7618,
+                7619,
+                7634,
+                7635,
+                7650,
+                7651,
+                7666,
+                7667,
+                7682,
+                7683,
+                7698,
+                7699,
+                7714,
+                7715,
+                7730,
+                7731,
+                8570,
+                8571,
+                9732
+              ],
+              "original_bytes_modified": false,
+              "metadata_fields": [
+                {
+                  "offset": 136,
+                  "bytes": 4,
+                  "role": "COFF link timestamp"
+                },
+                {
+                  "offset": 216,
+                  "bytes": 4,
+                  "role": "PE checksum"
+                },
+                {
+                  "offset": 176,
+                  "bytes": 8,
+                  "role": "loader image base"
+                },
+                {
+                  "offset": 9732,
+                  "bytes": 4,
+                  "role": "export link timestamp"
+                }
+              ]
+            },
+            "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+          },
+          {
+            "file": "solute.o",
+            "left_sha256": "48ae707cf3d5fa4df06fa0c504e3e1229b2d84de65fbc8f231e9045efe39e7d0",
+            "right_sha256": "48ae707cf3d5fa4df06fa0c504e3e1229b2d84de65fbc8f231e9045efe39e7d0",
+            "left_bytes": 74609,
+            "right_bytes": 74609,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap.o",
+            "left_sha256": "143ea4194805177950615751bf73edbcebf997437bd85ed2e6228910d7e0f872",
+            "right_sha256": "143ea4194805177950615751bf73edbcebf997437bd85ed2e6228910d7e0f872",
+            "left_bytes": 46149,
+            "right_bytes": 46149,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_csv_output.mod",
+            "left_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+            "right_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+            "left_bytes": 2955,
+            "right_bytes": 2955,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_csv_output.o",
+            "left_sha256": "c62cec3fba8ad1d4b6850e8010375ce64209c90ea01c9f70ef4613ac3d66c969",
+            "right_sha256": "c62cec3fba8ad1d4b6850e8010375ce64209c90ea01c9f70ef4613ac3d66c969",
+            "left_bytes": 251585,
+            "right_bytes": 251585,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_exchange.mod",
+            "left_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+            "right_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+            "left_bytes": 1470,
+            "right_bytes": 1470,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swap_main.o",
+            "left_sha256": "f1a539566609f9ef1da310f5d93bc7a810b2f90c51451abd01dd090247e162c5",
+            "right_sha256": "f1a539566609f9ef1da310f5d93bc7a810b2f90c51451abd01dd090247e162c5",
+            "left_bytes": 12048,
+            "right_bytes": 12048,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "swapoutput.o",
+            "left_sha256": "12c63bdce0287354b1e46a994720b3b81986a9d671b7743b6014f5a70a7c92aa",
+            "right_sha256": "12c63bdce0287354b1e46a994720b3b81986a9d671b7743b6014f5a70a7c92aa",
+            "left_bytes": 100326,
+            "right_bytes": 100326,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "thermal_output_snow_calendar_state.o",
+            "left_sha256": "4f7607fb5802e10f63ce8c33a5c0b2d450edfe4df194b195e770611734083653",
+            "right_sha256": "4f7607fb5802e10f63ce8c33a5c0b2d450edfe4df194b195e770611734083653",
+            "left_bytes": 8441,
+            "right_bytes": 8441,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "timecontrol.o",
+            "left_sha256": "05660750ba6bc6578bcb78fd60526d91df25d713d9975f3ba77af0635e1638a4",
+            "right_sha256": "05660750ba6bc6578bcb78fd60526d91df25d713d9975f3ba77af0635e1638a4",
+            "left_bytes": 37639,
+            "right_bytes": 37639,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          },
+          {
+            "file": "wofost.o",
+            "left_sha256": "3321c466eeec63a5cd420c5d4310416428cf0483c25d1254d94cc16431887525",
+            "right_sha256": "3321c466eeec63a5cd420c5d4310416428cf0483c25d1254d94cc16431887525",
+            "left_bytes": 85637,
+            "right_bytes": 85637,
+            "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+          }
+        ],
+        "raw_bytes_rewritten": false,
+        "model_executions": 0,
+        "compiler_executions_in_reader": 0
+      }
+    }
+  ],
+  "actual_compile_only_builds": 8,
+  "model_executions": 0,
+  "seconds": 198.9539079000242,
+  "checkout_restored": true,
+  "canonical_admission": false
+}
