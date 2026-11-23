@@ -6,7 +6,7 @@ from analytical_hydraulic_archives import SHA
 ROOT=Path(__file__).resolve().parents[2]
 CORE='813c40017b2c0aed2802910ed6fab61a613598e9'
 PATH='integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_SOURCE_EDITS_V1.json'
-MANIFEST_SHA='b8aa3a72c2d8c99cf023843bb852f7bdfe098372b67ec788d3d3f86d62a0b035'
+MANIFEST_SHA='1bcad1e7d956357c7fe3285eef2e4b42c2a590b51e215c6db514c38b2c1234dc'
 
 def verify():
  raw=norm((ROOT/PATH).read_bytes());assert SHA(raw)==MANIFEST_SHA;q=json.loads(raw);assert q['composition_core']==CORE
