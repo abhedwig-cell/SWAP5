@@ -83,7 +83,17 @@ jobs:
         if: always()
         run: |
           mkdir -p "$RUNNER_TEMP/control-proof"
-          git archive HEAD -- app/hybrid_water/daily_host.py tests/nomacro_drainage/explicit_bottom9_snow_native_controls.py tests/nomacro_drainage/explicit_bottom9_snow_science.py tests/nomacro_drainage/snow_undrained_control_forensics.py tests/nomacro_drainage/snow_undrained_forensics.py > "$RUNNER_TEMP/control-proof/actual-control-source.tar"
+          python3 -B - <<'PY'
+          import os,tarfile,json,hashlib,subprocess
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'control-proof';files=['app/hybrid_water/daily_host.py','tests/nomacro_drainage/explicit_bottom9_snow_native_controls.py','tests/nomacro_drainage/explicit_bottom9_snow_science.py','tests/nomacro_drainage/snow_undrained_control_forensics.py','tests/nomacro_drainage/snow_undrained_forensics.py'];members={}
+          with tarfile.open(root/'actual-control-source.tar','w') as archive:
+              for name in files:
+                  path=Path(name);raw=path.read_bytes();blob=subprocess.check_output(['git','rev-parse','HEAD:'+name],text=True).strip()
+                  assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==blob
+                  archive.add(path,arcname=name,recursive=False);members[name]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),git_blob=blob)
+          (root/'actual-control-source.json').write_text(json.dumps(members,indent=2)+'\n')
+          PY
           git rev-parse HEAD > "$RUNNER_TEMP/control-proof/actual-observer-head.txt"
       - uses: actions/upload-artifact@v4
         if: always()
