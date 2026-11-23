@@ -137,6 +137,9 @@ def inspect(directory, *, original_output=None):
     if paired_boundary is None:
         from prescribed_snow_boundary import selection as snow_paired_selection
         paired_boundary=snow_paired_selection(directory,original_output)
+    if paired_boundary is None:
+        from prescribed_vapor_boundary import selection as vapor_paired_selection
+        paired_boundary=vapor_paired_selection(directory,original_output)
     if paired_boundary is not None:allowed['SWBOTB'].add(9)
     if extended is not None:allowed['SWDRA']={2}
     if selected.get('SWINCO') == 1:

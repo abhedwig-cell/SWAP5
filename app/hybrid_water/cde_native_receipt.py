@@ -20,7 +20,8 @@ def metadata():
                 conserved_cde_prefix_offset_bytes=48,
                 native_stock_offset='48+8*(actual_nodes+1)',
                 native_stock='actual original saved SAMPRO, not reconstructed CMSY',
-                optional_native_prefixes={'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain',
+                optional_native_prefixes={'S5HPC007':'48 + 8*(14+2*actual_layers), checked duplicated paired9 vapor domain',
+                    'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain',
                     'S5HSC004':'48 + 8*(14+2*actual_layers), checked duplicated Snow vapor domain',
                     'S5HCC006':'48 + 8*(14+2*actual_layers), checked duplicated CDE calendar vapor domain',
                     'S5HBC005':'48 + 8*(14+2*actual_layers), checked duplicated bounded drainage/bottom vapor domain'},
@@ -34,6 +35,9 @@ def decode(aux,nodes,project=None):
     offset=48
     if aux[:8]==b'S5HCC006':
         from analytical_cde_calendar import cde_offset
+        offset=cde_offset(aux,nodes,project)
+    if aux[:8]==b'S5HPC007':
+        from prescribed_vapor_boundary import cde_offset
         offset=cde_offset(aux,nodes,project)
     if aux[:8]==b'S5HBC005':
         from vapor_boundary_composition import cde_offset
