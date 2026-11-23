@@ -96,8 +96,8 @@ def main():
             push = subprocess.run(['git','-c','gc.auto=0','-c','maintenance.auto=false','-c','pack.threads=2',
                                    'push','origin','HEAD:refs/heads/'+branches[role]], cwd=root, capture_output=True, timeout=180)
             label = 'EXPLICIT_BOTTOM9_COMBINED_FINAL_'+role+'_NEGATIVE'
-            (evidence/(label+'_PUSH_V4.stdout.txt')).write_bytes(push.stdout)
-            (evidence/(label+'_PUSH_V4.stderr.txt')).write_bytes(push.stderr)
+            (evidence/(label+'_PUSH_V5.stdout.txt')).write_bytes(push.stdout)
+            (evidence/(label+'_PUSH_V5.stderr.txt')).write_bytes(push.stderr)
             push.check_returncode()
             assert git('ls-remote','origin','refs/heads/'+branches[role]).split()[0] == head
             assert git('show','-s','--format=%P',head) == candidate
@@ -105,7 +105,7 @@ def main():
             item['status'] = 'ACTUAL_COMMITTED_PUSHED_PENDING_PUBLIC_REFUSAL'
             save()
             observed = observe(label+'_PUBLIC_V5')
-            error = (evidence/(label+'_PUBLIC_V4.stderr.txt')).read_bytes()
+            error = (evidence/(label+'_PUBLIC_V5.stderr.txt')).read_bytes()
             assert observed['status'] == 'ACTUAL_PUBLIC_COMMAND_RETURNED'
             assert observed['returncode'] not in (None,0) and b'AssertionError' in error
             item.update(status='ACTUAL_COMMITTED_PUSHED_CLEAN14_PUBLIC_REFUSED', actual_refusal=True,

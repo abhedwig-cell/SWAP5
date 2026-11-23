@@ -3,11 +3,14 @@ import argparse,hashlib,io,json,tarfile,zipfile
 from pathlib import Path,PureWindowsPath
 from contextlib import ExitStack
 from explicit_bottom9_combined_postimages import ROOT,SHA,git,verify,Archive,ReadView,generated,compare,prior_role
+from explicit_bottom9_analytical_inherited_custody import tracked_working_files,materialized
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 
 class GitArchive:
  def __init__(self,opt,stack):
-  name='OUTPUT_HYSTERESIS_WINDOWS_'+opt+'_RAW_ARCHIVE';self.record=json.loads((PROOF/(name+'.json')).read_text());raw=git('show','HEAD:integration/f-ci/nomacro-complete01/'+self.record['archive']);assert len(raw)==self.record['bytes'] and SHA(raw)==self.record['sha256'];self.z=stack.enter_context(zipfile.ZipFile(io.BytesIO(raw)));self.names=self.record['members'];assert len(self.z.namelist())==len(set(self.z.namelist()))==len(self.names) and set(self.z.namelist())==set(self.names)
+  name='OUTPUT_HYSTERESIS_WINDOWS_'+opt+'_RAW_ARCHIVE';path='integration/f-ci/nomacro-complete01/'+name+'.json';original=git('show','HEAD:'+path);tracked=tracked_working_files()
+  if materialized(path,tracked):assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==original,'Changed original hysteresis archive declaration'
+  self.record=json.loads(original);raw=git('show','HEAD:integration/f-ci/nomacro-complete01/'+self.record['archive']);assert len(raw)==self.record['bytes'] and SHA(raw)==self.record['sha256'];self.z=stack.enter_context(zipfile.ZipFile(io.BytesIO(raw)));self.names=self.record['members'];assert len(self.z.namelist())==len(set(self.z.namelist()))==len(self.names) and set(self.z.namelist())==set(self.names)
  def get(self,name):
   raw=self.z.read(name);assert isinstance(self.names[name],str) and SHA(raw)==self.names[name] and len(raw)==self.z.getinfo(name).file_size;return raw
 
