@@ -45,12 +45,18 @@ def source(anchor):
   if not actual.is_file() or actual.suffix.lower() not in suffixes:continue
   assert not actual.is_symlink()
   raw=norm(actual.read_bytes())
-  if path in inverses:raw=inverses[path];target=blob(PARENT_PUBLIC,path)
-  else:target=blob(anchor,path)
+  if path in inverses:
+   raw=inverses[path];target=blob(PARENT_PUBLIC,path)
+   assert raw==target,'Actual complete source inverse differs: '+path
   if path==SELF:
+   target=blob(anchor,path)
    pattern=br"(?m)^SEALED='[0-9a-f]{40}'$"
    raw,a=re.subn(pattern,b"SEALED='IMMUTABLE_DEPENDENCY_ANCHOR'",raw);target,b=re.subn(pattern,b"SEALED='IMMUTABLE_DEPENDENCY_ANCHOR'",target);assert a==b==1
-  assert raw==target,'Actual frozen source dependency changed: '+path
+   assert raw==target,'Actual frozen source dependency changed: '+path
+  elif path not in inverses:
+   # ls-tree already supplies the immutable exact object identity. Verify
+   # complete source bytes directly, without spawning git show per file.
+   assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==digest,'Actual frozen source dependency changed: '+path
   materialized.append(dict(path=path,actual_raw_sha256=hashlib.sha256(actual.read_bytes()).hexdigest(),proven_source_sha256=hashlib.sha256(raw).hexdigest(),explicit_inverse=path in inverses))
  assert git('rev-parse','HEAD')==head,'Actual source HEAD changed during proof'
  return dict(status='COMPLETE_ADMITTED_PARENT_SOURCE_TREE_AND_ACTUAL_SOURCE_BYTES_UNCHANGED_EXCEPT_EXPLICIT_ANALYTICAL_SELECTION_AND_OWNER_HOOK_INVERSES',parent=PARENT_PUBLIC,source_anchor=anchor,actual_head=head.decode().strip(),inherited_tree_entries=inherited,materialized_source=materialized,declared_source_delta=changed,actual_Git_or_filesystem_views_projected=False,compiler_executions=0,model_executions=0)
