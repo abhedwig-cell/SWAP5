@@ -1,0 +1,29 @@
+{
+  "status": "ACTUAL_CANONICAL4D_EXISTING_LEGACY_DATAQUAL12_SOURCE_SUCCESSION_REFUSALS_RETAINED_NO_WAIVER",
+  "canonical": "4d39e97d2f257f70b6fc108c62eb5efce9967a42",
+  "logs": [
+    {
+      "role": "WOF43A",
+      "actual_run": 45199685882,
+      "actual_job": 137779504475,
+      "conclusion": "failure",
+      "file": "EXPLICIT_BOTTOM9_CANONICAL4D_WOF43A_JOB137779504475_ORIGINAL_V1.log",
+      "bytes": 568623,
+      "sha256": "5ee8859c4140485fc47cb4427fc00a30844927db0d52a2f3b35262a17fde497e",
+      "actual_source_refusal": "integration/audits/verify_dataqual12_current.py unreviewed delta before original WOF/FSI oracles"
+    },
+    {
+      "role": "FSI35",
+      "actual_run": 45199685998,
+      "actual_job": 137779504995,
+      "conclusion": "failure",
+      "file": "EXPLICIT_BOTTOM9_CANONICAL4D_FSI35_JOB137779504995_ORIGINAL_V1.log",
+      "bytes": 535602,
+      "sha256": "ac4fbeac983f271c6ba3d6adfeaafb60fdc5e5ab4aa3464d6b5efb1db8dc8e5c",
+      "actual_source_refusal": "integration/audits/verify_dataqual12_current.py unreviewed delta before original WOF/FSI oracles"
+    }
+  ],
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "RC3_changed": false
+}
