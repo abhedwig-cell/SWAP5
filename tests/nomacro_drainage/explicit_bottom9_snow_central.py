@@ -42,6 +42,44 @@ def windows(proof,scratch):
  return dict(status='ALL4_WINDOWS_ACTIVE_SNOW9_ORIGINAL_ARCHIVE_COMMITTED_SOURCE_NATIVE_COLD_COMPILED_INDEPENDENT_PASS_NOT_ADMITTED',contexts=results,source_epochs=sorted(index['epochs']),raw_sha256=record['sha256'],compiler_executions=0,model_executions=0,canonical_admission=False)
 
 
+def supplement(proof,scratch,base_scratch):
+ from explicit_bottom9_snow_science import native_controls
+ complete_inverse();scratch=Path(scratch);base_scratch=Path(base_scratch);assert scratch.is_dir() and not any(scratch.iterdir())
+ with ExitStack() as stack:
+  store=Archive(proof,'EXPLICIT_BOTTOM9_SNOW_PRIOR_CONTROLS_RAW_V1',stack);base=Archive(proof,'EXPLICIT_BOTTOM9_SNOW_WINDOWS_RAW_V1',stack);link=json.loads(store.get('BASE_SOURCE_ARCHIVE_V1.json'));assert link['sha256']==base.record['sha256']
+  index=json.loads(store.get('COMMITTED_SOURCE_INDEX_V1.json'));objects=set()
+  for head,rows in index['epochs'].items():
+   expected={line.split('\t')[1]:dict(git_blob=line.split('\t')[0].split()[2],mode=line.split('\t')[0].split()[0]) for line in git('ls-tree','-r',head,'--',*index['scope']).decode().splitlines()};assert rows==expected;objects.update(v['git_blob'] for v in rows.values())
+  import hashlib
+  for digest in objects:
+   name='committed-source/blobs/'+digest;raw=(store if name in store.names else base).get(name);assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==digest
+  for name in store.names:
+   path=scratch/name;assert path.resolve().is_relative_to(scratch.resolve());path.parent.mkdir(parents=True,exist_ok=True)
+   with path.open('xb') as out:out.write(store.get(name))
+  projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));assert len(projection)==10
+  def built(actual):
+   item=projection[actual];path=scratch/item['archive_prefix'];assert SHA((path/'BUILD.json').read_bytes())==item['actual_BUILD_sha256'];return path
+  prior=json.loads(store.get('observations/EXPLICIT_BOTTOM9_SNOW_PRIOR_ACTUAL_PARENT_POSTIMAGES_V1.json'));assert len(prior['comparisons'])==4
+  for case in prior['comparisons']:
+   left,right=built(case['actual_parent']['build_root']),built(case['actual_candidate']['build_root'])
+   for row in case['generated_sources']:
+    a=(left/row['file']).read_bytes();b=(right/row['file']).read_bytes();assert SHA(a)==row['actual_parent_sha256'] and SHA(b)==row['actual_candidate_sha256'] and a.replace(b'\r\n',b'\n')==b.replace(b'\r\n',b'\n')
+   assert compare(left,right)==case['compiled']
+  from explicit_bottom9_analytical_parent_postimages import role as original_role,audit as original_audit
+  for opt in ('O0','O2'):
+   q=json.loads(store.get('profiles/explicit-bottom9-snow-prior-paired9-cde-monthly-'+opt+'-v1/RESULT.json'));archive,inputs,item,meta,old=original_role(proof,'cde-monthly',opt,stack)
+   actual=original_audit(built(q['build_root']),old,meta,q['actual_compiler_start_HEAD']);assert actual==q['complete_original_byte_comparison']
+  controls=json.loads(store.get('observations/EXPLICIT_BOTTOM9_SNOW_WINDOWS_COMPILED_NATIVE_CONTROLS_INDEPENDENT_V1.json'));results=[];base_projection=json.loads(base.get('COMPILED_PROJECTION_V1.json'))
+  for case in controls['contexts']:
+   role=next(x for x in base.record['roles'] if x['kind']==case['kind'] and x['optimization']==case['optimization']);profile=base_scratch/role['profile'];p=json.loads(base.get(role['profile']+'/RESULT.json'));build=base_scratch/base_projection[p['build_root']]['archive_prefix'];inputs=base_scratch/role['inputs']
+   # Revalidate every base byte used by the original independent native reader.
+   for prefix in (role['profile'],role['inputs'],base_projection[p['build_root']]['archive_prefix']):
+    for name,item in base.names.items():
+     if name.startswith(prefix+'/'):assert SHA((base_scratch/name).read_bytes())==item['sha256']
+   root=scratch/'profiles'/Path(case['controls']).name;actual=native_controls(root,profile,dict(build=build,inputs=inputs));assert actual==case['science'];results.append(actual)
+ return dict(status='ALL6_UNCHANGED_PRIOR_CONTEXT_POSTIMAGES_AND100_ACTUAL_COMPILED_NATIVE_REFUSALS_CENTRAL_INDEPENDENT_PASS',raw_sha256=store.record['sha256'],prior_Snow_contexts=4,prior_paired9_contexts=2,actual_compiled_refusals=100,actual_positive_startups=4,native_control_science=results,compiler_executions=0,model_periods=0,canonical_admission=False)
+
+
 def ubuntu(proof,opt,scratch):
  complete_inverse();results=[];scratch=Path(scratch);assert scratch.is_dir() and not any(scratch.iterdir())
  with ExitStack() as stack:
@@ -79,6 +117,6 @@ def ubuntu(proof,opt,scratch):
 
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--optimization',choices=('O0','O2'));p.add_argument('--scratch',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();q=ubuntu(a.proof,a.optimization,a.scratch) if a.optimization else windows(a.proof,a.scratch)
+ p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--optimization',choices=('O0','O2'));p.add_argument('--scratch',type=Path,required=True);p.add_argument('--base-scratch',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args();q=supplement(a.proof,a.scratch,a.base_scratch) if a.base_scratch else ubuntu(a.proof,a.optimization,a.scratch) if a.optimization else windows(a.proof,a.scratch)
  with a.output.open('x') as f:json.dump(q,f,indent=2);f.write('\n')
  print(q['status'],a.optimization)
