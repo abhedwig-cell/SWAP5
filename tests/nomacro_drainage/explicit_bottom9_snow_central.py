@@ -80,6 +80,34 @@ def supplement(proof,scratch,base_scratch):
  return dict(status='ALL6_UNCHANGED_PRIOR_CONTEXT_POSTIMAGES_AND100_ACTUAL_COMPILED_NATIVE_REFUSALS_CENTRAL_INDEPENDENT_PASS',raw_sha256=store.record['sha256'],prior_Snow_contexts=4,prior_paired9_contexts=2,actual_compiled_refusals=100,actual_positive_startups=4,native_control_science=results,compiler_executions=0,model_periods=0,canonical_admission=False)
 
 
+def ubuntu_native(proof,opt,scratch):
+ import hashlib,io,tarfile
+ from explicit_bottom9_snow_science import native_controls
+ complete_inverse();scratch=Path(scratch);assert scratch.is_dir() and not any(scratch.iterdir());results=[]
+ with ExitStack() as stack:
+  store=Archive(proof,'EXPLICIT_BOTTOM9_SNOW_NATIVE_UBUNTU_'+opt+'_RAW_V1',stack);model=Archive(proof,'EXPLICIT_BOTTOM9_SNOW_UBUNTU_'+opt+'_RAW_V1',stack);record=store.record
+  observed=store.get('actual-observer-head.txt').decode().strip();assert observed==record['actual_observer_source']
+  source=json.loads(store.get('actual-control-source.json'));archive=stack.enter_context(tarfile.open(fileobj=io.BytesIO(store.get('actual-control-source.tar'))));assert set(archive.getnames())==set(source)
+  for member in archive.getmembers():
+   assert member.isfile();raw=archive.extractfile(member).read();item=source[member.name];assert len(raw)==item['bytes'] and SHA(raw)==item['sha256'] and hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==item['git_blob']
+   assert git('rev-parse',observed+':'+member.name).decode().strip()==item['git_blob']
+  for name in store.names:
+   path=scratch/'controls'/name;assert path.resolve().is_relative_to((scratch/'controls').resolve());path.parent.mkdir(parents=True,exist_ok=True)
+   with path.open('xb') as out:out.write(store.get(name))
+  projection=json.loads(model.get('COMPILED_PROJECTION_V1.json'));expected=json.loads(store.get('INDEPENDENT.json'))
+  for kind in ('water','cde'):
+   prefix='snow9-'+kind+'-'+opt;profile=scratch/'model'/prefix;raw=model.get(prefix+'/RESULT.json');q=json.loads(raw);assert q['source']==record['actual_compiler_producer'];profile.mkdir(parents=True);(profile/'RESULT.json').write_bytes(raw)
+   build=scratch/'model/compiled'/prefix;build.mkdir(parents=True);entry=projection[q['build_root']];raw=model.get(entry['archive_prefix']+'/BUILD.json');assert SHA(raw)==entry['actual_BUILD_sha256'];(build/'BUILD.json').write_bytes(raw)
+   inputs=scratch/'model/inputs'/kind;inputs.mkdir(parents=True)
+   for name in model.names:
+    start='inputs/'+kind+'-initial1/'
+    if name.startswith(start):(inputs/name[len(start):]).write_bytes(model.get(name))
+   (profile/'trajectory').mkdir()
+   for name in ('daily.jsonl','accepted-column-1-day-4.zip'):(profile/'trajectory'/name).write_bytes(model.get(prefix+'/trajectory/'+name))
+   actual=native_controls(scratch/'controls'/kind,profile,dict(build=build,inputs=inputs));assert actual==next(x['science'] for x in expected['contexts'] if x['kind']==kind);results.append(dict(kind=kind,science=actual))
+ return dict(status='ALL50_UBUNTU_ORIGINAL_SNOW9_REUSED_COMPILED_AND_IDENTICAL_PAYLOAD_NATIVE_REFUSALS_CENTRAL_PASS',optimization=opt,actual_observer_source=observed,actual_compiler_producer=record['actual_compiler_producer'],actual_run=record['actual_run'],actual_artifact=record['actual_artifact'],raw_sha256=record['sha256'],contexts=results,accepted_model_days=0,compiler_executions=0,model_periods=0,canonical_admission=False)
+
+
 def ubuntu(proof,opt,scratch):
  complete_inverse();results=[];scratch=Path(scratch);assert scratch.is_dir() and not any(scratch.iterdir())
  with ExitStack() as stack:
@@ -117,6 +145,6 @@ def ubuntu(proof,opt,scratch):
 
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--optimization',choices=('O0','O2'));p.add_argument('--scratch',type=Path,required=True);p.add_argument('--base-scratch',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args();q=supplement(a.proof,a.scratch,a.base_scratch) if a.base_scratch else ubuntu(a.proof,a.optimization,a.scratch) if a.optimization else windows(a.proof,a.scratch)
+ p=argparse.ArgumentParser();p.add_argument('--proof',type=Path,default=ROOT/'integration/f-ci/nomacro-complete01');p.add_argument('--optimization',choices=('O0','O2'));p.add_argument('--scratch',type=Path,required=True);p.add_argument('--base-scratch',type=Path);p.add_argument('--native',action='store_true');p.add_argument('--output',type=Path,required=True);a=p.parse_args();q=ubuntu_native(a.proof,a.optimization,a.scratch) if a.native else supplement(a.proof,a.scratch,a.base_scratch) if a.base_scratch else ubuntu(a.proof,a.optimization,a.scratch) if a.optimization else windows(a.proof,a.scratch)
  with a.output.open('x') as f:json.dump(q,f,indent=2);f.write('\n')
  print(q['status'],a.optimization)
