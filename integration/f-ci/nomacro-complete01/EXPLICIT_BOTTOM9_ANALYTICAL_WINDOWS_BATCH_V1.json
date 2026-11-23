@@ -1,0 +1,68 @@
+{
+  "status": "FAILED",
+  "actual_source": "5ba56595b7f453981c0b407d4aeb58958bdb5be8",
+  "controller_sha256": "435bbd527cce27261fc7063bba2b347bec0e6bb4cda038bca29f7211f380ccae",
+  "scope": "Existing models3,7,11, two uniform layers at actual original unsaturated reference point -10cm; paired9 water/CDE, daily calendar, no new constitutive equations",
+  "contexts": [
+    {
+      "case": "model3-water-nonlinear-steady",
+      "model": 3,
+      "kind": "water",
+      "optimization": "O0",
+      "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-water-O0-v2",
+      "postimage": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-water-O0-v2-initial2-postimage",
+      "producer": "9c3dccc6f81eb1b82e04d1c4a465f18ba882ec80",
+      "independent": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-water-O0-v3-independent-v1.json",
+      "independent_sha256": "5b36697a480a189dda82d160862e678444a1bd5049deaf517759789cf9d7eee8",
+      "status": "INDEPENDENT_NONLINEAR_PAIRED9_ORIGINAL_CONSTITUTIVE_POINT_ALL_NODE_DARCY_MASS_NATIVE_EXACT_COLD_COMPILED_POSTIMAGE_PASS_NOT_ADMITTED",
+      "completed_original_period_reused": true
+    },
+    {
+      "case": "model3-water-nonlinear-steady",
+      "model": 3,
+      "kind": "water",
+      "optimization": "O2",
+      "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-water-O2-v3",
+      "postimage": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-water-O2-v3-initial2-postimage",
+      "producer": "5ba56595b7f453981c0b407d4aeb58958bdb5be8",
+      "independent": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-water-O2-v3-independent-v1.json",
+      "independent_sha256": "e5a9fe323e6b5585d4ae36b901dbd386621350cb644256f3d89d55f754008e1a",
+      "status": "INDEPENDENT_NONLINEAR_PAIRED9_ORIGINAL_CONSTITUTIVE_POINT_ALL_NODE_DARCY_MASS_NATIVE_EXACT_COLD_COMPILED_POSTIMAGE_PASS_NOT_ADMITTED",
+      "completed_original_period_reused": false
+    },
+    {
+      "case": "model3-cde-nonlinear-steady",
+      "model": 3,
+      "kind": "cde",
+      "optimization": "O0",
+      "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-cde-O0-v3",
+      "postimage": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-cde-O0-v3-initial2-postimage",
+      "producer": "5ba56595b7f453981c0b407d4aeb58958bdb5be8",
+      "independent": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-cde-O0-v3-independent-v1.json",
+      "independent_sha256": "30945087e50854be2c62d56089dbd56b98e4369a03fe0b55218b69f0df5b07f1",
+      "status": "INDEPENDENT_NONLINEAR_PAIRED9_ORIGINAL_CONSTITUTIVE_POINT_ALL_NODE_DARCY_MASS_NATIVE_EXACT_COLD_COMPILED_POSTIMAGE_PASS_NOT_ADMITTED",
+      "completed_original_period_reused": false
+    },
+    {
+      "case": "model3-cde-nonlinear-steady",
+      "model": 3,
+      "kind": "cde",
+      "optimization": "O2",
+      "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-cde-O2-v3",
+      "postimage": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-cde-O2-v3-initial2-postimage",
+      "producer": "5ba56595b7f453981c0b407d4aeb58958bdb5be8",
+      "independent": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model3-cde-O2-v3-independent-v1.json",
+      "independent_sha256": "9ee23875df839973387ff98527530e7e19b665c2e635127d90ac38ec6592988b",
+      "status": "INDEPENDENT_NONLINEAR_PAIRED9_ORIGINAL_CONSTITUTIVE_POINT_ALL_NODE_DARCY_MASS_NATIVE_EXACT_COLD_COMPILED_POSTIMAGE_PASS_NOT_ADMITTED",
+      "completed_original_period_reused": false
+    }
+  ],
+  "canonical_admission": false,
+  "active": {
+    "case": "model7-water-nonlinear-steady",
+    "optimization": "O0",
+    "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model7-water-O0-v3",
+    "postimage": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\explicit-bottom9-analytical-model7-water-O0-v3-initial2-postimage"
+  },
+  "error": "AssertionError({'label': 'explicit-bottom9-analytical-model7-water-O0-v3-reader', 'returncode': 1, 'stderr': 'C:\\\\Users\\\\Veldh012\\\\SWAP5-work\\\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\\\evidence\\\\explicit-bottom9-analytical-model7-water-O0-v3-reader.stderr.txt'})"
+}

@@ -1,0 +1,207 @@
+{
+  "status": "DECLARED_EIGHT_WHOLE_APP_SOURCE_INVERSES_TO_ACTUAL_QUALIFIED_PARENT216",
+  "parent": "67d2636672921505ecb47f1c9f4c6ea27a451889",
+  "composition_core": "813c40017b2c0aed2802910ed6fab61a613598e9",
+  "files": {
+    "app/hybrid_water/daily_host.py": {
+      "parent_sha256": "1610763b7d36f8440ac0786652b758ab0c9cac8c7578dcbe00b1228c7481e35f",
+      "core_sha256": "56d290c2b697cda96b3a97df9b178d6e8e8d93518afbc01486468a2151ef4175",
+      "positioned_literal_edits": [
+        {
+          "new_start": 174,
+          "new_end": 176,
+          "new": "    from prescribed_snow_boundary import enabled as paired_snow_enabled\n    paired_snow=paired_snow_enabled(project)\n",
+          "old": ""
+        },
+        {
+          "new_start": 829,
+          "new_end": 831,
+          "new": "            if not paired_snow:\n                path.write_text(render_headcalc(path.read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')\n",
+          "old": "            path.write_text(render_headcalc(path.read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')\n"
+        },
+        {
+          "new_start": 837,
+          "new_end": 838,
+          "new": "            if lower_boundary==9 and not paired_snow and not (age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt'])):\n",
+          "old": "            if lower_boundary==9 and not (age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt'])):\n"
+        },
+        {
+          "new_start": 883,
+          "new_end": 884,
+          "new": "    if lower_boundary==9 and not paired_snow and age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt']):\n",
+          "old": "    if lower_boundary==9 and age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt']):\n"
+        }
+      ]
+    },
+    "app/hybrid_water/experimental_project.py": {
+      "parent_sha256": "188e24d6b33c679c06328cde26b21e09a8e709bb2e4e5c679a9b2b6fe0da88fe",
+      "core_sha256": "519b42d88e44d5f97394b15e84c41f9feeeb84e0531b022fc4a474b72ff38715",
+      "positioned_literal_edits": [
+        {
+          "new_start": 133,
+          "new_end": 139,
+          "new": "    if paired_boundary is None:\n        from prescribed_history_boundary import selection as paired_history_selection\n        paired_boundary=paired_history_selection(directory,original_output)\n    if paired_boundary is None:\n        from prescribed_snow_boundary import selection as snow_paired_selection\n        paired_boundary=snow_paired_selection(directory,original_output)\n",
+          "old": ""
+        }
+      ]
+    },
+    "app/hybrid_water/original_output_hysteresis.py": {
+      "parent_sha256": "123d446724a5c7d042bfe23c1d48db3e3a85110a8cd810e4af51cada96a3757d",
+      "core_sha256": "e686bc59cb108b3a48012d31e285dae272ea5d9678398dbbba0e6133d2cbb0f3",
+      "positioned_literal_edits": [
+        {
+          "new_start": 40,
+          "new_end": 43,
+          "new": "        if key=='SWDRA':\n            from prescribed_history_boundary import enabled as paired_history_enabled\n            if paired_history_enabled(project):continue\n",
+          "old": ""
+        },
+        {
+          "new_start": 61,
+          "new_end": 62,
+          "new": "    result=dict(policy=POLICY,native_codec=magic(project).decode(),**selected,\n",
+          "old": "    return dict(policy=POLICY,native_codec=magic(project).decode(),**selected,\n"
+        },
+        {
+          "new_start": 73,
+          "new_end": 80,
+          "new": "    from prescribed_history_boundary import enabled as paired_history_enabled,domain_source as paired_history_domain\n    if paired_history_enabled(project):\n        result.update(paired_boundary=9,paired_history_policy='existing-original-hysteresis-explicit-paired9-daily-v1',\n                      paired_history_source_sha256=sha(Path(__file__).with_name('prescribed_history_boundary.py')),\n                      domain_source_sha256=hashlib.sha256(paired_history_domain(Path(__file__).with_name(DOMAIN+'.f90').read_bytes(),project)).hexdigest(),\n                      domain_version=2,domain_bytes=56)\n    return result\n",
+          "old": ""
+        },
+        {
+          "new_start": 133,
+          "new_end": 135,
+          "new": "    from prescribed_history_boundary import domain_source as paired_history_domain\n    (output/(DOMAIN+'.f90')).write_bytes(paired_history_domain(Path(__file__).with_name(DOMAIN+'.f90').read_bytes(),project))\n",
+          "old": "    (output/(DOMAIN+'.f90')).write_bytes(Path(__file__).with_name(DOMAIN+'.f90').read_bytes())\n"
+        }
+      ]
+    },
+    "app/hybrid_water/prescribed_head_flux_boundary.py": {
+      "parent_sha256": "687e3241de5620f29ed64294876d5dc446fe90ad9b2558e6896959f01fb52242",
+      "core_sha256": "5449e18f27aae3eeab424b7b440e84e731954d3f7354082b92e9abfb6aa38036",
+      "positioned_literal_edits": [
+        {
+          "new_start": 12,
+          "new_end": 13,
+          "new": "def selection(directory,original_output=True,*,hysteresis=0,snow=False):\n",
+          "old": "def selection(directory,original_output=True):\n"
+        },
+        {
+          "new_start": 22,
+          "new_end": 24,
+          "new": " if hysteresis not in (0,1,2) or snow and hysteresis!=0:return None\n fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=hysteresis,SWSNOW=int(snow),SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)\n",
+          "old": " fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=0,SWSNOW=0,SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)\n"
+        },
+        {
+          "new_start": 25,
+          "new_end": 26,
+          "new": " if snow and (integer('SWSOLU') not in (0,1) or integer('SWDRA')!=0):return None\n",
+          "old": ""
+        },
+        {
+          "new_start": 30,
+          "new_end": 41,
+          "new": " if re.search(r'(?i)\\bIHWCKMODEL\\b',remainder) or len(models)>1 or models and re.fullmatch(r'[+]?[0-9]+(?:[ \\t]+[+]?[0-9]+)*[ \\t]*',models[0]) is None:return None\n if models:\n  analytical=tuple(map(int,models[0].split()))\n  if not all(value in (1,3,4,5,6,7,8,9,10,11) for value in analytical):return None\n  if any(value!=1 for value in analytical):\n   if integer('SWSOLU') not in (0,1):return None\n   vapor=re.findall(r'(?mi)^[ \\t]*SWVAPOR[ \\t]*=[ \\t]*([^\\r\\n]+)',active)\n   if len(vapor)>1:return None\n   if vapor:\n    if re.fullmatch(r'[+-]?[0-9]+(?:[ \\t]+[+-]?[0-9]+)*[ \\t]*',vapor[0]) is None:return None\n    if any(int(token)!=0 for token in vapor[0].split()):return None\n",
+          "old": " if re.search(r'(?i)\\bIHWCKMODEL\\b',remainder) or len(models)>1 or models and re.fullmatch(r'\\+?0*1(?:[ \\t]+\\+?0*1)*[ \\t]*',models[0]) is None:return None\n"
+        },
+        {
+          "new_start": 69,
+          "new_end": 73,
+          "new": " from prescribed_history_boundary import enabled as history_enabled\n if history_enabled(project):return 9\n from prescribed_snow_boundary import enabled as snow_paired\n if snow_paired(project):return 9\n",
+          "old": ""
+        },
+        {
+          "new_start": 81,
+          "new_end": 86,
+          "new": " result=dict(policy=POLICY,source_sha256=sha(app/'prescribed_head_flux_boundary.py'),template_sha256=sha(app/'hybrid_step_budget.f90'),effective_SWBOTB=9,prescribed_external_flux_unchanged=True,all_actual_node_storage_included=True,groundwater_reaction_substituted=False,new_native_codec=False,strict_retry_provider_sha256=sha(app/'implicit_conductivity_retry.py'),strict_retry_predicate='swmacro==0.and.swbotb==9',strict_retry_clock_floor_ulps=8)\n from prescribed_snow_boundary import enabled as snow_paired,POLICY as snow_policy\n if snow_paired(project):\n  result.update(snow_composition_policy=snow_policy,snow_composition_source_sha256=sha(app/'prescribed_snow_boundary.py'),strict_retry_provider_sha256=sha(app/'groundwater_snow_retry.py'),strict_retry_predicate='swmacro==0.and.swkimpl==0')\n return result\n",
+          "old": " return dict(policy=POLICY,source_sha256=sha(app/'prescribed_head_flux_boundary.py'),template_sha256=sha(app/'hybrid_step_budget.f90'),effective_SWBOTB=9,prescribed_external_flux_unchanged=True,all_actual_node_storage_included=True,groundwater_reaction_substituted=False,new_native_codec=False,strict_retry_provider_sha256=sha(app/'implicit_conductivity_retry.py'),strict_retry_predicate='swmacro==0.and.swbotb==9',strict_retry_clock_floor_ulps=8)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained.py": {
+      "parent_sha256": "692a7940d9edab209c1e2ded09e0e7366e7a7021e1816671d6d72d4b6857840b",
+      "core_sha256": "d02c56c36af3565348b4b8723e09d7d9e98166b7d9143ea3a120843440a06c83",
+      "positioned_literal_edits": [
+        {
+          "new_start": 12,
+          "new_end": 16,
+          "new": "    if s['SWSNOW']!=1 or s['SWDRA']!=0 or report['boundary']['SWBOTB'] not in (5,8,9):return None\n    if report['boundary']['SWBOTB']==9:\n        from prescribed_snow_boundary import enabled\n        if not enabled(project):return None\n",
+          "old": "    if s['SWSNOW']!=1 or s['SWDRA']!=0 or report['boundary']['SWBOTB'] not in (5,8):return None\n"
+        },
+        {
+          "new_start": 40,
+          "new_end": 41,
+          "new": "    return dict(**({'paired_snow_boundary':True} if report['boundary']['SWBOTB']==9 else {}),**({'cde_interval_output':True,'cde_clock_output':npd>1 or step} if project.solute else {}),ordinary_snow_undrained_output=True,thermal_output=True,thermal_calendar=True,\n",
+          "old": "    return dict(**({'cde_interval_output':True,'cde_clock_output':npd>1 or step} if project.solute else {}),ordinary_snow_undrained_output=True,thermal_output=True,thermal_calendar=True,\n"
+        },
+        {
+          "new_start": 65,
+          "new_end": 66,
+          "new": "    if selected['swbotb']==9:providers+=['prescribed_snow_boundary.py','prescribed_head_flux_boundary.py']\n",
+          "old": ""
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_build.py": {
+      "parent_sha256": "64e20686e38e5714c21fbe2d379ea004fdef4af91a96278eaccb99c93b906eb9",
+      "core_sha256": "46503ff3587142905b0b8a4084a10de6ddd4c68183a2cad4f3b0c961e5e308f4",
+      "positioned_literal_edits": [
+        {
+          "new_start": 20,
+          "new_end": 22,
+          "new": "    if selected['swbotb']==9:\n        result=native.replace(result,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')\n",
+          "old": ""
+        },
+        {
+          "new_start": 92,
+          "new_end": 93,
+          "new": "    path.write_text(head_trial(text,selected),encoding='cp1252')\n",
+          "old": "    path.write_text(head_trial(text),encoding='cp1252')\n"
+        },
+        {
+          "new_start": 141,
+          "new_end": 142,
+          "new": "def head_trial(text,selected=None):\n",
+          "old": "def head_trial(text):\n"
+        },
+        {
+          "new_start": 152,
+          "new_end": 154,
+          "new": "    if selected is not None and selected['swbotb']==9:\n        guard='\\n         hybrid_snow_trial_guard=hybrid_snow_soil_trial_residual(qbot)\\n         if(abs(hybrid_snow_trial_guard)>1d-10)flnonconv=.true.'\n",
+          "old": ""
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_source_guard.py": {
+      "parent_sha256": "3153ad93a9616944566b24f4dde7f7761f3fc2ed9c1043058e5c4a105d437d41",
+      "core_sha256": "5e9ca43bce00181bfd242692a795650255cf4d925b412b6a9f5e9e80f6c8c66a",
+      "positioned_literal_edits": [
+        {
+          "new_start": 28,
+          "new_end": 31,
+          "new": "    # Paired Snow uses this exact original HeadCalc prefix. Its existing Snow\n    # rollback/pond-event owner is checked separately by the complete inverse.\n    if selection(project)['swbotb']==9:return namespace['source']\n",
+          "old": ""
+        },
+        {
+          "new_start": 98,
+          "new_end": 99,
+          "new": "        return build.head_trial(text,selected)\n",
+          "old": "        return build.head_trial(text)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_state.py": {
+      "parent_sha256": "9c1df212d7b1d1086e4d99cd669a9082c4a92d44cc7c8807f0052f9d2f83ddef",
+      "core_sha256": "6e1f7f4e9117180334ef956f5b682a8e974a34f4035c286578704dffa7511f54",
+      "positioned_literal_edits": [
+        {
+          "new_start": 24,
+          "new_end": 26,
+          "new": "    if selected['swbotb']==9:\n        text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')\n",
+          "old": ""
+        }
+      ]
+    }
+  },
+  "physical_reuse_basis": "All88 actual integrated whole generated and compiled postimages. Original64 new and216 parent scientific producers, raw inputs, Source identities and bindings remain immutable; no model-period replay or data rebinding.",
+  "actual_Git_or_filesystem_views_projected": false
+}

@@ -12,7 +12,7 @@ else
   python3 - <<'PY_TOP_SUCCESSOR'
 import runpy,subprocess
 path='src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
-row=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})
+row=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']().get(path,{})
 actual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
 assert row.get('historical_blob')=='abe2d699017300e890eeb69a56448bb071660d2d' and row.get('canonical_blob')==actual,'unregistered top successor'
 print('FCI93_SELECTED_TOP_SOURCE_BOUNDARY=PASS')
@@ -24,7 +24,7 @@ else
   python3 - <<'PY_TOP_SUCCESSOR'
 import runpy,subprocess
 path='src/solver/mod_b110_dynamic_top_boundary_provider.f90'
-row=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})
+row=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']().get(path,{})
 actual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
 assert row.get('historical_blob')=='5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae' and row.get('canonical_blob')==actual,'unregistered top successor'
 print('FCI93_SELECTED_TOP_SOURCE_BOUNDARY=PASS')
@@ -38,16 +38,8 @@ from pathlib import Path
 actual=subprocess.check_output(['git','rev-parse','HEAD:src/legacy/b1_10_port/headcalc.f90'],text=True).strip()
 old='7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac'
 if actual!=old:
-    sys.path.insert(0,'tests/nut-sol')
-    import verify_surface_age_successor as age
-    age.verify_source()
-    successors=age.record()['fci93_current_dependency_requalification']
-    perf=Path('integration/performance/authority.py')
-    if perf.exists():
-        import runpy
-        proof=runpy.run_path(str(perf),run_name='fsi35_perf01')
-        proof['verify_qualification']()
-        successors={**successors,**proof['fsi35_successors']()}
+    import runpy
+    successors=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']()
     row=successors['src/legacy/b1_10_port/headcalc.f90']
     assert row['historical_blob']==old and row['canonical_blob']==actual,'unregistered HeadCalc successor'
 print('FCI93_SELECTED_HEADCALC_SOURCE_BOUNDARY=PASS')
@@ -58,7 +50,7 @@ if [[ "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" == 3
 else
   python3 - <<'PY_TX_SUCCESSOR'
 import runpy,subprocess
-proof=runpy.run_path('integration/performance/authority.py')
+proof=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')
 path='src/transaction/mod_transaction_reference.f90'
 row=proof['fsi35_successors']().get(path,{})
 actual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
@@ -72,7 +64,7 @@ else
   python3 - <<'PY_CONTRACT_SUCCESSOR'
 import runpy,subprocess
 path='src/solver/mod_soil_water_solver_contract.f90'
-row=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})
+row=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']().get(path,{})
 actual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
 assert row.get('historical_blob')=='7b16c3fcf58179f1491104a1dce3279010b4178a' and row.get('canonical_blob')==actual,'unregistered solver contract successor'
 print('FCI93_SELECTED_CONTRACT_SOURCE_BOUNDARY=PASS')
@@ -84,19 +76,8 @@ python3 - <<'PY_CLOSURE'
 import json,subprocess
 from pathlib import Path
 p=Path('integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json')
-successors={}
-record=Path('integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json')
-if record.exists():
-    import sys
-    sys.path.insert(0,'tests/nut-sol')
-    import verify_surface_age_successor as age
-    age.verify_source()
-    successors=age.record()['fci93_current_dependency_requalification']
-perf=Path('integration/performance/authority.py')
-if perf.exists():
-    import runpy
-    proof=runpy.run_path(str(perf),run_name='fsi35_perf01_closure')
-    successors={**successors,**proof['fsi35_successors']()}
+import runpy
+successors=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']()
 for dep in json.loads(p.read_text())['dependencies']:
     actual=subprocess.check_output(['git','rev-parse','HEAD:'+dep['path']],text=True).strip()
     if actual!=dep['blob']:

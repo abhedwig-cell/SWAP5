@@ -1,0 +1,113 @@
+"""Fail-closed proposal: reuse immutable parent216 and new64 after exact postimages."""
+import hashlib,io,json,re,sys
+from contextlib import ExitStack,redirect_stdout
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'app/hybrid_water')]
+from analytical_hydraulic_archives import Archive,SHA
+from explicit_bottom9_source_inverse import git,blob,norm
+from explicit_bottom9_combined_source_custody import source as current_source
+from explicit_bottom9_analytical_inherited_custody import fresh as complete_parent_custody
+from explicit_bottom9_combined_windows_central import read as windows_postimages
+from explicit_bottom9_combined_linux_central import read as linux_postimages
+from canonical_legacy_original_oracles_central import read as legacy_oracles
+import explicit_bottom9_verify as parent
+PROOF=ROOT/'integration/f-ci/nomacro-complete01'
+SEALED='cd02860f0f17f89bd44d52d8078bbcd38cc66acf'
+PARENT_CANONICAL='4d39e97d2f257f70b6fc108c62eb5efce9967a42'
+PARENT_ADMISSION_SHA='9b39b63653e17886bdd8a21560d955001057a24a88bd2e5e06bfd4c824a07d37'
+CONTRACT_SHA='6a5d1a412f545cb739a9ba4ed356a81ca5ddf507b78be0228137116a5557ee00'
+PARENT='67d2636672921505ecb47f1c9f4c6ea27a451889'
+NAMES=(
+ 'EXPLICIT_BOTTOM9_ANALYTICAL_WINDOWS_RAW_V1','EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_O0_RAW_V1','EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_O2_RAW_V1','EXPLICIT_BOTTOM9_ANALYTICAL_PRIOR_POSTIMAGES_RAW_V1',
+ 'EXPLICIT_BOTTOM9_SNOW_WINDOWS_RAW_V1','EXPLICIT_BOTTOM9_SNOW_UBUNTU_O0_RAW_V1','EXPLICIT_BOTTOM9_SNOW_UBUNTU_O2_RAW_V1','EXPLICIT_BOTTOM9_SNOW_PRIOR_CONTROLS_RAW_V1','EXPLICIT_BOTTOM9_SNOW_NATIVE_UBUNTU_O0_RAW_V1','EXPLICIT_BOTTOM9_SNOW_NATIVE_UBUNTU_O2_RAW_V1',
+ 'EXPLICIT_BOTTOM9_HISTORY_WINDOWS_RAW_V1','EXPLICIT_BOTTOM9_HISTORY_UBUNTU_O0_ORIGINAL_V1','EXPLICIT_BOTTOM9_HISTORY_UBUNTU_O2_ORIGINAL_V1','EXPLICIT_BOTTOM9_HISTORY_INPUTS_RAW_V2',
+ 'EXPLICIT_BOTTOM9_COMBINED_WINDOWS_POSTIMAGES_RAW_V1','EXPLICIT_BOTTOM9_COMBINED_UBUNTU_O0_ORIGINAL_V1','EXPLICIT_BOTTOM9_COMBINED_UBUNTU_O2_ORIGINAL_V1','CANONICAL_LEGACY_ORIGINAL_ORACLES_RAW_V1')
+
+PUBLICATION_DOCUMENT_DOMAINS=('docs/publication','docs/publications','docs/verification','docs/performance/evidence')
+
+
+def publication_document_custody():
+ # These additional inherited publication dependencies lie outside SOURCE_DOMAINS.
+ from explicit_bottom9_analytical_inherited_custody import tracked_working_files,materialized
+ assert not git('diff',PARENT_CANONICAL,'HEAD','--',*PUBLICATION_DOCUMENT_DOMAINS),'Changed inherited publication documentation'
+ assert not git('status','--porcelain=v1','--untracked-files=all','--',*PUBLICATION_DOCUMENT_DOMAINS),'Dirty publication documentation'
+ tracked=tracked_working_files();observed=[]
+ text_suffixes={'.md','.json','.csv','.tsv','.txt','.rst','.tex','.bib','.yaml','.yml','.log','.py','.f90','.f','.c','.h','.cpp','.sh','.toml','.html','.css','.js','.svg','.b64','.sha256'}
+ for line in git('ls-tree','-rl',PARENT_CANONICAL,'--',*PUBLICATION_DOCUMENT_DOMAINS).decode().splitlines():
+  meta,path=line.split('\t');mode,kind,digest,size=meta.split()
+  assert kind=='blob' and mode!='120000' and path in tracked and tracked[path][1:]==(mode,digest),'Changed publication index dependency: '+path
+  if not materialized(path,tracked):
+   observed.append(dict(path=path,git_blob=digest,actual_storage='ACTUAL_IMMUTABLE_GIT_BLOB_NOT_MATERIALIZED'))
+   continue
+  raw=(ROOT/path).read_bytes();variants=(raw,norm(raw)) if Path(path).suffix.lower() in text_suffixes else (raw,)
+  assert any(hashlib.sha1(b'blob '+str(len(value)).encode()+b'\0'+value).hexdigest()==digest for value in variants),'Changed publication working bytes: '+path
+  observed.append(dict(path=path,git_blob=digest,actual_raw_sha256=SHA(raw),actual_storage='ACTUAL_WORKING_FILE'))
+ return dict(status='COMPLETE_INHERITED_PUBLICATION_DOCUMENT_GIT_INDEX_AND_ACTUAL_WORKING_BYTES_UNCHANGED',parent=PARENT_CANONICAL,files=observed,compiler_executions=0,model_executions=0)
+
+
+def checked_current_source():
+ assert re.fullmatch('[0-9a-f]{40}',SEALED) and re.fullmatch('[0-9a-f]{64}',PARENT_ADMISSION_SHA) and re.fullmatch('[0-9a-f]{64}',CONTRACT_SHA)
+ raw=norm((PROOF/'EXPLICIT_BOTTOM9_COMBINED_COADMISSION_CONTRACT_V1.json').read_bytes());assert SHA(raw)==CONTRACT_SHA;q=json.loads(raw)
+ assert q['parent_contexts']==216 and q['new_contexts']==64 and q['combined_contexts']==280 and q['previous_actual_canonical']==PARENT_CANONICAL and q['parent_admission_sha256']==PARENT_ADMISSION_SHA and q['canonical_admission'] is False
+ assert q['physical_equations_changed'] is False and q['whole_historical_family_closed'] is False and q['RC3_changed'] is False
+ documents=publication_document_custody();result=current_source(SEALED)
+ result['additional_publication_document_custody']=documents
+ return result
+
+def raw_custody():
+ observed=[]
+ with ExitStack() as stack:
+  for name in NAMES:
+   store=Archive(PROOF,name,stack);assert store.record==json.loads(blob(SEALED,'integration/f-ci/nomacro-complete01/'+name+'.json'))
+   for member in store.names:store.get(member)
+   observed.append(dict(archive=name,sha256=store.record['sha256'],bytes=store.record['bytes'],members=len(store.names)))
+ return observed
+
+def parent_admission():
+ with ExitStack() as stack:
+  store=Archive(PROOF,'EXPLICIT_BOTTOM9_ADMISSION_RAW_V1',stack);assert store.record['sha256']==PARENT_ADMISSION_SHA and store.record['candidate']==PARENT and store.record['canonical']==PARENT_CANONICAL and store.record['canonical_admission'] is True
+  for member in store.names:store.get(member)
+  prior=json.loads(store.get('EXPLICIT_BOTTOM9_ACTUAL_CANONICAL_PUBLIC_OWNER_V1.stdout.txt'));receipt=json.loads(store.get('EXPLICIT_BOTTOM9_ACTUAL_CANONICAL_PUBLIC_OWNER_V1.json'))
+  assert receipt['before']==receipt['after'] and receipt['before']['head']==PARENT_CANONICAL and receipt['returncode']==0 and not store.get('EXPLICIT_BOTTOM9_ACTUAL_CANONICAL_PUBLIC_OWNER_V1.stderr.txt')
+ assert prior['status']=='BOUNDED_ORIGINAL_EXPLICIT9_WATER_CDE_AGE_CALENDAR_DRAINAGE_SOURCE_RAW_NATIVE_PASS' and prior['coadmission']['contexts']==216 and prior['coadmission']['native_calendar_samples']==1518 and prior['coadmission']['exact_cold_windows']==652
+ q=json.loads((PROOF/'EXPLICIT_BOTTOM9_MERGE_RECEIPT_V1.json').read_text());assert q['qualified_head']==PARENT and q['actual_merge']==PARENT_CANONICAL and q['admission_archive_sha256']==PARENT_ADMISSION_SHA and q['contexts']==216 and q['canonical_admission'] is True
+ return q,prior
+
+def guard_previous_source():
+ checked_current_source();raw_custody();parent_admission();return True
+
+def strip_current_evidence(text):
+ # The complete workflow inverse is independently checked by current_source.
+ # This exact new data selector must also be removed before the unchanged
+ # historical workflow-body tests remove their original checkout metadata.
+ marker='            /integration/f-ci/nomacro-complete01/CANONICAL_LEGACY*\n'
+ assert text.count(marker)<=1
+ return parent.strip_current_evidence(text.replace(marker,'',1))
+
+def publication_dependencies_unchanged():
+ checked_current_source();raw_custody();parent_admission()
+ # Application/compiler Source and the additional publication documents are
+ # checked independently against their actual immutable owners above.
+ # The actual canonical216 selector was false; no new publication scope exists.
+ return True
+
+def verify():
+ sources=checked_current_source();raw=raw_custody();admission,prior=parent_admission();inherited=complete_parent_custody(PROOF);messages=io.StringIO()
+ with redirect_stdout(messages):
+  compiled_windows=windows_postimages();compiled_linux={opt:linux_postimages(PROOF/('EXPLICIT_BOTTOM9_COMBINED_UBUNTU_'+opt+'_ORIGINAL_V1.zip'),opt) for opt in ('O0','O2')};legacy=legacy_oracles()
+ assert compiled_windows==json.loads((PROOF/'EXPLICIT_BOTTOM9_COMBINED_WINDOWS_POSTIMAGES_CENTRAL_INDEPENDENT_V1.json').read_text())
+ assert legacy==json.loads((PROOF/'CANONICAL_LEGACY_ORIGINAL_ORACLES_CENTRAL_INDEPENDENT_V2.json').read_text())
+ for opt,value in compiled_linux.items():assert value==json.loads((PROOF/('EXPLICIT_BOTTOM9_COMBINED_UBUNTU_'+opt+'_CENTRAL_INDEPENDENT_V1.json')).read_text())
+ # All original numeric assertions were independently executed against these
+ # immutable original Source/input/raw bytes. Fresh whole-archive custody,
+ # unchanged physical execution sources and all88 integrated binary postimages
+ # establish configuration reuse; no old producer or binding is rewritten.
+ science={}
+ names=['EXPLICIT_BOTTOM9_ANALYTICAL_WINDOWS_CENTRAL_INDEPENDENT_V1','EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_O0_CENTRAL_INDEPENDENT_V1','EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_O2_CENTRAL_INDEPENDENT_V1','EXPLICIT_BOTTOM9_SNOW_WINDOWS_CENTRAL_INDEPENDENT_V1','EXPLICIT_BOTTOM9_SNOW_UBUNTU_O0_CENTRAL_INDEPENDENT_V1','EXPLICIT_BOTTOM9_SNOW_UBUNTU_O2_CENTRAL_INDEPENDENT_V1','EXPLICIT_BOTTOM9_HISTORY_WINDOWS_CENTRAL_INDEPENDENT_V1','EXPLICIT_BOTTOM9_HISTORY_UBUNTU_O0_CENTRAL_INDEPENDENT_V1','EXPLICIT_BOTTOM9_HISTORY_UBUNTU_O2_CENTRAL_INDEPENDENT_V1']
+ for name in names:
+  path='integration/f-ci/nomacro-complete01/'+name+'.json';raw_record=norm((ROOT/path).read_bytes());assert raw_record==blob(SEALED,path);q=json.loads(raw_record);assert 'PASS' in q['status'] and q['compiler_executions']==q['model_executions']==0 and q['canonical_admission'] is False;science[name]=q
+ assert sum(len(value['contexts']) for value in science.values())==64
+ return dict(status='BOUNDED_ORIGINAL_ANALYTICAL_SNOW_HISTORY_PAIRED9_SOURCE_RAW_NATIVE_AND_WHOLE_COMPILED_POSTIMAGES_PASS',new64_immutable_original_science= science,inherited216_and_all_prior_science=prior,parent_actual_admission=admission,inherited_fresh_source=sources,inherited_fresh_bytes=inherited,actual_current_raw_custody=raw,legacy_original_component_preservation=legacy,integrated_windows_compiled=compiled_windows,integrated_linux_compiled=compiled_linux,scientific_reader_messages=messages.getvalue(),scientific_reuse='EXACT_CURRENT_SOURCE_LITERAL_INVERSES_COMPLETE_FRESH_ORIGINAL_EVIDENCE_AND88_ACTUAL_INTEGRATED_WHOLE_COMPILED_POSTIMAGES_NO_PRODUCER_OR_BINDING_REWRITE',coadmission=dict(contexts=280,short35_contexts=278,year367_contexts=2,exact_cold_windows=844,native_calendar_samples=1966,compiled_initialization_postimages=223,integrated_compiler_preservation_postimages=88,previous_canonical=PARENT_CANONICAL,standalone_AGE110_admission_claimed=False),compiler_executions=0,model_executions=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
+
+if __name__=='__main__':print(json.dumps(verify(),indent=2))

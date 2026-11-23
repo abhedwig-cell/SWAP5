@@ -1,0 +1,31 @@
+{
+  "status": "ORIGINAL_HISTORICAL_RECEIPT_AND_STDOUT_BYTES_RETAINED_EXACTLY_IN_GIT_WITH_NO_TEXT_FILTER",
+  "failed_run": 45228625861,
+  "failed_head": "30be8f42e39288ed7672a5bae8529c342a8be11e",
+  "failed_job": 137881811225,
+  "failed_original_log": "CANONICAL_LEGACY_FSI35_UBUNTU_FAILED_JOB137881811225_V1.log",
+  "failure": "Git index retained former text-normalized blobs despite new -text attributes; exact original working bytes and original hashes already matched. Exact named paths re-added under -text; no bytes or hashes rewritten.",
+  "checks": [
+    {
+      "path": "integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_LEGACY_D12_ACTUAL_HISTORICAL_V2.json",
+      "bytes": 590,
+      "sha256": "b0449112ad607f3277fe8f3c7277a4101f2e3c373afda1af1a6908245bd1e385",
+      "actual_raw_working_bytes_equal_staged_Git_blob": true
+    },
+    {
+      "path": "integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_LEGACY_D12_ACTUAL_HISTORICAL_V2.stdout.txt",
+      "bytes": 3365,
+      "sha256": "4dbda776b33c8b32fcb1a9b385eb6e7833fb8f725c62c9e04190495f8c682fd9",
+      "actual_raw_working_bytes_equal_staged_Git_blob": true
+    },
+    {
+      "path": "integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_LEGACY_D12_ACTUAL_HISTORICAL_V2.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_raw_working_bytes_equal_staged_Git_blob": true
+    }
+  ],
+  "failed_attempt_compiler_executions": 0,
+  "failed_attempt_native_executions": 0,
+  "SWAP_model_periods": 0
+}

@@ -26,6 +26,9 @@ def explicit_head_parent(reference,project):
         'case':Path(project.input_directory),'trace_richards':False,'budget_retry':True,
         'strict_water':True,'shared_pond_transfer':False,'refresh_macro_final':False}
     exec(compile(module,'<original-explicit-head-read-only-prefix>','exec'),namespace)
+    # Paired Snow uses this exact original HeadCalc prefix. Its existing Snow
+    # rollback/pond-event owner is checked separately by the complete inverse.
+    if selection(project)['swbotb']==9:return namespace['source']
     from lower_boundary_receipt import render_headcalc
     return render_headcalc(namespace['source'],selection(project)['swbotb'])
 
@@ -93,7 +96,7 @@ def validate_source(bundle,project,identity,reference):
     def add(text):
         anchor='   use hybrid_step_budget, only: projected_water_residual'
         text=state.replace(text,anchor,'   use MOD_integral,only:hybrid_snow_soil_trial_residual\n'+anchor)
-        return build.head_trial(text)
+        return build.head_trial(text,selected)
     source=inverse(source,add,template)
     if selected['swkimpl']:
         from ordinary_pond_source_guard import HEADS

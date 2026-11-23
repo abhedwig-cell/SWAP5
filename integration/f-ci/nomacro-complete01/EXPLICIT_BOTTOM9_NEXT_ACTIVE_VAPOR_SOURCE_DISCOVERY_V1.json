@@ -1,0 +1,41 @@
+{
+  "status": "READONLY_NEXT_GENUINE_ACTIVE_VAPOR_PAIRED9_COMPOSITION_DISCOVERY_NO_QUALIFICATION_CLAIM",
+  "actual_source": "0fb32e9dd3a6f524672bdd483dc3071c94e5dc7a",
+  "source": {
+    "app/hybrid_water/hydraulic_vapor.py": {
+      "actual_raw_sha256": "d4a56214da1d0b5adef80dd93035c7195d701ecb1079148b15ca8b824f017328",
+      "git_blob": "d029c256bf652134aad557cf7bc7a087f98af965"
+    },
+    "app/hybrid_water/hydraulic_vapor_native.f90": {
+      "actual_raw_sha256": "7661eef5dc38c574b74f7ba027b9421226331eb69a6174cec021224a2d278814",
+      "git_blob": "4fdbe992b9201ca305028661e668ab02833e80cd"
+    },
+    "app/hybrid_water/vapor_boundary_composition.py": {
+      "actual_raw_sha256": "1a4c7bf266b03297230f17754ef212395ddbdcfc8901a6ae6f74dec9804316f5",
+      "git_blob": "6bf34708e8487e5fab45257dfc5ef37b0d5d4110"
+    },
+    "app/hybrid_water/prescribed_head_flux_boundary.py": {
+      "actual_raw_sha256": "6f78811a78c9da93c8a1a5e9ea87712486579b5c07d92812b1bb0ace5f774def",
+      "git_blob": "d96184e2b8319322b2153ac106192d60f358b7e1"
+    },
+    "app/hybrid_water/original_output.py": {
+      "actual_raw_sha256": "d59220cec828dae24d379e8b5e3514bd373040369d672d58981a48cb267d39b4",
+      "git_blob": "638c1790c7941361b0a2b566614254053aa10a70"
+    }
+  },
+  "classification": "MISSING_COMPOSITION",
+  "historical_scope": "Active original SWVAPOR is used only by hydraulic models8..11. Default model1 ignores SWVAPOR; model1 flag changes are not an active-vapor capability.",
+  "current_blockers": [
+    "prescribed_head_flux_boundary.selection explicitly rejects non-M1 SWVAPOR !=0.",
+    "hydraulic_vapor.selection requires vapor_boundary_composition.selected_context for nonstandard bottom/drainage; context currently binds only5/6/8, excludes9.",
+    "Existing vapor native3/5/6 and CDE offset own full hydraulic/thermal/lookup carry; selected_context and parent_digest/head inverse currently freeze only5/6/8."
+  ],
+  "next_coherent_batch": "Existing corrected original isothermal vapor+explicitpaired9 water/CDE, representative models8/11, noSnow/hys/Frost/AGE/implicit. Target32Windows/Ubuntu O0/O2contexts withundrained/activedrainage; CDEactivedrainprimarySWINCO2, knownsaturatedinitial1failure staysopen. Full originalcorrected-vapor references,allnodeindependentwater/CDEledger,complete7*n+6nativecarry,typedboundary/model/vaporwitness,cold/native refusals andwholegenerated/compiled prior-context postimages.",
+  "required_source_action": "Add a bounded paired-vapor owner and typed newnative domain using existing vapor state only. Extend paired renderer through explicit optional vapor selection, preserve exact old default/Snow/history paths. Reconcile true external prescribed QBOT9 and allnumnodstorage in existing terminal/budget owner; do not substitute NN-gradient flux for the paired external flux. Keep literal existing Kelvin-sign correction and1e-10bounds.",
+  "not_yet_done": "No renderer/physics/codec edits, inputs, builds, periods or qualification claims. Finish pendingcoherent280admission beforechangingfrozenAPPsurface.",
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false,
+  "whole_historical_family_closed": false,
+  "global_family_and_gap_counts": "UNKNOWN"
+}

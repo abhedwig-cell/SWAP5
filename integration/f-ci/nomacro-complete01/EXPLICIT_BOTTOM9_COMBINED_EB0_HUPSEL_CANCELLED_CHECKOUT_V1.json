@@ -1,0 +1,129 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 137965149925,
+      "run_id": 45252385208,
+      "workflow_name": "Closed Hupsel pond balance repair",
+      "head_branch": "codex/nomacro-explicit-bottom9-coadmission01",
+      "run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45252385208",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUOUgWc8AAAAgH10e5Q",
+      "head_sha": "eb0fca935ba5fe25278847163f72ed1611a318c7",
+      "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/jobs/137965149925",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/45252385208/job/137965149925",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-11-23T19:46:21Z",
+      "started_at": "2026-11-23T19:46:23Z",
+      "completed_at": "2026-11-23T20:05:54Z",
+      "name": "qualification",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-23T19:46:24Z",
+          "completed_at": "2026-11-23T19:46:25Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "cancelled",
+          "number": 2,
+          "started_at": "2026-11-23T19:46:25Z",
+          "completed_at": "2026-11-23T20:01:23Z"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 3,
+          "started_at": "2026-11-23T20:01:23Z",
+          "completed_at": "2026-11-23T20:01:23Z"
+        },
+        {
+          "name": "Prepare exact original no-macro provider",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 4,
+          "started_at": "2026-11-23T20:01:23Z",
+          "completed_at": "2026-11-23T20:01:23Z"
+        },
+        {
+          "name": "Original scalar pond equation versus actual O0/O2 Jacobian",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-11-23T20:01:23Z",
+          "completed_at": "2026-11-23T20:01:23Z"
+        },
+        {
+          "name": "Shared soil-air receipt template O0/O2 after composition",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6,
+          "started_at": "2026-11-23T20:01:23Z",
+          "completed_at": "2026-11-23T20:01:23Z"
+        },
+        {
+          "name": "Full undrained1096 and exact own50/530 restarts O2",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7,
+          "started_at": "2026-11-23T20:01:23Z",
+          "completed_at": "2026-11-23T20:01:23Z"
+        },
+        {
+          "name": "Full generated-donor and kernel O0 and exact native restarts",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-11-23T20:01:23Z",
+          "completed_at": "2026-11-23T20:01:23Z"
+        },
+        {
+          "name": "Three complete named applications and exact native continuations",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-23T20:01:23Z",
+          "completed_at": "2026-11-23T20:01:23Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-23T20:01:23Z",
+          "completed_at": "2026-11-23T20:01:24Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-11-23T20:01:24Z",
+          "completed_at": "2026-11-23T20:01:24Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-11-23T20:01:24Z",
+          "completed_at": "2026-11-23T20:01:24Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/check-runs/137965149925",
+      "labels": [
+        "ubuntu-26.04"
+      ],
+      "runner_id": 1000371113,
+      "runner_name": "GitHub Actions 1000371113",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

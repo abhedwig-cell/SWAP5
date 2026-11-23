@@ -1,0 +1,17 @@
+{
+  "status": "FSI_SOURCE_CONTRACT_GENERATION_SETUP_ASSERTIONS_PRESERVED_NO_NATIVE_REPEATS",
+  "failures": [
+    {
+      "assumption": "Every identity-guarded source is also compiled by the original FSI native matrix",
+      "actual": "mod_transaction_reference is not compiled by the stubbed FSI matrix; retain its exact standalone qualified historical Source with only IEEE/ISO intrinsic imports, separately from28currentcompiledsources."
+    },
+    {
+      "assumption": "Self-contained transaction provider has no USE declarations",
+      "actual": "Two USE declarations are standard IEEE/ISO intrinsic modules; there are no changing nonintrinsic Source dependencies."
+    }
+  ],
+  "compiler_executions": 0,
+  "native_executions": 0,
+  "SWAP_model_periods": 0,
+  "original_fsi_native70_compilers6_oracles_unchanged": true
+}

@@ -1,0 +1,1004 @@
+{
+  "status": "ALL_ORIGINAL_CURRENT_WOF43A_FVQ37_29000_13_AND_CO2_O0_O2_ORACLES_PASS",
+  "actual_source": "dbccae07f0e81745bf25b360e5785b0d2574a0b8",
+  "source_inventory": {
+    "src/crop/mod_wofost_rate_table.f90": {
+      "actual_raw_sha256": "bccb94aecf4a3228964c1a3f977d1966e4a62b2aa40ea114399d75823d21c337",
+      "git_blob": "6c38364075e1cfff508999e0a48fab8bb7396823"
+    },
+    "src/crop/mod_crop_et_canopy_view_provider.f90": {
+      "actual_raw_sha256": "c982634929cbd564c075f83e54e47b3fd8ee51795c34bc20f866f65be01842e4",
+      "git_blob": "7e007ea0f228c8e0dfeddafd2a340575233de576"
+    },
+    "tests/fwof/test_fwof43a_crop_et_canopy_view_provider.f90": {
+      "actual_raw_sha256": "b5c04077c24c00250781be2e9462677227a781e15e85726b2c9dc16806ec8fdd",
+      "git_blob": "0fda482e6d1b129accd00d56ca100971d5f763ea"
+    },
+    "tests/fvq/test_fvq37_crop_et_canopy_view_independent.f90": {
+      "actual_raw_sha256": "756947b2efe628d4267b839fc404cfce4c4d529eb31969e98211a64adccb53d2",
+      "git_blob": "70a3e63e9fea0075197e4abf3a78ac9053ad4347"
+    },
+    "src/crop/mod_crop_co2_response_resolver.f90": {
+      "actual_raw_sha256": "28d0d5368009e0bf5b1a78da826303687b686059e85bcbd6fb570f7a46d93e62",
+      "git_blob": "63ccbe2670e90fec957f6d563423efa6007760e9"
+    },
+    "src/transaction/mod_transaction_reference.f90": {
+      "actual_raw_sha256": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+      "git_blob": "0a5ce4d122037048ab9372acdeae447cc085f2d3"
+    },
+    "src/crop/mod_wofost_actual_biomass_state.f90": {
+      "actual_raw_sha256": "f8ff5ccabe6f596b006d178d365c8c1e18d092b7cae74d7bd40c1e453ac8a913",
+      "git_blob": "f1ef51683da38f798b342226a88e40aaa7854c4f"
+    },
+    "src/crop/mod_crop_root_depth_dvs.f90": {
+      "actual_raw_sha256": "916f13d8aa15baeb04a88050d206bb454472585c8f10dadd8491b49df0b7dced",
+      "git_blob": "23ebc55a423ca698a1fa0b3c3de512de93197766"
+    },
+    "src/crop/mod_crop_root_depth_biomass.f90": {
+      "actual_raw_sha256": "bc36229b89eccc115264ea213079a0be8d5d95140b3a93283087f0c909b43b54",
+      "git_blob": "4d9f4ffed0d56b1d8f0615e9e66354b5eb617c65"
+    },
+    "src/crop/mod_crop_root_profile_static.f90": {
+      "actual_raw_sha256": "2e9d5c0ce197631a01f86918863fef3d1cc3840d7113baabd050f15f178fbc66",
+      "git_blob": "6860bdd13b8b384d5e7f70eb1c2070e7129db7d1"
+    },
+    "src/crop/mod_crop_root_uptake_input_contract.f90": {
+      "actual_raw_sha256": "7036378379ef6d099e6e6451bd059749ed2a3b8767fc31ee91bd81c26c469809",
+      "git_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521"
+    },
+    "src/crop/mod_crop_root_biomass_distribution.f90": {
+      "actual_raw_sha256": "90c708fcca05ee562708bb32f3f7abe6abc9423b8aaab4024874f9f2dabc7f26",
+      "git_blob": "ff4dabeb4f824e8264625afd99470d92a56ec9c3"
+    },
+    "src/crop/mod_crop_bartholomeus_input.f90": {
+      "actual_raw_sha256": "4df387f0b2e47c1f80228aac2776fe34e77a3bb833719359f07485055e32546f",
+      "git_blob": "8c05a94d73112b0d1fcb7d89d5b4d70f875c8636"
+    },
+    "src/crop/mod_wofost_crop_owner_state.f90": {
+      "actual_raw_sha256": "6bf1ddcf3fdc071712f1508b5d26e43860c27d861886505a01c9477797e7c0bc",
+      "git_blob": "61c413e034744fd4d236d37f175ac2234e81b893"
+    },
+    "src/crop/mod_wofost_one_day_structural_evolution.f90": {
+      "actual_raw_sha256": "2415974bf58af4f584657236db0a4ddff4794388b7706b0a9cdc62e868f994a8",
+      "git_blob": "14b206df0e24b967c4b97814b50c777e07473228"
+    },
+    "src/runtime/mod_fmr_crop_co2_response_binding.f90": {
+      "actual_raw_sha256": "07f5e0fa89589b6d89cce2425730ce05cdd0a5090f2ee7b4a1e2cb5f838b0203",
+      "git_blob": "5fdf4b103c1a7c810b6d7cd8871a13ed5dec538e"
+    },
+    "tests/fmig431/test_swap431_crop_co2_response.f90": {
+      "actual_raw_sha256": "aa200bf2d9110165d713e8dd0ded0317e9fd082cda9734d791f8c750f099315c",
+      "git_blob": "7fbcbdd790609453ba7c12c77da272e569f2c4ae"
+    },
+    "tests/fmig431/run_swap431_crop_co2_response.py": {
+      "actual_raw_sha256": "bd102343ecd6d37935b4a8d936ec0ac98f514cc149037aecdabb0a29bde6ec74",
+      "git_blob": "9e27ab352aa5c306c5cf58a90ca3ad1ca904d8ef"
+    }
+  },
+  "actual_original_CO2_compile_closure": [
+    "src\\crop\\mod_wofost_rate_table.f90",
+    "src\\crop\\mod_crop_co2_response_resolver.f90",
+    "src\\transaction\\mod_transaction_reference.f90",
+    "src\\crop\\mod_wofost_actual_biomass_state.f90",
+    "src\\crop\\mod_crop_root_depth_dvs.f90",
+    "src\\crop\\mod_crop_root_depth_biomass.f90",
+    "src\\crop\\mod_crop_root_profile_static.f90",
+    "src\\crop\\mod_crop_root_uptake_input_contract.f90",
+    "src\\crop\\mod_crop_root_biomass_distribution.f90",
+    "src\\crop\\mod_crop_bartholomeus_input.f90",
+    "src\\crop\\mod_wofost_crop_owner_state.f90",
+    "src\\crop\\mod_wofost_one_day_structural_evolution.f90",
+    "src\\crop\\mod_crop_et_canopy_view_provider.f90",
+    "src\\runtime\\mod_fmr_crop_co2_response_binding.f90",
+    "tests\\fmig431\\test_swap431_crop_co2_response.f90"
+  ],
+  "events": [
+    {
+      "label": "test_fwof43a_crop_et_canopy_view_provider-compile",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-J",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1",
+        "-I",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1",
+        "src/crop/mod_wofost_rate_table.f90",
+        "src/crop/mod_crop_et_canopy_view_provider.f90",
+        "tests/fwof/test_fwof43a_crop_et_canopy_view_provider.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\test_fwof43a_crop_et_canopy_view_provider.exe"
+      ],
+      "returncode": 0,
+      "seconds": 1.6562423999421299,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\test_fwof43a_crop_et_canopy_view_provider-compile.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\test_fwof43a_crop_et_canopy_view_provider-compile.stderr"
+    },
+    {
+      "label": "test_fwof43a_crop_et_canopy_view_provider-execute",
+      "command": [
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\test_fwof43a_crop_et_canopy_view_provider.exe"
+      ],
+      "returncode": 0,
+      "seconds": 0.39500859985128045,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\test_fwof43a_crop_et_canopy_view_provider-execute.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\test_fwof43a_crop_et_canopy_view_provider-execute.stderr"
+    },
+    {
+      "label": "test_fvq37_crop_et_canopy_view_independent-compile",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-J",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1",
+        "-I",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1",
+        "src/crop/mod_wofost_rate_table.f90",
+        "src/crop/mod_crop_et_canopy_view_provider.f90",
+        "tests/fvq/test_fvq37_crop_et_canopy_view_independent.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\test_fvq37_crop_et_canopy_view_independent.exe"
+      ],
+      "returncode": 0,
+      "seconds": 2.3557428997009993,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\test_fvq37_crop_et_canopy_view_independent-compile.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\test_fvq37_crop_et_canopy_view_independent-compile.stderr"
+    },
+    {
+      "label": "test_fvq37_crop_et_canopy_view_independent-execute",
+      "command": [
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\test_fvq37_crop_et_canopy_view_independent.exe"
+      ],
+      "returncode": 0,
+      "seconds": 0.40139410039409995,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\test_fvq37_crop_et_canopy_view_independent-execute.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\test_fvq37_crop_et_canopy_view_independent-execute.stderr"
+    },
+    {
+      "label": "co2-mod_wofost_rate_table",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_wofost_rate_table.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_wofost_rate_table.o"
+      ],
+      "returncode": 0,
+      "seconds": 2.4198453999124467,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_wofost_rate_table.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_wofost_rate_table.stderr"
+    },
+    {
+      "label": "co2-mod_crop_co2_response_resolver",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_co2_response_resolver.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_co2_response_resolver.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.5140534997917712,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_co2_response_resolver.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_co2_response_resolver.stderr"
+    },
+    {
+      "label": "co2-mod_transaction_reference",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\transaction\\mod_transaction_reference.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_transaction_reference.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.5548967001959682,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_transaction_reference.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_transaction_reference.stderr"
+    },
+    {
+      "label": "co2-mod_wofost_actual_biomass_state",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_wofost_actual_biomass_state.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_wofost_actual_biomass_state.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.6366817001253366,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_wofost_actual_biomass_state.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_wofost_actual_biomass_state.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_depth_dvs",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_depth_dvs.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_depth_dvs.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.6889765001833439,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_depth_dvs.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_depth_dvs.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_depth_biomass",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_depth_biomass.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_depth_biomass.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.5949695003218949,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_depth_biomass.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_depth_biomass.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_profile_static",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_profile_static.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_profile_static.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.8710242998786271,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_profile_static.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_profile_static.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_uptake_input_contract",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_uptake_input_contract.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_uptake_input_contract.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.4614085000939667,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_uptake_input_contract.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_uptake_input_contract.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_biomass_distribution",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_biomass_distribution.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_biomass_distribution.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.5340766999870539,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_biomass_distribution.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_root_biomass_distribution.stderr"
+    },
+    {
+      "label": "co2-mod_crop_bartholomeus_input",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_bartholomeus_input.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_bartholomeus_input.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.6850999998860061,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_bartholomeus_input.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_bartholomeus_input.stderr"
+    },
+    {
+      "label": "co2-mod_wofost_crop_owner_state",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_wofost_crop_owner_state.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_wofost_crop_owner_state.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.6434459998272359,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_wofost_crop_owner_state.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_wofost_crop_owner_state.stderr"
+    },
+    {
+      "label": "co2-mod_wofost_one_day_structural_evolution",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_wofost_one_day_structural_evolution.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_wofost_one_day_structural_evolution.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.7080423999577761,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_wofost_one_day_structural_evolution.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_wofost_one_day_structural_evolution.stderr"
+    },
+    {
+      "label": "co2-mod_crop_et_canopy_view_provider",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_et_canopy_view_provider.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_et_canopy_view_provider.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.5473659001290798,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_et_canopy_view_provider.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_crop_et_canopy_view_provider.stderr"
+    },
+    {
+      "label": "co2-mod_fmr_crop_co2_response_binding",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\runtime\\mod_fmr_crop_co2_response_binding.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_fmr_crop_co2_response_binding.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.6543058999814093,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_fmr_crop_co2_response_binding.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-mod_fmr_crop_co2_response_binding.stderr"
+    },
+    {
+      "label": "co2-test_swap431_crop_co2_response",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\fmig431\\test_swap431_crop_co2_response.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\test_swap431_crop_co2_response.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.39926829980686307,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-test_swap431_crop_co2_response.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-test_swap431_crop_co2_response.stderr"
+    },
+    {
+      "label": "co2-link",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_wofost_rate_table.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_co2_response_resolver.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_transaction_reference.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_wofost_actual_biomass_state.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_depth_dvs.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_depth_biomass.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_profile_static.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_uptake_input_contract.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_root_biomass_distribution.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_bartholomeus_input.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_wofost_crop_owner_state.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_wofost_one_day_structural_evolution.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_crop_et_canopy_view_provider.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\mod_fmr_crop_co2_response_binding.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\test_swap431_crop_co2_response.o",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\test.exe"
+      ],
+      "returncode": 0,
+      "seconds": 0.3680052999407053,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-link.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-link.stderr"
+    },
+    {
+      "label": "co2-execute",
+      "command": [
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O0-v1\\co2\\test.exe"
+      ],
+      "returncode": 0,
+      "seconds": 0.38047900004312396,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-execute.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O0\\co2-execute.stderr"
+    },
+    {
+      "label": "test_fwof43a_crop_et_canopy_view_provider-compile",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-J",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1",
+        "-I",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1",
+        "src/crop/mod_wofost_rate_table.f90",
+        "src/crop/mod_crop_et_canopy_view_provider.f90",
+        "tests/fwof/test_fwof43a_crop_et_canopy_view_provider.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\test_fwof43a_crop_et_canopy_view_provider.exe"
+      ],
+      "returncode": 0,
+      "seconds": 2.517153099644929,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\test_fwof43a_crop_et_canopy_view_provider-compile.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\test_fwof43a_crop_et_canopy_view_provider-compile.stderr"
+    },
+    {
+      "label": "test_fwof43a_crop_et_canopy_view_provider-execute",
+      "command": [
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\test_fwof43a_crop_et_canopy_view_provider.exe"
+      ],
+      "returncode": 0,
+      "seconds": 0.19090599985793233,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\test_fwof43a_crop_et_canopy_view_provider-execute.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\test_fwof43a_crop_et_canopy_view_provider-execute.stderr"
+    },
+    {
+      "label": "test_fvq37_crop_et_canopy_view_independent-compile",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-J",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1",
+        "-I",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1",
+        "src/crop/mod_wofost_rate_table.f90",
+        "src/crop/mod_crop_et_canopy_view_provider.f90",
+        "tests/fvq/test_fvq37_crop_et_canopy_view_independent.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\test_fvq37_crop_et_canopy_view_independent.exe"
+      ],
+      "returncode": 0,
+      "seconds": 3.191778199747205,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\test_fvq37_crop_et_canopy_view_independent-compile.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\test_fvq37_crop_et_canopy_view_independent-compile.stderr"
+    },
+    {
+      "label": "test_fvq37_crop_et_canopy_view_independent-execute",
+      "command": [
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\test_fvq37_crop_et_canopy_view_independent.exe"
+      ],
+      "returncode": 0,
+      "seconds": 0.18860419979318976,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\test_fvq37_crop_et_canopy_view_independent-execute.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\test_fvq37_crop_et_canopy_view_independent-execute.stderr"
+    },
+    {
+      "label": "co2-mod_wofost_rate_table",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_wofost_rate_table.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_wofost_rate_table.o"
+      ],
+      "returncode": 0,
+      "seconds": 1.0285696000792086,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_wofost_rate_table.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_wofost_rate_table.stderr"
+    },
+    {
+      "label": "co2-mod_crop_co2_response_resolver",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_co2_response_resolver.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_co2_response_resolver.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.7984361997805536,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_co2_response_resolver.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_co2_response_resolver.stderr"
+    },
+    {
+      "label": "co2-mod_transaction_reference",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\transaction\\mod_transaction_reference.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_transaction_reference.o"
+      ],
+      "returncode": 0,
+      "seconds": 1.4135590000078082,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_transaction_reference.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_transaction_reference.stderr"
+    },
+    {
+      "label": "co2-mod_wofost_actual_biomass_state",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_wofost_actual_biomass_state.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_wofost_actual_biomass_state.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.7631546999327838,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_wofost_actual_biomass_state.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_wofost_actual_biomass_state.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_depth_dvs",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_depth_dvs.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_depth_dvs.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.48926950013265014,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_depth_dvs.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_depth_dvs.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_depth_biomass",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_depth_biomass.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_depth_biomass.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.49865899980068207,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_depth_biomass.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_depth_biomass.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_profile_static",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_profile_static.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_profile_static.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.551216599997133,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_profile_static.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_profile_static.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_uptake_input_contract",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_uptake_input_contract.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_uptake_input_contract.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.5756340003572404,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_uptake_input_contract.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_uptake_input_contract.stderr"
+    },
+    {
+      "label": "co2-mod_crop_root_biomass_distribution",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_root_biomass_distribution.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_biomass_distribution.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.6931946999393404,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_biomass_distribution.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_root_biomass_distribution.stderr"
+    },
+    {
+      "label": "co2-mod_crop_bartholomeus_input",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_bartholomeus_input.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_bartholomeus_input.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.6048436001874506,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_bartholomeus_input.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_bartholomeus_input.stderr"
+    },
+    {
+      "label": "co2-mod_wofost_crop_owner_state",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_wofost_crop_owner_state.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_wofost_crop_owner_state.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.9107237001881003,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_wofost_crop_owner_state.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_wofost_crop_owner_state.stderr"
+    },
+    {
+      "label": "co2-mod_wofost_one_day_structural_evolution",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_wofost_one_day_structural_evolution.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_wofost_one_day_structural_evolution.o"
+      ],
+      "returncode": 0,
+      "seconds": 1.1383465002290905,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_wofost_one_day_structural_evolution.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_wofost_one_day_structural_evolution.stderr"
+    },
+    {
+      "label": "co2-mod_crop_et_canopy_view_provider",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_crop_et_canopy_view_provider.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_et_canopy_view_provider.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.9054630002938211,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_et_canopy_view_provider.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_crop_et_canopy_view_provider.stderr"
+    },
+    {
+      "label": "co2-mod_fmr_crop_co2_response_binding",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\runtime\\mod_fmr_crop_co2_response_binding.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_fmr_crop_co2_response_binding.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.598518599756062,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_fmr_crop_co2_response_binding.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-mod_fmr_crop_co2_response_binding.stderr"
+    },
+    {
+      "label": "co2-test_swap431_crop_co2_response",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-c",
+        "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\fmig431\\test_swap431_crop_co2_response.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\test_swap431_crop_co2_response.o"
+      ],
+      "returncode": 0,
+      "seconds": 0.6665099002420902,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-test_swap431_crop_co2_response.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-test_swap431_crop_co2_response.stderr"
+    },
+    {
+      "label": "co2-link",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-std=f2008",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-JC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "-IC:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_wofost_rate_table.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_co2_response_resolver.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_transaction_reference.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_wofost_actual_biomass_state.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_depth_dvs.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_depth_biomass.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_profile_static.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_uptake_input_contract.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_root_biomass_distribution.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_bartholomeus_input.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_wofost_crop_owner_state.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_wofost_one_day_structural_evolution.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_crop_et_canopy_view_provider.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\mod_fmr_crop_co2_response_binding.o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\test_swap431_crop_co2_response.o",
+        "-o",
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\test.exe"
+      ],
+      "returncode": 0,
+      "seconds": 0.6988129001110792,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-link.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-link.stderr"
+    },
+    {
+      "label": "co2-execute",
+      "command": [
+        "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\canonical-legacy-WOF43A-O2-v1\\co2\\test.exe"
+      ],
+      "returncode": 0,
+      "seconds": 0.19031309988349676,
+      "stdout": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-execute.stdout",
+      "stderr": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-wof43a-current-original-oracles-v1\\O2\\co2-execute.stderr"
+    }
+  ],
+  "compiler_driver_executions": 38,
+  "native_component_executions": 6,
+  "SWAP_model_periods": 0,
+  "canonical_CI_source_reconciliation_still_required": true,
+  "canonical_admission": false
+}

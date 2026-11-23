@@ -22,6 +22,8 @@ def source(selected):
         count=text.count(old)
         if count<1:raise ValueError('Changed literal original Snow diagnostic provider')
         text=replace(text,old,new,count)
+    if selected['swbotb']==9:
+        text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')
     return text
 
 

@@ -10,7 +10,7 @@ from pathlib import Path
 POLICY='original-explicit-prescribed-head-flux-all-node-trial-v1'
 
 
-def selection(directory,original_output=True):
+def selection(directory,original_output=True,*,hysteresis=0,snow=False):
  if not directory or original_output is False:return None
  from experimental_project import switches
  text=(Path(directory)/'swap.swp').read_text(encoding='cp1252');s=switches(text)
@@ -20,13 +20,25 @@ def selection(directory,original_output=True):
   rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([^\r\n]*)',active)
   if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+[ \t]*',rows[0]) is None:return None
   return int(rows[0])
- fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=0,SWSNOW=0,SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)
+ if hysteresis not in (0,1,2) or snow and hysteresis!=0:return None
+ fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=hysteresis,SWSNOW=int(snow),SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)
  if any(integer(key)!=value for key,value in fixed.items()):return None
+ if snow and (integer('SWSOLU') not in (0,1) or integer('SWDRA')!=0):return None
  if integer('SWINCO') not in (1,2) or integer('SWSOLU') not in (0,1,2) or integer('SWDRA') not in (0,1) or integer('SWKMEAN') not in range(1,7):return None
  if re.search(r'(?i)\bSWAP_SOILS_DB\b',active):return None
  models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
  remainder=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
- if re.search(r'(?i)\bIHWCKMODEL\b',remainder) or len(models)>1 or models and re.fullmatch(r'\+?0*1(?:[ \t]+\+?0*1)*[ \t]*',models[0]) is None:return None
+ if re.search(r'(?i)\bIHWCKMODEL\b',remainder) or len(models)>1 or models and re.fullmatch(r'[+]?[0-9]+(?:[ \t]+[+]?[0-9]+)*[ \t]*',models[0]) is None:return None
+ if models:
+  analytical=tuple(map(int,models[0].split()))
+  if not all(value in (1,3,4,5,6,7,8,9,10,11) for value in analytical):return None
+  if any(value!=1 for value in analytical):
+   if integer('SWSOLU') not in (0,1):return None
+   vapor=re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^\r\n]+)',active)
+   if len(vapor)>1:return None
+   if vapor:
+    if re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',vapor[0]) is None:return None
+    if any(int(token)!=0 for token in vapor[0].split()):return None
  def civil(key):
   rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([^\s]+)',active)
   if len(rows)!=1:raise ValueError('Ambiguous original paired-boundary interval')
@@ -55,6 +67,10 @@ def selection(directory,original_output=True):
 
 def selected_boundary(project):
  if selection(project.input_directory,getattr(project,'original_output',False)) is not None:return 9
+ from prescribed_history_boundary import enabled as history_enabled
+ if history_enabled(project):return 9
+ from prescribed_snow_boundary import enabled as snow_paired
+ if snow_paired(project):return 9
  from implicit_groundwater_state import selected_boundary as previous
  return previous(project)
 
@@ -63,7 +79,11 @@ def boundary_metadata(project,sha,app,root):
  if selected_boundary(project)!=9:
   from implicit_groundwater_state import boundary_metadata as previous
   return previous(project,sha,app,root)
- return dict(policy=POLICY,source_sha256=sha(app/'prescribed_head_flux_boundary.py'),template_sha256=sha(app/'hybrid_step_budget.f90'),effective_SWBOTB=9,prescribed_external_flux_unchanged=True,all_actual_node_storage_included=True,groundwater_reaction_substituted=False,new_native_codec=False,strict_retry_provider_sha256=sha(app/'implicit_conductivity_retry.py'),strict_retry_predicate='swmacro==0.and.swbotb==9',strict_retry_clock_floor_ulps=8)
+ result=dict(policy=POLICY,source_sha256=sha(app/'prescribed_head_flux_boundary.py'),template_sha256=sha(app/'hybrid_step_budget.f90'),effective_SWBOTB=9,prescribed_external_flux_unchanged=True,all_actual_node_storage_included=True,groundwater_reaction_substituted=False,new_native_codec=False,strict_retry_provider_sha256=sha(app/'implicit_conductivity_retry.py'),strict_retry_predicate='swmacro==0.and.swbotb==9',strict_retry_clock_floor_ulps=8)
+ from prescribed_snow_boundary import enabled as snow_paired,POLICY as snow_policy
+ if snow_paired(project):
+  result.update(snow_composition_policy=snow_policy,snow_composition_source_sha256=sha(app/'prescribed_snow_boundary.py'),strict_retry_provider_sha256=sha(app/'groundwater_snow_retry.py'),strict_retry_predicate='swmacro==0.and.swkimpl==0')
+ return result
 
 
 def render_budget(source,boundary):

@@ -1,0 +1,116 @@
+{
+  "total_count": 2,
+  "jobs": [
+    {
+      "id": 137881811225,
+      "run_id": 45228625861,
+      "workflow_name": "Targeted original FSI35 source succession and unchanged native oracles",
+      "head_branch": "codex/nomacro-explicit-bottom9-coadmission01",
+      "run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45228625861",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUOUgWc8AAAAgGmV5GQ",
+      "head_sha": "30be8f42e39288ed7672a5bae8529c342a8be11e",
+      "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/jobs/137881811225",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/45228625861/job/137881811225",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-23T17:31:40Z",
+      "started_at": "2026-11-23T17:31:42Z",
+      "completed_at": "2026-11-23T17:32:00Z",
+      "name": "fsi35-permanent-preservation",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-23T17:31:43Z",
+          "completed_at": "2026-11-23T17:31:46Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-23T17:31:46Z",
+          "completed_at": "2026-11-23T17:31:55Z"
+        },
+        {
+          "name": "Compiler identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-23T17:31:55Z",
+          "completed_at": "2026-11-23T17:31:55Z"
+        },
+        {
+          "name": "Recover exact historical F-SI35 authorities",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-23T17:31:55Z",
+          "completed_at": "2026-11-23T17:31:55Z"
+        },
+        {
+          "name": "Preserve F-SI35 through admitted semantic successor lineage",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 5,
+          "started_at": "2026-11-23T17:31:55Z",
+          "completed_at": "2026-11-23T17:31:58Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-23T17:31:58Z",
+          "completed_at": "2026-11-23T17:31:58Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-23T17:31:58Z",
+          "completed_at": "2026-11-23T17:31:58Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/check-runs/137881811225",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000370967,
+      "runner_name": "GitHub Actions 1000370967",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 137881814582,
+      "run_id": 45228625861,
+      "workflow_name": "Targeted original FSI35 source succession and unchanged native oracles",
+      "head_branch": "codex/nomacro-explicit-bottom9-coadmission01",
+      "run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/45228625861",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUOUgWc8AAAAgGmWGNg",
+      "head_sha": "30be8f42e39288ed7672a5bae8529c342a8be11e",
+      "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/jobs/137881814582",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/45228625861/job/137881814582",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-23T17:31:40Z",
+      "started_at": "2026-11-23T17:31:40Z",
+      "completed_at": "2026-11-23T17:31:40Z",
+      "name": "fci58p-postimage-reconciliation",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/check-runs/137881814582",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    }
+  ]
+}

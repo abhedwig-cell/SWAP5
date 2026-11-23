@@ -1,0 +1,236 @@
+--- a/app/hybrid_water/cde_native_receipt.py
++++ b/app/hybrid_water/cde_native_receipt.py
+@@ -20,7 +20,8 @@
+                 conserved_cde_prefix_offset_bytes=48,
+                 native_stock_offset='48+8*(actual_nodes+1)',
+                 native_stock='actual original saved SAMPRO, not reconstructed CMSY',
+-                optional_native_prefixes={'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain',
++                optional_native_prefixes={'S5HPC007':'48 + 8*(14+2*actual_layers), checked duplicated paired9 vapor domain',
++                    'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain',
+                     'S5HSC004':'48 + 8*(14+2*actual_layers), checked duplicated Snow vapor domain',
+                     'S5HCC006':'48 + 8*(14+2*actual_layers), checked duplicated CDE calendar vapor domain',
+                     'S5HBC005':'48 + 8*(14+2*actual_layers), checked duplicated bounded drainage/bottom vapor domain'},
+@@ -34,6 +35,9 @@
+     offset=48
+     if aux[:8]==b'S5HCC006':
+         from analytical_cde_calendar import cde_offset
++        offset=cde_offset(aux,nodes,project)
++    if aux[:8]==b'S5HPC007':
++        from prescribed_vapor_boundary import cde_offset
+         offset=cde_offset(aux,nodes,project)
+     if aux[:8]==b'S5HBC005':
+         from vapor_boundary_composition import cde_offset
+--- a/app/hybrid_water/experimental_project.py
++++ b/app/hybrid_water/experimental_project.py
+@@ -137,6 +137,9 @@
+     if paired_boundary is None:
+         from prescribed_snow_boundary import selection as snow_paired_selection
+         paired_boundary=snow_paired_selection(directory,original_output)
++    if paired_boundary is None:
++        from prescribed_vapor_boundary import selection as vapor_paired_selection
++        paired_boundary=vapor_paired_selection(directory,original_output)
+     if paired_boundary is not None:allowed['SWBOTB'].add(9)
+     if extended is not None:allowed['SWDRA']={2}
+     if selected.get('SWINCO') == 1:
+--- a/app/hybrid_water/hydraulic_vapor.py
++++ b/app/hybrid_water/hydraulic_vapor.py
+@@ -36,6 +36,8 @@
+     if not enabled:return None
+     from vapor_boundary_composition import selected_context,check_daily_output as boundary_daily
+     boundary=selected_context(selected)
++    from prescribed_vapor_boundary import selected_context as paired_vapor_context
++    if boundary is None:boundary=paired_vapor_context(selected)
+     required=dict(SWKIMPL=0,SWSOPHY=0,SWHYST=0,SWFROST=0,SWMACRO=0,SWBR=0,SWMETDETAIL=0,SWHEA=1,SWCALT=2)
+     if original_output is False or any(selected.get(k)!=v for k,v in required.items()) or selected.get('SWSOLU') not in (0,1) or selected.get('SWSNOW') not in (0,1) or boundary is None and (selected.get('SWDRA'),selected.get('SWBOTB'))!=(1,6):
+         raise ValueError('Active original vapor requires qualified explicit daily water/CDE, numerical heat, NoFrost/hysteresis0 primarydrainage bottom6')
+@@ -98,6 +100,9 @@
+     from vapor_boundary_composition import metadata as boundary_metadata
+     boundary=boundary_metadata(project)
+     if boundary is not None:result['boundary_composition']=boundary
++    from prescribed_vapor_boundary import metadata as paired_metadata
++    paired=paired_metadata(project)
++    if paired is not None:result['paired_boundary_composition']=paired
+     from analytical_cde_calendar import metadata as calendar_metadata
+     calendar=calendar_metadata(project)
+     if calendar is not None:
+@@ -109,6 +114,8 @@
+ 
+ def native_magic(project):
+     if describe(project) is None:return None
++    from prescribed_vapor_boundary import enabled as paired_vapor_enabled
++    if paired_vapor_enabled(project):return b'S5HPC007' if project.solute else b'S5HPW007'
+     from analytical_cde_calendar import native_magic as calendar_native_magic
+     composed=calendar_native_magic(project)
+     if composed is not None:return composed
+@@ -121,6 +128,8 @@
+ 
+ def native_provider(project):
+     original=Path(__file__).with_name('hydraulic_vapor_native.f90').read_bytes()
++    from prescribed_vapor_boundary import enabled as paired_vapor_enabled,native_source as paired_native_source
++    if paired_vapor_enabled(project):return paired_native_source(original)
+     from analytical_cde_calendar import vapor_selected,native_provider as calendar_native_source
+     if vapor_selected(project):return calendar_native_source(original)
+     from vapor_boundary_composition import context as boundary_context,native_source as boundary_native_source
+--- a/app/hybrid_water/original_output.py
++++ b/app/hybrid_water/original_output.py
+@@ -38,6 +38,8 @@
+         if key=='SWDRA' and one(key)==0:
+             from prescribed_head_flux_boundary import selection as paired_boundary_selection
+             if paired_boundary_selection(project.input_directory,project.original_output) is not None:continue
++            from prescribed_vapor_boundary import enabled as paired_vapor_enabled
++            if paired_vapor_enabled(project):continue
+             from vapor_boundary_composition import enabled as boundary_enabled
+             if boundary_enabled(project):continue
+         if one('SWDRA')==2 and (key=='SWDRA' or key=='SWHYST' and one(key) in (1,2)):
+--- a/app/hybrid_water/prescribed_head_flux_boundary.py
++++ b/app/hybrid_water/prescribed_head_flux_boundary.py
+@@ -10,7 +10,7 @@
+ POLICY='original-explicit-prescribed-head-flux-all-node-trial-v1'
+ 
+ 
+-def selection(directory,original_output=True,*,hysteresis=0,snow=False):
++def selection(directory,original_output=True,*,hysteresis=0,snow=False,vapor=False):
+  if not directory or original_output is False:return None
+  from experimental_project import switches
+  text=(Path(directory)/'swap.swp').read_text(encoding='cp1252');s=switches(text)
+@@ -21,6 +21,7 @@
+   if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+[ \t]*',rows[0]) is None:return None
+   return int(rows[0])
+  if hysteresis not in (0,1,2) or snow and hysteresis!=0:return None
++ if vapor and (hysteresis!=0 or snow):return None
+  fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=hysteresis,SWSNOW=int(snow),SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)
+  if any(integer(key)!=value for key,value in fixed.items()):return None
+  if snow and (integer('SWSOLU') not in (0,1) or integer('SWDRA')!=0):return None
+@@ -29,6 +30,8 @@
+  models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
+  remainder=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
+  if re.search(r'(?i)\bIHWCKMODEL\b',remainder) or len(models)>1 or models and re.fullmatch(r'[+]?[0-9]+(?:[ \t]+[+]?[0-9]+)*[ \t]*',models[0]) is None:return None
++ active_vapor_allowed=vapor
++ active_vapor=False
+  if models:
+   analytical=tuple(map(int,models[0].split()))
+   if not all(value in (1,3,4,5,6,7,8,9,10,11) for value in analytical):return None
+@@ -38,7 +41,10 @@
+    if len(vapor)>1:return None
+    if vapor:
+     if re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',vapor[0]) is None:return None
+-    if any(int(token)!=0 for token in vapor[0].split()):return None
++    if any(int(token)!=0 for token in vapor[0].split()):
++     if not active_vapor_allowed or any(int(token) not in (0,1) for token in vapor[0].split()) or not any(model>=8 for model in analytical):return None
++     active_vapor=True
++ if active_vapor_allowed and not active_vapor:return None
+  def civil(key):
+   rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([^\s]+)',active)
+   if len(rows)!=1:raise ValueError('Ambiguous original paired-boundary interval')
+@@ -71,6 +77,8 @@
+  if history_enabled(project):return 9
+  from prescribed_snow_boundary import enabled as snow_paired
+  if snow_paired(project):return 9
++ from prescribed_vapor_boundary import enabled as vapor_paired
++ if vapor_paired(project):return 9
+  from implicit_groundwater_state import selected_boundary as previous
+  return previous(project)
+ 
+--- /dev/null
++++ b/app/hybrid_water/prescribed_vapor_boundary.py
+@@ -0,0 +1,100 @@
++"""PROPOSED next-batch owner; not imported by current application dispatch.
++
++Install as app/hybrid_water/prescribed_vapor_boundary.py only after the current
++280-context batch is admitted. No numerical equation or physical store changes.
++"""
++import hashlib, re, struct
++from pathlib import Path
++
++SHA = lambda raw: hashlib.sha256(raw).hexdigest()
++VERSION = 7
++POLICY = 'existing-original-active-vapor-explicit-paired9-daily-v1'
++
++
++def selected_context(selected):
++    if (selected.get('SWBOTB') != 9 or selected.get('SWSNOW') != 0
++            or selected.get('SWDRA') not in (0, 1)):
++        return None
++    return dict(bottom=9, drainage=selected['SWDRA'], native_domain_version=VERSION)
++
++
++def selection(directory, original_output=True):
++    from prescribed_head_flux_boundary import selection as paired_selection
++    paired = paired_selection(directory, original_output, vapor=True)
++    if paired is None:
++        return None
++    from experimental_project import switches
++    from hydraulic_vapor import selection as active_selection
++    selected = switches((Path(directory)/'swap.swp').read_text(encoding='cp1252'))
++    active = active_selection(directory, selected, original_output)
++    if active is None:
++        return None
++    return dict(paired, vapor_policy=POLICY, native_domain_version=VERSION,
++                active_original_vapor_layers=active['active_layers'])
++
++
++def enabled(project):
++    return bool(project.input_directory and not project.macro and not project.age
++                and project.time_step_policy == 'original-adaptive-day-seed-v1'
++                and selection(project.input_directory, project.original_output) is not None)
++
++
++def native_source(original):
++    text = original.decode('cp1252').replace('\r\n', '\n')
++    if SHA(text.encode('cp1252')) != 'a181df32399d64a4052f4e8d3d11133bb7388fd890c8f0e9139594bbc29877b0':
++        raise ValueError('Changed complete original vapor native3 owner')
++    edits = [('.or.swdra/=1.or.swbotb/=6)', '.or.(swdra/=0.and.swdra/=1).or.swbotb/=9)'),
++             ('expected(1:14)=[3,', 'expected(1:14)=[7,')]
++    for old, new in edits:
++        if text.count(old) != 1:
++            raise ValueError('Changed exact paired vapor domain seam')
++        text = text.replace(old, new, 1)
++    return text.encode('cp1252')
++
++
++def cde_offset(aux, nodes, project=None):
++    if aux[:8] != b'S5HPC007' or len(aux) < 104:
++        raise ValueError('Incomplete CDE paired vapor domain')
++    domain = struct.unpack_from('<14i', aux, 48)
++    layers = domain[2]
++    if (not 1 <= layers <= 1000 or domain[:12] != (7,nodes,layers,0,1,0,0,0,0,0,1,2)
++            or domain[12] not in (0,1) or domain[13] != 9):
++        raise ValueError('Foreign CDE paired vapor domain')
++    count = 14+2*layers
++    size = 4*count
++    if len(aux) < 48+2*size:
++        raise ValueError('Incomplete CDE paired vapor witness')
++    header = struct.unpack_from('<'+str(count)+'i', aux, 48)
++    if header != struct.unpack_from('<'+str(count)+'i', aux, 48+size):
++        raise ValueError('Foreign CDE paired vapor witness')
++    models, flags = header[14:14+layers], header[14+layers:]
++    if (any(m not in range(1,12) for m in models) or any(f not in (0,1) for f in flags)
++            or not any(flags) or any(f and m < 8 for m,f in zip(models,flags))):
++        raise ValueError('Foreign CDE paired vapor layers')
++    if project is not None:
++        from hydraulic_vapor import describe
++        active = describe(project)
++        from experimental_project import switches
++        context = selected_context(switches((Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')))
++        if (active is None or context is None or not enabled(project)
++                or domain[12:] != (context['drainage'],context['bottom'])
++                or tuple(active['models']) != models
++                or tuple(f if m >= 8 else 0 for m,f in zip(active['models'],active['SWVAPOR'])) != flags):
++            raise ValueError('CDE paired vapor differs from actual project')
++    return 48+2*size
++
++
++def metadata(project):
++    if not enabled(project):
++        return None
++    from experimental_project import switches
++    selected = switches((Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252'))
++    return dict(policy=POLICY, **selected_context(selected),
++                source_sha256=SHA(Path(__file__).read_bytes().replace(b'\r\n',b'\n')),
++                physical_equations_changed=False, new_physical_water_store=False,
++                original_Kelvin_sign_correction_unchanged=True,
++                all_actual_node_storage_included=True,
++                external_flux_owner='literal original BoundBottom QBOT9; existing paired9 projected_water_residual',
++                internal_NN_gradient_substituted_for_external_flux=False,
++                old_native_domains_3_4_5_6_unchanged=True,
++                fixed_absolute_water_limit_cm=1e-10)

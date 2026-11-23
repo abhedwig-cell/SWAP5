@@ -1,0 +1,832 @@
+{
+  "status": "SIXTEEN_HISTORY9_INPUT_FORMS_AND_ACTUAL_REFUSED_CDE_NONDISTRIBUTED_SETUP_PRESERVED_NOT_ADMITTED",
+  "actual_observer_source": "241b8aeac3af23193954dba610b6f44d68e8bfd1",
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false,
+  "original_failed_setup": "CDE SWDRA1/SWDIVD0 refused by unchanged experimental drainage process/state guard before any compiler/model; qualified CDE route uses original SWDIVD1, no guard relaxation",
+  "archive": "EXPLICIT_BOTTOM9_HISTORY_INPUTS_RAW_V2.zip",
+  "bytes": 1023648,
+  "sha256": "17e21008a980d9dbf663843bdd389aff0680a68e1e6cdb2faac6382af79dc0c1",
+  "members": {
+    "drainage/cde-hys1-initial1/283.met": {
+      "bytes": 67414,
+      "sha256": "9bb51b4e89e411ad7035d92fcb823dff2e93e93a31d8aa03382cfa1e4c049926"
+    },
+    "drainage/cde-hys1-initial1/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "drainage/cde-hys1-initial1/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "drainage/cde-hys1-initial1/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "drainage/cde-hys1-initial1/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "drainage/cde-hys1-initial1/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "drainage/cde-hys1-initial1/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "drainage/cde-hys1-initial1/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "drainage/cde-hys1-initial1/swap.dra": {
+      "bytes": 11693,
+      "sha256": "60f14eef20638e6f9870cf668659baf6711121492aba75c619e018c3d0a078a8"
+    },
+    "drainage/cde-hys1-initial1/swap.swp": {
+      "bytes": 36013,
+      "sha256": "45957650958f18045dfdfcb0a3d1dac9681cc735e7a554ffa63701b43299e97f"
+    },
+    "drainage/cde-hys1-initial2/283.met": {
+      "bytes": 67414,
+      "sha256": "9bb51b4e89e411ad7035d92fcb823dff2e93e93a31d8aa03382cfa1e4c049926"
+    },
+    "drainage/cde-hys1-initial2/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "drainage/cde-hys1-initial2/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "drainage/cde-hys1-initial2/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "drainage/cde-hys1-initial2/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "drainage/cde-hys1-initial2/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "drainage/cde-hys1-initial2/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "drainage/cde-hys1-initial2/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "drainage/cde-hys1-initial2/swap.dra": {
+      "bytes": 11693,
+      "sha256": "60f14eef20638e6f9870cf668659baf6711121492aba75c619e018c3d0a078a8"
+    },
+    "drainage/cde-hys1-initial2/swap.swp": {
+      "bytes": 36013,
+      "sha256": "18845ccfc0d39320415b29cfa2043b60ec1fb0372080f3ca04f4e8c87e8671a2"
+    },
+    "drainage/cde-hys2-initial1/283.met": {
+      "bytes": 67414,
+      "sha256": "9bb51b4e89e411ad7035d92fcb823dff2e93e93a31d8aa03382cfa1e4c049926"
+    },
+    "drainage/cde-hys2-initial1/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "drainage/cde-hys2-initial1/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "drainage/cde-hys2-initial1/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "drainage/cde-hys2-initial1/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "drainage/cde-hys2-initial1/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "drainage/cde-hys2-initial1/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "drainage/cde-hys2-initial1/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "drainage/cde-hys2-initial1/swap.dra": {
+      "bytes": 11693,
+      "sha256": "60f14eef20638e6f9870cf668659baf6711121492aba75c619e018c3d0a078a8"
+    },
+    "drainage/cde-hys2-initial1/swap.swp": {
+      "bytes": 36013,
+      "sha256": "b436a4eacdcfa305b3ad58301c2f9d240a025eb4c25b87f940289adb205b62ee"
+    },
+    "drainage/cde-hys2-initial2/283.met": {
+      "bytes": 67414,
+      "sha256": "9bb51b4e89e411ad7035d92fcb823dff2e93e93a31d8aa03382cfa1e4c049926"
+    },
+    "drainage/cde-hys2-initial2/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "drainage/cde-hys2-initial2/fixed-irrigation.irg": {
+      "bytes": 77,
+      "sha256": "4cfa5851777c1b95b88c157fa0b65ee97320089fa1bf95712acc3dbdd75a67fe"
+    },
+    "drainage/cde-hys2-initial2/grass.crp": {
+      "bytes": 30625,
+      "sha256": "7de344fc9a8f3c0ef8bab02d1f9313cd87d459b2f002eeec545da10de0a1fde5"
+    },
+    "drainage/cde-hys2-initial2/maize.crp": {
+      "bytes": 24134,
+      "sha256": "9cc83679333d1110b0ae9dde2865686decf0e5ba591195c74c46bac6e9437301"
+    },
+    "drainage/cde-hys2-initial2/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "drainage/cde-hys2-initial2/potato.crp": {
+      "bytes": 30667,
+      "sha256": "56bdb5cdee02b6a73db3e87dcc342527e352126eae09e4ae9a0e26f3a48770d8"
+    },
+    "drainage/cde-hys2-initial2/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "drainage/cde-hys2-initial2/swap.dra": {
+      "bytes": 11693,
+      "sha256": "60f14eef20638e6f9870cf668659baf6711121492aba75c619e018c3d0a078a8"
+    },
+    "drainage/cde-hys2-initial2/swap.swp": {
+      "bytes": 36013,
+      "sha256": "f2f6ecb4f964a7432cb56804eddba3c18f5d061188684a88015bea507376d110"
+    },
+    "drainage/water-hys1-initial1/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "drainage/water-hys1-initial1/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "drainage/water-hys1-initial1/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "drainage/water-hys1-initial1/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "drainage/water-hys1-initial1/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "drainage/water-hys1-initial1/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "drainage/water-hys1-initial1/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "drainage/water-hys1-initial1/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "drainage/water-hys1-initial1/swap.dra": {
+      "bytes": 11693,
+      "sha256": "ca941d7ca38a6d2a89a992fff79d94bdb667ea631b0d5433839f4862ece66845"
+    },
+    "drainage/water-hys1-initial1/swap.swp": {
+      "bytes": 36796,
+      "sha256": "4b637ef6edd861794d21a68f08873097aa2faf268a4ad83d21f160bda243d987"
+    },
+    "drainage/water-hys1-initial2/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "drainage/water-hys1-initial2/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "drainage/water-hys1-initial2/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "drainage/water-hys1-initial2/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "drainage/water-hys1-initial2/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "drainage/water-hys1-initial2/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "drainage/water-hys1-initial2/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "drainage/water-hys1-initial2/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "drainage/water-hys1-initial2/swap.dra": {
+      "bytes": 11693,
+      "sha256": "ca941d7ca38a6d2a89a992fff79d94bdb667ea631b0d5433839f4862ece66845"
+    },
+    "drainage/water-hys1-initial2/swap.swp": {
+      "bytes": 36796,
+      "sha256": "fe6cb266be16dfc6cbbbf264abe007063d50e730b53a7da93693b7822ba55b03"
+    },
+    "drainage/water-hys2-initial1/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "drainage/water-hys2-initial1/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "drainage/water-hys2-initial1/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "drainage/water-hys2-initial1/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "drainage/water-hys2-initial1/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "drainage/water-hys2-initial1/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "drainage/water-hys2-initial1/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "drainage/water-hys2-initial1/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "drainage/water-hys2-initial1/swap.dra": {
+      "bytes": 11693,
+      "sha256": "ca941d7ca38a6d2a89a992fff79d94bdb667ea631b0d5433839f4862ece66845"
+    },
+    "drainage/water-hys2-initial1/swap.swp": {
+      "bytes": 36796,
+      "sha256": "a7205aba3822d09cd185850111af3c47401cb8eeab675500a4c80cf59cdf1274"
+    },
+    "drainage/water-hys2-initial2/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "drainage/water-hys2-initial2/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "drainage/water-hys2-initial2/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "drainage/water-hys2-initial2/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "drainage/water-hys2-initial2/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "drainage/water-hys2-initial2/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "drainage/water-hys2-initial2/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "drainage/water-hys2-initial2/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "drainage/water-hys2-initial2/swap.dra": {
+      "bytes": 11693,
+      "sha256": "ca941d7ca38a6d2a89a992fff79d94bdb667ea631b0d5433839f4862ece66845"
+    },
+    "drainage/water-hys2-initial2/swap.swp": {
+      "bytes": 36796,
+      "sha256": "26d7f880128f3d44b8c9fcee79fdb30bfe8a28d7922c6b04205c2bac46d2a2f1"
+    },
+    "failed-cde-no-distribution/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "failed-cde-no-distribution/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "failed-cde-no-distribution/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "failed-cde-no-distribution/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "failed-cde-no-distribution/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "failed-cde-no-distribution/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "failed-cde-no-distribution/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "failed-cde-no-distribution/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "failed-cde-no-distribution/swap.dra": {
+      "bytes": 11693,
+      "sha256": "ca941d7ca38a6d2a89a992fff79d94bdb667ea631b0d5433839f4862ece66845"
+    },
+    "failed-cde-no-distribution/swap.swp": {
+      "bytes": 36796,
+      "sha256": "8b70e3cbe0d2d43c4b5970128d5d69695ba93c8bb46c2aea4ce63d2f73735a24"
+    },
+    "failed-saturated-cde-hys0/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "failed-saturated-cde-hys0/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "failed-saturated-cde-hys0/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "failed-saturated-cde-hys0/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "failed-saturated-cde-hys0/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "failed-saturated-cde-hys0/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "failed-saturated-cde-hys0/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "failed-saturated-cde-hys0/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "failed-saturated-cde-hys0/swap.dra": {
+      "bytes": 11693,
+      "sha256": "28b4051e625e939276de21a124980be5043cd977268f3e9babef062bc107e164"
+    },
+    "failed-saturated-cde-hys0/swap.swp": {
+      "bytes": 36796,
+      "sha256": "94683b1034502a64cd91dff8cf8b1da016bc2f660e89168dea7958d9cdbc59a1"
+    },
+    "failed-saturated-cde-hys1/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "failed-saturated-cde-hys1/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "failed-saturated-cde-hys1/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "failed-saturated-cde-hys1/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "failed-saturated-cde-hys1/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "failed-saturated-cde-hys1/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "failed-saturated-cde-hys1/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "failed-saturated-cde-hys1/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "failed-saturated-cde-hys1/swap.dra": {
+      "bytes": 11693,
+      "sha256": "28b4051e625e939276de21a124980be5043cd977268f3e9babef062bc107e164"
+    },
+    "failed-saturated-cde-hys1/swap.swp": {
+      "bytes": 36796,
+      "sha256": "8b70e3cbe0d2d43c4b5970128d5d69695ba93c8bb46c2aea4ce63d2f73735a24"
+    },
+    "observations/EXPLICIT_BOTTOM9_HISTORY_ACTUAL_PARENT_REFUSALS_V1.json": {
+      "bytes": 9658,
+      "sha256": "80ee57951e2939031c506aa9a2550dcc78b57d057de5a183c7b3d1c39e78fa93"
+    },
+    "observations/EXPLICIT_BOTTOM9_HISTORY_DRAINAGE_INPUTS_V4.json": {
+      "bytes": 24901,
+      "sha256": "33f405cbaa05645256c1d351a9ffc90d12a0ef7e8f2453d51b12eab31b9fd411"
+    },
+    "observations/EXPLICIT_BOTTOM9_HISTORY_FRONTEND_CONTROLS_V1.json": {
+      "bytes": 34994,
+      "sha256": "6aae244c9675267340f7a4f8f543e12b5fb2379e985726ae7b2ef4e7354536b7"
+    },
+    "observations/EXPLICIT_BOTTOM9_HISTORY_INPUTS_V1.json": {
+      "bytes": 38620,
+      "sha256": "869fe44467a1db0d96b0c48178a5b51fdcbb906cbf8e6046ec48249ba637fb84"
+    },
+    "observations/explicit-bottom9-history-drainage-hys0-control-v1.py": {
+      "bytes": 2967,
+      "sha256": "f4cf366174e541ada47b88434092b2c3044835542cb24ba25685b81b11636978"
+    },
+    "observations/explicit-bottom9-history-drainage-inputs-v1.py": {
+      "bytes": 2220,
+      "sha256": "d8112c833a68c3c7dba99800b9d7b751307d86c0e162cce795ccc8edec75a228"
+    },
+    "observations/explicit-bottom9-history-drainage-inputs-v2.py": {
+      "bytes": 2442,
+      "sha256": "52ba5cd4a4f11d8e92fe0b88f5e3a6d3815230c45013540e4b1e35abc5d95165"
+    },
+    "observations/explicit-bottom9-history-drainage-inputs-v3.py": {
+      "bytes": 2773,
+      "sha256": "65ebdff59a0635d1e68c20c47eea4632e28626514e8d9d36a6a960a372e7f193"
+    },
+    "observations/explicit-bottom9-history-drainage-inputs-v4.py": {
+      "bytes": 2798,
+      "sha256": "aa5201c557b50cf810d2c24f345dc3f9c8709417173e0a72af2af182df7131ea"
+    },
+    "observations/explicit-bottom9-history-frontend-controls-v1.py": {
+      "bytes": 1793,
+      "sha256": "728afbf80eb025b92a8527c8c619a07b60c017bb48ed2ce153d371820684ca35"
+    },
+    "observations/explicit-bottom9-history-inputs-v1.py": {
+      "bytes": 2261,
+      "sha256": "9829f852deb08174ba771fa44f9a147ca625adf000008494bbc027dbf56e43c0"
+    },
+    "observations/explicit-bottom9-history-parent-refusals-v1.py": {
+      "bytes": 2652,
+      "sha256": "432badde03eb8c4638e973f6a0c0884d052f93c9f9ababaee8032e22318f94cb"
+    },
+    "observations/explicit-bottom9-history-parent-refusals-v2.py": {
+      "bytes": 2674,
+      "sha256": "c45af99ea481c6d75ba16de91f247c8864ddde6658740f075c90911c08f1143b"
+    },
+    "undrained/cde-hys1-initial1/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "undrained/cde-hys1-initial1/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "undrained/cde-hys1-initial1/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "undrained/cde-hys1-initial1/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "undrained/cde-hys1-initial1/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "undrained/cde-hys1-initial1/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "undrained/cde-hys1-initial1/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "undrained/cde-hys1-initial1/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "undrained/cde-hys1-initial1/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "undrained/cde-hys1-initial1/swap.swp": {
+      "bytes": 36794,
+      "sha256": "9a3b030e410393a52f080479ef7d54d4df497d2011825a829129573d378605c9"
+    },
+    "undrained/cde-hys1-initial2/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "undrained/cde-hys1-initial2/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "undrained/cde-hys1-initial2/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "undrained/cde-hys1-initial2/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "undrained/cde-hys1-initial2/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "undrained/cde-hys1-initial2/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "undrained/cde-hys1-initial2/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "undrained/cde-hys1-initial2/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "undrained/cde-hys1-initial2/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "undrained/cde-hys1-initial2/swap.swp": {
+      "bytes": 36794,
+      "sha256": "b346d5216154743bb1375131e67a56ade7016e059ee3ae885c7477e40097d159"
+    },
+    "undrained/cde-hys2-initial1/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "undrained/cde-hys2-initial1/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "undrained/cde-hys2-initial1/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "undrained/cde-hys2-initial1/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "undrained/cde-hys2-initial1/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "undrained/cde-hys2-initial1/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "undrained/cde-hys2-initial1/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "undrained/cde-hys2-initial1/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "undrained/cde-hys2-initial1/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "undrained/cde-hys2-initial1/swap.swp": {
+      "bytes": 36794,
+      "sha256": "d691a88eebdbb415287caefdefdb59b54c0708234c7aff14a43fa45b2511aa81"
+    },
+    "undrained/cde-hys2-initial2/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "undrained/cde-hys2-initial2/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "undrained/cde-hys2-initial2/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "undrained/cde-hys2-initial2/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "undrained/cde-hys2-initial2/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "undrained/cde-hys2-initial2/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "undrained/cde-hys2-initial2/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "undrained/cde-hys2-initial2/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "undrained/cde-hys2-initial2/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "undrained/cde-hys2-initial2/swap.swp": {
+      "bytes": 36794,
+      "sha256": "d6196003e11e4b6cad0c36c8d27cfb9b9923751d43213c5838beef0c3b185eaf"
+    },
+    "undrained/water-hys1-initial1/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "undrained/water-hys1-initial1/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "undrained/water-hys1-initial1/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "undrained/water-hys1-initial1/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "undrained/water-hys1-initial1/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "undrained/water-hys1-initial1/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "undrained/water-hys1-initial1/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "undrained/water-hys1-initial1/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "undrained/water-hys1-initial1/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "undrained/water-hys1-initial1/swap.swp": {
+      "bytes": 36793,
+      "sha256": "bf3438500508d6ff4b0cf7648552d8dd15d1d554483409d34a928e68520df356"
+    },
+    "undrained/water-hys1-initial2/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "undrained/water-hys1-initial2/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "undrained/water-hys1-initial2/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "undrained/water-hys1-initial2/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "undrained/water-hys1-initial2/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "undrained/water-hys1-initial2/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "undrained/water-hys1-initial2/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "undrained/water-hys1-initial2/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "undrained/water-hys1-initial2/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "undrained/water-hys1-initial2/swap.swp": {
+      "bytes": 36793,
+      "sha256": "3dc4c203c3b8ada4f5715ef704961ab9199e113335bb84c4c286c552a05ead76"
+    },
+    "undrained/water-hys2-initial1/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "undrained/water-hys2-initial1/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "undrained/water-hys2-initial1/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "undrained/water-hys2-initial1/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "undrained/water-hys2-initial1/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "undrained/water-hys2-initial1/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "undrained/water-hys2-initial1/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "undrained/water-hys2-initial1/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "undrained/water-hys2-initial1/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "undrained/water-hys2-initial1/swap.swp": {
+      "bytes": 36793,
+      "sha256": "2424524988ea39af1af0fcbbaad3b1761394a1f409eada8e78ab7c2e3311c7a2"
+    },
+    "undrained/water-hys2-initial2/283.met": {
+      "bytes": 68532,
+      "sha256": "5983aaf4abcef893dc9d190fe2bd10f06e4ebe2135f0100580596d665830d702"
+    },
+    "undrained/water-hys2-initial2/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "undrained/water-hys2-initial2/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "undrained/water-hys2-initial2/grass.crp": {
+      "bytes": 31349,
+      "sha256": "84f138f7e6ba4b20818d3bab15b70c1166b6e355081fb72740f6bc5b2a4884bf"
+    },
+    "undrained/water-hys2-initial2/maize.crp": {
+      "bytes": 24649,
+      "sha256": "13855f12f18b2a2024a5ee1a82cd398722a6a8c680955d506c6e215b13a92900"
+    },
+    "undrained/water-hys2-initial2/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "undrained/water-hys2-initial2/potato.crp": {
+      "bytes": 31414,
+      "sha256": "5ec8406e555ec4f5958a7c9f405482a66414454fafdf5a24c9c06a861b9098e9"
+    },
+    "undrained/water-hys2-initial2/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "undrained/water-hys2-initial2/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "undrained/water-hys2-initial2/swap.swp": {
+      "bytes": 36793,
+      "sha256": "4e3ba4241b95c9c91f658e929b702d7305953411035c95c68eba68c0a1009da7"
+    }
+  },
+  "parts": [
+    {
+      "file": "EXPLICIT_BOTTOM9_HISTORY_INPUTS_RAW_V2.zip",
+      "bytes": 1023648,
+      "sha256": "17e21008a980d9dbf663843bdd389aff0680a68e1e6cdb2faac6382af79dc0c1"
+    }
+  ]
+}
