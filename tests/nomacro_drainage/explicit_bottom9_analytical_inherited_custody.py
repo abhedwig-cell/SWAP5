@@ -10,6 +10,26 @@ JOINT='tests/nomacro_drainage/initial_profile_age_groundwater_verify.py'
 SELF='tests/nomacro_drainage/explicit_bottom9_analytical_verify.py'
 
 
+def tracked_working_files():
+ rows={}
+ for record in git('ls-files','-v','-s','-z').split(b'\0'):
+  if not record:continue
+  meta,path=record.split(b'\t',1);flag,mode,digest,stage=meta.decode().split()
+  assert stage=='0','Unmerged scientific dependency: '+path.decode()
+  rows[path.decode()]=(flag,mode,digest)
+ return rows
+
+
+def materialized(path,tracked):
+ """Only an actual skip-worktree entry may inherit an absent working file."""
+ assert path in tracked,'Untracked or deleted scientific dependency: '+path
+ actual=ROOT/path
+ assert not actual.is_symlink(),'Symlink scientific dependency: '+path
+ if actual.is_file():return True
+ assert not actual.exists() and tracked[path][0]=='S','Missing materialized scientific dependency: '+path
+ return False
+
+
 def source(anchor):
  """Reuse the admitted source guard only after exact complete dependency proof.
 
@@ -37,12 +57,13 @@ def source(anchor):
  changed={line.split('\t',1)[1]:line.split('\t',1)[0] for line in expected.decode().splitlines()}
  assert {p for p,status in changed.items() if status!='A'}<=set(inverses)
  suffixes={'.py','.f90','.f','.for','.inc','.c','.h','.cpp','.hpp','.sh','.yml','.yaml','.json','.toml','.cmake'}
- materialized=[];inherited=0
+ working_inventory=tracked_working_files();observed_source=[];inherited=0
  for line in git('ls-tree','-rl',anchor,'--',*SOURCE_DOMAINS).decode().splitlines():
   meta,path=line.split('\t');mode,kind,digest,size=meta.split();assert kind=='blob'
   if path not in changed:inherited+=1
   actual=ROOT/path
-  if not actual.is_file() or actual.suffix.lower() not in suffixes:continue
+  if actual.suffix.lower() not in suffixes:continue
+  if not materialized(path,working_inventory):continue
   assert not actual.is_symlink()
   actual_raw=actual.read_bytes();raw=norm(actual_raw)
   if path in inverses:
@@ -58,9 +79,9 @@ def source(anchor):
    # complete source bytes directly, without spawning git show per file.
    git_blob=lambda value:hashlib.sha1(b'blob '+str(len(value)).encode()+b'\0'+value).hexdigest()
    assert digest in (git_blob(actual_raw),git_blob(raw)),'Actual frozen source dependency changed: '+path
-  materialized.append(dict(path=path,actual_raw_sha256=hashlib.sha256(actual_raw).hexdigest(),proven_source_sha256=hashlib.sha256(raw).hexdigest(),explicit_inverse=path in inverses))
+  observed_source.append(dict(path=path,actual_raw_sha256=hashlib.sha256(actual_raw).hexdigest(),proven_source_sha256=hashlib.sha256(raw).hexdigest(),explicit_inverse=path in inverses))
  assert git('rev-parse','HEAD')==head,'Actual source HEAD changed during proof'
- return dict(status='COMPLETE_ADMITTED_PARENT_SOURCE_TREE_AND_ACTUAL_SOURCE_BYTES_UNCHANGED_EXCEPT_EXPLICIT_ANALYTICAL_SELECTION_AND_OWNER_HOOK_INVERSES',parent=PARENT_PUBLIC,source_anchor=anchor,actual_head=head.decode().strip(),inherited_tree_entries=inherited,materialized_source=materialized,declared_source_delta=changed,actual_Git_or_filesystem_views_projected=False,compiler_executions=0,model_executions=0)
+ return dict(status='COMPLETE_ADMITTED_PARENT_SOURCE_TREE_AND_ACTUAL_SOURCE_BYTES_UNCHANGED_EXCEPT_EXPLICIT_ANALYTICAL_SELECTION_AND_OWNER_HOOK_INVERSES',parent=PARENT_PUBLIC,source_anchor=anchor,actual_head=head.decode().strip(),inherited_tree_entries=inherited,materialized_source=observed_source,declared_source_delta=changed,actual_Git_or_filesystem_views_projected=False,compiler_executions=0,model_executions=0)
 
 
 def inventory():
@@ -77,6 +98,16 @@ def fresh(proof):
  proof=Path(proof);plan=json.loads((proof/PLAN).read_text());assert plan['parent']==PARENT_PUBLIC and plan['count']==528
  rows=inventory();archives=[x for x in rows if any(s in Path(x['path']).name for s in ('.zip','.tar','.b64'))]
  expected=plan['archives_and_parts'];assert [{k:x[k] for k in ('path','git_blob','bytes')} for x in expected]==archives
+ working_inventory=tracked_working_files();head=git('rev-parse','HEAD')
+ current={}
+ for line in git('ls-tree','-rl','HEAD','--',PREFIX.rstrip('/')).decode().splitlines():
+  meta,path=line.split('\t');mode,kind,digest,size=meta.split();current[path]=(mode,kind,digest,int(size))
+ for item in rows:
+  path=item['path']
+  if item not in archives and (not path.endswith('.json') or Path(path).name in ('STATUS.json','GAP_MATRIX.json')):continue
+  assert path in current and current[path][1:]==('blob',item['git_blob'],item['bytes']),'Changed inherited committed scientific dependency: '+path
+  assert path in working_inventory and working_inventory[path][1:]==(current[path][0],item['git_blob']),'Changed inherited scientific index dependency: '+path
+  materialized(path,working_inventory)
  process=subprocess.Popen(['git','cat-file','--batch'],cwd=ROOT,stdin=subprocess.PIPE,stdout=subprocess.PIPE)
  def actual_blob(item):
   process.stdin.write((item['git_blob']+'\n').encode());process.stdin.flush()
@@ -90,7 +121,7 @@ def fresh(proof):
  try:
   for item in expected:
    working=ROOT/item['path'];sha=hashlib.sha256();blob=hashlib.sha1(b'blob '+str(item['bytes']).encode()+b'\0');total=0
-   if working.is_file():
+   if materialized(item['path'],working_inventory):
     assert not working.is_symlink()
     with working.open('rb') as stream:
      while block:=stream.read(8*1024*1024):sha.update(block);blob.update(block);total+=len(block)
@@ -105,9 +136,10 @@ def fresh(proof):
   for item in rows:
    if not item['path'].endswith('.json') or Path(item['path']).name in ('STATUS.json','GAP_MATRIX.json'):continue
    old=b''.join(actual_blob(item));current=ROOT/item['path']
-   if current.is_file():assert norm(current.read_bytes())==old,'Changed inherited scientific declaration: '+item['path']
+   if materialized(item['path'],working_inventory):assert norm(current.read_bytes())==old,'Changed inherited scientific declaration: '+item['path']
    declarations+=1
  finally:
   process.stdin.close();assert process.wait(timeout=30)==0
  assert not git('for-each-ref','--format=%(refname):%(objectname)','refs/replace')
+ assert git('rev-parse','HEAD')==head,'Actual evidence HEAD changed during proof'
  return dict(status='COMPLETE_PARENT_ARCHIVE_BLOBS_PRESENT_WORKING_BYTES_AND_ALL_SCIENTIFIC_DECLARATIONS_FRESH_EXACT',parent=PARENT_PUBLIC,archives_and_parts=observed,declarations=declarations,total_bytes=sum(x['bytes'] for x in observed),compiler_executions=0,model_executions=0,scientific_bytes_cached_or_projected=False)
