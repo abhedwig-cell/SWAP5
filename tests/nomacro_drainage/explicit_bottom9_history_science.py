@@ -8,7 +8,7 @@ from explicit_bottom9_source_inverse import git,blob,norm
 from analytical_hydraulic_archives import SHA
 from initial_profile_groundwater_science import ledger
 from implicit_conductivity_forensics import output_calendar,original_observations
-from initial_pressure_profile_science import initialized_heads
+from initial_pressure_profile_science import initialized_heads,PROVIDER
 from output_hysteresis_baseline import history
 from original_output_files import compare
 
@@ -54,14 +54,14 @@ def checkpoint(path,meta,row,selected,dz):
   return dict(day=row['day'],native=native(z.read('macro.bin'),meta,row,selected,dz),actual_original_scanning_history=end)
 
 
-def audit(profile,reference):
+def audit(profile,reference,locations=None):
  for name in ['initial_profile_groundwater_science.py','initial_pressure_profile_science.py']:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(PARENT,path)
  for name in ['implicit_conductivity_forensics.py','output_hysteresis_baseline.py']:
   path='tests/nomacro_scheduled_subsurface/'+name;assert norm((ROOT/path).read_bytes())==blob(PARENT,path)
  q=json.loads((profile/'RESULT.json').read_text());assert q['status']=='ACTUAL_EXPLICIT9_HYSTERESIS_PHYSICAL_NATIVE_OUTPUT_PERIOD_PASS_NOT_ADMITTED'
  assert q['days']==35 and len(q['cold'])==3 and not git('diff',CORE,q['source'],'--','app','src','tools','reference')
- inputs=Path(q['input_root']);build=Path(q['build_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity']
+ inputs=locations['inputs'] if locations else Path(q['input_root']);build=locations['build'] if locations else Path(q['build_root']);meta=json.loads((build/'BUILD.json').read_text());identity=meta['identity']
  assert SHA((build/'BUILD.json').read_bytes())==q['actual_BUILD_sha256']==q['trajectory']['build_sha256']
  assert q['build']['actual_completion_head']==q['source'] and q['build']['returncode']==0
  for name,digest in q['input_inventory']:assert SHA((inputs/name).read_bytes())==digest
@@ -75,13 +75,20 @@ def audit(profile,reference):
   rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([+-]?[0-9]+)[ \t]*(?:!.*)?$',text);assert len(rows)==1
   return int(rows[0])
  assert one('SWBOTB')==9 and one('SWHYST')==q['hysteresis'] and one('SWHYST') in (1,2) and one('SWSNOW')==one('SWKIMPL')==one('SWFROST')==one('SWMACRO')==0
- assert one('SWSOLU')==int(q['kind']=='cde') and one('SWINCO')==1
+ assert one('SWSOLU')==int(q['kind']=='cde') and one('SWINCO') in (1,2)
  selected=dict(identity['original_output'],swdra=one('SWDRA'));assert selected['paired_boundary']==9 and selected['domain_version']==2 and selected['domain_bytes']==56
  assert SHA(norm((build/'original_output_hysteresis_domain.f90').read_bytes()))==selected['domain_source_sha256']
  heads,initial=initialized_heads(text)
  grid=re.search(r'(?mi)^[ \t]*ISUBLAY[ \t]+ISOILLAY[ \t]+HSUBLAY[ \t]+NCOMP[^\n]*\n((?:[ \t]*\d+[^\n]*\n)+)',text);assert grid;dz=[]
  for line in grid[1].splitlines():
   _,_,height,count=line.split();dz.extend([float(height)/int(count)]*int(count))
+ if one('SWINCO')==2:
+  # Literal original SoilWater(1), not the independent HTB/SWINCO1 reader.
+  original=norm((reference/'build/swap-selected/soilwater.f90').read_bytes());assert SHA(original)==PROVIDER['soilwater.f90']
+  body=original.decode('cp1252');assert body.count('if (swinco == 2) then')==1 and 'gwl = gwli' in body and 'h(i) = gwl - z(i)' in body
+  values=re.findall(r'(?mi)^[ \t]*GWLI[ \t]*=[ \t]*([^!\r\n]+)',text);assert len(values)==1;gwli=float(values[0].strip().replace('D','E').replace('d','e'));z=[]
+  for width in dz:z.append(-.5*width if not z else z[-1]-.5*(dz[len(z)-1]+width))
+  heads=[gwli-node for node in z];initial=dict(actual_original_initialization=2,actual_GWLI=gwli,original_soilwater_sha256=SHA(original),literal_original_rule='h(i)=GWL-z(i); GWL=GWLI; POND=max(GWL,0)')
  rows=[json.loads(line) for line in (profile/'trajectory/daily.jsonl').read_text().splitlines()];assert len(rows)==35
  stdout=(profile/'trajectory/original/donor.stdout').read_text();actual=next(list(map(float,line.split()[3:])) for line in stdout.splitlines() if line.startswith('HYBRID_HYDRAULIC '));assert actual==heads
  measured=ledger(rows,q['kind'],stdout);original_observations(stdout.encode(),rows,meta['project']['start_date'])
@@ -98,7 +105,7 @@ def audit(profile,reference):
    with zipfile.ZipFile(warm) as a,zipfile.ZipFile(fresh) as b:
     for name in ('result.end','macro.bin'):assert a.read(name)==b.read(name)
   cold.append(compare(profile/'trajectory/original',out/'original',selected,low,high,meta['project']['start_date']))
- return dict(status='ORIGINAL_HISTORY9_LEDGER_SCANNING_WHOLE_NATIVE_COLD_OUTPUT_INDEPENDENT_PASS_NOT_ADMITTED',kind=q['kind'],hysteresis=q['hysteresis'],optimization=q['optimization'],days=35,native_samples=samples,exact_cold_windows=3,cold_original_output=cold,ledgers=measured,actual_compiler_producer=q['source'],canonical_admission=False)
+ return dict(status='ORIGINAL_HISTORY9_LEDGER_SCANNING_WHOLE_NATIVE_COLD_OUTPUT_INDEPENDENT_PASS_NOT_ADMITTED',kind=q['kind'],hysteresis=q['hysteresis'],initialization=one('SWINCO'),optimization=q['optimization'],days=35,native_samples=samples,exact_cold_windows=3,cold_original_output=cold,ledgers=measured,actual_compiler_producer=q['source'],canonical_admission=False)
 
 
 if __name__=='__main__':

@@ -17,13 +17,17 @@ def main():
  a=p.parse_args();a.output.mkdir();prior=json.loads((a.profile/'RESULT.json').read_text());assert prior['status']=='ACTUAL_EXPLICIT9_HYSTERESIS_PHYSICAL_NATIVE_OUTPUT_PERIOD_PASS_NOT_ADMITTED'
  source=git('rev-parse','HEAD').decode().strip();assert not git('diff',CORE,'--','app','src','tools','reference')
  old=Path(prior['input_root']);left=(old/'swap.swp').read_bytes();right=(a.input/'swap.swp').read_bytes()
- convert=lambda raw:re.sub(rb'(?mi)^([ \t]*SWINCO[ \t]*=[ \t]*)2(?=[ \t!\r\n])',rb'\g<1>1',raw)
- assert left!=right and convert(right)==left,'Initial2 input differs beyond exact one selector byte'
+ def initial(raw):
+  values=re.findall(rb'(?mi)^[ \t]*SWINCO[ \t]*=[ \t]*([12])(?=[ \t!\r\n])',raw);assert len(values)==1
+  return int(values[0])
+ primary_initial=initial(left);counterpart_initial=initial(right)
+ convert=lambda raw:re.sub(rb'(?mi)^([ \t]*SWINCO[ \t]*=[ \t]*)[12](?=[ \t!\r\n])',rb'\g<1>INITIALIZATION_SELECTOR',raw)
+ assert counterpart_initial==3-primary_initial and convert(left)==convert(right),'Counterpart differs beyond exact one initialization selector byte'
  for name,digest in prior['input_inventory']:
   assert SHA((old/name).read_bytes())==digest
   if name!='swap.swp':assert (old/name).read_bytes()==(a.input/name).read_bytes()
- project=m.e.load(a.input,original_output=True,time_step_policy='original-adaptive-day-seed-v1');assert m.e.switches((a.input/'swap.swp').read_text(encoding='cp1252'))['SWINCO']==2
- q=dict(status='RUNNING',source=source,initial1_profile=str(a.profile),initial1_RESULT_sha256=SHA((a.profile/'RESULT.json').read_bytes()),initial1_build_root=prior['build_root'],kind=prior['kind'],hysteresis=prior['hysteresis'],optimization=prior['optimization'],input_root=str(a.input),input_inventory=m.e.inventory(a.input),build_root=str(a.build_root/'bundle'),model_executions=0,canonical_admission=False)
+ project=m.e.load(a.input,original_output=True,time_step_policy='original-adaptive-day-seed-v1');assert m.e.switches((a.input/'swap.swp').read_text(encoding='cp1252'))['SWINCO']==counterpart_initial
+ q=dict(status='RUNNING',source=source,primary_profile=str(a.profile),primary_RESULT_sha256=SHA((a.profile/'RESULT.json').read_bytes()),primary_build_root=prior['build_root'],primary_initial=primary_initial,counterpart_initial=counterpart_initial,kind=prior['kind'],hysteresis=prior['hysteresis'],optimization=prior['optimization'],input_root=str(a.input),input_inventory=m.e.inventory(a.input),build_root=str(a.build_root/'bundle'),model_executions=0,canonical_admission=False)
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
  save()
  try:
@@ -31,7 +35,7 @@ def main():
   started=time.perf_counter()
   with (a.output/'build.stdout').open('x') as stdout,(a.output/'build.stderr').open('x') as stderr:result=subprocess.run(command,cwd=ROOT,stdout=stdout,stderr=stderr,timeout=300)
   q['build']=dict(command=command,returncode=result.returncode,seconds=time.perf_counter()-started,actual_completion_head=git('rev-parse','HEAD').decode().strip());save();result.check_returncode();assert q['build']['actual_completion_head']==source
-  m.validate_bundle(build,a.reference_work,project);q['postimage']=compare(Path(prior['build_root']),build);q['all_compiled']=all_compiled(Path(prior['build_root']),build);q['actual_BUILD_sha256']=SHA((build/'BUILD.json').read_bytes());q['status']='ACTUAL_HISTORY9_INITIAL2_WHOLE_GENERATED_AND_COMPILED_POSTIMAGE_PASS_NO_MODEL_REPLAY'
+  m.validate_bundle(build,a.reference_work,project);q['postimage']=compare(Path(prior['build_root']),build);q['all_compiled']=all_compiled(Path(prior['build_root']),build);q['actual_BUILD_sha256']=SHA((build/'BUILD.json').read_bytes());q['status']='ACTUAL_HISTORY9_INITIALIZATION_COUNTERPART_WHOLE_GENERATED_AND_COMPILED_POSTIMAGE_PASS_NO_MODEL_REPLAY'
  except Exception as error:q.update(status='FAILED',error=repr(error));raise
  finally:save()
  print(q['status'],q['kind'],q['hysteresis'],opt,flush=True)
