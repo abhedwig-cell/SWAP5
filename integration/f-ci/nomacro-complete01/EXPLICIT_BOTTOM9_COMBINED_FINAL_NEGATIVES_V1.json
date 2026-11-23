@@ -1,0 +1,93 @@
+{
+  "status": "FOUR_ACTUAL_COMMITTED_PUSHED_CLEAN14_PUBLIC_NEGATIVES_REFUSED",
+  "candidate": "2d38cd52d1c18a9c9550a2254b2cb446d7669e5e",
+  "never_merge": true,
+  "controls": [
+    {
+      "role": "SOURCE",
+      "path": "app/hybrid_water/prescribed_head_flux_boundary.py",
+      "branch": "codex/nomacro-paired9-combined-negative-source01",
+      "head": "42b761867be7b7beecdea203e06636acf4fed545",
+      "exact_parent": "2d38cd52d1c18a9c9550a2254b2cb446d7669e5e",
+      "actual_original_file_sha256": "6f78811a78c9da93c8a1a5e9ea87712486579b5c07d92812b1bb0ace5f774def",
+      "actual_mutated_file_sha256": "f3ee50d2b08a069d34620f9ead3c76a983382b78a22065df80bde86a8273fd67",
+      "mutation_recipe": {
+        "original_expression": "if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.",
+        "never_merge_test_guard": "2d-10"
+      },
+      "status": "ACTUAL_COMMITTED_PUSHED_CLEAN14_PUBLIC_REFUSED",
+      "never_merge": true,
+      "actual_refusal": true,
+      "actual_public_seconds": 14.687602600082755,
+      "actual_public_returncode": 1,
+      "actual_public_stderr_sha256": "d319df54e44f9ffb904008d5be538cf8c72479d62f5fc904723bf68810d35c76",
+      "actual_one_file_delta": true
+    },
+    {
+      "role": "RAW",
+      "path": "integration/f-ci/nomacro-complete01/CANONICAL_LEGACY_ORIGINAL_ORACLES_RAW_V1.zip",
+      "branch": "codex/nomacro-paired9-combined-negative-raw01",
+      "head": "5c2c909e0ea7464c620d35f0de15e464197de18e",
+      "exact_parent": "2d38cd52d1c18a9c9550a2254b2cb446d7669e5e",
+      "actual_original_file_sha256": "c22b2053e9f4972aa2693447aef77cc0d71a50c9869a8ba41174a25a8ed905b0",
+      "actual_mutated_file_sha256": "41dcec96401525b8f6291d1dca53c1ddbf7ce24e7826d722ec91488ed02d1468",
+      "mutation_recipe": {
+        "offset": 2167768,
+        "xor_hex": "01",
+        "old_byte": 25,
+        "new_byte": 24
+      },
+      "status": "ACTUAL_COMMITTED_PUSHED_CLEAN14_PUBLIC_REFUSED",
+      "never_merge": true,
+      "actual_refusal": true,
+      "actual_public_seconds": 296.30764639982954,
+      "actual_public_returncode": 1,
+      "actual_public_stderr_sha256": "e29ac7604c7fd4641e1624fad6b3867028932545555dd0095459a7901b7c5668",
+      "actual_one_file_delta": true
+    },
+    {
+      "role": "INHERITED",
+      "path": "integration/f-ci/nomacro-complete01/INITIAL_PROFILE_FROST_ADMISSION_RAW_V1.zip",
+      "branch": "codex/nomacro-paired9-combined-negative-inherited01",
+      "head": "4c4b26a929c6d7bb3a7480a1d352eca633d3b4d5",
+      "exact_parent": "2d38cd52d1c18a9c9550a2254b2cb446d7669e5e",
+      "actual_original_file_sha256": "db03a988270bd3ad29a745bf51d30f825d4f6455157e73d11ef2daa1d7d54b73",
+      "actual_mutated_file_sha256": "ffba9aced0297f42d663ae77fe5bba6bad51f7013424a5c503426dfcfe055386",
+      "mutation_recipe": {
+        "offset": 936406,
+        "xor_hex": "01",
+        "old_byte": 37,
+        "new_byte": 36
+      },
+      "status": "ACTUAL_COMMITTED_PUSHED_CLEAN14_PUBLIC_REFUSED",
+      "never_merge": true,
+      "actual_refusal": true,
+      "actual_public_seconds": 104.13109239982441,
+      "actual_public_returncode": 1,
+      "actual_public_stderr_sha256": "03b64029343e152d5f59266de65f9e303516496b1d7aeb151c5c6cdefa0d0d12",
+      "actual_one_file_delta": true
+    },
+    {
+      "role": "PUBLICATION",
+      "path": "tests/publication/run_pub_p2e09_reference_threshold_freeze.sh",
+      "branch": "codex/nomacro-paired9-combined-negative-publication01",
+      "head": "935c8efa030f216ba412cd5f7ad8576281c7718d",
+      "exact_parent": "2d38cd52d1c18a9c9550a2254b2cb446d7669e5e",
+      "actual_original_file_sha256": "7d0bd0e17bcabfce30097cf1fa4a8b0ae5b72c40b134c32771e00ae4cec0003c",
+      "actual_mutated_file_sha256": "07435f3d0bfa722000b352a331d9fda81070265ce207915e4e9a5f65f9ea6dec",
+      "mutation_recipe": {
+        "append_only_comment": true
+      },
+      "status": "ACTUAL_COMMITTED_PUSHED_CLEAN14_PUBLIC_REFUSED",
+      "never_merge": true,
+      "actual_refusal": true,
+      "actual_public_seconds": 19.374215399846435,
+      "actual_public_returncode": 1,
+      "actual_public_stderr_sha256": "54556db9209d4d5c77eaf3048e3b4c7b15c2252a71767c2f615ecbcf19601e46",
+      "actual_one_file_delta": true,
+      "actual_publication_replay_selected": true
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0
+}

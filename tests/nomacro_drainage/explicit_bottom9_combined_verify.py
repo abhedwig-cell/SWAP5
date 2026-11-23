@@ -1,5 +1,5 @@
 """Fail-closed proposal: reuse immutable parent216 and new64 after exact postimages."""
-import io,json,re,sys
+import hashlib,io,json,re,sys
 from contextlib import ExitStack,redirect_stdout
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
@@ -16,7 +16,7 @@ PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 SEALED='030eb45c3660525dca7e10a6392a6d6a3a17920f'
 PARENT_CANONICAL='4d39e97d2f257f70b6fc108c62eb5efce9967a42'
 PARENT_ADMISSION_SHA='9b39b63653e17886bdd8a21560d955001057a24a88bd2e5e06bfd4c824a07d37'
-CONTRACT_SHA='01285f5199bbd35c4c21af1732c39a9717a0f17d2c09302c4b86372019ce0f17'
+CONTRACT_SHA='6a5d1a412f545cb739a9ba4ed356a81ca5ddf507b78be0228137116a5557ee00'
 PARENT='67d2636672921505ecb47f1c9f4c6ea27a451889'
 NAMES=(
  'EXPLICIT_BOTTOM9_ANALYTICAL_WINDOWS_RAW_V1','EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_O0_RAW_V1','EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_O2_RAW_V1','EXPLICIT_BOTTOM9_ANALYTICAL_PRIOR_POSTIMAGES_RAW_V1',
@@ -24,12 +24,36 @@ NAMES=(
  'EXPLICIT_BOTTOM9_HISTORY_WINDOWS_RAW_V1','EXPLICIT_BOTTOM9_HISTORY_UBUNTU_O0_ORIGINAL_V1','EXPLICIT_BOTTOM9_HISTORY_UBUNTU_O2_ORIGINAL_V1','EXPLICIT_BOTTOM9_HISTORY_INPUTS_RAW_V2',
  'EXPLICIT_BOTTOM9_COMBINED_WINDOWS_POSTIMAGES_RAW_V1','EXPLICIT_BOTTOM9_COMBINED_UBUNTU_O0_ORIGINAL_V1','EXPLICIT_BOTTOM9_COMBINED_UBUNTU_O2_ORIGINAL_V1','CANONICAL_LEGACY_ORIGINAL_ORACLES_RAW_V1')
 
+PUBLICATION_DOCUMENT_DOMAINS=('docs/publication','docs/publications','docs/verification','docs/performance/evidence')
+
+
+def publication_document_custody():
+ # These additional inherited publication dependencies lie outside SOURCE_DOMAINS.
+ from explicit_bottom9_analytical_inherited_custody import tracked_working_files,materialized
+ assert not git('diff',PARENT_CANONICAL,'HEAD','--',*PUBLICATION_DOCUMENT_DOMAINS),'Changed inherited publication documentation'
+ assert not git('status','--porcelain=v1','--untracked-files=all','--',*PUBLICATION_DOCUMENT_DOMAINS),'Dirty publication documentation'
+ tracked=tracked_working_files();observed=[]
+ text_suffixes={'.md','.json','.csv','.tsv','.txt','.rst','.tex','.bib','.yaml','.yml','.log','.py','.f90','.f','.c','.h','.cpp','.sh','.toml','.html','.css','.js','.svg','.b64','.sha256'}
+ for line in git('ls-tree','-rl',PARENT_CANONICAL,'--',*PUBLICATION_DOCUMENT_DOMAINS).decode().splitlines():
+  meta,path=line.split('\t');mode,kind,digest,size=meta.split()
+  assert kind=='blob' and mode!='120000' and path in tracked and tracked[path][1:]==(mode,digest),'Changed publication index dependency: '+path
+  if not materialized(path,tracked):
+   observed.append(dict(path=path,git_blob=digest,actual_storage='ACTUAL_IMMUTABLE_GIT_BLOB_NOT_MATERIALIZED'))
+   continue
+  raw=(ROOT/path).read_bytes();variants=(raw,norm(raw)) if Path(path).suffix.lower() in text_suffixes else (raw,)
+  assert any(hashlib.sha1(b'blob '+str(len(value)).encode()+b'\0'+value).hexdigest()==digest for value in variants),'Changed publication working bytes: '+path
+  observed.append(dict(path=path,git_blob=digest,actual_raw_sha256=SHA(raw),actual_storage='ACTUAL_WORKING_FILE'))
+ return dict(status='COMPLETE_INHERITED_PUBLICATION_DOCUMENT_GIT_INDEX_AND_ACTUAL_WORKING_BYTES_UNCHANGED',parent=PARENT_CANONICAL,files=observed,compiler_executions=0,model_executions=0)
+
+
 def checked_current_source():
  assert re.fullmatch('[0-9a-f]{40}',SEALED) and re.fullmatch('[0-9a-f]{64}',PARENT_ADMISSION_SHA) and re.fullmatch('[0-9a-f]{64}',CONTRACT_SHA)
  raw=norm((PROOF/'EXPLICIT_BOTTOM9_COMBINED_COADMISSION_CONTRACT_V1.json').read_bytes());assert SHA(raw)==CONTRACT_SHA;q=json.loads(raw)
  assert q['parent_contexts']==216 and q['new_contexts']==64 and q['combined_contexts']==280 and q['previous_actual_canonical']==PARENT_CANONICAL and q['parent_admission_sha256']==PARENT_ADMISSION_SHA and q['canonical_admission'] is False
  assert q['physical_equations_changed'] is False and q['whole_historical_family_closed'] is False and q['RC3_changed'] is False
- return current_source(SEALED)
+ documents=publication_document_custody();result=current_source(SEALED)
+ result['additional_publication_document_custody']=documents
+ return result
 
 def raw_custody():
  observed=[]
@@ -57,7 +81,8 @@ def strip_current_evidence(text):return parent.strip_current_evidence(text)
 
 def publication_dependencies_unchanged():
  checked_current_source();raw_custody();parent_admission()
- # Complete inherited Source custody includes every publication dependency.
+ # Application/compiler Source and the additional publication documents are
+ # checked independently against their actual immutable owners above.
  # The actual canonical216 selector was false; no new publication scope exists.
  return True
 
