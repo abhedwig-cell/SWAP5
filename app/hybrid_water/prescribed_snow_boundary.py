@@ -6,7 +6,7 @@ POLICY='existing-original-snow-explicit-paired9-all-node-soil-receipt-v1'
 
 
 def selection(directory,original_output=True):
- if not directory or not original_output:return None
+ if not directory or original_output is False:return None
  from experimental_project import switches
  text=(Path(directory)/'swap.swp').read_text(encoding='cp1252');s=switches(text)
  if s.get('SWBOTB')!=9 or s.get('SWSNOW')!=1:return None
