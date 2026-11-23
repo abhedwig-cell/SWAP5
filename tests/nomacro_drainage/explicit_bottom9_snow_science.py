@@ -31,11 +31,11 @@ def literal_audit():
  return namespace['audit'],SHA(raw)
 
 
-def audit(profile):
+def audit(profile,locations=None):
  profile=Path(profile);q=json.loads((profile/'RESULT.json').read_text());assert q['status']==PERIOD and q['days']==35
- inputs=Path(q['input_root']);build=Path(q['build_root']);meta=json.loads((build/'BUILD.json').read_text());selected=meta['identity']['original_output']
+ locations=locations or {};inputs=Path(locations.get('inputs',q['input_root']));build=Path(locations.get('build',q['build_root']));meta=json.loads((build/'BUILD.json').read_text());selected=meta['identity']['original_output']
  assert selected['swbotb']==9 and selected['swkimpl']==selected['swhyst']==selected['swdra']==0 and selected['swsnow']==1 and selected['kind'] in ('water','cde') and selected['paired_snow_boundary'] is True
- function,parent_reader_sha=literal_audit();inherited=function(profile)
+ function,parent_reader_sha=literal_audit();inherited=function(profile,build_root=build,input_root=inputs)
  rows=[json.loads(line) for line in (profile/'trajectory/daily.jsonl').read_text().splitlines()];assert len(rows)==35
  d=lambda value:Decimal(str(value))
  global_residual=[];soil_residual=[]
