@@ -1,5 +1,5 @@
 """Fresh complete Source custody for configuration reuse of admitted parent216."""
-import hashlib,json,re
+import base64,hashlib,json,re
 from pathlib import Path
 from explicit_bottom9_combined_source import verify as sibling_sources,CORE
 from explicit_bottom9_analytical_inherited_custody import tracked_working_files,materialized,SOURCE_DOMAINS
@@ -46,11 +46,20 @@ def source(anchor,owner_installed=True):
   if path in parent and path not in inverses:assert current[path]==parent[path],'Inherited dependency changed: '+path
   if not materialized(path,tracked):continue
   actual=(ROOT/path).read_bytes();normalized=norm(actual)
+  encoded_archive=None
   if path==SELF:
    original=blob(anchor,path);pattern=br"(?m)^SEALED='[0-9a-f]{40}'$";left,a=re.subn(pattern,b"SEALED='IMMUTABLE_DEPENDENCY_ANCHOR'",normalized);right,b=re.subn(pattern,b"SEALED='IMMUTABLE_DEPENDENCY_ANCHOR'",original);assert a==b==1 and left==right,'Frozen owner changed beyond immutable anchor literal'
+  elif Path(path).suffix.lower()=='.b64':
+   original=blob(anchor,path)
+   # Git's textual base64 wrapper may use platform CRLF. Require that exact
+   # whole spelling and independently require the original decoded archive
+   # bytes; neither the wrapper nor its scientific payload is rewritten.
+   assert actual in (original,original.replace(b'\n',b'\r\n')),'Foreign base64 Source spelling: '+path
+   decoded=base64.b64decode(actual);assert decoded==base64.b64decode(original),'Changed encoded scientific archive: '+path
+   encoded_archive=SHA(decoded)
   else:
-   digest_of=lambda b:hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest();allowed=(digest_of(actual),) if Path(path).suffix.lower() in ('.zip','.tar','.gz','.b64') else (digest_of(actual),digest_of(normalized));assert digest in allowed,'Actual Source file differs: '+path
+   digest_of=lambda b:hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest();allowed=(digest_of(actual),) if Path(path).suffix.lower() in ('.zip','.tar','.gz') else (digest_of(actual),digest_of(normalized));assert digest in allowed,'Actual Source file differs: '+path
   if path in inverses:assert inverses[path]==blob(BASE,path)
-  observed.append(dict(path=path,actual_raw_sha256=SHA(actual),literal_parent_inverse=path in inverses))
+  observed.append(dict(path=path,actual_raw_sha256=SHA(actual),literal_parent_inverse=path in inverses,decoded_original_archive_sha256=encoded_archive))
  assert git('rev-parse','HEAD')==head and not git('for-each-ref','--format=%(refname)','refs/replace')
  return dict(status='COMPLETE_PARENT216_INHERITED_AND_CURRENT_SOURCE_TREE_WORKING_BYTES_AND_EIGHT_LITERAL_APP_INVERSES_VERIFIED',actual_head=head.decode().strip(),source_anchor=anchor,parent=BASE,materialized_source=observed,total_source_entries=len(expected),inherited_source_entries=len(parent),literal_parent_inverses=len(inverses),actual_Git_or_filesystem_views_projected=False,compiler_executions=0,model_executions=0)
