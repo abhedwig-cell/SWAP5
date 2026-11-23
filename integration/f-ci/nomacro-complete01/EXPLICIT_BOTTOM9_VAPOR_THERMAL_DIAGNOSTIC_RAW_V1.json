@@ -1,0 +1,710 @@
+{
+  "status": "BOUNDED_ORIGINAL_BOUNDARY9_TEMPERATURE_INITIAL_STORAGE_JUMP_O0_O2_EXACT_AND_SECOND300S_RUNTIME_CENSOR_PRESERVED_NOT_ADMISSION",
+  "actual_source": "6a08ad6a3198c1c03eef6c389c012ca259c54528",
+  "archive": "EXPLICIT_BOTTOM9_VAPOR_THERMAL_DIAGNOSTIC_RAW_V1.zip",
+  "bytes": 3428536,
+  "sha256": "b84a474e7670309421aa7292fa94f7332a74aad3eff789dfea2bee7ebeaa847f",
+  "inventory": {
+    "build/explicit-bottom9-vapor-initial9-component-O0-v1/actual-hydraulic.exe": {
+      "bytes": 1929986,
+      "sha256": "21a875e0bd9ec136fffbb9e3d7c7d983120bbaf53375a746e72dfabbae1613cd"
+    },
+    "build/explicit-bottom9-vapor-initial9-component-O0-v1/driver.o": {
+      "bytes": 14816,
+      "sha256": "db5e5b2732a5492d1235c5108acd2e094fb168ca6a015278262df44fcc541699"
+    },
+    "build/explicit-bottom9-vapor-initial9-component-O0-v1/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "build/explicit-bottom9-vapor-initial9-component-O0-v1/MOD_MvG_functions.f90": {
+      "bytes": 38408,
+      "sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+    },
+    "build/explicit-bottom9-vapor-initial9-component-O0-v1/MOD_MvG_functions.o": {
+      "bytes": 208115,
+      "sha256": "2a0d218f038b30ea9c46a19a0d9535334a75c3802f1b7aceb363aa1d1a4ddb1d"
+    },
+    "build/explicit-bottom9-vapor-initial9-component-O0-v1/WC_K_models_04_11.f90": {
+      "bytes": 18057,
+      "sha256": "9ad54cbf7887b0a6dc6555fa56ddd5486a5d96829af1bd437e0e8f341ca66fa8"
+    },
+    "build/explicit-bottom9-vapor-initial9-component-O0-v1/wc_k_models_04_11.mod": {
+      "bytes": 549,
+      "sha256": "78c06d935c5598e1fa0b3a8f53424c82bfcb30186118be906c10515b242abeef"
+    },
+    "build/explicit-bottom9-vapor-initial9-component-O0-v1/WC_K_models_04_11.o": {
+      "bytes": 58351,
+      "sha256": "4126d8f6e92e2f58714719b0e0e5a222fa3248526a4fd7f1b5ccc3d4bce8cfac"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O0-v1/actual-hydraulic.exe": {
+      "bytes": 1935043,
+      "sha256": "a1cf9d585c81ef4327c7966b8e80f3b5df2842fe815f6f792e9a33a1781dd6c5"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O0-v1/driver.o": {
+      "bytes": 16317,
+      "sha256": "3f70a690f1168fb0027e0f444a989c9e8997f0f2eae56648bdbc8913ad221997"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O0-v1/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O0-v1/MOD_MvG_functions.f90": {
+      "bytes": 38408,
+      "sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O0-v1/MOD_MvG_functions.o": {
+      "bytes": 210019,
+      "sha256": "bd8dd05f805534413643e3bdaf2db3fe02e29e84d0403fc9927ea82f7fefcecc"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O0-v1/WC_K_models_04_11.f90": {
+      "bytes": 18057,
+      "sha256": "9ad54cbf7887b0a6dc6555fa56ddd5486a5d96829af1bd437e0e8f341ca66fa8"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O0-v1/wc_k_models_04_11.mod": {
+      "bytes": 549,
+      "sha256": "78c06d935c5598e1fa0b3a8f53424c82bfcb30186118be906c10515b242abeef"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O0-v1/WC_K_models_04_11.o": {
+      "bytes": 58895,
+      "sha256": "5846a91c82012eaaacecea796be7fa18bd8e174ccc835c1913018dddcc02ab70"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O2-v1/actual-hydraulic.exe": {
+      "bytes": 1854076,
+      "sha256": "2d9abea953f74955b493aa4ed6578c18f2aa2d79b33da3720040e65544225a9a"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O2-v1/driver.o": {
+      "bytes": 14808,
+      "sha256": "c0f932f18caceb49b3451a62e716565715526528c9c9b33c1fd42193c0512d93"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O2-v1/mod_mvg.mod": {
+      "bytes": 1352,
+      "sha256": "eba6a50d6a511f3a6833dcb4ae46c1306b60b5f2a0f294bd764ec6703d4141d1"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O2-v1/MOD_MvG_functions.f90": {
+      "bytes": 38408,
+      "sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O2-v1/MOD_MvG_functions.o": {
+      "bytes": 109193,
+      "sha256": "456734da6d8728e022b145bdf63deba7dd636740cf76f0b70d50060759e2ddd3"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O2-v1/WC_K_models_04_11.f90": {
+      "bytes": 18057,
+      "sha256": "9ad54cbf7887b0a6dc6555fa56ddd5486a5d96829af1bd437e0e8f341ca66fa8"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O2-v1/wc_k_models_04_11.mod": {
+      "bytes": 549,
+      "sha256": "78c06d935c5598e1fa0b3a8f53424c82bfcb30186118be906c10515b242abeef"
+    },
+    "build/explicit-bottom9-original-boundbottom-component-O2-v1/WC_K_models_04_11.o": {
+      "bytes": 46067,
+      "sha256": "b415f4f868f840ba936af08d2899c2751dcff0728b254c29a877727249079689"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/age_output_calendar_probe.f90": {
+      "bytes": 870,
+      "sha256": "6082d492aaa0a921971384a8bb3c85d09b852d4758b2aeb72eeef8ea9c48756b"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/age_output_calendar_probe.o": {
+      "bytes": 5584,
+      "sha256": "e7512d4b94901de98c6e3f5c3a9232c8b943a6b1679a0c718907f6659c659c79"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/boundtop.f90": {
+      "bytes": 13987,
+      "sha256": "5c95fa81587361cb1dbe29ecc36ddd5da91f1826654639066cc29c0fdb6a4287"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/boundtop.o": {
+      "bytes": 25738,
+      "sha256": "acb9c58a413d9198e6496a74b079f98bcc1d52832a2034360d4492725287c42a"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/BUILD.json": {
+      "bytes": 45394,
+      "sha256": "2a163fe85c7bb6e33a0bfab24f6c137cee6bc90b494f3b783ca7e13477a4f712"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/day_donor.exe": {
+      "bytes": 2193095,
+      "sha256": "999fe05ac89183759184b5349a8fdfed2b84f5cef905f82a72d91cff0d918e24"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/day_kernel.exe": {
+      "bytes": 364079,
+      "sha256": "8beb335c8a88fdcd171cd236ae2023a2bc4896e6c2f4227ba2d3477c77fe25e3"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/headcalc.f90": {
+      "bytes": 27292,
+      "sha256": "48715c6be9890d4fa2ed06aefe753e437fced3ea37d8aa36f284b0754750cb0b"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/headcalc.o": {
+      "bytes": 56106,
+      "sha256": "1e892e4e6fc7666fad267ffc06739722011b00500def27a5558a594e51d96bf3"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hybrid_age_output_state.f90": {
+      "bytes": 852,
+      "sha256": "4b1657194d82b50358f8abbde0b019ab7ecb67d870d57edce92d01079d0c2e31"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hybrid_age_output_state.mod": {
+      "bytes": 2765,
+      "sha256": "87f65728b41718d28ed3b923e7ba529ddf31e064c7c06e59041983bee0d2c83e"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hybrid_age_output_state.o": {
+      "bytes": 1761,
+      "sha256": "b3e9a4e89705374a630b80131fcb675d57a99cd134e263f5abc35be8d5a346df"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hybrid_day_window.mod": {
+      "bytes": 366,
+      "sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hybrid_step_budget.f90": {
+      "bytes": 3652,
+      "sha256": "863f7c37a622df4eb0f18a48621a8c6a402fb18d735f6d48fc6d3f612b8a678c"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hybrid_step_budget.mod": {
+      "bytes": 1099,
+      "sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hybrid_step_budget.o": {
+      "bytes": 12378,
+      "sha256": "6d65663fc15f40f38c955dd88b2ebb0255511ef8da1b39145009390e78f33def"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hydraulic_vapor_native.f90": {
+      "bytes": 1634,
+      "sha256": "b603a4ba76d5847c22b2fbda0910a4d87d49e0460729928dfa2df4e8618fb4a7"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hydraulic_vapor_native.mod": {
+      "bytes": 320,
+      "sha256": "980fc3cfbc15f2215779197d31683ab7c42778b1f2de2cb9c305de738293f715"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/hydraulic_vapor_native.o": {
+      "bytes": 10122,
+      "sha256": "032677bd27a637b372a84e0458d00b874c43d9ddf715e32249d56fab42ae731c"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/integral.f90": {
+      "bytes": 34807,
+      "sha256": "34f11e21dab1a568bb273215ebb2808d1d9b5227d4fe2709cebfd5a5717e038a"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/integral.o": {
+      "bytes": 80152,
+      "sha256": "80a2e8100cfbd29a34f430442e746ffc4e48df1faf709e49974fa4b0418d9821"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/irrigation.f90": {
+      "bytes": 82594,
+      "sha256": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/irrigation.o": {
+      "bytes": 81228,
+      "sha256": "9b935e7c0de41c23150d4d7c479ce72d8be218c42bbd18b73af3465bb680594b"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/macropore.f90": {
+      "bytes": 92410,
+      "sha256": "c1476dc712d7640731537e712277cf634ae41c35fe3a3a4d739bc66a4f6417cb"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/macropore.o": {
+      "bytes": 514686,
+      "sha256": "ce25bc86889bb8b930526ce27e730d8119ca4478cc7603a96035cddb891a22b0"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_accepted_trajectory_directional_publication.mod": {
+      "bytes": 4417,
+      "sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_accepted_trajectory_directional_sensitivity.mod": {
+      "bytes": 4709,
+      "sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_canonical_contracts.mod": {
+      "bytes": 12974,
+      "sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_canonical_interval_runtime.mod": {
+      "bytes": 12951,
+      "sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/MOD_cropdevelopment.f90": {
+      "bytes": 81515,
+      "sha256": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_cropdevelopment.mod": {
+      "bytes": 4009,
+      "sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/MOD_cropdevelopment.o": {
+      "bytes": 113751,
+      "sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_fmr_soil_water_application_host.mod": {
+      "bytes": 1313,
+      "sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_groundwater_coupling_contract.mod": {
+      "bytes": 4100,
+      "sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_groundwater_interface_mass_ledger.mod": {
+      "bytes": 6592,
+      "sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_groundwater_swap_forcing_adapter.mod": {
+      "bytes": 24540,
+      "sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_groundwater_swap_transaction_participant.mod": {
+      "bytes": 27203,
+      "sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_integral.mod": {
+      "bytes": 4234,
+      "sha256": "f84abbd3048e5570bf69e4e4f433e3156990b13502b7aff8e97f5cc200d7a5b2"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_irrigation.mod": {
+      "bytes": 4286,
+      "sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_kernel_transactions.mod": {
+      "bytes": 23972,
+      "sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_macropore.mod": {
+      "bytes": 4157,
+      "sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_original_output_receipt.f90": {
+      "bytes": 2735,
+      "sha256": "fef3897c3b59efb198f601f50e01ce1f206294a13d6003e7ddff8d12c1ac060e"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_original_output_receipt.mod": {
+      "bytes": 2331,
+      "sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_original_output_receipt.o": {
+      "bytes": 3663,
+      "sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_rwu_micro.mod": {
+      "bytes": 1154,
+      "sha256": "053e13a03d4daa76b5a84c0cb5eccbc7566fe10b0e9f9dc9d861a70e237f1448"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_soil_water_accepted_step_direction_contract.mod": {
+      "bytes": 2006,
+      "sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_timer.mod": {
+      "bytes": 222,
+      "sha256": "665bb47ce9f4ae69116d6db4e45c0147d55f27e5b1a9c80e6893e4235245569a"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_top.mod": {
+      "bytes": 537,
+      "sha256": "ee65d4dfa51926fc4f1f6682aab044152763f4db14ea46ecaff700aaaa27239a"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_transaction_reference.mod": {
+      "bytes": 6815,
+      "sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/mod_wofost.mod": {
+      "bytes": 4134,
+      "sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/o2_pars.mod": {
+      "bytes": 1274,
+      "sha256": "e467aa7dc2f106e6e52762e06832aae20d286dd78e3017889e56ee7a78e24316"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/oxygenstress.f90": {
+      "bytes": 66696,
+      "sha256": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/oxygenstress.o": {
+      "bytes": 47625,
+      "sha256": "6aa974ba2afdf8eba00b1c0157cd18673cd068929db1f5c3170a711009669705"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/probe_kernel_donor.mod": {
+      "bytes": 36537,
+      "sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/readswap.f90": {
+      "bytes": 61302,
+      "sha256": "dbb82339f6d488e7ac5192bc7aa6b8546b0ed370a8ecd3d031225a0e2801f058"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/readswap.o": {
+      "bytes": 134539,
+      "sha256": "f7e41cc822e0eecfa8e91bbfe89445afc9ac20419748faebbb4751ae249c886c"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/restart_publish.dll": {
+      "bytes": 30291,
+      "sha256": "c9f7d16b9d4bdab068ccb38382ff5de0820093aaf83fc155ad42f23bff3f0e69"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/RWU_micro.f90": {
+      "bytes": 52700,
+      "sha256": "9ab7792d4a0532ee4c5f90ef837acd07e5418652c769987c75cf1c5ade4b7d0c"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/RWU_micro.o": {
+      "bytes": 74477,
+      "sha256": "219651f54dbc7d96f4cb43daf61c6070f9adb2c4028acad6088ad9ca31a9b3b6"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swap.f90": {
+      "bytes": 29413,
+      "sha256": "82b37c566c7d35aa3b1d35897d70d73e989f23ecb4504ffb21fd04617b2e28c0"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swap.o": {
+      "bytes": 47736,
+      "sha256": "5b5efab7154d84db3dfdc84e59c1ed5d5818fd95282c4b5ab402dc3d174be9df"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swap_csv_output.f90": {
+      "bytes": 135962,
+      "sha256": "430425e333c1005e8656801cb018a8d17acd595f240e0ab6d9a2bfec39ba8375"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swap_csv_output.mod": {
+      "bytes": 2955,
+      "sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swap_csv_output.o": {
+      "bytes": 297397,
+      "sha256": "0e762f400f67c2db42e47a48f1088610da31d3a0d58287e22e637931fb073482"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swap_exchange.mod": {
+      "bytes": 1470,
+      "sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swap_main.f90": {
+      "bytes": 11679,
+      "sha256": "8c1fd1ffd8ea6c7e36980d07a6f03445ed70d9b1c4dbc8bd9a676f0f5433caa8"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swap_main.o": {
+      "bytes": 11150,
+      "sha256": "b582c26c4d22c6e344105c04762705f1710df0ff86dfe5af1ceb596667539039"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swapoutput.f90": {
+      "bytes": 47749,
+      "sha256": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/swapoutput.o": {
+      "bytes": 108454,
+      "sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/timecontrol.f90": {
+      "bytes": 19587,
+      "sha256": "81f0107e176db9eee6398b91e06b2410188c4ed77675da6d7992d21588a82863"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/timecontrol.o": {
+      "bytes": 40520,
+      "sha256": "f74d17c489c7e7167aae74274651b9b6e951aea9765717938f6c63ac3be6273f"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/WC_K_models_04_11.f90": {
+      "bytes": 18694,
+      "sha256": "b3f6bab64b847801ff949ae33490cca4fd3a914b2bcdbaab4a26b3d4ae7d8a7b"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/wc_k_models_04_11.mod": {
+      "bytes": 549,
+      "sha256": "78c06d935c5598e1fa0b3a8f53424c82bfcb30186118be906c10515b242abeef"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/WC_K_models_04_11.o": {
+      "bytes": 31661,
+      "sha256": "434b47b30ff5cb5f7e470a47c1ce9fbbf4b7560b9bdf836bd1db9bea083d01ac"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/wofost.f90": {
+      "bytes": 79125,
+      "sha256": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b"
+    },
+    "build/explicit-bottom9-vapor11-initial-consistent-O0-v1/bundle/wofost.o": {
+      "bytes": 105790,
+      "sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822"
+    },
+    "profile/explicit-bottom9-vapor-initial9-component-O0-v1/actual-hydraulic.exe": {
+      "bytes": 1929986,
+      "sha256": "21a875e0bd9ec136fffbb9e3d7c7d983120bbaf53375a746e72dfabbae1613cd"
+    },
+    "profile/explicit-bottom9-vapor-initial9-component-O0-v1/hydraulic_vapor_initial9_probe.f90": {
+      "bytes": 2805,
+      "sha256": "2df03c73d156c1b562923564477dca8b45d32bb827ce729e4ffcf8c61873d788"
+    },
+    "profile/explicit-bottom9-vapor-initial9-component-O0-v1/MOD_MvG_functions.f90": {
+      "bytes": 38408,
+      "sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+    },
+    "profile/explicit-bottom9-vapor-initial9-component-O0-v1/model8.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor-initial9-component-O0-v1/model8.stdout": {
+      "bytes": 62112,
+      "sha256": "8861c5e1f13bf0fc52c33ea8b85549224141c24c7aef670e5edc8a8c431d0b5a"
+    },
+    "profile/explicit-bottom9-vapor-initial9-component-O0-v1/RESULT.json": {
+      "bytes": 17020,
+      "sha256": "79065c30dc19d3b3de0ed85247a8c3cf99b67f366fd7282292a92112aeb541e8"
+    },
+    "profile/explicit-bottom9-vapor-initial9-component-O0-v1/WC_K_models_04_11.f90": {
+      "bytes": 18057,
+      "sha256": "9ad54cbf7887b0a6dc6555fa56ddd5486a5d96829af1bd437e0e8f341ca66fa8"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O0-v1/actual-hydraulic.exe": {
+      "bytes": 1935043,
+      "sha256": "a1cf9d585c81ef4327c7966b8e80f3b5df2842fe815f6f792e9a33a1781dd6c5"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O0-v1/MOD_MvG_functions.f90": {
+      "bytes": 38408,
+      "sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O0-v1/model8.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O0-v1/model8.stdout": {
+      "bytes": 948,
+      "sha256": "bcbb0f709dafabaa43b588d577f3042e197da62b862d634465740f9f83af52ea"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O0-v1/original_boundbottom9_initial_probe.f90": {
+      "bytes": 2882,
+      "sha256": "7444e4d06de8dba6abc071d651851a5281c0c4d42761880e7a75a011c32c97c7"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O0-v1/RESULT.json": {
+      "bytes": 17419,
+      "sha256": "a41ca5bcb30d16591fe97fc6f9ec89310ee2d592f9307ce1b5262c73b54cc461"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O0-v1/WC_K_models_04_11.f90": {
+      "bytes": 18057,
+      "sha256": "9ad54cbf7887b0a6dc6555fa56ddd5486a5d96829af1bd437e0e8f341ca66fa8"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O2-v1/actual-hydraulic.exe": {
+      "bytes": 1854076,
+      "sha256": "2d9abea953f74955b493aa4ed6578c18f2aa2d79b33da3720040e65544225a9a"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O2-v1/MOD_MvG_functions.f90": {
+      "bytes": 38408,
+      "sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O2-v1/model8.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O2-v1/model8.stdout": {
+      "bytes": 948,
+      "sha256": "bcbb0f709dafabaa43b588d577f3042e197da62b862d634465740f9f83af52ea"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O2-v1/original_boundbottom9_initial_probe.f90": {
+      "bytes": 2882,
+      "sha256": "7444e4d06de8dba6abc071d651851a5281c0c4d42761880e7a75a011c32c97c7"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O2-v1/RESULT.json": {
+      "bytes": 17419,
+      "sha256": "066087fe87d15ed903d4dc9876a94efa76be2fae1b269e67019fcc7599fcae3c"
+    },
+    "profile/explicit-bottom9-original-boundbottom-component-O2-v1/WC_K_models_04_11.f90": {
+      "bytes": 18057,
+      "sha256": "9ad54cbf7887b0a6dc6555fa56ddd5486a5d96829af1bd437e0e8f341ca66fa8"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/build.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/build.stdout.txt": {
+      "bytes": 101,
+      "sha256": "d021fa9b8bb72bfb22f3a967492ae8e6a333a4ba3ae5c9497610ce5a26a3175f"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/RESULT.json": {
+      "bytes": 3563,
+      "sha256": "c4c113e16bace437dee2e3f0737f236a9fad39df1657a16398e5c2146c1dad88"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/BUILD.json": {
+      "bytes": 45392,
+      "sha256": "065bd9be04c8eacc6f12f5a9fff4cb5f874e0309c9cc1aec3a3dddea7d25c927"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/daily.jsonl": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/kernel.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/kernel.stdout": {
+      "bytes": 87,
+      "sha256": "d892fea2c957ba700eef88bc8053bfee2b2c6aa1f6c0d99df24fd7dee174e737"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/283.met": {
+      "bytes": 81802,
+      "sha256": "20ad933da156e00b31521479d12a08bad2382de2525dc37badba7861179f4e8e"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/283rd$00002.tmp": {
+      "bytes": 244992,
+      "sha256": "386abe63dcf7755435dfa85f64e0af32952a0a4772784d3c417f29179e663f2d"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/donor.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/donor.stdout": {
+      "bytes": 2768,
+      "sha256": "15194a4ff8c31ef6c6d2ea1bb25e6f55e1cbeeb0367f6cc3fb471a245f5938fd"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/grass.crp": {
+      "bytes": 31334,
+      "sha256": "fb5cb88dec30dcfa464e9f54858495f3e63cca9b8ff3b4d2149d7e446e9019b7"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/maize.crp": {
+      "bytes": 24634,
+      "sha256": "e611cdb24cb8cc7c50ebb8d39edb43cb109b1714d35fdb5497b0dbbb5c9e85a3"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/potato.crp": {
+      "bytes": 31399,
+      "sha256": "9582da4e49d815175863884f218d7d3debe644a4e8618fc108f9b982774ac43a"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/result.bal": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/result.blc": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/result_output.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/swap.err": {
+      "bytes": 176544,
+      "sha256": "22135b45710afac0f586f8d7926655887599daa6d2e974053113210b79925493"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/swap.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/swap.swp": {
+      "bytes": 37087,
+      "sha256": "48dfba61bef171f8221a824d39160ca710d23726ff834d1f16a881dc3f5ae8eb"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/swap.wrn": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "profile/explicit-bottom9-vapor11-initial-consistent-O0-v1/trajectory/original/swaprd$00001.tmp": {
+      "bytes": 20988,
+      "sha256": "911b03f2dbb98a68fe3d4b3657a6b75dda92b8d53f2469f07a8c06cfd8d8afd1"
+    },
+    "input/283.met": {
+      "bytes": 81802,
+      "sha256": "20ad933da156e00b31521479d12a08bad2382de2525dc37badba7861179f4e8e"
+    },
+    "input/control_plot.inp": {
+      "bytes": 1140,
+      "sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+    },
+    "input/fixed-irrigation.irg": {
+      "bytes": 81,
+      "sha256": "eb8d1430b860b8c51a4173708089b595217314eaefa75e48e53a441cae194864"
+    },
+    "input/grass.crp": {
+      "bytes": 31334,
+      "sha256": "fb5cb88dec30dcfa464e9f54858495f3e63cca9b8ff3b4d2149d7e446e9019b7"
+    },
+    "input/maize.crp": {
+      "bytes": 24634,
+      "sha256": "e611cdb24cb8cc7c50ebb8d39edb43cb109b1714d35fdb5497b0dbbb5c9e85a3"
+    },
+    "input/plot_swap.cmd": {
+      "bytes": 88,
+      "sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+    },
+    "input/potato.crp": {
+      "bytes": 31399,
+      "sha256": "9582da4e49d815175863884f218d7d3debe644a4e8618fc108f9b982774ac43a"
+    },
+    "input/run_swap.cmd": {
+      "bytes": 51,
+      "sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+    },
+    "input/swap.dra": {
+      "bytes": 11733,
+      "sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17"
+    },
+    "input/swap.swp": {
+      "bytes": 36267,
+      "sha256": "437c88cc0e6d6b00db78f58eaa9e0b23ee1d2492992474b30fae3f31f3095e6a"
+    },
+    "observation/explicit-bottom9-original-boundbottom-component-prepare-v1.py": {
+      "bytes": 2396,
+      "sha256": "d52c3f53eef75a2c78b9fe74f1f66ab9fb44224aa3dbb89a5d01e44dad44a059"
+    },
+    "observation/explicit-bottom9-original-boundbottom-component-v1.py": {
+      "bytes": 7917,
+      "sha256": "9ab107e48895324423c967dc51f11b9ada0ece1badec7174d38d13b8c94f450c"
+    },
+    "observation/explicit-bottom9-vapor-initial-consistent-input-v1.py": {
+      "bytes": 1952,
+      "sha256": "1b9265e9074694f28e2afd851d28ab3a59992db3cdc9b5511a75bd669d366b26"
+    },
+    "observation/explicit-bottom9-vapor-initial9-component-prepare-v1.py": {
+      "bytes": 1332,
+      "sha256": "22aebb27e4b83c28f8b2c18ae8b98a88b9d3c48aed60b403c8eaf112dcce658d"
+    },
+    "observation/explicit-bottom9-vapor-initial9-component-v1.py": {
+      "bytes": 7865,
+      "sha256": "fed8fbfdd6496dd5450052c9f4785a2b31b66876e9f1e84e8af2053b3b69c525"
+    },
+    "observation/EXPLICIT_BOTTOM9_VAPOR_INITIAL_CONSISTENT_INPUT_V1.json": {
+      "bytes": 2066,
+      "sha256": "830db7a686ffc2b5d4c973cf94fb74a8a7aeef689159e4785ccb17852fc9e97d"
+    },
+    "observation/hydraulic_vapor_initial9_probe.f90": {
+      "bytes": 2805,
+      "sha256": "2df03c73d156c1b562923564477dca8b45d32bb827ce729e4ffcf8c61873d788"
+    },
+    "observation/original_boundbottom9_initial_probe.f90": {
+      "bytes": 2882,
+      "sha256": "7444e4d06de8dba6abc071d651851a5281c0c4d42761880e7a75a011c32c97c7"
+    },
+    "actual-original-provider-source/boundbottom.f90": {
+      "bytes": 6054,
+      "sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e"
+    },
+    "actual-original-provider-source/swap_base.f90": {
+      "bytes": 22920,
+      "sha256": "572f5e99fba692f31a5dc30a7bd438628c1afec37edf5423b7e30a7f5ce40424"
+    },
+    "actual-original-provider-source/temperature.f90": {
+      "bytes": 32708,
+      "sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"
+    },
+    "actual-original-provider-object/boundbottom.o": {
+      "bytes": 18696,
+      "sha256": "d7792662aeae49b1aa25c3d9b460c65c8b19ff004e77f9aa106ce8275cfc802c"
+    },
+    "observation/actual-sealer.py": {
+      "bytes": 5620,
+      "sha256": "dbbd43455267308d3764e1516bf05d33d0e1fc32304bd6ecdd8a346217022a3e"
+    }
+  },
+  "logical_files": 171,
+  "unique_objects": 129,
+  "original_BoundBottom_raw_stdout_sha256": "bcbb0f709dafabaa43b588d577f3042e197da62b862d634465740f9f83af52ea",
+  "original_storage_jump_cm": 3.666738201957287e-08,
+  "time_steps": [
+    0.0,
+    0.04,
+    1e-06
+  ],
+  "positive20_storage_jump_cm": 0.0,
+  "actual_O0_O2_raw_stdout_exact": true,
+  "component_driver_hydraulic_model": 11,
+  "legacy_stdout_filename_model8_is_controller_argument_not_a_model8_scientific_claim": true,
+  "consistent_initial_profile_still_300s_censored_before_first_day": true,
+  "classification": "NUMERICAL_FAILURE_CENSORED_THERMAL_COMPOSITION; bounded original algebraic endpoint storage observation, full runtime cause NOT_PROVEN",
+  "canonical_admission": false,
+  "physical_equations_or_tolerances_changed": false
+}
