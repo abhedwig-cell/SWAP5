@@ -43,12 +43,14 @@ def active_selection(project):
         if one(key)!=value:return None
     from experimental_project import inspect
     bottom=inspect(project.input_directory,original_output=True)['boundary']['SWBOTB']
-    if bottom not in (1,5,8):
+    from prescribed_head_flux_boundary import selection as paired_selection
+    paired_bottom=bottom==9 and paired_selection(project.input_directory,project.original_output) is not None
+    if bottom not in (1,5,8) and not paired_bottom:
         from analytical_cde_calendar import bottom6_selected
         if bottom!=6 or not bottom6_selected(project):return None
     drainage=one('SWDRA')
     if drainage not in (0,1):return None
-    if bottom!=1 and drainage!=1:
+    if bottom!=1 and drainage!=1 and not paired_bottom:
         from analytical_cde_calendar import vapor_selected
         if not vapor_selected(project):return None
     reset=0 if monthly else one('SWRES');fmt=one('SWCSV',0);hys=one('SWHYST')
@@ -60,6 +62,7 @@ def active_selection(project):
         swhyst=hys,swcsv=fmt,nprintday=nprint,swmonth=monthly,swodat=dates,swres=reset,requested_period=requested,period=1,flprintdt=perstep,
         groups=one('INLIST_CSV',quoted=True) if fmt else None,num_decimals=precision,
         **({'analytical_bottom6_calendar':True} if bottom==6 else {}),
+        **({'paired_head_flux_cde_calendar':True} if paired_bottom else {}),
         **({'analytical_vapor_calendar':True} if __import__('analytical_cde_calendar').vapor_selected(project) else {}),
         **({'groundwater_cde_clock':True} if bottom==1 else {}),
         **({'groundwater_snow_cde_output':True} if bottom==1 and swsnow else {}),
@@ -97,7 +100,7 @@ def metadata(project):
         annual_counter_policy='original-global-or-completed-year-count-v1' if selected['flprintdt'] else 'original-print-period-counter-v1',
         timecontrol_composition='literal-original-snow-perstep-coincident-end-day-v1' if is_snow and selected['flprintdt'] else 'literal-original-snow-subdaily-coincident-end-day-v1' if is_snow else 'literal-original-bound-output-epoch-v1',
         clock_event_closure_source_sha256=sha(folder/'cde_clock_events.f90'),clock_event_coincidence_policy='actual-local-irrigation-and-end-day-existing-dtcrit-v1',clock_event_dtcrit=1e-8,
-        trial_receipt_policy='literal-original-independent-soil-candidate-bottom-cde-clock-v1',
+        trial_receipt_policy=('literal-original-all-node-prescribed-bottom-cde-clock-v1' if selected.get('paired_head_flux_cde_calendar') else 'literal-original-independent-soil-candidate-bottom-cde-clock-v1'),
         private_bridge_source_sha256=sha(Path(bridge.__file__)),private_cde_interval_fields=list(bridge.FIELDS),cde_output_state_sha256=sha(folder/'cde_interval_output_state.f90'),
         cde_output_state_version=2,cde_output_state_reals=20+project.nodes,cde_output_state_private_reals=2,cde_daily_receipt_source_sha256=sha(folder/'cde_interval_receipt.f90'),
         cde_daily_flux_policy='actual-original-six-rhs-increments-including-corrected-ssdi-v1',cde_daily_mass_guard_mg_cm2=1e-10,

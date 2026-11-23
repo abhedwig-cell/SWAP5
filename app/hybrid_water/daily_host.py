@@ -170,7 +170,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         return int(values[0])
     from micro_lookup_state import enabled as micro_lookup_enabled
     micro_state=micro_lookup_enabled(project)
-    from implicit_groundwater_state import selected_boundary
+    from prescribed_head_flux_boundary import selected_boundary
     lower_boundary=selected_boundary(project)
     lower_receipt=lower_boundary is not None
     from fixed_irrigation_file import enabled as fixed_irrigation_file_enabled
@@ -817,7 +817,7 @@ end module plant_interface""")
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
         if lower_receipt:
-            from age_groundwater_output import render_budget,render_headcalc
+            from prescribed_head_flux_boundary import render_budget,render_headcalc
             if lower_boundary==1:
                 reaction=output/'mod_prescribed_groundwater_reaction.f90'
                 reaction.write_bytes((ROOT/'src/process/mod_prescribed_groundwater_reaction.f90').read_bytes())
@@ -826,12 +826,18 @@ end module plant_interface""")
             budget_source.write_text(render_budget((APP/'hybrid_step_budget.f90').read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
             path=output/'headcalc.f90'
             path.write_text(render_headcalc(path.read_text(encoding='cp1252'),lower_boundary),encoding='cp1252')
-            if lower_boundary in (1,5):
-                from age_groundwater_output import render_readswap
+            if lower_boundary in (1,5,9):
+                from prescribed_head_flux_boundary import render_readswap
                 source=(donor_build/'swap-selected/readswap.f90').read_text(encoding='cp1252')
                 (output/'readswap.f90').write_text(render_readswap(source,project.start_clock,lower_boundary),encoding='cp1252')
                 if 'readswap' in patched:raise ValueError('Multiple original reader state owners')
                 patched.append('readswap')
+            if lower_boundary==9 and not (age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt'])):
+                from prescribed_head_flux_boundary import render_timecontrol
+                path=output/'timecontrol.f90'
+                source=(path if path.exists() else donor_build/'swap-selected/timecontrol.f90').read_text(encoding='cp1252')
+                path.write_text(render_timecontrol(source),encoding='cp1252')
+                if 'timecontrol' not in patched:patched.append('timecontrol')
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
     from surface_schedule import enabled as surface_schedule_enabled
     scheduled_pond=surface_schedule_enabled(project)
@@ -872,6 +878,19 @@ end module plant_interface""")
     if age_source:patched=current_age_source.apply_build(output,project,patched)
     from implicit_groundwater_trial import apply_build as implicit_groundwater_trial_build
     patched=implicit_groundwater_trial_build(output,donor_build,project,patched)
+    if lower_boundary==9 and age_calendar and (age_calendar['nprintday']>1 or age_calendar['flprintdt']):
+        from prescribed_head_flux_boundary import render_timecontrol,render_output_trial
+        if age_calendar.get('cde_clock_output'):
+            from prescribed_head_flux_boundary import render_cde_clock_headcalc
+            head=output/'headcalc.f90'
+            head.write_text(render_cde_clock_headcalc(head.read_text(encoding='cp1252')),encoding='cp1252')
+        integral=output/'integral.f90'
+        integral.write_text(render_output_trial(integral.read_text(encoding='cp1252'),
+            (donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252'),
+            (donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252')),encoding='cp1252')
+        path=output/'timecontrol.f90'
+        if 'timecontrol' not in patched or not path.is_file():raise ValueError('Missing actual original paired-boundary output clock owner')
+        path.write_text(render_timecontrol(path.read_text(encoding='cp1252')),encoding='cp1252')
     from implicit_conductivity_retry import apply_build as implicit_retry_build
     patched=implicit_retry_build(output,donor_build,project,patched)
     from implicit_conductivity_jacobian import apply_build as implicit_jacobian_build
@@ -1084,7 +1103,7 @@ end module plant_interface""")
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
     if lower_receipt:
-        from implicit_groundwater_state import boundary_metadata as lower_metadata
+        from prescribed_head_flux_boundary import boundary_metadata as lower_metadata
         build_identity['lower_boundary_receipt']=lower_metadata(project,sha,APP,ROOT)
     from implicit_groundwater_state import native_metadata as groundwater_native_metadata
     groundwater_state=groundwater_native_metadata(project,sha,APP)

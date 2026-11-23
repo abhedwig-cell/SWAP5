@@ -1,0 +1,143 @@
+{
+  "status": "ACTUAL_NEW_CDE_DISTRIBUTED_SUBDAILY_O0_O2_CI_SUCCESS",
+  "run": {
+    "id": 44990955100,
+    "head_sha": "27d68c0efa06512e02a4548fa7869419a6f0ae89",
+    "path": ".github/workflows/nomacro-explicit-bottom9.yml",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/44990955100"
+  },
+  "jobs": [
+    {
+      "id": 137111672628,
+      "name": "qualify (O2)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Preserve actual source and prepare immutable original provider",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Target the selected paired-boundary composition cohort",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Preserve actual compiled bytes and original provider identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        }
+      ]
+    },
+    {
+      "id": 137111672800,
+      "name": "qualify (O0)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Preserve actual source and prepare immutable original provider",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Target the selected paired-boundary composition cohort",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Preserve actual compiled bytes and original provider identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14742116012,
+      "name": "explicit-bottom9-O0-27d68c0efa06512e02a4548fa7869419a6f0ae89",
+      "size_in_bytes": 11705234,
+      "digest": "sha256:bbbb31afa6cb600a78be89175f34738bc37f8d2993b42ffbdff6adee10af59d1",
+      "expired": false
+    },
+    {
+      "id": 14741797576,
+      "name": "explicit-bottom9-O2-27d68c0efa06512e02a4548fa7869419a6f0ae89",
+      "size_in_bytes": 11743495,
+      "digest": "sha256:cf06bf8238d3ed729320f2fc5d8a1ef7dfcbf045014d7a54c03d50a628324fca",
+      "expired": false
+    }
+  ],
+  "previous_completed_monthly_periods_replayed": false,
+  "canonical_admission": false
+}

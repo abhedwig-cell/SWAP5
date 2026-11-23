@@ -1,0 +1,229 @@
+{
+  "status": "BOUNDED_EXPLICIT9_TARGETED60_CENTRAL_SCIENCE_AND_EXACT_SOURCE_COMPOSITION_PASS_PENDING_ACTUAL_PARENT_ADMISSION_AND_PUBLIC_OWNER",
+  "physical_core": "7979888d70950b27c2fc30c92320ff5bb62d9a53",
+  "input_admission_core": "57bd7fecbbb6c3944b4f28cfc29cb368d371398a",
+  "required_parent_candidate": "8ae1661391ed35125421290de3fb5d95ec8cd5b5",
+  "actual_parent_merge": "79ff3ab235f8b07535bf5273dcda32f4bef15f7d",
+  "required_parent_tree": "b3c78d4bd0c5b583bd8046e339bbe3bb3eb45371",
+  "parent_actual_canonical_readers": "RUNNING_NOT_YET_ADMITTED",
+  "new_contexts": 60,
+  "Windows_contexts": 48,
+  "Ubuntu_contexts": 12,
+  "new_native_checkpoints": 420,
+  "new_exact_cold_windows": 180,
+  "new_initial_selector_compiled_counterparts": 56,
+  "additional_intermediate_source_compiled_inheritance_contexts": 24,
+  "prospective_combined_contexts": 216,
+  "prospective_combined_short35_contexts": 214,
+  "prospective_combined_year367_contexts": 2,
+  "prospective_combined_native_checkpoints": 1518,
+  "prospective_combined_exact_cold_windows": 652,
+  "raw_records": {
+    "EXPLICIT_BOTTOM9_WINDOWS_RAW_V1": {
+      "bytes": 180685877,
+      "sha256": "b7c3e3e15c5c0c9f80b07338f9de6d9ade88447698bb509d991b91391148f917",
+      "members": 12980
+    },
+    "EXPLICIT_BOTTOM9_UBUNTU_O0_RAW_V1": {
+      "bytes": 17969175,
+      "sha256": "eef2f2930ad3edf7dd440a77817891082c7b6e9277c29c1904407ff12ca3c336",
+      "members": 1472
+    },
+    "EXPLICIT_BOTTOM9_UBUNTU_O2_RAW_V1": {
+      "bytes": 18100557,
+      "sha256": "73ee45d2d9c2e971fab5dd5d2c989d498185d1c6b42a7240d99c3f0199fb02c1",
+      "members": 1472
+    },
+    "EXPLICIT_BOTTOM9_LAST_NODE_WINDOWS_RAW_V1": {
+      "bytes": 18716510,
+      "sha256": "6c9d908626532aedc9c8993231c7052443e7ab11645a59b1cda836ca5bc5a453",
+      "members": 641
+    },
+    "EXPLICIT_BOTTOM9_LAST_NODE_UBUNTU_O0_RAW_V1": {
+      "bytes": 11398511,
+      "sha256": "5ebf562ee93695e3e1e12406a992840c7a1ab70367e5e3c45769fe0747e2d404",
+      "members": 861
+    },
+    "EXPLICIT_BOTTOM9_LAST_NODE_UBUNTU_O2_RAW_V1": {
+      "bytes": 11442450,
+      "sha256": "fdefee9162f717faf126361be4c522072cce3bb24e842a9a206b6d9d798aeba8",
+      "members": 861
+    },
+    "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1": {
+      "bytes": 49662667,
+      "sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef"
+    },
+    "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O0_RAW_V1": {
+      "bytes": 11596326,
+      "sha256": "0c0589cf434b903cfd6d4ecde40345e872cd13f6de83d6e12b33cc25811892ee"
+    },
+    "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O2_RAW_V1": {
+      "bytes": 11637272,
+      "sha256": "a04e96b0e7367d51ba7a4f68d3205cb52ed51ea202cf4c13fb85b3b844996c33"
+    },
+    "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O0_RAW_V1": {
+      "bytes": 11705234,
+      "sha256": "bbbb31afa6cb600a78be89175f34738bc37f8d2993b42ffbdff6adee10af59d1"
+    },
+    "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O2_RAW_V1": {
+      "bytes": 11743495,
+      "sha256": "cf06bf8238d3ed729320f2fc5d8a1ef7dfcbf045014d7a54c03d50a628324fca"
+    }
+  },
+  "first_linux_actual_producer": "8c60c07248172b7b6cb7032f40b141e8fc2363f0",
+  "last_node_linux_actual_producer": "e462878f2cac5895b0dbdc9ae90d1276384f0327",
+  "context_cohorts": {
+    "Windows_basic_drain_clock": 32,
+    "Windows_older_water_controls": 4,
+    "original_Linux_clocks_distributed_drain": 6,
+    "Windows_last_node_water": 2,
+    "Linux_last_node_water": 2,
+    "Windows_CDE_calendar": 10,
+    "Linux_CDE_calendar": 4
+  },
+  "scope": {
+    "SWMACRO": 0,
+    "SWBOTB": 9,
+    "SWKIMPL": 0,
+    "SWINCO": [
+      1,
+      2
+    ],
+    "SWSOLU": [
+      0,
+      1,
+      2
+    ],
+    "SWDRA": [
+      0,
+      1
+    ],
+    "SWDIVD0": "water only; original solute refusal retained",
+    "SWKMEAN": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "hydraulic_model": 1,
+    "SWHYST": 0,
+    "SWSNOW": 0,
+    "SWFROST": 0,
+    "detailed_weather": false,
+    "aquifer": false,
+    "CDE_calendar": "Bounded periodic/monthly/subdaily/per-step plus distributed-subdaily, existing native private20+N state and six daily RHS owners; Windows10/Linux4 independent central PASS.",
+    "water_AGE_calendars": "bounded daily/periodic/monthly/subdaily/per-step contexts retained"
+  },
+  "whole_inherited_SOURCE_guard": "PENDING_ACTUAL_CURRENT_COHERENT_PUBLIC_OWNER_SOURCE_AND_DATA_EXECUTION",
+  "original_O0_pilot_day2_native_continuations_preserved_without_replaying_initial35": true,
+  "old24_model_periods_replayed": false,
+  "old42_model_periods_replayed_after_last_node_guard": false,
+  "original_six_linux_periods_replayed_after_last_node_guard": false,
+  "physical_equations_changed": false,
+  "forced_qbot_reaction_or_compensation_added": false,
+  "mass_or_convergence_limits_changed": false,
+  "original_receipts_rewritten": false,
+  "new_native_codec": false,
+  "canonical_admission": false,
+  "standalone_parent_AGE110_admission_claimed": false,
+  "whole_historical_family_closed": false,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "prospective_combined_compiled_postimages": 159,
+  "whole_inherited_SOURCE_observer": "EXPLICIT_BOTTOM9_LAST_NODE_WHOLE_PARENT_SOURCE_OBSERVE_V2.json",
+  "whole_inherited_SOURCE_seconds": 798.7021580999717,
+  "CDE_calendar_addition": {
+    "migration_class": "B_EXISTING_TRANSPORT_AND_CALENDAR_COMPOSITION",
+    "actual_execution_source": "dcf509f80e77866b24ca06a021df3e3e53fd3ec0",
+    "descriptive_policy_source": "a2039fa529adb74bec571f493bc4c541dddf2a9a",
+    "contexts": 14,
+    "Windows": 10,
+    "Ubuntu": 4,
+    "days_per_context": 35,
+    "native_checkpoints": 98,
+    "exact_cold_windows": 42,
+    "whole_compiled_initial_selector_counterparts": 14,
+    "new_state_or_codec": false,
+    "physical_equations_changed": false,
+    "mass_or_convergence_limits_changed": false,
+    "prior46_inputs_new_CDE_owners_return_None_before_changed_condition": true,
+    "failed_observer_run": 44990472976,
+    "failed_observer_reason": "Supplemental observer incorrectly required exact zero interior pressure; original equation residual at unchanged1e-10 is now checked pernode. All completed model data reused.",
+    "completed_model_periods_replayed_for_observer_repair": 0,
+    "successful_targeted_drain_run": 44990955100,
+    "central_science": [
+      "EXPLICIT_BOTTOM9_CDE_WINDOWS_CENTRAL_INDEPENDENT_V2.json",
+      "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O0_CENTRAL_INDEPENDENT_V1.json",
+      "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O2_CENTRAL_INDEPENDENT_V1.json",
+      "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O0_CENTRAL_INDEPENDENT_V1.json",
+      "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O2_CENTRAL_INDEPENDENT_V1.json"
+    ],
+    "canonical_admission": false,
+    "raw_records": {
+      "EXPLICIT_BOTTOM9_CDE_WINDOWS_RAW_V1": {
+        "bytes": 49662667,
+        "sha256": "58c1aa5fb9967c8b6230c3a6bbd2ad5b71742d40d7c0ee7fe0a74a1658376eef"
+      },
+      "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O0_RAW_V1": {
+        "bytes": 11596326,
+        "sha256": "0c0589cf434b903cfd6d4ecde40345e872cd13f6de83d6e12b33cc25811892ee"
+      },
+      "EXPLICIT_BOTTOM9_CDE_UBUNTU_MONTHLY_O2_RAW_V1": {
+        "bytes": 11637272,
+        "sha256": "a04e96b0e7367d51ba7a4f68d3205cb52ed51ea202cf4c13fb85b3b844996c33"
+      },
+      "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O0_RAW_V1": {
+        "bytes": 11705234,
+        "sha256": "bbbb31afa6cb600a78be89175f34738bc37f8d2993b42ffbdff6adee10af59d1"
+      },
+      "EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O2_RAW_V1": {
+        "bytes": 11743495,
+        "sha256": "cf06bf8238d3ed729320f2fc5d8a1ef7dfcbf045014d7a54c03d50a628324fca"
+      }
+    }
+  },
+  "targeted60_counts": {
+    "contexts": 60,
+    "native_checkpoints": 420,
+    "exact_cold_windows": 180,
+    "whole_compiled_counterparts": 56,
+    "prior_intermediate_compiled_SOURCE_comparisons": 24,
+    "canonical_admission": false
+  },
+  "prospective_joint216_counts": {
+    "contexts": 216,
+    "short35": 214,
+    "year367": 2,
+    "native_calendar_samples": 1518,
+    "exact_cold_windows": 652,
+    "compiled_postimages": 159,
+    "actual_parent_admission_required": true,
+    "public_owner_installed": false,
+    "canonical_admission": false
+  },
+  "prior46_checkpoint_counts": {
+    "new_contexts": 46,
+    "Windows_contexts": 38,
+    "Ubuntu_contexts": 8,
+    "new_native_checkpoints": 322,
+    "new_exact_cold_windows": 138,
+    "new_initial_selector_compiled_counterparts": 42,
+    "prospective_combined_contexts": 202,
+    "prospective_combined_short35_contexts": 200,
+    "prospective_combined_year367_contexts": 2,
+    "prospective_combined_native_checkpoints": 1420,
+    "prospective_combined_exact_cold_windows": 610,
+    "prospective_combined_compiled_postimages": 145
+  },
+  "prior46_qualification_git_blob": "98766e362ce0095dabfecaef223bfd3e9231c025",
+  "prior_actual_whole_parent_SOURCE_observation": {
+    "whole_inherited_SOURCE_guard": "ACTUAL_COMMITTED_27149_FULL_LITERAL_PARENT156_SOURCE_GUARD_PASS",
+    "whole_inherited_SOURCE_observer": "EXPLICIT_BOTTOM9_LAST_NODE_WHOLE_PARENT_SOURCE_OBSERVE_V2.json",
+    "whole_inherited_SOURCE_seconds": 798.7021580999717
+  },
+  "current_complete_composition_SOURCE_inverse": "PASS including CDE calendar and exact descriptive policy correction; actual prior27149 full guard remains separately attributed."
+}

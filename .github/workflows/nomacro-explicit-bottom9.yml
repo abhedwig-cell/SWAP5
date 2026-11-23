@@ -1,0 +1,136 @@
+name: Targeted original explicit paired head flux boundary composition
+on:
+  push:
+    branches: [codex/nomacro-explicit-bottom9-composition01]
+    paths: ['.github/workflows/nomacro-explicit-bottom9.yml']
+  workflow_dispatch:
+    inputs:
+      cohort:
+        type: choice
+        default: cde-distributed-subdaily
+        options: [cde-distributed-subdaily, cde-calendars, last-node-water, clocks-and-distributed-drain]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: nomacro-explicit-bottom9-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        optimization: [O0, O2]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /app/**
+            /src/**
+            /tools/solute/**
+            /tools/vq/**
+            /tests/nomacro_mixtures/**
+            /tests/nomacro_scheduled_subsurface/**
+            /tests/nomacro_drainage/**
+            /tests/saltfarm_newton/**
+            /.github/workflows/**
+            /reference/swap-4.3.1/projects/**
+            /reference/swap-4.3.1/source-archives/**
+            /reference/swap-4.3.1/patches/**
+            /reference/swap-4.3.1/frost-corrections/**
+            /reference/swap-4.3.1/hydraulic-corrections/**
+            /integration/f-ci/nomacro-complete01/INITIAL_PROFILE_GROUNDWATER_CONTRACT_V1.json
+      - name: Preserve actual source and prepare immutable original provider
+        env:
+          PYTHONPATH: app/hybrid_water
+        run: |
+          proof="$RUNNER_TEMP/proof"
+          mkdir -p "$proof"
+          git fetch --no-tags --depth=1 --filter=blob:none origin a2039fa529adb74bec571f493bc4c541dddf2a9a dcf509f80e77866b24ca06a021df3e3e53fd3ec0 57bd7fecbbb6c3944b4f28cfc29cb368d371398a 7979888d70950b27c2fc30c92320ff5bb62d9a53 f3fc5705f09e93ab0aa57eceee78bbcfd2014517 d905cad376b42e709c3bf7949dbc8faebf119f24 4d4fb1b8e059f9137ec217e52f262222ead6ce1c 8ae1661391ed35125421290de3fb5d95ec8cd5b5 c0952e394647179d591a855fcaf1a7270871fb2b 99c4d7ca481f703937ed32e63b4af5bf847c3b85 84e815a0ba9f59a2d56fe838a3b13361ad8670a2 4a4053c210ce5bdd8cb2506b79dcf9ad8b42a43f 9694eb2c4cc69f71c2ef90bc64b500fd35cb9924 b285147254b208643423adea88a4fb5f1158b464 e079d1554041c831cd0ab609835e2e79bf3c31a1
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
+          cp .github/workflows/nomacro-explicit-bottom9.yml "$proof/actual-workflow.yml"
+          git rev-parse HEAD:.github/workflows/nomacro-explicit-bottom9.yml > "$proof/actual-workflow-git-blob.txt"
+          python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Target the selected paired-boundary composition cohort
+        env:
+          COHORT: ${{ inputs.cohort || 'cde-distributed-subdaily' }}
+        run: |
+          opt='${{ matrix.optimization }}'
+          cases="water-last-node-drainage"
+          if [ "$COHORT" = cde-calendars ]; then cases="cde-monthly cde-distributed-subdaily"; fi
+          if [ "$COHORT" = cde-distributed-subdaily ]; then cases="cde-distributed-subdaily"; fi
+          if [ "$COHORT" = clocks-and-distributed-drain ]; then cases="water-pressure-step cde-distributed-drain age-pressure-subdaily"; fi
+          for case in $cases; do
+            label="explicit-bottom9-$case-$opt-short"
+            if [ "$COHORT" = cde-calendars ] || [ "$COHORT" = cde-distributed-subdaily ]; then
+              post="$label-initial2-postimage"
+              if [ "$case" = cde-distributed-subdaily ]; then post="$label-initial1-counterpart"; fi
+              python3 -B tests/nomacro_drainage/explicit_bottom9_cde_batch.py --case "$case" --optimization "$opt" --inputs "$RUNNER_TEMP/proof/inputs" --reference-work "$RUNNER_TEMP/provider" --primary-build "$RUNNER_TEMP/builds/$label" --counter-build "$RUNNER_TEMP/builds/$post" --profile "$RUNNER_TEMP/proof/$label" --postimage "$RUNNER_TEMP/proof/$post" --output "$RUNNER_TEMP/proof/$label-CASE-RESULT.json"
+            elif [ "$case" = water-last-node-drainage ]; then
+              python3 -B tests/nomacro_drainage/explicit_bottom9_last_node_inputs.py --initial 1 --output "$RUNNER_TEMP/proof/inputs/$case-initial1"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --input "$RUNNER_TEMP/proof/inputs/$case-initial1" --case "$case"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_last_node_inputs.py --initial 2 --output "$RUNNER_TEMP/proof/inputs/$case-initial2"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_postimage.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --input "$RUNNER_TEMP/proof/inputs/$case-initial2" --build-root "$RUNNER_TEMP/builds/$label-initial2-postimage" --output "$RUNNER_TEMP/proof/$label-initial2-postimage"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_last_node_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --postimage "$RUNNER_TEMP/proof/$label-initial2-postimage" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
+              python3 -B -c 'import sys,json;from pathlib import Path;sys.path.insert(0,"tests/nomacro_drainage");from explicit_bottom9_compiled_postimage import compare;p=Path(sys.argv[1]);a=json.loads((p/"RESULT.json").read_text());b=json.loads((Path(str(p)+"-initial2-postimage")/"RESULT.json").read_text());Path(str(p)+"-ACTUAL-COMPILED.json").write_text(json.dumps(compare(Path(a["build_root"]),Path(b["build_root"])),indent=2)+"\n")' "$RUNNER_TEMP/proof/$label"
+            elif [ "$case" = cde-distributed-drain ]; then
+              python3 -B tests/nomacro_drainage/explicit_bottom9_drain_inputs.py --kind cde --initial 2 --output "$RUNNER_TEMP/proof/inputs/$case-initial2"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --input "$RUNNER_TEMP/proof/inputs/$case-initial2" --case "$case"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_drain_inputs.py --kind cde --initial 1 --output "$RUNNER_TEMP/proof/inputs/$case-initial1"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_drain_postimage.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --input "$RUNNER_TEMP/proof/inputs/$case-initial1" --build-root "$RUNNER_TEMP/builds/$label-initial1-counterpart" --output "$RUNNER_TEMP/proof/$label-initial1-counterpart"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_drain_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --postimage "$RUNNER_TEMP/proof/$label-initial1-counterpart" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
+            else
+              python3 -B tests/nomacro_drainage/explicit_bottom9_inputs.py --case "$case" --initial 1 --output "$RUNNER_TEMP/proof/inputs/$case-initial1"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_runtime.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds/$label" --output "$RUNNER_TEMP/proof/$label" --optimization "$opt" --input "$RUNNER_TEMP/proof/inputs/$case-initial1" --case "$case"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_inputs.py --case "$case" --initial 2 --output "$RUNNER_TEMP/proof/inputs/$case-initial2"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_postimage.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --input "$RUNNER_TEMP/proof/inputs/$case-initial2" --build-root "$RUNNER_TEMP/builds/$label-initial2-postimage" --output "$RUNNER_TEMP/proof/$label-initial2-postimage"
+              python3 -B tests/nomacro_drainage/explicit_bottom9_composition_science.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/$label" --postimage "$RUNNER_TEMP/proof/$label-initial2-postimage" --output "$RUNNER_TEMP/proof/$label-INDEPENDENT.json"
+              python3 -B -c 'import sys,json;from pathlib import Path;sys.path.insert(0,"tests/nomacro_drainage");from explicit_bottom9_compiled_postimage import compare;p=Path(sys.argv[1]);a=json.loads((p/"RESULT.json").read_text());b=json.loads((Path(str(p)+"-initial2-postimage")/"RESULT.json").read_text());Path(str(p)+"-ACTUAL-COMPILED.json").write_text(json.dumps(compare(Path(a["build_root"]),Path(b["build_root"])),indent=2)+"\n")' "$RUNNER_TEMP/proof/$label"
+            fi
+          done
+      - name: Preserve actual compiled bytes and original provider identity
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import os,shutil,json,hashlib
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)
+          provider=root/'provider/PREPARED.json'
+          if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
+          meteo=root/'provider/build/swap-selected/MOD_meteo.f90'
+          if meteo.is_file():shutil.copyfile(meteo,proof/'provider-MOD_meteo.f90')
+          projection={}
+          for stem in ('builds',):
+              for path in sorted((root/stem).rglob('*')):
+                  if path.is_file():
+                      target=proof/'compiled'/stem/path.relative_to(root/stem);target.parent.mkdir(parents=True,exist_ok=True)
+                      shutil.copyfile(path,target)
+                      if path.name=='BUILD.json':
+                          projection[str(path.parent)]=dict(archive_prefix=target.parent.relative_to(proof).as_posix(),actual_BUILD_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+          # Preserve actual provider link dependencies and every scientific
+          # descriptor mutant before the disposable runner disappears.
+          for source, stem in ((root/'provider/build','original-provider-build'),
+                               (root/'source-refusals','source-refusals')):
+              for path in sorted(source.rglob('*')):
+                  if not path.is_file():continue
+                  if stem=='source-refusals' and not any(part.startswith('input-') for part in path.relative_to(source).parts):continue
+                  target=proof/stem/path.relative_to(source);target.parent.mkdir(parents=True,exist_ok=True)
+                  shutil.copyfile(path,target)
+          (proof/'COMPILED_PROJECTION_V1.json').write_text(json.dumps(projection,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: explicit-bottom9-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

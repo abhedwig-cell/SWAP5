@@ -1,0 +1,90 @@
+{
+  "status": "ACTUAL_NEW_CDE9_NATIVE_PRIVATE_ANCHOR_VERSION_EOF_AND_DAY_MUTATIONS_REFUSED",
+  "actual_observer_source": "ec40937ed483b6948eca15f29a6752df638342a1",
+  "actual_native_checkpoint_sha256": "c8c03f1cd6546c334fdcf00c648cfa22765436f09972c12bc8d39bfa38b58351",
+  "actual_macro_sha256": "b1d766f487d1fb512d4aee4cb055f418f107f13e83c89b9faa0f1629725c6c75",
+  "controls": [
+    {
+      "label": "unsupported-private-version-with-equal-witness",
+      "rejected": true,
+      "refusal": "Actual original chemical private domain/witness/EOF differs",
+      "mutated_sha256": "f1c506528886963acc6db9a7e976663946fd2be4ffcf5691be97aa2956c9b33c",
+      "recipe": {
+        "offsets": [
+          1465464,
+          1465476
+        ],
+        "format": "<i",
+        "value": 3
+      }
+    },
+    {
+      "label": "invalid-actual-sampro0-anchor-with-equal-witness",
+      "rejected": true,
+      "refusal": "Actual original chemical private anchor differs",
+      "mutated_sha256": "83fe74f7172c01ab47e899d3c05f21071f42ba1fa32ac278d8259fa4fca0c59d",
+      "recipe": {
+        "offsets": [
+          1465904,
+          1466336
+        ],
+        "format": "<d",
+        "old": 0.6015055335591888,
+        "value": 1.6015055335591888
+      }
+    },
+    {
+      "label": "extra-trailing-byte",
+      "rejected": true,
+      "refusal": "Actual original chemical private domain/witness/EOF differs",
+      "mutated_sha256": "09f4b672003951360f90a974ea8a264b44885788f376a2a625af9f9644c9cbbf",
+      "recipe": {
+        "append_hex": "00"
+      }
+    },
+    {
+      "label": "foreign-accepted-day-with-equal-calendar-witness",
+      "rejected": true,
+      "refusal": "Actual original calendar numerical policy/day/counters differ",
+      "mutated_sha256": "779edd32b1ea5300898c3df2e31a71c2d5e5f5ef3edf05a3c83b84607c0213b7",
+      "recipe": {
+        "offsets": [
+          1361120,
+          1361200
+        ],
+        "format": "<i",
+        "value": 20
+      }
+    }
+  ],
+  "positive_calendar": {
+    "calendar_offset": 1361096,
+    "calendar_header": [
+      1,
+      34,
+      1,
+      6513,
+      1,
+      3,
+      19,
+      0,
+      58,
+      1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0
+    ],
+    "calendar_end": 1465464
+  },
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "original_raw_modified": false,
+  "canonical_admission": false
+}
