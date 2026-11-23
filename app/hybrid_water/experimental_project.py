@@ -131,6 +131,9 @@ def inspect(directory, *, original_output=None):
                    SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1})
     from prescribed_head_flux_boundary import selection as paired_boundary_selection
     paired_boundary=paired_boundary_selection(directory,original_output)
+    if paired_boundary is None:
+        from prescribed_history_boundary import selection as paired_history_selection
+        paired_boundary=paired_history_selection(directory,original_output)
     if paired_boundary is not None:allowed['SWBOTB'].add(9)
     if extended is not None:allowed['SWDRA']={2}
     if selected.get('SWINCO') == 1:

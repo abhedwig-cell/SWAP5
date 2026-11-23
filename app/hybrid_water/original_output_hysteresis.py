@@ -38,6 +38,9 @@ def selection(project):
     if perstep and reset:raise ValueError('Original hysteresis per-step cumulative reset needs separate qualification')
     if project.solute and (nprint!=1 or monthly or dates or requested!=1 or perstep):raise ValueError('Original hysteresis CDE output requires daily interval reset cadence')
     for key,value in dict(SWMACRO=0,SWSNOW=0,SWBR=0,SWFROST=0,SWDRA=1,SWMETDETAIL=0,SWSOPHY=0).items():
+        if key=='SWDRA':
+            from prescribed_history_boundary import enabled as paired_history_enabled
+            if paired_history_enabled(project):continue
         if key=='SWDRA' and one(key)==2:
             from extended_drainage import enabled as extended_drainage_enabled
             if extended_drainage_enabled(project):continue
@@ -56,7 +59,7 @@ def metadata(project):
     selected=selection(project)
     if selected is None:return ordinary.metadata(project)
     sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
-    return dict(policy=POLICY,native_codec=magic(project).decode(),**selected,
+    result=dict(policy=POLICY,native_codec=magic(project).decode(),**selected,
                 source_sha256=sha(Path(__file__)),ordinary_owner_sha256=sha(Path(ordinary.__file__)),
                 domain_source_sha256=sha(Path(__file__).with_name(DOMAIN+'.f90')),
                 calendar_owner_sha256=sha(Path(regular.__file__)),clock_owner_sha256=sha(Path(clock.__file__)),
@@ -68,6 +71,13 @@ def metadata(project):
                 binary_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-BINARY-OUTPUT-01/source.py') if selected['swcsv']==3 else None,
                 preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False,
                 conserved_cde_prefix_offset_bytes=48 if project.solute else None)
+    from prescribed_history_boundary import enabled as paired_history_enabled,domain_source as paired_history_domain
+    if paired_history_enabled(project):
+        result.update(paired_boundary=9,paired_history_policy='existing-original-hysteresis-explicit-paired9-daily-v1',
+                      paired_history_source_sha256=sha(Path(__file__).with_name('prescribed_history_boundary.py')),
+                      domain_source_sha256=hashlib.sha256(paired_history_domain(Path(__file__).with_name(DOMAIN+'.f90').read_bytes(),project)).hexdigest(),
+                      domain_version=2,domain_bytes=56)
+    return result
 
 
 def age_identity(original,project):
@@ -121,7 +131,8 @@ def apply_build(output,donor_build,project,patched):
     if hashlib.sha256((donor_build/'swap-selected/hysteresis.f90').read_bytes().replace(b'\r\n',b'\n')).hexdigest()!=HYSTERESIS_SHA:raise ValueError('Changed original hysteresis provider source')
     (output/(regular.PROVIDER+'.f90')).write_bytes((ROOT/'src/process'/(regular.PROVIDER+'.f90')).read_bytes())
     (output/'hybrid_age_output_state.f90').write_text(regular.state_source(project),encoding='cp1252')
-    (output/(DOMAIN+'.f90')).write_bytes(Path(__file__).with_name(DOMAIN+'.f90').read_bytes())
+    from prescribed_history_boundary import domain_source as paired_history_domain
+    (output/(DOMAIN+'.f90')).write_bytes(paired_history_domain(Path(__file__).with_name(DOMAIN+'.f90').read_bytes(),project))
     original=(donor_build/'swap-selected/integral.f90').read_text(encoding='cp1252');trial=selected['nprintday']>1 or selected['flprintdt']
     watstor=(donor_build/'swap-selected/watstor.f90').read_text(encoding='cp1252') if trial else None
     (output/'integral.f90').write_text(ordinary.render_integral(original,watstor,selected),encoding='cp1252')
