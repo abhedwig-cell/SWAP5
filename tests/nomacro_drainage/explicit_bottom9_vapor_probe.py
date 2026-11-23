@@ -1,4 +1,4 @@
-"""Two-day actual active-vapor9 coupling/native preflight; no admission claim."""
+"""Actual active-vapor9 coupling/native periods; independent science still required."""
 import argparse, hashlib, json, struct, subprocess, sys, time, zipfile
 from pathlib import Path
 
@@ -17,6 +17,8 @@ def main():
     for key in ('input','reference-work','build-root','output'):
         parser.add_argument('--'+key, type=Path, required=True)
     parser.add_argument('--optimization', choices=('O0','O2'), required=True)
+    parser.add_argument('--days', type=int, choices=(2,35), default=2)
+    parser.add_argument('--reuse-profile', type=Path)
     args = parser.parse_args()
     git = lambda *a: subprocess.check_output(['git',*a], cwd=ROOT, text=True).strip()
     assert not git('status','--porcelain=v1','--untracked-files=all','--','app','src','tools','tests','reference')
@@ -28,12 +30,24 @@ def main():
         assert SHA((ROOT/path).read_bytes().replace(b'\r\n',b'\n')) == item['proposed_lf_sha256']
     args.output.mkdir()
     build = args.build_root/'bundle'
+    previous = None
+    if args.reuse_profile:
+        previous = json.loads((args.reuse_profile/'RESULT.json').read_text())
+        assert previous['status'] == 'ACTUAL_TWO_DAY_ACTIVE_VAPOR_PAIRED9_BUILD_NATIVE_AND_EXACT_COLD_PREFLIGHT_PASS_NOT_QUALIFIED'
+        assert previous['optimization'] == args.optimization
+        assert previous['input_inventory'] == json.loads(json.dumps(m.e.inventory(args.input)))
+        assert not git('diff',previous['source'],'HEAD','--','app','src','tools','reference')
+        build = Path(previous['build_root'])
+        assert build == args.build_root/'bundle'
+        assert SHA((build/'BUILD.json').read_bytes()) == previous['trajectory']['build_sha256']
     record = dict(status='RUNNING', source=head, optimization=args.optimization,
-                  days=2, purpose='Essential uncovered paired9 active-vapor thermal/boundary and complete native carry risk; two-day preflight before full35 qualification',
+                  days=args.days, purpose='Essential uncovered paired9 active-vapor thermal/boundary and complete native carry risk; independent full scientific qualification remains pending',
                   expected_total_seconds=240, input_root=str(args.input),
                   input_inventory=m.e.inventory(args.input), build_root=str(build),
                   actual_changed_APP=sorted(paths), canonical_admission=False,
                   full_period_qualification=False)
+    record['actual_build_producer'] = previous['source'] if previous else head
+    record['existing_build_reused'] = bool(previous)
     save = lambda: (args.output/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n')
     started = time.perf_counter()
     save()
@@ -48,13 +62,19 @@ def main():
                    '--reference-work',str(args.reference_work),'--build-only',
                    '--donor-opt',args.optimization,'--kernel-opt',args.optimization,
                    '--output',str(build)]
-        with (args.output/'build.stdout.txt').open('xb') as out, (args.output/'build.stderr.txt').open('xb') as err:
-            response = subprocess.run(command,cwd=ROOT,stdout=out,stderr=err,timeout=300)
-        record['build'] = dict(command=command,returncode=response.returncode,
-                               actual_completion_head=git('rev-parse','HEAD'),
-                               seconds=time.perf_counter()-started)
+        if previous is None:
+            with (args.output/'build.stdout.txt').open('xb') as out, (args.output/'build.stderr.txt').open('xb') as err:
+                response = subprocess.run(command,cwd=ROOT,stdout=out,stderr=err,timeout=300)
+            record['build'] = dict(command=command,returncode=response.returncode,
+                                   actual_completion_head=git('rev-parse','HEAD'),
+                                   seconds=time.perf_counter()-started)
+            save()
+            response.check_returncode()
+        else:
+            record['build'] = dict(status='ACTUAL_EXISTING_BUILD_REUSED_UNCHANGED_NO_COMPILATION',
+                                   original_build_receipt=str(args.reuse_profile/'RESULT.json'),
+                                   actual_completion_head=git('rev-parse','HEAD'))
         save()
-        response.check_returncode()
         assert record['build']['actual_completion_head'] == head
         meta, _ = m.validate_bundle(build,args.reference_work,project)
         identity = meta['identity']
@@ -64,9 +84,11 @@ def main():
         from prescribed_head_flux_boundary import render_budget
         assert (build/'hybrid_step_budget.f90').read_text(encoding='cp1252') == render_budget((ROOT/'app/hybrid_water/hybrid_step_budget.f90').read_text(encoding='cp1252'),9)
         assert SHA((build/'headcalc.f90').read_text(encoding='cp1252').encode()) == '155dd85c118026439cd837e5b7f2178c9cae99a536b3c5e27b9e751912ebe80c'
-        record['trajectory'], data = m.trajectory(build,args.reference_work,project,args.output/'trajectory',2,{1,2},300)
+        windows = ((1,2),) if args.days == 2 else ((2,4),(19,23),(30,34))
+        cuts = {args.days,*(day for pair in windows for day in pair)}
+        record['trajectory'], data = m.trajectory(build,args.reference_work,project,args.output/'trajectory',args.days,cuts,300)
         record['actual_native_domains'] = []
-        for day in (1,2):
+        for day in sorted(cuts):
             with zipfile.ZipFile(args.output/'trajectory'/('accepted-column-1-day-'+str(day)+'.zip')) as archive:
                 raw = archive.read('macro.bin')
                 header = struct.unpack_from('<14i',raw,48)
@@ -81,8 +103,9 @@ def main():
                 assert first[14+layers:] == tuple(f if model>=8 else 0 for model,f in zip(vapor['models'],vapor['SWVAPOR']))
                 record['actual_native_domains'].append(dict(day=day,header=list(first),duplicated_witness_exact=True,
                                                             macro_bytes=len(raw),macro_sha256=SHA(raw)))
-        record['cold'] = own(build,args.reference_work,project,args.output/'trajectory',data,1,2,args.output/'own-1')
-        record['status'] = 'ACTUAL_TWO_DAY_ACTIVE_VAPOR_PAIRED9_BUILD_NATIVE_AND_EXACT_COLD_PREFLIGHT_PASS_NOT_QUALIFIED'
+        record['cold'] = [own(build,args.reference_work,project,args.output/'trajectory',data,start,end,args.output/('own-'+str(start))) for start,end in windows]
+        record['status'] = ('ACTUAL_TWO_DAY_ACTIVE_VAPOR_PAIRED9_BUILD_NATIVE_AND_EXACT_COLD_PREFLIGHT_PASS_NOT_QUALIFIED'
+                            if args.days == 2 else 'ACTUAL35_DAY_ACTIVE_VAPOR_PAIRED9_RUNTIME_NATIVE_AND_THREE_EXACT_COLD_WINDOWS_PASS_INDEPENDENT_SCIENCE_PENDING')
     except Exception as error:
         record.update(status='FAILED_ACTUAL_ACTIVE_VAPOR9_PREFLIGHT_NOT_QUALIFIED',error=repr(error))
         raise
