@@ -1,0 +1,93 @@
+name: Reuse original Snow9 binaries for native startup refusals
+on:
+  push:
+    branches: [codex/nomacro-explicit-bottom9-snow01]
+    paths: ['.github/workflows/nomacro-explicit-bottom9-snow-native-reuse.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  native:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /app/**
+            /src/**
+            /tools/solute/**
+            /tools/vq/**
+            /tests/nomacro_mixtures/**
+            /tests/nomacro_scheduled_subsurface/**
+            /tests/nomacro_drainage/**
+            /tests/saltfarm_newton/**
+            /reference/swap-4.3.1/projects/**
+            /reference/swap-4.3.1/patches/**
+            /integration/f-ci/nomacro-complete01/INITIAL_PROFILE_GROUNDWATER_CONTRACT_V1.json
+      - uses: actions/download-artifact@v4
+        with:
+          name: explicit-bottom9-snow-${{ matrix.optimization }}-3ca3be768994cd34bc23788e5986cdf46f650f30
+          run-id: 45178310540
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/proof
+      - name: Restore exact original compiled artifacts without rebuilding
+        run: |
+          git fetch --no-tags --depth=1 --filter=blob:none origin 04dadca2bf52027ef9c72360684c86bd98aa77ff
+          python3 -B - <<'PY'
+          import os,json,shutil,hashlib
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';projection=json.loads((proof/'COMPILED_PROJECTION_V1.json').read_text())
+          for actual,item in projection.items():
+              target=Path(actual);assert target.is_relative_to(root/'builds')
+              shutil.copytree(proof/item['archive_prefix'],target)
+              assert hashlib.sha256((target/'BUILD.json').read_bytes()).hexdigest()==item['actual_BUILD_sha256']
+              meta=json.loads((target/'BUILD.json').read_text())
+              for role in ('donor','kernel'):
+                  path=target/('day_'+role)
+                  assert hashlib.sha256(path.read_bytes()).hexdigest()==meta['executable_sha256'][role]
+                  path.chmod(0o755)
+          (root/'control-proof').mkdir()
+          PY
+      - name: Exercise actual original native startup and every malformed descriptor
+        run: |
+          for kind in water cde; do
+            python3 -B tests/nomacro_drainage/explicit_bottom9_snow_native_controls.py --reference-work "$RUNNER_TEMP/provider" --profile "$RUNNER_TEMP/proof/snow9-$kind-${{ matrix.optimization }}" --output "$RUNNER_TEMP/control-proof/$kind"
+          done
+          python3 -B - <<'PY'
+          import os,json,subprocess,sys
+          from pathlib import Path
+          sys.path[:0]=['tests/nomacro_drainage','tests/nomacro_scheduled_subsurface','app/hybrid_water']
+          from explicit_bottom9_snow_science import native_controls
+          root=Path(os.environ['RUNNER_TEMP']);opt='${{ matrix.optimization }}';contexts=[]
+          for kind in ('water','cde'):
+              result=native_controls(root/'control-proof'/kind,root/'proof'/('snow9-'+kind+'-'+opt))
+              assert result['actual_compiled_refusals']==25 and result['accepted_model_days']==0
+              contexts.append(dict(kind=kind,science=result))
+          result=dict(status='ALL50_ACTUAL_ORIGINAL_UBUNTU_SNOW9_REUSED_BINARY_NATIVE_REFUSALS_INDEPENDENT_PASS',observer_source=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),actual_compiler_producer='3ca3be768994cd34bc23788e5986cdf46f650f30',original_run=45178310540,optimization=opt,contexts=contexts,accepted_model_days=0,fresh_compilations=0,fresh_model_periods=0,canonical_admission=False)
+          (root/'control-proof/INDEPENDENT.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(result['status'],opt)
+          PY
+      - name: Preserve exact control source
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/control-proof"
+          git archive HEAD -- app/hybrid_water/daily_host.py tests/nomacro_drainage/explicit_bottom9_snow_native_controls.py tests/nomacro_drainage/explicit_bottom9_snow_science.py tests/nomacro_drainage/snow_undrained_control_forensics.py tests/nomacro_drainage/snow_undrained_forensics.py > "$RUNNER_TEMP/control-proof/actual-control-source.tar"
+          git rev-parse HEAD > "$RUNNER_TEMP/control-proof/actual-observer-head.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: explicit-bottom9-snow-native-reuse-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ runner.temp }}/control-proof
+          retention-days: 30

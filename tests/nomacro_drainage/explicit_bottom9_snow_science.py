@@ -31,6 +31,17 @@ def literal_audit():
  return namespace['audit'],SHA(raw)
 
 
+def native_controls(root,profile,locations=None):
+ import snow_undrained_control_forensics as controls
+ path='tests/nomacro_drainage/snow_undrained_control_forensics.py';raw=blob(PARENT,path);assert norm((ROOT/path).read_bytes())==raw
+ node=next(n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef) and n.name=='audit');edits=0
+ for value in ast.walk(node):
+  if isinstance(value,ast.Constant) and value.value=='ACTUAL_COMPILED_SNOW_UNDRAINED_NATIVE_REFUSALS_PASS':value.value='ACTUAL_COMPILED_EXPLICIT9_SNOW_NATIVE_REFUSALS_PASS';edits+=1
+ assert edits==1;namespace=dict(vars(controls));exec(compile(ast.fix_missing_locations(ast.Module(body=[node],type_ignores=[])),path,'exec'),namespace)
+ locations=locations or {}
+ return namespace['audit'](root,profile,build_root=locations.get('build'),input_root=locations.get('inputs'))
+
+
 def audit(profile,locations=None):
  profile=Path(profile);q=json.loads((profile/'RESULT.json').read_text());assert q['status']==PERIOD and q['days']==35
  locations=locations or {};inputs=Path(locations.get('inputs',q['input_root']));build=Path(locations.get('build',q['build_root']));meta=json.loads((build/'BUILD.json').read_text());selected=meta['identity']['original_output']
