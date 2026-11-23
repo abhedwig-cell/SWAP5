@@ -28,7 +28,7 @@ def capsule(store,prefix,head,stack,controller):
 
 def frontend(store):
  import prescribed_head_flux_boundary as boundary
- select=types.FunctionType(boundary.selection.__code__,dict(vars(boundary),Path=lambda value:value));q=json.loads(store.get('observations/EXPLICIT_BOTTOM9_ANALYTICAL_ACTUAL_FRONTEND_CONTROLS_V1.json'));assert q['status']=='TWELVE_ACTUAL_FRONTEND_HARD_REFUSALS_AND_TWO_SIGNED_INTEGER_EQUIVALENT_ACCEPTANCES_PASS' and q['compiler_executions']==q['model_executions']==0 and len(q['controls'])==14
+ select=types.FunctionType(boundary.selection.__code__,dict(vars(boundary),Path=lambda value:value));select.__kwdefaults__=boundary.selection.__kwdefaults__;q=json.loads(store.get('observations/EXPLICIT_BOTTOM9_ANALYTICAL_ACTUAL_FRONTEND_CONTROLS_V1.json'));assert q['status']=='TWELVE_ACTUAL_FRONTEND_HARD_REFUSALS_AND_TWO_SIGNED_INTEGER_EQUIVALENT_ACCEPTANCES_PASS' and q['compiler_executions']==q['model_executions']==0 and len(q['controls'])==14
  for index,item in enumerate(q['controls']):
   path=ReadView(store,'profiles/explicit-bottom9-analytical-actual-frontend-controls-v1/control-'+str(index));assert SHA((path/'swap.swp').read_bytes())==item['input_sha256'];selected=select(path,True);assert selected==item['bounded_selection'] and (selected is not None)==item['expected_frontend_acceptance']==item['actual_frontend_acceptance']
   if not item['expected_frontend_acceptance']:assert item['refusal']
