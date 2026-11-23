@@ -1,0 +1,139 @@
+{
+  "status": "ACTUAL_CURRENT_SNOW_HISTORY_POSITIVE_AND_TWELVE_UNQUALIFIED_DOMAIN_HARD_REFUSALS_PASS",
+  "source": "6154891091824c9f0f64c9fff299ad320ccd9479",
+  "checks": [
+    {
+      "label": "positive",
+      "field": null,
+      "value": null,
+      "input_sha256": "aee9aa3687e068c770cc9aebacab16ff9e7fb1e9cddc4edc88af71e47ef9d2c2",
+      "frontend_accepted": true,
+      "bounded_selection": {
+        "policy": "existing-original-snow-explicit-paired9-all-node-soil-receipt-v1",
+        "kind": "water",
+        "drainage": 0,
+        "initial": 1,
+        "table_rows": {
+          "DATE9A": 2,
+          "DATE9B": 2
+        },
+        "physical_equations_changed": false,
+        "new_native_codec": false,
+        "snow_state": "actual original seven-scalar Snow carry",
+        "soil_receipt": "actual net rainfall/irrigation and melt; all nodes; actual prescribed qbot"
+      },
+      "diagnostic": null
+    },
+    {
+      "label": "AGE",
+      "field": "SWSOLU",
+      "value": "2",
+      "input_sha256": "48e0400f24c4bd93200ee46b8b47134942316fbc70d53c73a4b94779fc29747f",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original age qualification currently requires no snow/aquifer"
+    },
+    {
+      "label": "implicit",
+      "field": "SWKIMPL",
+      "value": "1",
+      "input_sha256": "8de3e9356608b12ce37a4bd3424b1192fae2367c4b0831718eced14d51bfc0a4",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "label": "drainage",
+      "field": "SWDRA",
+      "value": "1",
+      "input_sha256": "9b5429cccb62f2756829d4363f69d9d001078d676c812769916b36aac38a20a6",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "label": "frost",
+      "field": "SWFROST",
+      "value": "1",
+      "input_sha256": "a194bbde5084d58250743fd6bba6409982872155f6699276bd00bdb13a50b8c5",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "label": "vapor",
+      "field": "SWVAPOR",
+      "value": "1 1",
+      "input_sha256": "2ba483758e3b9b0c5dda7f89b637316a1ec2f79cb5eca78d03192a16c24bc4bc",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "label": "analytical3",
+      "field": "IHWCKMODEL",
+      "value": "3 3",
+      "input_sha256": "f03d0ac8d94d7945161d4171abd02f26b05dee03723616cda05cf463ac2cc87e",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "label": "analytical7",
+      "field": "IHWCKMODEL",
+      "value": "7 7",
+      "input_sha256": "5e46cef2672e48a72cc82f70c9e2c091f412fed66ffb2e442148262a0c12712f",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "label": "invalid-history",
+      "field": "SWHYST",
+      "value": "3",
+      "input_sha256": "e8c8853ba3a5d45effda832b2dd0526376be54c57de20efba04a1a2e1dd480dc",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Unsupported experimental process/state: SWHYST"
+    },
+    {
+      "label": "invalid-calendar",
+      "field": "NPRINTDAY",
+      "value": "0",
+      "input_sha256": "669f1953d55b9acbb10f44cacd39cbc00c65ea5b0283896b8facb857fd90607b",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "label": "invalid-format",
+      "field": "SWCSV",
+      "value": "4",
+      "input_sha256": "0db2a3012b12242a8fe7d096286aa858c30b96caa7658361625ce138f2da92ac",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Unsupported experimental process/state: SWCSV"
+    },
+    {
+      "label": "invalid-step",
+      "field": "FLPRINTDT",
+      "value": "MAYBE",
+      "input_sha256": "bc27eadac3da94dbb8ea8156ed2ca231da9b0d7fe84b82030870933b050c0f46",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    },
+    {
+      "label": "invalid-precision",
+      "field": "NUM_DECIMALS",
+      "value": "13",
+      "input_sha256": "8e26a943147f0621806a03dd7d40b638af1aa54f00c433a2b2735a16efe49135",
+      "frontend_accepted": false,
+      "bounded_selection": null,
+      "diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}

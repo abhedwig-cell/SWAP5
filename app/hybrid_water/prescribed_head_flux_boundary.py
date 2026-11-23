@@ -20,7 +20,7 @@ def selection(directory,original_output=True,*,hysteresis=0,snow=False):
   rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([^\r\n]*)',active)
   if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+[ \t]*',rows[0]) is None:return None
   return int(rows[0])
- if hysteresis not in (0,1,2) or snow and hysteresis!=0:return None
+ if hysteresis not in (0,1,2):return None
  fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=hysteresis,SWSNOW=int(snow),SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)
  if any(integer(key)!=value for key,value in fixed.items()):return None
  if snow and (integer('SWSOLU') not in (0,1) or integer('SWDRA')!=0):return None

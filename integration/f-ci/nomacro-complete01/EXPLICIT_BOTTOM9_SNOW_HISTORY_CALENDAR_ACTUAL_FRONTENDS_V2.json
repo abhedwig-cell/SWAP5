@@ -1,0 +1,621 @@
+{
+  "status": "TWENTY_ACTUAL_CANONICAL_PARENT_REFUSALS_AND_TWENTY_CURRENT_CALENDAR_ACCEPTS_REAL_SOURCE_MODULES_NO_MODELS",
+  "before": {
+    "parent": {
+      "head": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "status": "",
+      "sparse": [
+        "/*",
+        "!/integration/**/*.zip",
+        "!/integration/**/*.zip.part*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_BOUNDARY*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_ANALYTICAL_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_SNOW_VAPOR*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1.*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_INITIAL_PRESSURE*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_STATE_COMPOSITION*",
+        "/integration/f-ci/nomacro-complete01/ANALYTICAL_CDE_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_PROFILE_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_PROFILE_*",
+        "/integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9*",
+        "/integration/f-ci/nomacro-complete01/CANONICAL_LEGACY*"
+      ]
+    },
+    "current": {
+      "head": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "status": "",
+      "sparse": [
+        "/*",
+        "!/integration/**/*.zip",
+        "!/integration/**/*.zip.part*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_BOUNDARY*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_ANALYTICAL_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_SNOW_VAPOR*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1.*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_INITIAL_PRESSURE*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_STATE_COMPOSITION*",
+        "/integration/f-ci/nomacro-complete01/ANALYTICAL_CDE_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_PROFILE_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_PROFILE_*",
+        "/integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9*",
+        "/integration/f-ci/nomacro-complete01/CANONICAL_LEGACY*"
+      ]
+    }
+  },
+  "after": {
+    "parent": {
+      "head": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "status": "",
+      "sparse": [
+        "/*",
+        "!/integration/**/*.zip",
+        "!/integration/**/*.zip.part*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_BOUNDARY*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_ANALYTICAL_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_SNOW_VAPOR*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1.*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_INITIAL_PRESSURE*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_STATE_COMPOSITION*",
+        "/integration/f-ci/nomacro-complete01/ANALYTICAL_CDE_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_PROFILE_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_PROFILE_*",
+        "/integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9*",
+        "/integration/f-ci/nomacro-complete01/CANONICAL_LEGACY*"
+      ]
+    },
+    "current": {
+      "head": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "status": "",
+      "sparse": [
+        "/*",
+        "!/integration/**/*.zip",
+        "!/integration/**/*.zip.part*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_BOUNDARY*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_ANALYTICAL_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_SNOW_VAPOR*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_VAPOR_WINDOWS_WATER_RAW_V1.*",
+        "/integration/f-ci/nomacro-complete01/HYDRAULIC_INITIAL_PRESSURE*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_STATE_COMPOSITION*",
+        "/integration/f-ci/nomacro-complete01/ANALYTICAL_CDE_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_PROFILE_CALENDAR*",
+        "/integration/f-ci/nomacro-complete01/INITIAL_PROFILE_*",
+        "/integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9*",
+        "/integration/f-ci/nomacro-complete01/CANONICAL_LEGACY*"
+      ]
+    }
+  },
+  "checks": [
+    {
+      "role": "cde-initial1-hys0-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "cde-initial1-hys0-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "2b5afe3ca9537215be775e279888021c1f4e547b7bc38854613fe83850bf16cb",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 0,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCI000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "cde-initial1-hys0-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "cde-initial1-hys0-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "9dce4718f4d93d2cb93a5ae781a2990b971c1aa23419dc4d0da0dc32f593ed3e",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 0,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCC000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "cde-initial1-hys1-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "cde-initial1-hys1-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "ea9306752cf85a7e3766184bc3e0a7d66575733aa56c845c4e207153e98f4161",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 1,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCC000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "cde-initial1-hys2-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "cde-initial1-hys2-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "7ed71bc75b5ead8dab65693029f735d8f2976e5a63b8220ef5d73662a22309f3",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 2,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCI000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "cde-initial1-hys2-step-reset",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "cde-initial1-hys2-step-reset",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "5cd80bd738e11c7f864c774cbc9aabd57c025d06cc8d05754f804fe4b46a3fcb",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 2,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCR000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "cde-initial2-hys0-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "cde-initial2-hys0-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "2b5afe3ca9537215be775e279888021c1f4e547b7bc38854613fe83850bf16cb",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 0,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCI000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "cde-initial2-hys0-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "cde-initial2-hys0-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "9dce4718f4d93d2cb93a5ae781a2990b971c1aa23419dc4d0da0dc32f593ed3e",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 0,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCC000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "cde-initial2-hys1-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "cde-initial2-hys1-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "ea9306752cf85a7e3766184bc3e0a7d66575733aa56c845c4e207153e98f4161",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 1,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCC000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "cde-initial2-hys2-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "cde-initial2-hys2-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "7ed71bc75b5ead8dab65693029f735d8f2976e5a63b8220ef5d73662a22309f3",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 2,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCI000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "cde-initial2-hys2-step-reset",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "cde-initial2-hys2-step-reset",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "5cd80bd738e11c7f864c774cbc9aabd57c025d06cc8d05754f804fe4b46a3fcb",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 2,
+        "snow": 1,
+        "kind": "cde",
+        "native_codec": "S5UCR000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial1-hys0-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "water-initial1-hys0-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "8e025382f85c385565304322bd7a60c7ecc9faa7f29515f8c1ae3538993513e9",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 0,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWI000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial1-hys0-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "water-initial1-hys0-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "da445078f2baac84e876614d83bdab13f5e816291c996a024a9a73b422dd450d",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 0,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWC000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial1-hys1-step-reset",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "water-initial1-hys1-step-reset",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "e7372a98ea4b21e683dec9148674011d517e23194c5225b1a90dd5b6d46ad710",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 1,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWR000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial1-hys1-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "water-initial1-hys1-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "704ce8fde694f644578c2aa34832df1fd0e253919edbd03d4edbce7c14c1567b",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 1,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWC000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial1-hys2-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "08d4567b0a12b963a67b32e3c771a8ebec0a9504bec49d066c695b30260b5373",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer"
+      }
+    },
+    {
+      "role": "water-initial1-hys2-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "a96a87499ffece3e1e515559478307e0ca798341a812447835f70e2859b84fd2",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 2,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWI000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial2-hys0-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "water-initial2-hys0-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "8e025382f85c385565304322bd7a60c7ecc9faa7f29515f8c1ae3538993513e9",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 0,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWI000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial2-hys0-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "water-initial2-hys0-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "da445078f2baac84e876614d83bdab13f5e816291c996a024a9a73b422dd450d",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 0,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWC000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial2-hys1-step-reset",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "water-initial2-hys1-step-reset",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "e7372a98ea4b21e683dec9148674011d517e23194c5225b1a90dd5b6d46ad710",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 1,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWR000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial2-hys1-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "water-initial2-hys1-subdaily",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "704ce8fde694f644578c2aa34832df1fd0e253919edbd03d4edbce7c14c1567b",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 1,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWC000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    },
+    {
+      "role": "water-initial2-hys2-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-implicit-conductivity-canonical01",
+      "source": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+      "returncode": 23,
+      "stdout_sha256": "69e610576656c0307f5d359b3919a43832844ea6949f136227c1af16e0000b7d",
+      "observation": {
+        "status": "ACTUAL_ORIGINAL_PARENT_FRONTEND_REFUSED",
+        "reason": "Unimplemented experimental selector: SWBOTB=9"
+      }
+    },
+    {
+      "role": "water-initial2-hys2-monthly",
+      "cwd": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+      "source": "b79a5bc64ec5806252c016185e925d424d65b66b",
+      "returncode": 0,
+      "stdout_sha256": "a96a87499ffece3e1e515559478307e0ca798341a812447835f70e2859b84fd2",
+      "observation": {
+        "status": "ACTUAL_CURRENT_FRONTEND_ACCEPTED",
+        "hysteresis": 2,
+        "snow": 1,
+        "kind": "water",
+        "native_codec": "S5UWI000",
+        "actual_frontend_module": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py"
+      }
+    }
+  ],
+  "actual_source_inverse": {
+    "status": "TWO_COMPLETE_LITERAL_GUARD_INVERSES_ALL_OTHER_PHYSICAL_SOURCE_UNCHANGED",
+    "actual_head": "b79a5bc64ec5806252c016185e925d424d65b66b",
+    "actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+    "physical_equations_changed": false,
+    "native_format_changed": false,
+    "compiler_executions": 0,
+    "model_executions": 0
+  },
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "canonical_admission": false
+}
