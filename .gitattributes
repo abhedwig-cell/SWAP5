@@ -396,3 +396,15 @@ tools/solute/run_rc1_science.py text eol=lf
 /integration/audits/test_nut_hist_carrier_gap.f90 text eol=crlf
 /integration/audits/test_nut_material_labels.f90 text eol=crlf
 /integration/f-ci/saltfarm-typed07/.gitattributes text eol=crlf
+
+# Preserve exact original CI log and workflow-control streams.
+integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_OLD2D_ORIGINAL_CHEMISTRY_FAILURE_JOB137932318481_V1.log -text
+integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_ORIGINAL_WORKFLOW_CONTROL_FAILURE_V1.stdout.txt -text
+integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_ORIGINAL_WORKFLOW_CONTROL_FAILURE_V1.stderr.txt -text
+integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_ORIGINAL_WORKFLOW_CONTROLS_POSITIVE_V1.stdout.txt -text
+integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_ORIGINAL_WORKFLOW_CONTROLS_POSITIVE_V1.stderr.txt -text
+
+integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_DAE_ORIGINAL_POSIX_READER_FAILURE_JOB137957280580_V1.log -text
+integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_SPARSE_MANIFEST_CHECK_V1.stdout.txt -text
+integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_EB0_ORIGINAL_SPARSE_FAILURE_JOB137965148160_V1.log -text
+integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_EB0_ORIGINAL_SPARSE_FAILURE_JOB137965149042_V1.log -text

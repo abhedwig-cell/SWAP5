@@ -1,13 +1,16 @@
 """Recompute every integrated whole compiled comparison from central raw bytes."""
 import argparse,hashlib,io,json,tarfile,zipfile
-from pathlib import Path
+from pathlib import Path,PureWindowsPath
 from contextlib import ExitStack
 from explicit_bottom9_combined_postimages import ROOT,SHA,git,verify,Archive,ReadView,generated,compare,prior_role
+from explicit_bottom9_analytical_inherited_custody import tracked_working_files,materialized
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 
 class GitArchive:
  def __init__(self,opt,stack):
-  name='OUTPUT_HYSTERESIS_WINDOWS_'+opt+'_RAW_ARCHIVE';self.record=json.loads((PROOF/(name+'.json')).read_text());raw=git('show','HEAD:integration/f-ci/nomacro-complete01/'+self.record['archive']);assert len(raw)==self.record['bytes'] and SHA(raw)==self.record['sha256'];self.z=stack.enter_context(zipfile.ZipFile(io.BytesIO(raw)));self.names=self.record['members'];assert len(self.z.namelist())==len(set(self.z.namelist()))==len(self.names) and set(self.z.namelist())==set(self.names)
+  name='OUTPUT_HYSTERESIS_WINDOWS_'+opt+'_RAW_ARCHIVE';path='integration/f-ci/nomacro-complete01/'+name+'.json';original=git('show','HEAD:'+path);tracked=tracked_working_files()
+  if materialized(path,tracked):assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==original,'Changed original hysteresis archive declaration'
+  self.record=json.loads(original);raw=git('show','HEAD:integration/f-ci/nomacro-complete01/'+self.record['archive']);assert len(raw)==self.record['bytes'] and SHA(raw)==self.record['sha256'];self.z=stack.enter_context(zipfile.ZipFile(io.BytesIO(raw)));self.names=self.record['members'];assert len(self.z.namelist())==len(set(self.z.namelist()))==len(self.names) and set(self.z.namelist())==set(self.names)
  def get(self,name):
   raw=self.z.read(name);assert isinstance(self.names[name],str) and SHA(raw)==self.names[name] and len(raw)==self.z.getinfo(name).file_size;return raw
 
@@ -43,7 +46,7 @@ def read():
    entry=projection[q['build_root']];assert entry['archive_prefix']==role['compiled'] and entry['actual_BUILD_sha256']==q['actual_BUILD_sha256'];producer=role['producer'];assert producer==q.get('actual_source',q.get('actual_compiler_start_HEAD'))==actual_captures['actual_head'];opt=role['optimization']
    if role['kind']=='postimages':
     family=q['family'];original_role=q['role']
-    if family=='PRIOR':old_store,inputs,old_role,original,old=prior_role(PROOF,next(x for x in ('water-pressure-step','age-pressure-step','cde-pressure-daily','cde-monthly','cde-distributed-subdaily','water-last-node-drainage') if x in Path(q['input_root']).parent.name),opt,stack)
+    if family=='PRIOR':old_store,inputs,old_role,original,old=prior_role(PROOF,next(x for x in ('water-pressure-step','age-pressure-step','cde-pressure-daily','cde-monthly','cde-distributed-subdaily','water-last-node-drainage') if x in PureWindowsPath(q['input_root']).parent.name),opt,stack)
     else:
      old_store=archive('EXPLICIT_BOTTOM9_'+family+'_WINDOWS_RAW_V1');original=json.loads(old_store.get(original_role['profile']+'/RESULT.json'));old_entry=json.loads(old_store.get('COMPILED_PROJECTION_V1.json'))[original['build_root']];old=ReadView(old_store,old_entry['archive_prefix']);assert SHA((old/'BUILD.json').read_bytes())==old_entry['actual_BUILD_sha256'];assert SHA(old_store.get(original_role['profile']+'/RESULT.json'))==q['original_profile_RESULT_sha256']
     assert original['source']==q['original_source'] and q['actual_compiler_start_HEAD']==q['actual_compiler_end_HEAD']==producer

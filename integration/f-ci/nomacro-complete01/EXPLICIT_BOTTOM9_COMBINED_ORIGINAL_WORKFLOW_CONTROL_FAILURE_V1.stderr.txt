@@ -1,0 +1,19 @@
+.......E...
+======================================================================
+ERROR: test_original_workflow_body_cannot_be_rewritten (__main__.Boundaries.test_original_workflow_body_cannot_be_rewritten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Veldh012\swap5-nomacro-scheduled-chemical01\tests\hupsel51\test_successor.py", line 32, in test_original_workflow_body_cannot_be_rewritten
+    s.validate_workflow(path, new, old)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\swap5-nomacro-scheduled-chemical01\tests\hupsel51\verify_successor.py", line 133, in validate_workflow
+    require(current == previous, 'historical workflow body changed: '+path)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\swap5-nomacro-scheduled-chemical01\tests\hupsel51\verify_successor.py", line 97, in require
+    raise ValueError(label)
+ValueError: historical workflow body changed: .github/workflows/mc-sol01-column-input.yml
+
+----------------------------------------------------------------------
+Ran 11 tests in 6.055s
+
+FAILED (errors=1)
