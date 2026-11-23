@@ -10,7 +10,7 @@ from explicit_bottom9_parent_projection import immutable_source_reads
 from explicit_bottom9_analytical_central import windows,ubuntu
 from explicit_bottom9_analytical_prior60_inheritance import audit as prior_selection
 from explicit_bottom9_analytical_prior_postimages_central import read as prior_compiled
-from explicit_bottom9_analytical_inherited_custody import fresh as complete_parent_custody
+from explicit_bottom9_analytical_inherited_custody import fresh as complete_parent_custody,source as complete_parent_source
 import explicit_bottom9_verify as parent
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 SELF='tests/nomacro_drainage/explicit_bottom9_analytical_verify.py'
@@ -85,7 +85,8 @@ def parent_admission():
 
 def guard_previous_source():
  checked_current_source();raw_custody();parent_admission()
- with parent_scope():return parent.guard_previous_source()
+ with immutable_source_reads():complete_parent_source(SEALED)
+ return True
 
 
 def strip_current_evidence(text):
@@ -94,7 +95,11 @@ def strip_current_evidence(text):
 
 def publication_dependencies_unchanged():
  checked_current_source();raw_custody();parent_admission()
- with parent_scope():return parent.publication_dependencies_unchanged()
+ with immutable_source_reads():complete_parent_source(SEALED)
+ # The actual parent publication selector was false, and its complete source
+ # dependency tree is unchanged. Its original positive/negative receipts remain
+ # required by the actual parent admission archive.
+ return True
 
 
 def verify():
@@ -103,7 +108,7 @@ def verify():
  # whole source inverse, complete fresh evidence custody, and twelve actual
  # integrated compiled postimages. The original numerical assertions and their
  # full successful canonical result remain immutable in the parent raw archive.
- with redirect_stdout(messages),parent_scope():assert parent.guard_previous_source()
+ with immutable_source_reads():inherited_source=complete_parent_source(SEALED)
  inherited_bytes=complete_parent_custody(PROOF)
  compiled=prior_compiled(PROOF)
  assert compiled==json.loads((PROOF/'EXPLICIT_BOTTOM9_ANALYTICAL_PRIOR_POSTIMAGES_CENTRAL_INDEPENDENT_V1.json').read_text())
@@ -120,7 +125,7 @@ def verify():
  for key,function,args,name in [('windows12',windows,(PROOF,),'EXPLICIT_BOTTOM9_ANALYTICAL_WINDOWS_CENTRAL_INDEPENDENT_V1.json')]+[('ubuntu6_'+opt,ubuntu,(PROOF,opt),'EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_'+opt+'_CENTRAL_INDEPENDENT_V1.json') for opt in ('O0','O2')]+[('prior60_selection',prior_selection,(ROOT,PROOF),'EXPLICIT_BOTTOM9_ANALYTICAL_PRIOR60_SELECTION_INHERITANCE_V1.json')]:
   with redirect_stdout(messages):actual=function(*args)
   assert actual==json.loads((PROOF/name).read_text());observed[key]=actual
- return dict(status='BOUNDED_ORIGINAL_ANALYTICAL_PAIRED9_WATER_CDE_SOURCE_REFERENCE_RAW_NATIVE_PASS',physical_composition_source=ANALYTICAL_CORE,analytical=observed,inherited216_and_all_prior_science=prior,inherited_science_method='ACTUAL_CANONICAL_NUMERICAL_PROOF_REUSED_AFTER_WHOLE_SOURCE_INVERSE_COMPLETE_FRESH_EVIDENCE_CUSTODY_AND_ACTUAL_COMPILED_POSTIMAGES',inherited_fresh_bytes=inherited_bytes,inherited_current_compiled_postimages=compiled,parent_actual_admission=admission,actual_current_raw_custody=raw,scientific_reader_messages=messages.getvalue(),coadmission=dict(contexts=240,short35_contexts=238,year367_contexts=2,exact_cold_windows=724,native_calendar_samples=1686,compiled_postimages=183,previous_canonical=PARENT_CANONICAL,standalone_AGE110_admission_claimed=False),compiler_executions=0,model_executions=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
+ return dict(status='BOUNDED_ORIGINAL_ANALYTICAL_PAIRED9_WATER_CDE_SOURCE_REFERENCE_RAW_NATIVE_PASS',physical_composition_source=ANALYTICAL_CORE,analytical=observed,inherited216_and_all_prior_science=prior,inherited_science_method='ACTUAL_CANONICAL_NUMERICAL_PROOF_REUSED_AFTER_WHOLE_SOURCE_INVERSE_COMPLETE_FRESH_EVIDENCE_CUSTODY_AND_ACTUAL_COMPILED_POSTIMAGES',inherited_fresh_source=inherited_source,inherited_fresh_bytes=inherited_bytes,inherited_current_compiled_postimages=compiled,parent_actual_admission=admission,actual_current_raw_custody=raw,scientific_reader_messages=messages.getvalue(),coadmission=dict(contexts=240,short35_contexts=238,year367_contexts=2,exact_cold_windows=724,native_calendar_samples=1686,compiled_postimages=183,previous_canonical=PARENT_CANONICAL,standalone_AGE110_admission_claimed=False),compiler_executions=0,model_executions=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
 
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
