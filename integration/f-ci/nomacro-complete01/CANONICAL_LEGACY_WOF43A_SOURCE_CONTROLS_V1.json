@@ -1,0 +1,33 @@
+{
+  "status": "ACTUAL_WOF_SOURCE_DEPENDENCY_AND_WHOLE_NATIVE_RECIPE_CONTROLS_REFUSED_AND_ORIGINAL_BYTES_RESTORED",
+  "actual_current_head": "ee5767b1f9d92a36902ae9d0568b08e52c727c8b",
+  "actual_uncommitted_helper_sha256": "c75b2215a59d66c92ec5eb4e82f561a81d2425c5ea8eee194d2f0b0a9f46f202",
+  "controls": [
+    {
+      "role": "compiled_dependency",
+      "path": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\src\\crop\\mod_wofost_rate_table.f90",
+      "actual_refusal": "Dirty WOF/CO2 compilation dependency",
+      "original_raw_sha256": "bccb94aecf4a3228964c1a3f977d1966e4a62b2aa40ea114399d75823d21c337",
+      "actual_mutated_sha256": "f8b8f2a050c57c697a6b636c25ff4a1ee9a23775590237c2ed545b8d42626ec5"
+    },
+    {
+      "role": "original_compiler_recipe",
+      "path": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\fci\\run_fci51p_wof43a_successor_preservation.sh",
+      "actual_refusal": "",
+      "original_raw_sha256": "f2b1ba69ed2e16593d3b9a450cd88b9f5f44745effd08bc3ae7a8a1f2995cc4c",
+      "actual_mutated_sha256": "5f3891151cc4cdf3fbd0453ceac581e488a8f165bb4f5e8c1c1660c4f9366582"
+    }
+  ],
+  "source_positive": {
+    "status": "WOF43A_SELECTED_SOURCE_AND_WHOLE_ORIGINAL_NATIVE_RECIPE_PRESERVED_PENDING_NATIVE_ORACLES",
+    "source_dependencies": 18,
+    "CO2_compilation_dependencies": 15,
+    "whole_global_DATAQUAL12_qualification_claimed": false,
+    "physical_equations_changed": false,
+    "compiler_executions": 0,
+    "model_executions": 0
+  },
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}

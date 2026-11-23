@@ -1,0 +1,118 @@
+{
+  "status": "BOUNDED_WOF43A_SOURCE_SUCCESSOR_REQUIRES_UNCHANGED_ORIGINAL_NATIVE_ORACLES",
+  "classification": "EVIDENCE_ONLY",
+  "baseline": "4d39e97d2f257f70b6fc108c62eb5efce9967a42",
+  "original_qualified_D12_source": "4e55baf8ab1889d00cd8594c4dc5519d20430011",
+  "actual_current_windows_oracle_producer": "dbccae07f0e81745bf25b360e5785b0d2574a0b8",
+  "original_scientific_tests_unchanged": true,
+  "physical_source_changes": false,
+  "global_DATAQUAL12_waiver": false,
+  "source_inventory": {
+    "src/crop/mod_wofost_rate_table.f90": {
+      "git_blob": "6c38364075e1cfff508999e0a48fab8bb7396823",
+      "LF_sha256": "611b2891e64ec992a395174117d029f9f0d196ca3c04a18e858a9ced809d8777"
+    },
+    "src/crop/mod_crop_et_canopy_view_provider.f90": {
+      "git_blob": "7e007ea0f228c8e0dfeddafd2a340575233de576",
+      "LF_sha256": "f173e16c2ebf8c2a17c770c7fe6a4c41e159f00315b87b17c441654adbb71fb3"
+    },
+    "tests/fwof/test_fwof43a_crop_et_canopy_view_provider.f90": {
+      "git_blob": "0fda482e6d1b129accd00d56ca100971d5f763ea",
+      "LF_sha256": "5523a0ad38b232e64273457cdf07d8738d9b96ce38c724a1a605e22a2ffa53d9"
+    },
+    "tests/fvq/test_fvq37_crop_et_canopy_view_independent.f90": {
+      "git_blob": "70a3e63e9fea0075197e4abf3a78ac9053ad4347",
+      "LF_sha256": "526659dfa1ccd6596dfb971e983baa292187a6e8ff3516445e35348a18547910"
+    },
+    "src/crop/mod_crop_co2_response_resolver.f90": {
+      "git_blob": "63ccbe2670e90fec957f6d563423efa6007760e9",
+      "LF_sha256": "4a19ae96fa65f10ff537ac427961355f9986852a222d5387069c97f20c054e80"
+    },
+    "src/transaction/mod_transaction_reference.f90": {
+      "git_blob": "0a5ce4d122037048ab9372acdeae447cc085f2d3",
+      "LF_sha256": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed"
+    },
+    "src/crop/mod_wofost_actual_biomass_state.f90": {
+      "git_blob": "f1ef51683da38f798b342226a88e40aaa7854c4f",
+      "LF_sha256": "c451172db39746eabfdea0c681cd9c9bb5d7e8047ec1044e28f995d9747a13ac"
+    },
+    "src/crop/mod_crop_root_depth_dvs.f90": {
+      "git_blob": "23ebc55a423ca698a1fa0b3c3de512de93197766",
+      "LF_sha256": "17ea93688481fd2abc0dd7bc552ddf77583e69e7e29bca30649485fcfdc1e161"
+    },
+    "src/crop/mod_crop_root_depth_biomass.f90": {
+      "git_blob": "4d9f4ffed0d56b1d8f0615e9e66354b5eb617c65",
+      "LF_sha256": "cad3f316fa4ad3bd3c3a2992c07782c5fcb2794347b6b7ea4ab9eb2ff01095a3"
+    },
+    "src/crop/mod_crop_root_profile_static.f90": {
+      "git_blob": "6860bdd13b8b384d5e7f70eb1c2070e7129db7d1",
+      "LF_sha256": "79c54eedac5126236b7ecc3e02d5485012a4f0438ff79e7677452dd9a9f47b95"
+    },
+    "src/crop/mod_crop_root_uptake_input_contract.f90": {
+      "git_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+      "LF_sha256": "01c08474c08d65cfca15055acb4aaaea1ca54968c8ae0d408a377a32d6d9f176"
+    },
+    "src/crop/mod_crop_root_biomass_distribution.f90": {
+      "git_blob": "ff4dabeb4f824e8264625afd99470d92a56ec9c3",
+      "LF_sha256": "8254bb464d9e894243c1de7f4e7a69b81b1cd08b284b54534d20f797ee55d6c9"
+    },
+    "src/crop/mod_crop_bartholomeus_input.f90": {
+      "git_blob": "8c05a94d73112b0d1fcb7d89d5b4d70f875c8636",
+      "LF_sha256": "470c4fd84eb636db1b1d30682c94539db896fa7bb3d1911c36d3c9c1d13fd024"
+    },
+    "src/crop/mod_wofost_crop_owner_state.f90": {
+      "git_blob": "61c413e034744fd4d236d37f175ac2234e81b893",
+      "LF_sha256": "889ee90ae98eeec10aee37b52497b7b472d572d4815c475d911dedf7b2ce0401"
+    },
+    "src/crop/mod_wofost_one_day_structural_evolution.f90": {
+      "git_blob": "14b206df0e24b967c4b97814b50c777e07473228",
+      "LF_sha256": "a119d2b9073cee7b2888bb10215ca1f5202bb82c1f6d5ff915b9f6819706b88a"
+    },
+    "src/runtime/mod_fmr_crop_co2_response_binding.f90": {
+      "git_blob": "5fdf4b103c1a7c810b6d7cd8871a13ed5dec538e",
+      "LF_sha256": "09398f1b30848dd1b1864aeef93867e4b7878fd0e9cdd7665e4cf37fd56e6a7c"
+    },
+    "tests/fmig431/test_swap431_crop_co2_response.f90": {
+      "git_blob": "7fbcbdd790609453ba7c12c77da272e569f2c4ae",
+      "LF_sha256": "cf7d111838bbe924ae86a874ec270957d871f72aa1d8bb52c2dcc02faacb7ad7"
+    },
+    "tests/fmig431/run_swap431_crop_co2_response.py": {
+      "git_blob": "9e27ab352aa5c306c5cf58a90ca3ad1ca904d8ef",
+      "LF_sha256": "a78cf1742527c87d7e7744b9b903a0de41e341a2cbe3d072e6ced5db24a5e80d"
+    }
+  },
+  "original_CO2_compile_closure": [
+    "src/crop/mod_wofost_rate_table.f90",
+    "src/crop/mod_crop_co2_response_resolver.f90",
+    "src/transaction/mod_transaction_reference.f90",
+    "src/crop/mod_wofost_actual_biomass_state.f90",
+    "src/crop/mod_crop_root_depth_dvs.f90",
+    "src/crop/mod_crop_root_depth_biomass.f90",
+    "src/crop/mod_crop_root_profile_static.f90",
+    "src/crop/mod_crop_root_uptake_input_contract.f90",
+    "src/crop/mod_crop_root_biomass_distribution.f90",
+    "src/crop/mod_crop_bartholomeus_input.f90",
+    "src/crop/mod_wofost_crop_owner_state.f90",
+    "src/crop/mod_wofost_one_day_structural_evolution.f90",
+    "src/crop/mod_crop_et_canopy_view_provider.f90",
+    "src/runtime/mod_fmr_crop_co2_response_binding.f90",
+    "tests/fmig431/test_swap431_crop_co2_response.f90"
+  ],
+  "runner": {
+    "path": "tests/fci/run_fci51p_wof43a_successor_preservation.sh",
+    "old_sha256": "c312c7fa549921aebd6005be467a699f7007938313b3bf1def929d2e7c93c980",
+    "new_sha256": "f2b1ba69ed2e16593d3b9a450cd88b9f5f44745effd08bc3ae7a8a1f2995cc4c",
+    "exact_old_call": "python3 -B integration/audits/surface_age_ci/authority.py --source-only",
+    "exact_new_call": "python3 -B tests/fci/verify_wof43a_nomacro_source.py",
+    "replacements": 2
+  },
+  "required_oracles": [
+    "FWO43A_CROP_ET_CANOPY_VIEW_TEST PASS",
+    "FVQ37_INDEPENDENT_GRID_CASES=29000",
+    "FVQ37_INDEPENDENT_EDGE_CASES=13",
+    "FVQ37_INDEPENDENT_CROP_ET_CANOPY_QUALIFICATION PASS",
+    "SW431_CROP_CO2_RESPONSE=PASS",
+    "SW431_CROP_CO2_O0_O2_IDENTITY=PASS"
+  ],
+  "scope": "Original FWO43A/FVQ37 two-module component and actual15-module CO2 closure only. Full original runner historical identities, lineage, flags, compiled/native oracles and O0/O2 exact-output comparisons stay byte-identical beyond two selected Source calls."
+}
