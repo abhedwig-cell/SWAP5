@@ -56,13 +56,20 @@ def source(anchor):
  # by Python, shell, Fortran/C and their declarative compile/qualification data.
  changed={line.split('\t',1)[1]:line.split('\t',1)[0] for line in expected.decode().splitlines()}
  assert {p for p,status in changed.items() if status!='A'}<=set(inverses)
- suffixes={'.py','.f90','.f','.for','.inc','.c','.h','.cpp','.hpp','.sh','.yml','.yaml','.json','.toml','.cmake'}
+ current_tree={}
+ for line in git('ls-tree','-rl','HEAD','--',*SOURCE_DOMAINS).decode().splitlines():
+  meta,path=line.split('\t');current_tree[path]=meta
+ anchor_tree={}
+ for line in git('ls-tree','-rl',anchor,'--',*SOURCE_DOMAINS).decode().splitlines():
+  meta,path=line.split('\t');anchor_tree[path]=meta
+ assert current_tree.keys()==anchor_tree.keys(),'Complete source tree path set changed'
+ for path,meta in anchor_tree.items():
+  if path!=SELF:assert current_tree[path]==meta,'Frozen committed source tree entry changed: '+path
  working_inventory=tracked_working_files();observed_source=[];inherited=0
  for line in git('ls-tree','-rl',anchor,'--',*SOURCE_DOMAINS).decode().splitlines():
   meta,path=line.split('\t');mode,kind,digest,size=meta.split();assert kind=='blob'
   if path not in changed:inherited+=1
   actual=ROOT/path
-  if actual.suffix.lower() not in suffixes:continue
   if not materialized(path,working_inventory):continue
   assert not actual.is_symlink()
   actual_raw=actual.read_bytes();raw=norm(actual_raw)
