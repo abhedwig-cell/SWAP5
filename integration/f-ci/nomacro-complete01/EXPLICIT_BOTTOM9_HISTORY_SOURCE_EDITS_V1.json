@@ -1,0 +1,107 @@
+{
+  "status": "EXACT_WHOLE_OLD_RENDERER_TEXT_INVERSES_AND_FROZEN_NEW_HISTORY_DOMAIN_OWNER",
+  "parent": "46eef99fbd6e5343c1cf7661ae5188549d555990",
+  "core": "cc33a863437ca3cf34cade7d6f2aba9c32729f22",
+  "files": {
+    "app/hybrid_water/experimental_project.py": {
+      "parent_sha256": "188e24d6b33c679c06328cde26b21e09a8e709bb2e4e5c679a9b2b6fe0da88fe",
+      "core_sha256": "7538f8a67ff1c3a2a0d498480ec3f0a3a683f744925766448ff105c8a6b7ae7a",
+      "changed_functions": [
+        "inspect"
+      ],
+      "positioned_literal_edits": [
+        {
+          "old_start": 133,
+          "old_end": 133,
+          "new_start": 133,
+          "new_end": 136,
+          "old": "",
+          "new": "    if paired_boundary is None:\n        from prescribed_history_boundary import selection as paired_history_selection\n        paired_boundary=paired_history_selection(directory,original_output)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output_hysteresis.py": {
+      "parent_sha256": "123d446724a5c7d042bfe23c1d48db3e3a85110a8cd810e4af51cada96a3757d",
+      "core_sha256": "e686bc59cb108b3a48012d31e285dae272ea5d9678398dbbba0e6133d2cbb0f3",
+      "changed_functions": [
+        "apply_build",
+        "metadata",
+        "selection"
+      ],
+      "positioned_literal_edits": [
+        {
+          "old_start": 40,
+          "old_end": 40,
+          "new_start": 40,
+          "new_end": 43,
+          "old": "",
+          "new": "        if key=='SWDRA':\n            from prescribed_history_boundary import enabled as paired_history_enabled\n            if paired_history_enabled(project):continue\n"
+        },
+        {
+          "old_start": 58,
+          "old_end": 59,
+          "new_start": 61,
+          "new_end": 62,
+          "old": "    return dict(policy=POLICY,native_codec=magic(project).decode(),**selected,\n",
+          "new": "    result=dict(policy=POLICY,native_codec=magic(project).decode(),**selected,\n"
+        },
+        {
+          "old_start": 70,
+          "old_end": 70,
+          "new_start": 73,
+          "new_end": 80,
+          "old": "",
+          "new": "    from prescribed_history_boundary import enabled as paired_history_enabled,domain_source as paired_history_domain\n    if paired_history_enabled(project):\n        result.update(paired_boundary=9,paired_history_policy='existing-original-hysteresis-explicit-paired9-daily-v1',\n                      paired_history_source_sha256=sha(Path(__file__).with_name('prescribed_history_boundary.py')),\n                      domain_source_sha256=hashlib.sha256(paired_history_domain(Path(__file__).with_name(DOMAIN+'.f90').read_bytes(),project)).hexdigest(),\n                      domain_version=2,domain_bytes=56)\n    return result\n"
+        },
+        {
+          "old_start": 123,
+          "old_end": 124,
+          "new_start": 133,
+          "new_end": 135,
+          "old": "    (output/(DOMAIN+'.f90')).write_bytes(Path(__file__).with_name(DOMAIN+'.f90').read_bytes())\n",
+          "new": "    from prescribed_history_boundary import domain_source as paired_history_domain\n    (output/(DOMAIN+'.f90')).write_bytes(paired_history_domain(Path(__file__).with_name(DOMAIN+'.f90').read_bytes(),project))\n"
+        }
+      ]
+    },
+    "app/hybrid_water/prescribed_head_flux_boundary.py": {
+      "parent_sha256": "fbb586a75f88ac9ece332672cdb1be961c4b0e8fdd3fa7e33dbe5d5e723a177a",
+      "core_sha256": "ba97782bb37070088b16ae486714cb8d060451a6fc1c00b05941afa2f54f005e",
+      "changed_functions": [
+        "selected_boundary",
+        "selection"
+      ],
+      "positioned_literal_edits": [
+        {
+          "old_start": 12,
+          "old_end": 13,
+          "new_start": 12,
+          "new_end": 13,
+          "old": "def selection(directory,original_output=True):\n",
+          "new": "def selection(directory,original_output=True,*,hysteresis=0):\n"
+        },
+        {
+          "old_start": 22,
+          "old_end": 23,
+          "new_start": 22,
+          "new_end": 24,
+          "old": " fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=0,SWSNOW=0,SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)\n",
+          "new": " if hysteresis not in (0,1,2):return None\n fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=hysteresis,SWSNOW=0,SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)\n"
+        },
+        {
+          "old_start": 67,
+          "old_end": 67,
+          "new_start": 68,
+          "new_end": 70,
+          "old": "",
+          "new": " from prescribed_history_boundary import enabled as history_enabled\n if history_enabled(project):return 9\n"
+        }
+      ]
+    }
+  },
+  "added_source": {
+    "app/hybrid_water/prescribed_history_boundary.py": "be28ce9b137bd9152d34db43b0062f207510e532eef1e389f4d5e39fa9a2c850"
+  },
+  "physical_Fortran_sources_changed": false,
+  "Git_or_filesystem_views_projected": false,
+  "scientific_data_rewritten": false
+}
