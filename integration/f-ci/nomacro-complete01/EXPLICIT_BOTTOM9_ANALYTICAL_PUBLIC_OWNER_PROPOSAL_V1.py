@@ -9,6 +9,8 @@ from explicit_bottom9_analytical_source_inverse import ANALYTICAL_CORE,PARENT_PU
 from explicit_bottom9_parent_projection import immutable_source_reads
 from explicit_bottom9_analytical_central import windows,ubuntu
 from explicit_bottom9_analytical_prior60_inheritance import audit as prior_selection
+from explicit_bottom9_analytical_prior_postimages_central import read as prior_compiled
+from explicit_bottom9_analytical_inherited_custody import fresh as complete_parent_custody
 import explicit_bottom9_verify as parent
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 SELF='tests/nomacro_drainage/explicit_bottom9_analytical_verify.py'
@@ -97,13 +99,28 @@ def publication_dependencies_unchanged():
 
 def verify():
  checked_current_source();raw=raw_custody();admission=parent_admission();messages=io.StringIO()
- with redirect_stdout(messages),parent_scope():prior=parent.verify()
+ # This is configuration reuse after actual canonical admission, the exact
+ # whole source inverse, complete fresh evidence custody, and twelve actual
+ # integrated compiled postimages. The original numerical assertions and their
+ # full successful canonical result remain immutable in the parent raw archive.
+ with redirect_stdout(messages),parent_scope():assert parent.guard_previous_source()
+ inherited_bytes=complete_parent_custody(PROOF)
+ compiled=prior_compiled(PROOF)
+ assert compiled==json.loads((PROOF/'EXPLICIT_BOTTOM9_ANALYTICAL_PRIOR_POSTIMAGES_CENTRAL_INDEPENDENT_V1.json').read_text())
+ with ExitStack() as stack:
+  store=Archive(PROOF,'EXPLICIT_BOTTOM9_ADMISSION_RAW_V1',stack)
+  assert store.record['sha256']==PARENT_ADMISSION_SHA
+  prior=json.loads(store.get('EXPLICIT_BOTTOM9_ACTUAL_CANONICAL_PUBLIC_OWNER_V1.stdout.txt'))
+  receipt=json.loads(store.get('EXPLICIT_BOTTOM9_ACTUAL_CANONICAL_PUBLIC_OWNER_V1.json'))
+  assert receipt['before']==receipt['after'] and receipt['before']['head']==PARENT_CANONICAL
+  assert receipt['returncode']==0 and not store.get('EXPLICIT_BOTTOM9_ACTUAL_CANONICAL_PUBLIC_OWNER_V1.stderr.txt')
  assert prior['status']=='BOUNDED_ORIGINAL_EXPLICIT9_WATER_CDE_AGE_CALENDAR_DRAINAGE_SOURCE_RAW_NATIVE_PASS' and prior['coadmission']['contexts']==216
+ assert prior['functional_completion']=='PARTIAL' and prior['whole_scientific_equivalence']=='NOT_QUALIFIED' and prior['RC3_changed'] is False
  observed={}
  for key,function,args,name in [('windows12',windows,(PROOF,),'EXPLICIT_BOTTOM9_ANALYTICAL_WINDOWS_CENTRAL_INDEPENDENT_V1.json')]+[('ubuntu6_'+opt,ubuntu,(PROOF,opt),'EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_'+opt+'_CENTRAL_INDEPENDENT_V1.json') for opt in ('O0','O2')]+[('prior60_selection',prior_selection,(ROOT,PROOF),'EXPLICIT_BOTTOM9_ANALYTICAL_PRIOR60_SELECTION_INHERITANCE_V1.json')]:
   with redirect_stdout(messages):actual=function(*args)
   assert actual==json.loads((PROOF/name).read_text());observed[key]=actual
- return dict(status='BOUNDED_ORIGINAL_ANALYTICAL_PAIRED9_WATER_CDE_SOURCE_REFERENCE_RAW_NATIVE_PASS',physical_composition_source=ANALYTICAL_CORE,analytical=observed,inherited216_and_all_prior_science=prior,parent_actual_admission=admission,actual_current_raw_custody=raw,scientific_reader_messages=messages.getvalue(),coadmission=dict(contexts=240,short35_contexts=238,year367_contexts=2,exact_cold_windows=724,native_calendar_samples=1686,compiled_postimages=183,previous_canonical=PARENT_CANONICAL,standalone_AGE110_admission_claimed=False),compiler_executions=0,model_executions=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
+ return dict(status='BOUNDED_ORIGINAL_ANALYTICAL_PAIRED9_WATER_CDE_SOURCE_REFERENCE_RAW_NATIVE_PASS',physical_composition_source=ANALYTICAL_CORE,analytical=observed,inherited216_and_all_prior_science=prior,inherited_science_method='ACTUAL_CANONICAL_NUMERICAL_PROOF_REUSED_AFTER_WHOLE_SOURCE_INVERSE_COMPLETE_FRESH_EVIDENCE_CUSTODY_AND_ACTUAL_COMPILED_POSTIMAGES',inherited_fresh_bytes=inherited_bytes,inherited_current_compiled_postimages=compiled,parent_actual_admission=admission,actual_current_raw_custody=raw,scientific_reader_messages=messages.getvalue(),coadmission=dict(contexts=240,short35_contexts=238,year367_contexts=2,exact_cold_windows=724,native_calendar_samples=1686,compiled_postimages=183,previous_canonical=PARENT_CANONICAL,standalone_AGE110_admission_claimed=False),compiler_executions=0,model_executions=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
 
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))

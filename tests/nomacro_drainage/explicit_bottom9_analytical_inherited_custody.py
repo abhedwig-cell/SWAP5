@@ -24,10 +24,11 @@ def fresh(proof):
  def actual_blob(item):
   process.stdin.write((item['git_blob']+'\n').encode());process.stdin.flush()
   assert process.stdout.readline().decode().split()==[item['git_blob'],'blob',str(item['bytes'])]
-  remaining=item['bytes']
+  remaining=item['bytes'];digest=hashlib.sha1(b'blob '+str(remaining).encode()+b'\0')
   while remaining:
-   block=process.stdout.read(min(remaining,8*1024*1024));assert block;remaining-=len(block);yield block
+   block=process.stdout.read(min(remaining,8*1024*1024));assert block;remaining-=len(block);digest.update(block);yield block
   assert process.stdout.read(1)==b'\n'
+  assert digest.hexdigest()==item['git_blob'],'Actual immutable Git blob content differs'
  observed=[];declarations=0
  try:
   for item in expected:

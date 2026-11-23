@@ -20,7 +20,7 @@ def main():
  controls=load('EXPLICIT_BOTTOM9_FINAL_NEGATIVES_OBSERVE_V4.json');keep('EXPLICIT_BOTTOM9_FINAL_NEGATIVES_OBSERVE_V4.json');assert controls['status']=='FOUR_ACTUAL_COMMITTED_PUSHED_CLEAN45_PUBLIC_NEGATIVES_REFUSED' and controls['candidate']==HEAD and controls['never_merge'] and len(controls['controls'])==4
  expected={'SOURCE':'app/hybrid_water/prescribed_head_flux_boundary.py','RAW':'integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_CDE_UBUNTU_DRAIN_O0_RAW_V1.zip','INHERITED':'integration/f-ci/nomacro-complete01/INITIAL_PROFILE_FROST_ADMISSION_RAW_V1.zip','PUBLICATION':'tests/publication/run_pub_p2e09_reference_threshold_freeze.sh'}
  assert {item['role']:item['path'] for item in controls['controls']}==expected
- cases=[('EXPLICIT_BOTTOM9_CANDIDATE_PUBLIC_OWNER_V2',HEAD,False),('EXPLICIT_BOTTOM9_ACTUAL_CANONICAL_PUBLIC_OWNER_V1',canonical,False)]+[('EXPLICIT_BOTTOM9_FINAL_'+item['role']+'_NEGATIVE_PUBLIC_V4',item['head'],True) for item in controls['controls']];observations={}
+ cases=[('EXPLICIT_BOTTOM9_CANDIDATE_PUBLIC_OWNER_V3',HEAD,False),('EXPLICIT_BOTTOM9_ACTUAL_CANONICAL_PUBLIC_OWNER_V1',canonical,False)]+[('EXPLICIT_BOTTOM9_FINAL_'+item['role']+'_NEGATIVE_PUBLIC_V4',item['head'],True) for item in controls['controls']];observations={}
  for label,head,negative in cases:
   q=load(label+'.json');observations[label]=q
   for suffix in ('.json','.stdout.txt','.stderr.txt'):keep(label+suffix)
