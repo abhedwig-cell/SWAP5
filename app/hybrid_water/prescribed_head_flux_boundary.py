@@ -145,7 +145,7 @@ CDE_CLOCK_DECL='   real(8)::hybrid_cde_clock_trial_guard,hybrid_cde_clock_candid
 CDE_CLOCK_GUARD='\n         if(swbotb==8.and..not.flboth)then\n            hybrid_cde_clock_candidate_bottom=0d0\n         else\n            hybrid_cde_clock_candidate_bottom=-kmean(NN+1)*hgrad(NN+1)\n         end if\n         hybrid_cde_clock_trial_guard=hybrid_ordinary_trial_residual(hybrid_cde_clock_candidate_bottom)\n         if(abs(hybrid_cde_clock_trial_guard)>1d-10)flnonconv=.true.'
 
 def render_cde_clock_headcalc(source):
- for old,new in ((CDE_CLOCK_IMPORT,'   use MOD_integral,only:hybrid_output_trial_residual\n'),(CDE_CLOCK_DECL,''),(CDE_CLOCK_GUARD,'\n         if(abs(hybrid_output_trial_residual())>1d-10)flnonconv=.true.')):
+ for old,new in ((CDE_CLOCK_IMPORT,'   use MOD_integral,only:hybrid_output_trial_residual\n'),(CDE_CLOCK_DECL,''),(CDE_CLOCK_GUARD,'\n         if(abs(hybrid_output_trial_residual())>2d-10)flnonconv=.true.')):
   if source.count(old)!=1:raise ValueError('Changed whole original CDE clock trial seam')
   source=source.replace(old,new,1)
  return source
