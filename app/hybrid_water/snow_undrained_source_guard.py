@@ -26,6 +26,9 @@ def explicit_head_parent(reference,project):
         'case':Path(project.input_directory),'trace_richards':False,'budget_retry':True,
         'strict_water':True,'shared_pond_transfer':False,'refresh_macro_final':False}
     exec(compile(module,'<original-explicit-head-read-only-prefix>','exec'),namespace)
+    # Paired Snow uses this exact original HeadCalc prefix. Its existing Snow
+    # rollback/pond-event owner is checked separately by the complete inverse.
+    if selection(project)['swbotb']==9:return namespace['source']
     from lower_boundary_receipt import render_headcalc
     return render_headcalc(namespace['source'],selection(project)['swbotb'])
 
