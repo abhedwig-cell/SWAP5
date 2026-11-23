@@ -21,12 +21,12 @@ class Original:
   self.names={n:None for n in names if not n.endswith('/')}
  def get(self,name):return self.z.read(name)
 
-def source(store):
- def tree(paths):return {line.split('\t')[1]:line.split('\t')[0].split()[2] for line in git('ls-tree','-r',HEAD,'--',*paths).decode().splitlines()}
+def source(store,head=HEAD,workflow_path='.github/workflows/nomacro-explicit-bottom9-history.yml'):
+ def tree(paths):return {line.split('\t')[1]:line.split('\t')[0].split()[2] for line in git('ls-tree','-r',head,'--',*paths).decode().splitlines()}
  def verify(name,raw,item,expected):
   assert len(raw)==item['bytes'] and SHA(raw)==item['sha256'] and item['git_blob']==expected[name]
   assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==expected[name]
- q=json.loads(store.get('source/RESULT.json'));assert q['producer_head']==HEAD
+ q=json.loads(store.get('source/RESULT.json'));assert q['producer_head']==head
  expected=tree(q['surfaces']);assert set(q['members'])==set(expected)
  raw=store.get('source/'+q['archive']);assert len(raw)==q['bytes'] and SHA(raw)==q['sha256']
  absent={n for n,item in q['members'].items() if item.get('checkout')=='ABSENT'}
@@ -36,14 +36,14 @@ def source(store):
   for name,item in q['members'].items():
    if name in absent:assert item==dict(git_blob=expected[name],checkout='ABSENT')
    else:verify(name,archive.read(name),item,expected)
- c=json.loads(store.get('controller-source.json'));assert c['producer_head']==HEAD
+ c=json.loads(store.get('controller-source.json'));assert c['producer_head']==head
  expected=tree(('tests/nomacro_drainage','tests/nomacro_scheduled_subsurface','tests/nomacro_mixtures','.github/workflows/nomacro-extended-implicit.yml'));assert set(c['members'])==set(expected)
  raw=store.get('controller-source.tar');assert len(raw)==c['bytes'] and SHA(raw)==c['sha256']
  with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
   members=archive.getmembers();assert len(members)==len({m.name for m in members}) and {m.name for m in members}==set(expected)
   for member in members:assert member.isfile();verify(member.name,archive.extractfile(member).read(),c['members'][member.name],expected)
  workflow=store.get('actual-workflow.yml');digest=hashlib.sha1(b'blob '+str(len(workflow)).encode()+b'\0'+workflow).hexdigest()
- assert digest==store.get('actual-workflow-git-blob.txt').decode().strip()==tree(('.github/workflows/nomacro-explicit-bottom9-history.yml',))['.github/workflows/nomacro-explicit-bottom9-history.yml']
+ assert digest==store.get('actual-workflow-git-blob.txt').decode().strip()==tree((workflow_path,))[workflow_path]
  return dict(actual_head=HEAD,source_sha256=q['sha256'],controller_sha256=c['sha256'],workflow_blob=digest,source_inventory=len(q['members']),absent_reference_paths=len(absent))
 
 def linux(path,opt):
