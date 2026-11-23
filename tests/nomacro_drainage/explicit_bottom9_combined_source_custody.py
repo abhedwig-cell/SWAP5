@@ -33,6 +33,14 @@ def source(anchor,owner_installed=True):
   ci_path,ci_original=runpy.run_path(str(ROOT/'tests/fci'/helper))['original_runner_source']()
   assert ci_original==blob(BASE,ci_path),'Original CI recipe no longer equals admitted parent: '+ci_path
   inverses[ci_path]=ci_original
+ for workflow in ('mc-sol01-column-input.yml','mc-sol01-swp-reader.yml'):
+  path='.github/workflows/'+workflow
+  original=blob(BASE,path);actual=norm((ROOT/path).read_bytes())
+  checkout_anchor=b'            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9*\n'
+  addition=b'            /integration/f-ci/nomacro-complete01/CANONICAL_LEGACY*\n'
+  assert original.count(checkout_anchor)==1 and addition not in original
+  assert actual==original.replace(checkout_anchor,checkout_anchor+addition,1),'Changed full inherited CI recipe beyond exact required archive checkout: '+path
+  inverses[path]=original
  if owner_installed:
   import explicit_bottom9_verify as old_owner
   text=norm((ROOT/JOINT).read_bytes()).decode()
@@ -66,4 +74,4 @@ def source(anchor,owner_installed=True):
   if path in inverses:assert inverses[path]==blob(BASE,path)
   observed.append(dict(path=path,actual_raw_sha256=SHA(actual),literal_parent_inverse=path in inverses,decoded_original_archive_sha256=encoded_archive))
  assert git('rev-parse','HEAD')==head and not git('for-each-ref','--format=%(refname)','refs/replace')
- return dict(status='COMPLETE_PARENT216_INHERITED_AND_CURRENT_SOURCE_TREE_WORKING_BYTES_EIGHT_APP_AND_TWO_BOUNDED_ORIGINAL_CI_RECIPE_INVERSES_VERIFIED',actual_head=head.decode().strip(),source_anchor=anchor,parent=BASE,materialized_source=observed,total_source_entries=len(expected),inherited_source_entries=len(parent),literal_parent_inverses=len(inverses),literal_APP_inverses=8,literal_CI_recipe_inverses=2,actual_Git_or_filesystem_views_projected=False,compiler_executions=0,model_executions=0)
+ return dict(status='COMPLETE_PARENT216_INHERITED_AND_CURRENT_SOURCE_TREE_WORKING_BYTES_EIGHT_APP_TWO_BOUNDED_ORIGINAL_CI_RECIPES_AND_TWO_EXACT_ARCHIVE_CHECKOUT_INVERSES_VERIFIED',actual_head=head.decode().strip(),source_anchor=anchor,parent=BASE,materialized_source=observed,total_source_entries=len(expected),inherited_source_entries=len(parent),literal_parent_inverses=len(inverses),literal_APP_inverses=8,literal_CI_recipe_inverses=2,literal_CI_checkout_inverses=2,actual_Git_or_filesystem_views_projected=False,compiler_executions=0,model_executions=0)
