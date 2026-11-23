@@ -1,0 +1,230 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-SUCCESSOR68",
+  "decision": "QUALIFIED_BOUNDED_COUPLED_ACCEPTANCE",
+  "scope": "one FOLLOW67 successor step: unchanged COMBINED63 algebra with one named additional time, qualified physical guards and W/V derivatives, fresh vs continuous O0/O2 unscaled accepted retry",
+  "baseline": "3d4b0d378da190682fd9e30c3e9cf555104acec2",
+  "model_routes": 7,
+  "results": [
+    {
+      "opt": "O0",
+      "larger_refusal": {
+        "dt": 2e-05,
+        "performed_iterations": 30,
+        "Fmax": 0.002596626525026763,
+        "sumF": 0.010712313887731877,
+        "active_W": 22,
+        "active_V": 0
+      },
+      "accepted": {
+        "dt": 1e-05,
+        "iterations": 10,
+        "fresh_checks": 1,
+        "Fmax": 5.34046701895774e-08,
+        "sumF": 3.6634745346460765e-07,
+        "IDecMpRat": 0.0,
+        "FrReduQ": 1.0,
+        "hostcommits_after_cut": 1,
+        "ledger_integrations_after_cut": 1,
+        "t1900": 35797.290451125155,
+        "active_W": 6,
+        "active_V": 2
+      },
+      "independent_waterinventory": {
+        "matrix_delta_cm": -2.1898482408981606e-06,
+        "macro_compartment_delta_cm": -6.715853197017179e-07,
+        "pond_delta_cm": 0.0,
+        "canopy_delta_cm": 0.0,
+        "external_cm": -2.861437224143292e-06,
+        "error_cm": 3.663543413404656e-12,
+        "existing_limit_cm": 1.0000000000000002e-10,
+        "domain_errors_cm": [
+          6.844322675346286e-17,
+          1.9527348488201923e-18,
+          -1.4753593405495802e-18,
+          -5.072271516175166e-21,
+          -3.8415508417881435e-20
+        ]
+      },
+      "max_mass_derivative_column_error": 5.684341886080802e-14,
+      "max_linear_residual": 2.190088388420719e-17,
+      "output_packet_sha256": "33cebbef3ecc58f966fa151f6ce40b39b879b0d05e4199605bec2953c381b560",
+      "output_packet_bytes": 139128
+    },
+    {
+      "opt": "O2",
+      "larger_refusal": {
+        "dt": 2e-05,
+        "performed_iterations": 30,
+        "Fmax": 0.002596626525026763,
+        "sumF": 0.010712313887731877,
+        "active_W": 22,
+        "active_V": 0
+      },
+      "accepted": {
+        "dt": 1e-05,
+        "iterations": 10,
+        "fresh_checks": 1,
+        "Fmax": 5.34046701895774e-08,
+        "sumF": 3.6634745346460765e-07,
+        "IDecMpRat": 0.0,
+        "FrReduQ": 1.0,
+        "hostcommits_after_cut": 1,
+        "ledger_integrations_after_cut": 1,
+        "t1900": 35797.290451125155,
+        "active_W": 6,
+        "active_V": 2
+      },
+      "independent_waterinventory": {
+        "matrix_delta_cm": -2.1898482408981606e-06,
+        "macro_compartment_delta_cm": -6.715853197017179e-07,
+        "pond_delta_cm": 0.0,
+        "canopy_delta_cm": 0.0,
+        "external_cm": -2.861437224143292e-06,
+        "error_cm": 3.663543413404656e-12,
+        "existing_limit_cm": 1.0000000000000002e-10,
+        "domain_errors_cm": [
+          6.844322675346286e-17,
+          1.9527348488201923e-18,
+          -1.4753593405495802e-18,
+          -5.072271516175166e-21,
+          -3.8415508417881435e-20
+        ]
+      },
+      "max_mass_derivative_column_error": 5.684341886080802e-14,
+      "max_linear_residual": 2.190088388420719e-17,
+      "output_packet_sha256": "33cebbef3ecc58f966fa151f6ce40b39b879b0d05e4199605bec2953c381b560",
+      "output_packet_bytes": 139128
+    }
+  ],
+  "equivalence": [
+    {
+      "opt": "O0",
+      "actual_own_cut_and_fresh_install_exact": true,
+      "rollback_except_normal_dt_fldtmin_exact": true,
+      "pre_retry_ledger_exact": true,
+      "first112_coupled_residuals_exact": true,
+      "accepted_state_ledger_budget_packet_exact": true,
+      "matched_files": [
+        [
+          "solver_3.txt",
+          "solver_1.txt"
+        ],
+        [
+          "context_follow_begin_3.txt",
+          "context_follow_begin_1.txt"
+        ],
+        [
+          "context_follow_returned_3.txt",
+          "context_follow_returned_1.txt"
+        ],
+        [
+          "ledger_follow_begin_3.txt",
+          "ledger_follow_begin_1.txt"
+        ],
+        [
+          "ledger_follow_returned_3.txt",
+          "ledger_follow_returned_1.txt"
+        ],
+        [
+          "origin_follow_begin_3.txt",
+          "origin_follow_begin_1.txt"
+        ],
+        [
+          "solver_4.txt",
+          "solver_2.txt"
+        ],
+        [
+          "context_follow_begin_4.txt",
+          "context_follow_begin_2.txt"
+        ],
+        [
+          "context_follow_returned_4.txt",
+          "context_follow_returned_2.txt"
+        ],
+        [
+          "ledger_follow_begin_4.txt",
+          "ledger_follow_begin_2.txt"
+        ],
+        [
+          "ledger_follow_returned_4.txt",
+          "ledger_follow_returned_2.txt"
+        ],
+        [
+          "origin_follow_begin_4.txt",
+          "origin_follow_begin_2.txt"
+        ]
+      ]
+    },
+    {
+      "opt": "O2",
+      "actual_own_cut_and_fresh_install_exact": true,
+      "rollback_except_normal_dt_fldtmin_exact": true,
+      "pre_retry_ledger_exact": true,
+      "first112_coupled_residuals_exact": true,
+      "accepted_state_ledger_budget_packet_exact": true,
+      "matched_files": [
+        [
+          "solver_3.txt",
+          "solver_1.txt"
+        ],
+        [
+          "context_follow_begin_3.txt",
+          "context_follow_begin_1.txt"
+        ],
+        [
+          "context_follow_returned_3.txt",
+          "context_follow_returned_1.txt"
+        ],
+        [
+          "ledger_follow_begin_3.txt",
+          "ledger_follow_begin_1.txt"
+        ],
+        [
+          "ledger_follow_returned_3.txt",
+          "ledger_follow_returned_1.txt"
+        ],
+        [
+          "origin_follow_begin_3.txt",
+          "origin_follow_begin_1.txt"
+        ],
+        [
+          "solver_4.txt",
+          "solver_2.txt"
+        ],
+        [
+          "context_follow_begin_4.txt",
+          "context_follow_begin_2.txt"
+        ],
+        [
+          "context_follow_returned_4.txt",
+          "context_follow_returned_2.txt"
+        ],
+        [
+          "ledger_follow_begin_4.txt",
+          "ledger_follow_begin_2.txt"
+        ],
+        [
+          "ledger_follow_returned_4.txt",
+          "ledger_follow_returned_2.txt"
+        ],
+        [
+          "origin_follow_begin_4.txt",
+          "origin_follow_begin_2.txt"
+        ]
+      ]
+    }
+  ],
+  "derivative_audits": [
+    "O0_DERIVATIVE_AUDIT.json",
+    "O2_DERIVATIVE_AUDIT.json"
+  ],
+  "no_new_solver_or_Jacobian_algebra": true,
+  "no_physics_criteria_or_dt_rule_changes": true,
+  "production_promotion": false,
+  "exclusions": [
+    "general time/physical envelopes",
+    "active V rejection or independent direct-small retry",
+    "second newly accepted successor or own new output checkpoint restart",
+    "full period or reference promotion"
+  ]
+}

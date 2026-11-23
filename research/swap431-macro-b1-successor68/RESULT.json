@@ -1,0 +1,524 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-SUCCESSOR68",
+  "decision": "QUALIFIED_BOUNDED_COUPLED_ACCEPTANCE",
+  "scope": "one FOLLOW67 successor step: unchanged COMBINED63 algebra with one named additional time, qualified physical guards and W/V derivatives, fresh vs continuous O0/O2 unscaled accepted retry",
+  "baseline": "3d4b0d378da190682fd9e30c3e9cf555104acec2",
+  "model_routes": 7,
+  "results": [
+    {
+      "opt": "O0",
+      "larger_refusal": {
+        "dt": 2e-05,
+        "performed_iterations": 30,
+        "Fmax": 0.002596626525026763,
+        "sumF": 0.010712313887731877,
+        "active_W": 22,
+        "active_V": 0
+      },
+      "accepted": {
+        "dt": 1e-05,
+        "iterations": 10,
+        "fresh_checks": 1,
+        "Fmax": 5.34046701895774e-08,
+        "sumF": 3.6634745346460765e-07,
+        "IDecMpRat": 0.0,
+        "FrReduQ": 1.0,
+        "hostcommits_after_cut": 1,
+        "ledger_integrations_after_cut": 1,
+        "t1900": 35797.290451125155,
+        "active_W": 6,
+        "active_V": 2
+      },
+      "independent_waterinventory": {
+        "matrix_delta_cm": -2.1898482408981606e-06,
+        "macro_compartment_delta_cm": -6.715853197017179e-07,
+        "pond_delta_cm": 0.0,
+        "canopy_delta_cm": 0.0,
+        "external_cm": -2.861437224143292e-06,
+        "error_cm": 3.663543413404656e-12,
+        "existing_limit_cm": 1.0000000000000002e-10,
+        "domain_errors_cm": [
+          6.844322675346286e-17,
+          1.9527348488201923e-18,
+          -1.4753593405495802e-18,
+          -5.072271516175166e-21,
+          -3.8415508417881435e-20
+        ]
+      },
+      "max_mass_derivative_column_error": 5.684341886080802e-14,
+      "max_linear_residual": 2.190088388420719e-17,
+      "output_packet_sha256": "33cebbef3ecc58f966fa151f6ce40b39b879b0d05e4199605bec2953c381b560",
+      "output_packet_bytes": 139128
+    },
+    {
+      "opt": "O2",
+      "larger_refusal": {
+        "dt": 2e-05,
+        "performed_iterations": 30,
+        "Fmax": 0.002596626525026763,
+        "sumF": 0.010712313887731877,
+        "active_W": 22,
+        "active_V": 0
+      },
+      "accepted": {
+        "dt": 1e-05,
+        "iterations": 10,
+        "fresh_checks": 1,
+        "Fmax": 5.34046701895774e-08,
+        "sumF": 3.6634745346460765e-07,
+        "IDecMpRat": 0.0,
+        "FrReduQ": 1.0,
+        "hostcommits_after_cut": 1,
+        "ledger_integrations_after_cut": 1,
+        "t1900": 35797.290451125155,
+        "active_W": 6,
+        "active_V": 2
+      },
+      "independent_waterinventory": {
+        "matrix_delta_cm": -2.1898482408981606e-06,
+        "macro_compartment_delta_cm": -6.715853197017179e-07,
+        "pond_delta_cm": 0.0,
+        "canopy_delta_cm": 0.0,
+        "external_cm": -2.861437224143292e-06,
+        "error_cm": 3.663543413404656e-12,
+        "existing_limit_cm": 1.0000000000000002e-10,
+        "domain_errors_cm": [
+          6.844322675346286e-17,
+          1.9527348488201923e-18,
+          -1.4753593405495802e-18,
+          -5.072271516175166e-21,
+          -3.8415508417881435e-20
+        ]
+      },
+      "max_mass_derivative_column_error": 5.684341886080802e-14,
+      "max_linear_residual": 2.190088388420719e-17,
+      "output_packet_sha256": "33cebbef3ecc58f966fa151f6ce40b39b879b0d05e4199605bec2953c381b560",
+      "output_packet_bytes": 139128
+    }
+  ],
+  "equivalence": [
+    {
+      "opt": "O0",
+      "actual_own_cut_and_fresh_install_exact": true,
+      "rollback_except_normal_dt_fldtmin_exact": true,
+      "pre_retry_ledger_exact": true,
+      "first112_coupled_residuals_exact": true,
+      "accepted_state_ledger_budget_packet_exact": true,
+      "matched_files": [
+        [
+          "solver_3.txt",
+          "solver_1.txt"
+        ],
+        [
+          "context_follow_begin_3.txt",
+          "context_follow_begin_1.txt"
+        ],
+        [
+          "context_follow_returned_3.txt",
+          "context_follow_returned_1.txt"
+        ],
+        [
+          "ledger_follow_begin_3.txt",
+          "ledger_follow_begin_1.txt"
+        ],
+        [
+          "ledger_follow_returned_3.txt",
+          "ledger_follow_returned_1.txt"
+        ],
+        [
+          "origin_follow_begin_3.txt",
+          "origin_follow_begin_1.txt"
+        ],
+        [
+          "solver_4.txt",
+          "solver_2.txt"
+        ],
+        [
+          "context_follow_begin_4.txt",
+          "context_follow_begin_2.txt"
+        ],
+        [
+          "context_follow_returned_4.txt",
+          "context_follow_returned_2.txt"
+        ],
+        [
+          "ledger_follow_begin_4.txt",
+          "ledger_follow_begin_2.txt"
+        ],
+        [
+          "ledger_follow_returned_4.txt",
+          "ledger_follow_returned_2.txt"
+        ],
+        [
+          "origin_follow_begin_4.txt",
+          "origin_follow_begin_2.txt"
+        ]
+      ]
+    },
+    {
+      "opt": "O2",
+      "actual_own_cut_and_fresh_install_exact": true,
+      "rollback_except_normal_dt_fldtmin_exact": true,
+      "pre_retry_ledger_exact": true,
+      "first112_coupled_residuals_exact": true,
+      "accepted_state_ledger_budget_packet_exact": true,
+      "matched_files": [
+        [
+          "solver_3.txt",
+          "solver_1.txt"
+        ],
+        [
+          "context_follow_begin_3.txt",
+          "context_follow_begin_1.txt"
+        ],
+        [
+          "context_follow_returned_3.txt",
+          "context_follow_returned_1.txt"
+        ],
+        [
+          "ledger_follow_begin_3.txt",
+          "ledger_follow_begin_1.txt"
+        ],
+        [
+          "ledger_follow_returned_3.txt",
+          "ledger_follow_returned_1.txt"
+        ],
+        [
+          "origin_follow_begin_3.txt",
+          "origin_follow_begin_1.txt"
+        ],
+        [
+          "solver_4.txt",
+          "solver_2.txt"
+        ],
+        [
+          "context_follow_begin_4.txt",
+          "context_follow_begin_2.txt"
+        ],
+        [
+          "context_follow_returned_4.txt",
+          "context_follow_returned_2.txt"
+        ],
+        [
+          "ledger_follow_begin_4.txt",
+          "ledger_follow_begin_2.txt"
+        ],
+        [
+          "ledger_follow_returned_4.txt",
+          "ledger_follow_returned_2.txt"
+        ],
+        [
+          "origin_follow_begin_4.txt",
+          "origin_follow_begin_2.txt"
+        ]
+      ]
+    }
+  ],
+  "O0_O2": {
+    "BARE": {
+      "exact_texts": [
+        "cache_follow_begin_1.txt",
+        "cache_follow_begin_2.txt",
+        "cause66_boundary.txt",
+        "cause66_F0.txt",
+        "cause66_refresh.txt",
+        "clock45_trace.txt",
+        "committed.txt",
+        "context_committed.txt",
+        "context_final.txt",
+        "context_follow_begin_1.txt",
+        "context_follow_begin_2.txt",
+        "context_follow_committed.txt",
+        "context_follow_returned_1.txt",
+        "context_follow_returned_2.txt",
+        "context_initial.txt",
+        "domain3_limit.txt",
+        "dtmin57_trials.txt",
+        "feedback48_trace.txt",
+        "final.txt",
+        "follow_begin_1.txt",
+        "follow_begin_2.txt",
+        "follow_committed.txt",
+        "follow_returned_1.txt",
+        "follow_returned_2.txt",
+        "geometry53_trace.txt",
+        "guard41_domains.txt",
+        "guard41_heads.txt",
+        "guard41_trace.txt",
+        "history44_trace.txt",
+        "inactive51_trace.txt",
+        "initial.txt",
+        "input_control64.txt",
+        "inventory_trace.txt",
+        "iteration_nodes.txt",
+        "jac24_trace.txt",
+        "jac37_trace.txt",
+        "jac63_systems.txt",
+        "jac63_trace.txt",
+        "ledger_committed.txt",
+        "ledger_final.txt",
+        "ledger_follow_begin_1.txt",
+        "ledger_follow_begin_2.txt",
+        "ledger_follow_committed.txt",
+        "ledger_follow_returned_1.txt",
+        "ledger_follow_returned_2.txt",
+        "ledger_initial.txt",
+        "ledger_installed.txt",
+        "native_installed.txt",
+        "node_absorption.txt",
+        "node_iterations.txt",
+        "node_operator.txt",
+        "operator_nodes.txt",
+        "origin_follow_begin_1.txt",
+        "origin_follow_begin_2.txt",
+        "outcome.txt",
+        "prefix_budget.txt",
+        "provider49_trace.txt",
+        "reference46_trace.txt",
+        "solver_1.txt",
+        "solver_2.txt",
+        "step_budget.txt",
+        "successor68_guard.txt"
+      ],
+      "attempts_exact_except_timing": true,
+      "packet_exact": true
+    },
+    "FD": {
+      "exact_texts": [
+        "cache_follow_begin_1.txt",
+        "cache_follow_begin_2.txt",
+        "cause66_boundary.txt",
+        "cause66_F0.txt",
+        "cause66_refresh.txt",
+        "clock45_trace.txt",
+        "committed.txt",
+        "context_committed.txt",
+        "context_final.txt",
+        "context_follow_begin_1.txt",
+        "context_follow_begin_2.txt",
+        "context_follow_committed.txt",
+        "context_follow_returned_1.txt",
+        "context_follow_returned_2.txt",
+        "context_initial.txt",
+        "domain3_limit.txt",
+        "dtmin57_trials.txt",
+        "feedback48_trace.txt",
+        "final.txt",
+        "follow_begin_1.txt",
+        "follow_begin_2.txt",
+        "follow_committed.txt",
+        "follow_returned_1.txt",
+        "follow_returned_2.txt",
+        "geometry53_trace.txt",
+        "guard41_domains.txt",
+        "guard41_heads.txt",
+        "guard41_trace.txt",
+        "history44_trace.txt",
+        "inactive51_trace.txt",
+        "initial.txt",
+        "input_control64.txt",
+        "inventory_trace.txt",
+        "iteration_nodes.txt",
+        "jac24_trace.txt",
+        "jac37_trace.txt",
+        "jac63_systems.txt",
+        "jac63_trace.txt",
+        "ledger_committed.txt",
+        "ledger_final.txt",
+        "ledger_follow_begin_1.txt",
+        "ledger_follow_begin_2.txt",
+        "ledger_follow_committed.txt",
+        "ledger_follow_returned_1.txt",
+        "ledger_follow_returned_2.txt",
+        "ledger_initial.txt",
+        "ledger_installed.txt",
+        "native_installed.txt",
+        "node_absorption.txt",
+        "node_iterations.txt",
+        "node_operator.txt",
+        "operator_nodes.txt",
+        "origin_follow_begin_1.txt",
+        "origin_follow_begin_2.txt",
+        "outcome.txt",
+        "potential68_b1_limits.txt",
+        "potential68_b1_points.txt",
+        "potential68_b1_restore.txt",
+        "potential68_b2_limits.txt",
+        "potential68_b2_points.txt",
+        "potential68_b2_restore.txt",
+        "prefix_budget.txt",
+        "provider49_trace.txt",
+        "reference46_trace.txt",
+        "solver_1.txt",
+        "solver_2.txt",
+        "step_budget.txt",
+        "successor68_guard.txt"
+      ],
+      "attempts_exact_except_timing": true,
+      "packet_exact": true
+    },
+    "CONT": {
+      "exact_texts": [
+        "cache_follow_begin_1.txt",
+        "cache_follow_begin_2.txt",
+        "cache_follow_begin_3.txt",
+        "cache_follow_begin_4.txt",
+        "cause66_boundary.txt",
+        "cause66_F0.txt",
+        "cause66_refresh.txt",
+        "clock45_trace.txt",
+        "committed.txt",
+        "context_committed.txt",
+        "context_cut67.txt",
+        "context_cut67_after_io.txt",
+        "context_final.txt",
+        "context_follow_begin_1.txt",
+        "context_follow_begin_2.txt",
+        "context_follow_begin_3.txt",
+        "context_follow_begin_4.txt",
+        "context_follow_committed.txt",
+        "context_follow_returned_1.txt",
+        "context_follow_returned_2.txt",
+        "context_follow_returned_3.txt",
+        "context_follow_returned_4.txt",
+        "context_initial.txt",
+        "cut67.txt",
+        "cut67_after_io.txt",
+        "domain3_limit.txt",
+        "dtmin57_trials.txt",
+        "feedback48_trace.txt",
+        "final.txt",
+        "follow_begin_1.txt",
+        "follow_begin_2.txt",
+        "follow_begin_3.txt",
+        "follow_begin_4.txt",
+        "follow_committed.txt",
+        "follow_returned_1.txt",
+        "follow_returned_2.txt",
+        "follow_returned_3.txt",
+        "follow_returned_4.txt",
+        "geometry53_trace.txt",
+        "guard41_domains.txt",
+        "guard41_heads.txt",
+        "guard41_trace.txt",
+        "history44_trace.txt",
+        "inactive51_trace.txt",
+        "initial.txt",
+        "input_control64.txt",
+        "inventory_trace.txt",
+        "iteration_nodes.txt",
+        "jac24_trace.txt",
+        "jac37_trace.txt",
+        "jac63_systems.txt",
+        "jac63_trace.txt",
+        "ledger_committed.txt",
+        "ledger_cut67.txt",
+        "ledger_cut67_after_io.txt",
+        "ledger_final.txt",
+        "ledger_follow_begin_1.txt",
+        "ledger_follow_begin_2.txt",
+        "ledger_follow_begin_3.txt",
+        "ledger_follow_begin_4.txt",
+        "ledger_follow_committed.txt",
+        "ledger_follow_returned_1.txt",
+        "ledger_follow_returned_2.txt",
+        "ledger_follow_returned_3.txt",
+        "ledger_follow_returned_4.txt",
+        "ledger_initial.txt",
+        "ledger_installed.txt",
+        "native_installed.txt",
+        "node_absorption.txt",
+        "node_iterations.txt",
+        "node_operator.txt",
+        "operator_nodes.txt",
+        "origin_follow_begin_1.txt",
+        "origin_follow_begin_2.txt",
+        "origin_follow_begin_3.txt",
+        "origin_follow_begin_4.txt",
+        "outcome.txt",
+        "prefix_budget.txt",
+        "provider49_trace.txt",
+        "reference46_trace.txt",
+        "solver_1.txt",
+        "solver_2.txt",
+        "solver_3.txt",
+        "solver_4.txt",
+        "step_budget.txt",
+        "successor68_guard.txt"
+      ],
+      "attempts_exact_except_timing": true,
+      "packet_exact": true
+    }
+  },
+  "runs": [
+    {
+      "route": "O0_BARE",
+      "returncode": 0,
+      "censored": false,
+      "seconds": 1.2375487997196615,
+      "stdout": "\n  running swap ....\n",
+      "stderr": "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 0\n"
+    },
+    {
+      "route": "O0_CONT",
+      "returncode": 0,
+      "censored": false,
+      "seconds": 2.2160578002221882,
+      "stdout": "\n  running swap ....\n",
+      "stderr": "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 0\n"
+    },
+    {
+      "route": "O0_FD",
+      "returncode": 0,
+      "censored": false,
+      "seconds": 6.792157100047916,
+      "stdout": "\n  running swap ....\n",
+      "stderr": "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 0\n"
+    },
+    {
+      "route": "O0_QUAL",
+      "returncode": 0,
+      "censored": false,
+      "seconds": 2.6059983000159264,
+      "stdout": "\n  running swap ....\n",
+      "stderr": "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 0\n"
+    },
+    {
+      "route": "O2_BARE",
+      "returncode": 0,
+      "censored": false,
+      "seconds": 1.2335731997154653,
+      "stdout": "\n  running swap ....\n",
+      "stderr": "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 0\n"
+    },
+    {
+      "route": "O2_CONT",
+      "returncode": 0,
+      "censored": false,
+      "seconds": 1.4212790997698903,
+      "stdout": "\n  running swap ....\n",
+      "stderr": "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 0\n"
+    },
+    {
+      "route": "O2_FD",
+      "returncode": 0,
+      "censored": false,
+      "seconds": 5.113957799971104,
+      "stdout": "\n  running swap ....\n",
+      "stderr": "Note: The following floating-point exceptions are signalling: IEEE_DENORMAL\nSTOP 0\n"
+    }
+  ],
+  "derivative_audits": [
+    "O0_DERIVATIVE_AUDIT.json",
+    "O2_DERIVATIVE_AUDIT.json"
+  ],
+  "no_new_solver_or_Jacobian_algebra": true,
+  "no_physics_criteria_or_dt_rule_changes": true,
+  "production_promotion": false,
+  "exclusions": [
+    "general time/physical envelopes",
+    "active V rejection or independent direct-small retry",
+    "second newly accepted successor or own new output checkpoint restart",
+    "full period or reference promotion"
+  ]
+}
