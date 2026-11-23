@@ -77,7 +77,13 @@ def parent_admission():
 def guard_previous_source():
  checked_current_source();raw_custody();parent_admission();return True
 
-def strip_current_evidence(text):return parent.strip_current_evidence(text)
+def strip_current_evidence(text):
+ # The complete workflow inverse is independently checked by current_source.
+ # This exact new data selector must also be removed before the unchanged
+ # historical workflow-body tests remove their original checkout metadata.
+ marker='            /integration/f-ci/nomacro-complete01/CANONICAL_LEGACY*\n'
+ assert text.count(marker)<=1
+ return parent.strip_current_evidence(text.replace(marker,'',1))
 
 def publication_dependencies_unchanged():
  checked_current_source();raw_custody();parent_admission()
