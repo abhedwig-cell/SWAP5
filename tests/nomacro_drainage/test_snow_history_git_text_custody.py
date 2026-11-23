@@ -6,6 +6,10 @@ from explicit_bottom9_snow_history_source_custody import ROOT,original_git_paylo
 class OriginalGitText(unittest.TestCase):
  def blob(self,raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
  def original(self,path):return subprocess.check_output(['git','show','HEAD:'+path],cwd=ROOT)
+ def test_actual_negative_control_paths_are_committed_inputs(self):
+  from explicit_bottom9_snow_history_text_fix_negative_controls import PATHS
+  self.assertEqual(PATHS['RAW'],'integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_HISTORY_UBUNTU_O0_ORIGINAL_V1.zip')
+  for path in PATHS.values():subprocess.run(['git','cat-file','-e','HEAD:'+path],cwd=ROOT,check=True,capture_output=True)
  def test_original_patch_crlf_spelling(self):
   path='integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_HISTORY_PROPOSED_V1.patch';original=self.original(path);self.assertNotIn(b'\r\n',original);working=original.replace(b'\n',b'\r\n');proven,storage=original_git_payload(working,path,self.blob(original));self.assertEqual(proven,original);self.assertIn('GIT_TEXT_CRLF_LF',storage);self.assertNotEqual(self.blob(working),self.blob(original))
  def test_changed_patch_content_refused(self):

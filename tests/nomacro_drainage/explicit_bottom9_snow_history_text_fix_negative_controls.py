@@ -5,7 +5,7 @@ from pathlib import Path
 SHA = lambda raw: hashlib.sha256(raw).hexdigest()
 PATHS = {
     'SOURCE': 'app/hybrid_water/prescribed_head_flux_boundary.py',
-    'RAW': 'integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_HISTORY_TEXT_FIX_UBUNTU_O0_ORIGINAL_V1.zip',
+    'RAW': 'integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_HISTORY_UBUNTU_O0_ORIGINAL_V1.zip',
     'INHERITED': 'integration/f-ci/nomacro-complete01/INITIAL_PROFILE_FROST_ADMISSION_RAW_V1.zip',
     'PUBLICATION': 'docs/publication/P2E09_REFERENCE_ONLY_THRESHOLD_FREEZE_PREREGISTRATION.json',
 }
@@ -22,13 +22,13 @@ def main():
     assert len(candidate) == 40 and git('rev-parse', 'HEAD') == candidate
     clean = lambda: not git('status', '--porcelain=v1', '--untracked-files=all', '--ignored')
     assert clean()
-    positive = json.loads((evidence/'EXPLICIT_BOTTOM9_SNOW_HISTORY_TEXT_FIX_CANDIDATE_PUBLIC_V1.json').read_text())
+    positive = json.loads((evidence/'EXPLICIT_BOTTOM9_SNOW_HISTORY_TEXT_FIX_CANDIDATE_PUBLIC_V2.json').read_text())
     assert positive['returncode'] == 0 and positive['before'] == positive['after']
     assert positive['before']['head'] == candidate
-    result = json.loads((evidence/'EXPLICIT_BOTTOM9_SNOW_HISTORY_TEXT_FIX_CANDIDATE_PUBLIC_V1.stdout.txt').read_text())
+    result = json.loads((evidence/'EXPLICIT_BOTTOM9_SNOW_HISTORY_TEXT_FIX_CANDIDATE_PUBLIC_V2.stdout.txt').read_text())
     assert result['coadmission']['contexts'] == 336
-    assert not (evidence/'EXPLICIT_BOTTOM9_SNOW_HISTORY_TEXT_FIX_CANDIDATE_PUBLIC_V1.stderr.txt').read_bytes()
-    positive_pub = evidence/'EXPLICIT_BOTTOM9_SNOW_HISTORY_TEXT_FIX_CANDIDATE_PUBLICATION_V1'
+    assert not (evidence/'EXPLICIT_BOTTOM9_SNOW_HISTORY_TEXT_FIX_CANDIDATE_PUBLIC_V2.stderr.txt').read_bytes()
+    positive_pub = evidence/'EXPLICIT_BOTTOM9_SNOW_HISTORY_TEXT_FIX_CANDIDATE_PUBLICATION_V2'
     pub = json.loads(positive_pub.with_suffix('.json').read_text())
     assert pub['before'] == pub['after'] and pub['before']['head'] == candidate and pub['returncode'] == 0
     assert 'PUBLICATION_REPLAY_SELECTED=false' in positive_pub.with_suffix('.stdout.txt').read_text()
