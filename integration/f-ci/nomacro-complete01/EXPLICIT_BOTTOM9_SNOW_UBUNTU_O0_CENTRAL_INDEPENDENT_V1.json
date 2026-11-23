@@ -1,0 +1,83 @@
+{
+  "status": "BOTH_UBUNTU_WATER_CDE_ACTIVE_SNOW9_ORIGINAL_ARCHIVE_INDEPENDENT_REPLAY_PASS_NOT_ADMITTED",
+  "optimization": "O0",
+  "actual_producer": "3ca3be768994cd34bc23788e5986cdf46f650f30",
+  "actual_run": 45178310540,
+  "actual_artifact": 14820208653,
+  "raw_sha256": "f4b4655b7c6f20a245fd9c93e65d352bc3863ddf86a5f6988ba250db68254331",
+  "contexts": [
+    {
+      "status": "INDEPENDENT_EXPLICIT9_ACTIVE_SNOW_ACCUMULATION_MELT_ALL_NODE_SOIL_GLOBAL_LEDGER_NATIVE_EXACT_COLD_PASS_NOT_ADMITTED",
+      "producer": "3ca3be768994cd34bc23788e5986cdf46f650f30",
+      "observer_source": "3ca3be768994cd34bc23788e5986cdf46f650f30",
+      "case": "explicit9-snow-water",
+      "optimization": "O0",
+      "actual_days": 35,
+      "actual_native_checkpoints": 7,
+      "actual_exact_cold_windows": 3,
+      "actual_original_Snow_scalar_carry": 7,
+      "actual_BUILD_sha256": "b9e7876b03c3ba2f7238587c1b00ad04a4a44d379754fcca283d950b7ea049e5",
+      "frozen_original_snow_reader_sha256": "b345dd7f92ea1251f499ba34ff9c529c5107bcf44efd74f58d834d8b32b53e1a",
+      "frozen_original_scientific_checks": {
+        "status": "INDEPENDENT_SNOW_UNDRAINED_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "actual_days": 35,
+        "actual_cold_windows": 3,
+        "water": {
+          "days": 35,
+          "whole_water_residual_cm": -4.090477956353311e-15
+        },
+        "actual_BUILD_sha256": "b9e7876b03c3ba2f7238587c1b00ad04a4a44d379754fcca283d950b7ea049e5",
+        "model_executions": 0,
+        "functional_completion": "PARTIAL",
+        "whole_scientific_equivalence": "NOT_QUALIFIED"
+      },
+      "decimal_global_maximum_absolute_residual_cm": "8E-15",
+      "decimal_net_soil_maximum_absolute_residual_cm": "7.10E-15",
+      "absolute_water_limit_cm": "1e-10",
+      "original_boundary_head": -1000.0,
+      "original_prescribed_qbot": 0.0,
+      "original_last_node_head": -1005.0,
+      "model_executions": 0,
+      "compiler_executions": 0,
+      "canonical_admission": false
+    },
+    {
+      "status": "INDEPENDENT_EXPLICIT9_ACTIVE_SNOW_ACCUMULATION_MELT_ALL_NODE_SOIL_GLOBAL_LEDGER_NATIVE_EXACT_COLD_PASS_NOT_ADMITTED",
+      "producer": "3ca3be768994cd34bc23788e5986cdf46f650f30",
+      "observer_source": "3ca3be768994cd34bc23788e5986cdf46f650f30",
+      "case": "explicit9-snow-cde",
+      "optimization": "O0",
+      "actual_days": 35,
+      "actual_native_checkpoints": 7,
+      "actual_exact_cold_windows": 3,
+      "actual_original_Snow_scalar_carry": 7,
+      "actual_BUILD_sha256": "bb62ac49573293268afd016e417e08ece7a33b40baf9b74e341b810bb5bfe153",
+      "frozen_original_snow_reader_sha256": "b345dd7f92ea1251f499ba34ff9c529c5107bcf44efd74f58d834d8b32b53e1a",
+      "frozen_original_scientific_checks": {
+        "status": "INDEPENDENT_SNOW_UNDRAINED_PHYSICAL_NATIVE_OUTPUT_PASS",
+        "actual_days": 35,
+        "actual_cold_windows": 3,
+        "water": {
+          "days": 35,
+          "whole_water_residual_cm": -4.090477956353311e-15
+        },
+        "actual_BUILD_sha256": "bb62ac49573293268afd016e417e08ece7a33b40baf9b74e341b810bb5bfe153",
+        "model_executions": 0,
+        "functional_completion": "PARTIAL",
+        "whole_scientific_equivalence": "NOT_QUALIFIED"
+      },
+      "decimal_global_maximum_absolute_residual_cm": "8E-15",
+      "decimal_net_soil_maximum_absolute_residual_cm": "7.10E-15",
+      "absolute_water_limit_cm": "1e-10",
+      "original_boundary_head": -1000.0,
+      "original_prescribed_qbot": 0.0,
+      "original_last_node_head": -1005.0,
+      "model_executions": 0,
+      "compiler_executions": 0,
+      "canonical_admission": false
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}
