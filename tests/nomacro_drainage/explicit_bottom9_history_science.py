@@ -1,5 +1,5 @@
 """Read actual paired9 hydraulic histories, raw native state and ledgers."""
-import argparse,hashlib,json,math,re,struct,sys,zipfile
+import argparse,hashlib,io,json,math,re,struct,sys,zipfile
 from datetime import date
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
@@ -43,7 +43,7 @@ def native(wire,meta,row,selected,dz):
 
 
 def checkpoint(path,meta,row,selected,dz):
- with zipfile.ZipFile(path) as z:
+ with zipfile.ZipFile(io.BytesIO(path.read_bytes())) as z:
   assert set(z.namelist())=={'checkpoint.json','result.end','macro.bin'}
   q=json.loads(z.read('checkpoint.json'));assert q['schema']=='swap5-hybrid-water-checkpoint-3' and q['binding']==meta['binding'] and q['receipt']==row
   assert set(q['files'])=={'result.end','macro.bin'}
@@ -102,7 +102,7 @@ def audit(profile,reference,locations=None):
   assert physical(continuation)==physical(rows[low:high])
   for day in (high,):
    warm=profile/'trajectory'/('accepted-column-1-day-'+str(day)+'.zip');fresh=out/warm.name
-   with zipfile.ZipFile(warm) as a,zipfile.ZipFile(fresh) as b:
+   with zipfile.ZipFile(io.BytesIO(warm.read_bytes())) as a,zipfile.ZipFile(io.BytesIO(fresh.read_bytes())) as b:
     for name in ('result.end','macro.bin'):assert a.read(name)==b.read(name)
   cold.append(compare(profile/'trajectory/original',out/'original',selected,low,high,meta['project']['start_date']))
  return dict(status='ORIGINAL_HISTORY9_LEDGER_SCANNING_WHOLE_NATIVE_COLD_OUTPUT_INDEPENDENT_PASS_NOT_ADMITTED',kind=q['kind'],hysteresis=q['hysteresis'],initialization=one('SWINCO'),optimization=q['optimization'],days=35,native_samples=samples,exact_cold_windows=3,cold_original_output=cold,ledgers=measured,actual_compiler_producer=q['source'],canonical_admission=False)
