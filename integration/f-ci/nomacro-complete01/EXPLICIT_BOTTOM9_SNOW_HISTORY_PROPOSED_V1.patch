@@ -1,0 +1,22 @@
+--- a/app/hybrid_water/prescribed_head_flux_boundary.py
++++ b/app/hybrid_water/prescribed_head_flux_boundary.py
+@@ -20,7 +20,7 @@
+   rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([^\r\n]*)',active)
+   if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+[ \t]*',rows[0]) is None:return None
+   return int(rows[0])
+- if hysteresis not in (0,1,2) or snow and hysteresis!=0:return None
++ if hysteresis not in (0,1,2):return None
+  fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=hysteresis,SWSNOW=int(snow),SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)
+  if any(integer(key)!=value for key,value in fixed.items()):return None
+  if snow and (integer('SWSOLU') not in (0,1) or integer('SWDRA')!=0):return None
+--- a/app/hybrid_water/prescribed_snow_boundary.py
++++ b/app/hybrid_water/prescribed_snow_boundary.py
+@@ -11,7 +11,7 @@
+  text=(Path(directory)/'swap.swp').read_text(encoding='cp1252');s=switches(text)
+  if s.get('SWBOTB')!=9 or s.get('SWSNOW')!=1:return None
+  from prescribed_head_flux_boundary import selection as paired
+- selected=paired(directory,original_output,snow=True)
++ selected=paired(directory,original_output,hysteresis=s.get('SWHYST'),snow=True)
+  if selected is None:return None
+  active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))
+  models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)

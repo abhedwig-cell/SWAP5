@@ -22,12 +22,12 @@ def main():
     assert len(candidate) == 40 and git('rev-parse', 'HEAD') == candidate
     clean = lambda: not git('status', '--porcelain=v1', '--untracked-files=all', '--ignored')
     assert clean()
-    positive = json.loads((evidence/'EXPLICIT_BOTTOM9_COMBINED_CANDIDATE_PUBLIC_V6.json').read_text())
+    positive = json.loads((evidence/'EXPLICIT_BOTTOM9_COMBINED_CANDIDATE_PUBLIC_V5.json').read_text())
     assert positive['returncode'] == 0 and positive['before'] == positive['after']
     assert positive['before']['head'] == candidate
-    result = json.loads((evidence/'EXPLICIT_BOTTOM9_COMBINED_CANDIDATE_PUBLIC_V6.stdout.txt').read_text())
+    result = json.loads((evidence/'EXPLICIT_BOTTOM9_COMBINED_CANDIDATE_PUBLIC_V5.stdout.txt').read_text())
     assert result['coadmission']['contexts'] == 280
-    assert not (evidence/'EXPLICIT_BOTTOM9_COMBINED_CANDIDATE_PUBLIC_V6.stderr.txt').read_bytes()
+    assert not (evidence/'EXPLICIT_BOTTOM9_COMBINED_CANDIDATE_PUBLIC_V5.stderr.txt').read_bytes()
     positive_pub = evidence/'EXPLICIT_BOTTOM9_COMBINED_CANDIDATE_PUBLICATION_V5'
     pub = json.loads(positive_pub.with_suffix('.json').read_text())
     assert pub['before'] == pub['after'] and pub['before']['head'] == candidate and pub['returncode'] == 0

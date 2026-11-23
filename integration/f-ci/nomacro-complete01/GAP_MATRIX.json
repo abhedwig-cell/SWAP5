@@ -61,12 +61,12 @@
       "function": "Prescribed groundwater chemical trial receipt and bottom9",
       "classification": "PARTIAL",
       "original_source": "boundbottom.f90, headcalc.f90",
-      "scope": "Full targeted60 science is centrally independently verified on Windows/Ubuntu, including last-node drainage and non-daily CDE. Coherent216 PR1789 fixed67 has all16workflows SUCCESS and four real committed/pushed negatives refused. Actual local candidate publicV3 is running after V2 interruption; no canonical216 admission yet.",
-      "authority": "integration/f-ci/nomacro-complete01/AGE_GROUNDWATER_MERGE_RECEIPT.json",
+      "scope": "Actual PR1790 canonical2a14f209 admits the bounded280 owner: parent216 plus analytical24, activeSnow8(hys0) and hysteresis32(Snow0). Real clean14 actualcanonical public/PUB pass, 47 terminal checks and17 workflows success; admission archive8aba9e5e92421e2370d3fc069e74fd906f6bd317d53cb75f130f21ae30055e8a. Whole family remains open.",
+      "authority": "integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_MERGE_RECEIPT_V1.json",
       "authority_present": true,
       "full_historical_family_closed": "UNKNOWN",
       "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed.",
-      "bounded_authority_reconciled_at_actual_canonical": "84e815a0ba9f59a2d56fe838a3b13361ad8670a2"
+      "bounded_authority_reconciled_at_actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a"
     },
     {
       "function": "Drainage methods2/3 and bounded frost SWDIVD0",
@@ -77,7 +77,7 @@
       "authority_present": true,
       "full_historical_family_closed": "UNKNOWN",
       "counting_note": "ADMITTED is the existing bounded authority, not proof that every historically reachable configuration in this broad family is closed.",
-      "remaining_compositions": "Ordinary explicit9 water DRAMET1/SWDIVD0 now has actual Windows/Ubuntu all-node/native/cold/compiled qualification in pendingPR1789; public/canonical admission is still pending. Original SWDIVD0 with solute remains literally unsupported. No broader composition claim."
+      "remaining_compositions": "Ordinary explicit9 water DRAMET1/SWDIVD0 bounded counterpart is admitted in actual parent216 and preserved in280. Original SWDIVD0+solute remains literally unsupported. Other compositions remain unqualified."
     },
     {
       "function": "Other drainage and surfacewater",
@@ -1502,7 +1502,7 @@
     "next": "Separate explicit evaporation-age/dry-state semantics and qualified state owner; retain actual failure and original equations."
   },
   "coverage": {
-    "canonical_reconciled": "79ff3ab235f8b07535bf5273dcda32f4bef15f7d",
+    "canonical_reconciled": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
     "authority": "This object extends existing GAP_MATRIX; STATUS.json remains sole recovery record. Existing26boundedfamily rows and original_integer_reader_calls are inherited, not recounted as full closure.",
     "denominator_status": "INCOMPLETE_VALID_CONFIGURATION_CONSTRAINT_RECONCILIATION",
     "full_historical_families_closed": "UNKNOWN",
@@ -1801,19 +1801,19 @@
       {
         "id": "original-bottom9-explicit",
         "function": "Original paired prescribed bottom head and flux, SWBOTB9/SWKIMPL0",
-        "gap_classification": "MISSING_IMPLEMENTATION",
+        "gap_classification": "MISSING_COMPOSITION",
         "historical_availability": {
           "reader": "Pinned SWAP.ZIP/readswap986..1006, DATE9A/HBOT9 and DATE9B/QBOT9",
           "dispatch": "Pinned BoundBottom143..153 and HeadCalc153,549,595",
           "supported": true
         },
-        "current_availability": "Public experimental lower-boundary domain excludes9. Original explicit implementation exists; current strict day-kernel boundary/storage/receipt/native coupling is not qualified.",
-        "implementation_completeness": "ORIGINAL_PROCESS_PRESENT_CURRENT_COUPLING_UNQUALIFIED",
-        "missing_composition_or_guard": "Last node is prescribed from both h/q schedules and excluded from solved unknowns; total storage/flux consistency and complete final-node state must be independently qualified before exposing it.",
-        "evidence_status": "SOURCE_DISCOVERY_ONLY_NO_MODEL_OR_COMPILER",
+        "current_availability": "Actual PR1790 canonical2a14f209 admits the bounded280 owner: parent216 plus analytical24, activeSnow8(hys0) and hysteresis32(Snow0). Real clean14 actualcanonical public/PUB pass, 47 terminal checks and17 workflows success; admission archive8aba9e5e92421e2370d3fc069e74fd906f6bd317d53cb75f130f21ae30055e8a. Whole family remains open.",
+        "implementation_completeness": "BOUNDED_IMPLEMENTED_ADMITTED_NOT_WHOLE_FAMILY",
+        "missing_composition_or_guard": "Snow+hysteresis now next configuration batch; active-vapor9 thermal composition has real300s censors and original endpoint storage observation. Frost/AGE/implicit crossdomains remain separately scoped.",
+        "evidence_status": "BOUNDED_ACTUAL_CANONICAL_280_PUBLIC_RAW_NATIVE_COMPILED_ADMISSION_VERIFIED",
         "user_relevance": "Original projects using paired measured head/flux boundary cannot currently load.",
         "remaining_effort": "Medium-to-large: inspect current boundary/storage interface, implement bounded explicit coupling and qualify independent mass/native/reference behavior.",
-        "authority": "integration/f-ci/nomacro-complete01/ORIGINAL_BOT9_EXPLICIT_IMPLICIT_SOURCE_DISCOVERY_V1.json",
+        "authority": "integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_COMBINED_MERGE_RECEIPT_V1.json",
         "actual_trial_receipt_surface": "integration/f-ci/nomacro-complete01/ORIGINAL_BOT9_TRIAL_RECEIPT_SURFACE_DISCOVERY_V1.json",
         "retained_independent_flux_requirement": "Original active Fluxes excludes9 from qbot reconstruction; do not replace qbot9 by compensating storage reaction. Independently qualify last-node continuity and reject incompatible h/q forcing under unchanged1e-10."
       },
@@ -2106,36 +2106,35 @@
   },
   "next_coherent_batches": [
     {
-      "family": "Analytical constitutive models3..11 with explicit paired9 water/CDE",
-      "classification": "MISSING_COMPOSITION",
-      "qualification_strategy": "B_EXISTING_PROCESS_COMPOSITION_WITH_STRICT_C_UNCHANGED_PROOF_REUSE",
       "priority": 1,
-      "status": "Twenty-four actual Windows/Ubuntu35day contexts PASS_NOT_ADMITTED; alloriginalreference, Darcy/storage, native/cold/wholecompiler checks preserved. Twelve representative prior compiled postimages pass without model replay.",
-      "next": "Combinequalifiedanalytical24+Snow8+history32 intoonecoherent280admission afteractualcanonical216parentseal; all88actualintegratedwholecompiledpostimagesPASS, no oldmodelperiodreplay."
+      "family": "Original Snow plus hysteresis with paired9 water/CDE",
+      "classification": "MISSING_COMPOSITION",
+      "status": "TWO_GUARD_CONFIGURATION_IMPLEMENTED_NOT_YET_QUALIFIED",
+      "next": "Commit this exact source and complete frontend/Source inverses. Start one real WindowsO0 activeSnow water/hysteresis1 35day+3cold and independent original ledger/native audit. Then coherent water/CDE,hys1/2,O0/O2 Windows/Ubuntu matrix and initial2 wholecompiled/native controls. Existing280 periods never repeat for metadata."
     },
     {
-      "family": "Original Snow with explicit paired9 water/CDE",
-      "classification": "MISSING_COMPOSITION",
-      "qualification_strategy": "B_EXISTING_SNOW_STATE_AND_SOIL_RECEIPT_COMPOSITION",
       "priority": 2,
-      "status": "EightactualWindows/Ubuntu35daySnow9water/CDEcontextsPASS_NOT_ADMITTED;all56native24cold8compiledcounterparts,compiled/typedrefusalsandold6postimagescentrallysealed; currentcombinedSourcepreservedbyall88postimages.",
-      "next": "Admitwithanalytical/historyincoherent280batchafteractual216parentseal; no newSnow+hysteresis/vapor/AGE/Frost/implicitcrossadmission."
-    },
-    {
-      "family": "Existing hydraulic hysteresis/per-layer vapor with paired9",
+      "family": "Paired9 Snow original subdaily/monthly output calendars",
       "classification": "MISSING_COMPOSITION",
-      "qualification_strategy": "B_EXISTING_CONSTITUTIVE_STATE_AND_BOTTOM_INTERFACE_COMPOSITION",
-      "priority": 3,
-      "status": "Hydraulic history paired9 scientificallyqualified32Windows/Ubuntucontexts andintegratedSource/compiledpostimages; canonicaladmissionpending280. Activevaporisgenuinemodel8..11interactionstillmissing; defaultmodel1 ignoresSWVAPOR.",
-      "next": "Finishcoherent280admissionthenboundedcorrectedactivevapor8..11+paired9water/CDEwithactualprescribedexternalQBOT9/allnumnodstorage,existingfullnativecarryandtypednewdomain. SeeEXPLICIT_BOTTOM9_NEXT_ACTIVE_VAPOR_SOURCE_DISCOVERY_V1.json."
+      "status": "Existing Snow-undrained calendar/native owners available; daily guard still restricts paired9. Review valid-domain/state surfaces and combine with Snow-history batch if safe before final admission."
     },
     {
+      "priority": 3,
+      "family": "Active vapor paired9 thermal endpoint coupling",
+      "classification": "NUMERICAL_FAILURE",
+      "status": "Two actual300s censors retained; original O0/O2 endpoint stock jump3.666738201957287e-8cm independent ofdt in bounded real component. No full cause or physical correction claimed."
+    },
+    {
+      "priority": 4,
       "family": "Retained dry-surface AGE moment semantics",
       "classification": "NUMERICAL_FAILURE",
-      "qualification_strategy": "SEPARATE_EXPLICIT_SCIENTIFIC_CONTRACT_REQUIRED",
-      "priority": 4,
-      "status": "Original and current bounded failures remain retained; original concentration reset does not remove retained moment and original evaporation exports no AGE.",
-      "next": "No epsilon-water, moment deletion, invented AGE evaporation or tolerance adjustment. Resolve the physical amount/concentration contract before qualification."
+      "status": "Original retained moment/no AGE evaporation remains. No epsilon-water, dropped moment or tolerance change."
+    },
+    {
+      "priority": 5,
+      "family": "Explicit original SWKMEAN7 hydraulic table",
+      "classification": "MISSING_IMPLEMENTATION",
+      "status": "Original physical table still absent; never fabricate or guard-only enable."
     }
   ],
   "bounded_frost_drainage_explicit": {
@@ -2405,13 +2404,13 @@
     "remaining_unnecessary_admission_guards": "UNKNOWN",
     "remaining_numerical_blockers": "UNKNOWN",
     "remaining_evidence_only_functions": "UNKNOWN",
-    "current_canonical": "79ff3ab235f8b07535bf5273dcda32f4bef15f7d",
+    "current_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
     "next_dependency_ordered_blocks": [
-      "Finish unchanged actual67 candidate publicV3 after interruptedV2; fresh expected-head mergePR1789, actualcanonical public/PUB, sealactual216. All16PRworkflows and4actual committed/pushed negative controls passed.",
-      "Admit existing analytical models3..11 with explicit paired9 water/CDE after parent216 receipt. New24 Windows/Ubuntu contexts independently pass; twelve unchanged-parent whole generated/compiled postimages and complete528rawparts/857declarations custody verified. No repeated prior model periods.",
-      "Compose explicit paired9 with existing original Snow water/CDE state, soil net rainfall/melt receipt and root diagnostic native owner. Preserve all34nodes and actual prescribed external qbot. Snow9 remains refused until a real bounded integrated qualification succeeds.",
-      "Use the same actual paired9 interface for bounded existing hysteresis and per-layer vapor compositions after source/state dependency review. Keep original implicit9 explicitly out of scope.",
-      "Resolve dry-surface retained AGE moment under a separate scientific contract; preserve actual original failure. Resolve the two existing legacy CI SOURCE succession failures through each already-qualified semantic successor and exact dependency requalification, never a blanket allowance."
+      "Original Snow plus hysteresis with paired9 water/CDE",
+      "Paired9 Snow original subdaily/monthly output calendars",
+      "Active vapor paired9 thermal endpoint coupling",
+      "Retained dry-surface AGE moment semantics",
+      "Explicit original SWKMEAN7 hydraulic table"
     ],
     "whole_completion": "PARTIAL",
     "whole_science": "NOT_QUALIFIED",
@@ -2498,25 +2497,24 @@
   },
   "original_explicit_paired_head_flux_composition": {
     "classification": [
-      "MISSING_COMPOSITION",
-      "EVIDENCE_ONLY"
+      "MISSING_COMPOSITION"
     ],
     "historical_availability": "Explicit SWBOTB9 original BoundBottom/HeadCalc exists. SWBOTB9+SWKIMPL1 is literally unimplemented in the original and OUT_OF_SCOPE.",
     "migration_class": "B_EXISTING_EQUATIONS_AND_EXISTING_STRICT_RETRY_COMPOSITION",
-    "current_availability": "Full targeted60 science is centrally independently verified on Windows/Ubuntu, including last-node drainage and non-daily CDE. Coherent216 PR1789 fixed67 has all16workflows SUCCESS and four real committed/pushed negatives refused. Actual local candidate publicV3 is running after V2 interruption; no canonical216 admission yet.",
-    "current_build_blocker": "No remaining targeted60 compilation/science blocker; actual local public and actual canonical proof are still required.",
+    "current_availability": "Actual PR1790 canonical2a14f209 admits the bounded280 owner: parent216 plus analytical24, activeSnow8(hys0) and hysteresis32(Snow0). Real clean14 actualcanonical public/PUB pass, 47 terminal checks and17 workflows success; admission archive8aba9e5e92421e2370d3fc069e74fd906f6bd317d53cb75f130f21ae30055e8a. Whole family remains open.",
+    "current_build_blocker": "No remaining blocker for admitted280; new Snow+hysteresis and active-vapor thermal crossdomain still unqualified.",
     "whole_family_closed": false,
-    "canonical_admission": false,
+    "canonical_admission": true,
     "counts": "UNKNOWN",
     "contract": "EXPLICIT_BOTTOM9_COUPLING_CONTRACT_V1.json",
     "actual_preclock_source": "99c4d7ca481f703937ed32e63b4af5bf847c3b85",
     "raw_discovery": "EV/EXPLICIT_BOTTOM9_OUTPUT_CLOCK_COMPOSITION_DISCOVERY_V1.json",
     "independent_binary_postimages": "EV/EXPLICIT_BOTTOM9_FIRST_EIGHT_ACTUAL_COMPILED_BINARY_POSTIMAGES_V1.json",
-    "next": "Complete recovered actual67 publicV3, expected-head merge1789 and actualcanonical observers, then seal216 and integrate analytical24 using strict unchanged dependency evidence reuse.",
+    "next": "New Snow+hysteresis existing-state configuration; see explicit_paired9_snow_history_composition.",
     "original_table_guard": "Original checkdate accepts one in-period date or full bracketing; immutable original executable actually completed the one-midperiod-point35day control. Current selector is restored to that original rule; targeted SWAP5 clock/table qualification remains pending.",
-    "remaining": "Activevapor8..11, Frost, Snow/history crosscompositions andwhole-familyselectorcoverage remainopen. Qualifiedanalytical24/Snow8/history32awaitcoherentcanonicaladmission. Originalimplicit9 andSWDIVD0+solute remainliteralunsupported; saturatedCDEinitial1startup NUMERICAL_FAILURE preserved.",
+    "remaining": "New Snow+hysteresis pending qualification. Active-vapor thermal paired9 censored300s twice; retain actual original O0/O2 storage observation. Frost/AGE/implicit extensions and whole selector coverage remain open.",
     "portable_workflow": ".github/workflows/nomacro-explicit-bottom9.yml",
-    "central_status": "ALL60_TARGETED_WINDOWS_AND_UBUNTU_CENTRAL_SCIENCE_NATIVE_COLD_WHOLE_COMPILED_PASS_PENDING_ACTUAL_PARENT_ADMISSION_AND_PUBLIC_OWNER",
+    "central_status": "ACTUAL_CANONICAL_280_ADMITTED",
     "central_Windows_raw": "integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_WINDOWS_RAW_V1.json",
     "central_Windows_science": "integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_WINDOWS_CENTRAL_INDEPENDENT_V2.json",
     "central_portable_science": [
@@ -2531,13 +2529,14 @@
       "Windows_O0_O2": "PASS 35days,7native,3exactcold,initial2wholecompiledcounterpart each; literal original AFGEN and allnode Darcy sink balance unchanged.",
       "original_solute_SWDIVD0": "OUT_OF_SCOPE_ORIGINAL_HARD_REFUSAL_RETAINED",
       "Linux": "ACTUAL_RUN44983154144_SUCCESS_O0_O2_CENTRAL_ARCHIVE_SCIENCE_NATIVE_COLD_WHOLE_COMPILED_PASS",
-      "canonical_admission": false,
+      "canonical_admission": true,
       "whole_family_closed": false,
       "central_Windows": "EXPLICIT_BOTTOM9_LAST_NODE_WINDOWS_CENTRAL_INDEPENDENT_V1.json",
       "central_Linux": [
         "EXPLICIT_BOTTOM9_LAST_NODE_UBUNTU_O0_CENTRAL_INDEPENDENT_V1.json",
         "EXPLICIT_BOTTOM9_LAST_NODE_UBUNTU_O2_CENTRAL_INDEPENDENT_V1.json"
-      ]
+      ],
+      "actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a"
     },
     "CDE_nondaily_calendar": {
       "classification": "MISSING_COMPOSITION",
@@ -2548,11 +2547,13 @@
       "prior46_inheritance": "EV/EXPLICIT_BOTTOM9_CDE_PRIOR46_INHERITANCE_V2.json",
       "new_state_or_native_codec": false,
       "whole_family_closed": false,
-      "canonical_admission": false,
+      "canonical_admission": true,
       "failed_new_observer_run": 44990472976,
       "model_periods_replayed_for_observer_repair": 0,
-      "successful_targeted_drain_run": 44990955100
-    }
+      "successful_targeted_drain_run": 44990955100,
+      "actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a"
+    },
+    "actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a"
   },
   "explicit_paired9_snow_daily_composition": {
     "classification": [
@@ -2563,9 +2564,12 @@
     "current_implementation": "ActualSnow7/rootstate carry plus netsoilrainfall/melt/all34nodes trial receipt using actualprescribedqbot, original1e-10 absoluteguard and existingrollback owners. All8 Windows/Ubuntu35day contexts independentlyPASS with24exactcold,56native,8initial2wholecompiled counterparts; all200actualcompiledstartuprefusals independentlyPASS. Not yet canonical.",
     "remaining": "Actualparent216 admission, analytical240 admission and then boundedSnow248 public/canonical proof. Non-dailySnow9,activevapor,hysteresis,AGE and alternateconstitutive interactions remainhardrefused/unqualified.",
     "qualification": "EXPLICIT_BOTTOM9_SNOW_QUALIFICATION_V1.json",
-    "canonical_admission": false,
+    "canonical_admission": true,
     "whole_historical_family_closed": false,
-    "global_counts": "UNKNOWN"
+    "global_counts": "UNKNOWN",
+    "actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+    "whole_family_closed": false,
+    "actual_280_admission": "EXPLICIT_BOTTOM9_COMBINED_MERGE_RECEIPT_V1.json"
   },
   "explicit_paired9_hydraulic_history_daily_composition": {
     "classification": "IMPLEMENTED_NOT_QUALIFIED",
@@ -2573,7 +2577,23 @@
     "qualification": "EXPLICIT_BOTTOM9_HISTORY_QUALIFICATION_V1.json; original35dayoutputs/nodes/ledgers/scanning/natives/cold and896actualcompiled malformed-native refusals; all88integratedcompiledpostimages including32newWindows/32newUbuntu and24oldseamsPASS",
     "numerical_failure": "Saturated distributedCDE SWINCO1 startupfailsbefore firstacceptedday withandwithout hysteresis; primarySWINCO2qualified,opposite1compiledonly. No fallback/tolerance change.",
     "whole_historical_family_closed": false,
+    "canonical_admission": true,
+    "global_family_and_gap_counts": "UNKNOWN",
+    "actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+    "whole_family_closed": false,
+    "actual_280_admission": "EXPLICIT_BOTTOM9_COMBINED_MERGE_RECEIPT_V1.json"
+  },
+  "explicit_paired9_snow_history_composition": {
+    "classification": "MISSING_COMPOSITION",
+    "migration_class": "B_EXISTING_PROCESS_C_TYPED_STATE_CONFIGURATION",
+    "status": "TWO_GUARD_IMPLEMENTATION_NEW_SOURCE_QUALIFICATION_PENDING",
+    "actual_parent": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+    "parent_admission_sha256": "8aba9e5e92421e2370d3fc069e74fd906f6bd317d53cb75f130f21ae30055e8a",
+    "contract": "EXPLICIT_BOTTOM9_SNOW_HISTORY_CONTRACT_V1.json",
+    "scope": "M1/Snow1/hysteresis1or2/daily waterCDE/paired9/DRA0; no vapor,Frost,AGE,implicit extension",
+    "physical_equations_changed": false,
+    "native_format_changed": false,
     "canonical_admission": false,
-    "global_family_and_gap_counts": "UNKNOWN"
+    "whole_family_closed": false
   }
 }

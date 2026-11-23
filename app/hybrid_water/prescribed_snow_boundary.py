@@ -11,7 +11,7 @@ def selection(directory,original_output=True):
  text=(Path(directory)/'swap.swp').read_text(encoding='cp1252');s=switches(text)
  if s.get('SWBOTB')!=9 or s.get('SWSNOW')!=1:return None
  from prescribed_head_flux_boundary import selection as paired
- selected=paired(directory,original_output,snow=True)
+ selected=paired(directory,original_output,hysteresis=s.get('SWHYST'),snow=True)
  if selected is None:return None
  active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))
  models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)

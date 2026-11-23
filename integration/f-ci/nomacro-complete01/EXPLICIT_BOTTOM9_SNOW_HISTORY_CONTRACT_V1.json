@@ -1,0 +1,65 @@
+{
+  "status": "BOUNDED_EXISTING_SNOW_HISTORY_TYPED_STATE_CONFIGURATION_CONTRACT_IMPLEMENTED_GUARDS_QUALIFICATION_PENDING",
+  "actual_canonical": "2a14f2094bfbfb29c169eb6331da1d7829faa70a",
+  "files": {
+    "app/hybrid_water/prescribed_head_flux_boundary.py": {
+      "before_lf_sha256": "5449e18f27aae3eeab424b7b440e84e731954d3f7354082b92e9abfb6aa38036",
+      "proposed_lf_sha256": "9448349f37457347db05f8524ede5046a25e838ec40720c8204bbe1183237efc",
+      "literal_old": "if hysteresis not in (0,1,2) or snow and hysteresis!=0:return None",
+      "literal_new": "if hysteresis not in (0,1,2):return None"
+    },
+    "app/hybrid_water/prescribed_snow_boundary.py": {
+      "before_lf_sha256": "94bf5d27e9b3c85e3ef4db846d16b26d682e35f7a9ced92682672ddfe6153f83",
+      "proposed_lf_sha256": "dccf3b774c4d6cac8cdd8fd7e8ef0d66efb2cbc16add60b4ea1bc20b23683a1e",
+      "literal_old": "selected=paired(directory,original_output,snow=True)",
+      "literal_new": "selected=paired(directory,original_output,hysteresis=s.get('SWHYST'),snow=True)"
+    }
+  },
+  "patch_sha256": "5943dd375c2e6ef63ebd06dd37f70c2a6c468b4b7d6feed40d17a2d00217a193",
+  "classification": "B_EXISTING_PROCESS_COMPOSITION_WITH_C_EXISTING_TYPED_STATE_CONFIGURATION",
+  "new_domain": {
+    "SWBOTB": 9,
+    "SWSNOW": 1,
+    "SWHYST": [
+      1,
+      2
+    ],
+    "SWDRA": 0,
+    "SWSOLU": [
+      0,
+      1
+    ],
+    "SWKIMPL": 0,
+    "IHWCKMODEL": 1,
+    "SWVAPOR": 0,
+    "SWFROST": 0,
+    "SWHEA": 1,
+    "SWCALT": 2,
+    "NPRINTDAY": 1,
+    "SWRES": 1,
+    "FLPRINTDT": false
+  },
+  "physical_equations_changed": false,
+  "native_format_changed": false,
+  "new_physical_state": false,
+  "native_contract": "Existing ordinary Snow-undrained domain and root witnesses already bind SWHYST and SWBOTB; original result.end retains all scanning state. Prove actual generated provider unchanged; never assume same magic alone is sufficient.",
+  "tests": {
+    "Windows_O0_O2_new35day_contexts": 8,
+    "Ubuntu_O0_O2_new35day_contexts": 8,
+    "each_native_checkpoints": 7,
+    "each_exact_cold_windows": 3,
+    "original_Snow_accumulation_melt_and_allnode_soil_global_CDE_ledgers": true,
+    "typed_native_and_external_transaction_refusals": true,
+    "unchanged_prior_whole_generated_compiled_postimages": true
+  },
+  "current_vapor_thermal_failure": "Separate unadmitted branch1069/6f1 preserves two300s censors and real original O0/O2 endpoint storage observations; no vapor, AGE, Frost, implicit or analytical crossadmission here.",
+  "global_counts": "UNKNOWN",
+  "whole_completion": "PARTIAL",
+  "whole_science": "NOT_QUALIFIED",
+  "RC3_changed": false,
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "parent_admission_sha256": "8aba9e5e92421e2370d3fc069e74fd906f6bd317d53cb75f130f21ae30055e8a",
+  "parent_contexts": 280,
+  "canonical_admission": false
+}
