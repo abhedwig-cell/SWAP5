@@ -1,0 +1,45 @@
+{
+  "status": "ALL4_COMPILED_LEGACY_CLOSURES_SOURCE_ORIGINAL_IMMUTABLE_INPUTS_12_NATIVE_ORACLES_AND_TWO_EXACT_UBUNTU_NATIVE_WORKFLOWS_CENTRAL_INDEPENDENT_PASS",
+  "raw_sha256": "c22b2053e9f4972aa2693447aef77cc0d71a50c9869a8ba41174a25a8ed905b0",
+  "contexts": [
+    {
+      "kind": "WOF43A",
+      "actual_producer": "dbccae07f0e81745bf25b360e5785b0d2574a0b8",
+      "actual_compiler_executions": 36,
+      "actual_native_component_executions": 6,
+      "exact_O0_O2_output_pairs": 3,
+      "all_original_native_markers_verified": true
+    },
+    {
+      "kind": "FSI35",
+      "actual_producer": "ace63eadadbbe40d47c731540250927e5835498d",
+      "actual_compiler_executions": 70,
+      "actual_native_component_executions": 6,
+      "exact_O0_O2_output_pairs": 3,
+      "all_original_native_markers_verified": true
+    }
+  ],
+  "exact_original_Ubuntu_workflows": [
+    {
+      "kind": "WOF43A",
+      "actual_run": 45225306180,
+      "actual_head": "ace63eadadbbe40d47c731540250927e5835498d",
+      "full_original_log_sha256": "c53e8517b3050356cf5d96c85d452b333d51314d329f4d866e107b2598f74ae9",
+      "conclusion": "success"
+    },
+    {
+      "kind": "FSI35",
+      "actual_run": 45229329739,
+      "actual_head": "b62b37600da90f93551aa9b384d3d32f0e4d72f6",
+      "full_original_log_sha256": "fe696b1d925021ef7b7aec4ee135c0d2b34f2c01e70fb756d6575f8ce7fe67c2",
+      "conclusion": "success"
+    }
+  ],
+  "actual_original_compilers": 106,
+  "actual_original_native_components": 12,
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "archive_members_extracted": 0,
+  "global_DATAQUAL12_qualification_claimed": false,
+  "canonical_admission": false
+}

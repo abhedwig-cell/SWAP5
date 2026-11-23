@@ -10,6 +10,7 @@ from explicit_bottom9_combined_source_custody import source as current_source
 from explicit_bottom9_analytical_inherited_custody import fresh as complete_parent_custody
 from explicit_bottom9_combined_windows_central import read as windows_postimages
 from explicit_bottom9_combined_linux_central import read as linux_postimages
+from canonical_legacy_original_oracles_central import read as legacy_oracles
 import explicit_bottom9_verify as parent
 PROOF=ROOT/'integration/f-ci/nomacro-complete01'
 SEALED='PENDING_ACTUAL_SOURCE_ANCHOR'
@@ -21,7 +22,7 @@ NAMES=(
  'EXPLICIT_BOTTOM9_ANALYTICAL_WINDOWS_RAW_V1','EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_O0_RAW_V1','EXPLICIT_BOTTOM9_ANALYTICAL_UBUNTU_O2_RAW_V1','EXPLICIT_BOTTOM9_ANALYTICAL_PRIOR_POSTIMAGES_RAW_V1',
  'EXPLICIT_BOTTOM9_SNOW_WINDOWS_RAW_V1','EXPLICIT_BOTTOM9_SNOW_UBUNTU_O0_RAW_V1','EXPLICIT_BOTTOM9_SNOW_UBUNTU_O2_RAW_V1','EXPLICIT_BOTTOM9_SNOW_PRIOR_CONTROLS_RAW_V1','EXPLICIT_BOTTOM9_SNOW_NATIVE_UBUNTU_O0_RAW_V1','EXPLICIT_BOTTOM9_SNOW_NATIVE_UBUNTU_O2_RAW_V1',
  'EXPLICIT_BOTTOM9_HISTORY_WINDOWS_RAW_V1','EXPLICIT_BOTTOM9_HISTORY_UBUNTU_O0_ORIGINAL_V1','EXPLICIT_BOTTOM9_HISTORY_UBUNTU_O2_ORIGINAL_V1','EXPLICIT_BOTTOM9_HISTORY_INPUTS_RAW_V2',
- 'EXPLICIT_BOTTOM9_COMBINED_WINDOWS_POSTIMAGES_RAW_V1','EXPLICIT_BOTTOM9_COMBINED_UBUNTU_O0_ORIGINAL_V1','EXPLICIT_BOTTOM9_COMBINED_UBUNTU_O2_ORIGINAL_V1')
+ 'EXPLICIT_BOTTOM9_COMBINED_WINDOWS_POSTIMAGES_RAW_V1','EXPLICIT_BOTTOM9_COMBINED_UBUNTU_O0_ORIGINAL_V1','EXPLICIT_BOTTOM9_COMBINED_UBUNTU_O2_ORIGINAL_V1','CANONICAL_LEGACY_ORIGINAL_ORACLES_RAW_V1')
 
 def checked_current_source():
  assert re.fullmatch('[0-9a-f]{40}',SEALED) and re.fullmatch('[0-9a-f]{64}',PARENT_ADMISSION_SHA) and re.fullmatch('[0-9a-f]{64}',CONTRACT_SHA)
@@ -63,8 +64,9 @@ def publication_dependencies_unchanged():
 def verify():
  sources=checked_current_source();raw=raw_custody();admission,prior=parent_admission();inherited=complete_parent_custody(PROOF);messages=io.StringIO()
  with redirect_stdout(messages):
-  compiled_windows=windows_postimages();compiled_linux={opt:linux_postimages(PROOF/('EXPLICIT_BOTTOM9_COMBINED_UBUNTU_'+opt+'_ORIGINAL_V1.zip'),opt) for opt in ('O0','O2')}
+  compiled_windows=windows_postimages();compiled_linux={opt:linux_postimages(PROOF/('EXPLICIT_BOTTOM9_COMBINED_UBUNTU_'+opt+'_ORIGINAL_V1.zip'),opt) for opt in ('O0','O2')};legacy=legacy_oracles()
  assert compiled_windows==json.loads((PROOF/'EXPLICIT_BOTTOM9_COMBINED_WINDOWS_POSTIMAGES_CENTRAL_INDEPENDENT_V1.json').read_text())
+ assert legacy==json.loads((PROOF/'CANONICAL_LEGACY_ORIGINAL_ORACLES_CENTRAL_INDEPENDENT_V2.json').read_text())
  for opt,value in compiled_linux.items():assert value==json.loads((PROOF/('EXPLICIT_BOTTOM9_COMBINED_UBUNTU_'+opt+'_CENTRAL_INDEPENDENT_V1.json')).read_text())
  # All original numeric assertions were independently executed against these
  # immutable original Source/input/raw bytes. Fresh whole-archive custody,
@@ -75,6 +77,6 @@ def verify():
  for name in names:
   path='integration/f-ci/nomacro-complete01/'+name+'.json';raw_record=norm((ROOT/path).read_bytes());assert raw_record==blob(SEALED,path);q=json.loads(raw_record);assert 'PASS' in q['status'] and q['compiler_executions']==q['model_executions']==0 and q['canonical_admission'] is False;science[name]=q
  assert sum(len(value['contexts']) for value in science.values())==64
- return dict(status='BOUNDED_ORIGINAL_ANALYTICAL_SNOW_HISTORY_PAIRED9_SOURCE_RAW_NATIVE_AND_WHOLE_COMPILED_POSTIMAGES_PASS',new64_immutable_original_science= science,inherited216_and_all_prior_science=prior,parent_actual_admission=admission,inherited_fresh_source=sources,inherited_fresh_bytes=inherited,actual_current_raw_custody=raw,integrated_windows_compiled=compiled_windows,integrated_linux_compiled=compiled_linux,scientific_reader_messages=messages.getvalue(),scientific_reuse='EXACT_CURRENT_SOURCE_LITERAL_INVERSES_COMPLETE_FRESH_ORIGINAL_EVIDENCE_AND88_ACTUAL_INTEGRATED_WHOLE_COMPILED_POSTIMAGES_NO_PRODUCER_OR_BINDING_REWRITE',coadmission=dict(contexts=280,short35_contexts=278,year367_contexts=2,exact_cold_windows=844,native_calendar_samples=1966,compiled_initialization_postimages=223,integrated_compiler_preservation_postimages=88,previous_canonical=PARENT_CANONICAL,standalone_AGE110_admission_claimed=False),compiler_executions=0,model_executions=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
+ return dict(status='BOUNDED_ORIGINAL_ANALYTICAL_SNOW_HISTORY_PAIRED9_SOURCE_RAW_NATIVE_AND_WHOLE_COMPILED_POSTIMAGES_PASS',new64_immutable_original_science= science,inherited216_and_all_prior_science=prior,parent_actual_admission=admission,inherited_fresh_source=sources,inherited_fresh_bytes=inherited,actual_current_raw_custody=raw,legacy_original_component_preservation=legacy,integrated_windows_compiled=compiled_windows,integrated_linux_compiled=compiled_linux,scientific_reader_messages=messages.getvalue(),scientific_reuse='EXACT_CURRENT_SOURCE_LITERAL_INVERSES_COMPLETE_FRESH_ORIGINAL_EVIDENCE_AND88_ACTUAL_INTEGRATED_WHOLE_COMPILED_POSTIMAGES_NO_PRODUCER_OR_BINDING_REWRITE',coadmission=dict(contexts=280,short35_contexts=278,year367_contexts=2,exact_cold_windows=844,native_calendar_samples=1966,compiled_initialization_postimages=223,integrated_compiler_preservation_postimages=88,previous_canonical=PARENT_CANONICAL,standalone_AGE110_admission_claimed=False),compiler_executions=0,model_executions=0,canonical_admission='OWNED_BY_ACTUAL_MERGE_RECEIPT',functional_completion='PARTIAL',whole_scientific_equivalence='NOT_QUALIFIED',global_family_and_gap_counts='UNKNOWN',RC3_changed=False)
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
