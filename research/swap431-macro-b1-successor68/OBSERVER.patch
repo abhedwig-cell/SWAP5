@@ -1,0 +1,58 @@
+--- POTENTIAL61/potential61_probe.f90
++++ SUCCESSOR68/potential68_probe.f90
+@@ -1,5 +1,5 @@
+ ! Bounded real-provider derivative qualification; never used by the linear solve.
+-subroutine potential61_probe()
++subroutine potential68_probe(branch68)
+ use,intrinsic::ieee_exceptions,only:ieee_status_type,ieee_get_status,ieee_set_status,ieee_all,ieee_get_flag
+ use SENSE23_TRANSACTION,only:snapshot
+ use MOD_arrays,only:macp,madm
+@@ -12,6 +12,7 @@
+ use variables,only:h,theta,k,swkimpl,thetas,thetar
+ use DIAG19,only:probe_busy,probe_u,point_id,point_node,point_delta,attempts,iter_index
+ implicit none
++integer,intent(in)::branch68
+ integer::u,pu,ru,oldunit,oldid,oldnode,nbytes,ncache,pid,lev,j,sgn,node
+ integer,parameter::nodes(9)=[49,50,51,52,53,54,55,56,57]
+ real(8)::olddelta,eps,delta,cm(24,madm),ins(macp,madm),outs(macp,madm),uns(macp,madm),rapid(macp,madm),sample61(24)
+@@ -19,14 +20,14 @@
+ character(120)::base,rest,cache,crest,points,receipt,limits
+ integer(1),allocatable::original(:),restored(:),coriginal(:),crestored(:)
+ type(ieee_status_type)::fp
+-if(attempts/=2.or.(iter_index/=53.and.iter_index/=54)) error stop 'POTENTIAL61 outside selected point'
+-write(base,'(a,i0,a)') 'potential61_i',iter_index,'_base.bin'
+-write(rest,'(a,i0,a)') 'potential61_i',iter_index,'_restored.bin'
+-write(cache,'(a,i0,a)') 'potential61_i',iter_index,'_cache.bin'
+-write(crest,'(a,i0,a)') 'potential61_i',iter_index,'_cache_restored.bin'
+-write(points,'(a,i0,a)') 'potential61_i',iter_index,'_points.txt'
+-write(receipt,'(a,i0,a)') 'potential61_i',iter_index,'_restore.txt'
+-write(limits,'(a,i0,a)') 'potential61_i',iter_index,'_limits.txt'
++if(branch68<1.or.branch68>2) error stop 'POTENTIAL68 branch'
++write(base,'(a,i0,a)') 'potential68_b',branch68,'_base.bin'
++write(rest,'(a,i0,a)') 'potential68_b',branch68,'_restored.bin'
++write(cache,'(a,i0,a)') 'potential68_b',branch68,'_cache.bin'
++write(crest,'(a,i0,a)') 'potential68_b',branch68,'_cache_restored.bin'
++write(points,'(a,i0,a)') 'potential68_b',branch68,'_points.txt'
++write(receipt,'(a,i0,a)') 'potential68_b',branch68,'_restore.txt'
++write(limits,'(a,i0,a)') 'potential68_b',branch68,'_limits.txt'
+ oldbusy=probe_busy;oldunit=probe_u;oldid=point_id;oldnode=point_node;olddelta=point_delta
+ call ieee_get_status(fp);call ieee_get_flag(ieee_all,flags0)
+ call snapshot(trim(base),1)
+@@ -38,6 +39,7 @@
+ open(newunit=pu,file=trim(points),status='replace');open(newunit=ru,file=trim(receipt),status='replace')
+ open(newunit=probe_u,file=trim(limits),status='replace')
+ probe_busy=.true.;pid=0
++call MACRORATE(1)
+ call record(0,0d0)
+ do lev=1,2
+  eps=1d-7/dble(lev)
+@@ -54,7 +56,8 @@
+   end do
+  end do
+ end do
+-call restore();pid=pid+1;call record(0,0d0)
++call restore();pid=pid+1;call MACRORATE(1);call record(0,0d0)
++call restore()
+ close(pu);close(ru);close(probe_u)
+ probe_busy=oldbusy;probe_u=oldunit;point_id=oldid;point_node=oldnode;point_delta=olddelta
+ call ieee_set_status(fp)
