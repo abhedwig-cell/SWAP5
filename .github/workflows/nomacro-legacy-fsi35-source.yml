@@ -1,0 +1,70 @@
+name: Targeted original FSI35 source succession and unchanged native oracles
+
+on:
+  push:
+    branches: [codex/nomacro-explicit-bottom9-coadmission01]
+    paths: ['.github/workflows/nomacro-legacy-fsi35-source.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  fsi35-permanent-preservation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/**
+            /tests/fci/**
+            /tests/fsi/**
+            /tests/support/**
+            /integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json
+            /integration/f-ci/nomacro-complete01/CANONICAL_LEGACY_FSI35_SOURCE_CONTRACT_V1.json
+            /integration/f-ci/nomacro-complete01/CANONICAL_LEGACY_FSI35_ORIGINAL_STUB_INTERFACE_V1.f90
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_LEGACY_D12_ACTUAL_HISTORICAL_V2.*
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Recover exact historical F-SI35 authorities
+        run: git fetch --no-tags origin 15ccbf4b6bcf6895b824a68c221762bef0bc08b9 5898e6616dbb6871a9f52d489038235ba1172cae fd93e50da5973f3e15c8f1b7fa57d72df6c31b72 19a67f7c398fcadbcbc9729509680a1c0c5424f3 f4f98637e963e07e2bedf7ef6acbcaab36e07e5a 48336cb7f14e9246b03c23e549fe7354a93f9e6b
+      - name: Preserve F-SI35 through admitted semantic successor lineage
+        shell: bash
+        run: bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh
+
+  fci58p-postimage-reconciliation:
+    if: github.ref_name == 'qualification/f-ci58p-fsi35-current-canonical-postimage-reconciliation' || github.head_ref == 'qualification/f-ci58p-fsi35-current-canonical-postimage-reconciliation'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/**
+            /tests/fci/**
+            /tests/fsi/**
+            /tests/support/**
+            /integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json
+            /integration/f-ci/nomacro-complete01/CANONICAL_LEGACY_FSI35_SOURCE_CONTRACT_V1.json
+            /integration/f-ci/nomacro-complete01/CANONICAL_LEGACY_FSI35_ORIGINAL_STUB_INTERFACE_V1.f90
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_LEGACY_D12_ACTUAL_HISTORICAL_V2.*
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Reconcile admitted F-SI35 source against historical F-CI58 postimage
+        shell: bash
+        env:
+          FCI58P_MODE: reconciliation
+          GH_TOKEN: ${{ github.token }}
+        run: bash tests/fci/run_fci58p_fsi35_current_canonical_postimage_reconciliation.sh

@@ -1,0 +1,436 @@
+{
+  "status": "BOUNDED_FSI35_CURRENT_SOURCE_SUCCESSOR_REQUIRES_UNCHANGED_IMMUTABLE_NATIVE_ORACLES",
+  "classification": "EVIDENCE_ONLY",
+  "baseline": "4d39e97d2f257f70b6fc108c62eb5efce9967a42",
+  "actual_current_windows_oracle_producer": "ace63eadadbbe40d47c731540250927e5835498d",
+  "source_inventory": {
+    "src/solver/mod_soil_water_solver_contract.f90": {
+      "git_blob": "f41e789d6bd27bfbf7046c1226371356e3c7ed25",
+      "LF_sha256": "91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": {
+      "git_blob": "5418b6a1a9f651e818678f347c9cd8399693eb82",
+      "LF_sha256": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": {
+      "git_blob": "8cf848d0ac85602bcde434d76189990f30c11dcb",
+      "LF_sha256": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/runtime/mod_a23bu_worker_execution_context.f90": {
+      "git_blob": "7861f062c5c7c3aa6bf386a9af793489d4a76f56",
+      "LF_sha256": "3bba0d4c16685c6af91e84285d1c296c396c72fcf91978c412ca1ca1d6a8270f",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_reference_linear_solver.f90": {
+      "git_blob": "a2eeeb951c5269068ed0c9e6cd47e22bfa736d7c",
+      "LF_sha256": "d2becea870d10dd954e1c3d3072992ccea0d85e3237fd159050379160f13fd33",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_reference_richards_workspace.f90": {
+      "git_blob": "1ae4eea78df6b27dc982b8318402f78728394aa7",
+      "LF_sha256": "cb899e79f1cb667d852ea97342efaa4924b90cbb2a1529629819291012273f5e",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_reference_richards_state_binding.f90": {
+      "git_blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+      "LF_sha256": "11609ee59a2f1a888c408c611a54b773f931bb5e0b5c46bd3ebb4a016bcf32d2",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_b110_default_mvg_provider.f90": {
+      "git_blob": "38143d9e85556dcc3e3b8e00e0992bd658004759",
+      "LF_sha256": "9f1806a45f759bb047b97fcd55a4e88339e4aaa111cb58b2fabe1cea65567f11",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": {
+      "git_blob": "ddc767fc0dff62d83a646dd68a16e97f5702efb4",
+      "LF_sha256": "40ed0f09d7ab29007cb89008c9e95d9b8dee2be882972775a8385798ebffe55b",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_b110_source_sink_provider.f90": {
+      "git_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+      "LF_sha256": "9f77a9fbd2f79b93aff97f8f5bee3ba8d7314a9d179c2fb3f3a0b93de33f118d",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_b110_root_sink_provider.f90": {
+      "git_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+      "LF_sha256": "7679dec5f23ea59ceabd3f5a1f7de65b30728b4ca6999dc33d499665acd0cd2e",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": {
+      "git_blob": "fb226f133bd48d8ab945f111c76897aeff49facf",
+      "LF_sha256": "83fac9a3f6bbae7f097b9f0d72d018b3d8d50553a8325f5a3f7b7f1d86f7e9e8",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_b110_direct_retention_core.f90": {
+      "git_blob": "4079f23ac63a60efb80e499029346fac88f8a780",
+      "LF_sha256": "6bdc5210911803a9b36e41b38aa706c92b8cab3e30ca797cc6d6be2586153336",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_b110_direct_retention_provider.f90": {
+      "git_blob": "8de39d457ee85ef930c021be360648c490b2c732",
+      "LF_sha256": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_reference_richards_temporal_indicator.f90": {
+      "git_blob": "349211075fe02c23042492a795bc2e308b0dfed2",
+      "LF_sha256": "68b4956d9bf2f2e52ac2623b5f64ce2c0285e8ed7121ca6752212b79e0a72f2a",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_surface_evaporation_capacity_contract.f90": {
+      "git_blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+      "LF_sha256": "9d6ebd186ed612ab0ca150190c5092b3056009954fc691bf2def8830cd46dae2",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": {
+      "git_blob": "8909cdf342527a2b0266c8d9a5fc918f98556ea2",
+      "LF_sha256": "5078e73bdfe436ced624d8ca44eaa3451ce78ce4d871f4663a3a1e3cbc963217",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/process/mod_restricted_surface_evaporation.f90": {
+      "git_blob": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77",
+      "LF_sha256": "7f35440dd71189668c0259d44092a1262f8d09791971347fdfd1f7e6cbb2c475",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": {
+      "git_blob": "b517617c57dc600eac12cbb421924a8886b41d53",
+      "LF_sha256": "e622d52f8edd35cd50e1235226e52570c9be0e8e345c632b6b8f2e00a6fbcfcf",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": {
+      "git_blob": "e9c6d0d367bedb94b184e3a32542bc5fba228cbf",
+      "LF_sha256": "c863927a8974a5753b71fe6d6d19e995576af102446953ca9527797cf78e767b",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": {
+      "git_blob": "0a957376b9a9fdea00ab6009f129803fb5341e4a",
+      "LF_sha256": "62c88eb7012ccd7b2c8c14f98c71ac9ffca0618de2337bf91cc29975540595dd",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90": {
+      "git_blob": "28aa42572ee202e7a25f790c175927c832ee849b",
+      "LF_sha256": "94f5852d14dfdfbdad80b37335d6eb00d365091efb47953467a89cbf4c1f504f",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90": {
+      "git_blob": "e381db141cf8c2b148dd944b98a73a7612a00296",
+      "LF_sha256": "96832f90e498ba501fdebc10bea77a85a1c577d190f184ad2511e2361a1df4b2",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/legacy/b1_10_port/headcalc.f90": {
+      "git_blob": "6c11621c0686bb25d5b8b3e3a420ad1ceb7ffdd0",
+      "LF_sha256": "862e1ab60ebcc319853a7247c61513a900a90bc418c125a03ce789ff414ed3e9",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/adapter/mod_reference_richards_legacy_binding.f90": {
+      "git_blob": "bebb605f0144b9a1b1cd3fc7701a148073dd6c4a",
+      "LF_sha256": "0e5bfb442b265b6536e088a26e93961eca282498c307cafb1372a45c411d0cbd",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": {
+      "git_blob": "6bb0ae737b5cbf26084b6de8250cebdce932fd19",
+      "LF_sha256": "c09975cb3aeaaaa503868e436900e371c41589475d6c362f6d0d72fbda667c4f",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/adapter/mod_b110_production_soil_water_task2.f90": {
+      "git_blob": "ed678be6e27621ac076a883c947abba8032ac7e6",
+      "LF_sha256": "11fa6fc7d8f5f080c89e7fb014647cbce0067f9dfae8df23f97874f4cc972734",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/legacy/b1_10_port/soilwater.f90": {
+      "git_blob": "2ab6ea917525cd6f2560860bd55aec1da16be014",
+      "LF_sha256": "3fe811413bfd823b825d3638e1e5263201b61e87f47faf0bd12da24e660c9139",
+      "role": "ACTUAL_CURRENT_NATIVE_COMPILE_CLOSURE"
+    },
+    "src/transaction/mod_transaction_reference.f90": {
+      "git_blob": "0a5ce4d122037048ab9372acdeae447cc085f2d3",
+      "LF_sha256": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+      "role": "UNCHANGED_SELF_CONTAINED_TRANSACTION_WITH_ONLY_IEEE_ISO_INTRINSICS_FROM_ACTUAL_QUALIFIED_HISTORICAL_D12"
+    }
+  },
+  "original_immutable_roots": [
+    "integration/f-ci/nomacro-complete01/CANONICAL_LEGACY_FSI35_ORIGINAL_STUB_INTERFACE_V1.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+    "src/runtime/mod_a23bu_worker_execution_context.f90",
+    "src/solver/mod_reference_linear_solver.f90",
+    "src/solver/mod_reference_richards_workspace.f90",
+    "src/solver/mod_reference_richards_state_binding.f90",
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90",
+    "src/solver/mod_b110_source_sink_provider.f90",
+    "src/solver/mod_b110_root_sink_provider.f90",
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+    "src/solver/mod_reference_richards_temporal_indicator.f90",
+    "src/solver/mod_surface_evaporation_capacity_contract.f90",
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90",
+    "src/process/mod_restricted_surface_evaporation.f90",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90",
+    "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+    "src/adapter/mod_b110_production_soil_water_task2.f90"
+  ],
+  "actual_transitive_closure": [
+    "integration/f-ci/nomacro-complete01/CANONICAL_LEGACY_FSI35_ORIGINAL_STUB_INTERFACE_V1.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+    "src/runtime/mod_a23bu_worker_execution_context.f90",
+    "src/solver/mod_reference_linear_solver.f90",
+    "src/solver/mod_reference_richards_workspace.f90",
+    "src/solver/mod_reference_richards_state_binding.f90",
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90",
+    "src/solver/mod_b110_source_sink_provider.f90",
+    "src/solver/mod_b110_root_sink_provider.f90",
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+    "src/solver/mod_b110_direct_retention_core.f90",
+    "src/solver/mod_b110_direct_retention_provider.f90",
+    "src/solver/mod_reference_richards_temporal_indicator.f90",
+    "src/solver/mod_surface_evaporation_capacity_contract.f90",
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90",
+    "src/process/mod_restricted_surface_evaporation.f90",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90",
+    "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90",
+    "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+    "src/adapter/mod_b110_production_soil_water_task2.f90"
+  ],
+  "original_immutable_inputs": [
+    {
+      "ref": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+      "path": "tests/fkt/fkt15_production_task2_stubs.f90",
+      "original_bytes": 9654,
+      "original_sha256": "0580405fce81a82b74a127466817352cf2c79f1daa62aa033c05115320102191",
+      "materialized": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-fsi35-current-original-oracles-v2\\immutable-inputs\\fkt15_stubs.f90"
+    },
+    {
+      "ref": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+      "path": "tests/fkt/test_fkt15_production_task2.f90",
+      "original_bytes": 9316,
+      "original_sha256": "697084e8867549aaff69a7a21c1de22cfad3bbeed05ba58336eac178ad21c22b",
+      "materialized": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-fsi35-current-original-oracles-v2\\immutable-inputs\\fkt15_task2.f90"
+    },
+    {
+      "ref": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+      "path": "tests/fkt/test_fkt15_production_surface_regimes.f90",
+      "original_bytes": 11961,
+      "original_sha256": "eac60fec37e2227a29b46159712bbe21d80fb5c739e6ed3567eb19239053c8a9",
+      "materialized": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-fsi35-current-original-oracles-v2\\immutable-inputs\\fkt15_surface.f90"
+    },
+    {
+      "ref": "5898e6616dbb6871a9f52d489038235ba1172cae",
+      "path": "tests/fsi/test_fsi35_task2_dispatch_equivalence.f90",
+      "original_bytes": 5966,
+      "original_sha256": "134aa4c4081575961c16b718c0607ceb3c8b54a62d63e84dd27f6b162e4ce1d2",
+      "materialized": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\canonical-legacy-fsi35-current-original-oracles-v2\\immutable-inputs\\fsi35_dispatch.f90"
+    }
+  ],
+  "stub_fixture": {
+    "path": "integration/f-ci/nomacro-complete01/CANONICAL_LEGACY_FSI35_ORIGINAL_STUB_INTERFACE_V1.f90",
+    "sha256": "abd4c8959e11f2c4a9faf18cfea0d504d69843e25e72cf73e1efa75dc789407e",
+    "approved_original_interface_only": "Exact original FCI93 SWSOPHY=0 stub interface addition; all original oracle calculations unchanged"
+  },
+  "compile_helper": {
+    "path": "tests/support/augment_bartholomeus_backend_sources.py",
+    "ref": "d8414c1ba11bee9f061622fd2495f631a57d2383",
+    "sha256": "d1d198edb588b4ae1df8db2254cc2131061216a09202be37bb1e353088f32ab4"
+  },
+  "historical_dependencies": {
+    "path": "integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json",
+    "sha256": "60311103cbbdf60081b68a0aa7f404da7885e6986180bb51bac72e55a144c48e"
+  },
+  "registered_successors": {
+    "src/solver/mod_soil_water_solver_contract.f90": {
+      "historical_blob": "7b16c3fcf58179f1491104a1dce3279010b4178a",
+      "canonical_blob": "f41e789d6bd27bfbf7046c1226371356e3c7ed25"
+    },
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": {
+      "historical_blob": "5418b6a1a9f651e818678f347c9cd8399693eb82",
+      "canonical_blob": "5418b6a1a9f651e818678f347c9cd8399693eb82"
+    },
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": {
+      "historical_blob": "8cf848d0ac85602bcde434d76189990f30c11dcb",
+      "canonical_blob": "8cf848d0ac85602bcde434d76189990f30c11dcb"
+    },
+    "src/runtime/mod_a23bu_worker_execution_context.f90": {
+      "historical_blob": "7861f062c5c7c3aa6bf386a9af793489d4a76f56",
+      "canonical_blob": "7861f062c5c7c3aa6bf386a9af793489d4a76f56"
+    },
+    "src/solver/mod_reference_linear_solver.f90": {
+      "historical_blob": "0ab15b79e8e74c94df43e4c27dfede268c28c112",
+      "canonical_blob": "a2eeeb951c5269068ed0c9e6cd47e22bfa736d7c"
+    },
+    "src/solver/mod_reference_richards_workspace.f90": {
+      "historical_blob": "1ae4eea78df6b27dc982b8318402f78728394aa7",
+      "canonical_blob": "1ae4eea78df6b27dc982b8318402f78728394aa7"
+    },
+    "src/solver/mod_reference_richards_state_binding.f90": {
+      "historical_blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+      "canonical_blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec"
+    },
+    "src/solver/mod_b110_default_mvg_provider.f90": {
+      "historical_blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed",
+      "canonical_blob": "38143d9e85556dcc3e3b8e00e0992bd658004759"
+    },
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": {
+      "historical_blob": "1eae1c4092542d224cceb9c2d494f91eba2565c3",
+      "canonical_blob": "ddc767fc0dff62d83a646dd68a16e97f5702efb4"
+    },
+    "src/solver/mod_b110_source_sink_provider.f90": {
+      "historical_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+      "canonical_blob": "d6c57add72387e5c0022a44319fff08046194aac"
+    },
+    "src/solver/mod_b110_root_sink_provider.f90": {
+      "historical_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+      "canonical_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+    },
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": {
+      "historical_blob": "fb226f133bd48d8ab945f111c76897aeff49facf",
+      "canonical_blob": "fb226f133bd48d8ab945f111c76897aeff49facf"
+    },
+    "src/solver/mod_b110_direct_retention_core.f90": {
+      "historical_blob": "4079f23ac63a60efb80e499029346fac88f8a780",
+      "canonical_blob": "4079f23ac63a60efb80e499029346fac88f8a780"
+    },
+    "src/solver/mod_b110_direct_retention_provider.f90": {
+      "historical_blob": "8de39d457ee85ef930c021be360648c490b2c732",
+      "canonical_blob": "8de39d457ee85ef930c021be360648c490b2c732"
+    },
+    "src/solver/mod_reference_richards_temporal_indicator.f90": {
+      "historical_blob": "63b89538e7466437a6af38a69d76a8043b206370",
+      "canonical_blob": "349211075fe02c23042492a795bc2e308b0dfed2"
+    },
+    "src/solver/mod_surface_evaporation_capacity_contract.f90": {
+      "historical_blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+      "canonical_blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982"
+    },
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": {
+      "historical_blob": "8909cdf342527a2b0266c8d9a5fc918f98556ea2",
+      "canonical_blob": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
+    },
+    "src/process/mod_restricted_surface_evaporation.f90": {
+      "historical_blob": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77",
+      "canonical_blob": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77"
+    },
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": {
+      "historical_blob": "5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae",
+      "canonical_blob": "b517617c57dc600eac12cbb421924a8886b41d53"
+    },
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": {
+      "historical_blob": "abe2d699017300e890eeb69a56448bb071660d2d",
+      "canonical_blob": "e9c6d0d367bedb94b184e3a32542bc5fba228cbf"
+    },
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": {
+      "historical_blob": "0a957376b9a9fdea00ab6009f129803fb5341e4a",
+      "canonical_blob": "0a957376b9a9fdea00ab6009f129803fb5341e4a"
+    },
+    "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90": {
+      "historical_blob": "28aa42572ee202e7a25f790c175927c832ee849b",
+      "canonical_blob": "28aa42572ee202e7a25f790c175927c832ee849b"
+    },
+    "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90": {
+      "historical_blob": "e381db141cf8c2b148dd944b98a73a7612a00296",
+      "canonical_blob": "e381db141cf8c2b148dd944b98a73a7612a00296"
+    },
+    "src/legacy/b1_10_port/headcalc.f90": {
+      "historical_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+      "canonical_blob": "6c11621c0686bb25d5b8b3e3a420ad1ceb7ffdd0"
+    },
+    "src/adapter/mod_reference_richards_legacy_binding.f90": {
+      "historical_blob": "8862ff35d17d309389c0f151cd296ca3a0729029",
+      "canonical_blob": "bebb605f0144b9a1b1cd3fc7701a148073dd6c4a"
+    },
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": {
+      "historical_blob": "6bb0ae737b5cbf26084b6de8250cebdce932fd19",
+      "canonical_blob": "6bb0ae737b5cbf26084b6de8250cebdce932fd19"
+    },
+    "src/adapter/mod_b110_production_soil_water_task2.f90": {
+      "historical_blob": "ed678be6e27621ac076a883c947abba8032ac7e6",
+      "canonical_blob": "ed678be6e27621ac076a883c947abba8032ac7e6"
+    },
+    "src/transaction/mod_transaction_reference.f90": {
+      "historical_blob": "33a0880325be36116dcbb781006b6283da5dac69",
+      "canonical_blob": "0a5ce4d122037048ab9372acdeae447cc085f2d3"
+    }
+  },
+  "unchanged_transaction": {
+    "path": "src/transaction/mod_transaction_reference.f90",
+    "actual_qualified_historical_ref": "4e55baf8ab1889d00cd8594c4dc5519d20430011",
+    "complete_source_and_only_intrinsic_dependencies_unchanged": true,
+    "historical_proof": [
+      {
+        "file": "EXPLICIT_BOTTOM9_LEGACY_D12_ACTUAL_HISTORICAL_V2.json",
+        "bytes": 590,
+        "sha256": "b0449112ad607f3277fe8f3c7277a4101f2e3c373afda1af1a6908245bd1e385"
+      },
+      {
+        "file": "EXPLICIT_BOTTOM9_LEGACY_D12_ACTUAL_HISTORICAL_V2.stdout.txt",
+        "bytes": 3365,
+        "sha256": "4dbda776b33c8b32fcb1a9b385eb6e7833fb8f725c62c9e04190495f8c682fd9"
+      },
+      {
+        "file": "EXPLICIT_BOTTOM9_LEGACY_D12_ACTUAL_HISTORICAL_V2.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "historical_evidence_promoted_to_current_whole_backend": false
+  },
+  "runner": {
+    "path": "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+    "old_sha256": "74330ccb5ae760c4b99f0e05857c5f8afc3dd6049dfb4e3e3a641291896d7e7c",
+    "new_sha256": "cb18d77e772dd07b2406e30321d5edd0017df8cc23715ff352805af21fccccf8",
+    "literal_source_edits": [
+      {
+        "label": "PY_TOP_SUCCESSOR",
+        "old": "import runpy,subprocess\npath='src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'\nrow=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})\nactual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()\nassert row.get('historical_blob')=='abe2d699017300e890eeb69a56448bb071660d2d' and row.get('canonical_blob')==actual,'unregistered top successor'\nprint('FCI93_SELECTED_TOP_SOURCE_BOUNDARY=PASS')\n",
+        "new": "import runpy,subprocess\npath='src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'\nrow=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']().get(path,{})\nactual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()\nassert row.get('historical_blob')=='abe2d699017300e890eeb69a56448bb071660d2d' and row.get('canonical_blob')==actual,'unregistered top successor'\nprint('FCI93_SELECTED_TOP_SOURCE_BOUNDARY=PASS')\n"
+      },
+      {
+        "label": "PY_TOP_SUCCESSOR",
+        "old": "import runpy,subprocess\npath='src/solver/mod_b110_dynamic_top_boundary_provider.f90'\nrow=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})\nactual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()\nassert row.get('historical_blob')=='5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae' and row.get('canonical_blob')==actual,'unregistered top successor'\nprint('FCI93_SELECTED_TOP_SOURCE_BOUNDARY=PASS')\n",
+        "new": "import runpy,subprocess\npath='src/solver/mod_b110_dynamic_top_boundary_provider.f90'\nrow=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']().get(path,{})\nactual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()\nassert row.get('historical_blob')=='5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae' and row.get('canonical_blob')==actual,'unregistered top successor'\nprint('FCI93_SELECTED_TOP_SOURCE_BOUNDARY=PASS')\n"
+      },
+      {
+        "label": "PY_CURRENT",
+        "old": "import sys,json,subprocess\nfrom pathlib import Path\nactual=subprocess.check_output(['git','rev-parse','HEAD:src/legacy/b1_10_port/headcalc.f90'],text=True).strip()\nold='7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac'\nif actual!=old:\n    sys.path.insert(0,'tests/nut-sol')\n    import verify_surface_age_successor as age\n    age.verify_source()\n    successors=age.record()['fci93_current_dependency_requalification']\n    perf=Path('integration/performance/authority.py')\n    if perf.exists():\n        import runpy\n        proof=runpy.run_path(str(perf),run_name='fsi35_perf01')\n        proof['verify_qualification']()\n        successors={**successors,**proof['fsi35_successors']()}\n    row=successors['src/legacy/b1_10_port/headcalc.f90']\n    assert row['historical_blob']==old and row['canonical_blob']==actual,'unregistered HeadCalc successor'\nprint('FCI93_SELECTED_HEADCALC_SOURCE_BOUNDARY=PASS')\n",
+        "new": "import sys,json,subprocess\nfrom pathlib import Path\nactual=subprocess.check_output(['git','rev-parse','HEAD:src/legacy/b1_10_port/headcalc.f90'],text=True).strip()\nold='7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac'\nif actual!=old:\n    import runpy\n    successors=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']()\n    row=successors['src/legacy/b1_10_port/headcalc.f90']\n    assert row['historical_blob']==old and row['canonical_blob']==actual,'unregistered HeadCalc successor'\nprint('FCI93_SELECTED_HEADCALC_SOURCE_BOUNDARY=PASS')\n"
+      },
+      {
+        "label": "PY_TX_SUCCESSOR",
+        "old": "import runpy,subprocess\nproof=runpy.run_path('integration/performance/authority.py')\npath='src/transaction/mod_transaction_reference.f90'\nrow=proof['fsi35_successors']().get(path,{})\nactual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()\nassert row.get('historical_blob')=='33a0880325be36116dcbb781006b6283da5dac69' and row.get('canonical_blob')==actual,'unregistered transaction successor'\nprint('FCI93_SELECTED_TRANSACTION_SOURCE_BOUNDARY=PASS')\n",
+        "new": "import runpy,subprocess\nproof=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')\npath='src/transaction/mod_transaction_reference.f90'\nrow=proof['fsi35_successors']().get(path,{})\nactual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()\nassert row.get('historical_blob')=='33a0880325be36116dcbb781006b6283da5dac69' and row.get('canonical_blob')==actual,'unregistered transaction successor'\nprint('FCI93_SELECTED_TRANSACTION_SOURCE_BOUNDARY=PASS')\n"
+      },
+      {
+        "label": "PY_CONTRACT_SUCCESSOR",
+        "old": "import runpy,subprocess\npath='src/solver/mod_soil_water_solver_contract.f90'\nrow=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})\nactual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()\nassert row.get('historical_blob')=='7b16c3fcf58179f1491104a1dce3279010b4178a' and row.get('canonical_blob')==actual,'unregistered solver contract successor'\nprint('FCI93_SELECTED_CONTRACT_SOURCE_BOUNDARY=PASS')\n",
+        "new": "import runpy,subprocess\npath='src/solver/mod_soil_water_solver_contract.f90'\nrow=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']().get(path,{})\nactual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()\nassert row.get('historical_blob')=='7b16c3fcf58179f1491104a1dce3279010b4178a' and row.get('canonical_blob')==actual,'unregistered solver contract successor'\nprint('FCI93_SELECTED_CONTRACT_SOURCE_BOUNDARY=PASS')\n"
+      },
+      {
+        "label": "PY_CLOSURE",
+        "old": "import json,subprocess\nfrom pathlib import Path\np=Path('integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json')\nsuccessors={}\nrecord=Path('integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json')\nif record.exists():\n    import sys\n    sys.path.insert(0,'tests/nut-sol')\n    import verify_surface_age_successor as age\n    age.verify_source()\n    successors=age.record()['fci93_current_dependency_requalification']\nperf=Path('integration/performance/authority.py')\nif perf.exists():\n    import runpy\n    proof=runpy.run_path(str(perf),run_name='fsi35_perf01_closure')\n    successors={**successors,**proof['fsi35_successors']()}\nfor dep in json.loads(p.read_text())['dependencies']:\n    actual=subprocess.check_output(['git','rev-parse','HEAD:'+dep['path']],text=True).strip()\n    if actual!=dep['blob']:\n        row=successors.get(dep['path'],{})\n        assert row.get('historical_blob')==dep['blob'] and row.get('canonical_blob')==actual,dep['path']\nprint('FCI93_EXACT_TRANSITIVE_COMPILE_DEPENDENCIES=PASS')\n",
+        "new": "import json,subprocess\nfrom pathlib import Path\np=Path('integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json')\nimport runpy\nsuccessors=runpy.run_path('tests/fci/verify_fsi35_nomacro_source.py')['fsi35_successors']()\nfor dep in json.loads(p.read_text())['dependencies']:\n    actual=subprocess.check_output(['git','rev-parse','HEAD:'+dep['path']],text=True).strip()\n    if actual!=dep['blob']:\n        row=successors.get(dep['path'],{})\n        assert row.get('historical_blob')==dep['blob'] and row.get('canonical_blob')==actual,dep['path']\nprint('FCI93_EXACT_TRANSITIVE_COMPILE_DEPENDENCIES=PASS')\n"
+      }
+    ]
+  },
+  "physical_source_changes": false,
+  "global_DATAQUAL12_waiver": false,
+  "full_original_oracle_body_from_POSTIMAGE_unchanged": true,
+  "required_final_marker": "FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS",
+  "windows_compiler_driver_executions": 70,
+  "windows_native_component_executions": 6,
+  "SWAP_model_periods": 0,
+  "canonical_admission": false
+}

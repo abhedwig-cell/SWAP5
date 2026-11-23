@@ -29,9 +29,10 @@ def source(anchor,owner_installed=True):
    meta,path=line.split('\t');entries[path]=meta
   return entries
  expected,current,parent=tree(anchor),tree('HEAD'),tree(BASE);assert current.keys()==expected.keys() and not git('status','--porcelain','--untracked-files=all','--',*SOURCE_DOMAINS),'Dirty or foreign Source dependency surface'
- ci_path,ci_original=runpy.run_path(str(ROOT/'tests/fci/verify_wof43a_nomacro_source.py'))['original_runner_source']()
- assert ci_original==blob(BASE,ci_path),'Original WOF CI recipe no longer equals admitted parent'
- inverses[ci_path]=ci_original
+ for helper in ('verify_wof43a_nomacro_source.py','verify_fsi35_nomacro_source.py'):
+  ci_path,ci_original=runpy.run_path(str(ROOT/'tests/fci'/helper))['original_runner_source']()
+  assert ci_original==blob(BASE,ci_path),'Original CI recipe no longer equals admitted parent: '+ci_path
+  inverses[ci_path]=ci_original
  if owner_installed:
   import explicit_bottom9_verify as old_owner
   text=norm((ROOT/JOINT).read_bytes()).decode()
@@ -65,4 +66,4 @@ def source(anchor,owner_installed=True):
   if path in inverses:assert inverses[path]==blob(BASE,path)
   observed.append(dict(path=path,actual_raw_sha256=SHA(actual),literal_parent_inverse=path in inverses,decoded_original_archive_sha256=encoded_archive))
  assert git('rev-parse','HEAD')==head and not git('for-each-ref','--format=%(refname)','refs/replace')
- return dict(status='COMPLETE_PARENT216_INHERITED_AND_CURRENT_SOURCE_TREE_WORKING_BYTES_EIGHT_APP_AND_ONE_BOUNDED_ORIGINAL_CI_RECIPE_INVERSES_VERIFIED',actual_head=head.decode().strip(),source_anchor=anchor,parent=BASE,materialized_source=observed,total_source_entries=len(expected),inherited_source_entries=len(parent),literal_parent_inverses=len(inverses),literal_APP_inverses=8,literal_CI_recipe_inverses=1,actual_Git_or_filesystem_views_projected=False,compiler_executions=0,model_executions=0)
+ return dict(status='COMPLETE_PARENT216_INHERITED_AND_CURRENT_SOURCE_TREE_WORKING_BYTES_EIGHT_APP_AND_TWO_BOUNDED_ORIGINAL_CI_RECIPE_INVERSES_VERIFIED',actual_head=head.decode().strip(),source_anchor=anchor,parent=BASE,materialized_source=observed,total_source_entries=len(expected),inherited_source_entries=len(parent),literal_parent_inverses=len(inverses),literal_APP_inverses=8,literal_CI_recipe_inverses=2,actual_Git_or_filesystem_views_projected=False,compiler_executions=0,model_executions=0)
