@@ -11,12 +11,12 @@ from implicit_conductivity_forensics import water,sequential_records
 from ordinary_pond_evidence import physical
 from original_output_files import compare
 
-def audit(profile,samples):
+def audit(profile,samples,resolve=Path):
     raw=(profile/'RESULT.json').read_bytes();q=json.loads(raw)
     assert q['status']=='ACTUAL_RIA_ADDITIONAL_WATER_POLISH35_GLOBAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED'
     assert q['days']==35 and q['source']==q['actual_completion_head']
     assert not subprocess.check_output(['git','diff',q['actual_compiler_source'],q['source'],'--','app','src','tools','reference'],cwd=R)
-    bundle=Path(q['build_root']);inputs=Path(q['input_root']);meta=json.loads((bundle/'BUILD.json').read_text())
+    bundle=resolve(q['build_root']);inputs=resolve(q['input_root']);meta=json.loads((bundle/'BUILD.json').read_text())
     assert SHA((bundle/'BUILD.json').read_bytes())==q['actual_BUILD_sha256']
     assert dict(q['input_inventory'])==meta['inputs']=={name:SHA((inputs/name).read_bytes()) for name,_ in q['input_inventory']}
     assert meta['identity']['water_polish_policy']=='ria12-strict-water-1e-12-polish-v1'
@@ -25,7 +25,7 @@ def audit(profile,samples):
     for role in ('donor','kernel'):
         paths=[bundle/('day_'+role+suffix) for suffix in ('','.exe') if (bundle/('day_'+role+suffix)).is_file()]
         assert len(paths)==1 and SHA(paths[0].read_bytes())==meta['executable_sha256'][role]
-    sample=json.loads((samples/'RESULT.json').read_text());component=Path(sample['component_root'])
+    sample=json.loads((samples/'RESULT.json').read_text());component=resolve(sample['component_root'])
     assert sample['profile_RESULT_sha256']==SHA(raw) and sample['model_periods']==0
     assert sample['daily_sha256']==SHA((profile/'trajectory/daily.jsonl').read_bytes())
     assert sample['actual_soil_input_sha256']==meta['inputs']['swap.swp']
@@ -66,7 +66,7 @@ def audit(profile,samples):
     for low,high in windows:
         root=profile/('own-'+str(low));observed=rows(root);assert physical(observed)==physical(data[low:high])
         result=receipt(root,observed);assert result['native_days']==[high]
-        with zipfile.ZipFile(warm/f'accepted-column-1-day-{high}.zip') as left,zipfile.ZipFile(root/f'accepted-column-1-day-{high}.zip') as right:
+        with zipfile.ZipFile(io.BytesIO((warm/f'accepted-column-1-day-{high}.zip').read_bytes())) as left,zipfile.ZipFile(io.BytesIO((root/f'accepted-column-1-day-{high}.zip').read_bytes())) as right:
             assert all(left.read(name)==right.read(name) for name in ('macro.bin','result.end'))
         result['original_user_output']=compare(warm/'original',root/'original',meta['identity']['original_output'],low,high,meta['project']['start_date']);cold.append(result)
     if q['kind']=='cde':assert any(row['solute_ledger_mg_cm2'][3]>0 for row in data)
