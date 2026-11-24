@@ -1,0 +1,278 @@
+{
+  "status": "CENTRAL_ORIGINAL_RIA_POLISH_FULL_GLOBAL_NATIVE_COLD_DRY_POLICY_AND_EXTERNAL_PASS_NOT_ADMITTED",
+  "platform": "Windows",
+  "optimization": "O0",
+  "contexts": [
+    {
+      "kind": "water",
+      "optimization": "O0",
+      "science": {
+        "status": "INDEPENDENT_RIA_WATER_POLISH_FULL35_ORIGINAL_GLOBAL_LEDGER_NATIVE_COLD_OUTPUT_PASS_NOT_ADMITTED",
+        "actual_model_source": "30630088a860df295b2c79cfb144c520b1a796ca",
+        "actual_compiler_source": "30630088a860df295b2c79cfb144c520b1a796ca",
+        "profile_RESULT_sha256": "34cbf949c94f23cb761d0785099848f54e55e9336423fbed52007ed0ca9a8bfa",
+        "kind": "water",
+        "optimization": "O0",
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": 3.496855582874048e-14
+          },
+          "chemical": null,
+          "native_days": [
+            2,
+            4,
+            19,
+            23,
+            30,
+            34,
+            35
+          ]
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 1.5432100042289676e-14
+            },
+            "chemical": null,
+            "native_days": [
+              4
+            ],
+            "original_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 2,
+                "kind": "original_REAL4_binary"
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -1.5265566588595902e-15
+            },
+            "chemical": null,
+            "native_days": [
+              23
+            ],
+            "original_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 4,
+                "kind": "original_REAL4_binary"
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -1.4814538484841933e-15
+            },
+            "chemical": null,
+            "native_days": [
+              34
+            ],
+            "original_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 4,
+                "kind": "original_REAL4_binary"
+              }
+            }
+          }
+        ],
+        "decimal_global_water_residual_cm": "2.4860E-14",
+        "decimal_maximum_daily_water_residual_cm": "1.359E-14",
+        "absolute_water_limit_cm": "1e-10",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "original_observer": "30630088a860df295b2c79cfb144c520b1a796ca",
+      "controls": {
+        "native_refusals": 37,
+        "foreign_bindings": 3,
+        "scope_refusals": 8,
+        "actual_compiler": "30630088a860df295b2c79cfb144c520b1a796ca",
+        "transaction": {
+          "discard_replay_commit_recover_exact": true,
+          "prepares": 3,
+          "commits": 1
+        }
+      },
+      "dry_seam": {
+        "days": 3,
+        "water": {
+          "days": 3,
+          "whole_water_residual_cm": -1.2212453270876722e-15
+        },
+        "cold_water": {
+          "days": 2,
+          "whole_water_residual_cm": -1.9984014443252818e-15
+        },
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 2,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "original_observations": 204
+      }
+    },
+    {
+      "kind": "cde",
+      "optimization": "O0",
+      "science": {
+        "status": "INDEPENDENT_RIA_WATER_POLISH_FULL35_ORIGINAL_GLOBAL_LEDGER_NATIVE_COLD_OUTPUT_PASS_NOT_ADMITTED",
+        "actual_model_source": "8c924a98d0f13444c8f5c378cf4f267a0920838b",
+        "actual_compiler_source": "94693b0ca978d889f32d441f5223a2bc3e88e8b2",
+        "profile_RESULT_sha256": "ce3176af41561648371ea9bde450f6c3252e7f4eb0334db521c55ee51df4e70b",
+        "kind": "cde",
+        "optimization": "O0",
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -8.835640552540269e-13
+          },
+          "chemical": {
+            "ledger": null,
+            "daily": {
+              "actual_original_daily_receipts": 35,
+              "actual_paired_original_chemical_ledgers": 70
+            }
+          },
+          "native_days": [
+            2,
+            4,
+            19,
+            23,
+            30,
+            34,
+            35
+          ]
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 8.992806499463768e-15
+            },
+            "chemical": {
+              "ledger": null,
+              "daily": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_days": [
+              4
+            ],
+            "original_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 2,
+                "kind": "original_REAL4_binary"
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -1.0366707492437399e-14
+            },
+            "chemical": {
+              "ledger": null,
+              "daily": {
+                "actual_original_daily_receipts": 4,
+                "actual_paired_original_chemical_ledgers": 8
+              }
+            },
+            "native_days": [
+              23
+            ],
+            "original_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 4,
+                "kind": "original_REAL4_binary"
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": 2.4751034555237084e-14
+            },
+            "chemical": {
+              "ledger": null,
+              "daily": {
+                "actual_original_daily_receipts": 4,
+                "actual_paired_original_chemical_ledgers": 8
+              }
+            },
+            "native_days": [
+              34
+            ],
+            "original_user_output": {
+              "result_output.bin": {
+                "exact": true,
+                "continuation_records": 4,
+                "kind": "original_REAL4_binary"
+              }
+            }
+          }
+        ],
+        "decimal_global_water_residual_cm": "-8.89431E-13",
+        "decimal_maximum_daily_water_residual_cm": "9.237E-13",
+        "absolute_water_limit_cm": "1e-10",
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "original_observer": "30630088a860df295b2c79cfb144c520b1a796ca",
+      "controls": {
+        "native_refusals": 37,
+        "foreign_bindings": 3,
+        "scope_refusals": 8,
+        "actual_compiler": "30630088a860df295b2c79cfb144c520b1a796ca",
+        "transaction": {
+          "discard_replay_commit_recover_exact": true,
+          "prepares": 3,
+          "commits": 1
+        },
+        "generated_sources": 19,
+        "compiled_files": 56
+      },
+      "dry_seam": {
+        "days": 3,
+        "water": {
+          "days": 3,
+          "whole_water_residual_cm": -1.2212453270876722e-15
+        },
+        "cold_water": {
+          "days": 2,
+          "whole_water_residual_cm": -1.9984014443252818e-15
+        },
+        "exact_original_output": {
+          "result_output.bin": {
+            "exact": true,
+            "continuation_records": 2,
+            "kind": "original_REAL4_binary"
+          }
+        },
+        "original_observations": 204
+      }
+    }
+  ],
+  "full35_periods": 2,
+  "exact_cold_windows": 6,
+  "dry_short3_contexts": 2,
+  "native_refusals": 74,
+  "foreign_bindings": 6,
+  "out_of_scope_inputs": 16,
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "canonical_admission": false
+}
