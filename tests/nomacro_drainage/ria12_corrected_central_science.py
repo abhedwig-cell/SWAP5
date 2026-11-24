@@ -246,7 +246,7 @@ def short_proofs():
            native_days=[]
            for path in folder.glob('accepted-column-1-day-*.zip'):
             day=int(path.stem.rsplit('-',1)[1]);row=next(r for r in actual if r['day']==day)
-            with zipfile.ZipFile(path) as z:
+            with zipfile.ZipFile(io.BytesIO(path.read_bytes())) as z:
              receipt=json.loads(z.read('checkpoint.json'));assert receipt['binding']==meta['binding'] and receipt['receipt']==row and all(SHA(z.read(n))==s for n,s in receipt['files'].items());native(z.read('macro.bin'),row,meta,parameters)
             native_days.append(day)
            chemical=None
@@ -254,7 +254,7 @@ def short_proofs():
             from groundwater_snow_forensics import clock
             chemical=dict(unchanged_ledger=clock.ledger(actual,len(actual)),actual_daily=standard_cde_daily(folder,actual,meta['project']['start_date']))
            proofs.append(dict(water=proof,solute=chemical,native_days=sorted(native_days)))
-          with zipfile.ZipFile(root/'trajectory/accepted-column-1-day-2.zip') as warm_zip,zipfile.ZipFile(root/'own-1/accepted-column-1-day-2.zip') as cold_zip:assert all(warm_zip.read(n)==cold_zip.read(n) for n in ('macro.bin','result.end'))
+          with zipfile.ZipFile(io.BytesIO((root/'trajectory/accepted-column-1-day-2.zip').read_bytes())) as warm_zip,zipfile.ZipFile(io.BytesIO((root/'own-1/accepted-column-1-day-2.zip').read_bytes())) as cold_zip:assert all(warm_zip.read(n)==cold_zip.read(n) for n in ('macro.bin','result.end'))
           peak=Decimal(0)
           with localcontext() as c:
            c.prec=60
