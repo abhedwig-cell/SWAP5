@@ -7,6 +7,7 @@ import frost_cde_drainage_runtime as runtime
 from original_output_baseline import assignment
 from experimental_project import inventory
 import frost_history_state_model_forensics as science
+from frost_history_state_inputs import prepare
 BASE='e0461f005b95b9f68bc70d4d4698eff903bc04ed'
 CLEANUP=Path('C:/Users/Veldh012/OneDrive - Wageningen University & Research/Documents/ChatGPT/SWAP5-finaliseren/tools/storage/cleanup.py')
 TASK='01a1e8b4-228b-75f1-8ac4-b07ca1e15713'
@@ -31,6 +32,7 @@ def source():
 def main():
     p=argparse.ArgumentParser()
     for name in ('evidence','output','reference-work'):p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument('--implicit',action='store_true')
     a=p.parse_args();head=source();a.output.mkdir();q=dict(status='RUNNING_BOUNDED_EXPLICIT_FROST_MATRIX_NOT_ADMITTED',source=head,contexts=[],canonical_admission=False)
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     def storage(*args):
@@ -40,16 +42,14 @@ def main():
         q['space_preflight']=storage('check-space','--large-job');save()
         for kind,hys,initial,opt in itertools.product(('water','cde'),(0,1),(1,2),('O0','O2')):
             assert source()==head
-            stem='frost-history-state01-explicit-'+kind+'-hys'+str(hys)+'-initial'+str(initial)
+            stem='frost-history-state01-'+('implicit' if a.implicit else 'explicit')+'-'+kind+'-hys'+str(hys)+'-initial'+str(initial)
             inputs=a.evidence/(stem+'-input-v1');label=stem+'-'+opt+'-v1';profile=a.evidence/label
             if not inputs.exists():
-                runtime.thermal.fixture(inputs,'water-frost-drained',3);path=inputs/'swap.swp';text=path.read_text(encoding='cp1252')
-                for key,value in dict(SWSOLU=int(kind=='cde'),SWHYST=hys,SWINCO=initial).items():text=assignment(text,key,value)
-                if kind=='cde':text=assignment(text,'CPRE','0.01')
-                path.write_text(text,encoding='cp1252');path=inputs/'swap.dra';path.write_text(assignment(path.read_text(encoding='cp1252'),'SWDIVD',1),encoding='cp1252')
+                prepare(kind,hys,initial,int(a.implicit),inputs)
             reused=profile.exists()
             if reused:
-                assert (kind,hys,initial,opt) in {('water',0,1,'O0'),('cde',1,2,'O0'),('cde',1,2,'O2')}
+                permitted={('water',0,1,'O0')} if a.implicit else {('water',0,1,'O0'),('cde',1,2,'O0'),('cde',1,2,'O2')}
+                assert (kind,hys,initial,opt) in permitted
                 original=json.loads((profile/'RESULT.json').read_text());assert original['status'].endswith('PASS_NOT_ADMITTED')
                 assert not subprocess.check_output(['git','diff',original['source'],head,'--','app','src','tools','reference'],cwd=R)
             else:
@@ -62,7 +62,8 @@ def main():
             q['contexts'].append(dict(kind=kind,hysteresis=hys,initial=initial,optimization=opt,profile=str(profile),input_inventory=inventory(inputs),existing_original_period_reused_without_rerun=reused,independent=independent));save()
             print('PASS',kind,hys,initial,opt,'reused' if reused else 'new',len(q['contexts']),flush=True)
         assert len(q['contexts'])==16 and source()==head
-        q.update(status='SIXTEEN_WINDOWS_EXPLICIT_FROST_STATE_CONTEXTS_35DAY_AND_48_COLD_INDEPENDENT_PASS_NOT_ADMITTED',original_completed_periods_reused=3,new_periods_executed=13)
+        reused=sum(item['existing_original_period_reused_without_rerun'] for item in q['contexts'])
+        q.update(status='SIXTEEN_WINDOWS_'+('IMPLICIT' if a.implicit else 'EXPLICIT')+'_FROST_STATE_CONTEXTS_35DAY_AND_48_COLD_INDEPENDENT_PASS_NOT_ADMITTED',original_completed_periods_reused=reused,new_periods_executed=16-reused)
     except Exception as error:q.update(status='FAILED_BOUNDED_FROST_MATRIX_NOT_ADMITTED',error=repr(error));raise
     finally:save()
     print(q['status'],flush=True)
