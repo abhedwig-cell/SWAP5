@@ -25,6 +25,43 @@ def parameter_bytes(original_dump, layers):
     return result
 
 
+def physical_restart(raw, row, build):
+    """Read original SWAP unformatted restart fields in original writer order."""
+    records, cursor = [], 0
+    while cursor < len(raw):
+        size = struct.unpack_from('<i', raw, cursor)[0]
+        assert size > 0 and cursor + size + 8 <= len(raw)
+        assert struct.unpack_from('<i', raw, cursor + size + 4)[0] == size
+        records.append(raw[cursor + 4:cursor + size + 4])
+        cursor += size + 8
+    assert cursor == len(raw)
+    integer = lambda i: struct.unpack('<i', records[i])[0]
+    real = lambda i: struct.unpack('<d', records[i])[0]
+    n = build['project']['nodes']
+    selected = build['identity']['original_output']['original_ria12_thermal']
+    assert integer(0) == 1 and integer(1) == 0 and integer(2) == n
+    assert list(struct.unpack('<' + str(n) + 'd', records[3])) == row['pressure_head_cm']
+    assert real(4) == row['stock_end_cm'][1]
+    snow = integer(5)
+    assert snow == selected['snow']
+    i = 6
+    if snow:
+        assert real(i) == row['stock_end_cm'][2] >= 0 and math.isfinite(real(i + 1)) and real(i + 1) >= 0
+        i += 2
+    evaporation = integer(i)
+    assert evaporation in (0, 1, 2)
+    i += 1
+    for _ in range(evaporation):
+        assert math.isfinite(real(i)) and real(i) >= 0
+        i += 1
+    assert integer(i) == 0 and integer(i + 1) == 1  # No hysteresis; heat active.
+    temperatures = struct.unpack('<' + str(n) + 'd', records[i + 2])
+    assert all(math.isfinite(v) and v > -273.15 for v in temperatures)
+    assert integer(i + 3) == int(selected['kind'] == 'cde')
+    return dict(original_temperature_nodes=n, minimum_temperature_C=min(temperatures),
+                maximum_temperature_C=max(temperatures), original_sequential_records=len(records))
+
+
 def native(raw, row, build, original_parameter_dump=None):
     """Read actual outer parameters and literal preceding thermal/calendar state."""
     selected = build['identity']['original_output']

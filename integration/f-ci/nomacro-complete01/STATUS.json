@@ -35148,18 +35148,21 @@
     "windows_raw_members": 9824
   },
   "ria12_thermal_snow_active_v1": {
-    "status": "IMPLEMENTED_UNQUALIFIED_FOUR_FRONTENDS_ACCEPTED_ACTUAL_TWO_DAY_PROBES_NEXT",
+    "status": "CORRECTED_RIA_KSAT_MAPPING_FOUR_O0_SHORT_PASS_FOUR_O2_35_AND_12COLD_COMPLETED_OBSERVER_REPAIR_NO_REPLAY",
     "parent_candidate": "8e8f2a4c7ff28e4e4845c4b5554894a4bc3c5af1",
     "parent_PR": 1796,
     "parent_admission": "Public400/PUB/four real negatives PASS; applicable CI pending",
     "actual_canonical": "a18cc38017f69523de48ec04d47cd12686b1ecff",
     "scope": "All-layer12, numerical heat1/CALT2, optionalSnow0/1, primary drainage1/bottom6, HeatOn=false and VaporCond=false, noFrost/hysteresis/aquifer, dense daily water/CDE",
     "native_reader_limit": "Typed outer model/context/original-parameter and basic clock witness only; independent complete inner thermal/calendar audit still required before qualification",
-    "next_action": "Freeze source; actual O0 two-day/native/cold probes water/CDE NoSnow andSnow with complete original RIA/TTUTIL oracle. Preserve failures. Qualify complete original heat/Snow carry, not only a selector. Do not admit before actual PR1796 parent admission.",
+    "next_action": "Run first O0 full35 from genuine unchanged short compiles after exact status-name preflight repair. Independently sample/audit completed O2 full35+all3cold; retain original FAILED status for irrelevant copied active-bottom postcheck, no full model replay. Parent1796 one TIMEINT checkout pending; all other12 applicable workflowsSUCCESS.",
     "last_probe_findings": {
       "water_snow0": "actual a648 two-day and exact own cold PASS; complete original RIA stock PASS; full inner thermal/calendar audit pending",
       "water_snow1": "actual a648 first-day refusal Invalid top history physical domain; 0 accepted days; original build/runtime retained",
       "next_action": "selected-only original top-state diagnostic retains every original validity check; rerun only failed short Snow probe, then unexecuted CDE probes"
-    }
+    },
+    "reference_defect": "Original readswap incorrectly binds Ksatfit to UHCCpars(:,1)=hae; new thermal route explicitly corrects to column4=Ksat. Complete original RIA+HCOMEAN O0/O2,10calls each PASS;7negative legacy means each.",
+    "short_source": "7562dbb2ac547832494952140e3ee58734670707",
+    "full35_source": "978c7e7d6048141db84d50e250142a4ee101d6d2"
   }
 }

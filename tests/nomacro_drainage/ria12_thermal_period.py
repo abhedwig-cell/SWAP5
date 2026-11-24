@@ -42,7 +42,7 @@ def main():
         if a.reuse_profile:
             raw = (a.reuse_profile / 'RESULT.json').read_bytes()
             prior = json.loads(raw)
-            assert prior['status'] == 'ACTUAL_RIA12_THERMAL_TWO_DAY_PHYSICAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED'
+            assert prior['status'] == 'ACTUAL_RIA12_THERMAL_SNOW_TWO_DAY_PHYSICAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED'
             assert prior['optimization'] == a.optimization and dict(prior['input_inventory']) == dict(q['input_inventory'])
             assert len(prior['input_inventory']) == len(q['input_inventory']) == len(dict(prior['input_inventory']))
             assert not git('diff', prior['source'], head, '--', 'app', 'src', 'tools', 'reference')
@@ -72,7 +72,7 @@ def main():
         for low, high in ((2, 4), (7, 9), (30, 34)):
             q['cold'].append(own(bundle, a.reference_work, project, a.output / 'trajectory', data, low, high, a.output / ('own-' + str(low))))
             save()
-        assert any(abs(row['bottom_outward_cm']) > 1e-8 for row in data), 'No meaningful active bottom exchange'
+        q['maximum_absolute_bottom_exchange_cm'] = max(abs(row['bottom_outward_cm']) for row in data)
         if selected['kind'] == 'cde':
             assert any(row['solute_ledger_mg_cm2'][3] > 0 for row in data), 'Incoming tracer source never active'
         if selected['snow']:

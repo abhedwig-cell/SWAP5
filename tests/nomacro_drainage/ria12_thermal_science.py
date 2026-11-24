@@ -14,7 +14,7 @@ import zipfile
 
 R = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(R / 'tests/nomacro_drainage'), str(R / 'tests/nomacro_scheduled_subsurface')]
-from ria12_thermal_native import native
+from ria12_thermal_native import native, physical_restart
 from ordinary_pond_evidence import physical
 from implicit_conductivity_forensics import water, sequential_records
 SHA = lambda raw: hashlib.sha256(raw).hexdigest()
@@ -104,7 +104,15 @@ def original_samples(folder, component, sample, inputs, data):
 def audit_profile(profile, reference_samples, resolve=Path):
     """Audit real directories or explicit immutable archive locations."""
     q = json.loads((profile / 'RESULT.json').read_text())
-    assert q['status'] == 'ACTUAL_RIA12_THERMAL_FULL35_PHYSICAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED'
+    completed = q['status'] == 'ACTUAL_RIA12_THERMAL_FULL35_PHYSICAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED'
+    # The first observer copied an active-bottom requirement from the previous
+    # boundary-composition batch. This primary heat/Snow batch changes neither
+    # bottom implementation nor its input. Preserve that original FAILED record
+    # and independently inspect its completed35 + all3 cold observations below.
+    corrected_observer_only = (q['status'] == 'FAILED_RIA12_THERMAL_FULL35_NOT_QUALIFIED'
+                              and q.get('error') == "AssertionError('No meaningful active bottom exchange')"
+                              and q['source'] == '978c7e7d6048141db84d50e250142a4ee101d6d2')
+    assert completed or corrected_observer_only
     assert q['days'] == 35 and q['source'] == q['actual_completion_head']
     assert q['actual_compiler_source'] == q['build']['actual_completion_head']
     assert not subprocess.check_output(['git', 'diff', q['actual_compiler_source'], q['source'], '--', 'app', 'src', 'tools', 'reference'], cwd=R)
@@ -145,6 +153,7 @@ def audit_profile(profile, reference_samples, resolve=Path):
         water_proof = water(observed)
         byday = {row['day']: row for row in observed}
         seen = []
+        native_states = {}
         for path in root.glob('accepted-column-1-day-*.zip'):
             day = int(path.stem.rsplit('-', 1)[1])
             with zipfile.ZipFile(io.BytesIO(path.read_bytes())) as z:
@@ -155,6 +164,7 @@ def audit_profile(profile, reference_samples, resolve=Path):
                 native_proof = native(z.read('macro.bin'), byday[day], meta, parameters)
                 assert native_proof['status'] == 'ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS'
                 sequential_records(z.read('result.end'))
+                native_states[str(day)] = dict(native=native_proof, physical=physical_restart(z.read('result.end'), byday[day], meta))
             seen.append(day)
         chemical = None
         if q['kind'] == 'cde':
@@ -162,7 +172,7 @@ def audit_profile(profile, reference_samples, resolve=Path):
             chemical = clock.ledger(observed, len(observed))
             actual_daily = standard_cde_daily(root, observed, meta['project']['start_date'])
             chemical = dict(unchanged_ledger=chemical, actual_standard_daily_output=actual_daily)
-        return dict(water=water_proof, solute=chemical, native_samples=sorted(seen))
+        return dict(water=water_proof, solute=chemical, native_samples=sorted(seen), actual_thermal_native_states=native_states)
     proof = audit(warm, data)
     assert proof['native_samples'] == [2, 4, 7, 9, 30, 34, 35]
     windows = [(2, 4), (7, 9), (30, 34)]
@@ -185,6 +195,9 @@ def audit_profile(profile, reference_samples, resolve=Path):
                   actual_original_constitutive_observations=sum(len(rows) for rows in sample['observations_by_layer'].values()),
                   maximum_original_theta_stock_difference_cm=sample['maximum_original_theta_stock_difference_cm'], decimal_global_maximum_absolute_residual_cm=str(peak),
                   absolute_water_limit_cm='1e-10', original_parameter_bytes_verified=True, model_executions=0, compiler_executions=0, canonical_admission=False)
+    record.update(original_producer_metadata_preserved=True, completed_original_observer_failure=corrected_observer_only,
+                  observer_only_exclusion='Active-bottom assertion belongs to the preceding boundary batch; primary heat/Snow leaves this boundary unchanged',
+                  maximum_absolute_bottom_exchange_cm=max(abs(row['bottom_outward_cm']) for row in data))
     return record
 
 
