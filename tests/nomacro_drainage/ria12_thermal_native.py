@@ -26,7 +26,7 @@ def parameter_bytes(original_dump, layers):
 
 
 def native(raw, row, build, original_parameter_dump=None):
-    """Independent typed outer witness only; full thermal/calendar audit pending."""
+    """Read actual outer parameters and literal preceding thermal/calendar state."""
     selected = build['identity']['original_output']
     ria = selected['original_ria12_thermal']
     layers = len(ria['models'])
@@ -47,4 +47,61 @@ def native(raw, row, build, original_parameter_dump=None):
     nodes, clock, step, canopy = struct.unpack_from('<i3d', raw, 8)
     epoch = (date.fromisoformat(build['project']['start_date']) - date(1900, 1, 1)).days + 1
     assert nodes == build['project']['nodes'] and clock == epoch + row['day'] and 0 < step <= 1 and canopy == row['stock_end_cm'][3] >= 0
-    return dict(status='TYPED_OUTER_RIA_DOMAIN_AND_ORIGINAL_PARAMETER_BYTES_PASS_INNER_THERMAL_CALENDAR_NOT_YET_AUDITED', parameter_offset=at, snow=snow, precision_bytes=16)
+    assert all(map(math.isfinite, (clock, step, canopy)))
+    calendar = output_calendar(raw[:at], nodes, row, selected, build['project']['start_date'], chemical)
+    result = dict(status='ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS',
+                  parameter_offset=at, snow=snow, precision_bytes=16, calendar=calendar)
+    if snow:
+        end = calendar['calendar_offset']
+        thermal_domain = (1, nodes, 0, int(chemical), 0, 1, 0, 1, 1, 2)
+        domain = struct.pack('<10i', *thermal_domain)
+        assert raw[end-80:end] == domain + domain and raw.count(domain + domain) == 1
+        # Parse the actual preceding microscopic block from its size trailer.
+        # No transport header, model number, producer metadata or bytes change.
+        micro_end = end - 80
+        micro_size = struct.unpack_from('<i', raw, micro_end - 4)[0]
+        assert micro_size in (44, 44 + 8 * 862 * layers)
+        micro_at = micro_end - micro_size
+        h = struct.unpack_from('<8id', raw, micro_at)
+        version, active, crop, drought, model, nl, nm, nk, saved_clock = h
+        assert version == 2 and active in (0, 1) and saved_clock == clock
+        if active:
+            assert 1 <= crop <= 5 and (drought, model) in ((2, 2), (3, 1))
+            assert (nl, nm, nk) == (layers, 431, 431) and micro_size == 44 + 8 * 862 * layers
+            lookup = struct.unpack_from('<' + str(862 * layers) + 'd', raw, micro_at + 40)
+            assert all(math.isfinite(v) and v >= 0 for v in lookup)
+        else:
+            assert (crop, drought, model, nl, nm, nk) == (0,) * 6 and micro_size == 44
+        top_at = micro_at - 72
+        version, saved_clock, *top = struct.unpack_from('<id6d3i', raw, top_at)
+        assert version == 1 and saved_clock == clock and top[-1] == 72
+        assert all(map(math.isfinite, top[:6])) and min(top[:4]) >= 0 and top[0] <= 1
+        assert all(v in (0, 1) for v in top[6:8])
+        # Oxygen's own flag distinguishes initialized arrays from no arrays.
+        candidates = []
+        for initialized in (0, 1):
+            size = 24 + 48 * nodes * initialized
+            oxygen_at = top_at - size
+            if oxygen_at < 36:
+                continue
+            if struct.unpack_from('<3id', raw, oxygen_at) == (1, initialized, nodes, clock) and struct.unpack_from('<i', raw, top_at - 4)[0] == size:
+                candidates.append((oxygen_at, initialized))
+        assert len(candidates) == 1
+        oxygen_at, initialized = candidates[0]
+        if initialized:
+            oxygen = struct.unpack_from('<' + str(6 * nodes) + 'd', raw, oxygen_at + 20)
+            assert all(math.isfinite(v) and v >= 0 for v in oxygen) and min(oxygen[5 * nodes:]) >= 1
+        heat_at = oxygen_at - 8 * (2 * nodes + 2)
+        heat = struct.unpack_from('<' + str(2 * nodes + 2) + 'd', raw, heat_at)
+        assert all(map(math.isfinite, heat)) and min(heat[:2 * nodes]) > 0
+        crop_at = heat_at - 404
+        emerged = struct.unpack_from('<i', raw, crop_at)[0]
+        rates = struct.unpack_from('<50d', raw, crop_at + 4)
+        assert emerged in (0, 1) and all(map(math.isfinite, rates))
+        result.update(thermal_domain_offset=end-80, microscopic_offset=micro_at, top_offset=top_at,
+                      oxygen_offset=oxygen_at, thermal_history_offset=heat_at, crop_rates_offset=crop_at,
+                      complete_original_thermal_fields=['heacon', 'heacap', 'tetop', 'tebot'],
+                      minimum_top_maximum_conductivity_cm_day=top[3],
+                      thermal_conductivity_range=[min(heat[:nodes]), max(heat[:nodes])],
+                      thermal_capacity_range=[min(heat[nodes:2 * nodes]), max(heat[nodes:2 * nodes])])
+    return result
