@@ -1151,6 +1151,8 @@ end module plant_interface""")
             build_identity['solute_step_policy_source'] = sha(APP/'solute_step_policy.py')
         build_identity['time_step_policy'] = project.time_step_policy
         build_identity['water_polish_policy'] = project.water_polish_policy
+        if project.water_polish_policy == RIA12_WATER_POLISH:
+            build_identity['ria12_water_polish_source'] = sha(APP/'ria12_water_polish.py')
         build_identity['time_step_policy_source'] = sha(APP/'donor_sources.py')
         library = compile_restart_publisher(output)
         build_identity['restart_publisher'] = {

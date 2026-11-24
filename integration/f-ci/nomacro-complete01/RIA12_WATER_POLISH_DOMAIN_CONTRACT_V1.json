@@ -9,7 +9,7 @@
   "files": {
     "app/hybrid_water/daily_host.py": {
       "before_lf_sha256": "4d0932e7c8633744e9156bc54315a0bd1790dace96104a0c147f4101c1376070",
-      "proposed_lf_sha256": "e272161564ce237f43bd325902a20999b1d022eab862573eb6a28cb30b8c4044",
+      "proposed_lf_sha256": "0152f8ebddc8a1215ec34991ae9f743e9cff2fed8459fdaaa3514ac7c7829cd9",
       "ordered_literal_edits": [
         {
           "base_start": 1545,
@@ -34,6 +34,12 @@
           "base_end": 60242,
           "before": "",
           "after": "    from ria12_water_polish import apply_build as ria12_water_polish_build\n    patched=ria12_water_polish_build(output,donor_build,project,patched)\n"
+        },
+        {
+          "base_start": 76421,
+          "base_end": 76421,
+          "before": "",
+          "after": "        if project.water_polish_policy == RIA12_WATER_POLISH:\n            build_identity['ria12_water_polish_source'] = sha(APP/'ria12_water_polish.py')\n"
         }
       ]
     },
@@ -108,6 +114,18 @@
           "after": "    if project.time_step_policy!='original-adaptive-day-seed-v1':\n        from ria12_water_polish import POLICY as RIA_POLISH_POLICY, require_project as require_ria_polish\n        if project.water_polish_policy!=RIA_POLISH_POLICY or require_ria_polish(project) is None:\n            raise ValueError('Original output requires original adaptive policy or explicit bounded RIA primary water polishing')\n"
         }
       ]
+    },
+    "app/hybrid_water/daily_coupling.py": {
+      "before_lf_sha256": "512d9d5f5c6a900a0ed6aae925b0059aba4c91616d9b3087bec4bc02419891c2",
+      "proposed_lf_sha256": "ae0c1e3c418e29e07070c1b78cb8bc9e79d3e326bd2177dd51d5cc80faadaae8",
+      "ordered_literal_edits": [
+        {
+          "base_start": 28618,
+          "base_end": 28618,
+          "before": "",
+          "after": "    from ria12_water_polish import POLICY as RIA12_WATER_POLISH\n    if project.water_polish_policy == RIA12_WATER_POLISH:\n        if identity.get('ria12_water_polish_source') != h.sha(h.APP/'ria12_water_polish.py'):\n            raise ValueError('Bundle RIA Newton polishing source differs; rebuild without rebinding checkpoints')\n"
+        }
+      ]
     }
   },
   "added_files": {
@@ -139,5 +157,6 @@
   "reuse_existing_timecontrol_provider": "app/hybrid_water/donor_sources.py:render_physical_iteration_proposal",
   "reuse_existing_timecontrol_provider_lf_sha256": "f4aa03debbf613f9cbe7912dba6d0e86798e4fa6919d78e58849a7214e4ace83",
   "failed_original_adaptive_short": "Actual source2b5208142d: completed day1 with independent water -9.812706203149446e-13cm, then240second model cap before day2 complete. Original result/status/stdout/native remain unchanged; not scientificPASS.",
-  "original_output_policy_exception": "Allow only explicit new RIA primary1/6 polishing with existing physical-growth v2. Every other non-original original-output composition still refuses. No format, calendar, ledger or native implementation changes."
+  "original_output_policy_exception": "Allow only explicit new RIA primary1/6 polishing with existing physical-growth v2. Every other non-original original-output composition still refuses. No format, calendar, ledger or native implementation changes.",
+  "current_build_identity": "New policy alone includes actual ria12_water_polish.py SHA256; current validator refuses earlier build identities. Prior full periods retain original compiler/source; current actual compiled/source postimage and native prefix must establish inheritance without metadata rebinding."
 }

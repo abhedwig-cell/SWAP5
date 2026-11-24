@@ -35303,7 +35303,7 @@
     "failed_wet_stress": "Original O0/O2 complete35 retained NUMERICAL_FAILURE wholewater -1.232353486e-9cm, unchanged limit1e-10; no replay or tolerance change"
   },
   "ria12_water_polish_active_v1": {
-    "status": "O0_SHORT3_GLOBAL_ORIGINAL_RIA_NATIVE_COLD_OUTPUT_PASS_FULL35_NEXT",
+    "status": "WINDOWS_O0_O2_WET_PRIMARY_FULL35_GLOBAL_EXACT_COLD_ORIGINAL_RIA_PASS_CURRENT_BUILD_IDENTITY_NEXT",
     "branch": "codex/nomacro-ria12-water-polish01",
     "parent_actual_canonical": "e252e995eeece63d8f05531a10b746674c070685",
     "source_dependency": "1874c63ee359df7bbcfaead42af69bd9312a9065",
@@ -35315,7 +35315,7 @@
     "epsilon_or_inventory_corrections": false,
     "old_default_policy_changed": false,
     "new_persistent_state": false,
-    "next_action": "Run original unchanged wet-primary full35 O0 using exact short3 compiler/build; then O2 short3/full35 and independent original RIA/TTUTIL/native/output. Default postimage preservation, native/transaction controls and Ubuntu qualification required before admission. Keep original failed/censored evidence and 1e-10 daily/global limits unchanged.",
+    "next_action": "New source identity prevents unnoticed numerical generator changes. Recompile current CDE and prove exact generated/compiled postimages against original full35 producer, targeted native prefix/output and external rollback; do not replay existing full35 periods for identity-only changes. Complete water representatives/default preservation/Ubuntu before admission.",
     "first_actual_source": "2b5208142d2e290b0830c4241143e0bba68616d6",
     "first_days_completed": 1,
     "first_day_water_residual_cm": -9.812706203149446e-13,
@@ -35327,7 +35327,14 @@
     "current_policy_scope": "newRiaPOLISH + existing configured-dtmax-physical-growth-v2 only; all other original-output numerical policy guards unchanged",
     "short3_actual_source": "94693b0ca978d889f32d441f5223a2bc3e88e8b2",
     "short3_global_water_residual_cm": -9.054146321574308e-13,
-    "short3_original_RIA_TTUTIL_stock_difference_cm": 0.0
+    "short3_original_RIA_TTUTIL_stock_difference_cm": 0.0,
+    "full35_original_compiler_sources": [
+      "94693b0ca978d889f32d441f5223a2bc3e88e8b2",
+      "8c924a98d0f13444c8f5c378cf4f267a0920838b"
+    ],
+    "full35_global_water_residual_cm": -8.835640552540269e-13,
+    "main_exact_cold_windows": 6,
+    "original_RIA_observations_per_optimization": 2380
   },
   "test_selection_ria12_water_polish_v1": {
     "owner": "SWAP5-NOMACRO-COMPLETE01",
