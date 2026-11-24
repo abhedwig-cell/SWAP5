@@ -3,8 +3,10 @@ import argparse
 from datetime import date
 from decimal import Decimal, localcontext
 import hashlib
+import io
 import json
 import math
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -44,15 +46,67 @@ def standard_cde_daily(root, data, epoch):
     return dict(actual_original_daily_receipts=len(receipts), actual_paired_original_chemical_ledgers=len(ledgers) - 1)
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    for key in ('profile', 'reference-samples', 'output'):
-        parser.add_argument('--' + key, type=Path, required=True)
-    args = parser.parse_args()
-    q = json.loads((args.profile / 'RESULT.json').read_text())
+def original_samples(folder, component, sample, inputs, data):
+    """Read original executable observations and every measured stock afresh."""
+    q = sample['component']
+    assert all(item['returncode'] == 0 for item in q['compiler'])
+    for name, key in (('MOD_RIA.f90', 'original_RIA_raw_sha256'), ('swap_base.f90', 'original_swap_base_raw_sha256'),
+                      ('original_swapoutput.f90', 'original_error_full_source_sha256'), ('swap_error.f90', 'original_error_fragment_sha256'),
+                      ('ria12_reference_probe.f90', 'driver_raw_sha256')):
+        assert SHA((component / name).read_bytes()) == q[key]
+    assert SHA((component / 'MOD_RIA.f90').read_bytes().replace(b'\r\n', b'\n')) == '454b3949827917ce0ca32ce044e6368faffbf6c4c14266f1f969c2e3b038a01a'
+    full = (component / 'original_swapoutput.f90').read_bytes()
+    low, high = q['original_error_fragment_bounds']
+    assert full[low:high] == (component / 'swap_error.f90').read_bytes()
+    driver = (component / 'ria12_reference_probe.f90').read_bytes()
+    committed = subprocess.check_output(['git', 'show', q['actual_source'] + ':tests/nomacro_drainage/ria12_reference_probe.f90'], cwd=R)
+    assert driver.replace(b'\r\n', b'\n') == committed
+    heads = sorted({head for row in data for head in row['pressure_head_cm']})
+    expected = (str(len(heads)) + '\n' + ''.join(format(head, '.17g') + '\n' for head in heads)).encode()
+    actual_heads = (folder / 'actual-heads.txt').read_bytes()
+    assert sample['heads'] == heads and actual_heads.replace(b'\r\n', b'\n') == expected
+    assert SHA(actual_heads) == sample['head_input_sha256']
+    observed = {}
+    for line in (folder / 'sample.stdout').read_text().splitlines():
+        if not line.startswith('ACTUAL_ORIGINAL_RIA12_SAMPLE '):
+            continue
+        words = line.split()
+        model, layer, index = map(int, words[1:4])
+        values = list(map(float, words[4:]))
+        assert len(words) == 10 and model == 12 and layer in (1, 2) and 1 <= index <= len(heads)
+        assert (layer, index) not in observed and values[0] == heads[index - 1] and all(map(math.isfinite, values))
+        assert min(values[1:5]) >= 0 and values[5] == 0 and values[3] == values[4]
+        observed[layer, index] = values
+    assert len(observed) == 2 * len(heads)
+    for layer in (1, 2):
+        assert sample['observations_by_layer'][str(layer)] == [observed[layer, i] for i in range(1, len(heads) + 1)]
+    table = re.search(r'(?mi)^\s*ISUBLAY\s+ISOILLAY\s+HSUBLAY\s+NCOMP\s*\n(.*?)^\* End of table', (inputs / 'swap.swp').read_bytes().decode('cp1252'), re.S)
+    assert table
+    layers, dz = [], []
+    for line in table[1].splitlines():
+        words = line.split('!')[0].split()
+        if words:
+            assert len(words) == 4 and int(words[1]) in (1, 2)
+            count = int(words[3])
+            layers.extend([int(words[1])] * count)
+            dz.extend([float(words[2]) / count] * count)
+    lookup = {layer: {values[0]: values for (soil, _), values in observed.items() if soil == layer} for layer in (1, 2)}
+    errors = []
+    for row in data:
+        assert len(row['pressure_head_cm']) == len(layers)
+        stock = math.fsum(lookup[layer][head][1] * height for layer, head, height in zip(layers, row['pressure_head_cm'], dz))
+        error = abs(stock - row['stock_end_cm'][0])
+        assert error <= 1e-10
+        errors.append(error)
+    assert max(errors) == sample['maximum_original_theta_stock_difference_cm']
+
+
+def audit_profile(profile, reference_samples, resolve=Path):
+    """Audit real directories or explicit immutable archive locations."""
+    q = json.loads((profile / 'RESULT.json').read_text())
     assert q['status'] == 'ACTUAL_RIA12_FULL35_PHYSICAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED'
     assert q['days'] == 35 and q['source'] == q['actual_completion_head'] == q['build']['actual_completion_head']
-    bundle, inputs = Path(q['build_root']), Path(q['input_root'])
+    bundle, inputs = resolve(q['build_root']), resolve(q['input_root'])
     meta = json.loads((bundle / 'BUILD.json').read_text())
     assert SHA((bundle / 'BUILD.json').read_bytes()) == q['actual_BUILD_sha256']
     assert dict(q['input_inventory']) == meta['inputs'] == {name: SHA((inputs / name).read_bytes()) for name, _ in q['input_inventory']}
@@ -62,19 +116,20 @@ def main():
     for role in ('donor', 'kernel'):
         paths = [bundle / ('day_' + role + suffix) for suffix in ('', '.exe') if (bundle / ('day_' + role + suffix)).is_file()]
         assert len(paths) == 1 and SHA(paths[0].read_bytes()) == meta['executable_sha256'][role]
-    sample = json.loads((args.reference_samples / 'RESULT.json').read_text())
-    assert sample['profile_RESULT_sha256'] == SHA((args.profile / 'RESULT.json').read_bytes())
-    assert sample['daily_sha256'] == SHA((args.profile / 'trajectory/daily.jsonl').read_bytes()) and sample['actual_soil_input_sha256'] == meta['inputs']['swap.swp']
+    sample = json.loads((reference_samples / 'RESULT.json').read_text())
+    assert sample['profile_RESULT_sha256'] == SHA((profile / 'RESULT.json').read_bytes())
+    assert sample['daily_sha256'] == SHA((profile / 'trajectory/daily.jsonl').read_bytes()) and sample['actual_soil_input_sha256'] == meta['inputs']['swap.swp']
     assert sample['model_periods'] == 0 and sample['maximum_original_theta_stock_difference_cm'] <= 1e-10
-    component = Path(sample['component_root'])
+    component = resolve(sample['component_root'])
     assert json.loads((component / 'COMPONENT.json').read_text()) == sample['component']
     assert SHA((component / sample['component']['executable']).read_bytes()) == sample['component']['executable_sha256']
-    assert SHA((args.reference_samples / 'sample.stdout').read_bytes()) == sample['stdout_sha256'] and not (args.reference_samples / 'sample.stderr').read_bytes()
-    parameters = (args.reference_samples / 'original-parameters.bin').read_bytes()
+    assert SHA((reference_samples / 'sample.stdout').read_bytes()) == sample['stdout_sha256'] and not (reference_samples / 'sample.stderr').read_bytes()
+    parameters = (reference_samples / 'original-parameters.bin').read_bytes()
     assert SHA(parameters) == sample['original_parameter_bytes_sha256']
     rows = lambda path: [json.loads(line) for line in (path / 'daily.jsonl').read_text().splitlines()]
-    warm = args.profile / 'trajectory'
+    warm = profile / 'trajectory'
     data = rows(warm)
+    original_samples(reference_samples, component, sample, inputs, data)
     assert len(data) == 35 and [row['day'] for row in data] == list(range(1, 36))
     peak = Decimal(0)
     with localcontext() as context:
@@ -90,7 +145,7 @@ def main():
         seen = []
         for path in root.glob('accepted-column-1-day-*.zip'):
             day = int(path.stem.rsplit('-', 1)[1])
-            with zipfile.ZipFile(path) as z:
+            with zipfile.ZipFile(io.BytesIO(path.read_bytes())) as z:
                 assert set(z.namelist()) == {'checkpoint.json', 'macro.bin', 'result.end'}
                 checkpoint = json.loads(z.read('checkpoint.json'))
                 assert checkpoint['binding'] == meta['binding'] and checkpoint['receipt'] == byday[day]
@@ -111,12 +166,12 @@ def main():
     assert [(item['start'], item['end']) for item in q['cold']] == windows
     cold = []
     for low, high in windows:
-        root = args.profile / ('own-' + str(low))
+        root = profile / ('own-' + str(low))
         observed = rows(root)
         assert physical(observed) == physical(data[low:high])
         result = audit(root, observed)
         assert result['native_samples'] == [high]
-        with zipfile.ZipFile(warm / f'accepted-column-1-day-{high}.zip') as a, zipfile.ZipFile(root / f'accepted-column-1-day-{high}.zip') as b:
+        with zipfile.ZipFile(io.BytesIO((warm / f'accepted-column-1-day-{high}.zip').read_bytes())) as a, zipfile.ZipFile(io.BytesIO((root / f'accepted-column-1-day-{high}.zip').read_bytes())) as b:
             assert all(a.read(name) == b.read(name) for name in ('macro.bin', 'result.end'))
         cold.append(result)
     if q['kind'] == 'cde':
@@ -127,9 +182,18 @@ def main():
                   actual_original_constitutive_observations=sum(len(rows) for rows in sample['observations_by_layer'].values()),
                   maximum_original_theta_stock_difference_cm=sample['maximum_original_theta_stock_difference_cm'], decimal_global_maximum_absolute_residual_cm=str(peak),
                   absolute_water_limit_cm='1e-10', original_parameter_bytes_verified=True, model_executions=0, compiler_executions=0, canonical_admission=False)
+    return record
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    for key in ('profile', 'reference-samples', 'output'):
+        parser.add_argument('--' + key, type=Path, required=True)
+    args = parser.parse_args()
+    record = audit_profile(args.profile, args.reference_samples)
     with args.output.open('x') as stream:
         json.dump(record, stream, indent=2)
-    print(record['status'], q['kind'], q['optimization'], peak)
+    print(record['status'], record['kind'], record['optimization'], record['decimal_global_maximum_absolute_residual_cm'])
 
 
 if __name__ == '__main__':
