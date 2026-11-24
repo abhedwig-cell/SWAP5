@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
   "branch": "codex/nomacro-frost-hysteresis-state01",
-  "last_commit": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+  "last_commit": "122d762c69",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35445,11 +35445,14 @@
     "prototype_recovery_head": "d29caa2076"
   },
   "frost_hysteresis_state01": {
-    "status": "SOURCE_RECONCILIATION_NOT_IMPLEMENTED",
+    "status": "EXPLICIT_HYS01_ORIGINAL_INITIAL12_IMPLEMENTED_PERSISTING_NOT_QUALIFIED",
     "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "classification": "B_EXISTING_FROST_HYSTERESIS_ROOT_STATE_COMPOSITION",
     "scope": "Model1 dense original water/CDE, existing corrected Frost DIVDRA1 bottom6 Snow1 numeric heat, explicit/implicit and originalinitial1/2 withhysteresis0/1; currentoriginal hys2 remains unchanged",
-    "next_action": "Add strict actual-input selector; delegate only hys0/1 exclusions; preserve original numerical bodies and oldhys2 generated postimages; begin actualO0 explicit-water originalinitial1 35days/cold after storagecheck. Implicit typedroot native must retain exact currenthys2 body and bind each newhys value independently.",
-    "qualified": false
+    "next_action": "Actual O0 first explicitwater/hys0/initial1 35day trajectory and3exactcold fromunchanged Frost fixture; compile viareal publicbuilder. Then hys1/CDE/initial2 O0/O2 representatives in samebatch, typed wronghys native tests; expand implicit only after its actualroot bindings preserveoldhys2 wholepostimages.",
+    "qualified": false,
+    "source_contract": "FROST_HYSTERESIS_STATE01_CONTRACT_V1.json",
+    "first_input": "EV/frost-history-state01-explicit-water-hys0-initial1-input-v1",
+    "first_frontend": "actual new inspect PASS; current canonical refusal to record before models"
   }
 }

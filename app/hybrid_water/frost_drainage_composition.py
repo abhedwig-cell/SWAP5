@@ -33,10 +33,14 @@ def metadata(project):
     sha = lambda p: hashlib.sha256(p.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     providers = ['frost_drainage_composition.py', 'frost_divdra_overlap.py']
     if project.solute: providers.append('snow_undrained_cde_positive.py')
-    return dict(policy=POLICY, providers={name: sha(folder / name) for name in providers},
+    result=dict(policy=POLICY, providers={name: sha(folder / name) for name in providers},
         correction='FROST-DIVDRA-OVERLAP-01', native_codec=codec(project).decode(),
         fixed_SWKIMPL=0, fixed_SWDIVD=1, new_physical_state=False,
         chemical_positive_mass_policy='original-cde-preserve-positive-cell-mass-v1' if project.solute else None)
+    from frost_hysteresis_composition import metadata as history_metadata
+    history=history_metadata(project)
+    if history is not None:result['hysteresis_state_composition']=history
+    return result
 
 
 def apply_build(output, donor_build, project, patched):

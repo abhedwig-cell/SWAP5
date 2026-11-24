@@ -4,6 +4,9 @@ from pathlib import Path
 
 
 def selection(directory,original_output=True):
+ from frost_hysteresis_composition import selection as frost_history_selection
+ composed=frost_history_selection(directory,original_output)
+ if composed is not None:return composed
  if not directory or original_output is False:return None
  from experimental_project import switches,one
  folder=Path(directory);text=(folder/'swap.swp').read_text(encoding='cp1252');selected=switches(text)

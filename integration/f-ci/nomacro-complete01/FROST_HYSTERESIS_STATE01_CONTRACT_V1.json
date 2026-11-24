@@ -1,0 +1,65 @@
+{
+  "status": "PERSISTED_EXPLICIT_FROST_HISTORY_COMPOSITION_IMPLEMENTATION_NOT_QUALIFIED",
+  "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+  "classification": "B_EXISTING_PROCESS_AND_C_STATE_COMPOSITION",
+  "scope": "Explicit model1 original Snow/Frost DIVDRA1 bottom6 water/CDE,hys0/1,initial1/2,dense daily/event closure",
+  "new_physical_equations": false,
+  "new_native_format": false,
+  "owning_water_and_chemical_limits": "Unchanged1e-10 owning Frost daily/terminal and CDE absolute every-prefix; existing elapsed hydraulic-step guard",
+  "implicit_hys01_still_refused": true,
+  "files": {
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "3551ec4b5f8f287baa20bf2f90841ca119a73c8b685f7629a3c16f30d7f85cfa",
+      "proposed_lf_sha256": "41c0dbed87feef466533dc2a659aaf53454696ebba85baabb09a9417414d454b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 12360,
+          "base_end": 12360,
+          "before": "",
+          "after": "        from frost_hysteresis_composition import selection as frost_history_selection\n        frost_history=frost_history_selection(directory,original_output)\n"
+        },
+        {
+          "base_start": 12443,
+          "base_end": 12486,
+          "before": "                or selected['SWHYST']!=2):\n",
+          "after": "                or selected['SWHYST']!=2 and frost_history is None):\n"
+        }
+      ]
+    },
+    "app/hybrid_water/frost_drainage_composition.py": {
+      "before_lf_sha256": "6038ea434f0dd42c21e2804762d94ab56c7d1587021316300b8759e948148ca8",
+      "proposed_lf_sha256": "58d0111a47ad5419ed576eb273d1c03e896c927baff7d61edc2de02fed69693d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1549,
+          "base_end": 1640,
+          "before": "    return dict(policy=POLICY, providers={name: sha(folder / name) for name in providers},\n",
+          "after": "    result=dict(policy=POLICY, providers={name: sha(folder / name) for name in providers},\n"
+        },
+        {
+          "base_start": 1904,
+          "base_end": 1904,
+          "before": "",
+          "after": "    from frost_hysteresis_composition import metadata as history_metadata\n    history=history_metadata(project)\n    if history is not None:result['hysteresis_state_composition']=history\n    return result\n"
+        }
+      ]
+    },
+    "app/hybrid_water/initial_profile_frost.py": {
+      "before_lf_sha256": "5e6e0eb52d39ab12411fe027488c29f6be8926dae776b105caa805c37007b7c0",
+      "proposed_lf_sha256": "694335fcaa507719f5edc05642c9830f8ab31b6ea3d861b6415c13b4e08e5de3",
+      "ordered_literal_edits": [
+        {
+          "base_start": 165,
+          "base_end": 165,
+          "before": "",
+          "after": " from frost_hysteresis_composition import selection as frost_history_selection\n composed=frost_history_selection(directory,original_output)\n if composed is not None:return composed\n"
+        }
+      ]
+    }
+  },
+  "added_file": {
+    "path": "app/hybrid_water/frost_hysteresis_composition.py",
+    "sha256": "fca322b0462e98ee126ce5525d3175d9b5b3feda128a9a37f0fedb70154a1d4a"
+  },
+  "next_expensive_action": "Actual O0 first explicitwater/hys0/initial1 35day trajectory and3exactcold fromunchanged Frost fixture; compile viareal publicbuilder. Then hys1/CDE/initial2 O0/O2 representatives in samebatch, typed wronghys native tests; expand implicit only after its actualroot bindings preserveoldhys2 wholepostimages."
+}
