@@ -95,6 +95,7 @@ jobs:
             /integration/f-ci/nomacro-complete01/*DEFAULT_MODEL_GRAMMAR*
             /integration/f-ci/nomacro-complete01/*SNOW_VAPOR*
             /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*
+            /integration/f-ci/nomacro-complete01/RIA12_*
       - name: Build both optimizations and run actual file/restart qualification
         run: |
           set -euo pipefail
