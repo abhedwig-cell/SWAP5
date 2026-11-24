@@ -77,4 +77,3 @@ if s['SWSOLU']:assert any(row['solute_ledger_mg_cm2'][3]>0 for row in data),'CDE
 result=dict(status='ACTUAL_ANALYTICAL_SNOW35_ALL_NODE_GLOBAL_SOIL_SOLUTE_NATIVE_EXACT_COLD_INDEPENDENT_PASS_NOT_ADMITTED',producer=q['source'],layer_models=q['layer_models'],kind=q['kind'],optimization=q['optimization'],days=35,warm=proof,cold=cold,actual_original_constitutive_samples=sample_receipt,decimal_global_maximum_absolute_residual_cm=str(global_max),absolute_water_limit_cm='1e-10',independent_native_reader_sha256=SHA(decoder),actual_BUILD_sha256=q['actual_BUILD_sha256'],compiler_executions=0,model_executions=0,canonical_admission=False)
 with a.output.open('x') as stream:json.dump(result,stream,indent=2)
 print(result['status'],q['kind'],q['layer_models'],str(global_max))
-

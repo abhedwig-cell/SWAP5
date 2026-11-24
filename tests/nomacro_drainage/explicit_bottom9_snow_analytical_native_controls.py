@@ -59,4 +59,3 @@ try:
  q['status']='ACTUAL_COMPILED_ANALYTICAL_SNOW_MODEL_NATIVE_17_REFUSALS_AND_OWN_POSITIVE_PASS'
 finally:save()
 print(q['status'],len(q['compiled_refusals']))
-

@@ -23,5 +23,3 @@ assert not rows[1]['ready'] and rows[1]['returncode'] not in (0,100) and 'Active
 assert git('rev-parse','HEAD')==observer
 q=dict(status='ACTUAL_CURRENT_COMPILED_NO_VAPOR_NATIVE_OWN_POSITIVE_AND_FOREIGN_ACTIVE_VAPOR_REFUSAL_PASS',actual_compiler_producer=q['source'],actual_observer_source=observer,actual_BUILD_sha256=SHA((build/'BUILD.json').read_bytes()),genuine_current_checkpoint_sha256=checkpointsha,kind=q['kind'],optimization=q['optimization'],rows=rows,compiler_executions=0,model_periods=0,accepted_model_days=0,original_checkpoint_rebound=False,canonical_admission=False)
 (a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n');print(q['status'],q['kind'],q['optimization'])
-
-

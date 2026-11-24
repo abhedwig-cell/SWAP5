@@ -46,4 +46,3 @@ with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED) as z:
  for key,raw in sorted(files.items()):z.writestr(key,raw)
 raw=archive.read_bytes();record=dict(status='ACTUAL_ORIGINAL_PARAMETER_SNOW_ANALYTICAL_3_7_11_WATER_CDE_INPUTS_PREPARED_NO_MODELS',source=head,archive=archive.name,bytes=len(raw),sha256=SHA(raw),members={k:dict(bytes=len(v),sha256=SHA(v)) for k,v in files.items()},roles=[x['role'] for x in cases],cases=cases,parent_input_archives={k:q['sha256'] for k,(_,q) in archives.items()},model7_preflight_inputs_exactly_preserved=True,compiler_executions=0,model_executions=0,canonical_admission=False)
 (P/(name+'.json')).write_text(json.dumps(record,indent=2)+'\n');print(record['status'],len(files),len(raw),record['sha256'])
-
