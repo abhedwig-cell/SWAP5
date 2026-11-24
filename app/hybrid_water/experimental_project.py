@@ -72,7 +72,8 @@ def inspect(directory, *, original_output=None):
     check_paths(text, 'swap.swp')
     selected = switches(text)
     from original_ria12 import selection as ria12_selection
-    ria12 = ria12_selection(directory, original_output)
+    from original_ria12_boundary import selection as ria12_boundary_selection
+    ria12 = ria12_boundary_selection(directory, original_output) or ria12_selection(directory, original_output)
     # Descriptor-only helper calls accept the historical output domain. Actual
     # executions use load() with an explicit compatibility/original choice.
     if original_output is not False and 'SWCSV' not in selected:selected['SWCSV']=0

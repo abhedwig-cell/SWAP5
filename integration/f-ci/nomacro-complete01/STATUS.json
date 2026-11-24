@@ -2,8 +2,8 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
-  "branch": "codex/nomacro-ria12-native01",
-  "last_commit": "c23d91cf17d75deaf74b206fb3333f7441a76b5f",
+  "branch": "codex/nomacro-ria12-boundary01",
+  "last_commit": "904968de3737dc1376e4f758327c2c7e8563cc19",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35065,5 +35065,14 @@
     "cleanup_deleted": 24,
     "cleanup_actual_net_free_change_bytes": 230768640,
     "cleanup_blocked": "Previously absent owned negative worktree; no deletion attempted"
+  },
+  "ria12_boundary_active_v1": {
+    "status": "IMPLEMENTED_UNQUALIFIED_INITIAL_TWO_DAY_PROBES_NEXT",
+    "parent_candidate": "904968de3737dc1376e4f758327c2c7e8563cc19",
+    "parent_PR": 1795,
+    "parent_admission": "CI_PENDING",
+    "actual_canonical": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
+    "scope": "NoSnow/NoHeat all-layer12 daily water/CDE; five added (SWDRA,SWBOTB) pairs (0,5),(0,6),(0,8),(1,5),(1,8); old (1,6) literal path retained",
+    "next_action": "Freeze source and run actual O0 two-day/cold boundary8 undrained and boundary5 drained probes; retain strict refusals/failures. ParentPR1795 full admission gates continue independently; do not admit successor before parent."
   }
 }
