@@ -1,8 +1,10 @@
 """Independent RIA35 balances, complete native/calendar and original soil observations."""
 import argparse
+from datetime import date
 from decimal import Decimal, localcontext
 import hashlib
 import json
+import math
 from pathlib import Path
 import subprocess
 import sys
@@ -14,6 +16,32 @@ from ria12_native import native
 from ordinary_pond_evidence import physical
 from implicit_conductivity_forensics import water, sequential_records
 SHA = lambda raw: hashlib.sha256(raw).hexdigest()
+
+
+def standard_cde_daily(root, data, epoch):
+    """Read this producer's actual standard-daily ABI, not interval diagnostics."""
+    ledgers, receipts, returns = [], [], []
+    for line in (root / 'original/donor.stdout').read_text().splitlines():
+        if line.startswith('HYBRID_SOLUTE_LEDGER '):
+            values = list(map(float, line.split()[1:]))
+            assert len(values) == 9 and all(map(math.isfinite, values))
+            ledgers.append(values)
+        elif line.startswith('ORIGINAL_DAILY_RECEIPT '):
+            fields = line.split()
+            assert len(fields) == 3
+            receipts.append((int(fields[1]), float(fields[2])))
+        elif line.startswith('HYBRID_DAY_RETURN '):
+            fields = line.split()
+            assert len(fields) == 3
+            returns.append((int(fields[1]), float(fields[2])))
+    assert len(ledgers) == 2 * len(data) + 1
+    assert ledgers[0][0] == data[0]['solute_start_mg_cm2']
+    for index, row in enumerate(data):
+        assert ledgers[2 * index + 1] == ledgers[2 * index + 2] == row['solute_ledger_mg_cm2']
+    clock = (date.fromisoformat(epoch) - date(1900, 1, 1)).days + 1
+    expected = [(row['day'], clock + row['day']) for row in data]
+    assert receipts == returns == expected
+    return dict(actual_original_daily_receipts=len(receipts), actual_paired_original_chemical_ledgers=len(ledgers) - 1)
 
 
 def main():
@@ -74,10 +102,8 @@ def main():
         if q['kind'] == 'cde':
             from groundwater_snow_forensics import clock
             chemical = clock.ledger(observed, len(observed))
-            class Files:
-                def read(self, name):
-                    return (root / name).read_bytes()
-            clock.daily(Files(), '', observed, meta['project']['nodes'])
+            actual_daily = standard_cde_daily(root, observed, meta['project']['start_date'])
+            chemical = dict(unchanged_ledger=chemical, actual_standard_daily_output=actual_daily)
         return dict(water=water_proof, solute=chemical, native_samples=sorted(seen))
     proof = audit(warm, data)
     assert proof['native_samples'] == [2, 4, 7, 9, 30, 34, 35]
