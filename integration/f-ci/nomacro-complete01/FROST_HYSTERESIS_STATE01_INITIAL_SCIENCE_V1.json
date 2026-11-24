@@ -1,0 +1,2237 @@
+{
+  "status": "THREE_CURRENT_35DAY_AND_NINE_COLD_INDEPENDENT_PASS_46_FRONTEND_CHECKS_NOT_ADMITTED",
+  "science": [
+    {
+      "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+      "producer": "643504179b4902d5484f5cc1c2d1197250fb0858",
+      "result_sha256": "a8e3a28705b1f69aa32fd30590505dbb0d8d28482eb29a1e490bdfee6175c950",
+      "kind": "water",
+      "optimization": "O0",
+      "days": 35,
+      "cold_windows": 3,
+      "partial_frost_days": 25,
+      "actual_frost_day20": true,
+      "water_max_decimal": "9.9876108E-11",
+      "chemical_max_decimal": "0",
+      "chemical_prefix_max_decimal": "0",
+      "model_executions": 0,
+      "compiler_executions": 0,
+      "canonical_admission": false,
+      "auditor_source": "c66173092b61853fff8dc116326613ef2e950f81"
+    },
+    {
+      "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+      "producer": "21ad6f6a48e045a809cbfbd63dac3f6507909c7a",
+      "result_sha256": "0c2caba5c54d16a902cd6955d34ca9568cd9c43728571531033ceea351dab02a",
+      "kind": "cde",
+      "optimization": "O0",
+      "days": 35,
+      "cold_windows": 3,
+      "partial_frost_days": 25,
+      "actual_frost_day20": true,
+      "water_max_decimal": "9.998883E-11",
+      "chemical_max_decimal": "1.072E-13",
+      "chemical_prefix_max_decimal": "1.95795071941513306382E-13",
+      "model_executions": 0,
+      "compiler_executions": 0,
+      "canonical_admission": false,
+      "auditor_source": "21ad6f6a48e045a809cbfbd63dac3f6507909c7a"
+    },
+    {
+      "status": "INDEPENDENT_COMPLETE_COMPILER_SOURCES_DAILY_BUDGETS_COLD_NATIVE_PASS",
+      "producer": "21ad6f6a48e045a809cbfbd63dac3f6507909c7a",
+      "result_sha256": "520b65cb2235c3b1ae0b639bfd29c073660b4bba24e5780ed1d0dccd991bbbf8",
+      "kind": "cde",
+      "optimization": "O2",
+      "days": 35,
+      "cold_windows": 3,
+      "partial_frost_days": 25,
+      "actual_frost_day20": true,
+      "water_max_decimal": "9.998883E-11",
+      "chemical_max_decimal": "1.072E-13",
+      "chemical_prefix_max_decimal": "1.95795071941513306382E-13",
+      "model_executions": 0,
+      "compiler_executions": 0,
+      "canonical_admission": false,
+      "auditor_source": "21ad6f6a48e045a809cbfbd63dac3f6507909c7a"
+    }
+  ],
+  "frontend": {
+    "status": "ACTUAL_NEW_FRONTEND_FOUR_POSITIVES_FORTY_REFUSALS_TWO_OLD_HYS2_RETAINED",
+    "source": "21ad6f6a48e045a809cbfbd63dac3f6507909c7a",
+    "checks": [
+      {
+        "label": "frost-history-state01-explicit-water-hys0-initial1-input-v1",
+        "status": "CURRENT_NEW_ROUTE_SELECTED",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-explicit-water-hys0-initial1-input-v1",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "4c4d4f1c3ed71517451a7d3b639be125f984ff47c4ede1e423c9dde63744fdc7"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWMACRO=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-0",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "1299eb3404c4f4c85744d5e8476001485b452b44c39e36fdf0f532e3949c4b25"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWSOLU=2",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-1",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "a80e95f19a1f7cb2ccc9a5728717edd12c34cfc569f4280f6d0bd8238cfec5cc"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWKIMPL=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-2",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "42243c4d0262aaf1f684c0640f12f00204cc6081d39a0adf0441128cea4131bd"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWSNOW=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-3",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "8b5961136394fc7a0e26e0dcafcef1630a86de536b04f045a5075f5393c7e395"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWHEA=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-4",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "86f43feac3b2e8d9feb8926ea0f2e1312bc82437fd6de3006d42994543161fd0"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWCALT=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-5",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "cc7906bce540abbf95ea4bcb48e5d3175419a0c89a9137755309e1b675d56bfa"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWSOPHY=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-6",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "7f4dfb92893672a67fcfc3c91e2786ff930e1a669ae18c9154f6eeb0ec046734"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWDRA=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-7",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "4b925ad4ad746bce2dd9b1cd13179a072a48c3e222d5c6ea694a7beb6885afd3"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWBOTB=5",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-8",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "0b0f6448e3149d2bac7b423be6e30b002371d5e38fcd6890e5fc602b45fe65fd"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWBR=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-9",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "68e6f978db2ce73ef17469b814b35027f66a30845c49c49527aa020a9463f1fa"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWMETDETAIL=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-10",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "d56e10e489f3b1637b4f8647e916d3511cd8031390c6e9b7bafa9dbfefaae097"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "IHWCKMODEL=8",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-11",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "8374ffc3ac4c747d13189324f6a1591d52e73cfb4557695e76ce85dc2d42c261"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "NPRINTDAY=2",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-12",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "e2d3a9fde4fadcc12a1b57036e4e292381dfc56e86b243b4ff10d9908945a261"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "PERIOD=2",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-13",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "e6a9cd6bf056bc8d38c1ea29d437bacde8429038882019d368986a8d938ba396"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWMONTH=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-14",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "65e9ca8260efe09250a8ea4f8fe35c6a6389eac18f4fcc4a6329891e5c88f45a"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "FLPRINTDT=.TRUE.",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-15",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "54774d27a95747b9d875679d3c6fd2d9d7095457729444f869e39d9d5b1e8631"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWINCO=3",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-16",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "e639aa7b812aadb6e7fac3215a14fa7e6e045e2422e923034a421d3bdcedc2dd"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWRES=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-17",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "39b03756ad0cccf4251ae1e3088856f44bf77023b0073d588233cddc59e39e05"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "DRAIN=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-18",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "764451c5195b1054e5e43fa5eab00e3d4b87b77838605eaffd8f76ede2311855"
+          ],
+          [
+            "swap.swp",
+            "4c4d4f1c3ed71517451a7d3b639be125f984ff47c4ede1e423c9dde63744fdc7"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "DUPLICATE=SWHYST",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-refusal-19",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "216b0460ffee8ac8cc3508fdd77edab9559917857b634db81a06c50b251625be"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "water-retained-hys2",
+        "status": "EXISTING_HYS2_ROUTE_RETAINED",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\water-retained-hys2",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "0337ae3af3b06b66b5d76809adaf674ea9d5547718b6b2563ef8a9590f08b8ca"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "frost-history-state01-explicit-water-hys1-initial1-input-v1",
+        "status": "CURRENT_NEW_ROUTE_SELECTED",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-explicit-water-hys1-initial1-input-v1",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "9d4d38988f391644f5b831f18e1af3e9bad71cd74048b88b5c9907fdd1b0eb24"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "frost-history-state01-explicit-cde-hys0-initial2-input-v1",
+        "status": "CURRENT_NEW_ROUTE_SELECTED",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-explicit-cde-hys0-initial2-input-v1",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "0315a10c88e33a7f61203ef135b34bd73655f90780d5b2941a3dba77bc8e2781"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "frost-history-state01-explicit-cde-hys1-initial2-input-v1",
+        "status": "CURRENT_NEW_ROUTE_SELECTED",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-explicit-cde-hys1-initial2-input-v1",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "f7c582ff41268259404b35aafab47dbe7cafad1a3050cd8ba589154eb3c9ec4b"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWMACRO=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-0",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "0ae8773c94d5ab28b4b92795cea10f09082fed80ed821ba78d91a871f728ecd4"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWSOLU=2",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-1",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "d1c0cda4e151f706b2ad14083862d552430e917925483843fdbd95c926c67b4b"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWKIMPL=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-2",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "edd0f4d925a9a3a235505dfda4682fd4eaec66f5daa9c65fbed7ec9b9f735e1a"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWSNOW=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-3",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "57c3a18737a0353f881d8557a0318ae7cf12f653ef1d7079d59c8ec0b4c7aa29"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWHEA=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-4",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "53b9ca33f30bd9d069a35be1b35077eaf88af7cf73310d3e22abfe2958a5168e"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWCALT=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-5",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "3af805ac4af817edd8aea602228a94800ace56366ede2d5a65b2da360cdf2fdd"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWSOPHY=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-6",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "9c4b10546c14c9ff795cdfd8f2c7c63ef8de4093e6589220e0d8bdf02bc69e60"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWDRA=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-7",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "4fe0ad5908119708958bc07a7cb3e0f787d9b3460984e1e53cc36b89f2815640"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWBOTB=5",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-8",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "dfb3a54a0d47712ab0b832e936f76d90a014916cc2e45a02c9c45b10436c6e82"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWBR=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-9",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "47d2e05417cd4d628b4c7d612e70d8bb412b3c63cbf11d6827c8787e39465baf"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWMETDETAIL=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-10",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "38a5b906c19cd4980618d7a87819c5a395ec1a137588c5e2577aa4dcb3c7f3d0"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "IHWCKMODEL=8",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-11",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "f871877e388a1432ed54d14eaaf53384416230795830575198746945972be8ec"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "NPRINTDAY=2",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-12",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "942cf9d6ebdd5e18cdd01ebab23b2f502ab29aa6ab9c9b689cb453400b344762"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "PERIOD=2",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-13",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "633d53d5ceafb5e9a62c00dd6b14b07ee03ef0da8fa7c5aee1ea46ef5efa5cee"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWMONTH=1",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-14",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "128c71471c59d482eeaa5bac40a188ccf216e98a4484f7d78ea53a4207ac3c6c"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "FLPRINTDT=.TRUE.",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-15",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "4293e9b6879b485d7c71ed1c310ddeb0040609ac3fb21a4cb4c380ce4634b397"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWINCO=3",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-16",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "5af73817bcb5f4b77684ce94d3bf1af80a4c2405d2455c8477833e25dae3f1ab"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "SWRES=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-17",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "44a3caf60557dc87da54dd0493a228ed4d22c18d140676fae44b023a8c815d75"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "DRAIN=0",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-18",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "764451c5195b1054e5e43fa5eab00e3d4b87b77838605eaffd8f76ede2311855"
+          ],
+          [
+            "swap.swp",
+            "f7c582ff41268259404b35aafab47dbe7cafad1a3050cd8ba589154eb3c9ec4b"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "DUPLICATE=SWHYST",
+        "status": "ACTUAL_PUBLIC_FRONTEND_REFUSED_NO_BUILD",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-refusal-19",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "51f0badd0125cfb3e520893a82dc11cf642682043079891fdb61f0b40a8ce899"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      },
+      {
+        "label": "cde-retained-hys2",
+        "status": "EXISTING_HYS2_ROUTE_RETAINED",
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\frost-history-state01-actual-frontends-v4\\cde-retained-hys2",
+        "input_inventory": [
+          [
+            "283.met",
+            "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6"
+          ],
+          [
+            "control_plot.inp",
+            "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8"
+          ],
+          [
+            "grass.crp",
+            "0b7f56a0983ed1a0159833bbc288f10fb89183f670dfcbe11c877ac4b06ca6cd"
+          ],
+          [
+            "maize.crp",
+            "d954547d227880636779a4b10d285323fa1213147c6afc230e757a68a9860ef3"
+          ],
+          [
+            "plot_swap.cmd",
+            "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357"
+          ],
+          [
+            "potato.crp",
+            "438c07b55ec9d0c13a89f247fa90e15af428d016b82419f94df5447d85060482"
+          ],
+          [
+            "run_swap.cmd",
+            "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9"
+          ],
+          [
+            "swap.dra",
+            "822786977b0c9dbc8de4900f971a7bda4d3f590d24a2bfd7740b59b83875d2c3"
+          ],
+          [
+            "swap.swp",
+            "a477aa805d5b5e95bb7340d6ba42db8b06e2b756b338ce28d2d095cd88fa6cf0"
+          ],
+          [
+            "swap.tss",
+            "db419803943a9097a79adf8ddf7293711ad768e9d86c7285ba25225f0c1dc5ee"
+          ]
+        ]
+      }
+    ],
+    "compiler_executions": 0,
+    "model_executions": 0
+  },
+  "original_frontend_setup_failures_retained": [
+    "EV/frost-history-state01-actual-frontends-v1/SETUP_FAILURE.json",
+    "EV/frost-history-state01-actual-frontends-v2/RESULT.json",
+    "EV/frost-history-state01-actual-frontends-v3/RESULT.json"
+  ],
+  "owning_limits_unchanged": true,
+  "canonical_admission": false,
+  "next": "Remaining13Windows O0/O2 original initial1/2,hys0/1,water/CDE combinations in samebatch; then native context/refusal/source postimages andfocusedUbuntu portability"
+}
