@@ -2,6 +2,7 @@ module hybrid_snow_analytical_native
   use MOD_grid,only:numnod,numlay
   use MOD_swap_base,only:swmacro,swsolu,swsnow,swfrost,swhyst,swdra,swhea,swcalt
   use MOD_MvG,only:iHWCKmodel,swsophy
+  use WC_K_models_04_11,only:NoVap
   use variables,only:swkimpl,swbotb
   implicit none
   private
@@ -18,6 +19,8 @@ contains
     if(any(iHWCKmodel(1:numlay)<1).or.any(iHWCKmodel(1:numlay)>11).or. &
        any(iHWCKmodel(1:numlay)==2).or.all(iHWCKmodel(1:numlay)==1)) &
        error stop 'Foreign analytical Snow native constitutive models'
+    if(any((iHWCKmodel(1:numlay)>=8).and.(.not.NoVap(1:numlay)))) &
+       error stop 'Active vapor cannot use analytical Snow native'
     n=4+numlay;allocate(expected(n),header(n),witness(n))
     expected(1:4)=[1,numnod,numlay,swsolu]
     expected(5:n)=iHWCKmodel(1:numlay)
