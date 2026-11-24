@@ -1,0 +1,179 @@
+{
+  "status": "CENTRAL_ORIGINAL_SNOW58_SCIENCE_AND_CONTROLS_PASS_NOT_ADMITTED",
+  "platform": "Ubuntu",
+  "optimization": "O2",
+  "archive_sha256": "6067c67ea1ae8ba04944bf04ffa1b4fe8da809ee38291b5bffd1b4af744db38f",
+  "contexts": [
+    {
+      "case": "bottom5-model7-water-dry-initial1",
+      "actual_source": "1438907b876f91605b0c41af24c73377bab7c7e3",
+      "actual_observer": "1438907b876f91605b0c41af24c73377bab7c7e3",
+      "days": 35,
+      "native": 7,
+      "exact_cold": 3,
+      "compiled_files": 64,
+      "model_refusals": 18,
+      "root_refusals": 25,
+      "transactions": true,
+      "vapor_refusal": false,
+      "ledger": {
+        "water": {
+          "days": 35,
+          "whole_water_residual_cm": 4.4224606615683726e-16
+        },
+        "soil_max_cm": 2.398255205537936e-16,
+        "solute": null,
+        "decimal_global_max_cm": "1.83945E-15"
+      },
+      "original_constitutive": {
+        "actual_original_constitutive_rows": 1068,
+        "maximum_original_theta_stock_error_cm": 7.105427357601002e-15,
+        "component_actual_source": "1438907b876f91605b0c41af24c73377bab7c7e3",
+        "actual_sample_source": "26497facb174d26af47821171314df05263ff976"
+      }
+    },
+    {
+      "case": "bottom8-model7-water-wet-initial2",
+      "actual_source": "26497facb174d26af47821171314df05263ff976",
+      "actual_observer": "26497facb174d26af47821171314df05263ff976",
+      "days": 35,
+      "native": 7,
+      "exact_cold": 3,
+      "compiled_files": 63,
+      "model_refusals": 18,
+      "root_refusals": 0,
+      "transactions": false,
+      "vapor_refusal": false,
+      "ledger": {
+        "water": {
+          "days": 35,
+          "whole_water_residual_cm": 5.238864897449957e-16
+        },
+        "soil_max_cm": 1.1102230246251565e-16,
+        "solute": null,
+        "decimal_global_max_cm": "1.128E-14"
+      },
+      "original_constitutive": {
+        "actual_original_constitutive_rows": 2382,
+        "maximum_original_theta_stock_error_cm": 2.842170943040401e-14,
+        "component_actual_source": "1438907b876f91605b0c41af24c73377bab7c7e3",
+        "actual_sample_source": "26497facb174d26af47821171314df05263ff976"
+      }
+    },
+    {
+      "case": "bottom5-model3-cde-dry-initial1",
+      "actual_source": "26497facb174d26af47821171314df05263ff976",
+      "actual_observer": "26497facb174d26af47821171314df05263ff976",
+      "days": 35,
+      "native": 7,
+      "exact_cold": 3,
+      "compiled_files": 76,
+      "model_refusals": 18,
+      "root_refusals": 0,
+      "transactions": false,
+      "vapor_refusal": false,
+      "ledger": {
+        "water": {
+          "days": 35,
+          "whole_water_residual_cm": -8.35160933465584e-15
+        },
+        "soil_max_cm": 9.964197435902156e-15,
+        "solute": null,
+        "decimal_global_max_cm": "9.9063E-15"
+      },
+      "original_constitutive": {
+        "actual_original_constitutive_rows": 1350,
+        "maximum_original_theta_stock_error_cm": 7.105427357601002e-15,
+        "component_actual_source": "1438907b876f91605b0c41af24c73377bab7c7e3",
+        "actual_sample_source": "26497facb174d26af47821171314df05263ff976"
+      }
+    },
+    {
+      "case": "bottom8-model11-cde-wet-initial2",
+      "actual_source": "26497facb174d26af47821171314df05263ff976",
+      "actual_observer": "26497facb174d26af47821171314df05263ff976",
+      "days": 35,
+      "native": 7,
+      "exact_cold": 3,
+      "compiled_files": 75,
+      "model_refusals": 18,
+      "root_refusals": 25,
+      "transactions": true,
+      "vapor_refusal": true,
+      "ledger": {
+        "water": {
+          "days": 35,
+          "whole_water_residual_cm": -1.931441118152577e-14
+        },
+        "soil_max_cm": 1.892930256985892e-14,
+        "solute": null,
+        "decimal_global_max_cm": "2.098E-14"
+      },
+      "original_constitutive": {
+        "actual_original_constitutive_rows": 2382,
+        "maximum_original_theta_stock_error_cm": 2.842170943040401e-14,
+        "component_actual_source": "1438907b876f91605b0c41af24c73377bab7c7e3",
+        "actual_sample_source": "26497facb174d26af47821171314df05263ff976"
+      }
+    },
+    {
+      "case": "bottom8-model3-water-wet-initial1",
+      "actual_source": "26497facb174d26af47821171314df05263ff976",
+      "actual_observer": "26497facb174d26af47821171314df05263ff976",
+      "days": 35,
+      "native": 7,
+      "exact_cold": 3,
+      "compiled_files": 61,
+      "model_refusals": 18,
+      "root_refusals": 0,
+      "transactions": false,
+      "vapor_refusal": false,
+      "ledger": {
+        "water": {
+          "days": 35,
+          "whole_water_residual_cm": 6.106226635438361e-16
+        },
+        "soil_max_cm": 8.326672684688674e-17,
+        "solute": null,
+        "decimal_global_max_cm": "1.152E-14"
+      },
+      "original_constitutive": {
+        "actual_original_constitutive_rows": 2382,
+        "maximum_original_theta_stock_error_cm": 2.842170943040401e-14,
+        "component_actual_source": "1438907b876f91605b0c41af24c73377bab7c7e3",
+        "actual_sample_source": "26497facb174d26af47821171314df05263ff976"
+      }
+    },
+    {
+      "case": "bottom5-model11-water-dry-initial1",
+      "actual_source": "26497facb174d26af47821171314df05263ff976",
+      "actual_observer": "26497facb174d26af47821171314df05263ff976",
+      "days": 35,
+      "native": 7,
+      "exact_cold": 3,
+      "compiled_files": 62,
+      "model_refusals": 18,
+      "root_refusals": 0,
+      "transactions": false,
+      "vapor_refusal": true,
+      "ledger": {
+        "water": {
+          "days": 35,
+          "whole_water_residual_cm": 4.2977774117325396e-16
+        },
+        "soil_max_cm": 2.255140518769849e-16,
+        "solute": null,
+        "decimal_global_max_cm": "2.6423E-15"
+      },
+      "original_constitutive": {
+        "actual_original_constitutive_rows": 1488,
+        "maximum_original_theta_stock_error_cm": 7.105427357601002e-15,
+        "component_actual_source": "1438907b876f91605b0c41af24c73377bab7c7e3",
+        "actual_sample_source": "26497facb174d26af47821171314df05263ff976"
+      }
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}
