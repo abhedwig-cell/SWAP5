@@ -1,7 +1,11 @@
 """Decode actual RIA12 native model, original parameters and unchanged calendar."""
 from datetime import date
 import math
+from pathlib import Path
 import struct
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tests/nomacro_scheduled_subsurface'))
 
 from implicit_conductivity_forensics import output_calendar
 
