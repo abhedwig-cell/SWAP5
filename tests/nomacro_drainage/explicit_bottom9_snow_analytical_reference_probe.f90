@@ -25,6 +25,7 @@ program actual_original_hydraulic_probe
   call get_command_argument(3,actual_input)
   if(len_trim(actual_input)==0)error stop 'Missing actual soil input path'
   call rdinit(31,6,trim(actual_input))
+  actual_count=2
   call rdfinr('IHWCKMODEL',1,11,actual_models,2,actual_count)
   if(actual_count/=2.or.any(actual_models/=model))error stop 'Foreign actual per-layer hydraulic model'
   if(rdinqr('ELAS').or.rdinqr('h_power').or.rdinqr('SWAP_SOILS_DB')) &
@@ -92,6 +93,7 @@ contains
     integer,intent(in)::index
     real(8)::values(2)
     integer::count
+    count=2
     call rdfdor(name,low,high,values,2,count)
     if(count/=2.or..not.all(ieee_is_finite(values)))error stop 'Invalid actual original soil array'
     cofgen(index,1:2)=values
