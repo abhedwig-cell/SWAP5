@@ -2,7 +2,7 @@
   "status": "PERSISTED_EXPERIMENTAL_THERMAL_DIAGNOSTIC_ONLY_NOT_QUALIFIED",
   "source_dependency": "7e7924a0e01ef94eef5b64aaad0b74d246e57544",
   "required_parent_whole_tree": "66da3029d52a8fe3bcf49a75e3471229d6d87c5b",
-  "parent_admission_pending_PR": 1799,
+  "parent_admission_pending_PR": null,
   "diagnostic_only": true,
   "canonical_admission": false,
   "physical_equations_changed": false,
@@ -136,7 +136,8 @@
   },
   "added_files": {
     "app/hybrid_water/prescribed_vapor_boundary.py": {
-      "proposed_lf_sha256": "4f16ba2476750215ef1f240cc5327f3b864e278903af3cdd1df916546d88bfab"
+      "proposed_lf_sha256": "723d9f1f72bf21ca5b1a35ebea2fd338a0753cab66d84815588d0b8a6dfb32e5"
     }
-  }
+  },
+  "parent_actual_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed"
 }

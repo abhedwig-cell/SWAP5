@@ -121,7 +121,9 @@ def diagnostic_build(output, project, patched):
              "              'PAIRED_VAPOR_THERMAL02_TRIAL_WITNESS',paired_debug_count,itry,numbit,flnonconv, &\n"
              '              t1900,dt,budget_start,budget_total,budget_step,h(numnod),hm1(numnod), &\n'
              '              theta(numnod),thetm1(numnod),paired_debug_tsoil(numnod),qbot,qtop,pond,pondm1, &\n'
-             '              maxval(abs(F(1:NN)))\n'
+             '              maxval(abs(F(1:NN))),kmean(NN+1),hgrad(NN+1),sum(F(1:NN)), &\n'
+             '              (theta(numnod)-thetm1(numnod))*dz(numnod), &\n'
+             '              sum((theta(1:numnod)-thetm1(1:numnod))*dz(1:numnod))\n'
              '            flush(paired_debug_output)\n'
              '         end if\n')
     if any(before.count(anchor)!=1 for anchor in (use_anchor,implicit,guard)):

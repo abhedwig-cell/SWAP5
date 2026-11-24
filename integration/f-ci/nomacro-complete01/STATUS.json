@@ -1,9 +1,9 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
-  "canonical": "e252e995eeece63d8f05531a10b746674c070685",
+  "canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
   "branch": "codex/nomacro-paired-vapor-thermal02",
-  "last_commit": "7e7924a0e01ef94eef5b64aaad0b74d246e57544",
+  "last_commit": "b08b0a416ee00b38e06dca6e731703afda3c87e9",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35415,10 +35415,10 @@
     "canonical_admission": false
   },
   "paired_vapor_thermal02_active_v1": {
-    "status": "EXPERIMENTAL_RECONCILED_PROTOTYPE_AND_BOUNDED_IO_WITNESS_PERSISTED_NOT_RUN",
+    "status": "ORIGINAL_FAILED_INPUT_30S_CENSORED_120_PHYSICAL_CONVERGED_MASS_REFUSED_ROWS_NO_ADMISSION",
     "parent_candidate": "7e7924a0e01ef94eef5b64aaad0b74d246e57544",
-    "parent_canonical_admission_pending_PR": 1799,
-    "current_actual_canonical": "e252e995eeece63d8f05531a10b746674c070685",
+    "parent_canonical_admission_pending_PR": null,
+    "current_actual_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "writing_checkout": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
     "qualified_parent_checkout": "C:/Users/Veldh012/swap5-implicit-conductivity-canonical01",
     "historical_failed_input": "EV/explicit-bottom9-vapor-initial-consistent-input-v1",
@@ -35426,6 +35426,13 @@
     "model_wall_cap_seconds": 30,
     "maximum_debug_witness_rows": 120,
     "scientific_PASS_claimed": false,
-    "next_action": "Run persisted one-day O0 original unchanged300s-failed input with exact current source/bundle and bounded120-row IO witness. Distinguish physical Newton convergence from stricter water guard and endpoint state; keep diagnostic separate from qualification. PR1799 current17 CI continues; no old full35 replay."
+    "next_action": "Persist bounded second diagnostic adding literal internal bottom flux and telescoping F/stock witnesses. Run original unchanged failed input O0 one-day30s cap; no threshold or physical changes. Actual PR1799 merge public/PUB observers running on separate canonical checkout; seal their results before admission receipt.",
+    "diagnostic_source": "b08b0a416ee00b38e06dca6e731703afda3c87e9",
+    "diagnostic_accepted_days": 0,
+    "diagnostic_witness_rows": 120,
+    "diagnostic_physical_converged_mass_refused_rows": 120,
+    "original_30s_result": "EV/paired-vapor-thermal02-original-input-O0-trace-v2/RESULT.json",
+    "postrun_observer_type_failure": "tuple/list inventory comparison; independent dict and source audit exact; no model rerun",
+    "parent_merge_exact_tree": "66da3029d52a8fe3bcf49a75e3471229d6d87c5b"
   }
 }

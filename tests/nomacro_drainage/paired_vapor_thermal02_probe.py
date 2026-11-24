@@ -39,15 +39,15 @@ def main():
         if log.is_file():
             for line in log.read_text().splitlines():
                 if not line.startswith('PAIRED_VAPOR_THERMAL02_TRIAL_WITNESS '):continue
-                fields=line.split();assert len(fields)==20,fields
+                fields=line.split();assert len(fields)==25,fields
                 count,itry,numbit=map(int,fields[1:4]);assert fields[4] in ('T','F');values=list(map(float,fields[5:]));assert all(map(math.isfinite,values))
-                names=('clock','dt','budget_start','budget_total','budget_step','head_last','head_previous_last','theta_last','theta_previous_last','temperature_last','qbot','qtop','pond','pond_previous','maximum_physical_F')
+                names=('clock','dt','budget_start','budget_total','budget_step','head_last','head_previous_last','theta_last','theta_previous_last','temperature_last','qbot','qtop','pond','pond_previous','maximum_physical_F','internal_bottom_conductivity','internal_bottom_gradient','physical_F_sum','last_node_storage_change','all_node_storage_change')
                 row=dict(zip(names,values));limit=1e-10*(row['clock']-row['budget_start']+row['dt'])
                 row.update(witness=count,retry=itry,newton_iterations=numbit,physical_flag_nonconverged=fields[4]=='T',mass_guard_limit_cm=limit,mass_guard_would_reject=abs(row['budget_total']+row['budget_step'])>limit);witness.append(row)
         q['witness']=witness;q['witness_rows']=len(witness)
         q['physical_converged_but_mass_guard_reject_rows']=sum(not row['physical_flag_nonconverged'] and row['mass_guard_would_reject'] for row in witness)
         daily=a.output/'trajectory/daily.jsonl';q['accepted_days']=len(daily.read_bytes().splitlines()) if daily.is_file() else 0
         q.update(actual_completion_head=git('rev-parse','HEAD').decode().strip(),seconds=time.perf_counter()-started);save()
-    assert q['actual_completion_head']==head and m.e.inventory(a.input)==[tuple(row) for row in q['input_inventory']]
+    assert q['actual_completion_head']==head and dict(m.e.inventory(a.input))==dict(q['input_inventory'])
     print(q['status'],'days',q['accepted_days'],'witness',q['witness_rows'],'physical-converged-mass-refused',q['physical_converged_but_mass_guard_reject_rows'])
 if __name__=='__main__':main()
