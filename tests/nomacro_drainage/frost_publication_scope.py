@@ -1,5 +1,7 @@
 """Select publication replay only when its actual dependency surface changed."""
 import os
+import sys
+sys.dont_write_bytecode = True
 from pathlib import Path
 
 

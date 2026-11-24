@@ -85,5 +85,13 @@
     "top_validity_check_weakened": false
   },
   "parent_actual_admission_archive": "RIA12_BOUNDARY_ADMISSION_RAW_V1",
-  "parent_actual_admission_archive_sha256": "db830e813d9edcde4d30bb0de367195f79cb001891b43eae1118032a31636585"
+  "parent_actual_admission_archive_sha256": "db830e813d9edcde4d30bb0de367195f79cb001891b43eae1118032a31636585",
+  "observer_execution_policy": {
+    "tests/nomacro_drainage/frost_publication_scope.py": {
+      "before_lf_sha256": "8981e67d3d0142ec165db5f981d18430d68b23550d8925a784ee76cc56c0e2be",
+      "proposed_lf_sha256": "098a0c85397b3ec17cae2a2164deb3c45a4eba11b733d19b80b8c0830f6ff240",
+      "scope": "Prevent implicit Python bytecode writes before importing actual strict source guards; no source files or bytecode are hidden or filtered; no physics/numerical/reference authority changes",
+      "literal_insertion": "import sys\nsys.dont_write_bytecode = True\n"
+    }
+  }
 }
