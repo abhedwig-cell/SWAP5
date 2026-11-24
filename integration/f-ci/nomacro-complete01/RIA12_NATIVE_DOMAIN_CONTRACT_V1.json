@@ -1,5 +1,5 @@
 {
-  "status": "PROPOSED_BOUNDED_RIA12_NATIVE_IDENTITY_MIGRATION_NOT_IMPLEMENTED_NOT_QUALIFIED_NOT_ADMITTED",
+  "status": "IMPLEMENTED_BOUNDED_NATIVE_MODEL_AND_ORIGINAL_PRECISION_PARAMETER_WITNESS_PENDING_SMALL_REAL_GATES",
   "version": 1,
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "classification": "B_EXISTING_ORIGINAL_RIA_PROCESS_NATIVE_STATE_COMPOSITION",
@@ -75,7 +75,7 @@
     "SWBR": 0,
     "SWMETDETAIL": 0
   },
-  "planned_change": "Dedicated RIA12 water/CDE native codecs and actual duplicated per-layer model/domain witness; exact original existing payload body/physical functions and immutable input binding retained.",
+  "planned_change": "Dedicated RIA12 water/CDE native codecs; duplicated actual per-layer model/domain and original-precision immutable SWRC/UHCC parameter witnesses, verified against the actual original reader state. Existing physical payload body/functions retained; no new physical state or parameter restoration.",
   "invariants": {
     "physical_equations_changed": false,
     "mass_or_convergence_limits_changed": false,
@@ -94,5 +94,6 @@
   "whole_functional_completion": "PARTIAL",
   "whole_scientific_equivalence": "NOT_QUALIFIED",
   "global_family_and_gap_counts": "UNKNOWN",
-  "RC3_changed": false
+  "RC3_changed": false,
+  "native_layout_changed_only_for_new_RIA12_codec": true
 }
