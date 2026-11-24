@@ -2,6 +2,7 @@
 import argparse,json,io,re,struct,zipfile,math
 from pathlib import Path
 from contextlib import ExitStack
+from decimal import Decimal,localcontext
 from analytical_hydraulic_archives import SHA
 from explicit_bottom9_snow_analytical_central_science import Pool,read,rows,build,exact_native
 from ria12_boundary_central_science import compiled,generated
