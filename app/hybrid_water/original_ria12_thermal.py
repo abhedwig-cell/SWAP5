@@ -78,6 +78,16 @@ def metadata(project):
                 native_provider_sha256=sha(PROVIDER), parameter_precision='actual original DoublePrec.DP')
 
 
+def top_diagnostic(source, project):
+    """Expose a refused original state; retain every existing validity check."""
+    if selection(project.input_directory, project.original_output) is None:
+        return source
+    anchor = "if(any(values(1:4)<0d0).or.values(1)>1d0)error stop 'Invalid top history physical domain'"
+    if source.count(anchor) != 1:
+        raise ValueError('Changed original top-history validator')
+    return source.replace(anchor, "if(any(values(1:4)<0d0).or.values(1)>1d0) &\n  write(*,'(a,6(1x,es25.17e3))')'RIA12_REFUSED_TOP_HISTORY',values\n" + anchor, 1)
+
+
 def render_macro(text, project):
     selected = selection(project.input_directory, project.original_output)
     if selected is None:
