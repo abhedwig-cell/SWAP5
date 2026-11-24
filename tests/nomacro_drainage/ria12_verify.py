@@ -10,7 +10,7 @@ from ria12_central_science import audit, preservation
 import snow58_analytical_verify as previous
 
 PROOF = ROOT / 'integration/f-ci/nomacro-complete01'
-SEALED='3966b28076aa310712eb9c727c634d0043429faa'
+SEALED='863a0e14c0986142ee3d10b65462590e0c058f39'
 ADMISSION_SHA = 'c17670492b81699c1de02f33a129a3d7651506084cc7121673054b59d325e135'
 RAW_NAMES = ('RIA12_WINDOWS_RAW_V1', 'RIA12_INPUTS_V1', 'RIA12_NATIVE_CONTROL_ORIGINS_V1') + tuple(
     'RIA12_UBUNTU_' + opt + '_' + suffix + '_V1' for opt in ('O0', 'O2') for suffix in ('ORIGINAL', 'CONTROLS_ORIGINAL'))
