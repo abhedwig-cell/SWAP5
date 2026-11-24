@@ -32,7 +32,7 @@ def source(anchor):
  parent,current,frozen=tree(CORE),tree('HEAD'),tree(anchor);assert current.keys()==frozen.keys() and parent.keys()<=current.keys()
  modified={path for path in parent if parent[path]!=current[path]}
  contract=json.loads((ROOT/(PREFIX+'RIA12_THERMAL_SNOW_DOMAIN_CONTRACT_V1.json')).read_text())
- assert modified==set(contract['files'])|{JOINT},modified
+ assert modified==set(contract['files'])|{JOINT}|set(contract.get('observer_execution_policy',{})),modified
  actual=(ROOT/JOINT).read_bytes().replace(b'\r\n',b'\n')
  for name in ('guard_previous_source','verify','strip_current_evidence','publication_dependencies_unchanged'):
   old=' import ria12_boundary_verify as boundary_owner\n return boundary_owner.'+name+'('+('text' if name=='strip_current_evidence' else '')+')\n'

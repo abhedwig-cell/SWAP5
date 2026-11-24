@@ -5,7 +5,7 @@ from pathlib import Path
 import subprocess
 
 R = Path(__file__).resolve().parents[2]
-CORE = '27d155ebd1ae7a8604c2b16baf585c3b986ef96d'
+CORE = '6bbb9a5d8b97c1277af8af3b3f15e78d1ad1d70a'
 git = lambda *a: subprocess.check_output(['git', *a], cwd=R)
 SHA = lambda b: hashlib.sha256(b).hexdigest()
 

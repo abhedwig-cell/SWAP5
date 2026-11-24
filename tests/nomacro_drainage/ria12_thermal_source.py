@@ -37,4 +37,11 @@ def complete_inverse():
         assert not git('ls-tree', CORE, '--', path)
         actual = (R / path).read_bytes().replace(b'\r\n', b'\n')
         assert SHA(actual) == item['proposed_lf_sha256'] and actual == git('show', 'HEAD:' + path)
+    for path, item in q.get('observer_execution_policy', {}).items():
+        before = git('show', CORE + ':' + path)
+        actual = (R / path).read_bytes().replace(b'\r\n', b'\n')
+        assert SHA(before) == item['before_lf_sha256'] and SHA(actual) == item['proposed_lf_sha256']
+        assert actual == git('show', 'HEAD:' + path)
+        insertion = b'import sys\nsys.dont_write_bytecode = True\n'
+        assert actual.count(insertion) == 1 and actual.replace(insertion, b'', 1) == before
     return dict(status='EXACT_REAL_ACTUAL_RIA_PRIMARY_PARENT_BOUNDARY_NATIVE_SOURCE_AND_ALL_OTHER_EXECUTION_DEPENDENCIES_PASS', actual_head=git('rev-parse', 'HEAD').decode().strip(), actual_parent=CORE)
