@@ -1,6 +1,6 @@
 """Independent short boundary science; reads original producers without replay."""
 from pathlib import Path
-import hashlib,json,sys,zipfile,subprocess
+import hashlib,json,sys,zipfile,subprocess,math
 from decimal import Decimal,localcontext
 import argparse
 p=argparse.ArgumentParser();p.add_argument('--evidence',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
@@ -23,7 +23,16 @@ for kind,drain,bottom,label in cases:
   original_samples(sample_root,Path(sample['component_root']),sample,inputs,data)
   proofs=[]
   for folder,actual in ((root/'trajectory',data),(root/'own-1',cold)):
-   proof=water(actual);native_days=[]
+   try:
+    proof=water(actual)
+   except ValueError as error:
+    assert '-wet-primary-top-' in label and str(error)=='Whole actual implicit water inventory does not close'
+    daily=[water([row]) for row in actual]
+    assert all(actual[i]['stock_start_cm']==actual[i-1]['stock_end_cm'] for i in range(1,len(actual)))
+    total=math.fsum([*actual[0]['stock_start_cm'],*(-v for v in actual[-1]['stock_end_cm']),*(v for row in actual for v in row['external_flux_cm'][:7]),*(-v for row in actual for v in row['external_flux_cm'][7:])])
+    assert abs(total)>1e-10
+    proof=dict(status='EXPECTED_EXTRA_WET_PRIMARY_GLOBAL_INVENTORY_REFUSAL_NOT_ADMITTED',error=str(error),whole_water_residual_cm=total,unchanged_water_limit_cm=1e-10,daily=daily)
+   native_days=[]
    for path in folder.glob('accepted-column-1-day-*.zip'):
     day=int(path.stem.rsplit('-',1)[1]);row=next(r for r in actual if r['day']==day)
     with zipfile.ZipFile(path) as z:
@@ -40,7 +49,9 @@ for kind,drain,bottom,label in cases:
    c.prec=60
    for row in data:
     d=lambda v:Decimal(str(v));residual=sum(map(d,row['stock_start_cm']))+sum(map(d,row['external_flux_cm'][:7]))-sum(map(d,row['external_flux_cm'][7:]))-sum(map(d,row['stock_end_cm']));assert abs(residual)<=Decimal('1e-10');peak=max(peak,abs(residual))
-  observed.append(dict(case=label,actual_producer=q['source'],actual_BUILD_sha256=q['actual_BUILD_sha256'],decimal_global_peak_cm=str(peak),original_theta_stock_peak_cm=sample['maximum_original_theta_stock_difference_cm'],warm_cold=proofs))
-record=dict(status='ALL16_ACTUAL_TWO_DAY_RIA_CORRECTED_GLOBAL_CDE_ORIGINAL_STOCK_PARAMETER_BYTES_AND_EXACT_COLD_PASS_NOT_QUALIFIED',actual_observer=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R).decode().strip(),contexts=observed,model_executions=0,compiler_executions=0,full35_periods_replayed=0,canonical_admission=False,whole_scope='PARTIAL / NOT_QUALIFIED')
+  observed.append(dict(case=label,classification='NUMERICAL_FAILURE' if '-wet-primary-top-' in label else 'QUALIFIED_SHORT_NOT_ADMITTED',actual_producer=q['source'],actual_BUILD_sha256=q['actual_BUILD_sha256'],decimal_global_peak_cm=str(peak),original_theta_stock_peak_cm=sample['maximum_original_theta_stock_difference_cm'],warm_cold=proofs))
+assert len(observed)==16 and sum(x['classification']=='NUMERICAL_FAILURE' for x in observed)==2
+assert all(any(p['water'].get('status')=='EXPECTED_EXTRA_WET_PRIMARY_GLOBAL_INVENTORY_REFUSAL_NOT_ADMITTED' for p in x['warm_cold']) for x in observed if x['classification']=='NUMERICAL_FAILURE')
+record=dict(status='FOURTEEN_ORIGINAL_DOMAIN_SHORTS_PASS_TWO_EXTRA_WET_PRIMARY_GLOBAL_REFUSALS_RETAINED_NOT_ADMITTED',qualified_original_short_contexts=14,extra_wet_primary_global_refusals=2,actual_observer=subprocess.check_output(['git','rev-parse','HEAD'],cwd=R).decode().strip(),contexts=observed,model_executions=0,compiler_executions=0,full35_periods_replayed=0,canonical_admission=False,whole_scope='PARTIAL / NOT_QUALIFIED')
 with a.output.open('x') as f:json.dump(record,f,indent=2)
 print(record['status'])
