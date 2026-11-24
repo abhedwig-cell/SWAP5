@@ -1,6 +1,7 @@
 """Bound original RIA12 to numerical heat and complete existing Snow carry."""
 import hashlib
 import math
+import importlib.util
 from pathlib import Path
 import re
 
@@ -75,7 +76,9 @@ def metadata(project):
         return None
     sha = lambda path: hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     return dict(**selected, native_codec=CODECS[(selected['snow'], selected['kind'])].decode(), source_sha256=sha(Path(__file__)),
-                native_provider_sha256=sha(PROVIDER), parameter_precision='actual original DoublePrec.DP')
+                native_provider_sha256=sha(PROVIDER), parameter_precision='actual original DoublePrec.DP',
+                reference_correction='NOMACRO-RIA-KSAT-MAPPING-01',
+                reference_correction_sha256=sha(Path(__file__).resolve().parents[2] / 'reference/swap-4.3.1/patches/NOMACRO-RIA-KSAT-MAPPING-01/source.py'))
 
 
 def top_diagnostic(source, project):
@@ -86,6 +89,23 @@ def top_diagnostic(source, project):
     if source.count(anchor) != 1:
         raise ValueError('Changed original top-history validator')
     return source.replace(anchor, "if(any(values(1:4)<0d0).or.values(1)>1d0) &\n  write(*,'(a,6(1x,es25.17e3))')'RIA12_REFUSED_TOP_HISTORY',values\n" + anchor, 1)
+
+
+def apply_build(output, donor_build, project, patched):
+    if selection(project.input_directory, project.original_output) is None:
+        return patched
+    path = Path(__file__).resolve().parents[2] / 'reference/swap-4.3.1/patches/NOMACRO-RIA-KSAT-MAPPING-01/source.py'
+    spec = importlib.util.spec_from_file_location('original_ria_ksat_mapping_correction', path)
+    correction = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(correction)
+    original = donor_build / 'swap-selected/readswap.f90'
+    correction.verify_original(original.read_bytes())
+    reader = output / 'readswap.f90'
+    source = reader.read_text(encoding='cp1252') if 'readswap' in patched else original.read_text(encoding='cp1252')
+    reader.write_text(correction.source(source), encoding='cp1252')
+    if 'readswap' not in patched:
+        patched.append('readswap')
+    return patched
 
 
 def render_macro(text, project):
