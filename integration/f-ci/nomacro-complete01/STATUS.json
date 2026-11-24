@@ -2,8 +2,8 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "e252e995eeece63d8f05531a10b746674c070685",
-  "branch": "codex/nomacro-ria12-water-polish01",
-  "last_commit": "cfc12198d1018ea55a2f6fb621b864b77ba61348",
+  "branch": "codex/nomacro-paired-vapor-thermal02",
+  "last_commit": "7e7924a0e01ef94eef5b64aaad0b74d246e57544",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35413,5 +35413,19 @@
     "wall_cap_seconds_per_full35": 240,
     "uncovered_risk": "Original wet-primary full35 daily residuals pass but accumulated global defect -1.232353486e-9cm; short3 cannot establish full-period closure",
     "canonical_admission": false
+  },
+  "paired_vapor_thermal02_active_v1": {
+    "status": "EXPERIMENTAL_RECONCILED_PROTOTYPE_AND_BOUNDED_IO_WITNESS_PERSISTED_NOT_RUN",
+    "parent_candidate": "7e7924a0e01ef94eef5b64aaad0b74d246e57544",
+    "parent_canonical_admission_pending_PR": 1799,
+    "current_actual_canonical": "e252e995eeece63d8f05531a10b746674c070685",
+    "writing_checkout": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01",
+    "qualified_parent_checkout": "C:/Users/Veldh012/swap5-implicit-conductivity-canonical01",
+    "historical_failed_input": "EV/explicit-bottom9-vapor-initial-consistent-input-v1",
+    "original_thermal_archive_sha256": "b84a474e7670309421aa7292fa94f7332a74aad3eff789dfea2bee7ebeaa847f",
+    "model_wall_cap_seconds": 30,
+    "maximum_debug_witness_rows": 120,
+    "scientific_PASS_claimed": false,
+    "next_action": "Run persisted one-day O0 original unchanged300s-failed input with exact current source/bundle and bounded120-row IO witness. Distinguish physical Newton convergence from stricter water guard and endpoint state; keep diagnostic separate from qualification. PR1799 current17 CI continues; no old full35 replay."
   }
 }

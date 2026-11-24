@@ -36,6 +36,8 @@ def selection(directory,selected,original_output):
     if not enabled:return None
     from vapor_boundary_composition import selected_context,check_daily_output as boundary_daily
     boundary=selected_context(selected)
+    from prescribed_vapor_boundary import selected_context as paired_vapor_context
+    if boundary is None:boundary=paired_vapor_context(selected)
     required=dict(SWKIMPL=0,SWSOPHY=0,SWHYST=0,SWFROST=0,SWMACRO=0,SWBR=0,SWMETDETAIL=0,SWHEA=1,SWCALT=2)
     if original_output is False or any(selected.get(k)!=v for k,v in required.items()) or selected.get('SWSOLU') not in (0,1) or selected.get('SWSNOW') not in (0,1) or boundary is None and (selected.get('SWDRA'),selected.get('SWBOTB'))!=(1,6):
         raise ValueError('Active original vapor requires qualified explicit daily water/CDE, numerical heat, NoFrost/hysteresis0 primarydrainage bottom6')
@@ -98,6 +100,9 @@ def metadata(project):
     from vapor_boundary_composition import metadata as boundary_metadata
     boundary=boundary_metadata(project)
     if boundary is not None:result['boundary_composition']=boundary
+    from prescribed_vapor_boundary import metadata as paired_metadata
+    paired=paired_metadata(project)
+    if paired is not None:result['paired_boundary_composition']=paired
     from analytical_cde_calendar import metadata as calendar_metadata
     calendar=calendar_metadata(project)
     if calendar is not None:
@@ -109,6 +114,8 @@ def metadata(project):
 
 def native_magic(project):
     if describe(project) is None:return None
+    from prescribed_vapor_boundary import enabled as paired_vapor_enabled
+    if paired_vapor_enabled(project):return b'S5HPC007' if project.solute else b'S5HPW007'
     from analytical_cde_calendar import native_magic as calendar_native_magic
     composed=calendar_native_magic(project)
     if composed is not None:return composed
@@ -121,6 +128,8 @@ def native_magic(project):
 
 def native_provider(project):
     original=Path(__file__).with_name('hydraulic_vapor_native.f90').read_bytes()
+    from prescribed_vapor_boundary import enabled as paired_vapor_enabled,native_source as paired_native_source
+    if paired_vapor_enabled(project):return paired_native_source(original)
     from analytical_cde_calendar import vapor_selected,native_provider as calendar_native_source
     if vapor_selected(project):return calendar_native_source(original)
     from vapor_boundary_composition import context as boundary_context,native_source as boundary_native_source

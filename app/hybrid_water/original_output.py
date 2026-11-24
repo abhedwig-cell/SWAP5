@@ -43,6 +43,8 @@ def selection(project):
             if ria12_boundary_selection(project.input_directory,project.original_output) is not None:continue
             from prescribed_head_flux_boundary import selection as paired_boundary_selection
             if paired_boundary_selection(project.input_directory,project.original_output) is not None:continue
+            from prescribed_vapor_boundary import enabled as paired_vapor_enabled
+            if paired_vapor_enabled(project):continue
             from vapor_boundary_composition import enabled as boundary_enabled
             if boundary_enabled(project):continue
         if one('SWDRA')==2 and (key=='SWDRA' or key=='SWHYST' and one(key) in (1,2)):

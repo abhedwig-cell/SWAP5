@@ -942,6 +942,8 @@ end module plant_interface""")
     patched=ria12_corrected_build(output,donor_build,project,patched)
     from ria12_water_polish import apply_build as ria12_water_polish_build
     patched=ria12_water_polish_build(output,donor_build,project,patched)
+    from prescribed_vapor_boundary import diagnostic_build as paired_vapor_diagnostic_build
+    patched=paired_vapor_diagnostic_build(output,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")

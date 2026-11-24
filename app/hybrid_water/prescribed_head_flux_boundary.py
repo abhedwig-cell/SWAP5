@@ -10,7 +10,7 @@ from pathlib import Path
 POLICY='original-explicit-prescribed-head-flux-all-node-trial-v1'
 
 
-def selection(directory,original_output=True,*,hysteresis=0,snow=False):
+def selection(directory,original_output=True,*,hysteresis=0,snow=False,vapor=False):
  if not directory or original_output is False:return None
  from experimental_project import switches
  text=(Path(directory)/'swap.swp').read_text(encoding='cp1252');s=switches(text)
@@ -21,6 +21,7 @@ def selection(directory,original_output=True,*,hysteresis=0,snow=False):
   if len(rows)!=1 or re.fullmatch(r'[+-]?[0-9]+[ \t]*',rows[0]) is None:return None
   return int(rows[0])
  if hysteresis not in (0,1,2):return None
+ if vapor and (hysteresis!=0 or snow):return None
  fixed=dict(SWMACRO=0,SWBOTB=9,SWKIMPL=0,SWHYST=hysteresis,SWSNOW=int(snow),SWFROST=0,SWHEA=1,SWCALT=2,SWBR=0,SWMETDETAIL=0,SWSOPHY=0,SWBBCFILE=0)
  if any(integer(key)!=value for key,value in fixed.items()):return None
  if snow and (integer('SWSOLU') not in (0,1) or integer('SWDRA')!=0):return None
@@ -29,6 +30,8 @@ def selection(directory,original_output=True,*,hysteresis=0,snow=False):
  models=re.findall(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[ \t]*([^\r\n]*)',active)
  remainder=re.sub(r'(?mi)^[ \t]*IHWCKMODEL[ \t]*=[^\r\n]*','',active)
  if re.search(r'(?i)\bIHWCKMODEL\b',remainder) or len(models)>1 or models and re.fullmatch(r'[+]?[0-9]+(?:[ \t]+[+]?[0-9]+)*[ \t]*',models[0]) is None:return None
+ active_vapor_allowed=vapor
+ active_vapor=False
  if models:
   analytical=tuple(map(int,models[0].split()))
   if not all(value in (1,3,4,5,6,7,8,9,10,11) for value in analytical):return None
@@ -38,7 +41,10 @@ def selection(directory,original_output=True,*,hysteresis=0,snow=False):
    if len(vapor)>1:return None
    if vapor:
     if re.fullmatch(r'[+-]?[0-9]+(?:[ \t]+[+-]?[0-9]+)*[ \t]*',vapor[0]) is None:return None
-    if any(int(token)!=0 for token in vapor[0].split()):return None
+    if any(int(token)!=0 for token in vapor[0].split()):
+     if not active_vapor_allowed or any(int(token) not in (0,1) for token in vapor[0].split()) or not any(model>=8 for model in analytical):return None
+     active_vapor=True
+ if active_vapor_allowed and not active_vapor:return None
  def civil(key):
   rows=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*([^\s]+)',active)
   if len(rows)!=1:raise ValueError('Ambiguous original paired-boundary interval')
@@ -71,6 +77,8 @@ def selected_boundary(project):
  if history_enabled(project):return 9
  from prescribed_snow_boundary import enabled as snow_paired
  if snow_paired(project):return 9
+ from prescribed_vapor_boundary import enabled as vapor_paired
+ if vapor_paired(project):return 9
  from implicit_groundwater_state import selected_boundary as previous
  return previous(project)
 

@@ -1,0 +1,142 @@
+{
+  "status": "PERSISTED_EXPERIMENTAL_THERMAL_DIAGNOSTIC_ONLY_NOT_QUALIFIED",
+  "source_dependency": "7e7924a0e01ef94eef5b64aaad0b74d246e57544",
+  "required_parent_whole_tree": "66da3029d52a8fe3bcf49a75e3471229d6d87c5b",
+  "parent_admission_pending_PR": 1799,
+  "diagnostic_only": true,
+  "canonical_admission": false,
+  "physical_equations_changed": false,
+  "physical_state_or_flux_corrected": false,
+  "acceptance_threshold_changed": false,
+  "existing_Snow_hysteresis_route_preserved": true,
+  "accepted_native_state_added": false,
+  "transient_process_debug_counter_added": true,
+  "debug_counter_checkpointed": false,
+  "files": {
+    "app/hybrid_water/cde_native_receipt.py": {
+      "before_lf_sha256": "5e3699814e23aac9f6e4267188fea1145cf3c693e20f23632f9ab39ec93cfc05",
+      "proposed_lf_sha256": "7b78d6916d7a82123e87090eab30b84706e472d1f4d1588064fab1e80fc91de6",
+      "ordered_literal_edits": [
+        {
+          "base_start": 889,
+          "base_end": 1006,
+          "before": "                optional_native_prefixes={'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain',\n",
+          "after": "                optional_native_prefixes={'S5HPC007':'48 + 8*(14+2*actual_layers), checked duplicated paired9 vapor domain',\n                    'S5HVC003':'48 + 8*(14+2*actual_layers), checked duplicated vapor domain',\n"
+        },
+        {
+          "base_start": 1727,
+          "base_end": 1727,
+          "before": "",
+          "after": "        offset=cde_offset(aux,nodes,project)\n    if aux[:8]==b'S5HPC007':\n        from prescribed_vapor_boundary import cde_offset\n"
+        }
+      ]
+    },
+    "app/hybrid_water/daily_host.py": {
+      "before_lf_sha256": "0152f8ebddc8a1215ec34991ae9f743e9cff2fed8459fdaaa3514ac7c7829cd9",
+      "proposed_lf_sha256": "6e0de49c31ba63cf715fe9edcffb8845008ea5925f48b7150f7e0ee44cc3606e",
+      "ordered_literal_edits": [
+        {
+          "base_start": 60808,
+          "base_end": 60808,
+          "before": "",
+          "after": "    from prescribed_vapor_boundary import diagnostic_build as paired_vapor_diagnostic_build\n    patched=paired_vapor_diagnostic_build(output,project,patched)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "3551ec4b5f8f287baa20bf2f90841ca119a73c8b685f7629a3c16f30d7f85cfa",
+      "proposed_lf_sha256": "17f21c185e292413b74465b196906b1325718daacd1ee29d86d759172fce7ec4",
+      "ordered_literal_edits": [
+        {
+          "base_start": 8264,
+          "base_end": 8264,
+          "before": "",
+          "after": "    if paired_boundary is None:\n        from prescribed_vapor_boundary import selection as vapor_paired_selection\n        paired_boundary=vapor_paired_selection(directory,original_output)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/hydraulic_vapor.py": {
+      "before_lf_sha256": "7700b459bcb13c542568762a56b69520c629264751a3692eaba33f31617fb596",
+      "proposed_lf_sha256": "4e82b9f3cfe68c7583132436c30a8264b45e2000878cab55f506e07725a62d8b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2519,
+          "base_end": 2519,
+          "before": "",
+          "after": "    from prescribed_vapor_boundary import selected_context as paired_vapor_context\n    if boundary is None:boundary=paired_vapor_context(selected)\n"
+        },
+        {
+          "base_start": 6705,
+          "base_end": 6705,
+          "before": "",
+          "after": "    from prescribed_vapor_boundary import metadata as paired_metadata\n    paired=paired_metadata(project)\n    if paired is not None:result['paired_boundary_composition']=paired\n"
+        },
+        {
+          "base_start": 7137,
+          "base_end": 7137,
+          "before": "",
+          "after": "    from prescribed_vapor_boundary import enabled as paired_vapor_enabled\n    if paired_vapor_enabled(project):return b'S5HPC007' if project.solute else b'S5HPW007'\n"
+        },
+        {
+          "base_start": 7781,
+          "base_end": 7781,
+          "before": "",
+          "after": "    from prescribed_vapor_boundary import enabled as paired_vapor_enabled,native_source as paired_native_source\n    if paired_vapor_enabled(project):return paired_native_source(original)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output.py": {
+      "before_lf_sha256": "6836d18ea114a26f4f275a9fa5f5d747a4d19d2f43757b9f112bdb925736514d",
+      "proposed_lf_sha256": "ef0e37b41385682252fadd9473d5af03a61a7fc2e57b5dd33af54ff28f837d88",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3089,
+          "base_end": 3089,
+          "before": "",
+          "after": "            from prescribed_vapor_boundary import enabled as paired_vapor_enabled\n            if paired_vapor_enabled(project):continue\n"
+        }
+      ]
+    },
+    "app/hybrid_water/prescribed_head_flux_boundary.py": {
+      "before_lf_sha256": "9448349f37457347db05f8524ede5046a25e838ec40720c8204bbe1183237efc",
+      "proposed_lf_sha256": "44229c15c7602df42938827ccb133cf0be2fd2287b8a33d41aa42036a52c170b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 368,
+          "base_end": 441,
+          "before": "def selection(directory,original_output=True,*,hysteresis=0,snow=False):\n",
+          "after": "def selection(directory,original_output=True,*,hysteresis=0,snow=False,vapor=False):\n"
+        },
+        {
+          "base_start": 1005,
+          "base_end": 1005,
+          "before": "",
+          "after": " if vapor and (hysteresis!=0 or snow):return None\n"
+        },
+        {
+          "base_start": 1829,
+          "base_end": 1829,
+          "before": "",
+          "after": " active_vapor_allowed=vapor\n active_vapor=False\n"
+        },
+        {
+          "base_start": 2275,
+          "base_end": 2343,
+          "before": "    if any(int(token)!=0 for token in vapor[0].split()):return None\n",
+          "after": "    if any(int(token)!=0 for token in vapor[0].split()):\n     if not active_vapor_allowed or any(int(token) not in (0,1) for token in vapor[0].split()) or not any(model>=8 for model in analytical):return None\n     active_vapor=True\n if active_vapor_allowed and not active_vapor:return None\n"
+        },
+        {
+          "base_start": 4060,
+          "base_end": 4060,
+          "before": "",
+          "after": " from prescribed_vapor_boundary import enabled as vapor_paired\n if vapor_paired(project):return 9\n"
+        }
+      ]
+    }
+  },
+  "added_files": {
+    "app/hybrid_water/prescribed_vapor_boundary.py": {
+      "proposed_lf_sha256": "1705b5acbee3c47e4b09f6439fc7c86ca3b4e26529e55cd0bf74384af74f1ffa"
+    }
+  }
+}
