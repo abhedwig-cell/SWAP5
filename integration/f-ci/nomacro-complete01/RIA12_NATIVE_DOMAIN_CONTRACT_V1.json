@@ -104,13 +104,19 @@
   "files": {
     "app/hybrid_water/experimental_project.py": {
       "before_lf_sha256": "8c2a43914bdfaf8b465f449ab771faedb5911178b039d729201ca20531227db4",
-      "proposed_lf_sha256": "727c116ae1333cbe30a64ae5e5f61bee6766b407512aabb9adff080d068e072d",
+      "proposed_lf_sha256": "d6762b5e5e8c94c0a4d4f5abec2dfc60e4052c0a3ad679d02356e93c271128c7",
       "ordered_literal_edits": [
         {
           "base_start": 3078,
           "base_end": 3078,
           "before": "",
-          "after": "t)\n    from original_ria12 import selection as ria12_selection\n    ria12_selection(directory, original_outpu"
+          "after": "t)\n    from original_ria12 import selection as ria12_selection\n    ria12 = ria12_selection(directory, original_outpu"
+        },
+        {
+          "base_start": 9064,
+          "base_end": 9064,
+          "before": "",
+          "after": " is None and ria12"
         }
       ]
     },
@@ -172,5 +178,6 @@
     }
   },
   "reference_component_observations_per_optimization": 136,
-  "reference_component_maximum_stock_difference_cm": 0.0
+  "reference_component_maximum_stock_difference_cm": 0.0,
+  "initial_pressure_scope": "Original inline pressure initialization may use the bounded RIA12 no-heat state owner; the generic historical heat-profile guard remains literal for all unselected inputs. Opposite initialization compiled postimages and a discriminating real short native composition are required."
 }

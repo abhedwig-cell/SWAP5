@@ -72,7 +72,7 @@ def inspect(directory, *, original_output=None):
     check_paths(text, 'swap.swp')
     selected = switches(text)
     from original_ria12 import selection as ria12_selection
-    ria12_selection(directory, original_output)
+    ria12 = ria12_selection(directory, original_output)
     # Descriptor-only helper calls accept the historical output domain. Actual
     # executions use load() with an explicit compatibility/original choice.
     if original_output is not False and 'SWCSV' not in selected:selected['SWCSV']=0
@@ -155,7 +155,7 @@ def inspect(directory, *, original_output=None):
         initial_age=initial_age_selection(directory,original_output)
         from initial_profile_groundwater import selection as initial_groundwater_selection
         initial_groundwater=initial_groundwater_selection(directory,original_output)
-        if (original_output is False or any(selected.get(key) not in values for key,values in domain.items())) and initial_frost is None and initial_age is None and initial_groundwater is None and paired_boundary is None:
+        if (original_output is False or any(selected.get(key) not in values for key,values in domain.items())) and initial_frost is None and initial_age is None and initial_groundwater is None and paired_boundary is None and ria12 is None:
             raise ValueError('Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer')
         history,snow,implicit=selected['SWHYST'],selected['SWSNOW'],selected['SWKIMPL']
         boundary_pair=(selected['SWDRA'],selected['SWBOTB'])
