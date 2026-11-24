@@ -63,6 +63,18 @@
     }
   },
   "actual_canonical_parent": "1e48f182a1415a3ef5224de39559a0ecff0c4c7c",
-  "parent_admission_state": "All22 exact-head workflows PASS; actual merge same complete qualified tree; actual C public/PUB running; admission archive to join this functional batch",
-  "retained_numerical_failure": "Extra near-saturated primary aboveground24 CDE stress O0/O2: daily<=1e-10 but whole35=-1.232353486e-9cm; existing unchanged global gate refuses; unqualified diagnostic, no result relabelled"
+  "parent_admission_state": "ACTUAL_CANONICAL416_FULLY_ADMITTED_22WORKFLOWS_36CHECKS_PUBLIC_AND_ORDINARY_PUB_PASS",
+  "retained_numerical_failure": "Extra near-saturated primary aboveground24 CDE stress O0/O2: daily<=1e-10 but whole35=-1.232353486e-9cm; existing unchanged global gate refuses; unqualified diagnostic, no result relabelled",
+  "parent_admission_archive_sha256": "1cb8c57a69dc89028ae8d62ce263600703af7683a0758c93f99d936f75d4bbab",
+  "legacy_native_transition": {
+    "new_codecs": [
+      "S5RKW001",
+      "S5RKC001"
+    ],
+    "old_negative_Ksat_native_accepted": false,
+    "automatic_native_conversion": false,
+    "reason": "The explicitly qualified original reader binding correction changes the saturated-compatibility domain. Genuine old primary/boundary natives are refused by the new corrected ABI; all original evidence and legacy reference records remain intact. Current exact cold requirements are proven on the corrected typed provider.",
+    "current_NoHeat_contexts_replaced": 16,
+    "current_context_availability_increase_claimed": 0
+  }
 }
