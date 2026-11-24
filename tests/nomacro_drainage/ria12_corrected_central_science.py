@@ -279,7 +279,18 @@ def reference_correction():
                 name=setup(pool,platform,opt)
                 for label in ('water-primary-dry','cde-primary-dry','water-boundary5','cde-wet8-d1'):
                     prefix='evidence/ria12-corrected-'+label+'-Windows-'+opt+'-full35-v1' if platform=='Windows' else 'current/'+label
-                    q=read(pool.view(name,prefix+'/RESULT.json'));directory,meta=build(pool,q['build_root'],q['actual_BUILD_sha256']);actual=(directory/'readswap.f90').read_bytes().replace(b'\r\n',b'\n');assert actual==before.replace(old,new,1)
+                    q=read(pool.view(name,prefix+'/RESULT.json'));directory,meta=build(pool,q['build_root'],q['actual_BUILD_sha256']);actual=(directory/'readswap.f90').read_bytes().replace(b'\r\n',b'\n')
+                    expected=before.replace(old,new,1)
+                    selected=meta['identity']['original_output']['original_ria12_corrected']
+                    if selected['bottom']==5:
+                        # This unchanged inherited native-calendar start guard is
+                        # separate from the new constitutive Ksat column correction.
+                        from datetime import date
+                        epoch=(date.fromisoformat(meta['project']['start_date'])-date(1900,1,1)).days+1
+                        anchor=b"call checkdate(ifnd,dates,tend,tstart,'date5 ','readswap//swbotb=5      ')"
+                        rebound=b"call checkdate(ifnd,dates,tend,"+str(epoch).encode()+b"d0,'date5 ','readswap//swbotb=5      ')"
+                        assert expected.count(anchor)==1;expected=expected.replace(anchor,rebound,1)
+                    assert actual==expected
                     assert meta['identity']['original_output']['original_ria12_corrected']['parameter_binding_corrected'] is True
                     reports.append(dict(platform=platform,optimization=opt,case=label,actual_compiler=q['actual_compiler_source'],actual_readswap_sha256=SHA(actual)))
     assert len(reports)==16
