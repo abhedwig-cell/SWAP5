@@ -34734,5 +34734,18 @@
       "pure_generated_source_delta": "Only two literal NoVap import/precondition insertions; all physical source unchanged",
       "expected_seconds_per_platform_parallel_O0_O2": 900
     }
+  },
+  "snow_analytical_public_reader_repair_v1": {
+    "status": "ACTUAL_CLEAN14_CANDIDATE_PUBLIC_REFUSED_ORIGINAL_ARCHIVE_SCHEMA_READER_FIX_PENDING_REQUALIFICATION",
+    "failed_candidate": "b4e50c63c58773b347e55128e556dbe2686ef5b0",
+    "actual_public_seconds": 439.3969784998335,
+    "actual_returncode": 1,
+    "actual_stderr_sha256": "b7f1fee062ff2b368c7a0796df8593c403c2222a41b15b54ff4511a6edd2e65c",
+    "cause": "Owner raw_custody incorrectly sent two original single-ZIP inventory declarations without parts to the strict multipart Archive reader.",
+    "fix": "Direct read of those two exact recorded single-ZIP schemas with unchanged file size/SHA/member inventory/member size/SHA assertions. Other12 datasets retain existing strict Archive. Original JSON and ZIP bytes remain unchanged.",
+    "physical_or_input_changes": false,
+    "model_periods_replayed": 0,
+    "PR": 1793,
+    "next": "Focused all14 raw/member custody, real new immutable source anchor and stamped candidate; clean14 public/PUB V2, four actual negatives and exact candidate CI. Actual canonical remains04dc and336contexts."
   }
 }

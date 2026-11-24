@@ -1,5 +1,6 @@
 """Bounded actual analytical Snow source/native owner inheriting canonical336."""
 import json
+import zipfile
 from contextlib import ExitStack
 from pathlib import Path
 from analytical_hydraulic_archives import Archive,SHA
@@ -33,9 +34,22 @@ def raw_custody():
  rows=[]
  with ExitStack() as stack:
   for name in RAW_NAMES:
-   declaration=frozen(name);store=Archive(PROOF,name,stack);assert store.record==declaration
-   for member in store.names:store.get(member)
-   rows.append(dict(archive=name,bytes=declaration['bytes'],sha256=declaration['sha256'],members=len(store.names)))
+   declaration=frozen(name)
+   if 'parts' in declaration:
+    store=Archive(PROOF,name,stack);assert store.record==declaration
+    for member in store.names:store.get(member)
+    count=len(store.names)
+   else:
+    # Original discovery/input declarations are single ZIP inventories.
+    # Read that recorded schema directly; never rewrite their metadata.
+    assert name in ('EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_SHORT_NATIVE_DISCOVERY_RAW_V1','EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_INPUTS_V1')
+    assert declaration['archive']==name+'.zip'
+    path=PROOF/declaration['archive'];assert path.stat().st_size==declaration['bytes'] and SHA(path.read_bytes())==declaration['sha256']
+    z=stack.enter_context(zipfile.ZipFile(path));members=declaration['members'];assert len(z.namelist())==len(set(z.namelist()))==len(members) and set(z.namelist())==set(members)
+    for member,item in members.items():
+     raw=z.read(member);assert len(raw)==item['bytes'] and SHA(raw)==item['sha256']
+    count=len(members)
+   rows.append(dict(archive=name,bytes=declaration['bytes'],sha256=declaration['sha256'],members=count))
  return rows
 
 
