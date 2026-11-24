@@ -18,7 +18,7 @@ contains
     real(dp),allocatable::parameters(:,:),parameter_header(:,:),parameter_witness(:,:)
     integer::n,ios
     if(numnod<1.or.numlay<1.or.numlay>size(iHWCKmodel).or.swmacro/=0.or.swsolu<0.or.swsolu>1.or. &
-       swsnow/=0.or.swfrost/=0.or.swhyst/=0.or.swdra/=1.or.swhea/=0.or.swcalt/=1.or. &
+       swsnow/=0.or.swfrost/=0.or.swhyst/=0.or.swdra/=1.or.swhea/=0.or.swcalt/=0.or. &
        swsophy/=0.or.swkimpl/=0.or.swbotb/=6.or.HeatOn.or.VaporCond) &
        error stop 'Foreign original RIA12 native domain'
     if(any(iHWCKmodel(1:numlay)/=12).or.nLayer/=numlay) &

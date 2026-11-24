@@ -29,7 +29,7 @@ def selection(directory, original_output=True):
     from experimental_project import switches
     s = switches(active)
     fixed = dict(SWMACRO=0, SWKIMPL=0, SWSOPHY=0, SWHYST=0, SWSNOW=0, SWFROST=0,
-                 SWDRA=1, SWBOTB=6, SWHEA=0, SWCALT=1, SWBR=0, SWMETDETAIL=0,
+                 SWDRA=1, SWBOTB=6, SWHEA=0, SWBR=0, SWMETDETAIL=0,
                  SWMONTH=0, SWODAT=0, SWRES=1)
     if any(s.get(key) != value for key, value in fixed.items()) or s.get('SWSOLU') not in (0, 1) or s.get('SWINCO') not in (1, 2):
         raise ValueError('RIA12 native domain requires bounded explicit daily primary water/CDE without heat, Snow, hysteresis or aquifer')

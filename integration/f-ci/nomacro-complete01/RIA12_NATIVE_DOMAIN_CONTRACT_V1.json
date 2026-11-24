@@ -55,7 +55,7 @@
     "SWDRA": 1,
     "SWBOTB": 6,
     "SWHEA": 0,
-    "SWCALT": 1,
+    "SWCALT": "Inactive input; actual original runtime zero when SWHEA0",
     "HeatOn": false,
     "VaporCond": false,
     "SWSOLU": [
@@ -95,5 +95,6 @@
   "whole_scientific_equivalence": "NOT_QUALIFIED",
   "global_family_and_gap_counts": "UNKNOWN",
   "RC3_changed": false,
-  "native_layout_changed_only_for_new_RIA12_codec": true
+  "native_layout_changed_only_for_new_RIA12_codec": true,
+  "original_inactive_heat_dispatch": "Original swap_base.f90 declares SWCALT0 and reads it only when SWHEA1 (line266); native witness validates actual runtime0. Inactive file spelling1/2 introduces no heat process."
 }
