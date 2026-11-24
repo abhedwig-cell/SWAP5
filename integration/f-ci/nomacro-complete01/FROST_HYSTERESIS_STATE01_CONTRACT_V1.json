@@ -148,5 +148,19 @@
   "next_expensive_action": "First actual O0 implicitwater hys0 initial1 original35day/cold3, thenotherimplicitstate/native/CDE contexts; actualexplicitcompile/prefix preservation nofull16replay; wholeoldhys2 sameR defaultbaseline.",
   "implicit_new_hys_guard_exact": true,
   "explicit_full35_source": "12adccd47556d4317847850b09a994788ffa6059",
-  "explicit_full35_periods_replayed_for_implicit_addition": 0
+  "explicit_full35_periods_replayed_for_implicit_addition": 0,
+  "ci_dependency_materialization": {
+    ".github/workflows/mc-sol01-swp-reader.yml": {
+      "before_lf_sha256": "6e8d3bffca4269c846350b810e1367bc0caaac5c5e7986342a2c0c19d1b8a954",
+      "proposed_lf_sha256": "1365b705586b2414346a46ef6db8c75b8ddf6d0bba9fa1d433e3eed61b66b88a",
+      "before_literal": "            /integration/f-ci/nomacro-complete01/RIA12_*\n",
+      "after_literal": "            /integration/f-ci/nomacro-complete01/RIA12_*\n            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n"
+    },
+    ".github/workflows/mc-sol01-column-input.yml": {
+      "before_lf_sha256": "ceef93b0170e5a7b94d1e153df76c6d28dc95b4c85a5246a7512be8fcb548e91",
+      "proposed_lf_sha256": "7eeddc1f68ee252e46206ddf5372eb8016364ee989d088a8667f3b2226c75a0c",
+      "before_literal": "            /integration/f-ci/nomacro-complete01/RIA12_*\n",
+      "after_literal": "            /integration/f-ci/nomacro-complete01/RIA12_*\n            /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*\n"
+    }
+  }
 }

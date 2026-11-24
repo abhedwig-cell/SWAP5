@@ -49,6 +49,9 @@ def main():
             target=R/path;assert not target.is_symlink();actual=target.read_bytes();assert actual.replace(b'\r\n',b'\n')==raw.replace(b'\r\n',b'\n')
             if actual!=raw:target.write_bytes(raw);restored.append(path)
             assert target.read_bytes()==raw
+        if restored:
+            subprocess.run(['git','-c','gc.auto=0','-c','maintenance.auto=false','add','--',*restored],cwd=R,check=True,capture_output=True)
+            assert git('write-tree')==tree
         missing=[path for path in proofs if not (R/path).is_file()]
         for at in range(0,len(missing),20):subprocess.run(['git','restore','--source=HEAD','--worktree','--ignore-skip-worktree-bits','--',*missing[at:at+20]],cwd=R,check=True,capture_output=True)
         for path,digest in proofs.items():assert hashlib.sha256((R/path).read_bytes()).hexdigest()==digest
