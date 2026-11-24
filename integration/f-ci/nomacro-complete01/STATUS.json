@@ -1,9 +1,9 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
-  "canonical": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
+  "canonical": "a18cc38017f69523de48ec04d47cd12686b1ecff",
   "branch": "codex/nomacro-ria12-boundary01",
-  "last_commit": "184b71afbb",
+  "last_commit": "4858ee5f8e0902397f70600fb2fcf24c2f673052",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35004,7 +35004,7 @@
     "original_project_files": 56
   },
   "ria12_native_active_v1": {
-    "status": "ALL8_SCIENCE_PUBLIC392_PUB_AND4_REAL_NEGATIVES_PASS_PR1795_ONE_CHECKOUT_ONLY_CI_RETRY_PENDING",
+    "status": "PR1795_MERGED_A18_EXACT_PARENTS_TREE_ALL13_CI_PASS_ACTUAL_CANONICAL_PUBLIC_PUB_RUNNING",
     "branch": "codex/nomacro-ria12-native01",
     "actual_composed_parent": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
     "composition_head": "80ebfbefb8ea446628f785990ae6d5d96083f010",
@@ -35071,7 +35071,7 @@
     "status": "TEN_DRY_AND_TWO_ACTIVE_WET8_O0_SHORT_ORIGINAL_COLD_PASS_FRESH_REPRESENTATIVE35_DRIVER_READY",
     "parent_candidate": "904968de3737dc1376e4f758327c2c7e8563cc19",
     "parent_PR": 1795,
-    "parent_admission": "CI_PENDING",
+    "parent_admission": "ACTUAL_MERGED_13_CI_SUCCESS_CANONICAL_PUBLIC_PUB_RUNNING",
     "actual_canonical": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
     "scope": "NoSnow/NoHeat all-layer12 daily water/CDE; five added (SWDRA,SWBOTB) pairs (0,5),(0,6),(0,8),(1,5),(1,8); old (1,6) literal path retained",
     "next_action": "Run fresh35 representative water d0/b5 dry and CDE d1/b8 wet, O0 reuse genuine completed2-day compiles only with exact execution source/input proof; new O2 compiles. Four Windows35 then four Ubuntu35. Finish parent PR1795 only checkout retry/current actual canonical verification in parallel; source/code changes must wait while period controllers hold HEAD.",
@@ -35094,7 +35094,7 @@
     "parent_publication_replay": false,
     "parent_all_four_real_committed_negatives_PASS": true,
     "parent_PR1795_remaining_gate": "TIMEINT16 inverse-qualification original checkout timed out before compiler/tests; rerun only job138280553227; other12workflowsSUCCESS",
-    "parent_actual_canonical": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
+    "parent_actual_canonical": "a18cc38017f69523de48ec04d47cd12686b1ecff",
     "actual_wet8_compiler": "184b71afbb",
     "wet8_water_bottom_outward_cm": [
       4.684416821751029,
@@ -35109,6 +35109,7 @@
       0.0
     ],
     "wet8_original_theta_stock_max_cm": 1.4210854715202004e-14,
-    "wet8_archive": "RIA12_BOUNDARY_WET8_INPUTS_V1.zip"
+    "wet8_archive": "RIA12_BOUNDARY_WET8_INPUTS_V1.zip",
+    "full35_initial_preflight_failure": "Zero model days: JSON list versus in-memory tuple inventory representation; fixed exact path/SHA map and cardinality check. Original failed v1 record retained; no completed model period replayed."
   }
 }

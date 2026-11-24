@@ -43,7 +43,8 @@ def main():
             raw = (a.reuse_profile / 'RESULT.json').read_bytes()
             prior = json.loads(raw)
             assert prior['status'] == 'ACTUAL_RIA12_BOUNDARY_TWO_DAY_PHYSICAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED'
-            assert prior['optimization'] == a.optimization and prior['input_inventory'] == q['input_inventory']
+            assert prior['optimization'] == a.optimization and dict(prior['input_inventory']) == dict(q['input_inventory'])
+            assert len(prior['input_inventory']) == len(q['input_inventory']) == len(dict(prior['input_inventory']))
             assert not git('diff', prior['source'], head, '--', 'app', 'src', 'tools', 'reference')
             bundle = Path(prior['build_root'])
             assert SHA((bundle / 'BUILD.json').read_bytes()) == prior['actual_BUILD_sha256']
