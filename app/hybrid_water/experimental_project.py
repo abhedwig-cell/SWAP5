@@ -330,7 +330,7 @@ def inspect(directory, *, original_output=None):
     return report
 
 
-def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_table_policy=None, original_output=False, age_irrigation_source=False, age_direct_soil_source=False):
+def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_table_policy=None, water_polish_policy=None, original_output=False, age_irrigation_source=False, age_direct_soil_source=False):
     from daily_host import HybridProject, ORIGINAL_TIME_POLICY, TIME_POLICIES
     from solute_step_policy import LEGACY_SOLUTE_STEP_POLICY, SOLUTE_STEP_POLICIES
     policy=ORIGINAL_TIME_POLICY if time_step_policy is None else time_step_policy
@@ -383,10 +383,19 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
         raise ValueError('Chemical substep policy requires active SWSOLU1')
     if age_irrigation_source:report={**report,'age_irrigation_source_policy':'original-fixed-current-irrigation-age-days-v1'}
     if age_direct_soil_source:report={**report,'age_direct_soil_source_policy':'original-fixed-direct-soil-age-transport-then-input-v1'}
+    from daily_host import ALWAYS_WATER_POLISH, RIA12_WATER_POLISH
+    polish = ALWAYS_WATER_POLISH if water_polish_policy is None else water_polish_policy
+    if polish not in (ALWAYS_WATER_POLISH, RIA12_WATER_POLISH):
+        raise ValueError('Unknown experimental water polishing policy')
+    if polish == RIA12_WATER_POLISH:
+        from ria12_water_polish import selection as polish_selection
+        polish_selection(directory, original_output)
+        if policy != ORIGINAL_TIME_POLICY:
+            raise ValueError('RIA water polishing requires original adaptive time control')
     key = hashlib.sha256(json.dumps(report, sort_keys=True).encode()).hexdigest()
     project=HybridProject('experimental-'+key, MODEL, report['start_date'], report['nodes'], 1e-10,
                          solute=report['solute'], age=report.get('age',False), end_date=report['end_date'],
-                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical,soil_table_policy=soil,original_output=original_output,age_irrigation_source=age_irrigation_source,age_direct_soil_source=age_direct_soil_source)
+                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical,soil_table_policy=soil,original_output=original_output,age_irrigation_source=age_irrigation_source,age_direct_soil_source=age_direct_soil_source,water_polish_policy=polish)
     if age_irrigation_source or age_direct_soil_source:
         from age_direct_soil_source import selection
         selection(project)
@@ -394,7 +403,7 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
 
 
 def validate(project):
-    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy,solute_step_policy=project.solute_step_policy,soil_table_policy=project.soil_table_policy,original_output=project.original_output,age_irrigation_source=project.age_irrigation_source,age_direct_soil_source=project.age_direct_soil_source) != project:
+    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy,solute_step_policy=project.solute_step_policy,soil_table_policy=project.soil_table_policy,water_polish_policy=project.water_polish_policy,original_output=project.original_output,age_irrigation_source=project.age_irrigation_source,age_direct_soil_source=project.age_direct_soil_source) != project:
         raise ValueError('Experimental input, process configuration or metadata differs')
     return Path(project.input_directory)
 

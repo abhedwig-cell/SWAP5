@@ -1,0 +1,139 @@
+{
+  "status": "PROTOTYPE_UNQUALIFIED_ADDITIONAL_NEWTON_POLISH_NOT_ADMITTED",
+  "source_dependency": "1874c63ee359df7bbcfaead42af69bd9312a9065",
+  "parent_PR": 1798,
+  "parent_admission_pending": true,
+  "actual_canonical_at_start": "1e48f182a1415a3ef5224de39559a0ecff0c4c7c",
+  "policy": "ria12-strict-water-1e-12-polish-v1",
+  "scope": "Explicit corrected all12 NoHeat primary1/6 water/CDE, original adaptive policy, original output; default ALWAYSpolicy remains unchanged",
+  "files": {
+    "app/hybrid_water/daily_host.py": {
+      "before_lf_sha256": "4d0932e7c8633744e9156bc54315a0bd1790dace96104a0c147f4101c1376070",
+      "proposed_lf_sha256": "e272161564ce237f43bd325902a20999b1d022eab862573eb6a28cb30b8c4044",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1544,
+          "base_end": 1544,
+          "before": "",
+          "after": "\nfrom ria12_water_polish import POLICY as RIA12_WATER_POLISH\nWATER_POLISH_POLICIES = (ALWAYS_WATER_POLISH, INTERIOR_WATER_POLISH, RIA12_WATER_POLISH)"
+        },
+        {
+          "base_start": 6722,
+          "base_end": 6730,
+          "before": "(ALWAYS_",
+          "after": ""
+        },
+        {
+          "base_start": 6742,
+          "base_end": 6757,
+          "before": ",INTERIOR_WATER",
+          "after": ""
+        },
+        {
+          "base_start": 6762,
+          "base_end": 6762,
+          "before": "",
+          "after": "CIE"
+        },
+        {
+          "base_start": 6763,
+          "base_end": 6765,
+          "before": "H)",
+          "after": ""
+        },
+        {
+          "base_start": 7042,
+          "base_end": 7042,
+          "before": "",
+          "after": ")\n    if project.water_polish_policy == RIA12_WATER_POLISH:\n        if not strict_water or not budget_retry:\n            raise ValueError('RIA water polishing requires the unchanged strict-water receipt')\n        from ria12_water_polish import require_project\n        require_project(project"
+        },
+        {
+          "base_start": 60247,
+          "base_end": 60247,
+          "before": "",
+          "after": "rom ria12_water_polish import apply_build as ria12_water_polish_build\n    patched=ria12_water_polish_build(output,donor_build,project,patched)\n    f"
+        }
+      ]
+    },
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "2a9d5cfc5ba9f5ec4ffea74c16576beb705e1f30d2ea5203cdf6b4f16e122c50",
+      "proposed_lf_sha256": "f8b10447b9e10318aa6797cda053674384b345f5403d02c9625b25eb6fafa81a",
+      "ordered_literal_edits": [
+        {
+          "base_start": 22356,
+          "base_end": 22356,
+          "before": "",
+          "after": "water_polish_policy=None, "
+        },
+        {
+          "base_start": 27068,
+          "base_end": 27068,
+          "before": "",
+          "after": "from daily_host import ALWAYS_WATER_POLISH, RIA12_WATER_POLISH\n    polish = ALWAYS_WATER_POLISH if water_polish_policy is None else water_polish_policy\n    if polish not in (ALWAYS_WATER_POLISH, RIA12_WATER_POLISH):\n        raise ValueError('Unknown experimental water polishing policy')\n    if polish == RIA12_WATER_POLISH:\n        from ria12_water_polish import selection as polish_selection\n        polish_selection(directory, original_output)\n        if policy != ORIGINAL_TIME_POLICY:\n            raise ValueError('RIA water polishing requires original adaptive time control')\n    "
+        },
+        {
+          "base_start": 27656,
+          "base_end": 27656,
+          "before": "",
+          "after": ",water_polish_policy=polish"
+        },
+        {
+          "base_start": 28029,
+          "base_end": 28029,
+          "before": "",
+          "after": "_policy,water_polish_policy=project.water_polish"
+        }
+      ]
+    },
+    "tools/solute/run_water.py": {
+      "before_lf_sha256": "9479d555970d28f55c73d3ab0b6d9edb34db123c09a5101d521a9cf56966808d",
+      "proposed_lf_sha256": "1c9b724e6803ca67b941c2c767d957149a3a683251fa1b904efec3f2c911787b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 12016,
+          "base_end": 12016,
+          "before": "",
+          "after": "water-polish-policy',choices=(host_module.ALWAYS_WATER_POLISH,host_module.RIA12_WATER_POLISH),\n                        help='Explicit stricter Newton water polishing for corrected NoHeat RIA primary1/6; no automatic fallback')\n    parser.add_argument('--experimental-"
+        },
+        {
+          "base_start": 14560,
+          "base_end": 14560,
+          "before": "",
+          "after": "experimental_water_polish_policy,args."
+        },
+        {
+          "base_start": 15925,
+          "base_end": 15925,
+          "before": "",
+          "after": "-policy requires --experimental-project')\n    if args.experimental_water_polish_policy is not None and not experimental:\n        parser.error('--experimental-water-polish"
+        },
+        {
+          "base_start": 19936,
+          "base_end": 19936,
+          "before": "",
+          "after": "_policy,water_polish_policy=args.experimental_water_polish"
+        }
+      ]
+    }
+  },
+  "added_files": {
+    "app/hybrid_water/ria12_water_polish.py": {
+      "proposed_lf_sha256": "bcf7ea07b2c3f663cba944fa41bd72b0b535500541e8f58e779cf49a81b6df5f"
+    }
+  },
+  "invariants": {
+    "original_scientific_water_limit_cm": "1e-10",
+    "additional_Newton_precision_cm_per_day": "1e-12",
+    "original_Newton_mass_guard_literal_unchanged": true,
+    "physical_equations_changed": false,
+    "old_default_generated_source_changed": false,
+    "inventory_or_flux_fixup": false,
+    "epsilon_water_added": false,
+    "age_moment_disposed": false,
+    "automatic_fallback": false,
+    "new_persistent_state": false,
+    "native_layout_changed": false,
+    "production_authority_changed": false
+  },
+  "next": "Compile current real committed prototype O0; discriminating3day original wet-primary CDE and exact1..3 native/user cold. Independently original RIA and whole inventory. Full35 only if short passes; keep R parent1874 immutable until1798 admission."
+}

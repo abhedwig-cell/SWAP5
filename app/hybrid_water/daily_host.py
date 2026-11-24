@@ -32,6 +32,8 @@ PCHIP_SOIL_TABLE_POLICY = 'original-pchip-v1'
 SOIL_TABLE_POLICIES = (ORIGINAL_SOIL_TABLE_POLICY,PCHIP_SOIL_TABLE_POLICY)
 ALWAYS_WATER_POLISH = 'strict-water-always-polish-v1'
 INTERIOR_WATER_POLISH = 'strict-water-half-interior-polish-v1'
+from ria12_water_polish import POLICY as RIA12_WATER_POLISH
+WATER_POLISH_POLICIES = (ALWAYS_WATER_POLISH, INTERIOR_WATER_POLISH, RIA12_WATER_POLISH)
 NO_MACRO_FP_FLAGS = ('-ffp-contract=off', '-march=x86-64', '-mtune=generic')
 
 
@@ -138,10 +140,15 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         raise ValueError('Unknown no-macro daily time-step policy')
     case = project_case(reference, project)
     strict_water = project.solute or bool(project.input_directory and budget_retry)
-    if project.water_polish_policy not in (ALWAYS_WATER_POLISH,INTERIOR_WATER_POLISH):
+    if project.water_polish_policy not in WATER_POLISH_POLICIES:
         raise ValueError('Unknown strict-water polishing policy')
     if project.water_polish_policy == INTERIOR_WATER_POLISH and (project.macro or not strict_water or not budget_retry):
         raise ValueError('Interior polishing requires the strict no-macro water receipt')
+    if project.water_polish_policy == RIA12_WATER_POLISH:
+        if not strict_water or not budget_retry:
+            raise ValueError('RIA water polishing requires the unchanged strict-water receipt')
+        from ria12_water_polish import require_project
+        require_project(project)
     management_state = project.solute or bool(project.input_directory)
     if donor_opt not in ('O0','O2') or (donor_opt!='O2' and project.macro):
         raise ValueError('Generated-donor optimization requires explicit no-macro qualification')
@@ -933,6 +940,8 @@ end module plant_interface""")
     patched=ria12_thermal_build(output,donor_build,project,patched)
     from original_ria12_corrected import apply_build as ria12_corrected_build
     patched=ria12_corrected_build(output,donor_build,project,patched)
+    from ria12_water_polish import apply_build as ria12_water_polish_build
+    patched=ria12_water_polish_build(output,donor_build,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")

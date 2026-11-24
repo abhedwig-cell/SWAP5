@@ -198,6 +198,8 @@ def main():
                         help='Explicit experimental chemical execution policy; no automatic fallback')
     parser.add_argument('--experimental-soil-table-policy',choices=host_module.SOIL_TABLE_POLICIES,
                         help='Explicit original table interpolation branch; no automatic fallback')
+    parser.add_argument('--experimental-water-polish-policy',choices=(host_module.ALWAYS_WATER_POLISH,host_module.RIA12_WATER_POLISH),
+                        help='Explicit stricter Newton water polishing for corrected NoHeat RIA primary1/6; no automatic fallback')
     parser.add_argument('--experimental-time-step-policy',choices=host_module.TIME_POLICIES,
                         help='Explicit experimental numerical policy; defaults to original adaptive daily seed, new policy is not qualified for all option mixes')
     parser.add_argument("--reference-work", type=Path, help="Original source provider prepared by --prepare-sources (or legacy Andelst archive)")
@@ -221,7 +223,7 @@ def main():
     if args.prepare_sources:
         if (not args.no_macro_release or args.reference_work is None or args.model is not None
             or args.build_only or any(v is not None for v in (args.output,args.prepare_archive,args.build_bundle,
-                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project,args.experimental_time_step_policy,args.experimental_solute_step_policy,args.experimental_soil_table_policy,args.donor_opt))):
+                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project,args.experimental_time_step_policy,args.experimental_solute_step_policy,args.experimental_soil_table_policy,args.experimental_water_polish_policy,args.donor_opt))):
             parser.error('--prepare-sources requires only --no-macro-release and a new --reference-work')
         try:
             prepared=user_prepare.prepare(args.reference_work)
@@ -240,6 +242,8 @@ def main():
         parser.error('--experimental-soil-table-policy requires --experimental-project')
     if args.experimental_solute_step_policy is not None and not experimental:
         parser.error('--experimental-solute-step-policy requires --experimental-project')
+    if args.experimental_water_polish_policy is not None and not experimental:
+        parser.error('--experimental-water-polish-policy requires --experimental-project')
     if args.experimental_time_step_policy is not None and not experimental:
         parser.error("--experimental-time-step-policy requires --experimental-project")
     if args.donor_opt is not None and not (experimental or args.no_macro_release):
@@ -289,7 +293,7 @@ def main():
     try:
         if experimental:
             from experimental_project import load
-            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy,original_output=args.original_output,age_irrigation_source=args.age_irrigation_source,age_direct_soil_source=args.age_direct_soil_source)
+            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy,water_polish_policy=args.experimental_water_polish_policy,original_output=args.original_output,age_irrigation_source=args.age_irrigation_source,age_direct_soil_source=args.age_direct_soil_source)
         else:
             project={p.model:p for p in PROJECTS}[args.model]
         from implicit_conductivity_admission import require_transport
