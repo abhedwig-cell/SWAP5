@@ -5,7 +5,7 @@ from pathlib import Path
 import subprocess
 
 R = Path(__file__).resolve().parents[2]
-CORE = '904968de3737dc1376e4f758327c2c7e8563cc19'
+CORE = 'a18cc38017f69523de48ec04d47cd12686b1ecff'
 git = lambda *a: subprocess.check_output(['git', *a], cwd=R)
 SHA = lambda b: hashlib.sha256(b).hexdigest()
 
@@ -15,7 +15,7 @@ def complete_inverse():
     raw = (R / path).read_bytes().replace(b'\r\n', b'\n')
     assert raw == git('show', 'HEAD:' + path)
     q = json.loads(raw)
-    assert q['source_dependency'] == CORE and q['parent_PR'] == 1795
+    assert q['source_dependency'] == CORE and q['parent_PR'] == 1795 and q['source_dependency_is_admitted_canonical']
     assert all(q['invariants'][key] is False for key in ('physical_equations_changed', 'mass_or_convergence_limits_changed', 'epsilon_water_added', 'age_moment_disposed', 'rejected_trial_semantics_changed', 'production_authority_changed'))
     domains = ('app', 'src', 'tools', 'reference')
     assert set(git('diff', '--name-only', CORE, 'HEAD', '--', *domains).decode().splitlines()) == set(q['files']) | set(q['added_files'])

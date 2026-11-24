@@ -2109,13 +2109,13 @@
       "priority": 1,
       "family": "Original RIA12 daily water/CDE native model and constitutive parameter identity",
       "classification": "MISSING_COMPOSITION",
-      "status": "ALL8_SOURCE_PUBLIC392_PUB_NEGATIVES_PASS_PR1795_ONE_CHECKOUT_ONLY_CI_RETRY_PENDING"
+      "status": "ACTUAL_CANONICAL392_FULLY_ADMITTED"
     },
     {
       "priority": 1.1,
       "family": "Original RIA12 five additional boundary/drainage compositions",
       "classification": "MISSING_COMPOSITION",
-      "status": "Implemented10short/cold/originalReferencePASS; representativefull35/native/externalqualificationnext"
+      "status": "TwelveO0short+fourWindows35original/coldPASS;fourUbuntu35andcurrentcontrolsnext"
     },
     {
       "priority": 2,
@@ -2670,7 +2670,7 @@
     "authority": "SNOW58_ANALYTICAL_MERGE_RECEIPT_V1.json"
   },
   "original_ria12_native_state": {
-    "status": "IMPLEMENTED_ALL8_FULL35_PUBLIC392_PUB_AND4_REAL_NEGATIVES_PASS_ONE_CI_CHECKOUT_RETRY_PENDING",
+    "status": "BOUNDED_ACTUAL_CANONICAL392_ADMITTED",
     "branch": "codex/nomacro-ria12-native01",
     "actual_composed_parent": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
     "composition_head": "80ebfbefb8ea446628f785990ae6d5d96083f010",
@@ -2685,7 +2685,7 @@
     "independent_native_reader": "tests/nomacro_drainage/ria12_native.py",
     "original_component_driver": "tests/nomacro_drainage/ria12_reference_probe.f90",
     "next_action": "Compile only complete original MOD_RIA plus TTUTIL probe; independently verify original parameter bytes and stock at every accepted pressure; then select bounded water/CDE full35/cold/native batch. Source-bound real producer/observer records and all failures retained.",
-    "canonical_admission": false,
+    "canonical_admission": true,
     "whole_historical_completion": "PARTIAL",
     "whole_scientific_equivalence": "NOT_QUALIFIED",
     "global_family_and_gap_counts": "UNKNOWN",
@@ -2699,16 +2699,20 @@
     "actual_cold_windows": 24,
     "actual_native_refusals": 312,
     "actual_private_input_refusals": 24,
-    "next": "Finish actual parent admission; continue five additional original boundary/drainage pairs now implemented with10actualshort/cold/original-referencePASS; whole-family closureUNKNOWN."
+    "next": "Finish actual parent admission; continue five additional original boundary/drainage pairs now implemented with10actualshort/cold/original-referencePASS; whole-family closureUNKNOWN.",
+    "actual_canonical": "a18cc38017f69523de48ec04d47cd12686b1ecff",
+    "authority": "RIA12_MERGE_RECEIPT_V1.json"
   },
   "original_ria12_boundary_composition": {
     "classification": "MISSING_COMPOSITION",
     "migration_class": "B",
-    "status": "IMPLEMENTED_TEN_O0_SHORT_ORIGINAL_REFERENCE_AND_EXACT_COLD_PASS_FULL_REPRESENTATIVES_NOT_QUALIFIED",
+    "status": "FOUR_WINDOWS_FULL35_ORIGINAL_NATIVE_COLD_PASS_FOUR_UBUNTU_NEXT",
     "scope": "All-layer12 NoSnow/NoHeat water/CDE daily; added drainage/bottom pairs(0,5),(0,6),(0,8),(1,5),(1,8)",
     "actual_source": "2d5a36917e678f4f5ab47ae2c0edf545cd0412e1",
     "whole_family_closed": false,
     "canonical_admission": false,
-    "global_counts": "UNKNOWN"
+    "global_counts": "UNKNOWN",
+    "actual_full35_windows": 4,
+    "actual_windows_cold": 12
   }
 }

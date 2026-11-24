@@ -1,7 +1,7 @@
 {
   "status": "UNQUALIFIED_NEW_BOUNDED_EXISTING_PROCESS_COMPOSITION",
-  "source_dependency": "904968de3737dc1376e4f758327c2c7e8563cc19",
-  "source_dependency_is_admitted_canonical": false,
+  "source_dependency": "a18cc38017f69523de48ec04d47cd12686b1ecff",
+  "source_dependency_is_admitted_canonical": true,
   "parent_PR": 1795,
   "parent_actual_canonical_at_start": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
   "invariants": {
@@ -81,5 +81,7 @@
     "app/hybrid_water/original_ria12_boundary_native.f90": {
       "proposed_lf_sha256": "7530aadc65fa9e8c22ea650e69b2f5d37ad8d8738fd28c01e40707336accb000"
     }
-  }
+  },
+  "parent_actual_admission_receipt": "RIA12_MERGE_RECEIPT_V1.json",
+  "parent_actual_admission_archive_sha256": "19c966e0d3173d844ce434151b21252c4ceb5c04495f515f92c8388a18a505c3"
 }
