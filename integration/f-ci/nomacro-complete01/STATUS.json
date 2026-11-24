@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "e252e995eeece63d8f05531a10b746674c070685",
   "branch": "codex/nomacro-ria12-water-polish01",
-  "last_commit": "94693b0ca978d889f32d441f5223a2bc3e88e8b2",
+  "last_commit": "30630088a860df295b2c79cfb144c520b1a796ca",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35303,7 +35303,7 @@
     "failed_wet_stress": "Original O0/O2 complete35 retained NUMERICAL_FAILURE wholewater -1.232353486e-9cm, unchanged limit1e-10; no replay or tolerance change"
   },
   "ria12_water_polish_active_v1": {
-    "status": "WINDOWS_O0_O2_WET_PRIMARY_FULL35_GLOBAL_EXACT_COLD_ORIGINAL_RIA_PASS_CURRENT_BUILD_IDENTITY_NEXT",
+    "status": "WINDOWS_WATER_CDE_O0_O2_FOUR_FULL35_INDEPENDENT_ORIGINAL_RIA_COLD_PASS_CURRENT_CDE_POSTIMAGES_EXTERNAL_PASS",
     "branch": "codex/nomacro-ria12-water-polish01",
     "parent_actual_canonical": "e252e995eeece63d8f05531a10b746674c070685",
     "source_dependency": "1874c63ee359df7bbcfaead42af69bd9312a9065",
@@ -35315,7 +35315,7 @@
     "epsilon_or_inventory_corrections": false,
     "old_default_policy_changed": false,
     "new_persistent_state": false,
-    "next_action": "New source identity prevents unnoticed numerical generator changes. Recompile current CDE and prove exact generated/compiled postimages against original full35 producer, targeted native prefix/output and external rollback; do not replay existing full35 periods for identity-only changes. Complete water representatives/default preservation/Ubuntu before admission.",
+    "next_action": "Real same-root default preservation: compile actual admitted e252 defaults then current defaults, waterO0/CDEO2, compare all generated and compiled bytes; restore current branch and exact sparse materialization. Then policy/native controls, dry seam qualification and Ubuntu O0/O2. Existing full periods remain immutable; no admission yet.",
     "first_actual_source": "2b5208142d2e290b0830c4241143e0bba68616d6",
     "first_days_completed": 1,
     "first_day_water_residual_cm": -9.812706203149446e-13,
@@ -35333,8 +35333,15 @@
       "8c924a98d0f13444c8f5c378cf4f267a0920838b"
     ],
     "full35_global_water_residual_cm": -8.835640552540269e-13,
-    "main_exact_cold_windows": 6,
-    "original_RIA_observations_per_optimization": 2380
+    "main_exact_cold_windows": 12,
+    "original_RIA_observations_per_optimization": 2380,
+    "full35_windows": 4,
+    "original_RIA_observations_total": 9520,
+    "current_CDE_generated_compiled_postimages_both_optimizations": "PASS",
+    "current_CDE_external_discard_replay_recovery_both_optimizations": "PASS",
+    "water_full35_global_residual_cm": 3.496855582874048e-14,
+    "cde_full35_global_residual_cm": -8.835640552540269e-13,
+    "full35_periods_replayed_for_build_identity_change": 0
   },
   "test_selection_ria12_water_polish_v1": {
     "owner": "SWAP5-NOMACRO-COMPLETE01",
