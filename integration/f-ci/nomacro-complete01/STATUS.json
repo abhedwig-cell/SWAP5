@@ -35148,7 +35148,7 @@
     "windows_raw_members": 9824
   },
   "ria12_thermal_snow_active_v1": {
-    "status": "ALL16_MAIN_SCIENCE_AND_ALL8_PRESERVATION_KSAT_REFERENCE_SHORT_AND_USER_OUTPUT_CENTRAL_PASS_PUBLIC_FREEZE_NEXT",
+    "status": "FROZEN_CANDIDATE_PUBLIC416_PUB_FALSE_PASS_REAL_NEGATIVES_AND_PR_CI_ACTIVE",
     "parent_candidate": "8e8f2a4c7ff28e4e4845c4b5554894a4bc3c5af1",
     "parent_PR": 1796,
     "parent_admission": "ACTUAL_CANONICAL400_PUBLIC609.708s_PUB662.375s_13WORKFLOWS_27SUCCESS_15SKIP_FOUR_REAL_NEGATIVES_ALL_PASS",
@@ -35206,6 +35206,26 @@
     "windows_raw_members": 16202,
     "current_public_target_contexts": 416,
     "current_canonical_admitted_contexts": 400,
-    "source_freeze_next": "Commit full current source and science; pin owner SEALED to actual source commit only; source/index/working and inherited400 custody must pass before candidate public/PUB and four real pushed negatives."
+    "source_freeze_next": "Commit full current source and science; pin owner SEALED to actual source commit only; source/index/working and inherited400 custody must pass before candidate public/PUB and four real pushed negatives.",
+    "candidate": "27d155ebd1ae7a8604c2b16baf585c3b986ef96d",
+    "source_anchor": "fc1b69349bbce18b4f78a435ca3751b2375974d3",
+    "PR": 1797,
+    "candidate_public_seconds": 389.9729271000251,
+    "candidate_publication_seconds": 504.6248842999339,
+    "remaining_gate": "four real C negative controls; all22 currently applicable workflows; original exact-source logs; actual merge and actual clean14merged public/PUB",
+    "working_branch_now": "codex/nomacro-ria12-ksat-corrected01",
+    "candidate_branch_held_immutable": "codex/nomacro-ria12-thermal-snow01"
+  },
+  "ria12_corrected_ksat_active_v1": {
+    "status": "IMPLEMENTED_UNQUALIFIED_NOHEAT_CORRECTION_AND_DISTINCT_NATIVE_ABI",
+    "parent_candidate": "27d155ebd1ae7a8604c2b16baf585c3b986ef96d",
+    "parent_PR": 1797,
+    "parent_actual_canonical": "2c361f08f7170943d716483252512817ef35a3a1",
+    "scope": "All6 NoHeat RIA drainage/bottom pairs; use same separately qualified Ksat binding4 correction; no thermal implementation change",
+    "codecs": [
+      "S5RKW001",
+      "S5RKC001"
+    ],
+    "next_action": "Freeze actual source, run genuine12 O0 dry two-day+owncold/originalRIA samples across all6pairs water/CDE, plus wet aboveground irrigation pair; qualify before replacing current NoHeat authorities. Continue PR1797 actual admission independently."
   }
 }

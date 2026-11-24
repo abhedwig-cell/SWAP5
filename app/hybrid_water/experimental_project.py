@@ -74,7 +74,8 @@ def inspect(directory, *, original_output=None):
     from original_ria12 import selection as ria12_selection
     from original_ria12_boundary import selection as ria12_boundary_selection
     from original_ria12_thermal import selection as ria12_thermal_selection
-    ria12 = ria12_thermal_selection(directory, original_output) or ria12_boundary_selection(directory, original_output) or ria12_selection(directory, original_output)
+    from original_ria12_corrected import selection as ria12_corrected_selection
+    ria12 = ria12_thermal_selection(directory, original_output) or ria12_corrected_selection(directory, original_output) or ria12_boundary_selection(directory, original_output) or ria12_selection(directory, original_output)
     # Descriptor-only helper calls accept the historical output domain. Actual
     # executions use load() with an explicit compatibility/original choice.
     if original_output is not False and 'SWCSV' not in selected:selected['SWCSV']=0
