@@ -2722,7 +2722,7 @@
   },
   "original_ria12_numerical_heat_and_snow": {
     "classification": "MISSING_COMPOSITION",
-    "implementation": "BOUNDED_ACTUAL_CANONICAL416_MERGED_PUBLIC_OBSERVERS_RUNNING",
+    "implementation": "BOUNDED_ACTUAL_CANONICAL416_FULLY_ADMITTED",
     "scope": "All-layer12 primary dra1/bottom6 explicit heat1/CALT2, Snow0/1, noFrost/hysteresis, water/CDE, HeatOn=false/VaporCond=false, dense daily SWINCO1/2",
     "new_full35_periods": 16,
     "platforms": [
@@ -2743,15 +2743,18 @@
     "whole_family_closed": false,
     "global_family_and_gap_counts": "UNKNOWN",
     "reference_defect": "readswap assigns RIA Ksatfit=UHCCpars(:,1)=hae. New thermal route explicitly corrects to column4=Ksat; complete original RIA+HCOMEAN O0/O2 component evidence owns this separate correction. Other NoHeat RIA routes retain original bound source and require subsequent correction qualification.",
-    "next": "Finish actual C PUBLIC/PUB and seal original22CI/failures/admission within corrected NoHeat functional batch",
+    "next": "Current NoHeat typed Ksat correction16replacement contexts qualified scientific raw; actual public owner integration next; whole RIA family remains open",
     "actual_canonical": "1e48f182a1415a3ef5224de39559a0ecff0c4c7c",
-    "PR": 1797
+    "PR": 1797,
+    "canonical_admission": true,
+    "actual_public_and_ordinary_publication_PASS": true,
+    "admission_archive_sha256": "1cb8c57a69dc89028ae8d62ce263600703af7683a0758c93f99d936f75d4bbab"
   },
   "original_ria12_legacy_saturated_compatibility_binding": {
     "classification": "REFERENCE_DEFECT",
     "original_source": "readswap.f90 line635 and MOD_RIA.f90 original RIA_Reader UHCC column assignments/SingleKcomponents saturated branch",
     "discriminating_evidence": "Complete actual original RIA/TTUTIL and original functions.f90 HCOMEAN O0/O2 each10calls; oldmean negative7calls each; corrected Ksat=10/5 cm/day equals actual original SingleKcomponents(0)",
-    "current_fix_scope": "Thermal canonical416; NoHeat correction implemented and Windows original8representatives/24cold PASS, Ubuntu/current controls pending",
+    "current_fix_scope": "Thermal canonical416; NoHeat all16full35/48cold and current688native/48private/16external Windows/Ubuntu passed, raw/source/public freeze pending",
     "remaining_scope": "NoHeat correction not yet admitted; mixed RIA/nonRIA requires separate original wholecolumn-reader defect analysis",
     "next_action": "Propagate typed Ksat correction to NoHeat routes as separate source-dependent scientific batch; current raw legacy comparison results remain preserved; no silent relabeling",
     "whole_family_closed": false
