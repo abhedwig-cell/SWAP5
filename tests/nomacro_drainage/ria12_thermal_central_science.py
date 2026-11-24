@@ -286,7 +286,7 @@ def original_outputs():
                         warm=outputs(profile/'trajectory');observed=[]
                         for item in q['cold']:
                             low,high=item['start'],item['end'];proof=output_continuation(warm,outputs(profile/f'own-{low}'),meta['identity']['original_output'],low,high,meta['project']['start_date'])
-                            assert proof==item['exact_original_output']
+                            assert proof==item['exact_user_output']
                             observed.append(dict(low=low,high=high,exact=proof))
                         results.append(dict(platform=platform,optimization=opt,kind=kind,snow=snow,cold=observed))
         assert len(results)==16 and sum(len(x['cold']) for x in results)==48
@@ -320,7 +320,7 @@ def short_proofs():
                             physical_restart(z.read('result.end'),row,meta)
                 exact_native(profile/'trajectory/accepted-column-1-day-2.zip',profile/'own-1/accepted-column-1-day-2.zip')
                 def outputs(root):return {p.name:output_records(p.read_bytes(),p.name) for p in (root/'original').glob('result_output.*') if p.suffix in ('.csv','.bin')}
-                proof=output_continuation(outputs(profile/'trajectory'),outputs(profile/'own-1'),meta['identity']['original_output'],1,2,meta['project']['start_date']);assert proof==q['cold'][0]['exact_original_output']
+                proof=output_continuation(outputs(profile/'trajectory'),outputs(profile/'own-1'),meta['identity']['original_output'],1,2,meta['project']['start_date']);assert proof==q['cold'][0]['exact_user_output']
                 results.append(dict(kind=kind,snow=snow,days=2,cold=1,original_stock_difference_cm=sample['maximum_original_theta_stock_difference_cm']))
         return dict(status='ACTUAL_FOUR_CORRECTED_RIA_HEAT_SNOW_SHORT_ORIGINAL_STOCK_COMPLETE_NATIVE_AND_USER_COLD_PASS',contexts=results,model_executions=0,compiler_executions=0)
 
