@@ -2403,7 +2403,7 @@
     "remaining_unnecessary_admission_guards": "UNKNOWN",
     "remaining_numerical_blockers": "UNKNOWN",
     "remaining_evidence_only_functions": "UNKNOWN",
-    "current_canonical": "e252e995eeece63d8f05531a10b746674c070685",
+    "current_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "next_dependency_ordered_blocks": [
       "Original RIA12 native model/constitutive parameter state identity and water/CDE qualification",
       "Active vapor paired9 thermal endpoint coupling",
@@ -2784,5 +2784,18 @@
     "source_analysis": "RIA12_MIXED_ORIGINAL_READER_BINDING_ANALYSIS_V1.json",
     "finding": "Original maxval(model)==12 selects RIA for whole column, skips model1..11 reader, overwrites every compatibility layer. Removing all12 guard alone is unsafe.",
     "canonical_admission": false
+  },
+  "paired_vapor_thermal02_causal_diagnostic": {
+    "classification": "NUMERICAL_FAILURE_WITH_OBSERVED_ORIGINAL_BOUNDARY_FLUX_INCONSISTENCY",
+    "status": "DIAGNOSTIC_BLOCKED_INTERNAL_PRESCRIBED_FLUX_INCONSISTENCY_NO_QUALIFIED_CORRECTION",
+    "source": "18002b09789f20696fe6ec70d21cd32440f5734e",
+    "raw": "PAIRED_VAPOR_THERMAL02_DIAGNOSTIC_RAW_V1.zip",
+    "raw_sha256": "c2633ac944b2c2bf2e9e24e3cab442dc88b39afd30097d7ce22e1d5e73aab9cb",
+    "observed_trials": 120,
+    "accepted_days": 0,
+    "scope": "Original unchanged300s-failed input; two dt at first model clock; internal-to-prescribed flux gap reconstructs every measured all-node residual exactly. Runtime endpoint storage jump zero; old standalone T9 initialization jump not this observed cause.",
+    "canonical_admission": false,
+    "qualified_correction": false,
+    "next": "Independent Frost/hysteresis/state composition; active paired-vapor route stays refused on canonical."
   }
 }
