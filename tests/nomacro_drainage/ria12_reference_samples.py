@@ -47,7 +47,8 @@ def main():
         assert SHA((component_root / 'MOD_RIA.f90').read_bytes()) == component['original_RIA_raw_sha256']
     else:
         component_root = args.build_root
-        component_root.mkdir(parents=True)
+        component_root.mkdir(parents=True, exist_ok=True)
+        assert not any(component_root.iterdir()), 'Component allocation must be empty'
         (component_root / 'MOD_RIA.f90').write_bytes(original_raw)
         (component_root / driver.name).write_bytes(driver.read_bytes())
         flags = ['-' + q['optimization'], '-ffree-line-length-none', '-fallow-argument-mismatch', '-finit-local-zero', '-ffp-contract=off', '-march=x86-64', '-mtune=generic']
