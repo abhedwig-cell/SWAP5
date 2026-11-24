@@ -4,6 +4,16 @@ import re
 from pathlib import Path
 
 POLICY='existing-explicit-frost-hysteresis01-initial12-dense-v1'
+IMPLICIT_POLICY='existing-implicit-frost-hysteresis01-initial12-dense-v1'
+
+
+def implicit_input_domain(selectors,boundary,original_output):
+    fixed=dict(SWMACRO=0,SWFROST=1,SWSNOW=1,SWHEA=1,SWCALT=2,SWSOPHY=0,
+               SWDRA=1,SWBR=0,SWMETDETAIL=0,SWKIMPL=1)
+    return bool(original_output is not False and boundary.get('SWBOTB')==6
+                and selectors.get('SWHYST') in (0,1) and selectors.get('SWINCO') in (1,2)
+                and selectors.get('SWSOLU') in (0,1)
+                and all(selectors.get(key)==value for key,value in fixed.items()))
 
 
 def selection(directory,original_output=True):
@@ -11,9 +21,9 @@ def selection(directory,original_output=True):
     from experimental_project import switches,one
     folder=Path(directory);text=(folder/'swap.swp').read_text(encoding='cp1252');selected=switches(text)
     fixed=dict(SWMACRO=0,SWFROST=1,SWSNOW=1,SWHEA=1,SWCALT=2,SWSOPHY=0,
-               SWDRA=1,SWBOTB=6,SWBR=0,SWBBCFILE=0,SWMETDETAIL=0,SWKIMPL=0)
+               SWDRA=1,SWBOTB=6,SWBR=0,SWBBCFILE=0,SWMETDETAIL=0)
     domains={key:{value} for key,value in fixed.items()}
-    domains.update(SWHYST={0,1},SWINCO={1,2},SWSOLU={0,1},NPRINTDAY={1},
+    domains.update(SWHYST={0,1},SWINCO={1,2},SWSOLU={0,1},SWKIMPL={0,1},NPRINTDAY={1},
                    PERIOD={1},SWMONTH={0},SWODAT={0},SWRES={1})
     if any(selected.get(key) not in values for key,values in domains.items() if key in fixed or key in ('SWHYST','SWINCO','SWSOLU')):return None
     active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))
@@ -29,8 +39,8 @@ def selection(directory,original_output=True):
     name=one(text,'DRFIL',r"'[^']+'").strip("'");prefix=one(text,'PATHDRAIN',r"'[^']*'").strip("'").strip()
     drain=folder/(prefix+name+'.dra')
     if not drain.is_file() or switches(drain.read_text(encoding='cp1252')).get('SWDIVD')!=1:return None
-    return dict(policy=POLICY,hysteresis=selected['SWHYST'],initial=selected['SWINCO'],
-                kind='cde' if selected['SWSOLU'] else 'water',implicit=0,
+    return dict(policy=IMPLICIT_POLICY if selected['SWKIMPL'] else POLICY,hysteresis=selected['SWHYST'],initial=selected['SWINCO'],
+                kind='cde' if selected['SWSOLU'] else 'water',implicit=selected['SWKIMPL'],
                 physical_equations_changed=False,new_native_codec=False)
 
 

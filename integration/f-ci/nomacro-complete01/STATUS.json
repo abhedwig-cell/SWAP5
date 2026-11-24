@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
   "branch": "codex/nomacro-frost-hysteresis-state01",
-  "last_commit": "12adccd47556d4317847850b09a994788ffa6059",
+  "last_commit": "797e446e7a",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35446,11 +35446,11 @@
     "prototype_recovery_head": "d29caa2076"
   },
   "frost_hysteresis_state01": {
-    "status": "EXPLICIT_ALL16_WINDOWS_35DAY_AND48COLD_INDEPENDENT_PASS_NOT_ADMITTED",
+    "status": "IMPLICIT_EXACT_HYS01_TYPED_ROOT_DOMAIN_IMPLEMENTED_PERSISTING_NOT_RUN",
     "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "classification": "B_EXISTING_FROST_HYSTERESIS_ROOT_STATE_COMPOSITION",
     "scope": "Model1 dense original water/CDE, existing corrected Frost DIVDRA1 bottom6 Snow1 numeric heat, explicit/implicit and originalinitial1/2 withhysteresis0/1; currentoriginal hys2 remains unchanged",
-    "next_action": "Persist samebatch implicit hys0/1 root-state domain selection with unchanged oldhys2 exactsource bytes. Rebuild earlierexplicitcode postimages/shortseams ratherthan replay16full periods. Then implicit35/cold/native andfocusedUbuntu, defaultwholepostimages,raw/public/negative/CIadmission.",
+    "next_action": "First actual O0 implicitwater hys0 initial1 original35day/cold3, thenotherimplicitstate/native/CDE contexts; actualexplicitcompile/prefix preservation nofull16replay; wholeoldhys2 sameR defaultbaseline.",
     "qualified": false,
     "source_contract": "FROST_HYSTERESIS_STATE01_CONTRACT_V1.json",
     "first_input": "EV/frost-history-state01-explicit-water-hys0-initial1-input-v1",
@@ -35466,7 +35466,8 @@
     "actual_frontend_checks": 46,
     "compiled_initial12_pairs": 8,
     "compiled_native_refusals": 83,
-    "external_transaction_contexts": 2
+    "external_transaction_contexts": 2,
+    "old_hys2_generator_whole_source_exact": true
   },
   "ria12_water_polish_actual_admission": {
     "status": "BOUNDED_EXPLICIT_RIA_WATER_POLISH_ACTUAL_CANONICAL_ADMITTED",

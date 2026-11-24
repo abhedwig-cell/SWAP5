@@ -6,6 +6,8 @@ POLICY = 'original-implicit-frost-fitted-surface-daily-drainage-v1'
 
 
 def input_domain(selectors, boundary, original_output):
+    from frost_hysteresis_composition import implicit_input_domain
+    if implicit_input_domain(selectors,boundary,original_output):return True
     required = dict(SWMACRO=0, SWKIMPL=1, SWFROST=1, SWSNOW=1, SWHYST=2,
                     SWDRA=1, SWHEA=1, SWCALT=2, SWSOPHY=0, SWBR=0, SWMETDETAIL=0)
     return bool(original_output is not False and selectors.get('SWSOLU') in (0, 1)
@@ -45,12 +47,16 @@ def metadata(project):
     if project.solute: providers.append('snow_undrained_cde_positive.py')
     sha = lambda p: hashlib.sha256(p.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     from implicit_frost_root_state import metadata as root_metadata
-    return dict(policy=POLICY, providers={name: sha(folder/name) for name in providers},
+    result=dict(policy=POLICY, providers={name: sha(folder/name) for name in providers},
         correction='FROST-DIVDRA-OVERLAP-01', native_codec=codec(project).decode(),
         fixed_SWKIMPL=1, fixed_SWDIVD=1, examined_ksat_interpolation=False,
         new_physical_state=False, physical_equations_changed=False,
         root_diagnostic_carry=root_metadata(project),
         chemical_positive_mass_policy='original-cde-preserve-positive-cell-mass-v1' if project.solute else None)
+    from frost_hysteresis_composition import metadata as history_metadata
+    history=history_metadata(project)
+    if history is not None:result['hysteresis_state_composition']=history
+    return result
 
 
 def apply_build(output, project, patched):
