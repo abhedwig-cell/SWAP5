@@ -249,6 +249,73 @@ def primary_preservation(kind, optimization):
                     model_executions=0, compiler_executions=0, canonical_admission=False)
 
 
+def short_proofs():
+    from decimal import Decimal, localcontext
+    from ria12_boundary_science import original_samples, standard_cde_daily
+    from implicit_conductivity_forensics import water
+    with ExitStack() as stack:
+        pool = Pool(stack)
+        name = setup_windows(pool)
+        cases = [(f'ria12-boundary-{kind}-d{drain}-b{bottom}-O0-short-v1', kind, drain, bottom, False)
+                 for kind in ('water', 'cde') for drain, bottom in ((0, 5), (0, 6), (0, 8), (1, 5), (1, 8))]
+        cases += [(f'ria12-boundary-{kind}-wet8-d{drain}-O0-short-v2', kind, drain, 8, True) for kind, drain in (('water', 0), ('cde', 1))]
+        observed = []
+        for label, kind, drain, bottom, wet in cases:
+            profile = pool.view(name, 'evidence/' + label)
+            sample_root = pool.view(name, 'evidence/' + label + '-original-samples')
+            q, sample = read(profile / 'RESULT.json'), read(sample_root / 'RESULT.json')
+            assert q['status'] == 'ACTUAL_RIA12_BOUNDARY_TWO_DAY_PHYSICAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED' and q['days'] == 2
+            assert q['source'] == q['actual_completion_head'] == q['build']['actual_completion_head']
+            _, meta = build(pool, q['build_root'], q['actual_BUILD_sha256'])
+            selected = meta['identity']['original_output']['original_ria12_boundary']
+            assert selected['models'] == [12, 12] and selected['bottom'] == bottom and selected['drainage'] == drain and selected['kind'] == kind
+            inputs = pool.resolve(q['input_root'])
+            assert dict(q['input_inventory']) == meta['inputs'] == {path: SHA((inputs / path).read_bytes()) for path, _ in q['input_inventory']}
+            assert sample['profile_RESULT_sha256'] == SHA((profile / 'RESULT.json').read_bytes())
+            assert sample['daily_sha256'] == SHA((profile / 'trajectory/daily.jsonl').read_bytes()) and sample['actual_soil_input_sha256'] == meta['inputs']['swap.swp']
+            component = pool.resolve(sample['component_root'])
+            assert read(component / 'COMPONENT.json') == sample['component']
+            assert SHA((component / sample['component']['executable']).read_bytes()) == sample['component']['executable_sha256']
+            assert SHA((sample_root / 'sample.stdout').read_bytes()) == sample['stdout_sha256'] and not (sample_root / 'sample.stderr').read_bytes()
+            parameters = (sample_root / 'original-parameters.bin').read_bytes()
+            assert SHA(parameters) == sample['original_parameter_bytes_sha256']
+            data, cold = rows(profile / 'trajectory'), rows(profile / 'own-1')
+            assert len(data) == 2 and physical(cold) == physical(data[1:])
+            original_samples(sample_root, component, sample, inputs, data)
+            for folder, actual in ((profile / 'trajectory', data), (profile / 'own-1', cold)):
+                water(actual)
+                if kind == 'cde':
+                    from groundwater_snow_forensics import clock
+                    clock.ledger(actual, len(actual))
+                    standard_cde_daily(folder, actual, meta['project']['start_date'])
+                for path in folder.glob('accepted-column-1-day-*.zip'):
+                    day = int(path.stem.rsplit('-', 1)[1])
+                    row = next(row for row in actual if row['day'] == day)
+                    with zipfile.ZipFile(io.BytesIO(path.read_bytes())) as z:
+                        receipt = json.loads(z.read('checkpoint.json'))
+                        assert receipt['binding'] == meta['binding'] and receipt['receipt'] == row
+                        assert all(SHA(z.read(n)) == digest for n, digest in receipt['files'].items())
+                        native(z.read('macro.bin'), row, meta, parameters)
+            exact_native(profile / 'trajectory/accepted-column-1-day-2.zip', profile / 'own-1/accepted-column-1-day-2.zip')
+            peak = Decimal(0)
+            with localcontext() as ctx:
+                ctx.prec = 60
+                for row in data:
+                    d = lambda v: Decimal(str(v))
+                    residual = sum(map(d, row['stock_start_cm'])) + sum(map(d, row['external_flux_cm'][:7])) - sum(map(d, row['external_flux_cm'][7:])) - sum(map(d, row['stock_end_cm']))
+                    assert abs(residual) <= Decimal('1e-10')
+                    peak = max(peak, abs(residual))
+            if wet:
+                assert all(row['bottom_outward_cm'] > 1 for row in data)
+                if drain:
+                    assert any(row['drainage_outward_cm'] > 0 for row in data)
+            observed.append(dict(case=label, kind=kind, bottom=bottom, drainage=drain, wet8=wet, producer=q['source'],
+                                 actual_BUILD_sha256=q['actual_BUILD_sha256'], decimal_global_water_peak_cm=str(peak),
+                                 maximum_original_stock_error_cm=sample['maximum_original_theta_stock_difference_cm'], native_samples=2, exact_cold=1))
+        return dict(status='ALL12_ARCHIVED_RIA_BOUNDARY_SHORT_ORIGINAL_GLOBAL_SOLUTE_NATIVE_AND_EXACT_COLD_PASS', contexts=observed,
+                    model_executions=0, compiler_executions=0, canonical_admission=False)
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--platform', choices=('Windows', 'Ubuntu'), required=True)
