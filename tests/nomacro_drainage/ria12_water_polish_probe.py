@@ -22,7 +22,7 @@ def main():
     if a.reuse_profile:
         prior=json.loads((a.reuse_profile/'RESULT.json').read_text())
         assert prior['status']=='ACTUAL_RIA_ADDITIONAL_WATER_POLISH3_GLOBAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED'
-        assert prior['optimization']==a.optimization and prior['input_inventory']==m.e.inventory(a.input)
+        assert prior['optimization']==a.optimization and prior['input_inventory']==json.loads(json.dumps(m.e.inventory(a.input)))
         assert not git('diff',prior['actual_compiler_source'],head,'--','app','src','tools','reference')
         bundle=Path(prior['build_root'])
         assert SHA((bundle/'BUILD.json').read_bytes())==prior['actual_BUILD_sha256']
