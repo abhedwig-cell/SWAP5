@@ -158,5 +158,13 @@
   "reuse_existing_timecontrol_provider_lf_sha256": "f4aa03debbf613f9cbe7912dba6d0e86798e4fa6919d78e58849a7214e4ace83",
   "failed_original_adaptive_short": "Actual source2b5208142d: completed day1 with independent water -9.812706203149446e-13cm, then240second model cap before day2 complete. Original result/status/stdout/native remain unchanged; not scientificPASS.",
   "original_output_policy_exception": "Allow only explicit new RIA primary1/6 polishing with existing physical-growth v2. Every other non-original original-output composition still refuses. No format, calendar, ledger or native implementation changes.",
-  "current_build_identity": "New policy alone includes actual ria12_water_polish.py SHA256; current validator refuses earlier build identities. Prior full periods retain original compiler/source; current actual compiled/source postimage and native prefix must establish inheritance without metadata rebinding."
+  "current_build_identity": "New policy alone includes actual ria12_water_polish.py SHA256; current validator refuses earlier build identities. Prior full periods retain original compiler/source; current actual compiled/source postimage and native prefix must establish inheritance without metadata rebinding.",
+  "ci_dependency_materialization": {
+    ".github/workflows/mc-sol01-swp-reader.yml": {
+      "before_lf_sha256": "cc466ced5ccb2edfbd197bbe658a40e6a3b1fd71d77f5f58294f50de879ee073",
+      "proposed_lf_sha256": "6e8d3bffca4269c846350b810e1367bc0caaac5c5e7986342a2c0c19d1b8a954",
+      "before_literal": "            /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*\n",
+      "after_literal": "            /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*\n            /integration/f-ci/nomacro-complete01/RIA12_*\n"
+    }
+  }
 }

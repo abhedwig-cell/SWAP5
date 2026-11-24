@@ -19,7 +19,13 @@ def source(anchor):
     tree=lambda ref:{line.split('\t',1)[1]:line.split('\t',1)[0] for line in git('ls-tree','-rl',ref,'--',*DOMAINS).decode().splitlines()}
     parent,current,frozen=tree(ADMITTED),tree('HEAD'),tree(anchor);assert parent.keys()<=current.keys() and current.keys()==frozen.keys()
     contract=json.loads((ROOT/(PREFIX+'RIA12_WATER_POLISH_DOMAIN_CONTRACT_V1.json')).read_text())
-    changed={path for path in parent if parent[path]!=current[path]};assert changed==set(contract['files'])|{JOINT},changed
+    ci=contract.get('ci_dependency_materialization',{})
+    changed={path for path in parent if parent[path]!=current[path]};assert changed==set(contract['files'])|{JOINT}|set(ci),changed
+    for path,item in ci.items():
+        before=git('show',ADMITTED+':'+path);after=(ROOT/path).read_bytes().replace(b'\r\n',b'\n')
+        assert SHA(before)==item['before_lf_sha256'] and SHA(after)==item['proposed_lf_sha256']
+        assert before.count(item['before_literal'].encode())==1
+        assert before.replace(item['before_literal'].encode(),item['after_literal'].encode(),1)==after==git('show','HEAD:'+path)
     actual=(ROOT/JOINT).read_bytes().replace(b'\r\n',b'\n')
     for name in ('guard_previous_source','verify','strip_current_evidence','publication_dependencies_unchanged'):
         args='text' if name=='strip_current_evidence' else ''
