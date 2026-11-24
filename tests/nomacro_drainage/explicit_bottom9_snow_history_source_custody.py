@@ -11,6 +11,19 @@ DOMAINS=(*SOURCE_DOMAINS,'.gitattributes','docs/publication','docs/publications'
 PREFIX='integration/f-ci/nomacro-complete01/'
 
 
+def original_git_payload(raw,path,digest):
+ """Keep opaque raw exact; recognize only an original Git text spelling."""
+ blob=lambda value:hashlib.sha1(b'blob '+str(len(value)).encode()+b'\0'+value).hexdigest()
+ if blob(raw)==digest:return raw,'ACTUAL_WORKING_BYTES_EXACT'
+ rows=[row for row in git('ls-files','--eol','-z','--',path).split(b'\0') if row]
+ assert len(rows)==1,'Ambiguous original Git text path: '+path
+ meta,name=rows[0].split(b'\t',1);spelling=meta.decode().split()
+ assert name.decode()==path and 'i/lf' in spelling and 'attr/-text' not in spelling and b'\0' not in raw,'Changed opaque scientific evidence bytes: '+path
+ normalized=raw.replace(b'\r\n',b'\n')
+ assert blob(normalized)==digest,'Changed original Git text content: '+path
+ return normalized,'ACTUAL_GIT_TEXT_CRLF_LF_SPELLING_WITH_EXACT_ORIGINAL_GIT_BLOB_AND_SEPARATE_RAW_HASH'
+
+
 def source(anchor):
  complete_inverse();head=git('rev-parse','HEAD');assert not git('diff',ACTUAL_COMPILER_SOURCE,'HEAD','--','app','src','tools','reference'),'Current execution source differs from actual completed whole compiled postimages';assert not git('for-each-ref','--format=%(refname)','refs/replace')
  assert re.fullmatch('[0-9a-f]{40}',anchor) and not git('status','--porcelain=v1','--untracked-files=all','--',*DOMAINS),'Dirty scientific Source'
@@ -46,20 +59,14 @@ def source(anchor):
   if path in parent_proof or Path(path).name in ('STATUS.json','GAP_MATRIX.json'):continue
   assert kind=='blob' and path in tracked and tracked[path][1:]==(mode,digest),'Changed new scientific proof tree/index: '+path
   raw=(ROOT/path).read_bytes() if materialized(path,tracked) else git('cat-file','blob',digest)
-  blob=lambda value:hashlib.sha1(b'blob '+str(len(value)).encode()+b'\0'+value).hexdigest()
-  variants=(raw,raw.replace(b'\r\n',b'\n')) if Path(path).suffix.lower() in ('.json','.md','.txt','.csv','.py') else (raw,)
-  assert digest in tuple(blob(value) for value in variants),'Changed actual new scientific proof bytes: '+path
-  new_proof.append(dict(path=path,actual_raw_sha256=SHA(raw)))
+  proven,storage=original_git_payload(raw,path,digest)
+  new_proof.append(dict(path=path,actual_raw_sha256=SHA(raw),actual_git_bytes_sha256=SHA(proven),storage=storage))
  assert git('rev-parse','HEAD')==head
  return dict(status='COMPLETE_280_PARENT_AND_CURRENT_SOURCE_TREE_INDEX_WORKING_BYTES_LITERAL_TWO_GUARDS_AND_PUBLIC_OWNER_INVERSE_PASS',actual_head=head.decode().strip(),source_anchor=anchor,parent=CORE,files=observed,new_proof_custody=new_proof,modified_inherited_files=sorted(modified),compiler_executions=0,model_executions=0,Git_or_working_views_projected=False)
 
 
 def inherited_evidence():
  head=git('rev-parse','HEAD');tracked=tracked_working_files();rows=[]
- eol={}
- for row in git('ls-files','--eol','-z','--',PREFIX).split(b'\0'):
-  if row:
-   meta,path=row.split(b'\t',1);eol[path.decode()]=meta.decode().split()
  for line in git('ls-tree','-rl',CORE,'--',PREFIX).decode().splitlines():
   meta,path=line.split('\t',1);mode,kind,digest,size=meta.split()
   if Path(path).name in ('STATUS.json','GAP_MATRIX.json'):continue
@@ -70,11 +77,9 @@ def inherited_evidence():
   for item in rows:
    path=ROOT/item['path'];total=0;sha=hashlib.sha256();obj=hashlib.sha1(b'blob '+str(item['bytes']).encode()+b'\0')
    if materialized(item['path'],tracked):
-    raw=path.read_bytes();working_raw_sha256=SHA(raw);raw_blob=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest();storage='ACTUAL_WORKING_BYTES_EXACT'
-    if raw_blob!=item['git_blob']:
-     spelling=eol[item['path']];assert 'i/lf' in spelling and 'attr/-text' not in spelling and b'\0' not in raw,'Changed opaque scientific evidence bytes: '+item['path']
-     raw=raw.replace(b'\r\n',b'\n');storage='ACTUAL_GIT_TEXT_CRLF_LF_SPELLING_WITH_EXACT_ORIGINAL_GIT_BLOB_AND_SEPARATE_RAW_HASH'
-    total=len(raw);sha.update(raw);obj.update(raw)
+    raw=path.read_bytes();working_raw_sha256=SHA(raw)
+    proven,storage=original_git_payload(raw,item['path'],item['git_blob'])
+    total=len(proven);sha.update(proven);obj.update(proven)
    else:
     process.stdin.write((item['git_blob']+'\n').encode());process.stdin.flush();assert process.stdout.readline().decode().split()==[item['git_blob'],'blob',str(item['bytes'])];remaining=item['bytes']
     while remaining:
