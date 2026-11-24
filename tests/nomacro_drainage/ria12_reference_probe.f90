@@ -4,6 +4,7 @@ program actual_original_ria12_probe
   use DoublePrec,only:dp
   use SHPvariables,only:nLayer,iLayer,SWRCpars,UHCCpars,HeatOn
   use KVapor,only:VaporCond,DefaultTemperature
+  use MOD_swap_base,only:unit_log
   use,intrinsic::ieee_arithmetic,only:ieee_is_finite
   implicit none
   character(len=2048)::input,heads,dump
@@ -16,6 +17,7 @@ program actual_original_ria12_probe
   call get_command_argument(2,heads)
   call get_command_argument(3,dump)
   if(len_trim(input)==0.or.len_trim(heads)==0.or.len_trim(dump)==0)error stop 'Missing original RIA probe input'
+  unit_log=6
   call rdinit(31,6,trim(input))
   call RIA_Reader()
   if(nLayer/=2.or.HeatOn.or.VaporCond)error stop 'Unselected original RIA12 component domain'

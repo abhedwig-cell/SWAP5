@@ -39,24 +39,29 @@ def main():
     original_raw = source.read_bytes()
     assert SHA(original_raw.replace(b'\r\n', b'\n')) == ORIGINAL_RIA
     library = args.reference_work / 'build/ttutil-obj/libttutil.a'
+    base_source = args.reference_work / 'build/swap-selected/swap_base.f90'
     if args.reuse_component:
         component_root = args.reuse_component
         component = json.loads((component_root / 'COMPONENT.json').read_text())
         assert component['optimization'] == q['optimization'] and component['original_RIA_lf_sha256'] == ORIGINAL_RIA
         assert component['driver_raw_sha256'] == SHA(driver.read_bytes()) and component['TTUTIL_library_sha256'] == SHA(library.read_bytes())
         assert SHA((component_root / 'MOD_RIA.f90').read_bytes()) == component['original_RIA_raw_sha256']
+        assert SHA((component_root / 'swap_base.f90').read_bytes()) == component['original_swap_base_raw_sha256'] == SHA(base_source.read_bytes())
     else:
         component_root = args.build_root
         component_root.mkdir(parents=True, exist_ok=True)
         assert not any(component_root.iterdir()), 'Component allocation must be empty'
         (component_root / 'MOD_RIA.f90').write_bytes(original_raw)
+        (component_root / 'swap_base.f90').write_bytes(base_source.read_bytes())
         (component_root / driver.name).write_bytes(driver.read_bytes())
-        flags = ['-' + q['optimization'], '-ffree-line-length-none', '-fallow-argument-mismatch', '-finit-local-zero', '-ffp-contract=off', '-march=x86-64', '-mtune=generic']
+        flags = ['-' + q['optimization'], '-ffree-line-length-none', '-fallow-argument-mismatch', '-finit-local-zero', '-ffp-contract=off', '-march=x86-64', '-mtune=generic', '-ffunction-sections', '-fdata-sections']
+        includes = ['-J.', '-I.', '-I' + str(args.reference_work / 'build/swap-obj'), '-I' + str(args.reference_work / 'build/ttutil-obj')]
         executable = 'original_ria12_probe.exe' if __import__('os').name == 'nt' else 'original_ria12_probe'
         commands = [
-            ['gfortran', *flags, '-J.', '-I.', '-c', 'MOD_RIA.f90', '-o', 'MOD_RIA.o'],
-            ['gfortran', *flags, '-J.', '-I.', '-c', driver.name, '-o', 'probe.o'],
-            ['gfortran', *flags, 'MOD_RIA.o', 'probe.o', str(library), '-o', executable],
+            ['gfortran', *flags, *includes, '-c', 'swap_base.f90', '-o', 'swap_base.o'],
+            ['gfortran', *flags, *includes, '-c', 'MOD_RIA.f90', '-o', 'MOD_RIA.o'],
+            ['gfortran', *flags, *includes, '-c', driver.name, '-o', 'probe.o'],
+            ['gfortran', *flags, '-Wl,--gc-sections', 'swap_base.o', 'MOD_RIA.o', 'probe.o', str(library), '-o', executable],
         ]
         compiler = []
         for index, command in enumerate(commands):
@@ -67,6 +72,8 @@ def main():
         component = dict(status='COMPLETE_ORIGINAL_RIA_AND_TTUTIL_COMPONENT_BUILT_NO_MODEL', actual_source=head, optimization=q['optimization'],
                          original_RIA_lf_sha256=ORIGINAL_RIA, original_RIA_raw_sha256=SHA(original_raw), driver_raw_sha256=SHA(driver.read_bytes()),
                          TTUTIL_library_sha256=SHA(library.read_bytes()), executable=executable, executable_sha256=SHA((component_root / executable).read_bytes()),
+                         original_swap_base_raw_sha256=SHA(base_source.read_bytes()),
+                         shared_runtime_dependency='Complete original RIA junction initialization uses original MOD_swap_base.unit_log; compile complete original swap_base and discard unused sections. No replacement physics or module stubs.',
                          compiler=compiler, model_periods=0)
         (component_root / 'COMPONENT.json').write_text(json.dumps(component, indent=2) + '\n')
     assert SHA((component_root / component['executable']).read_bytes()) == component['executable_sha256']
