@@ -1,0 +1,98 @@
+{
+  "status": "PROPOSED_BOUNDED_RIA12_NATIVE_IDENTITY_MIGRATION_NOT_IMPLEMENTED_NOT_QUALIFIED_NOT_ADMITTED",
+  "version": 1,
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "classification": "B_EXISTING_ORIGINAL_RIA_PROCESS_NATIVE_STATE_COMPOSITION",
+  "development_parent": "9e6a69d7d1ba016cbb7c29145577d7a804f35356",
+  "development_parent_admission": "PR1794_PENDING_CANONICAL_SOURCE_MUST_BE_RECONCILED_BEFORE_ADMISSION",
+  "actual_admitted_canonical": "0157d2995e85adce362642918095e871469e4ee1",
+  "original_reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:556",
+  "original_RIA_source_lf_sha256": "454b3949827917ce0ca32ce044e6368faffbf6c4c14266f1f969c2e3b038a01a",
+  "actual_discovery": {
+    "status": "ACTUAL_CURRENT_RIA12_GENUINE_FOREIGN_MODEL1_NATIVE_ACCEPTED_BEFORE_MODEL_IDENTITY_REFUSAL",
+    "actual_source": "9e6a69d7d1ba016cbb7c29145577d7a804f35356",
+    "actual_BUILD_sha256": "acad0696e4bad954ecf18efe80b1f3152fbf133c9540f20e37e064be58b80cb7",
+    "genuine_model1_source": "9e6a69d7d1ba016cbb7c29145577d7a804f35356",
+    "genuine_model1_profile_RESULT_sha256": "9fc028101d514c02f793cd02864b87679bd1b4df55ffad8162ae4234dca38c68",
+    "own_checkpoint_sha256": "fcb7d9952d2eebe6c46d1412b6fd8c27996bdce3a12637fb9d7b229ce5e73d0f",
+    "foreign_checkpoint_sha256": "563312adba3c3592769d04ad6815f1181a18d00f60fbb8fffa29886c9c84df5e",
+    "original_checkpoint_metadata_or_binding_rewritten": false,
+    "private_attack_origin_macro_only": true,
+    "rows": [
+      {
+        "label": "genuine-own-ria12-positive",
+        "ready": true,
+        "returncode": 100,
+        "raw_sha256": "9a74c7805b28e3d348b26983f08ccdbaef3081767ae1f18c7d9beda5c65c9198",
+        "bytes": 1465176,
+        "codec": "S5IOW001",
+        "stderr": ""
+      },
+      {
+        "label": "genuine-foreign-model1-native",
+        "ready": true,
+        "returncode": 100,
+        "raw_sha256": "b773a1e318b16a439ea9e640f6693805d4471d7e7a5f26f6e9b97c626da97dc7",
+        "bytes": 1465176,
+        "codec": "S5IOW001",
+        "stderr": ""
+      }
+    ],
+    "compiler_executions": 0,
+    "accepted_model_days": 0,
+    "scientific_qualification": false,
+    "canonical_admission": false
+  },
+  "physical_parameter_scope": "Explicit synthetic valid original-reader parameters; not measured soil evidence.",
+  "scope": {
+    "IHWCKMODEL": "12 in every layer",
+    "SWMACRO": 0,
+    "SWKIMPL": 0,
+    "SWSOPHY": 0,
+    "SWHYST": 0,
+    "SWSNOW": 0,
+    "SWFROST": 0,
+    "SWDRA": 1,
+    "SWBOTB": 6,
+    "SWHEA": 0,
+    "SWCALT": 1,
+    "HeatOn": false,
+    "VaporCond": false,
+    "SWSOLU": [
+      0,
+      1
+    ],
+    "SWINCO": [
+      1,
+      2
+    ],
+    "NPRINTDAY": 1,
+    "SWMONTH": 0,
+    "SWODAT": 0,
+    "SWRES": 1,
+    "PERIOD": 1,
+    "FLPRINTDT": false,
+    "SWBR": 0,
+    "SWMETDETAIL": 0
+  },
+  "planned_change": "Dedicated RIA12 water/CDE native codecs and actual duplicated per-layer model/domain witness; exact original existing payload body/physical functions and immutable input binding retained.",
+  "invariants": {
+    "physical_equations_changed": false,
+    "mass_or_convergence_limits_changed": false,
+    "epsilon_water_added": false,
+    "age_moment_disposed": false,
+    "rejected_trial_semantics_changed": false,
+    "production_authority_changed": false
+  },
+  "test_selection": {
+    "first": "Own-positive and genuine model1 native startup refusal; malformed duplicated model/domain fields; actual private HeatOn/VaporCond domain controls; zero accepted model days.",
+    "component": "Complete original MOD_RIA/TTUTIL reader and constitutive sample driver at every actual accepted pressure; both layers, water/CDE stock, original source identity.",
+    "integration": "After native/component gates: eight representative35day Windows/Ubuntu O0/O2 water/CDE periods with exact (2,4),(7,9),(30,34) cold windows; SWINCO1 opposite compile, no duplicate full periods.",
+    "preservation": "Actual unselected model1 water/CDE generated and whole compiled objects/modules/executable/publisher postimages; inherited admitted evidence only with exact dependency proof.",
+    "cost": "Small real production native/component feedback first; bounded integrated selection after measured small gates, no Cartesian or generic full historical campaign."
+  },
+  "whole_functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}
