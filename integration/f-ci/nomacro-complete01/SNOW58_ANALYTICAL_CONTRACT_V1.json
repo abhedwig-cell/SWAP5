@@ -1,9 +1,9 @@
 {
   "status": "IMPLEMENTED_BOUND_DIRECTINPUT_PRESSURE_AND_SNOW_NATIVE_DOMAIN_PENDING_REAL_PHYSICAL_PREFLIGHT",
   "version": 1,
-  "source_dependency": "9fbc580c79db7ef78f0a74de74192b7dfe8ab080",
-  "source_dependency_is_admitted_canonical": false,
-  "actual_admitted_canonical": "04dc6b1cf3ddb4570c33b13ae20be746c8bcde54",
+  "source_dependency": "0157d2995e85adce362642918095e871469e4ee1",
+  "source_dependency_is_admitted_canonical": true,
+  "actual_admitted_canonical": "0157d2995e85adce362642918095e871469e4ee1",
   "category": "B_EXISTING_UNCHANGED_PHYSICAL_PROCESSES_AND_STATE_OWNER_COMPOSITION",
   "scope": {
     "SWBOTB": [
@@ -137,5 +137,8 @@
       "proposed_lf_sha256": "40f52d11264133cdf1c2599f52bd02f3bad9364c3e09a6ae5a4c14c2988746e8"
     }
   },
-  "implementation_frontend_positive_contexts": 24
+  "implementation_frontend_positive_contexts": 24,
+  "original_candidate_source_dependency": "9fbc580c79db7ef78f0a74de74192b7dfe8ab080",
+  "source_dependency_admission_receipt": "EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_MERGE_RECEIPT_V1.json",
+  "source_dependency_admission_archive_sha256": "1272201c759396f7441b33676a0a08a47ae0f9ebf5b8d527f2f33fc5fcf6c7ec"
 }

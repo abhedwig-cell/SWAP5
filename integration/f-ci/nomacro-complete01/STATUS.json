@@ -34676,7 +34676,7 @@
     "old_checkpoint_bindings_rewritten": false,
     "global_functional_family_counts": "UNKNOWN"
   },
-  "last_fully_public_verified_canonical": "04dc6b1cf3ddb4570c33b13ae20be746c8bcde54",
+  "last_fully_public_verified_canonical": "0157d2995e85adce362642918095e871469e4ee1",
   "canonical2500_public_refusal": {
     "status": "PATCH_CRLF_TEXT_READER_REFUSAL_NOT_SCIENTIFIC_FAILURE",
     "PR": 1791,
@@ -34750,11 +34750,11 @@
   },
   "snow58_analytical_active_v1": {
     "status": "REAL_O0_O2_SMALL_WATER_COLD_STOCK_NATIVE_FRONTEND_GATES_PASS_35DAY_COMPOSITION_NEXT",
-    "source_dependency": "9fbc580c79db7ef78f0a74de74192b7dfe8ab080",
-    "source_dependency_canonical_admission": false,
+    "source_dependency": "0157d2995e85adce362642918095e871469e4ee1",
+    "source_dependency_canonical_admission": true,
     "source_dependency_PR": 1793,
-    "actual_admitted_canonical": "04dc6b1cf3ddb4570c33b13ae20be746c8bcde54",
-    "actual_admitted_contexts": 336,
+    "actual_admitted_canonical": "0157d2995e85adce362642918095e871469e4ee1",
+    "actual_admitted_contexts": 360,
     "qualified_local_proposed_contexts": 360,
     "prior_local_public_seconds": 489.54740629997104,
     "prior_local_publication_replay": false,
@@ -34764,13 +34764,15 @@
     "frontend_discovery": "SNOW58_ANALYTICAL_ACTUAL_FRONTEND_DISCOVERY_V1.json",
     "actual_initial1_pressure_guard_refusals": 12,
     "actual_initial2_snow_guard_refusals": 12,
-    "next": "Finish actualcanonical publication and seal360 admission, retaining realsource126 prototypes. Then select representative35day5/8waterCDE processes with actual wet8outflow, Jan5tracer, perlayeroriginalstock, completecold/native/currentinitialcounterparts; reuse current126builds without metadata/binding changes.",
+    "next": "Persist exactsixrepresentativeinputselection; real35daywater/CDEbatch and3coldwindows, independentoriginalstock/ledgers/native. Reuse unchangedactual126shortbuilds with actualproducer andobserveridentities distinct. Preservecurrent9/M1sourcecompiledclosures without fullperiodreplay.",
     "actual_source_implementation": "126d78ffae2badf489d3a1ffda0947c2633790da",
     "actual_canonical_merged_into_next_branch": "0157d2995e85adce362642918095e871469e4ee1",
     "prior360_CI": "ALL13_WORKFLOWS_SUCCESS_42CHECKS_27SUCCESS15SKIPPED_DVS_RETRY2_SUCCESS",
     "prior360_actual_canonical_public_seconds": 479.36611990025267,
-    "prior360_actual_canonical_publication_pending": true,
-    "short_gates": "SNOW58_ANALYTICAL_PREFLIGHT_V1.json"
+    "prior360_actual_canonical_publication_pending": false,
+    "short_gates": "SNOW58_ANALYTICAL_PREFLIGHT_V1.json",
+    "prior360_admission_sealed": true,
+    "prior360_admission_archive_sha256": "1272201c759396f7441b33676a0a08a47ae0f9ebf5b8d527f2f33fc5fcf6c7ec"
   },
   "snow58_analytical_test_selection_v1": {
     "category": "B_EXISTING_PHYSICAL_PROCESS_AND_TYPED_STATE_COMPOSITION",
@@ -34791,6 +34793,102 @@
       "MODFLOW",
       "RossFast",
       "Generalperformance"
-    ]
+    ],
+    "exact_cases": [
+      {
+        "case": "bottom5-model7-water-dry-initial1",
+        "bottom": 5,
+        "model": 7,
+        "kind": "water",
+        "initial": 1,
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical-input-discovery-v1\\bottom5-model7-water-initial1"
+      },
+      {
+        "case": "bottom8-model7-water-wet-initial2",
+        "bottom": 8,
+        "model": 7,
+        "kind": "water",
+        "initial": 2,
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical7-water-bottom8-original-wet-initial2-v1",
+        "requires_actual_lysimeter_outflow": true
+      },
+      {
+        "case": "bottom5-model3-cde-dry-initial1",
+        "bottom": 5,
+        "model": 3,
+        "kind": "cde",
+        "initial": 1,
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical-input-discovery-v1\\bottom5-model3-cde-initial1",
+        "requires_actual_incoming_tracer": true
+      },
+      {
+        "case": "bottom8-model11-cde-wet-initial2",
+        "bottom": 8,
+        "model": 11,
+        "kind": "cde",
+        "initial": 2,
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical-bottom8-model11-cde-wet-initial2-v1",
+        "requires_actual_lysimeter_outflow": true,
+        "requires_actual_incoming_tracer": true
+      },
+      {
+        "case": "bottom8-model3-water-wet-initial1",
+        "bottom": 8,
+        "model": 3,
+        "kind": "water",
+        "initial": 1,
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical-bottom8-model3-water-wet-initial1-v1",
+        "requires_actual_lysimeter_outflow": true
+      },
+      {
+        "case": "bottom5-model11-water-dry-initial1",
+        "bottom": 5,
+        "model": 11,
+        "kind": "water",
+        "initial": 1,
+        "input_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical-input-discovery-v1\\bottom5-model11-water-initial1"
+      }
+    ],
+    "selected_full35_contexts": 24,
+    "selected_windows": [
+      [
+        2,
+        4
+      ],
+      [
+        7,
+        9
+      ],
+      [
+        30,
+        34
+      ]
+    ],
+    "input_archive": "SNOW58_ANALYTICAL_INPUTS_V1.json",
+    "input_archive_sha256": "ec550214aa5fbcd5dfd538a4766a31379841e67e26f306bd14179cc23c79f263",
+    "actual_parent_admitted": "0157d2995e85adce362642918095e871469e4ee1",
+    "build_reuse_policy": "Use original untouched126shortbuilds forfourWindowsmodel7water5/8wet optcontexts with realsource/observer identities distinct; noBUILD/checkpoint/binding rewrite. Full35periods notpreviouslyrun, sozero completedfull35replays. Allnewcasesfreshactualbuilds."
+  },
+  "snow_analytical_admission_v1": {
+    "status": "ACTUAL_CANONICAL360_ADMITTED_SOURCE_RAW_NATIVE_COLD_COMPILED_PUBLIC_PUB_REAL_NEGATIVES_ALL_CI",
+    "actual_canonical": "0157d2995e85adce362642918095e871469e4ee1",
+    "qualified_head": "9fbc580c79db7ef78f0a74de74192b7dfe8ab080",
+    "source_anchor": "7851426eaad1df72cd7de2792886490f82c25ec4",
+    "admission_archive": "EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_ADMISSION_RAW_V1.json",
+    "admission_archive_sha256": "1272201c759396f7441b33676a0a08a47ae0f9ebf5b8d527f2f33fc5fcf6c7ec",
+    "actual_canonical_public_seconds": 479.36611990025267,
+    "actual_canonical_publication_seconds": 371.80736370012164,
+    "public_checkout_patterns": 14,
+    "original_project_files": 56,
+    "contexts": 360,
+    "new_contexts": 24,
+    "actual_model_native_refusals": 408,
+    "actual_root_native_refusals": 200,
+    "all_checks": 42,
+    "successful_workflows": 13,
+    "whole_functional_completion": "PARTIAL",
+    "global_functional_family_counts": "UNKNOWN",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "RC3_changed": false
   }
 }

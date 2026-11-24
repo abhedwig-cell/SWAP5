@@ -1,7 +1,7 @@
 """Exact bounded Snow5/8 analytical source against actual qualified candidate dependency."""
 import hashlib,json,subprocess
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];CORE='9fbc580c79db7ef78f0a74de74192b7dfe8ab080';git=lambda *args:subprocess.check_output(['git',*args],cwd=ROOT);SHA=lambda raw:hashlib.sha256(raw).hexdigest()
+ROOT=Path(__file__).resolve().parents[2];CORE='0157d2995e85adce362642918095e871469e4ee1';git=lambda *args:subprocess.check_output(['git',*args],cwd=ROOT);SHA=lambda raw:hashlib.sha256(raw).hexdigest()
 def complete_inverse():
  path='integration/f-ci/nomacro-complete01/SNOW58_ANALYTICAL_CONTRACT_V1.json';raw=(ROOT/path).read_bytes().replace(b'\r\n',b'\n');assert raw==git('show','HEAD:'+path);q=json.loads(raw)
  assert q['source_dependency']==CORE and q['version']==1 and not q['physical_equations_changed'] and not q['new_physical_state'] and not q['native_payload_layout_changed']

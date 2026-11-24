@@ -18,7 +18,7 @@ def main():
  from model7_capacity import analytical_models
  models=analytical_models(project);assert models and any(value!=1 for value in models)
  head=git('rev-parse','HEAD').decode().strip();build=a.build_root/'bundle';kind='cde' if project.solute else 'water'
- q=dict(status='RUNNING',source=head,observer_source=head,composition_core=CORE,source_dependency_is_admitted_canonical=False,case='snow58-analytical-'+str(list(models))+'-'+kind,layer_models=list(models),hysteresis=s['SWHYST'],kind=kind,optimization=a.optimization,days=a.days,build_root=str(build),input_root=str(a.input),input_inventory=m.e.inventory(a.input),canonical_admission=False)
+ q=dict(status='RUNNING',source=head,observer_source=head,composition_core=CORE,source_dependency_is_admitted_canonical=True,case='snow58-analytical-'+str(list(models))+'-'+kind,layer_models=list(models),hysteresis=s['SWHYST'],kind=kind,optimization=a.optimization,days=a.days,build_root=str(build),input_root=str(a.input),input_inventory=m.e.inventory(a.input),canonical_admission=False)
  def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
  started=time.monotonic();save()
  try:
