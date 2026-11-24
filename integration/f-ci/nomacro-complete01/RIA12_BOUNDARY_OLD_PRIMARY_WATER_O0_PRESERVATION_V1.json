@@ -1,0 +1,533 @@
+{
+  "status": "ACTUAL_TESTED_PARENT_CANDIDATE_RIA_PRIMARY_ALL_GENERATED_AND_WHOLE_COMPILED_POSTIMAGES_PRESERVED_NO_MODEL_REPLAY",
+  "actual_current_compiler": "2d5a36917e678f4f5ab47ae2c0edf545cd0412e1",
+  "actual_original_compiler": "7a2a0066e99e183bf5cbeddf2f3fbbfd4bc7be1b",
+  "actual_current_build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ria12-boundary-old-primary-water-O0-preservation-v1\\bundle",
+  "actual_original_build_root": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\ria12-water-Windows-O0-full35-native-controls-v3\\bundle",
+  "actual_current_BUILD_sha256": "7a13d44aca6ed1d5c3d1c54e05d4aaa45004bc8b622d5c88acc73b2fdae0863d",
+  "actual_original_BUILD_sha256": "76c1a5f17849d7d4669b44c69835f34f38eb4cd888b5185f038ddf99fde50dab",
+  "compiled": {
+    "status": "ALL_ACTUAL_GENERATED_OBJECT_MODULE_EXECUTABLE_PUBLISHER_CODE_DATA_POSTIMAGES_VERIFIED",
+    "files": [
+      {
+        "file": "MOD_cropdevelopment.o",
+        "left_sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4",
+        "right_sha256": "9bf4457fe26b84c3ae397b53de7155bbfd3166d84d99be0da681e88ba84da4f4",
+        "left_bytes": 113751,
+        "right_bytes": 113751,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "age_output_calendar_probe.o",
+        "left_sha256": "e7512d4b94901de98c6e3f5c3a9232c8b943a6b1679a0c718907f6659c659c79",
+        "right_sha256": "e7512d4b94901de98c6e3f5c3a9232c8b943a6b1679a0c718907f6659c659c79",
+        "left_bytes": 5584,
+        "right_bytes": 5584,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "boundtop.o",
+        "left_sha256": "0d525256795be44c8452acf4948b794270517c082c74aaca34f57d9304e8d96c",
+        "right_sha256": "0d525256795be44c8452acf4948b794270517c082c74aaca34f57d9304e8d96c",
+        "left_bytes": 21317,
+        "right_bytes": 21317,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "day_donor.exe",
+        "left_sha256": "2f80bceed7a6bf9e49eabd75c70396cc7073fdf582ef7a5c960a7c4270ccae7c",
+        "right_sha256": "7550de28d79b1015e930b7a447f81c5c25393b5373df1108826b390bb1a11944",
+        "left_bytes": 2135781,
+        "right_bytes": 2135781,
+        "PE_loader_relative_whole_code_data": {
+          "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+          "old_sha256": "2f80bceed7a6bf9e49eabd75c70396cc7073fdf582ef7a5c960a7c4270ccae7c",
+          "current_sha256": "7550de28d79b1015e930b7a447f81c5c25393b5373df1108826b390bb1a11944",
+          "old_image_base": 5368709120,
+          "current_image_base": 5368709120,
+          "actual_relocations": 1282,
+          "changed_byte_count": 5,
+          "changed_offsets": [
+            136,
+            137,
+            216,
+            217,
+            218
+          ],
+          "original_bytes_modified": false,
+          "metadata_fields": [
+            {
+              "offset": 136,
+              "bytes": 4,
+              "role": "COFF link timestamp"
+            },
+            {
+              "offset": 216,
+              "bytes": 4,
+              "role": "PE checksum"
+            },
+            {
+              "offset": 176,
+              "bytes": 8,
+              "role": "loader image base"
+            }
+          ]
+        },
+        "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+      },
+      {
+        "file": "day_kernel.exe",
+        "left_sha256": "1d38bd0d2f22eaec73f7564ab1fce32785663f45a42ab452afca8cdc04c306f6",
+        "right_sha256": "21bd6314653827166a926894daf211fcd996890f4bb97fa10c4bf01f84bf261c",
+        "left_bytes": 364079,
+        "right_bytes": 364079,
+        "PE_loader_relative_whole_code_data": {
+          "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+          "old_sha256": "1d38bd0d2f22eaec73f7564ab1fce32785663f45a42ab452afca8cdc04c306f6",
+          "current_sha256": "21bd6314653827166a926894daf211fcd996890f4bb97fa10c4bf01f84bf261c",
+          "old_image_base": 5368709120,
+          "current_image_base": 5368709120,
+          "actual_relocations": 274,
+          "changed_byte_count": 4,
+          "changed_offsets": [
+            136,
+            137,
+            216,
+            217
+          ],
+          "original_bytes_modified": false,
+          "metadata_fields": [
+            {
+              "offset": 136,
+              "bytes": 4,
+              "role": "COFF link timestamp"
+            },
+            {
+              "offset": 216,
+              "bytes": 4,
+              "role": "PE checksum"
+            },
+            {
+              "offset": 176,
+              "bytes": 8,
+              "role": "loader image base"
+            }
+          ]
+        },
+        "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+      },
+      {
+        "file": "headcalc.o",
+        "left_sha256": "b0cff3d8f4448acc06984e550f57cfddaa0d491fdbec1f97451110ca2a9167a7",
+        "right_sha256": "b0cff3d8f4448acc06984e550f57cfddaa0d491fdbec1f97451110ca2a9167a7",
+        "left_bytes": 56054,
+        "right_bytes": 56054,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_age_output_state.mod",
+        "left_sha256": "87f65728b41718d28ed3b923e7ba529ddf31e064c7c06e59041983bee0d2c83e",
+        "right_sha256": "87f65728b41718d28ed3b923e7ba529ddf31e064c7c06e59041983bee0d2c83e",
+        "left_bytes": 2765,
+        "right_bytes": 2765,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_age_output_state.o",
+        "left_sha256": "b3e9a4e89705374a630b80131fcb675d57a99cd134e263f5abc35be8d5a346df",
+        "right_sha256": "b3e9a4e89705374a630b80131fcb675d57a99cd134e263f5abc35be8d5a346df",
+        "left_bytes": 1761,
+        "right_bytes": 1761,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_day_window.mod",
+        "left_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+        "right_sha256": "911b49f55990e262040cce187c963668eba4d0993e826894a20bec2d971f04fc",
+        "left_bytes": 366,
+        "right_bytes": 366,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_original_ria12_native.mod",
+        "left_sha256": "3593c2be399ad879be54a6be0c0ec6244f21891ebfaf5c400beb8a71c22ea718",
+        "right_sha256": "3593c2be399ad879be54a6be0c0ec6244f21891ebfaf5c400beb8a71c22ea718",
+        "left_bytes": 2493,
+        "right_bytes": 2493,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_step_budget.mod",
+        "left_sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7",
+        "right_sha256": "fea8cd19ba097c0487ec766ecd545e1d61609f06459de05dc4fa3016ff22d4f7",
+        "left_bytes": 1099,
+        "right_bytes": 1099,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "hybrid_step_budget.o",
+        "left_sha256": "e000a43d12f7e5d184597a72d6cb5cc2af1a07b5cb13a417f1acc529869808bd",
+        "right_sha256": "e000a43d12f7e5d184597a72d6cb5cc2af1a07b5cb13a417f1acc529869808bd",
+        "left_bytes": 12352,
+        "right_bytes": 12352,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "integral.o",
+        "left_sha256": "80a2e8100cfbd29a34f430442e746ffc4e48df1faf709e49974fa4b0418d9821",
+        "right_sha256": "80a2e8100cfbd29a34f430442e746ffc4e48df1faf709e49974fa4b0418d9821",
+        "left_bytes": 80152,
+        "right_bytes": 80152,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "irrigation.o",
+        "left_sha256": "9b935e7c0de41c23150d4d7c479ce72d8be218c42bbd18b73af3465bb680594b",
+        "right_sha256": "9b935e7c0de41c23150d4d7c479ce72d8be218c42bbd18b73af3465bb680594b",
+        "left_bytes": 81228,
+        "right_bytes": 81228,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "macropore.o",
+        "left_sha256": "9d8e702b4f4b0ed241fff93fd571c094271b89318da70386429485285cb560f6",
+        "right_sha256": "9d8e702b4f4b0ed241fff93fd571c094271b89318da70386429485285cb560f6",
+        "left_bytes": 519086,
+        "right_bytes": 519086,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_accepted_trajectory_directional_publication.mod",
+        "left_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+        "right_sha256": "54184df44f860cbba7c53c94035f4df3d4ec150403dcdf1c6b8444934489a92f",
+        "left_bytes": 4417,
+        "right_bytes": 4417,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_accepted_trajectory_directional_sensitivity.mod",
+        "left_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+        "right_sha256": "cadc559986ceecd90866c3f9e9635224699063d96052f409a4e272c0922d7f93",
+        "left_bytes": 4709,
+        "right_bytes": 4709,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_canonical_contracts.mod",
+        "left_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+        "right_sha256": "9e38688b54853b5c7a1b4ed4f8a4a90f27edbe8719edafe8c5fb95d74e095482",
+        "left_bytes": 12974,
+        "right_bytes": 12974,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_canonical_interval_runtime.mod",
+        "left_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+        "right_sha256": "48b870166a41bd2323be5ecd7dce5632faebfe590ee7b3e52ee9d29d30bac263",
+        "left_bytes": 12951,
+        "right_bytes": 12951,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_cropdevelopment.mod",
+        "left_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+        "right_sha256": "a41356a36a4447d608aafcf20c4d45c497cbb83b5139d1f07cb26fa0ec772717",
+        "left_bytes": 4009,
+        "right_bytes": 4009,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_fmr_soil_water_application_host.mod",
+        "left_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+        "right_sha256": "0f29a4e295f13b5cac97fe7900e8dd0829e1ab4d7adcd25b4f43b1cbf721101c",
+        "left_bytes": 1313,
+        "right_bytes": 1313,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_groundwater_coupling_contract.mod",
+        "left_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+        "right_sha256": "dd3624fda727a7dd40cb1458256662d7c107636179f6d8e3e0b32ce019c0e6b0",
+        "left_bytes": 4100,
+        "right_bytes": 4100,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_groundwater_interface_mass_ledger.mod",
+        "left_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+        "right_sha256": "a8f874e48ac1c86f42d29003b7ac0c2a4e5c067fd69999582370eeecfc9bb6c8",
+        "left_bytes": 6592,
+        "right_bytes": 6592,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_groundwater_swap_forcing_adapter.mod",
+        "left_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+        "right_sha256": "3ac8dbbdaa9632a473fef14721974b5de64dbb39d1df3c8ced8f02bc3a49189f",
+        "left_bytes": 24540,
+        "right_bytes": 24540,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_groundwater_swap_transaction_participant.mod",
+        "left_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+        "right_sha256": "d792c0b8ae3e103cc9bd1a73370a91b1c92ef0555e836c7f3395e1bfb5b3fc78",
+        "left_bytes": 27203,
+        "right_bytes": 27203,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_integral.mod",
+        "left_sha256": "f84abbd3048e5570bf69e4e4f433e3156990b13502b7aff8e97f5cc200d7a5b2",
+        "right_sha256": "f84abbd3048e5570bf69e4e4f433e3156990b13502b7aff8e97f5cc200d7a5b2",
+        "left_bytes": 4234,
+        "right_bytes": 4234,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_irrigation.mod",
+        "left_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+        "right_sha256": "618b437ce47a9911ba93e91d8c30f32cd14683088d2669449f63c694a0409765",
+        "left_bytes": 4286,
+        "right_bytes": 4286,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_kernel_transactions.mod",
+        "left_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+        "right_sha256": "1721cee5a08145e6945c26002cc2e126a41449672c8d767da799a79cb0f903d3",
+        "left_bytes": 23972,
+        "right_bytes": 23972,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_macropore.mod",
+        "left_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+        "right_sha256": "458782f1f2ac8affcbfdd7e1f2c32bf765bdc2c4431d3a530a40fc77c560e92b",
+        "left_bytes": 4157,
+        "right_bytes": 4157,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_original_output_receipt.mod",
+        "left_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+        "right_sha256": "5ec8ae83688d32ed90ce6b06b41ec605d5c08cbd530191bd870131e221bfec92",
+        "left_bytes": 2331,
+        "right_bytes": 2331,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_original_output_receipt.o",
+        "left_sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d",
+        "right_sha256": "7ad0e5b64149f31ca86a78d64946971fafa6a308fa071bf848c9b76157138b8d",
+        "left_bytes": 3663,
+        "right_bytes": 3663,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_soil_water_accepted_step_direction_contract.mod",
+        "left_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+        "right_sha256": "db54ebc9c6d2f1e5db4c907169f53bb1ae0bb5ca8c55e0863ba22d629068f58f",
+        "left_bytes": 2006,
+        "right_bytes": 2006,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_top.mod",
+        "left_sha256": "1eb23fb10c946b5bedbedc0fde0dd2d2a743e8e80e89782138c2486aa241208d",
+        "right_sha256": "1eb23fb10c946b5bedbedc0fde0dd2d2a743e8e80e89782138c2486aa241208d",
+        "left_bytes": 433,
+        "right_bytes": 433,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_transaction_reference.mod",
+        "left_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+        "right_sha256": "b46e6f85c656b446bab5ab0359533fc06c39198baaa5a21303714461fcd61bef",
+        "left_bytes": 6815,
+        "right_bytes": 6815,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "mod_wofost.mod",
+        "left_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+        "right_sha256": "9cd3f46ded050cc8678a2f51b40f6b69aadb31ba25fd64f0166430e304fab08a",
+        "left_bytes": 4134,
+        "right_bytes": 4134,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "probe_kernel_donor.mod",
+        "left_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+        "right_sha256": "1ef66137dc1539d56845abf27a661c11ec953fd9888bd84a1f89a74a655ee922",
+        "left_bytes": 36537,
+        "right_bytes": 36537,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "restart_publish.dll",
+        "left_sha256": "11d6288418c00ee45b9b0f4a96f3821f7da3d7829be6af5ac169fdd8e3b670be",
+        "right_sha256": "94a7d98af18146acc47f9e5aca41eb07a11d6c271c1b3278ce4c05f4b7bef748",
+        "left_bytes": 30291,
+        "right_bytes": 30291,
+        "PE_loader_relative_whole_code_data": {
+          "status": "ACTUAL_PE_LOADER_RELATIVE_CODE_DATA_EXACT",
+          "old_sha256": "11d6288418c00ee45b9b0f4a96f3821f7da3d7829be6af5ac169fdd8e3b670be",
+          "current_sha256": "94a7d98af18146acc47f9e5aca41eb07a11d6c271c1b3278ce4c05f4b7bef748",
+          "old_image_base": 10307371008,
+          "current_image_base": 8228700160,
+          "actual_relocations": 15,
+          "changed_byte_count": 54,
+          "changed_offsets": [
+            136,
+            137,
+            178,
+            179,
+            180,
+            216,
+            217,
+            6658,
+            6659,
+            6660,
+            7538,
+            7539,
+            7540,
+            7554,
+            7555,
+            7556,
+            7570,
+            7571,
+            7572,
+            7586,
+            7587,
+            7588,
+            7602,
+            7603,
+            7604,
+            7618,
+            7619,
+            7620,
+            7634,
+            7635,
+            7636,
+            7650,
+            7651,
+            7652,
+            7666,
+            7667,
+            7668,
+            7682,
+            7683,
+            7684,
+            7698,
+            7699,
+            7700,
+            7714,
+            7715,
+            7716,
+            7730,
+            7731,
+            7732,
+            8570,
+            8571,
+            8572,
+            9732,
+            9733
+          ],
+          "original_bytes_modified": false,
+          "metadata_fields": [
+            {
+              "offset": 136,
+              "bytes": 4,
+              "role": "COFF link timestamp"
+            },
+            {
+              "offset": 216,
+              "bytes": 4,
+              "role": "PE checksum"
+            },
+            {
+              "offset": 176,
+              "bytes": 8,
+              "role": "loader image base"
+            },
+            {
+              "offset": 9732,
+              "bytes": 4,
+              "role": "export link timestamp"
+            }
+          ]
+        },
+        "status": "ACTUAL_COMPLETE_PE_CODE_DATA_RELOCATIONS_EXACT_LINK_METADATA_DIFFERENCES_RETAINED"
+      },
+      {
+        "file": "swap.o",
+        "left_sha256": "ca880c20e1d94e6a19c547af0367b96eba96201638cfd56ad066ad3555fd5c0b",
+        "right_sha256": "ca880c20e1d94e6a19c547af0367b96eba96201638cfd56ad066ad3555fd5c0b",
+        "left_bytes": 47541,
+        "right_bytes": 47541,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swap_csv_output.mod",
+        "left_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+        "right_sha256": "9cf061d7f26367fe26da8438746e423134b9c0fbeaf813fa68b1047fb9b16388",
+        "left_bytes": 2955,
+        "right_bytes": 2955,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swap_csv_output.o",
+        "left_sha256": "0e762f400f67c2db42e47a48f1088610da31d3a0d58287e22e637931fb073482",
+        "right_sha256": "0e762f400f67c2db42e47a48f1088610da31d3a0d58287e22e637931fb073482",
+        "left_bytes": 297397,
+        "right_bytes": 297397,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swap_exchange.mod",
+        "left_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+        "right_sha256": "1f666015d2741e0835066e4d51345d88165a713dd7f8fe068c3a7a5057ddf876",
+        "left_bytes": 1470,
+        "right_bytes": 1470,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swap_main.o",
+        "left_sha256": "b582c26c4d22c6e344105c04762705f1710df0ff86dfe5af1ceb596667539039",
+        "right_sha256": "b582c26c4d22c6e344105c04762705f1710df0ff86dfe5af1ceb596667539039",
+        "left_bytes": 11150,
+        "right_bytes": 11150,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "swapoutput.o",
+        "left_sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213",
+        "right_sha256": "f64f57828a50b2f8b692e61cdbd852523eb617e71e60e07f3cb40698b415a213",
+        "left_bytes": 108454,
+        "right_bytes": 108454,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      },
+      {
+        "file": "wofost.o",
+        "left_sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822",
+        "right_sha256": "36af1649a1a29edc122add1b6afd6a8e71d60a462d535468802f5fa4d5c36822",
+        "left_bytes": 105790,
+        "right_bytes": 105790,
+        "status": "ACTUAL_COMPLETE_COMPILED_BYTES_EXACT"
+      }
+    ],
+    "raw_bytes_rewritten": false,
+    "model_executions": 0,
+    "compiler_executions_in_reader": 0
+  },
+  "generated_sources": 14,
+  "kind": "water",
+  "optimization": "O0",
+  "compiler_executions": 0,
+  "reused_completed_water_build_without_recompile": true,
+  "original_water_observer_failure": "Wrong hardcoded 43 count; all actual44 compiled files compare exactly. Original v1 controller/build/logs preserved unchanged.",
+  "model_executions": 0,
+  "parent_admission": "PR1795_CI_PENDING_AT_EXECUTION",
+  "canonical_admission": false
+}

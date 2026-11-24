@@ -2109,7 +2109,13 @@
       "priority": 1,
       "family": "Original RIA12 daily water/CDE native model and constitutive parameter identity",
       "classification": "MISSING_COMPOSITION",
-      "status": "IMPLEMENTED_O0_O2_SHORT_COLD_AND_82_ZERO_DAY_REFUSALS_PASS_ORIGINAL_COMPONENT_NEXT"
+      "status": "ALL8_SOURCE_PUBLIC392_PUB_NEGATIVES_PASS_PR1795_ONE_CHECKOUT_ONLY_CI_RETRY_PENDING"
+    },
+    {
+      "priority": 1.1,
+      "family": "Original RIA12 five additional boundary/drainage compositions",
+      "classification": "MISSING_COMPOSITION",
+      "status": "Implemented10short/cold/originalReferencePASS; representativefull35/native/externalqualificationnext"
     },
     {
       "priority": 2,
@@ -2664,7 +2670,7 @@
     "authority": "SNOW58_ANALYTICAL_MERGE_RECEIPT_V1.json"
   },
   "original_ria12_native_state": {
-    "status": "BOUNDED_ORIGINAL_RIA12_NATIVE_REPAIR_IMPLEMENTED_REAL_SMALL_O0_O2_GATES_PASS_COMPONENT_AND_FULL_QUALIFICATION_PENDING",
+    "status": "IMPLEMENTED_ALL8_FULL35_PUBLIC392_PUB_AND4_REAL_NEGATIVES_PASS_ONE_CI_CHECKOUT_RETRY_PENDING",
     "branch": "codex/nomacro-ria12-native01",
     "actual_composed_parent": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
     "composition_head": "80ebfbefb8ea446628f785990ae6d5d96083f010",
@@ -2685,6 +2691,24 @@
     "global_family_and_gap_counts": "UNKNOWN",
     "RC3_changed": false,
     "classification": "MISSING_COMPOSITION",
-    "missing_state_contract": "Native model and immutable original constitutive parameter identity"
+    "missing_state_contract": "Native model and immutable original constitutive parameter identity",
+    "candidate": "904968de3737dc1376e4f758327c2c7e8563cc19",
+    "PR": 1795,
+    "actual_full35_contexts": 8,
+    "actual_warm_native_samples": 56,
+    "actual_cold_windows": 24,
+    "actual_native_refusals": 312,
+    "actual_private_input_refusals": 24,
+    "next": "Finish actual parent admission; continue five additional original boundary/drainage pairs now implemented with10actualshort/cold/original-referencePASS; whole-family closureUNKNOWN."
+  },
+  "original_ria12_boundary_composition": {
+    "classification": "MISSING_COMPOSITION",
+    "migration_class": "B",
+    "status": "IMPLEMENTED_TEN_O0_SHORT_ORIGINAL_REFERENCE_AND_EXACT_COLD_PASS_FULL_REPRESENTATIVES_NOT_QUALIFIED",
+    "scope": "All-layer12 NoSnow/NoHeat water/CDE daily; added drainage/bottom pairs(0,5),(0,6),(0,8),(1,5),(1,8)",
+    "actual_source": "2d5a36917e678f4f5ab47ae2c0edf545cd0412e1",
+    "whole_family_closed": false,
+    "canonical_admission": false,
+    "global_counts": "UNKNOWN"
   }
 }
