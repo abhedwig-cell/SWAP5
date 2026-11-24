@@ -96,6 +96,18 @@
           "after": "            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy,water_polish_policy=args.experimental_water_polish_policy,original_output=args.original_output,age_irrigation_source=args.age_irrigation_source,age_direct_soil_source=args.age_direct_soil_source)\n"
         }
       ]
+    },
+    "app/hybrid_water/original_output.py": {
+      "before_lf_sha256": "b377a3d718cb8923237c7f53655d75b39037a8015bfda005fc51bb19e5451b22",
+      "proposed_lf_sha256": "6836d18ea114a26f4f275a9fa5f5d747a4d19d2f43757b9f112bdb925736514d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 538,
+          "base_end": 692,
+          "before": "    if project.time_step_policy!='original-adaptive-day-seed-v1':raise ValueError('Original output currently requires original adaptive-day-seed policy')\n",
+          "after": "    if project.time_step_policy!='original-adaptive-day-seed-v1':\n        from ria12_water_polish import POLICY as RIA_POLISH_POLICY, require_project as require_ria_polish\n        if project.water_polish_policy!=RIA_POLISH_POLICY or require_ria_polish(project) is None:\n            raise ValueError('Original output requires original adaptive policy or explicit bounded RIA primary water polishing')\n"
+        }
+      ]
     }
   },
   "added_files": {
@@ -126,5 +138,6 @@
   "time_step_policy": "configured-dtmax-physical-growth-v2",
   "reuse_existing_timecontrol_provider": "app/hybrid_water/donor_sources.py:render_physical_iteration_proposal",
   "reuse_existing_timecontrol_provider_lf_sha256": "f4aa03debbf613f9cbe7912dba6d0e86798e4fa6919d78e58849a7214e4ace83",
-  "failed_original_adaptive_short": "Actual source2b5208142d: completed day1 with independent water -9.812706203149446e-13cm, then240second model cap before day2 complete. Original result/status/stdout/native remain unchanged; not scientificPASS."
+  "failed_original_adaptive_short": "Actual source2b5208142d: completed day1 with independent water -9.812706203149446e-13cm, then240second model cap before day2 complete. Original result/status/stdout/native remain unchanged; not scientificPASS.",
+  "original_output_policy_exception": "Allow only explicit new RIA primary1/6 polishing with existing physical-growth v2. Every other non-original original-output composition still refuses. No format, calendar, ledger or native implementation changes."
 }
