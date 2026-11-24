@@ -2,8 +2,8 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "a18cc38017f69523de48ec04d47cd12686b1ecff",
-  "branch": "codex/nomacro-ria12-boundary01",
-  "last_commit": "085d00591c8dcad8a4bcdf8d1c041dde192a20d8",
+  "branch": "codex/nomacro-ria12-thermal-snow01",
+  "last_commit": "8e8f2a4c7ff28e4e4845c4b5554894a4bc3c5af1",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35146,5 +35146,15 @@
     "windows_raw_bytes": 61052206,
     "windows_raw_sha256": "11b8fa45dee55f4fd5f49c339b716798535b4001439ca4b306c19eda8cfd7d7a",
     "windows_raw_members": 9824
+  },
+  "ria12_thermal_snow_active_v1": {
+    "status": "IMPLEMENTED_UNQUALIFIED_FOUR_FRONTENDS_ACCEPTED_ACTUAL_TWO_DAY_PROBES_NEXT",
+    "parent_candidate": "8e8f2a4c7ff28e4e4845c4b5554894a4bc3c5af1",
+    "parent_PR": 1796,
+    "parent_admission": "Public400/PUB/four real negatives PASS; applicable CI pending",
+    "actual_canonical": "a18cc38017f69523de48ec04d47cd12686b1ecff",
+    "scope": "All-layer12, numerical heat1/CALT2, optionalSnow0/1, primary drainage1/bottom6, HeatOn=false and VaporCond=false, noFrost/hysteresis/aquifer, dense daily water/CDE",
+    "native_reader_limit": "Typed outer model/context/original-parameter and basic clock witness only; independent complete inner thermal/calendar audit still required before qualification",
+    "next_action": "Freeze source; actual O0 two-day/native/cold probes water/CDE NoSnow andSnow with complete original RIA/TTUTIL oracle. Preserve failures. Qualify complete original heat/Snow carry, not only a selector. Do not admit before actual PR1796 parent admission."
   }
 }

@@ -1,0 +1,133 @@
+{
+  "status": "UNQUALIFIED_NEW_ORIGINAL_RIA_NUMERICAL_HEAT_AND_SNOW_COMPOSITION",
+  "source_dependency": "8e8f2a4c7ff28e4e4845c4b5554894a4bc3c5af1",
+  "source_dependency_is_admitted_canonical": false,
+  "parent_PR": 1796,
+  "parent_actual_canonical_at_start": "a18cc38017f69523de48ec04d47cd12686b1ecff",
+  "invariants": {
+    "physical_equations_changed": false,
+    "mass_or_convergence_limits_changed": false,
+    "epsilon_water_added": false,
+    "age_moment_disposed": false,
+    "rejected_trial_semantics_changed": false,
+    "production_authority_changed": false
+  },
+  "files": {
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "52cb767a38403fb08995c3617d50bed0b3361fbfedc447737ea2d022beb72d22",
+      "proposed_lf_sha256": "720176bf207d299493ff8582b2c9988044db4b0978e57994e0b809b4250ccaf8",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3223,
+          "base_end": 3223,
+          "before": "",
+          "after": "from original_ria12_thermal import selection as ria12_thermal_selection\n    "
+        },
+        {
+          "base_start": 3230,
+          "base_end": 3230,
+          "before": "",
+          "after": " ria12_thermal_selection(directory, original_output) or"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output.py": {
+      "before_lf_sha256": "f5dd7b0f42ed9e4d1fc69898eadc3aaa16c6707b79f7cdcf55b5d135667ee9b3",
+      "proposed_lf_sha256": "5ef178e5db72b9a5813be0f5e4ceecbf76bcf5010caa59c5c662b7d4f7e3381b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 5468,
+          "base_end": 5468,
+          "before": "",
+          "after": "from original_ria12_thermal import metadata as ria12_thermal_metadata\n    thermal=ria12_thermal_metadata(project)\n    "
+        },
+        {
+          "base_start": 5477,
+          "base_end": 5477,
+          "before": "",
+          "after": "None if thermal is not None else "
+        },
+        {
+          "base_start": 5514,
+          "base_end": 5514,
+          "before": "",
+          "after": "if thermal is not None:result['original_ria12_thermal']=thermal\n    "
+        },
+        {
+          "base_start": 5536,
+          "base_end": 5536,
+          "before": "",
+          "after": " is not None or thermal"
+        },
+        {
+          "base_start": 5990,
+          "base_end": 5990,
+          "before": "",
+          "after": "\n    from original_ria12_thermal import selection as ria12_thermal_selection,CODECS as ria12_thermal_codecs\n    thermal=ria12_thermal_selection(project.input_directory,project.original_output)\n    if thermal is not None:return ria12_thermal_codecs[(thermal['snow'],thermal['kind'])]"
+        },
+        {
+          "base_start": 10765,
+          "base_end": 10765,
+          "before": "",
+          "after": "\n    from original_ria12_thermal import selection as ria12_thermal_selection,render_macro as ria12_thermal_macro\n    if ria12_thermal_selection(project.input_directory,project.original_output) is not None:\n        return ria12_thermal_macro(prefix+source.replace(anchor,calls+anchor,1)+suffix,project)"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output_thermal.py": {
+      "before_lf_sha256": "7377655873f3e43a5fb0c8d2e9629fc7418b25328b09187bc1e972845a7bf71c",
+      "proposed_lf_sha256": "d6e8789d39892382993bfa8d93754eeafba27e1c1678ce36ddcfdd67575c8b2d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3804,
+          "base_end": 3804,
+          "before": "",
+          "after": "original_ria12_thermal import selection as ria12_thermal_selection,CODECS as ria12_thermal_codecs\n    thermal=ria12_thermal_selection(project.input_directory,project.original_output)\n    if thermal is not None:return ria12_thermal_codecs[(thermal['snow'],thermal['kind'])]\n    from "
+        },
+        {
+          "base_start": 4538,
+          "base_end": 4538,
+          "before": "",
+          "after": "sul"
+        },
+        {
+          "base_start": 4539,
+          "base_end": 4543,
+          "before": "urn ",
+          "after": "="
+        },
+        {
+          "base_start": 5972,
+          "base_end": 5972,
+          "before": "",
+          "after": "\n    from original_ria12_thermal import metadata as ria12_thermal_metadata\n    thermal=ria12_thermal_metadata(project)\n    if thermal is not None:result['original_ria12_thermal']=thermal\n    return result"
+        },
+        {
+          "base_start": 9404,
+          "base_end": 9404,
+          "before": "",
+          "after": "from original_ria12_thermal import render_macro as ria12_thermal_macro\n    "
+        },
+        {
+          "base_start": 9411,
+          "base_end": 9411,
+          "before": "",
+          "after": "ria12_thermal_macro("
+        },
+        {
+          "base_start": 9431,
+          "base_end": 9431,
+          "before": "",
+          "after": ",project)"
+        }
+      ]
+    }
+  },
+  "added_files": {
+    "app/hybrid_water/original_ria12_thermal.py": {
+      "proposed_lf_sha256": "6e65f8237fe22b19e0991c10c05dee9009a790e133d161f6dcd157a9f729175c"
+    },
+    "app/hybrid_water/original_ria12_thermal_native.f90": {
+      "proposed_lf_sha256": "dbb3d5b2ef0530b601c80f4b62f985d600eb46800372428cd1e4b422a7d25b10"
+    }
+  }
+}
