@@ -17,8 +17,10 @@ def audit(profile_path, reference, *, locations=None, provider_catalog=None):
     profile = json.loads((profile_path / 'RESULT.json').read_text(encoding='utf-8'))
     assert 'PASS_NOT_ADMITTED' in profile['status'] and not profile['canonical_admission']
     kind, opt, phase = profile['kind'], profile['optimization'], profile['phase']
-    from experimental_project import switches
-    selected_hysteresis=switches((Path(profile['input_root'])/'swap.swp').read_text(encoding='cp1252'))['SWHYST']
+    import re
+    modes=re.findall(r'(?mi)^\s*SWHYST\s*=\s*([01])\s*(?:!.*)?$',(Path(profile['input_root'])/'swap.swp').read_text(encoding='cp1252'))
+    assert len(modes)==1
+    selected_hysteresis=int(modes[0])
     assert selected_hysteresis in (0,1)
     build = locations['bundle'] if locations else Path(profile['build_root'])
     inputs = locations['inputs'] if locations else Path(profile['input_root'])

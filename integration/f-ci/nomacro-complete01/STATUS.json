@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
   "branch": "codex/nomacro-frost-hysteresis-state01",
-  "last_commit": "122d762c69",
+  "last_commit": "643504179b4902d5484f5cc1c2d1197250fb0858",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -60,7 +60,8 @@
     "Extended drainage frozen ec4: Windows/Ubuntu O0/O2 sixteen1096day periods,112primary+16table cold windows;312public/288compiled native refusals and12CLI/transaction contexts. Actual full public source/raw owner PASS; committed wrong-source ecbca2 correctly refused. Canonical admission pending.",
     "PR1763 actualcanonical66d6297b1 exactbc927/0dd926orderedparents and completed4b3322tree; all48PR checks terminal without failures; qualifiedclean22patternowner PASS161.1168011s. Actual66detached owner running; next output/calendar functional branch underway.",
     "Actualcanonical66d6297b1 clean detached22pattern public owner PASS151.247505seconds, exit0/empty stderr/clean includingignored. All48PRchecks nofailure and completequalifiedtree/orderedparents exact. Receipt persisted with nextfunctionalbatch, no metadataPR.",
-    "PR1777 actualcanonical0abcdd5eb3a00327d505cdc897e92c50030ed3e7: exact ordered085/dcdparents and complete7c5dbb9tree; all53latestchecks terminal38success15skip. Actualclean33patternpublicowner PASS361.5331516s, candidate374.3373006s; fourcommittedpushedsource/raw/inherited/publicationnegativesrefused. Original15minuteCIcancellationretained; onlysame-headfailedjobtargetedretrySUCCESS. Actualadmissionsealed dbd18b19cc8ef08044f5f9b48d1db0e20e9f6ca7bd82cf2da69168325f13ca79; wholemigrationPARTIAL/NOT_QUALIFIED."
+    "PR1777 actualcanonical0abcdd5eb3a00327d505cdc897e92c50030ed3e7: exact ordered085/dcdparents and complete7c5dbb9tree; all53latestchecks terminal38success15skip. Actualclean33patternpublicowner PASS361.5331516s, candidate374.3373006s; fourcommittedpushedsource/raw/inherited/publicationnegativesrefused. Original15minuteCIcancellationretained; onlysame-headfailedjobtargetedretrySUCCESS. Actualadmissionsealed dbd18b19cc8ef08044f5f9b48d1db0e20e9f6ca7bd82cf2da69168325f13ca79; wholemigrationPARTIAL/NOT_QUALIFIED.",
+    "PR1799 actualcanonical e0461f005b95b9f68bc70d4d4698eff903bc04ed exact e252/7e parents and complete66da tree;17workflowsSUCCESS,31successful17skippedchecks; four actualcommittedpushednegativesrefused. Actualclean14/56 PUBLIC906.953592s andordinaryPUB648.756811s PASS; original8CIlogs andfailures/censoredattempts sealed58,433,938B SHA5bd3a60cc8dcdf5d4598df6dad1bb1168ff20418d76b15dffc0f2ec3c23b0caa; explicit bounded waterpolish admitted, wholemigrationPARTIAL/NOT_QUALIFIED."
   ],
   "open": [
     "Complete historical selector inventory",
@@ -35445,14 +35446,49 @@
     "prototype_recovery_head": "d29caa2076"
   },
   "frost_hysteresis_state01": {
-    "status": "EXPLICIT_HYS01_ORIGINAL_INITIAL12_IMPLEMENTED_PERSISTING_NOT_QUALIFIED",
+    "status": "FIRST_EXPLICIT_WATER_HYS0_INITIAL1_O0_35DAY_AND_THREE_EXACT_COLD_PASS_NOT_ADMITTED",
     "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "classification": "B_EXISTING_FROST_HYSTERESIS_ROOT_STATE_COMPOSITION",
     "scope": "Model1 dense original water/CDE, existing corrected Frost DIVDRA1 bottom6 Snow1 numeric heat, explicit/implicit and originalinitial1/2 withhysteresis0/1; currentoriginal hys2 remains unchanged",
-    "next_action": "Actual O0 first explicitwater/hys0/initial1 35day trajectory and3exactcold fromunchanged Frost fixture; compile viareal publicbuilder. Then hys1/CDE/initial2 O0/O2 representatives in samebatch, typed wronghys native tests; expand implicit only after its actualroot bindings preserveoldhys2 wholepostimages.",
+    "next_action": "Run persisted independent reader on original35day output; then O0/O2 hys1 CDE initial2 and full bounded frontend/native controls in the samebatch. No repeat firstwaterperiod for reader import-only repair.",
     "qualified": false,
     "source_contract": "FROST_HYSTERESIS_STATE01_CONTRACT_V1.json",
     "first_input": "EV/frost-history-state01-explicit-water-hys0-initial1-input-v1",
-    "first_frontend": "actual new inspect PASS; current canonical refusal to record before models"
+    "first_frontend": "actual new inspect PASS; current canonical refusal to record before models",
+    "first_source": "643504179b4902d5484f5cc1c2d1197250fb0858",
+    "first_model_days": 35,
+    "first_own_cold_windows": 3,
+    "first_daily_water_max_cm": 9.987588187043706e-11,
+    "first_global_water_sum_diagnostic_cm": 3.599042539144913e-10,
+    "global_water_diagnostic_is_not_existing_Frost_owning_gate": true
+  },
+  "ria12_water_polish_actual_admission": {
+    "status": "BOUNDED_EXPLICIT_RIA_WATER_POLISH_ACTUAL_CANONICAL_ADMITTED",
+    "PR": 1799,
+    "actual_merge": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+    "ordered_parents": [
+      "e252e995eeece63d8f05531a10b746674c070685",
+      "7e7924a0e01ef94eef5b64aaad0b74d246e57544"
+    ],
+    "whole_tree": "66da3029d52a8fe3bcf49a75e3471229d6d87c5b",
+    "qualified_candidate": "7e7924a0e01ef94eef5b64aaad0b74d246e57544",
+    "actual_signed_object_bytes": 1226,
+    "actual_public_seconds": 906.9535920000635,
+    "actual_ordinary_publication_seconds": 648.7568112001754,
+    "actual_clean_sparse_patterns": 14,
+    "actual_original_input_files": 56,
+    "workflows_success": 17,
+    "checks_success": 31,
+    "checks_skipped": 17,
+    "actual_committed_pushed_negatives_refused": 4,
+    "original_required_CI_logs": 8,
+    "admission_archive": "RIA12_WATER_POLISH_ADMISSION_RAW_V1.zip",
+    "admission_archive_sha256": "5bd3a60cc8dcdf5d4598df6dad1bb1168ff20418d76b15dffc0f2ec3c23b0caa",
+    "canonical_admission": true,
+    "functional_completion": "PARTIAL",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "global_family_and_gap_counts": "UNKNOWN",
+    "RC3_changed": false,
+    "next": "Existing Frost/hysteresis/state composition on real e046 descendant; paired-vapor diagnostic remains blocked/unqualified."
   }
 }
