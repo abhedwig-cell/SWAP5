@@ -43,7 +43,7 @@ for kind,drain,bottom,label in cases:
     from groundwater_snow_forensics import clock
     chemical=dict(unchanged_ledger=clock.ledger(actual,len(actual)),actual_daily=standard_cde_daily(folder,actual,meta['project']['start_date']))
    proofs.append(dict(water=proof,solute=chemical,native_days=sorted(native_days)))
-  with zipfile.ZipFile(root/'trajectory/accepted-column-1-day-2.zip') as a,zipfile.ZipFile(root/'own-1/accepted-column-1-day-2.zip') as b:assert all(a.read(n)==b.read(n) for n in ('macro.bin','result.end'))
+  with zipfile.ZipFile(root/'trajectory/accepted-column-1-day-2.zip') as warm_zip,zipfile.ZipFile(root/'own-1/accepted-column-1-day-2.zip') as cold_zip:assert all(warm_zip.read(n)==cold_zip.read(n) for n in ('macro.bin','result.end'))
   peak=Decimal(0)
   with localcontext() as c:
    c.prec=60
