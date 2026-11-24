@@ -28,7 +28,13 @@ def main():
     compiler = profile.get('actual_compiler_source', profile['source'])
     if a.current_controls:
         control = json.loads((a.current_controls / 'RESULT.json').read_text())
-        assert control['own_positive_ready'] and control['actual_compiled_postimage']
+        assert control['own_positive_ready']
+        if not control['actual_compiled_postimage']:
+            # A native control on the original genuine compile needs no
+            # additional compiler image. Require exact original identity.
+            assert Path(control['actual_current_build_root']) == build
+            assert control['actual_compiler_source'] == compiler
+            assert control['actual_BUILD_sha256'] == hashlib.sha256((build / 'BUILD.json').read_bytes()).hexdigest()
         build = Path(control['actual_current_build_root'])
         compiler = control['actual_compiler_source']
     project = inherited.m.e.load(profile['input_root'], original_output=True, time_step_policy='original-adaptive-day-seed-v1')
