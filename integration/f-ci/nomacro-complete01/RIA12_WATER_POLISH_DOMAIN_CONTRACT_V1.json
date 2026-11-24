@@ -2,7 +2,7 @@
   "status": "PROTOTYPE_UNQUALIFIED_ADDITIONAL_NEWTON_POLISH_NOT_ADMITTED",
   "source_dependency": "1874c63ee359df7bbcfaead42af69bd9312a9065",
   "parent_PR": 1798,
-  "parent_admission_pending": true,
+  "parent_admission_pending": false,
   "actual_canonical_at_start": "1e48f182a1415a3ef5224de39559a0ecff0c4c7c",
   "policy": "ria12-strict-water-1e-12-polish-v1",
   "scope": "Explicit corrected all12 NoHeat primary1/6 water/CDE, original adaptive policy, original output; default ALWAYSpolicy remains unchanged",
@@ -135,5 +135,8 @@
     "native_layout_changed": false,
     "production_authority_changed": false
   },
-  "next": "Compile current real committed prototype O0; discriminating3day original wet-primary CDE and exact1..3 native/user cold. Independently original RIA and whole inventory. Full35 only if short passes; keep R parent1874 immutable until1798 admission."
+  "next": "Compile current real committed prototype O0; discriminating3day original wet-primary CDE and exact1..3 native/user cold. Independently original RIA and whole inventory. Full35 only if short passes; keep R parent1874 immutable until1798 admission.",
+  "actual_canonical_parent": "e252e995eeece63d8f05531a10b746674c070685",
+  "parent_canonical_tree_equals_dependency": true,
+  "parent_actual_public_and_PUB_running_in_R": true
 }
