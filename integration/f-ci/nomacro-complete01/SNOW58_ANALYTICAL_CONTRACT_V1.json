@@ -1,5 +1,5 @@
 {
-  "status": "PROPOSED_BOUND_CONFIGURATION_AND_EXISTING_NATIVE_OWNER_COMPOSITION_BEFORE_IMPLEMENTATION",
+  "status": "IMPLEMENTED_BOUND_DIRECTINPUT_PRESSURE_AND_SNOW_NATIVE_DOMAIN_PENDING_REAL_PHYSICAL_PREFLIGHT",
   "version": 1,
   "source_dependency": "9fbc580c79db7ef78f0a74de74192b7dfe8ab080",
   "source_dependency_is_admitted_canonical": false,
@@ -63,5 +63,79 @@
   "native_payload_layout_changed": false,
   "required_first_gate": "Real original model7 water bottom5 O0 two-day plus exactcold and independent perlayeroriginalTTUTILstock; source and native origin recorded. Actual8fluxactivation inspected before representative integrated selection.",
   "scientific_qualification": false,
-  "canonical_admission": false
+  "canonical_admission": false,
+  "files": {
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "519b42d88e44d5f97394b15e84c41f9feeeb84e0531b022fc4a474b72ff38715",
+      "proposed_lf_sha256": "8c2a43914bdfaf8b465f449ab771faedb5911178b039d729201ca20531227db4",
+      "ordered_literal_edits": [
+        {
+          "base_start": 9782,
+          "base_end": 9782,
+          "before": "",
+          "after": "from analytical_snow_undrained import selection as initial_analytical_snow_selection\n        initial_analytical_snow=initial_analytical_snow_selection(directory,original_output)\n        "
+        },
+        {
+          "base_start": 9911,
+          "base_end": 9911,
+          "before": "",
+          "after": " is None and initial_analytical_snow"
+        },
+        {
+          "base_start": 10512,
+          "base_end": 10512,
+          "before": "",
+          "after": " is None and initial_analytical_snow"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained.py": {
+      "before_lf_sha256": "c181e03cb2c7da4654b7f5391ef912d6911d8146090b335008a92c50ed2bba1d",
+      "proposed_lf_sha256": "8c19d0f2ca6a7df8db0ba1ac29ef5c8d997057a476f7da80e1379404b25a3741",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1962,
+          "base_end": 1962,
+          "before": "",
+          "after": "from analytical_snow_undrained import selection as analytical58_selection\n            if analytical58_selection(project.input_directory,project.original_output) is None:\n                "
+        },
+        {
+          "base_start": 2062,
+          "base_end": 2069,
+          "before": " paired",
+          "after": ""
+        },
+        {
+          "base_start": 3362,
+          "base_end": 3362,
+          "before": "",
+          "after": "}\n    if report['boundary']['SWBOTB'] in (5,8):\n        from analytical_snow_undrained import selection as analytical58_selection\n        selected58=analytical58_selection(project.input_directory,project.original_output)\n        if selected58:analytical={'analytical_snow_models':selected58['models']"
+        },
+        {
+          "base_start": 5540,
+          "base_end": 5540,
+          "before": "",
+          "after": "selected.get('analytical_snow_models') and selected['swbotb'] in (5,8):providers.append('analytical_snow_undrained.py')\n    if "
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_state.py": {
+      "before_lf_sha256": "5129ac0edb2ef02781b16bfe8fe6538924f99b14dff82f1f67f369da1743fb0b",
+      "proposed_lf_sha256": "f98f2dc62b811c79a8a049f765cacf7108194e09594a5bd31a50a8a51638cbc6",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1212,
+          "base_end": 1212,
+          "before": "",
+          "after": ")\n        if selected['swbotb'] in (5,8):\n            extra=replace(extra,'swbotb/=9','swbotb/='+str(selected['swbotb'])"
+        }
+      ]
+    }
+  },
+  "added_files": {
+    "app/hybrid_water/analytical_snow_undrained.py": {
+      "proposed_lf_sha256": "40f52d11264133cdf1c2599f52bd02f3bad9364c3e09a6ae5a4c14c2988746e8"
+    }
+  },
+  "implementation_frontend_positive_contexts": 24
 }

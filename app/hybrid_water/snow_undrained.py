@@ -26,7 +26,9 @@ def selection(project):
         # New paired9 analytical composition stays explicit with hysteresis0.
         # The actual paired Snow selector above already validated every model.
         if report['boundary']['SWBOTB']!=9 or s['SWKIMPL']!=0 or s['SWHYST']!=0:
-            raise ValueError('Ordinary Snow drainage-off requires original analytical model1 or bounded explicit paired analytical Snow')
+            from analytical_snow_undrained import selection as analytical58_selection
+            if analytical58_selection(project.input_directory,project.original_output) is None:
+                raise ValueError('Ordinary Snow drainage-off requires original analytical model1 or bounded explicit analytical Snow')
     def one(key,default=None,quoted=False):
         pattern=r"'[^']*'" if quoted else r'[+-]?\d+'
         values=re.findall(r'(?mi)^[ \t]*'+key+r'[ \t]*=[ \t]*('+pattern+r')[ \t]*(?:!.*)?$',text)
@@ -42,6 +44,10 @@ def selection(project):
     if not 1<=npd<=1440 or monthly not in (0,1) or fmt not in (0,1,2,3) or dates not in (0,1) or reset not in (0,1) or not 0<=requested<=366 or precision is not None and not 5<=precision<=12:
         raise ValueError('Invalid ordinary Snow drainage-off output domain')
     analytical={}
+    if report['boundary']['SWBOTB'] in (5,8):
+        from analytical_snow_undrained import selection as analytical58_selection
+        selected58=analytical58_selection(project.input_directory,project.original_output)
+        if selected58:analytical={'analytical_snow_models':selected58['models']}
     if report['boundary']['SWBOTB']==9 and s['SWKIMPL']==s['SWHYST']==0:
         from model7_capacity import analytical_models
         layer_models=analytical_models(project)
@@ -70,6 +76,7 @@ def metadata(project,selected):
         'thermal_output_clock.py','thermal_output_step.py','thermal_output_reset.py',
         'implicit_snow_root_state.f90','original_output_thermal_domain.f90','thermal_output_snow_calendar_state.f90']
     if selected.get('analytical_snow_models'):providers.append('snow_analytical_native.f90')
+    if selected.get('analytical_snow_models') and selected['swbotb'] in (5,8):providers.append('analytical_snow_undrained.py')
     if project.solute:providers+=['cde_clock_output.py','cde_interval_output.py','cde_interval_source.py',
         'cde_interval_output_state.f90','cde_interval_snow_state.f90','cde_interval_receipt.f90','cde_clock_events.f90']
     if not selected['swkimpl']:providers.append('implicit_interception_partition.py')
