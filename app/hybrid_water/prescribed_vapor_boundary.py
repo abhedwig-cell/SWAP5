@@ -113,7 +113,7 @@ def diagnostic_build(output, project, patched):
     uses=('   use iso_fortran_env, only: paired_debug_output=>output_unit\n'
           '   use MOD_SoilTemperature, only: paired_debug_tsoil=>tsoil\n')
     declaration='   integer, save :: paired_debug_count=0\n'
-    implicit='   implicit none\n'
+    implicit='   implicit none\n\n!  local\n'
     guard='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
     witness=('         if(paired_debug_count<120)then\n'
              '            paired_debug_count=paired_debug_count+1\n'
