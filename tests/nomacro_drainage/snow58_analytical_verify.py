@@ -9,7 +9,7 @@ from snow58_analytical_source_custody import source, inherited_evidence
 from snow58_analytical_central_science import audit, preservation
 
 PROOF = ROOT / 'integration/f-ci/nomacro-complete01'
-SEALED='0000000000000000000000000000000000000000'
+SEALED='58aa5693940ac61a32a9b99012a63c51f4c6c807'
 PARENT_ADMISSION_SHA = '1272201c759396f7441b33676a0a08a47ae0f9ebf5b8d527f2f33fc5fcf6c7ec'
 RAW_NAMES = (
     'SNOW58_ANALYTICAL_WINDOWS_RAW_V1',
