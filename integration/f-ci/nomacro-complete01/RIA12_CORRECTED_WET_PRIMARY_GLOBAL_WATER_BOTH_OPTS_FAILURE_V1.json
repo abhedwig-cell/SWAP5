@@ -1,0 +1,19 @@
+{
+  "classification": "NUMERICAL_FAILURE",
+  "canonical_admission": false,
+  "unchanged_absolute_water_limit_cm": "1e-10",
+  "originals": {
+    "O0": {
+      "days": 35,
+      "max_daily": "9.97553E-11",
+      "whole35": "-1.232353486E-9",
+      "original_science_stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_drainage\\ria12_corrected_science.py\", line 202, in <module>\n    main()\n    ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_drainage\\ria12_corrected_science.py\", line 195, in main\n    record = audit_profile(args.profile, args.reference_samples)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_drainage\\ria12_corrected_science.py\", line 165, in audit_profile\n    proof = audit(warm, data)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_drainage\\ria12_corrected_science.py\", line 145, in audit\n    water_proof = water(observed)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\implicit_conductivity_forensics.py\", line 26, in water\n    require(abs(total)<=1e-10,'Whole actual implicit water inventory does not close')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\implicit_conductivity_forensics.py\", line 7, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Whole actual implicit water inventory does not close\n"
+    },
+    "O2": {
+      "days": 35,
+      "max_daily": "9.97553E-11",
+      "whole35": "-1.232353486E-9",
+      "original_science_stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_drainage\\ria12_corrected_science.py\", line 202, in <module>\n    main()\n    ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_drainage\\ria12_corrected_science.py\", line 195, in main\n    record = audit_profile(args.profile, args.reference_samples)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_drainage\\ria12_corrected_science.py\", line 165, in audit_profile\n    proof = audit(warm, data)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_drainage\\ria12_corrected_science.py\", line 145, in audit\n    water_proof = water(observed)\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\implicit_conductivity_forensics.py\", line 26, in water\n    require(abs(total)<=1e-10,'Whole actual implicit water inventory does not close')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\tests\\nomacro_scheduled_subsurface\\implicit_conductivity_forensics.py\", line 7, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: Whole actual implicit water inventory does not close\n"
+    }
+  }
+}

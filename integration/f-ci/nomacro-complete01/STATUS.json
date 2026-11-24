@@ -35152,7 +35152,7 @@
     "parent_candidate": "8e8f2a4c7ff28e4e4845c4b5554894a4bc3c5af1",
     "parent_PR": 1796,
     "parent_admission": "ACTUAL_CANONICAL400_PUBLIC609.708s_PUB662.375s_13WORKFLOWS_27SUCCESS_15SKIP_FOUR_REAL_NEGATIVES_ALL_PASS",
-    "actual_canonical": "2c361f08f7170943d716483252512817ef35a3a1",
+    "actual_canonical": "1e48f182a1415a3ef5224de39559a0ecff0c4c7c",
     "scope": "All-layer12, numerical heat1/CALT2, optionalSnow0/1, primary drainage1/bottom6, HeatOn=false and VaporCond=false, noFrost/hysteresis/aquifer, dense daily water/CDE",
     "native_reader_limit": "Typed outer model/context/original-parameter and basic clock witness only; independent complete inner thermal/calendar audit still required before qualification",
     "next_action": "Freeze new observer source anchor, execute normal Python PUBLICATION with bytecode env vars absent, source before==after clean; no completed full model replay. Preserve all old failures and new full observer receipts; refresh candidate real negative controls and exact-head CI before merge. NoHeat prototype a658 is saved remotely and remains unqualified.",
@@ -35220,25 +35220,44 @@
     "actual_normal_python_default_bytecode_flag": false,
     "checkout_before_after_exactly_clean": true,
     "negative_control_controller": "EV/ria12-thermal-envfix-negative-controls-v1.py",
-    "remaining_gate": "Four actual refreshed6bbb negatives PASS; exacthead CI20 success, F-CI active, pond cancelled after14min checkout and500of1096steps; decoded original retained. Rerun only cancelled pond job138377259132, no candidate source change.",
-    "candidate_branch_held_immutable": "codex/nomacro-ria12-thermal-snow01"
+    "remaining_gate": "Merged all22workflows success/36checks success/15skip; genuine actualmerge same qualifiedtree; actualC PUBLIC and normalPythonPUB running, admission archive pending",
+    "candidate_branch_held_immutable": "codex/nomacro-ria12-thermal-snow01",
+    "refreshed_four_real_negatives": "ALL_REFUSED",
+    "original_pond_cancelled_job": 138377259132,
+    "pond_single_job_retry": 138392636236
   },
   "ria12_corrected_ksat_active_v1": {
-    "status": "FOURTEEN_REAL_O0_SHORT_AND_ORIGINAL_RIA_PASS_FULL35_PENDING",
+    "status": "EIGHT_ORIGINAL_REPRESENTATIVES_FULL35_AND24_COLD_ORIGINAL_RIA_PASS_UBUNTU_AND_CONTROLS_NEXT",
     "parent_candidate": "6bbb9a5d8b97c1277af8af3b3f15e78d1ad1d70a",
     "parent_PR": 1797,
-    "parent_actual_canonical": "2c361f08f7170943d716483252512817ef35a3a1",
+    "parent_actual_canonical": "1e48f182a1415a3ef5224de39559a0ecff0c4c7c",
     "scope": "All6 NoHeat RIA drainage/bottom pairs; use same separately qualified Ksat binding4 correction; no thermal implementation change",
     "codecs": [
       "S5RKW001",
       "S5RKC001"
     ],
-    "next_action": "Run representative corrected NoHeat full35+own2/7/30 with unchanged scientific limits, independent original RIA/TTUTIL at every actual head. Reuse exact O0 short compiler only after complete input and execution-source equality. Add original wet8 two-day checks; preserve all PR1797 CI and cancellation logs.",
+    "next_action": "Push Ubuntu O0/O2 four representative full35 and exact typed native/opposite-initial/external controls; locally execute prepared controls on real8completed originals, no full35 replay. Seal actual1797 PUBLIC/PUB admission once both real C observers complete; integrate in this functional batch.",
     "parent_admission": "6bbbpublic416/PUB normalPython PASS; refreshedrealCnegatives+exactCIactive; not yet canonical",
     "input_cases": 14,
     "input_root": "EV/ria12-corrected-ksat-inputs-v1",
     "short_source": "aa8580218dff2de7f245e5596d2a5a71ee204c13",
-    "short_cases_passed": 14,
-    "short_exact_cold_passed": 14
+    "short_cases_passed": 16,
+    "short_exact_cold_passed": 14,
+    "full35_original_representatives_windows": 8,
+    "main_exact_cold_windows": 24,
+    "extra_wet_primary_global_water_failures_both_optimizations": 2,
+    "preserved_thermal_compiled_contexts": 8,
+    "actual_scientific_model_source": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+    "qualification_scope": "Original dry primary water/CDE and existing boundary5/wet8; failed extra wet-primary stress is not admitted"
+  },
+  "test_selection_corrected_noheat": {
+    "changed_dependency": "Separately qualified original RIA Ksat column1->4 binding now composed with all6NoHeat boundary/drainage pairs and distinct nativev2",
+    "scientific_claim": "Corrected original dryprimary water/CDE and boundary5/wet8 actual full35, original RIA, exact state/cold/transactions; thermal eight compiled contexts unchanged",
+    "owner": "SWAP5-NOMACRO-COMPLETE01",
+    "authority": "integration/f-ci/nomacro-complete01/RIA12_CORRECTED_KSAT_DOMAIN_CONTRACT_V1.json",
+    "expected_seconds": 1200,
+    "existing_evidence": "Windows8representatives/24cold originalRIA PASS; sixteenO0short/cold PASS; eightthermalcompiled postimages PASS; Ubuntu new compiler/platform RUN; inherited thermal complete16periods NOT_SELECTED_IMPACT because exact compiled bytes unchanged",
+    "prior_execution": "NONE_UBUNTU_CORRECTED_SOURCE",
+    "failed_wet_stress": "Original O0/O2 complete35 retained NUMERICAL_FAILURE wholewater -1.232353486e-9cm, unchanged limit1e-10; no replay or tolerance change"
   }
 }

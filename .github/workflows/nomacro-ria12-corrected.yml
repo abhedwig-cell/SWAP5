@@ -1,0 +1,96 @@
+name: Original RIA12 corrected NoHeat Ksat composition
+on:
+  push:
+    branches: [codex/nomacro-ria12-ksat-corrected01]
+    paths: ['.github/workflows/nomacro-ria12-corrected.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: nomacro-ria12-ksat-corrected-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        optimization: [O0, O2]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /app/**
+            /src/**
+            /tools/solute/**
+            /tools/vq/**
+            /tests/nomacro_mixtures/**
+            /tests/nomacro_scheduled_subsurface/**
+            /tests/nomacro_drainage/**
+            /tests/saltfarm_newton/**
+            /.github/workflows/**
+            /reference/swap-4.3.1/projects/**
+            /reference/swap-4.3.1/source-archives/**
+            /reference/swap-4.3.1/patches/**
+            /reference/swap-4.3.1/frost-corrections/**
+            /reference/swap-4.3.1/hydraulic-corrections/**
+            /integration/f-ci/nomacro-complete01/INITIAL_PROFILE_GROUNDWATER_CONTRACT_V1.json
+            /integration/f-ci/nomacro-complete01/RIA12_CORRECTED_KSAT_DOMAIN_CONTRACT_V1.json
+            /integration/f-ci/nomacro-complete01/RIA12_CORRECTED_KSAT_INPUTS_V1.zip
+            /integration/f-ci/nomacro-complete01/RIA12_CORRECTED_KSAT_INPUTS_V1.json
+            /integration/f-ci/nomacro-complete01/RIA12_BOUNDARY_WET8_INPUTS_V1.zip
+            /integration/f-ci/nomacro-complete01/RIA12_BOUNDARY_WET8_INPUTS_V1.json
+            /integration/f-ci/nomacro-complete01/RIA12_NATIVE_CONTROL_ORIGINS_V1.zip
+            /integration/f-ci/nomacro-complete01/RIA12_NATIVE_CONTROL_ORIGINS_V1.json
+            /integration/f-ci/nomacro-complete01/RIA12_BOUNDARY_NATIVE_ORIGINS_V1.zip
+            /integration/f-ci/nomacro-complete01/RIA12_BOUNDARY_NATIVE_ORIGINS_V1.json
+      - name: Preserve actual source and prepare fresh original provider
+        env:
+          PYTHONPATH: app/hybrid_water
+        run: |
+          proof="$RUNNER_TEMP/proof"
+          mkdir -p "$proof"
+          git fetch --no-tags --depth=1 --filter=blob:none origin 6bbb9a5d8b97c1277af8af3b3f15e78d1ad1d70a
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
+          cp .github/workflows/nomacro-ria12-corrected.yml "$proof/actual-workflow.yml"
+          git rev-parse HEAD:.github/workflows/nomacro-ria12-corrected.yml > "$proof/actual-workflow-git-blob.txt"
+          python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Run four corrected NoHeat full35 periods and exact native controls
+        run: |
+          python3 -B tests/nomacro_drainage/ria12_corrected_batch.py --reference-work "$RUNNER_TEMP/provider" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/proof/current" --optimization '${{ matrix.optimization }}'
+      - name: Preserve every actual compiled byte and original provider
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import os,shutil,json,hashlib
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/'proof';proof.mkdir(exist_ok=True)
+          provider=root/'provider/PREPARED.json'
+          if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
+          projection={}
+          for source,stem in ((root/'builds','compiled'),(root/'provider/build','original-provider-build')):
+              for path in sorted(source.rglob('*')):
+                  if not path.is_file():continue
+                  target=proof/stem/path.relative_to(source);target.parent.mkdir(parents=True,exist_ok=True)
+                  shutil.copyfile(path,target)
+                  if path.name=='BUILD.json':
+                      projection[str(path.parent)]=dict(archive_prefix=target.parent.relative_to(proof).as_posix(),actual_BUILD_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+          (proof/'COMPILED_PROJECTION_V1.json').write_text(json.dumps(projection,indent=2)+'\n')
+          PY
+      - name: Preserve original raw inputs source native and failures
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ria12-corrected-ksat-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

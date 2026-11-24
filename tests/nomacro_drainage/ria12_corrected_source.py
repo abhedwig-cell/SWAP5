@@ -1,4 +1,4 @@
-"""Actual bounded RIA thermal source against admitted canonical400; no projected views."""
+"""Actual corrected NoHeat RIA source against the exact thermal dependency; no projected views."""
 import hashlib
 import json
 from pathlib import Path
@@ -37,4 +37,4 @@ def complete_inverse():
         assert not git('ls-tree', CORE, '--', path)
         actual = (R / path).read_bytes().replace(b'\r\n', b'\n')
         assert SHA(actual) == item['proposed_lf_sha256'] and actual == git('show', 'HEAD:' + path)
-    return dict(status='EXACT_REAL_ACTUAL_RIA_PRIMARY_PARENT_BOUNDARY_NATIVE_SOURCE_AND_ALL_OTHER_EXECUTION_DEPENDENCIES_PASS', actual_head=git('rev-parse', 'HEAD').decode().strip(), actual_parent=CORE)
+    return dict(status='EXACT_REAL_CORRECTED_NOHEAT_KSAT_NATIVE_SOURCE_AND_ALL_OTHER_EXECUTION_DEPENDENCIES_PASS', actual_head=git('rev-parse', 'HEAD').decode().strip(), actual_parent=CORE)
