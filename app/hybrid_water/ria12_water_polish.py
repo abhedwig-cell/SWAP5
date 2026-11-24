@@ -28,7 +28,7 @@ def apply_build(output, donor_build, project, patched):
     path = Path(output) / 'headcalc.f90'
     source = path.read_text(encoding='cp1252')
     original = '         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
-    additional = '         if (abs(budget_total+budget_step)>1d-12*(t1900-budget_start+dt)) flnonconv=.true.'
+    additional = '         if (abs(budget_total+budget_step)>1d-12) flnonconv=.true.'
     if source.count(original) != 1 or additional in source:
         raise ValueError('Foreign original NoHeat RIA Newton water-budget owner')
     actual = source.replace(original, original + '\n' + additional, 1)
