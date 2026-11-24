@@ -33,7 +33,7 @@ def main():
     assert len(attacks)==25
     q=dict(status='RUNNING',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=original.ROOT,text=True).strip(),
         actual_compiler_producer=qprofile['source'],actual_BUILD_sha256=original.m.sha(build/'BUILD.json'),compiler_executions=0,model_periods=0,original_checkpoint_sha256=before,
-        expected_compiled_refusals=25,refusals=[],accepted_model_days=0,
+        expected_compiled_refusals=25,refusals=[],accepted_model_days=0,actual_bottom=selected['swbotb'],actual_models=selected['analytical_snow_models'],
         authority='Direct original compiled startup on private prepared inputs; typed reader checked separately on identical malformed bytes')
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     def worker(target,raw):
@@ -74,7 +74,7 @@ def main():
             else:raise AssertionError('Typed reader accepted actual malformed undrained Snow native: '+label)
             q['refusals'].append(dict(attack=label,status='REFUSED',authority='compiled_native',returncode=result.returncode,
                 diagnostic=diagnostic,identical_payload_typed_reader_refused=public));assert original.m.sha(source)==before;save()
-        q['status']='ACTUAL_COMPILED_EXPLICIT9_SNOW_HISTORY_NATIVE_REFUSALS_PASS'
+        q['status']='ACTUAL_COMPILED_SNOW58_ROOT_NATIVE_REFUSALS_PASS'
     except Exception as error:q.update(status='FAILED',error=repr(error));raise
     finally:save()
     print(q['status'],len(q['refusals']))
