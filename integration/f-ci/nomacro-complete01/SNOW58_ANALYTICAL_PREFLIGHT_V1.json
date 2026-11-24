@@ -1,0 +1,185 @@
+{
+  "status": "SHORT_REAL_COMPONENT_AND_INTEGRATION_GATES_PASS_FULL_COMPOSITION_NOT_QUALIFIED",
+  "source_implementation": "126d78ffae2badf489d3a1ffda0947c2633790da",
+  "actual_canonical_merged_into_next_branch": "0157d2995e85adce362642918095e871469e4ee1",
+  "canonical_public_pass_seconds": 479.36611990025267,
+  "canonical_publication_still_pending": true,
+  "source_projection": false,
+  "cases": [
+    {
+      "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical7-water-bottom5-O0-preflight-v1",
+      "actual_compiler_source": "126d78ffae2badf489d3a1ffda0947c2633790da",
+      "actual_BUILD_sha256": "c66779cca08f10036fb9e3737c3c7bc46856fcd94d255e4e116b870fde0061ae",
+      "days": 2,
+      "optimization": "O0",
+      "bottom": 5,
+      "wet_initial_groundwater": false,
+      "actual_exact_cold_windows": [
+        {
+          "start": 1,
+          "end": 2,
+          "exact_physical": true,
+          "exact_complete_native": true,
+          "exact_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          },
+          "origin_unchanged": true,
+          "seconds": 0.49856270011514425
+        }
+      ],
+      "actual_bottom_outward_cm": [
+        -0.00030898269345058793,
+        -0.0003095454749448834
+      ],
+      "original_stock_max_cm": 7.105427357601002e-15,
+      "profile_sha256": "eb658ef4e4a3401d3f95570d36aac370082ca8c78f8a348f7b3a17b9e068fc39",
+      "independent_stock_sha256": "6bbd5b1fe7060c9105a737fd94451e6fb0ea532517a03b65ca06add331786ffc"
+    },
+    {
+      "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical7-water-bottom5-O2-preflight-v1",
+      "actual_compiler_source": "126d78ffae2badf489d3a1ffda0947c2633790da",
+      "actual_BUILD_sha256": "4582f1cbed380b18831243ea7e3e08a59ae8755f875b7e644ff6689d5f5d43ce",
+      "days": 2,
+      "optimization": "O2",
+      "bottom": 5,
+      "wet_initial_groundwater": false,
+      "actual_exact_cold_windows": [
+        {
+          "start": 1,
+          "end": 2,
+          "exact_physical": true,
+          "exact_complete_native": true,
+          "exact_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          },
+          "origin_unchanged": true,
+          "seconds": 0.5370827000588179
+        }
+      ],
+      "actual_bottom_outward_cm": [
+        -0.00030898269345058793,
+        -0.0003095454749448834
+      ],
+      "original_stock_max_cm": 7.105427357601002e-15,
+      "profile_sha256": "2b88a1731dc822f849ebc9ed89fa8175e8f01d5d0bc0f2caad67e959ce8d4724",
+      "independent_stock_sha256": "a9292ec7f33fc5325f3ef9a99d6cbb4a92a4b02578ac05d02f90b01f0ad6115a"
+    },
+    {
+      "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical7-water-bottom8-O0-preflight-v1",
+      "actual_compiler_source": "126d78ffae2badf489d3a1ffda0947c2633790da",
+      "actual_BUILD_sha256": "92921eff7a66a69fdf7ce52a7a2ebc199f577a4a32b90e832852d7c5b8a1c4e5",
+      "days": 2,
+      "optimization": "O0",
+      "bottom": 8,
+      "wet_initial_groundwater": false,
+      "actual_exact_cold_windows": [
+        {
+          "start": 1,
+          "end": 2,
+          "exact_physical": true,
+          "exact_complete_native": true,
+          "exact_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          },
+          "origin_unchanged": true,
+          "seconds": 0.4851104998961091
+        }
+      ],
+      "actual_bottom_outward_cm": [
+        0.0,
+        0.0
+      ],
+      "original_stock_max_cm": 3.552713678800501e-15,
+      "profile_sha256": "a064b9a7675461b0a24dcbb5a154d77e9f88398f401fe4d9d35291014e310d1e",
+      "independent_stock_sha256": "20af8ebf051b7f2afb32740839f7d6b8e252c8a0e31509b6ea99af0af861a375"
+    },
+    {
+      "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical7-water-bottom8-wet-O0-preflight-v1",
+      "actual_compiler_source": "126d78ffae2badf489d3a1ffda0947c2633790da",
+      "actual_BUILD_sha256": "89bb1e209ab8e3896d62e8a46a4ae1b3a020c4e5f4f7a8207c40e389455a1f5e",
+      "days": 2,
+      "optimization": "O0",
+      "bottom": 8,
+      "wet_initial_groundwater": true,
+      "actual_exact_cold_windows": [
+        {
+          "start": 1,
+          "end": 2,
+          "exact_physical": true,
+          "exact_complete_native": true,
+          "exact_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          },
+          "origin_unchanged": true,
+          "seconds": 0.48502130014821887
+        }
+      ],
+      "actual_bottom_outward_cm": [
+        0.7141853433568599,
+        0.5183910864678012
+      ],
+      "original_stock_max_cm": 1.4210854715202004e-14,
+      "profile_sha256": "e19dc32debfa456fd12aa13f732723b0bffe32b553130fc3f69b447a04b4a9af",
+      "independent_stock_sha256": "d418307c389691c9ee7fa849a3e4f7e773cbe1f12f1c5385db8c5c82244f9444"
+    },
+    {
+      "profile": "C:\\Users\\Veldh012\\SWAP5-work\\01a1e8b4-228b-75f1-8ac4-b07ca1e15713-a9ded600\\evidence\\snow58-analytical7-water-bottom8-wet-O2-preflight-v1",
+      "actual_compiler_source": "126d78ffae2badf489d3a1ffda0947c2633790da",
+      "actual_BUILD_sha256": "4db272c549927dfa3bd3f4f5511b4063af080a2b0955396c09ad9028dc2e0415",
+      "days": 2,
+      "optimization": "O2",
+      "bottom": 8,
+      "wet_initial_groundwater": true,
+      "actual_exact_cold_windows": [
+        {
+          "start": 1,
+          "end": 2,
+          "exact_physical": true,
+          "exact_complete_native": true,
+          "exact_user_output": {
+            "result_output.bin": {
+              "exact": true,
+              "continuation_records": 1,
+              "kind": "original_REAL4_binary"
+            }
+          },
+          "origin_unchanged": true,
+          "seconds": 0.43433830002322793
+        }
+      ],
+      "actual_bottom_outward_cm": [
+        0.7141853433568599,
+        0.5183910864678012
+      ],
+      "original_stock_max_cm": 1.4210854715202004e-14,
+      "profile_sha256": "96829766b28ae2de56ecbdf289c8d2bdb6dd88d03628b00ef661223a96bded46",
+      "independent_stock_sha256": "0bd592732cd89fd994c785e9ae33ad7a8033ac75d57ddfe041fe40bca12ffd66"
+    }
+  ],
+  "actual_frontend_positive_count": 24,
+  "actual_frontend_hard_refusal_count": 12,
+  "actual_compiled_model_native_refusals": 17,
+  "actual_own_native_positive": true,
+  "genuine_foreign_bottom9_refusal": "ACTUAL_COMPILED_OWN5_READY_GENUINE_SAME_MODEL_9_NATIVE_REFUSED_BEFORE_READY_AND_TYPED_REFUSED",
+  "raw_archive_centralized": false,
+  "actual_global_functional_family_counts": "UNKNOWN",
+  "whole_functional_completion": "PARTIAL",
+  "scientific_qualification": false,
+  "canonical_admission": false
+}
