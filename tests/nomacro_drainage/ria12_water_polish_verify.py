@@ -44,7 +44,12 @@ def raw_custody():
 def guard_previous_source():
     source(SEALED);inherited_evidence();parent_admission();raw_custody();return True
 
-def strip_current_evidence(text):return previous.strip_current_evidence(text)
+def strip_current_evidence(text):
+    line='            /integration/f-ci/nomacro-complete01/RIA12_*\n'
+    if line in text:
+        assert text.count(line)==1,'Ambiguous RIA evidence checkout addition'
+        text=text.replace(line,'',1)
+    return previous.strip_current_evidence(text)
 
 def publication_dependencies_unchanged():
     guard_previous_source();return True
