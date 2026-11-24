@@ -1,0 +1,176 @@
+{
+  "status": "PROTOTYPE_UNQUALIFIED_ADDITIONAL_NEWTON_POLISH_NOT_ADMITTED",
+  "source_dependency": "1874c63ee359df7bbcfaead42af69bd9312a9065",
+  "parent_PR": 1798,
+  "parent_admission_pending": false,
+  "actual_canonical_at_start": "1e48f182a1415a3ef5224de39559a0ecff0c4c7c",
+  "policy": "ria12-strict-water-1e-12-polish-v1",
+  "scope": "Explicit corrected all12 NoHeat primary1/6 water/CDE, existing physical-iteration growth v2, original output; default ALWAYS and original-adaptive routes unchanged",
+  "files": {
+    "app/hybrid_water/daily_host.py": {
+      "before_lf_sha256": "4d0932e7c8633744e9156bc54315a0bd1790dace96104a0c147f4101c1376070",
+      "proposed_lf_sha256": "0152f8ebddc8a1215ec34991ae9f743e9cff2fed8459fdaaa3514ac7c7829cd9",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1545,
+          "base_end": 1545,
+          "before": "",
+          "after": "from ria12_water_polish import POLICY as RIA12_WATER_POLISH\nWATER_POLISH_POLICIES = (ALWAYS_WATER_POLISH, INTERIOR_WATER_POLISH, RIA12_WATER_POLISH)\n"
+        },
+        {
+          "base_start": 6680,
+          "base_end": 6767,
+          "before": "    if project.water_polish_policy not in (ALWAYS_WATER_POLISH,INTERIOR_WATER_POLISH):\n",
+          "after": "    if project.water_polish_policy not in WATER_POLISH_POLICIES:\n"
+        },
+        {
+          "base_start": 7044,
+          "base_end": 7044,
+          "before": "",
+          "after": "    if project.water_polish_policy == RIA12_WATER_POLISH:\n        if not strict_water or not budget_retry:\n            raise ValueError('RIA water polishing requires the unchanged strict-water receipt')\n        from ria12_water_polish import require_project\n        require_project(project)\n"
+        },
+        {
+          "base_start": 60242,
+          "base_end": 60242,
+          "before": "",
+          "after": "    from ria12_water_polish import apply_build as ria12_water_polish_build\n    patched=ria12_water_polish_build(output,donor_build,project,patched)\n"
+        },
+        {
+          "base_start": 76421,
+          "base_end": 76421,
+          "before": "",
+          "after": "        if project.water_polish_policy == RIA12_WATER_POLISH:\n            build_identity['ria12_water_polish_source'] = sha(APP/'ria12_water_polish.py')\n"
+        }
+      ]
+    },
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "2a9d5cfc5ba9f5ec4ffea74c16576beb705e1f30d2ea5203cdf6b4f16e122c50",
+      "proposed_lf_sha256": "3551ec4b5f8f287baa20bf2f90841ca119a73c8b685f7629a3c16f30d7f85cfa",
+      "ordered_literal_edits": [
+        {
+          "base_start": 22261,
+          "base_end": 22439,
+          "before": "def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_table_policy=None, original_output=False, age_irrigation_source=False, age_direct_soil_source=False):\n",
+          "after": "def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_table_policy=None, water_polish_policy=None, original_output=False, age_irrigation_source=False, age_direct_soil_source=False):\n"
+        },
+        {
+          "base_start": 27064,
+          "base_end": 27064,
+          "before": "",
+          "after": "    from daily_host import ALWAYS_WATER_POLISH, RIA12_WATER_POLISH\n    polish = ALWAYS_WATER_POLISH if water_polish_policy is None else water_polish_policy\n    if polish not in (ALWAYS_WATER_POLISH, RIA12_WATER_POLISH):\n        raise ValueError('Unknown experimental water polishing policy')\n    if polish == RIA12_WATER_POLISH:\n        from ria12_water_polish import selection as polish_selection\n        polish_selection(directory, original_output)\n        from ria12_water_polish import TIME_POLICY as RIA_POLISH_TIME_POLICY\n        if policy != RIA_POLISH_TIME_POLICY:\n            raise ValueError('RIA water polishing requires physical-iteration growth v2')\n"
+        },
+        {
+          "base_start": 27354,
+          "base_end": 27658,
+          "before": "                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical,soil_table_policy=soil,original_output=original_output,age_irrigation_source=age_irrigation_source,age_direct_soil_source=age_direct_soil_source)\n",
+          "after": "                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical,soil_table_policy=soil,original_output=original_output,age_irrigation_source=age_irrigation_source,age_direct_soil_source=age_direct_soil_source,water_polish_policy=polish)\n"
+        },
+        {
+          "base_start": 27838,
+          "base_end": 28196,
+          "before": "    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy,solute_step_policy=project.solute_step_policy,soil_table_policy=project.soil_table_policy,original_output=project.original_output,age_irrigation_source=project.age_irrigation_source,age_direct_soil_source=project.age_direct_soil_source) != project:\n",
+          "after": "    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy,solute_step_policy=project.solute_step_policy,soil_table_policy=project.soil_table_policy,water_polish_policy=project.water_polish_policy,original_output=project.original_output,age_irrigation_source=project.age_irrigation_source,age_direct_soil_source=project.age_direct_soil_source) != project:\n"
+        }
+      ]
+    },
+    "tools/solute/run_water.py": {
+      "before_lf_sha256": "9479d555970d28f55c73d3ab0b6d9edb34db123c09a5101d521a9cf56966808d",
+      "proposed_lf_sha256": "1c9b724e6803ca67b941c2c767d957149a3a683251fa1b904efec3f2c911787b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 11976,
+          "base_end": 11976,
+          "before": "",
+          "after": "    parser.add_argument('--experimental-water-polish-policy',choices=(host_module.ALWAYS_WATER_POLISH,host_module.RIA12_WATER_POLISH),\n                        help='Explicit stricter Newton water polishing for corrected NoHeat RIA primary1/6; no automatic fallback')\n"
+        },
+        {
+          "base_start": 14295,
+          "base_end": 14574,
+          "before": "                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project,args.experimental_time_step_policy,args.experimental_solute_step_policy,args.experimental_soil_table_policy,args.donor_opt))):\n",
+          "after": "                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project,args.experimental_time_step_policy,args.experimental_solute_step_policy,args.experimental_soil_table_policy,args.experimental_water_polish_policy,args.donor_opt))):\n"
+        },
+        {
+          "base_start": 15967,
+          "base_end": 15967,
+          "before": "",
+          "after": "    if args.experimental_water_polish_policy is not None and not experimental:\n        parser.error('--experimental-water-polish-policy requires --experimental-project')\n"
+        },
+        {
+          "base_start": 19729,
+          "base_end": 20082,
+          "before": "            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy,original_output=args.original_output,age_irrigation_source=args.age_irrigation_source,age_direct_soil_source=args.age_direct_soil_source)\n",
+          "after": "            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy,water_polish_policy=args.experimental_water_polish_policy,original_output=args.original_output,age_irrigation_source=args.age_irrigation_source,age_direct_soil_source=args.age_direct_soil_source)\n"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output.py": {
+      "before_lf_sha256": "b377a3d718cb8923237c7f53655d75b39037a8015bfda005fc51bb19e5451b22",
+      "proposed_lf_sha256": "6836d18ea114a26f4f275a9fa5f5d747a4d19d2f43757b9f112bdb925736514d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 538,
+          "base_end": 692,
+          "before": "    if project.time_step_policy!='original-adaptive-day-seed-v1':raise ValueError('Original output currently requires original adaptive-day-seed policy')\n",
+          "after": "    if project.time_step_policy!='original-adaptive-day-seed-v1':\n        from ria12_water_polish import POLICY as RIA_POLISH_POLICY, require_project as require_ria_polish\n        if project.water_polish_policy!=RIA_POLISH_POLICY or require_ria_polish(project) is None:\n            raise ValueError('Original output requires original adaptive policy or explicit bounded RIA primary water polishing')\n"
+        }
+      ]
+    },
+    "app/hybrid_water/daily_coupling.py": {
+      "before_lf_sha256": "512d9d5f5c6a900a0ed6aae925b0059aba4c91616d9b3087bec4bc02419891c2",
+      "proposed_lf_sha256": "ae0c1e3c418e29e07070c1b78cb8bc9e79d3e326bd2177dd51d5cc80faadaae8",
+      "ordered_literal_edits": [
+        {
+          "base_start": 28618,
+          "base_end": 28618,
+          "before": "",
+          "after": "    from ria12_water_polish import POLICY as RIA12_WATER_POLISH\n    if project.water_polish_policy == RIA12_WATER_POLISH:\n        if identity.get('ria12_water_polish_source') != h.sha(h.APP/'ria12_water_polish.py'):\n            raise ValueError('Bundle RIA Newton polishing source differs; rebuild without rebinding checkpoints')\n"
+        }
+      ]
+    }
+  },
+  "added_files": {
+    "app/hybrid_water/ria12_water_polish.py": {
+      "proposed_lf_sha256": "2c6a859d668ad551a87a2e067fce013d224a9327d6202852b3c44c2b63fd745a"
+    }
+  },
+  "invariants": {
+    "original_scientific_water_limit_cm": "1e-10",
+    "additional_Newton_precision_cm_per_day": "1e-12",
+    "original_Newton_mass_guard_literal_unchanged": true,
+    "physical_equations_changed": false,
+    "old_default_generated_source_changed": false,
+    "inventory_or_flux_fixup": false,
+    "epsilon_water_added": false,
+    "age_moment_disposed": false,
+    "automatic_fallback": false,
+    "new_persistent_state": false,
+    "native_layout_changed": false,
+    "production_authority_changed": false,
+    "additional_polishing_targets_accumulated_day_inventory": true
+  },
+  "next": "Actual O0 three-day wet-primary CDE composition of stricter accumulated-day polishing with unchanged existing physical-iteration growth v2; original input bytes. Keep mass oracle1e-10, full native/user cold. Full35 only if shortPASS.",
+  "actual_canonical_parent": "e252e995eeece63d8f05531a10b746674c070685",
+  "parent_canonical_tree_equals_dependency": true,
+  "parent_actual_public_and_PUB_running_in_R": true,
+  "precision_design": "Additional1e-12 applies to the accumulated day inventory. Original elapsed-time-scaled1e-10 guard remains literally unchanged, including early tiny substeps; the additional precision rule does not impose a new elapsed-time-dependent machine-floor threshold.",
+  "time_step_policy": "configured-dtmax-physical-growth-v2",
+  "reuse_existing_timecontrol_provider": "app/hybrid_water/donor_sources.py:render_physical_iteration_proposal",
+  "reuse_existing_timecontrol_provider_lf_sha256": "f4aa03debbf613f9cbe7912dba6d0e86798e4fa6919d78e58849a7214e4ace83",
+  "failed_original_adaptive_short": "Actual source2b5208142d: completed day1 with independent water -9.812706203149446e-13cm, then240second model cap before day2 complete. Original result/status/stdout/native remain unchanged; not scientificPASS.",
+  "original_output_policy_exception": "Allow only explicit new RIA primary1/6 polishing with existing physical-growth v2. Every other non-original original-output composition still refuses. No format, calendar, ledger or native implementation changes.",
+  "current_build_identity": "New policy alone includes actual ria12_water_polish.py SHA256; current validator refuses earlier build identities. Prior full periods retain original compiler/source; current actual compiled/source postimage and native prefix must establish inheritance without metadata rebinding.",
+  "ci_dependency_materialization": {
+    ".github/workflows/mc-sol01-swp-reader.yml": {
+      "before_lf_sha256": "cc466ced5ccb2edfbd197bbe658a40e6a3b1fd71d77f5f58294f50de879ee073",
+      "proposed_lf_sha256": "6e8d3bffca4269c846350b810e1367bc0caaac5c5e7986342a2c0c19d1b8a954",
+      "before_literal": "            /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*\n",
+      "after_literal": "            /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*\n            /integration/f-ci/nomacro-complete01/RIA12_*\n"
+    },
+    ".github/workflows/mc-sol01-column-input.yml": {
+      "before_lf_sha256": "ed4d280eea3256ac755475d9a84f71526bec8699b8b5a3975b93642026c7096c",
+      "proposed_lf_sha256": "ceef93b0170e5a7b94d1e153df76c6d28dc95b4c85a5246a7512be8fcb548e91",
+      "before_literal": "            /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*\n",
+      "after_literal": "            /integration/f-ci/nomacro-complete01/OUTPUT_THERMAL_WINDOWS_*\n            /integration/f-ci/nomacro-complete01/RIA12_*\n"
+    }
+  }
+}

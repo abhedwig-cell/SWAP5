@@ -398,6 +398,10 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Bundle time-step policy differs; rebuild at current source')
     if not project.macro and identity.get('water_polish_policy') != project.water_polish_policy:
         raise ValueError('Bundle strict-water polishing policy differs; rebuild without rebinding checkpoints')
+    from ria12_water_polish import POLICY as RIA12_WATER_POLISH
+    if project.water_polish_policy == RIA12_WATER_POLISH:
+        if identity.get('ria12_water_polish_source') != h.sha(h.APP/'ria12_water_polish.py'):
+            raise ValueError('Bundle RIA Newton polishing source differs; rebuild without rebinding checkpoints')
     from irrigation_pulse_time import POLICY as PULSE_POLICY, metadata as pulse_metadata
     expected_pulse=pulse_metadata((reference/'build/swap-selected/timecontrol.f90').read_bytes()) if project.time_step_policy==PULSE_POLICY else None
     if identity.get('irrigation_pulse_time') != expected_pulse:

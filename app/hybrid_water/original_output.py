@@ -14,7 +14,10 @@ ROOT=regular.ROOT
 def selection(project):
     if not getattr(project,'original_output',False):return None
     if project.macro or not project.input_directory:raise ValueError('Original output requires an explicit nonmacro original project')
-    if project.time_step_policy!='original-adaptive-day-seed-v1':raise ValueError('Original output currently requires original adaptive-day-seed policy')
+    if project.time_step_policy!='original-adaptive-day-seed-v1':
+        from ria12_water_polish import POLICY as RIA_POLISH_POLICY, require_project as require_ria_polish
+        if project.water_polish_policy!=RIA_POLISH_POLICY or require_ria_polish(project) is None:
+            raise ValueError('Original output requires original adaptive policy or explicit bounded RIA primary water polishing')
     text=(Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')
     def one(key,default=None,quoted=False):
         pattern=r"'[^']*'" if quoted else r'[+-]?\d+'

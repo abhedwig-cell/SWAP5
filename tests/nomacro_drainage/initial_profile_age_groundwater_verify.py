@@ -37,8 +37,8 @@ def prior_namespace():
 
 
 def guard_previous_source():
- import ria12_corrected_verify as corrected_owner
- return corrected_owner.guard_previous_source()
+ import ria12_water_polish_verify as polish_owner
+ return polish_owner.guard_previous_source()
  complete_inverse();age_complete_inverse()
  for name in PARSERS:
   path='tests/nomacro_drainage/'+name;assert norm((ROOT/path).read_bytes())==blob(SEALED,path),'Frozen pressure/AGE observer changed'
@@ -53,22 +53,22 @@ def guard_previous_source():
 
 
 def strip_current_evidence(text):
- import ria12_corrected_verify as corrected_owner
- return corrected_owner.strip_current_evidence(text)
+ import ria12_water_polish_verify as polish_owner
+ return polish_owner.strip_current_evidence(text)
  assert text.count(PATTERN)<=1
  return literal('strip_current_evidence',dict(vars(previous)))(text.replace(PATTERN,''))
 
 
 def publication_dependencies_unchanged():
- import ria12_corrected_verify as corrected_owner
- return corrected_owner.publication_dependencies_unchanged()
+ import ria12_water_polish_verify as polish_owner
+ return polish_owner.publication_dependencies_unchanged()
  guard_previous_source()
  with prior_source_projection():return literal('publication_dependencies_unchanged',prior_namespace())()
 
 
 def verify():
- import ria12_corrected_verify as corrected_owner
- return corrected_owner.verify()
+ import ria12_water_polish_verify as polish_owner
+ return polish_owner.verify()
  guard_previous_source()
  names=['INITIAL_PROFILE_AGE_GROUNDWATER_QUALIFICATION.json','INITIAL_PROFILE_AGE_QUALIFICATION.json','INITIAL_PROFILE_AGE_CONTRACT_V2.json','INITIAL_PROFILE_AGE_CENTRAL_INDEPENDENT_V2.json','INITIAL_PROFILE_GROUNDWATER_CONTRACT_V1.json','INITIAL_PROFILE_AGE_GROUNDWATER_COADMISSION_CONTRACT_V1.json','INITIAL_PROFILE_GROUNDWATER_CENTRAL_INDEPENDENT_V1.json',*[name+'.json' for name in RAW_NAMES],'INITIAL_PROFILE_FROST_ADMISSION_RAW_V1.json','INITIAL_PROFILE_FROST_MERGE_RECEIPT_V1.json']
  for name in names:
