@@ -1,0 +1,2496 @@
+{
+  "status": "ACTUAL_RIA_THERMAL_SNOW_CENTRAL_ORIGINAL_STOCK_WATER_SOLUTE_TEMPERATURE_NATIVE_COLD_COMPILED_AND_EXTERNAL_PASS",
+  "platform": "Windows",
+  "optimization": "O2",
+  "contexts": [
+    {
+      "kind": "water",
+      "snow": 0,
+      "optimization": "O2",
+      "actual_producer": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+      "actual_compiler": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+      "original_observer": "8e601386df3a044d0c1c625d379a6a98f98acc06",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_THERMAL_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+        "actual_compiler_source": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+        "actual_BUILD_sha256": "6c139b31de670b0d101c36d77e312aa15b7927ba7d5f98ebd9c44c3854ef81d0",
+        "kind": "water",
+        "optimization": "O2",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -3.073929999430902e-13
+          },
+          "solute": null,
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ],
+          "actual_thermal_native_states": {
+            "2": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465176,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1360808,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    2,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465176
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": -2.1213028153570725,
+                "maximum_temperature_C": 9.41258559685651,
+                "original_sequential_records": 16
+              }
+            },
+            "30": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465176,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1360808,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    30,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465176
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 5.719644414320015,
+                "maximum_temperature_C": 10.6604688101068,
+                "original_sequential_records": 16
+              }
+            },
+            "34": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465176,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1360808,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    34,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465176
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 6.067162599763548,
+                "maximum_temperature_C": 10.22981456912744,
+                "original_sequential_records": 16
+              }
+            },
+            "35": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465176,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1360808,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    35,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465176
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 6.170907596946509,
+                "maximum_temperature_C": 9.685327653406894,
+                "original_sequential_records": 16
+              }
+            },
+            "4": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465176,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1360808,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    4,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465176
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": -6.855352501321572,
+                "maximum_temperature_C": 9.102466157071657,
+                "original_sequential_records": 16
+              }
+            },
+            "7": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465176,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1360808,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    7,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465176
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 1.2690743839434193,
+                "maximum_temperature_C": 8.772583309593434,
+                "original_sequential_records": 16
+              }
+            },
+            "9": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465176,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1360808,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    9,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465176
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": -1.2427276360287465,
+                "maximum_temperature_C": 8.259434601127046,
+                "original_sequential_records": 16
+              }
+            }
+          }
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -2.0816681711721685e-15
+            },
+            "solute": null,
+            "native_samples": [
+              4
+            ],
+            "actual_thermal_native_states": {
+              "4": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1465176,
+                  "snow": 0,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1360808,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      4,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1465176
+                  }
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": -6.855352501321572,
+                  "maximum_temperature_C": 9.102466157071657,
+                  "original_sequential_records": 16
+                }
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -3.552713678800501e-15
+            },
+            "solute": null,
+            "native_samples": [
+              9
+            ],
+            "actual_thermal_native_states": {
+              "9": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1465176,
+                  "snow": 0,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1360808,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      9,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1465176
+                  }
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": -1.2427276360287465,
+                  "maximum_temperature_C": 8.259434601127046,
+                  "original_sequential_records": 16
+                }
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -3.552713678800501e-15
+            },
+            "solute": null,
+            "native_samples": [
+              34
+            ],
+            "actual_thermal_native_states": {
+              "34": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1465176,
+                  "snow": 0,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1360808,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      34,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1465176
+                  }
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": 6.067162599763548,
+                  "maximum_temperature_C": 10.22981456912744,
+                  "original_sequential_records": 16
+                }
+              }
+            }
+          }
+        ],
+        "actual_original_constitutive_observations": 2380,
+        "maximum_original_theta_stock_difference_cm": 7.105427357601002e-15,
+        "decimal_global_maximum_absolute_residual_cm": "4.4E-14",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false,
+        "original_producer_metadata_preserved": true,
+        "completed_original_observer_failure": true,
+        "observer_only_exclusion": "Active-bottom assertion belongs to the preceding boundary batch; primary heat/Snow leaves this boundary unchanged",
+        "maximum_absolute_bottom_exchange_cm": 0.0
+      },
+      "native_controls": {
+        "native_refusals": 43,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 45,
+        "actual_compiler": "978c7e7d6048141db84d50e250142a4ee101d6d2"
+      },
+      "opposite_initial": {
+        "compiled_files": 45,
+        "generated_sources": 15,
+        "cde_short_native_exact": false,
+        "actual_compiler": "0f0837e77901fd9e3b752d0812a8be53aa0f3352"
+      },
+      "external": null,
+      "native": 7,
+      "cold": 3
+    },
+    {
+      "kind": "water",
+      "snow": 1,
+      "optimization": "O2",
+      "actual_producer": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+      "actual_compiler": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+      "original_observer": "8e601386df3a044d0c1c625d379a6a98f98acc06",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_THERMAL_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+        "actual_compiler_source": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+        "actual_BUILD_sha256": "8ae04fedefd4b2f600a93a84b56c9f841520192934cbb6b81a498af6fda3f5b6",
+        "kind": "water",
+        "optimization": "O2",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -2.634385765087899e-13
+          },
+          "solute": null,
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ],
+          "actual_thermal_native_states": {
+            "2": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465956,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361588,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    2,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465956
+                },
+                "thermal_domain_offset": 1361508,
+                "microscopic_offset": 1361464,
+                "top_offset": 1361392,
+                "oxygen_offset": 1361368,
+                "thermal_history_offset": 1360808,
+                "crop_rates_offset": 1360404,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.001928055330112,
+                "thermal_conductivity_range": [
+                  596.8800426423737,
+                  1084.0371057131533
+                ],
+                "thermal_capacity_range": [
+                  1.438580003266752,
+                  1.8006121206451533
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 8.29776459327625,
+                "maximum_temperature_C": 10.782498075666531,
+                "original_sequential_records": 18
+              }
+            },
+            "30": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465956,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361588,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    30,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465956
+                },
+                "thermal_domain_offset": 1361508,
+                "microscopic_offset": 1361464,
+                "top_offset": 1361392,
+                "oxygen_offset": 1361368,
+                "thermal_history_offset": 1360808,
+                "crop_rates_offset": 1360404,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.003100494240283,
+                "thermal_conductivity_range": [
+                  740.7817333435167,
+                  1111.5485151564149
+                ],
+                "thermal_capacity_range": [
+                  1.4678249849602796,
+                  1.8346965808937754
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 7.49396924276768,
+                "maximum_temperature_C": 10.671578677052073,
+                "original_sequential_records": 18
+              }
+            },
+            "34": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465956,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361588,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    34,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465956
+                },
+                "thermal_domain_offset": 1361508,
+                "microscopic_offset": 1361464,
+                "top_offset": 1361392,
+                "oxygen_offset": 1361368,
+                "thermal_history_offset": 1360808,
+                "crop_rates_offset": 1360404,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.0029712218404025,
+                "thermal_conductivity_range": [
+                  731.2793126641479,
+                  1114.688167803213
+                ],
+                "thermal_capacity_range": [
+                  1.4650258775477443,
+                  1.8387394267908157
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 7.638554061349838,
+                "maximum_temperature_C": 10.239213891271678,
+                "original_sequential_records": 18
+              }
+            },
+            "35": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465956,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361588,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    35,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465956
+                },
+                "thermal_domain_offset": 1361508,
+                "microscopic_offset": 1361464,
+                "top_offset": 1361392,
+                "oxygen_offset": 1361368,
+                "thermal_history_offset": 1360808,
+                "crop_rates_offset": 1360404,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.002947676522073,
+                "thermal_conductivity_range": [
+                  728.5444117398595,
+                  1115.2760116638442
+                ],
+                "thermal_capacity_range": [
+                  1.4645070887049663,
+                  1.8394984591278476
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 7.695283408005374,
+                "maximum_temperature_C": 9.69427748894071,
+                "original_sequential_records": 18
+              }
+            },
+            "4": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465956,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361588,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    4,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465956
+                },
+                "thermal_domain_offset": 1361508,
+                "microscopic_offset": 1361464,
+                "top_offset": 1361392,
+                "oxygen_offset": 1361368,
+                "thermal_history_offset": 1360808,
+                "crop_rates_offset": 1360404,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.001928055330112,
+                "thermal_conductivity_range": [
+                  596.8800426423737,
+                  1084.0371057131533
+                ],
+                "thermal_capacity_range": [
+                  1.438580003266752,
+                  1.8006121206451533
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 5.988354444286356,
+                "maximum_temperature_C": 9.854671768587002,
+                "original_sequential_records": 18
+              }
+            },
+            "7": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465956,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361588,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    7,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465956
+                },
+                "thermal_domain_offset": 1361508,
+                "microscopic_offset": 1361464,
+                "top_offset": 1361392,
+                "oxygen_offset": 1361368,
+                "thermal_history_offset": 1360808,
+                "crop_rates_offset": 1360404,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.015179314397423,
+                "thermal_conductivity_range": [
+                  705.1536061673944,
+                  1084.0371058262722
+                ],
+                "thermal_capacity_range": [
+                  1.4531527274536076,
+                  1.8006121207092172
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 5.777232106136093,
+                "maximum_temperature_C": 9.397813855839768,
+                "original_sequential_records": 18
+              }
+            },
+            "9": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1465956,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361588,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    9,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465956
+                },
+                "thermal_domain_offset": 1361508,
+                "microscopic_offset": 1361464,
+                "top_offset": 1361392,
+                "oxygen_offset": 1361368,
+                "thermal_history_offset": 1360808,
+                "crop_rates_offset": 1360404,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.004203251624465,
+                "thermal_conductivity_range": [
+                  743.1480022021174,
+                  1089.619452069139
+                ],
+                "thermal_capacity_range": [
+                  1.4666412284528487,
+                  1.8079134194145654
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 5.382391316868024,
+                "maximum_temperature_C": 9.358174897138701,
+                "original_sequential_records": 18
+              }
+            }
+          }
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 2.220446049250313e-16
+            },
+            "solute": null,
+            "native_samples": [
+              4
+            ],
+            "actual_thermal_native_states": {
+              "4": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1465956,
+                  "snow": 1,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1361588,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      4,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1465956
+                  },
+                  "thermal_domain_offset": 1361508,
+                  "microscopic_offset": 1361464,
+                  "top_offset": 1361392,
+                  "oxygen_offset": 1361368,
+                  "thermal_history_offset": 1360808,
+                  "crop_rates_offset": 1360404,
+                  "complete_original_thermal_fields": [
+                    "heacon",
+                    "heacap",
+                    "tetop",
+                    "tebot"
+                  ],
+                  "minimum_top_maximum_conductivity_cm_day": 5.001928055330112,
+                  "thermal_conductivity_range": [
+                    596.8800426423737,
+                    1084.0371057131533
+                  ],
+                  "thermal_capacity_range": [
+                    1.438580003266752,
+                    1.8006121206451533
+                  ]
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": 5.988354444286356,
+                  "maximum_temperature_C": 9.854671768587002,
+                  "original_sequential_records": 18
+                }
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 1.7541523789077473e-14
+            },
+            "solute": null,
+            "native_samples": [
+              9
+            ],
+            "actual_thermal_native_states": {
+              "9": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1465956,
+                  "snow": 1,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1361588,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      9,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1465956
+                  },
+                  "thermal_domain_offset": 1361508,
+                  "microscopic_offset": 1361464,
+                  "top_offset": 1361392,
+                  "oxygen_offset": 1361368,
+                  "thermal_history_offset": 1360808,
+                  "crop_rates_offset": 1360404,
+                  "complete_original_thermal_fields": [
+                    "heacon",
+                    "heacap",
+                    "tetop",
+                    "tebot"
+                  ],
+                  "minimum_top_maximum_conductivity_cm_day": 5.004203251624465,
+                  "thermal_conductivity_range": [
+                    743.1480022021174,
+                    1089.619452069139
+                  ],
+                  "thermal_capacity_range": [
+                    1.4666412284528487,
+                    1.8079134194145654
+                  ]
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": 5.382391316868024,
+                  "maximum_temperature_C": 9.358174897138701,
+                  "original_sequential_records": 18
+                }
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -3.197442310920451e-14
+            },
+            "solute": null,
+            "native_samples": [
+              34
+            ],
+            "actual_thermal_native_states": {
+              "34": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1465956,
+                  "snow": 1,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1361588,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      34,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1465956
+                  },
+                  "thermal_domain_offset": 1361508,
+                  "microscopic_offset": 1361464,
+                  "top_offset": 1361392,
+                  "oxygen_offset": 1361368,
+                  "thermal_history_offset": 1360808,
+                  "crop_rates_offset": 1360404,
+                  "complete_original_thermal_fields": [
+                    "heacon",
+                    "heacap",
+                    "tetop",
+                    "tebot"
+                  ],
+                  "minimum_top_maximum_conductivity_cm_day": 5.0029712218404025,
+                  "thermal_conductivity_range": [
+                    731.2793126641479,
+                    1114.688167803213
+                  ],
+                  "thermal_capacity_range": [
+                    1.4650258775477443,
+                    1.8387394267908157
+                  ]
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": 7.638554061349838,
+                  "maximum_temperature_C": 10.239213891271678,
+                  "original_sequential_records": 18
+                }
+              }
+            }
+          }
+        ],
+        "actual_original_constitutive_observations": 2040,
+        "maximum_original_theta_stock_difference_cm": 7.105427357601002e-15,
+        "decimal_global_maximum_absolute_residual_cm": "3.5E-14",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false,
+        "original_producer_metadata_preserved": true,
+        "completed_original_observer_failure": true,
+        "observer_only_exclusion": "Active-bottom assertion belongs to the preceding boundary batch; primary heat/Snow leaves this boundary unchanged",
+        "maximum_absolute_bottom_exchange_cm": 0.0
+      },
+      "native_controls": {
+        "native_refusals": 49,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 51,
+        "actual_compiler": "978c7e7d6048141db84d50e250142a4ee101d6d2"
+      },
+      "opposite_initial": {
+        "compiled_files": 51,
+        "generated_sources": 18,
+        "cde_short_native_exact": false,
+        "actual_compiler": "0f0837e77901fd9e3b752d0812a8be53aa0f3352"
+      },
+      "external": {
+        "exact_external_transaction": true,
+        "actual_control_source": "0f0837e77901fd9e3b752d0812a8be53aa0f3352",
+        "targeted_prefix_days": 0
+      },
+      "native": 7,
+      "cold": 3
+    },
+    {
+      "kind": "cde",
+      "snow": 0,
+      "optimization": "O2",
+      "actual_producer": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+      "actual_compiler": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+      "original_observer": "8e601386df3a044d0c1c625d379a6a98f98acc06",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_THERMAL_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+        "actual_compiler_source": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+        "actual_BUILD_sha256": "bbc1f6e12faa992e034c4fd2f5238402b8f21a2f0ddf7a056bb1aa9d9244bcab",
+        "kind": "cde",
+        "optimization": "O2",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -2.8211877278749853e-12
+          },
+          "solute": {
+            "unchanged_ledger": null,
+            "actual_standard_daily_output": {
+              "actual_original_daily_receipts": 35,
+              "actual_paired_original_chemical_ledgers": 70
+            }
+          },
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ],
+          "actual_thermal_native_states": {
+            "2": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1466320,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361096,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    2,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465464
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": -2.1213028153570725,
+                "maximum_temperature_C": 9.41258559685651,
+                "original_sequential_records": 18
+              }
+            },
+            "30": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1466320,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361096,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    30,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465464
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 5.626258656676641,
+                "maximum_temperature_C": 10.661633896339742,
+                "original_sequential_records": 18
+              }
+            },
+            "34": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1466320,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361096,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    34,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465464
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 5.999375114341334,
+                "maximum_temperature_C": 10.23050896970977,
+                "original_sequential_records": 18
+              }
+            },
+            "35": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1466320,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361096,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    35,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465464
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 6.109141679101536,
+                "maximum_temperature_C": 9.685815855763968,
+                "original_sequential_records": 18
+              }
+            },
+            "4": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1466320,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361096,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    4,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465464
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": -6.855352501321572,
+                "maximum_temperature_C": 9.102466157071657,
+                "original_sequential_records": 18
+              }
+            },
+            "7": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1466320,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361096,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    7,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465464
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 1.266286853863405,
+                "maximum_temperature_C": 8.769083383648512,
+                "original_sequential_records": 18
+              }
+            },
+            "9": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1466320,
+                "snow": 0,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361096,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    9,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1465464
+                }
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": -1.2458823258476706,
+                "maximum_temperature_C": 8.22252237956816,
+                "original_sequential_records": 18
+              }
+            }
+          }
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -2.0816681711721685e-15
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              4
+            ],
+            "actual_thermal_native_states": {
+              "4": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1466320,
+                  "snow": 0,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1361096,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      4,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1465464
+                  }
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": -6.855352501321572,
+                  "maximum_temperature_C": 9.102466157071657,
+                  "original_sequential_records": 18
+                }
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -7.105427357601002e-15
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              9
+            ],
+            "actual_thermal_native_states": {
+              "9": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1466320,
+                  "snow": 0,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1361096,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      9,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1465464
+                  }
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": -1.2458823258476706,
+                  "maximum_temperature_C": 8.22252237956816,
+                  "original_sequential_records": 18
+                }
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -7.105427357601002e-15
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 4,
+                "actual_paired_original_chemical_ledgers": 8
+              }
+            },
+            "native_samples": [
+              34
+            ],
+            "actual_thermal_native_states": {
+              "34": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1466320,
+                  "snow": 0,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1361096,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      34,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1465464
+                  }
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": 5.999375114341334,
+                  "maximum_temperature_C": 10.23050896970977,
+                  "original_sequential_records": 18
+                }
+              }
+            }
+          }
+        ],
+        "actual_original_constitutive_observations": 2380,
+        "maximum_original_theta_stock_difference_cm": 1.0658141036401503e-14,
+        "decimal_global_maximum_absolute_residual_cm": "2.57163E-12",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false,
+        "original_producer_metadata_preserved": true,
+        "completed_original_observer_failure": true,
+        "observer_only_exclusion": "Active-bottom assertion belongs to the preceding boundary batch; primary heat/Snow leaves this boundary unchanged",
+        "maximum_absolute_bottom_exchange_cm": 0.0
+      },
+      "native_controls": {
+        "native_refusals": 43,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 54,
+        "actual_compiler": "978c7e7d6048141db84d50e250142a4ee101d6d2"
+      },
+      "opposite_initial": {
+        "compiled_files": 54,
+        "generated_sources": 18,
+        "cde_short_native_exact": true,
+        "actual_compiler": "0f0837e77901fd9e3b752d0812a8be53aa0f3352"
+      },
+      "external": {
+        "exact_external_transaction": true,
+        "actual_control_source": "0f0837e77901fd9e3b752d0812a8be53aa0f3352",
+        "targeted_prefix_days": 0
+      },
+      "native": 7,
+      "cold": 3
+    },
+    {
+      "kind": "cde",
+      "snow": 1,
+      "optimization": "O2",
+      "actual_producer": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+      "actual_compiler": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+      "original_observer": "8e601386df3a044d0c1c625d379a6a98f98acc06",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_THERMAL_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+        "actual_compiler_source": "978c7e7d6048141db84d50e250142a4ee101d6d2",
+        "actual_BUILD_sha256": "be4d06e4be20ff610ee346d58d74719a24594a7055976676d990e93d86c89a38",
+        "kind": "cde",
+        "optimization": "O2",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": 4.899029099059149e-12
+          },
+          "solute": {
+            "unchanged_ledger": null,
+            "actual_standard_daily_output": {
+              "actual_original_daily_receipts": 35,
+              "actual_paired_original_chemical_ledgers": 70
+            }
+          },
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ],
+          "actual_thermal_native_states": {
+            "2": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1467100,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361876,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    2,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1466244
+                },
+                "thermal_domain_offset": 1361796,
+                "microscopic_offset": 1361752,
+                "top_offset": 1361680,
+                "oxygen_offset": 1361656,
+                "thermal_history_offset": 1361096,
+                "crop_rates_offset": 1360692,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.001928055330112,
+                "thermal_conductivity_range": [
+                  596.8800426423737,
+                  1084.0371057131533
+                ],
+                "thermal_capacity_range": [
+                  1.438580003266752,
+                  1.8006121206451533
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 8.29776459327625,
+                "maximum_temperature_C": 10.782498075666531,
+                "original_sequential_records": 20
+              }
+            },
+            "30": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1467100,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361876,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    30,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1466244
+                },
+                "thermal_domain_offset": 1361796,
+                "microscopic_offset": 1361752,
+                "top_offset": 1361680,
+                "oxygen_offset": 1361656,
+                "thermal_history_offset": 1361096,
+                "crop_rates_offset": 1360692,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.004777436307795,
+                "thermal_conductivity_range": [
+                  770.6594622407611,
+                  1152.471176667679
+                ],
+                "thermal_capacity_range": [
+                  1.498532824932775,
+                  1.88805308083747
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 7.436459250210893,
+                "maximum_temperature_C": 10.671512003464903,
+                "original_sequential_records": 20
+              }
+            },
+            "34": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1467100,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361876,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    34,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1466244
+                },
+                "thermal_domain_offset": 1361796,
+                "microscopic_offset": 1361752,
+                "top_offset": 1361680,
+                "oxygen_offset": 1361656,
+                "thermal_history_offset": 1361096,
+                "crop_rates_offset": 1360692,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.0045206463902945,
+                "thermal_conductivity_range": [
+                  766.671390506232,
+                  1156.9637292634993
+                ],
+                "thermal_capacity_range": [
+                  1.4943807500580537,
+                  1.8941922598311725
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 7.592509390457916,
+                "maximum_temperature_C": 10.239099609266722,
+                "original_sequential_records": 20
+              }
+            },
+            "35": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1467100,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361876,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    35,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1466244
+                },
+                "thermal_domain_offset": 1361796,
+                "microscopic_offset": 1361752,
+                "top_offset": 1361680,
+                "oxygen_offset": 1361656,
+                "thermal_history_offset": 1361096,
+                "crop_rates_offset": 1360692,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.004474406186994,
+                "thermal_conductivity_range": [
+                  765.9350940995791,
+                  1157.7899885492088
+                ],
+                "thermal_capacity_range": [
+                  1.493615998470733,
+                  1.8953257170574969
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 7.651828775774905,
+                "maximum_temperature_C": 9.694118310802061,
+                "original_sequential_records": 20
+              }
+            },
+            "4": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1467100,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361876,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    4,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1466244
+                },
+                "thermal_domain_offset": 1361796,
+                "microscopic_offset": 1361752,
+                "top_offset": 1361680,
+                "oxygen_offset": 1361656,
+                "thermal_history_offset": 1361096,
+                "crop_rates_offset": 1360692,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.001928055330112,
+                "thermal_conductivity_range": [
+                  596.8800426423737,
+                  1084.0371057131533
+                ],
+                "thermal_capacity_range": [
+                  1.438580003266752,
+                  1.8006121206451533
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 5.988354444286356,
+                "maximum_temperature_C": 9.854671768587002,
+                "original_sequential_records": 20
+              }
+            },
+            "7": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1467100,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361876,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    7,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1466244
+                },
+                "thermal_domain_offset": 1361796,
+                "microscopic_offset": 1361752,
+                "top_offset": 1361680,
+                "oxygen_offset": 1361656,
+                "thermal_history_offset": 1361096,
+                "crop_rates_offset": 1360692,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.039838418238562,
+                "thermal_conductivity_range": [
+                  838.7116524127227,
+                  1174.5008538198153
+                ],
+                "thermal_capacity_range": [
+                  1.5572427211838555,
+                  1.922600887674958
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 6.109862605050068,
+                "maximum_temperature_C": 9.38501739728185,
+                "original_sequential_records": 20
+              }
+            },
+            "9": {
+              "native": {
+                "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                "parameter_offset": 1467100,
+                "snow": 1,
+                "precision_bytes": 16,
+                "calendar": {
+                  "calendar_offset": 1361876,
+                  "calendar_header": [
+                    1,
+                    34,
+                    1,
+                    6513,
+                    1,
+                    1,
+                    9,
+                    0,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "calendar_end": 1466244
+                },
+                "thermal_domain_offset": 1361796,
+                "microscopic_offset": 1361752,
+                "top_offset": 1361680,
+                "oxygen_offset": 1361656,
+                "thermal_history_offset": 1361096,
+                "crop_rates_offset": 1360692,
+                "complete_original_thermal_fields": [
+                  "heacon",
+                  "heacap",
+                  "tetop",
+                  "tebot"
+                ],
+                "minimum_top_maximum_conductivity_cm_day": 5.011579186003419,
+                "thermal_conductivity_range": [
+                  819.1220384461351,
+                  1173.5673515221772
+                ],
+                "thermal_capacity_range": [
+                  1.5446797386727487,
+                  1.9179418692669103
+                ]
+              },
+              "physical": {
+                "original_temperature_nodes": 34,
+                "minimum_temperature_C": 5.350434424602476,
+                "maximum_temperature_C": 9.34384417174407,
+                "original_sequential_records": 20
+              }
+            }
+          }
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 2.220446049250313e-16
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              4
+            ],
+            "actual_thermal_native_states": {
+              "4": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1467100,
+                  "snow": 1,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1361876,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      4,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1466244
+                  },
+                  "thermal_domain_offset": 1361796,
+                  "microscopic_offset": 1361752,
+                  "top_offset": 1361680,
+                  "oxygen_offset": 1361656,
+                  "thermal_history_offset": 1361096,
+                  "crop_rates_offset": 1360692,
+                  "complete_original_thermal_fields": [
+                    "heacon",
+                    "heacap",
+                    "tetop",
+                    "tebot"
+                  ],
+                  "minimum_top_maximum_conductivity_cm_day": 5.001928055330112,
+                  "thermal_conductivity_range": [
+                    596.8800426423737,
+                    1084.0371057131533
+                  ],
+                  "thermal_capacity_range": [
+                    1.438580003266752,
+                    1.8006121206451533
+                  ]
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": 5.988354444286356,
+                  "maximum_temperature_C": 9.854671768587002,
+                  "original_sequential_records": 20
+                }
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 1.7541523789077473e-14
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              9
+            ],
+            "actual_thermal_native_states": {
+              "9": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1467100,
+                  "snow": 1,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1361876,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      9,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1466244
+                  },
+                  "thermal_domain_offset": 1361796,
+                  "microscopic_offset": 1361752,
+                  "top_offset": 1361680,
+                  "oxygen_offset": 1361656,
+                  "thermal_history_offset": 1361096,
+                  "crop_rates_offset": 1360692,
+                  "complete_original_thermal_fields": [
+                    "heacon",
+                    "heacap",
+                    "tetop",
+                    "tebot"
+                  ],
+                  "minimum_top_maximum_conductivity_cm_day": 5.011579186003419,
+                  "thermal_conductivity_range": [
+                    819.1220384461351,
+                    1173.5673515221772
+                  ],
+                  "thermal_capacity_range": [
+                    1.5446797386727487,
+                    1.9179418692669103
+                  ]
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": 5.350434424602476,
+                  "maximum_temperature_C": 9.34384417174407,
+                  "original_sequential_records": 20
+                }
+              }
+            }
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -3.907985046680551e-14
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 4,
+                "actual_paired_original_chemical_ledgers": 8
+              }
+            },
+            "native_samples": [
+              34
+            ],
+            "actual_thermal_native_states": {
+              "34": {
+                "native": {
+                  "status": "ACTUAL_RIA_ORIGINAL_PARAMETERS_CALENDAR_AND_SELECTED_THERMAL_CARRY_PASS",
+                  "parameter_offset": 1467100,
+                  "snow": 1,
+                  "precision_bytes": 16,
+                  "calendar": {
+                    "calendar_offset": 1361876,
+                    "calendar_header": [
+                      1,
+                      34,
+                      1,
+                      6513,
+                      1,
+                      1,
+                      34,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      0,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "calendar_end": 1466244
+                  },
+                  "thermal_domain_offset": 1361796,
+                  "microscopic_offset": 1361752,
+                  "top_offset": 1361680,
+                  "oxygen_offset": 1361656,
+                  "thermal_history_offset": 1361096,
+                  "crop_rates_offset": 1360692,
+                  "complete_original_thermal_fields": [
+                    "heacon",
+                    "heacap",
+                    "tetop",
+                    "tebot"
+                  ],
+                  "minimum_top_maximum_conductivity_cm_day": 5.0045206463902945,
+                  "thermal_conductivity_range": [
+                    766.671390506232,
+                    1156.9637292634993
+                  ],
+                  "thermal_capacity_range": [
+                    1.4943807500580537,
+                    1.8941922598311725
+                  ]
+                },
+                "physical": {
+                  "original_temperature_nodes": 34,
+                  "minimum_temperature_C": 7.592509390457916,
+                  "maximum_temperature_C": 10.239099609266722,
+                  "original_sequential_records": 20
+                }
+              }
+            }
+          }
+        ],
+        "actual_original_constitutive_observations": 2176,
+        "maximum_original_theta_stock_difference_cm": 7.105427357601002e-15,
+        "decimal_global_maximum_absolute_residual_cm": "2.69954E-12",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false,
+        "original_producer_metadata_preserved": true,
+        "completed_original_observer_failure": true,
+        "observer_only_exclusion": "Active-bottom assertion belongs to the preceding boundary batch; primary heat/Snow leaves this boundary unchanged",
+        "maximum_absolute_bottom_exchange_cm": 0.0
+      },
+      "native_controls": {
+        "native_refusals": 49,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 60,
+        "actual_compiler": "978c7e7d6048141db84d50e250142a4ee101d6d2"
+      },
+      "opposite_initial": {
+        "compiled_files": 60,
+        "generated_sources": 21,
+        "cde_short_native_exact": true,
+        "actual_compiler": "0f0837e77901fd9e3b752d0812a8be53aa0f3352"
+      },
+      "external": {
+        "exact_external_transaction": true,
+        "actual_control_source": "0f0837e77901fd9e3b752d0812a8be53aa0f3352",
+        "targeted_prefix_days": 0
+      },
+      "native": 7,
+      "cold": 3
+    }
+  ],
+  "full35_periods": 4,
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "metadata_or_source_views_faked": false,
+  "canonical_admission": false
+}

@@ -190,4 +190,82 @@ def main():
     print(q['status'],a.platform,a.optimization)
 
 
+def preservation():
+    with ExitStack() as stack:
+        pool=Pool(stack);name=setup_windows(pool);result=[]
+        def check(label,left,right,record,expected):
+            a,b=read(left/'BUILD.json'),read(right/'BUILD.json')
+            assert a['inputs']==b['inputs'] and 'original_ria12_thermal' not in b['identity']['original_output']
+            sources=generated(left,right);files=compiled(left,right)
+            assert len(files)==expected and sources==record['generated_sources']
+            original=record['compiled'];original=original['files'] if isinstance(original,dict) else original
+            project=lambda items:[{k:r[k] for k in ('file','left_sha256','right_sha256')} for r in items]
+            assert files==project(original)
+            result.append(dict(label=label,compiled=files,generated_sources=sources))
+        for opt in ('O0','O2'):
+            q=read(pool.view(name,f'evidence/ria12-thermal-model1-{opt}-preservation-v1/RESULT.json'))
+            left,_=build(pool,q['actual_original_build_root'],q['actual_original_BUILD_sha256']);right,_=build(pool,q['actual_current_build_root'],q['actual_current_BUILD_sha256'])
+            assert q['actual_current_compiler']=='0f0837e77901fd9e3b752d0812a8be53aa0f3352' and q['model_executions']==0
+            check('NoSnow-model1-'+opt,left,right,q,43)
+        for role,opt,count in [('primary-water','O0',44),('primary-cde','O2',53),('boundary-water','O0',45),('boundary-cde','O2',53)]:
+            q=read(pool.view(name,f'evidence/ria12-thermal-preserve-{role}-{opt}-v1/RESULT.json'))
+            left=pool.view(q['original_archive'],q['original_archive_prefix']);right,_=build(pool,q['actual_current_build_root'],q['actual_current_BUILD_sha256'])
+            assert SHA((left/'BUILD.json').read_bytes())==q['actual_original_BUILD_sha256'] and q['model_executions']==0
+            check('NoHeat-'+role+'-'+opt,left,right,q,count)
+        compilers=read(pool.view(name,'evidence/RIA12_THERMAL_REAL_OLD_SNOW_MODEL1_COMPILERS_V1.json'))
+        assert not compilers['HEAD_or_source_views_faked'] and compilers['actual_before_head']==compilers['actual_restored_head']=='0f0837e77901fd9e3b752d0812a8be53aa0f3352'
+        for kind,opt,count in [('water','O0',49),('cde','O2',58)]:
+            a=next(q for q in compilers['outputs'] if q['phase']=='actual-parent' and q['kind']==kind)
+            b=next(q for q in compilers['outputs'] if q['phase']=='actual-current' and q['kind']==kind)
+            assert a['actual_compiler_source']==a['actual_completion_head']=='8e8f2a4c7ff28e4e4845c4b5554894a4bc3c5af1'
+            assert b['actual_compiler_source']==b['actual_completion_head']==compilers['actual_restored_head'] and a['returncode']==b['returncode']==0
+            q=read(pool.view(name,f'evidence/RIA12_THERMAL_SNOW_MODEL1_{kind.upper()}_{opt}_PRESERVED_V1.json'))
+            left,right=pool.resolve(a['actual_build_root']),pool.resolve(b['actual_build_root'])
+            assert read(left/'BUILD.json')['identity']['original_output']['thermal_output'] is True
+            check('Snow-model1-'+kind+'-'+opt,left,right,q,count)
+        return dict(status='ACTUAL_ALL8_UNSELECTED_NOHEAT_RIA_NOSNOW_AND_SNOW_MODEL1_WHOLE_GENERATED_COMPILED_PRESERVATION_PASS',contexts=result,model_executions=0,compiler_executions=0)
+
+
+def reference_correction():
+    import math
+    with ExitStack() as stack:
+        pool=Pool(stack);name=setup_windows(pool)
+        original=pool.store('RIA12_WINDOWS_RAW_V1').get('original-provider/build/swap-selected/readswap.f90')
+        before='            ksatfit(1:numlay)       = dble(UHCCpars(1:numlay, 1))'
+        after='            ksatfit(1:numlay)       = dble(UHCCpars(1:numlay, 4))'
+        old=original.replace(b'\r\n',b'\n').decode('cp1252');assert old.count(before)==1 and after not in old
+        reports=[]
+        for opt in ('O0','O2'):
+            folder=pool.view(name,f'evidence/ria12-ksat-mapping-component-{opt}-v1');q=read(folder/'RESULT.json')
+            directory=pool.view(name,f'compiled/ria12-ksat-mapping-component-{opt}-v1')
+            assert q['actual_source']=='978c7e7d6048141db84d50e250142a4ee101d6d2' and q['actual_calls']==10 and q['legacy_negative_mean_calls']==7 and q['model_periods']==0
+            assert q['original_reader_sha256']==SHA(original) and q['corrected_reader_sha256']==SHA(original.decode('cp1252').replace(before,after,1).encode('cp1252'))
+            assert all(c['returncode']==0 for c in q['compiler']) and not (folder/'original.stderr').read_bytes()
+            assert SHA((directory/'mapping.exe').read_bytes())==q['executable_sha256']
+            assert SHA((directory/'driver.f90').read_bytes())==q['driver_sha256']
+            assert (directory/'functions.f90').read_bytes()==pool.store('RIA12_WINDOWS_RAW_V1').get('original-provider/build/swap-selected/functions.f90')
+            raw=(folder/'original.stdout').read_bytes();assert SHA(raw)==q['stdout_sha256']
+            observed=[]
+            for line in raw.decode().splitlines():
+                if not line.startswith('ORIGINAL_KSAT_MAPPING '):continue
+                words=line.split();assert len(words)==8;layer,index=map(int,words[1:3]);values=list(map(float,words[3:]));head,legacy,corrected,oldmean,newmean=values
+                assert layer in (1,2) and 1<=index<=5 and head==[0.,-5.,-10.,-1200.,-1e6][index-1]
+                assert all(map(math.isfinite,values)) and legacy==[-5.,-10.][layer-1] and corrected==[10.,5.][layer-1] and newmean>0
+                observed.append((layer,index,oldmean))
+            assert len(observed)==len(set((a,b) for a,b,_ in observed))==10 and sum(v<0 for _,_,v in observed)==7
+            reports.append(dict(optimization=opt,actual_original_calls=10,negative_legacy_means=7,corrected_original_saturated_Ksat=[10.,5.]))
+        for platform in ('Windows','Ubuntu'):
+            for opt in ('O0','O2'):
+                for kind in ('water','cde'):
+                    for snow in (0,1):
+                        if platform=='Windows':
+                            version='v2' if opt=='O0' else 'v1';profile=pool.view(name,f'evidence/ria12-thermal-{kind}-snow{snow}-Windows-{opt}-full35-{version}')
+                        else:
+                            archive=f'RIA12_THERMAL_UBUNTU_{opt}_ORIGINAL_V1';pool.add('/home/runner/work/_temp/builds',archive,'compiled');profile=pool.view(archive,f'current/{kind}-snow{snow}')
+                        q=read(profile/'RESULT.json');directory=pool.resolve(q['build_root'])
+                        actual=(directory/'readswap.f90').read_bytes().replace(b'\r\n',b'\n').decode('cp1252')
+                        assert actual==old.replace(before,after,1),'Incomplete original Ksat mapping source inverse'
+        return dict(status='COMPLETE_ORIGINAL_RIA_HCOMEAN_O0_O2_AND_ALL16_ACTUAL_READER_LITERAL_KSAT_CORRECTION_PASS',optimizations=reports,actual_model_readers=16,physical_equations_changed=False,parameter_binding_corrected=True,tolerance_changed=False,model_executions=0,compiler_executions=0)
+
+
 if __name__=='__main__':main()
