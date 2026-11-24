@@ -49,6 +49,9 @@ def selection(project):
 
 
 def magic(project):
+    from original_ria12_thermal import selection as ria12_thermal_selection,CODECS as ria12_thermal_codecs
+    thermal=ria12_thermal_selection(project.input_directory,project.original_output)
+    if thermal is not None:return ria12_thermal_codecs[(thermal['snow'],thermal['kind'])]
     from hydraulic_vapor import native_magic as vapor_native_magic
     vapor=vapor_native_magic(project)
     if vapor is not None:return vapor
@@ -65,7 +68,7 @@ def metadata(project):
     from hydraulic_vapor import describe as vapor_selection
     vapor=vapor_selection(project)
     stock_offset=48+8*(14+2*vapor['numlay']) if vapor is not None else 48
-    return dict(policy=POLICY,native_codec=magic(project).decode(),**selected,
+    result=dict(policy=POLICY,native_codec=magic(project).decode(),**selected,
                 source_sha256=sha(Path(__file__)),ordinary_owner_sha256=sha(Path(ordinary.__file__)),
                 domain_source_sha256=sha(Path(__file__).with_name(DOMAIN+'.f90')),
                 calendar_owner_sha256=sha(Path(regular.__file__)),clock_owner_sha256=sha(Path(clock.__file__)),
@@ -79,6 +82,10 @@ def metadata(project):
                 conserved_cde_prefix_offset_bytes=stock_offset if project.solute else None,
                 snow_stock='actual MOD_snow ssnow',snow_increment_slots=[2,3,13],
                 physical_equations_changed=False,native_domain_bytes=80)
+    from original_ria12_thermal import metadata as ria12_thermal_metadata
+    thermal=ria12_thermal_metadata(project)
+    if thermal is not None:result['original_ria12_thermal']=thermal
+    return result
 
 
 def age_identity(original,project):
@@ -126,7 +133,8 @@ def render_macro(source,project):
     for restore in ('.true.','.false.'):
         anchor=f'        call hybrid_output_calendar_checkpoint(unit,{restore})';assert source.count(anchor)==1
         source=source.replace(anchor,f'        call hybrid_output_thermal_checkpoint(unit,{restore})\n'+anchor,1)
-    return prefix+source+suffix
+    from original_ria12_thermal import render_macro as ria12_thermal_macro
+    return ria12_thermal_macro(prefix+source+suffix,project)
 
 
 def render_integral(original,watstor,selected):

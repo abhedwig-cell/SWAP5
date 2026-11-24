@@ -771,7 +771,8 @@ end module MOD_wofost""")
         (output/'oxygenstress.f90').write_text(render_oxygen_lookup(source),encoding='cp1252')
         patched.insert(0,'oxygenstress')
         from history_top_state import render as render_history_top
-        (output/'boundtop.f90').write_text(render_history_top((output/'boundtop.f90').read_text(encoding='cp1252'),scheduled_pond=selector('SWPONDMX')==1),encoding='cp1252')
+        from original_ria12_thermal import top_diagnostic as ria12_top_diagnostic
+        (output/'boundtop.f90').write_text(ria12_top_diagnostic(render_history_top((output/'boundtop.f90').read_text(encoding='cp1252'),scheduled_pond=selector('SWPONDMX')==1),project),encoding='cp1252')
         if checkpoint_day is not None or runtime_checkpoint:
             path=output/'swap.f90';source=path.read_text(encoding='cp1252')
             source=replace(source,'use MOD_wofost,only:hybrid_apply_wofost',
@@ -928,6 +929,8 @@ end module plant_interface""")
     patched=hydraulic_vapor_build(output,donor_build,project,patched)
     from model7_terminal_water import apply_build as model7_terminal_build
     patched=model7_terminal_build(output,project,patched)
+    from original_ria12_thermal import apply_build as ria12_thermal_build
+    patched=ria12_thermal_build(output,donor_build,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")

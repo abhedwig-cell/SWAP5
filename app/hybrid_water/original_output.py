@@ -77,8 +77,11 @@ def metadata(project):
                 preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False)
     from original_ria12 import metadata as ria12_metadata
     from original_ria12_boundary import metadata as ria12_boundary_metadata
-    boundary=ria12_boundary_metadata(project)
-    ria12=None if boundary is not None else ria12_metadata(project)
+    from original_ria12_thermal import metadata as ria12_thermal_metadata
+    thermal=ria12_thermal_metadata(project)
+    boundary=None if thermal is not None else ria12_boundary_metadata(project)
+    if thermal is not None:result['original_ria12_thermal']=thermal
+    ria12=None if boundary is not None or thermal is not None else ria12_metadata(project)
     if boundary is not None:result['original_ria12_boundary']=boundary
     if ria12 is not None:result['original_ria12']=ria12
     return result
@@ -91,6 +94,9 @@ def age_identity(original,project):
 
 
 def magic(project):
+    from original_ria12_thermal import selection as ria12_thermal_selection,CODECS as ria12_thermal_codecs
+    thermal=ria12_thermal_selection(project.input_directory,project.original_output)
+    if thermal is not None:return ria12_thermal_codecs[(thermal['snow'],thermal['kind'])]
     from original_ria12_boundary import selection as ria12_boundary_selection,CODECS as ria12_boundary_codecs
     boundary=ria12_boundary_selection(project.input_directory,project.original_output)
     if boundary is not None:return ria12_boundary_codecs[boundary['kind']]
@@ -170,6 +176,9 @@ def render_macro(source,project):
     anchor='      end if\n      close(unit)';assert source.count(anchor)==1
     calls='        call hybrid_output_calendar_checkpoint(unit,.false.)\n'
     if project.solute:calls+='        call hybrid_cde_output_checkpoint(unit,.false.)\n'
+    from original_ria12_thermal import selection as ria12_thermal_selection,render_macro as ria12_thermal_macro
+    if ria12_thermal_selection(project.input_directory,project.original_output) is not None:
+        return ria12_thermal_macro(prefix+source.replace(anchor,calls+anchor,1)+suffix,project)
     from original_ria12 import render_macro as ria12_macro
     from original_ria12_boundary import selection as ria12_boundary_selection,render_macro as ria12_boundary_macro
     if ria12_boundary_selection(project.input_directory,project.original_output) is not None:
