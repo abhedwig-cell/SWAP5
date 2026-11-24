@@ -49,7 +49,9 @@ def main():
         component_root = args.reuse_component
         component = json.loads((component_root / 'COMPONENT.json').read_text())
         assert component['optimization'] == q['optimization'] and component['original_RIA_lf_sha256'] == ORIGINAL_RIA
-        assert component['driver_raw_sha256'] == SHA(driver.read_bytes()) and component['TTUTIL_library_sha256'] == SHA(library.read_bytes())
+        original_driver = (component_root / driver.name).read_bytes()
+        assert component['driver_raw_sha256'] == SHA(original_driver) and component['TTUTIL_library_sha256'] == SHA(library.read_bytes())
+        assert original_driver.replace(b'\r\n', b'\n') == driver.read_bytes().replace(b'\r\n', b'\n') == git('show', component['actual_source'] + ':tests/nomacro_drainage/ria12_reference_probe.f90')
         assert SHA((component_root / 'MOD_RIA.f90').read_bytes()) == component['original_RIA_raw_sha256']
         assert SHA((component_root / 'swap_base.f90').read_bytes()) == component['original_swap_base_raw_sha256'] == SHA(base_source.read_bytes())
         assert SHA((component_root / 'swap_error.f90').read_bytes()) == component['original_error_fragment_sha256'] == SHA(fragment[0])
