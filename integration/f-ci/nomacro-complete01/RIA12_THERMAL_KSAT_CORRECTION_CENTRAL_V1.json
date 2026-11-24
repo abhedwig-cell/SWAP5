@@ -1,0 +1,29 @@
+{
+  "status": "COMPLETE_ORIGINAL_RIA_HCOMEAN_O0_O2_AND_ALL16_ACTUAL_READER_LITERAL_KSAT_CORRECTION_PASS",
+  "optimizations": [
+    {
+      "optimization": "O0",
+      "actual_original_calls": 10,
+      "negative_legacy_means": 7,
+      "corrected_original_saturated_Ksat": [
+        10.0,
+        5.0
+      ]
+    },
+    {
+      "optimization": "O2",
+      "actual_original_calls": 10,
+      "negative_legacy_means": 7,
+      "corrected_original_saturated_Ksat": [
+        10.0,
+        5.0
+      ]
+    }
+  ],
+  "actual_model_readers": 16,
+  "physical_equations_changed": false,
+  "parameter_binding_corrected": true,
+  "tolerance_changed": false,
+  "model_executions": 0,
+  "compiler_executions": 0
+}

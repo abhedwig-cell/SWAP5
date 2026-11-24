@@ -268,4 +268,61 @@ def reference_correction():
         return dict(status='COMPLETE_ORIGINAL_RIA_HCOMEAN_O0_O2_AND_ALL16_ACTUAL_READER_LITERAL_KSAT_CORRECTION_PASS',optimizations=reports,actual_model_readers=16,physical_equations_changed=False,parameter_binding_corrected=True,tolerance_changed=False,model_executions=0,compiler_executions=0)
 
 
+def original_outputs():
+    from implicit_conductivity_forensics import output_records, output_continuation
+    with ExitStack() as stack:
+        pool=Pool(stack);win=setup_windows(pool);results=[]
+        for platform in ('Windows','Ubuntu'):
+            for opt in ('O0','O2'):
+                archive=win if platform=='Windows' else f'RIA12_THERMAL_UBUNTU_{opt}_ORIGINAL_V1'
+                if platform=='Ubuntu':pool.add('/home/runner/work/_temp/builds',archive,'compiled')
+                for kind in ('water','cde'):
+                    for snow in (0,1):
+                        if platform=='Windows':
+                            version='v2' if opt=='O0' else 'v1';prefix=f'evidence/ria12-thermal-{kind}-snow{snow}-Windows-{opt}-full35-{version}'
+                        else:prefix=f'current/{kind}-snow{snow}'
+                        profile=pool.view(archive,prefix);q=read(profile/'RESULT.json');_,meta=build(pool,q['build_root'],q['actual_BUILD_sha256'])
+                        def outputs(root):return {p.name:output_records(p.read_bytes(),p.name) for p in (root/'original').glob('result_output.*') if p.suffix in ('.csv','.bin')}
+                        warm=outputs(profile/'trajectory');observed=[]
+                        for item in q['cold']:
+                            low,high=item['start'],item['end'];proof=output_continuation(warm,outputs(profile/f'own-{low}'),meta['identity']['original_output'],low,high,meta['project']['start_date'])
+                            assert proof==item['exact_original_output']
+                            observed.append(dict(low=low,high=high,exact=proof))
+                        results.append(dict(platform=platform,optimization=opt,kind=kind,snow=snow,cold=observed))
+        assert len(results)==16 and sum(len(x['cold']) for x in results)==48
+        return dict(status='ACTUAL_ALL16_ORIGINAL_USER_OUTPUTS_ALL48_COLD_CONTINUATIONS_FRESH_EXACT_PASS',contexts=results,model_executions=0,compiler_executions=0)
+
+
+def short_proofs():
+    from ria12_thermal_science import original_samples,standard_cde_daily
+    from implicit_conductivity_forensics import water,output_records,output_continuation
+    with ExitStack() as stack:
+        pool=Pool(stack);name=setup_windows(pool);results=[]
+        for kind in ('water','cde'):
+            for snow in (0,1):
+                label=f'ria12-thermal-{kind}-snow{snow}-O0-corrected-short-v1';profile=pool.view(name,'evidence/'+label);samples=pool.view(name,'evidence/'+label+'-original-samples')
+                q=read(profile/'RESULT.json');sample=read(samples/'RESULT.json')
+                assert q['status']=='ACTUAL_RIA12_THERMAL_SNOW_TWO_DAY_PHYSICAL_NATIVE_COLD_USER_OUTPUT_PASS_NOT_ADMITTED' and q['source']==q['actual_completion_head']=='7562dbb2ac547832494952140e3ee58734670707'
+                _,meta=build(pool,q['build_root'],q['actual_BUILD_sha256']);data=rows(profile/'trajectory');assert len(data)==2 and [x['day'] for x in data]==[1,2]
+                assert sample['profile_RESULT_sha256']==SHA((profile/'RESULT.json').read_bytes()) and sample['daily_sha256']==SHA((profile/'trajectory/daily.jsonl').read_bytes())
+                component=pool.resolve(sample['component_root']);assert read(component/'COMPONENT.json')==sample['component']
+                original_samples(samples,component,sample,pool.resolve(q['input_root']),data)
+                parameters=(samples/'original-parameters.bin').read_bytes();cold=rows(profile/'own-1');assert physical(cold)==physical(data[1:])
+                water(data);water(cold)
+                if kind=='cde':standard_cde_daily(profile/'trajectory',data,meta['project']['start_date']);standard_cde_daily(profile/'own-1',cold,meta['project']['start_date'])
+                for folder,observed in ((profile/'trajectory',data),(profile/'own-1',cold)):
+                    for row in observed:
+                        with zipfile.ZipFile(io.BytesIO((folder/f"accepted-column-1-day-{row['day']}.zip").read_bytes())) as z:
+                            receipt=json.loads(z.read('checkpoint.json'));assert receipt['binding']==meta['binding'] and receipt['receipt']==row
+                            assert all(SHA(z.read(n))==digest for n,digest in receipt['files'].items())
+                            native(z.read('macro.bin'),row,meta,parameters)
+                            from ria12_thermal_native import physical_restart
+                            physical_restart(z.read('result.end'),row,meta)
+                exact_native(profile/'trajectory/accepted-column-1-day-2.zip',profile/'own-1/accepted-column-1-day-2.zip')
+                def outputs(root):return {p.name:output_records(p.read_bytes(),p.name) for p in (root/'original').glob('result_output.*') if p.suffix in ('.csv','.bin')}
+                proof=output_continuation(outputs(profile/'trajectory'),outputs(profile/'own-1'),meta['identity']['original_output'],1,2,meta['project']['start_date']);assert proof==q['cold'][0]['exact_original_output']
+                results.append(dict(kind=kind,snow=snow,days=2,cold=1,original_stock_difference_cm=sample['maximum_original_theta_stock_difference_cm']))
+        return dict(status='ACTUAL_FOUR_CORRECTED_RIA_HEAT_SNOW_SHORT_ORIGINAL_STOCK_COMPLETE_NATIVE_AND_USER_COLD_PASS',contexts=results,model_executions=0,compiler_executions=0)
+
+
 if __name__=='__main__':main()
