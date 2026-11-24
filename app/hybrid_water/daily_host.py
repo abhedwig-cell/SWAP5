@@ -931,6 +931,8 @@ end module plant_interface""")
     patched=model7_terminal_build(output,project,patched)
     from original_ria12_thermal import apply_build as ria12_thermal_build
     patched=ria12_thermal_build(output,donor_build,project,patched)
+    from original_ria12_corrected import apply_build as ria12_corrected_build
+    patched=ria12_corrected_build(output,donor_build,project,patched)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")

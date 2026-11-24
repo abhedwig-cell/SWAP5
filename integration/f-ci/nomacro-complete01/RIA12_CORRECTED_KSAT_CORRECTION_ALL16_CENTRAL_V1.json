@@ -1,0 +1,150 @@
+{
+  "status": "COMPLETE_ORIGINAL_QUALIFIED_RIA_HCOMEAN_AND_ALL16_CORRECTED_NOHEAT_READER_LITERAL_INVERSES_PASS",
+  "original_component": {
+    "status": "COMPLETE_ORIGINAL_RIA_HCOMEAN_O0_O2_AND_ALL16_ACTUAL_READER_LITERAL_KSAT_CORRECTION_PASS",
+    "optimizations": [
+      {
+        "optimization": "O0",
+        "actual_original_calls": 10,
+        "negative_legacy_means": 7,
+        "corrected_original_saturated_Ksat": [
+          10.0,
+          5.0
+        ]
+      },
+      {
+        "optimization": "O2",
+        "actual_original_calls": 10,
+        "negative_legacy_means": 7,
+        "corrected_original_saturated_Ksat": [
+          10.0,
+          5.0
+        ]
+      }
+    ],
+    "actual_model_readers": 16,
+    "physical_equations_changed": false,
+    "parameter_binding_corrected": true,
+    "tolerance_changed": false,
+    "model_executions": 0,
+    "compiler_executions": 0
+  },
+  "current_readers": [
+    {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": "water-primary-dry",
+      "actual_compiler": "aa8580218dff2de7f245e5596d2a5a71ee204c13",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": "cde-primary-dry",
+      "actual_compiler": "aa8580218dff2de7f245e5596d2a5a71ee204c13",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": "water-boundary5",
+      "actual_compiler": "aa8580218dff2de7f245e5596d2a5a71ee204c13",
+      "actual_readswap_sha256": "27204fcaa18333c357570dee6fdb05dcc40eb0fc8168e021f6165fcfa4293f79"
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O0",
+      "case": "cde-wet8-d1",
+      "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": "water-primary-dry",
+      "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": "cde-primary-dry",
+      "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": "water-boundary5",
+      "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_readswap_sha256": "27204fcaa18333c357570dee6fdb05dcc40eb0fc8168e021f6165fcfa4293f79"
+    },
+    {
+      "platform": "Windows",
+      "optimization": "O2",
+      "case": "cde-wet8-d1",
+      "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": "water-primary-dry",
+      "actual_compiler": "45424631ba4fe62c349110129e8f796005893d7f",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": "cde-primary-dry",
+      "actual_compiler": "45424631ba4fe62c349110129e8f796005893d7f",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": "water-boundary5",
+      "actual_compiler": "45424631ba4fe62c349110129e8f796005893d7f",
+      "actual_readswap_sha256": "27204fcaa18333c357570dee6fdb05dcc40eb0fc8168e021f6165fcfa4293f79"
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O0",
+      "case": "cde-wet8-d1",
+      "actual_compiler": "45424631ba4fe62c349110129e8f796005893d7f",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": "water-primary-dry",
+      "actual_compiler": "45424631ba4fe62c349110129e8f796005893d7f",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": "cde-primary-dry",
+      "actual_compiler": "45424631ba4fe62c349110129e8f796005893d7f",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": "water-boundary5",
+      "actual_compiler": "45424631ba4fe62c349110129e8f796005893d7f",
+      "actual_readswap_sha256": "27204fcaa18333c357570dee6fdb05dcc40eb0fc8168e021f6165fcfa4293f79"
+    },
+    {
+      "platform": "Ubuntu",
+      "optimization": "O2",
+      "case": "cde-wet8-d1",
+      "actual_compiler": "45424631ba4fe62c349110129e8f796005893d7f",
+      "actual_readswap_sha256": "77ecd8da7c9791af948d072eb8c218da7b94c90e5b8f9f0fedc64b9aeca2e264"
+    }
+  ],
+  "physical_equations_changed": false,
+  "tolerance_changed": false,
+  "model_executions": 0,
+  "compiler_executions": 0
+}

@@ -1,0 +1,7 @@
+{
+  "actual_source": "5a8c6a872a95d91183a4925827866cf4eebb67cb",
+  "error": "AttributeError: 'ReadView' object has no attribute 'seek'",
+  "correction": "Give ZipFile explicit immutable archive-member bytes through io.BytesIO; never make an archive view impersonate an operating-system path.",
+  "model_periods_replayed": 0,
+  "originals_rewritten": false
+}

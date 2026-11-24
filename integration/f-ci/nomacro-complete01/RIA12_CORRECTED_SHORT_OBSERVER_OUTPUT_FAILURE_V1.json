@@ -1,0 +1,8 @@
+{
+  "actual_source": "f5e82debe6",
+  "error": "AttributeError: 'ZipFile' object has no attribute 'output'",
+  "phase": "All16 actual short native/physical/original RIA checks completed; output path argument shadowed by ZIP context variable",
+  "correction": "Rename ZIP context variables only",
+  "model_periods_replayed": 0,
+  "originals_rewritten": false
+}

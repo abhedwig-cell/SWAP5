@@ -1,0 +1,21 @@
+{
+  "status": "ACTUAL_ORIGINAL_READER_MIXED_RIA12_NOT_A_SIMPLE_ADMISSION_GUARD",
+  "classification": "REFERENCE_DEFECT",
+  "original_provider_source": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-selected\\readswap.f90",
+  "raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+  "lf_sha256": "e6fc217798d3f0424641c61b92fb8831fcdeb78c19670def00695b82ab8e80fe",
+  "actual_reader_branches": [
+    {
+      "lines": "556..562",
+      "text": "            if (maxval(iHWCKmodel(1:numlay)) == 12) then\n               ! use MOD_RIA\n               if (swhyst > 0) call swap_error('readswap', 'Combination of MOD_RIA and hysteresis (SWHYST = 1) is not possible.')\n               call RIA_Reader()\n               call swap_warning ('readswap', 'Using RIA model (by Gerrit de Rooij) for soil physical properties')\n            else\n               call rdfdor ('osat',0.d0,1.0d0,osat,maho,numlay)"
+    },
+    {
+      "lines": "628..637",
+      "text": "         if (maxval(iHWCKmodel(1:numlay)) == 12) then\n            ! set some van Gencuhten parameters erqual to MOD_RIA equivalents (for safety)\n            ores(1:numlay)          = 0.0d0\n            osat(1:numlay)          = dble(SWRCpars(1:numlay, 1))\n            h_enpr_global(1:numlay) = dble(SWRCpars(1:numlay, 2))\n            alfa(1:numlay)          = dble(SWRCpars(1:numlay, 4))\n            npar(1:numlay)          = dble(SWRCpars(1:numlay, 5))\n            ksatfit(1:numlay)       = dble(UHCCpars(1:numlay, 1))\n            lexp(1:numlay)          = dble(UHCCpars(1:numlay, 6))\n         end if"
+    }
+  ],
+  "finding": "maxval(iHWCKmodel)==12 selects RIA_Reader for the whole column and bypasses the ordinary model1..11 parameter-reader branch. It then replaces van Genuchten compatibility arrays for every layer with RIA arrays. Mixed12/other selectors cannot be enabled solely by removing the all12 guard; per-layer original parameter-reader validity requires separate reference-defect investigation.",
+  "new_physical_claim": false,
+  "canonical_admission": false,
+  "whole_family_closed": false
+}
