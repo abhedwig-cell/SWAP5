@@ -75,6 +75,10 @@ def controls(pool, folder, profile, meta, parameters):
             raise AssertionError('Independent complete RIA reader accepted ' + label)
     for item in q['private_input_refusals']:
         root = folder / item['attack']
+        key, value = {'private-HeatOn': ('HeatOn', '.TRUE.'), 'private-VaporCond': ('VaporCond', '.TRUE.'), 'private-constitutive-ksat': ('RIA_UHCC_ksat', '11.0 5.0')}[item['attack']]
+        before = (positive / 'original/swap.swp').read_bytes()
+        expected, count = re.subn(rb'(?mi)^([ \t]*' + key.encode() + rb'[ \t]*=[ \t]*)[^!\r\n]*', lambda m: m[1] + value.encode(), before)
+        assert count == 1 and (root / 'original/swap.swp').read_bytes() == expected
         assert (root / 'origin/macro.bin').read_bytes() == good
         assert b'HYBRID_READY' not in (root / 'donor.stdout').read_bytes() and b'ERROR STOP' in (root / 'donor.stderr').read_bytes()
     return dict(native_refusals=39, private_input_refusals=3, own_positive=True, compiled_files=len(postimages), actual_compiler=q['actual_compiler_source'])
@@ -117,15 +121,40 @@ def postimage(pool, folder, profile, meta, parameters):
     return dict(compiled_files=count, generated_sources=sources, cde_short_native_exact=bool(short), actual_compiler=q['actual_compiler_source'])
 
 
-def transactions(folder, profile):
+def transactions(pool, folder, profile, parameters):
     q = read(folder / 'RESULT.json')
     assert q['status'] == 'RIA12_ACTUAL_EXTERNAL_DISCARD_REPLAY_ACCEPT_RECOVER_EXACT_PASS_NOT_ADMITTED'
     assert q['full35_producer'] == read(profile / 'RESULT.json')['source']
     assert q['full35_periods_replayed'] == q['compiler_executions'] == 0 and not q['original_checkpoint_metadata_or_binding_rewritten']
     assert q['external_worker_prepares'] == 3 and q['external_commits'] == 1
     assert all(q[key] for key in ('discard_no_day_advance', 'replay_exact', 'accept_exact', 'recovered_next_day_exact', 'origin_unchanged'))
-    # Actual journals and accepted native, in addition to the producer assertions.
-    assert (folder / 'external').rglob('*') and (folder / 'recovered').rglob('*')
+    _, meta = build(pool, q['actual_build_root'], q['actual_BUILD_sha256'])
+    data = rows(profile / 'trajectory')
+    stages = [('external/trial-1', 5), ('external/trial-2', 5), ('external', 5), ('recovered/trial-1', 6)]
+    for stage, day in stages:
+        path = folder / stage / f'accepted-column-1-day-{day}.zip'
+        with zipfile.ZipFile(io.BytesIO(path.read_bytes())) as z:
+            receipt = json.loads(z.read('checkpoint.json'))
+            binding = receipt['binding']
+            if 'external_daily' in binding:
+                assert {k: v for k, v in binding.items() if k != 'external_daily'} == meta['binding']
+            else:
+                assert binding == meta['binding']
+            actual_receipt = receipt['receipt']
+            if stage == 'external':
+                coupling = actual_receipt['coupling']
+                assert coupling['id'] == 'original-output' and coupling['revision'] == 1 and coupling['origin_revision'] == 0 and coupling['origin_day'] == 4 and coupling['forcing'] == 'original-project'
+                assert coupling['origin_sha256'] == SHA(pool.resolve(q['actual_origin']).read_bytes())
+            else:
+                assert 'coupling' not in actual_receipt
+            assert physical([{k: v for k, v in actual_receipt.items() if k != 'coupling'}]) == physical([data[day - 1]])
+            assert all(SHA(z.read(name)) == digest for name, digest in receipt['files'].items())
+            native(z.read('macro.bin'), data[day - 1], meta, parameters)
+    exact_native(folder / 'external/trial-1/accepted-column-1-day-5.zip', folder / 'external/trial-2/accepted-column-1-day-5.zip')
+    exact_native(folder / 'external/trial-2/accepted-column-1-day-5.zip', folder / 'external/accepted-column-1-day-5.zip')
+    if q['targeted_current_prefix_days']:
+        assert q['targeted_current_prefix_days'] == 4 and physical(rows(folder / 'current-prefix4')) == physical(data[:4])
+        exact_native(folder / 'current-prefix4/accepted-column-1-day-4.zip', profile / 'trajectory/accepted-column-1-day-4.zip')
     return dict(exact_external_transaction=True, actual_control_source=q['actual_observer_source'], targeted_prefix_days=q['targeted_current_prefix_days'])
 
 
@@ -174,10 +203,45 @@ def audit(platform, optimization):
                 tx = pool.view(supplement_name, kind + '-transactions')
             item = dict(kind=kind, optimization=optimization, actual_producer=q['source'], original_observer=observer, independent=actual,
                         native_controls=controls(pool, control, profile, meta, parameters), opposite_initial=postimage(pool, post, profile, meta, parameters),
-                        external=transactions(tx, profile) if tx else None, native=7, cold=3)
+                        external=transactions(pool, tx, profile, parameters) if tx else None, native=7, cold=3)
             result.append(item)
         return dict(status='ACTUAL_RIA12_CENTRAL_ORIGINAL_STOCK_GLOBAL_SOLUTE_NATIVE_COLD_COMPILED_AND_EXTERNAL_PASS', platform=platform, optimization=optimization,
                     contexts=result, full35_periods=2, model_executions=0, compiler_executions=0, metadata_or_source_views_faked=False, canonical_admission=False)
+
+
+def preservation(optimization):
+    assert optimization in ('O0', 'O2')
+    with ExitStack() as stack:
+        pool = Pool(stack)
+        name = 'RIA12_WINDOWS_RAW_V1'
+        store = pool.store(name)
+        for path, item in json.loads(store.get('ACTUAL_ARCHIVE_LOCATIONS_V1.json')).items():
+            pool.add(path, name, item['prefix'])
+        label = 'ria12-current-model1-preservation-O0-v1' if optimization == 'O0' else 'ria12-model1-O2-same-real-source-root-v2'
+        q = read(pool.view(name, 'evidence/' + label) / 'RESULT.json')
+        key = 'baseline_BUILD_sha256' if optimization == 'O0' else 'actual_baseline_BUILD_sha256'
+        left, a = build(pool, q['actual_baseline_build_root'], q[key])
+        right, b = build(pool, q['actual_current_build_root'], q['actual_current_BUILD_sha256'])
+        assert a['inputs'] == b['inputs'] and q['model_executions'] == 0
+        assert 'original_ria12' not in a['identity']['original_output'] and 'original_ria12' not in b['identity']['original_output']
+        source_count = generated(left, right)
+        files = compiled(left, right)
+        assert len(files) == 43
+        if optimization == 'O2':
+            assert q['actual_canonical'] == q['actual_baseline_compiler_source'] == '310abf1c99b028a977b0282b6f72ae6181b2cf8f'
+            assert q['actual_current_head_restored'] == q['actual_current_compiler_source'] == q['current_head'] == '41583a1f5a35d6e231af085211e995b50b9d5feb'
+            assert q['HEAD_or_paths_projected'] is False
+            # Retain and independently refuse the earlier unlike-path comparison.
+            failed = pool.resolve(q['actual_current_build_root'].replace('current/bundle', 'genuine-canonical-baseline/bundle').replace('current\\bundle', 'genuine-canonical-baseline\\bundle'))
+            try:
+                compiled(failed, right)
+            except AssertionError:
+                pass
+            else:
+                raise AssertionError('Unlike diagnostic paths unexpectedly passed strict compiler-image comparison')
+        return dict(status='ACTUAL_UNSELECTED_MODEL1_ORIGINAL_ALL43_COMPILED_AND_GENERATED_POSTIMAGES_PASS', optimization=optimization,
+                    generated_sources=source_count, files=files, original_producer=q.get('genuine_baseline_source', q.get('actual_baseline_compiler_source')),
+                    current_producer=q.get('actual_current_source', q.get('actual_current_compiler_source')), model_executions=0, compiler_executions=0, canonical_admission=False)
 
 
 def main():
