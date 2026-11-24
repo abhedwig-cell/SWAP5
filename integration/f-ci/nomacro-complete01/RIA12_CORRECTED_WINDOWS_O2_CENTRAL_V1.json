@@ -1,0 +1,441 @@
+{
+  "status": "FOUR_ORIGINAL_CORRECTED_NOHEAT_CENTRAL_GLOBAL_ORIGINAL_RIA_NATIVE_COLD_COMPILED_AND_EXTERNAL_PASS_NOT_ADMITTED",
+  "platform": "Windows",
+  "optimization": "O2",
+  "contexts": [
+    {
+      "case": "water-primary-dry",
+      "kind": "water",
+      "optimization": "O2",
+      "actual_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_original_observer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_CORRECTED_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_compiler_source": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_BUILD_sha256": "e84a73bbcd8217dbff291b121c6a8bfa4cf12a48502742ef46754f7619428376",
+        "kind": "water",
+        "optimization": "O2",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -3.073929999430902e-13
+          },
+          "solute": null,
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ]
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -2.0816681711721685e-15
+            },
+            "solute": null,
+            "native_samples": [
+              4
+            ]
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -3.552713678800501e-15
+            },
+            "solute": null,
+            "native_samples": [
+              9
+            ]
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -3.552713678800501e-15
+            },
+            "solute": null,
+            "native_samples": [
+              34
+            ]
+          }
+        ],
+        "actual_original_constitutive_observations": 2380,
+        "maximum_original_theta_stock_difference_cm": 7.105427357601002e-15,
+        "decimal_global_maximum_absolute_residual_cm": "4.4E-14",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_controls": {
+        "native_refusals": 43,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 45,
+        "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549"
+      },
+      "opposite_initial": {
+        "compiled_files": 45,
+        "generated_sources": 15,
+        "cde_short_native_exact": false,
+        "actual_compiler": "8dbe27a91b342847bf1d47582bace28743fc6a74",
+        "actual_original_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_original_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "retained_original_observer_compiler_field": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "original_observer_field_is_model_producer": true
+      },
+      "external": {
+        "exact_external_transaction": true,
+        "actual_control_source": "8dbe27a91b342847bf1d47582bace28743fc6a74",
+        "targeted_prefix_days": 0
+      }
+    },
+    {
+      "case": "cde-primary-dry",
+      "kind": "cde",
+      "optimization": "O2",
+      "actual_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_original_observer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_CORRECTED_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_compiler_source": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_BUILD_sha256": "364e0b0dda4417bb468f4d97602679620fcb00dfa0731b707cb23d19af1fa51d",
+        "kind": "cde",
+        "optimization": "O2",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -2.8211877278749853e-12
+          },
+          "solute": {
+            "unchanged_ledger": null,
+            "actual_standard_daily_output": {
+              "actual_original_daily_receipts": 35,
+              "actual_paired_original_chemical_ledgers": 70
+            }
+          },
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ]
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -2.0816681711721685e-15
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              4
+            ]
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -7.105427357601002e-15
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              9
+            ]
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -7.105427357601002e-15
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 4,
+                "actual_paired_original_chemical_ledgers": 8
+              }
+            },
+            "native_samples": [
+              34
+            ]
+          }
+        ],
+        "actual_original_constitutive_observations": 2380,
+        "maximum_original_theta_stock_difference_cm": 1.0658141036401503e-14,
+        "decimal_global_maximum_absolute_residual_cm": "2.57163E-12",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_controls": {
+        "native_refusals": 43,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 54,
+        "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549"
+      },
+      "opposite_initial": {
+        "compiled_files": 54,
+        "generated_sources": 18,
+        "cde_short_native_exact": true,
+        "actual_compiler": "8dbe27a91b342847bf1d47582bace28743fc6a74",
+        "actual_original_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_original_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "retained_original_observer_compiler_field": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "original_observer_field_is_model_producer": true
+      },
+      "external": {
+        "exact_external_transaction": true,
+        "actual_control_source": "8dbe27a91b342847bf1d47582bace28743fc6a74",
+        "targeted_prefix_days": 0
+      }
+    },
+    {
+      "case": "water-boundary5",
+      "kind": "water",
+      "optimization": "O2",
+      "actual_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_original_observer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_CORRECTED_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_compiler_source": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_BUILD_sha256": "49fd14694a67fd7d54a2a4e56cde6ac34d24c99409845d72aedb8aaa7f5790c9",
+        "kind": "water",
+        "optimization": "O2",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -9.43689570931383e-16
+          },
+          "solute": null,
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ]
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 7.077671781985373e-15
+            },
+            "solute": null,
+            "native_samples": [
+              4
+            ]
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 0.0
+            },
+            "solute": null,
+            "native_samples": [
+              9
+            ]
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": 0.0
+            },
+            "solute": null,
+            "native_samples": [
+              34
+            ]
+          }
+        ],
+        "actual_original_constitutive_observations": 2380,
+        "maximum_original_theta_stock_difference_cm": 1.4210854715202004e-14,
+        "decimal_global_maximum_absolute_residual_cm": "8.42E-15",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_controls": {
+        "native_refusals": 43,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 45,
+        "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549"
+      },
+      "opposite_initial": {
+        "compiled_files": 45,
+        "generated_sources": 16,
+        "cde_short_native_exact": false,
+        "actual_compiler": "8dbe27a91b342847bf1d47582bace28743fc6a74",
+        "actual_original_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_original_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "retained_original_observer_compiler_field": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "original_observer_field_is_model_producer": true
+      },
+      "external": {
+        "exact_external_transaction": true,
+        "actual_control_source": "8dbe27a91b342847bf1d47582bace28743fc6a74",
+        "targeted_prefix_days": 0
+      }
+    },
+    {
+      "case": "cde-wet8-d1",
+      "kind": "cde",
+      "optimization": "O2",
+      "actual_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "actual_original_observer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_CORRECTED_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_compiler_source": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_BUILD_sha256": "25c07efb750575b18f941736e6a3d8506222c10d5a7587542f14e40100dbe4c3",
+        "kind": "cde",
+        "optimization": "O2",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -2.0615453788508376e-14
+          },
+          "solute": {
+            "unchanged_ledger": null,
+            "actual_standard_daily_output": {
+              "actual_original_daily_receipts": 35,
+              "actual_paired_original_chemical_ledgers": 70
+            }
+          },
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ]
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -2.220446049250313e-15
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              4
+            ]
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 0.0
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              9
+            ]
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": 0.0
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 4,
+                "actual_paired_original_chemical_ledgers": 8
+              }
+            },
+            "native_samples": [
+              34
+            ]
+          }
+        ],
+        "actual_original_constitutive_observations": 2380,
+        "maximum_original_theta_stock_difference_cm": 1.4210854715202004e-14,
+        "decimal_global_maximum_absolute_residual_cm": "2.6866E-14",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_controls": {
+        "native_refusals": 43,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 54,
+        "actual_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549"
+      },
+      "opposite_initial": {
+        "compiled_files": 54,
+        "generated_sources": 19,
+        "cde_short_native_exact": true,
+        "actual_compiler": "8dbe27a91b342847bf1d47582bace28743fc6a74",
+        "actual_original_compiler": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "actual_original_model_producer": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "retained_original_observer_compiler_field": "8d67858c5c28f9e73a8c1b62dd8aeab1fa59e549",
+        "original_observer_field_is_model_producer": true
+      },
+      "external": {
+        "exact_external_transaction": true,
+        "actual_control_source": "8dbe27a91b342847bf1d47582bace28743fc6a74",
+        "targeted_prefix_days": 0
+      }
+    }
+  ],
+  "full35_periods": 4,
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "source_or_metadata_views_faked": false,
+  "canonical_admission": false,
+  "extra_wet_primary_stress_inherited_PASS": false
+}
