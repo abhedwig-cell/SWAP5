@@ -6,6 +6,7 @@ import implicit_conductivity_runtime as original
 from analytical_hydraulic_archives import SHA
 p=argparse.ArgumentParser()
 for key in ('profile','reference-work','model1-origin','legacy-ria-origin','other-kind-origin','output'):p.add_argument('--'+key,type=Path,required=True)
+p.add_argument('--build-root',type=Path)
 a=p.parse_args()
 from ria12_source import complete_inverse
 complete_inverse()
@@ -17,10 +18,22 @@ bundle=Path(q['build_root']);reference=a.reference_work
 oldmeta=meta=json.loads((bundle/'BUILD.json').read_text())
 assert SHA((bundle/'BUILD.json').read_bytes())==q['actual_BUILD_sha256']
 project=original.m.e.load(q['input_root'],original_output=True,time_step_policy='original-adaptive-day-seed-v1')
+oldbundle=bundle
+postimage=None
+if a.build_root:
+ bundle=a.build_root/'bundle'
+ command=[sys.executable,'-B','tools/solute/run_water.py','--model',project.model,'--experimental-project',q['input_root'],'--original-output','--experimental-time-step-policy',project.time_step_policy,'--reference-work',str(reference),'--build-only','--donor-opt',q['optimization'],'--kernel-opt',q['optimization'],'--output',str(bundle)]
+ a.output.mkdir()
+ with (a.output/'build.stdout').open('xb') as out,(a.output/'build.stderr').open('xb') as err:r=subprocess.run(command,cwd=R,stdout=out,stderr=err,timeout=240)
+ r.check_returncode()
+ meta=json.loads((bundle/'BUILD.json').read_text())
+ from snow58_compiled_postimage import compare
+ postimage=compare(oldbundle,bundle)
+ assert meta['inputs']==oldmeta['inputs']
 original.m.validate_bundle(bundle,reference,project)
 codec=b'S5RIW001' if q['kind']=='water' else b'S5RIC001'
 assert meta['identity']['original_output']['native_codec']==codec.decode()
-a.output.mkdir()
+a.output.mkdir(exist_ok=True)
 own=profile/'trajectory/accepted-column-1-day-2.zip';ownsha=SHA(own.read_bytes())
 with zipfile.ZipFile(own) as z:good=z.read('macro.bin')
 with zipfile.ZipFile(a.model1_origin) as z:model1=z.read('macro.bin')
@@ -45,7 +58,7 @@ for index in (0,3,8,19):
   if both:raw[at+parameter_size+16*index]^=1
   attacks.append((f'parameter-{index}-'+('both' if both else 'header'),bytes(raw)))
 raw=bytearray(good);nan=(1|32767<<112).to_bytes(16,'little');raw[at:at+16]=nan;raw[at+parameter_size:at+parameter_size+16]=nan;attacks.append(('nonfinite-parameter-both',bytes(raw)))
-record=dict(status='RUNNING',actual_observer_source=head,actual_compiler_source=q['source'],genuine_checkpoint_producer=q['source'],genuine_checkpoint_sha256=ownsha,actual_BUILD_sha256=SHA((bundle/'BUILD.json').read_bytes()),actual_current_build_root=str(bundle),kind=q['kind'],optimization=q['optimization'],compiled_refusals=[],private_input_refusals=[],compiler_executions=0,model_periods=0,accepted_model_days=0,original_checkpoint_metadata_or_binding_rewritten=False,canonical_admission=False)
+record=dict(status='RUNNING',actual_observer_source=head,actual_compiler_source=head if a.build_root else q['source'],actual_compiled_postimage=postimage,genuine_checkpoint_producer=q['source'],genuine_checkpoint_sha256=ownsha,actual_BUILD_sha256=SHA((bundle/'BUILD.json').read_bytes()),actual_current_build_root=str(bundle),kind=q['kind'],optimization=q['optimization'],compiled_refusals=[],private_input_refusals=[],compiler_executions=int(a.build_root is not None),model_periods=0,accepted_model_days=0,original_checkpoint_metadata_or_binding_rewritten=False,canonical_admission=False)
 def save():(a.output/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n')
 def run(label,raw,change=None):
  root=a.output/label;root.mkdir();origin=root/'origin';receipt=original.m.h.verify_checkpoint(own,2,oldmeta['binding'],origin);(origin/'macro.bin').write_bytes(raw);directory=root/'original';original.m.h.prepare_column(Path(q['input_root']),directory,original.m.h.ColumnStart('original',2,origin,receipt),True,True,project)
