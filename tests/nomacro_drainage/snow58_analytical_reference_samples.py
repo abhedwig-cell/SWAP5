@@ -39,7 +39,7 @@ def build(reference,folder,opt,output):
    after='   C_MvG_2_s = (WCs-WCr)*(Omega1*C1(h) + Omega2*C2(h))/(1.0d0-Omega1*Gam01-Omega2*Gam02)'
    assert text.count(before)==1;raw=text.replace(before,after,1).encode('cp1252');assert SHA(raw)=='7910cd29c045037778bfffdc7e40a77802d70fb477e0afa78be426776bd26e27'
   target=folder/source.name;target.write_bytes(raw);obj=folder/(name+'.o');compile([*flags,'-c',str(target),'-o',str(obj)]);affected[objects/(name+'.o')]=obj;q['original_rebuilt_sources'][source.name]=SHA(raw);(output/source.name).write_bytes(raw)
- driver=ROOT/'tests/nomacro_drainage/explicit_bottom9_snow_analytical_reference_probe.f90';q['driver_sha256']=SHA(driver.read_bytes());obj=folder/'driver.o';compile([*flags,'-c',str(driver),'-o',str(obj)])
+ driver=ROOT/'tests/nomacro_drainage/snow58_analytical_reference_probe.f90';q['driver_sha256']=SHA(driver.read_bytes());obj=folder/'driver.o';compile([*flags,'-c',str(driver),'-o',str(obj)])
  selected={lookup[symbol] for values in symbols([obj,*affected.values()],'--undefined-only').values() for symbol in values if symbol in lookup}
  while True:
   before=set(selected)
@@ -61,7 +61,7 @@ def main():
  heads=sorted({-10.,*(h for row in rows for h in row['pressure_head_cm'])});text=str(len(heads))+'\n'+'\n'.join(repr(h) for h in heads)+'\n';sample=a.output/'actual-heads.txt';sample.write_text(text);assert [float(x) for x in text.splitlines()[1:]]==heads
  component=build(a.reference_work,a.build_root,prior['optimization'],a.output) if a.build_root else json.loads((a.reuse_component/'COMPONENT.json').read_text())
  assert component['status']=='ACTUAL_ORIGINAL_SAMPLED_CONSTITUTIVE_COMPONENT_COMPILED_NO_MODEL_PERIOD' and component['optimization']==prior['optimization'] and git('cat-file','-t',component['source']).strip()==b'commit'
- assert component['driver_sha256']==SHA((ROOT/'tests/nomacro_drainage/explicit_bottom9_snow_analytical_reference_probe.f90').read_bytes())
+ assert component['driver_sha256']==SHA((ROOT/'tests/nomacro_drainage/snow58_analytical_reference_probe.f90').read_bytes())
  for name,digest in component['original_provider_files'].items():assert SHA((a.reference_work/name).read_bytes())==digest
  executable=Path(component['build_root'])/component['executable'];assert SHA(executable.read_bytes())==component['executable_sha256']
  start=time.perf_counter();r=subprocess.run([str(executable),str(model),str(sample),str(Path(prior['input_root'])/'swap.swp')],cwd=a.output,capture_output=True,text=True,timeout=90);(a.output/'sample.stdout').write_text(r.stdout);(a.output/'sample.stderr').write_text(r.stderr);r.check_returncode();assert not r.stderr
