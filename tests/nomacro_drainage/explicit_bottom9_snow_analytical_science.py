@@ -57,12 +57,21 @@ if a.reference_samples:
   if line.startswith('ACTUAL_ORIGINAL_HYDRAULIC_SAMPLE '):
    words=line.split();model,soil,index=map(int,words[1:4]);values=list(map(float,words[4:]));assert len(words)==14 and model==sample['model'] and soil in (1,2) and 1<=index<=len(sample['heads']) and values[0]==sample['heads'][index-1] and (soil,index) not in observed;observed[soil,index]=values
  assert len(observed)==2*len(sample['heads'])
- for index in range(1,len(sample['heads'])+1):assert observed[1,index]==observed[2,index]==sample['observations'][index-1]
- samples={row[0]:row for row in sample['observations']};residual=[]
- import math
+ assert sample['actual_soil_input_sha256']==SHA((inputs/'swap.swp').read_bytes())
+ for soil in (1,2):
+  for index in range(1,len(sample['heads'])+1):assert observed[soil,index]==sample['observations_by_layer'][str(soil)][index-1]
+ samples={soil:{row[0]:row for row in sample['observations_by_layer'][str(soil)]} for soil in (1,2)};residual=[]
+ import math,re
+ table=re.search(r'(?mi)^\s*ISUBLAY\s+ISOILLAY\s+HSUBLAY\s+NCOMP\s*\n(.*?)^\* End of table',text,re.S);assert table
+ layers=[]
+ for line in table[1].splitlines():
+  values=line.split('!')[0].split()
+  if values:
+   assert len(values)==4 and int(values[1]) in (1,2) and int(values[3])>0;layers.extend([int(values[1])]*int(values[3]))
+ assert len(layers)==len(dz)==meta['project']['nodes']
  for row in data:
-  assert all(head in samples for head in row['pressure_head_cm'])
-  stock=math.fsum(samples[head][1]*height for head,height in zip(row['pressure_head_cm'],dz));error=abs(stock-row['stock_end_cm'][0]);assert error<=1e-10;residual.append(error)
+  assert all(head in samples[soil] for soil,head in zip(layers,row['pressure_head_cm']))
+  stock=math.fsum(samples[soil][head][1]*height for soil,head,height in zip(layers,row['pressure_head_cm'],dz));error=abs(stock-row['stock_end_cm'][0]);assert error<=1e-10;residual.append(error)
  sample_receipt=dict(actual_original_constitutive_rows=len(observed),all_actual_pressures_observed=True,maximum_original_theta_stock_difference_cm=max(residual),model_periods=0,raw_stdout_sha256=sample['stdout_sha256'])
 if s['SWSOLU']:assert any(row['solute_ledger_mg_cm2'][3]>0 for row in data),'CDE incoming tracer source never active'
 result=dict(status='ACTUAL_ANALYTICAL_SNOW35_ALL_NODE_GLOBAL_SOIL_SOLUTE_NATIVE_EXACT_COLD_INDEPENDENT_PASS_NOT_ADMITTED',producer=q['source'],layer_models=q['layer_models'],kind=q['kind'],optimization=q['optimization'],days=35,warm=proof,cold=cold,actual_original_constitutive_samples=sample_receipt,decimal_global_maximum_absolute_residual_cm=str(global_max),absolute_water_limit_cm='1e-10',independent_native_reader_sha256=SHA(decoder),actual_BUILD_sha256=q['actual_BUILD_sha256'],compiler_executions=0,model_executions=0,canonical_admission=False)
