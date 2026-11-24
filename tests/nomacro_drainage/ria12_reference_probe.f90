@@ -7,7 +7,9 @@ program actual_original_ria12_probe
   use,intrinsic::ieee_arithmetic,only:ieee_is_finite
   implicit none
   character(len=2048)::input,heads,dump
-  integer::samples,index,ios
+  integer::samples,index,ios,models(2),count
+  logical::rdinar
+  external::rdinar
   real(8)::head
   real(dp)::theta,capacity,k,kliq,kvap
   call get_command_argument(1,input)
@@ -17,6 +19,13 @@ program actual_original_ria12_probe
   call rdinit(31,6,trim(input))
   call RIA_Reader()
   if(nLayer/=2.or.HeatOn.or.VaporCond)error stop 'Unselected original RIA12 component domain'
+  if(rdinar('IHWCKMODEL'))then
+    count=2
+    call rdfinr('IHWCKMODEL',12,12,models,2,count)
+    if(count/=2.or.any(models/=12))error stop 'Foreign original per-layer RIA12 model'
+  else
+    call rdsinr('IHWCKMODEL',12,12,models(1))
+  end if
   ! Dump the original arrays in their original column-major layout. The
   ! independent Python reader maps these to the new native witness explicitly.
   open(33,file=trim(dump),status='new',form='unformatted',access='stream')

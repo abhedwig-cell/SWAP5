@@ -26,6 +26,8 @@ def selection(directory, original_output=True):
     models = list(map(int, rows[0].split()))
     if not models or any(model != 12 for model in models):
         raise ValueError('RIA12 native domain requires model12 in every layer')
+    if tokens('SWAP_SOILS_DB'):
+        raise ValueError('RIA12 native domain requires inline original RIA parameters')
     from experimental_project import switches
     s = switches(active)
     fixed = dict(SWMACRO=0, SWKIMPL=0, SWSOPHY=0, SWHYST=0, SWSNOW=0, SWFROST=0,
