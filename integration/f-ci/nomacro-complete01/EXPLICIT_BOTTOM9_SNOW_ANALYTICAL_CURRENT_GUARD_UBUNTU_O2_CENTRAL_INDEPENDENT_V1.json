@@ -1,0 +1,314 @@
+{
+  "status": "ALL6_CURRENT_NO_VAPOR_NATIVE_PRECONDITION_CENTRAL_SOURCE_COMPILED_PHYSICAL_NATIVE_EXACT_COLD_AND_REFUSALS_PASS_NOT_ADMITTED",
+  "platform": "Ubuntu",
+  "optimization": "O2",
+  "contexts": [
+    {
+      "status": "CENTRAL_CURRENT_NO_VAPOR_NATIVE_PRECONDITION_WARM4_COLD4_7_ALL_UNAFFECTED_SOURCE_COMPILED_PHYSICAL_NATIVE_PASS",
+      "model": 3,
+      "kind": "water",
+      "optimization": "O2",
+      "actual_current_compiler_producer": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+      "actual_original_full35_producer": "4d284a5e543d29555bd1c5497a12b3a4b5408a13",
+      "actual_current_warm_days": 4,
+      "actual_current_cold_window": [
+        4,
+        7
+      ],
+      "warm_ledger": {
+        "water": {
+          "days": 4,
+          "whole_water_residual_cm": 2.1163626406917047e-16
+        },
+        "soil": {
+          "actual_days": 4,
+          "maximum_absolute_residual_cm": 0.0
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "7E-17"
+      },
+      "cold_ledger": {
+        "water": {
+          "days": 3,
+          "whole_water_residual_cm": 1.3877787807814457e-16
+        },
+        "soil": {
+          "actual_days": 3,
+          "maximum_absolute_residual_cm": 2.220446049250313e-16
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "5.36E-16"
+      },
+      "actual_changed_generated_source": [
+        "macropore.f90",
+        "snow_undrained_root_state.f90"
+      ],
+      "actual_changed_compiled_native_closure": [
+        "day_donor",
+        "macropore.o"
+      ],
+      "unaffected_compiled_files": 60,
+      "foreign_active_vapor_refusal": null,
+      "old_checkpoints_rebound": false,
+      "full35_periods_replayed": 0
+    },
+    {
+      "status": "CENTRAL_CURRENT_NO_VAPOR_NATIVE_PRECONDITION_WARM4_COLD4_7_ALL_UNAFFECTED_SOURCE_COMPILED_PHYSICAL_NATIVE_PASS",
+      "model": 3,
+      "kind": "cde",
+      "optimization": "O2",
+      "actual_current_compiler_producer": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+      "actual_original_full35_producer": "505954d2943b3f7f478efbb617c53f53dc5f5126",
+      "actual_current_warm_days": 4,
+      "actual_current_cold_window": [
+        4,
+        7
+      ],
+      "warm_ledger": {
+        "water": {
+          "days": 4,
+          "whole_water_residual_cm": 2.1163626406917047e-16
+        },
+        "soil": {
+          "actual_days": 4,
+          "maximum_absolute_residual_cm": 0.0
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "7E-17"
+      },
+      "cold_ledger": {
+        "water": {
+          "days": 3,
+          "whole_water_residual_cm": -2.815671307221379e-12
+        },
+        "soil": {
+          "actual_days": 3,
+          "maximum_absolute_residual_cm": 2.8242963523439357e-12
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "2.82083E-12"
+      },
+      "actual_changed_generated_source": [
+        "macropore.f90",
+        "snow_undrained_root_state.f90"
+      ],
+      "actual_changed_compiled_native_closure": [
+        "day_donor",
+        "macropore.o"
+      ],
+      "unaffected_compiled_files": 74,
+      "foreign_active_vapor_refusal": null,
+      "old_checkpoints_rebound": false,
+      "full35_periods_replayed": 0
+    },
+    {
+      "status": "CENTRAL_CURRENT_NO_VAPOR_NATIVE_PRECONDITION_WARM4_COLD4_7_ALL_UNAFFECTED_SOURCE_COMPILED_PHYSICAL_NATIVE_PASS",
+      "model": 7,
+      "kind": "water",
+      "optimization": "O2",
+      "actual_current_compiler_producer": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+      "actual_original_full35_producer": "505954d2943b3f7f478efbb617c53f53dc5f5126",
+      "actual_current_warm_days": 4,
+      "actual_current_cold_window": [
+        4,
+        7
+      ],
+      "warm_ledger": {
+        "water": {
+          "days": 4,
+          "whole_water_residual_cm": 2.1163626406917047e-16
+        },
+        "soil": {
+          "actual_days": 4,
+          "maximum_absolute_residual_cm": 0.0
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "7E-17"
+      },
+      "cold_ledger": {
+        "water": {
+          "days": 3,
+          "whole_water_residual_cm": 1.3877787807814457e-16
+        },
+        "soil": {
+          "actual_days": 3,
+          "maximum_absolute_residual_cm": 2.220446049250313e-16
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "4.64E-16"
+      },
+      "actual_changed_generated_source": [
+        "macropore.f90",
+        "snow_undrained_root_state.f90"
+      ],
+      "actual_changed_compiled_native_closure": [
+        "day_donor",
+        "macropore.o"
+      ],
+      "unaffected_compiled_files": 62,
+      "foreign_active_vapor_refusal": null,
+      "old_checkpoints_rebound": false,
+      "full35_periods_replayed": 0
+    },
+    {
+      "status": "CENTRAL_CURRENT_NO_VAPOR_NATIVE_PRECONDITION_WARM4_COLD4_7_ALL_UNAFFECTED_SOURCE_COMPILED_PHYSICAL_NATIVE_PASS",
+      "model": 7,
+      "kind": "cde",
+      "optimization": "O2",
+      "actual_current_compiler_producer": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+      "actual_original_full35_producer": "505954d2943b3f7f478efbb617c53f53dc5f5126",
+      "actual_current_warm_days": 4,
+      "actual_current_cold_window": [
+        4,
+        7
+      ],
+      "warm_ledger": {
+        "water": {
+          "days": 4,
+          "whole_water_residual_cm": 2.1163626406917047e-16
+        },
+        "soil": {
+          "actual_days": 4,
+          "maximum_absolute_residual_cm": 0.0
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "7E-17"
+      },
+      "cold_ledger": {
+        "water": {
+          "days": 3,
+          "whole_water_residual_cm": -2.711095237195593e-12
+        },
+        "soil": {
+          "actual_days": 3,
+          "maximum_absolute_residual_cm": 2.709166224690307e-12
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "2.70787E-12"
+      },
+      "actual_changed_generated_source": [
+        "macropore.f90",
+        "snow_undrained_root_state.f90"
+      ],
+      "actual_changed_compiled_native_closure": [
+        "day_donor",
+        "macropore.o"
+      ],
+      "unaffected_compiled_files": 76,
+      "foreign_active_vapor_refusal": null,
+      "old_checkpoints_rebound": false,
+      "full35_periods_replayed": 0
+    },
+    {
+      "status": "CENTRAL_CURRENT_NO_VAPOR_NATIVE_PRECONDITION_WARM4_COLD4_7_ALL_UNAFFECTED_SOURCE_COMPILED_PHYSICAL_NATIVE_PASS",
+      "model": 11,
+      "kind": "water",
+      "optimization": "O2",
+      "actual_current_compiler_producer": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+      "actual_original_full35_producer": "505954d2943b3f7f478efbb617c53f53dc5f5126",
+      "actual_current_warm_days": 4,
+      "actual_current_cold_window": [
+        4,
+        7
+      ],
+      "warm_ledger": {
+        "water": {
+          "days": 4,
+          "whole_water_residual_cm": 2.1163626406917047e-16
+        },
+        "soil": {
+          "actual_days": 4,
+          "maximum_absolute_residual_cm": 0.0
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "7E-17"
+      },
+      "cold_ledger": {
+        "water": {
+          "days": 3,
+          "whole_water_residual_cm": 1.3877787807814457e-16
+        },
+        "soil": {
+          "actual_days": 3,
+          "maximum_absolute_residual_cm": 2.220446049250313e-16
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "5.36E-16"
+      },
+      "actual_changed_generated_source": [
+        "macropore.f90",
+        "snow_undrained_root_state.f90"
+      ],
+      "actual_changed_compiled_native_closure": [
+        "day_donor",
+        "macropore.o"
+      ],
+      "unaffected_compiled_files": 60,
+      "foreign_active_vapor_refusal": {
+        "actual_compiler_producer": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+        "actual_observer_source": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+        "accepted_model_days": 0
+      },
+      "old_checkpoints_rebound": false,
+      "full35_periods_replayed": 0
+    },
+    {
+      "status": "CENTRAL_CURRENT_NO_VAPOR_NATIVE_PRECONDITION_WARM4_COLD4_7_ALL_UNAFFECTED_SOURCE_COMPILED_PHYSICAL_NATIVE_PASS",
+      "model": 11,
+      "kind": "cde",
+      "optimization": "O2",
+      "actual_current_compiler_producer": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+      "actual_original_full35_producer": "505954d2943b3f7f478efbb617c53f53dc5f5126",
+      "actual_current_warm_days": 4,
+      "actual_current_cold_window": [
+        4,
+        7
+      ],
+      "warm_ledger": {
+        "water": {
+          "days": 4,
+          "whole_water_residual_cm": 2.1163626406917047e-16
+        },
+        "soil": {
+          "actual_days": 4,
+          "maximum_absolute_residual_cm": 0.0
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "7E-17"
+      },
+      "cold_ledger": {
+        "water": {
+          "days": 3,
+          "whole_water_residual_cm": -2.636460494365167e-12
+        },
+        "soil": {
+          "actual_days": 3,
+          "maximum_absolute_residual_cm": 2.638111951114297e-12
+        },
+        "solute": null,
+        "decimal_global_maximum_absolute_residual_cm": "2.63582E-12"
+      },
+      "actual_changed_generated_source": [
+        "macropore.f90",
+        "snow_undrained_root_state.f90"
+      ],
+      "actual_changed_compiled_native_closure": [
+        "day_donor",
+        "macropore.o"
+      ],
+      "unaffected_compiled_files": 74,
+      "foreign_active_vapor_refusal": {
+        "actual_compiler_producer": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+        "actual_observer_source": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+        "accepted_model_days": 0
+      },
+      "old_checkpoints_rebound": false,
+      "full35_periods_replayed": 0
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "original_producers_retained": true,
+  "original_checkpoint_bindings_rewritten": false,
+  "canonical_admission": false
+}

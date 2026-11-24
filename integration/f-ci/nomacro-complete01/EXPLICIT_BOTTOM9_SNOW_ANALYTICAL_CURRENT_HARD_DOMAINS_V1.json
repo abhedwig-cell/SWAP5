@@ -1,0 +1,154 @@
+{
+  "status": "ACTUAL_CURRENT_EXPERIMENTAL6_POSITIVE_AND10_HARD_DOMAIN_REFUSALS_PASS_NOT_ADMITTED",
+  "actual_source": "134760c0583a5eb31bdcaf1af0f5f2c4386c15fa",
+  "actual_frontend_path": "C:\\Users\\Veldh012\\swap5-nomacro-scheduled-chemical01\\app\\hybrid_water\\experimental_project.py",
+  "checks": [
+    {
+      "case": "positive-3-water",
+      "frontend_accepted": true,
+      "models": [
+        3,
+        3
+      ],
+      "native_codec": "S5AWI000"
+    },
+    {
+      "case": "positive-3-cde",
+      "frontend_accepted": true,
+      "models": [
+        3,
+        3
+      ],
+      "native_codec": "S5ACR000"
+    },
+    {
+      "case": "positive-7-water",
+      "frontend_accepted": true,
+      "models": [
+        7,
+        7
+      ],
+      "native_codec": "S5AWI000"
+    },
+    {
+      "case": "positive-7-cde",
+      "frontend_accepted": true,
+      "models": [
+        7,
+        7
+      ],
+      "native_codec": "S5ACR000"
+    },
+    {
+      "case": "positive-11-water",
+      "frontend_accepted": true,
+      "models": [
+        11,
+        11
+      ],
+      "native_codec": "S5AWI000"
+    },
+    {
+      "case": "positive-11-cde",
+      "frontend_accepted": true,
+      "models": [
+        11,
+        11
+      ],
+      "native_codec": "S5ACR000"
+    },
+    {
+      "case": "active-vapor",
+      "field": "SWVAPOR",
+      "value": "1 1",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Active original vapor requires qualified explicit daily water/CDE, numerical heat, NoFrost/hysteresis0 primarydrainage bottom6",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "38203456c92367e6502775a87c8d1e776a4d661ddebcc67f76d3814c9590c9a1"
+    },
+    {
+      "case": "macro",
+      "field": "SWMACRO",
+      "value": "1",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Unsupported experimental process/state: SWMACRO",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "e6ed029455fe4dffe4cac0cf6b53e3d965ecb24c2299abc28b5e275cfc2e2d48"
+    },
+    {
+      "case": "frost",
+      "field": "SWFROST",
+      "value": "1",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "96c65c605bb969e61a5b4273ce0ae9389f10739637c97a218372a86f2a02f2e4"
+    },
+    {
+      "case": "hys1",
+      "field": "SWHYST",
+      "value": "1",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "65ef55b2879ffe9e431a8801ab6f0a28db281b67065479e726297113ba278e39"
+    },
+    {
+      "case": "hys2",
+      "field": "SWHYST",
+      "value": "2",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "1117b1d0e9f4489c4293dd521ac3a074cf275ab073a793f079218f9bdaba0ea4"
+    },
+    {
+      "case": "implicit9",
+      "field": "SWKIMPL",
+      "value": "1",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "f03c66900b19524bf00cadba7fc46271dabff360c277b52ae9d3eecdcf90a6a6"
+    },
+    {
+      "case": "age-snow",
+      "field": "SWSOLU",
+      "value": "2",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Original age qualification currently requires no snow/aquifer",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "5eb1d52dd048ea12c90ea2c8a4264819b3dff572707c04d5436dd83ba89b2f2f"
+    },
+    {
+      "case": "drained",
+      "field": "SWDRA",
+      "value": "1",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "0753810548cc523572ba095aafbbccc120e1346de849c6fa52115687ce819b7f"
+    },
+    {
+      "case": "unqualified-model2",
+      "field": "IHWCKMODEL",
+      "value": "2 2",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "054850ee3baeb9af26f04b1d6365de8cbe4756ae125452c11ccebaf79681dff1"
+    },
+    {
+      "case": "RIA12",
+      "field": "IHWCKMODEL",
+      "value": "12 12",
+      "frontend_accepted": false,
+      "actual_diagnostic": "Original pressure-profile initialization requires bounded daily water/CDE without Frost/aquifer",
+      "original_swp_sha256": "99b0b5fbd356506d52ae645cfbcf1c7a30dcceb718436707ac3daf86ff980727",
+      "actual_swp_sha256": "c6f41a9d00b99f5450500a1d7fa00a9e09de89bb26f887336e4e82cad1fe0944"
+    }
+  ],
+  "compiler_executions": 0,
+  "model_executions": 0,
+  "canonical_admission": false
+}
