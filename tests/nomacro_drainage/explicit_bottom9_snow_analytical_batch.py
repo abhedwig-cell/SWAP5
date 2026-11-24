@@ -8,7 +8,7 @@ from explicit_bottom9_snow_analytical_source import ROOT,complete_inverse,git
 def main():
  p=argparse.ArgumentParser()
  for key in ('reference-work','proof','build-root'):p.add_argument('--'+key,type=Path,required=True)
- p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--reuse-map',type=Path);a=p.parse_args()
+ p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--reuse-map',type=Path);p.add_argument('--reference-component',type=Path);a=p.parse_args()
  complete_inverse();a.proof.mkdir(parents=True,exist_ok=True);a.build_root.mkdir(parents=True,exist_ok=True)
  head=git('rev-parse','HEAD').decode().strip();reuse=json.loads(a.reuse_map.read_text()) if a.reuse_map else {}
  name='EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_INPUTS_V1';folder=ROOT/'integration/f-ci/nomacro-complete01';raw=(folder/(name+'.zip')).read_bytes();record=json.loads((folder/(name+'.json')).read_text())
@@ -19,7 +19,7 @@ def main():
   for member,item in record['members'].items():
    value=z.read(member);assert len(value)==item['bytes'] and SHA(value)==item['sha256'];path=a.proof/'inputs'/member
    assert path.resolve().is_relative_to((a.proof/'inputs').resolve());path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(value)
- q=dict(status='RUNNING',source=head,optimization=a.optimization,input_archive_sha256=record['sha256'],contexts=[],canonical_admission=False,completed_model_periods_replayed=0);start=time.monotonic();component=None
+ q=dict(status='RUNNING',source=head,optimization=a.optimization,input_archive_sha256=record['sha256'],contexts=[],canonical_admission=False,completed_model_periods_replayed=0);start=time.monotonic();component=a.reference_component
  def save():(a.proof/'BATCH.json').write_text(json.dumps(q,indent=2)+'\n')
  def run(command,label):
   assert git('rev-parse','HEAD').decode().strip()==head

@@ -49,6 +49,10 @@ jobs:
             /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_INPUTS_V1.json
             /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_WINDOWS_RAW_V1.zip
             /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_WINDOWS_RAW_V1.json
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_FIRST4D_UBUNTU_O0_ORIGINAL_V1.zip
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_FIRST4D_UBUNTU_O0_ORIGINAL_V1.json
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_FIRST4D_UBUNTU_O2_ORIGINAL_V1.zip
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_FIRST4D_UBUNTU_O2_ORIGINAL_V1.json
       - name: Preserve actual source and prepare immutable original provider
         env:
           PYTHONPATH: app/hybrid_water
@@ -61,9 +65,13 @@ jobs:
           cp .github/workflows/nomacro-explicit-bottom9-snow-analytical.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-explicit-bottom9-snow-analytical.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Reuse genuine completed first4d period and original compiled bytes
+        run: |
+          git fetch --no-tags --depth=1 --filter=blob:none origin 4d284a5e543d29555bd1c5497a12b3a4b5408a13
+          python3 -B tests/nomacro_drainage/explicit_bottom9_snow_analytical_reuse_ubuntu.py --optimization '${{ matrix.optimization }}' --proof "$RUNNER_TEMP/proof" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/reuse.json"
       - name: Qualify water and CDE active Snow accumulation melt soil coupling
         run: |
-          python3 -B tests/nomacro_drainage/explicit_bottom9_snow_analytical_batch.py --optimization '${{ matrix.optimization }}' --reference-work "$RUNNER_TEMP/provider" --proof "$RUNNER_TEMP/proof" --build-root "$RUNNER_TEMP/builds"
+          python3 -B tests/nomacro_drainage/explicit_bottom9_snow_analytical_batch.py --optimization '${{ matrix.optimization }}' --reference-work "$RUNNER_TEMP/provider" --proof "$RUNNER_TEMP/proof" --build-root "$RUNNER_TEMP/builds" --reuse-map "$RUNNER_TEMP/reuse.json"
       - name: Preserve actual compiled bytes and original provider identity
         if: always()
         run: |
