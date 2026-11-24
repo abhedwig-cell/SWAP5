@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
   "branch": "codex/nomacro-frost-hysteresis-state01",
-  "last_commit": "21ad6f6a48e045a809cbfbd63dac3f6507909c7a",
+  "last_commit": "12adccd47556d4317847850b09a994788ffa6059",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35446,11 +35446,11 @@
     "prototype_recovery_head": "d29caa2076"
   },
   "frost_hysteresis_state01": {
-    "status": "THREE_ORIGINAL35DAY_NINE_EXACT_COLD_INDEPENDENT_PASS_46_FRONTEND_CHECKS_NOT_ADMITTED",
+    "status": "EXPLICIT_ALL16_WINDOWS_35DAY_AND48COLD_INDEPENDENT_PASS_NOT_ADMITTED",
     "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "classification": "B_EXISTING_FROST_HYSTERESIS_ROOT_STATE_COMPOSITION",
     "scope": "Model1 dense original water/CDE, existing corrected Frost DIVDRA1 bottom6 Snow1 numeric heat, explicit/implicit and originalinitial1/2 withhysteresis0/1; currentoriginal hys2 remains unchanged",
-    "next_action": "Run remaining13 explicitWindows O0/O2 hys0/1 initial1/2 water/CDE full35/cold3 through actual existing runtime and separate frozen-numeric-body auditor. Original3completed periods not replayed. Then typednative/source-postimage controls,focusedUbuntu andpublicowner integration before admission.",
+    "next_action": "Persist samebatch implicit hys0/1 root-state domain selection with unchanged oldhys2 exactsource bytes. Rebuild earlierexplicitcode postimages/shortseams ratherthan replay16full periods. Then implicit35/cold/native andfocusedUbuntu, defaultwholepostimages,raw/public/negative/CIadmission.",
     "qualified": false,
     "source_contract": "FROST_HYSTERESIS_STATE01_CONTRACT_V1.json",
     "first_input": "EV/frost-history-state01-explicit-water-hys0-initial1-input-v1",
@@ -35461,9 +35461,12 @@
     "first_daily_water_max_cm": 9.987588187043706e-11,
     "first_global_water_sum_diagnostic_cm": 3.599042539144913e-10,
     "global_water_diagnostic_is_not_existing_Frost_owning_gate": true,
-    "full35_contexts": 3,
-    "exact_cold_windows": 9,
-    "actual_frontend_checks": 46
+    "full35_contexts": 16,
+    "exact_cold_windows": 48,
+    "actual_frontend_checks": 46,
+    "compiled_initial12_pairs": 8,
+    "compiled_native_refusals": 83,
+    "external_transaction_contexts": 2
   },
   "ria12_water_polish_actual_admission": {
     "status": "BOUNDED_EXPLICIT_RIA_WATER_POLISH_ACTUAL_CANONICAL_ADMITTED",
