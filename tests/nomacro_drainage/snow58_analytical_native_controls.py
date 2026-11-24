@@ -38,14 +38,19 @@ for both in (False,True):
   attacks.append((('both-' if both else 'header-')+str(index),bytes(raw)))
 assert len(attacks)==17
 with ExitStack() as stack:
- store=Archive(P,'EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_CURRENT_GUARD_WINDOWS_RAW_V1',stack)
- label='model'+str(qprofile['layer_models'][0])+'-'+qprofile['kind']+'-O0'
- member='profiles/sna-guard-Windows-O0-v1/'+label+'/trajectory/accepted-column-1-day-2.zip'
+ if (qprofile['layer_models'][0],qprofile['kind'])==(11,'water'):
+  archive_name='EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_NO_VAPOR_PROTOTYPES535_RAW_V1'
+  member='actual-current-bridge-O0/trajectory/accepted-column-1-day-2.zip'
+ else:
+  archive_name='EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_CURRENT_GUARD_WINDOWS_RAW_V1'
+  label='model'+str(qprofile['layer_models'][0])+'-'+qprofile['kind']+'-O0'
+  member='profiles/sna-guard-Windows-O0-v1/'+label+'/trajectory/accepted-column-1-day-2.zip'
+ store=Archive(P,archive_name,stack)
  original9=store.get(member);foreign9_archive_sha256=store.record['sha256']
 with zipfile.ZipFile(io.BytesIO(original9)) as z:foreign9=z.read('macro.bin')
 attacks.append(('genuine-same-model-kind-original-bottom9-native',foreign9))
 assert len(attacks)==18
-q=dict(status='RUNNING',actual_compiler_producer=qprofile['source'],actual_BUILD_sha256=SHA((build/'BUILD.json').read_bytes()),original_checkpoint_sha256=ownsha,original_model1_native_sha256=SHA(foreign),compiled_refusals=[],compiler_executions=0,model_periods=0,accepted_model_days=0,canonical_admission=False,expected_actual_compiled_refusals=len(attacks),genuine_foreign9_checkpoint_sha256=SHA(original9),genuine_foreign9_archive_sha256=foreign9_archive_sha256)
+q=dict(status='RUNNING',actual_compiler_producer=qprofile['source'],actual_BUILD_sha256=SHA((build/'BUILD.json').read_bytes()),original_checkpoint_sha256=ownsha,original_model1_native_sha256=SHA(foreign),compiled_refusals=[],compiler_executions=0,model_periods=0,accepted_model_days=0,canonical_admission=False,expected_actual_compiled_refusals=len(attacks),genuine_foreign9_checkpoint_sha256=SHA(original9),genuine_foreign9_archive_sha256=foreign9_archive_sha256,genuine_foreign9_archive=archive_name,genuine_foreign9_member=member)
 def save():(out/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
 def run(label,raw):
  target=out/label;target.mkdir();origin=target/'origin';receipt=original.m.h.verify_checkpoint(own,2,meta['binding'],origin)
