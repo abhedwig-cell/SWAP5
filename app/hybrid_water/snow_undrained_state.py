@@ -26,6 +26,8 @@ def source(selected):
         text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')
     if selected.get('analytical_snow_models'):
         extra=Path(__file__).with_name('snow_analytical_native.f90').read_text(encoding='cp1252')
+        if selected['swbotb'] in (5,8):
+            extra=replace(extra,'swbotb/=9','swbotb/='+str(selected['swbotb']))
         text=replace(text,'  implicit none',
             '  use hybrid_snow_analytical_native,only:snow_analytical_domain_checkpoint\n  implicit none')
         text=replace(text,'    expected=[3,numnod',
