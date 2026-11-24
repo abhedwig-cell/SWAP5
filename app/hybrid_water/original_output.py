@@ -64,7 +64,7 @@ def metadata(project):
     selected=selection(project)
     if selected is None:return None
     sha=lambda p:hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
-    return dict(policy=POLICY,native_codec=magic(project).decode(),**selected,source_sha256=sha(Path(__file__)),
+    result=dict(policy=POLICY,native_codec=magic(project).decode(),**selected,source_sha256=sha(Path(__file__)),
                 calendar_owner_sha256=sha(Path(regular.__file__)),clock_owner_sha256=sha(Path(clock.__file__)),
                 receipt_provider_sha256=sha(ROOT/'src/process/mod_original_output_receipt.f90'),
                 original_integral_sha256=regular.INTEGRAL_SHA,
@@ -73,6 +73,10 @@ def metadata(project):
                 vector_catalog_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-VECTOR-OUTPUT-01/source.py') if selected['swcsv'] else None,
                 binary_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-BINARY-OUTPUT-01/source.py') if selected['swcsv']==3 else None,
                 preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False)
+    from original_ria12 import metadata as ria12_metadata
+    ria12=ria12_metadata(project)
+    if ria12 is not None:result['original_ria12']=ria12
+    return result
 
 
 def age_identity(original,project):
@@ -82,6 +86,9 @@ def age_identity(original,project):
 
 
 def magic(project):
+    from original_ria12 import selection as ria12_selection,CODECS as ria12_codecs
+    ria12=ria12_selection(project.input_directory,project.original_output)
+    if ria12 is not None:return ria12_codecs[ria12['kind']]
     from hydraulic_vapor import native_magic as vapor_native_magic
     vapor=vapor_native_magic(project)
     if vapor is not None:return vapor
@@ -155,7 +162,8 @@ def render_macro(source,project):
     anchor='      end if\n      close(unit)';assert source.count(anchor)==1
     calls='        call hybrid_output_calendar_checkpoint(unit,.false.)\n'
     if project.solute:calls+='        call hybrid_cde_output_checkpoint(unit,.false.)\n'
-    return prefix+source.replace(anchor,calls+anchor,1)+suffix
+    from original_ria12 import render_macro as ria12_macro
+    return ria12_macro(prefix+source.replace(anchor,calls+anchor,1)+suffix,project)
 
 
 def apply_build(output,donor_build,project,patched):

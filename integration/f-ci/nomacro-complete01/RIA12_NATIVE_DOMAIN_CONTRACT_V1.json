@@ -1,0 +1,183 @@
+{
+  "status": "EXACT_SOURCE_INVERSE_SMALL_NATIVE_AND_ORIGINAL_REFERENCE_GATES_PASS_FULL35_SELECTED",
+  "version": 1,
+  "work_unit": "SWAP5-NOMACRO-COMPLETE01",
+  "classification": "B_EXISTING_ORIGINAL_RIA_PROCESS_NATIVE_STATE_COMPOSITION",
+  "development_parent": "9e6a69d7d1ba016cbb7c29145577d7a804f35356",
+  "development_parent_admission": "PR1794_ACTUALLY_ADMITTED_CANONICAL310_PUBLIC555.949s_PUB527.874s",
+  "actual_admitted_canonical": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
+  "original_reader": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90:556",
+  "original_RIA_source_lf_sha256": "454b3949827917ce0ca32ce044e6368faffbf6c4c14266f1f969c2e3b038a01a",
+  "actual_discovery": {
+    "status": "ACTUAL_CURRENT_RIA12_GENUINE_FOREIGN_MODEL1_NATIVE_ACCEPTED_BEFORE_MODEL_IDENTITY_REFUSAL",
+    "actual_source": "9e6a69d7d1ba016cbb7c29145577d7a804f35356",
+    "actual_BUILD_sha256": "acad0696e4bad954ecf18efe80b1f3152fbf133c9540f20e37e064be58b80cb7",
+    "genuine_model1_source": "9e6a69d7d1ba016cbb7c29145577d7a804f35356",
+    "genuine_model1_profile_RESULT_sha256": "9fc028101d514c02f793cd02864b87679bd1b4df55ffad8162ae4234dca38c68",
+    "own_checkpoint_sha256": "fcb7d9952d2eebe6c46d1412b6fd8c27996bdce3a12637fb9d7b229ce5e73d0f",
+    "foreign_checkpoint_sha256": "563312adba3c3592769d04ad6815f1181a18d00f60fbb8fffa29886c9c84df5e",
+    "original_checkpoint_metadata_or_binding_rewritten": false,
+    "private_attack_origin_macro_only": true,
+    "rows": [
+      {
+        "label": "genuine-own-ria12-positive",
+        "ready": true,
+        "returncode": 100,
+        "raw_sha256": "9a74c7805b28e3d348b26983f08ccdbaef3081767ae1f18c7d9beda5c65c9198",
+        "bytes": 1465176,
+        "codec": "S5IOW001",
+        "stderr": ""
+      },
+      {
+        "label": "genuine-foreign-model1-native",
+        "ready": true,
+        "returncode": 100,
+        "raw_sha256": "b773a1e318b16a439ea9e640f6693805d4471d7e7a5f26f6e9b97c626da97dc7",
+        "bytes": 1465176,
+        "codec": "S5IOW001",
+        "stderr": ""
+      }
+    ],
+    "compiler_executions": 0,
+    "accepted_model_days": 0,
+    "scientific_qualification": false,
+    "canonical_admission": false
+  },
+  "physical_parameter_scope": "Explicit synthetic valid original-reader parameters; not measured soil evidence.",
+  "scope": {
+    "IHWCKMODEL": "12 in every layer",
+    "SWMACRO": 0,
+    "SWKIMPL": 0,
+    "SWSOPHY": 0,
+    "SWHYST": 0,
+    "SWSNOW": 0,
+    "SWFROST": 0,
+    "SWDRA": 1,
+    "SWBOTB": 6,
+    "SWHEA": 0,
+    "SWCALT": "Inactive input; actual original runtime zero when SWHEA0",
+    "HeatOn": false,
+    "VaporCond": false,
+    "SWSOLU": [
+      0,
+      1
+    ],
+    "SWINCO": [
+      1,
+      2
+    ],
+    "NPRINTDAY": 1,
+    "SWMONTH": 0,
+    "SWODAT": 0,
+    "SWRES": 1,
+    "PERIOD": 1,
+    "FLPRINTDT": false,
+    "SWBR": 0,
+    "SWMETDETAIL": 0
+  },
+  "planned_change": "Dedicated RIA12 water/CDE native codecs; duplicated actual per-layer model/domain and original-precision immutable SWRC/UHCC parameter witnesses, verified against the actual original reader state. Existing physical payload body/functions retained; no new physical state or parameter restoration.",
+  "invariants": {
+    "physical_equations_changed": false,
+    "mass_or_convergence_limits_changed": false,
+    "epsilon_water_added": false,
+    "age_moment_disposed": false,
+    "rejected_trial_semantics_changed": false,
+    "production_authority_changed": false
+  },
+  "test_selection": {
+    "first": "Own-positive and genuine model1 native startup refusal; malformed duplicated model/domain fields; actual private HeatOn/VaporCond domain controls; zero accepted model days.",
+    "component": "Complete original MOD_RIA/TTUTIL reader and constitutive sample driver at every actual accepted pressure; both layers, water/CDE stock, original source identity.",
+    "integration": "After native/component gates: eight representative35day Windows/Ubuntu O0/O2 water/CDE periods with exact (2,4),(7,9),(30,34) cold windows; SWINCO1 opposite compile, no duplicate full periods.",
+    "preservation": "Actual unselected model1 water/CDE generated and whole compiled objects/modules/executable/publisher postimages; inherited admitted evidence only with exact dependency proof.",
+    "cost": "Small real production native/component feedback first; bounded integrated selection after measured small gates, no Cartesian or generic full historical campaign."
+  },
+  "whole_functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false,
+  "native_layout_changed_only_for_new_RIA12_codec": true,
+  "original_inactive_heat_dispatch": "Original swap_base.f90 declares SWCALT0 and reads it only when SWHEA1 (line266); native witness validates actual runtime0. Inactive file spelling1/2 introduces no heat process.",
+  "source_dependency": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
+  "source_dependency_is_admitted_canonical": true,
+  "actual_source_composition": "80ebfbefb8ea446628f785990ae6d5d96083f010",
+  "actual_native_guard_compiler_source": "af9e298f558517fa1c52938d0ffb706a38a134ea",
+  "files": {
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "8c2a43914bdfaf8b465f449ab771faedb5911178b039d729201ca20531227db4",
+      "proposed_lf_sha256": "d6762b5e5e8c94c0a4d4f5abec2dfc60e4052c0a3ad679d02356e93c271128c7",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3078,
+          "base_end": 3078,
+          "before": "",
+          "after": "t)\n    from original_ria12 import selection as ria12_selection\n    ria12 = ria12_selection(directory, original_outpu"
+        },
+        {
+          "base_start": 9064,
+          "base_end": 9064,
+          "before": "",
+          "after": " is None and ria12"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output.py": {
+      "before_lf_sha256": "bc1cf3606360327911119a0f1254ccf6de8910d0b43821be9b68527f2bf3e71e",
+      "proposed_lf_sha256": "eae13974eb7a5db555e231eed7ab1c18228f2689e288e690290fb3a5c26817f3",
+      "ordered_literal_edits": [
+        {
+          "base_start": 4148,
+          "base_end": 4148,
+          "before": "",
+          "after": "sul"
+        },
+        {
+          "base_start": 4149,
+          "base_end": 4153,
+          "before": "urn ",
+          "after": "="
+        },
+        {
+          "base_start": 5134,
+          "base_end": 5134,
+          "before": "",
+          "after": "    from original_ria12 import metadata as ria12_metadata\n    ria12=ria12_metadata(project)\n    if ria12 is not None:result['original_ria12']=ria12\n    return result\n"
+        },
+        {
+          "base_start": 5401,
+          "base_end": 5401,
+          "before": "",
+          "after": "\n    from original_ria12 import selection as ria12_selection,CODECS as ria12_codecs\n    ria12=ria12_selection(project.input_directory,project.original_output)\n    if ria12 is not None:return ria12_codecs[ria12['kind']]"
+        },
+        {
+          "base_start": 9691,
+          "base_end": 9691,
+          "before": "",
+          "after": "from original_ria12 import render_macro as ria12_macro\n    "
+        },
+        {
+          "base_start": 9698,
+          "base_end": 9698,
+          "before": "",
+          "after": "ria12_macro("
+        },
+        {
+          "base_start": 9749,
+          "base_end": 9749,
+          "before": "",
+          "after": ",project)"
+        }
+      ]
+    }
+  },
+  "added_files": {
+    "app/hybrid_water/original_ria12.py": {
+      "proposed_lf_sha256": "2009698a503ae69ce2a34a89a9a8a6bf5d911e85773ace3d2e7e8ab37b1a8811"
+    },
+    "app/hybrid_water/original_ria12_native.f90": {
+      "proposed_lf_sha256": "bbbcbdcc62b0bcdca8f4dc990df0cf0687a04100688f3bd8540eb7e4829139e4"
+    }
+  },
+  "reference_component_observations_per_optimization": 136,
+  "reference_component_maximum_stock_difference_cm": 0.0,
+  "initial_pressure_scope": "Original inline pressure initialization may use the bounded RIA12 no-heat state owner; the generic historical heat-profile guard remains literal for all unselected inputs. Opposite initialization compiled postimages and a discriminating real short native composition are required."
+}

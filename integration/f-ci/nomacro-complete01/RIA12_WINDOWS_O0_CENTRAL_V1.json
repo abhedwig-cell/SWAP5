@@ -1,0 +1,216 @@
+{
+  "status": "ACTUAL_RIA12_CENTRAL_ORIGINAL_STOCK_GLOBAL_SOLUTE_NATIVE_COLD_COMPILED_AND_EXTERNAL_PASS",
+  "platform": "Windows",
+  "optimization": "O0",
+  "contexts": [
+    {
+      "kind": "water",
+      "optimization": "O0",
+      "actual_producer": "85a90a6610864b5f7281da894def1b51918231ac",
+      "original_observer": "48c329d7e31ec8751c15309ece42e2350d8d1ac8",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "85a90a6610864b5f7281da894def1b51918231ac",
+        "actual_BUILD_sha256": "1d5b3622b4bf6af0626be1e98650783f3ca1a51d7f9ebeabe3f0381f987df732",
+        "kind": "water",
+        "optimization": "O0",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -3.073929999430902e-13
+          },
+          "solute": null,
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ]
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -2.0816681711721685e-15
+            },
+            "solute": null,
+            "native_samples": [
+              4
+            ]
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -3.552713678800501e-15
+            },
+            "solute": null,
+            "native_samples": [
+              9
+            ]
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -3.552713678800501e-15
+            },
+            "solute": null,
+            "native_samples": [
+              34
+            ]
+          }
+        ],
+        "actual_original_constitutive_observations": 2380,
+        "maximum_original_theta_stock_difference_cm": 7.105427357601002e-15,
+        "decimal_global_maximum_absolute_residual_cm": "4.4E-14",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_controls": {
+        "native_refusals": 39,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 44,
+        "actual_compiler": "7a2a0066e99e183bf5cbeddf2f3fbbfd4bc7be1b"
+      },
+      "opposite_initial": {
+        "compiled_files": 44,
+        "generated_sources": 14,
+        "cde_short_native_exact": false,
+        "actual_compiler": "41583a1f5a35d6e231af085211e995b50b9d5feb"
+      },
+      "external": {
+        "exact_external_transaction": true,
+        "actual_control_source": "16fdc31093902e61987ccd7782f2d181e1713010",
+        "targeted_prefix_days": 4
+      },
+      "native": 7,
+      "cold": 3
+    },
+    {
+      "kind": "cde",
+      "optimization": "O0",
+      "actual_producer": "85a90a6610864b5f7281da894def1b51918231ac",
+      "original_observer": "0c2e36845fb751f508274beff178d79e61d54028",
+      "independent": {
+        "status": "INDEPENDENT_RIA12_FULL35_GLOBAL_SOLUTE_ORIGINAL_STOCK_NATIVE_PARAMETERS_AND_EXACT_COLD_PASS_NOT_ADMITTED",
+        "actual_model_producer": "85a90a6610864b5f7281da894def1b51918231ac",
+        "actual_BUILD_sha256": "0ac47441a93c5be3927094f821eb10f9aea116bf49499aa30f401c46cf6622dc",
+        "kind": "cde",
+        "optimization": "O0",
+        "days": 35,
+        "warm": {
+          "water": {
+            "days": 35,
+            "whole_water_residual_cm": -2.5271451598030126e-13
+          },
+          "solute": {
+            "unchanged_ledger": null,
+            "actual_standard_daily_output": {
+              "actual_original_daily_receipts": 35,
+              "actual_paired_original_chemical_ledgers": 70
+            }
+          },
+          "native_samples": [
+            2,
+            4,
+            7,
+            9,
+            30,
+            34,
+            35
+          ]
+        },
+        "cold": [
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": -2.0816681711721685e-15
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              4
+            ]
+          },
+          {
+            "water": {
+              "days": 2,
+              "whole_water_residual_cm": 1.0658141036401503e-14
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 2,
+                "actual_paired_original_chemical_ledgers": 4
+              }
+            },
+            "native_samples": [
+              9
+            ]
+          },
+          {
+            "water": {
+              "days": 4,
+              "whole_water_residual_cm": -1.7763568394002505e-14
+            },
+            "solute": {
+              "unchanged_ledger": null,
+              "actual_standard_daily_output": {
+                "actual_original_daily_receipts": 4,
+                "actual_paired_original_chemical_ledgers": 8
+              }
+            },
+            "native_samples": [
+              34
+            ]
+          }
+        ],
+        "actual_original_constitutive_observations": 2380,
+        "maximum_original_theta_stock_difference_cm": 7.105427357601002e-15,
+        "decimal_global_maximum_absolute_residual_cm": "3.123E-14",
+        "absolute_water_limit_cm": "1e-10",
+        "original_parameter_bytes_verified": true,
+        "model_executions": 0,
+        "compiler_executions": 0,
+        "canonical_admission": false
+      },
+      "native_controls": {
+        "native_refusals": 39,
+        "private_input_refusals": 3,
+        "own_positive": true,
+        "compiled_files": 53,
+        "actual_compiler": "7a2a0066e99e183bf5cbeddf2f3fbbfd4bc7be1b"
+      },
+      "opposite_initial": {
+        "compiled_files": 53,
+        "generated_sources": 17,
+        "cde_short_native_exact": true,
+        "actual_compiler": "41583a1f5a35d6e231af085211e995b50b9d5feb"
+      },
+      "external": {
+        "exact_external_transaction": true,
+        "actual_control_source": "16fdc31093902e61987ccd7782f2d181e1713010",
+        "targeted_prefix_days": 4
+      },
+      "native": 7,
+      "cold": 3
+    }
+  ],
+  "full35_periods": 2,
+  "model_executions": 0,
+  "compiler_executions": 0,
+  "metadata_or_source_views_faked": false,
+  "canonical_admission": false
+}
