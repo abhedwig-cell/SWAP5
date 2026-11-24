@@ -1,0 +1,25 @@
+{
+  "status": "DECLARED_BOUNDED_NO_VAPOR_NATIVE_PRECONDITION_STRENGTHENING_NOT_YET_COMPILED",
+  "original_positive_source": "505954d2943b3f7f478efbb617c53f53dc5f5126",
+  "source_file": "app/hybrid_water/snow_analytical_native.f90",
+  "original_complete_lf_sha256": "9c28f59d0f54e29a68c4d60cffa471376c439788e82944a71ea5f2261531a31a",
+  "proposed_complete_lf_sha256": "678b7e45c45f4add4d987e15c5be87276e091380601e700f724e8b170957e78e",
+  "literal_edits": [
+    {
+      "before": "  use variables,only:swkimpl,swbotb\n",
+      "after": "  use WC_K_models_04_11,only:NoVap\n  use variables,only:swkimpl,swbotb\n"
+    },
+    {
+      "before": "    n=4+numlay;allocate(expected(n),header(n),witness(n))\n",
+      "after": "    if(any((iHWCKmodel(1:numlay)>=8).and.(.not.NoVap(1:numlay)))) &\n       error stop 'Active vapor cannot use analytical Snow native'\n    n=4+numlay;allocate(expected(n),header(n),witness(n))\n"
+    }
+  ],
+  "actual_gap_receipt_sha256": "6e6ce9f78ab19aa798309963ebf2612e363a26a72554318a626f737adc1969dd",
+  "physical_equations_changed": false,
+  "positive_path_state_mutations_added": false,
+  "native_format_changed": false,
+  "old_model1_generated_dependency_unchanged": true,
+  "required_current_integrated_evidence": "Real current builds, genuine current4day warm prefixes and current4..7 cold native windows for all24 original contexts; exact original source505 receipt/native/output equivalence, no old checkpoint rebinding; direct compiled foreign-vapor refusal. Actual old initial2 postimages remain labelled with their original source.",
+  "original_35day_periods_to_replay": 0,
+  "canonical_admission": false
+}

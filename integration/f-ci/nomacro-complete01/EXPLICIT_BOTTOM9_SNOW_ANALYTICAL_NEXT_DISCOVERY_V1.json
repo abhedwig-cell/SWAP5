@@ -1,0 +1,37 @@
+{
+  "status": "READONLY_ACTUAL_SOURCE_DISCOVERY_NEXT_SNOW_ANALYTICAL_COMPOSITION_NOT_EXECUTED_NOT_ADMITTED",
+  "actual_candidate": "f9d499a03dbe477dfd97da4599f771b24f70ed0a",
+  "pending_actual_canonical_PR": 1791,
+  "source": {
+    "app/hybrid_water/prescribed_snow_boundary.py": {
+      "actual_raw_sha256": "be404f159ee28ff21a0188e33456c9ea10dccdb5939f679064740854b5e54b6b",
+      "git_blob": "dbb35b01285de6feee373e2d4aad1f8b0c2af32a"
+    },
+    "app/hybrid_water/snow_undrained.py": {
+      "actual_raw_sha256": "d3f7029badaa93d7b3b7e4304f53acea6a2e010e07ac75afa442a54312f9f564",
+      "git_blob": "0403060f903471db30b1e0e3779d34538fe58f86"
+    },
+    "app/hybrid_water/model7_capacity.py": {
+      "actual_raw_sha256": "0ccd9b608b89e86eae0a5653691541ef06af5963cae4d65844dfd9de2194183d",
+      "git_blob": "137ee56fa699abf648b94baf791a513a5e24dc17"
+    },
+    "app/hybrid_water/prescribed_head_flux_boundary.py": {
+      "actual_raw_sha256": "4a3261c4b6a31f05976377bff0f143428a54903e25170592999478219d0ca4a3",
+      "git_blob": "3115c605ffb5f0ffb5ca256f11bb8b1939fca4c6"
+    }
+  },
+  "original_reader_path": "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-src\\SWAP\\readswap.f90",
+  "original_reader_raw_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+  "original_provider_PREPARED_sha256": "a2f529bc5d69c9e15bdda4c7aeb643a48685b50e10c2c1fce9eb639faf8a2da5",
+  "findings": [
+    "Actual paired9 selector already admits qualified constitutive models1,3,4,5,6,7,8,9,10,11 with inactive vapor. Current Snow selector and ordinary Snow owner each separately require model1. Both gates therefore need bounded coherent composition assessment, not only one literal change.",
+    "Actual model7 capacity-correction selector requires SWKIMPL,SWSOPHY,SWHYST,SWFROST,SWMACRO all0 but does not exclude active Snow. Start the next bounded composition with hysteresis0; preserve hard refusal of nonM1 hysteresis until separately qualified.",
+    "Original readswap explicitly reads per-layer constitutive models and additional bimodal/adsorptive parameters; explicit original incompatibilities include RIA12+hysteresis and tabulated soil physics+hysteresis. Do not infer numerical success from accepted original input alone.",
+    "IHWCKMODEL=7 constitutive/capacity behavior is distinct from SWKMEAN=7 averaging. The former has existing qualified representative paired9 cases; do not confuse it with the still unimplemented original averaging option."
+  ],
+  "next_code_action": "After actual canonical336 admission: derive documented inputs from immutable original Snow forcing and already qualified analytical3/7/11 hydraulic parameter blocks; create one coherent experimental branch in the same owned checkout. Bound both Snow selectors to paired9/explicit/drainage0/hysteresis0/vapor0 waterCDE. First actual O0 model7+CDE Snow preflight must exercise existing capacity correction, full-node water/CDE ledger, accumulation/melt and exact native cold. Preserve every original failure; expand O0/O2 Windows/Ubuntu and existing calendars only after that actual coupled result.",
+  "new_model_periods": 0,
+  "new_compiler_executions": 0,
+  "canonical_admission": false,
+  "global_family_and_gap_counts": "UNKNOWN"
+}

@@ -24,6 +24,13 @@ def source(selected):
         text=replace(text,old,new,count)
     if selected['swbotb']==9:
         text=replace(text,'(swbotb/=5.and.swbotb/=8)','swbotb/=9')
+    if selected.get('analytical_snow_models'):
+        extra=Path(__file__).with_name('snow_analytical_native.f90').read_text(encoding='cp1252')
+        text=replace(text,'  implicit none',
+            '  use hybrid_snow_analytical_native,only:snow_analytical_domain_checkpoint\n  implicit none')
+        text=replace(text,'    expected=[3,numnod',
+            '    call snow_analytical_domain_checkpoint(unit,restoring)\n    expected=[3,numnod')
+        text=extra+'\n'+text
     return text
 
 
@@ -72,6 +79,13 @@ def validate_native(raw,selected,nodes):
     header=struct.unpack('<16i',raw[-96:-32]);values=struct.unpack('<4d',raw[-32:])
     if list(header[:8])!=expected or list(header[8:])!=expected:raise ValueError('Foreign undrained Snow root witness')
     if values[:2]!=values[2:] or not all(map(math.isfinite,values)):raise ValueError('Invalid undrained Snow root values')
+    models=selected.get('analytical_snow_models')
+    if models:
+        domain=[1,nodes,len(models),int(selected['kind']=='cde'),*models];size=4*len(domain)
+        if len(raw)<104+2*size:raise ValueError('Incomplete analytical Snow native model domain')
+        at=len(raw)-96-2*size
+        actual=struct.unpack_from('<'+str(2*len(domain))+'i',raw,at)
+        if list(actual)!=domain+domain:raise ValueError('Foreign analytical Snow native model witness')
     return values[:2]
 
 

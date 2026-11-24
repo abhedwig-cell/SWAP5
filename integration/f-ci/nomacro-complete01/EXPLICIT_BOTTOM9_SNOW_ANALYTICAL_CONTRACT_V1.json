@@ -1,0 +1,107 @@
+{
+  "status": "EXPERIMENTAL_EXISTING_ANALYTICAL_SNOW_COMPOSITION_WITH_BOUNDED_MODEL_NATIVE_NOT_QUALIFIED",
+  "version": 2,
+  "actual_canonical": "04dc6b1cf3ddb4570c33b13ae20be746c8bcde54",
+  "files": {
+    "app/hybrid_water/prescribed_snow_boundary.py": {
+      "before_lf_sha256": "214c3a6ab6084ccab71f13e516151a166ffd9586b714a8f9f7e5b56c4fbb6a9e",
+      "proposed_lf_sha256": "253dd6763af609816d65423b0aecfa67fb9dc1f32293a6d72a5d68b09183b6be",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2197,
+          "base_end": 2197,
+          "before": "",
+          "after": "\n  if s.get('SWHYST')!=0 or any(int(value) not in (1,3,4,5,6,7,8,9,10,11) for value in models[0].split()):"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained.py": {
+      "before_lf_sha256": "d02c56c36af3565348b4b8723e09d7d9e98166b7d9143ea3a120843440a06c83",
+      "proposed_lf_sha256": "c181e03cb2c7da4654b7f5391ef912d6911d8146090b335008a92c50ed2bba1d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1720,
+          "base_end": 1720,
+          "before": "",
+          "after": "# New paired9 analytical composition stays explicit with hysteresis0.\n        # The actual paired Snow selector above already validated every model.\n        if report['boundary']['SWBOTB']!=9 or s['SWKIMPL']!=0 or s['SWHYST']!=0:\n            "
+        },
+        {
+          "base_start": 1800,
+          "base_end": 1800,
+          "before": "",
+          "after": " or bounded explicit paired analytical Snow"
+        },
+        {
+          "base_start": 3065,
+          "base_end": 3065,
+          "before": "",
+          "after": "analytical={}\n    if report['boundary']['SWBOTB']==9 and s['SWKIMPL']==s['SWHYST']==0:\n        from model7_capacity import analytical_models\n        layer_models=analytical_models(project)\n        if layer_models and any(value!=1 for value in layer_models):\n            analytical={'analytical_snow_models':list(layer_models)}\n    "
+        },
+        {
+          "base_start": 3077,
+          "base_end": 3077,
+          "before": "",
+          "after": "**analytical,"
+        },
+        {
+          "base_start": 4150,
+          "base_end": 4150,
+          "before": "",
+          "after": "domain='A' if selected.get('analytical_snow_models') else 'U'\n    "
+        },
+        {
+          "base_start": 4161,
+          "base_end": 4162,
+          "before": "U",
+          "after": ""
+        },
+        {
+          "base_start": 4163,
+          "base_end": 4163,
+          "before": "",
+          "after": "+domain"
+        },
+        {
+          "base_start": 4738,
+          "base_end": 4738,
+          "before": "",
+          "after": "\n    if selected.get('analytical_snow_models'):providers.append('snow_analytical_native.f90')"
+        }
+      ]
+    },
+    "app/hybrid_water/snow_undrained_state.py": {
+      "before_lf_sha256": "6e1f7f4e9117180334ef956f5b682a8e974a34f4035c286578704dffa7511f54",
+      "proposed_lf_sha256": "5129ac0edb2ef02781b16bfe8fe6538924f99b14dff82f1f67f369da1743fb0b",
+      "ordered_literal_edits": [
+        {
+          "base_start": 1068,
+          "base_end": 1068,
+          "before": "",
+          "after": "\n    if selected.get('analytical_snow_models'):\n        extra=Path(__file__).with_name('snow_analytical_native.f90').read_text(encoding='cp1252')\n        text=replace(text,'  implicit none',\n            '  use hybrid_snow_analytical_native,only:snow_analytical_domain_checkpoint\\n  implicit none')\n        text=replace(text,'    expected=[3,numnod',\n            '    call snow_analytical_domain_checkpoint(unit,restoring)\\n    expected=[3,numnod')\n        text=extra+'\\n'+text"
+        },
+        {
+          "base_start": 4105,
+          "base_end": 4105,
+          "before": "",
+          "after": "models=selected.get('analytical_snow_models')\n    if models:\n        domain=[1,nodes,len(models),int(selected['kind']=='cde'),*models];size=4*len(domain)\n        if len(raw)<104+2*size:raise ValueError('Incomplete analytical Snow native model domain')\n        at=len(raw)-96-2*size\n        actual=struct.unpack_from('<'+str(2*len(domain))+'i',raw,at)\n        if list(actual)!=domain+domain:raise ValueError('Foreign analytical Snow native model witness')\n    "
+        }
+      ]
+    }
+  },
+  "added_files": {
+    "app/hybrid_water/snow_analytical_native.f90": {
+      "proposed_lf_sha256": "678b7e45c45f4add4d987e15c5be87276e091380601e700f724e8b170957e78e"
+    }
+  },
+  "scope": "Paired9 explicit drainage0 Snow water/CDE hysteresis0, original analytical models1,3..11 and inactive vapor; existing model1/hysteresis native and equations preserved",
+  "physical_equations_changed": false,
+  "original_capacity_correction_changed": false,
+  "new_physical_state": false,
+  "native_format_changed": true,
+  "native_format_change_scope": "Only new non-model1 Snow route: distinct S5A codec and actual per-layer model witness before unchanged root diagnostics",
+  "old_model1_native_format_unchanged": true,
+  "actual_discovery_producer": "9668ec3177ce7f9c454326370d809b1256820923",
+  "actual_wrong_model_native_acceptance_preserved_in": "EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_SHORT_NATIVE_DISCOVERY_RAW_V1.json",
+  "native_model_domain_qualification": "PENDING_ACTUAL_NEW_COMPILED_STARTUP_AND_COLD",
+  "canonical_admission": false
+}

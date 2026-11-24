@@ -1,0 +1,109 @@
+name: Native no-vapor boundary with exact original analytical Snow preservation
+on:
+  push:
+    branches: [codex/nomacro-explicit-bottom9-snow-analytical01]
+    paths: ['.github/workflows/nomacro-explicit-bottom9-snow-analytical-guard.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: nomacro-explicit-bottom9-snow-analytical-guard-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        optimization: [O0, O2]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /app/**
+            /src/**
+            /tools/solute/**
+            /tools/vq/**
+            /tests/nomacro_mixtures/**
+            /tests/nomacro_scheduled_subsurface/**
+            /tests/nomacro_drainage/**
+            /tests/saltfarm_newton/**
+            /.github/workflows/**
+            /reference/swap-4.3.1/projects/**
+            /reference/swap-4.3.1/source-archives/**
+            /reference/swap-4.3.1/patches/**
+            /reference/swap-4.3.1/frost-corrections/**
+            /reference/swap-4.3.1/hydraulic-corrections/**
+            /integration/f-ci/nomacro-complete01/INITIAL_PROFILE_GROUNDWATER_CONTRACT_V1.json
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_CONTRACT_V1.json
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_WINDOWS_RAW_V1.zip
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_WINDOWS_RAW_V1.json
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_VAPOR_DOMAIN_GUARD_CONTRACT_V1.json
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_UBUNTU_O0_ORIGINAL_V2.json
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_UBUNTU_O0_ORIGINAL_V2.zip
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_UBUNTU_O2_ORIGINAL_V2.json
+            /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_UBUNTU_O2_ORIGINAL_V2.zip
+      - name: Preserve actual source and prepare immutable original provider
+        env:
+          PYTHONPATH: app/hybrid_water
+        run: |
+          proof="$RUNNER_TEMP/guard-proof"
+          mkdir -p "$proof"
+          git fetch --no-tags --depth=1 --filter=blob:none origin 505954d2943b3f7f478efbb617c53f53dc5f5126 535b0ee491605b8e47a594977ccdfe21431359a7 04dc6b1cf3ddb4570c33b13ae20be746c8bcde54 2a14f2094bfbfb29c169eb6331da1d7829faa70a 262e9cbc3d44244d0e8ca720e0c7147228be3b98 b79a5bc64ec5806252c016185e925d424d65b66b 8e27dd9eb0f633050d2d82d00d28992435c313cb a2039fa529adb74bec571f493bc4c541dddf2a9a dcf509f80e77866b24ca06a021df3e3e53fd3ec0 57bd7fecbbb6c3944b4f28cfc29cb368d371398a 7979888d70950b27c2fc30c92320ff5bb62d9a53 f3fc5705f09e93ab0aa57eceee78bbcfd2014517 d905cad376b42e709c3bf7949dbc8faebf119f24 4d4fb1b8e059f9137ec217e52f262222ead6ce1c 8ae1661391ed35125421290de3fb5d95ec8cd5b5 c0952e394647179d591a855fcaf1a7270871fb2b 99c4d7ca481f703937ed32e63b4af5bf847c3b85 84e815a0ba9f59a2d56fe838a3b13361ad8670a2 4a4053c210ce5bdd8cb2506b79dcf9ad8b42a43f 9694eb2c4cc69f71c2ef90bc64b500fd35cb9924 b285147254b208643423adea88a4fb5f1158b464 e079d1554041c831cd0ab609835e2e79bf3c31a1 9c9e35ca34c5831505425ed7546f58c311ecb8c0 02813169713f103b846ab95657e5c5f830bc77d4 2a42311e6e5eed9a6a2a45cc9f4697a4b4eed584 67d2636672921505ecb47f1c9f4c6ea27a451889 04dadca2bf52027ef9c72360684c86bd98aa77ff 342c5dd92861f67fa90b094f1a63c5a6b53b9c4e
+          python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
+          python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
+          cp .github/workflows/nomacro-explicit-bottom9-snow-analytical-guard.yml "$proof/actual-workflow.yml"
+          git rev-parse HEAD:.github/workflows/nomacro-explicit-bottom9-snow-analytical-guard.yml > "$proof/actual-workflow-git-blob.txt"
+          python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Materialize genuine complete original source505 periods without replay
+        run: |
+          python3 -B tests/nomacro_drainage/explicit_bottom9_snow_analytical_reuse_positive505.py --optimization '${{ matrix.optimization }}' --proof "$RUNNER_TEMP/proof" --build-root "$RUNNER_TEMP/builds"
+      - name: Qualify current native precondition with genuine fresh current origins
+        run: |
+          python3 -B tests/nomacro_drainage/explicit_bottom9_snow_analytical_guard_batch.py --positive-batch "$RUNNER_TEMP/proof/BATCH.json" --reference-work "$RUNNER_TEMP/provider" --proof "$RUNNER_TEMP/guard-proof" --build-root "$RUNNER_TEMP/guard-builds"
+      - name: Preserve actual compiled bytes and original provider identity
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import os,shutil,json,hashlib
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);proof=root/'guard-proof';proof.mkdir(exist_ok=True)
+          provider=root/'provider/PREPARED.json'
+          if provider.is_file():shutil.copyfile(provider,proof/'provider-PREPARED.json')
+          meteo=root/'provider/build/swap-selected/MOD_meteo.f90'
+          if meteo.is_file():shutil.copyfile(meteo,proof/'provider-MOD_meteo.f90')
+          projection={}
+          for stem in ('guard-builds',):
+              for path in sorted((root/stem).rglob('*')):
+                  if path.is_file():
+                      target=proof/'compiled'/stem/path.relative_to(root/stem);target.parent.mkdir(parents=True,exist_ok=True)
+                      shutil.copyfile(path,target)
+                      if path.name=='BUILD.json':
+                          projection[str(path.parent)]=dict(archive_prefix=target.parent.relative_to(proof).as_posix(),actual_BUILD_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+          # Preserve actual provider link dependencies and every scientific
+          # descriptor mutant before the disposable runner disappears.
+          for source, stem in ((root/'provider/build','original-provider-build'),
+                               (root/'source-refusals','source-refusals')):
+              for path in sorted(source.rglob('*')):
+                  if not path.is_file():continue
+                  if stem=='source-refusals' and not any(part.startswith('input-') for part in path.relative_to(source).parts):continue
+                  target=proof/stem/path.relative_to(source);target.parent.mkdir(parents=True,exist_ok=True)
+                  shutil.copyfile(path,target)
+          (proof/'COMPILED_PROJECTION_V1.json').write_text(json.dumps(projection,indent=2)+'\n')
+          PY
+      - name: Preserve actual original Snow raw native and source evidence
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: explicit-bottom9-snow-analytical-guard-${{ matrix.optimization }}-${{ github.sha }}
+          path: ${{ runner.temp }}/guard-proof
+          retention-days: 30
