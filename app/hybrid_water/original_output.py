@@ -36,6 +36,8 @@ def selection(project):
         raise ValueError('Original CDE output currently requires daily interval reset cadence')
     for key,value in dict(SWSNOW=0,SWBR=0,SWHYST=0,SWFROST=0,SWDRA=1,SWMETDETAIL=0).items():
         if key=='SWDRA' and one(key)==0:
+            from original_ria12_boundary import selection as ria12_boundary_selection
+            if ria12_boundary_selection(project.input_directory,project.original_output) is not None:continue
             from prescribed_head_flux_boundary import selection as paired_boundary_selection
             if paired_boundary_selection(project.input_directory,project.original_output) is not None:continue
             from vapor_boundary_composition import enabled as boundary_enabled
@@ -74,7 +76,10 @@ def metadata(project):
                 binary_correction_sha256=sha(ROOT/'reference/swap-4.3.1/patches/NOMACRO-BINARY-OUTPUT-01/source.py') if selected['swcsv']==3 else None,
                 preserves_requested_groups_and_precision=True,undefined_allocation_tails_serialized=False)
     from original_ria12 import metadata as ria12_metadata
-    ria12=ria12_metadata(project)
+    from original_ria12_boundary import metadata as ria12_boundary_metadata
+    boundary=ria12_boundary_metadata(project)
+    ria12=None if boundary is not None else ria12_metadata(project)
+    if boundary is not None:result['original_ria12_boundary']=boundary
     if ria12 is not None:result['original_ria12']=ria12
     return result
 
@@ -86,6 +91,9 @@ def age_identity(original,project):
 
 
 def magic(project):
+    from original_ria12_boundary import selection as ria12_boundary_selection,CODECS as ria12_boundary_codecs
+    boundary=ria12_boundary_selection(project.input_directory,project.original_output)
+    if boundary is not None:return ria12_boundary_codecs[boundary['kind']]
     from original_ria12 import selection as ria12_selection,CODECS as ria12_codecs
     ria12=ria12_selection(project.input_directory,project.original_output)
     if ria12 is not None:return ria12_codecs[ria12['kind']]
@@ -163,6 +171,9 @@ def render_macro(source,project):
     calls='        call hybrid_output_calendar_checkpoint(unit,.false.)\n'
     if project.solute:calls+='        call hybrid_cde_output_checkpoint(unit,.false.)\n'
     from original_ria12 import render_macro as ria12_macro
+    from original_ria12_boundary import selection as ria12_boundary_selection,render_macro as ria12_boundary_macro
+    if ria12_boundary_selection(project.input_directory,project.original_output) is not None:
+        return ria12_boundary_macro(prefix+source.replace(anchor,calls+anchor,1)+suffix,project)
     return ria12_macro(prefix+source.replace(anchor,calls+anchor,1)+suffix,project)
 
 

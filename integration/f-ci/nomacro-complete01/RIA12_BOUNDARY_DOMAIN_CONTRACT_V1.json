@@ -1,0 +1,87 @@
+{
+  "status": "UNQUALIFIED_NEW_BOUNDED_EXISTING_PROCESS_COMPOSITION",
+  "source_dependency": "a18cc38017f69523de48ec04d47cd12686b1ecff",
+  "source_dependency_is_admitted_canonical": true,
+  "parent_PR": 1795,
+  "parent_actual_canonical_at_start": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
+  "invariants": {
+    "physical_equations_changed": false,
+    "mass_or_convergence_limits_changed": false,
+    "epsilon_water_added": false,
+    "age_moment_disposed": false,
+    "rejected_trial_semantics_changed": false,
+    "production_authority_changed": false
+  },
+  "files": {
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "d6762b5e5e8c94c0a4d4f5abec2dfc60e4052c0a3ad679d02356e93c271128c7",
+      "proposed_lf_sha256": "52cb767a38403fb08995c3617d50bed0b3361fbfedc447737ea2d022beb72d22",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3145,
+          "base_end": 3145,
+          "before": "",
+          "after": "from original_ria12_boundary import selection as ria12_boundary_selection\n    "
+        },
+        {
+          "base_start": 3152,
+          "base_end": 3152,
+          "before": "",
+          "after": " ria12_boundary_selection(directory, original_output) or"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output.py": {
+      "before_lf_sha256": "eae13974eb7a5db555e231eed7ab1c18228f2689e288e690290fb3a5c26817f3",
+      "proposed_lf_sha256": "f5dd7b0f42ed9e4d1fc69898eadc3aaa16c6707b79f7cdcf55b5d135667ee9b3",
+      "ordered_literal_edits": [
+        {
+          "base_start": 2442,
+          "base_end": 2442,
+          "before": "",
+          "after": "\n            from original_ria12_boundary import selection as ria12_boundary_selection\n            if ria12_boundary_selection(project.input_directory,project.original_output) is not None:continue"
+        },
+        {
+          "base_start": 5196,
+          "base_end": 5196,
+          "before": "",
+          "after": "from original_ria12_boundary import metadata as ria12_boundary_metadata\n    boundary=ria12_boundary_metadata(project)\n    "
+        },
+        {
+          "base_start": 5202,
+          "base_end": 5202,
+          "before": "",
+          "after": "None if boundary is not None else "
+        },
+        {
+          "base_start": 5225,
+          "base_end": 5225,
+          "before": "",
+          "after": "\n    if boundary is not None:result['original_ria12_boundary']=boundary"
+        },
+        {
+          "base_start": 5567,
+          "base_end": 5567,
+          "before": "",
+          "after": "\n    from original_ria12_boundary import selection as ria12_boundary_selection,CODECS as ria12_boundary_codecs\n    boundary=ria12_boundary_selection(project.input_directory,project.original_output)\n    if boundary is not None:return ria12_boundary_codecs[boundary['kind']]"
+        },
+        {
+          "base_start": 10129,
+          "base_end": 10129,
+          "before": "",
+          "after": "\n    from original_ria12_boundary import selection as ria12_boundary_selection,render_macro as ria12_boundary_macro\n    if ria12_boundary_selection(project.input_directory,project.original_output) is not None:\n        return ria12_boundary_macro(prefix+source.replace(anchor,calls+anchor,1)+suffix,project)"
+        }
+      ]
+    }
+  },
+  "added_files": {
+    "app/hybrid_water/original_ria12_boundary.py": {
+      "proposed_lf_sha256": "e1595ff0998f1ef65b92f860cbf9246ec2ebd42ca53ac8e560a5c0817fa96fcd"
+    },
+    "app/hybrid_water/original_ria12_boundary_native.f90": {
+      "proposed_lf_sha256": "7530aadc65fa9e8c22ea650e69b2f5d37ad8d8738fd28c01e40707336accb000"
+    }
+  },
+  "parent_actual_admission_receipt": "RIA12_MERGE_RECEIPT_V1.json",
+  "parent_actual_admission_archive_sha256": "19c966e0d3173d844ce434151b21252c4ceb5c04495f515f92c8388a18a505c3"
+}
