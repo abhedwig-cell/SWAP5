@@ -51,21 +51,28 @@ jobs:
             /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_WINDOWS_RAW_V1.json
             /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_CURRENT_GUARD_WINDOWS_RAW_V1.zip
             /integration/f-ci/nomacro-complete01/EXPLICIT_BOTTOM9_SNOW_ANALYTICAL_CURRENT_GUARD_WINDOWS_RAW_V1.json
+            /integration/f-ci/nomacro-complete01/SNOW58_ANALYTICAL_FIRST143_UBUNTU_O0_ORIGINAL_V1.zip
+            /integration/f-ci/nomacro-complete01/SNOW58_ANALYTICAL_FIRST143_UBUNTU_O0_ORIGINAL_V1.json
+            /integration/f-ci/nomacro-complete01/SNOW58_ANALYTICAL_FIRST143_UBUNTU_O2_ORIGINAL_V1.zip
+            /integration/f-ci/nomacro-complete01/SNOW58_ANALYTICAL_FIRST143_UBUNTU_O2_ORIGINAL_V1.json
       - name: Preserve actual source and prepare immutable original provider
         env:
           PYTHONPATH: app/hybrid_water
         run: |
           proof="$RUNNER_TEMP/proof"
           mkdir -p "$proof"
-          git fetch --no-tags --depth=1 --filter=blob:none origin 0157d2995e85adce362642918095e871469e4ee1 04dc6b1cf3ddb4570c33b13ae20be746c8bcde54 2a14f2094bfbfb29c169eb6331da1d7829faa70a 262e9cbc3d44244d0e8ca720e0c7147228be3b98 b79a5bc64ec5806252c016185e925d424d65b66b 8e27dd9eb0f633050d2d82d00d28992435c313cb a2039fa529adb74bec571f493bc4c541dddf2a9a dcf509f80e77866b24ca06a021df3e3e53fd3ec0 57bd7fecbbb6c3944b4f28cfc29cb368d371398a 7979888d70950b27c2fc30c92320ff5bb62d9a53 f3fc5705f09e93ab0aa57eceee78bbcfd2014517 d905cad376b42e709c3bf7949dbc8faebf119f24 4d4fb1b8e059f9137ec217e52f262222ead6ce1c 8ae1661391ed35125421290de3fb5d95ec8cd5b5 c0952e394647179d591a855fcaf1a7270871fb2b 99c4d7ca481f703937ed32e63b4af5bf847c3b85 84e815a0ba9f59a2d56fe838a3b13361ad8670a2 4a4053c210ce5bdd8cb2506b79dcf9ad8b42a43f 9694eb2c4cc69f71c2ef90bc64b500fd35cb9924 b285147254b208643423adea88a4fb5f1158b464 e079d1554041c831cd0ab609835e2e79bf3c31a1 9c9e35ca34c5831505425ed7546f58c311ecb8c0 02813169713f103b846ab95657e5c5f830bc77d4 2a42311e6e5eed9a6a2a45cc9f4697a4b4eed584 67d2636672921505ecb47f1c9f4c6ea27a451889 04dadca2bf52027ef9c72360684c86bd98aa77ff 342c5dd92861f67fa90b094f1a63c5a6b53b9c4e
+          git fetch --no-tags --depth=1 --filter=blob:none origin 1438907b876f91605b0c41af24c73377bab7c7e3 0157d2995e85adce362642918095e871469e4ee1 04dc6b1cf3ddb4570c33b13ae20be746c8bcde54 2a14f2094bfbfb29c169eb6331da1d7829faa70a 262e9cbc3d44244d0e8ca720e0c7147228be3b98 b79a5bc64ec5806252c016185e925d424d65b66b 8e27dd9eb0f633050d2d82d00d28992435c313cb a2039fa529adb74bec571f493bc4c541dddf2a9a dcf509f80e77866b24ca06a021df3e3e53fd3ec0 57bd7fecbbb6c3944b4f28cfc29cb368d371398a 7979888d70950b27c2fc30c92320ff5bb62d9a53 f3fc5705f09e93ab0aa57eceee78bbcfd2014517 d905cad376b42e709c3bf7949dbc8faebf119f24 4d4fb1b8e059f9137ec217e52f262222ead6ce1c 8ae1661391ed35125421290de3fb5d95ec8cd5b5 c0952e394647179d591a855fcaf1a7270871fb2b 99c4d7ca481f703937ed32e63b4af5bf847c3b85 84e815a0ba9f59a2d56fe838a3b13361ad8670a2 4a4053c210ce5bdd8cb2506b79dcf9ad8b42a43f 9694eb2c4cc69f71c2ef90bc64b500fd35cb9924 b285147254b208643423adea88a4fb5f1158b464 e079d1554041c831cd0ab609835e2e79bf3c31a1 9c9e35ca34c5831505425ed7546f58c311ecb8c0 02813169713f103b846ab95657e5c5f830bc77d4 2a42311e6e5eed9a6a2a45cc9f4697a4b4eed584 67d2636672921505ecb47f1c9f4c6ea27a451889 04dadca2bf52027ef9c72360684c86bd98aa77ff 342c5dd92861f67fa90b094f1a63c5a6b53b9c4e
           python3 -B tests/nomacro_scheduled_subsurface/implicit_conductivity_source_capsule.py --output "$proof/source"
           python3 -B tests/nomacro_drainage/controller_source_capsule.py --output "$proof/controller-source.tar"
           cp .github/workflows/nomacro-snow58-analytical.yml "$proof/actual-workflow.yml"
           git rev-parse HEAD:.github/workflows/nomacro-snow58-analytical.yml > "$proof/actual-workflow-git-blob.txt"
           python3 -B -c 'import os,user_prepare; user_prepare.prepare(os.environ["RUNNER_TEMP"]+"/provider")'
+      - name: Restore genuine completed first143 period at its actual original paths
+        run: |
+          python3 -B tests/nomacro_drainage/snow58_analytical_reuse_ubuntu.py --optimization '${{ matrix.optimization }}' --proof "$RUNNER_TEMP/proof" --build-root "$RUNNER_TEMP/builds" --output "$RUNNER_TEMP/reuse143.json"
       - name: Qualify water and CDE active Snow accumulation melt soil coupling
         run: |
-          python3 -B tests/nomacro_drainage/snow58_analytical_batch.py --optimization '${{ matrix.optimization }}' --reference-work "$RUNNER_TEMP/provider" --proof "$RUNNER_TEMP/proof" --build-root "$RUNNER_TEMP/builds"
+          python3 -B tests/nomacro_drainage/snow58_analytical_batch.py --optimization '${{ matrix.optimization }}' --reference-work "$RUNNER_TEMP/provider" --proof "$RUNNER_TEMP/proof/current" --build-root "$RUNNER_TEMP/current-builds" --reuse-map "$RUNNER_TEMP/reuse143.json" --reference-component "$RUNNER_TEMP/proof/bottom5-model7-water-dry-initial1-${{ matrix.optimization }}-original-samples"
       - name: Preserve actual compiled bytes and original provider identity
         if: always()
         run: |
@@ -78,7 +85,7 @@ jobs:
           meteo=root/'provider/build/swap-selected/MOD_meteo.f90'
           if meteo.is_file():shutil.copyfile(meteo,proof/'provider-MOD_meteo.f90')
           projection={}
-          for stem in ('builds',):
+          for stem in ('builds','current-builds'):
               for path in sorted((root/stem).rglob('*')):
                   if path.is_file():
                       target=proof/'compiled'/stem/path.relative_to(root/stem);target.parent.mkdir(parents=True,exist_ok=True)

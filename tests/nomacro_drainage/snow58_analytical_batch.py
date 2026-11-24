@@ -52,7 +52,7 @@ def main():
    native=a.proof/(label+'-model-native');run(['tests/nomacro_drainage/snow58_analytical_native_controls.py','--profile',profile,'--output',native],label+'-model-native')
    root=None;transactions=None;vapor=None
    if case['case'] in ('bottom5-model7-water-dry-initial1','bottom8-model11-cde-wet-initial2'):
-    root=a.proof/(label+'-root-native');run(['tests/nomacro_drainage/explicit_bottom9_snow_history_native_controls.py','--profile',profile,'--reference-work',a.reference_work,'--output',root],label+'-root-native')
+    root=a.proof/(label+'-root-native');run(['tests/nomacro_drainage/snow58_analytical_root_controls.py','--profile',profile,'--reference-work',a.reference_work,'--output',root],label+'-root-native')
     transactions=a.proof/(label+'-transactions');run(['tests/nomacro_drainage/explicit_bottom9_snow_history_transactions.py','--profile',profile,'--reference-work',a.reference_work,'--output',transactions],label+'-transactions')
    if case['model']==11:
     vapor=a.proof/(label+'-vapor-refusal');run(['tests/nomacro_drainage/snow58_analytical_vapor_refusal.py','--profile',profile,'--output',vapor],label+'-vapor-refusal')

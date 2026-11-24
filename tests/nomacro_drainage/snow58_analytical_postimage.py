@@ -11,7 +11,13 @@ import experimental_project
 
 def verify_record(directory,profile,head):
  directory,profile=Path(directory),Path(profile);record=json.loads((directory/'RESULT.json').read_text());q=json.loads((profile/'RESULT.json').read_text())
- assert record['status']=='ACTUAL_SNOW58_OPPOSITE_INITIALIZATION_WHOLE_GENERATED_COMPILED_POSTIMAGE_PASS_NO_MODEL_PERIOD' and record['source']==record['actual_compiler_start_HEAD']==record['actual_compiler_end_HEAD']==head
+ assert record['status']=='ACTUAL_SNOW58_OPPOSITE_INITIALIZATION_WHOLE_GENERATED_COMPILED_POSTIMAGE_PASS_NO_MODEL_PERIOD' and record['source']==record['actual_compiler_start_HEAD']==record['actual_compiler_end_HEAD']
+ import ast
+ def generation_authority(raw):
+  tree=ast.parse(raw);return ast.dump(ast.Module(body=[node for node in tree.body if not isinstance(node,ast.FunctionDef) or node.name!='verify_record'],type_ignores=[]),include_attributes=False)
+ path='tests/nomacro_drainage/snow58_analytical_postimage.py'
+ assert generation_authority(git('show',record['source']+':'+path).decode())==generation_authority((ROOT/path).read_text())
+ assert not git('diff',record['source'],head,'--','app','src','tools','reference','tests/nomacro_drainage/snow58_compiled_postimage.py','tests/nomacro_drainage/calendar_publisher.py'),'Changed actual compilation/source/oracle dependency; cannot inherit postimage'
  assert record['profile_RESULT_sha256']==SHA((profile/'RESULT.json').read_bytes()) and record['original_producer']==q['source']
  left,right=Path(q['build_root']),Path(record['build_root']);assert SHA((left/'BUILD.json').read_bytes())==record['actual_original_BUILD_sha256'] and SHA((right/'BUILD.json').read_bytes())==record['actual_counterpart_BUILD_sha256']
  files=lambda root:{p.relative_to(root).as_posix():p for p in root.rglob('*') if p.is_file() and p.suffix.lower() in ('.f90','.f','.for','.inc')}
