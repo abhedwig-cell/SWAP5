@@ -4,7 +4,7 @@ from pathlib import Path
 R=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(R/'tests/nomacro_drainage'),str(R/'tests/nomacro_scheduled_subsurface'),str(R/'app/hybrid_water')]
 from ria12_water_polish_source import complete_inverse,git,SHA
-from ria12_water_polish import POLICY
+from ria12_water_polish import POLICY,TIME_POLICY
 from explicit_bottom9_runtime import m,own
 from implicit_conductivity_forensics import water
 
@@ -12,7 +12,7 @@ def main():
     p=argparse.ArgumentParser()
     for key in ('input','reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args();complete_inverse()
-    head=git('rev-parse','HEAD').decode().strip();project=m.e.load(a.input,original_output=True,time_step_policy='original-adaptive-day-seed-v1',water_polish_policy=POLICY)
+    head=git('rev-parse','HEAD').decode().strip();project=m.e.load(a.input,original_output=True,time_step_policy=TIME_POLICY,water_polish_policy=POLICY)
     assert project.water_polish_policy==POLICY
     a.output.mkdir();bundle=a.build_root/'bundle';started=time.perf_counter()
     q=dict(status='RUNNING_RIA_WATER_POLISH3_NOT_QUALIFIED',source=head,observer_source=head,actual_compiler_source=head,composition_core='e252e995eeece63d8f05531a10b746674c070685',days=3,optimization=a.optimization,kind='cde' if project.solute else 'water',layer_models=[12,12],input_root=str(a.input),input_inventory=m.e.inventory(a.input),build_root=str(bundle),water_polish_policy=POLICY,original_scientific_water_limit_cm='1e-10',canonical_admission=False)

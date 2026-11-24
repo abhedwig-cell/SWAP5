@@ -390,8 +390,9 @@ def load(directory, *, time_step_policy=None, solute_step_policy=None, soil_tabl
     if polish == RIA12_WATER_POLISH:
         from ria12_water_polish import selection as polish_selection
         polish_selection(directory, original_output)
-        if policy != ORIGINAL_TIME_POLICY:
-            raise ValueError('RIA water polishing requires original adaptive time control')
+        from ria12_water_polish import TIME_POLICY as RIA_POLISH_TIME_POLICY
+        if policy != RIA_POLISH_TIME_POLICY:
+            raise ValueError('RIA water polishing requires physical-iteration growth v2')
     key = hashlib.sha256(json.dumps(report, sort_keys=True).encode()).hexdigest()
     project=HybridProject('experimental-'+key, MODEL, report['start_date'], report['nodes'], 1e-10,
                          solute=report['solute'], age=report.get('age',False), end_date=report['end_date'],

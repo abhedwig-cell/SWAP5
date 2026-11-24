@@ -35299,7 +35299,7 @@
     "failed_wet_stress": "Original O0/O2 complete35 retained NUMERICAL_FAILURE wholewater -1.232353486e-9cm, unchanged limit1e-10; no replay or tolerance change"
   },
   "ria12_water_polish_active_v1": {
-    "status": "EXPLICIT_EXTRA_NEWTON_PRECISION_PROTOTYPE_NOT_QUALIFIED",
+    "status": "FIRST_ORIGINAL_ADAPTIVE_SHORT_CENSORED_AFTER1GOOD_DAY_PHYSICAL_GROWTH_COMPOSITION_NEXT",
     "branch": "codex/nomacro-ria12-water-polish01",
     "parent_actual_canonical": "e252e995eeece63d8f05531a10b746674c070685",
     "source_dependency": "1874c63ee359df7bbcfaead42af69bd9312a9065",
@@ -35311,6 +35311,13 @@
     "epsilon_or_inventory_corrections": false,
     "old_default_policy_changed": false,
     "new_persistent_state": false,
-    "next_action": "Actual committed O0 CDE wet-primary3day discriminating solve+own1..3 exact native/output; independent full originalRIA and unchanged1e-10 daily/global inventory. No full35 untilshortPASS. R is read-only actuale252 canonical admission observer; preserve C sourceunqualified until qualification."
+    "next_action": "Current real O0 three-day same wet-primary input, existing physical-iteration growth v2 plus extra1e-12day polishing; exact native/output cold and original RIA oracle. R actuale252 PUBLIC/PUB remains independent and active.",
+    "first_actual_source": "2b5208142d2e290b0830c4241143e0bba68616d6",
+    "first_days_completed": 1,
+    "first_day_water_residual_cm": -9.812706203149446e-13,
+    "first_model_wall_cap_seconds": 240,
+    "first_scientific_PASS_claimed": false,
+    "time_step_policy": "configured-dtmax-physical-growth-v2",
+    "existing_physical_iteration_provider_unchanged": true
   }
 }
