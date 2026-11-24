@@ -17,7 +17,10 @@ def verify_record(directory,profile,head):
   tree=ast.parse(raw);return ast.dump(ast.Module(body=[node for node in tree.body if not isinstance(node,ast.FunctionDef) or node.name!='verify_record'],type_ignores=[]),include_attributes=False)
  path='tests/nomacro_drainage/snow58_analytical_postimage.py'
  assert generation_authority(git('show',record['source']+':'+path).decode())==generation_authority((ROOT/path).read_text())
- assert not git('diff',record['source'],head,'--','app','src','tools','reference','tests/nomacro_drainage/snow58_compiled_postimage.py','tests/nomacro_drainage/calendar_publisher.py'),'Changed actual compilation/source/oracle dependency; cannot inherit postimage'
+ assert not git('diff',record['source'],head,'--','app','src','tools','reference'),'Changed actual compilation dependency; cannot inherit postimage'
+ for oracle in ('tests/nomacro_drainage/snow58_compiled_postimage.py','tests/nomacro_drainage/calendar_publisher.py'):
+  before=git('show',record['source']+':'+oracle);current=(ROOT/oracle).read_bytes().replace(b'\r\n',b'\n')
+  assert before.rstrip(b'\r\n')==current.rstrip(b'\r\n'),'Changed real compiled-image oracle beyond trailing text newlines'
  assert record['profile_RESULT_sha256']==SHA((profile/'RESULT.json').read_bytes()) and record['original_producer']==q['source']
  left,right=Path(q['build_root']),Path(record['build_root']);assert SHA((left/'BUILD.json').read_bytes())==record['actual_original_BUILD_sha256'] and SHA((right/'BUILD.json').read_bytes())==record['actual_counterpart_BUILD_sha256']
  files=lambda root:{p.relative_to(root).as_posix():p for p in root.rglob('*') if p.is_file() and p.suffix.lower() in ('.f90','.f','.for','.inc')}

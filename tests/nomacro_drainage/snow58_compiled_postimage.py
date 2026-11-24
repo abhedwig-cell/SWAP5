@@ -20,4 +20,3 @@ def compare(left,right):
   observed.append(item)
  assert {'day_donor.exe','day_kernel.exe','restart_publish.dll'}<=set(a) or {'day_donor','day_kernel','restart_publish.so'}<=set(a)
  return dict(status='ALL_ACTUAL_GENERATED_OBJECT_MODULE_EXECUTABLE_PUBLISHER_CODE_DATA_POSTIMAGES_VERIFIED',files=observed,raw_bytes_rewritten=False,model_executions=0,compiler_executions_in_reader=0)
-
