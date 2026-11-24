@@ -37,6 +37,8 @@ contains
     if(restoring)then
       read(unit,iostat=ios)parameter_header,parameter_witness,header,witness
       if(ios/=0)error stop 'Incomplete original RIA12 native constitutive domain'
+      if(.not.all(ieee_is_finite(parameter_header)).or..not.all(ieee_is_finite(parameter_witness))) &
+         error stop 'Nonfinite original RIA12 native parameter witness'
       if(any(header/=expected).or.any(witness/=expected))error stop 'Foreign original RIA12 native model witness'
       if(any(parameter_header/=parameters).or.any(parameter_witness/=parameters)) &
          error stop 'Foreign original RIA12 native parameter witness'
