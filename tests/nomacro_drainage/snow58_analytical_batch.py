@@ -40,7 +40,12 @@ def main():
     run(['tests/nomacro_drainage/snow58_analytical_period.py','--input',inputs,'--reference-work',a.reference_work,'--output',profile,'--optimization',a.optimization,*extra],label+'-runtime')
    prior=json.loads((profile/'RESULT.json').read_text());assert dict(prior['input_inventory'])==expected
    if case.get('requires_actual_lysimeter_outflow'):assert any(value>0 for value in prior['actual_bottom_outward_cm']),'Selected lysimeter never drained'
-   post=a.proof/(label+'-opposite-initialization');run(['tests/nomacro_drainage/snow58_analytical_postimage.py','--profile',profile,'--reference-work',a.reference_work,'--build-root',a.build_root/(label+'-opposite-initialization'),'--output',post],label+'-postimage')
+   post=Path(reuse[label]['postimage']) if label in reuse and reuse[label].get('postimage') else None
+   if post:
+    from snow58_analytical_postimage import verify_record
+    verify_record(post,profile,head)
+   else:
+    post=a.proof/(label+'-opposite-initialization');run(['tests/nomacro_drainage/snow58_analytical_postimage.py','--profile',profile,'--reference-work',a.reference_work,'--build-root',a.build_root/(label+'-opposite-initialization'),'--output',post],label+'-postimage')
    samples=a.proof/(label+'-original-samples');extra=['--reuse-component',component] if component else ['--build-root',a.build_root/'original-saturated-component'];run(['tests/nomacro_drainage/snow58_analytical_reference_samples.py','--profile',profile,'--reference-work',a.reference_work,'--output',samples,*extra],label+'-original-samples')
    if component is None:component=samples
    science=a.proof/(label+'-INDEPENDENT.json');run(['tests/nomacro_drainage/snow58_analytical_science.py','--profile',profile,'--reference-samples',samples,'--output',science],label+'-independent')

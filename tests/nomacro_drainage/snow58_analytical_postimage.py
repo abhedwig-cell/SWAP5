@@ -4,9 +4,23 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/nomacro_drainage'),str(ROOT/'tests/nomacro_scheduled_subsurface'),str(ROOT/'app/hybrid_water')]
 from snow58_analytical_source import complete_inverse,git,CORE
-from explicit_bottom9_compiled_postimage import compare
+from snow58_compiled_postimage import compare
 from analytical_hydraulic_archives import SHA
 import experimental_project
+
+
+def verify_record(directory,profile,head):
+ directory,profile=Path(directory),Path(profile);record=json.loads((directory/'RESULT.json').read_text());q=json.loads((profile/'RESULT.json').read_text())
+ assert record['status']=='ACTUAL_SNOW58_OPPOSITE_INITIALIZATION_WHOLE_GENERATED_COMPILED_POSTIMAGE_PASS_NO_MODEL_PERIOD' and record['source']==record['actual_compiler_start_HEAD']==record['actual_compiler_end_HEAD']==head
+ assert record['profile_RESULT_sha256']==SHA((profile/'RESULT.json').read_bytes()) and record['original_producer']==q['source']
+ left,right=Path(q['build_root']),Path(record['build_root']);assert SHA((left/'BUILD.json').read_bytes())==record['actual_original_BUILD_sha256'] and SHA((right/'BUILD.json').read_bytes())==record['actual_counterpart_BUILD_sha256']
+ files=lambda root:{p.relative_to(root).as_posix():p for p in root.rglob('*') if p.is_file() and p.suffix.lower() in ('.f90','.f','.for','.inc')}
+ a,b=files(left),files(right);assert a.keys()==b.keys();observed=[]
+ for name,path in sorted(a.items()):
+  x,y=path.read_bytes(),b[name].read_bytes();assert x.replace(b'\r\n',b'\n')==y.replace(b'\r\n',b'\n');observed.append(dict(file=name,original_sha256=SHA(x),counterpart_sha256=SHA(y)))
+ assert observed==record['generated_sources'] and compare(left,right)==record['compiled']
+ assert git('rev-parse','HEAD').decode().strip()==head
+ return record
 
 
 def main():
