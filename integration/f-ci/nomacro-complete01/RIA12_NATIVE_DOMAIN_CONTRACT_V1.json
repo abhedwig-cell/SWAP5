@@ -1,5 +1,5 @@
 {
-  "status": "IMPLEMENTED_REAL_O0_O2_OWN_NATIVE_POSITIVE_AND82_ACTUAL_REFUSALS_PASS_PENDING_ORIGINAL_COMPONENT_AND_FULL_QUALIFICATION",
+  "status": "EXACT_SOURCE_INVERSE_SMALL_NATIVE_AND_ORIGINAL_REFERENCE_GATES_PASS_FULL35_SELECTED",
   "version": 1,
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "classification": "B_EXISTING_ORIGINAL_RIA_PROCESS_NATIVE_STATE_COMPOSITION",
@@ -100,5 +100,77 @@
   "source_dependency": "310abf1c99b028a977b0282b6f72ae6181b2cf8f",
   "source_dependency_is_admitted_canonical": true,
   "actual_source_composition": "80ebfbefb8ea446628f785990ae6d5d96083f010",
-  "actual_native_guard_compiler_source": "af9e298f558517fa1c52938d0ffb706a38a134ea"
+  "actual_native_guard_compiler_source": "af9e298f558517fa1c52938d0ffb706a38a134ea",
+  "files": {
+    "app/hybrid_water/experimental_project.py": {
+      "before_lf_sha256": "8c2a43914bdfaf8b465f449ab771faedb5911178b039d729201ca20531227db4",
+      "proposed_lf_sha256": "727c116ae1333cbe30a64ae5e5f61bee6766b407512aabb9adff080d068e072d",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3078,
+          "base_end": 3078,
+          "before": "",
+          "after": "t)\n    from original_ria12 import selection as ria12_selection\n    ria12_selection(directory, original_outpu"
+        }
+      ]
+    },
+    "app/hybrid_water/original_output.py": {
+      "before_lf_sha256": "bc1cf3606360327911119a0f1254ccf6de8910d0b43821be9b68527f2bf3e71e",
+      "proposed_lf_sha256": "eae13974eb7a5db555e231eed7ab1c18228f2689e288e690290fb3a5c26817f3",
+      "ordered_literal_edits": [
+        {
+          "base_start": 4148,
+          "base_end": 4148,
+          "before": "",
+          "after": "sul"
+        },
+        {
+          "base_start": 4149,
+          "base_end": 4153,
+          "before": "urn ",
+          "after": "="
+        },
+        {
+          "base_start": 5134,
+          "base_end": 5134,
+          "before": "",
+          "after": "    from original_ria12 import metadata as ria12_metadata\n    ria12=ria12_metadata(project)\n    if ria12 is not None:result['original_ria12']=ria12\n    return result\n"
+        },
+        {
+          "base_start": 5401,
+          "base_end": 5401,
+          "before": "",
+          "after": "\n    from original_ria12 import selection as ria12_selection,CODECS as ria12_codecs\n    ria12=ria12_selection(project.input_directory,project.original_output)\n    if ria12 is not None:return ria12_codecs[ria12['kind']]"
+        },
+        {
+          "base_start": 9691,
+          "base_end": 9691,
+          "before": "",
+          "after": "from original_ria12 import render_macro as ria12_macro\n    "
+        },
+        {
+          "base_start": 9698,
+          "base_end": 9698,
+          "before": "",
+          "after": "ria12_macro("
+        },
+        {
+          "base_start": 9749,
+          "base_end": 9749,
+          "before": "",
+          "after": ",project)"
+        }
+      ]
+    }
+  },
+  "added_files": {
+    "app/hybrid_water/original_ria12.py": {
+      "proposed_lf_sha256": "2009698a503ae69ce2a34a89a9a8a6bf5d911e85773ace3d2e7e8ab37b1a8811"
+    },
+    "app/hybrid_water/original_ria12_native.f90": {
+      "proposed_lf_sha256": "bbbcbdcc62b0bcdca8f4dc990df0cf0687a04100688f3bd8540eb7e4829139e4"
+    }
+  },
+  "reference_component_observations_per_optimization": 136,
+  "reference_component_maximum_stock_difference_cm": 0.0
 }
