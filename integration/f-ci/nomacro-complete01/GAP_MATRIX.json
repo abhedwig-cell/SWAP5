@@ -2713,6 +2713,45 @@
     "canonical_admission": false,
     "global_counts": "UNKNOWN",
     "actual_full35_windows": 4,
-    "actual_windows_cold": 12
+    "actual_windows_cold": 12,
+    "actual_canonical": "2c361f08f7170943d716483252512817ef35a3a1",
+    "canonical_PR": 1796,
+    "admission_archive_sha256": "db830e813d9edcde4d30bb0de367195f79cb001891b43eae1118032a31636585",
+    "admitted_contexts": 400,
+    "actual_public_and_publication_PASS": true
+  },
+  "original_ria12_numerical_heat_and_snow": {
+    "classification": "MISSING_COMPOSITION",
+    "implementation": "IMPLEMENTED_SCIENTIFIC_RAW_PASS_PUBLIC_FREEZE_PENDING",
+    "scope": "All-layer12 primary dra1/bottom6 explicit heat1/CALT2, Snow0/1, noFrost/hysteresis, water/CDE, HeatOn=false/VaporCond=false, dense daily SWINCO1/2",
+    "new_full35_periods": 16,
+    "platforms": [
+      "Windows",
+      "Ubuntu"
+    ],
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "new_main_exact_cold_windows": 48,
+    "new_main_warm_native_samples": 112,
+    "current_compiled_native_refusals": 736,
+    "private_input_refusals": 48,
+    "opposite_initial_compiled_postimages": 16,
+    "external_representatives": 12,
+    "scientific_raw_PASS_does_not_equal_admission": true,
+    "whole_family_closed": false,
+    "global_family_and_gap_counts": "UNKNOWN",
+    "reference_defect": "readswap assigns RIA Ksatfit=UHCCpars(:,1)=hae. New thermal route explicitly corrects to column4=Ksat; complete original RIA+HCOMEAN O0/O2 component evidence owns this separate correction. Other NoHeat RIA routes retain original bound source and require subsequent correction qualification.",
+    "next": "Seal complete Windows source/raw/failures, read both original Ubuntu+control artifacts independently; verify old routes byteexact; freeze current public400+new16 owner and real refusal controls."
+  },
+  "original_ria12_legacy_saturated_compatibility_binding": {
+    "classification": "REFERENCE_DEFECT",
+    "original_source": "readswap.f90 line635 and MOD_RIA.f90 original RIA_Reader UHCC column assignments/SingleKcomponents saturated branch",
+    "discriminating_evidence": "Complete actual original RIA/TTUTIL and original functions.f90 HCOMEAN O0/O2 each10calls; oldmean negative7calls each; corrected Ksat=10/5 cm/day equals actual original SingleKcomponents(0)",
+    "current_fix_scope": "New numerical-heat RIA12 route only",
+    "remaining_scope": "Existing admitted NoHeat primary and boundary all12 routes; mixed12/othermodel reader bindings also require original-dispatch analysis",
+    "next_action": "Propagate typed Ksat correction to NoHeat routes as separate source-dependent scientific batch; current raw legacy comparison results remain preserved; no silent relabeling",
+    "whole_family_closed": false
   }
 }

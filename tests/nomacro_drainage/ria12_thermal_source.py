@@ -1,11 +1,11 @@
-"""Actual bounded RIA source against admitted canonical384; no projected views."""
+"""Actual bounded RIA thermal source against admitted canonical400; no projected views."""
 import hashlib
 import json
 from pathlib import Path
 import subprocess
 
 R = Path(__file__).resolve().parents[2]
-CORE = '8e8f2a4c7ff28e4e4845c4b5554894a4bc3c5af1'
+CORE = '2c361f08f7170943d716483252512817ef35a3a1'
 git = lambda *a: subprocess.check_output(['git', *a], cwd=R)
 SHA = lambda b: hashlib.sha256(b).hexdigest()
 
