@@ -15,6 +15,8 @@ CODECS={'S5ITW001':'S5IRW001','S5CTW002':'S5IRW002','S5STW001':'S5IRW003',
 
 def enabled(project):
     if not project.input_directory or not project.original_output or project.macro or project.solute or project.age:return False
+    from frost_boundary_composition import selection as frost_boundary_selection
+    if frost_boundary_selection(project.input_directory,project.original_output) is not None:return False
     from experimental_project import inspect
     report=inspect(project.input_directory);s=report['selectors']
     return s['SWKIMPL']==s['SWSNOW']==1 and report['boundary']['SWBOTB'] in (5,8)

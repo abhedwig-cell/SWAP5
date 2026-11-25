@@ -1,0 +1,866 @@
+{
+  "status": "ACTUAL_CANONICAL500_ORIGINAL_PUBLIC_ORDINARY_PUB_CI_NEGATIVES_AND_SIGNED_OBJECTS_PRESERVED",
+  "archive": "FROST_CALENDAR_STATE02_ADMISSION_RAW_V1.zip",
+  "bytes": 7679011,
+  "sha256": "5fc94d202dc7b7d1de61418e25f96384eea667f49d63aacd4d86f1da163310a6",
+  "parts": [
+    {
+      "file": "FROST_CALENDAR_STATE02_ADMISSION_RAW_V1.zip",
+      "bytes": 7679011,
+      "sha256": "5fc94d202dc7b7d1de61418e25f96384eea667f49d63aacd4d86f1da163310a6"
+    }
+  ],
+  "members": {
+    "frost-calendar-state02-actual-canonical-merge-observer-prepare-v1.py": {
+      "bytes": 3105,
+      "sha256": "66e8b665c8f28599eaab8c34ec3103b92512113a2244bba219a0e4c9c4f5040f"
+    },
+    "frost-calendar-state02-actual-merge-normal-publication-v1.py": {
+      "bytes": 618,
+      "sha256": "5c3f12dc86e680d333167662b34f8341ed99e762b36ec5a095121b9f15e628e5"
+    },
+    "frost-calendar-state02-admission-seal-v1.py": {
+      "bytes": 6569,
+      "sha256": "534473381e25689d61fbccfc9a65882a091ec44c811ef8ebea29b489c84bad10"
+    },
+    "frost-calendar-state02-both-ci-negative-controls-v2.py": {
+      "bytes": 9153,
+      "sha256": "0143bd96d1accc0c1cb47c8c78e89ad303cb096d9b68ae4b03b942da3cc2a14c"
+    },
+    "frost-calendar-state02-both-ci-negative-controls-v3.py": {
+      "bytes": 10101,
+      "sha256": "a9de6ffce2dcf1980882d0910dfb5c1a62fdce3a3f7f8f449e9127f22cfea6cc"
+    },
+    "frost-calendar-state02-build-central-byte-custody-v1.py": {
+      "bytes": 3407,
+      "sha256": "80a17b2fdc2ed74a84964e45bd1b2b2ef6e247024171c9f9dfd43ca56c67f394"
+    },
+    "frost-calendar-state02-build-cleanup-final-v2.py": {
+      "bytes": 2899,
+      "sha256": "6844fdbf2fc78559ac14f85c576298ab2475c1fe5764a48cfd75637eb5b1afad"
+    },
+    "frost-calendar-state02-candidate-normal-python-publication-observe-v1.py": {
+      "bytes": 2231,
+      "sha256": "ced02d793bc0831de17e57c59f7d9d3818ce6610c77774c46a46da5705f9bd0e"
+    },
+    "frost-calendar-state02-candidate-normal-python-publication-observe-v2.py": {
+      "bytes": 2231,
+      "sha256": "88246d425f72a691b9bc8657ab7b92de56d25a4a6443b55450e7a8058a29ee43"
+    },
+    "frost-calendar-state02-candidate-normal-python-publication-observe-v3.py": {
+      "bytes": 2231,
+      "sha256": "8bd8c772e0a7136f9c113f80cd8e29a705d7155831d2b4ee858f8bf649781d33"
+    },
+    "frost-calendar-state02-controls-proposed-v1.py": {
+      "bytes": 4232,
+      "sha256": "f49fa5ccfe4f5a32064d615a7892806250834d63e2f1695f0db0682806b2543d"
+    },
+    "frost-calendar-state02-extra-native-proposed-v1.py": {
+      "bytes": 3631,
+      "sha256": "29c3ececebdc5f73704ef84d1a80b1e437ff754e56965a3da73d5875b013c5ea"
+    },
+    "frost-calendar-state02-genuine-signed-object-import-v1.py": {
+      "bytes": 2811,
+      "sha256": "4077bf7a7fc61652a5da3042e2564d826432fa5c73de3511f7450fb6ab578410"
+    },
+    "frost-calendar-state02-native-adapter-proposed-v1.py": {
+      "bytes": 6233,
+      "sha256": "6443bff7d0f7d2252bad82f346986c68cae330fe250c1e1ff1c13b9e3dfca7f3"
+    },
+    "frost-calendar-state02-negative-controls-v1.py": {
+      "bytes": 9139,
+      "sha256": "2cf00ca3323ab91f4a6a7f63e4776aeb3d6b4ece6168b4bf2a8f8affe85f329a"
+    },
+    "frost-calendar-state02-old-build-git-custody-v1.py": {
+      "bytes": 3752,
+      "sha256": "62eb5f7d857f81490adf885c66d4e6bc3d56606a41ae4368281c31bef5350fc6"
+    },
+    "frost-calendar-state02-original-ci-job-log-v1.py": {
+      "bytes": 3222,
+      "sha256": "cf146895d95a4ec6309df330ed3b832682cdd1a2e800f8e235e30c40f1676e86"
+    },
+    "frost-calendar-state02-release-custodied-builds-v1.py": {
+      "bytes": 2027,
+      "sha256": "f1a891ec94fb528a80f4695c2c3da3861ba711bc61c3c9efca30ed26c0acd49d"
+    },
+    "frost-calendar-state02-restore-candidate-archive-dependencies-v4.py": {
+      "bytes": 1507,
+      "sha256": "1a88c0e8cf9030ff0351f62dff5b942bee930677cc5af5941c8eeaab847c6722"
+    },
+    "frost-calendar-state02-root-controls-proposed-v1.py": {
+      "bytes": 4908,
+      "sha256": "eb8b4b85c8df0539ac2e97a1f855345936b82eec812687f98852b8c1ee27cdc2"
+    },
+    "FROST_CALENDAR_STATE02_ACTUAL_MERGE_PUBLIC_V1.json": {
+      "bytes": 18287,
+      "sha256": "60523de2613344e0df9bd28cc49899a9acb1e41a074522957a9608a20426ab8c"
+    },
+    "FROST_CALENDAR_STATE02_ACTUAL_MERGE_PUBLIC_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_ACTUAL_MERGE_PUBLIC_V1.stdout.txt": {
+      "bytes": 2434614,
+      "sha256": "2dd6f0d6c9ee8d922831b948ea4435b9862b9ee1d7543c17ecafd3fbccd3979f"
+    },
+    "FROST_CALENDAR_STATE02_ACTUAL_MERGE_PUBLICATION_V1.json": {
+      "bytes": 18387,
+      "sha256": "1b2843d854b05a4519fe660fe59ad3e5fa30b27874d69ad220d7ead34dc55b61"
+    },
+    "FROST_CALENDAR_STATE02_ACTUAL_MERGE_PUBLICATION_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_ACTUAL_MERGE_PUBLICATION_V1.stdout.txt": {
+      "bytes": 124,
+      "sha256": "b7a46d07c983f3c14ce7985e592af223c2b5cc506e9939a60cb25a504563c0b7"
+    },
+    "FROST_CALENDAR_STATE02_ACTUAL_PARENT_DEFAULT_LOCATIONS_V1.json": {
+      "bytes": 70155,
+      "sha256": "489296ae256f65eb48a841746515c456ae3c35f6de1cbc5a735994d65150106b"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_INHERITED_NEGATIVE_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_INHERITED_NEGATIVE_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 93,
+      "sha256": "16010b5a68386f282e424f6729cf407844753dcdc2b37e330dec55d4d7f03eb4"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_INHERITED_NEGATIVE_PUBLIC_V1.json": {
+      "bytes": 18286,
+      "sha256": "cf73c7b29ed5fc7a04caeb6258b61ccaf9210644322071a569eb459427dabc2a"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_INHERITED_NEGATIVE_PUBLIC_V1.stderr.txt": {
+      "bytes": 12924,
+      "sha256": "88e3789175876626fa87f0f60854a1ddc58ef743727de08ee6d3c3a1a0c00d05"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_INHERITED_NEGATIVE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_INHERITED_NEGATIVE_PUSH_V1.stderr.txt": {
+      "bytes": 385,
+      "sha256": "71588ff2327f2c719e8fce1bbecfdbefc22a0055fb33260283db8e5c4c682080"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_INHERITED_NEGATIVE_PUSH_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_NEGATIVES_V1.json": {
+      "bytes": 4469,
+      "sha256": "19bf98364f5efabb2b8537910d91fe04314bd67e87c74066acf512324dee8f0a"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 93,
+      "sha256": "af7dfeb24f7e9590390b63c1bfc06e76f1dd2a86401cb13ba841a452bc0662f1"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1.json": {
+      "bytes": 18286,
+      "sha256": "397632d9e580c656bc968c84b2035050d77106398a043d01796d976dfb0753e0"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1.stderr.txt": {
+      "bytes": 13181,
+      "sha256": "79de8acfa17002774988da24eccadd6f522a2b6ca90adcf4ac7831404184ecb9"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_PUSH_V1.stderr.txt": {
+      "bytes": 391,
+      "sha256": "58e5884c3c7977db20848f81e23dcc28cc9af544be32e7f987aa1d4816f44de4"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_PUSH_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1-observer.stdout.txt": {
+      "bytes": 93,
+      "sha256": "e2d2227c7d5e0069c6d751d5a756d65a2ceeb9773d916f8e56d9a4e7272a5295"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1.json": {
+      "bytes": 18301,
+      "sha256": "5a50eeca48d7f1b1b476df8cab93574cb76ab4d9cd84f07e10b29fa9074a9fc0"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1.stdout.txt": {
+      "bytes": 741,
+      "sha256": "4681c71176f9b15ee57f2df4b191be4c15cea2027815ae6b58e8c55fd71e8617"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_RAW_NEGATIVE_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_RAW_NEGATIVE_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 93,
+      "sha256": "f7ddebe4643faad630b5e006e5bccffc028674f76b5386c1baccd5b8e813368b"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_RAW_NEGATIVE_PUBLIC_V1.json": {
+      "bytes": 18286,
+      "sha256": "bc65bea38f0e736e775682fa978e16e8ab86fd2da08d607fbbeae1ad925c9f13"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_RAW_NEGATIVE_PUBLIC_V1.stderr.txt": {
+      "bytes": 12618,
+      "sha256": "9eb28124e7c513cfa10605a7a070b2804d8e9bc882686e5761ac91926ad2bf26"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_RAW_NEGATIVE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_RAW_NEGATIVE_PUSH_V1.stderr.txt": {
+      "bytes": 367,
+      "sha256": "44187940702d62e59421bb147a551da74dcdd68aff118d122eef8dbbe21e1032"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_RAW_NEGATIVE_PUSH_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_SOURCE_NEGATIVE_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_SOURCE_NEGATIVE_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 93,
+      "sha256": "f98b75e10aa8eea8cb7e71cb071a5a677450694927cd54451600043ff0b52e44"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_SOURCE_NEGATIVE_PUBLIC_V1.json": {
+      "bytes": 18286,
+      "sha256": "963f954edaef9f5c074137302229fc313077a7f01aa2865d8990131b1837128a"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_SOURCE_NEGATIVE_PUBLIC_V1.stderr.txt": {
+      "bytes": 12933,
+      "sha256": "0ed36239cd355bf9bd6a89b5e320f3ba6dfe128f09f537cbbe02f098703c9c47"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_SOURCE_NEGATIVE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_SOURCE_NEGATIVE_PUSH_V1.stderr.txt": {
+      "bytes": 376,
+      "sha256": "e8909e50db6f3fbec034c558a20248c1af7eeff2bc191439f56b8bcbdc8d7f29"
+    },
+    "FROST_CALENDAR_STATE02_BOTHCI_FINAL_SOURCE_NEGATIVE_PUSH_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_CENTRAL_BYTE_CUSTODY_V1.json": {
+      "bytes": 718637,
+      "sha256": "3eb68636eaa5197f25b0a0a971b0834f94ac4a761b58493e3acc463388c569f2"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_CLEANUP_APPLIED_V2.json": {
+      "bytes": 46381,
+      "sha256": "da9edb85c12ebf8b08035a31dd5aed70c0199ff7efc1c90ad0b66bb1e44af0b4"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_CLEANUP_APPLIED_V2.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_CLEANUP_PREVIEW_V1.json": {
+      "bytes": 47098,
+      "sha256": "6839e2cb227a237305eba99c026dc9f8da93ace967b747a009cbfd6c104df356"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_CLEANUP_PREVIEW_V2.json": {
+      "bytes": 47099,
+      "sha256": "76a655f1aa9ff19e349f88c207d61b0e3d4273780688f80eeb1faaee5d8b82e2"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_1cb63925defc1aaf-4b7235da_V1.json": {
+      "bytes": 203,
+      "sha256": "0f7503540643401a62e288515fda056ff3d162f6aa8e72445afa56186c48b7d4"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_23a7b8c58592cdbb-bbbeb9ec_V1.json": {
+      "bytes": 229,
+      "sha256": "38927264c64fb9d12b1d79e39a4e5d1be9d14daa241f533bbc862d34e726f06f"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_2612d17b9ad5ae37-f5fe792d_V1.json": {
+      "bytes": 229,
+      "sha256": "219b2d52ffcca74654b88c36ff20eda78ac220bcd7ca035c4358ad5f4e5ef00f"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_2a5b2650914a7e7d-f56d3072_V1.json": {
+      "bytes": 209,
+      "sha256": "6e7d73b20eed01b59a339f2ded213ba023b05dcfbd47403b87f2fb291f398fd6"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_448bbddef4809ec9-75fadc76_V1.json": {
+      "bytes": 233,
+      "sha256": "af0c99b903f43fc55ef92200f2b99e76e8bb295ef5878d36e12016a9bf14f7fd"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_4cf1a1a4db8ad333-9913b2a4_V1.json": {
+      "bytes": 226,
+      "sha256": "57999de5686b393fee6f4c1f3741a8929d913b8fa578f23d16cac9a36045d93c"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_5a9f1e9d14fd79ed-9a22b575_V1.json": {
+      "bytes": 218,
+      "sha256": "a0cee97e6355d35c6030b3b8523554ad912d06af9984bb0eb8813c7057ca3f00"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_619c0a9a193ef449-323a53ef_V1.json": {
+      "bytes": 197,
+      "sha256": "2766907212c9e577ad0934ba25712f8fc13d684711ce24f7a2c091bc97c565bf"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_8237ab65e4427cd7-ef16125d_V1.json": {
+      "bytes": 209,
+      "sha256": "7d4b0023a59a56b7da0c5bc7200c72d5fe9c211054cda40cc69a7e633f1080fd"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_8668181f86399249-7f4a792a_V1.json": {
+      "bytes": 218,
+      "sha256": "0209224eff83c1f087b54f7b0971f36263972153d517e17290333e6424617ea6"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_a43dd026b4cd4103-68c7cdae_V1.json": {
+      "bytes": 223,
+      "sha256": "678dd61035ac3a58b1e22a3c913607f85f6fb905fafd86bf7bfa39e5f03fad46"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_b4236996a3250d13-2eeffd47_V1.json": {
+      "bytes": 218,
+      "sha256": "e5a627bff22c12ff477fad057ddcb1da2e3707489a8cefd82ff0e926368a478b"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_c6e771f40daa4a18-206e2785_V1.json": {
+      "bytes": 217,
+      "sha256": "4e5210f1a1238e755dce629aa81a4c8b0237db913f343cce8e4d86487df2c253"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_ddabfcd55fa6e1f8-e9e4a98a_V1.json": {
+      "bytes": 210,
+      "sha256": "dee089d5a6f04baa9d1daedb1adc5f4387edaef0262e62aceaad6beecdac2170"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_dfd01470f5d46f8b-acf2f0c8_V1.json": {
+      "bytes": 204,
+      "sha256": "9ceaab1aca2d5121756a765d241990abe69c35b455e17927c07c94204a76b9d9"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_e292140ee7fea549-1574d9fa_V1.json": {
+      "bytes": 207,
+      "sha256": "fe61b9e326f761d1f81416093f867fc7c748ceef34d0f4104fa3f95ce40c8cc9"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_e3f8d1484671d43d-8b985cc3_V1.json": {
+      "bytes": 226,
+      "sha256": "90d49fc7e6d2a32e048a59c63bed132575ba55408f11e7ddd7f914649bffed21"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_e4614378f147345c-948ee0ff_V1.json": {
+      "bytes": 220,
+      "sha256": "070c6e7039f61cde3814953cb46a6c4628047a510bb75d1d81099f2c3332150f"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_f474df5b1863cf2e-872bd367_V1.json": {
+      "bytes": 207,
+      "sha256": "fb7b0875daea0146e5d56c73b8ac7a5772394f6163db13c72f338573c0ae7a93"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_f9136a897e94af3e-54e51149_V1.json": {
+      "bytes": 218,
+      "sha256": "4479883d04e3f206f5e49cecaf7e1806ebcfdf4c540b92dd47e3b4c87199b176"
+    },
+    "FROST_CALENDAR_STATE02_BUILD_RELEASE_fa0397a765cc0562-aecb28ca_V1.json": {
+      "bytes": 223,
+      "sha256": "fd3cb000bd61de1363bada4a3f78b22841bab2b64698628067431ce6276f42e2"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_EXACT_REQUIRED_DEPENDENCIES_V3.json": {
+      "bytes": 6883,
+      "sha256": "0c00f9e436fa08b24feec3063958b0ae1e9e13f7066605982db947e2c815bc27"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V1.json": {
+      "bytes": 18286,
+      "sha256": "542615bee6e9b0c2b014792c02198a38d2d1a5a80a52b717580ce1dec498b46a"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V1.stdout.txt": {
+      "bytes": 2433758,
+      "sha256": "f403e234e9b3000bf992d58069a639aabff8924bd23f2f51da33244eb1a0497b"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V2.json": {
+      "bytes": 18286,
+      "sha256": "7d3a92b1e938e90c6f2a67708ce692d214554bc9c6e7377cf2ef7c9e1609ec96"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V2.stderr.txt": {
+      "bytes": 13386,
+      "sha256": "4448d221f6430834631967bf9ff5baf624b842e1f3ff950aead9affb61599c2e"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V2.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V3.json": {
+      "bytes": 18286,
+      "sha256": "00af9fe911372fad118658eb7699be657441cf5a2552d0f0178bc781362e8ab9"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V3.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V3.stdout.txt": {
+      "bytes": 2434670,
+      "sha256": "57c0f988af83d3bc105c2dcbe2610c3f02309e34c52fba07b4aec3f724ecdb70"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V1.json": {
+      "bytes": 18388,
+      "sha256": "1b6f036ae49e9853f59f87219a7c02994e3d96565868964a2ae8e03e9147d7e1"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V1.stdout.txt": {
+      "bytes": 124,
+      "sha256": "b7a46d07c983f3c14ce7985e592af223c2b5cc506e9939a60cb25a504563c0b7"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V2.json": {
+      "bytes": 18387,
+      "sha256": "379050e9da9a48d15b05a86070d327c6adbd3809859efac326364f61862a2cc3"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V2.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V2.stdout.txt": {
+      "bytes": 135,
+      "sha256": "a5b09a331bb7aa938ea715297ff8422d4eb89737ec4747f100e810ec9af03ac6"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V3.json": {
+      "bytes": 18387,
+      "sha256": "6c79f3d793626239561282ba9513baa9ff69e33b8a86763f0c72604bda62d89a"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V3.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V3.stdout.txt": {
+      "bytes": 124,
+      "sha256": "b7a46d07c983f3c14ce7985e592af223c2b5cc506e9939a60cb25a504563c0b7"
+    },
+    "FROST_CALENDAR_STATE02_CANONICAL_DEPENDENCIES_BEFORE_PR1801_V1.json": {
+      "bytes": 28162,
+      "sha256": "6485d3c196d533695f8e14ae1d02e38bfdbaaef229887b02b6ae3fc3c157d0ed"
+    },
+    "FROST_CALENDAR_STATE02_COMPLETE_SELECTED_COHORT_CENTRAL_V1.json": {
+      "bytes": 32186,
+      "sha256": "c6c6b674b987346b65fb9b4e6d162e179757d8bc0dce4720de354366e209fb58"
+    },
+    "FROST_CALENDAR_STATE02_CORRECTED_SAME_FAILED_WINDOWS_YEAR_FOLLOWUP_V1.json": {
+      "bytes": 1824,
+      "sha256": "73c7093a87e168037961311e67c7f27c88e8a886cba2ae7925b45af098088039"
+    },
+    "FROST_CALENDAR_STATE02_CORRECTED_SAME_YEAR_UBUNTU_FOLLOWUP_DECIMAL_V2.json": {
+      "bytes": 3431,
+      "sha256": "bd8cf028b27f0f71f070098af2ac2083fe9fb23d76331dd0c0f34bb8c9528570"
+    },
+    "FROST_CALENDAR_STATE02_CORRECTED_SAME_YEAR_UBUNTU_FOLLOWUP_V1.json": {
+      "bytes": 2751,
+      "sha256": "c18fd86e60496e60414d6f60dd4b5ae0645716e5ba51cd10201af58cb2242fa5"
+    },
+    "FROST_CALENDAR_STATE02_DUPLICATE_ARCHIVE_COPY_CANDIDATES_V1.json": {
+      "bytes": 20910,
+      "sha256": "02fa9a281cc0f930e6425bab689005ec16578d63bbe0d48119a88f6f2ecc23d6"
+    },
+    "FROST_CALENDAR_STATE02_EXACT_MERGE_OBSERVER_DEPENDENCIES_V1.json": {
+      "bytes": 44047,
+      "sha256": "c30621b61f4a8776c23021b8f749ea0ef2beffc671101cb8cdcd7e5e156339f0"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_INHERITED_NEGATIVE_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_INHERITED_NEGATIVE_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 94,
+      "sha256": "6213fd8abf4f87ab26fd3db21db2e01864f27dec78886795ac893ffb0961a93f"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_INHERITED_NEGATIVE_PUBLIC_V1.json": {
+      "bytes": 18287,
+      "sha256": "0e6d210542b73b349cc7f89b0ca006dfb6e2ae9d2bdb1b1f0abb3a9c56f4f010"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_INHERITED_NEGATIVE_PUBLIC_V1.stderr.txt": {
+      "bytes": 12924,
+      "sha256": "88e3789175876626fa87f0f60854a1ddc58ef743727de08ee6d3c3a1a0c00d05"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_INHERITED_NEGATIVE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_INHERITED_NEGATIVE_PUSH_V1.stderr.txt": {
+      "bytes": 385,
+      "sha256": "3f28e5bafd80b42428082888647b2dbda7b479e581465af428c574588e6a99e2"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_INHERITED_NEGATIVE_PUSH_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_NEGATIVES_V1.json": {
+      "bytes": 4471,
+      "sha256": "6a165d5cc414cc8f78c85b8b3264b78b41784ff1dba9dd588eb9a0cd94893fa1"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 92,
+      "sha256": "ecc358067c182e3b5c9c78104865403c321ca98eac6c590acfdd989fc4e630d5"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1.json": {
+      "bytes": 18285,
+      "sha256": "e94731162121eec359085b4724998a40028ca90ccbc88bd5b4b0479b3ebd9198"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1.stderr.txt": {
+      "bytes": 13089,
+      "sha256": "3aec69bba7ea3cb05b0b282612280e583e7818a13ada5852fa35b3b28fd8c1a6"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_PUSH_V1.stderr.txt": {
+      "bytes": 391,
+      "sha256": "253cb7b94de08653c4d79e6dc8ea78139a37dd52002b4f8e250ccb78b2130b83"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_PUSH_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1-observer.stdout.txt": {
+      "bytes": 93,
+      "sha256": "048bc64b617668afb98fb1b3b2492dbc012cc184dd3e5698f8f319cd7ed72922"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1.json": {
+      "bytes": 18301,
+      "sha256": "eba36c592905741f6c24ef69a3eeeb1aabbe1c830871ce15d6960daaf72b17a3"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_PUBLICATION_NEGATIVE_SCOPE_V1.stdout.txt": {
+      "bytes": 649,
+      "sha256": "8bd825b0c1c933cba5b3ab6f333283d082d29cd27fd1d027018e73687cb19700"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_RAW_NEGATIVE_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_RAW_NEGATIVE_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 94,
+      "sha256": "6145623095efd0b0f9f415782c7ec8a640135acb5097c565abaf5834158f9787"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_RAW_NEGATIVE_PUBLIC_V1.json": {
+      "bytes": 18287,
+      "sha256": "668e8d9b7aa67b753dd14b74f98351bef7c624782ee70a3e3a3808c4b7e3ca1e"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_RAW_NEGATIVE_PUBLIC_V1.stderr.txt": {
+      "bytes": 12618,
+      "sha256": "9eb28124e7c513cfa10605a7a070b2804d8e9bc882686e5761ac91926ad2bf26"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_RAW_NEGATIVE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_RAW_NEGATIVE_PUSH_V1.stderr.txt": {
+      "bytes": 367,
+      "sha256": "945b0bb8e71f52a8d44764ce4973f8819650d549ad6310fb1677d8521aabe1dc"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_RAW_NEGATIVE_PUSH_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_SOURCE_NEGATIVE_PUBLIC_V1-observer.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_SOURCE_NEGATIVE_PUBLIC_V1-observer.stdout.txt": {
+      "bytes": 94,
+      "sha256": "befb5c0be4301f841158c91daf740d28a0a55e6a9f6d20f3e14b1dacc59b4596"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_SOURCE_NEGATIVE_PUBLIC_V1.json": {
+      "bytes": 18287,
+      "sha256": "2cf17272ab6e367d2fd1b9619f73c9fa20b2082fc3ebefa9ea0bd6a18f413874"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_SOURCE_NEGATIVE_PUBLIC_V1.stderr.txt": {
+      "bytes": 12933,
+      "sha256": "0ed36239cd355bf9bd6a89b5e320f3ba6dfe128f09f537cbbe02f098703c9c47"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_SOURCE_NEGATIVE_PUBLIC_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_SOURCE_NEGATIVE_PUSH_V1.stderr.txt": {
+      "bytes": 376,
+      "sha256": "932e84596edc713d42e87049dbd2c97345334ed5097359ef9dc287c993237d13"
+    },
+    "FROST_CALENDAR_STATE02_FINAL_SOURCE_NEGATIVE_PUSH_V1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FROST_CALENDAR_STATE02_FIRST_UBUNTU_ACTUAL_PROVIDER_ANALYSIS_V1.json": {
+      "bytes": 1212,
+      "sha256": "11aad338de034be2ff03d7eff43a4f753d46568d2299017545c7af6b1748f28a"
+    },
+    "FROST_CALENDAR_STATE02_FRESH_ACTUAL_PARENT_ADMISSION_V1.json": {
+      "bytes": 2422,
+      "sha256": "9b48439e99175f1ded5ce695897538a54c7242d802ee6778698d76c95c41ff93"
+    },
+    "FROST_CALENDAR_STATE02_FRESH_CANONICAL472_INHERITED_BYTES_V2.json": {
+      "bytes": 947670,
+      "sha256": "8443e5adee6e928177e964637dc2c7c012cf32bac74ad97078a3294fb257eaef"
+    },
+    "FROST_CALENDAR_STATE02_FRESH_EOL_READER_EXACT_NEGATIVES_V2.json": {
+      "bytes": 2312,
+      "sha256": "02e4bf38313973db80a7e758ee9dfe42390d652cd01db4fc539c1fa36fb8c605"
+    },
+    "FROST_CALENDAR_STATE02_FULL_EOL_PREFLIGHT_STOP_V1.json": {
+      "bytes": 400,
+      "sha256": "5266167dd14f879fb264910574cdf4ed59a08545cba91f277e75c2c9ebd5464f"
+    },
+    "FROST_CALENDAR_STATE02_GENUINE_CANONICAL_DENSE_CONTROL_RETURN_V1.json": {
+      "bytes": 1090,
+      "sha256": "d42cdf43caabade6082c6d5de637a0036ea080d40e190061737bf8074767a075"
+    },
+    "FROST_CALENDAR_STATE02_GENUINE_CANONICAL_DENSE_CONTROL_SELECTION_V1.json": {
+      "bytes": 1098,
+      "sha256": "65195e96620d75104a4e73cecf84c3cb98b1a52e2334f4c5f195aa2a26f8cc15"
+    },
+    "FROST_CALENDAR_STATE02_LOCAL_TERMINAL_CAUSAL_ARCHIVE_V1.json": {
+      "bytes": 2327,
+      "sha256": "d046ebf06dec47dd7b63c1d9807767fcfde2aafd470522f37f23314843a14eee"
+    },
+    "FROST_CALENDAR_STATE02_NAMED_CANDIDATE_DEPENDENCIES_V4.json": {
+      "bytes": 4383,
+      "sha256": "c20bb57f5a69a07ca4f04e311a464cefa4c3093506e370c85a36c03a731db77b"
+    },
+    "FROST_CALENDAR_STATE02_OLD_SOURCE_REFUSAL_TEMP_PRESERVED_V1.json": {
+      "bytes": 2013998,
+      "sha256": "998034fc639fd9f95e16771164ff535a543968ba5fc9fe5cdb83f8afcaed16d4"
+    },
+    "FROST_CALENDAR_STATE02_OLD_TEMP_PRESERVED_V1.json": {
+      "bytes": 4740311,
+      "sha256": "e09b6fc6ef23c8601eaedfd2001dbe582d33dc247e8ae2ec37dabf49bed2b4d4"
+    },
+    "FROST_CALENDAR_STATE02_OLDER_BUILD_CANONICAL_GIT_BYTE_CUSTODY_V1.json": {
+      "bytes": 7383010,
+      "sha256": "ce5011d40781897934f15d4f767a834d5d305169f3b6771541d62a94f7c435de"
+    },
+    "FROST_CALENDAR_STATE02_OLDER_BUILD_CUSTODY_PREFLIGHT_STOP_V1.json": {
+      "bytes": 400,
+      "sha256": "698294095503064a920bc489d076268e6a1a7ba9f79d1e6f0afe6f996b31f51f"
+    },
+    "FROST_CALENDAR_STATE02_POST_NEGATIVES_RECOVERY_V1.json": {
+      "bytes": 2981,
+      "sha256": "ec988af3302612d38d7383aa5399a87bcda31fc682675439200d55f2551101b6"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_ACTUAL_GIT_API_V1.json": {
+      "bytes": 2959,
+      "sha256": "0393b0fb6256d14723407a97134a6e1a32638128a0c7e8da1ac6c205de5d2b7f"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_CO2_ORIGINAL_CI_V1.log": {
+      "bytes": 28472,
+      "sha256": "0e91a50433e139daa2a7caa6e93f07378017d4f3900e48a9688c355250e3a278"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_CO2_ORIGINAL_CI_V1.log.json": {
+      "bytes": 636,
+      "sha256": "015592a5fa777f5679a6320f2a716ea1ffd3d23e2eaea27fb7d9c6c730638c37"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_DVS_ORIGINAL_CI_V1.log": {
+      "bytes": 28936,
+      "sha256": "22f7976bcb0dd123c8dc2fa58a6ffb8afbc1755522bec81e4967c4c661c41fc8"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_DVS_ORIGINAL_CI_V1.log.json": {
+      "bytes": 636,
+      "sha256": "08cd0e2a70a3e368b3155a6ecac0af22930a146c8330d20f0f29b38a801341e7"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_FCI_MODULAR_ORIGINAL_CI_V1.log": {
+      "bytes": 4216584,
+      "sha256": "7c8eff1df2c4906d44f12ebd2f0dddf18c6fdeaa1110fef46db79dce8fd9e734"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_FCI_MODULAR_ORIGINAL_CI_V1.log.json": {
+      "bytes": 638,
+      "sha256": "1ec122c29a32295dcd1f95b89858cef6939a3d1d93f4376fcfa44784f316dc29"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_FINAL_ALL_CI_API_V1.json": {
+      "bytes": 548930,
+      "sha256": "975fa0835690d51ea73880de0b9e2591d6679c5aad6f4e05210f61ba212e2995"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_GENUINE_GIT_OBJECT_1c3b8725548c836c9a73570c2579dd6cdc683217.bin": {
+      "bytes": 1242,
+      "sha256": "3c8d70465a59b9ff942f97b31ba07f9e5f852de93467d96b638e80f9e43de4b3"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_GENUINE_GIT_OBJECT_1c3b8725548c836c9a73570c2579dd6cdc683217.json": {
+      "bytes": 925,
+      "sha256": "0c802ad5d05a456788313438e96b23c7939e9b9aa53ea9d34a55633b69bce0de"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_GENUINE_GIT_OBJECT_ecd8ad97ca5a6e19239ebd06fe0547711cf3ec68.bin": {
+      "bytes": 1175,
+      "sha256": "9aef9238069f0cf6bf213b5319435825c7b73b2da2c749a11f8d0d2563b75e3b"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_GENUINE_GIT_OBJECT_ecd8ad97ca5a6e19239ebd06fe0547711cf3ec68.json": {
+      "bytes": 937,
+      "sha256": "a02f95235c3f470b621af47e0fe4e026e3e3f64decabafb88246f9e06d134d0a"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_LRV_ORIGINAL_CI_V1.log": {
+      "bytes": 30383,
+      "sha256": "513d503a4c980a3c661cffc206d95e78b9651b6642575c73971656d9b0351f10"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_LRV_ORIGINAL_CI_V1.log.json": {
+      "bytes": 636,
+      "sha256": "34d299ecc629ef7f42b92f663b03077dce3611870ea28c3af2c47866d1a7b49f"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_MCSOL_COLUMN_ORIGINAL_CI_V1.log": {
+      "bytes": 4124108,
+      "sha256": "05fcbf6f54fec1ea14f6e6398971bc1ce8ac92c2a227d8dc7398554b7e8dbc7e"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_MCSOL_COLUMN_ORIGINAL_CI_V1.log.json": {
+      "bytes": 638,
+      "sha256": "79cc0bab3042d07f25dfc10311201d5740e1fb60dd7e4c0ca5da8d96606ea2af"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_MCSOL_SWP_ORIGINAL_CI_V1.log": {
+      "bytes": 4127212,
+      "sha256": "688f232d4ae0f462ef4ae6deb03db372f819e1ea5abdd6f031c4e309b11b4c7e"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_MCSOL_SWP_ORIGINAL_CI_V1.log.json": {
+      "bytes": 638,
+      "sha256": "c0062b393e0fc35d41e3b4307f652f6eff4918b8163d0d2dbdef0f827238334e"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_SYNTHETIC_OFFICIAL_GIT_API_V2.json": {
+      "bytes": 2618,
+      "sha256": "b42d810e08a190f2b0aeabf42ba44994b823adecafb034abc90d354c0e3a6476"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_TIMEINT_INVERSE_ORIGINAL_CI_V1.log": {
+      "bytes": 551599,
+      "sha256": "5a8ccc704c0732596a35a10d5827ffbcbcdf341d0d3af007ba6a2606ce2662a9"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_TIMEINT_INVERSE_ORIGINAL_CI_V1.log.json": {
+      "bytes": 637,
+      "sha256": "0a14142965195c0d9818de0df60a9eb3420e375de51aa69fe97234bee3a6c5a6"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_TIMEINT_STARTUP_ORIGINAL_CI_V1.log": {
+      "bytes": 618697,
+      "sha256": "3163f5e8a1007be7ab269d040140bcc64463c0de76765ea4043f1759aab53b26"
+    },
+    "FROST_CALENDAR_STATE02_PR1801_TIMEINT_STARTUP_ORIGINAL_CI_V1.log.json": {
+      "bytes": 637,
+      "sha256": "40e65788af5ab1aa9d7c15d41ae4ffc5ba9b9c03c0049cbd75f00ae1d9c61569"
+    },
+    "FROST_CALENDAR_STATE02_READ_ONLY_DEPENDENCY_DISCOVERY_V1.json": {
+      "bytes": 2433,
+      "sha256": "304596885fdc1859e26db0b4c3dbd4f4767e5aac54c01c52ff31f34bebe12b98"
+    },
+    "FROST_CALENDAR_STATE02_SELECTOR_DENSE_DELEGATION_V1.json": {
+      "bytes": 381,
+      "sha256": "b0f1182e35ce1a21be95bb9b06b7fb639dcbe755f91f5fea7420677dae97301c"
+    },
+    "FROST_CALENDAR_STATE02_SOURCE_TEMP_CLEANUP_APPLY_V1.json": {
+      "bytes": 48499,
+      "sha256": "81a9da97f2c6ebc32cdc6dd811474d9558aaa408ca5b7c101086598f91d04241"
+    },
+    "FROST_CALENDAR_STATE02_SOURCE_TEMP_CLEANUP_PREVIEW_V1.json": {
+      "bytes": 48493,
+      "sha256": "f4d118581f08cb87699b355153ac7ffc4346a9fe87df2ed23cd461a7e68738d2"
+    },
+    "FROST_CALENDAR_STATE02_SUPERSEDED_PARENT_BUILD_CUSTODY_V2.json": {
+      "bytes": 87982,
+      "sha256": "725c7c022cbda3d8acc41ee8a25eb2ef517c4b821f69f43b5f1670c607378147"
+    },
+    "FROST_CALENDAR_STATE02_TERMINAL_PREIMAGE_NEGATIVES_V1.json": {
+      "bytes": 738,
+      "sha256": "133c2bd2f20ffd23baa9a9aea0048513bff374b38985249c28a8784aa86eab5a"
+    },
+    "FROST_CALENDAR_STATE02_UBUNTU_O0_CENTRAL_PARTS_READER_V1.json": {
+      "bytes": 8802,
+      "sha256": "a226ed36638086bf95a8f95247c17247f5fa9e798bbd36cf03395824b6709bda"
+    },
+    "FROST_CALENDAR_STATE02_UBUNTU_O0_CENTRAL_V1.json": {
+      "bytes": 8802,
+      "sha256": "a226ed36638086bf95a8f95247c17247f5fa9e798bbd36cf03395824b6709bda"
+    },
+    "FROST_CALENDAR_STATE02_UBUNTU_O0_ORIGINAL_V1.json": {
+      "bytes": 2420230,
+      "sha256": "503841f35c1fdbfdd73ecd0db46de553ff86c4f166d4a4f5681d5755068e04b0"
+    },
+    "FROST_CALENDAR_STATE02_UBUNTU_O2_CENTRAL_V1.json": {
+      "bytes": 8802,
+      "sha256": "71420e62024d92b0db6c374773cfac4ac095d7087a8ab42bc5f232139fb6575c"
+    },
+    "FROST_CALENDAR_STATE02_UBUNTU_O2_ORIGINAL_V1.json": {
+      "bytes": 2420213,
+      "sha256": "c39c0d277e4dea8f1cbe615aa3002efc49a0e2c061d00f16ae6ca9cdaf4e3a5b"
+    },
+    "FROST_CALENDAR_STATE02_VERIFIED_RESOURCES_CLEANUP_APPLY_V1.json": {
+      "bytes": 46884,
+      "sha256": "2a358cf91097c0841e89cccbc6347811bd772d7f8195f67c574532b082050a9a"
+    },
+    "FROST_CALENDAR_STATE02_VERIFIED_RESOURCES_CLEANUP_PREVIEW_V1.json": {
+      "bytes": 47298,
+      "sha256": "1d4058c5f40f201903f8f9ba33158c9dfac968a9ca7fd44a8548860f663e6c56"
+    },
+    "FROST_CALENDAR_STATE02_VERSIONED_CENTRAL_READER_V1.json": {
+      "bytes": 32186,
+      "sha256": "c6c6b674b987346b65fb9b4e6d162e179757d8bc0dce4720de354366e209fb58"
+    },
+    "FROST_CALENDAR_STATE02_VERSIONED_CENTRAL_READER_V2.json": {
+      "bytes": 32186,
+      "sha256": "c6c6b674b987346b65fb9b4e6d162e179757d8bc0dce4720de354366e209fb58"
+    },
+    "FROST_CALENDAR_STATE02_WINDOWS_CI_O0_CENTRAL_V1.json": {
+      "bytes": 5549,
+      "sha256": "587a328aa20e76408ed288c33a4c8f3b3111ce20386ec087cf9a6973d3f4674a"
+    },
+    "FROST_CALENDAR_STATE02_WINDOWS_CI_O0_ORIGINAL_V1.json": {
+      "bytes": 1267482,
+      "sha256": "2fab2d93b38a0bbc94d41fe258a29c2d4d96b63b4b4d72204aa672abcb22efcc"
+    },
+    "FROST_CALENDAR_STATE02_WINDOWS_CI_O2_CENTRAL_V1.json": {
+      "bytes": 6321,
+      "sha256": "defefa7eae862daf3d1abc29b017e53447d511ae922c947dc3d714e0e322af14"
+    },
+    "FROST_CALENDAR_STATE02_WINDOWS_CI_O2_ORIGINAL_V1.json": {
+      "bytes": 1299937,
+      "sha256": "62471baa88cf069f036041e5d254cd9c4bf7f949ba074059be67bae9a3aab3c9"
+    },
+    "FROST_CALENDAR_STATE02_WINDOWS_LOCAL_CENTRAL_V1.json": {
+      "bytes": 159450,
+      "sha256": "30b449e6385728eb3b7411b7d5dad3b1d0c11a6da8c3e39554df7846e89acd32"
+    },
+    "FROST_CALENDAR_STATE02_WINDOWS_LOCAL_RAW_V1.json": {
+      "bytes": 938471,
+      "sha256": "375c2a8268affac3de59165e8cb6f11f8d798a5b7bb89b85ef995a2a08765dfa"
+    }
+  },
+  "canonical_admission": true,
+  "actual_merge": "1c3b8725548c836c9a73570c2579dd6cdc683217",
+  "qualified_candidate": "3250f0c59337334994b0e8edda624afe8f91b11f",
+  "source_anchor": "38d01129d73e9128c93e10d61153970676a2fcf7",
+  "whole_tree": "d20d8d776c52b1e5a6b95d500b5547f78a519f6b",
+  "coadmission": {
+    "contexts": 500,
+    "short35_contexts": 486,
+    "year367_contexts": 2,
+    "new_short_calendar_contexts": 12,
+    "new_frost_calendar_state_contexts": 28,
+    "native_calendar_samples": 3450,
+    "exact_cold_windows": 1484,
+    "compiled_initialization_postimages": 375,
+    "current_unselected_dense_compiled_postimages": 4,
+    "previous_canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3"
+  },
+  "actual_public_observations": {
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLIC_V3": 490.8628018000163,
+    "FROST_CALENDAR_STATE02_CANDIDATE_PUBLICATION_V3": 435.8321472001262,
+    "FROST_CALENDAR_STATE02_ACTUAL_MERGE_PUBLIC_V1": 476.87500150036067,
+    "FROST_CALENDAR_STATE02_ACTUAL_MERGE_PUBLICATION_V1": 430.1179172000848
+  },
+  "successful_workflows": 17,
+  "successful_checks": 31,
+  "skipped_checks": 17,
+  "full_model_periods_replayed_for_CI_or_observer_repairs": 0,
+  "whole_historical_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}

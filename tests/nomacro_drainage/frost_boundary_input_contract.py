@@ -31,6 +31,8 @@ def main():
                 if implicit:
                     assert root.boundary(project)==bottom
                     assert '(swbotb/='+str(bottom)+'.or.swfrost/=1' in root.source(project.solute,2,bottom)
+                    from implicit_snow_root_carry import enabled as ordinary_snow_root
+                    assert not ordinary_snow_root(project),'Two native root owners selected'
                 cases.append(dict(case=name,codec=codec(project).decode(),selection=selected))
     donor=a.output/'water-bottom5-implicit0';declined=[]
     changes=dict(SWHYST=0,SWINCO=1,SWBOTB=6,SWDRA=0,SWSOLU=2,SWBR=1,SWMETDETAIL=1,

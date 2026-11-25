@@ -1710,7 +1710,7 @@
           ],
           "supported": "Reachable original domains must respect original SWDIVD/solute reader restrictions"
         },
-        "current_availability": "Bounded explicit and implicit ordinary Frost water/CDE admitted PR1775/1776; pressure/Frost12-context extension is included in actual merged PR1787 with canonical readonly receipt pending. Invalid/fully closed original Frost geometry, non-daily output, AGE and other unqualified combinations remain open.",
+        "current_availability": "Bounded dense Frost and original initialization/hysteresis and regular/monthly/explicit-date state composition admitted through PR1800/1801 on actual1c3b8725548c836c9a73570c2579dd6cdc683217. Boundary5/8 existing-state composition currently implemented, not qualified. Other chemical, AGE, subdaily/perstep, closed/front and broader boundary domains remain open.",
         "implementation_completeness": "BOUNDED_OR_OPEN_AS_STATED_NOT_GLOBAL",
         "missing_composition_or_guard": "Bounded water/drained frost admitted; closed/front/chemical failures and state compositions remain; do not unguard proven strict failures.",
         "evidence_status": "SOURCE_BOUND_STATUS_AND_NAMED_RAW_OBSERVATIONS; WHOLE_NOT_QUALIFIED",
@@ -2403,7 +2403,7 @@
     "remaining_unnecessary_admission_guards": "UNKNOWN",
     "remaining_numerical_blockers": "UNKNOWN",
     "remaining_evidence_only_functions": "UNKNOWN",
-    "current_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+    "current_canonical": "1c3b8725548c836c9a73570c2579dd6cdc683217",
     "next_dependency_ordered_blocks": [
       "Original RIA12 native model/constitutive parameter state identity and water/CDE qualification",
       "Active vapor paired9 thermal endpoint coupling",
@@ -2800,9 +2800,9 @@
   },
   "frost_hysteresis_state_composition": {
     "classification": "OVERRESTRICTIVE_GUARD_AND_MISSING_COMPOSITION",
-    "status": "BOUNDED_ACTUAL_CANONICAL_472_ADMITTED",
+    "status": "ACTUALLY_ADMITTED_PR1800_CANONICAL8DBE472_CONTEXT_RECEIPT_SEALED",
     "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
-    "scope": "Original model1 corrected Frost/SWDIVD1 bottom6 hys0/1 initial1/2 dense water/CDE, explicit and fittedKsat implicit together",
+    "scope": "Bounded original model1 Frost primaryDIVD1 bottom6 explicit/fittedimplicit water/CDE, hys0/1/2 initial1/2, dense daily; actual prior parent source/evidence/native admission preserved.",
     "physical_equations_changed": false,
     "new_native_format": false,
     "whole_family_closed": false,
@@ -2815,12 +2815,18 @@
     "actual_native_snapshots": 336
   },
   "frost_calendar_state_composition": {
+    "status": "ACTUALLY_ADMITTED_PR1801_CANONICAL1C3B500_CONTEXT_RECEIPT_SEALED",
+    "classification": "BOUNDED_EXISTING_CALENDAR_AND_STATE_COMPOSITION",
+    "actual_canonical": "1c3b8725548c836c9a73570c2579dd6cdc683217",
+    "scope": "Model1 Snow/Frost primaryDIVD1 bottom6 water/CDE hys0/1/2 initial1/2 explicit/fittedimplicit NPRINTDAY1 regular/monthly/explicit dates and reset; no subdaily/perstep.",
+    "receipt": "FROST_CALENDAR_STATE02_MERGE_RECEIPT_V1.json",
+    "whole_family_closed": false
+  },
+  "frost_boundary58_composition": {
+    "status": "FOUR_FIRST_FULL35_CONTEXTS_PASS_PRIVATE_OWNER_REPAIR_PENDING_COMPOSITION_QUALIFICATION",
     "classification": "MISSING_COMPOSITION",
-    "status": "IMPLEMENTED_FIRST_REAL_MONTHLY_WATER_AND_IMPLICIT_REGULAR_CDE_SHORT_NATIVE_OUTPUT_BUDGET_PASS_NOT_QUALIFIED",
-    "scope": "Existing original regular/monthly/explicit date output, Snow7 and CDEprivate frame with existing Frost event/root owners",
-    "new_physical_equations": false,
-    "canonical_admission": false,
-    "whole_family_closed": false,
-    "authority": "FROST_CALENDAR_STATE02_CONTRACT_V1.json"
+    "scope": "Original hydraulic model1 Snow/Frost numerical heat2, primary SWDRA1/SWDIVD1, SWBOTB5 or8, water/CDE, explicit or fitted implicit conductivity, hysteresis2, initialization2, original dense daily output and SWRES1. No boundary-file indirection.",
+    "contract": "FROST_BOUNDARY03_CONTRACT_V1.json",
+    "whole_family_closed": false
   }
 }

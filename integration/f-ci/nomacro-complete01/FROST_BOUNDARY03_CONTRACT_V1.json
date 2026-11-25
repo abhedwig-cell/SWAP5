@@ -1,11 +1,11 @@
 {
-  "status": "IMPLEMENTED_EIGHT_PUBLIC_LOADS_AND_SIX_EXACT_DEFAULT_ROOT_SOURCES_PASS_NOT_QUALIFIED",
+  "status": "FIRST_EXPLICIT_FULL35_FOUR_PLATFORM_OPT_CONTEXTS_PASS_IMPLICIT_PRIVATE_OWNER_OVERLAP_REPAIRED_NOT_QUALIFIED",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "classification": "B_EXISTING_ORIGINAL_BOUNDARY_AND_FROST_STATE_COMPOSITION",
   "actual_canonical_at_start": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
   "dependency_candidate": "3250f0c59337334994b0e8edda624afe8f91b11f",
   "dependency_PR": 1801,
-  "dependency_admission": "ALL17_CANDIDATE_CI_PASS_ACTUAL_MERGE_PUBLIC_OBSERVATIONS_RUNNING",
+  "dependency_admission": "ACTUAL_CANONICAL500_PUBLIC_AND_ORDINARY_PUBLICATION_ALL17CI_FOUR_NEGATIVES_AND_SIGNED_OBJECT_ADMISSION_SEALED",
   "scope": "Original hydraulic model1 Snow/Frost numerical heat2, primary SWDRA1/SWDIVD1, SWBOTB5 or8, water/CDE, explicit or fitted implicit conductivity, hysteresis2, initialization2, original dense daily output and SWRES1. No boundary-file indirection.",
   "owning_interfaces": [
     "experimental_project original input admission",
@@ -47,15 +47,9 @@
       "ordered_literal_edits": [
         {
           "base_start": 15908,
-          "base_end": 15908,
-          "before": "",
-          "after": "from frost_boundary_composition import selection as frost_boundary_selection\n        frost_boundary=frost_boundary_selection(directory,original_output)\n        "
-        },
-        {
-          "base_start": 15911,
           "base_end": 15911,
-          "before": "",
-          "after": "("
+          "before": "if ",
+          "after": "from frost_boundary_composition import selection as frost_boundary_selection\n        frost_boundary=frost_boundary_selection(directory,original_output)\n        if ("
         },
         {
           "base_start": 15974,
@@ -102,10 +96,10 @@
           "after": "\n    from frost_boundary_composition import selection as boundary_selection,codec as boundary_codec\n    selected=boundary_selection(project.input_directory,project.original_output)\n    if selected is not None:return boundary_codec(selected)"
         },
         {
-          "base_start": 2351,
-          "base_end": 2351,
+          "base_start": 2356,
+          "base_end": 2356,
           "before": "",
-          "after": "\n    from frost_boundary_composition import metadata as boundary_metadata\n    boundary=boundary_metadata(project)\n    if boundary is not None:\n        result['boundary_composition']=boundary\n        result['providers']['frost_boundary_composition.py']=sha(folder/'frost_boundary_composition.py')"
+          "after": "from frost_boundary_composition import metadata as boundary_metadata\n    boundary=boundary_metadata(project)\n    if boundary is not None:\n        result['boundary_composition']=boundary\n        result['providers']['frost_boundary_composition.py']=sha(folder/'frost_boundary_composition.py')\n    "
         }
       ]
     },
@@ -175,6 +169,19 @@
           "after": ",boundary(project)"
         }
       ]
+    },
+    "app/hybrid_water/implicit_snow_root_carry.py": {
+      "added": false,
+      "proposed_lf_sha256": "d2cca37625694e14ff0fb5bc35f129e08201502e00e1a587a7ed4904d36d5990",
+      "before_lf_sha256": "e062c1a8b702762cfec552eb7fbf1214e7732b4d9f63af127be418d588c7fe04",
+      "ordered_literal_edits": [
+        {
+          "base_start": 674,
+          "base_end": 674,
+          "before": "",
+          "after": "e:return False\n    from frost_boundary_composition import selection as frost_boundary_selection\n    if frost_boundary_selection(project.input_directory,project.original_output) is not Non"
+        }
+      ]
     }
   },
   "actual_dependency_merge": "1c3b8725548c836c9a73570c2579dd6cdc683217",
@@ -184,5 +191,9 @@
     "ok": false,
     "compiler_executions": 0
   },
-  "next": "Four actual Windows/Ubuntu O0/O2 source-bound full35/cold cohorts; compiled active/refusal qualification and independent archive admission still required."
+  "next": "Four actual Windows/Ubuntu O0/O2 source-bound full35/cold cohorts; compiled active/refusal qualification and independent archive admission still required.",
+  "admission_receipt": "FROST_CALENDAR_STATE02_MERGE_RECEIPT_V1.json",
+  "first_scientific_source": "16988131766408867b0c1fa94a3a45cabe68b6fe",
+  "private_owner_correction": "Existing generic implicit Snow rate carry must decline exactly the selected Frost boundary58 domain, whose own typed Frost rate carry is installed later. No codec allowlist or double state owner.",
+  "no_replay_rule": "Keep the four completed explicit water bottom5 full35 contexts. Fresh current generated/compiled postimages must match their actual original CI artifacts before inheritance; run only the seven missing contexts per opt/platform."
 }
