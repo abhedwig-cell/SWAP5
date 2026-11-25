@@ -2835,7 +2835,7 @@
     "admission": "ACTUAL_FINAL_MERGE_RECEIPT_REQUIRED"
   },
   "frost_boundary_state_calendar04": {
-    "status": "TWELVE_ACTUAL_COMPLETED_PERIODS_PRESERVED_FOUR_DAY22_WATER_REJECTIONS_NOT_ADMITTED_REMAINING32_REAL_CI_RUNNING",
+    "status": "TWENTYEIGHT_COMPLETE_CONTEXTS_RETAINED_KNOWN_DAY22_DAY25_NUMERICAL_FAILURES_OPEN_YEAR_INPUT_TEMPLATE_CORRECTED",
     "contract": "FROST_BOUNDARY_STATE_CALENDAR04_CONTRACT_V1.json",
     "whole_family_closed": false,
     "global_family_and_gap_counts": "UNKNOWN",
@@ -2850,6 +2850,39 @@
       "mass_limit_changed": false,
       "cause": "NOT_PROVEN"
     },
-    "remaining_genuine_contexts": 32
+    "remaining_genuine_contexts": 32,
+    "second_epoch": {
+      "actual_source": "83810c95b433bf48f8b1bc7c87b005dbe24af197",
+      "Ubuntu_run": 45658886517,
+      "Windows_run": 45658886508,
+      "remaining_contexts": 32,
+      "APP_src_tools_tests_reference_unchanged": true,
+      "completed_period_replays": 0,
+      "qualified_actual_failure_waived": false,
+      "status": "FAILED_ORIGINALS_PRESERVED",
+      "diagnostic": "FROST_BOUNDARY_STATE_CALENDAR04_SECOND_ORIGINALS_DIAGNOSTIC_V2.json"
+    },
+    "third_epoch": {
+      "status": "PREPARED_MISSING_CASES_ONLY",
+      "Ubuntu_cases": [
+        "cde-b5-i1-h1-p1-dense-r1",
+        "water-b5-i0-h2-p2-monthly-r1-year-seam",
+        "cde-b8-i0-h2-p2-dates-r0-year-seam",
+        "cde-b5-i1-h2-p2-regular-r0-year-seam"
+      ],
+      "Windows_cases": [
+        "water-b5-i0-h2-p2-monthly-r1-year-seam",
+        "cde-b8-i0-h2-p2-dates-r0-year-seam",
+        "cde-b5-i1-h2-p2-regular-r0-year-seam"
+      ],
+      "prior_completed_periods_replayed": 0,
+      "APP_src_tools_reference_unchanged": true,
+      "changed_controller": "tests/nomacro_drainage/frost_boundary_state_calendar_inputs.py",
+      "input_fix": "Shift genuine varying DATE5 table by same start-date offset already applied to IRDATE; values/order preserved.",
+      "previous_failed_year_case": "INVALID_TEST_TEMPLATE_ORIGINAL_READER_REFUSAL",
+      "numerical_day22_day25_failure_waived": false
+    },
+    "completed_full_period_contexts": 28,
+    "canonical_admission": false
   }
 }

@@ -1,5 +1,5 @@
 {
-  "status": "TWELVE_ACTUAL_COMPLETED_PERIODS_PRESERVED_FOUR_DAY22_WATER_REJECTIONS_NOT_ADMITTED_REMAINING32_REAL_CI_RUNNING",
+  "status": "TWENTYEIGHT_COMPLETE_CONTEXTS_RETAINED_KNOWN_DAY22_DAY25_NUMERICAL_FAILURES_OPEN_YEAR_INPUT_TEMPLATE_CORRECTED",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "batch": "FROST_BOUNDARY_STATE_CALENDAR04",
   "classification": "B_EXISTING_PROCESS_COMPOSITION_WITH_C_CONFIGURATION_REUSE",
@@ -378,14 +378,14 @@
   },
   "original_scientific_workflows": {
     ".github/workflows/nomacro-frost-boundary-state-calendar04-ubuntu.yml": {
-      "sha256": "80dc7c2eccd12ab380fba991e9b1ed58c4662e7676348edfabccb23231fbcc03",
+      "sha256": "e1a21ec77af2ff66a4852d727e11de27aae8689598a70284b34e4eb1723da645",
       "platform": "ubuntu",
       "expected_contexts_per_optimization": 12,
       "completed_local_Windows_water_context_excluded_without_replay": false,
       "trigger": "Explicit push of persisted scientific source to codex/nomacro-frost-boundary-state-calendar04-science01; no metadata-only numerical retrigger"
     },
     ".github/workflows/nomacro-frost-boundary-state-calendar04-windows.yml": {
-      "sha256": "49ec66809be04584f9134a445813d61b3f9905c24c8c4bb605a42ba404b2ddd2",
+      "sha256": "1d1b4dc24c0184e6677dfcc6d67595c45e49ae1885e36ddf273ea3951a5a4241",
       "platform": "windows",
       "expected_contexts_per_optimization": 11,
       "completed_local_Windows_water_context_excluded_without_replay": true,
@@ -442,6 +442,28 @@
     "remaining_contexts": 32,
     "APP_src_tools_tests_reference_unchanged": true,
     "completed_period_replays": 0,
-    "qualified_actual_failure_waived": false
+    "qualified_actual_failure_waived": false,
+    "status": "FAILED_ORIGINALS_PRESERVED",
+    "diagnostic": "FROST_BOUNDARY_STATE_CALENDAR04_SECOND_ORIGINALS_DIAGNOSTIC_V2.json"
+  },
+  "third_scientific_epoch": {
+    "status": "PREPARED_MISSING_CASES_ONLY",
+    "Ubuntu_cases": [
+      "cde-b5-i1-h1-p1-dense-r1",
+      "water-b5-i0-h2-p2-monthly-r1-year-seam",
+      "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "cde-b5-i1-h2-p2-regular-r0-year-seam"
+    ],
+    "Windows_cases": [
+      "water-b5-i0-h2-p2-monthly-r1-year-seam",
+      "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "cde-b5-i1-h2-p2-regular-r0-year-seam"
+    ],
+    "prior_completed_periods_replayed": 0,
+    "APP_src_tools_reference_unchanged": true,
+    "changed_controller": "tests/nomacro_drainage/frost_boundary_state_calendar_inputs.py",
+    "input_fix": "Shift genuine varying DATE5 table by same start-date offset already applied to IRDATE; values/order preserved.",
+    "previous_failed_year_case": "INVALID_TEST_TEMPLATE_ORIGINAL_READER_REFUSAL",
+    "numerical_day22_day25_failure_waived": false
   }
 }
