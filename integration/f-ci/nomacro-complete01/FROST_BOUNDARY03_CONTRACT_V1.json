@@ -395,44 +395,32 @@
   "independent_cohort": "FROST_BOUNDARY03_COMPLETE24_CENTRAL_V1.json",
   "new_public_owner": "tests/nomacro_drainage/frost_boundary_verify.py",
   "archive_api": "Explicit immutable GitArchiveSource at real40-character Git revision. Filesystem API unchanged; actual single/multipart member bytes match. No pretend filesystem/source/head or mutable index projection.",
-  "ci_consumer_filters": {
+  "ci_dependency_materialization": {
     ".github/workflows/mc-sol01-swp-reader.yml": {
       "before_lf_sha256": "2525999df5610785704f2baadfca0ed96a8324b382a86fb9d7915a5baad159b8",
-      "proposed_lf_sha256": "c341ba22da9ec68c7b8c956d76dd5633d8d8818f4ca016396bbcb60d5027529e",
+      "proposed_lf_sha256": "9bbdfb0da391ed93eb3811dd08618209b2990addd004b85bc8d08381f47be6ba",
       "ordered_literal_edits": [
         {
-          "base_start": 98,
-          "base_end": 98,
+          "base_start": 3952,
+          "base_end": 3952,
           "before": "",
-          "after": "'\n      - 'tests/nomacro_drainage/frost_boundary_*.py"
-        },
-        {
-          "base_start": 334,
-          "base_end": 334,
-          "before": "",
-          "after": "'\n      - 'tests/nomacro_drainage/frost_boundary_*.py"
+          "after": "      /integration/f-ci/nomacro-complete01/FROST_BOUNDARY03_*.json\n      "
         }
       ],
-      "reason": "Existing verify_successor consumer must select changed Frost boundary source authority; no model/scientific dependency changes."
+      "reason": "Materialize only current frozen JSON declarations for existing source authority. Full scientific ZIP payload remains actual immutable Git API bytes. Original path triggers, commands, limits and test bodies unchanged."
     },
     ".github/workflows/mc-sol01-column-input.yml": {
       "before_lf_sha256": "420d584b8c850e02ef7e795aa28186a7820b8ffc40af89e9d63e92339d0598d3",
-      "proposed_lf_sha256": "dd032e464a3ab9836e959b4ec880d414c6bdbc9d69e6cd129b6e4f4a307202f2",
+      "proposed_lf_sha256": "5229b1d5612a29acc990fcd4282bec65bbb3526ac0b9a0bfe6a61abf3cde21c3",
       "ordered_literal_edits": [
         {
-          "base_start": 105,
-          "base_end": 105,
+          "base_start": 4539,
+          "base_end": 4539,
           "before": "",
-          "after": "'\n      - 'tests/nomacro_drainage/frost_boundary_*.py"
-        },
-        {
-          "base_start": 636,
-          "base_end": 636,
-          "before": "",
-          "after": "'\n      - 'tests/nomacro_drainage/frost_boundary_*.py"
+          "after": "      /integration/f-ci/nomacro-complete01/FROST_BOUNDARY03_*.json\n      "
         }
       ],
-      "reason": "Existing verify_successor consumer must select changed Frost boundary source authority; no model/scientific dependency changes."
+      "reason": "Materialize only current frozen JSON declarations for existing source authority. Full scientific ZIP payload remains actual immutable Git API bytes. Original path triggers, commands, limits and test bodies unchanged."
     }
   }
 }

@@ -29,7 +29,7 @@ def source(anchor):
     changed={path for path in parent if parent[path]!=current[path]}
     inherited={path for path,item in contract['files'].items() if not item['added']}
     adapters=contract['read_only_archive_api']
-    adapters={**adapters,**contract['ci_consumer_filters']}
+    adapters={**adapters,**contract['ci_dependency_materialization']}
     assert changed==inherited|{JOINT}|set(adapters),changed
     for path,item in adapters.items():
         before=git('show',BASE+':'+path);after=(ROOT/path).read_bytes().replace(b'\r\n',b'\n')

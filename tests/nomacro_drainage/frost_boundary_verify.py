@@ -11,7 +11,7 @@ from frost_boundary_central import audit
 from frost_calendar_state_central import audit as parent_calendar_audit
 import frost_calendar_state_verify as previous
 
-SEALED='dccb2d2a64502190eb7a9ac73e1effb9eb24bdc2'
+SEALED='0000000000000000000000000000000000000000'
 RAW_NAMES=('FROST_BOUNDARY03_DISCOVERY_RAW_V1',)+tuple('FROST_BOUNDARY03_'+platform+'_'+opt+'_ORIGINAL_V'+str(version)
     for platform in ('WINDOWS','UBUNTU') for opt in ('O0','O2') for version in (1,2,3,4))
 
@@ -39,7 +39,10 @@ def guard_previous_source():
     source(SEALED);inherited_evidence();parent_admission();raw_custody();return True
 
 
-def strip_current_evidence(text):return previous.strip_current_evidence(text)
+def strip_current_evidence(text):
+    line='            /integration/f-ci/nomacro-complete01/FROST_BOUNDARY03_*.json\n'
+    assert text.count(line)==1
+    return previous.strip_current_evidence(text.replace(line,'',1))
 
 
 def publication_dependencies_unchanged():

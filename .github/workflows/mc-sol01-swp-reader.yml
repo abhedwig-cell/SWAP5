@@ -3,7 +3,6 @@ on:
   pull_request:
     paths:
       - 'app/solute_column/**'
-      - 'tests/nomacro_drainage/frost_boundary_*.py'
       - 'tools/solute/**'
       - 'tests/nut-sol/*swp*'
       - 'integration/audits/*swp*'
@@ -12,7 +11,6 @@ on:
     branches: [integration/f-ci-canonical]
     paths:
       - 'app/solute_column/**'
-      - 'tests/nomacro_drainage/frost_boundary_*.py'
       - 'tools/solute/**'
       - 'tests/nut-sol/*swp*'
       - 'integration/audits/*swp*'
@@ -84,6 +82,7 @@ jobs:
             /integration/f-ci/nomacro-complete01/RIA12_*
             /integration/f-ci/nomacro-complete01/FROST_HYSTERESIS_STATE01_*
             /integration/f-ci/nomacro-complete01/FROST_CALENDAR_STATE02_*
+            /integration/f-ci/nomacro-complete01/FROST_BOUNDARY03_*.json
       - name: Original native input and real application
         run: |
           set -euo pipefail
