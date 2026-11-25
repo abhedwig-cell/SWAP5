@@ -23,7 +23,7 @@ def selection(directory,original_output=True):
     fixed=dict(SWMACRO=0,SWFROST=1,SWSNOW=1,SWHEA=1,SWCALT=2,SWSOPHY=0,
                SWDRA=1,SWBOTB=6,SWBR=0,SWBBCFILE=0,SWMETDETAIL=0)
     domains={key:{value} for key,value in fixed.items()}
-    domains.update(SWHYST={0,1},SWINCO={1,2},SWSOLU={0,1},SWKIMPL={0,1},NPRINTDAY={1},
+    domains.update(SWHYST={0,1,2},SWINCO={1,2},SWSOLU={0,1},SWKIMPL={0,1},NPRINTDAY={1},
                    PERIOD={1},SWMONTH={0},SWODAT={0},SWRES={1})
     if any(selected.get(key) not in values for key,values in domains.items() if key in fixed or key in ('SWHYST','SWINCO','SWSOLU')):return None
     active='\n'.join(line.split('!',1)[0] for line in text.splitlines() if not line.lstrip().startswith('*'))
