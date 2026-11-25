@@ -20,6 +20,10 @@ def enabled(project):
 
 
 def codec(project):
+    from frost_calendar_state import selection as calendar_selection
+    if calendar_selection(project.input_directory,project.original_output) is not None:
+        from frost_calendar_output import codec as calendar_codec
+        return calendar_codec(project)
     from implicit_frost_composition import enabled as implicit, codec as implicit_codec
     if implicit(project): return implicit_codec(project)
     return b'S5FDC001' if project.solute else b'S5FDW001'

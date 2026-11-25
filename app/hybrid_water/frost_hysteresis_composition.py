@@ -18,6 +18,9 @@ def implicit_input_domain(selectors,boundary,original_output):
 
 def selection(directory,original_output=True):
     if not directory or original_output is False:return None
+    from frost_calendar_state import selection as calendar_selection
+    calendar=calendar_selection(directory,original_output)
+    if calendar is not None:return calendar
     from experimental_project import switches,one
     folder=Path(directory);text=(folder/'swap.swp').read_text(encoding='cp1252');selected=switches(text)
     fixed=dict(SWMACRO=0,SWFROST=1,SWSNOW=1,SWHEA=1,SWCALT=2,SWSOPHY=0,

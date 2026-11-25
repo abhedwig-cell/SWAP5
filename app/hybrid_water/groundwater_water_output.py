@@ -43,6 +43,8 @@ def active_selection(project):
 
 
 def selection(project):
+    from frost_calendar_output import selection as frost_selection,selection as frost_result
+    if frost_selection(project) is not None:return frost_result(project)
     from snow_undrained import selection as undrained_selection
     undrained=undrained_selection(project)
     if undrained is not None:return undrained
@@ -51,12 +53,16 @@ def selection(project):
 
 
 def magic(project):
+    from frost_calendar_output import selection as frost_selection,codec as frost_result
+    if frost_selection(project) is not None:return frost_result(project)
     if active_selection(project) is None:return prior.magic(project)
     from implicit_groundwater_state import magic as native_magic
     return native_magic(project)
 
 
 def metadata(project):
+    from frost_calendar_output import selection as frost_selection,metadata as frost_result
+    if frost_selection(project) is not None:return frost_result(project)
     from snow_undrained import selection as undrained_selection,metadata as undrained_metadata
     undrained=undrained_selection(project)
     if undrained is not None:return undrained_metadata(project,undrained)
@@ -79,7 +85,10 @@ def metadata(project):
     return dict(policy=POLICY,native_codec=magic(project).decode(),**selected,source_sha256=sha(Path(__file__)),calendar_owner_sha256=sha(Path(regular.__file__)),clock_owner_sha256=sha(Path(clock.__file__)),perstep_owner_sha256=sha(Path(step_owner.__file__)),history_owner_sha256=sha(Path(history.__file__)),receipt_provider_sha256=sha(ROOT/'src/process/mod_original_output_receipt.f90'),original_integral_sha256=regular.INTEGRAL_SHA,original_watstor_sha256=clock.WATSTOR_SHA,original_timecontrol_sha256=clock.TIME_SHA,original_output_epoch=project.start_clock,physical_equations_changed=False,trial_water_guard_cm=1e-10,undefined_allocation_tails_serialized=False,preserves_requested_groups_and_precision=True)
 
 
-def source_age_identity(original,project):return prior.source_age_identity(original,project)
+def source_age_identity(original,project):
+    from frost_calendar_output import selection as frost_selection,source_age_identity as frost_identity
+    if frost_selection(project) is not None:return frost_identity(original,project)
+    return prior.source_age_identity(original,project)
 
 
 def render_integral(original,watstor,selected):
@@ -110,6 +119,8 @@ def render_macro(original,project,selected):
 
 
 def apply_build(output,donor_build,project,patched):
+    from frost_calendar_output import selection as frost_selection,apply_build as frost_build
+    if frost_selection(project) is not None:return frost_build(output,donor_build,project,patched)
     from snow_undrained import selection as undrained_selection
     undrained=undrained_selection(project)
     if undrained is not None:
