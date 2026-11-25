@@ -1,6 +1,6 @@
 {
-  "status": "IMPLEMENTED_BOUNDARY_RECEIPT_CORRECTION_AND_PUBLIC_COMPOSITION_PENDING_QUALIFICATION",
-  "classification": "MISSING_COMPOSITION_WITH_DIAGNOSED_TRIAL_RECEIPT_DEFECT",
+  "status": "FULL35_PUBLIC_LOCAL_PASS_PENDING_DATE_NATIVE_GUARD_CORRECTION_IMPLEMENTED_PENDING_REQUALIFICATION",
+  "classification": "MISSING_COMPOSITION_WITH_TRIAL_RECEIPT_AND_NATIVE_PENDING_DATE_GUARD_DEFECTS",
   "baseline_canonical": "087fc67db3e1e58d45215522eb284e89cb6c12f1",
   "source_owner": "SWAP5-NOMACRO-COMPLETE01 / ACCELERATE02",
   "actual_original_compiler_source": "6049f82bcf265ef17de2ff86a69b4ef4c33f768f",
@@ -17,7 +17,7 @@
   "qualification": "NOT_QUALIFIED",
   "runtime_DLL_comparison": "UNKNOWN_ORIGINAL_DLL_HASHES_NOT_CAPTURED",
   "hypothesis": "Observed original physical convergence plus passing projected step receipt; old terminal receipt reads stale global qbot. Actual-trial receipt returns first day using unchanged original implicit retry/TimeControl. Mixed compiler observations are diagnostic only; complete actual public builds must qualify.",
-  "next_code_action": "Persist actual implementation. Run local O0/O2 whole35 water/CDE selected implicit8 public builds, exact native cold and real compiled refusal/transaction controls. Then qualify the coherent Windows/Ubuntu matrix with actual compilers and independently audit raw archives.",
+  "next_code_action": "Run actual local O0/O2 full35 regular water and exact12year cold seam after bounded original pending-date guard correction. Then requalify all changed water calendar cases and previously unreached CDE year; inherit only exact unchanged dense water and CDE full35 bodies after actual postimage custody.",
   "representative_cases": [
     {
       "name": "water-b8-i1-h2-p2-parent-dense",
@@ -167,9 +167,23 @@
     "scientific_matrix": "Eight representative cases per platform/optimization; same physical correction and existing codecs/calendar/root owners, no unrelated model replay."
   },
   "files": {
+    "app/hybrid_water/daily_coupling.py": {
+      "added": false,
+      "proposed_lf_sha256": "a3170ed483d54a269d61256a97776fb3ebbd9c9436b56b3deb3724e92e21883d",
+      "before_lf_sha256": "b774b3a6a239e56cc7e7d542abd970f460e6b1e5ac305d79567e683f79b3a532",
+      "ordered_literal_edits": [
+        {
+          "base_start": 16486,
+          "base_end": 16486,
+          "before": "",
+          "after": ")\n    from frost_implicit_plate_calendar import validate as validate_plate_calendar\n    validate_plate_calendar(bundle,project,reference"
+        }
+      ]
+    },
     "app/hybrid_water/frost_boundary_composition.py": {
-      "before_lf_sha256": "30020b96968cc971fb482ce4123f1fe1f2550ae0b33ae31fc1f6bef6c4d5fe0c",
+      "added": false,
       "proposed_lf_sha256": "fb18e307fa14911cbed948491472750190799e950aee1bf70831586621a2b1ed",
+      "before_lf_sha256": "30020b96968cc971fb482ce4123f1fe1f2550ae0b33ae31fc1f6bef6c4d5fe0c",
       "ordered_literal_edits": [
         {
           "base_start": 746,
@@ -180,8 +194,9 @@
       ]
     },
     "app/hybrid_water/frost_boundary_state_calendar.py": {
-      "before_lf_sha256": "55988979de9dc433b6892cfa50668446a0aa2c8168a169cff87a8bb9e898577c",
+      "added": false,
       "proposed_lf_sha256": "625ab2f4a693cca0c1f6eb61119c024d677f91f2c57c46a8261bce49b3227787",
+      "before_lf_sha256": "55988979de9dc433b6892cfa50668446a0aa2c8168a169cff87a8bb9e898577c",
       "ordered_literal_edits": [
         {
           "base_start": 625,
@@ -192,8 +207,9 @@
       ]
     },
     "app/hybrid_water/frost_boundary_terminal_trial.py": {
-      "before_lf_sha256": "27b13684463fcc467dbaabfafab497549f98e3d12552cd3ecd8d65d6a2283f19",
+      "added": false,
       "proposed_lf_sha256": "ed8b8c1e542dac65a7555f9e99b27b621df57f6cf4221a3fd6370e526f9b4ade",
+      "before_lf_sha256": "27b13684463fcc467dbaabfafab497549f98e3d12552cd3ecd8d65d6a2283f19",
       "ordered_literal_edits": [
         {
           "base_start": 19,
@@ -245,9 +261,29 @@
         }
       ]
     },
+    "app/hybrid_water/frost_calendar_output.py": {
+      "added": false,
+      "proposed_lf_sha256": "9a10f598e9eb55b149cd86d19e83cb9cb32e15d966d22f26de35aa38cc75a545",
+      "before_lf_sha256": "673130ff2ae6911905eab369b562686c05f3f1412c8f70c13ecd4e2a63858e01",
+      "ordered_literal_edits": [
+        {
+          "base_start": 3679,
+          "base_end": 3679,
+          "before": "",
+          "after": "from frost_implicit_plate_calendar import selected as implicit_plate_water\n    if implicit_plate_water(project):providers.append('frost_implicit_plate_calendar.py')\n    "
+        },
+        {
+          "base_start": 7301,
+          "base_end": 7301,
+          "before": "",
+          "after": "from frost_implicit_plate_calendar import render_integral as implicit_plate_integral\n    integral=implicit_plate_integral(integral,project)\n    "
+        }
+      ]
+    },
     "app/hybrid_water/implicit_frost_source_guard.py": {
-      "before_lf_sha256": "4253775eaf245f93801af7032a918b500aac7f3f2b7379b7c664b49981f0c1e7",
+      "added": false,
       "proposed_lf_sha256": "73be2b7a13ecb6c5a6f5029ac85cdb33e3ea4232af2488a758e592ad4e534e67",
+      "before_lf_sha256": "4253775eaf245f93801af7032a918b500aac7f3f2b7379b7c664b49981f0c1e7",
       "ordered_literal_edits": [
         {
           "base_start": 2531,
@@ -262,6 +298,14 @@
           "after": "    if trial_enabled(project):expected=receipt_source(expected.decode('cp1252')).encode('cp1252')\n        "
         }
       ]
+    },
+    "app/hybrid_water/frost_implicit_plate_calendar.py": {
+      "added": true,
+      "proposed_lf_sha256": "52353b50533229a4bdd3414dc40d01f479152dce645cd062c1d8a59d948925a7",
+      "before_lf_sha256": null,
+      "ordered_literal_edits": []
     }
-  }
+  },
+  "pending_date_evidence": "FROST_IMPLICIT_PLATE05_ORIGINAL_YEAR_PENDING_DATE_FAILURE_V1.json",
+  "preserve_original_failed_year": true
 }
