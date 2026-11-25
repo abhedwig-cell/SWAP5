@@ -1,5 +1,5 @@
 """Actual Linux CLI builds and bounded calendar science, with unchanged limits."""
-import argparse,json,subprocess,sys,time
+import argparse,json,subprocess,sys,time,platform
 from pathlib import Path
 from frost_calendar_state_batch import source
 from frost_calendar_state_inputs import prepare
@@ -10,8 +10,8 @@ R=Path(__file__).resolve().parents[2]
 def main():
     p=argparse.ArgumentParser()
     for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--optimization',choices=('O0','O2'),required=True);a=p.parse_args()
-    head,contract=source();a.output.mkdir(parents=True);q=dict(status='RUNNING_ACTUAL_UBUNTU_CALENDAR_NOT_ADMITTED',actual_source=head,optimization=a.optimization,contexts=[],compiler_executions=0,canonical_admission=False)
+    p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--platform',choices=('Ubuntu','Windows'),default='Ubuntu');p.add_argument('--exclude-case',action='append',default=[]);a=p.parse_args();assert platform.system()==('Windows' if a.platform=='Windows' else 'Linux');host=a.platform.upper()
+    head,contract=source();a.output.mkdir(parents=True);q=dict(status='RUNNING_ACTUAL_'+host+'_CALENDAR_NOT_ADMITTED',actual_source=head,platform=a.platform,optimization=a.optimization,excluded_cases=a.exclude_case,contexts=[],compiler_executions=0,canonical_admission=False)
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     def run(command,folder,cap):
         with (folder/'controller.stdout').open('xb') as stdout,(folder/'controller.stderr').open('xb') as stderr:
@@ -19,7 +19,10 @@ def main():
         result.check_returncode()
     save()
     try:
-        for case in contract['representative_cases']:
+        names={case['name'] for case in contract['representative_cases']};assert len(a.exclude_case)==len(set(a.exclude_case)) and set(a.exclude_case)<=names
+        selected=[case for case in contract['representative_cases'] if case['name'] not in a.exclude_case]
+        assert selected
+        for case in selected:
             assert source()[0]==head
             folder=a.output/case['name'];folder.mkdir();inputs=folder/'inputs'
             prepare(case['kind'],case['hysteresis'],case['initial'],case['implicit'],case['calendar'],inputs,reset=case['reset'],start=case['start'])
@@ -42,9 +45,9 @@ def main():
                 run([sys.executable,'-B','tests/nomacro_drainage/frost_calendar_state_controls.py','--reference-work',str(a.reference_work),'--profile',str(folder/'science'),'--output',str(folder/'controls')],logs,600)
                 item['controls']=json.loads((folder/'controls/RESULT.json').read_text());assert item['controls']['status']=='ACTUAL_FROST_CALENDAR_COMPILED_NATIVE_SNOW_CDE_ROOT_AND_TRANSACTIONS_PASS_NOT_ADMITTED';save()
             print('PASS',case['name'],case['days'],flush=True)
-        assert len(q['contexts'])==7 and source()[0]==head
-        q['status']='ACTUAL_UBUNTU_FOUR_FULL35_THREE_SHORT_NATIVE_AND_TRANSACTIONS_PASS_NOT_ADMITTED'
-    except Exception as error:q.update(status='FAILED_ACTUAL_UBUNTU_CALENDAR_NOT_QUALIFIED',error=repr(error));raise
+        assert len(q['contexts'])==len(selected) and source()[0]==head
+        q['status']=('ACTUAL_UBUNTU_FOUR_FULL35_THREE_SHORT_NATIVE_AND_TRANSACTIONS_PASS_NOT_ADMITTED' if a.platform=='Ubuntu' and not a.exclude_case else 'ACTUAL_'+host+'_SELECTED_CALENDAR_NATIVE_AND_TRANSACTIONS_PASS_NOT_ADMITTED')
+    except Exception as error:q.update(status='FAILED_ACTUAL_'+host+'_CALENDAR_NOT_QUALIFIED',error=repr(error));raise
     finally:save()
 
 

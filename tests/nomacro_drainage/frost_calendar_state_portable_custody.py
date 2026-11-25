@@ -5,7 +5,7 @@ from frost_history_state_archives import R,SHA
 def git(*args):return subprocess.check_output(['git',*args],cwd=R)
 
 
-def source(store,stack,expected_producer='ed7042f02214b492eb23c1e7a9fda393865e8dc4',expected_physical='ed7042f02214b492eb23c1e7a9fda393865e8dc4'):
+def source(store,stack,expected_producer='ed7042f02214b492eb23c1e7a9fda393865e8dc4',expected_physical='ed7042f02214b492eb23c1e7a9fda393865e8dc4',expected_workflow='.github/workflows/nomacro-frost-calendar-state02.yml'):
     captured=json.loads(store.get('source/RESULT.json'));raw=store.get('source/actual-producer-source.zip')
     assert captured['producer_head']==expected_producer and len(raw)==captured['bytes'] and SHA(raw)==captured['sha256']
     assert not git('diff',expected_physical,expected_producer,'--','app','src','tools/solute','tools/vq','reference')
@@ -26,7 +26,7 @@ def source(store,stack,expected_producer='ed7042f02214b492eb23c1e7a9fda393865e8d
     tar=stack.enter_context(tarfile.open(fileobj=io.BytesIO(raw)))
     assert {m.name for m in tar.getmembers()}==set(ctl['members'])
     for name,item in ctl['members'].items():check(name,tar.extractfile(name).read(),item)
-    workflow=git('show',expected_producer+':.github/workflows/nomacro-frost-calendar-state02.yml')
+    workflow=git('show',expected_producer+':'+expected_workflow)
     assert store.get('actual-workflow.yml')==workflow
     assert store.get('actual-workflow-git-blob.txt').decode().strip()==hashlib.sha1(b'blob '+str(len(workflow)).encode()+b'\0'+workflow).hexdigest()
     original=cap.read('reference/swap-4.3.1/source-archives/SWAP.ZIP')

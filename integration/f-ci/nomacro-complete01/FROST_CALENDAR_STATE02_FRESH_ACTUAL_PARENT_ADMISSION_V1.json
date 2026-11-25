@@ -1,0 +1,54 @@
+{
+  "status": "ACTUAL_CANONICAL472_SIGNED_PARENT_ORIGINAL_CLEAN14_PUBLIC_PUBLICATION_CI_AND_PUSHED_NEGATIVES_PASS",
+  "receipt": {
+    "status": "BOUNDED_EXISTING_FROST_HYSTERESIS_INITIAL_STATE_ACTUAL_CANONICAL_ADMITTED",
+    "PR": 1800,
+    "actual_merge": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+    "ordered_parents": [
+      "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+      "8b7c2925d4c14051b5e5bc6879851702a0780511"
+    ],
+    "whole_tree": "8dd26c2de238e6be975ad308058e482d31be225e",
+    "qualified_candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
+    "actual_signed_object_bytes": 1250,
+    "actual_public_seconds": 884.1248984001577,
+    "actual_ordinary_publication_seconds": 779.1726832999848,
+    "actual_clean_sparse_patterns": 14,
+    "actual_original_input_files": 56,
+    "workflows_success": 16,
+    "checks_success": 30,
+    "checks_skipped": 17,
+    "actual_committed_pushed_negatives_refused": 4,
+    "original_required_CI_logs": 8,
+    "admission_archive": "FROST_HYSTERESIS_STATE01_ADMISSION_RAW_V1.zip",
+    "admission_archive_sha256": "4c6da7790d3e0732f1fc474b8ae4373c76e92e2ae93575dd1dea5b5a36c29508",
+    "canonical_admission": true,
+    "coadmission": {
+      "contexts": 472,
+      "short35_contexts": 470,
+      "year367_contexts": 2,
+      "new_frost_hysteresis_state_contexts": 48,
+      "native_calendar_samples": 3310,
+      "exact_cold_windows": 1420,
+      "compiled_initialization_postimages": 375,
+      "previous_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed"
+    },
+    "functional_completion": "PARTIAL",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "global_family_and_gap_counts": "UNKNOWN",
+    "RC3_changed": false,
+    "next": "Current original Frost calendar/state composition: actual short monthly water and implicit regular CDE exact native/user-output/budget controls pass; full representative closure and both optimizations/platforms next."
+  },
+  "actual_admitted_coadmission": {
+    "contexts": 472,
+    "short35_contexts": 470,
+    "year367_contexts": 2,
+    "new_frost_hysteresis_state_contexts": 48,
+    "native_calendar_samples": 3310,
+    "exact_cold_windows": 1420,
+    "compiled_initialization_postimages": 375,
+    "previous_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed"
+  },
+  "parent_model_periods_reexecuted": 0,
+  "old_scientific_math_reexecution_claimed": false
+}
