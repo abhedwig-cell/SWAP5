@@ -1,0 +1,20 @@
+{
+  "status": "PERSISTED_SELECTOR_ONLY_NOT_PUBLICLY_DISPATCHED_NOT_QUALIFIED",
+  "baseline_actual_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+  "required_pending_parent_candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
+  "parent_PR": 1800,
+  "classification": "B_EXISTING_CALENDAR_NATIVE_STATE_COMPOSITION",
+  "scope": "Model1 Snow/Frost primaryDIVD1 bottom6 water/CDE hys0/1/2 initial1/2 explicit/fittedimplicit, NPRINTDAY1 regular/monthly/explicit dates and reset; retain event closure, exclude perstep/subdaily",
+  "new_physical_equations": false,
+  "implementation": "Strict original singleton input selector only. Dispatch/native renderers not yet wired; public route remains refused.",
+  "state_dependencies": [
+    "Actual seven original Snow cumulative output fields",
+    "Existing original calendar/crop pending-date frame",
+    "Existing CDE interval20+nodes state and observed daily six-RHS mass receipt",
+    "Existing implicit Frost root96-byte typed carry"
+  ],
+  "source": "app/hybrid_water/frost_calendar_state.py",
+  "source_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a",
+  "next": "Finish parent exact-head CI and actual canonical admission; implement original calendar/native renderer composition and strict literal source inverses; first actual short month/reset cold seam before selecting any full periods.",
+  "canonical_admission": false
+}

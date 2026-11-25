@@ -2,8 +2,8 @@
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
-  "branch": "codex/nomacro-frost-hysteresis-state01",
-  "last_commit": "2b2f4e59abe4636ff2cca245963fdd73db7c760d",
+  "branch": "codex/nomacro-frost-calendar-state02",
+  "last_commit": "8b7c2925d4c14051b5e5bc6879851702a0780511",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35446,11 +35446,11 @@
     "prototype_recovery_head": "d29caa2076"
   },
   "frost_hysteresis_state01": {
-    "status": "ALL48_ORIGINAL_SCIENCE_AND_DEFAULT_INITIAL_NATIVE_PRESERVATION_PASS_PUBLIC_ADMISSION_PENDING",
+    "status": "EXACT_CANDIDATE_PUBLIC_ORDINARY_PUB_AND_FOUR_REMOTE_NEGATIVES_PASS_PR1800_CI_PENDING",
     "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "classification": "B_EXISTING_FROST_HYSTERESIS_ROOT_STATE_COMPOSITION",
     "scope": "Model1 dense original water/CDE, existing corrected Frost DIVDRA1 bottom6 Snow1 numeric heat, explicit/implicit and originalinitial1/2 withhysteresis0/1; currentoriginal hys2 remains unchanged",
-    "next_action": "Freeze actual public source anchor; real clean14/56 PUBLIC and ordinary PUB; four committed pushed SOURCE/RAW/INHERITED/PUBLICATION controls; exact candidate CI and actual merge observers. No completed full periods repeated.",
+    "next_action": "Observe all16 applicable PR1800 workflows to terminal; preserve remaining exact original joblogs and actual canonical merge+clean14/56 PUBLIC/ordinaryPUB before admission. Parent scientific periods stay unchanged.",
     "qualified": false,
     "source_contract": "FROST_HYSTERESIS_STATE01_CONTRACT_V1.json",
     "first_input": "EV/frost-history-state01-explicit-water-hys0-initial1-input-v1",
@@ -35501,7 +35501,10 @@
       "FROST_HYSTERESIS_STATE01_UBUNTU_O2_CENTRAL_V1.json"
     ],
     "central_preservation_report": "FROST_HYSTERESIS_STATE01_PRESERVATION_CENTRAL_V1.json",
-    "source_owner": "tests/nomacro_drainage/frost_history_state_verify.py"
+    "source_owner": "tests/nomacro_drainage/frost_history_state_verify.py",
+    "candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
+    "PR": 1800,
+    "premerge_public_evidence": "FROST_HYSTERESIS_STATE01_PREMERGE_PUBLIC_RAW_V1.json"
   },
   "ria12_water_polish_actual_admission": {
     "status": "BOUNDED_EXPLICIT_RIA_WATER_POLISH_ACTUAL_CANONICAL_ADMITTED",
@@ -35548,6 +35551,26 @@
       "General performance or obsolete low-air stress"
     ],
     "scientific_risk": "History and implicitroot typed native modes/initialization and active Frost rollback; addressed by original raw and exact restart controls",
+    "canonical_admission": false
+  },
+  "frost_calendar_state02": {
+    "status": "PERSISTED_SELECTOR_ONLY_NOT_PUBLICLY_DISPATCHED_NOT_QUALIFIED",
+    "baseline_actual_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+    "required_pending_parent_candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
+    "parent_PR": 1800,
+    "classification": "B_EXISTING_CALENDAR_NATIVE_STATE_COMPOSITION",
+    "scope": "Model1 Snow/Frost primaryDIVD1 bottom6 water/CDE hys0/1/2 initial1/2 explicit/fittedimplicit, NPRINTDAY1 regular/monthly/explicit dates and reset; retain event closure, exclude perstep/subdaily",
+    "new_physical_equations": false,
+    "implementation": "Strict original singleton input selector only. Dispatch/native renderers not yet wired; public route remains refused.",
+    "state_dependencies": [
+      "Actual seven original Snow cumulative output fields",
+      "Existing original calendar/crop pending-date frame",
+      "Existing CDE interval20+nodes state and observed daily six-RHS mass receipt",
+      "Existing implicit Frost root96-byte typed carry"
+    ],
+    "source": "app/hybrid_water/frost_calendar_state.py",
+    "source_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a",
+    "next": "Finish parent exact-head CI and actual canonical admission; implement original calendar/native renderer composition and strict literal source inverses; first actual short month/reset cold seam before selecting any full periods.",
     "canonical_admission": false
   }
 }
