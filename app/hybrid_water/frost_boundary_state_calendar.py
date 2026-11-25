@@ -11,7 +11,6 @@ def input_domain(selectors,boundary,original_output):
     return bool(original_output is not False and boundary.get('SWBOTB') in (5,8)
                 and selectors.get('SWKIMPL') in (0,1)
                 and not (selectors.get('SWKIMPL')==1 and selectors.get('SWHYST')==2)
-                and not (boundary.get('SWBOTB')==8 and selectors.get('SWKIMPL')==1)
                 and selectors.get('SWSOLU') in (0,1)
                 and selectors.get('SWHYST') in (0,1,2) and selectors.get('SWINCO') in (1,2)
                 and all(selectors.get(key)==value for key,value in FIXED.items() if key!='NPRINTDAY'))

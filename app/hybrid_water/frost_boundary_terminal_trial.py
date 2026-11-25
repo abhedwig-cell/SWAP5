@@ -1,4 +1,4 @@
-"""Use the original explicit plate solver's actual trial lower-boundary flux.
+"""Use the original plate solver's actual trial lower-boundary flux.
 
 Fluxes reconstructs global qbot later. At HeadCalc convergence that global is
 not the current candidate. Only the independent trial receipt receives this
@@ -19,11 +19,11 @@ TRIAL_GUARD='''            if(flboth)then
 def enabled(project):
     from frost_boundary_composition import selection
     selected=selection(project.input_directory,project.original_output)
-    return bool(selected and selected['bottom']==8 and selected['implicit']==0)
+    return bool(selected and selected['bottom']==8)
 
 
 def _replace(text, before, after):
-    if text.count(before)!=1:raise ValueError('Changed original explicit plate terminal trial anchor')
+    if text.count(before)!=1:raise ValueError('Changed original plate terminal trial anchor')
     return text.replace(before,after,1)
 
 
@@ -59,6 +59,12 @@ def head_source(text):
     return _replace(_replace(text,IMPORT,TRIAL_IMPORT),GUARD,TRIAL_GUARD)
 
 
+def original_head_source(text):
+    original=_replace(_replace(text,TRIAL_IMPORT,IMPORT),TRIAL_GUARD,GUARD)
+    if head_source(original)!=text:raise ValueError('Foreign plate terminal trial source')
+    return original
+
+
 def apply_build(output,project,patched):
     if not enabled(project):return patched
     for name,render in [('terminal_water_receipt',receipt_source),('headcalc',head_source)]:
@@ -71,5 +77,4 @@ def apply_build(output,project,patched):
 def validate(bundle,project):
     if not enabled(project):return
     text=(Path(bundle)/'headcalc.f90').read_text(encoding='cp1252')
-    original=_replace(_replace(text,TRIAL_IMPORT,IMPORT),TRIAL_GUARD,GUARD)
-    if head_source(original)!=text:raise ValueError('Foreign explicit plate terminal trial source')
+    original_head_source(text)
