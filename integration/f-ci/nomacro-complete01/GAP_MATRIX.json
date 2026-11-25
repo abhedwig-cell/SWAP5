@@ -2835,7 +2835,7 @@
     "admission": "ACTUAL_FINAL_MERGE_RECEIPT_REQUIRED"
   },
   "frost_boundary_state_calendar04": {
-    "status": "ACTUAL_DAY_CLOCK_REDUCTION_DEFECT_REPRODUCED_EXPLICIT_PLATE_FIX_IMPLEMENTED_NOT_QUALIFIED",
+    "status": "REAL_PLATE_CLOCK_LOCAL_O0_O2_COMPLETE_AFFECTED14_CI_PREPARED_IMPLICIT_YEAR_NUMERICAL_FAILURE_OPEN",
     "contract": "FROST_BOUNDARY_STATE_CALENDAR04_CONTRACT_V1.json",
     "whole_family_closed": false,
     "global_family_and_gap_counts": "UNKNOWN",
@@ -2913,6 +2913,33 @@
       "diagnostic_archive": "FROST_BOUNDARY_STATE_CALENDAR04_ACTUAL_CLOCK_DIAGNOSTIC_AND_READERS_RAW_V1.json"
     },
     "parent_actual_canonical": "9936bcda75eb920d67aa74e47018baf39ab18f78",
-    "parent_actual_canonical_admission": "COMPLETE524"
+    "parent_actual_canonical_admission": "COMPLETE524",
+    "fourth_epoch": {
+      "status": "LOCAL_O0_O2_FULL35_NATIVE_COLD_AND_CONTROLS_PASS_AFFECTED_PLATE_CI_PREPARED",
+      "source_anchor": "060c66cb8343019e9b9f5ef0be07ddd9f61311f4",
+      "local_science_source": "0566877f3d1ef27a472c4fae6f5275e8e76871a4",
+      "local_complete_contexts": 2,
+      "local_primary_days": 70,
+      "local_refusals": 166,
+      "local_transactions": 4,
+      "workflow_cases": {
+        "ubuntu": [
+          "water-b8-i0-h1-p1-dates-r1",
+          "cde-b8-i0-h0-p2-regular-r1",
+          "cde-b8-i0-h1-p2-dense-r1",
+          "cde-b8-i0-h2-p2-dates-r0-year-seam"
+        ],
+        "windows": [
+          "water-b8-i0-h1-p1-dates-r1",
+          "cde-b8-i0-h1-p2-dense-r1",
+          "cde-b8-i0-h2-p2-dates-r0-year-seam"
+        ]
+      },
+      "remaining_affected_contexts": 14,
+      "original_failed_implicit_year_unchanged": true,
+      "unchanged_bottom5_full_periods_selected_for_replay": 0,
+      "unaffected_bottom5_actual_postimage_preservation_gate": "PENDING",
+      "canonical_admission": false
+    }
   }
 }

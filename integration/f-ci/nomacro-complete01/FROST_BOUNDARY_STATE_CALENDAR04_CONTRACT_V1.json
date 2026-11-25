@@ -1,5 +1,5 @@
 {
-  "status": "ACTUAL_DAY_CLOCK_REDUCTION_DEFECT_REPRODUCED_EXPLICIT_PLATE_FIX_IMPLEMENTED_NOT_QUALIFIED",
+  "status": "REAL_PLATE_CLOCK_LOCAL_O0_O2_COMPLETE_AFFECTED14_CI_PREPARED_IMPLICIT_YEAR_NUMERICAL_FAILURE_OPEN",
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "batch": "FROST_BOUNDARY_STATE_CALENDAR04",
   "classification": "B_EXISTING_PROCESS_COMPOSITION_WITH_C_CONFIGURATION_REUSE",
@@ -409,14 +409,14 @@
   },
   "original_scientific_workflows": {
     ".github/workflows/nomacro-frost-boundary-state-calendar04-ubuntu.yml": {
-      "sha256": "e1a21ec77af2ff66a4852d727e11de27aae8689598a70284b34e4eb1723da645",
+      "sha256": "d8a2bda59b3cda61c1979ef10758ac5edc0a3360b2e16f4328b7b7b71f875921",
       "platform": "ubuntu",
       "expected_contexts_per_optimization": 12,
       "completed_local_Windows_water_context_excluded_without_replay": false,
       "trigger": "Explicit push of persisted scientific source to codex/nomacro-frost-boundary-state-calendar04-science01; no metadata-only numerical retrigger"
     },
     ".github/workflows/nomacro-frost-boundary-state-calendar04-windows.yml": {
-      "sha256": "1d1b4dc24c0184e6677dfcc6d67595c45e49ae1885e36ddf273ea3951a5a4241",
+      "sha256": "65323fb61ad28195b4917dbb853a85f0273b630bb7c41791253dbfc75963111e",
       "platform": "windows",
       "expected_contexts_per_optimization": 11,
       "completed_local_Windows_water_context_excluded_without_replay": true,
@@ -524,5 +524,32 @@
     "required_new_science": "Windows/Ubuntu O0/O2 four representative explicit plate configurations; local original failed regular case O0/O2 first.",
     "unaffected_evidence": "Reuse bottom5 periods only after exact current emitted physical postimage comparison; no metadata-only full-period replay.",
     "diagnostic_archive": "FROST_BOUNDARY_STATE_CALENDAR04_ACTUAL_CLOCK_DIAGNOSTIC_AND_READERS_RAW_V1.json"
+  },
+  "fourth_scientific_epoch": {
+    "status": "LOCAL_O0_O2_FULL35_NATIVE_COLD_AND_CONTROLS_PASS_AFFECTED_PLATE_CI_PREPARED",
+    "source_anchor": "060c66cb8343019e9b9f5ef0be07ddd9f61311f4",
+    "local_science_source": "0566877f3d1ef27a472c4fae6f5275e8e76871a4",
+    "local_complete_contexts": 2,
+    "local_primary_days": 70,
+    "local_refusals": 166,
+    "local_transactions": 4,
+    "workflow_cases": {
+      "ubuntu": [
+        "water-b8-i0-h1-p1-dates-r1",
+        "cde-b8-i0-h0-p2-regular-r1",
+        "cde-b8-i0-h1-p2-dense-r1",
+        "cde-b8-i0-h2-p2-dates-r0-year-seam"
+      ],
+      "windows": [
+        "water-b8-i0-h1-p1-dates-r1",
+        "cde-b8-i0-h1-p2-dense-r1",
+        "cde-b8-i0-h2-p2-dates-r0-year-seam"
+      ]
+    },
+    "remaining_affected_contexts": 14,
+    "original_failed_implicit_year_unchanged": true,
+    "unchanged_bottom5_full_periods_selected_for_replay": 0,
+    "unaffected_bottom5_actual_postimage_preservation_gate": "PENDING",
+    "canonical_admission": false
   }
 }
