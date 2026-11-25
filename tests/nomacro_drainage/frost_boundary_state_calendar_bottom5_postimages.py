@@ -39,12 +39,18 @@ def main():
    input_hashes={x.relative_to(inputs).as_posix():SHA(x.read_bytes()) for x in inputs.rglob('*') if x.is_file()}
    assert all(m['members'][old_inputs+x]['sha256']==v for x,v in input_hashes.items())
    meta=json.loads((bundle/'BUILD.json').read_text());generated=meta['identity']['donor_generated'];source_checks={};objects={}
+   baseline=json.loads((R/P/'FROST_BOUNDARY_STATE_CALENDAR04_BOTTOM5_PHYSICAL_POSTIMAGE_BASELINES_V1.json').read_text())['records'][host+'/'+a.optimization+'/'+name]
+   assert baseline['original_manifest_sha256']==SHA(raw) and baseline['original_archive_sha256']==m['sha256']
+   assert set(generated)==set(baseline['generated'])
    for file,digest in generated.items():
     actual=SHA((bundle/file).read_bytes());expected=m['members'][compiled+file]['sha256'];assert actual==digest
-    source_checks[file]=dict(current_sha256=actual,original_sha256=expected,exact=actual==expected)
+    prior=baseline['generated'][file];assert prior['original_raw_sha256']==expected
+    current_lf=SHA((bundle/file).read_bytes().replace(b'\r\n',b'\n'))
+    source_checks[file]=dict(current_raw_sha256=actual,original_raw_sha256=expected,raw_exact=actual==expected,current_LF_sha256=current_lf,original_LF_sha256=prior['original_LF_sha256'],exact=current_lf==prior['original_LF_sha256'])
     object_file=Path(file).with_suffix('.o').as_posix();current=SHA((bundle/object_file).read_bytes());prior=m['members'][compiled+object_file]['sha256'];objects[object_file]=dict(current_sha256=current,original_sha256=prior,exact=current==prior)
    item.update(original_manifest=original_manifest,original_manifest_git_anchor=anchor,original_manifest_sha256=SHA(raw),original_archive_sha256=m['sha256'],original_source=old_source,original_inputs_exact=True,whole_current_generated_sources=source_checks,whole_current_compiled_objects=objects,actual_BUILD_sha256=SHA((bundle/'BUILD.json').read_bytes()),current_compiler=meta['identity']['compiler'],current_flags=meta['identity']['donor_flags'])
    save();assert all(x['exact'] for x in source_checks.values()),'Actual bottom5 generated source changed'
+   assert {k:meta['identity'][k] for k in baseline['compiler']}==baseline['compiler'],'Different actual compiler build; compiled inheritance not established'
    assert all(x['exact'] for x in objects.values()),'Actual bottom5 compiled object changed; inspect original bytes before inheritance'
    assert source()[0]==head
    print('ACTUAL_BOTTOM5_CURRENT_PUBLIC_COMPILED_POSTIMAGE_EXACT',name,a.optimization,len(generated),flush=True)

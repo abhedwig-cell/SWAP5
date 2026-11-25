@@ -1,0 +1,188 @@
+{
+  "status": "FOURTH_REAL_PLATE_COHORTS_COMPLETE_ALL_ORIGINAL_BYTES_PRESERVED_NOT_ADMITTED",
+  "source": "0fae846dec07fb3b1a317a55b975accbbf110128",
+  "complete": [
+    {
+      "platform": "UBUNTU",
+      "optimization": "O0",
+      "case": "water-b8-i0-h1-p1-dates-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 74,
+      "transactions": 2
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O0",
+      "case": "cde-b8-i0-h0-p2-regular-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 83,
+      "transactions": 2
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O0",
+      "case": "cde-b8-i0-h1-p2-dense-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 83,
+      "transactions": 2
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O0",
+      "case": "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "days": 12,
+      "native": 2,
+      "cold": 1,
+      "refusals": 0,
+      "transactions": 0
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O2",
+      "case": "water-b8-i0-h1-p1-dates-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 74,
+      "transactions": 2
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O2",
+      "case": "cde-b8-i0-h0-p2-regular-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 83,
+      "transactions": 2
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O2",
+      "case": "cde-b8-i0-h1-p2-dense-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 83,
+      "transactions": 2
+    },
+    {
+      "platform": "UBUNTU",
+      "optimization": "O2",
+      "case": "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "days": 12,
+      "native": 2,
+      "cold": 1,
+      "refusals": 0,
+      "transactions": 0
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "case": "water-b8-i0-h1-p1-dates-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 74,
+      "transactions": 2
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "case": "cde-b8-i0-h1-p2-dense-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 83,
+      "transactions": 2
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "case": "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "days": 12,
+      "native": 2,
+      "cold": 1,
+      "refusals": 0,
+      "transactions": 0
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "case": "water-b8-i0-h1-p1-dates-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 74,
+      "transactions": 2
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "case": "cde-b8-i0-h1-p2-dense-r1",
+      "days": 35,
+      "native": 7,
+      "cold": 3,
+      "refusals": 83,
+      "transactions": 2
+    },
+    {
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "case": "cde-b8-i0-h2-p2-dates-r0-year-seam",
+      "days": 12,
+      "native": 2,
+      "cold": 1,
+      "refusals": 0,
+      "transactions": 0
+    }
+  ],
+  "failures": [],
+  "archives": [
+    {
+      "name": "FROST_BOUNDARY_STATE_CALENDAR04_UBUNTU_O0_ORIGINAL_V4",
+      "bytes": 46887689,
+      "sha256": "b6c868d47fab4f1d3ce685721c630bbe99118335caf960558fb86cd44aca7ac5"
+    },
+    {
+      "name": "FROST_BOUNDARY_STATE_CALENDAR04_UBUNTU_O2_ORIGINAL_V4",
+      "bytes": 46963666,
+      "sha256": "1f82ea6258b533ac5595577320a060c37851896c959322356b7d43e69d7725ab"
+    },
+    {
+      "name": "FROST_BOUNDARY_STATE_CALENDAR04_WINDOWS_O0_ORIGINAL_V4",
+      "bytes": 35155007,
+      "sha256": "b556f7609c415de5da61194eef59effebbc4aa36f630fd2ce98f0ee77857e2aa"
+    },
+    {
+      "name": "FROST_BOUNDARY_STATE_CALENDAR04_WINDOWS_O2_ORIGINAL_V4",
+      "bytes": 35230533,
+      "sha256": "60fdc2ca7997e061c351bc924faf449c3f9d1748460c5bbd88a8c2a63f13e7c7"
+    }
+  ],
+  "canonical_admission": false,
+  "completed_contexts": 14,
+  "days": 398,
+  "native": 78,
+  "cold": 34,
+  "refusals": 794,
+  "transactions": 20,
+  "plate_completed_with_local": 16,
+  "plate_days_with_local": 468,
+  "unaffected_bottom5_period_contexts": 28,
+  "unaffected_bottom5_inheritance": "PENDING_ACTUAL_POSTIMAGE_GATES",
+  "candidate_total_if_all_admission_gates_pass": 44,
+  "known_implicit_year_failures_retained": 4,
+  "new_failed_contexts": 0,
+  "unexecuted_contexts": 0,
+  "whole_completion": "PARTIAL",
+  "equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}
