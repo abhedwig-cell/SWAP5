@@ -6,9 +6,10 @@ def require_convergence(folder):
     files=[];failures=[]
     for path in folder.rglob('*'):
         if path.suffix.lower() not in ('.wrn','.war','.log','.err','.stdout'):continue
-        raw=path.read_bytes();files.append(dict(path=str(path),sha256=hashlib.sha256(raw).hexdigest()))
+        actual_path=str(getattr(path,'path',path))
+        raw=path.read_bytes();files.append(dict(path=actual_path,sha256=hashlib.sha256(raw).hexdigest()))
         for line in raw.decode('cp1252',errors='replace').splitlines():
-            if 'No convergence was reached' in line:failures.append(dict(path=str(path),line=line))
+            if 'No convergence was reached' in line:failures.append(dict(path=actual_path,line=line))
     assert files,'Missing actual original convergence diagnostics'
     assert not failures,('Original continued without Richards convergence',failures)
     return dict(status='ACTUAL_ORIGINAL_CONVERGENCE_DIAGNOSTICS_NO_FALLBACK',files=files,unconverged_continuations=0)
