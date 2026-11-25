@@ -1,5 +1,5 @@
 """Register and build one actual original Frost calendar context on real HEAD."""
-import argparse,json,subprocess,sys
+import argparse,json,subprocess,sys,time
 from pathlib import Path
 R=Path(__file__).resolve().parents[2]
 TASK='01a1e8b4-228b-75f1-8ac4-b07ca1e15713'
@@ -19,12 +19,16 @@ def main():
     q=dict(status='RUNNING_ACTUAL_FROST_CALENDAR_BUILD_NOT_QUALIFIED',actual_source=head,input_root=str(a.inputs),build_root=str(build),command=command,space_preflight=space,compiler_executions=1,model_executions=0)
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     save()
+    started=time.perf_counter()
     try:
         with (a.output/'build.stdout').open('xb') as stdout,(a.output/'build.stderr').open('xb') as stderr:r=subprocess.run(command,cwd=R,stdout=stdout,stderr=stderr,timeout=240)
         q['returncode']=r.returncode;r.check_returncode();assert git('rev-parse','HEAD').decode().strip()==head
         q['status']='ACTUAL_FROST_CALENDAR_BUILD_PASS_NOT_QUALIFIED'
     except Exception as error:q.update(status='FAILED_ACTUAL_FROST_CALENDAR_BUILD_NOT_QUALIFIED',error=repr(error));raise
-    finally:save()
+    finally:
+        q['actual_public_builder_wall_seconds']=time.perf_counter()-started
+        q['separate_compile_link_validation_seconds']='UNKNOWN'
+        save()
     print(q['status'],flush=True)
 
 

@@ -1,9 +1,9 @@
 {
   "work_unit": "SWAP5-NOMACRO-COMPLETE01",
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
-  "canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
+  "canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
   "branch": "codex/nomacro-frost-calendar-state02",
-  "last_commit": "16efb12ff4b365b5fd208f8a2c262e4a1e2fe2f7",
+  "last_commit": "6cbe47b8012fb7590d2200aed338785458cd0cef",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35446,7 +35446,7 @@
     "prototype_recovery_head": "d29caa2076"
   },
   "frost_hysteresis_state01": {
-    "status": "EXACT_CANDIDATE_PUBLIC_ORDINARY_PUB_AND_FOUR_REMOTE_NEGATIVES_PASS_PR1800_CI_PENDING",
+    "status": "ACTUAL_CANONICAL_MERGED_ALL16_CI_PASS_POSTMERGE_OBSERVERS_RUNNING",
     "baseline": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "classification": "B_EXISTING_FROST_HYSTERESIS_ROOT_STATE_COMPOSITION",
     "scope": "Model1 dense original water/CDE, existing corrected Frost DIVDRA1 bottom6 Snow1 numeric heat, explicit/implicit and originalinitial1/2 withhysteresis0/1; currentoriginal hys2 remains unchanged",
@@ -35504,7 +35504,12 @@
     "source_owner": "tests/nomacro_drainage/frost_history_state_verify.py",
     "candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
     "PR": 1800,
-    "premerge_public_evidence": "FROST_HYSTERESIS_STATE01_PREMERGE_PUBLIC_RAW_V1.json"
+    "premerge_public_evidence": "FROST_HYSTERESIS_STATE01_PREMERGE_PUBLIC_RAW_V1.json",
+    "actual_canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
+    "whole_tree": "8dd26c2de238e6be975ad308058e482d31be225e",
+    "checks_success": 30,
+    "checks_skipped": 17,
+    "workflows_success": 16
   },
   "ria12_water_polish_actual_admission": {
     "status": "BOUNDED_EXPLICIT_RIA_WATER_POLISH_ACTUAL_CANONICAL_ADMITTED",
@@ -35555,8 +35560,7 @@
   },
   "frost_calendar_state02": {
     "status": "PERSISTED_CALENDAR_NATIVE_RENDERER_AND_DISPATCH_NOT_TESTED_NOT_QUALIFIED",
-    "baseline_actual_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
-    "required_pending_parent_candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
+    "baseline_actual_canonical": "8dbe3db7c7832dd6a1f86c4275cd43f054552df3",
     "parent_PR": 1800,
     "classification": "B_EXISTING_CALENDAR_NATIVE_STATE_COMPOSITION",
     "scope": "Model1 Snow/Frost primaryDIVD1 bottom6 water/CDE hys0/1/2 initial1/2 explicit/fittedimplicit, NPRINTDAY1 regular/monthly/explicit dates and reset; retain event closure, exclude perstep/subdaily",
@@ -35710,8 +35714,8 @@
         ]
       }
     },
-    "first_actual_build": "PASS original water monthly O0 at actual be9a06ffa6; original compiler/control records retained",
-    "first_actual_short_probe": "Original reader refused IRDATE outside Jan28..Feb2 before HYBRID_READY; zero accepted model days, not a numerical or native-state failure. Original failed input/result preserved unchanged.",
-    "input_fixture_correction": "New v2 input preserves original irrigation amount/concentration/type/rate and shifts only its actual date by the original TSTART-to-newTSTART offset. Failed v1 not rewritten."
+    "parent_qualified_candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
+    "parent_actual_merge_observers": "RUNNING_REAL_CANONICAL_PUBLIC_AND_ORDINARY_PUB",
+    "first_short_month_seam": "Six days/exact cold/native/user-output plus fresh original unchanged1e-10 daily water budget PASS from preserved actual raw. Original failed observer daily-witness assumption retained; corrected output-event reader does not replay models."
   }
 }
