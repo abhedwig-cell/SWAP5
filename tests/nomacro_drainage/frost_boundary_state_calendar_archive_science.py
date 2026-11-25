@@ -53,7 +53,7 @@ def controls(folder,warm,data,meta,case,refusal_folder=None):
   if stem=='snow-transactions':assert max(data[start]['stock_start_cm'][2],data[start]['stock_end_cm'][2])>0
   transactions.append(dict(start=start,discard_replay_accept_exact=True,recovered_next_day_exact=True))
  return dict(actual_compiled_refusals=count,accepted_mutant_days=0,actual_refusal_data_location=refusal_folder.path,actual_transaction_data_location=folder.path,transactions=transactions)
-def case_audit(store,folder_prefix,build_prefix,provider_store,case,producer,opt,controls_prefix=None,refusals_prefix=None):
+def case_audit(store,folder_prefix,build_prefix,provider_store,case,producer,opt,controls_prefix=None,refusals_prefix=None,trial_flux=False):
  folder=ReadView(store,folder_prefix);profile=folder/'science';q=read(profile/'RESULT.json');warm=profile/'trajectory';build=ReadView(store,build_prefix);meta=read(build/'BUILD.json');identity=meta['identity']
  assert q['status']=='ACTUAL_FROST_CALENDAR_ORIGINAL_BUDGETS_NATIVE_HISTORY_COLD_AND_USER_OUTPUT_PASS_NOT_ADMITTED' and q['source']==producer and q['duration_days']==case['days'] and q['kind']==case['kind']
  assert q['trajectory']['build_sha256']==SHA((build/'BUILD.json').read_bytes())
@@ -65,7 +65,11 @@ def case_audit(store,folder_prefix,build_prefix,provider_store,case,producer,opt
  for role,digest in meta['executable_sha256'].items():assert SHA((build/('day_'+role+suffix)).read_bytes())==digest
  assert '-'+opt in identity['donor_flags'] and '-'+opt in identity['kernel_flags'] and '-ffp-contract=off' in identity['donor_flags'] and '-ffp-contract=off' in identity['kernel_flags']
  from frost_calendar_terminal_water import source as terminal
- assert (build/'terminal_water_receipt.f90').read_text(encoding='cp1252')==terminal()
+ expected_terminal=terminal()
+ if trial_flux:
+  from frost_boundary_terminal_trial import receipt_source
+  expected_terminal=receipt_source(expected_terminal)
+ assert (build/'terminal_water_receipt.f90').read_text(encoding='cp1252')==expected_terminal
  selected=q['selection']
  assert all(selected[k]==case[k] for k in ('kind','bottom','implicit','hysteresis','initial'))
  from experimental_project import switches
@@ -75,9 +79,10 @@ def case_audit(store,folder_prefix,build_prefix,provider_store,case,producer,opt
   from time_event_closure import source as event
   from frost_boundary_convergence import historical_clock_source as plate_timecontrol_source
   parent=provider_store.get('original-provider-build/swap-selected/timecontrol.f90')
-  assert (build/'timecontrol.f90').read_bytes().replace(b'\r\n',b'\n')==plate_timecontrol_source(event(parent))
+  expected_clock=event(parent) if trial_flux else plate_timecontrol_source(event(parent))
+  assert (build/'timecontrol.f90').read_bytes().replace(b'\r\n',b'\n')==expected_clock
  from frost_boundary_convergence import require_convergence
- require_convergence(profile)
+ convergence=require_convergence(profile)
  scientific=budgets(warm,case['kind'],case['days']);assert scientific==q['independent_original_budgets']
  data=[json.loads(line) for line in (warm/'daily.jsonl').read_text().splitlines()]
  windows=[(2,4),(19,23),(30,34)] if case['days']==35 else [(2,case['days'])]
@@ -90,7 +95,7 @@ def case_audit(store,folder_prefix,build_prefix,provider_store,case,producer,opt
   assert [physical(x,case['kind']) for x in rows]==[physical(x,case['kind']) for x in data[start:end]]
   assert checkpoint(cold/f'accepted-column-1-day-{end}.zip',meta,case,rows[-1])==checkpoint(warm/f'accepted-column-1-day-{end}.zip',meta,case,data[end-1])
   compare(warm/'original',cold/'original',identity['original_output'],start,end,actual_start)
- result=dict(case=case,actual_compiler_source=producer,actual_controller_source=q['actual_controller_source'],compiler=identity['compiler'],optimization=opt,science=scientific,native_samples=len(cuts),exact_cold_windows=len(windows),BUILD_sha256=SHA((build/'BUILD.json').read_bytes()))
+ result=dict(convergence=convergence,case=case,actual_compiler_source=producer,actual_controller_source=q['actual_controller_source'],compiler=identity['compiler'],optimization=opt,science=scientific,native_samples=len(cuts),exact_cold_windows=len(windows),BUILD_sha256=SHA((build/'BUILD.json').read_bytes()))
  if case['days']==35:result['controls']=controls(ReadView(store,controls_prefix) if controls_prefix else folder/'controls',warm,data,meta,case,ReadView(store,refusals_prefix) if refusals_prefix else None)
  return result
 
