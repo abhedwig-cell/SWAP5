@@ -81,7 +81,7 @@ def audit(proof):
      x=parent_audit(store,name,case);assert x['actual_compiler_source']==producers[5]
      profile=ReadView(store,'current/'+name+'/science');x['convergence']=require_convergence(profile)
      record=json.loads((profile/'RESULT.json').read_text());projection=json.loads(store.get('COMPILED_PROJECTION_V1.json'));build=ReadView(store,projection[record['build_root']]['archive_prefix'])
-     assert (build/'timecontrol.f90').read_bytes().replace(b'\r\n',b'\n')==original_event_source(store.get('original-provider-build/swap-selected/timecontrol.f90'))
+     assert (build/'timecontrol.f90').read_bytes().replace(b'\r\n',b'\n')==original_event_source(store.get('original-provider-build/swap-selected/timecontrol.f90')).replace(b'\r\n',b'\n')
      # The old dense route retains its actual interval receipt, not a day-frame substitution.
      from frost_calendar_terminal_water import PARENT
      assert (build/'terminal_water_receipt.f90').read_text(encoding='cp1252')==receipt_source(PARENT.read_text(encoding='cp1252'))

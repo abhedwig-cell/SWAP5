@@ -80,7 +80,7 @@ def case_audit(store,folder_prefix,build_prefix,provider_store,case,producer,opt
   from frost_boundary_convergence import historical_clock_source as plate_timecontrol_source
   parent=provider_store.get('original-provider-build/swap-selected/timecontrol.f90')
   expected_clock=event(parent) if trial_flux else plate_timecontrol_source(event(parent))
-  assert (build/'timecontrol.f90').read_bytes().replace(b'\r\n',b'\n')==expected_clock
+  assert (build/'timecontrol.f90').read_bytes().replace(b'\r\n',b'\n')==expected_clock.replace(b'\r\n',b'\n')
  from frost_boundary_convergence import require_convergence
  convergence=require_convergence(profile)
  scientific=budgets(warm,case['kind'],case['days']);assert scientific==q['independent_original_budgets']
