@@ -1,0 +1,55 @@
+{
+  "status": "RUN_ONLY_REMAINING32_ORIGINAL_CONTEXTS_AFTER_PRESERVING_COMPLETED_PERIODS_AND_REJECTED_DAY22_PROFILE",
+  "previous_actual_source": "71806beaee8e532af407ab88298b7bde4ac766c2",
+  "completed_actual_contexts_available_for_independent_final_audit": 12,
+  "completed_primary_days": 420,
+  "native_samples": 84,
+  "exact_cold_windows": 36,
+  "compiled_refusals": 924,
+  "transaction_contexts": 24,
+  "completed_periods_or_refusals_to_replay": 0,
+  "excluded_from_this_numerical_epoch": [
+    "water-b5-i0-h0-p1-regular-r0",
+    "cde-b5-i0-h1-p2-monthly-r1",
+    "water-b8-i0-h1-p1-dates-r1",
+    "cde-b8-i0-h0-p2-regular-r1"
+  ],
+  "remaining_cases_per_platform_optimization": 8,
+  "remaining_contexts": 32,
+  "failed_profile": "cde-b8-i0-h0-p2-regular-r1",
+  "failure": {
+    "accepted_days": 21,
+    "rejected_day": 22,
+    "platform_optimization_repetitions": 4,
+    "water_residual_cm": "1.812687009522529e-8",
+    "water_limit_cm": "1e-10",
+    "chemical_residual_within_1e_10": true,
+    "cause": "NOT_PROVEN",
+    "classification": "NUMERICAL_FAILURE_WATER_GUARD_REJECTION",
+    "final_public_admission": "MUST_REFUSE_UNLESS_SEPARATELY_FIXED_AND_QUALIFIED"
+  },
+  "source_change": "Only two workflow case-selection argument lists and this explicit scientific epoch declaration change. APP, src, tools, tests, original inputs and process generation code are exactly previous71806beaee. Actual producer source remains the genuine new GitHub Actions checkout HEAD, never an old-source HEAD projection.",
+  "preserved_original_artifacts": [
+    {
+      "id": 15042067791,
+      "digest": "b7cb352caf1d1911cd305afdf12a44ac7c9b278e59d8bb1c00de5f673d8900a6"
+    },
+    {
+      "id": 15042013209,
+      "digest": "4e0bc97d1c238f4844de1bb1eff210a58b7125488e75c10b2aac7a0eda24edbd"
+    },
+    {
+      "id": 15040259844,
+      "digest": "c00c6f638b5d20f0be81071449854a056ec8271ab577053e06150f81f5176940"
+    },
+    {
+      "id": 15042361630,
+      "digest": "040215a8c009e12a8fa7d744b4bc78152b8a574ceb95760ab8a98494414ce177"
+    }
+  ],
+  "canonical_admission": false,
+  "functional_completion": "PARTIAL",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "global_family_and_gap_counts": "UNKNOWN",
+  "RC3_changed": false
+}
