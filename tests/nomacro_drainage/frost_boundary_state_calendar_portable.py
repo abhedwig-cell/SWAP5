@@ -11,12 +11,15 @@ def main():
     for key in ('reference-work','build-root','output'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--optimization',choices=('O0','O2'),required=True)
     p.add_argument('--platform',choices=('Windows','Ubuntu'),required=True)
-    p.add_argument('--case',action='append',default=[]);a=p.parse_args()
+    p.add_argument('--case',action='append',default=[])
+    p.add_argument('--exclude-case',action='append',default=[]);a=p.parse_args()
     assert platform.system()==('Windows' if a.platform=='Windows' else 'Linux')
     head,contract=source();a.output.mkdir(parents=True)
     names={x['name'] for x in contract['representative_cases']};assert len(a.case)==len(set(a.case)) and set(a.case)<=names
-    selected=[x for x in contract['representative_cases'] if not a.case or x['name'] in a.case]
-    q=dict(status='RUNNING_ACTUAL_BOUNDARY_STATE_CALENDAR_NOT_QUALIFIED',source=head,platform=a.platform,optimization=a.optimization,contexts=[],public_builder_invocations=0,canonical_admission=False)
+    assert len(a.exclude_case)==len(set(a.exclude_case)) and set(a.exclude_case)<=names
+    selected=[x for x in contract['representative_cases'] if (not a.case or x['name'] in a.case) and x['name'] not in a.exclude_case]
+    assert selected
+    q=dict(status='RUNNING_ACTUAL_BOUNDARY_STATE_CALENDAR_NOT_QUALIFIED',source=head,platform=a.platform,optimization=a.optimization,requested_cases=a.case,excluded_cases=a.exclude_case,contexts=[],public_builder_invocations=0,canonical_admission=False)
     def save():(a.output/'RESULT.json').write_text(json.dumps(q,indent=2)+'\n')
     def run(command,folder,cap):
         with (folder/'controller.stdout').open('xb') as stdout,(folder/'controller.stderr').open('xb') as stderr:

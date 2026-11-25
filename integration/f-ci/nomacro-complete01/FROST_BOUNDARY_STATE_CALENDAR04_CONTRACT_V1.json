@@ -375,5 +375,33 @@
     "Windows_O2_full35_and_cold": "PASS",
     "native_refusal_controller": "Actual39existing and35expanded raw refusals completed before stale aggregate count assertion; raw data and failed reports retained; independent read-only recovery and previously unexecuted real transactions pending.",
     "compiler_or_model_replay_for_count_correction": false
+  },
+  "original_scientific_workflows": {
+    ".github/workflows/nomacro-frost-boundary-state-calendar04-ubuntu.yml": {
+      "sha256": "80dc7c2eccd12ab380fba991e9b1ed58c4662e7676348edfabccb23231fbcc03",
+      "platform": "ubuntu",
+      "expected_contexts_per_optimization": 12,
+      "completed_local_Windows_water_context_excluded_without_replay": false,
+      "trigger": "Explicit push of persisted scientific source to codex/nomacro-frost-boundary-state-calendar04-science01; no metadata-only numerical retrigger"
+    },
+    ".github/workflows/nomacro-frost-boundary-state-calendar04-windows.yml": {
+      "sha256": "49ec66809be04584f9134a445813d61b3f9905c24c8c4bb605a42ba404b2ddd2",
+      "platform": "windows",
+      "expected_contexts_per_optimization": 11,
+      "completed_local_Windows_water_context_excluded_without_replay": true,
+      "trigger": "Explicit push of persisted scientific source to codex/nomacro-frost-boundary-state-calendar04-science01; no metadata-only numerical retrigger"
+    }
+  },
+  "qualification_plan_counts": {
+    "contexts": 48,
+    "primary_days": 1404,
+    "native_samples": 276,
+    "exact_cold_windows": 120,
+    "actual_compiled_refusals_expected": 3144,
+    "transaction_contexts_expected": 72,
+    "counts_are_target_not_completed": true,
+    "local_Windows_water_full35_contexts": 2,
+    "remaining_Windows_CI_contexts": 22,
+    "Ubuntu_CI_contexts": 24
   }
 }
