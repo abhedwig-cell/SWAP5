@@ -3,7 +3,7 @@
   "baseline": "b6dc588ef283fc141cb2d6b942c29912ba6bde96",
   "canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
   "branch": "codex/nomacro-frost-calendar-state02",
-  "last_commit": "8b7c2925d4c14051b5e5bc6879851702a0780511",
+  "last_commit": "14d91abe6a4a417e57acb032aa5132f1c91ecf27",
   "status": "PARTIAL",
   "functional_completeness": "PARTIAL",
   "scientific_equivalence": "NOT_QUALIFIED",
@@ -35554,14 +35554,14 @@
     "canonical_admission": false
   },
   "frost_calendar_state02": {
-    "status": "PERSISTED_SELECTOR_ONLY_NOT_PUBLICLY_DISPATCHED_NOT_QUALIFIED",
+    "status": "PERSISTED_CALENDAR_NATIVE_RENDERER_AND_DISPATCH_NOT_TESTED_NOT_QUALIFIED",
     "baseline_actual_canonical": "e0461f005b95b9f68bc70d4d4698eff903bc04ed",
     "required_pending_parent_candidate": "8b7c2925d4c14051b5e5bc6879851702a0780511",
     "parent_PR": 1800,
     "classification": "B_EXISTING_CALENDAR_NATIVE_STATE_COMPOSITION",
     "scope": "Model1 Snow/Frost primaryDIVD1 bottom6 water/CDE hys0/1/2 initial1/2 explicit/fittedimplicit, NPRINTDAY1 regular/monthly/explicit dates and reset; retain event closure, exclude perstep/subdaily",
     "new_physical_equations": false,
-    "implementation": "Strict original singleton input selector only. Dispatch/native renderers not yet wired; public route remains refused.",
+    "implementation": "Real original thermal/calendar/Snow7 and CDE interval provider APIs; four distinct native codecs; exact nonselected daily delegation. Actual short producer/native/month seam next.",
     "state_dependencies": [
       "Actual seven original Snow cumulative output fields",
       "Existing original calendar/crop pending-date frame",
@@ -35570,7 +35570,145 @@
     ],
     "source": "app/hybrid_water/frost_calendar_state.py",
     "source_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a",
-    "next": "Finish parent exact-head CI and actual canonical admission; implement original calendar/native renderer composition and strict literal source inverses; first actual short month/reset cold seam before selecting any full periods.",
-    "canonical_admission": false
+    "next": "Finish parentPR1800 CI and actualcanonical admission in parallel; actual public frontend then build-only and real6day month/cold seam; no repeated completed parent48 periods.",
+    "canonical_admission": false,
+    "new_native_format": true,
+    "native_codecs": [
+      "S5FCW001",
+      "S5FCC001",
+      "S5FCW002",
+      "S5FCC002"
+    ],
+    "files": {
+      "app/hybrid_water/daily_host.py": {
+        "added": false,
+        "before_lf_sha256": "0152f8ebddc8a1215ec34991ae9f743e9cff2fed8459fdaaa3514ac7c7829cd9",
+        "proposed_lf_sha256": "517fb178f1e5b085412ab4904a1160e76ca70bfa5e7669fc1940cd0d54248189",
+        "ordered_literal_edits": [
+          {
+            "base_start": 73001,
+            "base_end": 73080,
+            "before": "        from age_groundwater_output import source_age_identity as age_identity\n",
+            "after": "        from groundwater_water_output import source_age_identity as age_identity\n"
+          }
+        ]
+      },
+      "app/hybrid_water/experimental_project.py": {
+        "added": false,
+        "before_lf_sha256": "41c0dbed87feef466533dc2a659aaf53454696ebba85baabb09a9417414d454b",
+        "proposed_lf_sha256": "958ef2cf948c4c9a5a38b65108a305be00ca3fe71768d6dd13c47ea591f1e108",
+        "ordered_literal_edits": [
+          {
+            "base_start": 11058,
+            "base_end": 11316,
+            "before": "                or len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')) and initial_calendar is None and initial_age is None and initial_groundwater is None and paired_boundary is None and initial_analytical_snow is None:\n",
+            "after": "                or len(flags)>1 or flags and flags[0].strip().upper() not in ('.FALSE.','FALSE','.F.','F')) and initial_calendar is None and initial_age is None and initial_groundwater is None and paired_boundary is None and initial_analytical_snow is None and not (initial_frost or {}).get('frost_calendar'):\n"
+          },
+          {
+            "base_start": 29308,
+            "base_end": 29308,
+            "before": "",
+            "after": "    from frost_calendar_output import selection as frost_calendar_selection,codec as frost_calendar_codec\n    if frost_calendar_selection(project) is not None:return frost_calendar_codec(project)\n"
+          }
+        ]
+      },
+      "app/hybrid_water/frost_calendar_output.py": {
+        "added": true,
+        "proposed_lf_sha256": "4a67b2ca79da538decf4978e7748b7b6331ca6dc5f072fc9ba6a4dca909799d3"
+      },
+      "app/hybrid_water/frost_calendar_state.py": {
+        "added": true,
+        "proposed_lf_sha256": "0f3c686f423abc03503f7febf7cf87282fd2a6852baeaa55e9c021aa1a143c9a"
+      },
+      "app/hybrid_water/frost_drainage_composition.py": {
+        "added": false,
+        "before_lf_sha256": "58d0111a47ad5419ed576eb273d1c03e896c927baff7d61edc2de02fed69693d",
+        "proposed_lf_sha256": "a5e3e0b53a1521497e9f30c79d17688ea7886fc71aa9adf58c38395f8d90714b",
+        "ordered_literal_edits": [
+          {
+            "base_start": 853,
+            "base_end": 853,
+            "before": "",
+            "after": "    from frost_calendar_state import selection as calendar_selection\n    if calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_output import codec as calendar_codec\n        return calendar_codec(project)\n"
+          }
+        ]
+      },
+      "app/hybrid_water/frost_hysteresis_composition.py": {
+        "added": false,
+        "before_lf_sha256": "b63e7ac50646689158ff32f35fca6678cb6ddac1007f4b5157522c7325c1ba19",
+        "proposed_lf_sha256": "4b2a04c5361c16c19b21b177d13a86e2d805a886bc159d10d379705595514953",
+        "ordered_literal_edits": [
+          {
+            "base_start": 873,
+            "base_end": 873,
+            "before": "",
+            "after": "    from frost_calendar_state import selection as calendar_selection\n    calendar=calendar_selection(directory,original_output)\n    if calendar is not None:return calendar\n"
+          }
+        ]
+      },
+      "app/hybrid_water/groundwater_water_output.py": {
+        "added": false,
+        "before_lf_sha256": "f8844e285fb144b30494f3ee2db49267ffebcb01a3bc5156b859ae31a1a43c5f",
+        "proposed_lf_sha256": "c6b8901f12870d5ba4d210169d86fa15cf1f509193edf5e37769c84251268548",
+        "ordered_literal_edits": [
+          {
+            "base_start": 2916,
+            "base_end": 2916,
+            "before": "",
+            "after": "    from frost_calendar_output import selection as frost_selection,selection as frost_result\n    if frost_selection(project) is not None:return frost_result(project)\n"
+          },
+          {
+            "base_start": 3200,
+            "base_end": 3200,
+            "before": "",
+            "after": "    from frost_calendar_output import selection as frost_selection,codec as frost_result\n    if frost_selection(project) is not None:return frost_result(project)\n"
+          },
+          {
+            "base_start": 3392,
+            "base_end": 3392,
+            "before": "",
+            "after": "    from frost_calendar_output import selection as frost_selection,metadata as frost_result\n    if frost_selection(project) is not None:return frost_result(project)\n"
+          },
+          {
+            "base_start": 5257,
+            "base_end": 5350,
+            "before": "def source_age_identity(original,project):return prior.source_age_identity(original,project)\n",
+            "after": "def source_age_identity(original,project):\n    from frost_calendar_output import selection as frost_selection,source_age_identity as frost_identity\n    if frost_selection(project) is not None:return frost_identity(original,project)\n    return prior.source_age_identity(original,project)\n"
+          },
+          {
+            "base_start": 7159,
+            "base_end": 7159,
+            "before": "",
+            "after": "    from frost_calendar_output import selection as frost_selection,apply_build as frost_build\n    if frost_selection(project) is not None:return frost_build(output,donor_build,project,patched)\n"
+          }
+        ]
+      },
+      "app/hybrid_water/implicit_frost_composition.py": {
+        "added": false,
+        "before_lf_sha256": "496a8f9879d0ef0669a127b017d3a56f15ab20fe4fe8981ac462d523e13995b6",
+        "proposed_lf_sha256": "339bb2966ce1992ecf306f0747adea9b3ef12793a8188f62af5c33458cba4736",
+        "ordered_literal_edits": [
+          {
+            "base_start": 1490,
+            "base_end": 1490,
+            "before": "",
+            "after": "    from frost_calendar_state import selection as calendar_selection\n    if calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_output import codec as calendar_codec\n        return calendar_codec(project)\n"
+          }
+        ]
+      },
+      "app/hybrid_water/implicit_frost_root_state.py": {
+        "added": false,
+        "before_lf_sha256": "dfb3b6141f3d84f687d48018f3ee2352ec03b2e8bcc4807edb5e7bd178d09bb3",
+        "proposed_lf_sha256": "e7852f067cdcb2f861a2bf180bedb3ae99d25c6305f16c06d8784d369f68c894",
+        "ordered_literal_edits": [
+          {
+            "base_start": 5251,
+            "base_end": 5251,
+            "before": "",
+            "after": "    from frost_calendar_state import selection as calendar_selection\n    if calendar_selection(project.input_directory,project.original_output) is not None:\n        from frost_calendar_output import render_macro\n"
+          }
+        ]
+      }
+    }
   }
 }
